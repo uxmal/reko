@@ -33,6 +33,8 @@ namespace Decompiler.Core.Expressions
 	{
 		public Identifier(string name, DataType type, Storage stg) : base(type)
 		{
+            if (name == "tLoc24")   //$DEBUG
+                name.ToCharArray();
 			this.Name = name;
 			this.Storage = stg;
 		}

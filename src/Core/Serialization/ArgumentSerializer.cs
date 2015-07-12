@@ -106,13 +106,23 @@ namespace Decompiler.Core.Serialization
         public Identifier DeserializeReturnValue(Argument_v1 arg)
         {
             argCur = arg;
-            if (arg.Kind != null)
-                return arg.Kind.Accept(this);
-			var dt = this.argCur.Type.Accept(procSer.TypeLoader);
+            DataType dt = null;
+            if (this.argCur.Type != null)
+			    dt = this.argCur.Type.Accept(procSer.TypeLoader);
             if (dt is VoidType)
                 return null;
-            var reg = procSer.GetReturnRegister(arg, dt.BitSize);
-            return frame.EnsureIdentifier(reg);
+            Identifier id;
+            if (arg.Kind != null)
+            {
+                id = arg.Kind.Accept(this);
+                id.DataType = dt ?? id.DataType;
+            }
+            else
+            {
+                var reg = procSer.GetReturnRegister(arg, dt.BitSize);
+                id = new Identifier(reg.ToString() + "@<>", dt, reg);
+            }
+            return id;
         }
 
 		public Identifier Deserialize(Argument_v1 arg)

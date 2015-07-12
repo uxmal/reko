@@ -126,7 +126,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             };
             Given_ProcedureSerializer();
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register word32 test(Register word64 f1)", sig.ToString("test"));
+            Assert.AreEqual("Register int test(Register word64 f1)", sig.ToString("test"));
         }
 
         private SerializedType Type(string typeName)

@@ -145,6 +145,14 @@ namespace Decompiler.Core.Expressions
             return new Application(fn, retType, exps);
         }
 
+        public Application Fn(ExternalProcedure ep, params Expression[] args)
+        {
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Pointer32, ep), 
+                ep.Signature.ReturnValue.DataType,
+                args);
+        }
+
         public Application Fn(PseudoProcedure ppp, params Expression[] args)
         {
             return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);

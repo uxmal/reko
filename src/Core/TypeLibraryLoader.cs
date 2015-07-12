@@ -121,6 +121,7 @@ namespace Decompiler.Core
             }
             catch (Exception ex)
             {
+                Debug.Print("An error occurred when loading the signature of procedure {0}.", sp.Name);
                 throw new ApplicationException(
                     string.Format("An error occurred when loading the signature of procedure {0}.", sp.Name),
                     ex);

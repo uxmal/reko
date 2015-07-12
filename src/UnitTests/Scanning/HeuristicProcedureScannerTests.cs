@@ -22,19 +22,90 @@ using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Scanning
 {
-    class HeuristicProcedureScannerTests
+    [TestFixture]
+    public class HeuristicProcedureScannerTests : HeuristicTestBase
     {
-        HeuristicProcedureScanner subject;
+        private HeuristicProcedureScanner subject;
+        private HeuristicProcedure proc;
+
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
 
         [Test]
-        public void HPSC_Valid()
+        public void HPSC_Conflicts_1()
         {
+            Given_Image32(
+                0x0010000,
+                "55 89 e5 c3");
+            Given_x86_32();
+            Given_RewriterHost();
+            mr.ReplayAll();
 
+            When_DisassembleProcedure();
+            var conflicts = HeuristicProcedureScanner.BuildConflictGraph(proc.Cfg.Nodes);
+            var sExp = @"(l00010001-l00010002)
+(l00010002-l00010003)
+";
+            AssertConflicts(sExp, conflicts);
+        }
+
+        [Test]
+        public void HPSC_Conflicts_2()
+        {
+            Given_Image32(
+                0x0010000,
+                "55 E8 00 00 00 38 c3");
+            Given_x86_32();
+            Given_RewriterHost();
+            mr.ReplayAll();
+
+            When_DisassembleProcedure();
+            var conflicts = HeuristicProcedureScanner.BuildConflictGraph(proc.Cfg.Nodes);
+            var sExp =
+@"(l00010001-l00010002)
+(l00010001-l00010003)
+(l00010001-l00010004)
+(l00010001-l00010005)
+(l00010002-l00010003)
+(l00010003-l00010004)
+(l00010004-l00010005)
+(l00010005-l00010006)
+";
+            AssertConflicts(sExp, conflicts);
+        }
+
+
+        private void AssertConflicts(string sExp, IEnumerable<Tuple<HeuristicBlock, HeuristicBlock>> conflicts)
+        {
+            var sActual = conflicts
+                .OrderBy(c => c.Item1.Address.ToLinear())
+                .ThenBy(c => c.Item2.Address.ToLinear())
+                .Aggregate(
+                    new StringBuilder(),
+                    (s, c) => s.AppendFormat("({0}-{1})", c.Item1.Name, c.Item2.Name).AppendLine())
+                .ToString();
+            if (sExp != sActual)
+            {
+                Debug.Print(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
+        }
+
+        private void When_DisassembleProcedure()
+        {
+            var hsc = new HeuristicScanner(prog, host);
+            this.proc = hsc.DisassembleProcedure(
+                prog.Image.BaseAddress,
+                prog.Image.BaseAddress + prog.Image.Length);
         }
     }
 }

@@ -27,6 +27,10 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
+    /// <summary>
+    /// Given a heuristically discovered procedure, attempt to discard as 
+    /// many basic blocks as possible.
+    /// </summary>
     public class HeuristicProcedureScanner
     {
         private Program program;
@@ -39,7 +43,7 @@ namespace Decompiler.Scanning
             this.program = program;
             this.proc = proc;
             this.blocks = proc.Cfg;
-            this.conflicts = new HashSet<Tuple<HeuristicBlock, HeuristicBlock>>(new CollisionComparer());
+            this.conflicts = BuildConflictGraph(proc.Cfg.Nodes);
         }
 
         /// <summary>
@@ -61,21 +65,32 @@ namespace Decompiler.Scanning
             // Trace the reachable blocks using DFS; call them 'valid'.
             var valid = new DfsIterator<HeuristicBlock>(blocks).PreOrder().ToHashSet();
 
+            return valid;
+        }
+
+        /// <summary>
+        /// Given a list of blocks, creates an undirected graph of all blocks which overlap.
+        /// </summary>
+        /// <param name="blocks"></param>
+        /// <returns></returns>
+        public static HashSet<Tuple<HeuristicBlock, HeuristicBlock>> BuildConflictGraph(IEnumerable<HeuristicBlock> blocks)
+        {
+            var conflicts = new HashSet<Tuple<HeuristicBlock, HeuristicBlock>>(new CollisionComparer());
             // Find all conflicting blocks: pairs that overlap.
-            var blockMap = blocks.Nodes.ToSortedList(n => n.Address);
+            var blockMap = blocks.OrderBy(n => n.Address).ToList();
             for (int i = 0; i < blockMap.Count; ++i)
             {
-                var u = blockMap.Values[i];
+                var u = blockMap[i];
                 var uEnd = u.GetEndAddress();
                 for (int j = i + 1; j < blockMap.Count; ++j)
                 {
-                    var v = blockMap.Values[j];
+                    var v = blockMap[j];
                     if (v.Address >= uEnd)
                         break;
                     conflicts.Add(Tuple.Create(u, v));
                 }
             }
-            return valid;
+            return conflicts;
         }
 
         private void RemoveBlocksConflictingWithValidBlocks(HashSet<HeuristicBlock> valid)
