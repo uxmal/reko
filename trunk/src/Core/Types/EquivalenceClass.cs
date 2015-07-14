@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Decompiler.Core.Types
@@ -103,7 +104,17 @@ namespace Decompiler.Core.Types
 		
 		public override int Size
 		{
-			get { return DataType.Size; }
+            get
+            {
+                if (DataType == null)
+                {
+                    Debug.Print("DataType of {0} is NULL!", Name); return 4;
+                }
+                else
+                {
+                    return DataType.Size;
+                }
+            }
 			set { ThrowBadSize(); }
 		}
 

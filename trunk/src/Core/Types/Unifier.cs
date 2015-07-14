@@ -56,6 +56,15 @@ namespace Decompiler.Core.Types
 				return (pa.Domain &  pb.Domain) != 0;
 			}
 
+            TypeReference tra = a as TypeReference;
+            TypeReference trb = b as TypeReference;
+            if (tra != null && trb != null)
+                return tra == trb;
+            if (tra != null)
+                return AreCompatible(tra.Referent, b);
+            if (trb != null)
+                return AreCompatible(a, trb.Referent);
+
 			TypeVariable tva = a as TypeVariable;
 			TypeVariable tvb = b as TypeVariable;
 			if (tva != null && tvb != null)
@@ -238,6 +247,26 @@ namespace Decompiler.Core.Types
 			{
 				MakeUnion(a, b);
 			}
+
+            TypeReference trA = a as TypeReference;
+            TypeReference trB = b as TypeReference;
+            if (trA != null && trB != null)
+            {
+                if (trA == trB)
+                    return trA;
+                else 
+                    return MakeUnion(a, b);
+            }
+            if (trA != null)
+            {
+                if (AreCompatible(trA.Referent, b))
+                    return a;
+            }
+            if (trB != null)
+            {
+                if (AreCompatible(a, trB.Referent))
+                    return b;
+            }
 
 			EquivalenceClass eqA = a as EquivalenceClass;
 			EquivalenceClass eqB = b as EquivalenceClass;

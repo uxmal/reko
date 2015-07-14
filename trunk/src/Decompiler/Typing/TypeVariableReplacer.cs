@@ -31,10 +31,12 @@ namespace Decompiler.Typing
 	public class TypeVariableReplacer : DataTypeTransformer
 	{
 		private TypeStore store;
+        private HashSet<DataType> visitedTypes;
 
 		public TypeVariableReplacer(TypeStore store)
 		{
 			this.store = store;
+            this.visitedTypes = new HashSet<DataType>();
 		}
 
 		/// <summary>
@@ -42,13 +44,13 @@ namespace Decompiler.Typing
 		/// </summary>
 		public void ReplaceTypeVariables()
 		{
-			Dictionary<EquivalenceClass,EquivalenceClass> visited = new Dictionary<EquivalenceClass,EquivalenceClass>();
+			var visited = new HashSet<EquivalenceClass>();
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				EquivalenceClass eq = tv.Class;
-				if (!visited.ContainsKey(eq))
+				if (!visited.Contains(eq))
 				{
-					visited.Add(eq, eq);
+					visited.Add(eq);
 					if (eq.DataType != null)
 					{
 						eq.DataType = eq.DataType.Accept(this);
@@ -66,5 +68,13 @@ namespace Decompiler.Typing
 		{
 			return tv.Class;
 		}
+
+        public override DataType VisitStructure(StructureType str)
+        {
+            if (visitedTypes.Contains(str))
+                return str;
+            visitedTypes.Add(str);
+            return base.VisitStructure(str);
+        }
 	}
 }
