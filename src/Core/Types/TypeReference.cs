@@ -54,7 +54,7 @@ namespace Decompiler.Core.Types
 
         public override DataType Clone()
         {
-            return new TypeReference(this.Name, this.Referent.Clone());
+            return this;
         }
     }
 }

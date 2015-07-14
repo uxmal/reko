@@ -119,11 +119,18 @@ namespace Decompiler.Core.Output
             { codeFormatter.InnerFormatter.WriteComment("Recursion too deep"); return codeFormatter; }
             else
             {
-                //$TODO: this should go away once we figure out why type inference loops.
-                ++guard;
-                var cf = eq.DataType.Accept(this);
-                --guard;
-                return cf;
+                if (eq.DataType != null)
+                {
+                    //$TODO: this should go away once we figure out why type inference loops.
+                    ++guard;
+                    var cf = eq.DataType.Accept(this);
+                    --guard;
+                    return cf;
+                } else
+                {
+                    Debug.Print("WARNING: eq.DataType is null for {0}", eq.Name);
+                    return codeFormatter;
+                }
             }
         }
 

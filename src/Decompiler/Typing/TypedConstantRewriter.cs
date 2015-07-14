@@ -269,7 +269,7 @@ namespace Decompiler.Typing
 
         public Expression VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref.Referent.Accept(this);
         }
 
 		public Expression VisitTypeVariable(TypeVariable tv)

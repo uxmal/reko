@@ -112,8 +112,8 @@ namespace Decompiler.Core.Types
                 DataType dtOld = c.DataType;
                 if (dtOld != null)
                     dt = u.Unify(dt, dtOld);
-                else if (dt != null)
-                    dt = dt.Clone();
+                //else if (dt != null)
+                //    dt = dt.Clone();        // why clone???
                 c.DataType = dt;
             }
         }

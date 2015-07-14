@@ -539,6 +539,7 @@ namespace Decompiler.Typing
 
         public DataType VisitOutArgument(OutArgument outArg)
         {
+            outArg.Expression.Accept(this);
             return handler.PointerTrait(
                 outArg,
                 outArg.DataType.Size,

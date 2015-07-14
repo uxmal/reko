@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Typing
@@ -44,6 +45,7 @@ namespace Decompiler.Typing
         private DecompilerEventListener eventListener;
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
+        private HashSet<DataType> visitedTypes;
 
         public TypeTransformer(TypeFactory factory, TypeStore store, Program prog)
             : this(factory, store, prog, new NullDecompilerEventListener())
@@ -242,6 +244,7 @@ namespace Decompiler.Typing
                     return;
                 }
 				Changed = false;
+                this.visitedTypes = new HashSet<DataType>();
 				foreach (TypeVariable tv in store.TypeVariables)
 				{
 					tvCur = tv;
@@ -254,7 +257,7 @@ namespace Decompiler.Typing
                     {
                         tv.DataType = tv.DataType.Accept(this);
                     }
-                    Debug.Print("Transformed {0}:{1}", tv, tv.Class.DataType);
+                    // Debug.Print("Transformed {0}:{1}", tv, tv.Class.DataType);
 				}
 				if (ppr.ReplaceAll())
 					Changed = true;
@@ -343,6 +346,9 @@ namespace Decompiler.Typing
 
         public DataType VisitStructure(StructureType str)
 		{
+            if (visitedTypes.Contains(str))
+                return str;
+            visitedTypes.Add(str);
             foreach (var field in str.Fields)
             {
                 field.DataType = field.DataType.Accept(this);

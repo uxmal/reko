@@ -21,6 +21,7 @@
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
@@ -33,11 +34,13 @@ namespace Decompiler.Typing
 		private TypeStore store;
 		private bool insideComplexType;
 		private bool changed;
-
+        private HashSet<DataType> visitedTypes;
+ 
 		public NestedComplexTypeExtractor(TypeFactory factory, TypeStore store)
 		{
 			this.factory = factory;
 			this.store = store;
+            this.visitedTypes = new HashSet<DataType>();
 		}
 
 		public bool Changed
@@ -87,6 +90,9 @@ namespace Decompiler.Typing
 
 		public override DataType VisitStructure(StructureType str)
 		{
+            if (visitedTypes.Contains(str))
+                return str;
+            visitedTypes.Add(str);
 			if (insideComplexType)
 			{
 				changed = true;

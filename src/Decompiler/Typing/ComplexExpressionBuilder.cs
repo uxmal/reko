@@ -23,6 +23,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 
 using System;
+using System.Diagnostics;
 
 namespace Decompiler.Typing
 {
@@ -137,7 +138,9 @@ namespace Decompiler.Typing
                 dtPointee is CodeType ||
                 comp.Compare(dtPtr, dtResult) == 0)
 			{
-                if (offset == 0 || dtPointee is ArrayType || offset % dtPointee.Size == 0)
+                if (dtPointee.Size == 0)
+                    Debug.Print("WARNING: {0} has size 0, which should be impossible", dtPointee);
+                if (offset == 0 || dtPointee is ArrayType || dtPointee.Size > 0 && offset % dtPointee.Size == 0)
                 {
                     int idx = (offset == 0 || dtPointee is ArrayType)
                         ? 0
@@ -268,7 +271,7 @@ namespace Decompiler.Typing
 
 		public Expression VisitPointer(Pointer ptr)
 		{
-			return RewritePointer(ptr, ptr.Pointee, ((Pointer) this.dtOriginal).Pointee);
+			return RewritePointer(ptr, ptr.Pointee, ptr.Pointee);
 		}
 
 		public Expression VisitMemberPointer(MemberPointer memptr)
@@ -299,7 +302,7 @@ namespace Decompiler.Typing
 
         public Expression VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref.Referent.Accept(this);
         }
 
         public Expression VisitTypeVariable(TypeVariable tv)

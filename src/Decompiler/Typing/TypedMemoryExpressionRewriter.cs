@@ -134,10 +134,17 @@ namespace Decompiler.Typing
             return tcr.Rewrite(addr, true);
         }
 
-		public Expression VisitApplication(Application appl)
-		{
-			throw new NotImplementedException();
-		}
+        public Expression VisitApplication(Application appl)
+        {
+            //$BUGBUG: should rewerite the fn and the args too.
+            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                dtResult,
+                appl.TypeVariable.DataType,
+                appl.TypeVariable.OriginalDataType,
+                basePointer, appl, null, 0);
+            ceb.Dereferenced = true;
+            return ceb.BuildComplex();
+        }
 
 		public Expression VisitArrayAccess(ArrayAccess acc)
 		{
