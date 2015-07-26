@@ -18,21 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Decompiler.Gui.Forms
 {
-    public class HeuristicProcedure
+    public interface IUserPreferencesDialog : IDialog
     {
-        public DirectedGraph<HeuristicBlock> Cfg = new DiGraph<HeuristicBlock>();
-        public Frame Frame;
-
-        public Address BeginAddress;
-        public Address EndAddress;
     }
 }

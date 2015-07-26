@@ -68,6 +68,10 @@ namespace Decompiler.Core.Serialization
                 TypesFilename = program.TypesFilename,
                 GlobalsFilename = program.GlobalsFilename,
                 OnLoadedScript = program.OnLoadedScript,
+                Options = new ProgramOptions_v2
+                {
+                    HeuristicScanning = program.Options.HeuristicScanning,
+                }
             };
         }
 

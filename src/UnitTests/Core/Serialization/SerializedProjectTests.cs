@@ -50,7 +50,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SudWrite()
 		{
-            this.mr = new MockRepository();
 			Project_v1 ud = new Project_v1();
 			ud.Input.Address = "0x1000:0x0";
 			ud.Output.DisassemblyFilename = "foo.asm";
@@ -319,6 +318,49 @@ namespace Decompiler.UnitTests.Core.Serialization
             var project = ploader.LoadProject(sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
+        }
+
+        [Test]
+        public void SudLoadProgramOptions()
+        {
+            var sProject = new Project_v2
+            {
+                Inputs = 
+                {
+                    new DecompilerInput_v2
+                    {
+                        Options = new ProgramOptions_v2
+                        {
+                            HeuristicScanning = true,
+                        }
+                    }
+                }
+            };
+            var loader = mr.Stub<ILoader>();
+            loader.Stub(l => l.LoadImageBytes(null, 0))
+                .IgnoreArguments()
+                .Return(new byte[10]);
+            loader.Stub(l => l.LoadExecutable(null, null, null))
+                .IgnoreArguments()
+                .Return(new Program());
+            mr.ReplayAll();
+
+            var ploader = new ProjectLoader(loader);
+            var project = ploader.LoadProject(sProject);
+            Assert.IsTrue(project.Programs[0].Options.HeuristicScanning);
+        }
+
+        [Test]
+        public void SudSaveProgramOptions()
+        {
+            var program = new Program();
+            program.Options.HeuristicScanning = true;
+            
+            var pSaver = new ProjectSaver();
+            var file = pSaver.VisitProgram(program);
+            var ip = (DecompilerInput_v2)file;
+            Assert.IsTrue(ip.Options.HeuristicScanning);
+
         }
 	}
 }

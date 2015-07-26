@@ -753,8 +753,6 @@ namespace Decompiler.Scanning
 
         public ExternalProcedure ImportedProcedureName(Expression callTarget)
         {
-            if (callTarget is SegmentedAccess)
-                throw new NotSupportedException("Imports of segmented adddreses not supported yet.");
             var mem = callTarget as MemoryAccess;
             if (mem == null)
                 return null;

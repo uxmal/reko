@@ -254,6 +254,7 @@
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
     <Compile Include="Gui\Forms\IPatternSearchDialog.cs" />
     <Compile Include="Gui\Forms\IProgramPropertiesDialog.cs" />
+    <Compile Include="Gui\Forms\IUserPreferencesDialog.cs" />
     <Compile Include="Gui\Forms\OpenAsInteractor.cs" />
     <Compile Include="Gui\HtmlCodeFormatter.cs" />
     <Compile Include="Gui\HtmlFormatter.cs" />
@@ -326,6 +327,7 @@
       <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\ProgramPropertiesInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\UnscannedBlocksResult.cs" />
     <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -570,6 +572,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\ProcedureStructureBuilder.cs" />
+    <Compile Include="Structure\Schwartz\LoopFinder.cs" />
+    <Compile Include="Structure\Schwartz\ProcedureStructurer.cs" />
+    <Compile Include="Structure\Schwartz\Region.cs" />
+    <Compile Include="Structure\Schwartz\RegionFactory.cs" />
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -736,6 +742,7 @@
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
     <Content Include="Images\CloseTab.ico" />
+    <Content Include="Images\RestardDecompilation.ico" />
     <Content Include="Images\RwSection.ico" />
     <Content Include="Images\DiscardableSection.ico" />
     <Content Include="Images\RxSection.ico" />

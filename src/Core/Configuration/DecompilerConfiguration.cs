@@ -30,7 +30,8 @@ using System.Text;
 namespace Decompiler.Core.Configuration
 {
     /// <summary>
-    /// Provides access to information stored in the app.config file.
+    /// Client code uses this service to access information stored 
+    /// in the app.config file.
     /// </summary>
     public interface IConfigurationService
     {

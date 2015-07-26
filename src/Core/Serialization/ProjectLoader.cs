@@ -168,6 +168,10 @@ namespace Decompiler.Core.Serialization
             program.GlobalsFilename = sInput.GlobalsFilename;
             program.EnsureFilenames(sInput.Filename);
             program.OnLoadedScript = sInput.OnLoadedScript;
+            if (sInput.Options != null)
+            {
+                program.Options.HeuristicScanning = sInput.Options.HeuristicScanning;
+            }
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }

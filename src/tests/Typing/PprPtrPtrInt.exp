@@ -53,7 +53,7 @@ T_6: (in r3 : word32)
 T_7: (in 0x00010000 : word32)
   Class: Eq_7
   DataType: (ptr Eq_7)
-  OrigDataType: (ptr (struct (0 T_8 t0000)))
+  OrigDataType: (ptr (struct (0 word32 dw0000)))
 T_8: (in Mem0[0x00010000:word32] : word32)
   Class: Eq_5
   DataType: word32
@@ -61,7 +61,7 @@ T_8: (in Mem0[0x00010000:word32] : word32)
 T_9: (in 0x00010004 : word32)
   Class: Eq_9
   DataType: (ptr Eq_9)
-  OrigDataType: (ptr (struct (0 T_10 t0000)))
+  OrigDataType: (ptr (struct (0 (ptr Eq_2) ptr0000)))
 T_10: (in Mem0[0x00010004:word32] : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

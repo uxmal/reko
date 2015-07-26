@@ -75,6 +75,8 @@ namespace Decompiler.Scanning
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
         IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame);
+
+        void ScanImageHeuristically();
     }
 
     /// <summary>
@@ -625,6 +627,19 @@ namespace Decompiler.Scanning
         public void ScanImage()
         {
             ProcessQueue();
+        }
+
+        public void ScanImageHeuristically()
+        {
+            var heuristicScanner = new HeuristicScanner(program, this);
+            var ranges = heuristicScanner.FindUnscannedRanges();
+            foreach (var item in heuristicScanner.FindPossibleFunctions(ranges))
+            {
+                var hproc = heuristicScanner.DisassembleProcedure(item.Item1, item.Item2);
+                var hps = new HeuristicProcedureScanner(program, hproc);
+                hps.BlockConflictResolution();
+                // TODO: add all guessed code to image map -- clearly labelled.
+            }
         }
 
         [Conditional("DEBUG")]

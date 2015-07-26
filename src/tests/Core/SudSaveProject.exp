@@ -27,6 +27,9 @@
     </global>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
+    <options>
+      <HeuristicScanning>false</HeuristicScanning>
+    </options>
   </input>
   <output />
 </project>

@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,9 +87,9 @@ namespace Decompiler.UnitTests.Structure
 
         private void RunTest32(string sourceFilename, string outFilename, Address addrBase)
         {
+            var program = RewriteProgram32(sourceFilename, addrBase);
             using (FileUnitTester fut = new FileUnitTester(outFilename))
             {
-                RewriteProgram32(sourceFilename, addrBase);
                 foreach (Procedure proc in program.Procedures.Values)
                 {
                     var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
@@ -126,7 +126,6 @@ namespace Decompiler.UnitTests.Structure
                 fut.AssertFilesEqual();
             }
         }
-
 
         private void RunTest(string expected, Program program)
         {
@@ -216,7 +215,6 @@ namespace Decompiler.UnitTests.Structure
             RunTest16("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
         }
 
-
         [Test]
         [Ignore("Not quite ready yet")]
         public void StrNonreducible()
@@ -257,7 +255,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void StrFragmentTest()
         {
-            RewriteX86Fragment(@"
+            RewriteX86RealFragment(@"
 .i386
 push ebp
 mov ebp,esp
@@ -279,6 +277,103 @@ ret
 ===
 ", program);
 
+        }
+
+        [Test]
+        public void StrReg00001()
+        {
+            var program = RewriteX86_32Fragment(
+                @"
+mane proc
+        call testproc
+        mov [0x02000000],eax
+        ret
+    endp
+
+testproc proc
+
+    mov edi,edi
+    push ebp	      
+    mov ebp,esp	      
+    mov eax,DWORD PTR [ebp+8]	      
+    mov ecx,DWORD PTR [eax+0x3c]      
+    add ecx,eax	      
+    movzx eax,WORD PTR [ecx+0x14]	;char* dst = arg[0]
+    push ebx	      
+    push esi	      
+    movzx esi,WORD PTR [ecx+0x6]	      
+    xor edx,edx	      
+    push edi	      
+    lea eax,[eax+ecx*1+18]
+    test esi,esi	      
+    jbe loc_0000003d 
+	      
+    mov edi,DWORD PTR [ebp+0xc]	      
+
+loc_00000025:
+        mov ecx,DWORD PTR [eax+0xc]	      
+        cmp edi,ecx	      
+        jb loc_00000035 
+	      
+        mov ebx,DWORD PTR [eax+0x8]	      
+        add ebx,ecx	      
+        cmp edi,ebx	      
+        jb loc_0000003f
+
+loc_00000035:
+        inc edx	      
+        add eax,0x28	      
+        cmp edx,esi	      
+        jb loc_00000025 
+	      
+loc_0000003d:
+xor eax,eax	      
+
+loc_0000003f:
+pop edi	      
+pop esi	      
+pop ebx	      
+pop ebp
+ret
+endp
+",
+    Address.Ptr32(0x00100000));
+            var sExp =
+@"void fn00100000()
+{
+	Mem5[0x02000000:word32] = fn0010000C(dwArg00, dwArg04);
+	return;
+}
+===
+word32 fn0010000C(word32 dwArg04, word32 dwArg08)
+{
+	word32 ecx_12 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04;
+	word32 esi_20 = (word32) Mem0[ecx_12 + 0x00000006:word16];
+	word32 edx_21 = 0x00000000;
+	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C;
+	if (true)
+	{
+l00100031:
+		do
+		{
+			word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32];
+			if (dwArg08 >=u ecx_56 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
+				goto l0010004D;
+			edx_21 = edx_21 + 0x00000001;
+			eax_24 = eax_24 + 0x00000028;
+		} while (edx_21 <u esi_20);
+l0010004B:
+		eax_24 = 0x00000000;
+	}
+	else
+		goto l0010004B;
+	return eax_24;
+}
+===
+
+
+";
+            RunTest(sExp, program);
         }
     }
 }

@@ -28,6 +28,9 @@ using System;
 
 namespace Decompiler.Typing
 {
+    /// <summary>
+    /// Performs a type analysis of the program.
+    /// </summary>
     public class TypeCollector : InstructionVisitor<bool>
     {
         private TypeFactory factory;

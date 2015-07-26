@@ -134,6 +134,7 @@ namespace Decompiler.Core
             return this;
         }
 
+        public abstract ImageWriter WriteUInt32(uint w);
         public abstract ImageWriter WriteUInt32(uint offset, uint w);
 
         public ImageWriter WriteLeUInt32(uint ui)
@@ -195,6 +196,7 @@ namespace Decompiler.Core
             return new BeImageWriter(Bytes, (uint) Position);
         }
 
+        public override ImageWriter WriteUInt32(uint w) { return WriteBeUInt32(w); }
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteBeUInt32(offset, w); }
     }
 
@@ -219,6 +221,7 @@ namespace Decompiler.Core
             return new LeImageWriter(Bytes, (uint)Position);
         }
 
+        public override ImageWriter WriteUInt32(uint w) { return WriteLeUInt32(w); }
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteLeUInt32(offset, w); }
     }
 }

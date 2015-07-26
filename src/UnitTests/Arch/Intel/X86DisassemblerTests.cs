@@ -636,5 +636,11 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("push\trbp", 0x40, 0x55);
         }
+
+        [Test]
+        public void Dis_x86_repz_ret()
+        {
+            AssertCode64("ret\t", 0xF3, 0xC3);
+        }
     }
 }

@@ -171,52 +171,21 @@ namespace Decompiler.UnitTests.Scanning
             mr.ReplayAll();
 
             var hsc = new HeuristicScanner(prog, host);
-            var ranges = hsc.FindPossibleFunctions().ToArray();
+            var r = hsc.FindUnscannedRanges();
+            var ranges = hsc.FindPossibleFunctions(r).ToArray();
             Assert.AreEqual(0x10003, ranges[0].Item1.ToLinear());
             Assert.AreEqual(0x1000A, ranges[0].Item2.ToLinear());
             Assert.AreEqual(0x1000A, ranges[1].Item1.ToLinear());
             Assert.AreEqual(0x1000D, ranges[1].Item2.ToLinear());
         }
 
-        private void AssertBlocks(string sExpected, DirectedGraph<HeuristicBlock> cfg)
-        {
-            var sb = new StringBuilder();
-            foreach (var hblock in cfg.Nodes.OrderBy(hb => hb.Address))
-            {
-                sb.AppendFormat("{0}:  // pred:", hblock.Name);
-                foreach (var pred in cfg.Predecessors(hblock).OrderBy(hb => hb.Address))
-                {
-                    sb.AppendFormat(" {0}", pred.Name);
-                }
-                sb.AppendLine();
-                var lastAddr = hblock.GetEndAddress();
-                var dasm = prog.Architecture.CreateDisassembler(
-                    prog.Architecture.CreateImageReader(prog.Image, hblock.Address));
-                foreach (var instr in dasm.TakeWhile(i => i.Address < lastAddr))
-                {
-                    sb.AppendFormat("    {0}", instr);
-                    sb.AppendLine();
-                }
-            }
-            var sActual = sb.Replace('\t', ' ').ToString();
-            if (sActual != sExpected)
-            {
-                Debug.Print(sActual);
-                Assert.AreEqual(sExpected, sActual);
-            }
-        }
 
         [Test]
         public void HSC_HeuristicDisassembleProc()
         {
             Given_Image32(
                 0x10000,
-                "55 89 e5 e8 00 00 74 11 " +
-                "0a 05 3c 00 75 06 " +
-                "b0 00 " +
-                "eb 07 " +
-                "0a 05 a1 00 00 74 " +
-                "01 89 ec 5d c3 90");
+                TrickyProc);
             Given_x86_32();
             Given_RewriterHost();
             host.Stub(h => h.GetImportedProcedure(null, null))
@@ -230,63 +199,63 @@ namespace Decompiler.UnitTests.Scanning
                 prog.Image.BaseAddress + prog.Image.Length);
             var sExp =
                 #region Expected
- @"l00010000:  // pred: l00010003
+ @"l00010000:  // pred:
     push ebp
-l00010001:  // pred: l00010003
+l00010001:  // pred: l00010000
     mov ebp,esp
-l00010002:  // pred: l00010006
+l00010002:  // pred:
     in eax,E8
-l00010003:  // pred:
+l00010003:  // pred: l00010001
     call 11750008
-l00010004:  // pred: l00010006
+l00010004:  // pred: l00010002
     add [eax],al
-l00010005:  // pred: l00010009
+l00010005:  // pred:
     add [ecx+edx+0A],dh
-l00010006:  // pred:
+l00010006:  // pred: l00010004
     jz 00010019
 l00010007:  // pred:
     adc [edx],ecx
-l00010008:  // pred: l00010006 l00010010
+l00010008:  // pred: l00010006
     or al,[0675003C]
-l00010009:  // pred: l00010007
+l00010009:  // pred: l00010005 l00010007
     add eax,0675003C
-l0001000A:  // pred: l0001000C
+l0001000A:  // pred:
     cmp al,00
 l0001000B:  // pred:
     add [ebp+06],dh
-l0001000C:  // pred:
+l0001000C:  // pred: l0001000A
     jnz 00010014
 l0001000D:  // pred:
     push es
-l0001000E:  // pred: l00010009 l0001000B l0001000C l0001000D l00010010
+l0001000E:  // pred: l00010008 l00010009 l0001000B l0001000C l0001000D
     mov al,00
-l0001000F:  // pred: l00010018
+l0001000F:  // pred:
     add bl,ch
-l00010010:  // pred:
+l00010010:  // pred: l0001000E
     jmp 00010019
-l00010011:  // pred: l00010018
+l00010011:  // pred: l0001000F
     pop es
-l00010012:  // pred: l00010018
+l00010012:  // pred: l00010011
     or al,[740000A1]
 l00010013:  // pred:
     add eax,740000A1
 l00010014:  // pred: l0001000C
     mov eax,[01740000]
-l00010015:  // pred: l00010017
+l00010015:  // pred:
     add [eax],al
 l00010016:  // pred:
     add [ecx+eax-77],dh
-l00010017:  // pred:
+l00010017:  // pred: l00010015
     jz 0001001A
-l00010018:  // pred: l00010013
+l00010018:  // pred: l00010012 l00010013
     add [ecx+90C35DEC],ecx
-l00010019:  // pred: l00010006 l00010010 l00010014 l00010017 l0001001C
+l00010019:  // pred: l00010006 l00010010 l00010014 l00010017
     mov esp,ebp
 l0001001A:  // pred: l00010016 l00010017
     in al,dx
-l0001001B:  // pred: l0001001A l0001001C
+l0001001B:  // pred: l00010019 l0001001A
     pop ebp
-l0001001C:  // pred:
+l0001001C:  // pred: l0001001B
     ret 
 ";
             #endregion

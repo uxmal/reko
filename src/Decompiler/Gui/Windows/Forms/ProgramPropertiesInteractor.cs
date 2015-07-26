@@ -50,6 +50,7 @@ namespace Decompiler.Gui.Windows.Forms
                 dlg.EnableScript.Checked = loadedScript.Enabled;
                 dlg.LoadScript.Text = loadedScript.Script;
             }
+            dlg.HeuristicScanning.Checked = dlg.Program.Options.HeuristicScanning;
         }
 
         void OkButton_Click(object sender, EventArgs e)
@@ -59,6 +60,7 @@ namespace Decompiler.Gui.Windows.Forms
                 Enabled = dlg.EnableScript.Checked,
                 Script = dlg.LoadScript.Text,
             };
+            dlg.Program.Options.HeuristicScanning = dlg.HeuristicScanning.Checked;
         }
     }
 }

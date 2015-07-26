@@ -50,7 +50,7 @@ namespace Decompiler
         void ReconstructTypes();
         void StructureProgram();
 
-        void Assemble(string file, Core.Assemblers.Assembler asm);
+        void Assemble(string file, Assembler asm);
     }
 
 	/// <summary>
@@ -181,12 +181,12 @@ namespace Decompiler
         }
 
         /// <summary>
-		/// Loads (or assembles) the decompiler project. If a binary file is specified instead,
+        /// Loads (or assembles) the decompiler project. If a binary file is specified instead,
         /// we create a simple project for the file.
-		/// </summary>
+        /// </summary>
         /// <returns>True if what was loaded was an actual project</returns>
-		/// <param name="program"></param>
-		/// <param name="cfg"></param>
+        /// <param name="program"></param>
+        /// <param name="cfg"></param>
         public bool Load(string fileName)
         {
             eventListener.ShowStatus("Loading source program.");
@@ -385,28 +385,38 @@ namespace Decompiler
 
             foreach (Program program in Project.Programs)
             {
-                try
-                {
-                    eventListener.ShowStatus("Rewriting reachable machine code.");
-                    scanner = CreateScanner(program, eventListener);
-                    foreach (EntryPoint ep in program.EntryPoints)
-                    {
-                        scanner.EnqueueEntryPoint(ep);
-                    }
-                    foreach (Procedure_v1 up in program.UserProcedures.Values)
-                    {
-                        scanner.EnqueueUserProcedure(up);
-                    }
-                    scanner.ScanImage();
-                    eventListener.ShowStatus("Finished rewriting reachable machine code.");
-                }
-                finally
-                {
-                    host.WriteDisassembly(program, w => DumpAssembler(program, w));
-                    host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
-                }
+                ScanProgram(program);
             }
 		}
+
+        private void ScanProgram(Program program)
+        {
+            try
+            {
+                eventListener.ShowStatus("Rewriting reachable machine code.");
+                scanner = CreateScanner(program, eventListener);
+                foreach (EntryPoint ep in program.EntryPoints)
+                {
+                    scanner.EnqueueEntryPoint(ep);
+                }
+                foreach (Procedure_v1 up in program.UserProcedures.Values)
+                {
+                    scanner.EnqueueUserProcedure(up);
+                }
+                scanner.ScanImage();
+                if (program.Options.HeuristicScanning)
+                {
+                    eventListener.ShowStatus("Finding machine code using heuristics.");
+                    scanner.ScanImageHeuristically();
+                }
+                eventListener.ShowStatus("Finished rewriting reachable machine code.");
+            }
+            finally
+            {
+                host.WriteDisassembly(program, w => DumpAssembler(program, w));
+                host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
+            }
+        }
 
         public IDictionary<Address, ProcedureSignature> LoadCallSignatures(
             Program program, 

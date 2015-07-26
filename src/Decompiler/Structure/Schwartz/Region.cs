@@ -19,20 +19,45 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Absyn;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Decompiler.Structure.Schwartz
 {
-    public class HeuristicProcedure
+    public class Region
     {
-        public DirectedGraph<HeuristicBlock> Cfg = new DiGraph<HeuristicBlock>();
-        public Frame Frame;
+        public Block Block;
+        public RegionType Type;
+        public List<AbsynStatement> Statements = new List<AbsynStatement>();
 
-        public Address BeginAddress;
-        public Address EndAddress;
+        public Region(Block block)
+        {
+            this.Block = block;
+        }
+
+        public virtual void Write(StringWriter sb)
+        {
+            var f = new CodeFormatter(new TextFormatter(sb));
+            foreach (var stm in Statements)
+                stm.Accept(f);
+        }
+
+        public Expression Expression { get; set; }
+    }
+
+    public enum RegionType
+    {
+        Linear,
+        Condition,
+        IncSwitch,
+        Switch,
+        Tail,
     }
 }
