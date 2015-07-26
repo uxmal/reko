@@ -76,6 +76,14 @@ namespace Decompiler.Gui.Windows
 				Services = services,
             };
         }
+
+        public IUserPreferencesDialog CreateUserPreferencesDialog()
+        {
+            return new UserPreferencesDialog
+            {
+                Services = services,
+            };
+        }
     }
 }
 

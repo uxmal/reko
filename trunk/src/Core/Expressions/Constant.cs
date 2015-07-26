@@ -28,7 +28,7 @@ namespace Decompiler.Core.Expressions
     /// <summary>
     /// Models a constant value.
     /// </summary>
-	public abstract class Constant : Expression
+	public abstract class Constant : Expression // , IFormattable
 	{
         protected Constant(DataType t)
             : base(t)
@@ -379,9 +379,12 @@ namespace Decompiler.Core.Expressions
             return new StringConstant(strType, str);
         }
 
-
 		public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
         public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
+
+        //public abstract string ToString(string format, IFormatProvider formatProvider)
+        //{
+        //}
     }
 
     internal class ConstantBool : Constant

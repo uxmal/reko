@@ -20,8 +20,10 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -60,11 +62,18 @@ namespace Decompiler.Scanning
             RemoveConflictsRandomly();
         }
 
+        /// <summary>
+        /// Trace the reachable blocks using DFS; call them 'valid'.
+        /// </summary>
+        /// <returns>A set of blocks considered "valid".</returns>
         private HashSet<HeuristicBlock> TraceReachableBlocks()
         {
-            // Trace the reachable blocks using DFS; call them 'valid'.
-            var valid = new DfsIterator<HeuristicBlock>(blocks).PreOrder().ToHashSet();
-
+            var entry = blocks.Nodes.Where(b => b.Address == proc.BeginAddress).FirstOrDefault();
+            var valid = new DfsIterator<HeuristicBlock>(blocks).PreOrder(entry).ToHashSet();
+            foreach (var item in valid.OrderBy(i => i.Address))
+            {
+                Debug.Print(" {0}", item.Address);
+            }
             return valid;
         }
 
@@ -93,43 +102,55 @@ namespace Decompiler.Scanning
             return conflicts;
         }
 
+        /// <summary>
+        /// Any node that is in conflict with a valid node must be removed.
+        /// </summary>
+        /// <param name="valid"></param>
         private void RemoveBlocksConflictingWithValidBlocks(HashSet<HeuristicBlock> valid)
         {
-            // Any node that is in conflict with a valid node must be removed.
             var deleted = new HashSet<HeuristicBlock>();
             foreach (var n in blocks.Nodes.Where(nn => !valid.Contains(nn)).ToList())
             {
                 foreach (var v in valid)
                 {
                     if (conflicts.Contains(Tuple.Create(n, v)))
-                        blocks.Nodes.Remove(n);
+                    {
+                        RemoveBlockFromGraph(n);
+                    }
                 }
             }
+        }
+
+        private void RemoveBlockFromGraph(HeuristicBlock n)
+        {
+            if (n.Address.ToString().EndsWith("003"))   //$DEBUG:
+                n.Address.ToLinear();
+            Debug.Print("Removing block: {0}", n.Address);
+            blocks.Nodes.Remove(n);
         }
 
         private void RemoveConflictsRandomly()
         {
             // foreach (conflict u, v)
             //    pick u, v randomly and remove it.
-            foreach (var conflict in conflicts)
+            foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
                 if (blocks.Nodes.Contains(conflict.Item1) &&
                     blocks.Nodes.Contains(conflict.Item2))
                 {
-                    blocks.Nodes.Remove(conflict.Item2);
+                    RemoveBlockFromGraph(conflict.Item2);
                 }
             }
         }
 
         private void RemoveBlocksWithFewSuccessors()
         {
-
             // foreach (conflict (u, v)
             //    if (u.succ.Count < v.succ.Count)
             //      remove u
             //    else if (u.succ.Count > v.succ.count)
             //      remove v
-            foreach (var conflict in conflicts)
+            foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
                 if (blocks.Nodes.Contains(conflict.Item1) &&
                     blocks.Nodes.Contains(conflict.Item2))
@@ -137,25 +158,57 @@ namespace Decompiler.Scanning
                     var uCount = blocks.Successors(conflict.Item1).Count;
                     var vCount = blocks.Successors(conflict.Item2).Count;
                     if (uCount < vCount)
-                        blocks.Nodes.Remove(conflict.Item1);
+                        RemoveBlockFromGraph(conflict.Item1);
                 }
             }
         }
 
         private void RemoveBlocksWithFewPredecessors()
         {
-            // 
             //    if (u.pred.Count < v.pred.Count)
             //      remove u
             //    else if (u.pred.Count > v.pred.count)
             //      remove v
-            foreach (var conflict in conflicts)
+            foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
                 var uCount = blocks.Predecessors(conflict.Item1).Count;
                 var vCount = blocks.Predecessors(conflict.Item2).Count;
                 if (uCount < vCount)
-                    blocks.Nodes.Remove(conflict.Item1);
+                    RemoveBlockFromGraph(conflict.Item1);
             }
+        }
+
+        private bool Remaining(Tuple<HeuristicBlock, HeuristicBlock> c)
+        {
+            var nodes = proc.Cfg.Nodes;
+            return 
+                nodes.Contains(c.Item1) &&
+                nodes.Contains(c.Item2);
+        }
+        
+        public ISet<HeuristicBlock> GetAncestors(HeuristicBlock n)
+        {
+            var anc = new HashSet<HeuristicBlock>();
+            foreach (var p in blocks.Predecessors(n))
+            {
+                GetAncestorsAux(p, n, anc);
+            }
+            return anc;
+        }
+
+        private ISet<HeuristicBlock> GetAncestorsAux(
+            HeuristicBlock n, 
+            HeuristicBlock orig, 
+            ISet<HeuristicBlock> ancestors)
+        {
+            if (ancestors.Contains(n) || n == orig)
+                return ancestors;
+            ancestors.Add(n);
+            foreach (var p in blocks.Predecessors(n))
+            {
+                GetAncestorsAux(p, orig, ancestors);
+            }
+            return ancestors;
         }
 
         private void RemoveParentsOfConflictingBlocks()
@@ -163,14 +216,13 @@ namespace Decompiler.Scanning
             // for all conflicting (u,v)
             //    for all common_parents p
             //        remove p.
-            foreach (var conflict in conflicts)
+            foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
-
-                //var uParents = cp.GetParents(conflict.Item1);
-                //var vParents = cp.GetParents(conflict.Item2);
-                //foreach (var uP in uParents)
-                //    if (vParents.Contains(uP))
-                //        blocks.Nodes.Remove(uP);
+                var uParents = GetAncestors(conflict.Item1);
+                var vParents = GetAncestors(conflict.Item2);
+                foreach (var uP in uParents)
+                    if (vParents.Contains(uP))
+                        RemoveBlockFromGraph(uP);
             }
         }
 
@@ -209,11 +261,7 @@ namespace Decompiler.Scanning
             for (Address addr = gap.Item1; addr < gap.Item2; addr = addr + program.Architecture.InstructionBitSize / 8)
             {
                 var block = new HeuristicBlock(addr, string.Format("l{0:X}" + addr));
-                var dasm = program.Architecture.CreateRewriter(
-                    program.CreateImageReader(addr),
-                    program.Architecture.CreateProcessorState(),
-                    program.Architecture.CreateFrame(),
-                    null);
+                var dasm = CreateRewriter(addr);
                 bool isValid = false;
                 foreach (var instr in dasm)
                 {
@@ -229,6 +277,15 @@ namespace Decompiler.Scanning
                 if (isValid)
                     yield return addr;
             }
+        }
+
+        private IEnumerable<RtlInstructionCluster> CreateRewriter(Address addr)
+        {
+            return program.Architecture.CreateRewriter(
+                program.CreateImageReader(addr),
+                program.Architecture.CreateProcessorState(),
+                program.Architecture.CreateFrame(),
+                null);
         }
 
         private bool NonLocalTransferInstruction()
@@ -295,9 +352,6 @@ namespace Decompiler.Scanning
         //or equal than zero. Therefore, the score of a sequence
         //cannot decrease when more instructions are added. We
         //calculate instruction scores using statistical techniques
-        //and heuristics to identify improbable instructions
-
-        //        calculate instruction scores using statistical techniques
         //and heuristics to identify improbable instructions.
         //The statistical techniques are based on instruction probabilities
         //and digraphs. Our approach utilizes tables that

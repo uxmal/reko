@@ -50,6 +50,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public TextBox LoadScript { get { return txtScript; } }
         public CheckBox EnableScript { get { return chkRunScript; } }
+        public CheckBox HeuristicScanning { get { return chkHeuristicScanning; } }
         public Button OkButton { get { return btnOk; } }
     }
 }

@@ -32,6 +32,7 @@ namespace Decompiler.Gui
         IOpenAsDialog CreateOpenAsDialog();
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
         ISearchDialog CreateSearchDialog();
+        IUserPreferencesDialog CreateUserPreferencesDialog();
     }
 }
 

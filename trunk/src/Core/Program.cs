@@ -60,6 +60,7 @@ namespace Decompiler.Core
             this.UserProcedures = new SortedList<Address, Serialization.Procedure_v1>();
             this.UserCalls = new SortedList<Address, Serialization.SerializedCall_v1>();
             this.UserGlobalData = new SortedList<Address, Serialization.GlobalDataItem_v2>();
+            this.Options = new ProgramOptions();
 		}
 
         public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
@@ -149,7 +150,12 @@ namespace Decompiler.Core
         //$REVIEW: shouldnt these belong in Procedure?
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
-		/// <summary>
+        /// <summary>
+        /// User-specified options that control the decompilation of a program.
+        /// </summary>
+        public ProgramOptions Options { get; private set; }
+		
+        /// <summary>
 		/// The program's decompiled procedures, indexed by address.
 		/// </summary>
 		public SortedList<Address, Procedure> Procedures { get; private set; }

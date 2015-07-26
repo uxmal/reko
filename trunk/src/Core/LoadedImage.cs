@@ -228,6 +228,27 @@ namespace Decompiler.Core
             }
         }
 
+        public static bool TryReadBeUInt64(byte[] image, ulong off, out ulong value)
+        {
+            if (off + 8 <= (ulong)image.Length)
+            {
+                value =
+                    ((ulong)image[off] << 56) |
+                    ((ulong)image[off + 1] << 48) |
+                    ((ulong)image[off + 2] << 40) |
+                    ((ulong)image[off + 3] << 32) |
+                    ((ulong)image[off + 4] << 24) |
+                    ((ulong)image[off + 5] << 16) |
+                    ((ulong)image[off + 6] << 8) |
+                    ((ulong)image[off + 7]);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
         public static long ReadBeInt64(byte[] image, ulong off)
         {
             return ((long)image[off] << 56) |
@@ -262,6 +283,27 @@ namespace Decompiler.Core
             }
         }
 
+        public static bool TryReadLeUInt64(byte[] image, ulong off, out ulong value)
+        {
+            if (off + 8 <= (ulong)image.Length)
+            {
+                value =
+                     (ulong)image[off] |
+                    ((ulong)image[off + 1] << 8) |
+                    ((ulong)image[off + 2] << 16) |
+                    ((ulong)image[off + 3] << 24) |
+                    ((ulong)image[off + 4] << 32) |
+                    ((ulong)image[off + 5] << 40) |
+                    ((ulong)image[off + 6] << 48) |
+                    ((ulong)image[off + 7] << 56);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
         public static long ReadLeInt64(byte[] image, ulong off)
         {
             return 
@@ -425,6 +467,7 @@ namespace Decompiler.Core
         }
 
         public bool TryReadLeUInt32(Address address, out uint dw) { return TryReadLeUInt32(abImage, ToOffset(address), out dw); }
+        public bool TryReadLeUInt64(Address address, out ulong dw) { return TryReadLeUInt64(abImage, ToOffset(address), out dw); }
 
         public static uint ReadLeUInt32(byte[] img, ulong off)
         {

@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel;
+
 namespace Decompiler.Core
 {
 	/// <summary>

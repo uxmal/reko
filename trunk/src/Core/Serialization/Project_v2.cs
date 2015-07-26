@@ -122,6 +122,9 @@ namespace Decompiler.Core.Serialization
         [XmlElement("onLoad")]
         public Script_v2 OnLoadedScript;
 
+        [XmlElement("options")]
+        public ProgramOptions_v2 Options;
+
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
             return visitor.VisitInputFile(this);

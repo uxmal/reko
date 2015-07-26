@@ -212,7 +212,7 @@ namespace Decompiler.Analysis
                 // they can be to functions already visited. If so, they have a "ProcedureFlow" 
                 // associated with them. If they have not been visited, or are computed destinations
                 // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
-                // which case the the SSA treats teh call as a "hell node".
+                // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
                 var sst = new SsaTransform(flow, proc, doms);
                 var ssa = sst.SsaState;

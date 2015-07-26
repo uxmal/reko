@@ -53,7 +53,6 @@ namespace Decompiler.Gui
             View.AddColumn("Procedure Name", 20);
         }
 
-
         public SearchResultItem GetItem(int i)
         {
             return new SearchResultItem

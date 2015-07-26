@@ -217,6 +217,7 @@
     <Compile Include="IPlatformEmulator.cs" />
     <Compile Include="IProcessorEmulator.cs" />
     <Compile Include="IScriptInterpreter.cs" />
+    <Compile Include="Lib\DiGraph.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="MetadataLoader.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Operators\FSubOperator.cs" />
     <Compile Include="Output\ProcedureFormatter.cs" />
     <Compile Include="PrintfApplicationBuilder.cs" />
+    <Compile Include="ProgramOptions.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="MetadataFile.cs" />
     <Compile Include="Provenance.cs" />
@@ -258,6 +260,7 @@
     <Compile Include="Serialization\DataTypeNameSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
     <Compile Include="Serialization\MemberPointer_v1.cs" />
+    <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
     <Compile Include="Serialization\ProjectSaver.cs" />
     <Compile Include="Serialization\Project_v2.cs" />

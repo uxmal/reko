@@ -160,11 +160,12 @@
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList.Images.SetKeyName(0, "Open.ico");
             this.imageList.Images.SetKeyName(1, "Save.ico");
-            this.imageList.Images.SetKeyName(2, "NextPhase.ico");
-            this.imageList.Images.SetKeyName(3, "FinishDecompilation.ico");
-            this.imageList.Images.SetKeyName(4, "Error");
-            this.imageList.Images.SetKeyName(5, "Warning");
-            this.imageList.Images.SetKeyName(6, "CloseTab");
+            this.imageList.Images.SetKeyName(2, "RestartDecompilation.ico");
+            this.imageList.Images.SetKeyName(3, "NextPhase.ico");
+            this.imageList.Images.SetKeyName(4, "FinishDecompilation.ico");
+            this.imageList.Images.SetKeyName(5, "Error");
+            this.imageList.Images.SetKeyName(6, "Warning");
+            this.imageList.Images.SetKeyName(7, "CloseTab");
             // 
             // tabFindResults
             // 

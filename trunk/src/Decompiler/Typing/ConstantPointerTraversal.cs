@@ -112,7 +112,7 @@ namespace Decompiler.Typing
 
         public IEnumerable<WorkItem> VisitEnum(EnumType e)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IEnumerable<WorkItem> VisitEquivalenceClass(EquivalenceClass eq)

@@ -34,13 +34,15 @@ namespace Decompiler.Gui
     /// </summary>
     public class AddressSearchResult : ISearchResult
     {
-        private IServiceProvider services;
+        protected readonly IServiceProvider services;
         private List<AddressSearchHit> addresses;
 
-        public AddressSearchResult(IServiceProvider services, IEnumerable<AddressSearchHit> linearAddresses)
+        public AddressSearchResult(
+            IServiceProvider services,
+            IEnumerable<AddressSearchHit> addresses)
         {
             this.services = services;
-            this.addresses = linearAddresses.ToList();
+            this.addresses = addresses.ToList();
         }
 
         public ISearchResultView View { get; set; }
@@ -49,8 +51,6 @@ namespace Decompiler.Gui
         {
             get { return addresses.Count; }
         }
-
-
 
         public int ContextMenuID
         {
@@ -153,7 +153,7 @@ namespace Decompiler.Gui
             memSvc.ShowMemoryAtAddress(hit.Program, hit.Address);
         }
 
-        public bool QueryStatus(CommandID cmdID, CommandStatus status, CommandText txt)
+        public virtual bool QueryStatus(CommandID cmdID, CommandStatus status, CommandText txt)
         {
             if (cmdID.Guid == CmdSets.GuidDecompiler)
             {
@@ -168,7 +168,7 @@ namespace Decompiler.Gui
             return false;
         }
 
-        public bool Execute(CommandID cmdID)
+        public virtual bool Execute(CommandID cmdID)
         {
             switch (cmdID.ID)
             {
@@ -177,20 +177,28 @@ namespace Decompiler.Gui
             return false;
         }
 
+        /// <summary>
+        /// Returns the addresses the user has selected.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<AddressSearchHit> SelectedHits()
+        {
+            return View.SelectedIndices.Select(i => addresses[i]);
+        }
+
         public void MarkProcedures()
         {
             var decSvc = services.RequireService<IDecompilerService>();
             var userProcs =
-                from i in View.SelectedIndices
-                let address = addresses[i].GetAddress()
-                let proc = decSvc.Decompiler.ScanProcedure(addresses[i].Program, address)
+                from hit in SelectedHits()
+                let proc = decSvc.Decompiler.ScanProcedure(hit.Program, hit.Address)
                 select new
                 {
-                    Program = addresses[i].Program,
-                    Address = address,
+                    Program = hit.Program,
+                    Address = hit.Address,
                     UserProc = new Decompiler.Core.Serialization.Procedure_v1
                     {
-                        Address = address.ToString(),
+                        Address = hit.Address.ToString(),
                         Name = proc.Name
                     }
                 };

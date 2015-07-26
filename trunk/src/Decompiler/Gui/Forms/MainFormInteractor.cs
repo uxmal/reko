@@ -383,6 +383,16 @@ namespace Decompiler.Gui.Forms
             get { return SettingsDirectory + "\\mru.txt"; }
         }
 
+        public void RestartRecompilation()
+        {
+            if (decompilerSvc.Decompiler == null ||
+                decompilerSvc.Decompiler.Project == null)
+                return;
+
+            SwitchInteractor(this.InitialPageInteractor);
+            CloseAllDocumentWindows();
+        }
+
         public void NextPhase()
         {
             try
@@ -654,6 +664,9 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.FileMru:
                     cmdStatus.Status = MenuStatus.Visible;
                     return true;
+                case CmdIds.ActionRestartDecompilation:
+                    cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    break;
                 case CmdIds.ActionNextPhase:
                     cmdStatus.Status = currentPhase.CanAdvance
                         ? MenuStatus.Enabled | MenuStatus.Visible
@@ -715,6 +728,7 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.FileCloseProject: CloseProject(); return true;
                 case CmdIds.FileExit: form.Close(); return true;
 
+                case CmdIds.ActionRestartDecompilation: RestartRecompilation(); return true;
                 case CmdIds.ActionNextPhase: NextPhase(); return true;
                 case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
 

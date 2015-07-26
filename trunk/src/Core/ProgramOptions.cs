@@ -18,21 +18,23 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Decompiler.Core
 {
-    public class HeuristicProcedure
+    /// <summary>
+    /// User-settable options that control the outcome of the decompilation.
+    /// </summary>
+    public class ProgramOptions
     {
-        public DirectedGraph<HeuristicBlock> Cfg = new DiGraph<HeuristicBlock>();
-        public Frame Frame;
-
-        public Address BeginAddress;
-        public Address EndAddress;
+        public bool HeuristicScanning {
+            get { return heuristicScanning; }
+            set { heuristicScanning = value; HeuristicScanningChanged.Fire(this); }
+        }
+        public event EventHandler HeuristicScanningChanged;
+        private bool heuristicScanning;
     }
 }

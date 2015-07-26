@@ -73,9 +73,19 @@ namespace Decompiler.UnitTests.Structure
             return RewriteProgram();
         }
 
-        protected Program RewriteX86Fragment(string asmFragment, Address addrBase)
+        protected Program RewriteX86RealFragment(string asmFragment, Address addrBase)
         {
             var asm = new X86TextAssembler(new X86ArchitectureReal());
+            program = asm.AssembleFragment(addrBase, asmFragment);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+            return RewriteProgram();
+        }
+
+
+        protected Program RewriteX86_32Fragment(string asmFragment, Address addrBase)
+        {
+            var asm = new X86TextAssembler(new X86ArchitectureFlat32());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));

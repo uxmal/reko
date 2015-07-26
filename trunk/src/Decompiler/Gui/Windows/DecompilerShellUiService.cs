@@ -95,7 +95,7 @@ namespace Decompiler.Gui.Windows
             var tabPage = new TabPage
             {
                 Text = windowTitle,
-                ImageIndex = 6,
+                ImageIndex = 7,
             };
             WindowFrame frame = new WindowFrame(this, windowType, tabPage, pane);
             framesByName.Add(windowType, frame);

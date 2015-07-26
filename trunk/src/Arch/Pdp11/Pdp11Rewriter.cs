@@ -24,6 +24,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -75,7 +76,7 @@ namespace Decompiler.Arch.Pdp11
             }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

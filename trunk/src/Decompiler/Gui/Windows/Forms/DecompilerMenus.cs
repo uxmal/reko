@@ -191,14 +191,20 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slViewFindWhatPointsHere = new CommandMenuItem("Find _what points here", new Guid(CmdSets.Decompiler), CmdIds.ViewFindWhatPointsHere);
             slViewFindWhatPointsHere.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindWhatPointsHere);
+            CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Decompiler), CmdIds.ActionRestartDecompilation);
+            slActionRestartDecompilation.IsDynamic = false;
+            slActionRestartDecompilation.ImageIndex = 2;slGrpActions.Add(0, slActionRestartDecompilation);
             CommandMenuItem slActionNextPhase = new CommandMenuItem("_Next Phase", new Guid(CmdSets.Decompiler), CmdIds.ActionNextPhase);
             slActionNextPhase.IsDynamic = false;
-            slActionNextPhase.ImageIndex = 2;slGrpActions.Add(0, slActionNextPhase);
+            slActionNextPhase.ImageIndex = 3;slGrpActions.Add(0, slActionNextPhase);
             CommandMenuItem slActionFinishDecompilation = new CommandMenuItem("Finish _Decompilation", new Guid(CmdSets.Decompiler), CmdIds.ActionFinishDecompilation);
             slActionFinishDecompilation.IsDynamic = false;
-            slActionFinishDecompilation.ImageIndex = 3;slGrpActions.Add(0, slActionFinishDecompilation);
+            slActionFinishDecompilation.ImageIndex = 4;slGrpActions.Add(0, slActionFinishDecompilation);
             CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkProcedure);
             slActionMarkProcedure.IsDynamic = false;
+            
+            CommandMenuItem slActionScanHeuristically = new CommandMenuItem("Scan _heuristically", new Guid(CmdSets.Decompiler), CmdIds.ActionScanHeuristically);
+            slActionScanHeuristically.IsDynamic = false;
             
             CommandMenuItem slActionEditSignature = new CommandMenuItem("Edit _Signature...", new Guid(CmdSets.Decompiler), CmdIds.ActionEditSignature);
             slActionEditSignature.IsDynamic = false;
@@ -253,9 +259,11 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpToolbarFileOps.Add(0, slFileSave);
 			slGrpEdit.Add(0, slEditCopy);
 			slGrpEdit.Add(0, slEditProperties);
+			slGrpToolbarActions.Add(0, slActionRestartDecompilation);
 			slGrpToolbarActions.Add(0, slActionNextPhase);
 			slGrpToolbarActions.Add(0, slActionFinishDecompilation);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
+			slGrpActionsScanned.Add(0, slActionScanHeuristically);
 			slGrpMemoryControl.Add(0, slEditCopy);
 			slGrpCodeView .Add(0, slEditCopyAll);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
@@ -275,6 +283,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpBrowserProc.Add(0, slViewFindWhatPointsHere);
 			slGrpAddressSearch.Add(0, slViewFindWhatPointsHere);
 			slGrpAddressSearch.Add(0, slActionMarkProcedure);
+			slGrpAddressSearch.Add(0, slActionScanHeuristically);
     
       // Build accelerators.
       

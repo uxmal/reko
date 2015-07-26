@@ -20,10 +20,14 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Types;
+using Decompiler.Scanning;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -107,5 +111,40 @@ namespace Decompiler.UnitTests.Scanning
             };
         }
 
+        protected void AssertBlocks(string sExpected, DirectedGraph<HeuristicBlock> cfg)
+        {
+            var sb = new StringBuilder();
+            foreach (var hblock in cfg.Nodes.OrderBy(hb => hb.Address))
+            {
+                sb.AppendFormat("{0}:  // pred:", hblock.Name);
+                foreach (var pred in cfg.Predecessors(hblock).OrderBy(hb => hb.Address))
+                {
+                    sb.AppendFormat(" {0}", pred.Name);
+                }
+                sb.AppendLine();
+                var lastAddr = hblock.GetEndAddress();
+                var dasm = prog.Architecture.CreateDisassembler(
+                    prog.Architecture.CreateImageReader(prog.Image, hblock.Address));
+                foreach (var instr in dasm.TakeWhile(i => i.Address < lastAddr))
+                {
+                    sb.AppendFormat("    {0}", instr);
+                    sb.AppendLine();
+                }
+            }
+            var sActual = sb.Replace('\t', ' ').ToString();
+            if (sActual != sExpected)
+            {
+                Debug.Print(sActual);
+                Assert.AreEqual(sExpected, sActual);
+            }
+        }
+
+        protected const string TrickyProc =
+            "55 89 e5 e8 00 00 74 11 " +
+            "0a 05 3c 00 75 06 " +
+            "b0 00 " +
+            "eb 07 " +
+            "0a 05 a1 00 00 74 " +
+            "01 89 ec 5d c3 90";
     }
 }

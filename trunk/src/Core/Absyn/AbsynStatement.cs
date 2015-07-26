@@ -50,5 +50,5 @@ namespace Decompiler.Core.Absyn
 		{
 			get { return false; }
 		}
-	}
+    }
 }

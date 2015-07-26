@@ -31,8 +31,10 @@ using System.Text;
 namespace Decompiler.Scanning
 {
 	/// <summary>
-	/// In the absence of any other information, scans address ranges in search of code sequences that may represent
-	/// valid procedures. It needs help from the processor architecture to specify what byte patterns to look for.
+	/// In the absence of any other information, scans address ranges in 
+    /// search of code sequences that may represent valid procedures. It
+    /// needs help from the processor architecture to specify what byte 
+    /// patterns to look for.
 	/// </summary>
     /// <remarks>
     /// Static Disassembly of Obfuscated Binaries
@@ -78,27 +80,31 @@ namespace Decompiler.Scanning
         }
 
         /// <summary>
-        /// Heuristically locates previously unscanned functions in the image.
+        /// Heuristically locates previously unscanned functions in the image. 
+        /// If all fails, assume the whole range is a function.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tuple<Address, Address>> FindPossibleFunctions()
+        public IEnumerable<Tuple<Address, Address>> FindPossibleFunctions(
+            IEnumerable<Tuple<Address, Address>> ranges)
         {
-            foreach (var range in FindUnscannedRanges())
+            foreach (var range in ranges)
             {
                 SortedSet<Address> possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2)
                     .Concat(prog.EntryPoints.Select(ep => ep.Address))
                     .ToSortedSet();
                 var e = possibleEntries.GetEnumerator();
-                if (!e.MoveNext())
-                    continue;
-                var aEnd = e.Current;
-                while (e.MoveNext())
+                Address aEnd = range.Item1;
+                if (e.MoveNext())
                 {
-                    var aStart = aEnd;
                     aEnd = e.Current;
-                    yield return Tuple.Create(aStart, aEnd);
+                    while (e.MoveNext())
+                    {
+                        var aStart = aEnd;
+                        aEnd = e.Current;
+                        yield return Tuple.Create(aStart, aEnd);
+                    }
+                    yield return Tuple.Create(aEnd, range.Item2);
                 }
-                yield return Tuple.Create(aEnd, range.Item2);
             }
         }
 
@@ -184,6 +190,7 @@ namespace Decompiler.Scanning
         private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr, HeuristicProcedure proc)
         {
             var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
+            proc.Cfg.Nodes.Add(newBlock);
             newBlock.Statements.AddRange(
                 block.Statements.Where(r => r.Address >= addr).OrderBy(r => r.Address));
             foreach (var de in blockMap.Where(d => d.Key >= addr && d.Value == block).ToList())
@@ -197,7 +204,7 @@ namespace Decompiler.Scanning
                 proc.Cfg.AddEdge(newBlock, s);
                 proc.Cfg.RemoveEdge(block, s);
             }
-            proc.Cfg.AddEdge(newBlock, block);
+            proc.Cfg.AddEdge(block, newBlock);
             return newBlock;
         }
 
@@ -237,7 +244,7 @@ namespace Decompiler.Scanning
                         // 'current'. Create a fall-though edge
                         if (!proc.Cfg.Nodes.Contains(current))
                         {
-                            proc.Cfg.AddNode(current);
+                            proc.Cfg.Nodes.Add(current);
                         }
                         proc.Cfg.AddEdge(current, block);
                         return current;
@@ -248,7 +255,7 @@ namespace Decompiler.Scanning
                     // Fresh instruction
                     if (!proc.Cfg.Nodes.Contains(current))
                     {
-                        proc.Cfg.AddNode(current);
+                        proc.Cfg.Nodes.Add(current);
                     }
                     current.Statements.Add(rtl);
                     blockMap.Add(rtl.Address, current);
@@ -288,7 +295,5 @@ namespace Decompiler.Scanning
             }
             return current;
         }
-
-
     }
 }

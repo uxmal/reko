@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -86,7 +87,7 @@ namespace Decompiler.UnitTests
 			}
 		}
 
-		[System.Diagnostics.DebuggerHidden]
+		[DebuggerHidden]
 		public void CompareFiles(StreamReader expected, StreamReader test)
 		{
 			int line = 1;
@@ -103,7 +104,6 @@ namespace Decompiler.UnitTests
 				Assert.AreEqual(expLine, tstLine, string.Format("File differs on line {0}", line));
 				++line;
 			}
-
 		}
 
 		public void Dispose()
@@ -112,8 +112,7 @@ namespace Decompiler.UnitTests
 			System.GC.SuppressFinalize(this);
 		}
 
-
-		[System.Diagnostics.DebuggerHidden]
+		[DebuggerHidden]
 		public void AssertFilesEqual()
 		{
 			CloseTestStream();

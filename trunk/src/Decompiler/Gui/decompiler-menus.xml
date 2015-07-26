@@ -4,7 +4,6 @@
 
 	<!-- Menus and Toolbars ========================================================== -->
 
-
   <!-- Menus -->
 	<menu type="MainMenu" id="MainMenu" cmdSet="GuidCmdSet"/>
 	<menu id="FileMenu" cmdSet="Decompiler" container="GrpMain">_File</menu>
@@ -15,7 +14,7 @@
 	<menu id="HelpMenu" cmdSet="Decompiler" container="GrpMain">_Help</menu>
 
   <menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
-  <menu type="ContextMenu" id="CtxDisassembler" cmdSet="Decompiler"/>
+  <menu type="ContextMenu" id="CtxDisassembler" cmdSet="Decompiler"/> 
   <menu type="ContextMenu" id="CtxBrowser" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxProcedure" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxAddressSearch" cmdSet="Decompiler"/>
@@ -96,10 +95,12 @@
   <cmd id="ActionNextSearchHit" cmdSet="Decompiler" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Decompiler" key1="F8" alt1="Shift" />
 
-  <cmd id="ActionNextPhase" cmdSet="Decompiler" container="GrpActions" image="2">_Next Phase</cmd>
-  <cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions" image="3">Finish _Decompilation</cmd>
+  <cmd id="ActionRestartDecompilation" cmdSet="Decompiler" container="GrpActions" image="2">_Restart</cmd>
+  <cmd id="ActionNextPhase" cmdSet="Decompiler" container="GrpActions" image="3">_Next Phase</cmd>
+  <cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions" image="4">Finish _Decompilation</cmd>
 
-	<cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
+  <cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
+  <cmd id="ActionScanHeuristically" cmdSet="Decompiler" container="ActionScanHeuristically">Scan _heuristically</cmd>
   <cmd id="ActionEditSignature" cmdSet="Decompiler" container="ActionEditSignature">Edit _Signature...</cmd>
   <cmd id="ActionMarkType" cmdSet="Decompiler" container="ActionMarkType">Mark _Type</cmd>
 
@@ -127,12 +128,14 @@
 
   <placement item="EditCopy" container="GrpEdit" />
   <placement item="EditProperties" container="GrpEdit" />
-  
+
+  <placement item="ActionRestartDecompilation" container="GrpToolbarActions"/>
   <placement item="ActionNextPhase" container="GrpToolbarActions"/>
   <placement item="ActionFinishDecompilation" container="GrpToolbarActions"/>
 
   <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
-
+  <placement item="ActionScanHeuristically" container="GrpActionsScanned"/>
+  
   <placement item="EditCopy" container="GrpMemoryControl"/>
   <placement item="EditCopyAll" container="GrpCodeView "/>
   <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
@@ -156,6 +159,7 @@
 
   <placement item="ViewFindWhatPointsHere" container="GrpAddressSearch" />
   <placement item="ActionMarkProcedure" container="GrpAddressSearch"/>
+  <placement item="ActionScanHeuristically" container="GrpAddressSearch"/>
 
   <!-- Accelerators ================================================== -->
 
