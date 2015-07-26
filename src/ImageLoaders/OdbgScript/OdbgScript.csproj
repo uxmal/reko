@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\external\Rhino.Mocks-3.6\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -43,6 +42,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Debugger.cs" />
@@ -77,7 +79,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Remote.cs" />
     <Compile Include="Ue.cs" />
-    <Compile Include="Var.cs">
+    <Compile Include="var.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -86,19 +88,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj">
-      <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
+      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Win32\Win32.csproj">
-      <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
+      <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Win32</Name>
     </ProjectReference>
     <ProjectReference Include="..\MzExe\MzExe.csproj">
-      <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
+      <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
       <Name>MzExe</Name>
     </ProjectReference>
   </ItemGroup>

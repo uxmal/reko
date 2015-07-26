@@ -54,11 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj">
-      <Project>{dc11ed7f-97f6-4488-86b4-eec67dd1f511}</Project>
+      <Project>{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}</Project>
       <Name>Mos6502</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>

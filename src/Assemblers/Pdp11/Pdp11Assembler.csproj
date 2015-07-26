@@ -48,11 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Pdp11\Pdp11.csproj">
-      <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
+      <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
       <Name>Pdp11</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>

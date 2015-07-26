@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
-      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
       <Name>Arm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">

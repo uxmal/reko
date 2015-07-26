@@ -508,7 +508,7 @@
       <Name>Mos6502</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
-      <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
+      <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
       <Name>Pdp11</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
@@ -532,7 +532,7 @@
       <Name>M68kAssembler-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\Pdp11\Pdp11Assembler.csproj">
-      <Project>{3bb6b0fb-6686-428b-9dc9-a32f349e50e6}</Project>
+      <Project>{3BB6B0FB-6686-428B-9DC9-A32F349E50E6}</Project>
       <Name>Pdp11Assembler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\x86\X86Assembler.csproj">
@@ -548,11 +548,11 @@
       <Name>Decompiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
-      <Project>{0b2dcd75-44ff-4af6-aa08-aaf4ea30c402}</Project>
+      <Project>{0B2DCD75-44FF-4AF6-AA08-AAF4EA30C402}</Project>
       <Name>AmigaOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\C64\C64.csproj">
-      <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>
+      <Project>{FDFE3507-E8CE-4930-B9B5-8FB647CFC6DC}</Project>
       <Name>C64</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
@@ -564,7 +564,7 @@
       <Name>Msdos</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\SysV\SysV.csproj">
-      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
+      <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>
       <Name>SysV</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\Win32\Win32.csproj">
@@ -584,7 +584,7 @@
       <Name>Hunk</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MachO\MachO.csproj">
-      <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>
+      <Project>{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}</Project>
       <Name>MachO</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
