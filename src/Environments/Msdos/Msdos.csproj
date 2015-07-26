@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj">
-      <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
+      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">

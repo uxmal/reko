@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
-      <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
+      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
