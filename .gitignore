@@ -1,2 +1,6 @@
-/src/Arch/Arm/obj
-/src/Arch/Arm/bin
+[Oo]bj
+[Bb]in
+*.opensdf
+*.sdf
+*.suo
+*.csproj.user
