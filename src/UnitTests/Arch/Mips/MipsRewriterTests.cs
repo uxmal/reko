@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Arch.Mips
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new MipsRewriter(arch, dasm, frame);
+            return new MipsRewriter(arch, dasm, frame, host);
         }
 
         [Test]
