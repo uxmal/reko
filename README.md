@@ -18,6 +18,7 @@ other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompiler the binary
 (for instance if the binary is your own.) 
 
+== Version 0.5.0.0 ==
 
 == Version 0.4.5.0 ==
 * Command line interpreter supports --default-to option
