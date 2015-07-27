@@ -1,0 +1,86 @@
+void fn00000000001001C0(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  edi
+// LiveOut:
+// Trashed: SCZO eax ecx edx esp edi ax cx dx sp di al cl dl ah ch dh
+// Preserved: ebp
+fn00000000001001C0_entry:
+// DataOut: edi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+// LocalsOut: fp(64)
+
+l00000000001001C0:
+	branch edi == 0x00000000 l00000000001001F7
+// DataOut: edi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+// LocalsOut: fp(64)
+
+l00000000001001CA:
+// DataOut: ecx edx edi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 -4(fp):rbp
+// LocalsOut: fp(64)
+
+l00000000001001E0:
+	edi = edi - 0x00000001
+	branch edi != 0x00000000 l00000000001001E0
+// DataOut: eax ecx edx edi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 rcx:<invalid> edx:0x00000000 rax:<invalid> edi:<invalid> rdx:<invalid> -4(fp):rbp
+// LocalsOut: fp(64)
+
+l00000000001001F4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 rcx:<invalid> edx:0x00000000 rax:<invalid> edi:<invalid> rdx:<invalid> -4(fp):rbp
+// LocalsOut: fp(64)
+
+l00000000001001F7:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 rcx:<invalid> edx:0x00000000 rax:<invalid> edi:<invalid> rdx:<invalid> -4(fp):rbp
+
+l00000000001001C0:
+	branch edi == 0x00000000 l00000000001001F7
+// DataOut: edi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+// LocalsOut: fp(64)
+
+l00000000001001CA:
+// DataOut: ecx edx edi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 -4(fp):rbp
+// LocalsOut: fp(64)
+
+l00000000001001E0:
+	edi = edi - 0x00000001
+	branch edi != 0x00000000 l00000000001001E0
+// DataOut: eax ecx edx edi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 rcx:<invalid> edx:0x00000000 rax:<invalid> edi:<invalid> rdx:<invalid> -4(fp):rbp
+// LocalsOut: fp(64)
+
+l00000000001001F4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 rcx:<invalid> edx:0x00000000 rax:<invalid> edi:<invalid> rdx:<invalid> -4(fp):rbp
+// LocalsOut: fp(64)
+
+l00000000001001F7:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:0x00000000 rcx:<invalid> edx:0x00000000 rax:<invalid> edi:<invalid> rdx:<invalid> -4(fp):rbp
+
+fn00000000001001C0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp eax:0x00000000 rcx:<invalid> edx:0x00000000 rax:<invalid> edi:<invalid> rdx:<invalid> -4(fp):rbp
+
+
+

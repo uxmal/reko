@@ -1,0 +1,346 @@
+void fn00401000(word32 edx, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  edx fs
+// LiveOut:
+// Trashed: SCZDO eax ecx edi ax cx di al cl ah ch
+// Preserved: esp ebp
+// Stack args: Stack +0004(32) Stack +0008(32) Stack +000C(32)
+fn00401000_entry:
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+
+l00401000:
+	Mem6[0x00403180:word32] = GetModuleHandleA(0x00000000)
+	DialogBoxParamA(Mem6[0x00403180:word32], 0x000003EC, 0x00000000, 0x0040102C, 0x00000000)
+	ExitProcess(0x00000000)
+	branch dwArg08 != 0x00000110 l004010EB
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+
+l004010EB:
+	branch dwArg08 != 0x00000136 l00401102
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+
+l00401102:
+	branch dwArg08 != 0x0000000F l0040112F
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+
+l0040112F:
+	branch dwArg08 != 0x00000111 l0040118F
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+
+l0040118F:
+	branch dwArg08 != 0x00000010 l004011BC
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l00401195:
+	Mem206[fp - 0x00000008:word32] = 0x00090000
+	Mem208[fp - 0x0000000C:word32] = 0x000003E8
+	Mem210[fp - 0x00000010:word32] = dwArg04
+	AnimateWindow(0x000003EC, 0x00000000, 0x0040102C)
+	Mem214[fp - 0x00000008:word32] = Mem210[0x00403194:word32]
+	DeleteObject(0x0040102C)
+	Mem218[fp - 0x00000008:word32] = 0x00000000
+	Mem220[fp - 0x0000000C:word32] = dwArg04
+	EndDialog(0x00000000, 0x0040102C)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32)
+
+l00401138:
+	branch dwArg0C != 0x000003F2 l00401178
+// DataOut: eax edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l00401178:
+	branch dwArg0C != 0x000003FA l004011BC
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l0040117F:
+	Mem194[fp - 0x00000008:word32] = 0x00000000
+	Mem196[fp - 0x0000000C:word32] = 0x00000000
+	Mem198[fp - 0x00000010:word32] = 0x00000010
+	SendMessageA(dwArg04, 0x000003EC, 0x00000000, 0x0040102C)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32)
+
+l00401142:
+	Mem170[fp - 0x00000008:word32] = 0x0000000C
+	Mem172[fp - 0x0000000C:word32] = 0x00403198
+	Mem174[fp - 0x00000010:word32] = 0x000003F8
+	GetDlgItemTextA(dwArg04, 0x000003EC, 0x00000000, 0x0040102C)
+	Mem180[fp - 0x00000008:word32] = 0x0000000C
+	Mem182[fp - 0x0000000C:word32] = 0x004031B0
+	Mem184[fp - 0x00000010:word32] = 0x000003F9
+	GetDlgItemTextA(dwArg04, 0x000003EC, 0x00000000, 0x0040102C)
+	Mem189[0x004031CC:byte] = 0x00
+	fn00401238(edx)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32)
+
+l00401108:
+	Mem144[fp - 0x00000008:word32] = 0x00000001
+	Mem146[fp - 0x0000000C:word32] = 0x00000000
+	Mem148[fp - 0x00000010:word32] = dwArg04
+	InvalidateRect(0x000003EC, 0x00000000, 0x0040102C)
+	Mem152[fp - 0x00000008:word32] = dwArg04
+	UpdateWindow(0x0040102C)
+	Mem156[fp - 0x00000008:word32] = 0x00000001
+	Mem158[fp - 0x0000000C:word32] = dwArg04
+	ShowWindow(0x00000000, 0x0040102C)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+
+l004010F4:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+
+l0040103C:
+	Mem53[fp - 0x00000008:word32] = 0x00000053
+	Mem55[fp - 0x0000000C:word32] = 0x00000000
+	Mem57[fp - 0x00000010:word32] = 0x00000000
+	SetWindowPos(dwArg04, 0x00000000, 0x00000000, 0x00000000, 0x000003EC, 0x00000000, 0x0040102C)
+	Mem70[fp - 0x00000008:word32] = 0x000007D1
+	Mem72[fp - 0x0000000C:word32] = Mem70[0x00403180:word32]
+	Mem76[fp - 0x00000008:word32] = LoadBitmapA(0x00000000, 0x0040102C)
+	Mem79[0x00403194:word32] = CreatePatternBrush(0x0040102C)
+	Mem81[fp - 0x00000008:word32] = 0x0000000A
+	Mem83[fp - 0x0000000C:word32] = 0x000007D2
+	Mem85[fp - 0x00000010:word32] = Mem83[0x00403180:word32]
+	Mem88[0x00403184:word32] = FindResourceA(0x000003EC, 0x00000000, 0x0040102C)
+	Mem90[fp - 0x00000008:word32] = Mem88[0x00403184:word32]
+	Mem92[fp - 0x0000000C:word32] = Mem90[0x00403180:word32]
+	Mem95[0x00403188:word32] = LoadResource(0x00000000, 0x0040102C)
+	Mem97[fp - 0x00000008:word32] = Mem95[0x00403184:word32]
+	Mem99[fp - 0x0000000C:word32] = Mem97[0x00403180:word32]
+	Mem102[0x00403190:word32] = SizeofResource(0x00000000, 0x0040102C)
+	Mem104[fp - 0x00000008:word32] = Mem102[0x00403188:word32]
+	Mem107[0x0040318C:word32] = LockResource(0x0040102C)
+	Mem109[fp - 0x00000008:word32] = Mem107[0x0040318C:word32]
+	Mem111[fp - 0x0000000C:word32] = Mem109[0x00403190:word32]
+	Mem113[fp - 0x00000010:word32] = 0x00000000
+	word32 eax_114 = ExtCreateRegion(0x000003EC, 0x00000000, 0x0040102C)
+	Mem117[fp - 0x00000008:word32] = 0x00000001
+	Mem119[fp - 0x0000000C:word32] = eax_114
+	Mem121[fp - 0x00000010:word32] = dwArg04
+	SetWindowRgn(0x000003EC, 0x00000000, 0x0040102C)
+	Mem125[fp - 0x00000008:word32] = 0x00000001
+	Mem127[fp - 0x0000000C:word32] = dwArg04
+	ShowWindow(0x00000000, 0x0040102C)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
+// LocalsOut: fp(32)
+
+l004011BC:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edi:<invalid> al:0x00 -32(fp):<invalid> -28(fp):0x00000000 -24(fp):0x00000000 -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
+
+fn00401000_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> ebp:ebp ecx:<invalid> edi:<invalid> al:<invalid> -32(fp):<invalid> -28(fp):0x00000000 -24(fp):0x00000000 -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
+
+
+
+word32 fn004011C2(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: ecx
+// Trashed: SCZDO ecx edi ax cx di al cl ch
+// Preserved: esp ebp
+// Stack args: Stack +0004(32)
+fn004011C2_entry:
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l004011C2:
+	word32 edi_16 = dwArg04
+	word32 ecx_11 = ~0x00000000
+// DataOut: ecx edx edi fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l004011CF:
+	branch ecx_11 == 0x00000000 l004011D1
+// DataOut: ecx edx edi fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
+// LocalsOut: fp(32)
+
+l004011CF_1:
+	edi_16 = edi_33 + 0x00000001
+	ecx_11 = ecx_11 - 0x00000001
+	word32 edi_33 = edi_16
+	branch 0x00 != Mem0[edi_33:byte] l004011CF
+// DataOut: ecx edx edi fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
+// LocalsOut: fp(32)
+
+l004011D1:
+	return ~ecx_11 - 0x00000001
+// DataOut: ecx edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
+
+fn004011C2_exit:
+// DataOut: ecx edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
+
+
+
+void fn004011D8()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO eax ecx ebx ax cx bx al cl bl ah ch bh
+// Preserved: esp
+fn004011D8_entry:
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l004011D8:
+	Mem4[0x004035CF:word32] = 0x00000000
+	Mem5[0x004035D7:word32] = 0x00000000
+	Mem6[0x004035DF:word32] = 0x00000000
+	Mem14[0x004035E7:word32] = (word32) Mem6[(word32) Mem6[0x004031CC:byte] + 0x00403198:byte]
+	Mem15[0x004035EF:word32] = 0x00000032
+	Mem16[0x004035FF:word32] = 0x00000000
+	Mem17[0x00403610:byte] = 0x00
+	Mem18[0x0040360F:byte] = 0x00
+	Mem20[0x004031CC:byte] = Mem18[0x004031CC:byte] + 0x01
+	return
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn004011D8_exit:
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebx:<invalid> eax:<invalid> ecx:0x004031CC bl:<invalid> al:<invalid>
+
+
+
+void fn00401238(word32 edx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  edx fs
+// LiveOut:
+// Trashed: SCZDO eax ecx edi ax cx di al cl ah ch
+// Preserved: esp ebp
+l004012D4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401238_entry:
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0010(32)
+
+l00401238:
+	word32 ecx_10 = fn004011C2(0x00403198)
+	branch ecx_10 >=u 0x00000007 l0040124F
+// DataOut: ecx edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -000C(32) Local -0010(32)
+
+l0040124F:
+	Mem29[0x004031CD:word32] = ecx_10
+	Mem31[fp + 0xFFFFFFF4:word32] = 0x004031B0
+	branch fn004011C2(0x00403198) >=u 0x00000007 l00401268
+// DataOut: edx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x00403198 -4(fp):ebp
+// LocalsOut: fp(32)
+
+l00401268:
+	Mem43[fp + 0xFFFFFFF4:word32] = edx
+	word32 ecx_39 = 0x00000000
+// DataOut: ecx cl fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 eax:0x004031CD ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x004031B0 -4(fp):ebp
+// LocalsOut: fp(32)
+
+l00401271:
+	Mem52[ecx_39 + 0x00403198:byte] = (byte) (Mem43[ecx_39 + 0x00403198:word32] ^ ecx_39)
+	ecx_39 = ecx_39 + 0x00000001
+	branch ecx_39 <= Mem52[0x004031CD:word32] l00401271
+// DataOut: ecx cl fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF4 ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:0x004031CD ebx:<invalid> edi:<invalid> al:<invalid> -12(fp):edx -4(fp):ebp
+// LocalsOut: fp(32)
+
+l00401293:
+	Mem61[0x004031CE:word32] = ecx_39
+	Mem66[0x004031C8:word32] = Mem61[0x004035FF:word32]
+	fn004011D8()
+	Mem73[fs:0x00000000:word32] = fp + 0xFFFFFFF0
+	fn004011D8()
+	int3()
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF4 ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:0x004031CD ebx:<invalid> edi:<invalid> al:<invalid> -12(fp):edx -4(fp):ebp
+
+l00401266:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 eax:0x004031CD ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x004031B0 -4(fp):ebp
+
+l0040124D:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x00403198 -4(fp):ebp
+
+fn00401238_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:0x004031CD ecx:<invalid> edi:<invalid> al:0x00 -12(fp):<invalid> -4(fp):ebp
+
+
+
