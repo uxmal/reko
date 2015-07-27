@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FilteringXmlWriter.cs">
@@ -129,7 +129,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(TargetPath)" $(SolutionDir)Tools
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Tools"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
