@@ -23,53 +23,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Environments.ZX81
+namespace Decompiler.Environments.ZX81
 {
-    /*
-
-    +---------------------------------------------------------------------------+
-    |   |   0    |   1    |   2    |   3    |   4    |   5    |   6    |   7    |
-    |   +-----------------------------------------------------------------------+
-    | 0 |space   |        |        |        |        |        |        |        |
-    | 1 |(       |)       |>       |<       |=       |+       |-       |*       |
-    | 2 |4       |5       |6       |7       |8       |9       |A       |B       |
-    | 3 |K       |L       |M       |N       |O       |P       |Q       |R       |
-    | 4 |RND     |PI      |INKEY$  |~~      |~~      |~~      |~~      |~~      |
-    | 5 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
-    | 6 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
-    | 7 |up      |down    |left    |right   |GRAPHICS|EDIT    |NEWLINE |RUBOUT  |
-    | 8 |        |        |        |        |        |        |        |        |
-    | 9 |[(]     |[)]     |[>]     |[<]     |[=]     |[+]     |[-]     |[*]     |
-    | A |[4]     |[5]     |[6]     |[7]     |[8]     |[9]     |[A]     |[B]     |
-    | B |[K]     |[L]     |[M]     |[N]     |[O]     |[P]     |[Q]     |[R]     |
-    | C |""      |AT      |TAB     |~~      |CODE    |VAL     |LEN     |SIN     |
-    | D |SQR     |SGN     |ABS     |PEEK    |USR     |STR$    |CHR$    |NOT     |
-    | E |STEP    |LPRINT  |LLIST   |STOP    |SLOW    |FAST    |NEW     |SCROLL  |
-    | F |LIST    |LET     |PAUSE   |NEXT    |POKE    |PRINT   |PLOT    |RUN     |
-    +---+-----------------------------------------------------------------------+
-    |   |   8    |   9    |   A    |   B    |   C    |   D    |   E    |   F    |
-    |   +-----------------------------------------------------------------------+
-    | 0 |        |        |        |"       |£       |$       |:       |?       |
-    | 1 |/       |;       |,       |.       |0       |1       |2       |3       |
-    | 2 |C       |D       |E       |F       |G       |H       |I       |J       |
-    | 3 |S       |T       |U       |V       |W       |X       |Y       |Z       |
-    | 4 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
-    | 5 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
-    | 6 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
-    | 7 |[K]/[L] |FUNCTION|~~      |~~      |~~      |~~      |number  |cursor  |
-    | 8 |        |        |        |["]     |[£]     |[$]     |[:]     |[?]     |
-    | 9 |[/]     |[;]     |[,]     |[.]     |[0]     |[1]     |[2]     |[3]     |
-    | A |[C]     |[D]     |[E]     |[F]     |[G]     |[H]     |[I]     |[J]     |
-    | B |[S]     |[T]     |[U]     |[V]     |[W]     |[X]     |[Y]     |[Z]     |
-    | C |COS     |TAN     |ASN     |ACS     |ATN     |LN      |EXP     |INT     |
-    | D |**      |OR      |AND     |<=      |>=      |<>      |THEN    |TO      |
-    | E |CONT    |DIM     |REM     |FOR     |GOTO    |GOSUB   |INPUT   |LOAD    |
-    | F |SAVE    |RAND    |IF      |CLS     |UNPLOT  |CLEAR   |RETURN  |COPY    |
-    +---+-----------------------------------------------------------------------+
-     */
-
+    /// <summary>
+    /// Implements the Sinclair-defined text encoding, which has no relationship
+    /// at all to ASCII.
+    /// </summary>
     public class ZX81Encoding : Encoding
     {
+        /*
++---------------------------------------------------------------------------+
+|   |   0    |   1    |   2    |   3    |   4    |   5    |   6    |   7    |
+|   +-----------------------------------------------------------------------+
+| 0 |space   |        |        |        |        |        |        |        |
+| 1 |(       |)       |>       |<       |=       |+       |-       |*       |
+| 2 |4       |5       |6       |7       |8       |9       |A       |B       |
+| 3 |K       |L       |M       |N       |O       |P       |Q       |R       |
+| 4 |RND     |PI      |INKEY$  |~~      |~~      |~~      |~~      |~~      |
+| 5 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
+| 6 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
+| 7 |up      |down    |left    |right   |GRAPHICS|EDIT    |NEWLINE |RUBOUT  |
+| 8 |        |        |        |        |        |        |        |        |
+| 9 |[(]     |[)]     |[>]     |[<]     |[=]     |[+]     |[-]     |[*]     |
+| A |[4]     |[5]     |[6]     |[7]     |[8]     |[9]     |[A]     |[B]     |
+| B |[K]     |[L]     |[M]     |[N]     |[O]     |[P]     |[Q]     |[R]     |
+| C |""      |AT      |TAB     |~~      |CODE    |VAL     |LEN     |SIN     |
+| D |SQR     |SGN     |ABS     |PEEK    |USR     |STR$    |CHR$    |NOT     |
+| E |STEP    |LPRINT  |LLIST   |STOP    |SLOW    |FAST    |NEW     |SCROLL  |
+| F |LIST    |LET     |PAUSE   |NEXT    |POKE    |PRINT   |PLOT    |RUN     |
++---+-----------------------------------------------------------------------+
+|   |   8    |   9    |   A    |   B    |   C    |   D    |   E    |   F    |
+|   +-----------------------------------------------------------------------+
+| 0 |        |        |        |"       |£       |$       |:       |?       |
+| 1 |/       |;       |,       |.       |0       |1       |2       |3       |
+| 2 |C       |D       |E       |F       |G       |H       |I       |J       |
+| 3 |S       |T       |U       |V       |W       |X       |Y       |Z       |
+| 4 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
+| 5 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
+| 6 |~~      |~~      |~~      |~~      |~~      |~~      |~~      |~~      |
+| 7 |[K]/[L] |FUNCTION|~~      |~~      |~~      |~~      |number  |cursor  |
+| 8 |        |        |        |["]     |[£]     |[$]     |[:]     |[?]     |
+| 9 |[/]     |[;]     |[,]     |[.]     |[0]     |[1]     |[2]     |[3]     |
+| A |[C]     |[D]     |[E]     |[F]     |[G]     |[H]     |[I]     |[J]     |
+| B |[S]     |[T]     |[U]     |[V]     |[W]     |[X]     |[Y]     |[Z]     |
+| C |COS     |TAN     |ASN     |ACS     |ATN     |LN      |EXP     |INT     |
+| D |**      |OR      |AND     |<=      |>=      |<>      |THEN    |TO      |
+| E |CONT    |DIM     |REM     |FOR     |GOTO    |GOSUB   |INPUT   |LOAD    |
+| F |SAVE    |RAND    |IF      |CLS     |UNPLOT  |CLEAR   |RETURN  |COPY    |
++---+-----------------------------------------------------------------------+
+ */
         private static char[] asciiToZx;
 
         // '@' used as 'illegal' value since ZX81 apperently had no '@' in its character set.

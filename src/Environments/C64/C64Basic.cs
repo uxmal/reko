@@ -33,7 +33,8 @@ using System.Text;
 namespace Reko.Environments.C64
 {
     /// <summary>
-    /// For the lulz: Commodore 64 BASIC as a "processor"!
+    /// Oh why the hell not. C64 Basic can be interpreted as a machine
+    /// language of sorts.
     /// </summary>
     public class C64Basic : IProcessorArchitecture
     {

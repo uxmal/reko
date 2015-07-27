@@ -28,7 +28,8 @@ using System.Text;
 namespace Reko.Environments.C64
 {
     /// <summary>
-    /// Models C64 BASIC instructions as machine instructions(!)
+    /// That's right, your eyes are not fooling you. This class models
+    /// C64 basic instructions as MachineInstructions.
     /// </summary>
     public class C64BasicInstruction : MachineInstruction
     {

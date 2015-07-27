@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Hunk
 {
+    /// <summary>
+    /// Parses an AmigaOS HUNK file.
+    /// </summary>
     public class HunkFileParser
     {
         public HunkFile hunk_file;
