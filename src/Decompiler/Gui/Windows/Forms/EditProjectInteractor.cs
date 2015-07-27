@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class EditProjectInteractor
     {

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
 	/// <summary>
 	/// Using the 'Visitor' pattern, any class interested in examining 

@@ -20,9 +20,9 @@
 
 using NUnit.Framework;
 using System;
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 
-namespace Decompiler.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Lib
 {
     [TestFixture]
     public class DisjointPartitionTests

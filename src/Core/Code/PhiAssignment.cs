@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System.IO;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
 	/// <summary>
 	/// Represents an assignment of an identifier from an SSA phi expression.

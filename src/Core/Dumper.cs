@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Dumps low-level information about a binary.

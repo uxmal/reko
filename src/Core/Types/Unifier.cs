@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Performs type unification, returning a general unifier for the two parameters.

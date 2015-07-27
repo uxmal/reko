@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ using System.Reflection.Emit;
 using System.Text;
 
 
-namespace Decompiler.Arch.Cil
+namespace Reko.Arch.Cil
 {
     public class CilDisassembler : DisassemblerBase<CilInstruction>
     {

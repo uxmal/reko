@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.ImageLoaders.Hunk;
+using Reko.Core;
+using Reko.ImageLoaders.Hunk;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.ImageLoaders.Hunk
+namespace Reko.UnitTests.ImageLoaders.Hunk
 {
     [TestFixture]
     public class HunkFileParserTests

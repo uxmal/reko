@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Represents a procedure that has been decompiled from machine code.

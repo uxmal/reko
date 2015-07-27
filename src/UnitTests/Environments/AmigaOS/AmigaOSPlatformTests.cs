@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Services;
-using Decompiler.Environments.AmigaOS;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Environments.AmigaOS;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,7 +31,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.AmigaOS
+namespace Reko.UnitTests.Environments.AmigaOS
 {
     [TestFixture]
     public class AmigaOSPlatformTests

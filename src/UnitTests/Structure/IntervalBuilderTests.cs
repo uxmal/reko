@@ -1,12 +1,12 @@
-using Decompiler.Core;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.Structure;
+using Reko.Core;
+using Reko.UnitTests.Mocks;
+using Reko.Structure;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 
     [TestFixture]

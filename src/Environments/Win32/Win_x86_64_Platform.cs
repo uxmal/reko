@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
     public class Win_x86_64_Platform : Platform
     {

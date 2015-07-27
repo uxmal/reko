@@ -21,7 +21,7 @@
 using System;
 using System.ComponentModel.Design;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
 	/// <summary>
 	/// Abstract class that builds menus. It is intended to be called by the platform-agnostic interactor code.

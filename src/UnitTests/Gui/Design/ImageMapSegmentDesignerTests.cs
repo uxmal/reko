@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Design;
-using Decompiler.Core;
+using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Design;
+using Reko.Core;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Design
+namespace Reko.UnitTests.Gui.Design
 {
     [TestFixture]
     public class ImageMapSegmentDesignerTests

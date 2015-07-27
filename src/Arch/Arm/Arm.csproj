@@ -6,8 +6,8 @@
     <ProjectGuid>{32F09304-51BE-4797-A86A-C0BEFED2422B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.Arm</RootNamespace>
-    <AssemblyName>Decompiler.Arch.Arm</AssemblyName>
+    <RootNamespace>Reko.Arch.Arm</RootNamespace>
+    <AssemblyName>Reko.Arch.Arm</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

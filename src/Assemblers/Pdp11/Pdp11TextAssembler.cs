@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Arch.Pdp11;
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Assemblers;
+using Reko.Arch.Pdp11;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Assemblers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Assemblers.Pdp11
+namespace Reko.Assemblers.Pdp11
 {
     public class Pdp11TextAssembler : Assembler
     {

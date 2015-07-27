@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     public class MockWhileWithDeclarations : ProcedureBuilder
     {

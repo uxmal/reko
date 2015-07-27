@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Components
+namespace Reko.Gui.Components
 {
     public interface ITimer
     {

@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using Decompiler.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using Reko.Arch.M68k;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.M68k
+namespace Reko.UnitTests.Arch.M68k
 {
     [TestFixture]
     public class OperandRewriterTests

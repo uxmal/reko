@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 
-namespace Decompiler.Arch.Cil
+namespace Reko.Arch.Cil
 {
     public class CilInstruction : MachineInstruction
     {

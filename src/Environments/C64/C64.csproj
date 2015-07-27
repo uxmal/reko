@@ -7,8 +7,8 @@
     <ProjectGuid>{FDFE3507-E8CE-4930-B9B5-8FB647CFC6DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environments.C64</RootNamespace>
-    <AssemblyName>Decompiler.Environments.C64</AssemblyName>
+    <RootNamespace>Reko.Environments.C64</RootNamespace>
+    <AssemblyName>Reko.Environments.C64</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

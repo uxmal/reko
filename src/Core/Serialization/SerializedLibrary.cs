@@ -24,7 +24,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary

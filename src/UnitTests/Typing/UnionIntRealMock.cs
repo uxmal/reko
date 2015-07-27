@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	/// <summary>
 	/// Mock that unifies a signed integer and a real into the same memory slot.

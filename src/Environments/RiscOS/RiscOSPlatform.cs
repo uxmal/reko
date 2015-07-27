@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Arch.Arm;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Arch.Arm;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.RiscOS
+namespace Reko.Environments.RiscOS
 {
     public class RiscOSPlatform : Platform
     {

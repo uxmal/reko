@@ -18,15 +18,14 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Displays an image map graphically.

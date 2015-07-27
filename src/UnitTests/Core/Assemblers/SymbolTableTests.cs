@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Assemblers;
+using Reko.Core.Assemblers;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Core.Assemblers
+namespace Reko.UnitTests.Core.Assemblers
 {
 	[TestFixture]
 	public class SymbolTableTests

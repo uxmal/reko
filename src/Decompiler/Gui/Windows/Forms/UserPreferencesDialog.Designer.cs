@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Forms
+﻿namespace Reko.Gui.Windows.Forms
 {
     partial class UserPreferencesDialog
     {
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Decompiler.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Decompiler.Gui.Windows.Controls.EmptyEditorModel();
-            Decompiler.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel2 = new Decompiler.Gui.Windows.Controls.EmptyEditorModel();
+            Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
+            Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel2 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Code");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Data");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Memory Window", new System.Windows.Forms.TreeNode[] {
@@ -47,9 +47,9 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabWindows = new System.Windows.Forms.TabPage();
-            this.dasmCtl = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
-            this.codeCtl = new Decompiler.Gui.Windows.Controls.TextView();
-            this.memCtl = new Decompiler.Gui.Windows.Controls.MemoryControl();
+            this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
+            this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
+            this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.btnWindowBgColor = new System.Windows.Forms.Button();
             this.btnWindowFgColor = new System.Windows.Forms.Button();

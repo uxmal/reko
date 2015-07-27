@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
 	/// <summary>
 	/// Mock that implicitly defines a recursive data type, tree.

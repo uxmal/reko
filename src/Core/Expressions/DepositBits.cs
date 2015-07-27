@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
 	/// <summary>
 	/// Replaces the bits in the specified range with the new expression.

@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class ArgumentSerializerTests

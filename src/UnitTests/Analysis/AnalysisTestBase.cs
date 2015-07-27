@@ -18,29 +18,29 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Environments.Msdos;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Environments.Msdos;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	public abstract class AnalysisTestBase
 	{
@@ -138,7 +138,7 @@ namespace Decompiler.UnitTests.Analysis
             {
                 if (this.platform == null)
                 {
-                    this.platform = new Decompiler.Environments.Win32.Win32Platform(null, new X86ArchitectureFlat32());
+                    this.platform = new Reko.Environments.Win32.Win32Platform(null, new X86ArchitectureFlat32());
                 }
                 asm.Platform = this.platform;
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
@@ -260,7 +260,7 @@ namespace Decompiler.UnitTests.Analysis
                     new ExternalProcedure(
                         "GlobalHandle",
                         new ProcedureSignature(
-                            new Identifier("eax", tHglobal, Decompiler.Arch.X86.Registers.eax),
+                            new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax),
                             new Identifier("pv",  tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
                         {
                             StackDelta = 4,
@@ -271,7 +271,7 @@ namespace Decompiler.UnitTests.Analysis
                 .Return(new ExternalProcedure(
                     "GlobalUnlock",
                     new ProcedureSignature(
-                        new Identifier("eax",  tBool, Decompiler.Arch.X86.Registers.eax),
+                        new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
                         new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
                     {
                         StackDelta = 4,
@@ -283,7 +283,7 @@ namespace Decompiler.UnitTests.Analysis
              .Return(new ExternalProcedure(
                  "GlobalFree",
                  new ProcedureSignature(
-                     new Identifier("eax",  tBool, Decompiler.Arch.X86.Registers.eax),
+                     new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
                      new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
                  {
                      StackDelta = 4,
@@ -295,7 +295,7 @@ namespace Decompiler.UnitTests.Analysis
 
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
-                new Decompiler.Arch.X86.X86ArchitectureFlat32().CreateRegisterBitset());
+                new Reko.Arch.X86.X86ArchitectureFlat32().CreateRegisterBitset());
             Given_Platform(platform);
         }
 	}

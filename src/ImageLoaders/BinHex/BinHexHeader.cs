@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.BinHex
+namespace Reko.ImageLoaders.BinHex
 {
     public class BinHexHeader
     {

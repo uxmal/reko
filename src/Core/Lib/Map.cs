@@ -22,7 +22,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// Represents a collection of key-and-value pairs in sorted order, with support for lower bound

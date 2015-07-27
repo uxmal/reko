@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Environments.Win32;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Environments.Win32;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Win32
 {
     [TestFixture]
     public class MsMangledNameParserTests

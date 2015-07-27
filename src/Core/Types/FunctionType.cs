@@ -22,7 +22,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
     /// Models a function type. Note the similarity to ProcedureSignature: it's likely we'll want to merge these two.

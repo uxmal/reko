@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Code;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class CodeEmitterTests

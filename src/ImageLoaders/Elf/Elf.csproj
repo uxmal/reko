@@ -6,8 +6,8 @@
     <ProjectGuid>{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.ImageLoaders.Elf</RootNamespace>
-    <AssemblyName>Decompiler.ImageLoaders.Elf</AssemblyName>
+    <RootNamespace>Reko.ImageLoaders.Elf</RootNamespace>
+    <AssemblyName>Reko.ImageLoaders.Elf</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

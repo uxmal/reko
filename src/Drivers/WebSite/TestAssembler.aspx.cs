@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Loading;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Loading;
 using System;
 using System.ComponentModel.Design;
 
-namespace Decompiler.WebSite
+namespace Reko.WebSite
 {
 	public class TestAssembler : System.Web.UI.Page
 	{

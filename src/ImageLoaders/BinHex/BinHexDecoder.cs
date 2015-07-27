@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.ImageLoaders.BinHex
+namespace Reko.ImageLoaders.BinHex
 {
     // Classic Mac resource header format http://developer.apple.com/legacy/mac/library/documentation/mac/MoreToolbox/MoreToolbox-99.html
     public class BinHexDecoder

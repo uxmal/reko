@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Z80
+namespace Reko.Arch.Z80
 {
     public class Z80Instruction : MachineInstruction
     {

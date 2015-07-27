@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Describes the initial value, stride, and final value of an induction variable.

@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Structure.Schwartz
+namespace Reko.Structure.Schwartz
 {
     public enum NodeColor
     {

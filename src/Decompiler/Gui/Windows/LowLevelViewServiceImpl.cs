@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class LowLevelViewServiceImpl : ViewService, ILowLevelViewService
     {

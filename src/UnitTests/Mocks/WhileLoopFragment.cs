@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class WhileLoopFragment : ProcedureBuilder
     {

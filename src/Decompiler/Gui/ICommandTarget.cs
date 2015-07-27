@@ -21,7 +21,7 @@
 using System;
 using System.ComponentModel.Design;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
 	/// <summary>
 	/// An ICommandTarget handles the issuing of commands. It is inspired by IOleCommandTarget.

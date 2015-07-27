@@ -26,12 +26,12 @@
 
 using System;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
 	public class CmdSets
 	{
-		public const string Decompiler = "6D65B38B-4275-4892-BD3C-05AC0645373F";
-		public static Guid GuidDecompiler = new Guid("6D65B38B-4275-4892-BD3C-05AC0645373F");
+		public const string Reko = "6D65B38B-4275-4892-BD3C-05AC0645373F";
+		public static Guid GuidReko = new Guid("6D65B38B-4275-4892-BD3C-05AC0645373F");
 	
 	}
 	

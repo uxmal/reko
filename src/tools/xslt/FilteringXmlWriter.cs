@@ -23,7 +23,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Decompiler.Tools.Xslt
+namespace Reko.Tools.Xslt
 {
 	public class FilteringXmlWriter : System.Xml.XmlTextWriter
 	{

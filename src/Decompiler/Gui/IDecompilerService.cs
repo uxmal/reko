@@ -18,14 +18,13 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Provides access to the running instance of the decompiler.

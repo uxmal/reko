@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Loading;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Loading;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -32,7 +32,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedProjectTests

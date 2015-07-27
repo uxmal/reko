@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class StructureReaderTests

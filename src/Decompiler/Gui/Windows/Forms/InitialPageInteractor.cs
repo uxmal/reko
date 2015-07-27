@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core.Assemblers;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Configuration;
-using Decompiler.Gui;
-using Decompiler.Loading;
+using Reko.Core.Assemblers;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Configuration;
+using Reko.Gui;
+using Reko.Loading;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
     {
@@ -55,7 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid== CmdSets.GuidDecompiler)
+            if (cmdId.Guid== CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

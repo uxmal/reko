@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Builds data types incrementally by accepting traits and modifying the corresponding

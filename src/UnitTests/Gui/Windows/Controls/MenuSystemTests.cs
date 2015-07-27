@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Controls
+namespace Reko.UnitTests.Gui.Windows.Controls
 {
 	[TestFixture]
 	public class MenuSystemTests : ICommandTarget

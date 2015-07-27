@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Decompiler.Core;
+using Reko.Core;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     /// <summary>
     /// Rewrites ALU instructions.
@@ -475,7 +475,7 @@ namespace Decompiler.Arch.M68k
                 {
                     var src = orw.RewriteSrc(di.op1, di.Address) as MemoryAccess;
                     if (src == null)
-                        throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+                        throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
                     srcReg = frame.CreateTemporary(di.dataWidth);
                     emitter.Assign(srcReg, src.EffectiveAddress);
                 }
@@ -503,7 +503,7 @@ namespace Decompiler.Arch.M68k
                 {
                     var src = orw.RewriteSrc(di.op2, di.Address) as MemoryAccess;
                     if (src == null)
-                        throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+                        throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
                     var srcReg = frame.CreateTemporary(di.dataWidth);
                     emitter.Assign(srcReg, src.EffectiveAddress);
                     foreach (var reg in RegisterMaskIncreasing(dstRegs.BitSet))
@@ -514,7 +514,7 @@ namespace Decompiler.Arch.M68k
                 }
                 return;
             }
-            throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+            throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
         }
 
         private Expression RewriteNegx(Expression expr)

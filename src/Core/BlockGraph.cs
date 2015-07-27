@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     public class BlockGraph : DirectedGraph<Block>
     {

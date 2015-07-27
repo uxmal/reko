@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Loading;
-using Decompiler.Scanning;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Loading;
+using Reko.Scanning;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
 	[TestFixture]
     [Ignore("This needs to be rewritten, as we are now more explicitly referring to the stack pointer")]

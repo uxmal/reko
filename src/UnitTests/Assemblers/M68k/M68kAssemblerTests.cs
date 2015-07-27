@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Assemblers.M68k;
-using Decompiler.Core;
+using Reko.Arch.M68k;
+using Reko.Assemblers.M68k;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Assemblers.M68k
+namespace Reko.UnitTests.Assemblers.M68k
 {
     [TestFixture]
     public class M68kAssemblerTests

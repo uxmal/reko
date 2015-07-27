@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     partial class X86RewriterTests : Arch.RewriterTestBase

@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
 	/// <summary>
 	/// Common Representation of loops.

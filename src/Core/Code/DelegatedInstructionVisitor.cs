@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
     public class DelegatedInstructionVisitor : InstructionVisitor
     {

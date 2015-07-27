@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Output;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class AbsynCodeGeneratorTests

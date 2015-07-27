@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +29,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Implements the IWorkerDialogService and DecompilerEventListener services for the Windows Forms GUI.

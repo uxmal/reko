@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
     public class MsPrintfFormatParser
     {

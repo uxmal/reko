@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Gui;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Windows Forms implementation of the IListViewItem interface.

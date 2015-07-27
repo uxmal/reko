@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Code;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     public class IdentifierReplacer : InstructionTransformer, StorageVisitor<Identifier>
     {

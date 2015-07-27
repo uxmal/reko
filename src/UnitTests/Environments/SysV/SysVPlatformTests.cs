@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Environments.SysV;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Environments.SysV;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,7 +31,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.SysV
+namespace Reko.UnitTests.Environments.SysV
 {
     [TestFixture]
     public class SysVPlatformTests

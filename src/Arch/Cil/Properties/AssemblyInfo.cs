@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler;
+using Reko;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -29,9 +29,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Cil")]
 [assembly: AssemblyDescription("Support for decompilation of CIL assemblies")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

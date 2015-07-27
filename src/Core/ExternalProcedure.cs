@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
+using Reko.Core.Code;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
 using System;
 using System.IO;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Models a procedure in an external API, whose signature is known, but whose code is 

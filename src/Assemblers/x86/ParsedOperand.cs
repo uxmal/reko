@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Machine;
 using System;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	public class ParsedOperand
 	{

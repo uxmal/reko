@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Analysis;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Analysis;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
 
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	/// <summary>
 	/// Tests to make sure DeadCodeElimination works.

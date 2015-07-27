@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     /// <summary>
     /// A characteristics library contains characteristics for procedures that have semantics 

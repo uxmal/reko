@@ -6,8 +6,8 @@
     <ProjectGuid>{CD10A2C6-246C-4CBB-8E92-86579714795A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.Pdp11</RootNamespace>
-    <AssemblyName>Decompiler.Arch.Pdp11</AssemblyName>
+    <RootNamespace>Reko.Arch.Pdp11</RootNamespace>
+    <AssemblyName>Reko.Arch.Pdp11</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

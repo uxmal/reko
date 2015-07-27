@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class AddressTests

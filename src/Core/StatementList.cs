@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	public class StatementList : List<Statement>
 	{

@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Environments.Msdos;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// Loads EXE image files. These may contain executable code in varying formats. 

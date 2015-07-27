@@ -6,8 +6,8 @@
     <ProjectGuid>{2B4E0F2E-B458-4BC2-96AC-6A4D9324F974}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environments.ZX81</RootNamespace>
-    <AssemblyName>Decompiler.Environments.ZX81</AssemblyName>
+    <RootNamespace>Reko.Environments.ZX81</RootNamespace>
+    <AssemblyName>Reko.Environments.ZX81</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
 	public class Win32Platform : Platform
 	{

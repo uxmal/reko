@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Gui.Windows.Forms;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class FindDialogInteractorTests

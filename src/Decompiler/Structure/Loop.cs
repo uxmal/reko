@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     /// <summary>
     /// A loop is described by its header, its latch node, its members, and a follow node.

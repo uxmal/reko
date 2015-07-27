@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Formats code as HTML for presentation in Web browsers.

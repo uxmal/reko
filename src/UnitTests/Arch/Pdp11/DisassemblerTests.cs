@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.Pdp11;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Arch.Pdp11;
+using Reko.Core;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Pdp11
+namespace Reko.UnitTests.Arch.Pdp11
 {
     [TestFixture]   
     public class DisassemblerTests

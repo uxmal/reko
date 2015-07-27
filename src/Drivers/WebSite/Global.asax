@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="Decompiler.WebSite.Global" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="Reko.WebSite.Global" %>

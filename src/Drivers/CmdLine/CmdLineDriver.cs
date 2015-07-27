@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Services;
-using Decompiler.Loading;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Services;
+using Reko.Loading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -32,7 +32,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Decompiler.CmdLine
+namespace Reko.CmdLine
 {
     public class CmdLineDriver
     {

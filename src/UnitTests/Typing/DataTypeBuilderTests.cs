@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Fragments;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Fragments;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class DataTypeBuilderTests : TypingTestBase
@@ -355,7 +355,7 @@ namespace Decompiler.UnitTests.Typing
             Identifier ds = m.Local16("ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
-            var arch = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            var arch = new Reko.Arch.X86.X86ArchitectureReal();
             Program prog = new Program
             {
                 Architecture = arch,
@@ -381,7 +381,7 @@ namespace Decompiler.UnitTests.Typing
         public void DtbSegmentedDirectAddress()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            var arch = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            var arch = new Reko.Arch.X86.X86ArchitectureReal();
             var prog = new Program
             {
                 Architecture = arch,

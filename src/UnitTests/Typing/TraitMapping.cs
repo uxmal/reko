@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	/// <summary>
 	/// Given a type variable T, maps to the traits associated with that type variable.

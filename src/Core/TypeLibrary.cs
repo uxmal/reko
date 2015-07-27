@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +28,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     public class TypeLibrary
 	{

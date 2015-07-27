@@ -18,20 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Code;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Code;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	/// <summary>
 	/// A crude MASM-style assembler for x86 opcodes.

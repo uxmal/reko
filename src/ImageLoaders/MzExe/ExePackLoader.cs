@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Environments.Msdos;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Environments.Msdos;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
     /// <summary>
     /// Loader for MS-DOS executables packed with EXEPACK.

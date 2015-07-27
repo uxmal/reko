@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Loading;
+using Reko.Loading;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Decompiler.UnitTests.Loading
+namespace Reko.UnitTests.Loading
 {
     [TestFixture]
     public class UnpackerSignatureLoaderTests

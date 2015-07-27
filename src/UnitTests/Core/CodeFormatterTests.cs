@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Output;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class CodeFormatterTests

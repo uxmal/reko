@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Abstracts the notion of a dialog for assistance when unit testing.

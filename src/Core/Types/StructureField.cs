@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
     /// Describes a field of a structure.

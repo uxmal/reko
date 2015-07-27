@@ -7,7 +7,7 @@
     <ProjectGuid>{D439868B-C78F-472F-82F2-1E3E5C88163B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.CmdLine</RootNamespace>
+    <RootNamespace>Reko.CmdLine</RootNamespace>
     <AssemblyName>decompile</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -64,56 +64,56 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Cpm\cpm_bdos_services.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\MsDos\realmodeintservices.xml">
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_bdos_services.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\msvcrt.xml">
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\ntoskrnl.xml">
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\ntoskrnl.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\windows32.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\windows64.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\oleaut32.xml">
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows64.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\win32characteristics.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\win64characteristics.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\MacOS\macos_classic.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\SysV\libc.so.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\SysV\Xlib.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\SysV\linux-syscalls-i386.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\SysV\sysvcharacteristics.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Decompiler\Loading\Signatures\*.xml" />
-    <OdbgScripts Include="%24%28SolutionDir%29ImageLoaders\OdbgScript\*.osc" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win32characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win64characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+    <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <Architectures Include="%24%28SolutionDir%29Arch\Arm\%24%28OutDir%29Decompiler.Arch.Arm.*" />
-    <Architectures Include="%24%28SolutionDir%29Arch\M68k\%24%28OutDir%29Decompiler.Arch.M68k.*" />
-    <Architectures Include="%24%28SolutionDir%29Arch\Mips\%24%28OutDir%29Decompiler.Arch.Mips.*" />
-    <Architectures Include="%24%28SolutionDir%29Arch\Mos6502\%24%28OutDir%29Decompiler.Arch.Mos6502.*" />
-    <Architectures Include="%24%28SolutionDir%29Arch\PowerPC\%24%28OutDir%29Decompiler.Arch.PowerPC.*" />
-    <Architectures Include="%24%28SolutionDir%29Arch\Sparc\%24%28OutDir%29Decompiler.Arch.Sparc.*" />
-    <Architectures Include="%24%28SolutionDir%29Arch\X86\%24%28OutDir%29Decompiler.Arch.X86.*" />
-    <Architectures Include="%24%28SolutionDir%29Arch\Z80\%24%28OutDir%29Decompiler.Arch.Z80.*" />
-    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\MzExe\%24%28OutDir%29Decompiler.ImageLoaders.MzExe.*" />
-    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\BinHex\%24%28OutDir%29Decompiler.ImageLoaders.BinHex.*" />
-    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\Elf\%24%28OutDir%29Decompiler.ImageLoaders.Elf.*" />
-    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\Hunk\%24%28OutDir%29Decompiler.ImageLoaders.Hunk.*" />
-    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\MachO\%24%28OutDir%29Decompiler.ImageLoaders.MachO.*" />
-    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\OdbgScript\%24%28OutDir%29Decompiler.ImageLoaders.OdbgScript.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\AmigaOS\%24%28OutDir%29Decompiler.Environments.AmigaOS.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\C64\%24%28OutDir%29Decompiler.Environments.C64.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\Cpm\%24%28OutDir%29Decompiler.Environments.Cpm.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\MacOS\%24%28OutDir%29Decompiler.Environments.MacOS.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\MsDos\%24%28OutDir%29Decompiler.Environments.Msdos.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\Ps3\%24%28OutDir%29Decompiler.Environments.Ps3.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\RiscOS\%24%28OutDir%29Decompiler.Environments.RiscOS.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\SysV\%24%28OutDir%29Decompiler.Environments.SysV.*" />
-    <Environments Include="%24%28SolutionDir%29Environments\Win32\%24%28OutDir%29Decompiler.Environments.Win32.*" />
+    <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
+    <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
+    <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
+    <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
+    <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Reko.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
+    <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
+    <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
+    <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
+    <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
+    <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Reko.Environments.Msdos.*" />
+    <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
+    <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
+    <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
+    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Win32.*" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->

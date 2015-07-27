@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents a union of non-compatible types such as int and reals, or pointers and ints, or differently sized integers.

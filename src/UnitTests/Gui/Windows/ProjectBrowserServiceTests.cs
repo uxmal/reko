@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Controls;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using NUnit.Framework;
@@ -39,7 +39,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class ProjectBrowserServiceTests
@@ -400,7 +400,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void Given_UserProcedure(uint addr, string name)
         {
             program.UserProcedures.Add(
-                Address.Ptr32(addr), new Decompiler.Core.Serialization.Procedure_v1
+                Address.Ptr32(addr), new Reko.Core.Serialization.Procedure_v1
                 {
                     Address = addr.ToString(),
                     Name = name

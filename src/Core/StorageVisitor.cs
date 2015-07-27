@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Visitor pattern for storages, parametrized by the returned value of all the visitor methods.

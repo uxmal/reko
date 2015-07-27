@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     public class LinearInductionVariableContext
     {

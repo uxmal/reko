@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Gui;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
     /// Renders disassembled machine instructions.

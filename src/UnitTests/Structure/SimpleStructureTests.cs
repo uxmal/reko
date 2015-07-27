@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.UnitTests.TestCode;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
+using Reko.UnitTests.TestCode;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class SimpleStructureTests : StructureTestBase

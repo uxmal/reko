@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Serialization;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Serialization;
 using System;
 using System.IO;
 using System.Reflection;
 
-namespace Decompiler.Environments.Msdos
+namespace Reko.Environments.Msdos
 {
 	public class MsdosPlatform : Platform
 	{

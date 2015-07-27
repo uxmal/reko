@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
     /// <summary>
     /// Performs a type analysis of the program.

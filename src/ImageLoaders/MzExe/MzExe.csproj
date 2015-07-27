@@ -6,8 +6,8 @@
     <ProjectGuid>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.ImageLoaders.MzExe</RootNamespace>
-    <AssemblyName>Decompiler.ImageLoaders.MzExe</AssemblyName>
+    <RootNamespace>Reko.ImageLoaders.MzExe</RootNamespace>
+    <AssemblyName>Reko.ImageLoaders.MzExe</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

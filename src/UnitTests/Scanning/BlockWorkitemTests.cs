@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class BlockWorkitemTests

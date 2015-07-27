@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// Represents a set of integers. Recommended for small sets (> 1000 items). 

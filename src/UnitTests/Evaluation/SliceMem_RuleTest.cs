@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class SliceMem_RuleTest

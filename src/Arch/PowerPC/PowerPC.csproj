@@ -6,8 +6,8 @@
     <ProjectGuid>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.PowerPC</RootNamespace>
-    <AssemblyName>Decompiler.Arch.PowerPC</AssemblyName>
+    <RootNamespace>Reko.Arch.PowerPC</RootNamespace>
+    <AssemblyName>Reko.Arch.PowerPC</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class TextSpanFormatterTests

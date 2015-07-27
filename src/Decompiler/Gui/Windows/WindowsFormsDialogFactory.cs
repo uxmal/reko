@@ -18,12 +18,12 @@
 */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows.Forms;
 using System;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
 	public class WindowsFormsDialogFactory : IDialogFactory
 	{

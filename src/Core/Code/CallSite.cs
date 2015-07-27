@@ -21,7 +21,7 @@
 using System;
 using System.Text;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
     /// <summary>
     /// Interface between a calling procedure and a callee procedure. All registers

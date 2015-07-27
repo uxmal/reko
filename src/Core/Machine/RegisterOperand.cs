@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Machine
+namespace Reko.Core.Machine
 {
     /// <summary>
     /// Represents a register operand of a <code>MachineInstruction</code>. Most

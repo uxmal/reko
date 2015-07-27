@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core.Output;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core.Output;
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Base class for all decompiled expressions.

@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Transforms a <see cref="Decompiler.Core.Procedure"/> to Static Single Assignment form.

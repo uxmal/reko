@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Core.Operators
+namespace Reko.Core.Operators
 {
 	public class IModOperator : BinaryOperator
 	{

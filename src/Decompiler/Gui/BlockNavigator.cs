@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Used in search results to navigate to basic blocks. When NavigateTo is invoked, 

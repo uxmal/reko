@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
     public interface IHost
     {

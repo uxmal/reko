@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,9 +26,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
-    using Decompiler.Arch.X86;
+    using Reko.Arch.X86;
     using rulong = System.UInt64;
 
     // This is the table for Script Execution

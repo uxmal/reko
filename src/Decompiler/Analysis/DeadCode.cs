@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Performs dead code elimination. Statements that define an identifier that has no uses are removed,

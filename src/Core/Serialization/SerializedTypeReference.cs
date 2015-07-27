@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     /// <summary>
     /// Refers to another type by name only. Requires an external symbol table to

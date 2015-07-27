@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Analysis;
-using Decompiler.UnitTests;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Analysis;
+using Reko.UnitTests;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     public class AliasTests : AnalysisTestBase
     {

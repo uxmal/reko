@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Displays the contents of memory and allows selection of memory ranges. 

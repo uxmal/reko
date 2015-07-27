@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// We are keenly interested in discovering the register linkage 

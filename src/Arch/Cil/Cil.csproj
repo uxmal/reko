@@ -7,8 +7,8 @@
     <ProjectGuid>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.Cil</RootNamespace>
-    <AssemblyName>Decompiler.Arch.Cil</AssemblyName>
+    <RootNamespace>Reko.Arch.Cil</RootNamespace>
+    <AssemblyName>Reko.Arch.Cil</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

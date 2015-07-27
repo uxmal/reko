@@ -24,12 +24,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Represents a file that only used for the  metdata it contains.
     /// </summary>
-    [Designer("Decompiler.Gui.Design.MetadataFileDesigner,Decompiler")]
+    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko")]
     public class MetadataFile : ProjectFile
     {
         public override T Accept<T>(IProjectFileVisitor<T> visitor)

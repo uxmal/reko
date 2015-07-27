@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Used to match expressions to a pattern and possibly capture identifiers and constants.
@@ -96,7 +96,7 @@ namespace Decompiler.Core.Expressions
 
         #region ExpressionVisitor<bool> Members
 
-        bool ExpressionVisitor<bool>.VisitAddress(Decompiler.Core.Address addr)
+        bool ExpressionVisitor<bool>.VisitAddress(Reko.Core.Address addr)
         {
             var anyC = p as WildConstant;
             if (anyC != null)

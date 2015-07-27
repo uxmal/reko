@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class ExpressionSimplifierTests

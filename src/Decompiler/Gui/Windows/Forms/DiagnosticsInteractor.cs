@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -28,7 +28,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class DiagnosticsInteractor : IDiagnosticsService, IWindowPane, ICommandTarget
     {
@@ -157,7 +157,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -176,7 +176,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

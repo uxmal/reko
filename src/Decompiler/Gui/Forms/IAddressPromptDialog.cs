@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 
-namespace Decompiler.Gui.Forms
+namespace Reko.Gui.Forms
 {
 	public interface IAddressPromptDialog : IDialog
 	{

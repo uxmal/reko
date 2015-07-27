@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Base class for optional renderers for image map segments. It is used to render

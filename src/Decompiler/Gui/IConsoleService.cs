@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public interface IConsoleService
     {

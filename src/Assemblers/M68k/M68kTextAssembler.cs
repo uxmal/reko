@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Arch.M68k;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Assemblers.M68k
+namespace Reko.Assemblers.M68k
 {
     public class M68kTextAssembler : Assembler
     {

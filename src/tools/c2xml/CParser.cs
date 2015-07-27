@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     // http://www.ssw.uni-linz.ac.at/Coco/C/C.atg
 

@@ -24,7 +24,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 
-namespace Decompiler.WebSite
+namespace Reko.WebSite
 {
 	public class Global : System.Web.HttpApplication
 	{

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     public class TypeReferenceFormatter
     {

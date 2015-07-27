@@ -24,7 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
     public class SectionInfo
     {

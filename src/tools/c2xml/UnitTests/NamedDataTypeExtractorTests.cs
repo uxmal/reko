@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 
 #if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class NamedDataTypeExtractorTests

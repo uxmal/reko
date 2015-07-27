@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
 	/// <summary>
 	/// Matches a binOp with two constant parameters, which usually is easily simplified.

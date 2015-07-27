@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	public delegate void ErrorEventHandler(object sender, ErrorEventArgs args);
 

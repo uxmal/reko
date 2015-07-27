@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.UiPrototype
+namespace Reko.UiPrototype
 {
     static class Program
     {

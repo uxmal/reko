@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     public class EnumType : DataType
     {

@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core.Types;
-using Decompiler.Core.Serialization;
-using Decompiler.Gui;
+using Reko.Arch.X86;
+using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Gui;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     class SignatureParserTests

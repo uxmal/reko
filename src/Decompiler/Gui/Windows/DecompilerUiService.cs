@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Windows Forms implementation of the IDecompilerUIService service.
@@ -50,7 +50,7 @@ namespace Decompiler.Gui.Windows
         {
             DialogResult dlgr = DialogResult.No;
             form.Invoke(new Action(
-                () => { dlgr = MessageBox.Show(prompt, "Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
+                () => { dlgr = MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
             return dlgr == DialogResult.Yes;
         }
 
@@ -104,7 +104,7 @@ namespace Decompiler.Gui.Windows
                 e = e.InnerException;
             }
             form.Invoke(new Action<string>(delegate(string s)
-                { MessageBox.Show(form, s, "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
+                { MessageBox.Show(form, s, "Reko decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
                 sb.ToString() );
         }
 
@@ -113,7 +113,7 @@ namespace Decompiler.Gui.Windows
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(format, args);
             form.Invoke(new Action<StringBuilder>(delegate(StringBuilder s)
-                { MessageBox.Show(form, s.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
+                { MessageBox.Show(form, s.ToString(), "Reko decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
                 sb);
         }
         #endregion
@@ -122,7 +122,7 @@ namespace Decompiler.Gui.Windows
         public void ShowMessage(string msg)
         {
             form.Invoke(new Action<string>(delegate(string s)
-                { MessageBox.Show(form, s, "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Information); }),
+                { MessageBox.Show(form, s, "Reko decompiler", MessageBoxButtons.OK, MessageBoxIcon.Information); }),
                 msg);
         }
     }

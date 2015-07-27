@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Assemblers;
+using Reko.Core.Assemblers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     /// <summary>
     /// Client code uses this service to access information stored 
@@ -56,7 +56,7 @@ namespace Decompiler.Core.Configuration
     {
         public virtual ICollection GetImageLoaders()
         {
-            var handler = (LoaderSectionHandler) ConfigurationManager.GetSection("Decompiler/Loaders");
+            var handler = (LoaderSectionHandler) ConfigurationManager.GetSection("Reko/Loaders");
             if (handler == null)
                 return new LoaderElement[0];
             return handler.ImageLoaders;
@@ -64,7 +64,7 @@ namespace Decompiler.Core.Configuration
 
         public virtual ICollection GetSignatureFiles()
         {
-            var handler = (SignatureFileSectionHandler)ConfigurationManager.GetSection("Decompiler/SignatureFiles");
+            var handler = (SignatureFileSectionHandler)ConfigurationManager.GetSection("Reko/SignatureFiles");
             if (handler == null)
                 return new SignatureFileElement[0];
             return handler.SignatureFiles;
@@ -72,7 +72,7 @@ namespace Decompiler.Core.Configuration
 
         public virtual ICollection GetArchitectures()
         {
-            var handler = (ArchitectureSectionHandler) ConfigurationManager.GetSection("Decompiler/Architectures");
+            var handler = (ArchitectureSectionHandler) ConfigurationManager.GetSection("Reko/Architectures");
             if (handler == null)
                 return new ArchitectureElement[0];
             return handler.Architectures;
@@ -80,7 +80,7 @@ namespace Decompiler.Core.Configuration
 
         public virtual ICollection GetEnvironments()
         {
-            var handler = (OperatingEnvironmentSectionHandler)ConfigurationManager.GetSection("Decompiler/Environments");
+            var handler = (OperatingEnvironmentSectionHandler)ConfigurationManager.GetSection("Reko/Environments");
             if (handler == null)
                 return new OperatingEnvironmentElement[0];
             return handler.Environments;
@@ -88,7 +88,7 @@ namespace Decompiler.Core.Configuration
 
         public virtual ICollection GetAssemblers()
         {
-            var handler = (AssemblerSectionHandler)ConfigurationManager.GetSection("Decompiler/Assemblers");
+            var handler = (AssemblerSectionHandler)ConfigurationManager.GetSection("Reko/Assemblers");
             if (handler == null)
                 return new AssemblerElement[0];
             return handler.Environments;
@@ -96,7 +96,7 @@ namespace Decompiler.Core.Configuration
 
         public virtual ICollection GetRawFiles()
         {
-            var handler = (RawFileSectionHandler)ConfigurationManager.GetSection("Decompiler/RawFiles");
+            var handler = (RawFileSectionHandler)ConfigurationManager.GetSection("Reko/RawFiles");
             if (handler == null)
                 return new RawFileElement[0];
             return handler.RawFiles;
@@ -139,7 +139,7 @@ namespace Decompiler.Core.Configuration
 
         public DefaultPreferences GetDefaultPreferences()
         {
-            var handler = (UiPreferencesSectionHandler) ConfigurationManager.GetSection("Decompiler/UiPreferences");
+            var handler = (UiPreferencesSectionHandler) ConfigurationManager.GetSection("Reko/UiPreferences");
             if (handler == null)
                 handler = new UiPreferencesSectionHandler();
             return handler.GetPreferences();

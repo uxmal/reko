@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Archives;
+using Reko.Core.Archives;
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.BinHex.Cpt
+namespace Reko.ImageLoaders.BinHex.Cpt
 {
     public class CompactProArchive : Archive
     {

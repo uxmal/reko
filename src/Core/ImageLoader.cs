@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Abstract base class for image loaders. These examine a raw image, and generate a new,

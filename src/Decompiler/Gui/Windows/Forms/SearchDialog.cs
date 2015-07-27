@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
-using Decompiler.Scanning;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public partial class SearchDialog : Form, ISearchDialog
     {

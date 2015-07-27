@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Machine
+namespace Reko.Core.Machine
 {
     /// <summary>
     /// Abstract base class for low-level machine instructions.

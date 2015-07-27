@@ -1,4 +1,4 @@
-﻿namespace Decompiler.WindowsItp
+﻿namespace Reko.WindowsItp
 {
     partial class DisassemblyControlForm
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.disassemblyControl1 = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
+            this.disassemblyControl1 = new Reko.Gui.Windows.Controls.DisassemblyControl();
             this.SuspendLayout();
             // 
             // disassemblyControl1

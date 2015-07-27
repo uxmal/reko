@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents a memory structure type, consisting of several Fields.

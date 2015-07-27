@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     public class XmlConverter : 
         CSyntaxVisitor<int>

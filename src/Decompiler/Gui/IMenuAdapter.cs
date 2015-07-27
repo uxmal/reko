@@ -24,7 +24,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public interface IMenuAdapter
     {

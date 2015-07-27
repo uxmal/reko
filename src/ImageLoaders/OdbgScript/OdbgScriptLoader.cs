@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
-    using Decompiler.Arch.X86;
-    using Decompiler.Environments.Win32;
-    using Decompiler.ImageLoaders.MzExe;
+    using Reko.Arch.X86;
+    using Reko.Environments.Win32;
+    using Reko.ImageLoaders.MzExe;
     using System.IO;
     using rulong = System.UInt64;
 

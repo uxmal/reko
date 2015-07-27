@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Controls
+namespace Reko.UnitTests.Gui.Windows.Controls
 {
     [TestFixture]
     public class DisassemblyTextModelTests

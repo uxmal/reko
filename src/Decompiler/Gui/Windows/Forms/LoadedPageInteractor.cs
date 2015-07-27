@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -32,7 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public interface ILoadedPageInteractor : IPhasePageInteractor
     {
@@ -52,9 +52,9 @@ namespace Decompiler.Gui.Windows.Forms
             memSvc = services.RequireService<ILowLevelViewService>();
 
             mpCmdidToCommand = new Hashtable();
-            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments));
-            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned));
-            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewFindFragments));
+            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowAllFragments));
+            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowUnscanned));
+            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewFindFragments));
         }
 
         protected MenuCommand AddCommand(CommandID cmdId)
@@ -66,7 +66,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -114,7 +114,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId.ID];
                 if (cmd == null)

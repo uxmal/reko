@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Environments.Msdos;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class MsDosPlatformTests

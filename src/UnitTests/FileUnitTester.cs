@@ -24,7 +24,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests
+namespace Reko.UnitTests
 {
 	public class FileUnitTester : IDisposable
 	{

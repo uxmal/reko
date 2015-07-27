@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
 	/// <summary>
 	/// Creates a sequence out of two components. Contrast with <see cref="Slice"/>.

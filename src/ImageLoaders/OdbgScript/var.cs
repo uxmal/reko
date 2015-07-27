@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
     using System.Text;
     using rulong = System.UInt64;

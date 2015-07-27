@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Gui.Windows.Controls;
 using System.Collections.Generic;
 using System;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Used to render TextSpans for use in the disassembly viewer.

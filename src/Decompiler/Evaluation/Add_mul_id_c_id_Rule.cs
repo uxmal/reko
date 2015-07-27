@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Analysis;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
 	/// <summary>
 	/// Rule that matches (+ (* id c) id) and yields (* id (+ c 1))

@@ -18,23 +18,19 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Text;
 
-namespace Decompiler.UnitTests.Loading
+namespace Reko.UnitTests.Loading
 {
 	[TestFixture]
 	public class LoaderTests

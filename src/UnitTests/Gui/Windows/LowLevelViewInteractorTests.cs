@@ -18,26 +18,21 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Gui;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class LowLevelViewInteractorTests
@@ -100,7 +95,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             When_ShowControl();
             control.MemoryView.Focus();
             var status = new CommandStatus();
-            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress), status, null));
+            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress), status, null));
             Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);
         }
 
@@ -138,7 +133,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             When_ShowControl();
             interactor.Program = program;
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress));
 
             mr.VerifyAll();
             Assert.AreEqual("0x01020304", interactor.Control.ToolBarAddressTextbox.Text);

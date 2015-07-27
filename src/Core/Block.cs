@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Represents a basic block of statements.

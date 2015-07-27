@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
 	/// <summary>
 	/// Base class for rebuilding instructions -- and expressions therein.

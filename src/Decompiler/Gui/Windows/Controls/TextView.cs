@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
     /// A Windows Forms control that renders textual data. The textual data

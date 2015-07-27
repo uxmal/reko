@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
 	/// <summary>
 	/// Adapter that holds an Instruction.

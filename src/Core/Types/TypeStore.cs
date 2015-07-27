@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Output;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
     /// Stores, for a particular program, all type variables, equivalence classes, and their mappings to

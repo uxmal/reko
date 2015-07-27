@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Output;
+using Reko.Core;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
     public class DynamicSectionRenderer : ImageMapSegmentRenderer
     {

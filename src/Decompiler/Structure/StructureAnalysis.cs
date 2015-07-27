@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Output;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Output;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     public class StructureAnalysis : IStructureAnalysis
     {

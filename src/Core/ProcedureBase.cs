@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Output;
+using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Output;
 using System;
 using System.ComponentModel;
 using System.IO;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Abstract base class for all applicable procedure-like entities.

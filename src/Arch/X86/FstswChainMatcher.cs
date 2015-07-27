@@ -1,11 +1,11 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Machine;
+﻿using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     public class FstswChainMatcher
     {

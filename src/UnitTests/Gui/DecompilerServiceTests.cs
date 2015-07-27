@@ -18,19 +18,16 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class DecompilerServiceTests
@@ -53,7 +50,7 @@ namespace Decompiler.UnitTests.Gui
         public void DecSvc_NotifyOnChangedDecompiler()
         {
             var loader = mr.Stub<ILoader>();
-            var host = mr.Stub<Decompiler.DecompilerHost>();
+            var host = mr.Stub<DecompilerHost>();
             mr.ReplayAll();
 
             DecompilerDriver d = new DecompilerDriver(loader, host, sc);

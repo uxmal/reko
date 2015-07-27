@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.TestCode
+namespace Reko.UnitTests.TestCode
 {
     public class ManyIncrements : ProcedureBuilder
     {

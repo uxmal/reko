@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
+using Reko.Core;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     public class HeuristicBlock
     {

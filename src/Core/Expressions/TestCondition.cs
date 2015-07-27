@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Represents testing the expression to see if the condition code is true, and generating a

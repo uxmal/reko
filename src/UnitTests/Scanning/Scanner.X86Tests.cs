@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Environments.Msdos;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Environments.Msdos;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class Scanner_x86Tests

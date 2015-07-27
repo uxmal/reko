@@ -18,9 +18,8 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -34,11 +33,11 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using Decompiler.Loading;
+using Reko.Loading;
 using System.ComponentModel.Design;
-using Decompiler.Core.Configuration;
+using Reko.Core.Configuration;
 
-namespace Decompiler.WebSite
+namespace Reko.WebSite
 {
 	public class TestC : System.Web.UI.Page
 	{

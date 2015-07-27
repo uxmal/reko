@@ -18,15 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core;
 using System;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     /// <summary>
     /// Helper class used by the X86 rewriter to turn machine code operands into

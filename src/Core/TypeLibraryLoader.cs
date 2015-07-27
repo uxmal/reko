@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +27,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Knows how to persist and depersist Decompiler type libraries (which are just XML files).

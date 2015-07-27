@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public class SignatureParser
     {

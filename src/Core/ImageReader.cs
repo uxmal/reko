@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Reads bytes and differently sized words sequentially from an 

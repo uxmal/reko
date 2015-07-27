@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.Text;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class MenuItemAdapter : IMenuAdapter
     {

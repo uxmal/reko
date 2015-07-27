@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     partial class ArchiveBrowserDialog
     {

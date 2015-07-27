@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Evaluation;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
     [TestFixture]
     public class ExpressionMatcherTests

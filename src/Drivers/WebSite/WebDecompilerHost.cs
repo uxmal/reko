@@ -18,14 +18,13 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 
-namespace Decompiler.WebSite
+namespace Reko.WebSite
 {
 	public class WebDecompilerHost : DecompilerHost
 	{
@@ -121,7 +120,7 @@ namespace Decompiler.WebSite
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Configuration.IConfigurationService Configuration
+        public Reko.Core.Configuration.IConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }

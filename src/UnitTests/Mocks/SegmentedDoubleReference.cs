@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
 	/// <summary>
 	/// Simulates the accessing of a near pointer in a segment from multiple places.

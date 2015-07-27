@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch
+namespace Reko.UnitTests.Arch
 {
     public abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
         where TInstruction : MachineInstruction

@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.UnitTests.Mocks;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	/// <summary>
 	/// Simple mock to exercise Switch-detection. It is structured in the way that typical compiler output looks like: a 

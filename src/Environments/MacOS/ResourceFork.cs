@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
+using Reko.Arch.M68k;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Environments.MacOS
+namespace Reko.Environments.MacOS
 {
 // http://developer.apple.com/legacy/mac/library/documentation/mac/MoreToolbox/MoreToolbox-99.html
 

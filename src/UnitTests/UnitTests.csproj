@@ -629,8 +629,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\MsDos\*.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\*.xml" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />

@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     public class SerializedEnumType : SerializedTaggedType
     {

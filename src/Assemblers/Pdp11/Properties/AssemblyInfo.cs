@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Pdp11 Assembler")]
+[assembly: AssemblyTitle("PDP-11 Assembler")]
 [assembly: AssemblyDescription("PDP MACRO assembler implementation")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -22,6 +22,6 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("43fd5d8d-01de-4b9a-a46d-68994baa9c38")]
 
-[assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]
+[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
 

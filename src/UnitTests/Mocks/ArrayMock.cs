@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
 	/// <summary>
 	/// Mock procedure for reading an array of ints of the form:

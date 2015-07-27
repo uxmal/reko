@@ -18,24 +18,24 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Rhino.Mocks;
-using Decompiler.UnitTests.Scanning.Fragments;
+using Reko.UnitTests.Scanning.Fragments;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class ScannerTests

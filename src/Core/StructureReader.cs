@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Reflection;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Reads in a structure field by field from an image reader.

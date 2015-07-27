@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
 	/// <summary>
 	/// Represents a declaration of an identifier, with an optional initial value assignment.

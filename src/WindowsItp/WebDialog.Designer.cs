@@ -1,4 +1,4 @@
-﻿namespace Decompiler.WindowsItp
+﻿namespace Reko.WindowsItp
 {
     partial class WebDialog
     {

@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Controls
+﻿namespace Reko.Gui.Windows.Controls
 {
     partial class ImageSegmentView
     {
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Decompiler.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Decompiler.Gui.Windows.Controls.EmptyEditorModel();
-            this.textView1 = new Decompiler.Gui.Windows.Controls.TextView();
+            Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
+            this.textView1 = new Reko.Gui.Windows.Controls.TextView();
             this.SuspendLayout();
             // 
             // textView1

@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Core.Lib;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	/// <summary>
 	/// Helper class that serializes and deserializes procedures with their signatures.

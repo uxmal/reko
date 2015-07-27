@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	/// <summary>
 	/// In the absence of any other information, scans address ranges in 

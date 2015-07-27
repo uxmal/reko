@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Models an array access.

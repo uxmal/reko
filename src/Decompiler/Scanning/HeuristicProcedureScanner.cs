@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     /// <summary>
     /// Given a heuristically discovered procedure, attempt to discard as 

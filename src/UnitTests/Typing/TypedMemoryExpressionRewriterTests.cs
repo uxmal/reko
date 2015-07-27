@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Typing;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Typing;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
-using Decompiler.Core;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.UnitTests.Mocks;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypedMemoryExpressionRewriterTests

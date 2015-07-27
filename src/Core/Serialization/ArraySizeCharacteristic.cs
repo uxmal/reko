@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Text;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     public class ArraySizeCharacteristic
     {

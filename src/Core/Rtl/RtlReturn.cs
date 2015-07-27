@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Reko.Core.Rtl
 {
     public class RtlReturn : RtlInstruction
     {

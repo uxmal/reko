@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
     public class AbsynLineComment : AbsynStatement
     {

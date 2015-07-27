@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Visitor methods for types.

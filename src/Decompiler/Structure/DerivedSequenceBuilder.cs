@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     /// <summary>
     /// Builds the derived graph sequence. At each step, the intervals of the graph are found. A new graph is then

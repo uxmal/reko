@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Core;
+using Reko.Core.Configuration;
+using Reko.Core;
 using System;
 using System.IO;
 
-namespace Decompiler
+namespace Reko
 {
 	/// <summary>
 	/// Interface used by the decompiler's components to talk to the outside world.

@@ -22,7 +22,7 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Summarizes information about a particular processor.

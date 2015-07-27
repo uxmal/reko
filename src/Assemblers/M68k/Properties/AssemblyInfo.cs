@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("M68k Assembler")]
 [assembly: AssemblyDescription("Crude assembler for M68000 processor architecture.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -22,5 +22,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("e21df420-5edc-415a-8207-03dac2a516a6")]
 
-[assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]
+[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]

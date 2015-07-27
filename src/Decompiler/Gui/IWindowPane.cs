@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public interface IWindowPane
     {

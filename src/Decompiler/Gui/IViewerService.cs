@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// The viewer service provides callers with a way to display

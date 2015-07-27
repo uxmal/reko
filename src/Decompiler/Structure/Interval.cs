@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     /// <summary>
     /// Represents an interval.

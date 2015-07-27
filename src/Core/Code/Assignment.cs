@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
 	/// <summary>
 	/// An Assignment copies data from <paramref name="Src" /> to <paramref name="Dst" />.

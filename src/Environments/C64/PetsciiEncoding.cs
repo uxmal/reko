@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
     // http://www.df.lth.se/~triad/krad/recode/petscii_c64en_lc.txt
     /*

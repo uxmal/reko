@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Archives;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class ArchiveBrowserService : IArchiveBrowserService
     {

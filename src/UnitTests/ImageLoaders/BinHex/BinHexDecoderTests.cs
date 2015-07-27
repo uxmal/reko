@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.ImageLoaders.BinHex;
+using Reko.ImageLoaders.BinHex;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.ImageLoaders.BinHex
+namespace Reko.UnitTests.ImageLoaders.BinHex
 {
     [TestFixture]
     public class BinHexDecoderTests

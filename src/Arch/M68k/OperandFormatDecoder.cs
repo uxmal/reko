@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     /// <summary>
     /// Decodes M86k operands using a simple format language.

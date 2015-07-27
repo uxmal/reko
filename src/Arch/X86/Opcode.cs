@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     public enum Opcode : ushort
     {

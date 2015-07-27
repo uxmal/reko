@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Output;
 using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	public class SsaLivenessAnalysis : InstructionVisitorBase
 	{

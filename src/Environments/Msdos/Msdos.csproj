@@ -6,8 +6,8 @@
     <ProjectGuid>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environments.Msdos</RootNamespace>
-    <AssemblyName>Decompiler.Environments.Msdos</AssemblyName>
+    <RootNamespace>Reko.Environments.Msdos</RootNamespace>
+    <AssemblyName>Reko.Environments.Msdos</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

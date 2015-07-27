@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
 	/// <summary>
 	/// Models a statement that isn't an assignment, typically a function that does IO.

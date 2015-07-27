@@ -25,7 +25,7 @@ using System.IO;
 using System.Text;
 
 #if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class TypedefTests

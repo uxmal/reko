@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
     /// <summary>
     /// Models C64 BASIC instructions as machine instructions(!)

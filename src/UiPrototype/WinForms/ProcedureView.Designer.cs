@@ -1,4 +1,4 @@
-﻿namespace Decompiler.UiPrototype.WinForms
+﻿namespace Reko.UiPrototype.WinForms
 {
     partial class ProcedureView
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.editorView1 = new Decompiler.Gui.Windows.Controls.TextView();
+            this.editorView1 = new Reko.Gui.Windows.Controls.TextView();
             this.SuspendLayout();
             // 
             // editorView1
@@ -58,6 +58,6 @@
 
         #endregion
 
-        private Decompiler.Gui.Windows.Controls.TextView editorView1;
+        private Reko.Gui.Windows.Controls.TextView editorView1;
     }
 }

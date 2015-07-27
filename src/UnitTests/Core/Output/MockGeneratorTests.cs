@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Core.Output;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Core.Output;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Core.Output
+namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
     public class MockGeneratorTests

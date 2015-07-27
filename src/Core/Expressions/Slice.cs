@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
 	/// <summary>
 	/// A slice is an improper subsequence of bits. Commonly used to isolate

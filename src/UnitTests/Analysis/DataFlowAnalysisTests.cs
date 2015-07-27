@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Analysis;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.UnitTests.TestCode;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Analysis;
+using Reko.UnitTests.Mocks;
+using Reko.UnitTests.TestCode;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
 using Rhino.Mocks;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class DataFlowAnalysisTests : AnalysisTestBase

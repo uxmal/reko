@@ -7,8 +7,8 @@
     <ProjectGuid>{1A60F017-4E4C-48F8-BB97-47D52186C7FD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environments.Ps3</RootNamespace>
-    <AssemblyName>Decompiler.Environments.Ps3</AssemblyName>
+    <RootNamespace>Reko.Environments.Ps3</RootNamespace>
+    <AssemblyName>Reko.Environments.Ps3</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

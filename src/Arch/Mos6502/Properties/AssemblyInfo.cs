@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler;
+using Reko;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Mos6502")]
+[assembly: AssemblyTitle("MOS6502 plugin for Reko decompiler")]
 [assembly: AssemblyDescription("Support for decompiling MOS6502 programs.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]

@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Assemblers.Pdp11;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Assemblers.Pdp11;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Assemblers.Pdp11
+namespace Reko.UnitTests.Assemblers.Pdp11
 {
     [TestFixture]
     public class Pdp11TextAssemblerTests

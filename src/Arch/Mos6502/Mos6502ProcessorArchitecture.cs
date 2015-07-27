@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : IProcessorArchitecture
     {

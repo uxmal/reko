@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
     public class SignatureGuesser
     {

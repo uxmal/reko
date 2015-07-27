@@ -23,7 +23,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Extends MenuItems to contain a MenuCommand.

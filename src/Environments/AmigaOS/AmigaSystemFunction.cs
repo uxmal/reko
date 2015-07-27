@@ -1,11 +1,11 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Serialization;
+﻿using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.AmigaOS
+namespace Reko.Environments.AmigaOS
 {
     public class AmigaSystemFunction
     {

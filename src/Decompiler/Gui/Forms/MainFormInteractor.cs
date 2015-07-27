@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -35,7 +35,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Forms
+namespace Reko.Gui.Forms
 {
     /// <summary>
     /// Provices a component Container implementation, and specifically handles interactions 
@@ -615,7 +615,7 @@ namespace Decompiler.Gui.Forms
                 //    sb.Append('*');
                 sb.Append(" - ");
             }
-            sb.Append("Decompiler");
+            sb.Append("Reko Decompiler");
             MainForm.TitleText = sb.ToString();
         }
 
@@ -643,7 +643,7 @@ namespace Decompiler.Gui.Forms
             
             if (currentPhase != null && currentPhase.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 if (QueryMruItem(cmdId.ID, cmdStatus, cmdText))
                     return true;
@@ -713,7 +713,7 @@ namespace Decompiler.Gui.Forms
           
             if (currentPhase != null && currentPhase.Execute(cmdId))
                 return true;
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 if (ExecuteMruFile(cmdId.ID))
                     return false;

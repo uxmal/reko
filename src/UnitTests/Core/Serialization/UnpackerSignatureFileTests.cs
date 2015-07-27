@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
     [TestFixture]
     public class UnpackerSignatureFileTests

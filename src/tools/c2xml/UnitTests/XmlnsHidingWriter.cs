@@ -26,7 +26,7 @@ using System.Text;
 using System.Xml;
 
 #if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Reko.Tools.C2Xml.UnitTests
 {
     public class XmlnsHidingWriter : XmlTextWriter
     {

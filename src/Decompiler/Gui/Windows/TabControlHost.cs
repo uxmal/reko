@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class TabControlHost : ITabControlHostService
     {

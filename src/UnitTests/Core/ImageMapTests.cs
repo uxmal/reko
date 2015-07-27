@@ -18,15 +18,13 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Scanning;
-using Decompiler.Core.Types;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class ImageMapTests

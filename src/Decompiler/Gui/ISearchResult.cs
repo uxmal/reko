@@ -24,7 +24,7 @@ using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Represents the results of a search as a list of items which are navigatable.

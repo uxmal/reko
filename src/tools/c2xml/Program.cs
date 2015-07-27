@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     /// <summary>
     /// This program is used to convert ANSI C header files into the 

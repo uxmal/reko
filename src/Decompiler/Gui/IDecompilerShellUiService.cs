@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Services;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public interface IDecompilerShellUiService : IDecompilerUIService, ICommandTarget
     {

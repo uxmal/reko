@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class ConstantPointerTraversalTests

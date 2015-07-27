@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class SearchResultServiceImpl : ISearchResultService, IWindowPane, ICommandTarget
     {
@@ -255,7 +255,7 @@ namespace Decompiler.Gui.Windows
         {
             if (result != null && result.Execute(cmdId))
                 return true;
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

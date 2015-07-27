@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using Decompiler.UnitTests.Mocks;
+using Reko.UnitTests.Mocks;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	public class MockSnarl : ProcedureBuilder
 	{

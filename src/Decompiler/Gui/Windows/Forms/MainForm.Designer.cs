@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Forms
+﻿namespace Reko.Gui.Windows.Forms
 {
     partial class MainForm
     {
@@ -254,7 +254,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.Name = "MainForm";
-            this.Text = "Decompiler";
+            this.Text = "Reko Decompiler";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabControl1.ResumeLayout(false);

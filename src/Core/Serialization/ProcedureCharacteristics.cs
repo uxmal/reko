@@ -23,7 +23,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	/// <summary>
 	/// Extra characteristics that describe extra-lingustic semantics of a procedure.

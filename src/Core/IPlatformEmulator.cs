@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     using TWord = System.UInt32;
     /// <summary>

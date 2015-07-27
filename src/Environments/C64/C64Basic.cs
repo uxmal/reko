@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
     /// <summary>
     /// For the lulz: Commodore 64 BASIC as a "processor"!
@@ -121,7 +121,7 @@ namespace Decompiler.Environments.C64
             throw new NotImplementedException();
         }
 
-        public Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, Core.Types.DataType dataType)
+        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

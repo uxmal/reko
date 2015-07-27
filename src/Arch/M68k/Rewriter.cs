@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     /// <summary>
     /// Rewrites <seealso cref="M68kInstruction"/>s to <see cref="RtlInstructionCluster"/>s.

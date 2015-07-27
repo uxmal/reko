@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Controls
+﻿namespace Reko.Gui.Windows.Controls
 {
     partial class ImageMapView
     {

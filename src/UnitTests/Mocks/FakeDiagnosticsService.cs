@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeDiagnosticsService : IDiagnosticsService
     {

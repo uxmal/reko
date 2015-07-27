@@ -20,11 +20,11 @@
 
 using System;
 using System.IO;
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Core.Types;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Represents predefined functions or processor instructions that don't have a 

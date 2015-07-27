@@ -20,7 +20,7 @@
 
 using System.Configuration;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public interface ArchitectureReference
     {

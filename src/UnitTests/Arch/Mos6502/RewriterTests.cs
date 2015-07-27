@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core;
+using Reko.Arch.Mos6502;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Mos6502
+namespace Reko.UnitTests.Arch.Mos6502
 {
     [TestFixture]
     class RewriterTests : RewriterTestBase

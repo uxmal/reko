@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// Locates instances of add aLo, bLow followed later adc aHi, bHi and merges them into (add a, b)

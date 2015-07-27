@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Contains dataflow information for each procedure and each block of the program.

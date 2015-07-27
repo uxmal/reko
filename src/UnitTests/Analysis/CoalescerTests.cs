@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Analysis;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Analysis;
+using Reko.Core.Code;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CoalescerTests : AnalysisTestBase

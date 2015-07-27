@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Environments.AmigaOS;
-using Decompiler.Core.Serialization;
+using Reko.Environments.AmigaOS;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,16 +27,16 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.AmigaOS
+namespace Reko.UnitTests.Environments.AmigaOS
 {
     [TestFixture]
     public class FuncsFileParserTests
     {
-        private Decompiler.Arch.M68k.M68kArchitecture arch;
+        private Reko.Arch.M68k.M68kArchitecture arch;
 
         public FuncsFileParserTests()
         {
-            this.arch = new Decompiler.Arch.M68k.M68kArchitecture();
+            this.arch = new Reko.Arch.M68k.M68kArchitecture();
         }
 
         private FuncsFileParser CreateParser(string file)

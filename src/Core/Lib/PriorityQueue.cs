@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     public class PriorityQueue<T> : ICollection<T>
     {

@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]	
 	public class InterferenceGraphTests

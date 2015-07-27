@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Environments.Win32;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Environments.Win32;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Win32
 {
     [TestFixture]
     public class ModuleDefinitionLoaderTests

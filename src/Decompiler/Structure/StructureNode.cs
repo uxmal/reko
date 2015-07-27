@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     internal enum travType
     {

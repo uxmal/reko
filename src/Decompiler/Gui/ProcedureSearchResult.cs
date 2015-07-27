@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public class ProcedureSearchResult : ISearchResult
     {

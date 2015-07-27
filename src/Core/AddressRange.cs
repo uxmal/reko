@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Describes an address range [begin...end)

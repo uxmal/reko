@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
     public class Elf32_PHdr
     {
@@ -38,7 +38,7 @@ namespace Decompiler.ImageLoaders.Elf
         public uint p_flags;
         public uint p_align;
 
-        public static Elf32_PHdr Load(Core.ImageReader rdr)
+        public static Elf32_PHdr Load(ImageReader rdr)
         {
             var hdr = new Elf32_PHdr
             {

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Looks at member pointer uses, to see if they always are associated with the same base pointer / segment.

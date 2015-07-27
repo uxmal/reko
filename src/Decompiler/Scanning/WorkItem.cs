@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.IO;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	public enum BlockType
 	{

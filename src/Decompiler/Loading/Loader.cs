@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.ComponentModel.Design;
 
-namespace Decompiler.Loading
+namespace Reko.Loading
 {
     /// <summary>
     /// Class that abstracts the process of loading the "code", in whatever format it is in,

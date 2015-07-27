@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class RegisterLivenessUnitTests

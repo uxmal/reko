@@ -23,7 +23,7 @@ using IComparer = System.Collections.IComparer;
 using IEqualityComparer = System.Collections.IEqualityComparer;
 using Hashtable = System.Collections.Hashtable;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	/// <summary>
 	/// An InstructionTrie tallies instruction frequencies and instruction sequence lengths.

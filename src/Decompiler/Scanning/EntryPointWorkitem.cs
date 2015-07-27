@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     public class EntryPointWorkitem : WorkItem
     {

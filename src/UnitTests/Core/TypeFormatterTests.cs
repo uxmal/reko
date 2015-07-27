@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class TypeFormatterTests

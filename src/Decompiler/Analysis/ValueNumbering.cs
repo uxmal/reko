@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using TextWriter = System.IO.TextWriter;
 using StringWriter = System.IO.StringWriter;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// This class is used to compute value numbers of all the SSA variables

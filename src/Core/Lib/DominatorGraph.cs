@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     /// <summary>
     /// Describes the dominator structure of a particular graph.

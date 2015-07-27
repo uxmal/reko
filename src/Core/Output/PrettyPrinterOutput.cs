@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     public class PrettyPrinterOutput
     {

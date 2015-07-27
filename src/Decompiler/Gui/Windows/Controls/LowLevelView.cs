@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Windows;
+using Reko.Core;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
     /// Provides a unified view of Memory and Disassembly.

@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Forms
+namespace Reko.Gui.Forms
 {
     public class OpenAsInteractor
     {

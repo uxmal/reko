@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     class ExtractDecoder
     {

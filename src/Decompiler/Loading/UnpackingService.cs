@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,7 +30,7 @@ using System.Text;
 /// https://sourceforge.net/p/odbgscript/code/HEAD/tree/OllyLangCommands.cpp Olly
 /// https://plusvic.github.io/yara/
 /// 
-namespace Decompiler.Loading
+namespace Reko.Loading
 {
     public class UnpackingService : IUnpackerService
     {

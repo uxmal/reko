@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Matches the pattern: (union (ptr T_1) (ptr T_2) ... (ptr T_n)) where T_1.class .. T_n.class are all structures.

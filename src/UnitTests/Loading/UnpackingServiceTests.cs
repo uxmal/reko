@@ -1,6 +1,6 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Loading;
+﻿using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Loading;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -9,7 +9,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Loading
+namespace Reko.UnitTests.Loading
 {
     [TestFixture]
     public class UnpackingServiceTests

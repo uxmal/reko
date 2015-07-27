@@ -18,21 +18,21 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
 	[TestFixture]
 	public class BackwalkerTests

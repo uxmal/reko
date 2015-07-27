@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Reko.Core.Rtl
 {
     /// <summary>
     /// Builder class that accumulates RtlInstructions.

@@ -24,7 +24,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     /// <summary>
     /// Used for siting components for unit testing. First create component, 

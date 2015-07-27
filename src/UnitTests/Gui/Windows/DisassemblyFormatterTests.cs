@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class DisassemblyFormatterTests

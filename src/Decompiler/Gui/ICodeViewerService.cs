@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     // Service for presenting intermediate code.
     public interface ICodeViewerService

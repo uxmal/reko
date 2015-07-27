@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class NestedIfs : ProcedureBuilder
     {

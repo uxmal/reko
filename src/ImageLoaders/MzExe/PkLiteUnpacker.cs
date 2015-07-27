@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Environments.Msdos;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// A loader that understands how to unpack a binary packed with PkLite.

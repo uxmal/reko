@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     public enum Opcode : short
     {

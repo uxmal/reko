@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public enum Opcode
     {

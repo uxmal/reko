@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Operators
+namespace Reko.Core.Operators
 {
     public class CommaOperator : BinaryOperator
     {

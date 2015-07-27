@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +27,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Loading
+namespace Reko.Loading
 {
     public class UnpackerSignatureLoader : SignatureLoader
     {

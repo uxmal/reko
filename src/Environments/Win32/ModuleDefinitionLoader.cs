@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +26,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
     /// <summary>
     /// Reads Microsoft module definition (.def) files.
@@ -44,7 +44,7 @@ namespace Decompiler.Environments.Win32
             this.filename = filename;
             this.lexer = new Lexer( new StreamReader(new MemoryStream(bytes)));
             this.bufferedTok = null;
-            this.arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
+            this.arch = new Reko.Arch.X86.X86ArchitectureFlat32();
         }
 
         public ModuleDefinitionLoader(TextReader rdr, string filename, IProcessorArchitecture arch) : base(null, filename, null)

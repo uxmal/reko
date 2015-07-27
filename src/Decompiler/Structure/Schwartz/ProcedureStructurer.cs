@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Structure.Schwartz
+namespace Reko.Structure.Schwartz
 {
     // Based on:
     // Native x86 Decompilation using Semantics-Preserving Structural Analysis

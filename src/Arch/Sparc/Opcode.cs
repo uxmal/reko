@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Sparc
+namespace Reko.Arch.Sparc
 {
     public enum Opcode
     {

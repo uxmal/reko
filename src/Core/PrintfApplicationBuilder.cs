@@ -1,11 +1,11 @@
-﻿using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+﻿using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Builds a function application from a call site and a callee, with the assumption that the last

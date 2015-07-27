@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Deep-compares expressions.

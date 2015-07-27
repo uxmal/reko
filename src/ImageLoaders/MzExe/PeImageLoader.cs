@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Environments.Win32;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Environments.Win32;
 using System;
 using System.IO;
 using System.Linq;
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
     /// <summary>
     /// Loads Windows NT PE images.

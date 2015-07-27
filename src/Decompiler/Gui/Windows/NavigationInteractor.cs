@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Components;
-using Decompiler.Gui.Controls;
+using Reko.Core;
+using Reko.Gui.Components;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Performs back/forward navigation.

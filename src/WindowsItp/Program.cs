@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsItp
+namespace Reko.WindowsItp
 {
     static class Program
     {

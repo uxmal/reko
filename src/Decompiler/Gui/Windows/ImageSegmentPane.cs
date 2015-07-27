@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class ImageSegmentPane : IWindowPane
     {

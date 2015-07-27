@@ -19,16 +19,16 @@
 #endregion
 
 using NUnit.Framework;
-using Decompiler.Analysis;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.UnitTests.Mocks;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     public class UsedIdentifierFinderTests
     {

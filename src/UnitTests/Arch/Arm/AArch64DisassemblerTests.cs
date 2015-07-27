@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Arch.Arm;
+using Reko.Core;
+using Reko.Arch.Arm;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Arm
+namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     public class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>

@@ -24,7 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Assemblers.M68k
+namespace Reko.Assemblers.M68k
 {
     class Lexer
     {

@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.Sparc;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Arch.Sparc;
+using Reko.Core;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Sparc
+namespace Reko.UnitTests.Arch.Sparc
 {
     [TestFixture]
     public class SparcDisassemblerTests

@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Code;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     /// <summary>
     ///     while ("foo())

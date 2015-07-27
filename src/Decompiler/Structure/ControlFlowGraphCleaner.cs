@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
 using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
 	/// <summary>
 	/// Uses the CLEAN algorithm to clean up a control flow graph

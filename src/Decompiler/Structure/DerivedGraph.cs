@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     public class DerivedGraph
     {

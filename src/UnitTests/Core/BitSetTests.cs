@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	/// <summary>
 	/// NUnit tests for BitSet class.

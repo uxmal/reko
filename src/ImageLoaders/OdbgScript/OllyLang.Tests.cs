@@ -19,7 +19,7 @@
 #endregion
 
 #if DEBUG
-using Decompiler.Core;
+using Reko.Core;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -29,7 +29,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
     [TestFixture]
     public class OllyLangTests

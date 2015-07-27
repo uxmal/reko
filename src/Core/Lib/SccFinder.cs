@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// Encapsulates Tarjan's algorithm for finding strongly connected components in a directed graph.

@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public class OperatingEnvironmentElementCollection : ConfigurationElementCollection
     {

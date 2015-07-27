@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Design
+namespace Reko.Gui.Design
 {
     public class MetadataFileDesigner : TreeNodeDesigner
     {

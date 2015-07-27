@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// A directed graph implementation.

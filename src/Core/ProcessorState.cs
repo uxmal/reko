@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Machine;
+using Reko.Core.Code;
+using Reko.Core.Operators;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// ProcessorState simulates the state of the processor and a part of the stack during scanning.

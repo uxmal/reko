@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Scanning.Dfa;
+using Reko.Scanning.Dfa;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning.Dfa
+namespace Reko.UnitTests.Scanning.Dfa
 {
     [TestFixture]
     public class DfAutomatonTests

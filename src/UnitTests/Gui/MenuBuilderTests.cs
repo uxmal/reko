@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Gui;
+using Reko.Gui;
 using NUnit.Framework;
 using System;
 using System.ComponentModel.Design;
 using System.IO;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
 	[TestFixture]
 	public class MenuBuilderTests

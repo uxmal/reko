@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents a member pointer type, as in C++: int foo::*bar makes bar a pointer to a member of foo.

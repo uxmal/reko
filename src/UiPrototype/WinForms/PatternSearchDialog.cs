@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Gui.Forms;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UiPrototype.WinForms
+namespace Reko.UiPrototype.WinForms
 {
     public partial class PatternSearchDialog : Form, IPatternSearchDialog
     {

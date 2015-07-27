@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.PowerPC;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Decompiler.Environments.Ps3
+namespace Reko.Environments.Ps3
 {
     /// <summary>
     /// Platform support for Sony Playstation 3 (PS3).

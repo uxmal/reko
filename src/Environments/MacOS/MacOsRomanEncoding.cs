@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.MacOS
+namespace Reko.Environments.MacOS
 {
     public class MacOsRomanEncoding : Encoding
     {

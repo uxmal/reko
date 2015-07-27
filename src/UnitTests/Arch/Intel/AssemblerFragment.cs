@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core.Machine;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     public abstract class AssemblerFragment
     {

@@ -18,24 +18,21 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Code;
-using Decompiler.Core.Serialization;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
-using System;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Code;
+using Reko.Core.Serialization;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	public class RewriterTestBase
 	{

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     /// <summary>
     /// The registers of an x86 machine.

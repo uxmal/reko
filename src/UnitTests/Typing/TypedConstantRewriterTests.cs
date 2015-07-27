@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypedConstantRewriterTests

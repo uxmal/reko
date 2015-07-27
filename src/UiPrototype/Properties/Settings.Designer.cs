@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Decompiler.UiPrototype.Properties {
+namespace Reko.UiPrototype.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

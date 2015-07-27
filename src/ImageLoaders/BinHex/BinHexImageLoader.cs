@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Archives;
-using Decompiler.Core.Services;
-using Decompiler.Environments.MacOS;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Core.Services;
+using Reko.Environments.MacOS;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
 
-namespace Decompiler.ImageLoaders.BinHex
+namespace Reko.ImageLoaders.BinHex
 {
     public class BinHexImageLoader : ImageLoader
     {

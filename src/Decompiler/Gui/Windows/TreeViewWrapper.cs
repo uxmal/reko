@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Controls;
+using Reko.Core;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Wraps a Windows forms TreeView in the platform independent ITreeView interface.

@@ -18,12 +18,11 @@
  */
 #endregion
 
-using Decompiler;
 using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Assemblers
+namespace Reko.Core.Assemblers
 {
 	public interface Assembler
 	{

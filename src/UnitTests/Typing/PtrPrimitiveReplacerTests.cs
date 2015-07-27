@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class PtrPrimitiveReplacerTests : TypingTestBase

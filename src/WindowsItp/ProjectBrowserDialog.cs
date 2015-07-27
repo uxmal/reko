@@ -1,6 +1,6 @@
-﻿using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows;
+﻿using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsItp
+namespace Reko.WindowsItp
 {
     public partial class ProjectBrowserDialog : Form
     {
@@ -26,7 +26,7 @@ namespace Decompiler.WindowsItp
         {
             var image = new LoadedImage(Address.Ptr32(0x12312300),new byte[0x1000]);
             var imageMap = image.CreateImageMap();
-            var arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32();
             var program = new Core.Program(image, imageMap, arch, new DefaultPlatform(null, arch));
             var project = new Project { Programs = { program } };
             pbs.Load(project);

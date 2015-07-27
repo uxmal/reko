@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Replaces a union of TypeVars with a reference to an equivalence class.

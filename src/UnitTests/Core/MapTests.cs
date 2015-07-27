@@ -19,12 +19,12 @@
 #endregion
 
 using NUnit.Framework;
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System;
 using StringBuilder = System.Text.StringBuilder;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class MapTests

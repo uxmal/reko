@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +27,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class ProcedureDialogInteractor
     {

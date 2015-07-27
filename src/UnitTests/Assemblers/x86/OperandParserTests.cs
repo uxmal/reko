@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Code;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Code;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Assemblers.x86
+namespace Reko.UnitTests.Assemblers.x86
 {
 	[TestFixture]
 	public class OperandParserTests

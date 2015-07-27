@@ -1,6 +1,6 @@
-﻿using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Windows;
+﻿using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsItp
+namespace Reko.WindowsItp
 {
     public partial class TreeViewDialog : Form
     {

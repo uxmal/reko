@@ -1,4 +1,4 @@
-﻿namespace Decompiler.UiPrototype.WinForms
+﻿namespace Reko.UiPrototype.WinForms
 {
     partial class PatternSearchDialog
     {

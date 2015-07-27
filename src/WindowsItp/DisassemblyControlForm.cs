@@ -1,5 +1,5 @@
-﻿using Decompiler.Core;
-using Decompiler.Gui.Windows.Controls;
+﻿using Reko.Core;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,9 +8,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using CoreProgram = Decompiler.Core.Program;
+using CoreProgram = Reko.Core.Program;
 
-namespace Decompiler.WindowsItp
+namespace Reko.WindowsItp
 {
     public partial class DisassemblyControlForm : Form
     {
@@ -30,7 +30,7 @@ namespace Decompiler.WindowsItp
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32();
-                    Architecture = new Decompiler.Arch.PowerPC.PowerPcArchitecture32(),
+                    Architecture = new Reko.Arch.PowerPC.PowerPcArchitecture32(),
                     Image = image,
                     ImageMap = imageMap
                 });

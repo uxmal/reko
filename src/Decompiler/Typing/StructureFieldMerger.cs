@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
     /// <summary>
     /// Merges structure fields that overlap.

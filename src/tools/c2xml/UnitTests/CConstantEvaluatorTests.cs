@@ -26,7 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class CConstantEvaluatorTests

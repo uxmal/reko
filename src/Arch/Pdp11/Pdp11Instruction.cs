@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Reko.Arch.Pdp11
 {
     public class Pdp11Instruction : MachineInstruction
     {

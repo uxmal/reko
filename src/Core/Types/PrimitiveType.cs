@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
     /// A Domain specifies the possible interpretation of a chunk of bytes.

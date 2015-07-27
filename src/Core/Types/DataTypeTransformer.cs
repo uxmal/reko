@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Implements the "Visitor" pattern on types, with the intent of returning

@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Assemblers.x86
+namespace Reko.UnitTests.Assemblers.x86
 {
 	public class AssemblerBase
 	{

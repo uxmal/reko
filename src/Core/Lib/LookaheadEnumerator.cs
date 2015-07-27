@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     /// <summary>
     /// An extension of IEnumerator&lt;T&gt; that wraps an IEnumerator and 

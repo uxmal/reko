@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class SegmentedAccessClassifierTests

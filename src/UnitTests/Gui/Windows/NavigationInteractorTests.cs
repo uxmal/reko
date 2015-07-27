@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Components;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Windows;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Components;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,7 +31,7 @@ using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class NavigationInteractorTests

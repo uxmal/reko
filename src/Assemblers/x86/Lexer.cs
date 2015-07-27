@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	/// <summary>
 	/// Performs lexical analysis of x86 assembler, MASM-style.

@@ -7,8 +7,8 @@
     <ProjectGuid>{5307665E-072F-4398-872D-6550BE6FC1EB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environments.SysV</RootNamespace>
-    <AssemblyName>Decompiler.Environments.SysV</AssemblyName>
+    <RootNamespace>Reko.Environments.SysV</RootNamespace>
+    <AssemblyName>Reko.Environments.SysV</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

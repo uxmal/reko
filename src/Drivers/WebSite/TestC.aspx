@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="TestC.aspx.cs" AutoEventWireup="false" Inherits="Decompiler.WebSite.TestC" %>
-<%@ Register tagprefix="r" namespace="Decompiler.WebSite" assembly="Decompiler.WebSite" %>
+<%@ Page language="c#" Codebehind="TestC.aspx.cs" AutoEventWireup="false" Inherits="Reko.WebSite.TestC" %>
+<%@ Register tagprefix="r" namespace="Reko.WebSite" assembly="Decompiler.WebSite" %>
 <%@ Register tagprefix="r" tagname="navbar" src="navbar.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>

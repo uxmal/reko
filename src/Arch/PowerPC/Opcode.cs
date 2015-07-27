@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.PowerPC
+namespace Reko.Arch.PowerPC
 {
     public enum Opcode : ushort
     {

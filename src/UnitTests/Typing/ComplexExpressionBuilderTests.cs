@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class ComplexExpressionBuilderTests
@@ -170,7 +170,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void CEB_SegmentedArray()
         {
-            var m = new Decompiler.UnitTests.Mocks.ProcedureBuilder("CEB_SegmentedArray");
+            var m = new Reko.UnitTests.Mocks.ProcedureBuilder("CEB_SegmentedArray");
             var aw = new ArrayType(PrimitiveType.Int16, 0);
             var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
             var bx = m.Temp(PrimitiveType.Word16, "bx");

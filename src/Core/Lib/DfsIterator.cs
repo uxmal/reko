@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     /// <summary>
     /// Iterates through a directed graph in Depth-First order.

@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeWorkerDialogService : IWorkerDialogService
     {
@@ -46,7 +47,7 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-        public void Error(Decompiler.Core.ICodeLocation location, Exception ex, string message)
+        public void Error(ICodeLocation location, Exception ex, string message)
         {
         }
     }

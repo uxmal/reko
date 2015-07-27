@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Core.Assemblers
+namespace Reko.Core.Assemblers
 {
 	public class Symbol
 	{

@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.ImageLoaders.MachO;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.ImageLoaders.MachO;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -29,7 +29,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.ImageLoaders.MachO
+namespace Reko.UnitTests.ImageLoaders.MachO
 {
     [TestFixture]
     public class MachOLoaderTests

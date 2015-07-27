@@ -20,23 +20,23 @@
 
 using System;
 using System.Collections.Generic;
-using BitSet = Decompiler.Core.Lib.BitSet;
-using CallRewriter = Decompiler.Core.CallRewriter;
-using FpuStackStorage = Decompiler.Core.FpuStackStorage;
-using Frame = Decompiler.Core.Frame;
-using Identifier = Decompiler.Core.Expressions.Identifier;
-using OutArgumentStorage = Decompiler.Core.OutArgumentStorage;
-using PrimtiveType = Decompiler.Core.Types.PrimitiveType;
-using Procedure = Decompiler.Core.Procedure;
-using Program = Decompiler.Core.Program;
-using RegisterStorage = Decompiler.Core.RegisterStorage;
-using ReturnInstruction = Decompiler.Core.Code.ReturnInstruction;
-using SignatureBuilder = Decompiler.Core.SignatureBuilder;
-using StackArgumentStorage= Decompiler.Core.StackArgumentStorage;
-using Statement = Decompiler.Core.Statement;
-using UseInstruction = Decompiler.Core.Code.UseInstruction;
+using BitSet = Reko.Core.Lib.BitSet;
+using CallRewriter = Reko.Core.CallRewriter;
+using FpuStackStorage = Reko.Core.FpuStackStorage;
+using Frame = Reko.Core.Frame;
+using Identifier = Reko.Core.Expressions.Identifier;
+using OutArgumentStorage = Reko.Core.OutArgumentStorage;
+using PrimtiveType = Reko.Core.Types.PrimitiveType;
+using Procedure = Reko.Core.Procedure;
+using Program = Reko.Core.Program;
+using RegisterStorage = Reko.Core.RegisterStorage;
+using ReturnInstruction = Reko.Core.Code.ReturnInstruction;
+using SignatureBuilder = Reko.Core.SignatureBuilder;
+using StackArgumentStorage= Reko.Core.StackArgumentStorage;
+using Statement = Reko.Core.Statement;
+using UseInstruction = Reko.Core.Code.UseInstruction;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Rewrites a program, based on summary live-in and live-out information, so that all

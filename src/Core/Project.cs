@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     public class Project 
     {

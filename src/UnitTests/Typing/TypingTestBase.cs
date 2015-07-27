@@ -18,24 +18,24 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	/// <summary>
 	/// Base class for all typing tests.

@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
     /// Represents an array of elements and its length. A length of 0 indicates the array may be arbitrarily long.

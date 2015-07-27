@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Gui;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Gui;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class HtmlCodeFormatterTests

@@ -26,12 +26,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Mono Decompiler")]
-[assembly: AssemblyDescription("Mono host executable for decompiler")]
+[assembly: AssemblyTitle("Reko decompiler for Mono")]
+[assembly: AssemblyDescription("Mono host executable for Reko decompiler")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -46,8 +46,8 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]
+[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

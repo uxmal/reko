@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
+using Reko.Arch.PowerPC;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.PowerPC
+namespace Reko.UnitTests.Arch.PowerPC
 {
     [TestFixture]
     public class PowerPcPointerScannerTests

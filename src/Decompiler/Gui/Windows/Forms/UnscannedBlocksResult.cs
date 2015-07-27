@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Scanning;
+using Reko.Core;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class UnscannedBlocksResult : AddressSearchResult
     {
@@ -40,7 +40,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool QueryStatus(CommandID cmdID, CommandStatus status, CommandText txt)
         {
-            if (cmdID.Guid == CmdSets.GuidDecompiler)
+            if (cmdID.Guid == CmdSets.GuidReko)
             {
                 switch (cmdID.ID)
                 {
@@ -55,7 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool Execute(CommandID cmdID)
         {
-            if (cmdID.Guid == CmdSets.GuidDecompiler)
+            if (cmdID.Guid == CmdSets.GuidReko)
             {
                 switch (cmdID.ID)
                 {

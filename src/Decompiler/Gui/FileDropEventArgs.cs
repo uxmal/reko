@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public class FileDropEventArgs : EventArgs
     {

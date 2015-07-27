@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	public abstract class SerializedKind
 	{

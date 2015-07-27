@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning.Dfa
+namespace Reko.Scanning.Dfa
 {
     /// <summary>
     /// Represents a DFA state. 

@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedCallTests

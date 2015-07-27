@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Hunk
+namespace Reko.ImageLoaders.Hunk
 {
     public class HunkFileParser
     {

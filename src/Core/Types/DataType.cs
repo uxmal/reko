@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
+using Reko.Core.Output;
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents concrete C-like data types inferred by the decompiler as part of the decompilation process.

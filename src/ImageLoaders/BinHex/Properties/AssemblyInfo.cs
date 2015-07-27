@@ -26,11 +26,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BinHex")]
-[assembly: AssemblyDescription("Decompiler support for the BinHex file format.")]
+[assembly: AssemblyDescription("Reko Decompiler support for the BinHex file format.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]
+[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]

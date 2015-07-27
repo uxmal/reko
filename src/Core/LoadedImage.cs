@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Contains the bytes that are present in memory when a program is loaded.

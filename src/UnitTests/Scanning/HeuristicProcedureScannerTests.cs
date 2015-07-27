@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Scanning;
+using Reko.Scanning;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class HeuristicProcedureScannerTests : HeuristicTestBase
@@ -77,7 +77,8 @@ namespace Decompiler.UnitTests.Scanning
 
             When_DisassembleProcedure();
             var conflicts = HeuristicProcedureScanner.BuildConflictGraph(proc.Cfg.Nodes);
-            var sExp = @"(l00010001-l00010002)
+            var sExp = 
+@"(l00010001-l00010002)
 (l00010002-l00010003)
 ";
             AssertConflicts(sExp, conflicts);

@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
     /// <summary>
     /// This class follows constant pointers to discover structures in memory

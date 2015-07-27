@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// Finds all used identifiers in an expression.

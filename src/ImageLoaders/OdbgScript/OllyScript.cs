@@ -24,7 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
     /// <summary>
     /// Represents loaded Odbg script state

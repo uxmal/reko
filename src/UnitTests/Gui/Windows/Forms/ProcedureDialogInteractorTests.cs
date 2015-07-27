@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class ProcedureDialogInteractorTests

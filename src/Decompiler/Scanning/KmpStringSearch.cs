@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     /// <summary>
     /// Knuth-Morris-Pratt string search algorithm.

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     /// <summary>
     /// Writes out global initialized data.

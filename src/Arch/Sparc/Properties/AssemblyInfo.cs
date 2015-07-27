@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler;
+using Reko;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,8 +26,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sparc Architecture")]
-[assembly: AssemblyDescription("Decompiler support for the SPARC processor architecture.")]
+[assembly: AssemblyTitle("Sparc plugin for Reko decompiler")]
+[assembly: AssemblyDescription("Reko decompiler support for the SPARC processor architecture.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(AssemblyMetadata.Product)]

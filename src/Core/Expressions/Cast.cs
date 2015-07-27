@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Models a C-style cast. The specified expression is cast to the data type <code>dt</code>.

@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Win32;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Wraps access to the Win32 registry.

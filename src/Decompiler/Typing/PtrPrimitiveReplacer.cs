@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Replaces references to classes which are PrimitiveType, Pointer to T, or

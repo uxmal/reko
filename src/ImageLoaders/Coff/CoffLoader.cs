@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
+using Reko.Arch.X86;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Coff
+namespace Reko.ImageLoaders.Coff
 {
     public class CoffLoader : ImageLoader
     {

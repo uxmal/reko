@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.TreeMatching
+namespace Reko.Core.TreeMatching
 {
     //class TreeMatcher
     //{

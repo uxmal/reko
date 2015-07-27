@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Rewrites all the expressions in the program based on the type information provided.
@@ -210,7 +210,7 @@ namespace Decompiler.Typing
 				else
 					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
 			}
-			return new Decompiler.Core.Absyn.AbsynAssignment(dst, src);
+			return new Core.Absyn.AbsynAssignment(dst, src);
 		}
 
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)

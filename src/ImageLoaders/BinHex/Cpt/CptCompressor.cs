@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Archives;
+using Reko.Core;
+using Reko.Core.Archives;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.BinHex.Cpt
+namespace Reko.ImageLoaders.BinHex.Cpt
 {
     public class CptCompressor
     {

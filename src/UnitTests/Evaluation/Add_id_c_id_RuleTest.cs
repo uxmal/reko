@@ -19,14 +19,14 @@
 #endregion
 
 using System;
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Operators;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Operators;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class Add_id_c_id_RuleTest

@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Loading
+namespace Reko.Loading
 {
     /// <summary>
     /// The NullLoader is used when the decompiler is unable to determine what image loader to use.

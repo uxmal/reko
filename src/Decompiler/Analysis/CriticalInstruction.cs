@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Determines whether an instruction is critical or not. Non-critical instructions

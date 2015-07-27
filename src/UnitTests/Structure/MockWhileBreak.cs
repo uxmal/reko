@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.UnitTests.Mocks;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	public class MockWhileBreak : ProcedureBuilder
 	{

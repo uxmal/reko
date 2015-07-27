@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.ComponentModel;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	/// <summary>
 	/// Serialized representation of a procedure signature.

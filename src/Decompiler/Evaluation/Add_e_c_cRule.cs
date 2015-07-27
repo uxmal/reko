@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Evaluation;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
 	/// <summary>
 	/// (+ (+ e c1) c2) ==> (+ e (+ c1 c2))

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Assemblers;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	/// <summary>
 	/// This class is in charge of parsing an operand or several operands and 

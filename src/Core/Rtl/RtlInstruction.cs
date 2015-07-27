@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Reko.Core.Rtl
 {
     /// <summary>
     /// RtlInstructions are the low-level register-transfer instructions emitted by the Instruction rewriters.

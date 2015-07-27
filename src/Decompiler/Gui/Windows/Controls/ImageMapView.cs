@@ -1,5 +1,5 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Types;
+﻿using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     public partial class ImageMapView : Control
     {

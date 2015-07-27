@@ -1,4 +1,4 @@
-﻿namespace Decompiler.WindowsItp
+﻿namespace Reko.WindowsItp
 {
     partial class MemoryControlDialog
     {
@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.chkShowData = new System.Windows.Forms.CheckBox();
-            this.memoryControl1 = new Decompiler.Gui.Windows.Controls.MemoryControl();
-            this.imageMapView1 = new Decompiler.Gui.Windows.Controls.ImageMapView();
+            this.memoryControl1 = new Reko.Gui.Windows.Controls.MemoryControl();
+            this.imageMapView1 = new Reko.Gui.Windows.Controls.ImageMapView();
             this.SuspendLayout();
             // 
             // chkShowData
@@ -95,7 +95,7 @@
 
         #endregion
 
-        private Decompiler.Gui.Windows.Controls.MemoryControl memoryControl1;
+        private Reko.Gui.Windows.Controls.MemoryControl memoryControl1;
         private System.Windows.Forms.CheckBox chkShowData;
         private Gui.Windows.Controls.ImageMapView imageMapView1;
     }

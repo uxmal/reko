@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
+using Reko.Gui.Windows.Forms;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
@@ -36,7 +36,7 @@ using System.Text;
 using System.Windows.Forms;
 using Is = Rhino.Mocks.Constraints.Is;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class LowLevelViewServiceTests

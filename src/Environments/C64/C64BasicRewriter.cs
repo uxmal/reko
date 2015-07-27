@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
     /// <summary>
     /// Rewrites C64 Basic tokens into intermediate code.

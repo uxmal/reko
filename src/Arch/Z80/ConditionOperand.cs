@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Z80
+namespace Reko.Arch.Z80
 {
     public class ConditionOperand : MachineOperand
     {

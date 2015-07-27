@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
+using Reko.Arch.Mos6502;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
     /// <summary>
     /// Implementation of the C64 platform.

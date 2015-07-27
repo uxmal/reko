@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class DeclarationInserterTests

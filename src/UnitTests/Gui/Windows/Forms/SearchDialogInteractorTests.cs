@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.Scanning;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
+using Reko.Scanning;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class SearchDialogInteractorTests

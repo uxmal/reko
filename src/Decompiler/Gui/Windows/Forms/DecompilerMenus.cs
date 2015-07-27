@@ -24,14 +24,14 @@
 // stylesheet. The intent of this file is to automatically generate the menus for the Windows Decompiler based on 
 // the XML file. This saves developer effort when menu item verbs are added, removed, or changed.
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
@@ -113,121 +113,121 @@ namespace Decompiler.Gui.Windows.Forms
     
 			// Create commands in containers.
             
-            CommandMenuItem slFileOpen = new CommandMenuItem("_Open...", new Guid(CmdSets.Decompiler), CmdIds.FileOpen);
+            CommandMenuItem slFileOpen = new CommandMenuItem("_Open...", new Guid(CmdSets.Reko), CmdIds.FileOpen);
             slFileOpen.IsDynamic = false;
             slFileOpen.ImageIndex = 0;
-            CommandMenuItem slFileOpenAs = new CommandMenuItem("Op_en As...", new Guid(CmdSets.Decompiler), CmdIds.FileOpenAs);
+            CommandMenuItem slFileOpenAs = new CommandMenuItem("Op_en As...", new Guid(CmdSets.Reko), CmdIds.FileOpenAs);
             slFileOpenAs.IsDynamic = false;
             
-            CommandMenuItem slFileSave = new CommandMenuItem("_Save", new Guid(CmdSets.Decompiler), CmdIds.FileSave);
+            CommandMenuItem slFileSave = new CommandMenuItem("_Save", new Guid(CmdSets.Reko), CmdIds.FileSave);
             slFileSave.IsDynamic = false;
             slFileSave.ImageIndex = 1;
-            CommandMenuItem slFileAddBinary = new CommandMenuItem("Add _binary file...", new Guid(CmdSets.Decompiler), CmdIds.FileAddBinary);
+            CommandMenuItem slFileAddBinary = new CommandMenuItem("Add _binary file...", new Guid(CmdSets.Reko), CmdIds.FileAddBinary);
             slFileAddBinary.IsDynamic = false;
             
-            CommandMenuItem slFileAddMetadata = new CommandMenuItem("Add _metadata file...", new Guid(CmdSets.Decompiler), CmdIds.FileAddMetadata);
+            CommandMenuItem slFileAddMetadata = new CommandMenuItem("Add _metadata file...", new Guid(CmdSets.Reko), CmdIds.FileAddMetadata);
             slFileAddMetadata.IsDynamic = false;
             
-            CommandMenuItem slFileAssemble = new CommandMenuItem("Add asse_mbler file...", new Guid(CmdSets.Decompiler), CmdIds.FileAssemble);
+            CommandMenuItem slFileAssemble = new CommandMenuItem("Add asse_mbler file...", new Guid(CmdSets.Reko), CmdIds.FileAssemble);
             slFileAssemble.IsDynamic = false;
             
-            CommandMenuItem slFileCloseProject = new CommandMenuItem("Close projec_t", new Guid(CmdSets.Decompiler), CmdIds.FileCloseProject);
+            CommandMenuItem slFileCloseProject = new CommandMenuItem("Close projec_t", new Guid(CmdSets.Reko), CmdIds.FileCloseProject);
             slFileCloseProject.IsDynamic = false;
             
-            CommandMenuItem slFileMru = new CommandMenuItem("", new Guid(CmdSets.Decompiler), CmdIds.FileMru);
+            CommandMenuItem slFileMru = new CommandMenuItem("", new Guid(CmdSets.Reko), CmdIds.FileMru);
             slFileMru.IsDynamic = true;
             slGrpFileMru.Add(0, slFileMru);
-            CommandMenuItem slFileExit = new CommandMenuItem("E_xit", new Guid(CmdSets.Decompiler), CmdIds.FileExit);
+            CommandMenuItem slFileExit = new CommandMenuItem("E_xit", new Guid(CmdSets.Reko), CmdIds.FileExit);
             slFileExit.IsDynamic = false;
             slGrpFileEnd.Add(0, slFileExit);
-            CommandMenuItem slEditFind = new CommandMenuItem("_Find...", new Guid(CmdSets.Decompiler), CmdIds.EditFind);
+            CommandMenuItem slEditFind = new CommandMenuItem("_Find...", new Guid(CmdSets.Reko), CmdIds.EditFind);
             slEditFind.IsDynamic = false;
             slGrpEdit.Add(0, slEditFind);
-            CommandMenuItem slEditCopy = new CommandMenuItem("_Copy", new Guid(CmdSets.Decompiler), CmdIds.EditCopy);
+            CommandMenuItem slEditCopy = new CommandMenuItem("_Copy", new Guid(CmdSets.Reko), CmdIds.EditCopy);
             slEditCopy.IsDynamic = false;
             
-            CommandMenuItem slEditCopyAll = new CommandMenuItem("_Copy All", new Guid(CmdSets.Decompiler), CmdIds.EditCopyAll);
+            CommandMenuItem slEditCopyAll = new CommandMenuItem("_Copy All", new Guid(CmdSets.Reko), CmdIds.EditCopyAll);
             slEditCopyAll.IsDynamic = false;
             
-            CommandMenuItem slEditRename = new CommandMenuItem("_Rename", new Guid(CmdSets.Decompiler), CmdIds.EditRename);
+            CommandMenuItem slEditRename = new CommandMenuItem("_Rename", new Guid(CmdSets.Reko), CmdIds.EditRename);
             slEditRename.IsDynamic = false;
             slGrpEdit.Add(0, slEditRename);
-            CommandMenuItem slEditSelectAll = new CommandMenuItem("Select _all", new Guid(CmdSets.Decompiler), CmdIds.EditSelectAll);
+            CommandMenuItem slEditSelectAll = new CommandMenuItem("Select _all", new Guid(CmdSets.Reko), CmdIds.EditSelectAll);
             slEditSelectAll.IsDynamic = false;
             slGrpEdit.Add(0, slEditSelectAll);
-            CommandMenuItem slEditProperties = new CommandMenuItem("P_roperties", new Guid(CmdSets.Decompiler), CmdIds.EditProperties);
+            CommandMenuItem slEditProperties = new CommandMenuItem("P_roperties", new Guid(CmdSets.Reko), CmdIds.EditProperties);
             slEditProperties.IsDynamic = false;
             
-            CommandMenuItem slViewMemory = new CommandMenuItem("_Memory", new Guid(CmdSets.Decompiler), CmdIds.ViewMemory);
+            CommandMenuItem slViewMemory = new CommandMenuItem("_Memory", new Guid(CmdSets.Reko), CmdIds.ViewMemory);
             slViewMemory.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewMemory);
-            CommandMenuItem slViewDisassembly = new CommandMenuItem("_Disassembly", new Guid(CmdSets.Decompiler), CmdIds.ViewDisassembly);
+            CommandMenuItem slViewDisassembly = new CommandMenuItem("_Disassembly", new Guid(CmdSets.Reko), CmdIds.ViewDisassembly);
             slViewDisassembly.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewDisassembly);
-            CommandMenuItem slOpenLink = new CommandMenuItem("_Open", new Guid(CmdSets.Decompiler), CmdIds.OpenLink);
+            CommandMenuItem slOpenLink = new CommandMenuItem("_Open", new Guid(CmdSets.Reko), CmdIds.OpenLink);
             slOpenLink.IsDynamic = false;
             
-            CommandMenuItem slOpenLinkInNewWindow = new CommandMenuItem("Open in ne_w window", new Guid(CmdSets.Decompiler), CmdIds.OpenLinkInNewWindow);
+            CommandMenuItem slOpenLinkInNewWindow = new CommandMenuItem("Open in ne_w window", new Guid(CmdSets.Reko), CmdIds.OpenLinkInNewWindow);
             slOpenLinkInNewWindow.IsDynamic = false;
             
-            CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Decompiler), CmdIds.ViewGoToAddress);
+            CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Reko), CmdIds.ViewGoToAddress);
             slViewGoToAddress.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewGoToAddress);
-            CommandMenuItem slViewFindAllProcedures = new CommandMenuItem("Find all _procedures", new Guid(CmdSets.Decompiler), CmdIds.ViewFindAllProcedures);
+            CommandMenuItem slViewFindAllProcedures = new CommandMenuItem("Find all _procedures", new Guid(CmdSets.Reko), CmdIds.ViewFindAllProcedures);
             slViewFindAllProcedures.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindAllProcedures);
-            CommandMenuItem slViewShowAllFragments = new CommandMenuItem("Show _all fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowAllFragments);
+            CommandMenuItem slViewShowAllFragments = new CommandMenuItem("Show _all fragments", new Guid(CmdSets.Reko), CmdIds.ViewShowAllFragments);
             slViewShowAllFragments.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewShowAllFragments);
-            CommandMenuItem slViewShowUnscanned = new CommandMenuItem("Show _unscanned fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowUnscanned);
+            CommandMenuItem slViewShowUnscanned = new CommandMenuItem("Show _unscanned fragments", new Guid(CmdSets.Reko), CmdIds.ViewShowUnscanned);
             slViewShowUnscanned.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewShowUnscanned);
-            CommandMenuItem slViewFindPattern = new CommandMenuItem("Find selected _pattern...", new Guid(CmdSets.Decompiler), CmdIds.ViewFindPattern);
+            CommandMenuItem slViewFindPattern = new CommandMenuItem("Find selected _pattern...", new Guid(CmdSets.Reko), CmdIds.ViewFindPattern);
             slViewFindPattern.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindPattern);
-            CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Decompiler), CmdIds.ViewFindFragments);
+            CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Reko), CmdIds.ViewFindFragments);
             slViewFindFragments.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindFragments);
-            CommandMenuItem slViewFindWhatPointsHere = new CommandMenuItem("Find _what points here", new Guid(CmdSets.Decompiler), CmdIds.ViewFindWhatPointsHere);
+            CommandMenuItem slViewFindWhatPointsHere = new CommandMenuItem("Find _what points here", new Guid(CmdSets.Reko), CmdIds.ViewFindWhatPointsHere);
             slViewFindWhatPointsHere.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindWhatPointsHere);
-            CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Decompiler), CmdIds.ActionRestartDecompilation);
+            CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Reko), CmdIds.ActionRestartDecompilation);
             slActionRestartDecompilation.IsDynamic = false;
             slActionRestartDecompilation.ImageIndex = 2;slGrpActions.Add(0, slActionRestartDecompilation);
-            CommandMenuItem slActionNextPhase = new CommandMenuItem("_Next Phase", new Guid(CmdSets.Decompiler), CmdIds.ActionNextPhase);
+            CommandMenuItem slActionNextPhase = new CommandMenuItem("_Next Phase", new Guid(CmdSets.Reko), CmdIds.ActionNextPhase);
             slActionNextPhase.IsDynamic = false;
             slActionNextPhase.ImageIndex = 3;slGrpActions.Add(0, slActionNextPhase);
-            CommandMenuItem slActionFinishDecompilation = new CommandMenuItem("Finish _Decompilation", new Guid(CmdSets.Decompiler), CmdIds.ActionFinishDecompilation);
+            CommandMenuItem slActionFinishDecompilation = new CommandMenuItem("Finish _Decompilation", new Guid(CmdSets.Reko), CmdIds.ActionFinishDecompilation);
             slActionFinishDecompilation.IsDynamic = false;
             slActionFinishDecompilation.ImageIndex = 4;slGrpActions.Add(0, slActionFinishDecompilation);
-            CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkProcedure);
+            CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Reko), CmdIds.ActionMarkProcedure);
             slActionMarkProcedure.IsDynamic = false;
             
-            CommandMenuItem slActionScanHeuristically = new CommandMenuItem("Scan _heuristically", new Guid(CmdSets.Decompiler), CmdIds.ActionScanHeuristically);
+            CommandMenuItem slActionScanHeuristically = new CommandMenuItem("Scan _heuristically", new Guid(CmdSets.Reko), CmdIds.ActionScanHeuristically);
             slActionScanHeuristically.IsDynamic = false;
             
-            CommandMenuItem slActionEditSignature = new CommandMenuItem("Edit _Signature...", new Guid(CmdSets.Decompiler), CmdIds.ActionEditSignature);
+            CommandMenuItem slActionEditSignature = new CommandMenuItem("Edit _Signature...", new Guid(CmdSets.Reko), CmdIds.ActionEditSignature);
             slActionEditSignature.IsDynamic = false;
             
-            CommandMenuItem slActionMarkType = new CommandMenuItem("Mark _Type", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkType);
+            CommandMenuItem slActionMarkType = new CommandMenuItem("Mark _Type", new Guid(CmdSets.Reko), CmdIds.ActionMarkType);
             slActionMarkType.IsDynamic = false;
             
-            CommandMenuItem slWindowsCascade = new CommandMenuItem("_Cacade", new Guid(CmdSets.Decompiler), CmdIds.WindowsCascade);
+            CommandMenuItem slWindowsCascade = new CommandMenuItem("_Cacade", new Guid(CmdSets.Reko), CmdIds.WindowsCascade);
             slWindowsCascade.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsCascade);
-            CommandMenuItem slWindowsTileVertical = new CommandMenuItem("Tile _Vertically", new Guid(CmdSets.Decompiler), CmdIds.WindowsTileVertical);
+            CommandMenuItem slWindowsTileVertical = new CommandMenuItem("Tile _Vertically", new Guid(CmdSets.Reko), CmdIds.WindowsTileVertical);
             slWindowsTileVertical.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsTileVertical);
-            CommandMenuItem slWindowsTileHorizontal = new CommandMenuItem("Tile _Horizontally", new Guid(CmdSets.Decompiler), CmdIds.WindowsTileHorizontal);
+            CommandMenuItem slWindowsTileHorizontal = new CommandMenuItem("Tile _Horizontally", new Guid(CmdSets.Reko), CmdIds.WindowsTileHorizontal);
             slWindowsTileHorizontal.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsTileHorizontal);
-            CommandMenuItem slWindowsCloseAll = new CommandMenuItem("C_lose All Windows", new Guid(CmdSets.Decompiler), CmdIds.WindowsCloseAll);
+            CommandMenuItem slWindowsCloseAll = new CommandMenuItem("C_lose All Windows", new Guid(CmdSets.Reko), CmdIds.WindowsCloseAll);
             slWindowsCloseAll.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsCloseAll);
-            CommandMenuItem slHelpAbout = new CommandMenuItem("_About Decompiler...", new Guid(CmdSets.Decompiler), CmdIds.HelpAbout);
+            CommandMenuItem slHelpAbout = new CommandMenuItem("_About Decompiler...", new Guid(CmdSets.Reko), CmdIds.HelpAbout);
             slHelpAbout.IsDynamic = false;
             slGrpHelp.Add(0, slHelpAbout);
-            CommandMenuItem slShowProcedureCallHierarchy = new CommandMenuItem("Call graph", new Guid(CmdSets.Decompiler), CmdIds.ShowProcedureCallHierarchy);
+            CommandMenuItem slShowProcedureCallHierarchy = new CommandMenuItem("Call graph", new Guid(CmdSets.Reko), CmdIds.ShowProcedureCallHierarchy);
             slShowProcedureCallHierarchy.IsDynamic = false;
             slGrpProcedure.Add(0, slShowProcedureCallHierarchy);
 			
@@ -288,42 +288,42 @@ namespace Decompiler.Gui.Windows.Forms
       // Build accelerators.
       
         AddBinding(
-           "Decompiler.Gui.Windows.LowLevelViewInteractor", 
-          new Guid(CmdSets.Decompiler), 
+           "Reko.Gui.Windows.LowLevelViewInteractor", 
+          new Guid(CmdSets.Reko), 
           CmdIds.ActionMarkType, 
           Keys.T
           , Keys.Control);
       
         AddBinding(
            "", 
-          new Guid(CmdSets.Decompiler), 
+          new Guid(CmdSets.Reko), 
           CmdIds.ActionNextSearchHit, 
           Keys.F8);
       
         AddBinding(
            "", 
-          new Guid(CmdSets.Decompiler), 
+          new Guid(CmdSets.Reko), 
           CmdIds.ActionPrevSearchHit, 
           Keys.F8
           , Keys.Shift);
       
         AddBinding(
            "", 
-          new Guid(CmdSets.Decompiler), 
+          new Guid(CmdSets.Reko), 
           CmdIds.EditCopy, 
           Keys.C
           , Keys.Control);
       
         AddBinding(
-           "Decompiler.Gui.Windows.CodeViewerPane", 
-          new Guid(CmdSets.Decompiler), 
+           "Reko.Gui.Windows.CodeViewerPane", 
+          new Guid(CmdSets.Reko), 
           CmdIds.EditCopyAll, 
           Keys.C
           , Keys.Control);
       
         AddBinding(
            "", 
-          new Guid(CmdSets.Decompiler), 
+          new Guid(CmdSets.Reko), 
           CmdIds.EditSelectAll, 
           Keys.A
           , Keys.Control);

@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Assemblers;
+using Reko.Core.Assemblers;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
     public class AssembledSegment
     {

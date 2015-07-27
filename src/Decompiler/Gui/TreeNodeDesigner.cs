@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Base class for designers that wrap a "tree node".

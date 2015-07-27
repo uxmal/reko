@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
     public class AbsynCase : AbsynStatement
     {

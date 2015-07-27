@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Core.Types;
+using Reko.Typing;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	/// <summary>
 	/// Tests for the pattern: (union (ptr T_1) (ptr T_2) ... (ptr T_n)) where T_1.class .. T_n.class are all structures.

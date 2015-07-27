@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Gui;
+using Reko.Gui;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
 	[TestFixture]
 	public class MruListTests

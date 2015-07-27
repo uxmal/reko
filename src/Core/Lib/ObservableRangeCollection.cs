@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     /// <summary> 
     /// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed. 

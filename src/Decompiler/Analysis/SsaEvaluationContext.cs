@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Evaluation;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     public class SsaEvaluationContext : EvaluationContext
     {

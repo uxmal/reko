@@ -1,13 +1,13 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.UnitTests.Mocks;
+﻿using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning.Fragments
+namespace Reko.UnitTests.Scanning.Fragments
 {
     public class RtlEvenOdd
     {

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// An address search result is the ... well, result of a search of raw memory. Navigable items take you
@@ -155,7 +155,7 @@ namespace Decompiler.Gui
 
         public virtual bool QueryStatus(CommandID cmdID, CommandStatus status, CommandText txt)
         {
-            if (cmdID.Guid == CmdSets.GuidDecompiler)
+            if (cmdID.Guid == CmdSets.GuidReko)
             {
                 switch (cmdID.ID)
                 {
@@ -196,7 +196,7 @@ namespace Decompiler.Gui
                 {
                     Program = hit.Program,
                     Address = hit.Address,
-                    UserProc = new Decompiler.Core.Serialization.Procedure_v1
+                    UserProc = new Core.Serialization.Procedure_v1
                     {
                         Address = hit.Address.ToString(),
                         Name = proc.Name

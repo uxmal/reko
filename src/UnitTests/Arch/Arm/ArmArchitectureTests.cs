@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.Arm;
+using Reko.Arch.Arm;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Arm
+namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     public class ArmArchitectureTests

@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	/// <summary>
 	/// Accumulates information to generate a ModRm byte(and possibly SIB byte) 

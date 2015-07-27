@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Arch.PowerPC;
+using Reko.Core;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.PowerPC
+namespace Reko.UnitTests.Arch.PowerPC
 {
     [TestFixture]
     public class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>

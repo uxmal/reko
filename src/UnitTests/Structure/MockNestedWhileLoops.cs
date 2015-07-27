@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     public class MockNestedWhileLoops : ProcedureBuilder
     {

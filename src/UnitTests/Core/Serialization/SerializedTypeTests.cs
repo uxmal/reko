@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedTypeTests

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Output;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public class HtmlCodeFormatter : CodeFormatter
     {

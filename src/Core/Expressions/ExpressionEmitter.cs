@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Factory class that has the extra benefit of reducing the verbosity of the code.

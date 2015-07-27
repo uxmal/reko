@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Rtl;
+using Reko.Arch.PowerPC;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Rtl;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.PowerPC
+namespace Reko.UnitTests.Arch.PowerPC
 {
     [TestFixture]
     public class PowerPcRewriterTests : RewriterTestBase

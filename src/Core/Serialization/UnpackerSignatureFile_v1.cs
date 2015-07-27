@@ -25,7 +25,7 @@ using System.Text;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     [Serializable()]
     [XmlRoot(ElementName="SIGNATURES", Namespace = "", IsNullable = false)]

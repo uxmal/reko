@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	public class UnknownType : DataType
 	{

@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Models a unary expression like logical negation or bit complement.

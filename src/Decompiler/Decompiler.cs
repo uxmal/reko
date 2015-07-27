@@ -17,25 +17,25 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Scanning;
-using Decompiler.Loading;
-using Decompiler.Analysis;
-using Decompiler.Structure;
-using Decompiler.Typing;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Scanning;
+using Reko.Loading;
+using Reko.Analysis;
+using Reko.Structure;
+using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Decompiler.Core.Assemblers;
+using Reko.Core.Assemblers;
 
-namespace Decompiler
+namespace Reko
 {
     public interface IDecompiler
     {
@@ -217,7 +217,7 @@ namespace Decompiler
             try
             {
                 //$TODO: should be in the config file, yeah.
-                var type = Type.GetType("Decompiler.ImageLoaders.OdbgScript.OllyLang,Decompiler.ImageLoaders.OdbgScript");
+                var type = Type.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
                 interpreter = (IScriptInterpreter) Activator.CreateInstance(type);
             }
             catch (Exception ex)

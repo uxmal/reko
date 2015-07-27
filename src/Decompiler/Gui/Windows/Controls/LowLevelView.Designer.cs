@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Controls
+﻿namespace Reko.Gui.Windows.Controls
 {
     partial class LowLevelView
     {
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LowLevelView));
-            Decompiler.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Decompiler.Gui.Windows.Controls.EmptyEditorModel();
+            Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.lblMemoryView = new System.Windows.Forms.Label();
             this.lblDisassembly = new System.Windows.Forms.Label();
@@ -42,9 +42,9 @@
             this.txtAddress = new System.Windows.Forms.ToolStripTextBox();
             this.btnGo = new System.Windows.Forms.ToolStripButton();
             this.lowLeveImages = new System.Windows.Forms.ImageList(this.components);
-            this.memCtrl = new Decompiler.Gui.Windows.Controls.MemoryControl();
-            this.dasmCtrl = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
-            this.imageMapControl1 = new Decompiler.Gui.Windows.Controls.ImageMapView();
+            this.memCtrl = new Reko.Gui.Windows.Controls.MemoryControl();
+            this.dasmCtrl = new Reko.Gui.Windows.Controls.DisassemblyControl();
+            this.imageMapControl1 = new Reko.Gui.Windows.Controls.ImageMapView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -117,7 +117,7 @@
             // btnBack
             // 
             this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnBack.Image = global::Decompiler.Properties.Resources.Back;
+            this.btnBack.Image = global::Reko.Properties.Resources.Back;
             this.btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(23, 22);
@@ -126,7 +126,7 @@
             // btnForward
             // 
             this.btnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnForward.Image = global::Decompiler.Properties.Resources.Forward;
+            this.btnForward.Image = global::Reko.Properties.Resources.Forward;
             this.btnForward.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnForward.Name = "btnForward";
             this.btnForward.Size = new System.Drawing.Size(23, 22);

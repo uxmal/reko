@@ -1,12 +1,12 @@
-﻿using Decompiler.Arch.X86;
-using Decompiler.Core;
+﻿using Reko.Arch.X86;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
     using rulong = System.UInt64;
 

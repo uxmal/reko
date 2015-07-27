@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.CmdLine
+namespace Reko.CmdLine
 {
     public class CmdLineListener : DecompilerEventListener
     {

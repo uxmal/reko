@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Extracts nested types from the insides of each other. Thus, (struct (0 union x)) becomes (struct (0 eq_1)) where eq_1: (union x)

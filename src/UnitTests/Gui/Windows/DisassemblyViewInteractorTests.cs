@@ -18,21 +18,16 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class DisassemblyViewInteractorTests
@@ -69,7 +64,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void GotoAddressEnabled()
         {
             var status = new CommandStatus();
-            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress), status, null));
+            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress), status, null));
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);
         }
 
@@ -86,7 +81,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             repository.ReplayAll();
 
             Initialize();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress));
 
             repository.VerifyAll();
             Assert.AreEqual(0x41104110ul, interactor.StartAddress.ToLinear());
@@ -97,7 +92,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var status = new CommandStatus();
             var text = new CommandText();
-            var ret = interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionMarkProcedure), status, null);
+            var ret = interactor.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ActionMarkProcedure), status, null);
             Assert.IsTrue(ret);
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);
         }

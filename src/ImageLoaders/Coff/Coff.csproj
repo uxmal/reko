@@ -6,8 +6,8 @@
     <ProjectGuid>{02595A47-2592-441D-B44D-8EA8C19EE5E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.ImageLoaders.Coff</RootNamespace>
-    <AssemblyName>Decompiler.ImageLoaders.Coff</AssemblyName>
+    <RootNamespace>Reko.ImageLoaders.Coff</RootNamespace>
+    <AssemblyName>Reko.ImageLoaders.Coff</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

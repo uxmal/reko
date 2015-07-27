@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.CmdLine
+namespace Reko.CmdLine
 {
     class CmdLineDiagnosticsService : IDiagnosticsService
     {

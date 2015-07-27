@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
+using Reko.Core.Output;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core.Output
+namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
     public class PrettyPrinterTests

@@ -18,23 +18,23 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class LoadedPageInteractorTests
@@ -193,7 +193,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private MenuStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null);
+            interactor.QueryStatus(new CommandID(CmdSets.GuidReko, cmdId), status, null);
             return status.Status;
         }
     }

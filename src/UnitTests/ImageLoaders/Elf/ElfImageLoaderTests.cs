@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Arch.X86;
-using Decompiler.ImageLoaders.Elf;
+using Reko.Core;
+using Reko.Arch.X86;
+using Reko.ImageLoaders.Elf;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Rhino.Mocks;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Environments.SysV;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Environments.SysV;
 
-namespace Decompiler.UnitTests.ImageLoaders.Elf
+namespace Reko.UnitTests.ImageLoaders.Elf
 {
     [TestFixture]
     public class ElfImageLoaderTests

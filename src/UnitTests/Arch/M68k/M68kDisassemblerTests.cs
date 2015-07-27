@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Arch.M68k;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.M68k
+namespace Reko.UnitTests.Arch.M68k
 {
     [TestFixture]
     public class M68kDisassemblerTests : DisassemblerTestBase<M68kInstruction>

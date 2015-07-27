@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Forms;
+using Reko.Core;
+using Reko.Gui.Forms;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
 	public partial class AddressPromptDialog : Form, IAddressPromptDialog
 	{

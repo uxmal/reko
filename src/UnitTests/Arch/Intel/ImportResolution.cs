@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
+using Reko.Arch.X86;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class ImportResolution

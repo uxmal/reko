@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.Typing;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Uses an interprocedural reaching definition analysis to detect which 

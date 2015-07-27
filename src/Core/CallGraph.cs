@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Describes the call structure of the program: what nodes call what others.

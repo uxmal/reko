@@ -18,24 +18,24 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Analysis;
-using Decompiler.Assemblers.x86;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko;
+using Reko.Analysis;
+using Reko.Assemblers.x86;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Decompiler.Environments.Msdos;
-using Decompiler.Core.Configuration;
+using Reko.Environments.Msdos;
+using Reko.Core.Configuration;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	public class StructureTestBase
 	{

@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {

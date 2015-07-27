@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning.Dfa
+namespace Reko.Scanning.Dfa
 {
     public class TreeNode
     {

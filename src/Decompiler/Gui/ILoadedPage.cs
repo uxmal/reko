@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public interface ILoadedPage
     {

@@ -25,7 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Assemblers.Pdp11
+namespace Reko.Assemblers.Pdp11
 {
     public class Lexer
     {

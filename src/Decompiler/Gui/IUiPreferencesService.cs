@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +28,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public class UiStyle
     {

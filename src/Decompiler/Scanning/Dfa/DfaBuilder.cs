@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using BitArray = System.Collections.BitArray;
 
-namespace Decompiler.Scanning.Dfa
+namespace Reko.Scanning.Dfa
 {
     /// <summary>
     /// Builds a DFA directly from a regular expression.

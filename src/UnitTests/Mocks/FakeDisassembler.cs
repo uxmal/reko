@@ -1,10 +1,10 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Machine;
+﻿using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeDisassembler : DisassemblerBase<MachineInstruction>
     {

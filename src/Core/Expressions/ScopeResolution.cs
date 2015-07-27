@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
 	/// <summary>
 	/// Corresponds to the :: operator of C++; 

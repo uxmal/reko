@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Contains information about one input file, gathered during loading, scanning and data analysis,
@@ -37,7 +37,7 @@ namespace Decompiler.Core
     /// <remarks>
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
-    [Designer("Decompiler.Gui.Design.ProgramDesigner,Decompiler")]
+    [Designer("Reko.Gui.Design.ProgramDesigner,Reko")]
     public class Program
 	{
         private SortedList<Address, ImageMapVectorTable> vectors;

@@ -1,11 +1,11 @@
-using Decompiler.Core;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class ProcHeaderTests

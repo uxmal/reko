@@ -19,17 +19,17 @@
 #endregion
 
 using System;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class X86DisassemblerTests

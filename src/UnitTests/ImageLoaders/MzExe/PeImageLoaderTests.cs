@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Core;
-using Decompiler.ImageLoaders.MzExe;
+using Reko.Core.Configuration;
+using Reko.Core;
+using Reko.ImageLoaders.MzExe;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +30,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.ImageLoaders.MzExe
+namespace Reko.UnitTests.ImageLoaders.MzExe
 {
     /// <summary>
     /// Tests for PeImageLoader

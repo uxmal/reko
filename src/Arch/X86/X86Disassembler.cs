@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	/// <summary>
 	/// Intel x86 opcode disassembler 

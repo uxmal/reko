@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
-using Decompiler.Gui;
+using Reko.Core.Types;
+using Reko.Gui;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class HungarianParserTests

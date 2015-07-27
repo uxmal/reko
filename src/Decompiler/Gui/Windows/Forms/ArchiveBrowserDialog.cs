@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Archives;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core.Archives;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +28,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public partial class ArchiveBrowserDialog : Form, IDialog
     {

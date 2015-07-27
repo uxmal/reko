@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
     public class ElfHeaderRenderer : ImageMapSegmentRenderer
     {
-        public override void Render(ImageMapSegment segment, Program program, Core.Output.Formatter formatter)
+        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
         {
             throw new NotImplementedException();
         }

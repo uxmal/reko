@@ -18,18 +18,18 @@
 */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.Loading;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
+using Reko.Loading;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Decouples the creation of services, so that proper unit testing can be done.

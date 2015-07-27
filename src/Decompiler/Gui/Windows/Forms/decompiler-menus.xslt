@@ -26,14 +26,14 @@
 // stylesheet. The intent of this file is to automatically generate the menus for the Windows Decompiler based on 
 // the XML file. This saves developer effort when menu item verbs are added, removed, or changed.
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {

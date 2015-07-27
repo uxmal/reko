@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Core.Serialization;
+using Reko.Arch.PowerPC;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.UnitTests.Core.Serialization;
 using NUnit.Framework;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Arch.PowerPC
+namespace Reko.UnitTests.Arch.PowerPC
 {
     [TestFixture]
     public class PowerPcProcedureSerializerTests

@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
+using Reko.Core.Configuration;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public partial class AssembleFileDialog : Form, IAssembleFileDialog
     {

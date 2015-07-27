@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows;
+using Reko.Gui;
+using Reko.Gui.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class TabControlHostTests

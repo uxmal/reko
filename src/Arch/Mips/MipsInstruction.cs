@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 
-namespace Decompiler.Arch.Mips
+namespace Reko.Arch.Mips
 {
     public class MipsInstruction : MachineInstruction
     {

@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	public class ExpressionUseAdder : ExpressionVisitorBase
 	{

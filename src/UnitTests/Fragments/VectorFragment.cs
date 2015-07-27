@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Code;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Fragments
+namespace Reko.UnitTests.Fragments
 {
 	public class VectorFragment : ProcedureBuilder
 	{

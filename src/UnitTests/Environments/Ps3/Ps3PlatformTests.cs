@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.UnitTests.Arch.PowerPC;
+using Reko.Arch.PowerPC;
+using Reko.Core;
+using Reko.UnitTests.Arch.PowerPC;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.Ps3
+namespace Reko.UnitTests.Environments.Ps3
 {
     [TestFixture]
     public class Ps3PlatformTests

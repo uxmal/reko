@@ -18,11 +18,11 @@
 */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Forms;
+using Reko.Core;
+using Reko.Gui.Forms;
 using System;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public interface IDialogFactory
     {

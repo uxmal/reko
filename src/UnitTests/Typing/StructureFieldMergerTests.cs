@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Core.Types;
+using Reko.Typing;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class StructureFieldMergerTests

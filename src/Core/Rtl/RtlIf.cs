@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Decompiler.Core.Rtl
+namespace Reko.Core.Rtl
 {
     /// <summary>
     /// Models conditionally executed statements, like those that appear in the ARM architecture.

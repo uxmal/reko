@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     public enum ConditionCode
     {

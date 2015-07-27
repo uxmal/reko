@@ -26,9 +26,9 @@
        Instead, make sure you upgrade the Id every time you upgrade the version -->
 
   <Product
-    Id="$(var.DecompilerProductCode)"
-    Version="$(var.DecompilerVersion)"
-    Name="Decompiler"
+    Id="$(var.RekoProductCode)"
+    Version="$(var.RekoVersion)"
+    Name="Reko Decompiler"
     Language="1033"
     Manufacturer="jklSoft"
     UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E">
@@ -45,19 +45,19 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="jklSoftFolder" Name="jklSoft">
-          <Directory Id="INSTALLFOLDER" Name="Decompiler">
+          <Directory Id="INSTALLFOLDER" Name="Reko">
           </Directory>
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationProgramsFolder" Name="Decompiler"/>
+        <Directory Id="ApplicationProgramsFolder" Name="Reko Decompiler"/>
       </Directory>
     </Directory>
 
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="BAA295FE-414E-4043-B865-66278DEC98AE">
         <Shortcut Id="ApplicationStartMenuShortcut"
-                  Name="Decompiler"
+                  Name="Reko Decompiler"
                   Description="Decompiles binary executable files"
                   Target="[INSTALLFOLDER]WindowsDecompiler.exe"
                   WorkingDirectory="INSTALLFOLDER"/>

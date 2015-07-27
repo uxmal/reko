@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Controls
+namespace Reko.UnitTests.Gui.Windows.Controls
 {
 	[TestFixture]
 	public class MemoryControlTests

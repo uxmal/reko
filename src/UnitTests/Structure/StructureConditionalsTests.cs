@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class StructureConditionalsTests

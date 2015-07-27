@@ -19,15 +19,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Environments.Msdos;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Environments.Msdos;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// An image loader that understands the LzExe packing algorithms. 

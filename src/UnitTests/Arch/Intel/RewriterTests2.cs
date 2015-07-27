@@ -18,17 +18,10 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Arch.X86;
-using Decompiler.Scanning;
 using NUnit.Framework;
-using System;
-using System.Diagnostics;
-using System.IO;
+using Reko.Core;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class RewriterTests2 : RewriterTestBase

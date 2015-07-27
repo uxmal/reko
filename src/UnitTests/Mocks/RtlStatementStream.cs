@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class RtlStatementStream : ExpressionEmitter
     {

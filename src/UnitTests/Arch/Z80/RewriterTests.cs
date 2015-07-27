@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Arch.Z80;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
+using Reko.Arch.Z80;
+using Reko.Core;
+using Reko.Core.Rtl;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Arch.Z80
+namespace Reko.UnitTests.Arch.Z80
 {
     [TestFixture]
     class RewriterTests : RewriterTestBase

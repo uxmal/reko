@@ -26,7 +26,7 @@ using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 
-namespace Decompiler.Tools.Xslt
+namespace Reko.Tools.Xslt
 {
 	public class Program
 	{

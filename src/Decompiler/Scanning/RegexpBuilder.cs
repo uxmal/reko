@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +26,7 @@ using System.IO;
 using System.Text;
 using BitArray = System.Collections.BitArray;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	internal class RegexpBuilder
 	{

@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class DecompilerShellUiService :
         DecompilerUiService,

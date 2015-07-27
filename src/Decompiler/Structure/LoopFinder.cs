@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     /// <summary>
     /// Given an interval and its constituent nodes, finds a strongly connected component 

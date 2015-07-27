@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Arch.X86;
+using Reko.Core;
+using Reko.Arch.X86;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +28,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsItp
+namespace Reko.WindowsItp
 {
     public partial class MemoryControlDialog : Form
     {

@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Sparc
+namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {

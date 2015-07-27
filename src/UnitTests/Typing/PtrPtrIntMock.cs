@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	public class PtrPtrIntMock : ProcedureBuilder
 	{

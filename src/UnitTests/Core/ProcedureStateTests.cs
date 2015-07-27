@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Scanning;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Scanning;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class ProcedureStateTests
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Decompiler.Core.Lib.BitSet CreateRegisterBitset()
+            public Reko.Core.Lib.BitSet CreateRegisterBitset()
             {
                 throw new NotImplementedException();
             }

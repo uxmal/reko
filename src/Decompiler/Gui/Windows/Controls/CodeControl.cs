@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Displays IL codes. This could be raw blocks, in which case a pseudo-assembler

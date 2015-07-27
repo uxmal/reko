@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using BitSet = Decompiler.Core.Lib.BitSet;
+using BitSet = Reko.Core.Lib.BitSet;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Abstraction of a CPU architecture.

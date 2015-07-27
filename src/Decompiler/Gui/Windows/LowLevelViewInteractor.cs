@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -32,7 +32,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// This class manages user interaction with the LowLevelView control.
@@ -149,7 +149,7 @@ namespace Decompiler.Gui.Windows
         {
             if (Control.MemoryView.Focused)
             {
-                if (cmdId.Guid == CmdSets.GuidDecompiler)
+                if (cmdId.Guid == CmdSets.GuidReko)
                 {
                     switch (cmdId.ID)
                     {
@@ -170,7 +170,7 @@ namespace Decompiler.Gui.Windows
             else if (Control.DisassemblyView.Focused)
             {
                 var selAddress = Control.DisassemblyView.SelectedObject as Address;
-                if (cmdId.Guid == CmdSets.GuidDecompiler)
+                if (cmdId.Guid == CmdSets.GuidReko)
                 {
                     switch (cmdId.ID)
                     {
@@ -188,7 +188,7 @@ namespace Decompiler.Gui.Windows
         {
             if (Control.MemoryView.Focused)
             {
-                if (cmdId.Guid == CmdSets.GuidDecompiler)
+                if (cmdId.Guid == CmdSets.GuidReko)
                 {
                     switch (cmdId.ID)
                     {
@@ -203,7 +203,7 @@ namespace Decompiler.Gui.Windows
             }
             else if (Control.DisassemblyView.Focused)
             {
-                if (cmdId.Guid == CmdSets.GuidDecompiler)
+                if (cmdId.Guid == CmdSets.GuidReko)
                 {
                 }
             }
@@ -258,7 +258,7 @@ namespace Decompiler.Gui.Windows
         {
             var decompiler = services.GetService<IDecompilerService>().Decompiler;
             var proc = decompiler.ScanProcedure(program, address);
-            var userp = new Decompiler.Core.Serialization.Procedure_v1
+            var userp = new Reko.Core.Serialization.Procedure_v1
             {
                 Address = address.ToString(),
                 Name = proc.Name,

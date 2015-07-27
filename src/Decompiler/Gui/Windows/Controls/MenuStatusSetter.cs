@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Gui;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -26,7 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     public class MenuStatusSetter
     {

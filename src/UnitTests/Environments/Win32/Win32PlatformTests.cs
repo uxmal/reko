@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core.Configuration;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Environments.Win32;
+using Reko.Arch.X86;
+using Reko.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Environments.Win32;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -34,7 +34,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Decompiler.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Win32
 {
     [TestFixture]
     public class Win32PlatformTests

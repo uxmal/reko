@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
-using Decompiler.Core;
-using Decompiler.Core.Archives;
-using Decompiler.Core.Services;
+using Reko.Arch.Mos6502;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
     /// <summary>
     /// Loads sub-images from a Commodore C64 disk image.

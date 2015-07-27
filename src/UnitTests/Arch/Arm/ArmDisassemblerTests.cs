@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Arch.Arm;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Arch.Arm;
+using Reko.Core;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Arm
+namespace Reko.UnitTests.Arch.Arm
 {
     public abstract class ArmTestBase
     {

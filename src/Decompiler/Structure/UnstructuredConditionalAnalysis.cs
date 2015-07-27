@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     public class UnstructuredConditionalAnalysis
     {

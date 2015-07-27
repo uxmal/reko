@@ -18,14 +18,10 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Arch.X86;
-using Decompiler.Scanning;
 using NUnit.Framework;
-using System;
+using Reko.Core;
 
-namespace Decompiler.UnitTests.Assemblers.x86
+namespace Reko.UnitTests.Assemblers.x86
 {
 	[TestFixture]
 	public class AssemblerOverrides : AssemblerBase

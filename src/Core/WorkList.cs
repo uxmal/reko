@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// A WorkList contains a queue of items to be processed. 

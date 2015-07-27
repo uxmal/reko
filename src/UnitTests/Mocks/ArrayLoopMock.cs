@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
 	public class ArrayLoopMock : ProcedureBuilder
 	{

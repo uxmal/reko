@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 using System;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
 	public class AbsynBreak : AbsynStatement
 	{

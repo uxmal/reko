@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     /// <summary>
     /// Rewrite rules for control flow instructions.
@@ -124,7 +124,7 @@ namespace Decompiler.Arch.X86
             if (IsRealModeReboot(instrCur))
 			{
                 PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", VoidType.Instance, 0);
-                reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
+                reboot.Characteristics = new Core.Serialization.ProcedureCharacteristics();
                 reboot.Characteristics.Terminates = true;
                 emitter.SideEffect(PseudoProc(reboot, VoidType.Instance));
 				return;

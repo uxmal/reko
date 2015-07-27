@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// Represents a set of bits. The System.Collection.BitArray class has bugs, so we circumvent them here.

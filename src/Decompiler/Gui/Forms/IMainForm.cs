@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Forms
+namespace Reko.Gui.Forms
 {
 	/// <summary>
 	/// Interface that abstracts the functionality of the main form.

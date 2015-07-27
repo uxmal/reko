@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +30,7 @@ using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class DiagnosticsInteractorTests
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             mr.ReplayAll();
 
-            var cmd = new CommandID(CmdSets.GuidDecompiler, CmdIds.EditCopy);
+            var cmd = new CommandID(CmdSets.GuidReko, CmdIds.EditCopy);
             var status = new CommandStatus();
             var txt = new CommandText();
             Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svc.Error("Nilz");
             lv.SelectedIndices.Add(0);
 
-            var cmd = new CommandID(CmdSets.GuidDecompiler, CmdIds.EditCopy);
+            var cmd = new CommandID(CmdSets.GuidReko, CmdIds.EditCopy);
             var status = new CommandStatus();
             var txt = new CommandText();
             Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));

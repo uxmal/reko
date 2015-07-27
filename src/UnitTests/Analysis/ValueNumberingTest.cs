@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
+using Reko.Analysis;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Diagnostics;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	//[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
 	public class ValueNumberingTests : AnalysisTestBase

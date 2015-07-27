@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Compares two data types to see if they are equal or

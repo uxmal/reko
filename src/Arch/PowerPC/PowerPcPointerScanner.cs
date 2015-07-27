@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.PowerPC
+namespace Reko.Arch.PowerPC
 {
     public abstract class PowerPcPointerScanner<T> : PointerScanner<T>
     {

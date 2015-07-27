@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Loading;
-using Decompiler.ImageLoaders.MzExe;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Loading;
+using Reko.ImageLoaders.MzExe;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.ComponentModel.Design;
@@ -31,7 +31,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Loading
+namespace Reko.UnitTests.Loading
 {
 	[TestFixture]
 	public class PkLiteUnpackerTests

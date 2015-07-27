@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
 	[TestFixture]
 	public class MockProcedureTest

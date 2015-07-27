@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Structure;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Structure;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     public abstract class GraphNode<T>
     {

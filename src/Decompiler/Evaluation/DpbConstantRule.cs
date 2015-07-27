@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
     /// <summary>
     /// Transforms the sequence dpb(constant, constant) with the evaluated dpb.

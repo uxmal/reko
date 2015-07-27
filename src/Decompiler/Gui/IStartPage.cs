@@ -21,7 +21,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
 	/// <summary>
 	/// Abstracts the user interface of the initial page.

@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class PrintfApplicationBuilderTests

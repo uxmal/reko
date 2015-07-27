@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
-using Decompiler.Core;
-using Decompiler.Typing;
+using Reko.Core.Types;
+using Reko.Core;
+using Reko.Typing;
 using NUnit.Framework;
 using System;
 
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypeStoreTests

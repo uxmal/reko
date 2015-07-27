@@ -21,8 +21,8 @@
 
 // http://hitmen.c02.at/files/yapspd/psp_doc/chap26.html - PSP ELF
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -31,14 +31,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
     using ADDRESS = UInt32;
     using StrIntMap = Dictionary<string, int>;
     using RelocMap = Dictionary<UInt32, string>;
-    using Decompiler.Core.Configuration;
+    using Reko.Core.Configuration;
     using System.Collections;
-    using Decompiler.Core.Services;
+    using Reko.Core.Services;
 
     /// <summary>
     /// Loader for ELF images.

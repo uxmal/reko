@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core.Output;
+using Reko.Core.Types;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Implements a formatter that renders text into

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
-using Decompiler.Gui;
+using Reko.Core.Output;
+using Reko.Gui;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class HtmlFormatterTests

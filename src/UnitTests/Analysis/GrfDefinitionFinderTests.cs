@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
+using Reko.Analysis;
+using Reko.Core;
 using NUnit.Framework;
-using Decompiler.UnitTests.Mocks;
+using Reko.UnitTests.Mocks;
 using System;
 using System.IO;
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class GrfDefinitionFinderTests : AnalysisTestBase

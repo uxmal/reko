@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Gui;
+using Reko.Gui;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Base class for obtaining menus for this application. 

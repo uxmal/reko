@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Structure.Schwartz;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Structure.Schwartz;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Structure.Schwartz
+namespace Reko.UnitTests.Structure.Schwartz
 {
     [TestFixture]
     public class ProcedureStructurerTests

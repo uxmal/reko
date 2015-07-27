@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     partial class WorkerDialog
     {
@@ -115,7 +115,7 @@ namespace Decompiler.Gui.Windows.Forms
             this.Name = "WorkerDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Decompiler";
+            this.Text = "Reko Decompiler";
             this.ResumeLayout(false);
 
         }

@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     public class M68kAddressOperand : Core.Machine.AddressOperand, M68kOperand
     {

@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Forms
+﻿namespace Reko.Gui.Windows.Forms
 {
     partial class AboutDialog
     {
@@ -54,9 +54,9 @@
             this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(61, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 18);
+            this.label1.Size = new System.Drawing.Size(156, 18);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Decompiler";
+            this.label1.Text = "Reko Decompiler";
             // 
             // lblVersion
             // 
@@ -72,10 +72,10 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(61, 139);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(215, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(130, 13);
             this.linkLabel1.TabIndex = 3;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://sourceforge.net/projects/decompiler/";
+            this.linkLabel1.Text = "https://github/uxmal/reko";
             // 
             // btnOK
             // 
@@ -117,7 +117,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About Decompiler";
+            this.Text = "About Reko Decompiler";
             this.Load += new System.EventHandler(this.AboutDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

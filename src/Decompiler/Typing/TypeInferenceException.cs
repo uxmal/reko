@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// An exception occurring during type inference.

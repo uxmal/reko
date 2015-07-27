@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Services;
-using Decompiler.Gui;
+using Reko.Core.Services;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeUiService : IDecompilerUIService
     {

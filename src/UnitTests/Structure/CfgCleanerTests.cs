@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Structure;
+using Reko.Core;
+using Reko.Structure;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	[TestFixture]
 	public class CfgCleanerTests : StructureTestBase

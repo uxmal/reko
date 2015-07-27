@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Globalization;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
 	/// <summary>
 	/// Base class for all formatting classes. 

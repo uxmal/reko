@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -39,7 +39,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
 	public class MainFormInteractorTests
@@ -200,7 +200,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             When_CreateMainFormInteractor();
             Assert.IsNotNull(loader);
             dcSvc.Decompiler.Load("foo.exe");
-            var p = new Decompiler.Core.Serialization.Procedure_v1 {
+            var p = new Reko.Core.Serialization.Procedure_v1 {
                 Address = "12345",
                 Name = "MyProc", 
             };
@@ -217,6 +217,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     <procedure name=""MyProc"">
       <address>00012345</address>
     </procedure>
+    <options>
+      <HeuristicScanning>false</HeuristicScanning>
+    </options>
   </input>
   <output />
 </project>";
@@ -291,7 +294,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void Given_UiSvc_ReturnsFalseOnQueryStatus()
         {
-            var cmdset = CmdSets.GuidDecompiler;
+            var cmdset = CmdSets.GuidReko;
             uiSvc.Stub(u => u.QueryStatus(null, null, null)).IgnoreArguments().Return(false);
         }
 
@@ -363,7 +366,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewMemory));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewMemory));
 
             mr.VerifyAll();
         }
@@ -384,7 +387,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewDisassembly));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewDisassembly));
 
             mr.VerifyAll();
         }
@@ -415,7 +418,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var mdi = new TestForm();
             //form.DocumentWindows.Add(mdi);
             //Assert.AreEqual(1, form.DocumentWindows.Count);
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.WindowsCloseAll));
 
             mr.VerifyAll();
         }
@@ -454,7 +457,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.FileAddMetadata));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.FileAddMetadata));
             
             mr.VerifyAll();
         }
@@ -477,7 +480,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             When_CreateMainFormInteractor();
             Assert.IsNotNull(dcSvc.Decompiler.Project);
-            var executed = interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.FileCloseProject));
+            var executed = interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.FileCloseProject));
 
             Assert.IsTrue(executed);
             mr.VerifyAll();
@@ -598,7 +601,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private CommandStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            if (interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null))
+            if (interactor.QueryStatus(new CommandID(CmdSets.GuidReko, cmdId), status, null))
                 return status;
             else
                 return null;

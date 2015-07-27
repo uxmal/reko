@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
     /// <summary>
     /// Base class for intermediate-level instructions. These are generated from the low-level,

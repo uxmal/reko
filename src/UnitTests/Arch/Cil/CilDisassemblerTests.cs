@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Arch.Cil;
+using Reko.Core;
+using Reko.Arch.Cil;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Cil
+namespace Reko.UnitTests.Arch.Cil
 {
     [TestFixture]
     public class CilDisassemblerTests

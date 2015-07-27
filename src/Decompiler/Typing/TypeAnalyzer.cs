@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Gathers type information, infers structure, union, and array types,

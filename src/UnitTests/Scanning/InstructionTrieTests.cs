@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Scanning;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Scanning;
 using NUnit.Framework; 
 using System;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
 	[TestFixture]
 	public class InstructionTrieTests

@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ThOpcode = Decompiler.Arch.Arm.ThumbOpcode;
+using ThOpcode = Reko.Arch.Arm.ThumbOpcode;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class ThumbInstruction : MachineInstruction
     {

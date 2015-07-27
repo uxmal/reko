@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Archives;
-using Decompiler.Environments.C64;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Environments.C64;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.C64
+namespace Reko.UnitTests.Environments.C64
 {
     public class D64LoaderTests
     {

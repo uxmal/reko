@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     ///<summary>
     /// Tags this node and all its children within the case defined by (head,follow)

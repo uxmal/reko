@@ -1,4 +1,4 @@
-﻿namespace Decompiler.UiPrototype.WinForms
+﻿namespace Reko.UiPrototype.WinForms
 {
     partial class MainForm
     {
@@ -419,7 +419,7 @@
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
-            this.Text = "Decompiler";
+            this.Text = "Reko Decompiler";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

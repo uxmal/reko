@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     public class SerializedTypeComparer :
             IEqualityComparer<SerializedType>,

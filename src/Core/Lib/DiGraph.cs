@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     public class DiGraph<T> : DirectedGraph<T>
     {

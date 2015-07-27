@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CallRewriterTests : AnalysisTestBase

@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using Decompiler.Environments.C64;
-using Decompiler.UnitTests.Arch;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using Reko.Environments.C64;
+using Reko.UnitTests.Arch;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.C64
+namespace Reko.UnitTests.Environments.C64
 {
     [TestFixture]
     public class C64BasicRewriterTests : ArchTestBase

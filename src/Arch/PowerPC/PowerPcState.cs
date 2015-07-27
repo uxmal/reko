@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.PowerPC
+namespace Reko.Arch.PowerPC
 {
     public class PowerPcState : ProcessorState
     {

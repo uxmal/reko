@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UiPrototype.WinForms
+namespace Reko.UiPrototype.WinForms
 {
     public class StringSearcher : IEnumerable<SearchHit>
     {

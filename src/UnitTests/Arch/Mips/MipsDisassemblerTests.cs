@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.Mips;
-using Decompiler.Core;
+using Reko.Arch.Mips;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Mips
+namespace Reko.UnitTests.Arch.Mips
 {
     [TestFixture]
     public class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>

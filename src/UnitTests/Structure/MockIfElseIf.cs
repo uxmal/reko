@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.UnitTests.Mocks;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	/// <summary>
 	/// A sequence of nested if-thens that should decompile to a switch-like

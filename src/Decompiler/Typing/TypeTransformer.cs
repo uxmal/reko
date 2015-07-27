@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>Performs transformations on the generated data types to make them 
 	/// legal C-like data types.</summary>

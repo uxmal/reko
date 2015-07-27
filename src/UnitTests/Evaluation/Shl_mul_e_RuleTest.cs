@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions; 
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions; 
+using Reko.UnitTests.Mocks;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class Shl_mul_e_RuleTest

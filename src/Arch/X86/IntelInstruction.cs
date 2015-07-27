@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Machine;
 using System;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	/// <summary>
 	/// Models an X86 instruction.

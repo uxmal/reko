@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Environments.AmigaOS;
-using Decompiler.Core;
+using Reko.Arch.M68k;
+using Reko.Environments.AmigaOS;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Hunk
+namespace Reko.ImageLoaders.Hunk
 {
     /// <summary>
     /// This class knows how to load and relocate AmigaOS Hunk files.

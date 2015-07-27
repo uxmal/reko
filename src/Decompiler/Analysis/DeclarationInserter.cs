@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// Inserts declaration statements for local variables so they appear as close to all the

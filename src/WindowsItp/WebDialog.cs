@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsItp
+namespace Reko.WindowsItp
 {
     public partial class WebDialog : Form
     {

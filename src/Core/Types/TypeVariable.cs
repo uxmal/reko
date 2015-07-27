@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 
 using System;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Every expression in the program has a type variable associated with it.

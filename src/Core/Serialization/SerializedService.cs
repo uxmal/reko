@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	public class SerializedService : SerializedProcedureBase_v1
 	{

@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Wraps the Windows Forms textbox with the ITextBox interface.

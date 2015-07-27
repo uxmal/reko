@@ -22,7 +22,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents an equivalence class of types; i.e. types that are joined by equalities, function 

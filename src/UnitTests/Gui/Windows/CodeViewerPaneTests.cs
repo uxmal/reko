@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
+using Reko.Gui.Windows.Forms;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using NUnit.Framework;
 using System;
@@ -33,7 +33,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class CodeViewerPaneTests

@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Analysis;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Analysis;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class ConditionCodeEliminatorTests : AnalysisTestBase

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UiPrototype.WinForms
+namespace Reko.UiPrototype.WinForms
 {
     public class Project
     {

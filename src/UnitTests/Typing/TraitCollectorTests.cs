@@ -18,24 +18,23 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Scanning;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.UnitTests.Fragments;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Scanning;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
+using Reko.UnitTests.Fragments;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TraitCollectorTests : TypingTestBase

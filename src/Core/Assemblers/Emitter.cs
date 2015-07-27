@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Assemblers
+namespace Reko.Core.Assemblers
 {
 	/// <summary>
 	/// Emits bytes into a bytestream belonging to a segment/section.

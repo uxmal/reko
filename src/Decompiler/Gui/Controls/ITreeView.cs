@@ -6,7 +6,7 @@ using ContextMenu = System.Windows.Forms.ContextMenu;
 using DragEventHandler = System.Windows.Forms.DragEventHandler;
 using MouseEventHandler = System.Windows.Forms.MouseEventHandler;
 
-namespace Decompiler.Gui.Controls
+namespace Reko.Gui.Controls
 {
     public interface ITreeView
     {

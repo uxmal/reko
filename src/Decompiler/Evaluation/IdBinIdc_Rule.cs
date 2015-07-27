@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
 	/// <summary>
 	/// If we find a = x OP CONST followed by b = a, then replace so that b = x OP CONST.

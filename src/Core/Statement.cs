@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Statements constitute the contents basic blocks.

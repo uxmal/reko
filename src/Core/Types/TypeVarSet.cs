@@ -21,7 +21,7 @@
 using System;
 using System.Collections;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Implements a sparse set over type variables.

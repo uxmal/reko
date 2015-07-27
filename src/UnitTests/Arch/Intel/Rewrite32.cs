@@ -18,23 +18,21 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Environments.Win32;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Environments.Win32;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class Rewrite32
@@ -73,7 +71,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             tlSvc.Replay();
             configSvc.Replay();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            win32 = new Decompiler.Environments.Win32.Win32Platform(services, arch);
+            win32 = new Reko.Environments.Win32.Win32Platform(services, arch);
         }
 
 		[Test]

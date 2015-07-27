@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Given an expression with a complex type, rebuilds it to accomodate the 

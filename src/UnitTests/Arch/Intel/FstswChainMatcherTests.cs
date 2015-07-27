@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     [Ignore("Disabled until we come up with a mechanism to perform architecture-specific expression simplifications, at which point this should go to Analysis")]

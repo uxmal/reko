@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor<int>
     {

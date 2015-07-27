@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public interface LoaderElement
     {

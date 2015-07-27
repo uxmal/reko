@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Decompiler.ImageLoaders.OdbgScript
+namespace Reko.ImageLoaders.OdbgScript
 {
     using rulong = System.UInt64;
     using System.Text;

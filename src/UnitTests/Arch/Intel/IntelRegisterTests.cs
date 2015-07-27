@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
-using Decompiler.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Types;
+using Reko.Arch.X86;
 using NUnit.Framework;
 using System;
 using System.Text;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class IntelRegisterTests

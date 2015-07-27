@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Reko.Core.Rtl
 {
     public class RtlInstructionMatcher : RtlInstructionVisitor<bool>
     {

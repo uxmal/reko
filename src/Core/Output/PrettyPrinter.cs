@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     /// <summary>
     /// Prettyprint engine for nice formatting of long source code lines.

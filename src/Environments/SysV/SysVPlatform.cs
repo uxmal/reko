@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.SysV
+namespace Reko.Environments.SysV
 {
     //$TODO: rename to Elf-Neutral?
     public class SysVPlatform : Platform

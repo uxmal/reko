@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Environments.MacOS;
+using Reko.Environments.MacOS;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.MacOS
+namespace Reko.UnitTests.Environments.MacOS
 {
     [TestFixture]
     public class ResourceForkTests

@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
     /// Describes a source of textual data as a list of lines,

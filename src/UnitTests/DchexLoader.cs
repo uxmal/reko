@@ -1,5 +1,5 @@
-﻿using Decompiler.Core;
-using Decompiler.ImageLoaders;
+﻿using Reko.Core;
+using Reko.ImageLoaders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Decompiler.UnitTests
+namespace Reko.UnitTests
 {
     class DchexLoader : ImageLoader
     {
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests
         {
             switch (archName)
             {
-            case "m68k": return new Decompiler.Arch.M68k.M68kArchitecture();
+            case "m68k": return new Reko.Arch.M68k.M68kArchitecture();
             default: throw new NotImplementedException();
             }
         }

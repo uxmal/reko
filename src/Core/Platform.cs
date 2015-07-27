@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// A Platform is an abstraction of the operating environment,

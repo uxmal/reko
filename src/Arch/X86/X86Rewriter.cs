@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     /// <summary>
     /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.

@@ -18,15 +18,15 @@
  */
 #endregion 
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Xml;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Summarizes the effects of calling a procedure, as seen by the caller. Procedure signatures

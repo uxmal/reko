@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Archives;
+using Reko.Core.Archives;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Services
+namespace Reko.Core.Services
 {
     /// <summary>
     /// Used by loaders that have encountered an archive and need the user to select 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UiPrototype.Ui
+namespace Reko.UiPrototype.Ui
 {
     class MainFormInteractor
     {

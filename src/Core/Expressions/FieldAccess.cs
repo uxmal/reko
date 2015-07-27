@@ -18,11 +18,11 @@
  */
 #endregion 
 
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Models an access to the field of a record, like the Pascal expression a.field.

@@ -18,10 +18,10 @@
 */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Gui;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +29,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public interface IAnalyzedPageInteractor : IPhasePageInteractor
     {
@@ -112,7 +112,7 @@ namespace Decompiler.Gui.Windows.Forms
         #region ICommandTarget interface 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -128,7 +128,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
-using Procedure_v1 = Decompiler.Core.Serialization.Procedure_v1;
+using Procedure_v1 = Reko.Core.Serialization.Procedure_v1;
 
-namespace Decompiler.Gui.Design
+namespace Reko.Gui.Design
 {
     public class ProcedureDesigner : TreeNodeDesigner, IEquatable<ProcedureDesigner>
     {
@@ -69,7 +69,7 @@ namespace Decompiler.Gui.Design
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -86,7 +86,7 @@ namespace Decompiler.Gui.Design
 
         public override bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

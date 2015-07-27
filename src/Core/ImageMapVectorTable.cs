@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Represents a table of jumps or calls. Initially, it is empty.

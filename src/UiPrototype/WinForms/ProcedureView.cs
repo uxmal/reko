@@ -1,5 +1,5 @@
 ﻿using System;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui.Windows.Controls;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UiPrototype.WinForms
+namespace Reko.UiPrototype.WinForms
 {
     /// <summary>
     /// Renders IL code in colorized text format.

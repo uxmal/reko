@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Gui.Windows.Controls;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Gui.Windows.Controls;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Pane that displays decompiled code.
@@ -115,7 +115,7 @@ namespace Decompiler.Gui.Windows
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -131,7 +131,7 @@ namespace Decompiler.Gui.Windows
 
         public bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class AArch64Disassembler2 : DisassemblerBase<AArch64Instruction>
     {

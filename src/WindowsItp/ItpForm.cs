@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Configuration;
-using Decompiler.Environments.Win32;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.ImageLoaders.MzExe;
-using Decompiler.ImageLoaders.OdbgScript;
+using Reko.Arch.X86;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
+using Reko.Environments.Win32;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
+using Reko.ImageLoaders.MzExe;
+using Reko.ImageLoaders.OdbgScript;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsItp
+namespace Reko.WindowsItp
 {
     public partial class ItpForm : Form
     {
@@ -70,7 +70,7 @@ namespace Decompiler.WindowsItp
         {
             var sc = new System.ComponentModel.Design.ServiceContainer();
             sc.AddService(typeof(ISettingsService), new DummySettingsService());
-            using (var dlg = new Decompiler.Gui.Windows.Forms.SearchDialog())
+            using (var dlg = new Reko.Gui.Windows.Forms.SearchDialog())
             {
                 dlg.Services = sc;
                 if (dlg.ShowDialog() == DialogResult.OK)

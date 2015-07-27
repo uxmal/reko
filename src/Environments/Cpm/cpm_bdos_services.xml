@@ -2692,13 +2692,13 @@ href="files.html#ccp105p">CCP+</a> need a special flag set to
         <p>The format of a normal CP/Net message is:</p>
 
         <pre>
-          [--FMT--]  Format code, 1 byte. 0-7 are standard CP/Net message formats.
-          [--DID--]  Destination computer's network ID; normally 1 byte.
-          [--SID--]  Source computer's network ID; normally 1 byte.
-          [--FNC--]  Function code; for standard messages, BDOS function number.
+          [- -FMT- -]  Format code, 1 byte. 0-7 are standard CP/Net message formats.
+          [- -DID- -]  Destination computer's network ID; normally 1 byte.
+          [- -SID- -]  Source computer's network ID; normally 1 byte.
+          [- -FNC- -]  Function code; for standard messages, BDOS function number.
           Always 1 bytes.
-          [--SIZ--]  Message size - 1; normally 1 byte.
-          [--MSG--]  Message data; normally 1-256 bytes.
+          [ - -SIZ- -]  Message size - 1; normally 1 byte.
+          [- -MSG- -]  Message data; normally 1-256 bytes.
         </pre>
 
         <p>The 8 standard message formats are treated as bitfields:</p>

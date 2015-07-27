@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Reflection;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     /// <summary>
     /// Abstract base class for serialized types.

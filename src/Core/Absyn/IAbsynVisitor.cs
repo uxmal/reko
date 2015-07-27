@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
 	/// <summary>
 	/// Interface for visiting abstract syntax nodes.

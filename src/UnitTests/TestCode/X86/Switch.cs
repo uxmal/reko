@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.TestCode
+namespace Reko.UnitTests.TestCode
 {
     public partial class X86 
     {

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
 	public class AbsynLabel : AbsynStatement
 	{

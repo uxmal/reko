@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Services
+namespace Reko.Core.Services
 {
     /// <summary>
     /// Provides services for displaying items in the user interface.

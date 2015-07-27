@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Machine
+namespace Reko.Core.Machine
 {
     /// <summary>
     /// Abstraction of a processor instruction operand.

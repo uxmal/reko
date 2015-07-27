@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Globalization;
@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     /// <summary>
     /// Foratter that writes to a TextWriter.

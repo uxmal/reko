@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class OperatorTests

@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
 	/// <summary>
 	/// Rule that matches (+ id1 id1) and generates (* id1 2)

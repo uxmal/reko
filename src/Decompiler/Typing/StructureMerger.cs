@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Given an array of structures and their corresponding TypeVars, merges them and adjusts equivalence classes accordingly.

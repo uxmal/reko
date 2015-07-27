@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mips
+namespace Reko.Arch.Mips
 {
     abstract class OpRec 
     {

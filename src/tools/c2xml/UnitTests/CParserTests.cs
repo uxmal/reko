@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 
 #if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class CParserTests
@@ -162,7 +162,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             var sExp =
                 "(fndecl (decl __Inline PVOID " +
                     "((init-decl (func GetFiberData ((Void )))))) " +
-                    "(Decompiler.Tools.C2Xml.ReturnStat))";
+                    "(Reko.Tools.C2Xml.ReturnStat))";
             Assert.AreEqual(sExp, decl.ToString());
         }
 
@@ -171,7 +171,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         {
             Lex("typedef enum _S { Item = 1, Folder } S;");
             var decl = parser.Parse_ExternalDecl();
-            var sExp = "(decl Typedef Decompiler.Tools.C2Xml.EnumeratorTypeSpec " +
+            var sExp = "(decl Typedef Reko.Tools.C2Xml.EnumeratorTypeSpec " +
                 "((init-decl S)))";
             Assert.AreEqual(sExp, decl.ToString());
         }

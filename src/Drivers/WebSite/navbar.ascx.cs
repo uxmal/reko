@@ -25,7 +25,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-namespace Decompiler.WebSite
+namespace Reko.WebSite
 {
 	public class navbar : System.Web.UI.UserControl
 	{

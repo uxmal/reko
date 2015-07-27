@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	/// <summary>
 	/// </summary>

@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Serialization;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Serialization;
 using System;
 using System.ComponentModel;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Models a system service. The syscallinfo member indicates how the system service
     /// is selected (typically by loading specific values in processor registers).
     /// </summary>
     
-    [Designer("Decompiler.Gui.Design.SystemServiceDesigner,Decompiler")]
+    [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko")]
 	public class SystemService
 	{
 		public string Name;

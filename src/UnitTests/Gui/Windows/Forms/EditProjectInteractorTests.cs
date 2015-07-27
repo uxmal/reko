@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class EditProjectInteractorTests

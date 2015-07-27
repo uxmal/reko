@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
     public class SymbolicEvaluationContext : EvaluationContext
     {

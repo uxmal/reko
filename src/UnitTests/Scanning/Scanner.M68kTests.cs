@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Arch.M68k;
-using Decompiler.Assemblers.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Scanning;
+using Reko;
+using Reko.Arch.M68k;
+using Reko.Assemblers.M68k;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Scanning;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -32,7 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class Scanner_M68kTests

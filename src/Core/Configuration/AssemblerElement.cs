@@ -24,7 +24,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public interface AssemblerElement
     {

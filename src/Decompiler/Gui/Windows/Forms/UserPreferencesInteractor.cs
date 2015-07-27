@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     class UserPreferencesInteractor
     {

@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// Builds the alias graph for a procedure. The idea is to discover relationships like

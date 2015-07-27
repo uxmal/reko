@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// A LocationNavigator is used by the GUI front-end to navigate to a given location. Locations can be Addresses,

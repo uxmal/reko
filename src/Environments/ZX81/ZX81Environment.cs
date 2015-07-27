@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.Z80;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
+using Reko.Arch.Z80;
+using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.ZX81
+namespace Reko.Environments.ZX81
 {
     /// <summary>
     /// Implements the very meager ZX81 environment.

@@ -18,19 +18,18 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Loading;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Core.Configuration;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
+using Reko.Loading;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Core.Configuration;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
 using System;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace WindowsDecompiler
+namespace Reko.WindowsDecompiler
 {
 	public class Driver
 	{

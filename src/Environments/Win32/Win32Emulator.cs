@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
+using Reko.Arch.X86;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
-    using Decompiler.Core.Serialization;        // May need this for Win64 support.
+    using Reko.Core.Serialization;        // May need this for Win64 support.
     using System.Diagnostics;
     using TWord = System.UInt32;
 

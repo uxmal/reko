@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
 	public class Mps_Constant_Rule
 	{

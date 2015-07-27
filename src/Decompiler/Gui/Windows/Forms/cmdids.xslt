@@ -28,7 +28,7 @@
 
 using System;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
 	public class CmdSets
 	{

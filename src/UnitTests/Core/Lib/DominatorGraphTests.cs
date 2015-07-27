@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Lib
 {
     [TestFixture]
     public class DominatorGraphTests

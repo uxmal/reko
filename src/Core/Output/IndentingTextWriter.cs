@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     /// <summary>
     /// A TextWriter that maintains a notion of indentation.

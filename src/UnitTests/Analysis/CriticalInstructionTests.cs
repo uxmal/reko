@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core;
+using Reko.Analysis;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CriticalInstructionTests
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DereferenceTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Decompiler.Core.Expressions.Dereference(PrimitiveType.Pointer32, Id32("foo"))));
+			Assert.IsTrue(ci.IsCritical(new Reko.Core.Expressions.Dereference(PrimitiveType.Pointer32, Id32("foo"))));
 		}
 
 		[Test]

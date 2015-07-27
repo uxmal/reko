@@ -21,7 +21,7 @@
 using System;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     public class Diagnostic
     {

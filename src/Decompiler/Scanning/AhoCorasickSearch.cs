@@ -23,7 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
         /// <summary>
         /// Interface containing all methods to be implemented

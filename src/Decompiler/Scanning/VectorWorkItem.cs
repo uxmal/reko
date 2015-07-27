@@ -1,12 +1,12 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
+﻿using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     public class VectorWorkItem : WorkItem
     {

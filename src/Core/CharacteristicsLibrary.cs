@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     public class CharacteristicsLibrary
     {

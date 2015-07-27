@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// A disassembler can be considered an enumerator of disassembled instructions.

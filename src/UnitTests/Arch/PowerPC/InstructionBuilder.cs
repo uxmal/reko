@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
+using Reko.Arch.PowerPC;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.PowerPC
+namespace Reko.UnitTests.Arch.PowerPC
 {
     class InstructionBuilder
     {

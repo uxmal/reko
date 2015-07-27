@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Lib
 {
 	using StringBuilder = System.Text.StringBuilder;
 

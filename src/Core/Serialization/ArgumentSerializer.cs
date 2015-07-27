@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	public class ArgumentSerializer
 	{

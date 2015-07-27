@@ -17,9 +17,9 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Output;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Output;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.IO;
@@ -29,7 +29,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core.Output
+namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
     public class GlobalDataWriterTests

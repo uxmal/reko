@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Gui;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class CodeLocationTests

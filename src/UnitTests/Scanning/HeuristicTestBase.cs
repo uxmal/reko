@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
-using Decompiler.Scanning;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Types;
+using Reko.Scanning;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,7 +31,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     public class HeuristicTestBase
     {

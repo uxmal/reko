@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
+using Reko.Core.Configuration;
+using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,7 +31,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class OpenAsInteractorTests

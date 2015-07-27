@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Controls;
+using Reko.Core;
+using Reko.Gui.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Interactor class used to display the decompiler project as a tree view for user browsing.

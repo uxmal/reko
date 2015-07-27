@@ -21,7 +21,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	/// <summary>
 	/// Used to represent the signature of a procedure call occurring at a specified address.

@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class DominatorGraphTests : AnalysisTestBase

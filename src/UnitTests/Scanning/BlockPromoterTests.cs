@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]   
     public class BlockPromoterTests
