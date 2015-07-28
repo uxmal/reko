@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.ZX81
+namespace Reko.Environments.ZX81
 {
     /// <summary>
     /// Implements the Sinclair-defined text encoding, which has no relationship

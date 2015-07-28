@@ -291,7 +291,7 @@ namespace Reko.UnitTests.Analysis
                 m.Store(m.Word32(0x4232), id);
                 m.Return(id);
             });
-            proc.Dump(true, false);
+            proc.Dump(true);
             var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
             liv.Find();
 			var iv = liv.InductionVariables[0];
@@ -346,7 +346,7 @@ namespace Reko.UnitTests.Analysis
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);
-            proc.Dump(true, false); //$DEBUG
+            proc.Dump(true); //$DEBUG
 		}
 
         private void Prepare(Action<ProcedureBuilder> m)

@@ -102,11 +102,10 @@ namespace Reko.Typing
 		}
 
         /// <summary>
-        /// $DEBUG: for debugging only, only performs type analysis on the count procedures starting at
+        /// $DEBUG: for debugging only, only performs type analysis on the 
+        /// <param name="count"/> procedures starting at
         /// procedure start.
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="p_2"></param>
         [Conditional("DEBUG")]
         private void RestrictProcedures(Program prog, int start, int count, bool dumpProcedures)
         {
@@ -122,7 +121,7 @@ namespace Reko.Typing
                 prog.Procedures[Address.Ptr32(i)] = procs[i];
                 if (dumpProcedures)
                 {
-                    procs[i].Dump(true, false);
+                    procs[i].Dump(true);
                 }
                 else
                 {

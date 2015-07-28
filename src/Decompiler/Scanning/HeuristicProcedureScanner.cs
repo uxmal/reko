@@ -123,8 +123,6 @@ namespace Reko.Scanning
 
         private void RemoveBlockFromGraph(HeuristicBlock n)
         {
-            if (n.Address.ToString().EndsWith("003"))   //$DEBUG:
-                n.Address.ToLinear();
             Debug.Print("Removing block: {0}", n.Address);
             blocks.Nodes.Remove(n);
         }

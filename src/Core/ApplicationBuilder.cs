@@ -116,8 +116,6 @@ namespace Reko.Core
 
         public Instruction CreateInstruction()
         {
-            if (callee.ToString().StartsWith("Register"))//$DEBUG
-                callee.ToString();
             var idOut = BindReturnValue();
             var dtOut = sigCallee.ReturnValue != null
                 ? sigCallee.ReturnValue.DataType

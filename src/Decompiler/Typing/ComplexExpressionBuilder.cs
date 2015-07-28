@@ -254,20 +254,12 @@ namespace Reko.Typing
             return complexExp;
         }
 
-		public Expression VisitEquivalenceClass(EquivalenceClass eq)
-		{
-			var eqOriginal = dtOriginal as EquivalenceClass;
-			if (eqOriginal != null && eq.Number == eqOriginal.Number)
-			{
-				complexExp.DataType = eq;
-                return complexExp;
-			}
-			else
-			{
-				dt = eq.DataType;
-				return dt.Accept(this);
-			}
-		}
+        public Expression VisitEquivalenceClass(EquivalenceClass eq)
+        {
+            dt = eq.DataType;
+            dtOriginal = eq.DataType;
+            return dt.Accept(this);
+        }
 
 		public Expression VisitPointer(Pointer ptr)
 		{

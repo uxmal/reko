@@ -149,7 +149,12 @@
   <service name="_TEFindLine"><syscallinfo><vector>A0FF</vector></syscallinfo></service>
   <service name="_GetZone"><syscallinfo><vector>A11A</vector></syscallinfo></service>
   <service name="_MaxMem"><syscallinfo><vector>A11D</vector></syscallinfo></service>
-  <service name="_NewPtr"><syscallinfo><vector>A11E</vector></syscallinfo></service>
+  <service name="_NewPtr"><syscallinfo><vector>A11E</vector></syscallinfo>
+    <signature>
+      <return><reg>a0</reg></return>
+      <arg name="size"><reg>d0</reg></arg>
+    </signature>
+  </service>
   <service name="_NewHandle"><syscallinfo><vector>A122</vector></syscallinfo></service>
   <service name="_HandleZone"><syscallinfo><vector>A126</vector></syscallinfo></service>
   <service name="_RecoverHandle"><syscallinfo><vector>A128</vector></syscallinfo></service>

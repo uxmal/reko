@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -71,11 +72,12 @@ namespace Reko.Core
 
 		public static TypeLibrary Load(IProcessorArchitecture arch, string fileName)
 		{
-			string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR") ?? ".";
-			// TODO: extract runtime files ( like "realmodeintservices.xml") to their own directory ?
-
-			string libPath = Path.Combine(prefix,"src","Environments","Win32");
-			libPath = Path.Combine(libPath,fileName);
+            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var libPath = Path.Combine(prefix, fileName);
+            if (!File.Exists(libPath))
+            {
+                libPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            }
 			XmlSerializer ser = SerializedLibrary.CreateSerializer();
 			SerializedLibrary slib;
 			using (FileStream stm = new FileStream(libPath, FileMode.Open, FileAccess.Read, FileShare.Read))

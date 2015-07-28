@@ -24,6 +24,7 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Reko.Environments.Msdos
@@ -73,34 +74,26 @@ namespace Reko.Environments.Msdos
             throw new NotImplementedException();
         }
 
-		public void LoadRealmodeServices(IProcessorArchitecture arch)
-		{
-			string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR") ?? ".";
-			// TODO: extract runtime files ( like "realmodeintservices.xml") to their own directory ?
-			string libPath = Path.Combine(prefix,"src","Environments","Msdos","realmodeintservices.xml");
-			if (!File.Exists (libPath))
-			{
-                prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-				libPath = Path.Combine(prefix,"realmodeintservices.xml");
-				if (!File.Exists(libPath))
-				{
-					libPath = Path.Combine(Directory.GetCurrentDirectory() , "realmodeintservices.xml");
-				}
-			}
+        public void LoadRealmodeServices(IProcessorArchitecture arch)
+        {
+            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var libPath = Path.Combine(prefix, "realmodeintservices.xml");
+            if (!File.Exists(libPath))
+            {
+                libPath = Path.Combine(Directory.GetCurrentDirectory(), "realmodeintservices.xml");
+            }
 
             SerializedLibrary lib;
             using (FileStream stm = new FileStream(libPath, FileMode.Open))
-			{
+            {
                 lib = SerializedLibrary.LoadFromStream(stm);
-			}
+            }
 
-            int i = 0;
-			realModeServices = new SystemService[lib.Procedures.Count];
-			foreach (SerializedService ssvc in lib.Procedures)
-			{
-				realModeServices[i++] = ssvc.Build(arch);
-			}
-		}
+            realModeServices = lib.Procedures
+                .Cast<SerializedService>()
+                .Select(s => s.Build(arch))
+                .ToArray();
+        }
 
         public override string DefaultCallingConvention
         {

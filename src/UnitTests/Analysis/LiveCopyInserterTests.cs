@@ -189,7 +189,6 @@ namespace Reko.UnitTests.Analysis
 			coa.Transform();
 
 			DeadCode.Eliminate(proc, ssa);
-            proc.Dump(true, false); //$DEBUG
 		}
 	}
 }

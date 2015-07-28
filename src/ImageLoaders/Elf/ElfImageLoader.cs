@@ -18,27 +18,21 @@
  */
 #endregion
 
-
 // http://hitmen.c02.at/files/yapspd/psp_doc/chap26.html - PSP ELF
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
 using System;
-using System.IO;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
-    using StrIntMap = Dictionary<string, int>;
-    using RelocMap = Dictionary<UInt32, string>;
-    using Decompiler.Core.Configuration;
-    using System.Collections;
-    using Decompiler.Core.Services;
-
     /// <summary>
     /// Loader for ELF images.
     /// </summary>
@@ -161,7 +155,11 @@ namespace Decompiler.ImageLoaders.Elf
         public List<Elf64_SHdr> SectionHeaders64 { get; private set; }
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
-        public override Address PreferredBaseAddress { get { return addrPreferred; } }
+
+        public override Address PreferredBaseAddress { 
+            get { return addrPreferred; }
+            set { addrPreferred = value; }
+        }
 
         public override Program Load(Address addrLoad)
         {
@@ -253,7 +251,7 @@ namespace Decompiler.ImageLoaders.Elf
                         platform.MakeAddressFromLinear(segment.sh_addr), 
                         GetSectionName(segment.sh_name),
                         mode);
-                    seg.Renderer = CreateRenderer64(segment);
+                    seg.Designer = CreateRenderer64(segment);
                 }
             }
             else
@@ -273,7 +271,7 @@ namespace Decompiler.ImageLoaders.Elf
                     if ((segment.sh_flags & SHF_EXECINSTR) != 0)
                         mode |= AccessMode.Execute;
                     var seg = imageMap.AddSegment(Address.Ptr32(segment.sh_addr), GetSectionName(segment.sh_name), mode);
-                    seg.Renderer = CreateRenderer(segment);
+                    seg.Designer = CreateRenderer(segment);
                 }
                 imageMap.DumpSections();
             }
@@ -289,7 +287,7 @@ namespace Decompiler.ImageLoaders.Elf
         public Platform CreatePlatform(byte osAbi)
         {
             DefaultPlatform defaultPlatform;
-            var dcSvc = Services.RequireService<IDecompilerConfigurationService>();
+            var dcSvc = Services.RequireService<IConfigurationService>();
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
@@ -311,7 +309,7 @@ namespace Decompiler.ImageLoaders.Elf
 
         public IEnumerable<TypeLibrary> LoadTypeLibraries()
         {
-            var dcSvc = Services.GetService<IDecompilerConfigurationService>();
+            var dcSvc = Services.GetService<IConfigurationService>();
             if (dcSvc == null)
                 return new TypeLibrary[0];
             var env = dcSvc.GetEnvironment("elf-neutral");
@@ -443,7 +441,7 @@ namespace Decompiler.ImageLoaders.Elf
 
         private IProcessorArchitecture CreateArchitecture(ushort machineType)
         {
-            var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             string arch;
             switch (machineType)
             {

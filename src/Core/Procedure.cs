@@ -87,13 +87,13 @@ namespace Reko.Core
 		}
 
         [Conditional("DEBUG")]
-		public void Dump(bool dump, bool emitFrame)
+		public void Dump(bool dump)
 		{
 			if (!dump)
 				return;
 			
 			StringWriter sb = new StringWriter();
-			Write(emitFrame, sb);
+			Write(false, sb);
 			Debug.WriteLine(sb.ToString());
 		}
 

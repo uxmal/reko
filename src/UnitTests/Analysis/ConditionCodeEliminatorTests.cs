@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Analysis
                 var sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
                 SsaState ssa = sst.SsaState;
 
-                proc.Dump(true, false);
+                proc.Dump(true);
 
                 var vp = new ValuePropagator(ssa.Identifiers, proc);
                 vp.Transform();

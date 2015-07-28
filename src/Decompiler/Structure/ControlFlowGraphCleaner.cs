@@ -127,7 +127,7 @@ namespace Reko.Structure
                 }
 			} while (dirty);
 
-			proc.Dump(true, false);
+			proc.Dump(true);
 		}
 	}
 }
