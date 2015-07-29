@@ -35,8 +35,8 @@ namespace Reko.Gui
     {
         public string Name;     // Name of this style
         public Font Font;
-        public string ForeColor;
-        public string BackColor;
+        public SolidBrush ForeBrush;
+        public SolidBrush BackBrush;
         public string Cursor;
     }
 
@@ -149,35 +149,35 @@ namespace Reko.Gui
             AddStyle(new UiStyle
             {
                 Name = UiStyles.MemoryWindow,
-                ForeColor = (string)settingsSvc.Get(UiStyles.MemoryForeColor, defMemStyle.ForeColor),
-                BackColor = (string)settingsSvc.Get(UiStyles.MemoryBackColor, defMemStyle.BackColor),
+                ForeBrush = GetBrush(UiStyles.MemoryForeColor, defMemStyle.ForeColor),
+                BackBrush = GetBrush(UiStyles.MemoryBackColor, defMemStyle.BackColor),
                 Font = GetFont(UiStyles.MemoryFont, defMemStyle),
             });
             AddStyle(new UiStyle
             {
                 Name = UiStyles.MemoryCode,
-                ForeColor = (string)settingsSvc.Get(UiStyles.MemoryCodeForeColor, defMemCodeStyle.ForeColor),
-                BackColor = (string)settingsSvc.Get(UiStyles.MemoryCodeBackColor, defMemCodeStyle.BackColor),
+                ForeBrush = GetBrush(UiStyles.MemoryCodeForeColor, defMemCodeStyle.ForeColor),
+                BackBrush = GetBrush(UiStyles.MemoryCodeBackColor, defMemCodeStyle.BackColor),
             });
             AddStyle(new UiStyle
             {
                 Name = UiStyles.MemoryHeuristic,
-                ForeColor = (string)settingsSvc.Get(UiStyles.MemoryHeuristicForeColor, defMemHeurStyle.ForeColor),
-                BackColor = (string)settingsSvc.Get(UiStyles.MemoryHeuristicBackColor, defMemHeurStyle.BackColor),
+                ForeBrush = GetBrush(UiStyles.MemoryHeuristicForeColor, defMemHeurStyle.ForeColor),
+                BackBrush = GetBrush(UiStyles.MemoryHeuristicBackColor, defMemHeurStyle.BackColor),
             });
             AddStyle(new UiStyle
             {
                 Name = UiStyles.MemoryData,
-                ForeColor = (string)settingsSvc.Get(UiStyles.MemoryDataForeColor, defMemDataStyle.ForeColor),
-                BackColor = (string)settingsSvc.Get(UiStyles.MemoryDataBackColor, defMemDataStyle.BackColor),
+                ForeBrush = GetBrush(UiStyles.MemoryDataForeColor, defMemDataStyle.ForeColor),
+                BackBrush = GetBrush(UiStyles.MemoryDataBackColor, defMemDataStyle.BackColor),
             });
 
             var defDisStyle = q.Where(s => s.Name == UiStyles.Disassembler).Single();
             var disStyle = new UiStyle
             {
                 Name = UiStyles.Disassembler,
-                ForeColor = (string)settingsSvc.Get(UiStyles.DisassemblerForeColor, defDisStyle.ForeColor),
-                BackColor = (string)settingsSvc.Get(UiStyles.DisassemblerBackColor, defDisStyle.BackColor),
+                ForeBrush = GetBrush(UiStyles.DisassemblerForeColor, defDisStyle.ForeColor),
+                BackBrush = GetBrush(UiStyles.DisassemblerBackColor, defDisStyle.BackColor),
                 Font = GetFont(UiStyles.DisassemblerFont, defDisStyle),
             };
             AddStyle(disStyle);
@@ -185,7 +185,7 @@ namespace Reko.Gui
             var disOpStyle = new UiStyle
             {
                 Name = UiStyles.DisassemblerOpcode,
-                ForeColor = (string)settingsSvc.Get(UiStyles.DisassemblerOpcodeColor, defDisOpStyle.ForeColor)
+                ForeBrush = GetBrush(UiStyles.DisassemblerOpcodeColor, defDisOpStyle.ForeColor)
             };
             AddStyle(disOpStyle);
 
@@ -194,8 +194,8 @@ namespace Reko.Gui
             var codeStyle = new UiStyle
             {
                 Name = UiStyles.CodeWindow,
-                ForeColor = (string)settingsSvc.Get(UiStyles.CodeForeColor, defCodeStyle.ForeColor),
-                BackColor = (string)settingsSvc.Get(UiStyles.CodeBackColor, defCodeStyle.BackColor),
+                ForeBrush = GetBrush(UiStyles.CodeForeColor, defCodeStyle.ForeColor),
+                BackBrush = GetBrush(UiStyles.CodeBackColor, defCodeStyle.BackColor),
                 Font = GetFont(UiStyles.CodeFont, defDisStyle),
             };
             AddStyle(codeStyle);
@@ -204,7 +204,7 @@ namespace Reko.Gui
             var codeKwStyle = new UiStyle
             {
                 Name = UiStyles.CodeKeyword,
-                ForeColor = (string) settingsSvc.Get(UiStyles.CodeKeywordColor, defCodeKwStyle.ForeColor),
+                ForeBrush = GetBrush(UiStyles.CodeKeywordColor, defCodeKwStyle.ForeColor),
                 Font = GetFont(UiStyles.CodeKeywordFont, defCodeStyle)
             };
             AddStyle(codeKwStyle);
@@ -213,7 +213,7 @@ namespace Reko.Gui
             var codeCommentStyle = new UiStyle
             {
                 Name = UiStyles.CodeComment,
-                ForeColor = (string)settingsSvc.Get(UiStyles.CodeCommentColor, defCodeCommentStyle.ForeColor),
+                ForeBrush = GetBrush(UiStyles.CodeCommentColor, defCodeCommentStyle.ForeColor),
                 Font = GetFont(UiStyles.CodeCommentFont, defCodeStyle)
             };
             AddStyle(codeCommentStyle);
@@ -234,9 +234,24 @@ namespace Reko.Gui
             return font;
         }
 
+        private SolidBrush GetBrush(string brushNameSetting, string defaultColor)
+        {
+            var sColor = (string)settingsSvc.Get(brushNameSetting, defaultColor);
+            if (string.IsNullOrEmpty(sColor))
+                return null;
+            var colorCvt = TypeDescriptor.GetConverter(typeof(Color));
+            var brush = new SolidBrush(ConvertFrom<Color>(colorCvt, sColor));
+            return brush;
+        }
+
         private string SaveFont(Font font)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0}, {1}pt", font.Name, font.Size);
+        }
+
+        private string SaveBrush(SolidBrush brush)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "#{0:6}", brush.Color.ToArgb());
         }
 
         private void AddStyle(UiStyle s)
@@ -249,26 +264,41 @@ namespace Reko.Gui
             var fontCvt = TypeDescriptor.GetConverter(typeof(Font));
             var sizeCvt = TypeDescriptor.GetConverter(typeof(Size));
 
+            var memStyle = Styles[UiStyles.MemoryWindow];
+            settingsSvc.Set(UiStyles.MemoryForeColor, SaveBrush(memStyle.ForeBrush));
+            settingsSvc.Set(UiStyles.MemoryBackColor, SaveBrush(memStyle.BackBrush));
+            settingsSvc.Set(UiStyles.MemoryFont, SaveFont(memStyle.Font));
+
+            var memCodeStyle = Styles[UiStyles.MemoryCode];
+            settingsSvc.Set(UiStyles.MemoryCodeForeColor, SaveBrush(memCodeStyle.ForeBrush));
+            settingsSvc.Set(UiStyles.MemoryCodeBackColor, SaveBrush(memCodeStyle.BackBrush));
+            var memHeurStyle = Styles[UiStyles.MemoryHeuristic];
+            settingsSvc.Set(UiStyles.MemoryHeuristicForeColor, SaveBrush(memHeurStyle.ForeBrush));
+            settingsSvc.Set(UiStyles.MemoryHeuristicBackColor, SaveBrush(memHeurStyle.BackBrush));
+            var memDataStyle = Styles[UiStyles.MemoryData];
+            settingsSvc.Set(UiStyles.MemoryDataForeColor, SaveBrush(memDataStyle.ForeBrush));
+            settingsSvc.Set(UiStyles.MemoryDataBackColor, SaveBrush(memDataStyle.BackBrush));
+
             var disStyle = Styles[UiStyles.Disassembler];
-            settingsSvc.Set(UiStyles.DisassemblerForeColor, disStyle.ForeColor);
-            settingsSvc.Set(UiStyles.DisassemblerBackColor, disStyle.BackColor);
+            settingsSvc.Set(UiStyles.DisassemblerForeColor, SaveBrush(disStyle.ForeBrush));
+            settingsSvc.Set(UiStyles.DisassemblerBackColor, SaveBrush(disStyle.BackBrush));
             settingsSvc.Set(UiStyles.DisassemblerFont, SaveFont(disStyle.Font));
 
             var disOpStyle = Styles[UiStyles.DisassemblerOpcode];
-            settingsSvc.Set(UiStyles.DisassemblerOpcodeColor, disOpStyle.ForeColor);
+            settingsSvc.Set(UiStyles.DisassemblerOpcodeColor, disOpStyle.ForeBrush);
             
             var codeStyle = Styles[UiStyles.CodeWindow];
-            settingsSvc.Get(UiStyles.CodeForeColor, codeStyle.ForeColor);
-            settingsSvc.Get(UiStyles.CodeBackColor, codeStyle.BackColor);
-            settingsSvc.Get(UiStyles.CodeFont, SaveFont(codeStyle.Font));
+            settingsSvc.Set(UiStyles.CodeForeColor, SaveBrush(codeStyle.ForeBrush));
+            settingsSvc.Set(UiStyles.CodeBackColor, SaveBrush(codeStyle.BackBrush));
+            settingsSvc.Set(UiStyles.CodeFont, SaveFont(codeStyle.Font));
 
             var codeKwStyle = Styles[UiStyles.CodeKeyword];
-            settingsSvc.Set(UiStyles.CodeKeywordColor, codeKwStyle.ForeColor);
+            settingsSvc.Set(UiStyles.CodeKeywordColor, SaveBrush(codeKwStyle.ForeBrush));
             settingsSvc.Set(UiStyles.CodeKeywordFont, SaveFont(codeStyle.Font));
 
             var codeCommentStyle = Styles[UiStyles.CodeComment];
-            settingsSvc.Set(UiStyles.CodeCommentColor, codeCommentStyle.ForeColor);
-            settingsSvc.Set(UiStyles.CodeCommentFont, codeStyle.Font.FontFamily.ToString());
+            settingsSvc.Set(UiStyles.CodeCommentColor, SaveBrush(codeCommentStyle.ForeBrush));
+            settingsSvc.Set(UiStyles.CodeCommentFont,  SaveFont(codeStyle.Font));
 
             settingsSvc.Set("DisassemblyFont", fontCvt.ConvertToInvariantString(dasmFont));
             settingsSvc.Set("SourceCodeFont", fontCvt.ConvertToInvariantString(srcFont));

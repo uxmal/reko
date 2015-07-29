@@ -383,7 +383,7 @@ namespace Reko.WindowsItp
                     new UiStyleElement { Name = UiStyles.MemoryWindow, FontName="Lucida Console, 9pt"},
                     new UiStyleElement { Name = UiStyles.MemoryCode, ForeColor = "#000000", BackColor="#FFC0C0", },
                     new UiStyleElement { Name = UiStyles.MemoryHeuristic, ForeColor = "#000000", BackColor="#FFE0E0"},
-                    new UiStyleElement { Name = UiStyles.MemoryData, ForeColor="#000000", BackColor="#8080FF" },
+                    new UiStyleElement { Name = UiStyles.MemoryData, ForeColor="#000000", BackColor="#C0C0FF" },
                                
                     new UiStyleElement { Name = UiStyles.Disassembler,  FontName="Lucida Console, 9pt" },
                     new UiStyleElement { Name = UiStyles.DisassemblerOpcode, ForeColor = "#801010" },

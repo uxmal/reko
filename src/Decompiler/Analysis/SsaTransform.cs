@@ -30,7 +30,7 @@ using System.Linq;
 namespace Reko.Analysis
 {
 	/// <summary>
-	/// Transforms a <see cref="Decompiler.Core.Procedure"/> to Static Single Assignment form.
+	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
 	/// </summary>
 	public class SsaTransform
 	{

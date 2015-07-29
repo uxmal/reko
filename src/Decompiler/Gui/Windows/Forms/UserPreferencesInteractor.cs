@@ -134,19 +134,45 @@ namespace Reko.Gui.Windows.Forms
             public Color GetForeColor()
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                return (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFrom(style.ForeColor);
+                return style.ForeBrush != null
+                    ? style.ForeBrush.Color
+                    : Color.Empty;
             }
 
-            internal void SetForeColor(Color color)
+            public Color GetBackColor()
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                style.ForeColor = string.Format("#{0:X6}", color.ToArgb());
+                return style.BackBrush != null
+                    ? style.BackBrush.Color
+                    : Color.Empty;
+            }
+
+            public void SetForeColor(Color color)
+            {
+                var style = outer.localSettings.Styles[Style.Name];
+                if (style.ForeBrush != null)
+                {
+                    style.ForeBrush.Dispose();
+                }
+                style.ForeBrush = new SolidBrush(color);
+                Control.Refresh();
+            }
+
+            public void SetBackColor(Color color)
+            {
+                var style = outer.localSettings.Styles[Style.Name];
+                if (style.BackBrush != null)
+                {
+                    style.BackBrush.Dispose();
+                }
+                style.BackBrush = new SolidBrush(color);
                 Control.Refresh();
             }
         }
 
         void dlg_Load(object sender, EventArgs e)
         {
+            this.dlg.MemoryControl.Services = dlg.Services;
             this.uipSvc = dlg.Services.RequireService<IUiPreferencesService>();
             PopulateStyleTree();
 
@@ -211,15 +237,6 @@ namespace Reko.Gui.Windows.Forms
             var desc = descs[(string)dlg.ImagebarList.SelectedItem];
         }
 
-        void WindowBgButton_Click(object sender, EventArgs e)
-        {
-            if (dlg.ColorPicker.ShowDialog(dlg) == DialogResult.OK)
-            {
-                var node = dlg.WindowTree.SelectedNode;
-                if (node == null)
-                    return;
-            }
-        }
 
         private UiStyleDesigner GetSelectedDesigner()
         {
@@ -232,7 +249,15 @@ namespace Reko.Gui.Windows.Forms
             if (dlg.ColorPicker.ShowDialog(dlg) == DialogResult.OK)
             {
                 GetSelectedDesigner().SetForeColor(dlg.ColorPicker.Color);
-                dlg.MemoryControl.ForeColor = dlg.ColorPicker.Color;
+            }
+        }
+
+        void WindowBgButton_Click(object sender, EventArgs e)
+        {
+            dlg.ColorPicker.Color = GetSelectedDesigner().GetBackColor();
+            if (dlg.ColorPicker.ShowDialog(dlg) == DialogResult.OK)
+            {
+                GetSelectedDesigner().SetBackColor(dlg.ColorPicker.Color);
             }
         }
 

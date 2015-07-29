@@ -34,6 +34,9 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabWindows = new System.Windows.Forms.TabPage();
+            this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
+            this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
+            this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.btnWindowBgColor = new System.Windows.Forms.Button();
             this.btnWindowFgColor = new System.Windows.Forms.Button();
@@ -46,9 +49,6 @@
             this.lbxUiElements = new System.Windows.Forms.ListBox();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
             this.fontPicker = new System.Windows.Forms.FontDialog();
-            this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
-            this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
-            this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
             this.tabControl1.SuspendLayout();
             this.tabWindows.SuspendLayout();
             this.tabColors.SuspendLayout();
@@ -106,10 +106,58 @@
             this.tabWindows.Text = "Windows";
             this.tabWindows.UseVisualStyleBackColor = true;
             // 
+            // dasmCtl
+            // 
+            this.dasmCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dasmCtl.Location = new System.Drawing.Point(180, 37);
+            this.dasmCtl.Model = emptyEditorModel1;
+            this.dasmCtl.Name = "dasmCtl";
+            this.dasmCtl.SelectedObject = null;
+            this.dasmCtl.Services = null;
+            this.dasmCtl.Size = new System.Drawing.Size(374, 138);
+            this.dasmCtl.StartAddress = null;
+            this.dasmCtl.TabIndex = 8;
+            this.dasmCtl.TopAddress = null;
+            // 
+            // codeCtl
+            // 
+            this.codeCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.codeCtl.Location = new System.Drawing.Point(183, 37);
+            this.codeCtl.Model = emptyEditorModel2;
+            this.codeCtl.Name = "codeCtl";
+            this.codeCtl.Services = null;
+            this.codeCtl.Size = new System.Drawing.Size(371, 142);
+            this.codeCtl.TabIndex = 7;
+            this.codeCtl.Text = "textView1";
+            // 
+            // memCtl
+            // 
+            this.memCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.memCtl.Architecture = null;
+            this.memCtl.BytesPerRow = ((uint)(16u));
+            this.memCtl.ImageMap = null;
+            this.memCtl.Location = new System.Drawing.Point(183, 37);
+            this.memCtl.Name = "memCtl";
+            this.memCtl.ProgramImage = null;
+            this.memCtl.SelectedAddress = null;
+            this.memCtl.Services = null;
+            this.memCtl.Size = new System.Drawing.Size(371, 142);
+            this.memCtl.TabIndex = 6;
+            this.memCtl.Text = "memoryControl1";
+            this.memCtl.TopAddress = null;
+            this.memCtl.WordSize = ((uint)(1u));
+            // 
             // treeView1
             // 
             this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(7, 7);
             this.treeView1.Name = "treeView1";
             this.treeView1.ShowPlusMinus = false;
@@ -211,53 +259,6 @@
             this.lbxUiElements.Name = "lbxUiElements";
             this.lbxUiElements.Size = new System.Drawing.Size(164, 172);
             this.lbxUiElements.TabIndex = 1;
-            // 
-            // dasmCtl
-            // 
-            this.dasmCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dasmCtl.Location = new System.Drawing.Point(180, 37);
-            this.dasmCtl.Model = emptyEditorModel1;
-            this.dasmCtl.Name = "dasmCtl";
-            this.dasmCtl.SelectedObject = null;
-            this.dasmCtl.Services = null;
-            this.dasmCtl.Size = new System.Drawing.Size(374, 138);
-            this.dasmCtl.StartAddress = null;
-            this.dasmCtl.TabIndex = 8;
-            this.dasmCtl.TopAddress = null;
-            // 
-            // codeCtl
-            // 
-            this.codeCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.codeCtl.Location = new System.Drawing.Point(183, 37);
-            this.codeCtl.Model = emptyEditorModel2;
-            this.codeCtl.Name = "codeCtl";
-            this.codeCtl.Services = null;
-            this.codeCtl.Size = new System.Drawing.Size(371, 142);
-            this.codeCtl.TabIndex = 7;
-            this.codeCtl.Text = "textView1";
-            // 
-            // memCtl
-            // 
-            this.memCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.memCtl.Architecture = null;
-            this.memCtl.BytesPerRow = ((uint)(16u));
-            this.memCtl.ImageMap = null;
-            this.memCtl.Location = new System.Drawing.Point(183, 37);
-            this.memCtl.Name = "memCtl";
-            this.memCtl.ProgramImage = null;
-            this.memCtl.SelectedAddress = null;
-            this.memCtl.Services = null;
-            this.memCtl.Size = new System.Drawing.Size(371, 142);
-            this.memCtl.TabIndex = 6;
-            this.memCtl.Text = "memoryControl1";
-            this.memCtl.TopAddress = null;
-            this.memCtl.WordSize = ((uint)(1u));
             // 
             // UserPreferencesDialog
             // 

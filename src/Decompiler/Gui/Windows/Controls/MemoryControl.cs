@@ -533,11 +533,7 @@ namespace Reko.Gui.Windows.Controls
             public Address PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
             {
                 this.cellSize = cellSize;
-                //$TODO: these should be user-configurable.
-                codeTheme = new BrushTheme { Background = Brushes.Pink, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Red };
-                dataTheme = new BrushTheme { Background = Brushes.LightBlue, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Blue };
-                defaultTheme = new BrushTheme { Background = SystemBrushes.Window, Foreground = SystemBrushes.ControlText };
-                selectTheme = new BrushTheme { Background = SystemBrushes.Highlight, Foreground = SystemBrushes.HighlightText };
+                GetColorPreferences();
 
                 if (ctrl.arch == null || ctrl.imageMap == null)
                     return null;
@@ -568,6 +564,19 @@ namespace Reko.Gui.Windows.Controls
                     rc.Offset(0, ctrl.CellSize.Height);
                 }
                 return null;
+            }
+
+            private void GetColorPreferences()
+            {
+                var uiPrefs = this.ctrl.Services.RequireService<IUiPreferencesService>();
+                var wind = uiPrefs.Styles[UiStyles.MemoryWindow];
+                var code = uiPrefs.Styles[UiStyles.MemoryCode];
+                var data = uiPrefs.Styles[UiStyles.MemoryData];
+                var heur = uiPrefs.Styles[UiStyles.MemoryHeuristic];
+                codeTheme = new BrushTheme { Background = code.BackBrush, Foreground = code.ForeBrush ?? SystemBrushes.ControlText, StartMarker = Brushes.Red };
+                dataTheme = new BrushTheme { Background = data.BackBrush, Foreground = data.ForeBrush ?? SystemBrushes.ControlText, StartMarker = Brushes.Blue };
+                defaultTheme = new BrushTheme { Background = wind.BackBrush ?? SystemBrushes.Window, Foreground = wind.ForeBrush ?? SystemBrushes.ControlText };
+                selectTheme = new BrushTheme { Background = SystemBrushes.Highlight, Foreground = SystemBrushes.HighlightText };
             }
 
             /// <summary>
