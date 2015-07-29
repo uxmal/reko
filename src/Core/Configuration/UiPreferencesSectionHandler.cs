@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -30,25 +31,27 @@ namespace Reko.Core.Configuration
 {
     public class UiPreferencesSectionHandler : ConfigurationSection
     {
-        [ConfigurationProperty("disassemblyFont")]
-        public string DisassemblyFont
+        [ConfigurationProperty("", IsDefaultCollection = true, IsRequired = true)]
+        public UiStyleCollection Styles
         {
-            get { return (string) this["disassemblyFont"]; }
+            get { return (UiStyleCollection)this[""]; }
         }
 
-        [ConfigurationProperty("srcFont")]
-        public string SourceCodeFont
-        {
-            get { return (string) this["srcFont"]; }
-        }
+        //    [ConfigurationProperty("disassemblyFont")]
+        //    public string DisassemblyFont
+        //    {
+        //        get { return (string) this["disassemblyFont"]; }
+        //    }
 
-        internal DefaultPreferences GetPreferences()
+        //    [ConfigurationProperty("srcFont")]
+        //    public string SourceCodeFont
+        //    {
+        //        get { return (string) this["srcFont"]; }
+        //    }
+
+        public IEnumerable<UiStyle> GetPreferences()
         {
-            return new DefaultPreferences
-            {
-                DisassemblyFont = DisassemblyFont,
-                SourceCodeFont = SourceCodeFont,
-            };
+            return Styles.Cast<UiStyle>();
         }
     }
 }

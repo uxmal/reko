@@ -20,14 +20,26 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public class DefaultPreferences
+    public class UiStyleCollection : ConfigurationElementCollection
     {
-        public string DisassemblyFont;
-        public string SourceCodeFont;
+        public UiStyleCollection()
+        {
+            AddElementName = "Style";
+        }
+
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new UiStyleElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((UiStyleElement)element).Name;
+        }
     }
 }

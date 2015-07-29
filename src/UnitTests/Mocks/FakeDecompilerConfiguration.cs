@@ -76,12 +76,6 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public DefaultPreferences GetDefaultPreferences()
-        {
-            throw new NotImplementedException();
-        }
-
-
         public ICollection GetSignatureFiles()
         {
             return new SignatureFileElement[0];
@@ -89,6 +83,12 @@ namespace Reko.UnitTests.Mocks
 
 
         public string GetPath(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        System.Collections.Generic.IEnumerable<UiStyle> IConfigurationService.GetDefaultPreferences()
         {
             throw new NotImplementedException();
         }

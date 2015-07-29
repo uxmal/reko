@@ -47,7 +47,7 @@ namespace Reko.Core.Configuration
          Assembler GetAssembler(string assemblerName);
          RawFileElement GetRawFile(string rawFileFormat);
 
-         DefaultPreferences GetDefaultPreferences ();
+         IEnumerable<UiStyle> GetDefaultPreferences ();
 
          string GetPath(string path);
     }
@@ -137,7 +137,7 @@ namespace Reko.Core.Configuration
                 .SingleOrDefault();
         }
 
-        public DefaultPreferences GetDefaultPreferences()
+        public IEnumerable<UiStyle> GetDefaultPreferences()
         {
             var handler = (UiPreferencesSectionHandler) ConfigurationManager.GetSection("Reko/UiPreferences");
             if (handler == null)

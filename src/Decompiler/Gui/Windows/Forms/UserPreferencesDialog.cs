@@ -57,5 +57,6 @@ namespace Reko.Gui.Windows.Forms
 
         public ColorDialog ColorPicker { get { return colorPicker; } }
         public FontDialog FontPicker { get { return fontPicker; } }
+
     }
 }

@@ -23,7 +23,9 @@ using Reko.Core.Configuration;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -37,13 +39,21 @@ namespace Reko.Gui.Windows.Forms
         private TreeNode curNodeWnd;
         private UiPreferencesService localSettings;
         private ServiceContainer sc;
+        private Dictionary<string, string> descs;
+        private IUiPreferencesService uipSvc;
 
         public void Attach(UserPreferencesDialog userPreferencesDialog)
         {
             this.dlg = userPreferencesDialog;
+            this.descs = new Dictionary<string, string> {
+                { "Code", "Bytes that are known to be executable code." },
+                { "Heuristic code", "Bytes that have been determined to be executable code using heuristics." },
+                { "Data", "Bytes that are known to be used as data." },
+                { "Address", "Bytes that are known to be an address." },
+                { "Unknown", "Bytes whose function is unknown. " }
+            };
 
             dlg.Load += dlg_Load;
-
             dlg.WindowTree.AfterSelect += WindowTree_AfterSelect;
             dlg.WindowFontButton.Click += WindowFontButton_Click;
             dlg.WindowFgButton.Click += WindowFgButton_Click;
@@ -53,14 +63,97 @@ namespace Reko.Gui.Windows.Forms
             dlg.ImagebarFgButton.Click += ImagebarFgButton_Click;
             dlg.ImagebarBgButton.Click += ImagebarBgButton_Click;
 
+        }
+
+        void PopulateStyleTree()
+        {
+            var nodes = new TreeNode[] {
+            AddControl("Memory Window", UiStyles.MemoryWindow, dlg.MemoryControl,
+                AddStyle("Code", UiStyles.MemoryCode, dlg.MemoryControl),
+                AddStyle("Heuristic code", UiStyles.MemoryHeuristic, dlg.MemoryControl),
+                AddStyle("Data", UiStyles.MemoryData, dlg.MemoryControl)),
+            AddControl("Disassembly Window", UiStyles.Disassembler, dlg.DisassemblyControl,
+                AddStyle("Opcode", UiStyles.DisassemblerOpcode, dlg.DisassemblyControl)),
+            AddControl("Code Window", UiStyles.CodeWindow, dlg.CodeControl,
+                AddStyle("Keyword", UiStyles.CodeKeyword, dlg.CodeControl),
+                AddStyle("Comment", UiStyles.CodeComment, dlg.CodeControl))
+            };
+            dlg.WindowTree.Nodes.AddRange(nodes);
             dlg.WindowTree.SelectedNode = dlg.WindowTree.Nodes[0];
+            dlg.WindowTree.ExpandAll();
+        }
+        
+
+        private TreeNode AddControl(string text, string styleName, Control control, params TreeNode [] nodes)
+        {
+            var node = new TreeNode
+            {
+                Text = text,
+                Tag = new UiStyleDesigner(this)
+                {
+                    Style = GetStyle(styleName),
+                    Control = control,
+                    EnableFont = true,
+                },
+            };
+            node.Nodes.AddRange(nodes);
+            return node;
+        }
+
+        private TreeNode AddStyle(string text, string styleName, Control control)
+        {
+            return new TreeNode
+            {
+                Text = text,
+                Tag = new UiStyleDesigner(this)
+                {
+                    Style = GetStyle(styleName),
+                    Control = control,
+                }
+            };
+        }
+
+        private UiStyle GetStyle(string styleName)
+        {
+            return uipSvc.Styles[styleName];
+        }
+
+        private class UiStyleDesigner
+        {
+            public  Control Control;
+            public bool EnableFont;
+            public UiStyle Style { get; set; }
+
+            private UserPreferencesInteractor outer;
+
+            public UiStyleDesigner(UserPreferencesInteractor outer)
+            {
+                this.outer = outer;
+            }
+
+            public Color GetForeColor()
+            {
+                var style = outer.localSettings.Styles[Style.Name];
+                return (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFrom(style.ForeColor);
+            }
+
+            internal void SetForeColor(Color color)
+            {
+                var style = outer.localSettings.Styles[Style.Name];
+                style.ForeColor = string.Format("#{0:X6}", color.ToArgb());
+                Control.Refresh();
+            }
         }
 
         void dlg_Load(object sender, EventArgs e)
         {
+            this.uipSvc = dlg.Services.RequireService<IUiPreferencesService>();
+            PopulateStyleTree();
+
             this.sc = new ServiceContainer();
             this.localSettings = new UiPreferencesService(null, null);
             sc.AddService(typeof(IUiPreferencesService), localSettings);
+            CopyStyles(uipSvc, localSettings);
 
             GenerateSimulatedProgram();
             dlg.MemoryControl.ProgramImage = program.Image;
@@ -71,6 +164,17 @@ namespace Reko.Gui.Windows.Forms
             dlg.CodeControl.Model = null; /*;*/ 
         }
 
+        private void CopyStyles(IUiPreferencesService from,IUiPreferencesService to)
+        {
+            foreach (var style in from.Styles.Values)
+            {
+                to.Styles[style.Name] = style;
+            }
+        }
+
+        /// <summary>
+        /// Create a simulatd program to use in the code /data display.
+        /// </summary>
         private void GenerateSimulatedProgram()
         {
             var row = Enumerable.Range(0, 0x100).Select(b => (byte)b).ToArray();
@@ -104,6 +208,7 @@ namespace Reko.Gui.Windows.Forms
 
         void ImagebarList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            var desc = descs[(string)dlg.ImagebarList.SelectedItem];
         }
 
         void WindowBgButton_Click(object sender, EventArgs e)
@@ -116,11 +221,17 @@ namespace Reko.Gui.Windows.Forms
             }
         }
 
+        private UiStyleDesigner GetSelectedDesigner()
+        {
+            return (UiStyleDesigner)dlg.WindowTree.SelectedNode.Tag;
+        }
+
         void WindowFgButton_Click(object sender, EventArgs e)
         {
-            dlg.ColorPicker.Color = dlg.MemoryControl.ForeColor;
+            dlg.ColorPicker.Color = GetSelectedDesigner().GetForeColor();
             if (dlg.ColorPicker.ShowDialog(dlg) == DialogResult.OK)
             {
+                GetSelectedDesigner().SetForeColor(dlg.ColorPicker.Color);
                 dlg.MemoryControl.ForeColor = dlg.ColorPicker.Color;
             }
         }
@@ -143,18 +254,9 @@ namespace Reko.Gui.Windows.Forms
 
             if (nodeWnd != curNodeWnd)
             {
-                switch ((string)nodeWnd.Tag)
-                {
-                case "mem":
-                    dlg.MemoryControl.BringToFront();
-                    break;
-                case "dasm":
-                    dlg.DisassemblyControl.BringToFront();
-                    break;
-                case "code":
-                    dlg.CodeControl.BringToFront();
-                    break;
-                }
+                var designer = (UiStyleDesigner)nodeWnd.Tag;
+                dlg.WindowFontButton.Enabled = designer.EnableFont;
+                designer.Control.BringToFront();
             }
         }
     }
