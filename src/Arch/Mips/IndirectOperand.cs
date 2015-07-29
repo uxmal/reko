@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Arch.Mips
+namespace Reko.Arch.Mips
 {
     public class IndirectOperand : MachineOperand
     {
@@ -41,7 +41,7 @@ namespace Decompiler.Arch.Mips
             this.Base = baseReg;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             string fmt;
             int offset;
@@ -55,7 +55,7 @@ namespace Decompiler.Arch.Mips
                 fmt = "-{0:X4}({1})";
                 offset = -Offset;
             }
-            return string.Format(fmt, offset, Base);
+            writer.Write(string.Format(fmt, offset, Base));
         }
     }
 }

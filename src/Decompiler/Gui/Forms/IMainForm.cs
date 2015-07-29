@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Forms
+namespace Reko.Gui.Forms
 {
 	/// <summary>
 	/// Interface that abstracts the functionality of the main form.
@@ -35,11 +35,12 @@ namespace Decompiler.Gui.Forms
 		/// The text of the window's title bar.
 		/// </summary>
 		string TitleText { get; set; }
-        void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
+        System.Drawing.Size Size { get; set; }
+        FormWindowState WindowState { get; set; }
 
-        ICollection<IWindowFrame> DocumentWindows { get; }
         ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }
+        TabPage DiagnosticsPage { get; }
         ListView DiagnosticsList { get; }
         ITreeView ProjectBrowser { get; }
         OpenFileDialog OpenFileDialog { get; }
@@ -48,11 +49,13 @@ namespace Decompiler.Gui.Forms
         TabControl TabControl { get; }
         ToolStrip ToolBar { get; }
         MainMenu Menu { get; set; }
+        TabControl DocumentTabs { get; }
 
         event EventHandler Closed;
         event EventHandler Load;
         event KeyEventHandler ProcessCommandKey;
 
+        void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
         void LayoutMdi(DocumentWindowLayout layout);
         
         void Show();
@@ -61,7 +64,6 @@ namespace Decompiler.Gui.Forms
         DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
 
         void Close();
-        void CloseAllDocumentWindows();
 
         void SetCurrentPage(object page);
 
@@ -75,9 +77,6 @@ namespace Decompiler.Gui.Forms
         void SetStatusDetails(string txt);
 
 
-        System.Drawing.Size Size { get; set; }
-
-        FormWindowState WindowState { get; set; }
     }
 
     public enum DocumentWindowLayout

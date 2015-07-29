@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Machine
+namespace Reko.Core.Machine
 {
     /// <summary>
     /// Abstraction of a processor instruction operand.
@@ -37,21 +37,22 @@ namespace Decompiler.Core.Machine
 
 		protected MachineOperand(PrimitiveType width)
 		{
-            //if (width == null)
-            //    throw new ArgumentNullException("width");
-
 			this.width = width;
 		}
 
-		public virtual string ToString(bool fExplicit)
+        public sealed override string ToString()
+        {
+            return ToString(false);
+        }
+
+		public string ToString(bool fExplicit)
 		{
-			return ToString();
+            var sr = new StringRenderer();
+            Write(fExplicit, sr);
+			return sr.ToString();
 		}
 
-        public virtual void Write(bool fExplicit, MachineInstructionWriter writer)
-        {
-            writer.Write(ToString(fExplicit));
-        }
+        public abstract void Write(bool fExplicit, MachineInstructionWriter writer);
 
 		public static string FormatSignedValue(Constant c)
 		{
@@ -89,7 +90,6 @@ namespace Decompiler.Core.Machine
 		{
 			return c.ToUInt64().ToString(FormatString(c.DataType));
 		}
-
 	}
 
     /// <summary>
@@ -104,10 +104,17 @@ namespace Decompiler.Core.Machine
 			value = c;
 		}
 
-		public override string ToString()
-		{
-			return FormatValue(value);
-		}
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            var s = FormatValue(value);
+            var pt = value.DataType as PrimitiveType;
+            if (pt != null && pt.Domain == Domain.Pointer)
+                writer.WriteAddress(s, Address.FromConstant(value));    //$TODO: add WriteAddress(string, Constant) to MachineINstructionWriter
+            else if (value.DataType is Pointer)
+                writer.WriteAddress(s, Address.FromConstant(value));
+            else 
+                writer.Write(s);
+        }
 
 		public Constant Value
 		{
@@ -158,27 +165,24 @@ namespace Decompiler.Core.Machine
             Address = a;
         }
 
-        public static AddressOperand Ptr16(uint a)
+        public static AddressOperand Ptr16(ushort a)
         {
-            return new AddressOperand(new Address(a), PrimitiveType.Ptr16);
+            return new AddressOperand(Address.Ptr16(a), PrimitiveType.Ptr16);
         }
 
         public static AddressOperand Ptr32(uint a)
         {
-            return new AddressOperand(new Address(a), PrimitiveType.Pointer32);
+            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Pointer32);
         }
 
-        public static AddressOperand Ptr64(uint a)
+        public static AddressOperand Ptr64(ulong a)
         {
-            return new AddressOperand(new Address(a), PrimitiveType.Pointer64);
+            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            if (base.Width.Size == 2)
-                return string.Format("{0:X4}", Address.Linear);
-            else
-                return Address.ToString();
+            writer.WriteAddress(Address.ToString(), Address);
         }
     }
 
@@ -199,9 +203,9 @@ namespace Decompiler.Core.Machine
 			get { return fpuReg; }
 		}
 
-		public override string ToString()
+		public override void Write(bool fExplicit, MachineInstructionWriter writer)
 		{
-			return "st(" + fpuReg + ")";
+			writer.Write("st(" + fpuReg + ")");
 		}
 	}
 }

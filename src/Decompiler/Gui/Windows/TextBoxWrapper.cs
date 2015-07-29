@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,18 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
+    /// <summary>
+    /// Wraps the Windows Forms textbox with the ITextBox interface.
+    /// </summary>
     public class TextBoxWrapper : ITextBox
     {
         private TextBox text;

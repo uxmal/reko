@@ -48,7 +48,7 @@ fn0000131C_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (13F8 word32 dw13F8) (140C (ptr Eq_6) ptr140C))
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_6: (struct "Eq_6" (0 (ptr Eq_6) ptr0000) (4 (ptr (ptr code)) ptr0004))
 	T_6 (in a3_31 : (ptr Eq_6))
 	T_8 (in Mem0[0x0000140C:word32] : word32)
@@ -56,7 +56,7 @@ Eq_6: (struct "Eq_6" (0 (ptr Eq_6) ptr0000) (4 (ptr (ptr code)) ptr0004))
 	T_23 (in Mem34[a3_31 + 0x00000000:word32] : word32)
 	T_24 (in 0x00000000 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Design;
-using Decompiler.Core;
+using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Design;
+using Reko.Core;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Design
+namespace Reko.UnitTests.Gui.Design
 {
     [TestFixture]
     public class ImageMapSegmentDesignerTests
@@ -43,8 +43,8 @@ namespace Decompiler.UnitTests.Gui.Design
         public void Setup()
         {
             mr = new MockRepository();
-            seg1 = new ImageMapSegment("seg1", AccessMode.Execute) { Address = new Address(0x01000) };
-            seg2 = new ImageMapSegment("seg2", AccessMode.Execute) { Address = new Address(0x02000) };
+            seg1 = new ImageMapSegment("seg1", AccessMode.Execute) { Address = Address.Ptr32(0x01000) };
+            seg2 = new ImageMapSegment("seg2", AccessMode.Execute) { Address = Address.Ptr32(0x02000) };
             map = new ImageMap(seg1.Address, 0x4000);
         }
 
@@ -54,9 +54,9 @@ namespace Decompiler.UnitTests.Gui.Design
             var host = mr.StrictMock<ITreeNodeDesignerHost>();
             var treeNode = mr.StrictMock<ITreeNode>();
             treeNode.Expect(t => t.Text = "seg1");
-            treeNode.Expect(t => t.ImageName = "Header.ico");
-            treeNode.Expect(t => t.ToolTipText = "seg1\r\n00001000\r\n\r\n");
-            var des = new ImageMapSegmentDesigner();
+            treeNode.Expect(t => t.ImageName = "RoSection.ico");
+            treeNode.Expect(t => t.ToolTipText = "seg1\r\nAddress: 00001000\r\nSize: 0\r\n--x");
+            var des = new ImageMapSegmentNodeDesigner();
             des.Host = host;
             des.TreeNode = treeNode;
             des.Component = seg1;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     /// <summary>
     /// Builds a jump or call table by backtracking from the call site to find a comparison with a constant.
@@ -34,26 +35,16 @@ namespace Decompiler.Scanning
     /// </summary>
     public class VectorBuilder : IBackWalkHost
     {
-        private IProcessorArchitecture arch;
         private IScanner scanner;
-        private LoadedImage image;
-        private ImageMap imageMap;
+        private Program program;
         private int cbTable;
         private Backwalker bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
-        public VectorBuilder(IScanner scanner, DirectedGraphImpl<object> jumpGraph)
+        public VectorBuilder(IScanner scanner, Program program, DirectedGraphImpl<object> jumpGraph)
         {
-            this.arch = scanner.Architecture;
-            this.image = scanner.Image;
-            this.imageMap = scanner.ImageMap;
-            this.jumpGraph = jumpGraph;
-        }
-
-        public VectorBuilder(IProcessorArchitecture arch, IScanner scanner, DirectedGraphImpl<object> jumpGraph)
-        {
-            this.arch = arch;
             this.scanner = scanner;
+            this.program = program;
             this.jumpGraph = jumpGraph;
         }
 
@@ -95,7 +86,9 @@ namespace Decompiler.Scanning
         private int[] BuildMapping(BackwalkDereference deref, int limit)
         {
             int[] map = new int[limit];
-            var rdr = arch.CreateImageReader(scanner.Image, new Address((uint)deref.TableOffset));
+            var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
+            
+            var rdr = program.CreateImageReader(addrTableStart);
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();
@@ -103,6 +96,15 @@ namespace Decompiler.Scanning
             return map;
         }
 
+        /// <summary>
+        /// Builds a list of addresses that will be used as a jump or call vector.
+        /// </summary>
+        /// <param name="addrTable">The address at which the table starts.</param>
+        /// <param name="limit">The number of bytes that comprise the table</param>
+        /// <param name="permutation">If not null, a permutation of the items in the table</param>
+        /// <param name="stride">The size of the individual addresses in the table.</param>
+        /// <param name="state">Current processor state.</param>
+        /// <returns></returns>
         private List<Address> BuildTable(Address addrTable, int limit, int[] permutation, int stride, ProcessorState state)
         {
             List<Address> vector = new List<Address>();
@@ -114,26 +116,30 @@ namespace Decompiler.Scanning
                 {
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
-                    var entryAddr = (uint) (addrTable-scanner.Image.BaseAddress) + (uint)(permutation[i] * cbEntry);
-                    vector.Add(new Address(scanner.Image.ReadLeUInt32(entryAddr)));      //$BUG: will fail on 64-bit arch.
+                    var entryAddr = (uint) (addrTable-program.Image.BaseAddress) + (uint)(permutation[i] * cbEntry);
+                    var addr = Address.Ptr32(program.Image.ReadLeUInt32(entryAddr));                     //$BUG: will fail on 64-bit arch.
+                    vector.Add(addr);    
                 }
             }
             else
             {
                 ImageReader rdr = scanner.CreateReader(addrTable);
                 int cItems = limit / (int)stride;
+                var image = program.Image;
+                var arch = program.Architecture;
                 for (int i = 0; i < cItems; ++i)
                 {
-                    vector.Add(arch.ReadCodeAddress(stride, rdr, state));
+                    var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
+                    if (!image.IsValidAddress(entryAddr))
+                    {
+                        scanner.Warn(addrTable, "The call or jump table has invalid addresses; stopping.");
+                        break;
+                    }
+                    vector.Add(entryAddr);
                 }
                 cbTable = limit;
             }
             return vector;
-
-        }
-
-        public void AddDiagnostic(Address addr, Diagnostic diagnostic)
-        {
         }
 
         public Block GetSinglePredecessor(Block block)
@@ -149,7 +155,7 @@ namespace Decompiler.Scanning
                 if (block != null)
                     return null;
                 ImageMapItem item;
-                if (!imageMap.TryFindItem(addrPred, out item))
+                if (!program.ImageMap.TryFindItem(addrPred, out item))
                     return null;
                 block = item as ImageMapBlock;
             }
@@ -162,12 +168,17 @@ namespace Decompiler.Scanning
         public Address GetBlockStartAddress(Address addr)
         {
             ImageMapItem item;
-            if (!imageMap.TryFindItem(addr, out item))
+            if (!program.ImageMap.TryFindItem(addr, out item))
                 return null;
             ImageMapBlock block = item as ImageMapBlock;
             if (block == null)
                 return null;
             return block.Address;
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return program.Platform.MakeAddressFromConstant(c);
         }
 
         public RegisterStorage IndexRegister
@@ -184,6 +195,11 @@ namespace Decompiler.Scanning
         public int TableByteSize
         {
             get { return cbTable; }
+        }
+
+        public bool IsValidAddress(Address addr)
+        {
+            return program.Image.IsValidAddress(addr);
         }
     }
 }

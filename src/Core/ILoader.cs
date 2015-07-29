@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
+using Reko.Core;
+using Reko.Core.Assemblers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
+    /// <summary>
+    /// Implementors assume responsibility for loading project files or binaries.
+    /// </summary>
     public interface ILoader
     {
+        string DefaultToFormat { get; set; }
+
         byte[] LoadImageBytes(string fileName, int offset);
-        Program LoadExecutable(InputFile inputFile);
         Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress);
+        Program AssembleExecutable(string fileName, string asmName, Address loadAddress);
         Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress);
         Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress);
 

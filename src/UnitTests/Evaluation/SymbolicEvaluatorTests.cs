@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
     [TestFixture]
     public class SymbolicEvaluatorTests
@@ -56,12 +56,12 @@ namespace Decompiler.UnitTests.Evaluation
 
         private static Identifier Tmp32(string name)
         {
-            return new Identifier(name, 1, PrimitiveType.Word32, new TemporaryStorage(name, 1, PrimitiveType.Word32));
+            return new Identifier(name, PrimitiveType.Word32, new TemporaryStorage(name, 1, PrimitiveType.Word32));
         }
 
         private static Identifier Tmp8(string name)
         {
-            return new Identifier(name, 1, PrimitiveType.Byte, new TemporaryStorage(name, 1, PrimitiveType.Byte));
+            return new Identifier(name, PrimitiveType.Byte, new TemporaryStorage(name, 1, PrimitiveType.Byte));
         }
 
         private void CreateSymbolicEvaluator(Frame frame)

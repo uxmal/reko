@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	di = Mem0[ds:0x0100:word16]
 	si = Mem0[ds:di:word16]
 	call fn0C00_0026 (retsize: 2; depth: 2)
@@ -50,6 +51,7 @@ fn0C00_0026_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0026:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = di
 	di = Mem0[ds:0x0104:word16]
@@ -83,6 +85,7 @@ fn0C00_0033_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0033:
+	sp = fp
 	ax = Mem0[ds:si:word16]
 	ax = ax + ax
 	SCZO = cond(ax)

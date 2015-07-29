@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
     /// <summary>
     /// Before we have the luxury of SSA, we need to perform some simplifications. 
@@ -89,7 +89,7 @@ namespace Decompiler.Evaluation
 
         public Instruction VisitDefInstruction(DefInstruction def)
         {
-            throw new NotSupportedException("Def instructions shouldn't have been generated yet.");
+            return def;
         }
 
         public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
@@ -118,7 +118,7 @@ namespace Decompiler.Evaluation
 
         public Instruction VisitStore(Store store)
         {
-            var valSrc = store.Src.Accept(eval);
+            var valSrc = store.Src.Accept(sub).Accept(eval);
             var segmem = store.Dst as SegmentedAccess;
             if (segmem != null)
             {

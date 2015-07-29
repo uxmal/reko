@@ -5,6 +5,7 @@
 // Trashed: r0 r1
 // Preserved: r63
 // ManyIncrements
+// Return size: 0
 void ManyIncrements(word32 r0)
 ManyIncrements_entry:
 	goto loopTop
@@ -13,23 +14,23 @@ done:
 	return
 	// succ:  ManyIncrements_exit
 l1:
-	Mem10[0x33333330:word32] = Mem0[r0_7:byte]
-	Mem13[0x33333331:word32] = Mem10[r0_7 + 0x00000001:byte]
-	r0 = r0_7 + 0x00000002
+	Mem7[0x33333330:word32] = Mem0[r0_4:byte]
+	Mem10[0x33333331:word32] = Mem7[r0_4 + 0x00000001:byte]
+	r0 = r0_4 + 0x00000002
 	goto loopTop
 	// succ:  loopTop
 l2:
-	Mem16[0x33333330:word32] = Mem0[r0_7:byte]
-	r0 = r0_7 + 0x00000001
+	Mem13[0x33333330:word32] = Mem0[r0_4:byte]
+	r0 = r0_4 + 0x00000001
 	// succ:  loopTop
 loopTop:
-	word32 r1_6 = Mem0[r0:byte]
-	word32 r0_7 = r0 + 0x00000001
-	branch r1_6 != 1 not1
+	word32 r1_3 = Mem0[r0:byte]
+	word32 r0_4 = r0 + 0x00000001
+	branch r1_3 != 1 not1
 	goto l1
 	// succ:  l1 not1
 not1:
-	branch r1_6 != 2 done
+	branch r1_3 != 2 done
 	goto l2
 	// succ:  l2 done
 ManyIncrements_exit:

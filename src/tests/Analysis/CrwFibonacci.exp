@@ -5,6 +5,7 @@ Register word32 fn10000000(Stack word32 dwArg04)
 // Preserved: esp esi edi
 // Stack args: Stack +0004(32)
 // fn10000000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -23,6 +24,7 @@ word32 fn10000000(word32 dwArg04)
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
+	esp = fp
 	esp = fp - 0x00000004
 	dwLoc04 = esi
 	esi = dwArg04

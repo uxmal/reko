@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,22 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Interface used for backwalkers to get services from host.
 	/// </summary>
 	public interface IBackWalkHost
 	{
-        void AddDiagnostic(Address addr, Diagnostic diagnostic);
-
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
+        Address MakeAddressFromConstant(Constant c);
 
         Block GetSinglePredecessor(Block block);
+
+        bool IsValidAddress(Address addr);
     }
 }

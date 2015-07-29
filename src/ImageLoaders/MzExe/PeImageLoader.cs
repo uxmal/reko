@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Environments.Win32;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Environments.Win32;
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
     /// <summary>
     /// Loads Windows NT PE images.
@@ -37,27 +38,28 @@ namespace Decompiler.ImageLoaders.MzExe
 	{
         private IProcessorArchitecture arch;
         private Platform platform;
-        private List<ImportedFunction> unresolvedImports;
+        private SizeSpecificLoader innerLoader;
 
 		private short optionalHeaderSize;
 		private int sections;
-		private uint sectionOffset;
+		private uint rvaSectionTable;
 		private LoadedImage imgLoaded;
         private ImageMap imageMap;
-		private uint preferredBaseOfImage;
+		private Address preferredBaseOfImage;
 		private SortedDictionary<string, Section> sectionMap;
         private Dictionary<uint, PseudoProcedure> importThunks;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
 		private uint rvaExportTable;
 		private uint sizeExportTable;
 		private uint rvaImportTable;
-
-		private const short MACHINE_i386 = (short) 0x014C;
-        private const short MACHINE_x86_64 = unchecked((short)0x8664);
+        private uint rvaDelayImportDescriptor;
+        private Dictionary<Address, ImportReference> importReferences;
+		private const ushort MACHINE_i386 = (ushort) 0x014C;
+        private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
 		private const short ImageFileRelocationsStripped = 0x0001;
 		private const short ImageFileExecutable = 0x0002;
 
-		public PeImageLoader(IServiceProvider services, byte [] img, uint peOffset) : base(services, img)
+		public PeImageLoader(IServiceProvider services, string filename, byte [] img, uint peOffset) : base(services, filename, img)
 		{
 			ImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
@@ -68,6 +70,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new BadImageFormatException("Not a valid PE header.");
 			}
             importThunks = new Dictionary<uint, PseudoProcedure>();
+            importReferences = new Dictionary<Address, ImportReference>();
 			short expectedMagic = ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr, expectedMagic);
 		}
@@ -110,7 +113,7 @@ namespace Decompiler.ImageLoaders.MzExe
             return new EntryPoint(addrLoad + addr, new string(chars), arch.CreateProcessorState());
         }
 
-		public IProcessorArchitecture CreateArchitecture(short peMachineType)
+		public IProcessorArchitecture CreateArchitecture(ushort peMachineType)
 		{
 			switch (peMachineType)
 			{
@@ -120,7 +123,27 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-        private short GetExpectedMagic(short peMachineType)
+        public Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
+        {
+            switch (peMachineType)
+            {
+            case MACHINE_i386: return new Win32Platform(sp, arch);
+            case MACHINE_x86_64: return new Win_x86_64_Platform(sp, arch);
+            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
+            }
+        }
+
+        private SizeSpecificLoader CreateInnerLoader(ushort peMachineType)
+        {
+            switch (peMachineType)
+            {
+            case MACHINE_i386: return new Pe32Loader(this);
+            case MACHINE_x86_64: return new Pe64Loader(this);
+            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
+            }
+        }
+
+        private short GetExpectedMagic(ushort peMachineType)
         {
             switch (peMachineType)
             {
@@ -130,29 +153,43 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
         }
 
-        public override LoaderResults Load(Address addrLoad)
-		{
-			if (sections > 0)
-			{
-				LoadSections(addrLoad, sectionOffset, sections);
-			}
-			imgLoaded.BaseAddress = addrLoad;
-			return new LoaderResults(imgLoaded, imageMap, arch, platform);
-		}
+        public override Program Load(Address addrLoad)
+        {
+            if (sections > 0)
+            {
+                sectionMap = LoadSections(addrLoad, rvaSectionTable, sections);
+                imgLoaded = LoadSectionBytes(addrLoad, sectionMap);
+                imageMap = imgLoaded.CreateImageMap();
+            }
+            imgLoaded.BaseAddress = addrLoad;
+            var program = new Program(imgLoaded, imageMap, arch, platform);
+            this.importReferences = program.ImportReferences;
+            return program;
+        }
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
 		{
-			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress, s.VirtualSize);
+			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress,
+                s.SizeRawData);
 		}
+
+        public IEnumerable<Section> ReadSections(LeImageReader rdr, int sections)
+        {
+            for (int i = 0; i < sections; ++i)
+            {
+                yield return ReadSection(rdr);
+            }
+        }
 
 		/// <summary>
 		/// Loads the sections
 		/// </summary>
-		/// <param name="sectionOffset"></param>
+		/// <param name="rvaSectionTable"></param>
 		/// <returns></returns>
-		private void LoadSections(Address addrLoad, uint sectionOffset, int sections)
-		{
-			ImageReader rdr = new LeImageReader(RawImage, sectionOffset);
+		private SortedDictionary<string, Section> LoadSections(Address addrLoad, uint rvaSectionTable, int sections)
+        {
+            var sectionMap = new SortedDictionary<string, Section>();
+			ImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
 			var section = ReadSection(rdr);
 			var sectionMax = section;
 			sectionMap[section.Name] = section;
@@ -161,42 +198,46 @@ namespace Decompiler.ImageLoaders.MzExe
 			{
 				section = ReadSection(rdr);
 				sectionMap[section.Name] = section;
-				if (!section.IsDiscardable && section.VirtualAddress > sectionMax.VirtualAddress)
+				if (section.VirtualAddress > sectionMax.VirtualAddress)
 					sectionMax = section;
+                Debug.Print("  Section: {0,10} {1:X8} {2:X8} {3:X8} {4:X8}", section.Name, section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize);
 			}
-
-			imgLoaded = new LoadedImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
-            imageMap = new ImageMap(imgLoaded);
-
-			foreach (Section s in sectionMap.Values)
-			{
-				if (!s.IsDiscardable)
-				{
-					LoadSectionBytes(s, RawImage, imgLoaded.Bytes);
-				}
-			}
+            return sectionMap;
 		}
+
+        public LoadedImage LoadSectionBytes(Address addrLoad, SortedDictionary<string, Section> sections)
+        {
+            var vaMax = sections.Values.Max(s => s.VirtualAddress);
+            var sectionMax = sections.Values.Where(s => s.VirtualAddress == vaMax).First();
+            var imgLoaded = new LoadedImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
+            foreach (Section s in sectionMap.Values)
+            {
+                Array.Copy(RawImage, s.OffsetRawData, imgLoaded.Bytes, s.VirtualAddress, s.SizeRawData);
+            }
+            return imgLoaded;
+        }
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(this.preferredBaseOfImage); }
-		}
+			get { return this.preferredBaseOfImage; }
+            set { throw new NotImplementedException(); }
+        }
 
 		public short ReadCoffHeader(ImageReader rdr)
 		{
-			short machine = rdr.ReadLeInt16();
+			ushort machine = rdr.ReadLeUInt16();
             short expectedMagic = GetExpectedMagic(machine);
             arch = CreateArchitecture(machine);
-			platform = new Win32Platform(Services, arch);
+			platform = CreatePlatform(machine, Services, arch);
+            innerLoader = CreateInnerLoader(machine);
 
 			sections = rdr.ReadLeInt16();
-			sectionMap = new SortedDictionary<string, Section>();
 			rdr.ReadLeUInt32();		// timestamp.
 			rdr.ReadLeUInt32();		// COFF symbol table.
 			rdr.ReadLeUInt32();		// #of symbols.
 			optionalHeaderSize = rdr.ReadLeInt16();
 			short fileFlags = rdr.ReadLeInt16();
-			sectionOffset = (uint) (rdr.Offset + optionalHeaderSize);
+			rvaSectionTable = (uint) ((int)rdr.Offset + optionalHeaderSize);
             return expectedMagic;
 		}
 
@@ -206,7 +247,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new BadImageFormatException("Optional header size should be larger than 0 in a PE executable image file.");
 
 			short magic = rdr.ReadLeInt16();
-			if (magic != expectedMagic) // 0x010B || magic != 0x020B)
+			if (magic != expectedMagic) 
 				throw new BadImageFormatException("Not a valid PE Header.");
 			rdr.ReadByte();		// Linker major version
 			rdr.ReadByte();		// Linker minor version
@@ -215,8 +256,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();		// size of uninitialized data
 			rvaStartAddress = rdr.ReadLeUInt32();
 			uint rvaBaseOfCode = rdr.ReadLeUInt32();
-			uint rvaBaseOfData = rdr.ReadLeUInt32();
-			preferredBaseOfImage = rdr.ReadLeUInt32();
+            preferredBaseOfImage = innerLoader.ReadPreferredImageBase(rdr);
 			rdr.ReadLeUInt32();		// section alignment
 			rdr.ReadLeUInt32();		// file alignment
 			rdr.ReadLeUInt16();		// OS major version
@@ -231,25 +271,68 @@ namespace Decompiler.ImageLoaders.MzExe
 			uint checksum = rdr.ReadLeUInt32();
 			ushort subsystem = rdr.ReadLeUInt16();
 			ushort dllFlags = rdr.ReadLeUInt16();
-			uint stackReserve  = rdr.ReadLeUInt32();
-			uint stackCommit  = rdr.ReadLeUInt32();
-			uint heapReserve  = rdr.ReadLeUInt32();
-			uint heapCommit   = rdr.ReadLeUInt32();
-			rdr.ReadLeUInt32();			// obsolete
+            var stackReserve = rdr.Read(arch.WordWidth);
+            var stackCommit = rdr.Read(arch.WordWidth);
+            var heapReserve = rdr.Read(arch.WordWidth);
+            var heapCommit = rdr.Read(arch.WordWidth);
+			rdr.ReadLeUInt32();			// loader flags
 			uint dictionaryCount = rdr.ReadLeUInt32();
 
+            if (dictionaryCount == 0) return;
 			rvaExportTable = rdr.ReadLeUInt32();
 			sizeExportTable = rdr.ReadLeUInt32();
-			rvaImportTable = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            rvaImportTable = rdr.ReadLeUInt32();
 			uint importTableSize = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// resource address
 			rdr.ReadLeUInt32();			// resource size
+
+            if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// exception address
 			rdr.ReadLeUInt32();			// exception size
+
+            if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// certificate address
 			rdr.ReadLeUInt32();			// certificate size
-			uint rvaBaseRelocAddress = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaBaseRelocAddress = rdr.ReadLeUInt32();
 			uint baseRelocSize = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaDebug = rdr.ReadLeUInt32();
+            uint cbDebug = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaArchitecture = rdr.ReadLeUInt32();
+            uint cbArchitecture = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaGlobalPointer = rdr.ReadLeUInt32();
+            uint cbGlobalPointer = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaTls = rdr.ReadLeUInt32();
+            uint cbTls = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaLoadConfig = rdr.ReadLeUInt32();
+            uint cbLoadConfig = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaBoundImport = rdr.ReadLeUInt32();
+            uint cbBoundImport = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaIat = rdr.ReadLeUInt32();
+            uint cbIat = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            this.rvaDelayImportDescriptor = rdr.ReadLeUInt32();
+            uint cbDelayImportDescriptor = rdr.ReadLeUInt32();
 		}
 
 		private const ushort RelocationAbsolute = 0;
@@ -260,15 +343,16 @@ namespace Decompiler.ImageLoaders.MzExe
 		public override RelocationResults Relocate(Address addrLoad)
 		{
             AddSectionsToImageMap(addrLoad, imageMap);
-            var relocations = new RelocationDictionary();
+            var relocations = imgLoaded.Relocations;
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
 			{
-				ApplyRelocations(relocSection.OffsetRawData, relocSection.VirtualSize, (uint) addrLoad.Linear, relocations);
+				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.ToLinear(), relocations);
 			}
             var entryPoints = new List<EntryPoint> { new EntryPoint(addrLoad + rvaStartAddress, arch.CreateProcessorState()) };
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
+            ReadDeferredLoadDescriptors(addrLoad);
             return new RelocationResults(entryPoints, relocations);
 		}
 
@@ -276,19 +360,17 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             foreach (Section s in sectionMap.Values)
             {
-                if (!s.IsDiscardable)
+                AccessMode acc = AccessMode.Read;
+                if ((s.Flags & SectionFlagsWriteable) != 0)
                 {
-                    AccessMode acc = AccessMode.Read;
-                    if ((s.Flags & SectionFlagsWriteable) != 0)
-                    {
-                        acc |= AccessMode.Write;
-                    }
-                    if ((s.Flags & SectionFlagsExecutable) != 0)
-                    {
-                        acc |= AccessMode.Execute;
-                    }
-                    imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc);
+                    acc |= AccessMode.Write;
                 }
+                if ((s.Flags & SectionFlagsExecutable) != 0)
+                {
+                    acc |= AccessMode.Execute;
+                }
+                var seg = imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc);
+                seg.IsDiscardable = s.IsDiscardable;
             }
         }
 
@@ -303,11 +385,13 @@ namespace Decompiler.ImageLoaders.MzExe
 			case RelocationHighLow:
 			{
 				uint offset = page + (fixup & 0x0FFFu);
-				uint n = (uint) (imgLoaded.ReadLeUInt32(offset) + (baseOfImage - preferredBaseOfImage));
-				imgLoaded.WriteLeUint32(offset, n);
+				uint n = (uint) (imgLoaded.ReadLeUInt32(offset) + (baseOfImage - preferredBaseOfImage.ToLinear()));
+				imgLoaded.WriteLeUInt32(offset, n);
 				relocations.AddPointerReference(offset, n);
 				break;
 			}
+            case 0xA:
+            break;
 			default:
 				throw new NotImplementedException(string.Format("Fixup type: {0:X}", fixup >> 12));
 			}
@@ -323,7 +407,9 @@ namespace Decompiler.ImageLoaders.MzExe
 
 				uint page = rdr.ReadLeUInt32();
 				int cbBlock = rdr.ReadLeInt32();
-				uint offBlockEnd = (uint)(rdr.Offset + cbBlock - 8);
+                if (page == 0 || cbBlock == 0)
+                    break;
+				uint offBlockEnd = (uint)((int)rdr.Offset + cbBlock - 8);
 				while (rdr.Offset < offBlockEnd)
 				{
 					ApplyRelocation(baseOfImage, page, rdr, relocations);
@@ -331,16 +417,10 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-        public override Dictionary<uint, PseudoProcedure> ImportThunks { get { return importThunks; } }
-
-		public string ImportFileLocation(string dllName)
-		{
-			string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
-			return Path.Combine(assemblyDir, Path.ChangeExtension(dllName, ".xml"));
-		}
-
 		public string ReadUtf8String(uint rva, int maxLength)
 		{
+            if (rva == 0)
+                return null;
 			ImageReader rdr = imgLoaded.CreateLeReader(rva);
 			List<byte> bytes = new List<byte>();
 			byte b;
@@ -353,63 +433,171 @@ namespace Decompiler.ImageLoaders.MzExe
 			return Encoding.UTF8.GetString(bytes.ToArray());
 		}
 
-		public ImportDescriptor ReadImportDescriptor(ImageReader rdr, Address addrLoad)
-		{
-			ImportDescriptor id = new ImportDescriptor();
-			id.RvaEntries = rdr.ReadLeUInt32();		// IAT
-			if (id.RvaEntries == 0)
-				return null;
-			rdr.ReadLeUInt32();		// datestamp
-			rdr.ReadLeUInt32();		// forwarder chain
-			id.DllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
-			id.RvaThunks = rdr.ReadLeUInt32();		// first thunk
-
-			ImageReader rdrEntries = imgLoaded.CreateLeReader(id.RvaEntries);
-			ImageReader rdrThunks  = imgLoaded.CreateLeReader(id.RvaThunks);
-			for (;;)
-			{
-				Address addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
-				uint rvaEntry = rdrEntries.ReadLeUInt32();
-				uint rvaThunk = rdrThunks.ReadLeUInt32();
-				if (rvaEntry == 0)
-					break;
-
-                ResolveImportedFunction(id, rvaEntry, addrThunk);
-			}
-			return id;
-		}
-
-        private void ResolveImportedFunction(ImportDescriptor id, uint rvaEntry, Address addrThunk)
+        /// <summary>
+        /// Loads the import directory entry for one particular DLL.
+        /// </summary>
+        /// <remarks>
+        /// The goal of this method is to discover the imported DLL's and the names
+        /// of all imported methods. This is made difficult by the way different
+        /// compilers and linkers build the import directory entries. Sometimes,
+        /// the RVA to the Import lookup table (ILT) is null, so we have to use
+        /// a last resort and walk the Import Address table (IAT).</remarks>
+        /// <param name="rdr"></param>
+        /// <param name="addrLoad"></param>
+        /// <returns>True if there were entries in the import descriptor, otherwise 
+        /// false.</returns>
+        public bool ReadImportDescriptor(ImageReader rdr, Address addrLoad)
         {
-            if (!ImportedFunctionNameSpecified(rvaEntry))
+            var rvaILT = rdr.ReadLeUInt32();            // Import lookup table
+            rdr.ReadLeUInt32();		                    // Ignore datestamp...
+            rdr.ReadLeUInt32();		                    // ...and forwarder chain
+            var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
+            var rvaIAT = rdr.ReadLeUInt32();		    // Import address table 
+            if (rvaILT == 0 && dllName == null)
+                return false;
+
+            ImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT!=0 ? rvaILT:rvaIAT);
+            ImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
+            while (innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat))
+                ;
+            return true;
+        }
+
+        private abstract class SizeSpecificLoader
+        {
+            protected PeImageLoader outer;
+
+            public SizeSpecificLoader(PeImageLoader outer)
             {
-                AddUnresolvedImport(id, string.Format("Ordinal_{0}", rvaEntry & 0x7FFFFFF));
-                return;
+                this.outer = outer;
             }
 
-            string fnName = ReadUtf8String(rvaEntry + 2, 0);
-            ProcedureSignature sig = platform.LookupProcedure(fnName);
-            if (sig == null)
+            public abstract bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat);
+
+            public abstract bool ImportedFunctionNameSpecified(ulong rvaEntry);
+
+            public ImportReference ResolveImportedFunction(string dllName, ulong rvaEntry, Address addrThunk)
             {
-                // Can we guess at the signature?
-                sig = platform.SignatureFromName(fnName, arch);
-                if (sig != null)
+                if (!ImportedFunctionNameSpecified(rvaEntry))
                 {
-                    ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));   //$BUGBUG: mangled name!
+                    return new OrdinalImportReference(
+                        addrThunk, dllName, (int)rvaEntry & 0xFFFF);
                 }
-                AddUnresolvedImport(id, fnName);
-                return;
+                else
+                {
+                    string fnName = outer.ReadUtf8String((uint)rvaEntry + 2, 0);
+                    return new NamedImportReference(
+                        addrThunk, dllName, fnName);
+                }
             }
-            ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
+
+            public abstract Address ReadPreferredImageBase(ImageReader rdr);
         }
 
-        private void AddUnresolvedImport(ImportDescriptor id, string fnName)
+        private class Pe32Loader : SizeSpecificLoader
         {
-            unresolvedImports.Add(new ImportedFunction(id, fnName));
-            Services.RequireService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
-                new Diagnostic(string.Format("Unable to locate signature for {0}!{1}.", id.DllName, fnName)));
+            public Pe32Loader(PeImageLoader outer) : base(outer) {}
+
+            public override bool ImportedFunctionNameSpecified(ulong rvaEntry)
+            {
+                return (rvaEntry & 0x80000000) == 0;
+            }
+
+            public override Address ReadPreferredImageBase(ImageReader rdr)
+            {
+                {
+                    uint rvaBaseOfData = rdr.ReadLeUInt32();        // Only exists in PE32, not PE32+
+                    return Address32.Ptr32(rdr.ReadLeUInt32());
+                }
+            }
+
+            public override bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat)
+            {
+                Address addrThunk = rdrIat.Address;
+                uint iatEntry = rdrIat.ReadLeUInt32();
+                uint iltEntry = rdrIlt.ReadLeUInt32();
+                if (iltEntry == 0)
+                    return false;
+
+                outer.importReferences.Add(
+                    addrThunk,
+                    ResolveImportedFunction(dllName, iltEntry, addrThunk));
+                return true;
+            }
         }
 
+        private class Pe64Loader : SizeSpecificLoader
+        {
+            public Pe64Loader(PeImageLoader outer) : base(outer) {}
+
+            public override bool ImportedFunctionNameSpecified(ulong rvaEntry)
+            {
+                return (rvaEntry & 0x8000000000000000u) == 0;
+            }
+
+            public override Address ReadPreferredImageBase(ImageReader rdr)
+            {
+                return Address64.Ptr64(rdr.ReadLeUInt64());
+            }
+
+            public override bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat)
+            {
+                Address addrThunk = rdrIat.Address;
+                ulong iatEntry = rdrIat.ReadLeUInt64();
+                ulong iltEntry = rdrIlt.ReadLeUInt64();
+                if (iltEntry == 0)
+                    return false;
+                outer.importReferences.Add(
+                    addrThunk,
+                    ResolveImportedFunction(dllName, iltEntry, addrThunk));
+                Debug.Print("{0}: {1}", addrThunk, outer.importReferences[addrThunk]);
+                return true;
+            }
+        }
+
+        private bool ReadDeferredLoadDescriptors(ImageReader rdr, Address addrLoad)
+        {
+            var attributes = rdr.ReadLeUInt32();
+            var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);    // DLL name.
+            if (dllName == null)
+                return false;
+            var rdrModule = rdr.ReadLeInt32();
+            var rdrThunks = imgLoaded.CreateLeReader(rdr.ReadLeUInt32());
+            var rdrNames = imgLoaded.CreateLeReader(rdr.ReadLeUInt32());
+            for (;;)
+            {
+                var addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
+                uint rvaName = rdrNames.ReadLeUInt32();
+                uint rvaThunk = rdrThunks.ReadLeUInt32();
+                if (rvaName == 0)
+                    break;
+                importReferences.Add(
+                    addrThunk, 
+                    innerLoader.ResolveImportedFunction(dllName, rvaName, addrThunk));
+            }
+            rdr.ReadLeInt32();
+            rdr.ReadLeInt32();
+            rdr.ReadLeInt32();  // time stamp
+            return true;
+        }
+        
+        //[Obsolete("word-size dependent")]
+        //private ImportReference ResolveImportedFunction(string dllName, uint rvaEntry, Address addrThunk)
+        //{
+        //    if (!ImportedFunctionNameSpecified(rvaEntry))
+        //    {
+        //        return new OrdinalImportReference(
+        //            addrThunk, dllName, (int) rvaEntry & 0x7FFFFFF);
+        //    }
+        //    else
+        //    {
+        //        string fnName = ReadUtf8String(rvaEntry + 2, 0);
+        //        return new NamedImportReference(
+        //            addrThunk, dllName, fnName);
+        //    }
+        //}
+
+        [Obsolete("word-size dependent")]
         private bool ImportedFunctionNameSpecified(uint rvaEntry)
         {
             return (rvaEntry & 0x80000000) == 0;
@@ -417,17 +605,21 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		private void ReadImportDescriptors(Address addrLoad)
 		{
-            unresolvedImports = new List<ImportedFunction>();
 			ImageReader rdr = imgLoaded.CreateLeReader(rvaImportTable);
-			for (;;)
+			while (ReadImportDescriptor(rdr, addrLoad))
 			{
-				ImportDescriptor id = ReadImportDescriptor(rdr, addrLoad);
-				if (id == null)
-					break;
 			}
 		}
 
-		private Section ReadSection(ImageReader rdr)
+        private void ReadDeferredLoadDescriptors(Address addrLoad)
+        {
+            var rdr = imgLoaded.CreateLeReader(rvaDelayImportDescriptor);
+            while (ReadDeferredLoadDescriptors(rdr, addrLoad))
+            {
+            }
+        }
+
+		private static Section ReadSection(ImageReader rdr)
 		{
 			Section sec = new Section();
 			sec.Name = ReadSectionName(rdr);
@@ -443,7 +635,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			return sec;
 		}
 
-		private string ReadSectionName(ImageReader rdr)
+		private static string ReadSectionName(ImageReader rdr)
 		{
 			byte [] bytes = new Byte[8];
 			for (int b = 0; b < bytes.Length; ++b)
@@ -451,7 +643,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				bytes[b] = rdr.ReadByte();
 			}
 
-			ASCIIEncoding asc = new ASCIIEncoding();
+			Encoding asc = Encoding.ASCII;
 			char [] chars = asc.GetChars(bytes);
 			int i;
 			for (i = chars.Length - 1; i >= 0; --i)
@@ -470,25 +662,6 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const uint SectionFlagsWriteable =   0x80000000;
 		private const uint SectionFlagsExecutable =  0x00000020;
 
-		public class ImportDescriptor
-		{
-			public uint RvaEntries;
-			public string DllName;
-			public uint RvaThunks;
-		}
-
-        public class ImportedFunction
-        {
-            public ImportDescriptor ImportDescriptor;
-            public string FunctionName;
-
-            public ImportedFunction(ImportDescriptor id, string functionName)
-            {
-                this.ImportDescriptor = id;
-                this.FunctionName = functionName;
-            }
-        }
-
 		public class Section
 		{
 			public string Name;
@@ -503,5 +676,19 @@ namespace Decompiler.ImageLoaders.MzExe
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
 		}
+
+        public uint ReadEntryPointRva()
+        {
+            ImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
+            for (int i = 0; i < sections; ++i)
+            {
+                var s = ReadSection(rdr);
+                if (s.VirtualAddress <= rvaStartAddress && rvaStartAddress < s.VirtualAddress + s.VirtualSize)
+                {
+                    return (rvaStartAddress - s.VirtualAddress) + s.OffsetRawData;
+                }
+            }
+            return 0;
+        }
     }
 }

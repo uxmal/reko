@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,44 +18,53 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
-    /// Reads bytes and differently sized words sequentially from an associated LoadedImage.
+    /// Reads bytes and differently sized words sequentially from an 
+    /// associated LoadedImage. Concrete derived classes 
+    /// <see cref="BeImageReader"/> and <see cref="LeImageReader"/> 
+    /// implement big- and little-endian interpretation of byte sequences.
     /// </summary>
     public abstract class ImageReader
     {
         private LoadedImage image;
         protected byte[] bytes;
-        private uint offStart;
-        private uint off;
+        private ulong offStart;
+        private ulong off;
         private Address addrStart;
 
         protected ImageReader(LoadedImage img, Address addr)
         {
-            int o = addr - img.BaseAddress;
-            if (o < 0 || o >= img.Bytes.Length)
+            if (img == null)
+                throw new ArgumentNullException("img");
+            if (addr == null)
+                throw new ArgumentNullException("addr");
+            long o = addr - img.BaseAddress;
+            if (o < 0 || o >= img.Length)
                 throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = addr;
-            this.off = offStart = (uint) o;
+            this.off = offStart = (ulong)o;
         }
 
-        protected ImageReader(LoadedImage img, uint off)
+        protected ImageReader(LoadedImage img, ulong off)
         {
+            if (img == null)
+                throw new ArgumentNullException("img");
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = img.BaseAddress + off;
             this.off = offStart = off;
         }
 
-        protected ImageReader(byte[] img, uint off)
+        protected ImageReader(byte[] img, ulong off)
         {
             this.bytes = img;
             this.off = offStart = off;
@@ -67,7 +76,7 @@ namespace Decompiler.Core
             if (image != null)
             {
                 rdr = CreateNew(image, addrStart);
-                off = rdr.off;
+                rdr.off = off;
             }
             else
             {
@@ -76,7 +85,7 @@ namespace Decompiler.Core
             return rdr;
         }
 
-        public abstract ImageReader CreateNew(byte[] bytes, uint offset);
+        public abstract ImageReader CreateNew(byte[] bytes, ulong offset);
 
         public abstract ImageReader CreateNew(LoadedImage image, Address addr);
 
@@ -92,9 +101,9 @@ namespace Decompiler.Core
 
         public Address Address { get { return addrStart + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
-        public uint Offset { get { return off; } set { off = value; } }
+        public ulong Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
-        public bool IsValidOffset(uint offset) { return 0 <= offset && offset < bytes.Length; }
+        public bool IsValidOffset(ulong offset) { return 0 <= offset && offset < (ulong)bytes.Length; }
 
         public byte ReadByte()
         {
@@ -103,42 +112,58 @@ namespace Decompiler.Core
             return b;
         }
 
+        public bool TryReadByte(out byte b)
+        {
+            if (off >= (ulong)bytes.Length)
+            {
+                b = 0;
+                return false;
+            }
+            b = bytes[off];
+            ++off;
+            return true;
+        }
+
         public sbyte ReadSByte()
         {
-            return (sbyte) ReadByte();
+            return (sbyte)ReadByte();
         }
 
         public byte PeekByte(int offset)
         {
-            return bytes[off + offset];
+            return bytes[(long)off + offset];
         }
 
-        public sbyte PeekSByte(int offset) { return (sbyte) bytes[off + offset]; }
+        public sbyte PeekSByte(int offset) { return (sbyte)bytes[(long)off + offset]; }
 
-        public byte[] ReadBytes(int length) { return ReadBytes((uint) length); }
+        public byte[] ReadBytes(int length) { return ReadBytes((uint)length); }
 
         public byte[] ReadBytes(uint length)
         {
             byte[] dst = new byte[length];
-            Array.Copy(bytes, off, dst, 0, length);
+            Array.Copy(bytes,(int) off, dst, 0, length);
             Offset += length;
             return dst;
         }
 
         /// <summary>
-        /// Reads a chunk of bytes and interpret it in Little-Endian mode.
+        /// Reads a chunk of bytes and interprets it in Little-Endian mode.
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public Constant ReadLe(PrimitiveType type)
         {
-            Constant c = image.ReadLe(off, type);
+            Constant c;
+            if (image != null)
+                c = image.ReadLe(off, type);
+            else
+                c = LoadedImage.ReadLe(bytes, Offset, type);
             off += (uint)type.Size;
             return c;
         }
 
         /// <summary>
-        /// Reads a chunk of bytes and interret it in Big-Endian mode.
+        /// Reads a chunk of bytes and interprets it in Big-Endian mode.
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
@@ -186,9 +211,25 @@ namespace Decompiler.Core
             return u;
         }
 
+        public bool TryReadLeUInt16(out ushort us)
+        {
+            if (!LoadedImage.TryReadLeUInt16(bytes, (uint)off, out us))
+                return false;
+            off += 2;
+            return true;
+        }
+
+        public bool TryReadBeUInt16(out ushort us)
+        {
+            if (!LoadedImage.TryReadBeUInt16(bytes, (uint)off, out us))
+                return false;
+            off += 2;
+            return true;
+        }
+
         public ushort ReadBeUInt16()
         {
-            ushort u = LoadedImage.ReadBeUInt16(bytes, off);
+            ushort u = LoadedImage.ReadBeUInt16(bytes, (uint)off);
             off += 2;
             return u;
         }
@@ -196,14 +237,18 @@ namespace Decompiler.Core
         public short ReadBeInt16() { return (short)ReadBeUInt16(); }
         public short ReadLeInt16() { return (short)ReadLeUInt16(); }
 
-        public ushort PeekLeUInt16(uint offset) { return LoadedImage.ReadLeUInt16(bytes, offset + off); }
-        public ushort PeekBeUInt16(uint offset) { return LoadedImage.ReadBeUInt16(bytes, offset + off); }
-        public short PeekLeInt16(uint offset) { return (short) LoadedImage.ReadLeUInt16(bytes, offset + off); }
-        public short PeekBeInt16(uint offset) { return (short) LoadedImage.ReadBeUInt16(bytes, offset + off); }
+        public ushort PeekLeUInt16(uint offset) { return LoadedImage.ReadLeUInt16(bytes, offset + (uint)off); }
+        public ushort PeekBeUInt16(uint offset) { return LoadedImage.ReadBeUInt16(bytes, offset + (uint) off); }
+        public short PeekLeInt16(uint offset) { return (short)LoadedImage.ReadLeUInt16(bytes, offset + (uint) off); }
+        public short PeekBeInt16(uint offset) { return (short)LoadedImage.ReadBeUInt16(bytes, offset + (uint) off); }
 
+        public bool TryPeekByte(uint offset, out byte value) { return LoadedImage.TryReadByte(bytes, offset + (uint)off, out value); }
+        public bool TryPeekBeUInt16(uint offset, out ushort value) { return LoadedImage.TryReadBeUInt16(bytes, offset + (uint)off, out value); }
+        public bool TryPeekBeUInt32(uint offset, out uint value) { return LoadedImage.TryReadBeUInt32(bytes, offset + (uint)off, out value); }
+        
         public uint ReadLeUInt32()
         {
-            uint u = LoadedImage.ReadLeUInt32(bytes, off);
+            uint u = LoadedImage.ReadLeUInt32(bytes, (uint)off);
             off += 4;
             return u;
         }
@@ -215,13 +260,77 @@ namespace Decompiler.Core
             return u;
         }
 
+        public bool TryReadLeInt32(out int i32)
+        {
+            if (!LoadedImage.TryReadLeInt32(this.bytes, (uint)off, out i32))
+                return false;
+            off += 4;
+            return true;
+        }
+
+        public bool TryReadBeInt32(out int i32)
+        {
+            if (!LoadedImage.TryReadBeInt32(this.bytes,(uint) off, out i32))
+                return false;
+            off += 4;
+            return true;
+        }
+
+        public bool TryReadLeUInt32(out uint ui32)
+        {
+            if (!LoadedImage.TryReadLeUInt32(this.bytes, (uint)off, out ui32))
+                return false;
+            off += 4;
+            return true;
+        }
+
+        public bool TryReadBeUInt32(out uint ui32)
+        {
+            if (!LoadedImage.TryReadBeUInt32(this.bytes, (uint)off, out ui32))
+                return false;
+            off += 4;
+            return true;
+        }
+
+        public bool TryReadLeInt64(out long value)
+        {
+            if (!LoadedImage.TryReadLeInt64(this.bytes, off, out value))
+                return false;
+            off += 8;
+            return true;
+        }
+
+        public bool TryReadLeUInt64(out ulong value)
+        {
+            if (!LoadedImage.TryReadLeUInt64(this.bytes, off, out value))
+                return false;
+            off += 8;
+            return true;
+        }
+
+        public bool TryReadBeInt64(out long value)
+        {
+            if (!LoadedImage.TryReadBeInt64(this.bytes, off, out value))
+                return false;
+            off += 8;
+            return true;
+        }
+
+        public bool TryReadBeUInt64(out ulong value)
+        {
+            if (!LoadedImage.TryReadBeUInt64(this.bytes, off, out value))
+                return false;
+            off += 8;
+            return true;
+        }
+
         public int ReadBeInt32() { return (int)ReadBeUInt32(); }
         public int ReadLeInt32() { return (int)ReadLeUInt32(); }
 
         public uint PeekLeUInt32(uint offset) { return LoadedImage.ReadLeUInt32(bytes, offset + off); }
         public uint PeekBeUInt32(uint offset) { return LoadedImage.ReadBeUInt32(bytes, offset + off); }
-        public int PeekLeInt32(uint offset) { return (int) LoadedImage.ReadLeUInt32(bytes, offset + off); }
-        public int PeekBeInt32(uint offset) { return (int) LoadedImage.ReadBeUInt32(bytes, offset + off); }
+        public int PeekLeInt32(uint offset) { return (int)LoadedImage.ReadLeUInt32(bytes, offset + off); }
+        public int PeekBeInt32(uint offset) { return (int)LoadedImage.ReadBeUInt32(bytes, offset + off); }
 
         public ulong ReadLeUInt64()
         {
@@ -247,12 +356,17 @@ namespace Decompiler.Core
 
         public abstract short ReadInt16();
         public abstract int ReadInt32();
+        public abstract bool TryReadInt32(out int i32);
         public abstract long ReadInt64();
+        public abstract bool TryReadInt64(out long value);
 
         public abstract ushort ReadUInt16();
+        public abstract bool TryReadUInt16(out ushort ui16);
         public abstract uint ReadUInt32();
+        public abstract bool TryReadUInt32(out uint ui32);
         public abstract ulong ReadUInt64();
- 
+        public abstract bool TryReadUInt64(out ulong ui64);
+
         public abstract short ReadInt16(uint offset);
         public abstract int ReadInt32(uint offset);
         public abstract long ReadInt64(uint offset);
@@ -307,14 +421,19 @@ namespace Decompiler.Core
 
         public void Seek(int offset)
         {
-            off = (uint)(off + offset);
+            off = (ulong)((long) off + offset);
         }
 
         public byte[] ReadToEnd()
         {
-            var ab = new byte[this.Bytes.Length - Offset];
-            Array.Copy(Bytes, Offset, ab, 0, ab.Length);
+            var ab = new byte[(ulong)this.Bytes.Length - Offset];
+            Array.Copy(Bytes, (int)Offset, ab, 0, ab.Length);
             return ab;
+        }
+
+        public bool TryPeekBeUInt64(int p, out ulong target)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -323,11 +442,11 @@ namespace Decompiler.Core
     /// </summary>
     public class LeImageReader : ImageReader
     {
-        public LeImageReader(byte[] bytes, uint offset=0) : base(bytes, offset) { }
-        public LeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
+        public LeImageReader(byte[] bytes, ulong offset=0) : base(bytes, offset) { }
+        public LeImageReader(LoadedImage image, ulong offset) : base(image, offset) { }
         public LeImageReader(LoadedImage image, Address addr) : base(image, addr) { }
 
-        public override ImageReader CreateNew(byte[] bytes, uint offset)
+        public override ImageReader CreateNew(byte[] bytes, ulong offset)
         {
             return new LeImageReader(bytes, offset);
         }
@@ -343,6 +462,11 @@ namespace Decompiler.Core
         public override ushort ReadUInt16() { return ReadLeUInt16(); }
         public override uint ReadUInt32() { return ReadLeUInt32(); }
         public override ulong ReadUInt64() { return ReadLeUInt64(); }
+        public override bool TryReadInt32(out int i32) { return TryReadLeInt32(out i32); }
+        public override bool TryReadInt64(out long value) { return TryReadLeInt64(out value); }
+        public override bool TryReadUInt16(out ushort value) { return TryReadLeUInt16(out value); }
+        public override bool TryReadUInt32(out uint ui32) { return TryReadLeUInt32(out ui32); }
+        public override bool TryReadUInt64(out ulong ui64) { return TryReadLeUInt64(out ui64); }
 
         public override short ReadInt16(uint offset) { return PeekLeInt16(offset); }
         public override int ReadInt32(uint offset) { return PeekLeInt32(offset); }
@@ -359,11 +483,11 @@ namespace Decompiler.Core
     /// </summary>
     public class BeImageReader : ImageReader
     {
-        public BeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
-        public BeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
+        public BeImageReader(byte[] bytes, ulong offset) : base(bytes, offset) { }
+        public BeImageReader(LoadedImage image, ulong offset) : base(image, offset) { }
         public BeImageReader(LoadedImage image, Address addr) : base(image, addr) { }
 
-        public override ImageReader CreateNew(byte[] bytes, uint offset)
+        public override ImageReader CreateNew(byte[] bytes, ulong offset)
         {
             return new BeImageReader(bytes, offset);
         }
@@ -379,6 +503,11 @@ namespace Decompiler.Core
         public override ushort ReadUInt16() { return ReadBeUInt16(); }
         public override uint ReadUInt32() { return ReadBeUInt32(); }
         public override ulong ReadUInt64() { return ReadBeUInt64(); }
+        public override bool TryReadInt32(out int i32) { return TryReadBeInt32(out i32); }
+        public override bool TryReadInt64(out long value) { return TryReadBeInt64(out value); }
+        public override bool TryReadUInt16(out ushort ui16) { return TryReadBeUInt16(out ui16); }
+        public override bool TryReadUInt32(out uint ui32) { return TryReadBeUInt32(out ui32); }
+        public override bool TryReadUInt64(out ulong ui64) { return TryReadBeUInt64(out ui64); }
 
         public override short ReadInt16(uint offset) { return PeekBeInt16(offset); }
         public override int ReadInt32(uint offset) { return PeekBeInt32(offset); }

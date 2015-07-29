@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Gui;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Gui;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class HtmlCodeFormatterTests
@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Gui
         {
             var proc = new Procedure("proc", new Frame(PrimitiveType.Word32));
             var pc = new ProcedureConstant(PrimitiveType.Word32, proc);
-            map.Add(new Address(0x42), proc);
+            map.Add(Address.Ptr32(0x42), proc);
 
             pc.Accept(hcf);
 

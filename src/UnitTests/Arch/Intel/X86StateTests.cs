@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class X86StateTests
@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private Identifier CreateId(RegisterStorage reg)
         {
-            return new Identifier(reg.Name, reg.Number, reg.DataType, reg);
+            return new Identifier(reg.Name, reg.DataType, reg);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 StackDelta = 16,                        // ...but pop 16 bytes
             },
-            new Decompiler.Evaluation.ExpressionSimplifier(state)); //$TODO: hm. Move simplification out of state.
+            new Reko.Evaluation.ExpressionSimplifier(state)); //$TODO: hm. Move simplification out of state.
             Assert.IsNotNull(reportedError);
         }
 

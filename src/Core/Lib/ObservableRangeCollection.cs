@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     /// <summary> 
     /// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed. 
@@ -19,10 +20,12 @@ namespace Decompiler.Core.Lib
         {
             if (collection == null) 
                 throw new ArgumentNullException("collection");
-
-            foreach (var i in collection) 
+            var items = collection.ToList();        // Avoid iterating the collection twice.
+            foreach (var i in items)
+            {
                 Items.Add(i);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, collection.ToList()));
+            }
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
         }
 
         /// <summary> 

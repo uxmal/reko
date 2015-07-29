@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CallRewriterTests : AnalysisTestBase
@@ -68,7 +69,6 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			RunTest("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
 		}
-
 
 		[Test]
 		public void CrwManyStackArgs()
@@ -142,7 +142,6 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			RunTest32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
 		}
-
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,13 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Provides access to the running instance of the decompiler.
@@ -63,6 +62,7 @@ namespace Decompiler.Gui
             }
         }
 
+        //$REVIEW" huh?
         public string ProjectName
         {
             get
@@ -71,7 +71,7 @@ namespace Decompiler.Gui
                     return "";
                 if (decompiler.Project== null)
                     return "";
-                return Path.GetFileName(decompiler.Project.InputFiles[0].Filename);
+                return Path.GetFileName(decompiler.Project.Programs[0].Filename);
             }
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,23 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Reko.Core.Lib;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
 	public class InitialPageInteractorTests
@@ -50,7 +51,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private ILowLevelViewService memSvc;
         private Program program;
         private Project project;
-        private Program[] programs;
 
 		[SetUp]
 		public void Setup()
@@ -64,13 +64,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc = new FakeShellUiService();
             host = mr.StrictMock<DecompilerHost>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
-            var image = new LoadedImage(new Address(0x10000), new byte[1000]);
-            var imageMap = new ImageMap(image);
+            var image = new LoadedImage(Address.Ptr32(0x10000), new byte[1000]);
+            var imageMap = image.CreateImageMap();
             var arch = mr.StrictMock<IProcessorArchitecture>();
-            var platform = mr.StrictMock<Platform>(null, null);
+            arch.Stub(a => a.CreateRegisterBitset()).Return(new BitSet(32));
+            arch.Replay();
+            var platform = mr.StrictMock<Platform>(null, arch);
+            arch.BackToRecord();
             program = new Program(image, imageMap, arch, platform);
-            programs = new[] { program }; 
-            project = new Project();
+            project = new Project { Programs = { program } };
 
             browserSvc = mr.StrictMock<IProjectBrowserService>();
 
@@ -104,8 +106,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             dec.Stub(d => d.Load("floxe.exe")).Return(false);
             dec.Stub(d => d.Project).Return(project);
-            dec.Stub(d => d.Programs).Return(programs);
-            browserSvc.Stub(b => b.Load(programs));
+            browserSvc.Stub(b => b.Load(project));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
@@ -117,14 +118,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldPopulateFields()
         {
-            dec.Stub(d => d.Project).Return(null);
-            dec.Stub(d => d.Programs).Return(new Program[0]);
+            dec.Stub(d => d.Project).Return(project);
+            browserSvc.Stub(b => b.Load(project));
             mr.ReplayAll();
 
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
             mr.Record();
             dec.Stub(d => d.Load("floxe.exe")).Return(false);
+            memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
             i.OpenBinary("floxe.exe", host);
@@ -137,9 +139,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
             dec.Stub(d => d.Load("floxe.exe")).Return(false);
-            dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(d => d.Load(programs));
+            browserSvc.Stub(d => d.Load(project));
             memSvc.Expect(s => s.ViewImage(program));
             mr.ReplayAll();
 
@@ -152,9 +153,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
             dec.Stub(d => d.Load("foo.exe")).Return(false);
-            dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Expect(b => b.Load(programs));
+            browserSvc.Expect(b => b.Load(project));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
@@ -167,9 +167,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Ipi_LeavePage()
         {
             dec.Expect(d => d.Load("foo.exe")).Return(false);
-            dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(programs));
+            browserSvc.Stub(b => b.Load(project));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
@@ -184,7 +183,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private MenuStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            i.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null);
+            i.QueryStatus(new CommandID(CmdSets.GuidReko, cmdId), status, null);
             return status.Status;
         }
 

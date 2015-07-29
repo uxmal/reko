@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     public class SerializedEnumType : SerializedTaggedType
     {
@@ -37,9 +37,6 @@ namespace Decompiler.Core.Serialization
         [XmlAttribute("Domain")]
         [DefaultValue(Domain.None)]
         public Domain Domain;
-
-        [XmlAttribute("name")]
-        public string Name;
 
         [XmlElement("member")]
         public SerializedEnumValue[]  Values;

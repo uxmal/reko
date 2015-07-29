@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class StorageTests
@@ -37,8 +37,8 @@ namespace Decompiler.UnitTests.Core
 		public void CreateOutArgumentRegister()
 		{
 			RegisterStorage mr = new RegisterStorage("r1", 1, PrimitiveType.Word32);
-			Identifier oarg = new Identifier("r1Out", 2, PrimitiveType.Word32, new OutArgumentStorage(
-				new Identifier(mr.Name, 3, PrimitiveType.Word32, mr)));
+			Identifier oarg = new Identifier("r1Out", PrimitiveType.Word32, new OutArgumentStorage(
+				new Identifier(mr.Name, PrimitiveType.Word32, mr)));
 			StringWriter w = new StringWriter();
 			oarg.Write(true, w);
 			Assert.AreEqual("Register out word32 r1Out", w.ToString());

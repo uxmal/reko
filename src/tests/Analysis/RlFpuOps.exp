@@ -14,6 +14,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = 0x0320
 	sp = fp - 0x0004
@@ -47,6 +48,7 @@ fn0C00_0010_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0010:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002
@@ -90,6 +92,7 @@ fn0C00_0037_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0037:
+	sp = fp
 	rLoc1 = 0
 	Mem0[ds:0x0400:real64] = rLoc1
 	rLoc1 = 1

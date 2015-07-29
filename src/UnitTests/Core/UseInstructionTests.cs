@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class UseInstructionTests
@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void UseCreate()
 		{
-			var id1 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
+			var id1 = new Identifier("foo", PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
 			var use = new UseInstruction(id1);
 			Assert.AreSame(id1, use.Expression);
 			Assert.IsNull(use.OutArgument);
@@ -43,9 +43,9 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void UseCreateWithArg()
 		{
-			var id2 = new Identifier("bar", -1, PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
-			var r = new Identifier(Registers.edx.Name, 2, Registers.edx.DataType, Registers.edx);
-			var arg = new Identifier("barOut", 3, PrimitiveType.Pointer32, new OutArgumentStorage(r));
+			var id2 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
+			var r = new Identifier(Registers.edx.Name, Registers.edx.DataType, Registers.edx);
+			var arg = new Identifier("barOut", PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			var use2 = new UseInstruction(id2, arg);
 			Assert.AreSame(id2, use2.Expression);
 			Assert.AreEqual("barOut", use2.OutArgument.Name);
@@ -54,12 +54,12 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void UseToString()
 		{
-			var id1 = new Identifier("foo", 1, PrimitiveType.Word32, null);
+			var id1 = new Identifier("foo", PrimitiveType.Word32, null);
 			var use = new UseInstruction(id1);
 			Assert.AreEqual("use foo", use.ToString());
 
-			var r = new Identifier(Registers.edx.Name, 3, Registers.edx.DataType, Registers.edx);
-			var arg = new Identifier("edxOut", 4, PrimitiveType.Pointer32, new OutArgumentStorage(r));
+			var r = new Identifier(Registers.edx.Name, Registers.edx.DataType, Registers.edx);
+			var arg = new Identifier("edxOut", PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			use = new UseInstruction(id1, arg);
 			Assert.AreEqual("use foo (=> edxOut)" , use.ToString());
 		}

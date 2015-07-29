@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Builds a function application from a call site and a callee.
@@ -41,7 +41,6 @@ namespace Decompiler.Core
     ///   If more registers are returned, they all become out registers and the function
     ///    is declared void, unless flags are returned.
     /// </remarks>
-    //$TODO: make this a StorageVisitor and move teh Storage.BindFormaArgumentToFrame method here
     public class ApplicationBuilder : StorageVisitor<Expression>
 	{
         private IProcessorArchitecture arch;
@@ -57,7 +56,7 @@ namespace Decompiler.Core
         /// <param name="arch">The processor architecture to use.</param>
         /// <param name="frame">The Frame of the calling procedure.</param>
         /// <param name="site">The call site of the calling instruction.</param>
-        /// <param name="callee">The pointer to the procedure being called.</param>
+        /// <param name="callee">The procedure being called.</param>
         /// <param name="sigCallee">The signature of the procedure being called.</param>
         /// <param name="ensureVariables">If true, creates variables in the <paramref name="frame"/> if needed.</param>
         public ApplicationBuilder(
@@ -68,9 +67,6 @@ namespace Decompiler.Core
             ProcedureSignature sigCallee,
             bool ensureVariables)
         {
-			if (sigCallee == null || !sigCallee.ArgumentsValid)
-				throw new InvalidOperationException("No signature available; application cannot be constructed.");
-
             this.arch = arch;
             this.site = site;
             this.frame = frame;
@@ -79,12 +75,15 @@ namespace Decompiler.Core
             this.ensureVariables = ensureVariables;
         }
 
-        private List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
+        public virtual List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
         {
+            if (sigCallee == null || !sigCallee.ParametersValid)
+                throw new InvalidOperationException("No signature available; application cannot be constructed.");
+            this.sigCallee = sigCallee;
             var actuals = new List<Expression>();
-            for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
+            for (int i = 0; i < sigCallee.Parameters.Length; ++i)
             {
-                var formalArg = sigCallee.FormalArguments[i];
+                var formalArg = sigCallee.Parameters[i];
                 var actualArg = formalArg.Storage.Accept(this);
                 if (formalArg.Storage is OutArgumentStorage)
                 {
@@ -118,10 +117,13 @@ namespace Decompiler.Core
         public Instruction CreateInstruction()
         {
             var idOut = BindReturnValue();
+            var dtOut = sigCallee.ReturnValue != null
+                ? sigCallee.ReturnValue.DataType
+                : VoidType.Instance;
             var actuals = BindArguments(frame, sigCallee);
             var appl = new Application(
                 callee,
-                (idOut == null ? VoidType.Instance : idOut.DataType),
+                dtOut,
                 actuals.ToArray());
 
 			if (idOut == null)
@@ -138,7 +140,7 @@ namespace Decompiler.Core
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return frame.EnsureFlagGroup(grf.FlagGroupBits, grf.Name, PrimitiveType.Byte);		//$REVIEW: PrimitiveType.Byte is hard-wired here.
+            return frame.EnsureFlagGroup(grf.FlagGroupBits, grf.Name, grf.DataType);
         }
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)

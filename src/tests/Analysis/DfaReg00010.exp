@@ -5,6 +5,7 @@
 // Trashed: SCZO ax cx dx bx bp si al cl dl bl ah ch dh bh
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bp, word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -21,28 +22,29 @@ fn0C00_0000_exit:
 // Trashed: SCZO ax cx dx bx bp si al cl dl bl ah ch dh bh
 // Preserved: sp
 // fn0C00_0004
+// Return size: 0
 void fn0C00_0004(word16 bp, word16 si, selector ds)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	byte al_32 = (Mem0[ds:si:byte] >>u 0x04) + 0x30
-	word16 ax_33 = DPB(ax, al_32, 0, 8)
-	branch al_32 <= 0x39 l0C00_0016
+	byte al_29 = (Mem0[ds:si:byte] >>u 0x04) + 0x30
+	word16 ax_30 = DPB(ax, al_29, 0, 8)
+	branch al_29 <= 0x39 l0C00_0016
 	// succ:  l0C00_0014 l0C00_0016
 l0C00_0014:
-	ax_33 = DPB(ax_33, al_32 + 0x07, 0, 8) (alias)
+	ax_30 = DPB(ax_30, al_29 + 0x07, 0, 8) (alias)
 	// succ:  l0C00_0016
 l0C00_0016:
-	byte ah_40 = (Mem0[ds:si:byte] & 0x0F) + 0x30
-	word16 ax_41 = DPB(ax_33, ah_40, 8, 8)
-	branch ah_40 <= 0x39 l0C00_0026
+	byte ah_37 = (Mem0[ds:si:byte] & 0x0F) + 0x30
+	word16 ax_38 = DPB(ax_30, ah_37, 8, 8)
+	branch ah_37 <= 0x39 l0C00_0026
 	// succ:  l0C00_0023 l0C00_0026
 l0C00_0023:
-	ax_41 = DPB(ax_41, ah_40 + 0x07, 8, 8) (alias)
+	ax_38 = DPB(ax_38, ah_37 + 0x07, 8, 8) (alias)
 	// succ:  l0C00_0026
 l0C00_0026:
-	Mem46[ds:0x5427:word16] = ax_41
-	msdos_write_file(Mem46[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), out ax)
+	Mem43[ds:0x5427:word16] = ax_38
+	msdos_write_file(Mem43[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), out ax)
 	si = si + 0x0001
 	bp = bp - 0x0001
 	branch bp != 0x0000 l0C00_0004

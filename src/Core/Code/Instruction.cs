@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
     /// <summary>
     /// Base class for intermediate-level instructions. These are generated from the low-level,
@@ -42,6 +42,19 @@ namespace Decompiler.Core.Code
 
 		public abstract bool IsControlFlow { get; }
 
+        /// <summary>
+        /// Utility function to simplify code that first checks the type of an instruction
+        /// and then casts to it.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ass"></param>
+        /// <returns></returns>
+        public bool As<T>(out T value) where T : Instruction
+        {
+            value = this as T;
+            return value != null;
+        }
+
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();
@@ -52,6 +65,7 @@ namespace Decompiler.Core.Code
 			Accept(fmt);
 			return sw.ToString();
 		}
+
     }
 
     /// <summary>

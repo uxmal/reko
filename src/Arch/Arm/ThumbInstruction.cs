@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ThOpcode = Reko.Arch.Arm.ThumbOpcode;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class ThumbInstruction : MachineInstruction
     {
+        public ThOpcode Opcode;
+        public override int OpcodeAsInteger { get { return (int) Opcode; } }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Forms;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Windows;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class DisassemblyViewInteractor : IWindowPane, ICommandTarget
     {
@@ -61,7 +61,7 @@ namespace Decompiler.Gui.Windows
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
                     var image = program.Image;
-                    var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, StartAddress));
+                    var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
                     while (dasm.MoveNext())
                     {
                         var instr = dasm.Current;
@@ -166,12 +166,11 @@ namespace Decompiler.Gui.Windows
 
         #endregion
 
-
         #region ICommandTarget Members
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -184,7 +183,7 @@ namespace Decompiler.Gui.Windows
 
         public bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public interface OperatingEnvironment
     {
@@ -31,6 +31,10 @@ namespace Decompiler.Core.Configuration
         string Description { get; }
         string TypeName { get; }
         TypeLibraryElementCollection TypeLibraries { get; }
+        TypeLibraryElementCollection CharacteristicsLibraries { get; set; }
+
+        Platform Load(IServiceProvider services, IProcessorArchitecture arch);
+
     }
 
     public class OperatingEnvironmentElement : ConfigurationElement, OperatingEnvironment
@@ -54,7 +58,7 @@ namespace Decompiler.Core.Configuration
             set { this["Description"] = value; }
         }
 
-        [ConfigurationProperty("Type", IsRequired = true)]
+        [ConfigurationProperty("Type", IsRequired = false)]
         public string TypeName
         {
             get { return (string) this["Type"]; }
@@ -67,6 +71,23 @@ namespace Decompiler.Core.Configuration
         {
             get { return (TypeLibraryElementCollection) this["TypeLibraries"]; }
             set { this["TypeLibraries"] = value; }
+        }
+
+        [ConfigurationProperty("Characteristics", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationCollection(typeof(TypeLibraryElement))]
+        public TypeLibraryElementCollection CharacteristicsLibraries
+        {
+            get { return (TypeLibraryElementCollection)this["Characteristics"]; }
+            set { this["Characteristics"] = value; }
+        }
+
+        public Platform Load(IServiceProvider services, IProcessorArchitecture arch)
+        {
+            var type = Type.GetType(TypeName);
+            if (type == null)
+                throw new TypeLoadException(
+                    string.Format("Unable to load {0} environment.", Description));
+            return (Platform) Activator.CreateInstance(type, services, arch);
         }
 
         public override string ToString()

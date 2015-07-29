@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Output;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
     /// Stores, for a particular program, all type variables, equivalence classes, and their mappings to
@@ -113,7 +113,7 @@ namespace Decompiler.Core.Types
                 if (dtOld != null)
                     dt = u.Unify(dt, dtOld);
                 else if (dt != null)
-                    dt = dt.Clone();
+                    dt = dt.Clone();        // why clone???
                 c.DataType = dt;
             }
         }
@@ -164,23 +164,6 @@ namespace Decompiler.Core.Types
                 DataType dt = tv.Class.DataType;
                 tv.DataType = dt;
             }
-        }
-
-        public DataType ResolvePossibleTypeVar(DataType dt)
-        {
-            TypeVariable tv = dt as TypeVariable;
-            while (tv != null)
-            {
-                dt = tv.Class.DataType;
-                tv = dt as TypeVariable;
-            }
-            EquivalenceClass eq = dt as EquivalenceClass;
-            while (eq != null)
-            {
-                dt = eq.DataType;
-                eq = dt as EquivalenceClass;
-            }
-            return dt;
         }
 
         public IList<EquivalenceClass> UsedEquivalenceClasses

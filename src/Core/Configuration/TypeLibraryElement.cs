@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,20 +24,29 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public interface ITypeLibraryElement
     {
         string Name { get; }
+
+        string Architecture { get; set; }
     }
 
     public class TypeLibraryElement : ConfigurationElement, ITypeLibraryElement
     {
-        [ConfigurationProperty("Name", IsRequired = true)]
+        [ConfigurationProperty("name", IsRequired = true)]
         public string Name
         {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
+            get { return (string) this["name"]; }
+            set { this["name"] = value; }
+        }
+
+        [ConfigurationProperty("arch", IsRequired=false)]
+        public string Architecture
+        {
+            get { return (string) this["arch"]; }
+            set { this["arch"] = value; }
         }
     }
 }

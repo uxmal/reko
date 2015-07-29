@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core.Machine;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     public abstract class AssemblerFragment
     {
@@ -46,6 +46,6 @@ namespace Decompiler.UnitTests.Arch.Intel
         protected ParsedOperand si = new ParsedOperand(new RegisterOperand(Registers.si));
         protected ParsedOperand di = new ParsedOperand(new RegisterOperand(Registers.di));
 
-        public abstract void Build(IntelAssembler m);
+        public abstract void Build(X86Assembler m);
     }
 }

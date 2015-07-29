@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +27,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class ProcedureDialogInteractor
     {
@@ -86,7 +86,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void ApplyChangesToProcedure(Procedure procedure)
         {
-            var ser = new ProcedureSerializer(arch, "stdapi");          //$Where does convetion come from? Platform?
+            var ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");          //BUG:Where does convetion come from? Platform?
             var sp = new SignatureParser(arch);
             sp.Parse(dlg.Signature.Text);
             Debug.Assert(sp.IsValid);

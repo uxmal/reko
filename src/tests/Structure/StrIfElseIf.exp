@@ -1,4 +1,5 @@
 // MockIfElseIf
+// Return size: 0
 void MockIfElseIf()
 MockIfElseIf_entry:
 	branch r != 0x00000000 not_0

@@ -18,8 +18,18 @@
       </signature>
       <address>1000:0010</address>
     </procedure>
+    <global>
+      <Address>2000:0000</Address>
+      <str term="z">
+        <prim domain="Character" size="1" />
+      </str>
+      <Name>g_20000</Name>
+    </global>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
+    <options>
+      <HeuristicScanning>false</HeuristicScanning>
+    </options>
   </input>
   <output />
 </project>

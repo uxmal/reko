@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Arch.Arm;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Arch.Arm;
+using Reko.Core;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Arm
+namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     public class ThumbDisassemblerTests : ArmTestBase
@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Arch.Arm
 
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
         {
-            return new ThumbDisassembler(arch, rdr);
+            return new ThumbDisassembler(arch, rdr).GetEnumerator();
         }
 
         [Test]

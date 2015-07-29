@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,26 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Maps program image addresses to relocated values (with correct primitive types).
 	/// </summary>
 	public class RelocationDictionary 
     {
-        private Dictionary<uint, Constant> map = new Dictionary<uint, Constant>();
+        private Dictionary<ulong, Constant> map = new Dictionary<ulong, Constant>();
 
         /// <summary>
         /// Retrieves a relocated value at the <paramref name="imageOffset"/>.
         /// </summary>
         /// <param name="imageOffset"></param>
         /// <returns></returns>
-        public Constant this[uint imageOffset]
+        public Constant this[ulong imageOffset]
         {
             get
             {
@@ -49,13 +49,13 @@ namespace Decompiler.Core
             }
         }
 
-		public void AddPointerReference(uint imageOffset, uint pointer)
+		public void AddPointerReference(ulong imageOffset, uint pointer)
 		{
 			var c = Constant.Create(PrimitiveType.Pointer32, pointer);
 			map.Add(imageOffset, c);
 		}
 
-		public void AddSegmentReference(uint imageOffset, ushort segmentSelector)
+		public void AddSegmentReference(ulong imageOffset, ushort segmentSelector)
 		{
             var c = Constant.Create(PrimitiveType.SegmentSelector, segmentSelector);
 			map.Add(imageOffset, c);

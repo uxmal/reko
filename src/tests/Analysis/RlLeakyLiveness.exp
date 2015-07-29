@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	call fn0C00_000A (retsize: 2; depth: 2)
 	branch Test(ULT,C) l0C00_0009
 // DataOut: ax ds
@@ -52,6 +53,7 @@ fn0C00_000A_entry:
 
 // SymbolicIn: sp:fp
 l0C00_000A:
+	sp = fp
 	si = Mem0[ds:0x0100:word16]
 	SCZO = cond(si - Mem0[ds:0x0102:word16])
 	branch Test(EQ,Z) l0C00_001E

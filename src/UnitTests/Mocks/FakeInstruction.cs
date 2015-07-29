@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeInstruction : MachineInstruction
     {
@@ -36,6 +36,7 @@ namespace Decompiler.UnitTests.Mocks
             this.ops = ops;
         }
 
+        public override int OpcodeAsInteger { get { return (int)operation; } }
         public Operation Operation { get { return operation; } }
         public MachineOperand[] Operands { get { return ops; } }
     }

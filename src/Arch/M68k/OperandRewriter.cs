@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     /// <summary>
     /// Rewrites M68k operands into sequences of RTL expressions and possibly instructions.
@@ -119,8 +119,49 @@ namespace Decompiler.Arch.M68k
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 return m.Load(DataWidth, m.IAdd(ea, ix));
-            } 
+            }
+            var indop = operand as IndexedOperand;
+            if (indop!=null)
+            {
+                Expression ea = Combine(indop.Base, indop.base_reg);
+                if (indop.postindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                if (indop.index_reg != null)
+                {
+                    var idx = Combine(null, indop.index_reg);
+                    if (indop.index_scale > 1)
+                        idx = m.IMul(idx, indop.index_scale);
+                    ea = Combine(ea, idx);
+                }
+                if (indop.preindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                ea = Combine(ea, indop.outer);
+                return m.Load(DataWidth, ea);
+            }
             throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.GetType().Name);
+        }
+
+        Expression Combine(Expression e, RegisterStorage reg)
+        {
+            if (reg == null)
+                return e;
+            var r = frame.EnsureRegister(reg);
+            if (e == null)
+                return r;
+            return m.IAdd(e, r);
+        }
+
+        Expression Combine(Expression e, Expression o)
+        {
+            if (o == null)
+                return e;
+            if (e == null)
+                return o;
+            return m.IAdd(e, o);
         }
 
         public Expression RewriteDst(MachineOperand operand, Address addrInstr, Expression src, Func<Expression, Expression, Expression> opGen)
@@ -135,7 +176,7 @@ namespace Decompiler.Arch.M68k
             {
                 Expression r = frame.EnsureRegister(reg.Register);
                 Expression tmp = r;
-                if (reg.Width.BitSize > dataWidth.BitSize)
+                if (dataWidth != null && reg.Width.BitSize > dataWidth.BitSize)
                 {
                     Expression rSub = m.Cast(dataWidth, r);
                     var srcExp = opGen(src, rSub);
@@ -267,6 +308,15 @@ namespace Decompiler.Arch.M68k
                     return r;
                 }
             }
+            var addr = operand as M68kAddressOperand;
+            if (addr != null)
+            {
+                var load = m.Load(dataWidth, addr.Address);
+                var tmp = frame.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(load));
+                m.Assign(load, tmp);
+                return tmp;
+            }
             var mem = operand as MemoryOperand;
             if (mem != null)
             {
@@ -355,7 +405,17 @@ namespace Decompiler.Arch.M68k
                 m.Assign(load, src);
                 return src;
             }
-            throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + opDst.ToString());
+            var mAddr = opDst as M68kAddressOperand;
+            if (mAddr != null)
+            {
+                m.Assign(
+                    m.Load(
+                        dataWidth, 
+                        Constant.Word32(mAddr.Address.ToUInt32())),
+                    src);
+                return src;
+            }
+            throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + opDst.GetType().Name);
         }
 
         private Expression Spill(Expression src, Identifier r)

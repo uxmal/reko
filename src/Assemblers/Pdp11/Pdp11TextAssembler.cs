@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Arch.Pdp11;
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Assemblers;
+using Reko.Arch.Pdp11;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Assemblers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Assemblers.Pdp11
+namespace Reko.Assemblers.Pdp11
 {
     public class Pdp11TextAssembler : Assembler
     {
@@ -42,7 +42,7 @@ namespace Decompiler.Assemblers.Pdp11
             this.emitter = emitter;
         }
 
-        public LoaderResults Assemble(Address addrBase, TextReader reader)
+        public Program Assemble(Address addrBase, TextReader reader)
         {
             arch = new Pdp11Architecture();
             Assembler = new Pdp11Assembler(arch, addrBase, emitter);
@@ -61,7 +61,7 @@ namespace Decompiler.Assemblers.Pdp11
         }
 
  
-        public LoaderResults AssembleFragment(Address baseAddress, string fragment)
+        public Program AssembleFragment(Address baseAddress, string fragment)
         {
             return Assemble(baseAddress, new StringReader(fragment));
         }
@@ -199,7 +199,7 @@ namespace Decompiler.Assemblers.Pdp11
             if (lexer.Peek().Type == TokenType._Dot)
             {
                 lexer.Get();
-                return emitter.Position + (int) Assembler.BaseAddress.Linear;
+                return emitter.Position + (int) Assembler.BaseAddress.ToLinear();
             }
             if (lexer.Peek().Type == TokenType.Number)
             {
@@ -225,7 +225,7 @@ namespace Decompiler.Assemblers.Pdp11
             get { throw new NotImplementedException(); }
         }
 
-        public Dictionary<uint, PseudoProcedure> ImportThunks
+        public Dictionary<Address, ImportReference> ImportReferences
         {
             get { throw new NotImplementedException(); }
         }

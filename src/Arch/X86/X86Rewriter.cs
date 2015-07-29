@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     /// <summary>
     /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.
@@ -52,7 +52,7 @@ namespace Decompiler.Arch.X86
             IntelArchitecture arch,
             IRewriterHost host,
             X86State state,
-            ImageReader rdr, 
+            ImageReader rdr,
             Frame frame)
         {
             if (host == null)
@@ -75,7 +75,7 @@ namespace Decompiler.Arch.X86
                 instrCur = dasm.Current;
                 ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
                 emitter = new RtlEmitter(ric.Instructions);
-                orw = new OperandRewriter(arch, frame, host);
+                orw = arch.ProcessorMode.CreateOperandRewriter(arch, frame, host);
                 switch (instrCur.code)
                 {
                 default:
@@ -92,11 +92,13 @@ namespace Decompiler.Arch.X86
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.bt: RewriteBt(); break;
+                case Opcode.btr: RewriteBtr(); break;
+                case Opcode.bts: RewriteBts(); break;
                 case Opcode.call: RewriteCall(instrCur.op1, instrCur.op1.Width); break;
                 case Opcode.cbw: RewriteCbw(); break;
                 case Opcode.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
                 case Opcode.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
-                case Opcode.cli: break; //$TODO
+                case Opcode.cli: RewriteCli(); break;
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
                 case Opcode.cmova: RewriteConditionalMove(ConditionCode.UGT, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovbe: RewriteConditionalMove(ConditionCode.ULE, instrCur.op1, instrCur.op2); break;
@@ -114,9 +116,12 @@ namespace Decompiler.Arch.X86
                 case Opcode.cmovpo: RewriteConditionalMove(ConditionCode.PO, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovs: RewriteConditionalMove(ConditionCode.SG, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovz: RewriteConditionalMove(ConditionCode.EQ, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmpxchg: RewriteCmpxchg(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmps: RewriteStringInstruction(); break;
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
+                case Opcode.cpuid: RewriteCpuid(); break;
+                case Opcode.cvttsd2si: RewriteCvttsd2si(); break;
                 case Opcode.cwd: RewriteCwd(); break;
                 case Opcode.daa: EmitDaaDas("__daa"); break;
                 case Opcode.das: EmitDaaDas("__das"); break;
@@ -164,6 +169,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.fsubr: EmitCommonFpuInstruction(Operator.ISub, true, false); break;
                 case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.ISub, true, true); break;
                 case Opcode.ftst: RewriteFtst(); break;
+                case Opcode.fucompp: RewriteFcom(2); break;
                 case Opcode.fxam: RewriteFxam(); break;
                 case Opcode.fxch: RewriteExchange(); break;
                 case Opcode.fyl2x: RewriteFyl2x(); break;
@@ -201,6 +207,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.les: RewriteLxs(Registers.es); break;
                 case Opcode.lfs: RewriteLxs(Registers.fs); break;
                 case Opcode.lgs: RewriteLxs(Registers.gs); break;
+                case Opcode.@lock: RewriteLock(); break;
                 case Opcode.lods: RewriteStringInstruction(); break;
                 case Opcode.lodsb: RewriteStringInstruction(); break;
                 case Opcode.loop: RewriteLoop(0, ConditionCode.EQ); break;
@@ -208,10 +215,13 @@ namespace Decompiler.Arch.X86
                 case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.movd: RewriteMovzx(); break;
+                case Opcode.movdqa: RewriteMov(); break;
+                case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
                 case Opcode.movsx: RewriteMovsx(); break;
-                case Opcode.movzx: RewriteMovzx();  break;
+                case Opcode.movzx: RewriteMovzx(); break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.nop: continue;
@@ -220,16 +230,22 @@ namespace Decompiler.Arch.X86
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.@outs: RewriteStringInstruction(); break;
                 case Opcode.@outsb: RewriteStringInstruction(); break;
+                case Opcode.palignr: RewritePalignr(); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.popa: RewritePopa(); break;
                 case Opcode.popf: RewritePopf(); break;
+                case Opcode.pshufd: RewritePshufd(); break;
+                case Opcode.punpcklbw: RewritePunpcklbw(); break;
+                case Opcode.punpcklwd: RewritePunpcklwd(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pusha: RewritePusha(); break;
                 case Opcode.pushf: RewritePushf(); break;
-                case Opcode.rcl: RewriteRotation("__rcl", true, true); break;
-                case Opcode.rcr: RewriteRotation("__rcr", true, false); break;
-                case Opcode.rol: RewriteRotation("__rol", false, true); break;
-                case Opcode.ror: RewriteRotation("__ror", false, false); break;
+                case Opcode.pxor: RewritePxor(); break;
+                case Opcode.rcl: RewriteRotation(PseudoProcedure.RolC, true, true); break;
+                case Opcode.rcr: RewriteRotation(PseudoProcedure.RorC, true, false); break;
+                case Opcode.rol: RewriteRotation(PseudoProcedure.Rol, false, true); break;
+                case Opcode.ror: RewriteRotation(PseudoProcedure.Ror, false, false); break;
+                case Opcode.rdtsc: RewriteRdtsc(); break;
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
@@ -239,11 +255,17 @@ namespace Decompiler.Arch.X86
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.ISub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;
+                case Opcode.seta: RewriteSet(ConditionCode.UGT); break;
+                case Opcode.setc: RewriteSet(ConditionCode.ULT); break;
+                case Opcode.setbe: RewriteSet(ConditionCode.ULE); break;
                 case Opcode.setg: RewriteSet(ConditionCode.GT); break;
                 case Opcode.setge: RewriteSet(ConditionCode.GE); break;
                 case Opcode.setl: RewriteSet(ConditionCode.LT); break;
                 case Opcode.setle: RewriteSet(ConditionCode.LE); break;
+                case Opcode.setnc: RewriteSet(ConditionCode.UGE); break;
+                case Opcode.setns: RewriteSet(ConditionCode.NS); break;
                 case Opcode.setnz: RewriteSet(ConditionCode.NE); break;
+                case Opcode.seto: RewriteSet(ConditionCode.OV); break;
                 case Opcode.sets: RewriteSet(ConditionCode.SG); break;
                 case Opcode.setz: RewriteSet(ConditionCode.EQ); break;
                 case Opcode.shl: RewriteBinOp(BinaryOperator.Shl); break;
@@ -258,7 +280,9 @@ namespace Decompiler.Arch.X86
                 case Opcode.sub: RewriteAddSub(BinaryOperator.ISub); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.wait: break;	// used to slow down FPU.
+                case Opcode.xadd: RewriteXadd(); break;
                 case Opcode.xchg: RewriteExchange(); break;
+                case Opcode.xgetbv: RewriteXgetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 }
@@ -266,6 +290,7 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        //$TODO: common code.
         public Expression PseudoProc(string name, DataType retType, params Expression[] args)
         {
             var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
@@ -324,7 +349,7 @@ namespace Decompiler.Arch.X86
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 emitter.Assign(tmp, src);
-                var ea = orw.CreateMemoryAccess((MemoryOperand) opDst, state);
+                var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst, state);
                 emitter.Assign(ea, tmp);
                 dst = tmp;
             }
@@ -337,15 +362,15 @@ namespace Decompiler.Arch.X86
                 emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(dst));
             }
         }
-    
+
         private Expression SrcOp(MachineOperand opSrc)
         {
-            return orw.Transform(opSrc, opSrc.Width, state);
+            return orw.Transform(instrCur, opSrc, opSrc.Width, state);
         }
 
         private Expression SrcOp(MachineOperand opSrc, PrimitiveType dstWidth)
         {
-            return orw.Transform(opSrc, dstWidth, state);
+            return orw.Transform(instrCur, opSrc, dstWidth, state);
         }
     }
 }

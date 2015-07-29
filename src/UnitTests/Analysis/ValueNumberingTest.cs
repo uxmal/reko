@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,19 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
+using Reko.Analysis;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Diagnostics;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
-	[TestFixture]
-	[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
+	//[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
 	public class ValueNumberingTests : AnalysisTestBase
 	{
-		[Test]
+		//[Test]
 		public void VnSumTest()
 		{
 			Program prog = RewriteCodeFragment(
@@ -53,7 +52,7 @@ namespace Decompiler.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(proc, gr);
+                SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut.TextWriter);
@@ -68,7 +67,7 @@ namespace Decompiler.UnitTests.Analysis
 			proc.Write(false, writer);
 		}
 
-		[Test]
+		//[Test]
 		public void VnMemoryTest()
 		{
 			Program prog = RewriteCodeFragment(
@@ -86,7 +85,7 @@ namespace Decompiler.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut.TextWriter);
@@ -95,7 +94,7 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnLoopTest()
 		{
 			Program prog = this.RewriteCodeFragment(
@@ -120,7 +119,7 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 
@@ -135,7 +134,7 @@ done:
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnRedundantStore()
 		{
 			Program prog = RewriteCodeFragment(
@@ -157,7 +156,7 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
@@ -167,7 +166,7 @@ done:
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnLoop()
 		{
 			Program prog = RewriteCodeFragment(@".i86
@@ -190,7 +189,7 @@ looptest:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
@@ -200,19 +199,19 @@ looptest:
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnFactorial()
 		{
 			RunTest("Fragments/factorial.asm", "Analysis/VnFactorial.txt");
 		}
 
-		[Test]
+		//[Test]
 		public void VnReg00001()
 		{
 			RunTest("Fragments/regression00001.asm", "Analysis/VnReg00001.txt");
 		}
 
-		[Test]
+		//[Test]
 		public void VnStringInstructions()
 		{
 			RunTest("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");
@@ -220,12 +219,13 @@ looptest:
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
+            var progFlow = new ProgramDataFlow();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(progFlow, proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, writer);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);

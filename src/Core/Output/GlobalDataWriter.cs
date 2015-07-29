@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     /// <summary>
-    /// Writes out initialized data.
+    /// Writes out global initialized data.
     /// </summary>
     public class GlobalDataWriter : IDataTypeVisitor<CodeFormatter>
     {
@@ -36,24 +37,41 @@ namespace Decompiler.Core.Output
         private ImageReader rdr;
         private CodeFormatter codeFormatter;
         private StructureType globals;
+        private IServiceProvider services;
 
-        public GlobalDataWriter(Program program)
+        public GlobalDataWriter(Program program, IServiceProvider services)
         {
             this.program = program;
+            this.services = services;
         }
 
         public void WriteGlobals(Formatter formatter)
         {
             this.codeFormatter = new CodeFormatter(formatter);
-            var tw = new TypeFormatter(formatter, true);
-            this.globals = (StructureType) program.Globals.TypeVariable.DataType;
+            var tw = new TypeReferenceFormatter(formatter, true);
+            this.globals = (StructureType)((EquivalenceClass) ((Pointer)program.Globals.TypeVariable.DataType).Pointee).DataType;
             foreach (var field in globals.Fields)
             {
                 var name = string.Format("g_{0:X}", field.Name);
-                tw.Write(field.DataType, name);
-                formatter.Write(" = ");
-                this.rdr = program.Architecture.CreateImageReader(program.Image, new Address((uint) field.Offset));
-                field.DataType.Accept(this);
+                var addr = Address.Ptr32((uint) field.Offset);  //$BUG: this is completely wrong; offsets should be as wide as the platform permits.
+                try
+                {
+                    tw.WriteDeclaration(field.DataType, name);
+                    if (program.Image.IsValidAddress(addr))
+                    {
+                        formatter.Write(" = ");
+                        this.rdr = program.CreateImageReader(addr);
+                        field.DataType.Accept(this);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var dc = services.RequireService<DecompilerEventListener>();
+                    dc.Error(
+                        dc.CreateAddressNavigator(program, addr),
+                        ex,
+                        string.Format("Failed to write global variable {0}.", name));
+                }
                 formatter.Terminate(";");
             }
         }
@@ -67,12 +85,15 @@ namespace Decompiler.Core.Output
             fmt.Write("{");
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
-
+            
             for (int i = 0; i < at.Length; ++i)
             {
+                var r = rdr.Clone();
                 fmt.Indent();
                 at.ElementType.Accept(this);
                 fmt.Terminate(",");
+                r.Offset += (uint) at.ElementType.Size;
+                rdr = r;
             }
 
             fmt.Indentation -= fmt.TabSize;
@@ -91,9 +112,26 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        private int guard;
         public CodeFormatter VisitEquivalenceClass(EquivalenceClass eq)
         {
-            return eq.DataType.Accept(this);
+            if (guard > 100)
+            { codeFormatter.InnerFormatter.WriteComment("Recursion too deep"); return codeFormatter; }
+            else
+            {
+                if (eq.DataType != null)
+                {
+                    //$TODO: this should go away once we figure out why type inference loops.
+                    ++guard;
+                    var cf = eq.DataType.Accept(this);
+                    --guard;
+                    return cf;
+                } else
+                {
+                    Debug.Print("WARNING: eq.DataType is null for {0}", eq.Name);
+                    return codeFormatter;
+                }
+            }
         }
 
         public CodeFormatter VisitFunctionType(FunctionType ft)
@@ -132,7 +170,24 @@ namespace Decompiler.Core.Output
 
         public CodeFormatter VisitString(StringType str)
         {
-            throw new NotImplementedException();
+            var s = rdr.ReadCString(str.ElementType, Encoding.UTF8);    //$BUG: should get this from platform / user-setting.
+            var fmt = codeFormatter.InnerFormatter;
+            fmt.Write('"');
+            foreach (var ch in s.ToString())
+            {
+                if (Char.IsControl(ch))
+                {
+                    fmt.Write("\\x{0:X2}", (int) ch);
+                }
+                else
+                {
+                    if (ch == '\\' || ch == '"')
+                        fmt.Write(ch);
+                    fmt.Write(ch);
+                }
+            }
+            fmt.Write('"');
+            return codeFormatter;
         }
 
         public CodeFormatter VisitStructure(StructureType str)
@@ -159,7 +214,9 @@ namespace Decompiler.Core.Output
 
         public CodeFormatter VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            var fmt = codeFormatter.InnerFormatter;
+            fmt.WriteType(typeref.Name, typeref);
+            return codeFormatter;
         }
 
         public CodeFormatter VisitTypeVariable(TypeVariable tv)

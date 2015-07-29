@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Loading
+namespace Reko.Loading
 {
     /// <summary>
     /// The NullLoader is used when the decompiler is unable to determine what image loader to use.
@@ -31,31 +31,40 @@ namespace Decompiler.Loading
     /// </summary>
     public class NullImageLoader : ImageLoader
     {
+        private Address baseAddr;
         private byte[] imageBytes;
 
-        public NullImageLoader(IServiceProvider services, byte[] image) : base(services, image)
+        public NullImageLoader(IServiceProvider services, string filename, byte[] image) : base(services, filename, image)
         {
             this.imageBytes = image;
+            this.baseAddr = Address.Ptr32(0);
+            this.EntryPoints = new List<EntryPoint>();
         }
 
-        public override LoaderResults Load(Address addrLoad)
-        {
-            var image = new LoadedImage(addrLoad, imageBytes);
-            return new LoaderResults(
-                image,
-                new ImageMap(image),
-                null,
-                new DefaultPlatform(Services, null));
-        }
-
+        public IProcessorArchitecture Architecture { get; set; }
+        public List<EntryPoint> EntryPoints { get; private set; }
+        public Platform Platform { get; set; }
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0); }
+            get { return this.baseAddr; }
+            set { this.baseAddr = value; }
+        }
+
+        public override Program Load(Address addrLoad)
+        {
+            if (addrLoad == null)
+                addrLoad = PreferredBaseAddress;
+            var image = new LoadedImage(addrLoad, imageBytes);
+            return new Program(
+                image,
+                image.CreateImageMap(),
+                Architecture,
+                Platform ?? new DefaultPlatform(Services, Architecture));
         }
 
         public override RelocationResults Relocate(Address addrLoad)
         {
-            return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary());
+            return new RelocationResults(EntryPoints, new RelocationDictionary());
         }
     }
 }

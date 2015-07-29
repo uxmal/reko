@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Machine;
 using System;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	/// <summary>
 	/// Models an X86 instruction.
@@ -57,10 +57,21 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
+        public override int OpcodeAsInteger { get { return (int) code; } } 
+
 		private bool NeedsExplicitMemorySize()
 		{
 			if (code == Opcode.movsx || code == Opcode.movzx)
 				return true;
+            if (code == Opcode.lea ||
+                code == Opcode.lds ||
+                code == Opcode.les ||
+                code == Opcode.lfs || 
+                code == Opcode.lgs || 
+                code == Opcode.lss)
+                return false;
+            if (Operands >= 2 && op1.Width.Size != op2.Width.Size)
+                return true;
 			return 
 				 (Operands < 1 || !ImplicitWidth(op1)) &&
 				 (Operands < 2 || !ImplicitWidth(op2)) &&
@@ -115,23 +126,22 @@ namespace Decompiler.Arch.X86
 				}
 				break;
 			}
-			writer.Opcode(s);
-
+			writer.WriteOpcode(s);
 			writer.Tab();
 
 			bool fExplicit = NeedsExplicitMemorySize();
 
 			if (Operands >= 1)
 			{
-				writer.Write(op1.ToString());
+				op1.Write(fExplicit, writer);
 				if (Operands >= 2)
 				{
 					writer.Write(',');
-					writer.Write(op2.ToString(fExplicit));
+					op2.Write(fExplicit, writer);
 					if (Operands >= 3)
 					{
 						writer.Write(",");
-						writer.Write(op3.ToString(fExplicit));
+						op3.Write(fExplicit, writer);
 					}
 				}
 			}
@@ -199,10 +209,10 @@ namespace Decompiler.Arch.X86
 				return FlagM.ZF;
 			case Opcode.and:
 			case Opcode.or:
-			case Opcode.test:
-			case Opcode.xor:
-				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;
-			case Opcode.sahf:
+            case Opcode.sahf:
+            case Opcode.test:
+            case Opcode.xadd:
+            case Opcode.xor:
 				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;
 			default:
 				return 0;

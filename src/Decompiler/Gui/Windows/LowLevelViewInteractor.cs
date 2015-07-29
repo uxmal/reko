@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
+    /// <summary>
+    /// This class manages user interaction with the LowLevelView control.
+    /// </summary>
     public class LowLevelViewInteractor : IWindowPane, ICommandTarget
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
@@ -40,6 +46,7 @@ namespace Decompiler.Gui.Windows
         private TypeMarker typeMarker;
         private Program program;
         private bool ignoreAddressChange;
+        private NavigationInteractor navInteractor;
 
         public LowLevelView Control { get { return control; } }
 
@@ -54,9 +61,10 @@ namespace Decompiler.Gui.Windows
                     control.MemoryView.ProgramImage = value.Image;
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
-                    control.DisassemblyView.Image = value.Image;
-                    control.DisassemblyView.StartAddress = value.Image.BaseAddress;
-                    control.DisassemblyView.Architecture = value.Architecture;
+                    control.DisassemblyView.Model = new DisassemblyTextModel(value);
+                    control.ImageMapView.Image = value.Image;
+                    control.ImageMapView.ImageMap = value.ImageMap;
+                    control.ImageMapView.Granularity = value.Image.Bytes.Length;
                 }
             }
         }
@@ -66,13 +74,7 @@ namespace Decompiler.Gui.Windows
             get { return control.MemoryView.SelectedAddress; }
             set
             {
-                ignoreAddressChange = true;
-                var addrTop = value - ((int)value.Linear & 0x0F);
-                control.MemoryView.SelectedAddress = value;
-                control.MemoryView.TopAddress = addrTop;
-                control.DisassemblyView.SelectedAddress = value;
-                control.DisassemblyView.TopAddress = value;
-                ignoreAddressChange = false;
+                control.CurrentAddress = value;
             }
         }
 
@@ -81,12 +83,24 @@ namespace Decompiler.Gui.Windows
             var uiService = services.RequireService<IDecompilerShellUiService>();
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
+            this.Control.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F); //$TODO: use user preference
+            this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
+
+            this.Control.ImageMapView.SelectedAddressChanged += ImageMapView_SelectedAddressChanged;
+
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
-            this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
-            this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            this.Control.MemoryView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            this.control.MemoryView.Services = this.services;
+
+            this.Control.DisassemblyView.SelectedObjectChanged += DisassemblyView_SelectedObjectChanged;
+            this.Control.DisassemblyView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxDisassembler);
+            this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
+
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
-            this.control.MemoryView.Services = this.services;
+
+            this.navInteractor = new NavigationInteractor();
+            this.navInteractor.Attach(this.Control);
 
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += typeMarker_FormatType;
@@ -113,21 +127,58 @@ namespace Decompiler.Gui.Windows
         {
         }
 
+        private void NavigateToToolbarAddress()
+        {
+            Address addr;
+            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
+            if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
+                txtAddr = txtAddr.Substring(2);
+            if (!program.Architecture.TryParseAddress(txtAddr, out addr))
+                return;
+            UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
+        }
+
+        private void UserNavigateToAddress(Address addrFrom, Address addrTo)
+        {
+            if (!program.Image.IsValidAddress(addrTo))
+                return;
+            navInteractor.UserNavigateTo(addrTo);
+        }
+
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (Control.MemoryView.Focused)
             {
-                switch (cmdId.ID)
+                if (cmdId.Guid == CmdSets.GuidReko)
                 {
-                case CmdIds.ViewGoToAddress:
-                case CmdIds.ActionMarkType:
-                case CmdIds.ViewFindWhatPointsHere:
-                    status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
-                case CmdIds.EditCopy:
-                    status.Status = ValidSelection()
-                        ? MenuStatus.Visible | MenuStatus.Enabled
-                        : MenuStatus.Visible;
-                    return true;
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.ViewGoToAddress:
+                    case CmdIds.ActionMarkType:
+                    case CmdIds.ViewFindWhatPointsHere:
+                    case CmdIds.ActionMarkProcedure:
+                        status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                    case CmdIds.EditCopy:
+                    case CmdIds.ViewFindPattern:
+                        status.Status = ValidSelection()
+                            ? MenuStatus.Visible | MenuStatus.Enabled
+                            : MenuStatus.Visible;
+                        return true;
+                    }
+                }
+            }
+            else if (Control.DisassemblyView.Focused)
+            {
+                var selAddress = Control.DisassemblyView.SelectedObject as Address;
+                if (cmdId.Guid == CmdSets.GuidReko)
+                {
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.OpenLink:
+                    case CmdIds.OpenLinkInNewWindow:
+                        status.Status = selAddress != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -135,15 +186,25 @@ namespace Decompiler.Gui.Windows
 
         public bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (Control.MemoryView.Focused)
             {
-                switch (cmdId.ID)
+                if (cmdId.Guid == CmdSets.GuidReko)
                 {
-                case CmdIds.EditCopy: return CopySelection();
-                case CmdIds.ViewGoToAddress: GotoAddress(); return true;
-                case CmdIds.ActionMarkType: return MarkType();
-                case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
-                case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.EditCopy: return CopySelectionToClipboard();
+                    case CmdIds.ViewGoToAddress: GotoAddress(); return true;
+                    case CmdIds.ActionMarkType: return MarkType();
+                    case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
+                    case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
+                    case CmdIds.ViewFindPattern: return ViewFindPattern();
+                    }
+                }
+            }
+            else if (Control.DisassemblyView.Focused)
+            {
+                if (cmdId.Guid == CmdSets.GuidReko)
+                {
                 }
             }
             return false;
@@ -163,9 +224,8 @@ namespace Decompiler.Gui.Windows
             var addrRange = GetSelectedAddressRange();
             if (addrRange == null)
                 return;
-            var arch = program.Architecture;
-            var rdr = arch.CreateImageReader(program.Image, addrRange.Begin);
-            var addrDst = rdr.Read(arch.PointerType);
+            var rdr = program.CreateImageReader(addrRange.Begin);
+            var addrDst = rdr.Read(program.Platform.PointerType);
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
             txt.SelectAll();
@@ -182,32 +242,28 @@ namespace Decompiler.Gui.Windows
             AddressRange addrRange;
             if (!TryGetSelectedAddressRange(out addrRange))
                 return;
-
             try
             {
                 var address = addrRange.Begin;
                 MarkAndScanProcedure(address);
+                services.RequireService<IProjectBrowserService>().Reload();
             }
             catch (Exception ex)
             {
                 services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error happened while scanning the procedure.");
             }
-            control.MemoryView.Invalidate();
-            control.DisassemblyView.Invalidate();
         }
 
         private void MarkAndScanProcedure(Address address)
         {
             var decompiler = services.GetService<IDecompilerService>().Decompiler;
             var proc = decompiler.ScanProcedure(program, address);
-            var userp = new Decompiler.Core.Serialization.Procedure_v1
+            var userp = new Reko.Core.Serialization.Procedure_v1
             {
                 Address = address.ToString(),
                 Name = proc.Name,
             };
-            //$REVIEW: need to know what InputFile is in play.
-            var inputFile = (InputFile)decompiler.Project.InputFiles[0];
-            var ups = inputFile.UserProcedures;
+            var ups = program.UserProcedures;
             if (!ups.ContainsKey(address))
             {
                 ups.Add(address, userp);
@@ -225,7 +281,7 @@ namespace Decompiler.Gui.Windows
             }
             else if (control.DisassemblyView.Focused)
             {
-                var addr = control.DisassemblyView.SelectedAddress;
+                var addr = control.DisassemblyView.SelectedObject as Address;
                 if (addr == null)
                     return false;
                 addrRange = new AddressRange(addr, addr);
@@ -234,7 +290,11 @@ namespace Decompiler.Gui.Windows
             return true;
         }
 
-        private bool CopySelection()
+        /// <summary>
+        /// Copies the selected range of bytes into the clipboard.
+        /// </summary>
+        /// <returns></returns>
+        private bool CopySelectionToClipboard()
         {
             AddressRange range;
             if (!TryGetSelectedAddressRange(out range))
@@ -242,13 +302,14 @@ namespace Decompiler.Gui.Windows
             if (control.MemoryView.Focused)
             {
                  var decompiler = services.GetService<IDecompilerService>().Decompiler;
-                 var dumper = new Dumper(decompiler.Programs.First().Architecture);
+                 var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
                 var sb = new StringWriter();
                 dumper.DumpData(control.MemoryView.ProgramImage, range, sb);
                 Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
             }
             return true;
         }
+
         public bool MarkType()
         {
             var addrRange = control.MemoryView.GetAddressRange();
@@ -269,6 +330,7 @@ namespace Decompiler.Gui.Windows
             }
             return false;
         }
+
         public void typeMarker_FormatType(object sender, TypeMarkerEventArgs e)
         {
             try
@@ -292,42 +354,22 @@ namespace Decompiler.Gui.Windows
             var dataType = parser.Parse(userText);
             if (dataType == null)
                 return null;
-
-            var size = GetDataSize(address, dataType);
-            var item = new ImageMapItem
+            var arr = dataType as ArrayType;
+            if (arr != null && arr.ElementType.Size != 0)
             {
-                Address = address,
-                Size = size,
-                DataType = dataType,
-            };
-            if (size != 0)
-                program.ImageMap.AddItemWithSize(address, item);
-            else
-                program.ImageMap.AddItem(address, item);
+                var range = control.MemoryView.GetAddressRange();
+                if (range.IsValid)
+                {
+                    long size = (range.End - range.Begin) + 1;
+                    int nElems = (int)(size / arr.ElementType.Size);
+                    arr.Length = nElems;
+                }
+            }
+            var item = program.AddUserGlobalItem(address, dataType);
             control.MemoryView.Invalidate();
             return item;
         }
 
-        public uint GetDataSize(Address addr, DataType dt)
-        {
-            var strDt = dt as StringType;
-            if (strDt == null)
-                return (uint) dt.Size;
-            if (strDt.LengthPrefixType == null)
-            {
-                // Zero-terminated string.
-                var rdr = program.Architecture.CreateImageReader(program.Image, addr);
-                while (rdr.IsValid)
-                {
-                    var ch = rdr.ReadChar(strDt.CharType);
-                    if (ch == 0)
-                        break;
-                }
-                return (uint) (rdr.Address - addr);
-            }
-            throw new NotImplementedException();
-        }
-        
         public bool ViewWhatPointsHere()
         {
             AddressRange addrRange = control.MemoryView.GetAddressRange();
@@ -339,15 +381,80 @@ namespace Decompiler.Gui.Windows
             if (resultSvc == null)
                 return true;
 
-            var arch = program.Architecture;
-            var image = program.Image;
-            var rdr = program.Architecture.CreateImageReader(program.Image, 0);
-            var addrControl = arch.CreatePointerScanner(
-                rdr,
-                new HashSet<uint> { addrRange.Begin.Linear },
-                PointerScannerFlags.All);
-            resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
+            try
+            {
+                var arch = program.Architecture;
+                var image = program.Image;
+                var rdr = program.Architecture.CreateImageReader(program.Image, 0);
+                var addrControl = program.Platform.CreatePointerScanner(
+                    program.ImageMap,
+                    rdr,
+                    new[] { 
+                    addrRange.Begin
+                },
+                    PointerScannerFlags.All);
+                resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
+            } catch (Exception ex)
+            {
+                services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error occurred when searching for pointers.");
+            }
             return true;
+        }
+
+        public bool ViewFindPattern()
+        {
+            AddressRange addrRange = control.MemoryView.GetAddressRange();
+            if (!addrRange.IsValid || program == null)
+                return true;
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var srSvc = services.RequireService<ISearchResultService>();
+            using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
+            {
+                dlg.InitialPattern = SelectionToHex(addrRange);
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
+                    var hits = 
+                        re.GetMatches(program.Image.Bytes, 0)
+                        .Select(offset => new AddressSearchHit
+                        {
+                            Program = program,
+                            Address = program.Image.BaseAddress + offset
+                        });
+                    srSvc.ShowSearchResults(new AddressSearchResult(this.services, hits));
+                }
+            }
+            return true;
+        }
+
+        private string SelectionToHex(AddressRange addr)
+        {
+            var sb = new StringBuilder();
+            var rdr = program.Architecture.CreateImageReader(program.Image, addr.Begin);
+            var sep = "";
+            while (rdr.Address <= addr.End)
+            {
+                sb.Append(sep);
+                sep = " ";
+                sb.AppendFormat("{0:X2}", (uint)rdr.ReadByte());
+            }
+            return sb.ToString();
+        }
+
+        void ImageMapView_SelectedAddressChanged(object sender, EventArgs e)
+        {
+            if (ignoreAddressChange)
+                return;
+            var addr = Control.ImageMapView.SelectedAddress; 
+            this.ignoreAddressChange = true;
+            this.Control.MemoryView.SelectedAddress = addr;
+            this.Control.MemoryView.TopAddress = addr;
+            this.Control.DisassemblyView.SelectedObject = addr;
+            this.control.DisassemblyView.TopAddress = addr;
+            this.SelectionChanged.Fire(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
+            UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
+            this.ignoreAddressChange = false;
         }
 
         private void MemoryView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -355,10 +462,32 @@ namespace Decompiler.Gui.Windows
             if (ignoreAddressChange)
                 return;
             this.ignoreAddressChange = true;
-            this.Control.DisassemblyView.SelectedAddress = e.AddressRange.Begin;
+            this.Control.DisassemblyView.SelectedObject = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
             this.SelectionChanged.Fire(this, e);
             this.ignoreAddressChange = false;
+        }
+
+        void DisassemblyView_SelectedObjectChanged(object sender, EventArgs e)
+        {
+            var selectedAddr = Control.DisassemblyView.SelectedObject as Address;
+            if (ignoreAddressChange || selectedAddr == null)
+                return;
+            this.ignoreAddressChange = true;
+            this.Control.MemoryView.SelectedAddress = selectedAddr;
+            this.Control.MemoryView.TopAddress = selectedAddr;
+            this.ignoreAddressChange = false;
+        }
+
+        void LowLevelView_CurrentAddressChanged(object sender, EventArgs e)
+        {
+            ignoreAddressChange = true;
+            var value = Control.CurrentAddress;
+            var addrTop = value - ((int)value.ToLinear() & 0x0F);
+            control.MemoryView.SelectedAddress = value;
+            control.MemoryView.TopAddress = addrTop;
+            control.DisassemblyView.TopAddress = value;
+            ignoreAddressChange = false;
         }
 
         void ToolBarAddressTextbox_KeyDown(object sender, KeyEventArgs e)
@@ -367,32 +496,22 @@ namespace Decompiler.Gui.Windows
                 return;
             e.Handled = true;
             e.SuppressKeyPress = true;
-            GotoToolbarAddress();
+            NavigateToToolbarAddress();
         }
 
         void ToolBarGoButton_Click(object sender, EventArgs e)
         {
             if (ignoreAddressChange)
                 return;
-            GotoToolbarAddress();
+            NavigateToToolbarAddress();
         }
 
-        private void GotoToolbarAddress()
+        private void DisassemblyControl_Navigate(object sender, EditorNavigationArgs e)
         {
-            Address addr;
-            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
-            if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
-                txtAddr = txtAddr.Substring(2);
-            if (!Address.TryParse(txtAddr, 16, out addr))
+            var addr = e.Destination as Address;
+            if (e == null)
                 return;
-            if (!program.Image.IsValidAddress(addr))
-                return;
-            this.ignoreAddressChange = true;
-            this.Control.MemoryView.SelectedAddress = addr;
-            this.Control.MemoryView.TopAddress = addr;
-            this.Control.DisassemblyView.SelectedAddress = addr;
-            this.Control.DisassemblyView.TopAddress = addr;
-            this.ignoreAddressChange = false;
+            UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }
     }
 }

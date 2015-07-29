@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,9 @@
 
 using NUnit.Framework;
 using System;
+using Reko.Core.Lib;
 
-namespace Decompiler.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Lib
 {
     [TestFixture]
     public class DisjointPartitionTests
@@ -32,12 +33,10 @@ namespace Decompiler.UnitTests.Core.Lib
         }
 
         [Test]
-        [Ignore]
         public void MakeSet()
         {
-//            DisjointPartition<string> partition = new DisjointPartition<string>();
-  //          partition.MakeSet("Hello");
-     //       Assert.AreEqual(1, Items.Count);
+            DisjointPartition<string> partition = new DisjointPartition<string>();
+            partition.Add("Hello");
         }
     }
 }

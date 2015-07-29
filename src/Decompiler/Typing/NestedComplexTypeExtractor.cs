@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Extracts nested types from the insides of each other. Thus, (struct (0 union x)) becomes (struct (0 eq_1)) where eq_1: (union x)
@@ -33,11 +34,13 @@ namespace Decompiler.Typing
 		private TypeStore store;
 		private bool insideComplexType;
 		private bool changed;
-
+        private HashSet<DataType> visitedTypes;
+ 
 		public NestedComplexTypeExtractor(TypeFactory factory, TypeStore store)
 		{
 			this.factory = factory;
 			this.store = store;
+            this.visitedTypes = new HashSet<DataType>();
 		}
 
 		public bool Changed
@@ -87,6 +90,9 @@ namespace Decompiler.Typing
 
 		public override DataType VisitStructure(StructureType str)
 		{
+            if (visitedTypes.Contains(str))
+                return str;
+            visitedTypes.Add(str);
 			if (insideComplexType)
 			{
 				changed = true;

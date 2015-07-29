@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -39,7 +39,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
 	public class MainFormInteractorTests
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IDisassemblyViewService disasmSvc;
         private IDiagnosticsService diagnosticSvc;
         private IDecompilerShellUiService uiSvc;
-        private IDecompilerConfigurationService configSvc;
+        private IConfigurationService configSvc;
         private ITypeLibraryLoaderService typeLibSvc;
         private IProjectBrowserService brSvc;
         private IFileSystemService fsSvc;
@@ -64,6 +64,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IUiPreferencesService uiPrefs;
         private ITabControlHostService tcHostSvc;
         private IDecompilerService dcSvc;
+        private ISearchResultService srSvc;
         private IDecompiler decompiler;
 
 		[SetUp]
@@ -71,8 +72,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
             mr = new MockRepository();
             services = new ServiceContainer();
-            configSvc = mr.Stub<IDecompilerConfigurationService>();
-            services.AddService<IDecompilerConfigurationService>(configSvc);
+            configSvc = mr.Stub<IConfigurationService>();
+            services.AddService<IConfigurationService>(configSvc);
 		}
 
 		[Test]
@@ -82,9 +83,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             brSvc.Stub(d => d.Clear());
-            form.Stub(f => f.CloseAllDocumentWindows());
             Given_DecompilerInstance();
             dcSvc.Stub(d => d.Decompiler = null);
+            Given_SavePrompt(true);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -98,18 +99,20 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Given_Loader();
             Given_MainFormInteractor();
-            form.Stub(f => f.CloseAllDocumentWindows());
-            diagnosticSvc.Stub(d => d.AddDiagnostic(null, null)).IgnoreArguments();
+            diagnosticSvc.Stub(d => d.Error(
+                Arg<ICodeLocation>.Is.NotNull, 
+                Arg<string>.Is.NotNull)).IgnoreArguments();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             brSvc.Stub(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
             Given_DecompilerInstance();
+            Given_SavePrompt(true);
             dcSvc.Expect(d => d.Decompiler = null);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-            diagnosticSvc.AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic("test"));
+            diagnosticSvc.Error(new NullCodeLocation(""), "test");
             interactor.OpenBinary(null);
 
             mr.VerifyAll();
@@ -123,16 +126,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_DecompilerInstance();
             dcSvc.Expect(d => d.Decompiler = null);
-            form.Stub(f => f.DocumentWindows).Return(docWindows);
-            form.Expect(f => f.CloseAllDocumentWindows());
             brSvc.Expect(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
+            Given_SavePrompt(true);
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-            form.DocumentWindows.Add(new TestForm());
             interactor.OpenBinary("");
 
             mr.VerifyAll();
@@ -157,11 +158,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
-            form.Expect(f => f.CloseAllDocumentWindows());
             brSvc.Stub(b => b.Clear());
             Given_LoadPreferences();
             Given_DecompilerInstance();
+            Given_SavePrompt(true);
             dcSvc.Stub(d => d.Decompiler = null);
+            uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -182,7 +184,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
-                    Image = new LoadedImage(new Address(0x0C00,0x0000), bytes)
+                    Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes)
                 });
         }
 
@@ -198,12 +200,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             When_CreateMainFormInteractor();
             Assert.IsNotNull(loader);
             dcSvc.Decompiler.Load("foo.exe");
-            var p = new Decompiler.Core.Serialization.Procedure_v1 {
+            var p = new Reko.Core.Serialization.Procedure_v1 {
                 Address = "12345",
                 Name = "MyProc", 
             };
-            var inputFile = (InputFile)dcSvc.Decompiler.Project.InputFiles[0];
-            inputFile.UserProcedures.Add(new Address(0x12345), p);
+            var program = dcSvc.Decompiler.Project.Programs[0];
+            program.UserProcedures.Add(Address.Ptr32(0x12345), p);
 
             interactor.Save();
             string s =
@@ -215,6 +217,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     <procedure name=""MyProc"">
       <address>00012345</address>
     </procedure>
+    <options>
+      <HeuristicScanning>false</HeuristicScanning>
+    </options>
   </input>
   <output />
 </project>";
@@ -289,7 +294,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void Given_UiSvc_ReturnsFalseOnQueryStatus()
         {
-            var cmdset = CmdSets.GuidDecompiler;
+            var cmdset = CmdSets.GuidReko;
             uiSvc.Stub(u => u.QueryStatus(null, null, null)).IgnoreArguments().Return(false);
         }
 
@@ -331,17 +336,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             // Having a compiler presupposes having a project.
             var project = new Project
             {
-                InputFiles = { new InputFile { Filename="foo.exe" , BaseAddress = new Address(0x00010000), } }
+                Programs = { new Program 
+                { 
+                    Filename="foo.exe" ,
+                    Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]) 
+                }
+                }
             };
             dcSvc.Stub(d => d.Decompiler).Return(decompiler);
             decompiler.Stub(d => d.Project).Return(project);
             decompiler.Stub(d => d.Load(Arg<string>.Is.NotNull)).Return(false);
-            decompiler.Stub(d => d.Programs).Return(new List<Program> {
-                new Program
-                {
-                    Image = new LoadedImage(new Address(0x0004), new byte[0x100])
-                }
-            });
         }
 
         private void Given_NoDecompilerInstance()
@@ -357,13 +361,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_UiSvc_IgnoresCommands();
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);       //$REVIEW: this shouldn't be necessary -- only if user explicitly asks for it.
             memSvc.Expect(x => x.ShowWindow());
-            memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
             memSvc.Expect(m => m.ViewImage(Arg<Program>.Is.NotNull));
             Given_DecompilerInstance();
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewMemory));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewMemory));
 
             mr.VerifyAll();
         }
@@ -384,11 +387,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewDisassembly));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewDisassembly));
 
             mr.VerifyAll();
         }
-
 
         private void Given_UiSvc_IgnoresCommands()
         {
@@ -406,17 +408,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_MainFormInteractor();
             var docWindows = new List<IWindowFrame>();
-            form.Stub(f => f.DocumentWindows).Return(docWindows);
-            form.Expect(f => f.CloseAllDocumentWindows());
+            uiSvc.Stub(u => u.DocumentWindows).Return(docWindows);
+            //form.Expect(f => f.CloseAllDocumentWindows());
             Given_LoadPreferences();
             Given_CommandNotHandledBySubwindow();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
             var mdi = new TestForm();
-            form.DocumentWindows.Add(mdi);
-            Assert.AreEqual(1, form.DocumentWindows.Count);
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll));
+            //form.DocumentWindows.Add(mdi);
+            //Assert.AreEqual(1, form.DocumentWindows.Count);
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.WindowsCloseAll));
 
             mr.VerifyAll();
         }
@@ -427,6 +429,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiPrefs.Stub(u => u.WindowSize).Return(new Size());
             uiPrefs.Stub(u => u.WindowState).Return(FormWindowState.Normal);
             form.Stub(f => f.WindowState = FormWindowState.Normal);
+        }
+
+        private void Given_SavePrompt(bool answer)
+        {
+            uiSvc.Stub(u => u.Prompt(Arg<string>.Is.NotNull)).Return(answer);
         }
 
         private void Given_CommandNotHandledBySubwindow()
@@ -450,7 +457,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.FileAddMetadata));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.FileAddMetadata));
             
             mr.VerifyAll();
         }
@@ -462,31 +469,21 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_LoadPreferences();
             Given_CommandNotHandledBySubwindow();
-            form.Expect(f => f.CloseAllDocumentWindows());
+            uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
+            //form.Expect(f => f.CloseAllDocumentWindows());
             brSvc.Expect(b => b.Clear());
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             Given_DecompilerInstance();
+            Given_SavePrompt(true);
             dcSvc.Expect(d => d.Decompiler = Arg<IDecompiler>.Is.Anything);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
             Assert.IsNotNull(dcSvc.Decompiler.Project);
-            var executed = interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.FileCloseProject));
+            var executed = interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.FileCloseProject));
 
             Assert.IsTrue(executed);
             mr.VerifyAll();
-        }
-
-        public class FakeMetadataLoader : MetadataLoader
-        {
-            public FakeMetadataLoader(IServiceProvider services, byte[]bytes) :base(services, bytes)
-            {
-            }
-
-            public override TypeLibrary Load()
-            {
-                return new TypeLibrary();
-            }
         }
 
         private class TestForm : Form, IWindowFrame
@@ -499,7 +496,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new LoadedImage(new Address(0xC00, 0), new byte[300]);
+            prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[300]);
             return prog; 
         }
 
@@ -512,14 +509,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
             disasmSvc = mr.StrictMock<IDisassemblyViewService>();
-            diagnosticSvc = mr.StrictMock<IDiagnosticsService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
             brSvc = mr.StrictMock<IProjectBrowserService>();
             uiPrefs = mr.StrictMock<IUiPreferencesService>();
             fsSvc = mr.StrictMock<IFileSystemService>();
             tcHostSvc = mr.StrictMock<ITabControlHostService>();
             dcSvc = mr.StrictMock<IDecompilerService>();
-            memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
+            srSvc = MockRepository.GenerateMock<ISearchResultService, IWindowPane>();
+            diagnosticSvc = MockRepository.GenerateMock<IDiagnosticsService, IWindowPane>();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
@@ -537,14 +534,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull,Arg<DecompilerMenus>.Is.NotNull)).Return(uiSvc);
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
+            svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 
             form = mr.StrictMock<IMainForm>();
             var listView = new ListView();
             var imagelist = new ImageList();
-            var tabPage = new TabPage();
-            var tabControl = new TabControl { TabPages = { tabPage } };
+            var tabResults = new TabPage();
+            var tabDiagnostics = new TabPage();
+            var tabControl = new TabControl { TabPages = { tabResults, tabDiagnostics } };
             var toolStrip = new ToolStrip { };
             var statusStrip = new StatusStrip { Items = { new ToolStripLabel() } };
             var projectBrowser = mr.Stub<ITreeView>();
@@ -554,7 +553,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.AddToolbar(null)).IgnoreArguments();
             form.Stub(f => f.Dispose());
             form.Stub(f => f.TabControl).Return(tabControl);
-            form.Stub(f => f.FindResultsPage).Return(tabPage);
+            form.Stub(f => f.FindResultsPage).Return(tabResults);
+            form.Stub(f => f.DiagnosticsPage).Return(tabDiagnostics);
             form.Stub(f => f.FindResultsList).Return(listView);
             form.Stub(f => f.ToolBar).Return(toolStrip);
             form.Stub(f => f.ProjectBrowser).Return(projectBrowser);
@@ -572,6 +572,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 Arg<CommandStatus>.Is.Anything,
                 Arg<CommandText>.Is.Anything)).Return(false);
             tcHostSvc.Stub(t => t.Execute(Arg<CommandID>.Is.Anything)).Return(false);
+
+            uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
         }
 
         private void When_CreateMainFormInteractor()
@@ -599,7 +601,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private CommandStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            if (interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null))
+            if (interactor.QueryStatus(new CommandID(CmdSets.GuidReko, cmdId), status, null))
                 return status;
             else
                 return null;

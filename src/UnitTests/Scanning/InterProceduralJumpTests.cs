@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class InterProceduralJumpTests
@@ -55,8 +55,8 @@ namespace Decompiler.UnitTests.Scanning
 
         private void Test()
         {
-            reg = new Identifier("reg", 1, PrimitiveType.Word32, new RegisterStorage("reg", 1, PrimitiveType.Word32));
-            SCZO = new Identifier("SCZO", 2, PrimitiveType.Byte, new FlagGroupStorage(0xF, "SCZO", PrimitiveType.Byte));
+            reg = new Identifier("reg", PrimitiveType.Word32, new RegisterStorage("reg", 1, PrimitiveType.Word32));
+            SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(0xF, "SCZO", PrimitiveType.Byte));
             var traces = new RtlTraceBuilder
             {
                 { 
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Scanning
                             m.Assign(reg, m.Word32(1));
                         },
                         (m) => {
-                            m.Goto(new Address(0x1004));
+                            m.Goto(Address.Ptr32(0x1004));
                         }
                     }
                 },

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public interface Architecture
     {
@@ -36,6 +36,9 @@ namespace Decompiler.Core.Configuration
 
     public class ArchitectureElement : ConfigurationElement, Architecture
     {
+        /// <summary>
+        /// Short abbreviation for the architecture.
+        /// </summary>
         [ConfigurationProperty("Name", IsRequired = true)]
         public string Name
         {
@@ -43,6 +46,9 @@ namespace Decompiler.Core.Configuration
             set { this["Name"] = value; }
         }
 
+        /// <summary>
+        /// Human-readable description of the processor architecture
+        /// </summary>
         [ConfigurationProperty("Description", IsRequired = true)]
         public string Description
         {
@@ -50,6 +56,9 @@ namespace Decompiler.Core.Configuration
             set { this["Description"] = value; }
         }
 
+        /// <summary>
+        /// .NET type name for the architecture.
+        /// </summary>
         [ConfigurationProperty("Type", IsRequired = true)]
         public string TypeName
         {

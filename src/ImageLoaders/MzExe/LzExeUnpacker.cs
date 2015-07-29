@@ -1,7 +1,7 @@
 
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Environments.Msdos;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Environments.Msdos;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// An image loader that understands the LzExe packing algorithms. 
@@ -44,34 +44,47 @@ namespace Decompiler.ImageLoaders.MzExe
 		private ushort lzIp;
 		private ushort lzCs;
 
-		// Code insipired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
+		// Code inspired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
 
-		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
+		public LzExeUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
+        {
+            var exe = new ExeImageLoader(services, filename, rawImg);
+            this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(services, arch);
+            Validate(exe);
+        }
+
+		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, string filename, byte [] rawImg) : base(services, filename, rawImg)
 		{
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(services, arch);
 
-			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
-
-			// Locate the LzExe header and verify signature.
-
-			byte [] abC = RawImage;
-			int entry = lzHdrOffset + exe.e_ip;
-			if (LoadedImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
-			{
-				// Untested binary version
-				isLz91 = false;
-				throw new NotImplementedException("Untested");
-			}			
-			else if (LoadedImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
-			{
-				isLz91 = true;
-			}			
-			else
-			{
-				throw new ApplicationException("Image is not an LzExe-compressed binary");
-			}
+            Validate(exe);
 		}
+
+        private void Validate(ExeImageLoader exe)
+        {
+            this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
+
+            // Locate the LzExe header and verify signature.
+
+            byte[] abC = RawImage;
+            int entry = lzHdrOffset + exe.e_ip;
+            if (LoadedImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length))
+            {
+                // Untested binary version
+                isLz91 = false;
+                throw new NotImplementedException("Untested");
+            }
+            else if (LoadedImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
+            {
+                isLz91 = true;
+            }
+            else
+            {
+                throw new ApplicationException("Image is not an LzExe-compressed binary");
+            }
+        }
 
 		// EXE header test (is it LZEXE file?) 
 
@@ -93,7 +106,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			// Seed the scanner with the start location.
 
             List<EntryPoint> entryPoints = new List<EntryPoint>() {
-			    new EntryPoint(new Address((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
+			    new EntryPoint(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
             };
             var relocations = new RelocationDictionary();
 			if (isLz91)
@@ -168,22 +181,22 @@ namespace Decompiler.ImageLoaders.MzExe
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
 				relocations.AddSegmentReference((uint)rel_off, seg);
-				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 			}
 			return imageMap;
 		}
 
-
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
 		{
 			Unpack(RawImage, addrLoad);
-            return new LoaderResults(imgLoaded, imageMap, arch, platform);
+            return new Program(imgLoaded, imageMap, arch, platform);
 		}
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(0x0800, 0); }
-		}
+			get { return Address.SegPtr(0x0800, 0); }
+            set { throw new NotImplementedException(); }
+        }
 
 		public LoadedImage Unpack(byte [] abC, Address addrLoad)
 		{
@@ -259,7 +272,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			// Create a new image based on the uncompressed data.
 
 			this.imgLoaded = new LoadedImage(addrLoad, abU);
-            this.imageMap = new ImageMap(imgLoaded);
+            this.imageMap = imgLoaded.CreateImageMap();
 			return imgLoaded;
 		}
 

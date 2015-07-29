@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -28,29 +28,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class TypeLibraryLoaderTests
     {
-        private MockRepository repository;
+        private MockRepository mr;
         private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
         }
 
         [TearDown]
         public void TearDown()
         {
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         private void Given_ArchitectureStub()
         {
-            arch = repository.DynamicMock<IProcessorArchitecture>();
+            arch = mr.DynamicMock<IProcessorArchitecture>();
+            var procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
+            arch.Stub(a => a.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
+            procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(new ProcedureSignature());
         }
 
         private void Given_Arch_PointerDataType(PrimitiveType dt)
@@ -58,12 +61,11 @@ namespace Decompiler.UnitTests.Core
             arch.Stub(a => a.PointerType).Return(dt);
         }
 
-
         [Test]
         public void Tlldr_Empty()
         {
             Given_ArchitectureStub();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var tlLdr = new TypeLibraryLoader(arch, true);
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
@@ -73,7 +75,7 @@ namespace Decompiler.UnitTests.Core
         public void Tlldr_typedef_int()
         {
             Given_ArchitectureStub();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var tlLdr = new TypeLibraryLoader(arch, true);
             var slib = new SerializedLibrary
@@ -93,7 +95,7 @@ namespace Decompiler.UnitTests.Core
         {
             Given_ArchitectureStub();
             Given_Arch_PointerDataType(PrimitiveType.Pointer32);
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var tlLdr = new TypeLibraryLoader(arch, true);
             var slib = new SerializedLibrary
@@ -118,7 +120,7 @@ namespace Decompiler.UnitTests.Core
         public void Tlldr_void_fn()
         {
             Given_ArchitectureStub();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var tlLdr = new TypeLibraryLoader(arch, true);
             var slib = new SerializedLibrary
@@ -138,57 +140,36 @@ namespace Decompiler.UnitTests.Core
             };
             var lib = tlLdr.Load(slib);
 
-            repository.VerifyAll();
+            mr.VerifyAll();
             Assert.AreEqual(
                 "void foo()",
                 lib.Lookup("foo").ToString("foo"));
         }
 
         [Test]
-        public void Tlldr_fn_struct_param()
-        {
+        public void Tlldr_bothordinalandname()
+        {  
             Given_ArchitectureStub();
-            repository.ReplayAll();
-
-            var tlLdr = new TypeLibraryLoader(arch, true);
-            var slib = new SerializedLibrary
-            {
-                Types = new SerializedType[]
-                {
-                    new SerializedStructType {
-                        Name = "tagFoo",
-                        Fields = new SerializedStructField [] 
-                        {
-                            new SerializedStructField { Name="Bob", Offset=3, Type=new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=4 } }
-                        }
-                    },
-                },
+            mr.ReplayAll();
+            var tlLDr = new TypeLibraryLoader(arch, true);
+            var slib = new SerializedLibrary {
                 Procedures = {
-                    new Procedure_v1 { 
+                    new Procedure_v1 {
                         Name="foo",
-                        Signature = new SerializedSignature
-                        {
-                            Convention="__cdecl",
+                        Ordinal=2,
+                        Signature = new SerializedSignature {
                             ReturnValue = new Argument_v1 {
-                                Type = new VoidType_v1 {}
-                            },
-                            Arguments = new Argument_v1[] {
-                                new Argument_v1 {
-                                    Name = "bar",
-                                    Type = new SerializedStructType { Name="tagFoo" },
-                                    Kind = new StackVariable_v1(),
-                                }
+                                Type = new VoidType_v1()
                             }
                         }
                     }
                 }
             };
-            var lib = tlLdr.Load(slib);
+            var lib = tlLDr.Load(slib);
 
-            repository.VerifyAll();
-            Assert.AreEqual(
-                "void foo(Stack (struct \"tagFoo\") bar)",
-                lib.Lookup("foo").ToString("foo"));
+            mr.VerifyAll();
+            Assert.AreEqual(1, lib.ServicesByVector.Count);
+            Assert.IsNotNull(lib.ServicesByVector[2]);
         }
     }
 }

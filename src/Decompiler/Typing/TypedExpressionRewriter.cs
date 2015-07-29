@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,24 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Rewrites all the expressions in the program based on the type information provided.
 	/// </summary>
 	public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
 	{
-        private IProcessorArchitecture arch;
+        private Program prog;
+        private Platform platform;
 		private TypeStore store;
         private Identifier globals;
 		private DataTypeComparer compTypes;
@@ -42,21 +43,16 @@ namespace Decompiler.Typing
         private ExpressionEmitter m;
         private Unifier unifier;
 
-		public TypedExpressionRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
+		public TypedExpressionRewriter(Program prog)
 		{
-            this.arch = arch;
-			this.store = store;
-            this.globals = globals;
+            this.prog = prog;
+            this.platform = prog.Platform;
+			this.store = prog.TypeStore;
+            this.globals = prog.Globals;
 			this.compTypes = new DataTypeComparer();
-			this.tcr = new TypedConstantRewriter(arch, store, globals);
+			this.tcr = new TypedConstantRewriter(prog);
             this.m = new ExpressionEmitter();
             this.unifier = new Unifier();
-		}
-
-		public UnionType AsUnion(DataType dt)
-		{
-			dt = store.ResolvePossibleTypeVar(dt);
-			return dt as UnionType;
 		}
 
 		public DataType DataTypeOf(Expression e)
@@ -107,11 +103,12 @@ namespace Decompiler.Typing
         {
             if (sig.ReturnValue != null)
                 sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;
-            if (sig.FormalArguments != null)
+            if (sig.Parameters != null)
             {
-                foreach (Identifier formalArg in sig.FormalArguments)
+                foreach (Identifier formalArg in sig.Parameters)
                 {
-                    formalArg.DataType = formalArg.TypeVariable.DataType;
+                    if (formalArg.TypeVariable != null)
+                        formalArg.DataType = formalArg.TypeVariable.DataType;
                 }
             }
         }
@@ -146,7 +143,7 @@ namespace Decompiler.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var tmr = new TypedMemoryExpressionRewriter(arch, store, globals);
+            var tmr = new TypedMemoryExpressionRewriter(prog);
             return tmr.RewriteArrayAccess(acc.TypeVariable, acc.Array, acc.Index);
         }
 
@@ -198,8 +195,8 @@ namespace Decompiler.Typing
 			DataType dtDst = DataTypeOf(dst);
             if (!TypesAreCompatible(dtSrc, dtDst))
 			{
-				UnionType uDst = AsUnion(dtDst);
-				UnionType uSrc = AsUnion(dtSrc);
+				UnionType uDst = dtDst.ResolveAs<UnionType>();
+				UnionType uSrc = dtSrc.ResolveAs<UnionType>();
 				if (uDst != null)
 				{
 					var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
@@ -213,7 +210,7 @@ namespace Decompiler.Typing
 				else
 					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
 			}
-			return new Decompiler.Core.Absyn.AbsynAssignment(dst, src);
+			return new Core.Absyn.AbsynAssignment(dst, src);
 		}
 
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
@@ -225,9 +222,9 @@ namespace Decompiler.Typing
 
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
-            var proc = ci.Callee.Accept(new TypedMemoryExpressionRewriter(arch, store, globals));
+            //var proc = ci.Callee.Accept(new TypedMemoryExpressionRewriter(arch, store, globals));
             return new SideEffect(
-                new Application(proc, VoidType.Instance));
+                new Application(ci.Callee, VoidType.Instance));
         }
 
 		public override Instruction TransformStore(Store store)
@@ -305,13 +302,13 @@ namespace Decompiler.Typing
 
 		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(arch, store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(prog);
 			return tmer.Rewrite(access);
 		}
 
 		public override Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(arch, store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(prog);
 			return tmer.Rewrite(access);
 		}
 

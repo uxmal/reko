@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,17 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     public class FakePhasePageInteractor : IPhasePageInteractor
     {
@@ -84,7 +86,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         #region ICommandTarget Members
 
-        public bool QueryStatus(CommandID cmdId, Decompiler.Gui.CommandStatus status, Decompiler.Gui.CommandText text)
+        public bool QueryStatus(CommandID cmdId, Reko.Gui.CommandStatus status, Reko.Gui.CommandText text)
         {
             return false;
         }
@@ -110,7 +112,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             OpenBinaryCalled = true;
             return false;
         }
-        public bool OpenBinaryAs(string file, Decompiler.Core.IProcessorArchitecture arch, Decompiler.Core.Platform platform, Decompiler.Core.Address addrBase, DecompilerHost host)
+        public bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool Assemble(string file, Assembler asm, DecompilerHost host)
         {
             throw new NotImplementedException();
         }

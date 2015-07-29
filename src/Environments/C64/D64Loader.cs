@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,30 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
-using Decompiler.Core;
-using Decompiler.Core.Archives;
-using Decompiler.Core.Services;
+using Reko.Arch.Mos6502;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
-    // http://petlibrary.tripod.com/D64.HTM
-    // PRG files have 2 bytes load address and data.
-    // https://hkn.eecs.berkeley.edu/~mcmartin/ophis/manual/x51.html
-    // 
+    /// <summary>
+    /// Loads sub-images from a Commodore C64 disk image.
+    /// </summary>
     public class D64Loader : ImageLoader
     {
-#if NILZ
-                        this.rsrcFork = new ResourceFork(image, arch);
+        // http://petlibrary.tripod.com/D64.HTM
+        // PRG files have 2 bytes load address and data.
+        // https://hkn.eecs.berkeley.edu/~mcmartin/ophis/manual/x51.html
+        //
+        
+        /*
+ Track => offset map
  Track #Sect #SectorsIn D64 Offset   Track #Sect #SectorsIn D64 Offset
   ----- ----- ---------- ----------   ----- ----- ---------- ----------
     1     21       0       $00000      21     19     414       $19E00
@@ -60,7 +64,7 @@ namespace Decompiler.Environments.C64
    18     19     357       $16500      38*    17     717       $2CD00
    19     19     376       $17800      39*    17     734       $2DE00
    20     19     395       $18B00      40*    17     751       $2EF00
-#endif
+*/
         private static int [] sectorCount = new int[] {
             -1,
             21, 21, 21, 21, 21,  21, 21, 21, 21, 21, 
@@ -84,47 +88,69 @@ namespace Decompiler.Environments.C64
             0x19E00,0x1B100,0x1C400,0x1D700,0x1EA00,  0x1FC00,0x20E00,0x22000,0x23200,0x24400,
             0x25600,0x26700,0x27800,0x28900,0x29A00,  0x2AB00,0x2BC00,0x2CD00,0x2DE00,0x2EF00,
         };
-        private LoaderResults lr;
+        private Program program;
 
-        public D64Loader(IServiceProvider services, byte[] rawImage)
-            : base(services, rawImage)
+        public D64Loader(IServiceProvider services, string filename, byte[] rawImage)
+            : base(services, filename, rawImage)
         {
         }
-
 
         public override Address PreferredBaseAddress
         {
             get { return Address.Ptr16(2048); }
+            set { throw new NotImplementedException(); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public ImageHeader LoadHeaderH()
         {
-            var arch = new Mos6502ProcessorArchitecture();
-            LoadedImage image;
-            List<ArchiveDirectoryEntry> entries = LoadDirectory();
+            var entries = LoadDiskDirectory();
+            var abSvc = Services.GetService<IArchiveBrowserService>();
+            if (abSvc != null)
+            {
+                var selectedFile = abSvc.UserSelectFileFromArchive(entries) as D64FileEntry;
+                if (selectedFile != null)
+                {
+                    return new C64ImageHeader(selectedFile);
+                }
+            }
+            throw new NotImplementedException();
+        }
+
+        public class C64ImageHeader : ImageHeader
+        {
+            private D64FileEntry dirEntry;
+
+            public C64ImageHeader(D64FileEntry dirEntry)
+            {
+                this.dirEntry = dirEntry;
+                this.PreferredBaseAddress = Address.Ptr16(2048);
+            }
+        }
+
+        public override Program Load(Address addrLoad)
+        {
+            List<ArchiveDirectoryEntry> entries = LoadDiskDirectory();
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)
             {
                 var selectedFile = abSvc.UserSelectFileFromArchive(entries) as D64FileEntry;
                 if (selectedFile != null)
                 {
-                    image = LoadImage(addrLoad, selectedFile);
-                    this.lr = new LoaderResults(
-                        image, 
-                        new ImageMap(image), 
-                        arch, new C64Platform(Services, arch));
-                    return lr;
+                    this.program = LoadImage(addrLoad, selectedFile);
+                    return program;
                 }
             }
-            image = new LoadedImage(new Address(0), RawImage);
-            return new LoaderResults(
-                image,
-                new ImageMap(image),
-                arch,
-                new DefaultPlatform(Services, arch));
+            var arch = new Mos6502ProcessorArchitecture();
+            var image = new LoadedImage(Address.Ptr16(0), RawImage);
+            return new Program {
+                Image = image,
+                ImageMap = image.CreateImageMap(),
+                Architecture = arch,
+                Platform = new DefaultPlatform(Services, arch)
+            };
         }
 
-        private LoadedImage LoadImage(Address addrPreferred, D64FileEntry selectedFile)
+        private Program LoadImage(Address addrPreferred, D64FileEntry selectedFile)
         {
             byte[] imageBytes = selectedFile.GetBytes();
             switch (selectedFile.FileType & FileType.FileTypeMask)
@@ -132,13 +158,24 @@ namespace Decompiler.Environments.C64
             case FileType.PRG:
                 return LoadPrg(imageBytes);
             case FileType.SEQ:
-                return new LoadedImage(addrPreferred, imageBytes);
+                var image = new LoadedImage(addrPreferred, imageBytes);
+                var arch = new Mos6502ProcessorArchitecture();
+                return new Program(
+                    image,
+                    image.CreateImageMap(),
+                    arch,
+                    new DefaultPlatform(Services, arch));
             default:
                 throw new NotImplementedException();
             }
         }
 
-        private LoadedImage LoadPrg(byte[] imageBytes)
+        /// <summary>
+        /// Load a Basic PRG.
+        /// </summary>
+        /// <param name="imageBytes"></param>
+        /// <returns></returns>
+        private Program LoadPrg(byte[] imageBytes)
         {
             var stm = new MemoryStream();
             ushort preferredAddress = LoadedImage.ReadLeUInt16(imageBytes, 0);
@@ -148,9 +185,22 @@ namespace Decompiler.Environments.C64
                 stm.WriteByte(0);
             stm.Write(imageBytes, 2, imageBytes.Length - 2);
             var loadedBytes = stm.ToArray();
-            return new LoadedImage(
+            var image = new LoadedImage(
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
+            var rdr = new C64BasicReader(image, 0x0801);
+            var prog = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
+            var arch = new C64Basic(prog);
+            image = new LoadedImage(
+                Address.Ptr16(prog.Keys[0]),
+                new byte[0xFFFF]);
+            var program = new Program(
+                image,
+                image.CreateImageMap(),
+                arch,
+                new C64Platform(Services, null));
+            program.EntryPoints.Add(new EntryPoint(image.BaseAddress, arch.CreateProcessorState()));
+            return program;
         }
 
         public override RelocationResults Relocate(Address addrLoad)
@@ -160,7 +210,7 @@ namespace Decompiler.Environments.C64
                 new RelocationDictionary());
         }
 
-        public List<ArchiveDirectoryEntry> LoadDirectory()
+        public List<ArchiveDirectoryEntry> LoadDiskDirectory()
         {
             var entries = new List<ArchiveDirectoryEntry>();
             var rdr = new LeImageReader(RawImage, (uint)SectorOffset(18, 0));

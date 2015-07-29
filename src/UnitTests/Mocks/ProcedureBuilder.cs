@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System.Collections.Generic;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     /// <summary>
     /// Supports the building of a procedure without having to go through assembler.
@@ -124,23 +124,23 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-        public Statement Call(string procedureName)
+        public Statement Call(string procedureName, int retSizeOnStack)
         {
-            var ci = new CallInstruction(Constant.Invalid, new CallSite(4, 0));  //$REVIEW: hard-wired 4-byte pointer.
+            var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0)); 
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
             return Emit(ci);
         }
 
-        public Statement Call(ProcedureBase callee)
+        public Statement Call(ProcedureBase callee, int retSizeOnStack)
         {
             ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
-            CallInstruction ci = new CallInstruction(c, new CallSite(4, 0));     //$REVIEW: hard-wired 4-byte pointer.
+            CallInstruction ci = new CallInstruction(c, new CallSite(retSizeOnStack, 0));  
             return Emit(ci);
         }
 
-        public Statement Call(Expression e)
+        public Statement Call(Expression e, int retSizeOnstack)
         {
-            CallInstruction ci = new CallInstruction(e, new CallSite(4, 0));     //$REVIEW: hard-wired 4-byte pointer.
+            CallInstruction ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
             return Emit(ci);
         }
 
@@ -275,6 +275,11 @@ namespace Decompiler.UnitTests.Mocks
             return Frame.EnsureRegister(Architecture.GetRegister(name));
         }
 
+        public Identifier Register(RegisterStorage reg)
+        {
+            return Frame.EnsureRegister(reg);
+        }
+
         public override void Return()
         {
             base.Return();
@@ -321,5 +326,14 @@ namespace Decompiler.UnitTests.Mocks
             return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word32));
         }
 
+        public Identifier Reg16(string name)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word16));
+        }
+
+        public Identifier Reg8(string name)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Byte));
+        }
     }
 }

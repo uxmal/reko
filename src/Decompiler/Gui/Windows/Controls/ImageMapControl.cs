@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,14 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Displays an image map graphically.
@@ -66,15 +65,14 @@ namespace Decompiler.Gui.Windows.Controls
 			pea.Graphics.Transform = m;
 
 			Rectangle rc = ClientRectangle;
-			uint start = segs[0].Address.Linear;
+			ulong start = segs[0].Address.ToLinear();
 			foreach (ImageMapSegment seg in segs)
 			{
-				rc.Y = (int) (seg.Address.Linear - start);
+				rc.Y = (int) (seg.Address.ToLinear() - start);
 				rc.Height = (int) seg.Size;
 
 				PaintSegment(seg, pea.Graphics, rc);
 			}
-
 		}
 
 		private void PaintSegment(ImageMapSegment seg, Graphics g, Rectangle rc)
@@ -102,10 +100,10 @@ namespace Decompiler.Gui.Windows.Controls
 			base.OnMouseDown(me);
 			ImageMapSegment [] mapSegments = ExtractSegments();
 			float scaleFactor = (float) Height / (float) ImageSize(mapSegments);
-			uint start = mapSegments[0].Address.Linear;
+			ulong start = mapSegments[0].Address.ToLinear();
 			foreach (ImageMapSegment seg in mapSegments)
 			{
-				float y = scaleFactor * (seg.Address.Linear - start);
+				float y = scaleFactor * (seg.Address.ToLinear() - start);
 				float dy = scaleFactor * seg.Size;
 				if (y <= me.Y && me.Y < y + dy)
 				{

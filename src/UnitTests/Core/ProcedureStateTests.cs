@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,20 @@
  */
 #endregion
 
-using Decompiler.Scanning;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Scanning;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Serialization;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class ProcedureStateTests
@@ -50,7 +51,7 @@ namespace Decompiler.UnitTests.Core
 
             sce = new FakeProcessorState(arch);
 
-            idSp = new Identifier(sp.Name, 1, sp.DataType, sp);
+            idSp = new Identifier(sp.Name, sp.DataType, sp);
             m = new ExpressionEmitter();
         }
 
@@ -75,7 +76,7 @@ namespace Decompiler.UnitTests.Core
         {
             #region IProcessorArchitecture Members
 
-            public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+            public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
             {
                 throw new NotImplementedException();
             }
@@ -85,12 +86,12 @@ namespace Decompiler.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Decompiler.Core.Lib.BitSet CreateRegisterBitset()
+            public Reko.Core.Lib.BitSet CreateRegisterBitset()
             {
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+            public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
             {
                 throw new NotImplementedException();
             }
@@ -110,10 +111,21 @@ namespace Decompiler.UnitTests.Core
                 return new LeImageReader(image, addr);
             }
 
-            public ImageReader CreateImageReader(LoadedImage image, uint offset)
+            public ImageReader CreateImageReader(LoadedImage image, ulong offset)
             {
                 return new LeImageReader(image, offset);
             }
+
+            public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+            {
+                return null;
+            }
+
 
             public RegisterStorage GetRegister(int i)
             {
@@ -145,14 +157,14 @@ namespace Decompiler.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public Address MakeAddressFromConstant(Constant c)
+            {
+                return Address.Ptr32(c.ToUInt32());
+            }
+
             public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
             {
                 throw new NotImplementedException();
-            }
-
-            public Decompiler.Core.Lib.BitSet ImplicitArgumentRegisters
-            {
-                get { throw new NotImplementedException(); }
             }
 
             public int InstructionBitSize { get { return 32; } }
@@ -182,6 +194,11 @@ namespace Decompiler.UnitTests.Core
             public uint CarryFlagMask
             {
                 get { throw new NotImplementedException(); }
+            }
+
+            public bool TryParseAddress(string txtAddress, out Address addr)
+            {
+                return Address.TryParse32(txtAddress, out addr);
             }
 
             #endregion

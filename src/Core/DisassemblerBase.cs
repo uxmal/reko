@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,35 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
-    public abstract class DisassemblerBase<TInstr> : IEnumerator<TInstr>
+    /// <summary>
+    /// A disassembler can be considered an enumerator of disassembled instructions.
+    /// </summary>
+    /// <typeparam name="TInstr"></typeparam>
+    public abstract class DisassemblerBase<TInstr> : IEnumerable<TInstr>
     {
-        public abstract TInstr Current { get; }
-
-        object System.Collections.IEnumerator.Current { get { return Current; } }
-
-        public void Dispose() { }
-
-        public abstract bool MoveNext();
-
-        public void Reset()
+        public IEnumerator<TInstr> GetEnumerator()
         {
-            throw new NotSupportedException();
+            for (;;)
+            {
+                var instr = DisassembleInstruction();
+                if (instr == null)
+                    break;
+                yield return instr;
+            }
         }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public abstract TInstr DisassembleInstruction();
     }
 }

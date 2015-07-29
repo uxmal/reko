@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D439868B-C78F-472F-82F2-1E3E5C88163B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Reko.CmdLine</RootNamespace>
+    <AssemblyName>decompile</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CmdLineDiagnosticsService.cs" />
+    <Compile Include="CmdLineHost.cs" />
+    <Compile Include="CmdLineListener.cs" />
+    <Compile Include="CmdLineDriver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Decompiler\Decompiler.csproj">
+      <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
+      <Name>Decompiler</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_bdos_services.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\ntoskrnl.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows64.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win32characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win64characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+    <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
+    <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
+    <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
+    <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
+    <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Reko.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
+    <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
+    <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
+    <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
+    <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
+    <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Reko.Environments.Msdos.*" />
+    <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
+    <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
+    <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
+    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Win32.*" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.-->
+  <Target Name="BeforeBuild">
+    <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
+    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying ImageLoaders to $(TargetDir)" />
+    <Copy SourceFiles="@(ImageLoaders)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Architectures to $(TargetDir)" />
+    <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Environments to $(TargetDir)" />
+    <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Odbg scripts to $(TargetDir)" />
+    <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

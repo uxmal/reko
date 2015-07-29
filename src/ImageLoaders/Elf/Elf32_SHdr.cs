@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
     public class Elf32_SHdr
     {
@@ -53,6 +53,42 @@ namespace Decompiler.ImageLoaders.Elf
                 sh_info = rdr.ReadUInt32(),
                 sh_addralign = rdr.ReadUInt32(),
                 sh_entsize = rdr.ReadUInt32(),
+            };
+        }
+
+        public bool ContainsAddress(uint uAddress)
+        {
+            return sh_addr <= uAddress && uAddress < sh_addr + sh_size;
+        }
+    }
+
+    public class Elf64_SHdr
+    {
+        public uint sh_name;
+        public SectionHeaderType sh_type;
+        public ulong sh_flags;
+        public ulong sh_addr;        // Address
+        public ulong sh_offset;
+        public ulong sh_size;
+        public uint sh_link;
+        public uint sh_info;
+        public ulong sh_addralign;
+        public ulong sh_entsize;
+
+        public static Elf64_SHdr Load(ImageReader rdr)
+        {
+            return new Elf64_SHdr
+            {
+                sh_name = rdr.ReadUInt32(),
+                sh_type = (SectionHeaderType)rdr.ReadUInt32(),
+                sh_flags = rdr.ReadUInt64(),
+                sh_addr = rdr.ReadUInt64(),        // Address
+                sh_offset = rdr.ReadUInt64(),
+                sh_size = rdr.ReadUInt64(),
+                sh_link = rdr.ReadUInt32(),
+                sh_info = rdr.ReadUInt32(),
+                sh_addralign = rdr.ReadUInt64(),
+                sh_entsize = rdr.ReadUInt64(),
             };
         }
     }

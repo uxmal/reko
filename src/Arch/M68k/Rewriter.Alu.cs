@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     /// <summary>
     /// Rewrites ALU instructions.
@@ -44,9 +45,19 @@ namespace Decompiler.Arch.M68k
 
         public void RewriteRotation(string procName)
         {
-            var opSrc = orw.RewriteSrc(di.op1, di.Address);
-            var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
-                PseudoProc(procName, di.dataWidth, d, s));
+            Expression opDst;
+            if (di.op2 != null)
+            {
+                var opSrc = orw.RewriteSrc(di.op1, di.Address);
+                opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
+                    PseudoProc(procName, di.dataWidth, d, s));
+            }
+            else
+            {
+                opDst = orw.RewriteDst(di.op1, di.Address,
+                    Constant.Byte(1), (s, d) =>
+                        PseudoProc(procName, PrimitiveType.Word32, d, s));
+            }
             emitter.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.ZF),
                 emitter.Cond(opDst));
@@ -98,6 +109,20 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 emitter.Cond(emitter.And(opDst, tmpMask)));
+        }
+
+        public void RewriteBclrBset(string name)
+        {
+            var opSrc = orw.RewriteSrc(di.op1, di.Address);
+            PrimitiveType w = (di.op2 is RegisterOperand)
+                 ? PrimitiveType.Word32 
+                 : PrimitiveType.Byte;
+            di.op2.Width = w;
+            orw.DataWidth = w;
+            var opDst = orw.RewriteSrc(di.op2, di.Address);
+            emitter.Assign(
+                orw.FlagGroup(FlagM.ZF),
+                PseudoProc(name, PrimitiveType.Bool, opDst, opSrc, emitter.Out(PrimitiveType.Pointer32, opDst)));
         }
 
         public void RewriteExg()
@@ -353,8 +378,11 @@ namespace Decompiler.Arch.M68k
                 {
                     return di.Address + mem.Offset.ToInt32();
                 }
-                else
+                else if (mem.Offset == null)
                 {
+                    return frame.EnsureRegister(mem.Base);
+                }
+                else {
                     return emitter.IAdd(
                         frame.EnsureRegister(mem.Base),
                         Constant.Int32(mem.Offset.ToInt32()));
@@ -447,7 +475,7 @@ namespace Decompiler.Arch.M68k
                 {
                     var src = orw.RewriteSrc(di.op1, di.Address) as MemoryAccess;
                     if (src == null)
-                        throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+                        throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
                     srcReg = frame.CreateTemporary(di.dataWidth);
                     emitter.Assign(srcReg, src.EffectiveAddress);
                 }
@@ -475,7 +503,7 @@ namespace Decompiler.Arch.M68k
                 {
                     var src = orw.RewriteSrc(di.op2, di.Address) as MemoryAccess;
                     if (src == null)
-                        throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+                        throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
                     var srcReg = frame.CreateTemporary(di.dataWidth);
                     emitter.Assign(srcReg, src.EffectiveAddress);
                     foreach (var reg in RegisterMaskIncreasing(dstRegs.BitSet))
@@ -486,7 +514,7 @@ namespace Decompiler.Arch.M68k
                 }
                 return;
             }
-            throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+            throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
         }
 
         private Expression RewriteNegx(Expression expr)

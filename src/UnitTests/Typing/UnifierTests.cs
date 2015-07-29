@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Typing;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class UnifierTests
@@ -409,6 +409,23 @@ namespace Decompiler.UnitTests.Typing
             var p1 = new Pointer(code, 4);
             var p2 = new Pointer(code, 4);
             Assert.IsTrue(un.AreCompatible(p1, p2));
+        }
+
+        [Test]
+        public void CompatibleTypeReference()
+        {
+            var t1 = new TypeReference("CHAR", PrimitiveType.Char);
+            var t2 = PrimitiveType.Char;
+            Assert.IsTrue(un.AreCompatible(t1, t2));
+        }
+
+
+        [Test]
+        public void UnifyTypeReferences()
+        {
+            var t1 = new TypeReference("CHAR", PrimitiveType.Char);
+            var t2 = PrimitiveType.Char;
+            Assert.AreEqual("CHAR", un.Unify(t1, t2).ToString());
         }
 	}
 }

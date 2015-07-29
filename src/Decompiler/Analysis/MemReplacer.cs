@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Placeholder that replaces MEM nodes with C-like equivalents. It's placeholder because 
@@ -64,7 +64,7 @@ namespace Decompiler.Analysis
 			Constant c = ea as Constant;
 			if (c != null)
 			{
-				return new Identifier(string.Format("g_{0}{1:X8}", 0, type.Prefix, c.ToUInt32()), 0, type, new MemoryStorage());
+				return new Identifier(string.Format("g_{0}{1:X8}", type.Prefix, c.ToUInt32()), type, new MemoryStorage());
 			}
 			Identifier id = ea as Identifier;
 			if (id != null)

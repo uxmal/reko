@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Contains the non-global locations accessed by the code inside a procedure. 
@@ -99,10 +99,28 @@ namespace Decompiler.Core
 
         public Identifier CreateSequence(Identifier head, Identifier tail, DataType dt)
         {
-            Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), identifiers.Count, dt, new
+            Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dt, new
                 SequenceStorage(head, tail));
             identifiers.Add(id);
             return id;
+        }
+
+        public Identifier EnsureIdentifier(Storage stgForeign)
+        {
+            var reg = stgForeign as RegisterStorage;
+            if (reg != null)
+                return EnsureRegister(reg);
+            var grf = stgForeign as FlagGroupStorage;
+            if (grf != null)
+                return EnsureFlagGroup(grf);
+            var seq = stgForeign as SequenceStorage;
+            if (seq != null)
+                return EnsureSequence(
+                    seq.Head, 
+                    seq.Tail, 
+                    PrimitiveType.CreateWord(
+                        seq.Head.DataType.Size + seq.Tail.DataType.Size));
+            throw new NotImplementedException();
         }
 
 		/// <summary>
@@ -113,7 +131,7 @@ namespace Decompiler.Core
 		public Identifier CreateTemporary(DataType dt)
 		{
             string name = "v" + identifiers.Count;
-			Identifier id = new Identifier(name, identifiers.Count, dt,
+			Identifier id = new Identifier(name, dt,
                 new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
 			identifiers.Add(id);
 			return id;
@@ -121,7 +139,7 @@ namespace Decompiler.Core
 
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
-			Identifier id = new Identifier(name, identifiers.Count, dt, 
+			Identifier id = new Identifier(name, dt, 
                 new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
 			identifiers.Add(id);
 			return id;
@@ -134,11 +152,24 @@ namespace Decompiler.Core
 			Identifier id = FindFlagGroup(grfMask);
 			if (id == null)
 			{
-				id = new Identifier(name, identifiers.Count, dt, new FlagGroupStorage(grfMask, name, dt));
+				id = new Identifier(name, dt, new FlagGroupStorage(grfMask, name, dt));
 				identifiers.Add(id);
 			}
 			return id;
 		}
+
+        public Identifier EnsureFlagGroup(FlagGroupStorage grf)
+        {
+            if (grf.FlagGroupBits == 0)
+                return null;
+            var id = FindFlagGroup(grf.FlagGroupBits);
+            if (id == null)
+            {
+                id = new Identifier(grf.Name, grf.DataType, new FlagGroupStorage(grf.FlagGroupBits, grf.Name, grf.DataType));
+                identifiers.Add(id);
+            }
+            return id;
+        }
 
 		public Identifier EnsureFpuStackVariable(int depth, DataType type)
 		{
@@ -146,7 +177,7 @@ namespace Decompiler.Core
 			if (id == null)
 			{
 				string name = string.Format("{0}{1}", (depth < 0 ? "rLoc" : "rArg"), Math.Abs(depth));
-				id = new Identifier(name, identifiers.Count, type, new FpuStackStorage(depth, type));
+				id = new Identifier(name, type, new FpuStackStorage(depth, type));
 				identifiers.Add(id);
 			}
 			return id;
@@ -164,7 +195,7 @@ namespace Decompiler.Core
 			Identifier id = FindRegister(reg);
 			if (id == null)
 			{
-				id = new Identifier(reg.Name, identifiers.Count, reg.DataType, reg);
+				id = new Identifier(reg.Name, reg.DataType, reg);
 				identifiers.Add(id);
 			}
 			return id;
@@ -175,8 +206,7 @@ namespace Decompiler.Core
 			Identifier idOut = FindOutArgument(idOrig);
 			if (idOut == null)
 			{
-				idOut = new Identifier(idOrig.Name + "Out", identifiers.Count, 
-                    outArgumentPointer, new OutArgumentStorage(idOrig));
+				idOut = new Identifier(idOrig.Name + "Out", outArgumentPointer, new OutArgumentStorage(idOrig));
 				identifiers.Add(idOut);
 			}
 			return idOut;
@@ -208,7 +238,7 @@ namespace Decompiler.Core
 			Identifier id = FindStackLocal(cbOffset, type.Size);
 			if (id == null)
 			{
-				id = new Identifier(FormatStackAccessName(type, "Loc", cbOffset, name), identifiers.Count, type, new StackLocalStorage(cbOffset, type));
+				id = new Identifier(FormatStackAccessName(type, "Loc", cbOffset, name), type, new StackLocalStorage(cbOffset, type));
 				identifiers.Add(id);
 			}
 			return id;
@@ -226,7 +256,6 @@ namespace Decompiler.Core
 			{
 				id = new Identifier(
 					FormatStackAccessName(type, "Arg", cbOffset, argName), 
-					identifiers.Count,
 					type, 
 					new StackArgumentStorage(cbOffset, type));
 				identifiers.Add(id);
@@ -253,7 +282,6 @@ namespace Decompiler.Core
                 ? EnsureStackArgument(byteOffset, type)
                 : EnsureStackLocal(byteOffset, type);
         }
-
 
 		/// <summary>
 		/// The offset of a variable from the return address, as seen from a caller.

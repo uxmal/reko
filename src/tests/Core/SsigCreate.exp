@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedSignature>
   <return>
-    <type xmlns="http://schemata.jklnet.org/Decompiler">int</type>
+    <prim domain="SignedInt" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
     <reg>ax</reg>
   </return>
   <arg>

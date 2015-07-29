@@ -1,27 +1,28 @@
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds, word16 wArg04)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 bx_17 = 0x0000
+	word16 bx_14 = 0x0000
 	branch wArg04 <= 0x0000 l0C00_0015
 	// succ:  l0C00_000C l0C00_0015
 l0C00_000C:
-	word16 cx_32 = wArg04
+	word16 cx_23 = wArg04
 	// succ:  l0C00_000E
 l0C00_000E:
-	bx_17 = bx_17 + cx_32
-	cx_32 = cx_32 - 0x0001
-	branch cx_32 != 0x0000 l0C00_000E
+	bx_14 = bx_14 + cx_23
+	cx_23 = cx_23 - 0x0001
+	branch cx_23 != 0x0000 l0C00_000E
 	// succ:  l0C00_0012 l0C00_000E
 l0C00_0012:
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0015:
-	bx_17 = -wArg04
+	bx_14 = -wArg04
 	// succ:  l0C00_0019
 l0C00_0019:
-	Mem29[ds:0x0300:word16] = bx_17
+	Mem19[ds:0x0300:word16] = bx_14
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

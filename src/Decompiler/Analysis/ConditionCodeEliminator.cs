@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Removes any uses and definitions of condition codes.
@@ -52,21 +52,21 @@ namespace Decompiler.Analysis
 		private SsaIdentifier sidGrf;
         private HashSet<SsaIdentifier> aliases;     // aliases of sidGrf
         private Statement useStm;
-        private IProcessorArchitecture arch;
+        private Platform platform;
 
 		private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
 
-		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, IProcessorArchitecture arch)
+		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, Platform arch)
 		{
 			this.ssaIds = ssaIds;
-            this.arch = arch;
+            this.platform = arch;
 		}
 
         public void Transform()
         {
-            for (int i = 0; i < ssaIds.Count; ++i)
+            foreach (var s in ssaIds)
             {
-                sidGrf = ssaIds[i];
+                sidGrf = s;
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
 
@@ -277,7 +277,7 @@ namespace Decompiler.Analysis
 
 		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
-			Expression e = new Application(new ProcedureConstant(arch.PointerType, new PseudoProcedure("OVERFLOW", PrimitiveType.Bool, 1)),
+			Expression e = new Application(new ProcedureConstant(platform.PointerType, new PseudoProcedure("OVERFLOW", PrimitiveType.Bool, 1)),
 				PrimitiveType.Bool, bin);
 			if (isNegated)
 			{

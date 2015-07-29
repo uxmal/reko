@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,19 +27,23 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
-    /// Renders textual data, which is stored in a <seealso cref="TextViewModel"/>, in a window. 
+    /// A Windows Forms control that renders textual data. The textual data
+    /// is fetched from a <seealso cref="TextViewModel"/>. 
     /// </summary>
     public partial class TextView : Control
     {
+        // ModelChanged is fired whenever the Model property is set.
         public event EventHandler ModelChanged;
         public event EventHandler<EditorNavigationArgs> Navigate;
 
         private Brush fgBrush;
         private Brush bgBrush;
         private StringFormat stringFormat;
+        private SortedList<float, LayoutLine> visibleLines;
+        private bool ignoreScroll;
 
         public TextView()
         {
@@ -50,6 +54,19 @@ namespace Decompiler.Gui.Windows.Controls
             this.stringFormat = StringFormat.GenericTypographic;
             this.ModelChanged += model_ModelChanged;
             this.vScroll.ValueChanged += vScroll_ValueChanged;
+        }
+
+        public IServiceProvider Services { get; set; }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Shift|Keys.F10))
+            {
+                e.Handled = true;
+                ContextMenu.Show(this, new Point(0, 0));
+                return;
+            }
+            base.OnKeyDown(e);
         }
 
         public new Size ClientSize
@@ -93,6 +110,29 @@ namespace Decompiler.Gui.Windows.Controls
             return CacheBrush(ref bgBrush, new SolidBrush(BackColor));
         }
 
+        /// <summary>
+        /// Computes the size of a text span.
+        /// </summary>
+        /// <remarks>
+        /// The span is first asked to measure itself, then the current style is 
+        /// allowed to override the size.
+        /// </remarks>
+        /// <param name="span"></param>
+        /// <param name="text"></param>
+        /// <param name="font"></param>
+        /// <param name="g"></param>
+        /// <returns></returns>
+        private SizeF GetSize(TextSpan span, string text, Font font, Graphics g)
+        {
+            var size = span.GetSize(text, font, g);
+            EditorStyle style = GetStyle(span.Style);
+            if (style != null && style.Width.HasValue)
+            {
+                size.Width = style.Width.Value;
+            }
+            return size;
+        }
+
         private EditorStyle GetStyle(string styleSelector)
         {
             EditorStyle style;
@@ -126,11 +166,6 @@ namespace Decompiler.Gui.Windows.Controls
                 if (bgBrush != null) bgBrush.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            base.OnPaintBackground(pevent);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -167,6 +202,15 @@ namespace Decompiler.Gui.Windows.Controls
             base.OnMouseUp(e);
         }
 
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
+            RecomputeLayout();
+            UpdateScrollbar();
+            OnScroll();
+            Invalidate();
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             foreach (var line in visibleLines.Values)
@@ -184,18 +228,23 @@ namespace Decompiler.Gui.Windows.Controls
             public LayoutSpan[] Spans;
         }
 
-
         /// <summary>
         /// Horizontal span of text
         /// </summary>
-        private class LayoutSpan
+        protected class LayoutSpan
         {
             public RectangleF Extent;
             public string Text;
             public string Style;
             public object Tag;
+            public int ContextMenuID;
         }
 
+        /// <summary>
+        /// Computes the layout of all visibile text spans and stores them the 
+        /// member variable 'visibleLines'.
+        /// </summary>
+        /// <param name="g"></param>
         protected void ComputeLayout(Graphics g)
         {
             float cyLine = GetLineHeight();
@@ -203,15 +252,14 @@ namespace Decompiler.Gui.Windows.Controls
             SizeF szClient = new SizeF(ClientSize);
             var rcLine = new RectangleF(0, 0, szClient.Width, cyLine);
             
-            // Warm up the cache.
-            int iLine = vScroll.Value;
-            int cVisibleLines = (int) Math.Ceiling(szClient.Height + cyLine);
-            model.CacheHint(iLine, cVisibleLines);
-
+            // Get the lines.
+            int cVisibleLines = (int) Math.Ceiling(szClient.Height / cyLine);
+            var lines = model != null ? model.GetLineSpans(cVisibleLines) : new TextSpan[0][];
+            int iLine = 0;
             while (rcLine.Top < szClient.Height && 
-                   iLine < model.LineCount)
+                   iLine < lines.Length)
             {
-                var line = model.GetLineSpans(iLine);
+                var line = lines[iLine];
                 var ll = new LayoutLine { 
                     Extent = rcLine,
                     Spans = ComputeSpanLayouts(line, rcLine, g)
@@ -222,6 +270,13 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
+        /// <summary>
+        /// Computes the layout for a line of spans.
+        /// </summary>
+        /// <param name="spans"></param>
+        /// <param name="rcLine"></param>
+        /// <param name="g"></param>
+        /// <returns></returns>
         private LayoutSpan[] ComputeSpanLayouts(IEnumerable<TextSpan> spans, RectangleF rcLine, Graphics g)
         {
             var spanLayouts = new List<LayoutSpan>();
@@ -230,13 +285,14 @@ namespace Decompiler.Gui.Windows.Controls
             {
                 var text = span.GetText();
                 var font = GetFont(span.Style);
-                var szText = span.GetSize(text, font, g);
+                var szText = GetSize(span, text, font, g);
                 var rc = new RectangleF(pt, szText);
                 spanLayouts.Add(new LayoutSpan
                 {
                     Extent = rc,
                     Style = span.Style,
                     Text = text,
+                    ContextMenuID = span.ContextMenuID,
                     Tag = span.Tag,
                 });
                 pt.X = pt.X + szText.Width;
@@ -256,7 +312,7 @@ namespace Decompiler.Gui.Windows.Controls
         /// </summary>
         /// <param name="pt">Location specified in client coordinates.</param>
         /// <returns></returns>
-        private LayoutSpan GetSpan(Point pt)
+        protected LayoutSpan GetSpan(Point pt)
         {
             foreach (var line in this.visibleLines.Values)
             {
@@ -290,21 +346,39 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
+        /// <summary>
+        /// The Model provides text spans that the TextView uses to render itself.
+        /// </summary>
         public TextViewModel Model { get { return model; } set { this.model = value; vScroll.Value = 0; OnModelChanged(); ModelChanged.Fire(this); } }
         private TextViewModel model;
-        private void OnModelChanged()
+        protected virtual void OnModelChanged()
         {
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
-            vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
-            vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
-            vScroll.Enabled = visibleLines < model.LineCount;
-
+            if (model != null)
+            {
+                vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
+                vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
+                vScroll.Enabled = visibleLines < model.LineCount;
+            }
+            else
+            {
+                vScroll.Enabled = false;
+            }
             var g = CreateGraphics();
             ComputeLayout(g);
             g.Dispose();
 
             Invalidate();
+           
+        }
+
+        public object GetTagFromPoint(Point ptClient)
+        {
+            var span = GetSpan(ptClient);
+            if (span == null)
+                return null;
+            return span.Tag;
         }
 
         /// <summary>
@@ -330,8 +404,7 @@ namespace Decompiler.Gui.Windows.Controls
 
         public Dictionary<string, EditorStyle> Styles { get { return styles; } }
         private Dictionary<string, EditorStyle> styles;
-        private SortedList<float, LayoutLine> visibleLines;
-
+        
         void model_ModelChanged(object sender, EventArgs e)
         {
             OnModelChanged();
@@ -339,10 +412,34 @@ namespace Decompiler.Gui.Windows.Controls
 
         void vScroll_ValueChanged(object sender, EventArgs e)
         {
+            if (ignoreScroll)
+                return;
+            model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
+            RecomputeLayout();
+            OnScroll();
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Called when the view is scrolled. 
+        /// </summary>
+        protected virtual void OnScroll()
+        {
+        }
+
+        protected void RecomputeLayout()
+        {
             var g = CreateGraphics();
             ComputeLayout(g);
             g.Dispose();
-            Invalidate();
+        }
+
+        internal void UpdateScrollbar()
+        {
+            var frac = model.GetPositionAsFraction();
+            this.ignoreScroll = true;
+            vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
+            this.ignoreScroll = false;
         }
     }
 
@@ -352,6 +449,7 @@ namespace Decompiler.Gui.Windows.Controls
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
         public Cursor Cursor { get; set; }
+        public int? Width { get; set; } // If set, the width is fixed at a certain size.
     }
 
     public class EditorNavigationArgs : EventArgs

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Arch.Intel;
-using Decompiler.UnitTests.Arch.Intel.Fragments;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.UnitTests.Arch.Intel;
+using Reko.UnitTests.Arch.Intel.Fragments;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Assemblers.x86
+namespace Reko.UnitTests.Assemblers.x86
 {
     [TestFixture]
     public class AssembleFragmentTests
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
                 "0C00:0003	push	cx" + nl +
                 "0C00:0004	call	000F" + nl +
                 "0C00:0007	add	sp,02" + nl +
-                "0C00:000A	mov	word ptr [0100],ax" + nl +
+                "0C00:000A	mov	[0100],ax" + nl +
                 "0C00:000E	ret	" + nl +
                 "0C00:000F	push	bp" + nl +
                 "0C00:0010	mov	bp,sp" + nl +
@@ -66,10 +66,10 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
-            Address addrBase=  new Address(0xC00, 0);
-            IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
+            Address addrBase=  Address.SegPtr(0xC00, 0);
+            X86Assembler asm = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
-            LoaderResults lr = asm.GetImage();
+            Program lr = asm.GetImage();
 
             X86Disassembler dasm = new X86Disassembler(
                 lr.Image.CreateLeReader(lr.Image.BaseAddress),
@@ -79,9 +79,8 @@ namespace Decompiler.UnitTests.Assemblers.x86
             StringBuilder sb = new StringBuilder();
             try
             {
-                while (dasm.MoveNext())
+                foreach (var instr in dasm)
                 {
-                    IntelInstruction instr = dasm.Current;
                     sb.AppendFormat("{0}\t{1}", instr.Address, instr);
                     sb.AppendLine();
                 }

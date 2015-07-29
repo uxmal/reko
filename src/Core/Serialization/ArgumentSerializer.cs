@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,24 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	public class ArgumentSerializer
 	{
-		private ProcedureSerializer ps;
+		private ProcedureSerializer procSer;
 		private IProcessorArchitecture arch;
 		private Frame frame;
 		private Argument_v1 argCur;
         private string convention;
 
-		public ArgumentSerializer(ProcedureSerializer sig, IProcessorArchitecture arch, Frame frame, string callingConvention)
+		public ArgumentSerializer(ProcedureSerializer procSer, IProcessorArchitecture arch, Frame frame, string callingConvention)
 		{
-			this.ps = sig;
+			this.procSer = procSer;
 			this.arch = arch;
 			this.frame = frame;
             this.convention = callingConvention;
@@ -63,31 +63,31 @@ namespace Decompiler.Core.Serialization
 		{
             if (argCur.Name == "...")
             {
-                return ps.CreateId("...", new UnknownType(), new StackArgumentStorage(ps.StackOffset, new UnknownType()));
+                return procSer.CreateId("...", new UnknownType(), new StackArgumentStorage(procSer.StackOffset, new UnknownType()));
             }
             if (argCur.Type == null)
                 throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));
-			var dt = this.argCur.Type.Accept(ps.TypeLoader);
+			var dt = this.argCur.Type.Accept(procSer.TypeLoader);
             if (dt is VoidType)
             {
                 return null;
             }
-			var idArg = ps.CreateId(
-				argCur.Name ?? "arg" + ps.StackOffset, 
+			var idArg = procSer.CreateId(
+				argCur.Name ?? "arg" + procSer.StackOffset, 
 				dt,
-				new StackArgumentStorage(ps.StackOffset, dt));
-            ps.StackOffset += dt.Size;
+				new StackArgumentStorage(procSer.StackOffset, dt));
+            procSer.StackOffset += dt.Size;
             return idArg;
 		}
 
 		public Identifier Deserialize(FpuStackVariable_v1 fs)
 		{
-			var idArg = ps.CreateId(argCur.Name ?? "fpArg" + ps.FpuStackOffset , PrimitiveType.Real64, new FpuStackStorage(ps.FpuStackOffset, PrimitiveType.Real64));
-			++ps.FpuStackOffset;
+			var idArg = procSer.CreateId(argCur.Name ?? "fpArg" + procSer.FpuStackOffset , PrimitiveType.Real64, new FpuStackStorage(procSer.FpuStackOffset, PrimitiveType.Real64));
+			++procSer.FpuStackOffset;
             return idArg;
 		}
 
-        public Identifier Deserialize(SerializedFlag flag)
+        public Identifier Deserialize(FlagGroup_v1 flag)
 		{
 			var flags = arch.GetFlagGroup(flag.Name);
 			return frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
@@ -106,38 +106,36 @@ namespace Decompiler.Core.Serialization
         public Identifier DeserializeReturnValue(Argument_v1 arg)
         {
             argCur = arg;
-            if (arg.Kind != null)
-                return arg.Kind.Accept(this);
-            //$PLATFORM-SPECIFIC!!!!
-			var dt = this.argCur.Type.Accept(ps.TypeLoader);
+            DataType dt = null;
+            if (this.argCur.Type != null)
+			    dt = this.argCur.Type.Accept(procSer.TypeLoader);
             if (dt is VoidType)
                 return null;
-            var reg = arch.GetRegister("eax").GetSubregister(0, dt.BitSize);
-            return frame.EnsureRegister(reg);
-        }
-
-		public Identifier Deserialize(Argument_v1 arg, int idx)
-		{
-			argCur = arg;
+            Identifier id;
             if (arg.Kind != null)
             {
-                var a = arg.Kind.Accept(this);
-                return a;
+                id = arg.Kind.Accept(this);
+                id.DataType = dt ?? id.DataType;
             }
-            //$PLATFORM-specifiC!!! We're encoding Microsoft + x86 conventions here.
-            if (convention == "stdapi" || convention == "__cdecl" || convention == "__stdcall")
+            else
             {
-                return Deserialize(new StackVariable_v1 { });
+                var reg = procSer.GetReturnRegister(arg, dt.BitSize);
+                id = new Identifier(reg.ToString() + "@<>", dt, reg);
             }
-            if (convention == "__thiscall")
-            {
-                if (idx == 0)
-                    return Deserialize(new Register_v1("ecx"));
-                else
-                    return Deserialize(new StackVariable_v1());
-            }
-            throw new NotImplementedException();
-		}
+            return id;
+        }
+
+		public Identifier Deserialize(Argument_v1 arg)
+        {
+            argCur = arg;
+            return arg.Kind.Accept(this);
+        }
+
+        public Identifier Deserialize(Argument_v1 arg, SerializedKind kind)
+        {
+            argCur = arg;
+            return kind.Accept(this);
+        }
 
         public Argument_v1 Serialize(Identifier arg)
         {

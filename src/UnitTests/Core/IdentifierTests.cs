@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class IdentifierTests
@@ -35,8 +35,8 @@ namespace Decompiler.UnitTests.Core
 
 		public IdentifierTests()
 		{
-			reg = new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax);
-			outReg = new Identifier("eaxOut", 1, PrimitiveType.Pointer32, new OutArgumentStorage(reg));
+			reg = new Identifier("eax", PrimitiveType.Word32, Registers.eax);
+			outReg = new Identifier("eaxOut", PrimitiveType.Pointer32, new OutArgumentStorage(reg));
 		}
 
 		[Test]

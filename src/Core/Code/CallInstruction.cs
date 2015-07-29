@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
-namespace Decompiler.Core.Code
+namespace Reko.Core.Code
 {
     /// <summary>
     /// Models a low-level call instruction.
@@ -37,10 +38,19 @@ namespace Decompiler.Core.Code
                 throw new ArgumentNullException("callee");
             this.Callee = callee;
             this.CallSite = site;
+            this.Definitions = new HashSet<DefInstruction>();
+            this.Uses = new HashSet<UseInstruction>();
         }
 
         public Expression Callee { get; set; }
         public CallSite CallSite { get; private set; }
+
+        // Set of variables that reach the call site. These need to be reconciled 
+        // with the variables used by the callee, if these are known.
+        public HashSet<UseInstruction> Uses { get; private set; }
+        // Set of variables that the called function defines.
+        public HashSet<DefInstruction> Definitions { get; private set; }
+
         public override bool IsControlFlow { get { return false; } }
 
         public override Instruction Accept(InstructionTransformer xform)

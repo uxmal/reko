@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-using BitSet = Decompiler.Core.Lib.BitSet;
+using BitSet = Reko.Core.Lib.BitSet;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	using StringBuilder = System.Text.StringBuilder;
 	using StringWriter = System.IO.StringWriter;
@@ -143,7 +143,7 @@ namespace Decompiler.Analysis
 
 		private void Def(Identifier id)
 		{
-			varLive.Def(Procedure.Frame.Identifiers[id.Number]);
+			varLive.Def(id);
 		}
 
 		private void DumpBlock(Block block)
@@ -213,7 +213,6 @@ namespace Decompiler.Analysis
 			varLive.BitSet = new BitSet(item.DataOut);
 			varLive.Grf = item.grfOut;
             varLive.LiveStorages = new Dictionary<Storage,int>(item.StackVarsOut);
-
 			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.BitSet)));
 			Procedure = item.Block.Procedure;		// Used by statements because we need to look up registers using identifiers and the procedure frame.
 			StatementList stms = item.Block.Statements;
@@ -293,6 +292,7 @@ namespace Decompiler.Analysis
 		
 		public bool MergeIntoProcedureFlow(IdentifierLiveness varLive, ProcedureFlow flow)
 		{
+            if (varLive.BitSet[0x1F]) varLive.ToString();
 			bool fChange = false;
 			if (!(varLive.BitSet & ~flow.Summary).IsEmpty)
 			{
@@ -390,7 +390,7 @@ namespace Decompiler.Analysis
 
 		private void Use(Identifier id)
 		{
-			varLive.Use(Procedure.Frame.Identifiers[id.Number], bitUseOffset, cbitsUse);
+			varLive.Use(id, bitUseOffset, cbitsUse);
 		}
  
 		public IdentifierLiveness IdentifierLiveness
@@ -500,21 +500,21 @@ namespace Decompiler.Analysis
 		public override void VisitCallInstruction(CallInstruction ci)
 		{
             ProcedureSignature sig = GetProcedureSignature(ci.Callee);
-			if (sig != null && sig.ArgumentsValid)		
+			if (sig != null && sig.ParametersValid)		
 			{
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
                 var ab = new ApplicationBuilder(
                     prog.Architecture, 
                     Procedure.Frame, 
                     ci.CallSite,
-                    new ProcedureConstant(prog.Architecture.PointerType, procCallee), 
+                    new ProcedureConstant(prog.Platform.PointerType, procCallee), 
                     sig, 
                     false);
 				if (sig.ReturnValue != null)
 				{
                     varLive.Def(ab.Bind(sig.ReturnValue));
 				}
-				foreach (Identifier arg in sig.FormalArguments)
+				foreach (Identifier arg in sig.Parameters)
 				{
 					if (arg.Storage is OutArgumentStorage)
 					{
@@ -522,7 +522,7 @@ namespace Decompiler.Analysis
 					}
 				}
 
-				foreach (Identifier arg in sig.FormalArguments)
+				foreach (Identifier arg in sig.Parameters)
 				{
 					if (!(arg.Storage is OutArgumentStorage))
 					{
@@ -538,6 +538,8 @@ namespace Decompiler.Analysis
                 var procCallee = pc.Procedure as Procedure;
                 if (procCallee == null)
                     return;
+                if (varLive.BitSet[0x1F]) varLive.ToString();
+
                 if (state.PropagateThroughExitNodes)
 				{
 					PropagateToCalleeExitBlocks(stmCur);
@@ -547,13 +549,14 @@ namespace Decompiler.Analysis
 
 				ProcedureFlow pi = mpprocData[procCallee];
 				ProcedureFlow item = mpprocData[Procedure];
+                if (varLive.BitSet[0x1F]) varLive.ToString();
 
 				// The registers that are still live before a call are those
 				// that were live after the call and were bypassed by the called function
 				// or used by the called function.
 				varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
 				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
-
+                if (varLive.BitSet[0x1F]) varLive.ToString();
 				// Any stack parameters are also considered live.
 				MarkLiveStackParameters(ci);
 			}
@@ -701,7 +704,7 @@ namespace Decompiler.Analysis
 			public override void InitializeBlockFlow(Block block, ProgramDataFlow flow, bool isExitBlock)
 			{
 				BlockFlow bf = flow[block];
-				if (isExitBlock && block.Procedure.Signature.ArgumentsValid)
+				if (isExitBlock && block.Procedure.Signature.ParametersValid)
 				{
 					Identifier ret = block.Procedure.Signature.ReturnValue;
 					if (ret != null)
@@ -710,7 +713,7 @@ namespace Decompiler.Analysis
 						if (rs != null)
 							rs.SetAliases(bf.DataOut, true);
 					}
-					foreach (Identifier id in block.Procedure.Signature.FormalArguments)
+					foreach (Identifier id in block.Procedure.Signature.Parameters)
 					{
 						OutArgumentStorage os = id.Storage as OutArgumentStorage;
 						if (os == null)

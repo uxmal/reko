@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class DiagnosticsInteractorTests
@@ -37,16 +38,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private ListView lv;
         private TestDiagnosticsInteractor interactor;
         private IDiagnosticsService svc;
-        private MockRepository repository;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
             lv = new ListView();
+            lv.CreateControl();
             interactor = new TestDiagnosticsInteractor();
             interactor.Attach(lv);
             svc = interactor;
-            repository = new MockRepository();
+            mr = new MockRepository();
         }
 
         [TearDown]
@@ -58,7 +60,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void AddDiagnostic()
         {
-            svc.AddDiagnostic(new NullCodeLocation("01000"), new WarningDiagnostic("test"));
+            svc.Warn(new NullCodeLocation("01000"), "test");
             Assert.AreEqual(1, lv.Items.Count);
             Assert.AreEqual("01000", lv.Items[0].Text);
         }
@@ -66,7 +68,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void ClearDiagnostics()
         {
-            svc.AddDiagnostic(new NullCodeLocation("01000"), new WarningDiagnostic("test"));
+            svc.Warn(new NullCodeLocation("01000"), "test");
             svc.ClearDiagnostics();
             Assert.AreEqual(0, lv.Items.Count);
         }
@@ -74,16 +76,47 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void NavigateOnDoubleClick()
         {
-            var location = repository.DynamicMock<ICodeLocation>();
+            var location = mr.DynamicMock<ICodeLocation>();
             location.Expect(x => x.NavigateTo());
-            repository.ReplayAll();
+            mr.ReplayAll();
 
-            svc.AddDiagnostic(location, new Diagnostic("Hello"));
+            svc.Warn(location, "Hello");
             interactor.FocusedListItem = lv.Items[0];
             interactor.UserDoubleClicked();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
+
+        [Test(Description = "If no items selected, the Copy menu item should be visible but disabled")]
+        public void Di_NoItemsSelected_DisableCopy()
+        {
+            mr.ReplayAll();
+
+            var cmd = new CommandID(CmdSets.GuidReko, CmdIds.EditCopy);
+            var status = new CommandStatus();
+            var txt = new CommandText();
+            Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));
+
+            Assert.AreEqual(MenuStatus.Visible, status.Status);
+            mr.VerifyAll();
+        }
+
+        [Test(Description = "If >0 items selected, the Copy menu item should be visible and enabled")]
+        public void Di_ItemsSelected_EnableCopy()
+        {
+            mr.ReplayAll();
+
+            svc.Error("Nilz");
+            lv.SelectedIndices.Add(0);
+
+            var cmd = new CommandID(CmdSets.GuidReko, CmdIds.EditCopy);
+            var status = new CommandStatus();
+            var txt = new CommandText();
+            Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));
+
+            Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
+            mr.VerifyAll();
+        }        
 
         private class TestDiagnosticsInteractor : DiagnosticsInteractor
         {

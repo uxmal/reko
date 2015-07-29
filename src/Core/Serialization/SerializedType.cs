@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Reflection;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     /// <summary>
     /// Abstract base class for serialized types.
@@ -86,9 +86,11 @@ namespace Decompiler.Core.Serialization
                 XmlElements = 
                 {
                     new XmlElementAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
+                    new XmlElementAttribute("code", typeof(CodeType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
-                    new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
+                    new XmlElementAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
+                    new XmlElementAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},
                     new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
                     new XmlElementAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
@@ -108,8 +110,9 @@ namespace Decompiler.Core.Serialization
                 {
                     new XmlArrayItemAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
-                    new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},

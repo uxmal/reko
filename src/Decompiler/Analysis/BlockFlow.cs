@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using BitSet = Decompiler.Core.Lib.BitSet;
-using Block = Decompiler.Core.Block;
-using DataType = Decompiler.Core.Types.DataType;    
-using Expression = Decompiler.Core.Expressions.Expression;
-using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
-using Storage = Decompiler.Core.Storage;
+using BitSet = Reko.Core.Lib.BitSet;
+using Block = Reko.Core.Block;
+using DataType = Reko.Core.Types.DataType;    
+using Expression = Reko.Core.Expressions.Expression;
+using IProcessorArchitecture = Reko.Core.IProcessorArchitecture;
+using Storage = Reko.Core.Storage;
 using StringWriter = System.IO.StringWriter;
-using SymbolicEvaluationContext = Decompiler.Evaluation.SymbolicEvaluationContext;
+using SymbolicEvaluationContext = Reko.Evaluation.SymbolicEvaluationContext;
 using TextWriter = System.IO.TextWriter;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Summary information about the dataflow of a basic block.

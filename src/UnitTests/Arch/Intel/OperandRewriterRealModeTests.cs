@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	/// <summary>
 	/// Tests for operator rewriting when dealing with real mode.
@@ -37,31 +37,37 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private IntelArchitecture arch;
         private X86State state;
 		private Procedure proc;
+        private IntelInstruction instr;
 
 		[TestFixtureSetUp]
 		public void Setup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
-            var image = new LoadedImage(new Address(0x10000), new byte[4]);
+            var image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
 			var prog = new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 null);
-			var procAddress = new Address(0x10000000);
+			var procAddress = Address.Ptr32(0x10000000);
+            instr = new IntelInstruction(Opcode.nop, PrimitiveType.Word16, PrimitiveType.Word16)
+            {
+                Address = procAddress,
+            };
+
             proc = Procedure.Create(procAddress, arch.CreateFrame());
-			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
+			orw = new OperandRewriter16(arch, proc.Frame, new FakeRewriterHost(prog));
             state = (X86State)arch.CreateProcessorState();
         }
 
 		[Test]
-		public void RewriteSegConst()
+		public void X86Orw16_RewriteSegConst()
 		{
 			var m = new MemoryOperand(
 				PrimitiveType.Byte,
 				Registers.bx,
 				Constant.Int32(32));
-			var e = orw.CreateMemoryAccess(m, state);
+			var e = orw.CreateMemoryAccess(instr, m, state);
 			Assert.AreEqual("Mem0[ds:bx + 0x0020:byte]", e.ToString());
 		}
 	}

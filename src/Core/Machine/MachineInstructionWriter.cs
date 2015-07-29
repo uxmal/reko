@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Machine
+namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// Used to render machine instructions into text. The abstraction
+    /// offers opportunities to perform syntax highlighting etc.
+    /// </summary>
     public interface MachineInstructionWriter
     {
-        void Opcode(string opcode);
-        void Address(string formattedAddress, Address addr);
+        /// <summary>
+        /// The current platform we're in. May be null, so make sure
+        /// you test for that before dereferencing.
+        /// </summary>
+        Platform Platform { get;  }
+
+        void WriteOpcode(string opcode);
+        void WriteAddress(string formattedAddress, Address addr);
         void Tab();
         void Write(char c);
         void Write(uint n);
@@ -36,13 +46,19 @@ namespace Decompiler.Core.Machine
         void Write(string fmt, params object[] parms);
     }
 
+    /// <summary>
+    /// "Dumb" renderer that renders machine instructions as simple text.
+    /// </summary>
     public class StringRenderer : MachineInstructionWriter
     {
         private StringBuilder sb;
 
         public StringRenderer() { sb = new StringBuilder(); }
+        public StringRenderer(Platform platform) { sb = new StringBuilder(); this.Platform = platform; }
 
-        public void Opcode(string opcode)
+        public Platform Platform { get;private set; }
+
+        public void WriteOpcode(string opcode)
         {
             sb.Append(opcode);
         }
@@ -52,7 +68,7 @@ namespace Decompiler.Core.Machine
             sb.Append('\t');
         }
 
-        public void Address(string formattedAddress, Address addr)
+        public void WriteAddress(string formattedAddress, Address addr)
         {
             sb.Append(formattedAddress);
         }

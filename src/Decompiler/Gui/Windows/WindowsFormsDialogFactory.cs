@@ -1,6 +1,6 @@
 #region License
 /* 
-* Copyright (C) 1999-2014 John Källén.
+* Copyright (C) 1999-2015 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,12 @@
 */
 #endregion
 
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows.Forms;
 using System;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
 	public class WindowsFormsDialogFactory : IDialogFactory
 	{
@@ -38,6 +39,14 @@ namespace Decompiler.Gui.Windows
 			return new AddressPromptDialog();
 		}
 
+        public IAssembleFileDialog CreateAssembleFileDialog()
+        {
+            return new AssembleFileDialog
+            {
+                Services = services
+            };
+        }
+
         public IMainForm CreateMainForm()
         {
             return new MainForm();
@@ -51,11 +60,28 @@ namespace Decompiler.Gui.Windows
             };
         }
 
+        public IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program)
+        {
+            return new ProgramPropertiesDialog
+            {
+                Services = services,
+                Program = program,
+            };
+        }
+
         public ISearchDialog CreateSearchDialog()
         {
             return new SearchDialog()
             {
 				Services = services,
+            };
+        }
+
+        public IUserPreferencesDialog CreateUserPreferencesDialog()
+        {
+            return new UserPreferencesDialog
+            {
+                Services = services,
             };
         }
     }

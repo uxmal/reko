@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Models an access to memory, using the effective address <paramref name="ea"/> and the datatype
@@ -94,7 +94,6 @@ namespace Decompiler.Core.Expressions
 		}
 
         public Expression BasePointer { get; set; }         // Segment selector
-
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

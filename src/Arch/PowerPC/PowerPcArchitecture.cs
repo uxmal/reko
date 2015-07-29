@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,35 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.PowerPC
+namespace Reko.Arch.PowerPC
 {
-    public class PowerPcArchitecture : IProcessorArchitecture
+    public abstract class PowerPcArchitecture : IProcessorArchitecture
     {
         private PrimitiveType wordWidth;
         private PrimitiveType ptrType;
         private ReadOnlyCollection<RegisterStorage> regs;
         private ReadOnlyCollection<RegisterStorage> fpregs;
+        private ReadOnlyCollection<RegisterStorage> vregs;
         private ReadOnlyCollection<RegisterStorage> cregs;
+
+        public RegisterStorage lr { get; private set; }
+        public RegisterStorage cr { get; private set; }
+        public RegisterStorage ctr { get; private set; }
+        public RegisterStorage xer { get; private set; }
+        public RegisterStorage fpscr { get; private set; }
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
@@ -45,97 +54,43 @@ namespace Decompiler.Arch.PowerPC
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
         public PowerPcArchitecture(PrimitiveType wordWidth)
         {
-            if (wordWidth != PrimitiveType.Word32)
-                throw new ArgumentException("Only 32-bit mode of the architecture is currently supported.");
             this.wordWidth = wordWidth;
-            this.ptrType =  PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
-            regs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
-                new RegisterStorage("r0", 0, wordWidth),
-                new RegisterStorage("r1", 1, wordWidth),
-                new RegisterStorage("r2", 2, wordWidth),
-                new RegisterStorage("r3", 3, wordWidth),
-                new RegisterStorage("r4", 4, wordWidth),
-                new RegisterStorage("r5", 5, wordWidth),
-                new RegisterStorage("r6", 6, wordWidth),
-                new RegisterStorage("r7", 7, wordWidth),
-                new RegisterStorage("r8", 8, wordWidth),
-                new RegisterStorage("r9", 9, wordWidth),
+            this.ptrType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
 
-                new RegisterStorage("r10", 10, wordWidth),
-                new RegisterStorage("r11", 11, wordWidth),
-                new RegisterStorage("r12", 12, wordWidth),
-                new RegisterStorage("r13", 13, wordWidth),
-                new RegisterStorage("r14", 14, wordWidth),
-                new RegisterStorage("r15", 15, wordWidth),
-                new RegisterStorage("r16", 16, wordWidth),
-                new RegisterStorage("r17", 17, wordWidth),
-                new RegisterStorage("r18", 18, wordWidth),
-                new RegisterStorage("r19", 19, wordWidth),
+            this.lr = new RegisterStorage("lr", 0x68,   wordWidth);
+            this.cr = new RegisterStorage("cr", 0x69,   wordWidth);
+            this.ctr = new RegisterStorage("ctr", 0x6A, wordWidth);
+            this.xer = new RegisterStorage("xer", 0x6B, wordWidth);
+            this.fpscr = new RegisterStorage("fpscr", 0x6C, wordWidth);
 
-                new RegisterStorage("r20", 20, wordWidth),
-                new RegisterStorage("r21", 21, wordWidth),
-                new RegisterStorage("r22", 22, wordWidth),
-                new RegisterStorage("r23", 23, wordWidth),
-                new RegisterStorage("r24", 24, wordWidth),
-                new RegisterStorage("r25", 25, wordWidth),
-                new RegisterStorage("r26", 26, wordWidth),
-                new RegisterStorage("r27", 27, wordWidth),
-                new RegisterStorage("r28", 28, wordWidth),
-                new RegisterStorage("r29", 29, wordWidth),
+            regs = new ReadOnlyCollection<RegisterStorage>(
+                Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("r" + n, n, wordWidth))
+                .Concat(Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("f" + n, n + 0x20, PrimitiveType.Word64)))
+                .Concat(Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("v" + n, n + 0x40, PrimitiveType.Word128)))
+                .Concat(Enumerable.Range(0, 8)
+                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, PrimitiveType.Byte)))
+                .Concat(new[] { lr, cr, ctr, xer })
+                .ToList());
 
-                new RegisterStorage("r30", 30, wordWidth),
-                new RegisterStorage("r31", 31, wordWidth),
-            });
+            fpregs = new ReadOnlyCollection<RegisterStorage>(
+                regs.Skip(0x20).Take(0x20).ToList());
 
-            fpregs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
-                new RegisterStorage("f0", 0, PrimitiveType.Real64),
-                new RegisterStorage("f1", 1, PrimitiveType.Real64),
-                new RegisterStorage("f2", 2, PrimitiveType.Real64),
-                new RegisterStorage("f3", 3, PrimitiveType.Real64),
-                new RegisterStorage("f4", 4, PrimitiveType.Real64),
-                new RegisterStorage("f5", 5, PrimitiveType.Real64),
-                new RegisterStorage("f6", 6, PrimitiveType.Real64),
-                new RegisterStorage("f7", 7, PrimitiveType.Real64),
-                new RegisterStorage("f8", 8, PrimitiveType.Real64),
-                new RegisterStorage("f9", 9, PrimitiveType.Real64),
+            vregs = new ReadOnlyCollection<RegisterStorage>(
+                regs.Skip(0x40).Take(0x20).ToList());
 
-                new RegisterStorage("f10", 10, PrimitiveType.Real64),
-                new RegisterStorage("f11", 11, PrimitiveType.Real64),
-                new RegisterStorage("f12", 12, PrimitiveType.Real64),
-                new RegisterStorage("f13", 13, PrimitiveType.Real64),
-                new RegisterStorage("f14", 14, PrimitiveType.Real64),
-                new RegisterStorage("f15", 15, PrimitiveType.Real64),
-                new RegisterStorage("f16", 16, PrimitiveType.Real64),
-                new RegisterStorage("f17", 17, PrimitiveType.Real64),
-                new RegisterStorage("f18", 18, PrimitiveType.Real64),
-                new RegisterStorage("f19", 19, PrimitiveType.Real64),
+            cregs = new ReadOnlyCollection<RegisterStorage>(
+                regs.Skip(0x60).Take(0x8).ToList());
 
-                new RegisterStorage("f20", 20, PrimitiveType.Real64),
-                new RegisterStorage("f21", 21, PrimitiveType.Real64),
-                new RegisterStorage("f22", 22, PrimitiveType.Real64),
-                new RegisterStorage("f23", 23, PrimitiveType.Real64),
-                new RegisterStorage("f24", 24, PrimitiveType.Real64),
-                new RegisterStorage("f25", 25, PrimitiveType.Real64),
-                new RegisterStorage("f26", 26, PrimitiveType.Real64),
-                new RegisterStorage("f27", 27, PrimitiveType.Real64),
-                new RegisterStorage("f28", 28, PrimitiveType.Real64),
-                new RegisterStorage("f29", 29, PrimitiveType.Real64),
-
-                new RegisterStorage("f30", 30, PrimitiveType.Real64),
-                new RegisterStorage("f31", 31, PrimitiveType.Real64),
-            });
-
-            cregs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
-                new RegisterStorage("cr0", 0, PrimitiveType.Byte),
-                new RegisterStorage("cr1", 1, PrimitiveType.Byte),
-                new RegisterStorage("cr2", 2, PrimitiveType.Byte),
-                new RegisterStorage("cr3", 3, PrimitiveType.Byte),
-                new RegisterStorage("cr4", 4, PrimitiveType.Byte),
-                new RegisterStorage("cr5", 5, PrimitiveType.Byte),
-                new RegisterStorage("cr6", 6, PrimitiveType.Byte),
-                new RegisterStorage("cr7", 7, PrimitiveType.Byte),
-            });
         }
+
+        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
+
+        //$REVIEW: using R1 as the stack register is a _convention_. It 
+        // should be platform-specific at the very least.
+        public RegisterStorage StackRegister { get { return regs[1]; } }
 
         public ReadOnlyCollection<RegisterStorage> Registers
         {
@@ -147,6 +102,10 @@ namespace Decompiler.Arch.PowerPC
             get { return fpregs; }
         }
 
+        public ReadOnlyCollection<RegisterStorage> VecRegisters
+        {
+            get { return vregs; }
+        }
         public ReadOnlyCollection<RegisterStorage> CrRegisters
         {
             get { return cregs; }
@@ -159,14 +118,9 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        IEnumerator<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
+        IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
         {
             return new PowerPcDisassembler(this, rdr, WordWidth);
-        }
-
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
         }
 
         public Frame CreateFrame()
@@ -180,30 +134,105 @@ namespace Decompiler.Arch.PowerPC
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, offset);
         }
 
+        public abstract IEnumerable<Address> CreatePointerScanner(
+            ImageMap map, 
+            ImageReader rdr,
+            IEnumerable<Address> addrs, 
+            PointerScannerFlags flags);
+
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            var dasm = new PowerPcDisassembler(this, rdr, WordWidth);
+            return GetTrampolineDestination(dasm, host);
+        }
+
+        /// <summary>
+        /// Detects the presence of a PowerPC trampoline and returns the imported function 
+        /// that is actually being requested.
+        /// </summary>
+        /// <remarks>
+        /// A PowerPC trampoline looks like this:
+        ///     addis  rX,r0,XXXX (or oris rx,r0,XXXX)
+        ///     lwz    rY,YYYY(rX)
+        ///     mtctr  rY
+        ///     bctr   rY
+        /// When loading the ELF binary, we discovered the memory locations
+        /// that will contain pointers to imported functions. If the address
+        /// XXXXYYYY matches one of those memory locations, we have found a
+        /// trampoline.
+        /// </remarks>
+        /// <param name="rdr"></param>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public ProcedureBase GetTrampolineDestination(IEnumerable<PowerPcInstruction> rdr, IRewriterHost host)
+        {
+            var e = rdr.GetEnumerator();
+
+            if (!e.MoveNext() || (e.Current.Opcode != Opcode.addis && e.Current.Opcode != Opcode.oris))
+                return null;
+            var addrInstr = e.Current.Address;
+            var reg = ((RegisterOperand)e.Current.op1).Register;
+            var uAddr = ((ImmediateOperand)e.Current.op3).Value.ToUInt32() << 16;
+
+            if (!e.MoveNext() || e.Current.Opcode != Opcode.lwz)
+                return null;
+            var mem = e.Current.op2 as MemoryOperand;
+            if (mem == null)
+                return null;
+            if (mem.BaseRegister != reg)
+                return null;
+            uAddr = (uint)((int)uAddr + mem.Offset.ToInt32());
+            reg = ((RegisterOperand)e.Current.op1).Register;
+
+            if (!e.MoveNext() || e.Current.Opcode != Opcode.mtctr)
+                return null;
+            if (((RegisterOperand)e.Current.op1).Register != reg)
+                return null;
+
+            if (!e.MoveNext() || e.Current.Opcode != Opcode.bcctr)
+                return null;
+
+            // We saw a thunk! now try to resolve it.
+
+            var addr = Address.Ptr32(uAddr);
+            var ep = host.GetImportedProcedure(addr, addrInstr);
+            if (ep != null)
+                return ep;
+            return host.GetInterceptedCall(addr);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            return new PowerPcProcedureSerializer(this, typeLoader, defaultCc);
+        }
+
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new PowerPcState(this);
         }
 
         public BitSet CreateRegisterBitset()
         {
-            throw new NotImplementedException();
+            return new BitSet(0x80);
         }
 
         public RegisterStorage GetRegister(int i)
         {
-            throw new NotImplementedException();
+            if (0 <= i && i < regs.Count)
+                return regs[i];
+            else
+                return null;
         }
 
         public RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return this.regs.Where(r => r.Name == name).SingleOrDefault();
         }
 
         public bool TryGetRegister(string name, out RegisterStorage reg)
@@ -221,16 +250,13 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public int InstructionBitSize { get { return 32; } }
 
         public string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            //$BUG: this needs to be better conceved. There are 
+            // 32 (!) condition codes in the PowerPC architecture
+            return "crX";
         }
 
         public PrimitiveType FramePointerType
@@ -248,11 +274,6 @@ namespace Decompiler.Arch.PowerPC
             get { return this.wordWidth; } 
         }
 
-        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
-        public RegisterStorage StackRegister { get { return regs[1]; } }
-
-
-
         public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
@@ -260,14 +281,71 @@ namespace Decompiler.Arch.PowerPC
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new PowerPcRewriter(this, rdr, frame);
+            return new PowerPcRewriter(this, rdr, frame, host);
         }
+
+        public abstract Address MakeAddressFromConstant(Constant c);
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
+        public bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse32(txtAddress, out addr);
+        }
+
         #endregion
+    }
+
+    public class PowerPcArchitecture32 : PowerPcArchitecture
+    {
+        public PowerPcArchitecture32()
+            : base(PrimitiveType.Word32)
+        { }
+
+        public override IEnumerable<Address> CreatePointerScanner(
+            ImageMap map, 
+            ImageReader rdr, 
+            IEnumerable<Address> knownAddresses,
+            PointerScannerFlags flags)
+        {
+            var knownLinAddresses = knownAddresses
+                .Select(a => a.ToUInt32())
+                .ToHashSet();
+            return new PowerPcPointerScanner32(rdr, knownLinAddresses, flags)
+                .Select(u => Address.Ptr32(u));
+        }
+
+        public override  Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
+        }
+    }
+
+    public class PowerPcArchitecture64 : PowerPcArchitecture
+    {
+        public PowerPcArchitecture64()
+            : base(PrimitiveType.Word64)
+        { }
+
+        public override IEnumerable<Address> CreatePointerScanner(
+            ImageMap map,
+            ImageReader rdr,
+            IEnumerable<Address> knownAddresses,
+            PointerScannerFlags flags)
+        {
+            var knownLinAddresses = knownAddresses
+                .Select(a => a.ToLinear())
+                .ToHashSet();
+            return new PowerPcPointerScanner64(rdr, knownLinAddresses, flags)
+                .Select(u => Address.Ptr64(u));
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr64(c.ToUInt64());
+        }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class ExpressionSimplifierTests
@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Evaluation
 		}
 
         [Test]
-        public void OrWithSelf()
+        public void Exs_OrWithSelf()
         {
             BuildExpressionSimplifier();
             var expr = new BinaryExpression(Operator.Or, foo.DataType, foo, foo);
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void AddPositiveConstantToNegative()
+        public void ExsAddPositiveConstantToNegative()
         {
             BuildExpressionSimplifier();
             var expr = new BinaryExpression(
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Evaluation
                     Constant.Word32(4)),
                 Constant.Word32(1));
             var result = expr.Accept(simplifier);
-            Assert.AreEqual("foo - 0x00000003", result.ToString());
+            Assert.AreEqual("foo_0 - 0x00000003", result.ToString());
         }
 
 		private void BuildExpressionSimplifier()
@@ -88,12 +88,12 @@ namespace Decompiler.UnitTests.Evaluation
 		{
 			var mrFoo = new RegisterStorage("foo", 1, PrimitiveType.Word32);
 			var mrBar = new RegisterStorage("bar", 2, PrimitiveType.Word32);
-			foo = new Identifier(mrFoo.Name, 0, mrFoo.DataType, mrFoo);
-			bar = new Identifier(mrBar.Name, 1, mrBar.DataType, mrBar);
+			foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
+			bar = new Identifier(mrBar.Name, mrBar.DataType, mrBar);
 
 			var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);
-            coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false);
+            foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
 			return coll;
 		}
 	}

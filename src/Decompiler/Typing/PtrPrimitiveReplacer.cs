@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Replaces references to classes which are PrimitiveType, Pointer to T, or
@@ -43,12 +43,14 @@ namespace Decompiler.Typing
 		private bool changed;
         private Program program;
         private HashSet<EquivalenceClass> classesVisited;
+        private HashSet<DataType> visitedTypes;
 
 		public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
             this.program = program;
+            this.visitedTypes = new HashSet<DataType>();
 		}
 
 		public DataType Replace(DataType dt)
@@ -175,6 +177,14 @@ namespace Decompiler.Typing
                 return eq2;
             }
             return eq;
+        }
+
+        public override DataType VisitStructure(StructureType str)
+        {
+            //if (visitedTypes.Contains(str))
+            //    return str;
+            //visitedTypes.Add(str);
+            return base.VisitStructure(str);
         }
 
 		public override DataType VisitTypeVariable(TypeVariable tv)

@@ -14,6 +14,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	cx = 0x0064
 	sp = fp - 0x0002
 	wLoc02 = 0x0064
@@ -46,6 +47,7 @@ fn0C00_000F_entry:
 
 // SymbolicIn: sp:fp
 l0C00_000F:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002
@@ -78,7 +80,7 @@ l0C00_0026:
 // DataOut: ax ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4(fp):ax -2(fp):bp
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4(fp):<invalid> -2(fp):bp
 l0C00_0029:
 	bp = wLoc02
 	sp = fp
@@ -86,7 +88,7 @@ l0C00_0029:
 // DataOut: ax ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp bp:bp ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4(fp):ax -2(fp):bp
+// SymbolicIn: sp:fp bp:bp ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4(fp):<invalid> -2(fp):bp
 fn0C00_000F_exit:
 // DataOut: ax ds
 // DataOut (flags): 

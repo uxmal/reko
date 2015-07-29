@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Contains dataflow information for each procedure and each block of the program.
@@ -32,11 +32,13 @@ namespace Decompiler.Analysis
 	{
 		private Dictionary<Procedure,ProcedureFlow> procFlow;
         private Dictionary<Block, BlockFlow> blockFlow;
+        private Dictionary<Procedure, ProcedureFlow2> procFlow2;
 
 		public ProgramDataFlow()
 		{
 			procFlow = new Dictionary<Procedure,ProcedureFlow>();
             blockFlow = new Dictionary<Block,BlockFlow>();
+            procFlow2 = new Dictionary<Procedure, ProcedureFlow2>();
 		}
 
 		public ProgramDataFlow(Program prog) : this()
@@ -77,5 +79,7 @@ namespace Decompiler.Analysis
         {
             get { return procFlow.Values; }
         }
+
+        public Dictionary<Procedure, ProcedureFlow2> ProcedureFlows2 { get { return procFlow2; } }
 	}
 }

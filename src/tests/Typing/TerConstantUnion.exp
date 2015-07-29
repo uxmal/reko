@@ -1,5 +1,6 @@
 // Before ///////
 // ConstantUnionMock
+// Return size: 0
 void ConstantUnionMock()
 ConstantUnionMock_entry:
 	// succ:  l1
@@ -10,6 +11,7 @@ ConstantUnionMock_exit:
 
 // After ///////
 // ConstantUnionMock
+// Return size: 0
 void ConstantUnionMock()
 ConstantUnionMock_entry:
 	// succ:  l1
@@ -20,13 +22,13 @@ ConstantUnionMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 	T_2 (in 3 : int32)
 	T_3 (in x : word32)
 	T_4 (in 3F : real32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

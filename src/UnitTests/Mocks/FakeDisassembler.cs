@@ -1,10 +1,10 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Machine;
+﻿using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeDisassembler : DisassemblerBase<MachineInstruction>
     {
@@ -18,17 +18,15 @@ namespace Decompiler.UnitTests.Mocks
             this.instrs = e;
         }
 
-        public override MachineInstruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override MachineInstruction DisassembleInstruction()
         {
             if (!instrs.MoveNext())
-                return false;
+                return null;
             instr = instrs.Current;
             instr.Address = addr;
             instr.Length = 4;
             addr += 4;
-            return true;
+            return instr;
         }
     }
 }

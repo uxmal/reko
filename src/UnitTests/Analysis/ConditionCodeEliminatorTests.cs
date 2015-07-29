@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Analysis;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Analysis;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class ConditionCodeEliminatorTests : AnalysisTestBase
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Analysis
         private Identifier Reg32(string name)
         {
             var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
-            var id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, mr);
+            var id = new Identifier(name, PrimitiveType.Word32, mr);
             return ssaIds.Add(id, null, null, false).Identifier;
         }
 
@@ -68,7 +68,6 @@ namespace Decompiler.UnitTests.Analysis
         {
             Identifier id = new Identifier(
                 name,
-                ssaIds.Count,
                 PrimitiveType.Word32,
                 new FlagGroupStorage(1U, "C", PrimitiveType.Byte));
             return ssaIds.Add(id, null, null, false).Identifier;
@@ -85,15 +84,15 @@ namespace Decompiler.UnitTests.Analysis
 
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
-                var sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
                 SsaState ssa = sst.SsaState;
 
-                proc.Dump(true, false);
+                proc.Dump(true);
 
                 var vp = new ValuePropagator(ssa.Identifiers, proc);
                 vp.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
                 DeadCode.Eliminate(proc, ssa);
 
@@ -321,7 +320,8 @@ done:
 			var stmBr = m.BranchIf(m.Test(ConditionCode.EQ, y), "foo");
             ssaIds[y].Uses.Add(stmBr);
 
-			var cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
+            var arch = new FakeArchitecture();
+			var cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null, arch));
 			cce.Transform();
 			Assert.AreEqual("branch r == 0x00000000 foo", stmBr.Instruction.ToString());
 		}
@@ -339,7 +339,7 @@ done:
 			ssaIds[f].DefStatement = stmF;
 			ssaIds[Z].Uses.Add(stmF);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null, new FakeArchitecture()));
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
@@ -356,8 +356,8 @@ done:
         [Test]
 		public void SignedIntComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
-			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new DefaultPlatform(null, new FakeArchitecture()));
+			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Word16, new Identifier("a", PrimitiveType.Word16, null), new Identifier("b", PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
@@ -366,8 +366,8 @@ done:
 		[Test]
 		public void RealComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
-			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new DefaultPlatform(null, new FakeArchitecture()));
+			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Real64, new Identifier("a", PrimitiveType.Real64, null), new Identifier("b", PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("RltOperator", b.Operator.GetType().Name);
@@ -399,6 +399,34 @@ done:
                 m.Return();
             });
             RunTest(p, "Analysis/CceAddAdcPattern.txt");
+        }
+
+        [Test]
+        [Ignore]
+        public void CceShrRcrPattern()
+        {
+            var p = new ProgramBuilder(new FakeArchitecture());
+            p.Add("main", (m) =>
+            {
+                var C = m.Flags("C");
+                var r1 = MockReg(m, 1);
+                var r2 = MockReg(m, 2);
+
+                m.Assign(r1, m.Shr(r1, 1));
+                m.Assign(C, m.Cond(r1));
+                m.Assign(r2, m.Fn(new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2), r2, C));
+                m.Assign(C, m.Cond(r2));
+                m.Store(m.Word32(0x3000), r1);
+                m.Store(m.Word32(0x3004), r2);
+            });
+            RunTest(p, "Analysis/CceShrRcrPattern.txt");
+        }
+
+        [Test]
+        [Ignore("Think about how to deal with long variables (edx:eax)")]
+        public void CceIsqrt()
+        {
+            RunTest("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
         }
 	}
 }

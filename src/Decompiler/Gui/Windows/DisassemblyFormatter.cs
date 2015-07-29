@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,36 +18,51 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Gui.Windows.Controls;
-using System;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Gui.Windows.Controls;
 using System.Collections.Generic;
-using System.Linq;
-using System.Drawing;
+using System;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
+    /// <summary>
+    /// Used to render TextSpans for use in the disassembly viewer.
+    /// </summary>
     public class DisassemblyFormatter : MachineInstructionWriter 
     {
-        StringBuilder sb = new StringBuilder();
+        private Program program;
+        private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
 
-        public DisassemblyFormatter(List<TextSpan> line)
+        public DisassemblyFormatter(Program program, List<TextSpan> line)
         {
+            this.program = program;
             this.line = line;
+            this.Platform = program.Platform;
         }
 
-        public void Opcode(string opcode)
+        public Platform Platform { get; private set; }
+
+        public void WriteOpcode(string opcode)
         {
             line.Add(new DisassemblyTextModel.InertTextSpan(opcode, "opcode"));
         }
 
-        public void Address(string formattedAddress, Address addr)
+        public void WriteAddress(string formattedAddress, Address addr)
         {
-            var span = new DisassemblyTextModel.AddressTextSpan(addr, formattedAddress);
+            TerminateSpan();
+            Procedure proc;
+            TextSpan span;
+            if (program.Procedures.TryGetValue(addr, out proc))
+            {
+                span = new DisassemblyTextModel.ProcedureTextSpan(proc, addr);
+            }
+            else
+            {
+                span = new DisassemblyTextModel.AddressTextSpan(addr, formattedAddress);
+            }
             line.Add(span);
         }
 
@@ -58,6 +73,8 @@ namespace Decompiler.Gui.Windows
 
         private void TerminateSpan()
         {
+            if (sb.Length == 0)
+                return;
             var span = new DasmTextSpan
             {
                 Text = sb.ToString(),
@@ -97,7 +114,7 @@ namespace Decompiler.Gui.Windows
         {
             public override string GetText()
             {
-                throw new NotImplementedException();
+                return Text;
             }
 
             public string Text { get; set; }

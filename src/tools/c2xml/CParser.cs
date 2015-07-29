@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     // http://www.ssw.uni-linz.ac.at/Coco/C/C.atg
 
@@ -555,7 +555,6 @@ IGNORE tab + cr + lf
                 }
                 else if (s == "deprecated")
                 {
-                    lexer.ToString();       //$DEBUG
                     if (PeekThenDiscard(CTokenType.LParen))
                     {
                         ExpectToken(CTokenType.StringLiteral);
@@ -652,10 +651,10 @@ IGNORE tab + cr + lf
                     if (PeekThenDiscard(CTokenType.LBrace))
                     {
                         decls = new List<StructDecl>();
-                        do
+                        while (PeekTokenType() != CTokenType.RBrace) 
                         {
                             decls.Add(Parse_StructDecl());
-                        } while (PeekTokenType() != CTokenType.RBrace);
+                        }
                         ExpectToken(CTokenType.RBrace);
                     }
                 }
@@ -706,6 +705,7 @@ IGNORE tab + cr + lf
             case CTokenType.Volatile:
             case CTokenType.Comma:
             case CTokenType.Const:
+            case CTokenType.RBrace:
                 return null;
             default:
                 throw new NotImplementedException(string.Format("Meuf line {0}: {1}", lexer.LineNumber, token));
@@ -976,6 +976,7 @@ IGNORE tab + cr + lf
         //AbstractDeclarator =
         //    Pointer [DirectAbstractDeclarator]
         //| DirectAbstractDeclarator.
+        // | Pointer DirectAbstractDeclarator.
 
         Declarator Parse_AbstractDeclarator()
         {
@@ -988,7 +989,11 @@ IGNORE tab + cr + lf
                 decl = Parse_AbstractPointer();
                 return grammar.CallConventionDeclarator(token.Type, decl);
             case CTokenType.Star:
-                return Parse_AbstractPointer();
+                var ptr = Parse_Pointer();
+                decl = Parse_DirectAbstractDeclarator();
+                if (decl == null)
+                    return ptr;
+                return ptr;
             default:
                 return Parse_DirectAbstractDeclarator();
             }

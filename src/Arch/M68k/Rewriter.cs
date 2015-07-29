@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     /// <summary>
     /// Rewrites <seealso cref="M68kInstruction"/>s to <see cref="RtlInstructionCluster"/>s.
@@ -54,7 +54,7 @@ namespace Decompiler.Arch.M68k
             this.state = m68kState;
             this.frame = frame;
             this.host = host;
-            this.dasm = arch.CreateDisassembler(rdr);
+            this.dasm = arch.CreateDisassembler(rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -69,6 +69,7 @@ namespace Decompiler.Arch.M68k
                 {
                 case Opcode.add: RewriteBinOp((s, d) => emitter.IAdd(d, s), FlagM.CVZNX); break;
                 case Opcode.adda: RewriteBinOp((s, d) => emitter.IAdd(d, s)); break;
+                case Opcode.addi: RewriteArithmetic((s, d) => emitter.IAdd(d, s)); break;
                 case Opcode.addq: RewriteAddSubq((s, d) => emitter.IAdd(d, s)); break;
                 case Opcode.addx: RewriteAddSubx(Operator.IAdd); break;
                 
@@ -86,6 +87,7 @@ LS Low or Same 0011 C V Z
 VC Overflow Clear 1000 V
 VS Overflow Set 1001 V
  */
+                case Opcode.bclr: RewriteBclrBset("__bclr"); break;
                 case Opcode.bcc: RewriteBcc(ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.bcs: RewriteBcc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.beq: RewriteBcc(ConditionCode.EQ, FlagM.ZF); break;
@@ -100,6 +102,7 @@ VS Overflow Set 1001 V
                 case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.bchg: RewriteBchg(); break;
                 case Opcode.bra: RewriteBra(); break;
+                case Opcode.bset: RewriteBclrBset("__bset"); break;
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.btst: RewriteBtst(); break;
                 case Opcode.clr: RewriteClr(); break;
@@ -111,9 +114,11 @@ VS Overflow Set 1001 V
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Opcode.divu: RewriteDiv(Operator.UDiv); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
+                case Opcode.eori: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.exg: RewriteExg(); break;
                 case Opcode.ext: RewriteExt(); break;
                 case Opcode.extb: RewriteExtb(); break;
+                case Opcode.illegal: if (!RewriteIllegal()) goto default; break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lea: RewriteLea(); break;
@@ -128,14 +133,15 @@ VS Overflow Set 1001 V
                 case Opcode.mulu: RewriteMul((s, d) => emitter.UMul(d, s)); break;
                 case Opcode.neg: RewriteUnary(s => emitter.Neg(s), AllConditions); break;
                 case Opcode.negx: RewriteUnary(RewriteNegx, AllConditions); break;
+                case Opcode.nop: continue;
                 case Opcode.not: RewriteUnary(s => emitter.Comp(s), LogicalConditions); break;
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 case Opcode.ori: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 case Opcode.pea: RewritePea(); break;
-                case Opcode.rol: RewriteRotation("__rol"); ; break;
-                case Opcode.ror: RewriteRotation("__ror"); ; break;
-                case Opcode.roxl: RewriteRotationX("__roxl"); ; break;
-                case Opcode.roxr: RewriteRotationX("__roxr"); ; break;
+                case Opcode.rol: RewriteRotation(PseudoProcedure.Rol); break;
+                case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
+                case Opcode.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
+                case Opcode.roxr: RewriteRotationX(PseudoProcedure.RorC);  break;
                 case Opcode.rts: emitter.Return(4, 0); break;
                 case Opcode.scc: RewriteScc(ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.scs: RewriteScc(ConditionCode.ULT, FlagM.CF); break;

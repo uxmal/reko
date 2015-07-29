@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// A directed graph implementation.
@@ -233,7 +233,6 @@ namespace Decompiler.Core.Lib
 			return CreateEdgeCollectionCore(node, true);
 		}
 
-
 		private struct Node
 		{
 			public T Item;
@@ -430,7 +429,6 @@ namespace Decompiler.Core.Lib
 				get { return null; }
 			}
 
-
 			#region IEnumerable Members
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -443,7 +441,6 @@ namespace Decompiler.Core.Lib
 				return new NodeEnumerator(graph);
 			}
 			#endregion
-
 		}
 
 		private class NodeEnumerator : IEnumerator<T>

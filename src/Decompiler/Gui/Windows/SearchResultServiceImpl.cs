@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class SearchResultServiceImpl : ISearchResultService, IWindowPane, ICommandTarget
     {
@@ -70,12 +71,15 @@ namespace Decompiler.Gui.Windows
 
         private void SetSearchResults(ISearchResult result)
         {
+            if (this.result != null)
+                this.result.View = null;
             this.result = result;
             if (!listView.VirtualMode)
                 listView.Clear();
             listView.VirtualListSize = result.Count;
             var searchResultView = new SearchResultView(this.listView);
-            result.CreateColumns(searchResultView);
+            result.View = searchResultView;
+            result.CreateColumns();
             var ctxMenuID = result.ContextMenuID;
             if (ctxMenuID > 0)
             {
@@ -89,8 +93,13 @@ namespace Decompiler.Gui.Windows
         {
             if (0 <= i && i < result.Count)
             {
-                var item = new ListViewItem(result.GetItemStrings(i));
-                item.ImageIndex = result.GetItemImageIndex(i);
+                var sri = result.GetItem(i);
+                var item = new ListViewItem(sri.Items);
+                item.ImageIndex = sri.ImageIndex;
+                if (sri.BackgroundColor != -1)
+                {
+                    item.BackColor = System.Drawing.Color.FromArgb(sri.BackgroundColor);
+                }
                 item.Tag = i;
                 return item;
             }
@@ -154,8 +163,13 @@ namespace Decompiler.Gui.Windows
                 this.listView = lv;
                 this.listView.Columns.Clear();
             }
+            
+            public IEnumerable<int> SelectedIndices
+            {
+                get { return listView.SelectedIndices.Cast<int>(); }
+            }
 
-            #region ISearchResultView Members
+            public bool IsFocused { get { return listView.Focused; } }
 
             public void AddColumn(string columnText, int widthInCharacters)
             {
@@ -164,8 +178,6 @@ namespace Decompiler.Gui.Windows
                     colHeader.Width = listView.Font.Height * widthInCharacters;
                     listView.Columns.Add(colHeader);
             }
-
-            #endregion
         }
 
         /// <summary>
@@ -180,34 +192,70 @@ namespace Decompiler.Gui.Windows
 
             public int ContextMenuID { get { return 0; } }
 
-            public void CreateColumns(ISearchResultView view)
+            public void CreateColumns()
             {
-                view.AddColumn("",40);
+                View.AddColumn("",40);
             }
 
-            public int GetItemImageIndex(int i)
+            public SearchResultItem GetItem(int i)
             {
-                return -1;
-            }
-
-            public string[] GetItemStrings(int i)
-            {
-                return new string[] { "No items found." };
+                return new SearchResultItem
+                {
+                    Items = new string[] { "No items found." },
+                    ImageIndex = -1,
+                    BackgroundColor = -1,
+                };
             }
 
             public void NavigateTo(int i)
+            {
+            }
+
+            public ISearchResultView View {get;set;}
+
+      
+            public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+            {
+                return false;
+            }
+
+            public bool Execute(CommandID cmdId)
+            {
+                return false;
+            }
+
+            public int SortedColumn
+            {
+                get { return -1; }
+            }
+
+            public bool IsColumnSortable(int iColumn)
+            {
+                return false;
+            }
+
+            public SortDirection GetSortDirection(int iColumn)
+            {
+                return SortDirection.None;
+            }
+
+            public void SortByColumn(int iColumn, SortDirection dir)
             {
             }
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            return false;
+            if (result == null)
+                return false;
+            return result.QueryStatus(cmdId, status, text);
         }
 
         public bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (result != null && result.Execute(cmdId))
+                return true;
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

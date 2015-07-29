@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class ExpressionTypeAscenderTests 
@@ -44,12 +44,14 @@ namespace Decompiler.UnitTests.Typing
             this.m = new ExpressionEmitter();
             this.store = new TypeStore();
             this.factory = new TypeFactory();
-            this.exa = new ExpressionTypeAscender(new FakeArchitecture(), store, factory);
+            var arch = new FakeArchitecture();
+            var platform = new DefaultPlatform(null, arch);
+            this.exa = new ExpressionTypeAscender(platform, store, factory);
         }
 
         private static Identifier Id(string name, DataType dt)
         {
-            return new Identifier(name, 1, dt, TemporaryStorage.None);
+            return new Identifier(name, dt, TemporaryStorage.None);
         }
 
         private void Verify(string outputFileName)
@@ -63,7 +65,7 @@ namespace Decompiler.UnitTests.Typing
 
         private void RunTest(Expression e)
         {
-            var globals = new Identifier("globals", 0, PrimitiveType.Pointer32, TemporaryStorage.None);
+            var globals = new Identifier("globals", PrimitiveType.Pointer32, TemporaryStorage.None);
             store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store);
             e.Accept(eq);

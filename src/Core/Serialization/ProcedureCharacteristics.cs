@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	/// <summary>
 	/// Extra characteristics that describe extra-lingustic semantics of a procedure.
@@ -41,12 +41,17 @@ namespace Decompiler.Core.Serialization
             Terminates = old.Terminates;
             Allocator = old.Allocator;
             ArraySize = old.ArraySize;
+            VarargsParserClass = old.VarargsParserClass;
         }
 
 		[XmlElement("is-alloca")]
 		[DefaultValue(false)]
 		public virtual bool IsAlloca { get; set; }
 
+        /// <summary>
+        /// This property is set to true if calling it terminates the thread of execution, i.e. control
+        /// never returns.
+        /// </summary>
 		[XmlElement("terminates")]
 		[DefaultValue(false)]
 		public virtual bool Terminates { get;set; } 
@@ -57,6 +62,9 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("array-size")]
         public ArraySizeCharacteristic ArraySize { get; set; }
+
+        [XmlElement("varargs")]
+        public virtual string VarargsParserClass { get; set; }
 
         public void Write()
         {
@@ -98,7 +106,10 @@ namespace Decompiler.Core.Serialization
 			set { throw Invalid(); }
 		}
 
-		private Exception Invalid()
+        [XmlElement("varargs")]
+        public override string VarargsParserClass { get { return ""; } set { throw Invalid(); } }
+		
+        private Exception Invalid()
 		{
 			return new InvalidOperationException("Default characteristics may not be assigned.");
 		}

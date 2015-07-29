@@ -4,6 +4,7 @@ void fn0C00_0000(Register selector ds)
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -15,6 +16,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = 0x0003
 	al = fn0C00_0015(ax)
 	Mem0[ds:0x0300:byte] = al
@@ -30,6 +32,7 @@ Register byte fn0C00_0015(Register word16 ax)
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0015
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -43,6 +46,7 @@ byte fn0C00_0015(word16 ax)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
+	sp = fp
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false
@@ -67,6 +71,7 @@ Register byte fn0C00_0020(Register word16 ax)
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0020
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -80,6 +85,7 @@ byte fn0C00_0020(word16 ax)
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
+	sp = fp
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false

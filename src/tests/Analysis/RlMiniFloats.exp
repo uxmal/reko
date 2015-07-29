@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	ax = 0x0001
 	cl = 0x00
 	bx = 0x0001
@@ -47,6 +48,7 @@ fn0C00_001E_entry:
 
 // SymbolicIn: sp:fp
 l0C00_001E:
+	sp = fp
 	cl = cl - ch
 	SCZO = cond(cl)
 	branch Test(ULT,C) l0C00_0027
@@ -103,6 +105,7 @@ fn0C00_0032_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0032:
+	sp = fp
 	dx_ax = bx *s ax
 	SCZO = cond(dx_ax)
 	cl = cl + ch

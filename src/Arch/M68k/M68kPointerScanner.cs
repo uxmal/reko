@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
-    public class M68kPointerScanner : PointerScanner
+    public class M68kPointerScanner : PointerScanner<uint>
     {
         public M68kPointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
@@ -35,9 +35,24 @@ namespace Decompiler.Arch.M68k
 
         public override int PointerAlignment { get { return 2; } }
 
-        public override uint ReadOpcode(ImageReader rdr)
+        public override uint GetLinearAddress(Address address)
         {
-            return rdr.PeekBeUInt16(0);
+            return address.ToUInt32();
+        }
+
+        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        {
+            ushort wOpcode;
+            if (rdr.TryPeekBeUInt16(0, out wOpcode))
+            {
+                opcode = wOpcode;
+                return true;
+            }
+            else
+            {
+                opcode = 0;
+                return false;
+            }
         }
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
@@ -68,7 +83,7 @@ namespace Decompiler.Arch.M68k
             return false;
         }
 
-        public override bool PeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(ImageReader rdr, out uint target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
             {
@@ -112,7 +127,7 @@ namespace Decompiler.Arch.M68k
                 rdr.IsValidOffset(rdr.Offset + 4u))
             {
                 callOffset = rdr.PeekBeInt32(2);
-                target = (uint) (callOffset + rdr.Address.Linear + 2);
+                target = (uint) (callOffset + (long)rdr.Address.ToLinear() + 2);
                 return true;
             }
             if (callOffset == 0x00 // bsr.w)
@@ -120,10 +135,10 @@ namespace Decompiler.Arch.M68k
                 rdr.IsValidOffset(rdr.Offset + 2u))
             {
                 callOffset = rdr.PeekBeInt16(2);
-                target = (uint) (callOffset + rdr.Address.Linear + 2);
+                target = (uint) (callOffset + (long)rdr.Address.ToLinear() + 2);
                 return true;
             }
-            target = (uint) (callOffset + rdr.Address.Linear + 2);
+            target = (uint) (callOffset + (long)rdr.Address.ToLinear() + 2);
             return true;
         }
     }

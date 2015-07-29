@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Represents an edge between two identifiers that intefere in an
@@ -31,7 +31,7 @@ namespace Decompiler.Analysis
 	{
 		public Interference(Identifier id1, Identifier id2)
 		{
-			if (id1.Number < id2.Number)
+			if (string.Compare(id1.Name, id2.Name) < 0)
 			{
 				this.Identifier1 = id1;
 				this.Identifier2 = id2;
@@ -56,18 +56,18 @@ namespace Decompiler.Analysis
 
 		public override int GetHashCode()
 		{
-			return (Identifier1.Number.GetHashCode() << 8) |
-				Identifier2.Number.GetHashCode();
+			return (Identifier1.Name.GetHashCode() << 8) |
+				Identifier2.Name.GetHashCode();
 		}
 
 		#region IComparable Members
 
 		public int CompareTo(Interference i)
 		{
-			int d = Identifier1.Number - i.Identifier1.Number;
+            int d = string.Compare(Identifier1.Name, i.Identifier1.Name);
 			if (d != 0)
 				return d;
-			return Identifier2.Number - i.Identifier2.Number;
+            return string.Compare(Identifier2.Name, i.Identifier2.Name);
 		}
 
 		#endregion

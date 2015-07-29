@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     public abstract class MetadataLoader
     {
-        public MetadataLoader(IServiceProvider services, byte[] bytes)
+        public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)
         {
         }
 
@@ -38,7 +38,7 @@ namespace Decompiler.Core
     public class NullMetadataLoader : MetadataLoader
     {
         public NullMetadataLoader()
-            : base(null, null)
+            : base(null, "", new byte[0])
         {
         }
 

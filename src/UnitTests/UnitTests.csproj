@@ -77,6 +77,7 @@
     <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />
     <Compile Include="Analysis\CriticalInstructionTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
+    <Compile Include="Analysis\DataFlowAnalysisTests2.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
     <Compile Include="Analysis\DeclarationInserterTests.cs" />
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
@@ -99,8 +100,10 @@
     <Compile Include="Analysis\SignatureBuilderTests.cs" />
     <Compile Include="Analysis\SsaLivenessTests.cs" />
     <Compile Include="Analysis\SsaTests.cs" />
+    <Compile Include="Analysis\SsaTransformTests.cs" />
     <Compile Include="Analysis\StrengthReductionTests.cs" />
     <Compile Include="Analysis\TerminationAnalysisTests.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinder2Tests.cs" />
     <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
     <Compile Include="Analysis\TrashedRegisterSummarizerTests.cs" />
     <Compile Include="Analysis\TrashRegisterFinderUpdateCodeTests.cs" />
@@ -108,10 +111,11 @@
     <Compile Include="Analysis\UsedIdentifierFinderTests.cs" />
     <Compile Include="Analysis\ValueNumberingTest.cs" />
     <Compile Include="Analysis\ValuePropagationTests.cs" />
-    <Compile Include="Analysis\VariableLivenessTests.cs" />
+    <Compile Include="Analysis\IdentifierLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
     <Compile Include="Arch\ArchTestBase.cs" />
     <Compile Include="Arch\Arm\AArch64DisassemblerTests.cs" />
+    <Compile Include="Arch\Arm\ArmArchitectureTests.cs" />
     <Compile Include="Arch\Arm\ArmDisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
     <Compile Include="Arch\Arm\ThumbDisassemblerTests.cs" />
@@ -119,6 +123,7 @@
     <Compile Include="Arch\DisassemblerTestBase.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
+    <Compile Include="Arch\Intel\X86EmulatorTests.cs" />
     <Compile Include="Arch\Intel\X86PointerScannerTests.cs" />
     <Compile Include="Arch\M68k\M68kStateTests.cs" />
     <Compile Include="Arch\M68k\M68kPointerScannerTests.cs" />
@@ -131,6 +136,8 @@
     <Compile Include="Arch\Pdp11\DisassemblerTests.cs" />
     <Compile Include="Arch\Pdp11\RewriterTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcPointerScannerTests.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcProcedureSerializerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\RewriterTestBase.cs" />
     <Compile Include="Arch\Sparc\RtlTranslator.cs" />
@@ -143,17 +150,23 @@
     <Compile Include="Assemblers\Pdp11\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
+    <Compile Include="Core\ImportResolverTests.cs" />
     <Compile Include="Core\Output\GlobalDataWriterTests.cs" />
+    <Compile Include="Core\PrintfApplicationBuilderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Core\Serialization\DataTypeSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProjectSerializerTests.cs" />
+    <Compile Include="Core\Serialization\UnpackerSignatureFileTests.cs" />
     <Compile Include="Core\StructureReaderTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />
     <Compile Include="DchexLoader.cs" />
     <Compile Include="Environments\AmigaOS\AmigaOSPlatformTests.cs" />
     <Compile Include="Environments\AmigaOS\FuncsFileParserTests.cs" />
+    <Compile Include="Environments\C64\C64BasicRewriterTests.cs" />
     <Compile Include="Environments\C64\D64LoaderTests.cs" />
+    <Compile Include="Environments\Ps3\Ps3PlatformTests.cs" />
+    <Compile Include="Environments\SysV\SysVPlatformTests.cs" />
     <Compile Include="Environments\Win32\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
@@ -169,9 +182,11 @@
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
+    <Compile Include="Gui\Windows\DisassemblyFormatterTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\TabControlHostTests.cs" />
     <Compile Include="Gui\Windows\Controls\DisassemblyTextModelTests.cs" />
+    <Compile Include="Gui\Windows\NavigationInteractorTests.cs" />
     <Compile Include="Gui\Windows\TextSpanFormatterTests.cs" />
     <Compile Include="Gui\Windows\Forms\OpenAsInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SearchDialogInteractorTests.cs" />
@@ -181,14 +196,18 @@
     <Compile Include="ImageLoaders\Hunk\HunkFileParserTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />
+    <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
     <Compile Include="Environments\Win32\MsMangledNameParserTests.cs" />
+    <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
+    <Compile Include="Loading\UnpackingServiceTests.cs" />
+    <Compile Include="Mocks\FakeDiagnosticsService.cs" />
     <Compile Include="Mocks\SegmentedPointerProc.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
-    <Compile Include="Arch\Intel\DisassemblerTests.cs" />
+    <Compile Include="Arch\Intel\X86DisassemblerTests.cs" />
     <Compile Include="Arch\Intel\Fragments\Factorial.cs" />
     <Compile Include="Arch\Intel\ImportResolution.cs" />
     <Compile Include="Arch\Intel\IntelArchitectureTests.cs" />
@@ -257,7 +276,7 @@
     <Compile Include="Core\Serialization\SerializedServiceTests.cs" />
     <Compile Include="Core\Serialization\SerializedSignatureTests.cs" />
     <Compile Include="Core\Serialization\SerializedTypeTests.cs" />
-    <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
+    <Compile Include="Arch\Intel\X86ProcedureSerializerTests.cs" />
     <Compile Include="Core\SignatureLibraryTests.cs" />
     <Compile Include="Core\StructureTypeTests.cs" />
     <Compile Include="Core\TypeComparerTests.cs" />
@@ -377,7 +396,6 @@
     <Compile Include="Mocks\ProcedureBuilder.cs" />
     <Compile Include="Mocks\ProcedureMockTest.cs" />
     <Compile Include="Mocks\ProgramBuilder.cs" />
-    <Compile Include="Mocks\ProcGenerator.cs" />
     <Compile Include="Mocks\Reg00011Mock.cs" />
     <Compile Include="Mocks\SegmentedDoubleReference.cs" />
     <Compile Include="Mocks\TreeFindMock.cs" />
@@ -389,7 +407,10 @@
     <Compile Include="Scanning\Dfa\DfaBuilderTests.cs" />
     <Compile Include="Scanning\Dfa\AutomatonTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
+    <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
+    <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
+    <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
@@ -410,6 +431,7 @@
     <Compile Include="Structure\SccLoopFinderTests.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
+    <Compile Include="Structure\Schwartz\ProcedureStructurerTests.cs" />
     <Compile Include="Structure\StructureAnalysisTests.cs" />
     <Compile Include="Structure\StructureNodeTests.cs" />
     <Compile Include="Structure\TestBase.cs" />
@@ -487,7 +509,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
-      <Name>Pdp11 %28Architectures\Pdp11%29</Name>
+      <Name>Pdp11</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
@@ -509,13 +531,13 @@
       <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
       <Name>M68kAssembler-2010</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Assemblers\Pdp11\Pdp11.csproj">
-      <Project>{3bb6b0fb-6686-428b-9dc9-a32f349e50e6}</Project>
-      <Name>Pdp11 %28Assemblers\Pdp11%29</Name>
+    <ProjectReference Include="..\Assemblers\Pdp11\Pdp11Assembler.csproj">
+      <Project>{3BB6B0FB-6686-428B-9DC9-A32F349E50E6}</Project>
+      <Name>Pdp11Assembler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Assemblers\x86\X86Assembler-2010.csproj">
+    <ProjectReference Include="..\Assemblers\x86\X86Assembler.csproj">
       <Project>{3805DE2C-659A-442D-8C34-E88822A4D27C}</Project>
-      <Name>X86Assembler-2010</Name>
+      <Name>X86Assembler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
@@ -526,28 +548,32 @@
       <Name>Decompiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
-      <Project>{0b2dcd75-44ff-4af6-aa08-aaf4ea30c402}</Project>
+      <Project>{0B2DCD75-44FF-4AF6-AA08-AAF4EA30C402}</Project>
       <Name>AmigaOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\C64\C64.csproj">
-      <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>
+      <Project>{FDFE3507-E8CE-4930-B9B5-8FB647CFC6DC}</Project>
       <Name>C64</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\MacOS\MacOS-2010.csproj">
+    <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
-      <Name>MacOS-2010</Name>
+      <Name>MacOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Msdos\Msdos-2010.csproj">
+    <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
-      <Name>Msdos-2010</Name>
+      <Name>Msdos</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Win32\Win32-2010.csproj">
+    <ProjectReference Include="..\Environments\SysV\SysV.csproj">
+      <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>
+      <Name>SysV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Win32\Win32.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
-      <Name>Win32-2010</Name>
+      <Name>Win32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex-2010.csproj">
+    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj">
       <Project>{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}</Project>
-      <Name>BinHex-2010</Name>
+      <Name>BinHex</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\Elf\Elf.csproj">
       <Project>{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}</Project>
@@ -557,9 +583,13 @@
       <Project>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</Project>
       <Name>Hunk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe-2010.csproj">
+    <ProjectReference Include="..\ImageLoaders\MachO\MachO.csproj">
+      <Project>{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}</Project>
+      <Name>MachO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
       <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
-      <Name>MzExe-2010</Name>
+      <Name>MzExe</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -599,8 +629,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\MsDos\*.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\*.xml" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
@@ -612,7 +642,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>copy /y "$(SolutionDir)Environments\Win32\*.xml" "$(TargetDir)"
+</PreBuildEvent>
   </PropertyGroup>
 </Project>

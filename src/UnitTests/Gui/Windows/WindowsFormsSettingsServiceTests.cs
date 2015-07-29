@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
-* Copyright (C) 1999-2014 John Källén.
+* Copyright (C) 1999-2015 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows;
+using Reko.Gui;
+using Reko.Gui.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class WindowsFormsSettingsServiceTests
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void WFSS_SetString()
         {
             var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Decompiler", true)).Return(hk);
+            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko", true)).Return(hk);
             hk.Expect(h => h.SetValue("foo", "bar"));
             mr.ReplayAll();
 
@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void WFSS_SetStringWithDeepPath()
         {
             var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Decompiler\Deep\Scope", true)).Return(hk);
+            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko\Deep\Scope", true)).Return(hk);
             hk.Expect(h => h.SetValue("foo", "bar"));
             mr.ReplayAll();
 
@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void WFSS_SetIntegerWithPath()
         {
             var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Decompiler", true)).Return(hk);
+            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko", true)).Return(hk);
             hk.Expect(h => h.SetValue("foo", 3));
             mr.ReplayAll();
 
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void WFSS_GetExistingInt()
         {
             var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Decompiler", false)).Return(hk);
+            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko", false)).Return(hk);
             hk.Expect(h => h.GetValue("foo", 3)).Return(4);
             mr.ReplayAll();
 

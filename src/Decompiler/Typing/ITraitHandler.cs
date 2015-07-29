@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// The methods of this interface are called by the TraitCollector as it traverses 
@@ -65,7 +65,8 @@ namespace Decompiler.Typing
 		/// <param name="structPtrSize">Size of the pointer associated with the structure field reference.</param>
 		/// <param name="eField">Type variable for the field.</param>
 		/// <param name="offset">Field offset within the structure (in bytes).</param>
-		DataType MemAccessTrait(Expression eBase, Expression eStruct, int structPtrSize, Expression eField, int offset);
+        DataType MemAccessTrait(Expression eBase, Expression eStruct, int structPtrSize, Expression eField, int offset);
+        DataType MemFieldTrait(Expression eBase, Expression eStruct, Expression eField, int offset);
 
 		/// <summary>
 		/// <paramref>tStruct</paramref> has an array at offset <paramref>offset</paramref> whose elementsize is <paramref>elementSize</paramref>

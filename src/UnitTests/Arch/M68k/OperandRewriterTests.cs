@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using Decompiler.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using Reko.Arch.M68k;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.M68k
+namespace Reko.UnitTests.Arch.M68k
 {
     [TestFixture]
     public class OperandRewriterTests
@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             this.arch = new M68kArchitecture();
             this.rw = new Rewriter(this.arch, null, new M68kState(arch), new Frame(arch.FramePointerType), null);
-            this.addrInstr = new Address(0x0012340C);
+            this.addrInstr = Address.Ptr32(0x0012340C);
         }
 
         [Test]

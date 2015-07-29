@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,10 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Arch.X86;
-using Decompiler.Scanning;
 using NUnit.Framework;
-using System;
-using System.Diagnostics;
-using System.IO;
+using Reko.Core;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class RewriterTests2 : RewriterTestBase
@@ -176,7 +169,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
 			RunTest("Fragments/multiple/read_file.asm", "Intel/RwReadFile.txt");
 		}
-
 
 		[Test]
 		public void X86Rw_ProcIsolation()

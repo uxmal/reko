@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Environments.AmigaOS;
-using Decompiler.Core;
+using Reko.Arch.M68k;
+using Reko.Environments.AmigaOS;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Hunk
+namespace Reko.ImageLoaders.Hunk
 {
     /// <summary>
     /// This class knows how to load and relocate AmigaOS Hunk files.
@@ -41,8 +41,8 @@ namespace Decompiler.ImageLoaders.Hunk
         private TextHunk firstCodeHunk;
         private HunkFile hunkFile;
 
-        public HunkLoader(IServiceProvider services, byte[] imgRaw)
-            : base(services, imgRaw)
+        public HunkLoader(IServiceProvider services, string filename, byte[] imgRaw)
+            : base(services, filename, imgRaw)
         {
         }
 
@@ -50,10 +50,11 @@ namespace Decompiler.ImageLoaders.Hunk
         // seem to like this value.
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0x1000); }
+            get { return Address.Ptr32(0x1000); }
+            set { throw new NotImplementedException(); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             arch = new M68kArchitecture();
             var imgReader = new BeImageReader(RawImage, 0);
@@ -63,9 +64,9 @@ namespace Decompiler.ImageLoaders.Hunk
             this.firstCodeHunk = parse.FindFirstCodeHunk();
             var image = new LoadedImage(addrLoad, RelocateBytes(addrLoad));
 
-            return new LoaderResults(
+            return new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new AmigaOSPlatform(Services, arch));
         }
@@ -635,7 +636,7 @@ print arg_mem
             // Get sizes of all segments
             var sizes = rel.GetSegmentSizes();
             // Determine begin addrs for all segments
-            uint base_addr = addrLoad.Linear;
+            uint base_addr = addrLoad.ToUInt32();
             var addrs = rel.GetSegmentRelocationAddresses(base_addr);
             //  Relocate and return data of segments
             var datas = rel.Relocate(addrs);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Environments.Msdos;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Environments.Msdos;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
     /// <summary>
     /// Loader for MS-DOS executables packed with EXEPACK.
@@ -50,12 +50,13 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private LoadedImage imgU;
 
-        public ExePackLoader(IServiceProvider services, ExeImageLoader exe, byte[] imgRaw)
-            : base(services, imgRaw)
+        public ExePackLoader(IServiceProvider services, string filename, byte[] imgRaw)
+            : base(services, filename, imgRaw)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(Services, arch);
 
+            var exe = new ExeImageLoader(services, filename, imgRaw);
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
             this.hdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) * 0x10U;
             ImageReader rdr = new LeImageReader(RawImage, hdrOffset);
@@ -92,7 +93,7 @@ namespace Decompiler.ImageLoaders.MzExe
             return (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
         }
 
-        public override LoaderResults Load(Address addr)
+        public override Program Load(Address addr)
         {
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
@@ -132,13 +133,14 @@ namespace Decompiler.ImageLoaders.MzExe
                     }
                 }
             } while ((op & 1) == 0);
-            imageMap = new ImageMap(imgU);
-            return new LoaderResults(imgU, new ImageMap(imgU), new X86ArchitectureReal(), platform);
+            imageMap = imgU.CreateImageMap();
+            return new Program(imgU, imageMap, new X86ArchitectureReal(), platform);
         }
 
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0x800, 0); }
+            get { return Address.SegPtr(0x800, 0); }
+            set { throw new NotImplementedException(); }
         }
 
         public override RelocationResults Relocate(Address addrLoad)
@@ -156,7 +158,7 @@ namespace Decompiler.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+                        imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
                     } while (--cx != 0);
                 }
                 if (dx == 0xF000)
@@ -165,7 +167,7 @@ namespace Decompiler.ImageLoaders.MzExe
             }
 
             this.cs += segCode;
-            imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWrite);
+            imageMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute);
             this.ss += segCode;
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector));
@@ -175,7 +177,7 @@ namespace Decompiler.ImageLoaders.MzExe
             state.SetRegister(Registers.bx, Constant.Word16(0));
             var entryPoints = new List<EntryPoint> 
             {
-                new EntryPoint(new Address(cs, ip), state)
+                new EntryPoint(Address.SegPtr(cs, ip), state)
             };
             return new RelocationResults(entryPoints, new RelocationDictionary());
         }

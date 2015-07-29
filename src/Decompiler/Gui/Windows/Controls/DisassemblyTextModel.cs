@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,65 +18,56 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
-    /// Presents disassembled instructions as lines of text
+    /// Implemented the TextViewModel interface to support
+    /// presentation of disassembled instructions as lines of text.
     /// </summary>
-    public class DisassemblyTextModel : TextViewModel2
+    public class DisassemblyTextModel : TextViewModel
     {
-        public event EventHandler ModelChanged;
+        private Program program;
+        private Address position;
 
-        private IProcessorArchitecture arch;
-        private LoadedImage image;
-        private Dictionary<int, Address> cache;
-        private int mostRecentCacheSize;
-
-        public DisassemblyTextModel(IProcessorArchitecture arch, LoadedImage image)
+        public DisassemblyTextModel(Program program)
         {
-            this.arch = arch;
-            this.image = image;
-            this.cache = new Dictionary<int, Address>();
+            if (program == null)
+                throw new ArgumentNullException("program");
+            this.program = program;
+            this.position = program.Image.BaseAddress;
         }
 
-        public object CurrentPosition { get { throw new NotImplementedException(); } }
-        public object StartPosition { get { throw new NotImplementedException(); } }
-        public object EndPosition { get { throw new NotImplementedException(); } }
-        public int LineCount { get { return GetPositionEstimate(image.Bytes.Length); } }
-
-        public int EstablishPosition(Address addr)
-        {
-            if (addr == null || !image.IsValidAddress(addr))
-                return -1;
-            int idx = GetPositionEstimate(addr - image.BaseAddress);
-            cache = new Dictionary<int, Address>
-            {
-                { idx, addr }
-            };
-            return idx;
-        }
+        public object StartPosition { get { return program.Image.BaseAddress; } }
+        public object CurrentPosition { get { return position; } }
+        public object EndPosition { get { return program.ImageMap.MapLinearAddressToAddress((ulong)((long)program.Image.BaseAddress.ToLinear() + program.Image.Bytes.LongLength)); } }
+        public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
 
         public TextSpan[][] GetLineSpans(int count)
         {
             var lines = new List<TextSpan[]>();
-            var dasm = arch.CreateDisassembler(
-                arch.CreateImageReader(image, image.BaseAddress));
-            while (count != 0 && dasm.MoveNext())
+            if (program.Architecture != null)
             {
-                var line = new List<TextSpan>();
-                var addr = dasm.Current.Address;
-                line.Add(new InertTextSpan(addr.ToString() + " ", "addr"));
-                line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
-                var dfmt = new DisassemblyFormatter(line);
-                dasm.Current.Render(dfmt);
-                lines.Add(line.ToArray());
+                var dasm = program.CreateDisassembler(position).GetEnumerator();
+                while (count != 0 && dasm.MoveNext())
+                {
+                    var line = new List<TextSpan>();
+                    var addr = dasm.Current.Address;
+                    line.Add(new AddressSpan(addr.ToString() + " ", addr, "addr"));
+                    line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
+                    var dfmt = new DisassemblyFormatter(program, line);
+                    dasm.Current.Render(dfmt);
+                    dfmt.NewLine();
+                    lines.Add(line.ToArray());
+                    --count;
+                }
             }
             return lines.ToArray();
         }
@@ -84,7 +75,7 @@ namespace Decompiler.Gui.Windows.Controls
         private string BuildBytes(MachineInstruction instr)
         {
             var sb = new StringBuilder();
-            var rdr = arch.CreateImageReader(image, instr.Address);
+            var rdr = program.CreateImageReader(instr.Address);
             for (int i = 0; i < instr.Length; ++i)
             {
                 sb.AppendFormat("{0:X2} ", rdr.ReadByte());
@@ -92,19 +83,40 @@ namespace Decompiler.Gui.Windows.Controls
             return sb.ToString();
         }
 
-        public void MoveTo(object position, int offset)
+        public void MoveTo(object basePosition, int offset)
         {
-            throw new NotImplementedException();
+            var addr = (Address)basePosition;
+            var image = program.Image;
+            addr = addr + offset;
+            if (addr < image.BaseAddress)
+                addr = image.BaseAddress;
+            var addrEnd = program.ImageMap.MapLinearAddressToAddress(
+                image.BaseAddress.ToLinear() + (ulong)image.Length - 1);
+            if (addr > addrEnd)
+                addr = addrEnd;
+            this.position = addr;
         }
 
         public Tuple<int, int> GetPositionAsFraction()
         {
-            return Tuple.Create(0, 1);
+            var image = program.Image;
+            return Tuple.Create((int)(position - image.BaseAddress), (int)image.Length);
         }
 
-        public void SetPositionAsFraction(int numer, int denom)
+        public void SetPositionAsFraction(int numerator, int denominator)
         {
-            throw new NotImplementedException();
+            if (denominator <= 0)
+                throw new ArgumentException("denominator");
+            if (numerator < 0 || numerator > denominator)
+                throw new ArgumentException("numerator");
+            var image = program.Image;
+            long offset = Math.BigMul(numerator, (int)image.Length) / denominator;
+            if (offset < 0)
+                offset = 0;
+            else if (offset > image.Bytes.Length)
+                offset = image.Bytes.Length;
+
+            this.position = program.ImageMap.MapLinearAddressToAddress(image.BaseAddress.ToLinear() + (uint) offset);
         }
 
         /// <summary>
@@ -114,14 +126,11 @@ namespace Decompiler.Gui.Windows.Controls
         /// <returns></returns>
         private int GetPositionEstimate(int byteOffset)
         {
-            return 8 * byteOffset / arch.InstructionBitSize;
+            int bitSize = program.Architecture != null
+                ? program.Architecture.InstructionBitSize
+                : 8;
+            return 8 * byteOffset / bitSize;
         }
-
-        public void CacheHint(int index, int count)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public class InertTextSpan : TextSpan
         {
@@ -139,20 +148,37 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
-
         public class AddressTextSpan : TextSpan
         {
-            private Address addr;
             private string txtAddress;
 
             public AddressTextSpan(Address address, string addrAsText)
             {
-                this.addr = address;
+                this.Tag = address;
                 this.txtAddress = addrAsText;
+                this.Style = "addrText";
             }
+
             public override string GetText()
             {
                 return txtAddress;
+            }
+        }
+
+        public class ProcedureTextSpan : TextSpan
+        {
+            private ProcedureBase proc;
+
+            public ProcedureTextSpan(ProcedureBase proc, Address addr)
+            {
+                this.proc = proc;
+                this.Tag = addr;
+                this.Style = "addrText";
+            }
+
+            public override string GetText()
+            {
+                return proc.Name;
             }
         }
     }

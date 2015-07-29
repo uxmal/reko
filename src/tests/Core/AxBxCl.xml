@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedSignature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <return type="int">
+  <return>
     <reg>ax</reg>
+    <prim domain="SignedInt" size="2" />
   </return>
   <arg>
     <reg>bx</reg>

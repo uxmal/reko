@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	/// <summary>
 	/// Given a type variable T, maps to the traits associated with that type variable.

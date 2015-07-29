@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,16 @@
  */
 #endregion
 
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Decompiler.Evaluation 
+namespace Reko.Evaluation 
 {
     /// <summary>
     /// Partially evaluates expressions, using an <see cref="EvaluationContext"/> to obtain the values
@@ -41,6 +42,7 @@ namespace Decompiler.Evaluation
         private Add_mul_id_c_id_Rule addMici;
         private ConstConstBin_Rule constConstBin;
         private DpbConstantRule dpbConstantRule;
+        private DpbDpbRule dpbdpbRule;
         private IdConstant idConst;
         private IdCopyPropagationRule idCopyPropagation;
         private IdBinIdc_Rule idBinIdc;
@@ -61,6 +63,7 @@ namespace Decompiler.Evaluation
             this.addEcc = new Add_e_c_cRule(ctx);
             this.addMici = new Add_mul_id_c_id_Rule(ctx);
             this.dpbConstantRule = new DpbConstantRule();
+            this.dpbdpbRule = new DpbDpbRule(ctx);
             this.idConst = new IdConstant(ctx, new Unifier());
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
@@ -75,7 +78,8 @@ namespace Decompiler.Evaluation
             this.binopWithSelf = new BinOpWithSelf_Rule();
         }
 
-        public bool Changed { get; set; }
+        public bool Changed { get { return changed; } set { changed = value; } }
+        private bool changed;
 
         private bool IsAddOrSub(Operator op)
         {
@@ -122,7 +126,10 @@ namespace Decompiler.Evaluation
 
         public virtual Expression VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            return new ArrayAccess(
+                acc.DataType,
+                acc.Array.Accept(this),
+                acc.Index.Accept(this));
         }
 
         public virtual Expression VisitBinaryExpression(BinaryExpression binExp)
@@ -264,6 +271,8 @@ namespace Decompiler.Evaluation
         public virtual Expression VisitCast(Cast cast)
         {
             var exp = cast.Expression.Accept(this);
+            if (exp == Constant.Invalid)
+                return exp;
 
             Constant c = exp as Constant;
             if (c != null)
@@ -302,6 +311,11 @@ namespace Decompiler.Evaluation
             {
                 Changed = true;
                 return dpbConstantRule.Transform();
+            }
+            if (dpbdpbRule.Match(d))
+            {
+                Changed = true;
+                return dpbdpbRule.Transform();
             }
             return d;
         }
@@ -372,7 +386,7 @@ namespace Decompiler.Evaluation
                 if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
                 {
                     t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
-                    return new Address(c1.ToUInt16(), c2.ToUInt16());
+                    return Address.SegPtr(c1.ToUInt16(), c2.ToUInt16());
                 }
                 else
                 {
@@ -400,6 +414,22 @@ namespace Decompiler.Evaluation
         public virtual Expression VisitPhiFunction(PhiFunction pc)
         {
             return pc;
+            /*
+            var oldChanged = Changed;
+            var args = pc.Arguments
+                .Select(a => a.Accept(this))
+                .ToArray();
+            Changed = oldChanged;
+            Expression e = args[0];
+            if (args.All(a => new ExpressionValueComparer().Equals(a, e)))
+            {
+                Changed = true;
+                return e;
+            }
+            else
+            {
+                return pc;
+            }*/
         }
 
         public virtual Expression VisitPointerAddition(PointerAddition pa)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
     /// Determines whether something is a pointer.
@@ -60,7 +60,7 @@ namespace Decompiler.Typing
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
-				prog.Architecture.PointerType.Size);
+				prog.Platform.PointerType.Size);
 		}
 
 		public void FollowDerivedPointers()
@@ -120,7 +120,7 @@ namespace Decompiler.Typing
             }
         }
 
-        public void VisitBinaryExpression(BinaryExpression binExp)
+        public override void VisitBinaryExpression(BinaryExpression binExp)
         {
             base.VisitBinaryExpression(binExp);
             if (binExp.Operator == Operator.IAdd)
@@ -162,13 +162,13 @@ namespace Decompiler.Typing
 					return;				// null pointer is null (//$REVIEW: except for some platforms + archs)
 
                 var pointee = ptr.Pointee;
-                var segPointee = store.ResolvePossibleTypeVar(pointee) as StructureType;
+                var segPointee = pointee.ResolveAs<StructureType>();
                 if (segPointee != null && segPointee.IsSegment)
                 {
                     //$TODO: these are getting merged earlier, perhaps this is the right place to do those merges?
                     return;
                 }
-                var strGlobals =(StructureType)store.ResolvePossibleTypeVar(Globals.TypeVariable.Class.DataType);
+                var strGlobals = Globals.TypeVariable.Class.ResolveAs<StructureType>();
                 if (strGlobals.Fields.AtOffset(offset) == null)
                 {
                     strGlobals.Fields.Add(offset, pointee);
@@ -179,7 +179,7 @@ namespace Decompiler.Typing
 			if (mptr != null)
 			{
                 // C is a constant offset into a segment.
-                var seg = (StructureType) store.ResolvePossibleTypeVar(((Pointer) mptr.BasePointer).Pointee);
+                var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
                 if (seg.Fields.AtOffset(offset) == null)
                 {
                     seg.Fields.Add(offset, mptr.Pointee);

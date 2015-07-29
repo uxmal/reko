@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,23 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class LoadedPageInteractorTests
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private LoadedPageInteractor interactor;
         private IDecompilerService decSvc;
         private ServiceContainer sc;
-        private MockRepository repository;
+        private MockRepository mr;
         private ImageMapSegment mapSegment1;
         private ImageMapSegment mapSegment2;
         private IDecompilerShellUiService uiSvc;
@@ -53,17 +53,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
 
             form = new MainForm();
 
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new LoadedImage(new Address(0xC00, 0), new byte[10000]);
-            prog.ImageMap = new ImageMap(prog.Image);
+            prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[10000]);
+            prog.ImageMap = prog.Image.CreateImageMap();
 
-            prog.ImageMap.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
-            prog.ImageMap.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
+            prog.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite);
+            prog.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite);
             mapSegment1 = prog.ImageMap.Segments.Values[0];
             mapSegment2 = prog.ImageMap.Segments.Values[1];
 
@@ -77,7 +77,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
-            TestLoader ldr = new TestLoader(sc, new Project_v1(), prog);
+            ILoader ldr = mr.StrictMock<ILoader>();
+            ldr.Stub(l => l.LoadImageBytes("test.exe", 0)).Return(new byte[400]);
+            ldr.Stub(l => l.LoadExecutable(
+                Arg<string>.Is.NotNull,
+                Arg<byte[]>.Is.NotNull,
+                Arg<Address>.Is.Null)).Return(prog);
+            ldr.Replay();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.Load("test.exe");
 
@@ -90,23 +96,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Dispose();
         }
 
-        [Test]
-        [Ignore]
-        public void LpiPopulate()
-        {
-            var disSvc = AddService<IDisassemblyViewService>();
-
-            interactor.EnterPage();
-            //ListView lv = form.BrowserList;
-            //Assert.AreEqual(3, lv.Items.Count, "There should be three segments in the image.");
-        }
-
         private T AddService<T>() where T : class
         {
             var oldSvc = sc.GetService(typeof(T));
             if (oldSvc != null)
                 sc.RemoveService(typeof(T));
-            var svc = repository.DynamicMock<T>();
+            var svc = mr.DynamicMock<T>();
             sc.AddService(typeof(T), svc);
             return svc;
         }
@@ -117,8 +112,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             // Instead write expectations for the two added items.
 
-            AddProcedure(new Address(0xC20, 0x0000), "Test1");
-            AddProcedure(new Address(0xC20, 0x0002), "Test2");
+            AddProcedure(Address.SegPtr(0xC20, 0x0000), "Test1");
+            AddProcedure(Address.SegPtr(0xC20, 0x0002), "Test2");
             interactor.EnterPage();
             //Assert.AreEqual(3, form.BrowserList.Items.Count);
             //Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
@@ -135,19 +130,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void LpiMarkingProceduresShouldAddToUserProceduresList()
         {
             var disSvc = AddService<IDisassemblyViewService>();
-            Assert.AreEqual(0, ((InputFile) decSvc.Decompiler.Project.InputFiles[0]).UserProcedures.Count);
-            var addr = new Address(0x0C20, 0);
+            Assert.AreEqual(0, decSvc.Decompiler.Project.Programs[0].UserProcedures.Count);
+            var addr = Address.SegPtr(0x0C20, 0);
             memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
             memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             //interactor.MarkAndScanProcedure(prog);
 
-            repository.VerifyAll();
+            mr.VerifyAll();
             //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            var inputFile = (InputFile)decSvc.Decompiler.Project.InputFiles[0];
-            Assert.AreEqual(1, inputFile.UserProcedures.Count);
-            Procedure_v1 uproc = (Procedure_v1)inputFile.UserProcedures.Values[0];
+            var program = decSvc.Decompiler.Project.Programs[0];
+            Assert.AreEqual(1, program.UserProcedures.Count);
+            Procedure_v1 uproc = (Procedure_v1)program.UserProcedures.Values[0];
             Assert.AreEqual("0C20:0000", uproc.Address);
         }
 
@@ -165,83 +160,41 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             AddService<IProjectBrowserService>();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             interactor.EnterPage();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         [Test]
         public void Lpi_CallScanProgramWhenenteringPage()
         {
             var decSvc = AddService<IDecompilerService>();
-            var decompiler = repository.Stub<IDecompiler>();
+            var decompiler = mr.Stub<IDecompiler>();
             var prog = new Program();
-            prog.Image = new LoadedImage(new Address(0x3000), new byte[10]);
-            prog.ImageMap = new ImageMap(prog.Image);
-            decompiler.Stub(x => x.Programs).Return(new [] {prog});
+            prog.Image = new LoadedImage(Address.Ptr32(0x3000), new byte[10]);
+            prog.ImageMap = prog.Image.CreateImageMap();
+            var project = new Project { Programs = { prog } };
+            decompiler.Stub(x => x.Project).Return(project);
             decSvc.Stub(x => x.Decompiler).Return(decompiler);
             AddService<IDecompilerShellUiService>();
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             AddService<IProjectBrowserService>();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             Assert.IsNotNull(sc);
             interactor.EnterPage();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         private MenuStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null);
+            interactor.QueryStatus(new CommandID(CmdSets.GuidReko, cmdId), status, null);
             return status.Status;
-        }
-
-        //$TODO: use MockRepository for this.
-        private class TestLoader : ILoader
-        {
-            private Project_v1 project;
-            private Program prog;
-
-            public TestLoader(IServiceProvider services, Project_v1 project, Program prog) 
-            {
-                this.project = project;
-                this.prog = prog;
-            }
-
-            public byte[] LoadImageBytes(string fileName, int offset)
-            {
-                return new byte[400];
-            }
-
-            public Program LoadExecutable(InputFile file)
-            {
-                return prog;
-            }
-
-            public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)
-            {
-                return prog;
-            }
-
-            public Program AssembleExecutable(string fileName, Decompiler.Core.Assemblers.Assembler asm, Address loadAddress)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Program AssembleExecutable(string fileName, byte[] bytes, Decompiler.Core.Assemblers.Assembler asm, Address loadAddress)
-            {
-                throw new NotImplementedException();
-            }
-
-            public TypeLibrary LoadMetadata(string fileName)
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
     public class BinOpWithSelf_Rule
     {
@@ -32,7 +32,10 @@ namespace Decompiler.Evaluation
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.Operator != Operator.ISub && binExp.Operator != Operator.Xor && binExp.Operator != Operator.And && binExp.Operator != Operator.Or)
+            if (binExp.Operator != Operator.ISub &&
+                binExp.Operator != Operator.Xor && 
+                binExp.Operator != Operator.And &&
+                binExp.Operator != Operator.Or)
                 return false;
             this.binExp = binExp;
             id = binExp.Left as Identifier;

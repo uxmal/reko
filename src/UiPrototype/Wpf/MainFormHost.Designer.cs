@@ -1,4 +1,4 @@
-﻿namespace Decompiler.UiPrototype.Wpf
+﻿namespace Reko.UiPrototype.Wpf
 {
     partial class MainFormHost
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.mainForm1 = new Decompiler.UiPrototype.Wpf.MainForm();
+            this.mainForm1 = new Reko.UiPrototype.Wpf.MainForm();
             this.SuspendLayout();
             // 
             // elementHost1

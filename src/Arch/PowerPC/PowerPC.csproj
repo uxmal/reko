@@ -6,8 +6,8 @@
     <ProjectGuid>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.PowerPC</RootNamespace>
-    <AssemblyName>Decompiler.Arch.PowerPC</AssemblyName>
+    <RootNamespace>Reko.Arch.PowerPC</RootNamespace>
+    <AssemblyName>Reko.Arch.PowerPC</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -63,9 +63,16 @@
     <Compile Include="PowerPcArchitecture.cs" />
     <Compile Include="PowerPcDisassembler.cs" />
     <Compile Include="PowerPcInstruction.cs" />
+    <Compile Include="PowerPcPointerScanner.cs" />
+    <Compile Include="PowerPcProcedureSerializer.cs" />
+    <Compile Include="PowerPcRewriter.Alu.cs" />
+    <Compile Include="PowerPcRewriter.Control.cs" />
     <Compile Include="PowerPcRewriter.cs" />
+    <Compile Include="PowerPcRewriter.Fpu.cs" />
+    <Compile Include="PowerPcRewriter.Mem.cs" />
+    <Compile Include="PowerPcRewriter.Vector.cs" />
+    <Compile Include="PowerPcState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

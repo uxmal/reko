@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,26 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Serialization;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-using BitSet = Decompiler.Core.Lib.BitSet;
+using BitSet = Reko.Core.Lib.BitSet;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	// X86 flag masks.
 
@@ -60,7 +61,6 @@ namespace Decompiler.Arch.X86
     /// </summary>
 	public class IntelArchitecture : IProcessorArchitecture
 	{
-		private BitSet implicitRegs;
 		private ProcessorMode mode;
         private List<FlagGroupStorage> flagGroups;
 
@@ -69,18 +69,13 @@ namespace Decompiler.Arch.X86
 			this.mode = mode;
             this.flagGroups = new List<FlagGroupStorage>();
 		
-			implicitRegs = CreateRegisterBitset();
-			implicitRegs[Registers.cs.Number] = true;
-			implicitRegs[Registers.ss.Number] = true;
-			implicitRegs[Registers.sp.Number] = true;
-			implicitRegs[Registers.esp.Number] = true;
 		}
 
 		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
 		{
 			if (mode == ProcessorMode.Protected32)
 			{
-				return new Address(offset);
+				return Address.Ptr32(offset);
 			}
 			else
 			{
@@ -93,7 +88,7 @@ namespace Decompiler.Arch.X86
             return mode.CreateDisassembler(imageReader);
         }
 
-		IEnumerator<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
+		IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
 		{
             return CreateDisassembler(imageReader);
 		}
@@ -108,7 +103,7 @@ namespace Decompiler.Arch.X86
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -128,14 +123,24 @@ namespace Decompiler.Arch.X86
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public virtual IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public virtual IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
         {
-            return mode.CreateInstructionScanner(rdr, knownLinAddresses, flags);
+            return mode.CreateInstructionScanner(map, rdr, knownLinAddresses, flags);
+        }
+
+        public virtual ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            return new X86ProcedureSerializer(this, typeLoader, defaultCc);
         }
 
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return mode.CreateStackAccess(frame, offset, dataType);
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return mode.MakeAddressFromConstant(c);
         }
 
         public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
@@ -194,11 +199,6 @@ namespace Decompiler.Arch.X86
             return (reg != RegisterStorage.None);
         }
 
-		public BitSet ImplicitArgumentRegisters
-		{
-			get { return implicitRegs; }
-		}
-
         public int InstructionBitSize { get { return 8; } }
 
 		public string GrfToString(uint grf)
@@ -230,6 +230,11 @@ namespace Decompiler.Arch.X86
         public RegisterStorage StackRegister { get { return mode.StackRegister; } }
         
         public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
+
+        public bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return mode.TryParseAddress(txtAddress, out addr);
+        }
     }
 
     public class X86ArchitectureReal : IntelArchitecture
@@ -244,6 +249,14 @@ namespace Decompiler.Arch.X86
     {
         public X86ArchitectureFlat32()
             : base(ProcessorMode.Protected32)
+        {
+        }
+    }
+
+    public class X86ArchitectureFlat64 : IntelArchitecture
+    {
+        public X86ArchitectureFlat64()
+            : base(ProcessorMode.Protected64)
         {
         }
     }

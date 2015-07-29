@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +22,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
-using Decompiler.Core.Expressions;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Types;
+using Reko.Core.Expressions;
+using Reko.UnitTests.Mocks;
 
-namespace Decompiler.UnitTests.Fragments
+namespace Reko.UnitTests.Fragments
 {
     public class FnPointerFragment : ProcedureBuilder
     {
@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Fragments
             Identifier pfn = Local32("pfn");
             Assign(pfn, Int32(0x1213130));
             Store(Int32(0x10000000), pfn);
-            Call(LoadDw(Int32(0x10000000)));
+            Call(LoadDw(Int32(0x10000000)), 4);
             Return();
         }
     }

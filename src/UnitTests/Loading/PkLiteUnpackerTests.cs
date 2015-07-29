@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Loading;
-using Decompiler.ImageLoaders.MzExe;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Loading;
+using Reko.ImageLoaders.MzExe;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.ComponentModel.Design;
@@ -31,33 +31,17 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Loading
+namespace Reko.UnitTests.Loading
 {
 	[TestFixture]
 	public class PkLiteUnpackerTests
 	{
-		[Test]
-        [Ignore("Don't rely on external files in unit tests.")]
-		public void PkLiteLoad()
-		{
-            ServiceContainer sc = new ServiceContainer();
-            sc.AddService(typeof (DecompilerEventListener), new FakeDecompilerEventListener());
-            sc.AddService(typeof(IDecompilerConfigurationService), new FakeDecompilerConfiguration());
-			Loader l = new Loader(sc);
-			var image = new LoadedImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
-			ExeImageLoader exe = new ExeImageLoader(sc, image.Bytes);
-			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, image.Bytes);
-			LoaderResults lr = ldr.Load(new Address(0xC00, 0));
-			Assert.AreEqual(0x19EC0, lr.Image.Bytes.Length);
-			ldr.Relocate(new Address(0xC00, 0));
-		}
-
         [Test]
         public void ValidateImage()
         {
             Program prog = new Program();
-            LoadedImage rawImage = new LoadedImage(new Address(0x0C00, 0), CreateMsdosHeader());
-            ExeImageLoader exe = new ExeImageLoader(null, rawImage.Bytes);
+            LoadedImage rawImage = new LoadedImage(Address.SegPtr(0x0C00, 0), CreateMsdosHeader());
+            ExeImageLoader exe = new ExeImageLoader(null, "foo.exe", rawImage.Bytes);
             Assert.IsTrue(PkLiteUnpacker.IsCorrectUnpacker(exe, rawImage.Bytes));
         }
 

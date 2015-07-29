@@ -5,6 +5,7 @@ void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // Preserved: sp bp
 // Stack args: Stack +0004(32)
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -28,6 +29,7 @@ void fn0C00_0000(selector ds, segptr32 ptrArg04)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002
@@ -62,6 +64,7 @@ Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // Preserved: sp bp
 // Stack args: Stack +0002(32)
 // fn0C00_0020
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -78,6 +81,7 @@ word16 fn0C00_0020(segptr32 ptrArg02)
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002
@@ -96,6 +100,7 @@ Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // Preserved: sp bp
 // Stack args: Stack +0002(32) Stack +0006(16)
 // fn0C00_002E
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -114,6 +119,7 @@ word16 fn0C00_002E(segptr32 ptrArg02, word16 wArg06)
 fn0C00_002E_entry:
 	// succ:  l0C00_002E
 l0C00_002E:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002

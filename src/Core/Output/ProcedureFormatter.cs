@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     /// <summary>
     /// Renders an intermediate code procedure.
@@ -68,7 +68,7 @@ namespace Decompiler.Core.Output
                         var ret = block.Statements.Count > 0 && (block.Statements.Last.Instruction is ReturnInstruction);
                         if (!ret && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
-                            WriteGoto(succ[0].Name);
+                            WriteGoto(succ[0] != null ? succ[0].Name : "(null)");
                         }
                     }
                     else if (succ.Count == 2 && block.Statements.Count > 0)

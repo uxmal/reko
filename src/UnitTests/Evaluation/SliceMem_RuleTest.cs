@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Evaluation
+namespace Reko.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class SliceMem_RuleTest
@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Evaluation
 		{
 			var s = new Slice(PrimitiveType.Byte,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory, 
-				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
+				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();
@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Evaluation
 		{
 			var s = new Slice(PrimitiveType.Word16,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory,
-				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
+				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();

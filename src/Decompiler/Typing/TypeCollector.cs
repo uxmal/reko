@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,19 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
+    /// <summary>
+    /// Performs a type analysis of the program.
+    /// </summary>
     public class TypeCollector : InstructionVisitor<bool>
     {
         private TypeFactory factory;
@@ -42,7 +45,7 @@ namespace Decompiler.Typing
             this.factory = factory;
             this.store = store;
             this.program = program;
-            this.asc = new ExpressionTypeAscender(program.Architecture, store, factory);
+            this.asc = new ExpressionTypeAscender(program.Platform, store, factory);
             this.desc = new ExpressionTypeDescender(program, store, factory);
         }
 
@@ -50,7 +53,7 @@ namespace Decompiler.Typing
         {
             desc.MeetDataType(program.Globals, factory.CreatePointer(
                 factory.CreateStructureType(),
-                program.Architecture.PointerType.Size));
+                program.Platform.PointerType.Size));
             foreach (Procedure p in program.Procedures.Values)
             {
                 proc = p;
@@ -72,9 +75,9 @@ namespace Decompiler.Typing
             {
                 desc.MeetDataType(sig.ReturnValue, sig.ReturnValue.DataType);
             }
-            if (sig.FormalArguments != null)
+            if (sig.Parameters != null)
             {
-                foreach (var p in sig.FormalArguments)
+                foreach (var p in sig.Parameters)
                 {
                     desc.MeetDataType(p, p.DataType);
                 }
@@ -109,7 +112,7 @@ namespace Decompiler.Typing
                           call.Callee,
                           new Pointer(
                               new CodeType(),
-                              program.Architecture.PointerType.Size));
+                              program.Platform.PointerType.Size));
             return call.Callee.Accept(desc, call.Callee.TypeVariable);
         }
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows;
+using Reko.Gui;
+using Reko.Gui.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -28,7 +28,7 @@ using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class SearchResultServiceTests
@@ -80,17 +80,14 @@ namespace Decompiler.UnitTests.Gui.Windows
             var result = mr.StrictMock<ISearchResult>();
             result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.CreateColumns(
-                Arg<ISearchResultView>.Is.NotNull));
+            result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
+            result.Expect(s => s.CreateColumns());
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
-            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
-            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
-            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
             mr.ReplayAll();
 
             CreateUI();
@@ -110,10 +107,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void SRS_CreateColumns()
         {
             var result = mr.StrictMock<ISearchResult>();
+            result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
             result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(0);
-            result.Expect(s => s.CreateColumns(
-                Arg<ISearchResultView>.Is.NotNull));
+            result.Expect(s => s.CreateColumns());
             mr.ReplayAll();
 
             CreateUI();

@@ -117,20 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAIAAACR5s1WAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAEpSURBVFhH7ZhLCoQwDIY9SJc9jSvP4sKzCB5FPIreoAtx
-        IYKQCYidTl8THyNliLgQ7OPrn781MYMEriwBBmCIPQqsBCth78jkPTH3oEShhNT3nEuA4fajxa+EO72J
-        MgoJfaNRVgCVN2YD93nCLtCF6D0QYz3ER9ze6nEpEFsXaCsvhw1BJNCUSylvhlhQWFFRZLCio/IP64RG
-        ICkxtQjxtuHtzyQIrx91z6ORMtdwwJhudF12Igp6hb6TbWOaHCH1KNa5BEHHV2UXMc1DEIgbMfJzEMgR
-        Cs2jEMjhPawYYj/rWAlWwk5q2BN/6wnKB5Oe+6x1QcoxzUbxnJs+99eiIVb8/CLb81YuyUMkEY5IunDO
-        EGeMSU/1LrZMviq/uD56d1aC/1nZbnkBGxNXt3N4lnkAAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAIAAACR5s1WAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wQAADsEBuJFr7QAAAQpJREFUWEftl0EKgzAQRXsQl57GlWdx4VkEjyIeRW+QRXEhgjAdMJF0TNLR2tTS
+        efydmeThDBJvcAFEwiASBpEwiIQhJDF2oJJcJemaMUsBev34PNwS2+Pt3JMUulovBZgBVFaTNSQDlkCr
+        CzY4JO5VT7ZwZt2XI7EEmnI5gkAlmAZrpiI9WWLC7ZKSVL4Mdkdl3t7ZYUkMDUrQyhPDknDO41q5t1N2
+        dgzmtrtbd6YKzoouYEAH0/bwvT3O6LwlwUcVLTnYTiQJJDDI8SQQX2uiSiDOj5VIiIRIICJh+A+JY3ct
+        X+Yq1/s+E5II37mPxfnTEJL4xG3vNyUu0Q7k+4MZDZEwiIRBJBYAHhsTV7eJsCTSAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="lblCopyleft.Text" xml:space="preserve">
-    <value>Decompiler Copyright (C) 1999-2014 John Källén.
-This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it. The Decompiler project is hosted at SourceForge at the following URL:</value>
+    <value>Reko Decompiler Copyright (C) 1999-2015 John Källén.
+This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it. The Reko project is hosted at GitHub at the following URL:</value>
   </data>
 </root>

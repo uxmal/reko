@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Loading;
-using Decompiler.Scanning;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Loading;
+using Reko.Scanning;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
 	[TestFixture]
     [Ignore("This needs to be rewritten, as we are now more explicitly referring to the stack pointer")]
@@ -40,13 +40,13 @@ namespace Decompiler.UnitTests.Scanning
 		[Test]
 		public void EarRewriteFrameAccess()
 		{
-			RunTest("Fragments/escapedframe1.asm",  new Address(0xB00, 0), "Scanning/EarRewriteFrameAccess.txt");
+			RunTest("Fragments/escapedframe1.asm",  Address.SegPtr(0xB00, 0), "Scanning/EarRewriteFrameAccess.txt");
 		}
 
 		[Test]
 		public void EarAutoArray32()
 		{
-			RunTest("Fragments/autoarray32.asm", new Address(0x04000000), "Scanning/EarAutoArray32.txt");
+			RunTest("Fragments/autoarray32.asm", Address.Ptr32(0x04000000), "Scanning/EarAutoArray32.txt");
 		}
 
 		[Test]
@@ -66,11 +66,13 @@ namespace Decompiler.UnitTests.Scanning
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
             var ldr = new Loader(new ServiceContainer());
+            var arch = new X86ArchitectureReal();
             Program program = ldr.AssembleExecutable(
                  FileUnitTester.MapTestPath(sourceFile),
-                 new IntelTextAssembler(),
+                 new X86TextAssembler(arch),
                 addr);
-			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), null);
+            var project = new Project { Programs = { program } };
+			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), null);
 			foreach (EntryPoint ep in program.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);

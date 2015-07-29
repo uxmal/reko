@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
-namespace Decompiler.Evaluation
+namespace Reko.Evaluation
 {
     public class SymbolicEvaluationContext : EvaluationContext
     {
@@ -99,6 +99,14 @@ namespace Decompiler.Evaluation
             var local = id.Storage as StackLocalStorage;
             if (local != null)
                 return GetStackValue(local.StackOffset, local.DataType);
+
+            //$REVIEW: this is cheating a little; some flags could
+            // actually have been set to 0 or 1. The problem is we
+            // are doing "poor man's value propagation", and should
+            // really be doing this after SSA transformation has been
+            // done on the code.
+            if (id.Storage is FlagGroupStorage)
+                return Constant.Invalid;
             return id;
         }
 
@@ -139,6 +147,9 @@ namespace Decompiler.Evaluation
                     Expression v2;
                     if (StackState.TryGetValue(remainder, out v2))
                     {
+                        if (v2 == Constant.Invalid || value == Constant.Invalid)
+                            return Constant.Invalid;
+
                         //$BUGBUG: should evaluate the MkSequence, possibly creating a longer constant if v2 and value are 
                         // constant.
                         //$BUGBUG: the sequence below is little-endian!!!
@@ -182,6 +193,11 @@ namespace Decompiler.Evaluation
                     SetValue(outId, Constant.Invalid);
             } 
             return Constant.Invalid;
+        }
+
+        public Expression GetDefiningExpression(Identifier id)
+        {
+            return null;
         }
 
         public void RemoveIdentifierUse(Identifier id)

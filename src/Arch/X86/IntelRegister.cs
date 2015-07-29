@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Text;
 using System.Collections.Generic;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	public class IntelRegister : RegisterStorage
 	{
@@ -129,7 +129,7 @@ namespace Decompiler.Arch.X86
 	public class Intel64Register : IntelRegister
 	{
 		public Intel64Register(string name, int number, int regWord, int regHiByte, int regLoByte)
-			: base(name, number, PrimitiveType.Word32, number, regWord, regHiByte, regLoByte) 
+			: base(name, number, PrimitiveType.Word64, number, regWord, regHiByte, regLoByte) 
 		{
 		}
 
@@ -265,11 +265,9 @@ namespace Decompiler.Arch.X86
 
     public class Intel64AccRegister : Intel64Register
     {
-        private int regDword;
         public Intel64AccRegister(string name, int number, int regDword, int regWord, int regLoByte, int regHiByte)
             : base(name, number, regWord, regLoByte, regHiByte)
         {
-            this.regDword = regDword;
         }
 
         protected override Expression GetSliceImpl(Constant c)
@@ -532,10 +530,13 @@ namespace Decompiler.Arch.X86
 		{
 			base.SetRegisterFileValues(registerFile, value, valid);
 			int r = regWord;
-			registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
-			valid[r] = valid[regHiByte];
+            if ( r >= 0)
+			    registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
+            if (regHiByte >= 0)
+			    valid[r] = valid[regHiByte];
 			r = regDword;
-			registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
+            if (r >= 0)
+			    registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
 		}
 
         public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)

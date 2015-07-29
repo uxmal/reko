@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class ExpressionValueComparerTests
@@ -42,16 +42,16 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void EvcIdentifiers()
         {
-            Identifier a = new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32));
-            Identifier aa = new Identifier("aa", 1, PrimitiveType.Word32, new TemporaryStorage("aa", 1, PrimitiveType.Word32 ));
+            Identifier a = new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32));
+            Identifier aa = new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 2, PrimitiveType.Word32 ));
             Assert.IsTrue(eq.Equals(a, aa));
         }
 
         [Test]
         public void EvcTestCondition()
         {
-            TestCondition tc1 = new TestCondition(ConditionCode.EQ, new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
-            TestCondition tc2 = new TestCondition(ConditionCode.EQ, new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
+            TestCondition tc1 = new TestCondition(ConditionCode.EQ, new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
+            TestCondition tc2 = new TestCondition(ConditionCode.EQ, new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
             Assert.IsTrue(eq.Equals(tc1, tc2));
             Assert.AreEqual(eq.GetHashCode(tc1), eq.GetHashCode(tc2));
         }
@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void EvcApplication()
         {
-            Identifier pfn = new Identifier("pfn", 1, PrimitiveType.Pointer32, new TemporaryStorage("pfn", 1, PrimitiveType.Pointer32));
+            Identifier pfn = new Identifier("pfn", PrimitiveType.Pointer32, new TemporaryStorage("pfn", 1, PrimitiveType.Pointer32));
             Application a1 = new Application(pfn, PrimitiveType.Int32, pfn);
             Application a2 = new Application(pfn, PrimitiveType.Int32, pfn);
             Assert.IsTrue(eq.Equals(a1, a2));
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void EvcBinaryExpression()
         {
-            Identifier a = new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32));
+            Identifier a = new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32));
             BinaryExpression a1 = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, a, a);
             BinaryExpression a2 = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, a, a);
             Assert.IsTrue(eq.Equals(a1, a2));

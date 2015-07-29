@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 
-namespace Decompiler.Core.Operators
+namespace Reko.Core.Operators
 {
 	public class Operator
 	{
 		public static readonly BinaryOperator IAdd = new IAddOperator();
         public static readonly BinaryOperator ISub = new ISubOperator();
+        public static readonly BinaryOperator USub = new USubOperator();
         public static readonly BinaryOperator IMul = new IMulOperator();
         public static readonly BinaryOperator SMul = new SMulOperator();
         public static readonly BinaryOperator UMul = new UMulOperator();
@@ -72,6 +73,8 @@ namespace Decompiler.Core.Operators
 		public static readonly UnaryOperator Neg = new NegateOperator();
 		public static readonly UnaryOperator Comp = new ComplementOperator();
 		public static readonly UnaryOperator AddrOf = new AddressOfOperator();
+
+        public static readonly BinaryOperator Comma = new CommaOperator();
 
         public virtual Constant ApplyConstants(Constant c1, Constant c2)
         {

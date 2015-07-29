@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     public interface M68kOperand
     {
@@ -77,6 +77,12 @@ namespace Decompiler.Arch.M68k
         {
             return visitor.Visit(this);
         }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("#$");
+            writer.Write(MachineOperand.FormatValue(Constant));
+        }
     }
 
     public class DoubleRegisterOperand : M68kOperandImpl
@@ -93,6 +99,11 @@ namespace Decompiler.Arch.M68k
         public override T Accept<T>(M68kOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("{0},{1}", Register1.Name, Register2.Name);
         }
     }
 
@@ -138,6 +149,20 @@ namespace Decompiler.Arch.M68k
         {
             return new PostIncrementMemoryOperand(dataWidth, baseReg);
         }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            if (Offset != null)
+            {
+                writer.Write('$');
+                writer.Write(Offset.IsNegative
+                    ? MachineOperand.FormatSignedValue(Offset)
+                    : MachineOperand.FormatUnsignedValue(Offset));
+            }
+            writer.Write("(");
+            writer.Write(Base.Name);
+            writer.Write(")");
+        }
     }
 
     public class PredecrementMemoryOperand : M68kOperandImpl
@@ -154,6 +179,13 @@ namespace Decompiler.Arch.M68k
         {
             return visitor.Visit(this);
         }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("-(");
+            writer.Write(Register.Name);
+            writer.Write(")");
+        }
     }
 
     public class PostIncrementMemoryOperand : M68kOperandImpl
@@ -169,6 +201,13 @@ namespace Decompiler.Arch.M68k
         public override T Accept<T>(M68kOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("(");
+            writer.Write(Register.Name);
+            writer.Write(")+");
         }
     }
 
@@ -192,6 +231,25 @@ namespace Decompiler.Arch.M68k
         public override T Accept<T>(M68kOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("(");
+            if (Imm8 < 0)
+            {
+                writer.Write("-{0:X2},", -Imm8);
+            }
+            else if (Imm8 > 0)
+            {
+                writer.Write("{0:X2},", Imm8);
+            }
+            writer.Write(ARegister.Name);
+            writer.Write(",");
+            writer.Write(XRegister.Name);
+            if (Scale > 1)
+                writer.Write("*{0}", Scale);
+            writer.Write(")");
         }
     }
 }

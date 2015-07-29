@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedServiceTests
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			svc.SyscallInfo.RegisterValues[1] = new SerializedRegValue("al", "00");
 			svc.Signature = new SerializedSignature();
             ArgumentSerializer argSer = new ArgumentSerializer(null, arch, null, null);
-            svc.Signature.ReturnValue = argSer.Serialize(new Identifier("C", 0, PrimitiveType.Bool, 
+            svc.Signature.ReturnValue = argSer.Serialize(new Identifier("C", PrimitiveType.Bool, 
                 new FlagGroupStorage((uint) FlagM.CF, "C", PrimitiveType.Byte)));
 		}
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
+using Reko.Core.Code;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
 using System;
 using System.IO;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
-    /// Models a procedure in an API, whose signature is known, but whose code is 
+    /// Models a procedure in an external API, whose signature is known, but whose code is 
     /// irrelevant to the decompilation.
     /// </summary>
 	public class ExternalProcedure : ProcedureBase

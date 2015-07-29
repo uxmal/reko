@@ -1,6 +1,6 @@
 #region License
 /* 
-* Copyright (C) 1999-2014 John Källén.
+* Copyright (C) 1999-2015 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,21 @@
 */
 #endregion
 
-using Decompiler.Gui.Forms;
+using Reko.Core;
+using Reko.Gui.Forms;
 using System;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
-	public interface IDialogFactory
-	{
-		IAddressPromptDialog CreateAddressPromptDialog();
+    public interface IDialogFactory
+    {
+        IAssembleFileDialog CreateAssembleFileDialog();
+        IAddressPromptDialog CreateAddressPromptDialog();
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
+        IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
         ISearchDialog CreateSearchDialog();
+        IUserPreferencesDialog CreateUserPreferencesDialog();
     }
 }
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,30 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
-    /// Finds all provably dead registers within the basic blocks of the program, and removes them. 
+    /// Finds all provably dead registers within the basic blocks of the 
+    /// program, and removes them. 
     /// </summary>
     /// <remarks>
-    /// This is a cheap preprocessing stage that will remove the great majority of unused registers, especially
-    /// condition codes, of disassembled and rewritten code.
+    /// This is a cheap preprocessing stage that will remove the great majority 
+    /// of unused registers, especially condition codes, of disassembled and 
+    /// rewritten code. This avoids the unneccesary generation of SSA variables 
+    /// for dead code.
     /// </remarks>
-    public class IntraBlockDeadRegisters : InstructionVisitor<bool>, StorageVisitor<bool, bool>
+    public class IntraBlockDeadRegisters : 
+        InstructionVisitor<bool>,
+        StorageVisitor<bool, bool>
     {
         private ExpVisitor expVisitor;
         private HashSet<RegisterStorage> deadRegs;
@@ -233,16 +238,18 @@ namespace Decompiler.Analysis
             var reg = id.Storage as RegisterStorage;
             if (reg != null)
             {
-                Debug.Print("deadReg: {0}, F:{1}", reg, deadRegs.Contains(reg));
+                //Debug.Print("deadReg: {0}, F:{1}", reg, deadRegs.Contains(reg));
                 return deadRegs.Contains(reg);
             }
             var flags = id.Storage as FlagGroupStorage;
             if (flags != null)
             {
-                Debug.Print("deadFlags: {0}, F:{1}", deadFlags, flags.FlagGroupBits);
+                //Debug.Print("deadFlags: {0}, F:{1}", deadFlags, flags.FlagGroupBits);
                 return (flags.FlagGroupBits & deadFlags) == flags.FlagGroupBits;
             }
             if (id.Storage is FpuStackStorage || id.Storage is StackLocalStorage || id.Storage is SequenceStorage)
+                return false;
+            if (id.Storage is MemoryStorage)
                 return false;
             throw new NotImplementedException(id.Storage.GetType().Name);
         }

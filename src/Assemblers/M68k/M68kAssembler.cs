@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Assemblers.M68k
+namespace Reko.Assemblers.M68k
 {
     /// <summary>
     /// Handy little assembler that lets you write C# code that assembles 
@@ -76,14 +76,14 @@ namespace Decompiler.Assemblers.M68k
         public RegisterOperand a6 { get { return new RegisterOperand(Registers.a6); } }
         public RegisterOperand a7 { get { return new RegisterOperand(Registers.a7); } }
 
-        public LoaderResults GetImage()
+        public Program GetImage()
         {
             var image = new LoadedImage(BaseAddress, Emitter.GetBytes());
-            return new LoaderResults(
+            return new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch, 
-                new DefaultPlatform(null, null));
+                new DefaultPlatform(null, arch));
         }
 
         internal void Cnop(int extra, int align)
@@ -138,7 +138,7 @@ namespace Decompiler.Assemblers.M68k
             var addrOp = op as M68kAddressOperand;
             if (addrOp != null)
             {
-                Imm(addrOp.Width.Size, addrOp.Address.Linear);
+                Imm(addrOp.Width.Size, addrOp.Address.ToUInt32());
                 return 0x39;
             }
 
@@ -391,7 +391,7 @@ namespace Decompiler.Assemblers.M68k
 
         public void Jsr(string target)
         {
-            var linBase = BaseAddress.Linear;
+            var linBase = BaseAddress.ToUInt32();
             Imm(4, linBase);
             Emit(0x4EB9);
             ReferToSymbol(Symbols.CreateSymbol(target), Emitter.Position - 4, PrimitiveType.Word32);

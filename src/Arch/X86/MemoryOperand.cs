@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	public class MemoryOperand : MachineOperand
 	{
@@ -76,14 +76,8 @@ namespace Decompiler.Arch.X86
             get { return Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
 		}
 
-		public override string ToString()
+		public override void Write(bool fExplicit, MachineInstructionWriter writer)
 		{
-			return ToString(true);
-		}
-
-		public override string ToString(bool fExplicit)
-		{
-			StringBuilder sb = new StringBuilder();
 			if (fExplicit)
 			{
 				string s;
@@ -107,48 +101,48 @@ namespace Decompiler.Arch.X86
                     s = "ymmword ptr ";
                 else
 					throw new ArgumentOutOfRangeException();
-				sb.Append(s);
+				writer.Write(s);
 			}
 
             if (SegOverride != RegisterStorage.None)
 			{
-				sb.Append(SegOverride.ToString());
-				sb.Append(":");
+				writer.Write(SegOverride.ToString());
+				writer.Write(":");
 			}
-			sb.Append("[");
+			writer.Write("[");
 			if (Base != RegisterStorage.None)
 			{
-				sb.Append(Base.ToString());
+				writer.Write(Base.ToString());
 			}
 			else
 			{
-				sb.AppendFormat(FormatUnsignedValue(Offset));
+                var s = FormatUnsignedValue(Offset);
+				writer.WriteAddress(s, Address.FromConstant(Offset));
 			}
 
 			if (Index != RegisterStorage.None)
 			{
-				sb.Append("+");
-				sb.Append(Index.ToString());
+				writer.Write("+");
+				writer.Write(Index.ToString());
 				if (Scale > 1)
 				{
-					sb.Append("*");
-					sb.Append(Scale);
+					writer.Write("*");
+					writer.Write(Scale);
 				}
 			}
 			if (Base != RegisterStorage.None && Offset != null && Offset.IsValid)
 			{
 				if (Offset.DataType == PrimitiveType.Byte || Offset.DataType == PrimitiveType.SByte)
 				{
-					sb.Append(FormatSignedValue(Offset));
+					writer.Write(FormatSignedValue(Offset));
 				}
 				else
 				{	
-					sb.Append("+");
-					sb.Append(FormatUnsignedValue(Offset));
+					writer.Write("+");
+					writer.Write(FormatUnsignedValue(Offset));
 				}
 			}
-			sb.Append("]");
-			return sb.ToString();
+			writer.Write("]");
 		}
 
 		/// <summary>

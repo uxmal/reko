@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
     /// <summary>
     /// This class follows constant pointers to discover structures in memory
@@ -112,7 +112,7 @@ namespace Decompiler.Typing
 
         public IEnumerable<WorkItem> VisitEnum(EnumType e)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IEnumerable<WorkItem> VisitEquivalenceClass(EquivalenceClass eq)
@@ -138,7 +138,7 @@ namespace Decompiler.Typing
         public IEnumerable<WorkItem> VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
-            var rdr = arch.CreateImageReader(image, (uint) gOffset - image.BaseAddress.Linear);
+            var rdr = arch.CreateImageReader(image, (ulong) gOffset - image.BaseAddress.ToLinear());
             if (!rdr.IsValid)
                 return null;
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));

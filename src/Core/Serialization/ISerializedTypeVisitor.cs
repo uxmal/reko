@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     public interface ISerializedTypeVisitor<T>
     {
         T VisitPrimitive(PrimitiveType_v1 primitive);
         T VisitPointer(PointerType_v1 pointer);
+        T VisitCode(CodeType_v1 code);
         T VisitMemberPointer(MemberPointer_v1 memptr);
-        T VisitArray(SerializedArrayType array);
+        T VisitArray(ArrayType_v1 array);
         T VisitSignature(SerializedSignature signature);
         T VisitStructure(SerializedStructType structure);
         T VisitTypedef(SerializedTypedef typedef);
@@ -39,5 +40,7 @@ namespace Decompiler.Core.Serialization
         T VisitEnum(SerializedEnumType serializedEnumType);
         T VisitTemplate(SerializedTemplate serializedTemplate);
         T VisitVoidType(VoidType_v1 serializedVoidType);
+        T VisitString(StringType_v2 str);
+
     }
 }

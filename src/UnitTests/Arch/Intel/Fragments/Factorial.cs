@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel.Fragments
+namespace Reko.UnitTests.Arch.Intel.Fragments
 {
     public class Factorial : AssemblerFragment
     {
-        public override void Build(IntelAssembler m)
+        public override void Build(X86Assembler m)
         {
             m.i86();
             // A straight-forward factorial function + a driver program to ensure the return value 

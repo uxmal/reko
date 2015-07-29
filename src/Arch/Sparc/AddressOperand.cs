@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Sparc
+namespace Reko.Arch.Sparc
 {
     public class AddressOperand : MachineOperand
     {
@@ -38,9 +38,9 @@ namespace Decompiler.Arch.Sparc
             this.Address = address;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return Address.ToString();
+            writer.WriteAddress(Address.ToString(), Address);
         }
     }
 }

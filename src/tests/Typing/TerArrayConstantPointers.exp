@@ -1,5 +1,6 @@
 // Before ///////
 // Fn
+// Return size: 0
 void Fn()
 Fn_entry:
 	// succ:  l1
@@ -10,6 +11,7 @@ Fn_exit:
 
 // After ///////
 // Fn
+// Return size: 0
 void Fn()
 Fn_entry:
 	// succ:  l1
@@ -20,11 +22,11 @@ Fn_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (123456 (arr Eq_9) a123456))
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_9: (struct "Eq_9" 0008 (0 word32 dw0000))
 	T_9
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

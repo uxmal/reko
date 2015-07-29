@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
+using Reko.Arch.M68k;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.M68k
+namespace Reko.UnitTests.Arch.M68k
 {
     [TestFixture]
     public class M68kPointerScannerTests
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_Bsrl()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100000),
+                Address.Ptr32(0x00100000),
                 0x0000, 0x61FF, 0x0000, 0x000C, 0x4E75, 0x4E71, 0x4E71, 0x4E71,
                 0x4E75);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00100010u }, PointerScannerFlags.Calls).ToArray();
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_bsrw()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100000),
+                Address.Ptr32(0x00100000),
                 0x0000, 0x6100, 0x000C, 0x4E75, 0x4E71, 0x4E71, 0x4E71, 0x4E71,
                 0x4E75);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00100010u }, PointerScannerFlags.Calls).ToArray();
@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_bsrb()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100000),
+                Address.Ptr32(0x00100000),
                 0x4E75, 0x61FC);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00100000u }, PointerScannerFlags.Calls).ToArray();
 
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_jsrw()
         {
             var rdr = CreateImageReader(
-                new Address(0x00000100),
+                Address.Ptr32(0x00000100),
                 0x4EB8, 0x0108, 0x4E75, 0x4E71, 0x4E75);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00108u }, PointerScannerFlags.Calls).ToArray();
 
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_jsrl()
         {
             var rdr = CreateImageReader(
-                new Address(0x00000100),
+                Address.Ptr32(0x00000100),
                 0x4EB9, 0x0000, 0x0108, 0x4E75, 0x4E75);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00108u }, PointerScannerFlags.Calls).ToArray();
 
@@ -116,7 +116,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_brab()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100000),
+                Address.Ptr32(0x00100000),
                 0x4E75, 0x60FC, 0x4E75);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00100000u }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_jmpw()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100),
+                Address.Ptr32(0x00100),
                 0x4e75, 0x4EF8, 0x0100);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00100 }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
@@ -138,7 +138,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_jmpl()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100),
+                Address.Ptr32(0x00100),
                 0x4e75, 0x4EF9, 0x0000, 0x0100);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00100 }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
@@ -149,7 +149,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kps_FindPointer_Flat32()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100000),
+                Address.Ptr32(0x00100000),
                 0x2222, 0x0010, 0x0008);
             var items = new M68kPointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Pointers).ToArray();
             Assert.AreEqual(1, items.Length);

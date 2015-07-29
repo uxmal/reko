@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Reko.Arch.Pdp11
 {
     public class Pdp11Rewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -41,10 +42,10 @@ namespace Decompiler.Arch.Pdp11
             this.arch = arch;
         }
 
-        public Pdp11Rewriter(Pdp11Architecture arch, IEnumerator<Pdp11Instruction> instrs, Frame frame)
+        public Pdp11Rewriter(Pdp11Architecture arch, IEnumerable<Pdp11Instruction> instrs, Frame frame)
         {
             this.arch = arch;
-            this.instrs = instrs;
+            this.instrs = instrs.GetEnumerator();
             this.frame = frame;
         }
 
@@ -75,7 +76,7 @@ namespace Decompiler.Arch.Pdp11
             }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class SsaTests : AnalysisTestBase
@@ -152,15 +152,16 @@ namespace Decompiler.UnitTests.Analysis
             var r1 = m.Reg32("r1");
             var r2 = m.Reg32("r2");
             m.Assign(r1, m.LoadDw(r2));
-            m.Call(r1);
+            m.Call(r1, 4);
             m.Return();
 
             RunUnitTest(m, "Analysis/SsaCallIndirect.txt");
         }
+
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var proc = m.Procedure;
-            var sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
             ssa = sst.SsaState;
             using (var fut = new FileUnitTester(outfile))
             {
@@ -196,7 +197,7 @@ namespace Decompiler.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(flow, proc, gr);
 				ssa = sst.SsaState;
 				ssa.Write(writer);
 				proc.Write(false, true, writer);

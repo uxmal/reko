@@ -1,5 +1,6 @@
 // Before ///////
 // IndirectCallFragment
+// Return size: 0
 void IndirectCallFragment()
 IndirectCallFragment_entry:
 	// succ:  l1
@@ -11,6 +12,7 @@ IndirectCallFragment_exit:
 
 // After ///////
 // IndirectCallFragment
+// Return size: 0
 void IndirectCallFragment()
 IndirectCallFragment_entry:
 	// succ:  l1
@@ -22,13 +24,13 @@ IndirectCallFragment_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (27000 (ptr Eq_2) ptr27000))
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment "Eq_2")
 	T_2 (in 0x2700 : selector)
 Eq_3: (segment "Eq_3" (2040 (arr (memptr (ptr Eq_2) code)) a2040))
 	T_3 (in ds : selector)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (27000 T_2 t27000)))

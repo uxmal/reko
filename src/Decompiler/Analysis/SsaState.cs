@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,31 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	public class SsaState
 	{
 		private SsaIdentifierCollection ids;
-        private DominatorGraph<Block> domGraph;
 
 		public SsaState(Procedure proc, DominatorGraph<Block> domGraph)
 		{
 			this.Procedure = proc;
-            this.domGraph = domGraph;
+            this.DomGraph = domGraph;
 			this.ids = new SsaIdentifierCollection();
 		}
 
         public Procedure Procedure { get; private set; }
+        public DominatorGraph<Block> DomGraph { get; private set; }
 
         /// <summary>
         /// Inserts the instr d of the identifier v at statement S.
@@ -53,7 +53,7 @@ namespace Decompiler.Analysis
         public void Insert(Instruction d, Identifier v, Statement S)
         {
             // Insert new phi-functions.
-            foreach (var dfFode in domGraph.DominatorFrontier(S.Block))
+            foreach (var dfFode in DomGraph.DominatorFrontier(S.Block))
             {
                 // If there is no phi-function for v
                 //    create new phi-function for v. (which is an insert, so call self recursively)
@@ -98,7 +98,7 @@ namespace Decompiler.Analysis
 			Procedure.ExitBlock.Statements.Clear();
 		}
 
-#if DEBUG
+        [Conditional("DEBUG")]
 		public void DebugDump(bool trace)
 		{
 			if (trace)
@@ -109,11 +109,6 @@ namespace Decompiler.Analysis
 				Debug.WriteLineIf(trace, sb.ToString());
 			}
 		}
-#else
-		public void DebugDump(bool trace)
-		{
-		}
-#endif
 
 		/// <summary>
 		/// Deletes a statement by removing all the ids it references 
@@ -132,9 +127,13 @@ namespace Decompiler.Analysis
 			stm.Block.Statements.Remove(stm);
 		}
 
+        public int RpoNumber(Block b)
+        {
+            return DomGraph.ReversePostOrder[b];
+        }
 
 		/// <summary>
-		/// Dumps all SSA identifiers, showing the original variable,
+		/// Writes all SSA identifiers, showing the original variable,
 		/// the defining statement, and the using statements.
 		/// </summary>
 		/// <param name="writer"></param>
@@ -151,18 +150,18 @@ namespace Decompiler.Analysis
 
 		public void ReplaceDefinitions(Statement stmOld, Statement stmNew)
 		{
-			for (int i = 0; i < Identifiers.Count; ++i)
+			foreach (var sid in Identifiers)
 			{
-				if (Identifiers[i].DefStatement == stmOld)
-					Identifiers[i].DefStatement = stmNew;
+				if (sid.DefStatement == stmOld)
+					sid.DefStatement = stmNew;
 			}
 		}
 
 		public void RemoveUses(Statement stm)
 		{
-			for (int i = 0; i < Identifiers.Count; ++i)
+			foreach (var sid in Identifiers)
 			{
-				List<Statement> uses = Identifiers[i].Uses;
+				List<Statement> uses = sid.Uses;
 				int jTo = 0;
 				for (int j = 0; j < uses.Count; ++j)
 				{

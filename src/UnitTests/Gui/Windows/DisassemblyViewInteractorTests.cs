@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,16 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class DisassemblyViewInteractorTests
@@ -69,7 +64,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void GotoAddressEnabled()
         {
             var status = new CommandStatus();
-            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress), status, null));
+            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress), status, null));
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);
         }
 
@@ -77,7 +72,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void DviGotoAddress()
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
-            dlg.Stub(x => dlg.Address).Return(new Address(0x41104110));
+            dlg.Stub(x => dlg.Address).Return(Address.Ptr32(0x41104110));
             dlgFactory.Stub(x => x.CreateAddressPromptDialog()).Return(dlg);
             uiSvc.Expect(x => uiSvc.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))
@@ -86,10 +81,10 @@ namespace Decompiler.UnitTests.Gui.Windows
             repository.ReplayAll();
 
             Initialize();
-            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
+            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress));
 
             repository.VerifyAll();
-            Assert.AreEqual(0x41104110, interactor.StartAddress.Linear);
+            Assert.AreEqual(0x41104110ul, interactor.StartAddress.ToLinear());
         }
 
         [Test]
@@ -97,7 +92,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var status = new CommandStatus();
             var text = new CommandText();
-            var ret = interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionMarkProcedure), status, null);
+            var ret = interactor.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ActionMarkProcedure), status, null);
             Assert.IsTrue(ret);
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);
         }

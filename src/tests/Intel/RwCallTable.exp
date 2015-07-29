@@ -20,19 +20,19 @@ Call table at 0C00:0012 (6 bytes)
 fn0C00_0018()
 	mov	ax,[si+02]
 	add	ax,[si+04]
-	mov	word ptr [si+06],ax
+	mov	[si+06],ax
 	ret	
 
 fn0C00_0022()
 	mov	ax,[si+02]
 	sub	ax,[si+04]
-	mov	word ptr [si+06],ax
+	mov	[si+06],ax
 	ret	
 
 fn0C00_002C()
 	mov	ax,[si+02]
 	and	ax,[bx+04]
-	mov	word ptr [si+06],ax
+	mov	[si+06],ax
 	ret	
 
 Procedure fn0C00_0000 calls:

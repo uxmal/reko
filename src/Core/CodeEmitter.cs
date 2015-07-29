@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Provides an interface for simple generation of intermediate code.
@@ -76,9 +76,9 @@ namespace Decompiler.Core
             return gi;
         }
 
-        public GotoInstruction Goto(uint linearAddress)
+        public virtual GotoInstruction Goto(uint linearAddress)
         {
-            var gi = new GotoInstruction(new Address(linearAddress));
+            var gi = new GotoInstruction(Address.Ptr32(linearAddress));
             Emit(gi);
             return gi;
         }

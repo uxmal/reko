@@ -6,8 +6,8 @@
     <ProjectGuid>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.ImageLoaders.Hunk</RootNamespace>
-    <AssemblyName>Decompiler.ImageLoaders.Hunk</AssemblyName>
+    <RootNamespace>Reko.ImageLoaders.Hunk</RootNamespace>
+    <AssemblyName>Reko.ImageLoaders.Hunk</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

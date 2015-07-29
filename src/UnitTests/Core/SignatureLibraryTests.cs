@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class SignatureLibraryTests
@@ -45,12 +45,11 @@ namespace Decompiler.UnitTests.Core
                 {
                     new SerializedTypedef { 
                         Name="int", 
-                        DataType=new PrimitiveType_v1 { Domain = Decompiler.Core.Types.Domain.SignedInt, ByteSize = 4 }
+                        DataType=new PrimitiveType_v1 { Domain = Reko.Core.Types.Domain.SignedInt, ByteSize = 4 }
                     }
                 }
             };
-            var lib = new TypeLibrary();
-            lib.Load(new IntelArchitecture(ProcessorMode.Protected32), slib);
+            var lib = TypeLibrary.Load(new IntelArchitecture(ProcessorMode.Protected32), slib);
             Assert.AreEqual(PrimitiveType.Int32, lib.LookupType("int"));
         }
 	}

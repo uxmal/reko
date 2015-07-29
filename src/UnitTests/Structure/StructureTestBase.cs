@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,24 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Analysis;
-using Decompiler.Assemblers.x86;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko;
+using Reko.Analysis;
+using Reko.Assemblers.x86;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Reko.Environments.Msdos;
+using Reko.Core.Configuration;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	public class StructureTestBase
 	{
@@ -44,26 +46,71 @@ namespace Decompiler.UnitTests.Structure
             return proc.Nodes.Find(node => node.Name == nodeName);
         }
 
-		protected Program RewriteProgram(string sourceFilename, Address addrBase)
+		protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
-            var ldr = new Loader(new ServiceContainer());
+            var sc = new ServiceContainer();
+            sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
+            var ldr = new Loader(sc);
+            var arch = new X86ArchitectureReal();
+
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new IntelTextAssembler(),
+                new X86TextAssembler(arch) { Platform = new MsdosPlatform(null, arch) },
                 addrBase);
+            return RewriteProgram();
+		}
 
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
-			foreach (EntryPoint ep in program.EntryPoints)
-			{
-				scan.EnqueueEntryPoint(ep);
-			}
-			scan.ScanImage();
+        protected Program RewriteProgram32(string sourceFilename, Address addrBase)
+        {
+            var sc = new ServiceContainer();
+            sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
+            var ldr = new Loader(sc);
+            var arch = new X86ArchitectureFlat32();
+            program = ldr.AssembleExecutable(
+                FileUnitTester.MapTestPath(sourceFilename),
+                new X86TextAssembler(arch) { Platform = new DefaultPlatform(null, arch) },
+                addrBase);
+            return RewriteProgram();
+        }
+
+        protected Program RewriteX86RealFragment(string asmFragment, Address addrBase)
+        {
+            var asm = new X86TextAssembler(new X86ArchitectureReal());
+            program = asm.AssembleFragment(addrBase, asmFragment);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+            return RewriteProgram();
+        }
+
+
+        protected Program RewriteX86_32Fragment(string asmFragment, Address addrBase)
+        {
+            var asm = new X86TextAssembler(new X86ArchitectureFlat32());
+            program = asm.AssembleFragment(addrBase, asmFragment);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+            return RewriteProgram();
+        }
+
+        private Program RewriteProgram()
+        {
+            var project = new Project { Programs = { program } };
+            var scan = new Scanner(
+                program,
+                new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
+            foreach (EntryPoint ep in program.EntryPoints)
+            {
+                scan.EnqueueEntryPoint(ep);
+            }
+            scan.ScanImage();
 
             DecompilerEventListener eventListener = new FakeDecompilerEventListener();
-			DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
-			da.AnalyzeProgram();
+            DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
+            da.AnalyzeProgram();
 
             return program;
-		}
+        }
 	}
 }

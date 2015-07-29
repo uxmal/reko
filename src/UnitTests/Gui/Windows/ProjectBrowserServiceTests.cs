@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Controls;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using NUnit.Framework;
@@ -31,10 +31,15 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using ContextMenu = System.Windows.Forms.ContextMenu;
+using DataObject = System.Windows.Forms.DataObject;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+using DragEventHandler = System.Windows.Forms.DragEventHandler;
+using DragDropEffects = System.Windows.Forms.DragDropEffects;
 using System.Xml;
 using System.Xml.Linq;
+using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class ProjectBrowserServiceTests
@@ -50,7 +55,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
         private Program program;
-        private Program[] programs;
         private Project project;
         private IDecompilerShellUiService uiSvc;
 
@@ -103,6 +107,11 @@ namespace Decompiler.UnitTests.Gui.Windows
         private class FakeTreeView : ITreeView
         {
             public event EventHandler AfterSelect;
+            public event DragEventHandler DragEnter;
+            public event DragEventHandler DragOver;
+            public event DragEventHandler DragDrop;
+            public event EventHandler DragLeave;
+            public event MouseEventHandler MouseWheel;
 
             public FakeTreeView()
             {
@@ -127,6 +136,31 @@ namespace Decompiler.UnitTests.Gui.Windows
             public ITreeNode CreateNode(string text)
             {
                 return new FakeTreeNode { Text = text };
+            }
+
+            public void PerformDragEnter(DragEventArgs e)
+            {
+                DragEnter(this, e);
+            }
+
+            public void PerformDragOver(DragEventArgs e)
+            {
+                DragOver(this, e);
+            }
+
+            public void PerformDragDrop(DragEventArgs e)
+            {
+                DragDrop(this, e);
+            }
+
+            public void PerformDragLeave(EventArgs e)
+            {
+                DragLeave(this, e);
+            }
+
+            public void PerformMouseWheel(MouseEventArgs e)
+            {
+                MouseWheel(this, e);
             }
         }
 
@@ -294,24 +328,25 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_ProgramWithOneSegment()
         {
-            var image = new LoadedImage(new Address(0x12340000), new byte[0x1000]);
-            var imageMap = new ImageMap(image);
-            imageMap.AddSegment(new Address(0x12340000), ".text", AccessMode.Execute);
+            var image = new LoadedImage(Address.Ptr32(0x12340000), new byte[0x1000]);
+            var imageMap = image.CreateImageMap();
+            imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute);
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = new DefaultPlatform(sc, arch);
             this.program = new Program(image, imageMap, arch, platform);
             this.program.Name = "foo.exe";
-            this.program.InputFile = new InputFile { Filename = @"c:\test\foo.exe" };
-            this.programs = new[] { program }; 
+            this.program.Filename = @"c:\test\foo.exe";
+            project.Programs.Add(program);
         }
 
         [Test]
         public void PBS_SingleBinary()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_Project();
             Given_ProgramWithOneSegment();
 
-            pbs.Load(programs);
+            pbs.Load(project);
 
             Assert.IsTrue(fakeTree.ShowNodeToolTips);
             
@@ -324,29 +359,33 @@ namespace Decompiler.UnitTests.Gui.Windows
                     "tag=\"Program\">" +
                     "<node " + 
                         "text=\"Image base\" " +
-                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
+                        "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
                         "tag=\"ImageMapSegment\" />" +
                 "</node>" +
                 "</root>");
         }
 
         [Test]
-        [Ignore("Needs programs, not InputFiles")]
         public void PBS_AddBinary()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
-            Given_ProgramWithOneSegment();
             Given_Project();
-            pbs.Load(programs);
+            Given_ProgramWithOneSegment();
             mr.ReplayAll();
 
-            project.InputFiles.Add(new InputFile
+            pbs.Load(project);
+
+            project.Programs.Add(new Program
             {
                 Filename = "bar.exe",
-                BaseAddress = new Address(0x1231300)
+                Image = new LoadedImage(Address.Ptr32(0x1231300), new byte[128])
             });
 
-            Assert.AreEqual(2, fakeTree.Nodes.Count);
+            Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"Program\">" +
+                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegment\" />" +
+                 "</node>" +
+                 "</root>");
             mr.VerifyAll();
         }
 
@@ -354,18 +393,14 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             this.project = new Project
             {
-                InputFiles = 
-                {
-                    new InputFile { Filename="foo.exe", BaseAddress=new Address(0x400000) }
-                }
             };
         }
 
 
         private void Given_UserProcedure(uint addr, string name)
         {
-            program.InputFile.UserProcedures.Add(
-                new Address(addr), new Decompiler.Core.Serialization.Procedure_v1
+            program.UserProcedures.Add(
+                Address.Ptr32(addr), new Reko.Core.Serialization.Procedure_v1
                 {
                     Address = addr.ToString(),
                     Name = name
@@ -376,12 +411,12 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void PBS_UserProcedures()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
-            Given_ProgramWithOneSegment();
             Given_Project();
-            Given_UserProcedure(0x13000050, "MyFoo");
+            Given_ProgramWithOneSegment();
+            Given_UserProcedure(0x12340500, "MyFoo");
             mr.ReplayAll();
 
-            pbs.Load(programs);
+            pbs.Load(project);
 
             Expect(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -392,11 +427,11 @@ namespace Decompiler.UnitTests.Gui.Windows
                     "tag=\"Program\">" +
                     "<node " +
                         "text=\"Image base\" " +
-                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
+                        "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
                         "tag=\"ImageMapSegment\">" +
                         "<node " +
                             "text=\"MyFoo\" " +
-                            "tip=\"13000050\" " +
+                            "tip=\"12340500\" " +
                             "tag=\"ProcedureDesigner\" />" +
                     "</node>" +
                 "</node>" +
@@ -459,6 +494,91 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             var o = pbs.GetAncestorOfType<GrandParentComponent>(c);
             Assert.IsNull(o);
+        }
+
+        [Test]
+        public void PBS_AddTypeLib()
+        {
+            mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var project = new Project();
+            pbs.Load(project);
+
+            project.MetadataFiles.Add(new MetadataFile
+            {
+                ModuleName = "..\\foo.tlb"
+            });
+
+            Assert.AreEqual(1, mockTree.Nodes.Count);
+            Assert.AreEqual("foo.tlb", mockTree.Nodes[0].Text);
+        }
+
+        [Test]
+        public void PBS_AcceptFiles()
+        {
+            var mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var e = Given_DraggedFile();
+            mr.ReplayAll();
+
+            var project = new Project();
+            pbs.Load(project);
+            mockTree.PerformDragEnter(e);
+            Assert.AreEqual(DragDropEffects.Copy, e.Effect);
+        }
+
+        [Test]
+        public void PBS_RejectTextDrop()
+        {
+            var mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var e = Given_DraggedText();
+            mr.ReplayAll();
+
+            var project = new Project();
+            pbs.Load(project);
+            mockTree.PerformDragEnter(e);
+            Assert.AreEqual(DragDropEffects.None, e.Effect);
+        }
+
+        [Test]
+        public void PBS_AcceptDrop()
+        {
+            string filename = null;
+            var mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            pbs.FileDropped += (sender, ee) => { filename = ee.Filename; };
+            var e = Given_DraggedFile();
+            mr.ReplayAll();
+
+            var project = new Project();
+            pbs.Load(project);
+            mockTree.PerformDragDrop(e);
+            Assert.AreEqual("/home/bob/foo.exe", filename);
+        }
+
+        private DragEventArgs Given_DraggedFile()
+        {
+            var dObject = new DataObject(
+                DataFormats.FileDrop,
+                "/home/bob/foo.exe");
+
+            return new DragEventArgs(
+                    dObject, 0, 40, 40,
+                    DragDropEffects.All,
+                    DragDropEffects.All);
+        }
+
+        private DragEventArgs Given_DraggedText()
+        {
+            var dObject = new DataObject(
+                DataFormats.UnicodeText,
+                "hello world");
+
+            return new DragEventArgs(
+                    dObject, 0, 40, 40,
+                    DragDropEffects.All,
+                    DragDropEffects.All);
         }
     }
 }

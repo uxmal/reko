@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 
-namespace Decompiler.Arch.Cil
+namespace Reko.Arch.Cil
 {
     public class CilInstruction : MachineInstruction
     {
@@ -35,12 +35,13 @@ namespace Decompiler.Arch.Cil
         };
 
         public OpCode Opcode { get; set; }
+        public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
 
         public override void Render(MachineInstructionWriter writer)
         {
             try
             {
-                writer.Opcode(mpopcodetostring[Opcode]);
+                writer.WriteOpcode(mpopcodetostring[Opcode]);
             }
             catch
             {

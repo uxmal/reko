@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Arch.X86;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Arch.X86;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class ProcedureSignatureTests
@@ -37,8 +37,8 @@ namespace Decompiler.UnitTests.Core
 			{
 				IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 				uint f = (uint)(FlagM.CF|FlagM.ZF);
-				Identifier argF = new Identifier(arch.GrfToString(f), 0, PrimitiveType.Bool, new FlagGroupStorage(f, "CZ", PrimitiveType.Byte));
-				Identifier argR = new Identifier(Registers.ax.Name, 1, Registers.ax.DataType, Registers.ax);
+				Identifier argF = new Identifier(arch.GrfToString(f), PrimitiveType.Bool, new FlagGroupStorage(f, "CZ", PrimitiveType.Byte));
+				Identifier argR = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
 				
 				argF.Write(true, fut.TextWriter);
 				fut.TextWriter.WriteLine();
@@ -52,27 +52,27 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void PsigArgument()
 		{
-			Identifier arg = new Identifier(Registers.eax.Name, 0, Registers.eax.DataType, Registers.eax);
+			Identifier arg = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
 			Assert.AreEqual("eax", arg.Name);
 			Assert.AreEqual(PrimitiveType.Word32, arg.DataType);
 			Assert.AreEqual("eax", arg.Name);
 			Assert.AreEqual(PrimitiveType.Word32, arg.DataType);
 
-			Identifier arg2 = new Identifier(Registers.eax.Name, 0, Registers.eax.DataType, Registers.eax);
+			Identifier arg2 = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
 		}
 
 		[Test]
 		public void PsigValidArguments()
 		{
-			Identifier arg = new Identifier(Registers.eax.Name, 0, Registers.eax.DataType, Registers.eax);
+			Identifier arg = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
 			ProcedureSignature sig = new ProcedureSignature(null, new Identifier[] { arg });
-			Assert.IsTrue(sig.ArgumentsValid);
+			Assert.IsTrue(sig.ParametersValid);
 
 			sig = new ProcedureSignature(arg, null);
-			Assert.IsTrue(sig.ArgumentsValid);
+			Assert.IsTrue(sig.ParametersValid);
 
 			sig = new ProcedureSignature();
-			Assert.IsFalse(sig.ArgumentsValid);
+			Assert.IsFalse(sig.ParametersValid);
 		}
 	}
 }

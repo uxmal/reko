@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class EquivalenceClassBuilderTests
@@ -41,8 +41,8 @@ namespace Decompiler.UnitTests.Typing
 			TypeFactory factory = new TypeFactory();
 			TypeStore store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			Identifier id1 = new Identifier("id2", 1, PrimitiveType.Word32, null);
-			Identifier id2 = new Identifier("id2", 2, PrimitiveType.Word32, null);
+			Identifier id1 = new Identifier("id2", PrimitiveType.Word32, null);
+			Identifier id2 = new Identifier("id2", PrimitiveType.Word32, null);
 			Assignment ass = new Assignment(id1, id2);
 			ass.Accept(eqb);
 
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void ArrayAccess()
 		{
-            ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", 1, PrimitiveType.Pointer32, null), new Identifier("i", 1, PrimitiveType.Int32, null));
+            ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", PrimitiveType.Pointer32, null), new Identifier("i", PrimitiveType.Int32, null));
 			e.Accept(eqb);
 			Assert.AreEqual("T_3", e.TypeVariable.ToString());
 			Assert.AreEqual("T_1", e.Array.TypeVariable.ToString());
@@ -66,8 +66,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void SegmentedAccess()
 		{
-			Identifier ds = new Identifier("ds", 1, PrimitiveType.SegmentSelector, null);
-			Identifier bx = new Identifier("bx", 2, PrimitiveType.Word16, null);
+			Identifier ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
+			Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
 			SegmentedAccess mps = new SegmentedAccess(MemoryIdentifier.GlobalMemory, ds, bx, PrimitiveType.Word32);
 			mps.Accept(eqb);
 			Assert.AreEqual("T_3", mps.TypeVariable.Name);

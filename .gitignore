@@ -1,0 +1,7 @@
+[Oo]bj
+[Bb]in
+*.opensdf
+*.sdf
+*.suo
+*.csproj.user
+TestResults

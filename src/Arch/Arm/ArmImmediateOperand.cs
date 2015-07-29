@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class ArmImmediateOperand : ImmediateOperand
     {
@@ -36,33 +36,33 @@ namespace Decompiler.Arch.Arm
         {
         }
 
-        private new static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
-        private new static ArmImmediateOperand Word32(uint w) { return new ArmImmediateOperand(Constant.Word32((int)w)); }
+        public new static ArmImmediateOperand Byte(byte b) { return new ArmImmediateOperand(Constant.Byte(b)); }
+        public new static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
+        public new static ArmImmediateOperand Word32(uint w) { return new ArmImmediateOperand(Constant.Word32((int)w)); }
+        public new static ArmImmediateOperand Word64(ulong dw) { return new ArmImmediateOperand(Constant.Word64(dw)); }
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write("#");
-            int imm8 = Value.ToInt32();
+            long imm8 = Value.ToInt64();
             if (imm8 > 256 && ((imm8 & (imm8 - 1)) == 0))
             {
                 /* only one bit set, and that later than bit 8.
                  * Represent as 1<<... .
                  */
                 writer.Write("1<<");
+                uint n = 0;
+                while ((imm8 & 0xF) == 0)
                 {
-                    uint n = 0;
-                    while ((imm8 & 15) == 0)
-                    {
-                        n += 4; imm8 = imm8 >> 4;
-                    }
-                    // Now imm8 is 1, 2, 4 or 8. 
-                    n += (uint)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
-                    writer.Write(n);
+                    n += 4; imm8 = imm8 >> 4;
                 }
+                // Now imm8 is 1, 2, 4 or 8. 
+                n += (uint)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
+                writer.Write(n);
             }
             else
             {
-                if (((int)imm8) < 0 && ((int)imm8) > -100)
+                if (imm8 < 0 && imm8 > -100)
                 {
                     writer.Write('-'); imm8 = -imm8;
                 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypeVarReplacerTests : TypingTestBase
@@ -42,9 +42,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TvrReplaceInMem()
 		{
-			var id1 = new Identifier("pptr", 1, PrimitiveType.Word32, null);
-			var id2 = new Identifier("ptr", 2, PrimitiveType.Word32, null);
-			var id3 = new Identifier("v", 3, PrimitiveType.Word32, null);
+			var id1 = new Identifier("pptr", PrimitiveType.Word32, null);
+			var id2 = new Identifier("ptr", PrimitiveType.Word32, null);
+			var id3 = new Identifier("v", PrimitiveType.Word32, null);
 			var ass1 = new Assignment(id2, MemLoad(id1, 0, PrimitiveType.Word32));
 			var ass2 = new Assignment(id3, MemLoad(id2, 0, PrimitiveType.Word32));
 			eqb.VisitAssignment(ass1);
@@ -52,6 +52,7 @@ namespace Decompiler.UnitTests.Typing
 
             var prog = new Program();
             prog.Architecture = new FakeArchitecture();
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
             trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
@@ -76,16 +77,14 @@ namespace Decompiler.UnitTests.Typing
 			Verify(outputFilename);
 		}
 
-
-
 		[SetUp]
 		public void Setup()
 		{
-            
 			factory = new TypeFactory();
 			store = new TypeStore();
 			eqb = new EquivalenceClassBuilder(factory, store);
-			dtb = new DataTypeBuilder(factory, store, new FakeArchitecture());
+            var platform = new DefaultPlatform(null, new FakeArchitecture());
+			dtb = new DataTypeBuilder(factory, store, platform);
 		}
 
 		private void Verify(string outputFilename)

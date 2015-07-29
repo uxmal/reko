@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
 	/// <summary>
 	/// Formats intermediate-level instructions or abstract syntax statements.
@@ -82,6 +83,7 @@ namespace Decompiler.Core.Output
             precedences[Operator.FDiv] = 4;
             precedences[Operator.IAdd] = 5;
             precedences[Operator.ISub] = 5;
+            precedences[Operator.USub] = 5;
             precedences[Operator.FAdd] = 5;
             precedences[Operator.FSub] = 5;
             precedences[Operator.Sar] = 6;
@@ -144,16 +146,16 @@ namespace Decompiler.Core.Output
 
         public void VisitAddress(Address addr)
         {
-            if (addr.Selector == 0)
+            if (addr.IsNull)
             {
-                if (addr.Offset == 0)
-                    WriteNull();
-                else 
-                    writer.Write("0x{0:X8}", addr.Offset);
+                WriteNull();
             }
             else
             {
-                writer.Write(addr.ToString());
+                var s = addr.ToString();
+                if (!s.Contains(':'))
+                    s = string.Format("0x{0}", s);
+                writer.Write(s);
             }
         }
 
@@ -191,7 +193,7 @@ namespace Decompiler.Core.Output
 		{
 			int prec = SetPrecedence(PrecedenceCase);
 			writer.Write("(");
-			writer.Write(cast.DataType.ToString());        //$TODO: use a TypeFormatter
+            cast.DataType.Accept(new TypeFormatter(writer, true));
 			writer.Write(") ");
 			cast.Expression.Accept(this);
 			ResetPresedence(prec);
@@ -209,10 +211,11 @@ namespace Decompiler.Core.Output
             if (!c.IsValid)
             {
                 writer.Write("<invalid>");
+                return;
             }
-            else
+            PrimitiveType t = c.DataType as PrimitiveType;
+            if (t != null)
             {
-                PrimitiveType t = (PrimitiveType)c.DataType;
                 if (t.Domain == Domain.Boolean)
                 {
                     writer.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
@@ -222,6 +225,12 @@ namespace Decompiler.Core.Output
                     object v = c.GetValue();
                     writer.Write(FormatString(t, v), v);
                 }
+                return;
+            }
+            StringConstant s = c as StringConstant;
+            if (s != null)
+            {
+                writer.Write("{0}{1}{0}", '"', s.GetValue());
             }
         }
 
@@ -417,6 +426,24 @@ namespace Decompiler.Core.Output
             ci.Callee.Accept(this);
             writer.Write(" ({0})", ci.CallSite);
 			writer.Terminate();
+            if (ci.Uses.Count > 0)
+            {
+                writer.Indentation += writer.TabSize;
+                writer.Indent();
+                writer.Write("uses: ");
+                writer.Write(string.Join(",", ci.Uses.OrderBy(u => ((Identifier)(u.Expression)).Name).Select(u => u.Expression)));
+                writer.Terminate();
+                writer.Indentation -= writer.TabSize;
+            }
+            if (ci.Definitions.Count > 0)
+            {
+                writer.Indentation += writer.TabSize;
+                writer.Indent();
+                writer.Write("defs: ");
+                writer.Write(string.Join(",", ci.Definitions.OrderBy(d => ((Identifier)d.Expression).Name).Select(d => d.Expression)));
+                writer.Terminate();
+                writer.Indentation -= writer.TabSize;
+            }
 		}
 
 		public void VisitDeclaration(Declaration decl)
@@ -554,6 +581,15 @@ namespace Decompiler.Core.Output
             writer.Terminate(":");
             writer.Indentation += writer.TabSize;
         }
+
+        public void VisitDefault(AbsynDefault d)
+        {
+            writer.Indentation -= writer.TabSize;
+            writer.Indent();
+            writer.WriteKeyword("default");
+            writer.Terminate(":");
+            writer.Indentation += writer.TabSize;
+        }
 		
         public void VisitContinue(AbsynContinue cont)
 		{
@@ -677,7 +713,8 @@ namespace Decompiler.Core.Output
                 case 2: return "0x{0:X4}";
                 case 4: return "0x{0:X8}";
                 case 8: return "0x{0:X16}";
-                default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} are not supported.", type.Size));
+                case 16: return "0x{0:X16}";
+                default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bytes are not supported.", type.Size));
                 }
             }
         }
@@ -696,6 +733,12 @@ namespace Decompiler.Core.Output
 			writer.Write(lbl.Name);
 			writer.Terminate(":");
 		}
+
+        public void VisitLineComment(AbsynLineComment comment)
+        {
+            writer.WriteComment("// " + comment.Comment);
+            writer.Terminate();
+        }
 
 		public void VisitReturn(AbsynReturn ret)
 		{

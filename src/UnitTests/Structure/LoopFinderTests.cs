@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class LoopFinderTests : StructureTestBase
@@ -71,12 +71,13 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void LoopFinder_Reg00013()
         {
-            Program prog = RewriteProgram("Fragments/regressions/r00013.asm", new Address(0x800, 0));
+            Program prog = RewriteProgramMsdos("Fragments/regressions/r00013.asm", Address.SegPtr(0x800, 0));
             ProcedureStructureBuilder psb = new ProcedureStructureBuilder(prog.Procedures.Values[0]);
             proc = psb.Build();
             psb.AnalyzeGraph();
 
-            LoopFinder lf = new LoopFinder(proc.Ordering[23], proc.Ordering[0], proc.Ordering);
+            proc.Dump();
+            var lf = new LoopFinder(proc.Ordering[23], proc.Ordering[0], proc.Ordering);
             var intervalNodes = proc.Nodes[23].Interval.FindIntervalNodes(0);
             var loopNodes = lf.FindNodesInLoop(intervalNodes);
             proc.Dump();

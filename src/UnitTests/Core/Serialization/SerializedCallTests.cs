@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedCallTests
@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-			SerializedCall_v1 sc = new SerializedCall_v1(new Address(0x01004000), sig);
+			SerializedCall_v1 sc = new SerializedCall_v1(Address.Ptr32(0x01004000), sig);
 			Assert.AreEqual("01004000", sc.InstructionAddress);
 			Assert.AreEqual("bx", ((Register_v1) sc.Signature.Arguments[0].Kind).Name);
 		}

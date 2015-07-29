@@ -1,4 +1,5 @@
 // fn0C00_0000
+// Return size: 2
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -10,6 +11,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	call fn0C00_000A (retsize: 2;)
 	branch Test(ULT,C) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
@@ -21,6 +23,7 @@ l0C00_0009:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 // fn0C00_000A
+// Return size: 2
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -34,6 +37,7 @@ void fn0C00_000A()
 fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:
+	sp = fp
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = 0x0300

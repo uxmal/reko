@@ -4,6 +4,7 @@ void fn0C00_0000(Register selector ds)
 // Trashed: SCZO ax cx dx al cl dl ah ch dh
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -18,6 +19,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	cx = 0x0064
 	sp = fp - 0x0002
 	wLoc02 = 0x0064
@@ -35,6 +37,7 @@ Register word16 fn0C00_000F(Stack word16 wArg02)
 // Preserved: sp bp
 // Stack args: Stack +0002(16)
 // fn0C00_000F
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -54,6 +57,7 @@ word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002

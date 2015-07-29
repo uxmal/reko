@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     // http://www.e-tradition.net/bytes/6502/6502_instruction_set.html
 
@@ -41,12 +41,10 @@ namespace Decompiler.Arch.Mos6502
             this.rdr = rdr;
         }
 
-        public override Instruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             var op = rdr.ReadByte();
             var opRec = opRecs[op];
@@ -130,7 +128,7 @@ namespace Decompiler.Arch.Mos6502
                         Mode = AddressMode.Immediate,
                         Offset = Constant.Create(
                             PrimitiveType.Ptr16,
-                            (rdr.Address.Offset + offset)),
+                            (rdr.Address.ToUInt16() + offset)),
                     };
                     break;
                 default: throw new NotImplementedException(string.Format("Unknown format character {0}.", fmt[i - 1]));
@@ -141,9 +139,9 @@ namespace Decompiler.Arch.Mos6502
                 Code = opRec.Code,
                 Operand = operand,
                 Address = addr,
-                Length = rdr.Address - addr,
+                Length = (int)(rdr.Address - addr),
             };
-            return true;
+            return instr;
         }
 
         private Operand Indirect()
@@ -356,7 +354,7 @@ new OpRec(Opcode.illegal, ""),
     new OpRec(Opcode.illegal, ""),
  
 new OpRec(Opcode.bcc, "j"),
- 	    new OpRec(Opcode.sta, "Iy"),
+ 	new OpRec(Opcode.sta, "Iy"),
  	new OpRec(Opcode.illegal, ""),
  	new OpRec(Opcode.illegal, ""),
  	new OpRec(Opcode.sty, "zx"),
@@ -408,7 +406,7 @@ new OpRec(Opcode.bcs, "j"),
     new OpRec(Opcode.illegal, ""),
  
         // C0
-        new OpRec(Opcode.cpy, "#"),
+    new OpRec(Opcode.cpy, "#"),
         new OpRec(Opcode.cmp, "Ix"),
         new OpRec(Opcode.illegal, ""),
         new OpRec(Opcode.illegal, ""),

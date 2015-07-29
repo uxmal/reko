@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.ComponentModel.Design;
 
-namespace Decompiler.Loading
+namespace Reko.Loading
 {
     /// <summary>
     /// Class that abstracts the process of loading the "code", in whatever format it is in,
@@ -36,16 +37,29 @@ namespace Decompiler.Loading
     /// </summary>
     public class Loader : ILoader
     {
-        private IDecompilerConfigurationService cfgSvc;
-        private DecompilerEventListener eventListener;
+        private IConfigurationService cfgSvc;
+        private UnpackingService unpackerSvc;
 
         public Loader(IServiceProvider services)
         {
             this.Services = services;
-            this.cfgSvc = services.GetService<IDecompilerConfigurationService>();
+            this.cfgSvc = services.RequireService<IConfigurationService>();
+            this.unpackerSvc = new UnpackingService(services);
+            this.unpackerSvc.LoadSignatureFiles();
+            Services.RequireService<IServiceContainer>().AddService(typeof(IUnpackerService), unpackerSvc);
         }
 
+        public string DefaultToFormat { get; set; }
         public IServiceProvider Services { get; private set; }
+
+        public Program AssembleExecutable(string filename, string assemblerName, Address addrLoad)
+        {
+            var bytes = LoadImageBytes(filename, 0);
+            var asm = cfgSvc.GetAssembler(assemblerName);
+            if (asm == null)
+                throw new ApplicationException(string.Format("Unknown assembler name '{0}'.", assemblerName));
+            return AssembleExecutable(filename, bytes, asm, addrLoad);
+        }
 
         public Program AssembleExecutable(string fileName, Assembler asm, Address addrLoad)
         {
@@ -55,23 +69,11 @@ namespace Decompiler.Loading
 
         public Program AssembleExecutable(string fileName, byte[] image, Assembler asm, Address addrLoad)
         {
-            var lr = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
-            Program program = new Program(
-                lr.Image,
-                new ImageMap(lr.Image),
-                lr.Architecture,
-                lr.Platform);
+            var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = Path.GetFileName(fileName);
             program.EntryPoints.AddRange(asm.EntryPoints);
             program.EntryPoints.Add(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
-            CopyImportThunks(asm.ImportThunks, program);
-            return program;
-        }
-
-        public Program LoadExecutable(InputFile inputFile)
-        {
-            var program = LoadExecutable(inputFile.Filename, LoadImageBytes(inputFile.Filename, 0), inputFile.BaseAddress);
-            program.InputFile = inputFile;
+            CopyImportReferences(asm.ImportReferences, program);
             return program;
         }
 
@@ -81,25 +83,66 @@ namespace Decompiler.Loading
         /// </summary>
         /// <param name="rawBytes">Image of the executeable file.</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
-        public Program LoadExecutable(string fileName, byte[] image, Address addrLoad)
+        public Program LoadExecutable(string filename, byte[] image, Address addrLoad)
         {
-            ImageLoader imgLoader = FindImageLoader<ImageLoader>(fileName, image, () => new NullImageLoader(Services, image));
+            ImageLoader imgLoader = FindImageLoader<ImageLoader>(
+                filename, 
+                image,
+                () => CreateDefaultImageLoader(filename, image));
             if (addrLoad == null)
             {
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
             }
 
-            var result = imgLoader.Load(addrLoad);
-            Program program = new Program(
-                result.Image,
-                result.ImageMap,
-                result.Architecture,
-                result.Platform);
-            program.Name = Path.GetFileName(fileName);
+            var program = imgLoader.Load(addrLoad);
+            program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
-            CopyImportThunks(imgLoader.ImportThunks, program);
             return program;
+        }
+
+        public ImageLoader CreateDefaultImageLoader(string filename, byte[] image)
+        {
+            var imgLoader = new NullImageLoader(Services, filename, image);
+            var rawFile = cfgSvc.GetRawFile(DefaultToFormat);
+            if (rawFile == null)
+            {
+                this.Services.RequireService<DecompilerEventListener>().Warn(
+                    new NullCodeLocation(""),
+                    "The format of the file is unknown.");
+                return imgLoader;
+            }
+            var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
+            var env = cfgSvc.GetEnvironment(rawFile.Environment);
+            Platform platform;
+            Address baseAddr;
+            Address entryAddr;
+            if (env != null)
+            {
+                platform = env.Load(Services, arch);
+            }
+            else
+            {
+                platform = new DefaultPlatform(Services, arch);
+            }
+            imgLoader.Architecture = arch;
+            imgLoader.Platform = platform;
+            if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
+            {
+                imgLoader.PreferredBaseAddress = baseAddr;
+                entryAddr = baseAddr;
+                if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
+                {
+                    if (!arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
+                        entryAddr = baseAddr;
+                }
+                var state = arch.CreateProcessorState();
+                imgLoader.EntryPoints.Add(new EntryPoint(
+                    entryAddr,
+                    rawFile.EntryPoint.Name,
+                    state));
+            }
+            return imgLoader;
         }
 
         /// <summary>
@@ -110,7 +153,7 @@ namespace Decompiler.Loading
         public TypeLibrary LoadMetadata(string fileName)
         {
             var rawBytes = LoadImageBytes(fileName, 0);
-            MetadataLoader mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
+            var mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
             var result = mdLoader.Load();
             return result;
         }
@@ -139,7 +182,7 @@ namespace Decompiler.Loading
         /// </summary>
         /// <param name="rawBytes"></param>
         /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
-        public T FindImageLoader<T>(string fileName, byte[] rawBytes, Func<T> defaultLoader)
+        public T FindImageLoader<T>(string filename, byte[] rawBytes, Func<T> defaultLoader)
         {
             foreach (LoaderElement e in cfgSvc.GetImageLoaders())
             {
@@ -147,15 +190,11 @@ namespace Decompiler.Loading
                     ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset)
                     ||
                     (!string.IsNullOrEmpty(e.Extension) &&
-                        fileName.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
+                        filename.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return CreateImageLoader<T>(e.TypeName, rawBytes);
+                    return CreateImageLoader<T>(Services, e.TypeName, filename, rawBytes);
                 }
             }
-
-            this.Services.RequireService<DecompilerEventListener>().AddDiagnostic(
-                new NullCodeLocation(""),
-                new ErrorDiagnostic("The format of the file is unknown."));
             return defaultLoader();
         }
 
@@ -201,7 +240,7 @@ namespace Decompiler.Loading
             return bytes.ToArray();
         }
 
-        private uint HexDigit(char digit)
+        public static uint HexDigit(char digit)
         {
             switch (digit)
             {
@@ -217,22 +256,30 @@ namespace Decompiler.Loading
             }
         }
 
-        public T CreateImageLoader<T>(string typeName, byte[] bytes)
+        public static T CreateImageLoader<T>(IServiceProvider services, string typeName, string filename, byte[] bytes)
         {
             Type t = Type.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(t, this.Services, bytes);
+            return (T) Activator.CreateInstance(t, services, filename, bytes);
         }
 
-        protected void CopyImportThunks(Dictionary<uint, PseudoProcedure> importThunks, Program prog)
+        protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program prog)
         {
-            if (importThunks == null)
+            if (importReference == null)
                 return;
 
-            foreach (KeyValuePair<uint, PseudoProcedure> item in importThunks)
+            foreach (var item in importReference)
             {
-                prog.ImportThunks.Add(item.Key, item.Value);
+                prog.ImportReferences.Add(item.Key, item.Value);
+            }
+        }
+
+        protected void CopyInterceptedCalls(Dictionary<Address, ExternalProcedure> interceptedCalls, Program prog)
+        {
+            foreach (var item in interceptedCalls)
+            {
+                prog.InterceptedCalls.Add(item.Key, item.Value);
             }
         }
     }

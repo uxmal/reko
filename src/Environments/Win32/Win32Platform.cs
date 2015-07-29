@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,30 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
 	public class Win32Platform : Platform
 	{
-        private IProcessorArchitecture arch;
 		private SystemService int3svc;
-        private TypeLibrary [] TypeLibs;
+        private SystemService int29svc;
+
+        //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
+        //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
-			this.arch = arch;
             int3svc = new SystemService
             {
                 SyscallInfo = new SyscallInfo
@@ -49,21 +53,97 @@ namespace Decompiler.Environments.Win32
                 Signature = new ProcedureSignature(null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
+            var frame = arch.CreateFrame();
+            int29svc = new SystemService
+            {
+                SyscallInfo = new SyscallInfo
+                {
+                    Vector = 0x29,
+                    RegisterValues = new RegValue[0]
+                },
+                Name = "__fastfail",
+                Signature = new ProcedureSignature(
+                    null,
+                    frame.EnsureRegister(Registers.ecx)), //$bug what about win64?
+                Characteristics = new ProcedureCharacteristics
+                {
+                    Terminates = true
+                }
+            };
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override BitSet CreateImplicitArgumentRegisters()
         {
-            if (TypeLibs == null)
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.cs.SetAliases(bitset, true);
+            Registers.ss.SetAliases(bitset, true);
+            Registers.sp.SetAliases(bitset, true);
+            Registers.esp.SetAliases(bitset, true);
+            Registers.fs.SetAliases(bitset, true);
+            Registers.gs.SetAliases(bitset, true);
+            return bitset;
+        }
+
+        public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            var rw = Architecture.CreateRewriter(
+                rdr,
+                Architecture.CreateProcessorState(),
+                Architecture.CreateFrame(), host);
+            var rtlc = rw.FirstOrDefault();
+            if (rtlc == null || rtlc.Instructions.Count == 0)
+                return null;
+            var jump = rtlc.Instructions[0] as RtlGoto;
+            if (jump == null)
+                return null;
+            var pc = jump.Target as ProcedureConstant;
+            if (pc != null)
+                return pc.Procedure;
+            var access = jump.Target as MemoryAccess;
+            if (access == null)
+                return null;
+            var addrTarget = access.EffectiveAddress as Address;
+            if (addrTarget == null)
             {
-                var envCfg = Services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
-                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
-                    .Where(tl => tl != null).ToArray();
+                var wAddr = access.EffectiveAddress as Constant;
+                if (wAddr == null)
+                {
+                    return null;
+                }
+                addrTarget = MakeAddressFromConstant(wAddr);
             }
+            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
+            if (proc != null)
+                return proc;
+            return host.GetInterceptedCall(addrTarget);
+        }
+
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        {
+            //$REVIEW: common code with Win32_64 platform, consider pushing to base class?
+            EnsureTypeLibraries("win32");
             return TypeLibs.Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)
+                .Select(s => new ExternalProcedure(procName, s))
+                .FirstOrDefault();
+        }
+
+        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            EnsureTypeLibraries("win32");
+            return TypeLibs
+                .Where(t => string.Compare(t.ModuleName, moduleName, true) == 0)
+                .Select(t =>
+                {
+                    SystemService svc;
+                    if (t.ServicesByVector.TryGetValue(ordinal, out svc))
+                    {
+                        return new ExternalProcedure(svc.Name, svc.Signature);
+                    }
+                    else
+                        return null;
+                })
+                .Where(p => p != null)
                 .FirstOrDefault();
         }
 
@@ -71,6 +151,8 @@ namespace Decompiler.Environments.Win32
 		{
 			if (int3svc.SyscallInfo.Matches(vector, state))
 				return int3svc;
+            if (int29svc.SyscallInfo.Matches(vector, state))
+                return int29svc;
 			throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
 		}
 
@@ -79,9 +161,12 @@ namespace Decompiler.Environments.Win32
             get { return "stdapi"; }
         }
 
-        public override ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
+        public override ProcedureSignature SignatureFromName(string fnName)
         {
-            return SignatureGuesser.SignatureFromName(fnName, new TypeLibraryLoader(arch, true), arch);
+            return SignatureGuesser.SignatureFromName(
+                fnName, 
+                new TypeLibraryLoader(Architecture, true),
+                Architecture);
         }
 	}
 }

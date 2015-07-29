@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
     /// <summary>
     /// Unmangles methods and data objects whose names have been mangled using Microsoft's 
@@ -56,11 +56,11 @@ namespace Decompiler.Environments.Win32
         public string ClassName;
         public string Scope;
 
-        public SerializedStructField Parse()
+        public StructField_v1 Parse()
         {
             Expect('?');
             string basicName = ParseBasicName();
-            SerializedStructField typeCode;
+            StructField_v1 typeCode;
             var compoundArgs =     new List<Argument_v1>();
             if (PeekAndDiscard('@'))
             {
@@ -220,7 +220,7 @@ namespace Decompiler.Environments.Win32
             return qualifiers.ToArray();
         }
 
-        public SerializedStructField ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
+        public StructField_v1 ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
         {
             this.compoundArgs = new List<Argument_v1>();
             this.Scope = string.Join("::", qualification);
@@ -230,7 +230,7 @@ namespace Decompiler.Environments.Win32
             case '0':
             case '1':
             case '2':
-                return new SerializedStructField
+                return new StructField_v1
                 {
                     Type = ParseDataTypeCode(compoundArgs),
                     Name = basicName
@@ -261,19 +261,19 @@ namespace Decompiler.Environments.Win32
             default: throw new NotImplementedException();
                
             }
-            return new SerializedStructField
+            return new StructField_v1
             {
                 Type = sig,
                 Name = basicName,
             };
         }
 
-        public SerializedStructField ParseUnqualifiedTypeCode(string basicName)
+        public StructField_v1 ParseUnqualifiedTypeCode(string basicName)
         {
             this.compoundArgs = new List<Argument_v1>();
             if (PeekAndDiscard('Y'))
             {
-                return new SerializedStructField
+                return new StructField_v1
                 {
                     Name = basicName,
                     Type = (SerializedSignature) ParseFunctionTypeCode(),
@@ -282,7 +282,7 @@ namespace Decompiler.Environments.Win32
             else
             {
                 Expect('3');
-                return new SerializedStructField
+                return new StructField_v1
                 {
                     Name = basicName,
                     Type = ParseDataTypeCode(new List<Argument_v1>())
@@ -349,6 +349,10 @@ namespace Decompiler.Environments.Win32
 
         public string ParseThisStorageClass()
         {
+            if (PeekAndDiscard('E'))    // 64-bit ptr
+            {
+                // do nothing?
+            }
             switch (str[i++])
             {
             case 'A': return "";
@@ -550,16 +554,20 @@ namespace Decompiler.Environments.Win32
 
         public SerializedType ParsePointer(List<Argument_v1> compoundArgs)
         {
-            int size = 0;       //$REVIEW how to deal with 64-bitness
+            int size = 4;       //$TODO: should follow platform pointer size, really.
             SerializedType type;
+            if (PeekAndDiscard('E')) // 64-bit pointer
+            {
+                size = 8;
+            }
             switch (str[i++])
             {
-            case 'A': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       //$BUG: assumes 32-bitness
-            case 'B': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const ptr
-            case 'C': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // volatile ptr
-            case 'D': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const volatile ptr
-            case '6': size = 4; type = ParseFunctionTypeCode(); break;     // fn ptr
-            case '8': return ParseMemberFunctionPointerCode(4, compoundArgs);
+            case 'A': type = ParseDataTypeCode(new List<Argument_v1>()); break;       //$BUG: assumes 32-bitness
+            case 'B': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const ptr
+            case 'C': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // volatile ptr
+            case 'D': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const volatile ptr
+            case '6': type = ParseFunctionTypeCode(); break;     // fn ptr
+            case '8': return ParseMemberFunctionPointerCode(size, compoundArgs);
             default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }
             var pType = new PointerType_v1

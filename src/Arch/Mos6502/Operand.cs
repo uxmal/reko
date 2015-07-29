@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public class Operand : MachineOperand
     {
@@ -40,13 +40,13 @@ namespace Decompiler.Arch.Mos6502
         {
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             int o = Offset != null ? Offset.ToUInt16() : 0;
             string fmt;
             switch (Mode)
             {
-            case AddressMode.Accumulator: return "";        // Implicit, never displayed
+            case AddressMode.Accumulator: return;        // Implicit, never displayed
             case AddressMode.Immediate: fmt = "#${0:X2}"; break;
             case AddressMode.ZeroPage: fmt = "${0:X2}"; break;
             case AddressMode.ZeroPageX: 
@@ -60,7 +60,7 @@ namespace Decompiler.Arch.Mos6502
             case AddressMode.IndirectIndexed: fmt = "(%{0:X2}),{1}"; break;
             default: throw new NotSupportedException();
             }
-            return string.Format(fmt, o, Register);
+            writer.Write(string.Format(fmt, o, Register));
         }
     }
 
@@ -77,6 +77,6 @@ namespace Decompiler.Arch.Mos6502
         Indirect,           // ($AABB)
         IndexedIndirect,    // $(AA,x)
         IndirectIndexed,    // $(AA),y
-        Accumulator,
+        Accumulator,        // a
     }
 }

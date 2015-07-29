@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Controls;
+using Reko.Core;
+using Reko.Gui.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,15 +31,18 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Interactor class used to display the decompiler project as a tree view for user browsing.
     /// </summary>
     public class ProjectBrowserService : IProjectBrowserService, ITreeNodeDesignerHost, ICommandTarget
     {
+        public event EventHandler<FileDropEventArgs> FileDropped;
+
         private ITreeView tree;
         private Dictionary<object, TreeNodeDesigner> mpitemToDesigner;
+        private Project project;
 
         public ProjectBrowserService(IServiceProvider services, ITreeView treeView)
         {
@@ -47,6 +50,11 @@ namespace Decompiler.Gui
             this.tree = treeView;
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             this.tree.AfterSelect += tree_AfterSelect;
+            this.tree.DragEnter += tree_DragEnter;
+            this.tree.DragOver += tree_DragOver;
+            this.tree.DragDrop += tree_DragDrop;
+            this.tree.DragLeave += tree_DragLeave;
+            this.tree.MouseWheel += tree_MouseWheel;
         }
 
         public IServiceProvider Services { get; private set; }
@@ -56,32 +64,32 @@ namespace Decompiler.Gui
             Load(null);
         }
 
-        public void Load(IEnumerable<Program> progs)
+        public void Load(Project project)
         {
             tree.ContextMenu = Services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxBrowser);
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
-            if ((progs == null || progs.Count() == 0))
+            if (project == null)
             {
                 tree.ShowRootLines = false;
                 tree.ShowNodeToolTips = false;
                 tree.Nodes.Clear();
                 tree.Nodes.Add(tree.CreateNode("(No project loaded)"));
-                return;
             }
             else 
             {
-                AddComponents(progs);
-                //project.InputFiles.CollectionChanged += InputFiles_CollectionChanged;
+                AddComponents(project.Programs);
+                AddComponents(project.MetadataFiles);
+                project.MetadataFiles.CollectionChanged += TypeLibraries_CollectionChanged;
                 tree.ShowNodeToolTips = true;
                 tree.ShowRootLines = true;
             }
+            this.project = project;
         }
 
         public void Reload()
         {
-            var programs = tree.Nodes.Select(n => (Program) n.Tag).ToArray();
-            Load(programs);
+            Load(project);
         }
 
         public void AddComponents(IEnumerable components)
@@ -178,7 +186,7 @@ namespace Decompiler.Gui
             return GetDesigner(tree.SelectedNode.Tag);
         }
 
-        void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void TypeLibraries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -204,6 +212,45 @@ namespace Decompiler.Gui
             if (des == null)
                 return false;
             return des.Execute(cmdId);
+        }
+
+        void tree_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        void tree_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        void tree_DragLeave(object sender, EventArgs e)
+        {
+        }
+
+        void tree_DragDrop(object sender, DragEventArgs e)
+        {
+            var eh = FileDropped;
+            if (eh != null && e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var filename = (string) e.Data.GetData(DataFormats.FileDrop);
+                eh(this, new FileDropEventArgs(filename));
+            }
+        }
+
+        private void tree_MouseWheel(object sender, MouseEventArgs e)
+        {
+
+            //model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
+            //RecomputeLayout();
+            //OnScroll();
+            //tree,Invalidate();
         }
     }
 }

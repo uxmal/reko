@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	public class StatementList : List<Statement>
 	{
@@ -33,12 +33,12 @@ namespace Decompiler.Core
 			this.block = block;
 		}
 
-        public void Add(uint linearAddress, Instruction instr)
+        public void Add(ulong linearAddress, Instruction instr)
         {
             Add(new Statement(linearAddress, instr, block));
         }
 
-        public void Insert(int position, uint linearAddress, Instruction instr)
+        public void Insert(int position, ulong linearAddress, Instruction instr)
         {
             base.Insert(position, new Statement(linearAddress, instr, block));
         }

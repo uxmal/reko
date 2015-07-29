@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Gathers type information, infers structure, union, and array types,
@@ -69,20 +69,21 @@ namespace Decompiler.Typing
             factory = prog.TypeFactory;
             store = prog.TypeStore;
 
-            aen = new ExpressionNormalizer(prog.Architecture.PointerType);
+            aen = new ExpressionNormalizer(prog.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store);
-            dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+            dtb = new DataTypeBuilder(factory, store, prog.Platform);
             trco = new TraitCollector(factory, store, dtb, prog);
             //dpa = new DerivedPointerAnalysis(factory, store, prog.Architecture);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,prog, eventListener);
             ctn = new ComplexTypeNamer();
-            ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
+            ter = new TypedExpressionRewriter(prog);
 
-   //         RestrictProcedures(0, 1, true);
+            // RestrictProcedures(prog, 0, 1, true); //$DEBUG
+            eventListener.ShowStatus("Gathering primitive datatypes from instructions.");
 			aen.Transform(prog);
 			eqb.Build(prog);
-            eventListener.ShowStatus("Collecting datatype traits.");
+            eventListener.ShowStatus("Collecting datatype usage traits.");
 			trco.CollectProgramTraits(prog);
             eventListener.ShowStatus("Building equivalence classes.");
 			dtb.BuildEquivalenceClassDataTypes();
@@ -90,7 +91,7 @@ namespace Decompiler.Typing
 			tvr.ReplaceTypeVariables();
 
             eventListener.ShowStatus("Transforming datatypes.");
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, prog);
+			var ppr = new PtrPrimitiveReplacer(factory, store, prog);
 			ppr.ReplaceAll();
 
 			trans.Transform();
@@ -101,11 +102,10 @@ namespace Decompiler.Typing
 		}
 
         /// <summary>
-        /// $DEBUG: for debugging only, only performs type analysis on the count procedures starting at
+        /// $DEBUG: for debugging only, only performs type analysis on the 
+        /// <param name="count"/> procedures starting at
         /// procedure start.
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="p_2"></param>
         [Conditional("DEBUG")]
         private void RestrictProcedures(Program prog, int start, int count, bool dumpProcedures)
         {
@@ -118,10 +118,10 @@ namespace Decompiler.Typing
             prog.Procedures.Clear();
             for (uint i = 0; i < procs.Length; ++i)
             {
-                prog.Procedures[new Address(i)] = procs[i];
+                prog.Procedures[Address.Ptr32(i)] = procs[i];
                 if (dumpProcedures)
                 {
-                    procs[i].Dump(true, false);
+                    procs[i].Dump(true);
                 }
                 else
                 {

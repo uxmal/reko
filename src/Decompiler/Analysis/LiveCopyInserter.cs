@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using System;
+using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	public class LiveCopyInserter
 	{
@@ -55,7 +56,7 @@ namespace Decompiler.Analysis
 		public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
 		{
 			Statement stm = new Statement(0, null, b);
-            SsaIdentifier sidNew = ssaIds.Add(ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
+            SsaIdentifier sidNew = ssaIds.Add((Identifier)ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
 			stm.Instruction = new Assignment(sidNew.Identifier, idOld);
 			b.Statements.Insert(i, stm);
 			return sidNew.Identifier;
@@ -91,9 +92,8 @@ namespace Decompiler.Analysis
 
 		public void Transform()
 		{
-			for (int i = 0; i < ssaIds.Count; ++i)
+			foreach (var sid in ssaIds.ToArray())
 			{
-				SsaIdentifier sid = ssaIds[i];
 				if (sid.DefStatement == null || sid.Uses.Count == 0)
 					continue;
 				PhiAssignment ass = sid.DefStatement.Instruction as PhiAssignment;

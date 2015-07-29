@@ -1,4 +1,5 @@
 // SegmentedPointerProc
+// Return size: 0
 void SegmentedPointerProc()
 SegmentedPointerProc_entry:
 	// succ:  l1
@@ -11,7 +12,7 @@ SegmentedPointerProc_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct)
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_3: (segment (300 segptr32 ptr0300) (302 word16 w0302) (304 word16 w0304))
 	T_3 (in ds : selector)
 Eq_12: (segment)
@@ -19,7 +20,7 @@ Eq_12: (segment)
 Eq_13: (struct (4 word16 w0004))
 	T_13 (in SLICE(es_bx, word16, 0) : word16)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

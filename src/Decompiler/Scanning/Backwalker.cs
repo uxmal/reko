@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core.Rtl;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core.Rtl;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	/// <summary>
 	/// Walks code backwards to find "dominating" comparisons against constants,
@@ -44,6 +45,8 @@ namespace Decompiler.Scanning
 
 		public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
 		{
+            if (xfer is RtlGoto) //$DEBUG
+                xfer.ToString();
             this.host = host;
             this.eval = eval;
             var target = xfer.Target;
@@ -55,7 +58,7 @@ namespace Decompiler.Scanning
             var mem = target as MemoryAccess;
             if (mem == null)
             {
-                Index = null;
+                Index = RegisterOf(target as Identifier);
             }
             else
             {
@@ -68,18 +71,11 @@ namespace Decompiler.Scanning
         /// The register used to perform a table-dispatch switch.
         /// </summary>
         public RegisterStorage Index { get; private set; }
+        public Expression IndexExpression { get; set; }
         public Identifier UsedFlagIdentifier { get; set; } 
         public int Stride { get; private set; }
         public Address VectorAddress { get; private set; }
         public List<BackwalkOperation> Operations { get; private set; }
-
-        private IEnumerable<Statement> StatementsInReverseOrder(Block block)
-        {
-            for (int i = block.Statements.Count - 1; i >= 0; --i)
-            {
-                yield return block.Statements[i];
-            }
-        }
 
         /// <summary>
         /// Walks backward along the <paramref name="block"/>, recording the operations done to the idx register.
@@ -92,7 +88,7 @@ namespace Decompiler.Scanning
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
             bool continueBackwalking = BackwalkInstructions(Index, block);
-            if (Index == null)
+            if ((Index == null || Index == RegisterStorage.None) && IndexExpression == null)
                 return null;	// unable to find guard.
 
             if (continueBackwalking)
@@ -102,7 +98,7 @@ namespace Decompiler.Scanning
                     return null;	// seems unguarded to me.
 
                 BackwalkInstructions(Index, block);
-                if (Index == null)
+                if (Index == null && IndexExpression == null)
                     return null;
             }
             Operations.Reverse();
@@ -139,8 +135,14 @@ namespace Decompiler.Scanning
                             }
                             return false;
                         }
+                        if (binSrc.Operator is IMulOperator && immSrc != null)
+                        {
+                            Operations.Add(new BackwalkOperation(BackwalkOperator.mul, immSrc.ToInt32()));
+                            return true;
+                        }
                     }
-                    if (binSrc.Operator == Operator.Xor && 
+                    if (Index != null &&
+                        binSrc.Operator == Operator.Xor && 
                         binSrc.Left == ass.Dst && 
                         binSrc.Right == ass.Dst && 
                         RegisterOf(ass.Dst) == Index.GetSubregister(8,8))
@@ -158,11 +160,14 @@ namespace Decompiler.Scanning
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
-                    if (binCmp != null && binCmp.Operator is ISubOperator)
+                    if (binCmp != null && 
+                        (binCmp.Operator is ISubOperator ||
+                         binCmp.Operator is USubOperator))
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
-                        if (idLeft != RegisterStorage.None &&
-                            (idLeft == Index || idLeft == Index.GetPart(PrimitiveType.Byte)))
+                        if (idLeft != null &&
+                            (idLeft == Index || idLeft == Index.GetPart(PrimitiveType.Byte)) ||
+                           (IndexExpression != null && IndexExpression.ToString() == idLeft.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
                         {
                             var immSrc = binCmp.Right as Constant;
                             if (immSrc != null)
@@ -174,17 +179,22 @@ namespace Decompiler.Scanning
                     }
                 }
 
-                var memSrc = ass.Src as MemoryAccess;
+                var src = ass.Src;
+                var castSrc = src as Cast;
+                if (castSrc != null)
+                    src = castSrc.Expression;
+                var memSrc = src as MemoryAccess;
                 var regDst = RegisterOf(ass.Dst);
                 if (memSrc != null && (regDst == Index || regDst.IsSubRegisterOf(Index)))
                 {
                     // R = Mem[xxx]
                     var rIdx = Index;
                     var rDst = RegisterOf(ass.Dst);
-                    if (rDst != rIdx.GetSubregister(0, 8))
+                    if (rDst != rIdx.GetSubregister(0, 8) && castSrc == null)
                     {
                         Index = RegisterStorage.None;
-                        return false;
+                        IndexExpression = src;
+                        return true;
                     }
 
                     var binEa = memSrc.EffectiveAddress as BinaryExpression;
@@ -193,12 +203,17 @@ namespace Decompiler.Scanning
                     var memOffset = binEa.Right as Constant;
                     var scale = GetMultiplier(binEa.Left);
                     var baseReg = GetBaseRegister(binEa.Left);
-                    if (memOffset != null)
+                    if (memOffset != null && binEa.Operator == Operator.IAdd)
                     {
-                        Operations.Add(new BackwalkDereference(memOffset.ToInt32(), scale));
-                        Index = baseReg;
-                        return true;
+                        var mOff = memOffset.ToInt32();
+                        if (mOff > 0x200)
+                        { 
+                            Operations.Add(new BackwalkDereference(memOffset.ToInt32(), scale));
+                            Index = baseReg;
+                            return true;
+                        }
                     }
+                    return false;
                 }
 
                 if (regSrc != null && regDst == Index)
@@ -252,7 +267,7 @@ namespace Decompiler.Scanning
             Block block)
         {
             DumpBlock(regIdx, block);
-            return BackwalkInstructions(regIdx, StatementsInReverseOrder(block));
+            return BackwalkInstructions(regIdx, block.Statements.Reverse<Statement>());
         }
 
         [Conditional("DEBUG")]
@@ -315,6 +330,11 @@ namespace Decompiler.Scanning
             }
         }
 		
+        /// <summary>
+        /// Given a memory access, attempts to determine the index register.
+        /// </summary>
+        /// <param name="mem"></param>
+        /// <returns></returns>
         public RegisterStorage DetermineIndexRegister(MemoryAccess mem)
         {
             Stride = 0;
@@ -327,30 +347,41 @@ namespace Decompiler.Scanning
             var bin = mem.EffectiveAddress as BinaryExpression;
             if (bin == null)
                 return null;
+
             var idLeft = bin.Left as Identifier;
             var idRight = bin.Right as Identifier;
             if (idRight != null && idLeft == null)
             {
+                // Rearrange so that the effective address is [id + C]
                 var t = idLeft;
                 idLeft = idRight;
                 idRight = t;
             }
             if (idLeft != null && idRight != null)
+            {
+                // Can't handle [id1 + id2] yet.
                 return null;
+            }
             if (idLeft != null)
             {
+                // We have [id + C]
                 Stride = 1;
                 DetermineVector(mem, bin.Right);
-                return RegisterOf(idLeft);
+                if (host.IsValidAddress(VectorAddress))
+                    return RegisterOf(idLeft);
+                else
+                    return null;
             }
             var binLeft = bin.Left as BinaryExpression;
             if (IsScaledIndex(binLeft))
             {
+                // We have [(id * C1) + C2]
                 return DetermineVectorWithScaledIndex(mem, bin.Right, binLeft);
             }
             var binRight = bin.Right as BinaryExpression;
             if (IsScaledIndex(binRight))
             {
+                // We may have [C1 + (id * C2)]
                 return DetermineVectorWithScaledIndex(mem, bin.Left, binRight);
             }
             return null;
@@ -382,12 +413,12 @@ namespace Decompiler.Scanning
                 var selector = segmem.BasePointer.Accept(eval) as Constant;
                 if (selector != null)
                 {
-                    VectorAddress = new Address(selector.ToUInt16(), vector.ToUInt16());
+                    VectorAddress = Address.SegPtr(selector.ToUInt16(), vector.ToUInt16());
                 }
             }
             else
             {
-                VectorAddress = new Address(vector.ToUInt32());
+                VectorAddress = host.MakeAddressFromConstant(vector);   //$BUG: 32-bit only, what about 16- and 64-
             }
         }
 
@@ -427,6 +458,7 @@ namespace Decompiler.Scanning
 		{
 			return n != 0 && (n & (n - 1)) == 0;
 		}
+
 
     }
 }

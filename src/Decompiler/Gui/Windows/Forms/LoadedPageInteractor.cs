@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -32,7 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public interface ILoadedPageInteractor : IPhasePageInteractor
     {
@@ -52,9 +52,9 @@ namespace Decompiler.Gui.Windows.Forms
             memSvc = services.RequireService<ILowLevelViewService>();
 
             mpCmdidToCommand = new Hashtable();
-            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments));
-            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned));
-            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewFindFragments));
+            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowAllFragments));
+            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowUnscanned));
+            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewFindFragments));
         }
 
         protected MenuCommand AddCommand(CommandID cmdId)
@@ -66,7 +66,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -80,12 +80,12 @@ namespace Decompiler.Gui.Windows.Forms
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
             workerDialogSvc.SetCaption("Scanning source program.");
-            Decompiler.ScanProgram();
+            Decompiler.ScanPrograms();
         }
 
         public override void EnterPage()
         {
-            memSvc.ViewImage(Decompiler.Programs.First());
+            memSvc.ViewImage(Decompiler.Project.Programs.First());
             Services.RequireService<IProjectBrowserService>().Reload();
         }
 
@@ -101,10 +101,10 @@ namespace Decompiler.Gui.Windows.Forms
         public bool ViewUnscannedBlocks()
         {
             var srSvc = Services.RequireService<ISearchResultService>();
-            var hits = Decompiler.Programs
+            var hits = Decompiler.Project.Programs
                 .SelectMany(p => p.ImageMap.Items
                         .Where(i => i.Value.DataType is UnknownType)
-                        .Select(i => new AddressSearchHit { Program = p, LinearAddress = i.Key.Linear }));
+                        .Select(i => new AddressSearchHit { Program = p, Address = i.Key}));
             srSvc.ShowSearchResults(
                 new AddressSearchResult(
                     Services,
@@ -114,7 +114,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId.ID];
                 if (cmd == null)
@@ -129,7 +129,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
             if (range.Begin == null || range.End == null)
                 return;
-            if (range.Begin.Linear == range.End.Linear)       //$REFACTOR: make bytespan a method of addressrange.
+            if (range.Begin.ToLinear() == range.End.ToLinear())       //$REFACTOR: make bytespan a method of addressrange.
             {
                 sbSvc.SetText(string.Format("[{0}]", range.Begin));
             }

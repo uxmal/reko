@@ -1,16 +1,18 @@
 // Before ///////
 // proc1
+// Return size: 0
 void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Mem4[ds:0x0300:word16] = Mem0[ds:Mem0[ds:bx:word16]:word16]
+	Mem3[ds:0x0300:word16] = Mem0[ds:Mem0[ds:bx:word16]:word16]
 	return
 	// succ:  proc1_exit
 proc1_exit:
 
 // After ///////
 // proc1
+// Return size: 0
 void proc1()
 proc1_entry:
 	// succ:  l1
@@ -22,11 +24,11 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment "Eq_2" (300 word16 w0300))
 	T_2 (in ds : selector)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))
@@ -58,7 +60,7 @@ T_8: (in 0x0300 : word16)
   Class: Eq_8
   DataType: (memptr (ptr Eq_2) word16)
   OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
-T_9: (in Mem4[ds:0x0300:word16] : word16)
+T_9: (in Mem3[ds:0x0300:word16] : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16

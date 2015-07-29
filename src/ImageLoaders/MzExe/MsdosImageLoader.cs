@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Environments.Msdos;
-using Decompiler.Core;
+using Reko.Arch.X86;
+using Reko.Environments.Msdos;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
-	/// Loads MS-DOS program images.
+	/// Loads MS-DOS binary executables.
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{
@@ -37,7 +37,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private LoadedImage imgLoaded;
         private ImageMap imgLoadedMap;
 
-		public MsdosImageLoader(IServiceProvider services, ExeImageLoader exe) : base(services, exe.RawImage)
+		public MsdosImageLoader(IServiceProvider services, string filename, ExeImageLoader exe) : base(services, filename, exe.RawImage)
 		{
 			this.exe = exe;
             this.arch = new IntelArchitecture(ProcessorMode.Real);
@@ -46,10 +46,11 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(0x0800, 0); }
-		}
+			get { return Address.SegPtr(0x0800, 0); }
+            set { throw new NotImplementedException(); }
+        }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             int iImageStart = (exe.e_cparHeader * 0x10);
             int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
@@ -57,8 +58,8 @@ namespace Decompiler.ImageLoaders.MzExe
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new LoadedImage(addrLoad, bytes);
-            imgLoadedMap = new ImageMap(imgLoaded);
-            return new LoaderResults(imgLoaded, new ImageMap(imgLoaded), arch, platform);
+            imgLoadedMap = imgLoaded.CreateImageMap();
+            return new Program(imgLoaded, imgLoadedMap, arch, platform);
         }
 
 		public override RelocationResults Relocate(Address addrLoad)
@@ -77,14 +78,14 @@ namespace Decompiler.ImageLoaders.MzExe
 				imgLoaded.WriteLeUInt16(offset, seg);
 				relocations.AddSegmentReference(offset, seg);
 
-				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 				--i;
 			}
 		
 			// Found the start address.
 
-			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
-			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWrite);
+			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
+			imageMap.AddSegment(Address.SegPtr(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWriteExecute);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
                 relocations);

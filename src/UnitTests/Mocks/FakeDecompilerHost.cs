@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeDecompilerHost : DecompilerHost
     {
@@ -33,39 +34,39 @@ namespace Decompiler.UnitTests.Mocks
         private StringWriter decompiled = new StringWriter();
         private StringWriter typesWriter = new StringWriter();
         private StringWriter globalsWriter = new StringWriter();
-        private IDecompilerConfigurationService config = new FakeDecompilerConfiguration();
+        private IConfigurationService config = new FakeDecompilerConfiguration();
 
         public TextWriter CreateDecompiledCodeWriter(string file)
         {
             return decompiled;
         }
 
-        IDecompilerConfigurationService DecompilerHost.Configuration
+        IConfigurationService DecompilerHost.Configuration
         {
             get { return config; }
         }
 
-        public void WriteDisassembly(Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
             writer(disassembly);
         }
 
-        public void WriteIntermediateCode(Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
         {
             writer(intermediate);
         }
 
-        public void WriteTypes(Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<TextWriter> writer)
         {
             writer(typesWriter);
         }
 
-        public void WriteDecompiledCode(Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
         {
             writer(decompiled);
         }
-        
-        public void WriteGlobals(Action<TextWriter> writer)
+
+        public void WriteGlobals(Program program, Action<TextWriter> writer)
         {
             writer(globalsWriter);
         }

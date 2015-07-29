@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class DeclarationInserterTests
@@ -39,23 +40,24 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new DiamondMock().Procedure);
 			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
 			Web web = new Web();
-			SsaIdentifier r_4 = ssaIds[4];
-			SsaIdentifier r_5 = ssaIds[5];
-			SsaIdentifier r_6 = ssaIds[6];
+			SsaIdentifier r_1 = ssaIds.Where(s => s.Identifier.Name == "r_1").Single();
+            SsaIdentifier r_3 = ssaIds.Where(s => s.Identifier.Name == "r_3").Single();
+            SsaIdentifier r_4 = ssaIds.Where(s => s.Identifier.Name == "r_4").Single();
+			web.Add(r_1);
+			web.Add(r_3);
 			web.Add(r_4);
-			web.Add(r_5);
-			web.Add(r_6);
 			deci.InsertDeclaration(web);
-			Assert.AreEqual("word32 r_4", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
+			Assert.AreEqual("word32 r_1", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
 		}
 
 		private void Build(Procedure proc)
 		{
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, doms);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, doms);
 			
 			this.ssaIds = sst.SsaState.Identifiers;
+            sst.SsaState.DebugDump(true);//$DEBUG
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Sparc
+namespace Reko.UnitTests.Arch.Sparc
 {
 #if NEVER
     public class Expression 

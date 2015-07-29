@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
+    /// <summary>
+    /// Copies a basic block.
+    /// </summary>
     public class BlockCloner :
         InstructionVisitor<Instruction>,
         ExpressionVisitor<Expression>,
@@ -37,6 +41,7 @@ namespace Decompiler.Scanning
         private Block blockToClone;
         private Procedure procCalling;
         private CallGraph callGraph;
+        private DataType dt;
 
         public BlockCloner(Block blockToClone, Procedure procCalling, CallGraph callGraph)
         {
@@ -132,7 +137,7 @@ namespace Decompiler.Scanning
 
         public Instruction VisitSideEffect(SideEffect side)
         {
-            throw new NotImplementedException();
+            return new SideEffect(side.Expression.Accept(this));
         }
 
         public Instruction VisitStore(Store store)
@@ -154,7 +159,7 @@ namespace Decompiler.Scanning
 
         public Expression VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            return addr.CloneExpression();
         }
 
         public Expression VisitApplication(Application appl)
@@ -181,7 +186,7 @@ namespace Decompiler.Scanning
 
         public Expression VisitCast(Cast cast)
         {
-            throw new NotImplementedException();
+            return new Cast(cast.DataType, cast.Expression.Accept(this));
         }
 
         public Expression VisitConditionOf(ConditionOf cof)
@@ -212,6 +217,7 @@ namespace Decompiler.Scanning
         public Expression VisitIdentifier(Identifier id)
         {
             this.Identifier = id;
+            this.dt = id.DataType;
             return id.Storage.Accept(this);
         }
 
@@ -235,7 +241,9 @@ namespace Decompiler.Scanning
 
         public Expression VisitMkSequence(MkSequence seq)
         {
-            throw new NotImplementedException();
+            var h = seq.Head.Accept(this);
+            var t = seq.Tail.Accept(this);
+            return new MkSequence(seq.DataType, h, t);
         }
 
         public Expression VisitPhiFunction(PhiFunction phi)
@@ -279,7 +287,10 @@ namespace Decompiler.Scanning
 
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            return new UnaryExpression(
+                unary.Operator,
+                unary.DataType,
+                unary.Expression.Accept(this));
         }
 
         public Identifier VisitFlagGroupStorage(FlagGroupStorage grf)
@@ -314,7 +325,10 @@ namespace Decompiler.Scanning
 
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
-            throw new NotImplementedException();
+            var dt = this.dt;
+            var hd = (Identifier) seq.Head.Accept(this);
+            var tl = (Identifier) seq.Tail.Accept(this);
+            return procCalling.Frame.EnsureSequence(hd, tl, dt);
         }
 
         public Identifier VisitStackArgumentStorage(StackArgumentStorage stack)

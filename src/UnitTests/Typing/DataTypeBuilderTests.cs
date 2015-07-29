@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Fragments;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Fragments;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class DataTypeBuilderTests : TypingTestBase
@@ -54,7 +54,8 @@ namespace Decompiler.UnitTests.Typing
             arch = new FakeArchitecture();
             prog = new Program();
             prog.Architecture = arch;
-            dtb = new DataTypeBuilder(factory, store, arch);
+            prog.Platform = new DefaultPlatform(null, arch);
+            dtb = new DataTypeBuilder(factory, store, prog.Platform);
         }
 
         protected override void RunTest(Program prog, string outputFile)
@@ -112,12 +113,11 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
         public void DtbArrayLoopMock()
         {
-            ProgramBuilder mock = new Mocks.ProgramBuilder();
-            mock.Add(new ArrayLoopMock());
-            RunTest(mock, "Typing/DtbArrayLoopMock.txt");
+            var pb = new Mocks.ProgramBuilder();
+            pb.Add(new ArrayLoopMock());
+            RunTest(pb, "Typing/DtbArrayLoopMock.txt");
         }
 
         [Test]
@@ -131,8 +131,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbEqClass()
         {
-            Identifier id1 = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier id2 = new Identifier("bar", 1, PrimitiveType.Real32, null);
+            Identifier id1 = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
             store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
@@ -149,8 +149,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbEqClassType()
         {
-            Identifier id1 = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier id2 = new Identifier("bar", 1, PrimitiveType.Real32, null);
+            Identifier id1 = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
             store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
@@ -209,10 +209,10 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbMems()
         {
-            Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
-            Identifier baz = new Identifier("baz", 2, PrimitiveType.Word32, null);
-            Identifier fred = new Identifier("fred", 3, PrimitiveType.Word32, null);
+            Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier bar = new Identifier("bar", PrimitiveType.Word16, null);
+            Identifier baz = new Identifier("baz", PrimitiveType.Word32, null);
+            Identifier fred = new Identifier("fred", PrimitiveType.Word32, null);
             Assignment ass1 = new Assignment(bar, MemLoad(foo, 4, PrimitiveType.Word16));
             Assignment ass2 = new Assignment(baz, MemLoad(foo, 6, PrimitiveType.Word32));
             Assignment ass3 = new Assignment(fred, MemLoad(baz, 0, PrimitiveType.Word32));
@@ -231,8 +231,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbRepeatedLoads()
         {
-            Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Word32, null);
-            Identifier x = new Identifier("x", 1, PrimitiveType.Word32, null);
+            Identifier pfoo = new Identifier("pfoo", PrimitiveType.Word32, null);
+            Identifier x = new Identifier("x", PrimitiveType.Word32, null);
             Assignment ass1 = new Assignment(x, MemLoad(pfoo, 4, PrimitiveType.Word32));
             Assignment ass2 = new Assignment(x, MemLoad(pfoo, 4, PrimitiveType.Word32));
             ass1.Accept(eqb);
@@ -248,9 +248,9 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbSameMemFetch()
         {
-            Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
-            Identifier baz = new Identifier("baz", 1, PrimitiveType.Word16, null);
+            Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier bar = new Identifier("bar", PrimitiveType.Word16, null);
+            Identifier baz = new Identifier("baz", PrimitiveType.Word16, null);
             Assignment ass1 = new Assignment(bar, MemLoad(foo, 4, PrimitiveType.Word16));
             Assignment ass2 = new Assignment(baz, MemLoad(foo, 4, PrimitiveType.Word16));
             ass1.Accept(eqb);
@@ -269,9 +269,9 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbInductionVariables()
         {
-            Identifier i = new Identifier("i", 0, PrimitiveType.Word32, null);
+            Identifier i = new Identifier("i", PrimitiveType.Word32, null);
             MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
-            Identifier i2 = new Identifier("i2", 1, PrimitiveType.Word32, null);
+            Identifier i2 = new Identifier("i2", PrimitiveType.Word32, null);
             MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
 
             LinearInductionVariable iv = new LinearInductionVariable(
@@ -287,6 +287,7 @@ namespace Decompiler.UnitTests.Typing
 
             prog.InductionVariables.Add(i, iv);
             prog.InductionVariables.Add(i2, iv2);
+            prog.Platform = new DefaultPlatform(null, arch);
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 
             prog.Globals.Accept(eqb);
@@ -324,23 +325,10 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void DtbGlobalArray()
-        {
-            var m = new ProcedureBuilder();
-            var i = m.Local32("i");
-            Expression e = m.LoadDw(m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000)));
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
-            e = e.Accept(aen);
-            e.Accept(eqb);
-            e.Accept(trco);
-            Verify("Typing/DtbGlobalArray.txt");
-        }
-
-        [Test]
         public void DtbUnion()
         {
-            Identifier id1 = new Identifier("foo", 0, PrimitiveType.Int32, null);		// note signed: can't be unified with real
-            Identifier id2 = new Identifier("bar", 1, PrimitiveType.Real32, null);
+            Identifier id1 = new Identifier("foo", PrimitiveType.Int32, null);		// note signed: can't be unified with real
+            Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
             store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
@@ -356,7 +344,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbReals()
         {
-            RunTest(RewriteFile("Fragments/fpuops.asm"), "Typing/DtbReals.txt");
+            RunTest(RewriteFile16("Fragments/fpuops.asm"), "Typing/DtbReals.txt");
         }
 
         [Test]
@@ -367,8 +355,12 @@ namespace Decompiler.UnitTests.Typing
             Identifier ds = m.Local16("ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
-            Program prog = new Program();
-            prog.Architecture = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            var arch = new Reko.Arch.X86.X86ArchitectureReal();
+            Program prog = new Program
+            {
+                Architecture = arch,
+                Platform = new DefaultPlatform(null, arch),
+            };
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
             e = e.Accept(aen);
             e.Accept(eqb);
@@ -389,8 +381,12 @@ namespace Decompiler.UnitTests.Typing
         public void DtbSegmentedDirectAddress()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            Program prog = new Program();
-            prog.Architecture = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            var arch = new Reko.Arch.X86.X86ArchitectureReal();
+            var prog = new Program
+            {
+                Architecture = arch,
+                Platform = new DefaultPlatform(null, arch)
+            };
             store.EnsureExpressionTypeVariable(factory, prog.Globals);
 
             Identifier ds = m.Local16("ds");
@@ -415,19 +411,19 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbReg00008()
         {
-            RunTest("Fragments/regressions/r00008.asm", "Typing/DtbReg00008.txt");
+            RunTest16("Fragments/regressions/r00008.asm", "Typing/DtbReg00008.txt");
         }
 
         [Test]
         public void DtbReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
+            RunTest16("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
         }
 
         [Test]
         public void DtbReg00012()
         {
-            RunTest("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
+            RunTest16("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
         }
 
         [Test]
@@ -462,7 +458,7 @@ namespace Decompiler.UnitTests.Typing
                 Identifier arg1 = m.Local32("arg1");
                 Identifier ret = m.Register(1);
                 m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
-                m.Procedure.Signature.FormalArguments[0] = arg1;
+                m.Procedure.Signature.Parameters[0] = arg1;
                 m.Assign(ret, m.IAdd(arg1, 1));
                 m.Return(ret);
             });

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Archives;
-using Decompiler.Environments.C64;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Environments.C64;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.C64
+namespace Reko.UnitTests.Environments.C64
 {
     public class D64LoaderTests
     {
@@ -85,8 +85,8 @@ namespace Decompiler.UnitTests.Environments.C64
                 "CBM.COM",
                 0, 0,
                 new Dictionary<int, byte[]>());
-            var loader = new D64Loader(sc, image);
-            var items = loader.LoadDirectory();
+            var loader = new D64Loader(sc, "CBM.COM", image);
+            var items = loader.LoadDiskDirectory();
             Assert.AreEqual(0, items.Count);
         }
 
@@ -168,8 +168,8 @@ namespace Decompiler.UnitTests.Environments.C64
                             Encoding.ASCII.GetBytes("Hello world"))
                     }
                 });
-            var loader = new D64Loader(sc, image);
-            var items = loader.LoadDirectory();
+            var loader = new D64Loader(sc, "CBM.COM", image);
+            var items = loader.LoadDiskDirectory();
 
             Assert.AreEqual(1, items.Count);
             var file = (ArchivedFile) items[0];

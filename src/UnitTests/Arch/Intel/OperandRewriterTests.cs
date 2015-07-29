@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class OperandRewriterTests
@@ -37,9 +37,10 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private X86State state;
 		private Procedure proc;
         private Program prog;
+        private IntelInstruction instr;
 
 		[Test]
-		public void OrwCreation()
+		public void X86Orw32_Creation()
 		{
 		}
 
@@ -53,106 +54,70 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void Setup()
 		{
             prog = new Program();
-            prog.Image = new LoadedImage(new Address(0x10000), new byte[4]);
-            var procAddress = new Address(0x10000000);
+            prog.Image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
+            var procAddress = Address.Ptr32(0x10000000);
+            instr = new IntelInstruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
+            {
+                Address = procAddress,
+            };
             proc = Procedure.Create(procAddress, arch.CreateFrame());
 			state = (X86State) arch.CreateProcessorState();
-			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
+			orw = new OperandRewriter32(arch, proc.Frame, new FakeRewriterHost(prog));
 		}
 
 		[Test]
-		public void OrwRegister()
+		public void X86Orw32_Register()
 		{
 			var r = new RegisterOperand(Registers.ebp);
-			var id = (Identifier) orw.Transform(r, r.Width, state);
+			var id = (Identifier) orw.Transform(null, r, r.Width, state);
 			Assert.AreEqual("ebp", id.Name);
 			Assert.IsNotNull(proc.Frame.FramePointer);
 		}
 
 		[Test]
-		public void OrwImmediate()
+		public void X86Orw32_Immediate()
 		{
 			var imm = new ImmediateOperand(Constant.Word16(0x0003));
-			var c = (Constant) orw.Transform(imm, imm.Width, state);
+			var c = (Constant) orw.Transform(null, imm, imm.Width, state);
 			Assert.AreEqual("0x0003", c.ToString());
 		}
 
 		[Test]
-		public void OrwImmediateExtend()
+		public void X86Orw32_ImmediateExtend()
 		{
 			var imm = new ImmediateOperand(Constant.SByte(-1));
-			var c = (Constant) orw.Transform(imm, PrimitiveType.Word16, state);
+			var c = (Constant) orw.Transform(null, imm, PrimitiveType.Word16, state);
 			Assert.AreEqual("0xFFFF", c.ToString());
 		}
 
 		[Test]
-		public void OrwFpu()
+		public void X86Orw32_Fpu()
 		{
 			FpuOperand f = new FpuOperand(3);
-			Identifier id = (Identifier) orw.Transform(f, PrimitiveType.Real64,  state);
+			Identifier id = (Identifier) orw.Transform(instr, f, PrimitiveType.Real64,  state);
 			Assert.AreEqual(PrimitiveType.Real64, id.DataType);
 		}
 
 		[Test]
-        [Ignore("Frame escapes should be handled in Scanner/Rewriter, not in arch-dependent places")]
-		public void OrwFrameEscapes()
-		{
-			Assert.IsFalse(proc.Frame.Escapes);
-			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
-			mem.Base = Registers.esp;
-			mem.Index = Registers.eax;
-			mem.Scale = 4;
-			mem.Offset = Constant.Byte(0x02);
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
-			Assert.IsTrue(proc.Frame.Escapes);
-		}
-
-		[Test]
-        [Ignore("Escaping frame registers are ignored for now.")]
-		public void OrwEbpEscapes()
-		{
-            //state.FrameRegister = RegisterStorage.None;
-            //proc.Frame.FrameOffset = 0;
-            //Assert.AreEqual(false, proc.Frame.Escapes);
-
-            //RegisterOperand r = new RegisterOperand(Registers.ebp);
-            //orw.Transform(r, PrimitiveType.Word32, state);
-            //Assert.AreEqual(false, proc.Frame.Escapes);
-
-            //state.GrowStack(4);
-            //state.EnterFrame(Registers.ebp);
-            //Assert.AreEqual("fp", proc.Frame.FramePointer.Name);
-
-            //MemoryOperand m = new MemoryOperand(PrimitiveType.Word32);
-            //m.Base = Registers.ebp;
-            //m.Offset = new Constant(PrimitiveType.Byte, 0x08);
-            //Expression expr = orw.Transform(m, m.Width,  state);
-            //Assert.AreEqual(false, proc.Frame.Escapes);
-
-            //expr = orw.Transform(r, null, state);
-            //Assert.AreEqual(true, proc.Frame.Escapes);
-		}
-
-		[Test]
-		public void OrwMemAccess()
+        public void X86Orw32_MemAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
 			mem.Base = Registers.ecx;
 			mem.Offset = Constant.Word32(4);
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
 		}	
 
 		[Test]
-		public void OrwIndexedAccess()
+		public void X86Orw32_IndexedAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, Constant.Word32(0x24));
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[eax + 0x00000024 + edx * 0x00000004:word32]", expr.ToString());
 		}
 
 		[Test]
-		public void OrwAddrOf()
+		public void X86Orw32_AddrOf()
 		{
 			Identifier eax = orw.AluRegister(Registers.eax);
 			UnaryExpression ptr = orw.AddrOf(eax);
@@ -160,7 +125,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void OrwAluRegister()
+		public void X86Orw32_AluRegister()
 		{
 			Assert.AreEqual("si", orw.AluRegister(Registers.esi, PrimitiveType.Word16).ToString());
 		}
@@ -178,7 +143,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 			callSignatures = new Dictionary<Address,ProcedureSignature>();
 			procedures = new Dictionary<Address,Procedure>();
 		}
-
 
 		public void AddCallSignature(Address addr, ProcedureSignature sig)
 		{
@@ -208,6 +172,15 @@ namespace Decompiler.UnitTests.Arch.Intel
             return prog.EnsurePseudoProcedure(name, returnType, args);
 		}
 
+        public Expression PseudoProcedure(string name , DataType returnType, params Expression[] args)
+        {
+            var ppp = prog.EnsurePseudoProcedure(name, returnType, args.Length);
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                returnType,
+                args);
+        }
+
 		public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
 		{
             ProcedureSignature sig;
@@ -228,7 +201,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public PseudoProcedure GetImportedProcedure(uint linaddr)
+		public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
 		{
 			return null;
 		}
@@ -272,6 +245,18 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		#endregion
 
-	}
+
+
+        public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void Error(Address address, string message)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }

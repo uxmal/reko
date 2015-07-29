@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,22 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Assemblers
+namespace Reko.Core.Assemblers
 {
 	/// <summary>
 	/// Emits bytes into a bytestream belonging to a segment/section.
 	/// </summary>
     public interface IEmitter
     {
-        [Obsolete("Use GetBytes")]
-        byte[] Bytes { get; }
         int Length { get; }
         int Position { get; }
 
@@ -58,12 +56,6 @@ namespace Decompiler.Core.Assemblers
 	public class Emitter : IEmitter
 	{
 		private MemoryStream stmOut = new MemoryStream();
-
-        [Obsolete("Use GetBytes")]
-		public byte [] Bytes
-		{
-			get { return stmOut.ToArray(); }
-		}
 
         public byte[] GetBytes()
         {

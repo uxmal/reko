@@ -5,15 +5,16 @@
 // Trashed: SCZO ax al
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	byte al_6
-	branch fn0C00_000A(al, out al_6) l0C00_0009
+	byte al_3
+	branch fn0C00_000A(al, out al_3) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem8[ds:0x0300:byte] = al_6
+	Mem5[ds:0x0300:byte] = al_3
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
@@ -27,9 +28,10 @@ fn0C00_0000_exit:
 // Trashed: SCZO ax al
 // Preserved: sp
 // fn0C00_000A
+// Return size: 0
 byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:
-	Mem0[alOut:byte] = al
+	*alOut = al
 	// succ:  l0C00_000A
 l0C00_000A:
 	branch al <u 0x30 l0C00_0032
@@ -50,18 +52,18 @@ l0C00_001E:
 	branch al >u 0x66 l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	byte al_20
-	Mem0[alOut:byte] = al - 0x30
+	byte al_16
+	*alOut = al - 0x30
 	branch al <u 0x3A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	byte al_27
-	Mem0[alOut:byte] = al - 0x37
+	byte al_23
+	*alOut = al - 0x37
 	branch al <u 0x47 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	byte al_30
-	Mem0[alOut:byte] = al - 0x57
+	byte al_26
+	*alOut = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:
 	return false

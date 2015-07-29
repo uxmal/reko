@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,24 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	public class SsaIdentifier
 	{
-		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
+		public SsaIdentifier(Identifier id, Identifier eOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
 			if (id == null)
 				throw new ArgumentNullException("id");
-			if (idOrig == null)
-				throw new ArgumentNullException("idOrig");
+			if (eOrig == null)
+				throw new ArgumentNullException("eOrig");
 			this.Identifier = id;
-			this.OriginalIdentifier = idOrig;
+			this.OriginalIdentifier = eOrig;
 			this.DefStatement = stmDef;
             this.DefExpression = exprDef;
             this.IsSideEffect = isSideEffect;
@@ -59,7 +59,7 @@ namespace Decompiler.Analysis
 
 		public bool IsOriginal
 		{
-			get { return Identifier.Number == OriginalIdentifier.Number; }
+			get { return Identifier == OriginalIdentifier; }
 		}
 
         public bool IsSideEffect { get; private set; }
@@ -70,7 +70,7 @@ namespace Decompiler.Analysis
         public LinearInductionVariable InductionVariable { get; set; }
 
         /// <summary>
-        /// The original name of the identifier.
+        /// The original expression that was rewritten to this identifier.
         /// </summary>
         public Identifier OriginalIdentifier { get; private set; }
 

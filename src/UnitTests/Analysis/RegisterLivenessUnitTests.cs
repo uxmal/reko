@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class RegisterLivenessUnitTests
@@ -51,6 +51,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
 			m = new ProcedureBuilder();
 			proc = m.Procedure;
 			f = proc.Frame;
@@ -59,7 +60,6 @@ namespace Decompiler.UnitTests.Analysis
 			rl = new RegisterLiveness(prog, mpprocflow, null);
 			rl.Procedure = proc;
 			rl.IdentifierLiveness.BitSet = prog.Architecture.CreateRegisterBitset();
-
 		}
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)
@@ -221,13 +221,12 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure callee = new Procedure("callee", null);
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
+				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
-					new Identifier("ebx", -1, PrimitiveType.Word32, Registers.ebx),
-					new Identifier("ecx", -1, PrimitiveType.Word32, Registers.ecx),
-					new Identifier("edi", -1, PrimitiveType.Word32, new OutArgumentStorage(
-						new Identifier("edi", -1, PrimitiveType.Word32, Registers.edi)))
-								 });
+					f.EnsureRegister(Registers.ebx),
+					f.EnsureRegister(Registers.ecx),
+					f.EnsureOutArgument(f.EnsureRegister(Registers.edi), PrimitiveType.Pointer32)
+				});
 			
 			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.esi.Number] = true;
@@ -238,15 +237,16 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
+        [Ignore("Won't be needed when class obsoleted")]
 		public void Rl_CallToProcedureWithStackArgs()
 		{
 			Procedure callee = new Procedure("callee", null);
 			BitSet trash = prog.Architecture.CreateRegisterBitset();
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
+				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
-                    new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-					new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte))
+                    new Identifier("arg04", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
+					new Identifier("arg08", PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte))
                 });
 
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
@@ -291,12 +291,12 @@ namespace Decompiler.UnitTests.Analysis
 		public void Rl_PredefinedSignature()
 		{
 			Procedure callee = new Procedure("callee", null);
-			Identifier edx = new Identifier("edx", -1, PrimitiveType.Word32, Registers.edx);
+			Identifier edx = new Identifier("edx", PrimitiveType.Word32, Registers.edx);
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
-				new Identifier[] { new Identifier("ecx", -1, PrimitiveType.Word32, Registers.ecx),
-								   new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-								   new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(edx))});
+				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
+				new Identifier[] { new Identifier("ecx",    PrimitiveType.Word32, Registers.ecx),
+								   new Identifier("arg04",  PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
+								   new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(edx))});
 
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
 			BlockFlow bf = CreateBlockFlow(callee.ExitBlock, null);
@@ -331,29 +331,6 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.IsFalse(bf.DataOut[Registers.bp.Number], "preserved registers cannot be live out");
 			Assert.IsTrue(bf.DataOut[Registers.eax.Number], "trashed registers may be live out");
 			Assert.IsTrue(bf.DataOut[Registers.esi.Number], "Unmentioned registers may be live out");
-		}
-
-		[Test]
-        [Ignore("Not sure what this test is actually testing? Rather, test that procedure summaries are marked with the right liveness.")]
-		public void Rl_TerminatingProcedure()
-		{
-			Procedure terminator = new Procedure("terminator", null);
-			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock, terminator.Frame);
-			terminator.Signature = new ProcedureSignature(
-				null,
-				new Identifier[] {
-					new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax) });
-            terminator.Characteristics = new ProcedureCharacteristics
-            {
-                Terminates = true
-            };
-            rl.CurrentState = new RegisterLiveness.ByPassState();
-			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
-			rl.IdentifierLiveness.BitSet[Registers.ebx.Number] = true;
-			rl.MergeBlockInfo(terminator.ExitBlock);
-			Assert.IsFalse(rl.IdentifierLiveness.BitSet[Registers.eax.Number]);
-			Assert.IsFalse(rl.IdentifierLiveness.BitSet[Registers.ebx.Number]);
-
 		}
 
 		private string Dump(IdentifierLiveness vl)

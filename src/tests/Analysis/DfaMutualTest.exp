@@ -5,12 +5,13 @@
 // Trashed: SCZO ax dx al dl ah dh
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 dx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_5
-	fn0C00_0004(dx, out dx_5)
+	word16 dx_3
+	fn0C00_0004(dx, out dx_3)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -22,22 +23,23 @@ fn0C00_0000_exit:
 // Trashed: SCZO ax dx al dl ah dh
 // Preserved: sp
 // fn0C00_0004
+// Return size: 0
 word16 fn0C00_0004(word16 dx, ptr16 dxOut)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 dx_12
+	word16 dx_11
 	branch dx != 0x001E l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
-	Mem0[dxOut:word16] = fn0C00_0013(dx)
+	*dxOut = fn0C00_0013(dx)
 	goto l0C00_0010
 	// succ:  l0C00_0010
 l0C00_000F:
-	Mem0[dxOut:word16] = dx - 0x0001
+	*dxOut = dx - 0x0001
 	// succ:  l0C00_0010
 l0C00_0010:
-	return dx_12
+	return dx_11
 	// succ:  fn0C00_0004_exit
 fn0C00_0004_exit:
 
@@ -48,6 +50,7 @@ fn0C00_0004_exit:
 // Trashed: SCZO ax dx al dl ah dh
 // Preserved: sp
 // fn0C00_0013
+// Return size: 0
 word16 fn0C00_0013(word16 dx)
 fn0C00_0013_entry:
 	// succ:  l0C00_0013

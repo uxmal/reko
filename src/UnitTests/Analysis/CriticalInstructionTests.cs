@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core;
+using Reko.Analysis;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CriticalInstructionTests
 	{
 		private CriticalInstruction ci;
-        private Identifier foo = new Identifier("foo", 1, PrimitiveType.Word32, null);
+        private Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
 
 		[SetUp]
 		public void SetUp()
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void ApplicationTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Application(new Identifier("foo", 0, PrimitiveType.Word32, null), PrimitiveType.Bool)));
+			Assert.IsTrue(ci.IsCritical(new Application(new Identifier("foo", PrimitiveType.Word32, null), PrimitiveType.Bool)));
 		}
 
 		[Test]
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DereferenceTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Decompiler.Core.Expressions.Dereference(PrimitiveType.Pointer32, Id32("foo"))));
+			Assert.IsTrue(ci.IsCritical(new Reko.Core.Expressions.Dereference(PrimitiveType.Pointer32, Id32("foo"))));
 		}
 
 		[Test]
@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.IsFalse(ci.IsCritical(new BinaryExpression(
                 Operator.IAdd, 
                 PrimitiveType.Word32, 
-                new Identifier("id", 0, PrimitiveType.Word32, null), 
+                new Identifier("id", PrimitiveType.Word32, null), 
                 Constant.Word32(3))));
 		}
 
@@ -135,7 +135,6 @@ namespace Decompiler.UnitTests.Analysis
         {
             return new Identifier(
                 name,
-                0,
                 PrimitiveType.Word16,
                 new TemporaryStorage(
                     name, 0, PrimitiveType.Word16));
@@ -145,7 +144,6 @@ namespace Decompiler.UnitTests.Analysis
         {
             return new Identifier(
                 name,
-                0,
                 PrimitiveType.Word32,
                 new TemporaryStorage(
                     name, 0, PrimitiveType.Word32));

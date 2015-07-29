@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Environments.Msdos;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
-	/// Loads Microsoft EXE image files. 
+	/// Loads EXE image files. These may contain executable code in varying formats. 
 	/// </summary>
 	public class ExeImageLoader : ImageLoader
 	{
@@ -62,7 +63,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public const int CbPsp = 0x0100;			// Program segment prefix size in bytes.
 		public const int CbPageSize = 0x0200;		// MSDOS pages are 512 bytes.
 
-		public ExeImageLoader(IServiceProvider services, byte [] image) : base(services, image)
+		public ExeImageLoader(IServiceProvider services, string filename, byte [] image) : base(services, filename, image)
 		{
             this.services = services;
             ReadCommonExeFields();	
@@ -71,42 +72,11 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new FormatException("Image is not an MS-DOS executable image.");
 		}
 
-        private ImageLoader CreateRealModeLoader(byte[] image)
-        {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
-            var platform = new MsdosPlatform(null, arch);
-
-            if (LzExeUnpacker.IsCorrectUnpacker(this, image))
-            {
-                return new LzExeUnpacker(services, this, image);
-            }
-            else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
-            {
-                return new PkLiteUnpacker(services, this, image);
-            }
-            else if (ExePackLoader.IsCorrectUnpacker(this, image))
-            {
-                return new ExePackLoader(services, this, image);
-            }
-            else
-            {
-                return new MsdosImageLoader(services, this);
-            }
-        }
-
         private ImageLoader GetDeferredLoader()
         {
             if (ldrDeferred == null)
                 ldrDeferred = CreateDeferredLoader();
             return ldrDeferred;
-        }
-
-        public override Dictionary<uint, PseudoProcedure> ImportThunks
-        {
-            get
-            {
-                return GetDeferredLoader().ImportThunks;
-            }
         }
 
 		public bool IsNewExecutable
@@ -128,16 +98,27 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// Loads a Microsoft .EXE file. There are several widely varying sub-formats,
 		/// so we need to discover what flavour it is before we can proceed.
 		/// </summary>
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
 		{
 			return GetDeferredLoader().Load(addrLoad);
 		}
 
         private ImageLoader CreateDeferredLoader()
         {
+            // The image may have been packed. We ask the unpacker service whether
+            // it can determine if the image is packed, and if so provide us with an
+            // image loader that knows how to do unpacking.
+
+            var loaderSvc = services.RequireService<IUnpackerService>();
             if (IsPortableExecutable)
             {
-                return new PeImageLoader(services, base.RawImage, e_lfanew);
+                var peLdr = new PeImageLoader(services, Filename, base.RawImage, e_lfanew);
+                uint entryPointOffset = peLdr.ReadEntryPointRva();
+
+                var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, entryPointOffset);
+                if (unpacker != null)
+                    return unpacker;
+                return peLdr;
             }
             else if (IsNewExecutable)
             {
@@ -146,14 +127,19 @@ namespace Decompiler.ImageLoaders.MzExe
             }
             else
             {
-                return CreateRealModeLoader(RawImage);
+                var entryPointOffset = (((e_cparHeader + e_cs) << 4) + e_ip) & 0xFFFFF;
+                var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, (uint) entryPointOffset);
+                if (unpacker != null)
+                    return unpacker;
+                return new MsdosImageLoader(services, Filename, this);
             }
         }
 
 		public override Address PreferredBaseAddress
 		{
 			get { return GetDeferredLoader().PreferredBaseAddress; }
-		}
+            set { throw new NotImplementedException(); }
+        }
 
 		public void ReadCommonExeFields()
 		{

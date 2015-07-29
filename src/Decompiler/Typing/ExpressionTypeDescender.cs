@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
     public class ExpressionTypeDescender : ExpressionVisitor<bool, TypeVariable>
     {
@@ -40,7 +40,7 @@ namespace Decompiler.Typing
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
 
-        private IProcessorArchitecture arch;
+        private Platform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
@@ -49,7 +49,7 @@ namespace Decompiler.Typing
 
         public ExpressionTypeDescender(Program prog, TypeStore store, TypeFactory factory)
         {
-            this.arch = prog.Architecture;
+            this.platform = prog.Platform;
             this.globals = prog.Globals;
             this.ivs = prog.InductionVariables;
             this.store = store;
@@ -90,14 +90,14 @@ namespace Decompiler.Typing
                 return;
 
             var sig = pc.Procedure.Signature;
-            if (appl.Arguments.Length != sig.FormalArguments.Length)
+            if (appl.Arguments.Length != sig.Parameters.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-                    pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
+                    pc.Procedure.Name, appl.Arguments.Length, sig.Parameters.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                MeetDataType(appl.Arguments[i], sig.FormalArguments[i].DataType);
-                sig.FormalArguments[i].Accept(this, sig.FormalArguments[i].TypeVariable);
+                MeetDataType(appl.Arguments[i], sig.Parameters[i].DataType);
+                sig.Parameters[i].Accept(this, sig.Parameters[i].TypeVariable);
             }
         }
 
@@ -158,7 +158,7 @@ namespace Decompiler.Typing
             var field = new StructureField(offset, tField);
             s.Fields.Add(field);
 
-            var pointer = tBase != null
+            var pointer = tBase != null && tBase != globals
                 ? (DataType) factory.CreateMemberPointer(tBase.TypeVariable, s, structPtrSize)
                 : (DataType) factory.CreatePointer(s, structPtrSize);
             return MeetDataType(tStruct, pointer);
@@ -354,7 +354,7 @@ namespace Decompiler.Typing
                     globals, 
                     c.ToInt32() * 0x10,   //$REVIEW Platform-dependent: only valid for x86 real mode.
                     c.TypeVariable,
-                    arch.PointerType.Size);
+                    platform.PointerType.Size);
             }
             return false;
         }
@@ -509,13 +509,13 @@ namespace Decompiler.Typing
                 if (offset != 0)
                 {
                     SetSize(eBase, id, stride);
-                    MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), arch.PointerType.Size);
+                    MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), platform.PointerType.Size);
                 }
             }
             else
             {
                 SetSize(eBase, id, stride);
-                MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), arch.PointerType.Size);
+                MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), platform.PointerType.Size);
             }
         }
 
@@ -524,9 +524,9 @@ namespace Decompiler.Typing
             if (size <= 0)
                 throw new ArgumentOutOfRangeException("size must be positive");
             var s = factory.CreateStructureType(null, size);
-            var ptr = eBase != null
-                ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable, s, arch.FramePointerType.Size)
-                : (DataType) factory.CreatePointer(s, arch.PointerType.Size);
+            var ptr = eBase != null && eBase != globals
+                ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable, s, platform.FramePointerType.Size)
+                : (DataType) factory.CreatePointer(s, platform.PointerType.Size);
             return MeetDataType(tStruct, ptr);
         }
 
@@ -541,7 +541,7 @@ namespace Decompiler.Typing
 
         private Pointer PointerTo(DataType dt)
         {
-            return new Pointer(dt, arch.PointerType.Size);
+            return new Pointer(dt, platform.PointerType.Size);
         }
 
         private MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int size)

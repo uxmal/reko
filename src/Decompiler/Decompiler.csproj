@@ -7,13 +7,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Decompiler</AssemblyName>
+    <AssemblyName>Reko</AssemblyName>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>Decompiler</RootNamespace>
+    <RootNamespace>Reko</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -130,6 +130,9 @@
     <Compile Include="Analysis\GrfDefinitionFinder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\ProcedureFlow2.cs" />
+    <Compile Include="Analysis\ProcedureGraph.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinder2.cs" />
     <Compile Include="Analysis\UsedIdentifierFinder.cs" />
     <Compile Include="Analysis\IdentifierLiveness.cs" />
     <Compile Include="Analysis\Interference.cs">
@@ -213,6 +216,7 @@
     <Compile Include="Evaluation\Add_mul_id_c_id_Rule.cs" />
     <Compile Include="Evaluation\ConstConstBin_Rule.cs" />
     <Compile Include="Evaluation\DpbConstantRule.cs" />
+    <Compile Include="Evaluation\DpbDpbRule.cs" />
     <Compile Include="Evaluation\ExpressionSimplifier.cs" />
     <Compile Include="Evaluation\IdBinIdc_Rule.cs" />
     <Compile Include="Evaluation\IdConstant.cs" />
@@ -232,18 +236,25 @@
     <Compile Include="Gui\AddressSearchResult.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
+    <Compile Include="Gui\Components\ITimer.cs" />
     <Compile Include="Gui\Controls\IButton.cs" />
     <Compile Include="Gui\Controls\ICheckBox.cs" />
     <Compile Include="Gui\Controls\IComboBox.cs" />
+    <Compile Include="Gui\Controls\INavigableControl.cs" />
     <Compile Include="Gui\Controls\ITextBox.cs" />
     <Compile Include="Gui\Controls\ITreeView.cs" />
-    <Compile Include="Gui\Design\ImageMapSegmentDesigner.cs" />
-    <Compile Include="Gui\Design\InputFileDesigner.cs" />
+    <Compile Include="Gui\Design\ImageMapSegmentNodeDesigner.cs" />
     <Compile Include="Gui\Design\ProcedureDesigner.cs" />
+    <Compile Include="Gui\Design\SystemServiceDesigner.cs" />
     <Compile Include="Gui\Design\ProgramDesigner.cs" />
+    <Compile Include="Gui\Design\MetadataFileDesigner.cs" />
+    <Compile Include="Gui\FileDropEventArgs.cs" />
     <Compile Include="Gui\FindResult.cs" />
+    <Compile Include="Gui\Forms\IAssembleFileDialog .cs" />
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
     <Compile Include="Gui\Forms\IPatternSearchDialog.cs" />
+    <Compile Include="Gui\Forms\IProgramPropertiesDialog.cs" />
+    <Compile Include="Gui\Forms\IUserPreferencesDialog.cs" />
     <Compile Include="Gui\Forms\OpenAsInteractor.cs" />
     <Compile Include="Gui\HtmlCodeFormatter.cs" />
     <Compile Include="Gui\HtmlFormatter.cs" />
@@ -252,16 +263,18 @@
     <Compile Include="Gui\ICommandTarget.cs" />
     <Compile Include="Gui\IConsoleService.cs" />
     <Compile Include="Gui\IDecompilerService.cs" />
-    <Compile Include="Gui\IDecompilerUIService.cs" />
+    <Compile Include="Gui\IDecompilerShellUiService.cs" />
     <Compile Include="Gui\IDialog.cs" />
     <Compile Include="Gui\IDisassemblyViewService.cs" />
     <Compile Include="Gui\Forms\IMainForm.cs" />
     <Compile Include="Gui\ILowLevelViewService.cs" />
+    <Compile Include="Gui\ImageSegmentService.cs" />
     <Compile Include="Gui\IMenuAdapter.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
     <Compile Include="Gui\IProjectBrowserService.cs" />
     <Compile Include="Gui\ITabControlHostService.cs" />
     <Compile Include="Gui\IUiPreferencesService.cs" />
+    <Compile Include="Gui\IViewerService.cs" />
     <Compile Include="Gui\ProjectBrowserService.cs" />
     <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
@@ -272,6 +285,18 @@
       <DependentUpon>CodeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Controls\DisassemblyTextModel.cs" />
+    <Compile Include="Gui\Windows\Controls\ImageMapView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageMapView.Designer.cs">
+      <DependentUpon>ImageMapView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageSegmentView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageSegmentView.Designer.cs">
+      <DependentUpon>ImageSegmentView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Windows\Controls\MenuStatusSetter.cs" />
     <Compile Include="Gui\Windows\Controls\TextBuffer.cs" />
     <Compile Include="Gui\Windows\Controls\TextViewModel.cs" />
@@ -288,6 +313,30 @@
       <DependentUpon>LowLevelView.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\DisassemblyFormatter.cs" />
+    <Compile Include="Gui\Windows\Forms\AssembleFileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AssembleFileDialog.Designer.cs">
+      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AssembleFileInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\ProgramPropertiesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ProgramPropertiesDialog.Designer.cs">
+      <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ProgramPropertiesInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\UnscannedBlocksResult.cs" />
+    <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.Designer.cs">
+      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\UserPreferencesInteractor.cs" />
+    <Compile Include="Gui\Windows\ImageSegmentPane.cs" />
+    <Compile Include="Gui\Windows\ImageSegmentServiceImpl.cs" />
     <Compile Include="Gui\Windows\IRegistryService.cs" />
     <Compile Include="Gui\ISearchDialog.cs" />
     <Compile Include="Gui\ISearchResult.cs" />
@@ -390,11 +439,11 @@
     <Compile Include="Gui\Windows\Forms\WorkerDialog.Designer.cs">
       <DependentUpon>WorkerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Windows\IToolWindow.cs" />
     <Compile Include="Gui\IWindowFrame.cs" />
     <Compile Include="Gui\Windows\LowLevelViewInteractor.cs" />
     <Compile Include="Gui\Windows\LowLevelViewServiceImpl.cs" />
     <Compile Include="Gui\Windows\MenuItemAdapter.cs" />
+    <Compile Include="Gui\Windows\NavigationInteractor.cs" />
     <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
     <Compile Include="Gui\Windows\TabControlHost.cs" />
     <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />
@@ -410,7 +459,11 @@
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Gui\Windows\WindowsFormsRegistryService.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsService.cs" />
+    <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
+    <Compile Include="Loading\SignatureLoader.cs" />
+    <Compile Include="Loading\UnpackerSignatureLoader.cs" />
+    <Compile Include="Loading\UnpackingService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -424,13 +477,16 @@
     <Compile Include="Scanning\Dfa\State.cs" />
     <Compile Include="Scanning\Dfa\TreeNode.cs" />
     <Compile Include="Scanning\Dfa\Automaton.cs" />
+    <Compile Include="Scanning\HeuristicBlock.cs" />
+    <Compile Include="Scanning\HeuristicProcedure.cs" />
+    <Compile Include="Scanning\HeuristicProcedureScanner.cs" />
     <Compile Include="Scanning\IdentifierReplacer.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
-    <Compile Include="Scanning\UserProcedureWorkItem.cs" />
+    <Compile Include="Scanning\ProcedureWorkItem.cs" />
     <Compile Include="Scanning\VectorWorkItem.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
@@ -461,7 +517,6 @@
       <DependentUpon>ProcedureDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\RicheditFormatter.cs" />
     <Compile Include="Gui\Windows\ListViewItemWrapper.cs" />
     <Compile Include="Gui\MruList.cs" />
     <Compile Include="Loading\Loader.cs" />
@@ -496,6 +551,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\CaseFinder.cs" />
+    <Compile Include="Structure\IStructureAnalysis.cs" />
     <Compile Include="Structure\ProcedureStructure.cs" />
     <Compile Include="Structure\CompoundConditionCoalescer.cs">
       <SubType>Code</SubType>
@@ -516,6 +572,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\ProcedureStructureBuilder.cs" />
+    <Compile Include="Structure\Schwartz\LoopFinder.cs" />
+    <Compile Include="Structure\Schwartz\ProcedureStructurer.cs" />
+    <Compile Include="Structure\Schwartz\Region.cs" />
+    <Compile Include="Structure\Schwartz\RegionFactory.cs" />
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -587,7 +647,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\ILoadedPage.cs" />
-    <Compile Include="Gui\IDiagnosticsService.cs" />
     <Compile Include="Gui\IListViewItem.cs" />
     <Compile Include="Gui\Forms\IAddressPromptDialog.cs" />
     <Compile Include="Gui\IDialogFactory.cs" />
@@ -603,6 +662,12 @@
     <EmbeddedResource Include="Gui\Windows\Controls\DirtyManager.resx">
       <DependentUpon>DirtyManager.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\ImageMapView.resx">
+      <DependentUpon>ImageMapView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\ImageSegmentView.resx">
+      <DependentUpon>ImageSegmentView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Controls\TextView.resx">
       <DependentUpon>TextView.cs</DependentUpon>
@@ -624,6 +689,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\ArchiveBrowserDialog.resx">
       <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\AssembleFileDialog.resx">
+      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EnvironmentSelectorDialog.resx">
       <SubType>Designer</SubType>
@@ -650,8 +718,14 @@
     <EmbeddedResource Include="Gui\Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\ProgramPropertiesDialog.resx">
+      <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\UserPreferencesDialog.resx">
+      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
       <DependentUpon>WorkerDialog.cs</DependentUpon>
@@ -662,19 +736,42 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Gui\decompiler-menus.xml" />
+    <Content Include="Gui\decompiler-menus.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
+    <Content Include="Images\CloseTab.ico" />
+    <Content Include="Images\RestardDecompilation.ico" />
+    <Content Include="Images\RwSection.ico" />
+    <Content Include="Images\DiscardableSection.ico" />
+    <Content Include="Images\RxSection.ico" />
+    <Content Include="Images\WxSection.ico" />
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml" />
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
+    <Content Include="Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
     <None Include="Images\Back.bmp" />
+    <Content Include="Images\Back.ico" />
+    <Content Include="Images\Binary.ico" />
+    <Content Include="Images\Code.ico" />
+    <Content Include="Images\Data.ico" />
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />
     <None Include="Images\Forward.bmp" />
+    <Content Include="Images\Forward.ico" />
+    <Content Include="Images\Header.ico" />
     <Content Include="Images\NewBo.ico" />
     <Content Include="Images\NextPhase.ico" />
     <Content Include="Images\Open.ico" />
     <Content Include="Images\Procedure.ico" />
     <Content Include="Images\Save.ico" />
+    <Content Include="Images\typelib.ico" />
+    <Content Include="Images\Usercode.ico" />
     <Content Include="Images\Userproc.ico" />
     <Content Include="Images\warning.png" />
   </ItemGroup>

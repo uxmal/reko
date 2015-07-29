@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Extension methods to simplify firing of events.
@@ -18,6 +18,6 @@ namespace Decompiler.Core
         public static void Fire<T>(this EventHandler<T> eh, object sender, T e) where T : EventArgs
         {
             if (eh != null) eh(sender, e);
-        } 
+        }
     }
 }

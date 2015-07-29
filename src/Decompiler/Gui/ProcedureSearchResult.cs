@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public class ProcedureSearchResult : ISearchResult
     {
@@ -36,6 +37,8 @@ namespace Decompiler.Gui
             this.hits = procs;
         }
 
+        public ISearchResultView View { get; set; }
+
         public int Count
         {
             get { return hits.Count; }
@@ -43,24 +46,24 @@ namespace Decompiler.Gui
 
         public int ContextMenuID { get { return MenuIds.CtxProcedure; } }
 
-        public void CreateColumns(ISearchResultView view)
+        public void CreateColumns()
         {
-            view.AddColumn("Program", 10);
-            view.AddColumn("Address", 8);
-            view.AddColumn("Procedure Name", 20);
+            View.AddColumn("Program", 10);
+            View.AddColumn("Address", 8);
+            View.AddColumn("Procedure Name", 20);
         }
 
-        public int GetItemImageIndex(int i)
+        public SearchResultItem GetItem(int i)
         {
-            return -1;
-        }
-
-        public string[] GetItemStrings(int i)
-        {
-            return new string[] {
-                hits[i].Program.Name,
-                hits[i].Address.ToString(),
-                hits[i].Procedure.Name
+            return new SearchResultItem
+            {
+                Items = new[] {
+                    hits[i].Program.Name,
+                    hits[i].Address.ToString(),
+                    hits[i].Procedure.Name
+                },
+                ImageIndex = -1,
+                BackgroundColor = -1,
             };
         }
 
@@ -75,6 +78,35 @@ namespace Decompiler.Gui
             if (mvs == null)
                 return;
             mvs.ShowMemoryAtAddress(hit.Program, hit.Address);
+        }
+
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
+
+        public bool Execute(CommandID cmdId)
+        {
+            return false;
+        }
+
+        public int SortedColumn
+        {
+            get { return -1; }
+        }
+
+        public bool IsColumnSortable(int iColumn)
+        {
+            return false;
+        }
+
+        public SortDirection GetSortDirection(int iColumn)
+        {
+            return SortDirection.None;
+        }
+
+        public void SortByColumn(int iColumn, SortDirection dir)
+        {
         }
     }
 

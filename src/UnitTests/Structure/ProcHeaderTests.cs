@@ -1,11 +1,11 @@
-using Decompiler.Core;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class ProcHeaderTests
@@ -24,7 +24,7 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual(proc.Nodes[0], proc.Nodes[1].InEdges[0]);
         }
 
-        protected virtual void RunTest(ProcGenerator pg)
+        protected virtual void RunTest(Action<ProcedureBuilder> pg)
         {
             ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);

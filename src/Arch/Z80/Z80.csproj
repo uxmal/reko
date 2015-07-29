@@ -6,8 +6,8 @@
     <ProjectGuid>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.Z80</RootNamespace>
-    <AssemblyName>Decompiler.Arch.Z80</AssemblyName>
+    <RootNamespace>Reko.Arch.Z80</RootNamespace>
+    <AssemblyName>Reko.Arch.Z80</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

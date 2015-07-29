@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	/// <summary>
 	/// </summary>
@@ -99,7 +99,7 @@ namespace Decompiler.Scanning
 				if (mpbytecls[i] != 0)
 					sb.AppendFormat(" {0:X2}:{1}", i, mpbytecls[i]);
 			}
-			sb.Append("\r\nstates:\r\n");
+			sb.AppendLine("\r\nstates:");
 			for (int s = 0; s != states.Length; ++s)
 			{
 				sb.AppendFormat("\ts{0}{1}:", s, states[s].Accepts?" (acc)":"");
@@ -110,7 +110,7 @@ namespace Decompiler.Scanning
 						sb.AppendFormat(" {0}->s{1}", n - states[s].BasePosition, next[n]);
 					}
 				}
-				sb.Append("\r\n");
+				sb.AppendLine();
 			}
 			sb.Append("}");
 			return sb.ToString();

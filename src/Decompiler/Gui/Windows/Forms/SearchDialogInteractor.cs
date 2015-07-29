@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Scanning;
+using Reko.Core;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class SearchDialogInteractor
     {
@@ -37,7 +37,10 @@ namespace Decompiler.Gui.Windows.Forms
         {
             this.dlg = dlg;
             dlg.Load += dlg_Load;
+            dlg.Closed += dlg_Closed;
             dlg.Patterns.TextChanged += delegate { EnableControls(); };
+            dlg.ScannedMemory.CheckedChanged += delegate { EnableControls(); };
+            dlg.UnscannedMemory.CheckedChanged += delegate { EnableControls(); };
             dlg.SearchButton.Click += SearchButton_Click;
         }
 
@@ -45,7 +48,9 @@ namespace Decompiler.Gui.Windows.Forms
         {
             dlg.StartAddress.Enabled = dlg.EndAddress.Enabled =
                 dlg.Scopes.SelectedIndex == 2;
-            dlg.SearchButton.Enabled = dlg.Patterns.Text.Length > 0;
+            dlg.SearchButton.Enabled =
+                dlg.Patterns.Text.Length > 0 &&
+                (dlg.ScannedMemory.Checked || dlg.UnscannedMemory.Checked);
         }
 
         void SearchButton_Click(object sender, EventArgs e)
@@ -59,8 +64,10 @@ namespace Decompiler.Gui.Windows.Forms
             }
 
             var pattern = EncodePattern(dlg.Encodings.SelectedIndex, dlg.Patterns.Text);
-            dlg.ImageSearcher = new KmpStringSearch<byte>(pattern);
-
+            dlg.ImageSearcher = new KmpStringSearch<byte>(
+                pattern,
+                dlg.ScannedMemory.Checked,
+                dlg.UnscannedMemory.Checked);
         }
 
         private const int EncodingHex = 0;
@@ -113,9 +120,20 @@ namespace Decompiler.Gui.Windows.Forms
         {
             this.settingsSvc = dlg.Services.RequireService<ISettingsService>();
             dlg.Patterns.DataSource = settingsSvc.GetList("SearchDialog/Patterns");
+            if (dlg.InitialPattern != null)
+                dlg.Patterns.Text = dlg.InitialPattern;
             dlg.RegexCheckbox.Checked = (int)(settingsSvc.Get("SearchDialog/Regexp", 0) ?? 0)!= 0;
             dlg.Encodings.SelectedIndex = (int)(settingsSvc.Get("SearchDialog/Encoding", 0) ?? 0);
             dlg.Scopes.SelectedIndex = (int)(settingsSvc.Get("SearchDialog/Scope", 0) ?? 0);
+            dlg.ScannedMemory.Checked = (int)(settingsSvc.Get("SearchDialog/Scanned", 1) ?? 1) != 0;
+            dlg.UnscannedMemory.Checked = (int)(settingsSvc.Get("SearchDialog/Unscanned", 1) ?? 1) != 0;
+            EnableControls();
+        }
+
+        void dlg_Closed(object sender, EventArgs e)
+        {
+            settingsSvc.Set("SearchDialog/Scanned", dlg.ScannedMemory.Checked ? 1 : 0);
+            settingsSvc.Set("SearchDialog/Unscanned", dlg.UnscannedMemory.Checked ? 1 : 0);
             EnableControls();
         }
     }

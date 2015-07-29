@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,56 +18,58 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
+using Reko.Arch.PowerPC;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.PowerPC
+namespace Reko.UnitTests.Arch.PowerPC
 {
     class InstructionBuilder
     {
+        private PowerPcArchitecture arch;
         private Address addr;
 
-        public InstructionBuilder(Address start)
+        public InstructionBuilder(PowerPcArchitecture arch, Address start)
         {
+            this.arch = arch;
             this.Instructions = new List<PowerPcInstruction>();
-            this.r0 = new RegisterOperand(Registers.r0);
-            this.r1 = new RegisterOperand(Registers.r1);
-            this.r2 = new RegisterOperand(Registers.r2);
-            this.r3 = new RegisterOperand(Registers.r3);
-            this.r4 = new RegisterOperand(Registers.r4);
-            this.r5 = new RegisterOperand(Registers.r5);
-            this.r6 = new RegisterOperand(Registers.r6);
-            this.r7 = new RegisterOperand(Registers.r7);
-            this.r8 = new RegisterOperand(Registers.r8);
-            this.r9 = new RegisterOperand(Registers.r9);
-            this.r10 = new RegisterOperand(Registers.r10);
-            this.r11 = new RegisterOperand(Registers.r11);
-            this.r12 = new RegisterOperand(Registers.r12);
-            this.r13 = new RegisterOperand(Registers.r13);
-            this.r14 = new RegisterOperand(Registers.r14);
-            this.r15 = new RegisterOperand(Registers.r15);
-            this.r16 = new RegisterOperand(Registers.r16);
-            this.r17 = new RegisterOperand(Registers.r17);
-            this.r18 = new RegisterOperand(Registers.r18);
-            this.r19 = new RegisterOperand(Registers.r19);
-            this.r20 = new RegisterOperand(Registers.r20);
-            this.r21 = new RegisterOperand(Registers.r21);
-            this.r22 = new RegisterOperand(Registers.r22);
-            this.r23 = new RegisterOperand(Registers.r23);
-            this.r24 = new RegisterOperand(Registers.r24);
-            this.r25 = new RegisterOperand(Registers.r25);
-            this.r26 = new RegisterOperand(Registers.r26);
-            this.r27 = new RegisterOperand(Registers.r27);
-            this.r28 = new RegisterOperand(Registers.r28);
-            this.r29 = new RegisterOperand(Registers.r29);
-            this.r30 = new RegisterOperand(Registers.r30);
-            this.r31 = new RegisterOperand(Registers.r31);
+            this.r0 = new RegisterOperand(arch.Registers[0]);
+            this.r1 = new RegisterOperand(arch.Registers[1]);
+            this.r2 = new RegisterOperand(arch.Registers[2]);
+            this.r3 = new RegisterOperand(arch.Registers[3]);
+            this.r4 = new RegisterOperand(arch.Registers[4]);
+            this.r5 = new RegisterOperand(arch.Registers[5]);
+            this.r6 = new RegisterOperand(arch.Registers[6]);
+            this.r7 = new RegisterOperand(arch.Registers[7]);
+            this.r8 = new RegisterOperand(arch.Registers[8]);
+            this.r9 = new RegisterOperand(arch.Registers[9]);
+            this.r10 = new RegisterOperand(arch.Registers[10]);
+            this.r11 = new RegisterOperand(arch.Registers[11]);
+            this.r12 = new RegisterOperand(arch.Registers[12]);
+            this.r13 = new RegisterOperand(arch.Registers[13]);
+            this.r14 = new RegisterOperand(arch.Registers[14]);
+            this.r15 = new RegisterOperand(arch.Registers[15]);
+            this.r16 = new RegisterOperand(arch.Registers[16]);
+            this.r17 = new RegisterOperand(arch.Registers[17]);
+            this.r18 = new RegisterOperand(arch.Registers[18]);
+            this.r19 = new RegisterOperand(arch.Registers[19]);
+            this.r20 = new RegisterOperand(arch.Registers[20]);
+            this.r21 = new RegisterOperand(arch.Registers[21]);
+            this.r22 = new RegisterOperand(arch.Registers[22]);
+            this.r23 = new RegisterOperand(arch.Registers[23]);
+            this.r24 = new RegisterOperand(arch.Registers[24]);
+            this.r25 = new RegisterOperand(arch.Registers[25]);
+            this.r26 = new RegisterOperand(arch.Registers[26]);
+            this.r27 = new RegisterOperand(arch.Registers[27]);
+            this.r28 = new RegisterOperand(arch.Registers[28]);
+            this.r29 = new RegisterOperand(arch.Registers[29]);
+            this.r30 = new RegisterOperand(arch.Registers[30]);
+            this.r31 = new RegisterOperand(arch.Registers[31]);
 
             this.addr = start;
         }
@@ -114,6 +116,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             Instructions.Add(instr);
         }
 
+        public void Bctr()
+        {
+            Add(new PowerPcInstruction(Opcode.bcctr, new ImmediateOperand(Constant.Byte(0x20)), null, null, false));
+        }
+
         public void Oris(RegisterOperand rA, RegisterOperand rS, ushort val)
         {
             Add(new PowerPcInstruction(Opcode.oris, rA, rS, new ImmediateOperand(Constant.Word16(val)), false));
@@ -129,6 +136,16 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             Add(new PowerPcInstruction(Opcode.add, rT, rA, rB, true));
         }
 
+        internal void Lbzu(RegisterOperand rD, short offset, RegisterOperand rA)
+        {
+            Add(new PowerPcInstruction(Opcode.lbzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+        }
+
+        public void Lis(RegisterOperand r, ushort uimm)
+        {
+            Add(new PowerPcInstruction(Opcode.oris, r, r, new ImmediateOperand(Constant.Word16(uimm)), false));
+        }
+
         public void Lwzu(RegisterOperand rD, short offset, RegisterOperand rA)
         {
             Add(new PowerPcInstruction(Opcode.lwzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
@@ -137,6 +154,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void Lwz(RegisterOperand rD, short offset, RegisterOperand rA)
         {
             Add(new PowerPcInstruction(Opcode.lwz, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+        }
+
+        public void Mtctr(RegisterOperand r)
+        {
+            Add(new PowerPcInstruction(Opcode.mtctr, r, null, null, false));
         }
 
         public void Stbux(RegisterOperand rS, RegisterOperand rA, RegisterOperand rB)

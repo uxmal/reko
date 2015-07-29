@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Code;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class CodeEmitterTests
@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void AddIncrement()
 		{
-			var id = new Identifier("id", 0, PrimitiveType.Word16, null);
+			var id = new Identifier("id", PrimitiveType.Word16, null);
             var emitter = new CodeEmitterImpl();
 			var add = emitter.IAdd(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void SubIncrement()
 		{
-			var id = new Identifier("id", 0, PrimitiveType.Word16, null);
+			var id = new Identifier("id", PrimitiveType.Word16, null);
             var emitter = new CodeEmitterImpl();
 			var add = emitter.ISub(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Core
         public void Cond()
         {
             var emitter = new CodeEmitterImpl();
-            var cond = emitter.Cond(new Identifier("id", 0, PrimitiveType.Word32, null));
+            var cond = emitter.Cond(new Identifier("id", PrimitiveType.Word32, null));
             Assert.AreEqual("cond(id)", cond.ToString());
         }
 

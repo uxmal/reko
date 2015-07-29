@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	/// <summary>
 	/// Accumulates information to generate a ModRm byte(and possibly SIB byte) 
@@ -74,7 +74,7 @@ namespace Decompiler.Assemblers.x86
 		public void EmitModRM(int reg, RegisterOperand op)
 		{
 			reg <<= 3;
-			emitter.EmitByte(0xC0 | reg | IntelAssembler.RegisterEncoding(op.Register));
+			emitter.EmitByte(0xC0 | reg | X86Assembler.RegisterEncoding(op.Register));
 		}
 
 		/// <summary>
@@ -129,7 +129,7 @@ namespace Decompiler.Assemblers.x86
 					{
 						if (memOp.Base != Registers.esp)
 						{
-							reg |= IntelAssembler.RegisterEncoding(memOp.Base);
+							reg |= X86Assembler.RegisterEncoding(memOp.Base);
 							if (memOp.Offset == null && memOp.Base == Registers.ebp)
 							{
 								reg |= 0x40;
@@ -168,12 +168,12 @@ namespace Decompiler.Assemblers.x86
 						}
 						else
 						{
-							sib |= IntelAssembler.RegisterEncoding(memOp.Base);
+							sib |= X86Assembler.RegisterEncoding(memOp.Base);
 						}
 
 						if (memOp.Index != Registers.esp)
 						{
-							sib |= IntelAssembler.RegisterEncoding(memOp.Index) << 3;
+							sib |= X86Assembler.RegisterEncoding(memOp.Index) << 3;
 						}
 						else
 							throw new ApplicationException("ESP register can't be used as an index register");

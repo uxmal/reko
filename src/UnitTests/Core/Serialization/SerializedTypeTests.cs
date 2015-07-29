@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedTypeTests
@@ -46,9 +46,9 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
             SerializedStructType str = new SerializedStructType
             {
-                Fields = new SerializedStructField[] {
-                    new SerializedStructField(0, null, new PrimitiveType_v1(Domain.UnsignedInt, 4)),
-			        new SerializedStructField(4, null, new PrimitiveType_v1(Domain.Real, 8)),
+                Fields = new StructField_v1[] {
+                    new StructField_v1(0, null, new PrimitiveType_v1(Domain.UnsignedInt, 4)),
+			        new StructField_v1(4, null, new PrimitiveType_v1(Domain.Real, 8)),
                 }
             };
 			Assert.AreEqual("struct((0, ?, prim(UnsignedInt,4))(4, ?, prim(Real,8)))", str.ToString());
@@ -60,10 +60,10 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedStructType str = new SerializedStructType
             {
 			    ByteSize = 32,
-			    Fields = new SerializedStructField []
+			    Fields = new StructField_v1 []
                 {
-                    new SerializedStructField(0, null, new PrimitiveType_v1(Domain.SignedInt, 4)),
-			        new SerializedStructField(4, null, new PrimitiveType_v1(Domain.Real, 8)),
+                    new StructField_v1(0, null, new PrimitiveType_v1(Domain.SignedInt, 4)),
+			        new StructField_v1(4, null, new PrimitiveType_v1(Domain.Real, 8)),
                 }
             };
 			StringWriter writer = new StringWriter();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,29 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class WebBuilderTests : AnalysisTestBase
 	{
-		[Test]
-		public void WebAddSubCarries()
-		{
-			RunTest("Fragments/addsubcarries.asm", "Analysis/WebAddSubCarries.txt");
-		}
+        private MockRepository mr;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+        }
 
 		[Test]
 		public void WebNestedRepeats()
@@ -52,7 +56,11 @@ namespace Decompiler.UnitTests.Analysis
 
 		[Test]
 		public void WebGlobalHandle()
-		{
+        {
+            Given_FakeWin32Platform(mr);
+
+            mr.ReplayAll();
+
 			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
 		}
 
@@ -71,10 +79,10 @@ namespace Decompiler.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, gr);
 				SsaState ssa = sst.SsaState;
 
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

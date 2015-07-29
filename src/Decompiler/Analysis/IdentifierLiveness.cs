@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	public class IdentifierLiveness : StorageVisitor<Storage>	
 	{
@@ -70,7 +70,7 @@ namespace Decompiler.Analysis
                 Def(bin);
                 return;
             }
-            throw new NotImplementedException(string.Format("Can't handle {0}", e));
+            throw new NotImplementedException(string.Format("Can't handle {0}.", e));
         }
 
 

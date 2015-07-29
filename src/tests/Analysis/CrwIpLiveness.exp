@@ -4,6 +4,7 @@ void fn0C00_0000(Register selector ds)
 // Trashed: SCZO ax bx si di al bl ah bh
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -17,6 +18,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	di = Mem0[ds:0x0100:word16]
 	si = Mem0[ds:di:word16]
 	ax = fn0C00_0026(si, ds)
@@ -38,6 +40,7 @@ Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // Trashed: SCZO ax al ah
 // Preserved: sp di
 // fn0C00_0026
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -54,6 +57,7 @@ word16 fn0C00_0026(word16 si, selector ds)
 fn0C00_0026_entry:
 	// succ:  l0C00_0026
 l0C00_0026:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = di
 	di = Mem0[ds:0x0104:word16]
@@ -72,6 +76,7 @@ Register word16 fn0C00_0033(Register word16 si, Register selector ds)
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0033
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -84,6 +89,7 @@ word16 fn0C00_0033(word16 si, selector ds)
 fn0C00_0033_entry:
 	// succ:  l0C00_0033
 l0C00_0033:
+	sp = fp
 	ax = Mem0[ds:si:word16]
 	ax = ax + ax
 	SCZO = cond(ax)

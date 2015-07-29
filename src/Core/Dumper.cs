@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Dumps low-level information about a binary.
@@ -45,7 +45,7 @@ namespace Decompiler.Core
 		{
 			if (map == null)
 			{
-				DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length, stm);
+				DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + (uint)program.Image.Length, stm);
 			}
 			else
 			{
@@ -99,12 +99,12 @@ namespace Decompiler.Core
 
         public void DumpData(LoadedImage image, AddressRange range, TextWriter stm)
         {
-            DumpData(image, range.Begin, (uint) (range.End - range.Begin), stm);
+            DumpData(image, range.Begin, (long) (range.End - range.Begin), stm);
         }
 
-		public void DumpData(LoadedImage image, Address address, uint cbBytes, TextWriter stm)
+		public void DumpData(LoadedImage image, Address address, long cbBytes, TextWriter stm)
 		{
-			uint cSkip = address.Linear & 0x0F;
+			ulong cSkip = address.ToLinear() & 0x0F;
 			ImageReader rdr = arch.CreateImageReader(image, address);
 			while (cbBytes > 0)
 			{
@@ -114,7 +114,7 @@ namespace Decompiler.Core
 					stm.Write("{0} ", rdr.Address);
 					for (int i = 0; i < 16; ++i)
 					{
-						if (cbBytes > 0 && cSkip <= 0)
+						if (cbBytes > 0 && cSkip == 0)
 						{
 							byte b = rdr.ReadByte();
 							stm.Write("{0:X2} ", b);
@@ -147,9 +147,8 @@ namespace Decompiler.Core
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, addrStart));
             try
             {
-                while (dasm.MoveNext())
+                foreach (var instr in dasm)
                 {
-                    MachineInstruction instr = dasm.Current;
                     if (instr.Address >= addrLast)
                         break;
                     if (!DumpAssemblerLine(image, instr, writer))

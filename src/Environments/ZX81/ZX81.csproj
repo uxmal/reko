@@ -6,8 +6,8 @@
     <ProjectGuid>{2B4E0F2E-B458-4BC2-96AC-6A4D9324F974}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environments.ZX81</RootNamespace>
-    <AssemblyName>Decompiler.Environments.ZX81</AssemblyName>
+    <RootNamespace>Reko.Environments.ZX81</RootNamespace>
+    <AssemblyName>Reko.Environments.ZX81</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -43,6 +43,10 @@
     <Compile Include="ZX81Environment.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Z80\Z80.csproj">
+      <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
+      <Name>Z80</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>

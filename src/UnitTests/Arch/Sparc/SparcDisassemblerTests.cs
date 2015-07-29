@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,23 @@
  */
 #endregion
 
-using Decompiler.Arch.Sparc;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Arch.Sparc;
+using Reko.Core;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Sparc
+namespace Reko.UnitTests.Arch.Sparc
 {
     [TestFixture]
     public class SparcDisassemblerTests
     {
         private static SparcInstruction DisassembleWord(byte[] a)
         {
-            LoadedImage img = new LoadedImage(new Address(0x00100000), a);
+            LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), a);
             return Disassemble(img);
         }
 
@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             var bytes = new byte[4];
             new BeImageWriter(bytes).WriteBeUInt32(0, instr);
-            var img = new LoadedImage(new Address(0x00100000), bytes);
+            var img = new LoadedImage(Address.Ptr32(0x00100000), bytes);
             return Disassemble(img);
         }
 
@@ -50,8 +50,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             var arch = new SparcArchitecture(PrimitiveType.Word32);
             var dasm = new SparcDisassembler(arch, img.CreateBeReader(0U));
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         private void AssertInstruction(uint word, string expected)

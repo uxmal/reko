@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// Locates instances of add aLo, bLow followed later adc aHi, bHi and merges them into (add a, b)
@@ -39,7 +39,8 @@ namespace Decompiler.Analysis
     /// <remarks>Limitations: only does this on pairs within the same basic block, as dominator analysis
     /// and SSA analysis haven't been done this early. 
     /// //$TODO: consider doing this _after_ SSA, so that we reap the benefit of performing this across 
-    /// basic block boundaries.
+    /// basic block boundaries. The challenge is to introduce new variables xx_yy that interfere with existing xx 
+    /// and yy references.
     /// </remarks>
     public class LongAddRewriter
     {
@@ -140,7 +141,7 @@ namespace Decompiler.Analysis
             {
                 ReplaceLongAdditions(block);
             }
-            proc.Dump(true, true);
+            proc.Dump(true);
         }
 
         public void ReplaceLongAdditions(Block block)

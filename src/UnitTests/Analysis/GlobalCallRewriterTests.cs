@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class GlobalCallRewriterTests
@@ -43,6 +43,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			program = new Program();
 			program.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
 			gcr = new GlobalCallRewriter(program, null);
             proc = new Procedure("foo", program.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, program.Architecture);
@@ -99,16 +100,15 @@ namespace Decompiler.UnitTests.Analysis
 		{
             Procedure proc = new Procedure("foo", program.Architecture.CreateFrame());
 			proc.Signature = new ProcedureSignature(
-				new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
+				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
-					new Identifier("ecx", 1, PrimitiveType.Word32, Registers.ecx),
-					new Identifier("edxOut", 2, PrimitiveType.Word32, 
+					new Identifier("ecx", PrimitiveType.Word32, Registers.ecx),
+					new Identifier("edxOut", PrimitiveType.Word32, 
 									  new OutArgumentStorage(proc.Frame.EnsureRegister(Registers.edx)))});
 			gcr.EnsureSignature(proc, null);
 			gcr.AddUseInstructionsForOutArguments(proc);
 			Assert.AreEqual(1, proc.ExitBlock.Statements.Count);
 			Assert.AreEqual("use edx (=> edxOut)", proc.ExitBlock.Statements[0].Instruction.ToString());
-
 		}
 
 		[Test]
@@ -151,7 +151,7 @@ namespace Decompiler.UnitTests.Analysis
 
 				protected override void BuildBody()
 				{
-					base.Call("Leaf");
+					base.Call("Leaf", 4);
 					Store(Int32(0x320123), base.Register(0));
 				}
 			}

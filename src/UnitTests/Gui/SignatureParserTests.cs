@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core.Types;
-using Decompiler.Core.Serialization;
-using Decompiler.Gui;
+using Reko.Arch.X86;
+using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Gui;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     class SignatureParserTests

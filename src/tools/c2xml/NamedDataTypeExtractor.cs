@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
-using Decompiler.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Core.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     public class NamedDataTypeExtractor :
         DeclaratorVisitor<Func<NamedDataType,NamedDataType>>,
@@ -93,7 +93,7 @@ namespace Decompiler.Tools.C2Xml
                 nt = new NamedDataType
                 {
                     Name = nt.Name,
-                    DataType = new SerializedArrayType
+                    DataType = new ArrayType_v1
                     {
                         ElementType = nt.DataType,
                         Length = array.Size != null
@@ -158,12 +158,8 @@ namespace Decompiler.Tools.C2Xml
                 Argument_v1 ret = null;
                 if (nt.DataType != null)
                 {
-                    var kind = !(nt.DataType is VoidType_v1)
-                        ? new Register_v1 { Name = "eax" }       //$REVIEW platform-specific.
-                        : null;
                     ret = new Argument_v1
                     {
-                        Kind = kind,
                         Type = nt.DataType,
                     };
                 }
@@ -202,7 +198,6 @@ namespace Decompiler.Tools.C2Xml
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 return new Argument_v1
                 {
-                    Kind = new StackVariable_v1(),
                     Name = nt.Name,
                     Type = nt.DataType,
                 };
@@ -222,7 +217,7 @@ namespace Decompiler.Tools.C2Xml
         /// <returns></returns>
         private NamedDataType ConvertArrayToPointer(NamedDataType nt)
         {
-            var at = nt.DataType as SerializedArrayType;
+            var at = nt.DataType as ArrayType_v1;
             if (at != null)
             {
                 return new NamedDataType
@@ -365,7 +360,15 @@ namespace Decompiler.Tools.C2Xml
 
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
-            byteSize = converter.NamedTypes[typeDefName.Name].Accept(converter.Sizer);
+            SerializedType type;
+            if (!converter.NamedTypes.TryGetValue(typeDefName.Name, out type))
+            {
+                throw new ApplicationException(
+                    string.Format(
+                        "error: type name {0} not defined.",
+                        typeDefName.Name ?? "(null)"));
+            }
+            byteSize = type.Accept(converter.Sizer);
             return new SerializedTypeReference(typeDefName.Name);
         }
 
@@ -457,7 +460,7 @@ namespace Decompiler.Tools.C2Xml
             return en;
         }
 
-        private IEnumerable<SerializedStructField> ExpandStructFields(IEnumerable<StructDecl> decls)
+        private IEnumerable<StructField_v1> ExpandStructFields(IEnumerable<StructDecl> decls)
         {
             int offset = 0;
             foreach (var decl in decls)
@@ -468,7 +471,7 @@ namespace Decompiler.Tools.C2Xml
                     var nt = ntde.GetNameAndType(declarator);
                     var rawSize = nt.DataType.Accept(converter.Sizer);
                     offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))
-                    yield return new SerializedStructField
+                    yield return new StructField_v1
                     {
                         Offset = offset,
                         Name = nt.Name,

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,20 @@
  */
 #endregion
 
-using Decompiler.Scanning.Dfa;
+using Reko.Scanning.Dfa;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning.Dfa
+namespace Reko.UnitTests.Scanning.Dfa
 {
     [TestFixture]
     public class DfAutomatonTests
     {
+        private Automaton automaton;
+
         [Test]
         public void Dfa_SingleState()
         {
@@ -71,34 +73,73 @@ namespace Decompiler.UnitTests.Scanning.Dfa
 
         private static Automaton Given_LongMatchAutomaton()
         {
-            var automaton = new Automaton(
-                new State[] {
-                    new State { Number = 0, Starts = false, Terminates = false },
-                    new State { Number = 1, Starts = false, Terminates = false },
-                    new State { Number = 2, Starts = true, Terminates = false },
-                    new State { Number = 3, Starts = false, Terminates = true},
-                },
-                new int[,] {
-                    { -1, -1, 0, -1 },
-                    {  2, -1, 1, -1 },
-                    { -1,  3,  1, -1 },
-                    { -1, -1, -1, -1 },
-                });
+            var automaton = Automaton.CreateFromPattern("02+");
             return automaton;
         }
 
         private static Automaton Given_SingleStateAutomaton()
         {
-            var automaton = new Automaton(
-                new State[] { 
-                    new State { Number = 0, Starts = true, Terminates= false },
-                    new State { Number = 1, Starts = false, Terminates= true},
-                },
-                new int[,] {
-                    { -1, -1, 1, -1 },
-                    { -1, -1, -1, -1 }
-                });
+            var automaton = Automaton.CreateFromPattern("02");
             return automaton;
+        }
+
+        [Test]
+        public void Dfa_TwoBytes()
+        {
+             Given_TextAutomaton("55 8B");
+             Assert.AreEqual(
+                new int[] { 3 },
+                automaton.GetMatches(new byte[] { 0x00, 0x00, 0x00, 0x55, 0x8B, 0x00, 0x00}, 0).ToArray());
+        }
+
+        [Test]
+        public void Dfa_TwoOccurrences()
+        {
+            Given_TextAutomaton("55 8B");
+            Assert.AreEqual(
+                new int[] { 3, 9 },
+                automaton.GetMatches(new byte[] { 0x00, 0x00, 0x00, 0x55, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x55, 0x8B }, 0).ToArray());
+        }
+
+        [Test]
+        public void Dfa_TwoOccurrences_Wildcards()
+        {
+            Given_TextAutomaton("55+8B");
+            Assert.AreEqual(
+                new int[] { 2, 8 },
+                automaton.GetMatches(new byte[] { 0x00, 0x00, 0x55, 0x55, 0x8B, 0x00, 0x00, 0x00, 0x55, 0x55, 0x8B }, 0).ToArray());
+        }
+
+        [Test]
+        public void Dfa_Regressions()
+        {
+            Given_TextAutomaton("55 8B");
+            Assert.AreEqual(
+                new int[] { 8 },
+                automaton.GetMatches(new byte[] { 0x00, 0x00, 0x55, 0x55, 0x00, 0x00, 0x00, 0x55, 0x55, 0x8B }, 0).ToArray());
+        }
+
+        [Test]
+        public void Dfa_MatchAny()
+        {
+            Given_TextAutomaton("??");
+            Assert.AreEqual(
+                new int[] { 0 },
+                automaton.GetMatches(new byte[] { 0x1 }, 0).ToArray());
+        }
+
+        [Test]
+        public void Dfa_MatchAny2()
+        {
+            Given_TextAutomaton("55 ??");
+            Assert.AreEqual(
+                new int[] { 2 },
+                automaton.GetMatches(new byte[] { 0x11, 0x22, 0x55, 0x41 }, 0).ToArray());
+        }
+
+        private void Given_TextAutomaton(string pattern)
+        {
+            this.automaton = Automaton.CreateFromPattern(pattern);
         }
     }
 }

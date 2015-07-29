@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
     /// Models a function type. Note the similarity to ProcedureSignature: it's likely we'll want to merge these two.
@@ -54,8 +54,8 @@ namespace Decompiler.Core.Types
             this.ReturnType = sig.ReturnValue != null
                 ? sig.ReturnValue.DataType
                 : VoidType.Instance;
-            this.ArgumentTypes = sig.FormalArguments.Select(a => a.DataType).ToArray();
-            this.ArgumentNames = sig.FormalArguments.Select(a => a.Name).ToArray();
+            this.ArgumentTypes = sig.Parameters.Select(a => a.DataType).ToArray();
+            this.ArgumentNames = sig.Parameters.Select(a => a.Name).ToArray();
         }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)

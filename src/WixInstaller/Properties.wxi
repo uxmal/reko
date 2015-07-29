@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <!-- Every time you change the RekoVersion, you must also update
+       the RekoProductCode -->
+  <?define RekoVersion="0.5.0.0"?>
+  <?define RekoProductCode="7C5A3ED0-4859-414D-9699-6285DFF293A6"?>
+</Include>

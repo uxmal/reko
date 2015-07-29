@@ -1,5 +1,6 @@
 // Before ///////
 // SegmentedMemoryPointerMock2
+// Return size: 0
 void SegmentedMemoryPointerMock2()
 SegmentedMemoryPointerMock2_entry:
 	// succ:  l1
@@ -10,6 +11,7 @@ SegmentedMemoryPointerMock2_exit:
 
 // After ///////
 // SegmentedMemoryPointerMock2
+// Return size: 0
 void SegmentedMemoryPointerMock2()
 SegmentedMemoryPointerMock2_entry:
 	// succ:  l1
@@ -20,13 +22,13 @@ SegmentedMemoryPointerMock2_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment "Eq_2")
 	T_2 (in ds : selector)
 Eq_3: (struct "Eq_3" (0 word16 w0000) (4 word16 w0004))
 	T_3 (in bx : word16)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 
 // http://amiga.sourceforge.net/amigadevhelp/phpwebdev.php?keyword=FindTask&funcgroup=AmigaOS&action=Search
-namespace Decompiler.Environments.AmigaOS
+namespace Reko.Environments.AmigaOS
 {
     /// <summary>
     /// Parses AmigaOS funcs file, with extended support for return registers and data types.

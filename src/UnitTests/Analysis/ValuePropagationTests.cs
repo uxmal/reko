@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,44 +18,93 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core.Machine;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core.Machine;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Rhino.Mocks;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class ValuePropagationTests : AnalysisTestBase
 	{
 		SsaIdentifierCollection ssaIds;
+        private MockRepository mr;
 
 		[SetUp]
 		public void Setup()
 		{
 			ssaIds = new SsaIdentifierCollection();
+            mr = new MockRepository();
 		}
 
-		[Test]
-		public void VpAddSubCarries()
+        private Identifier Reg32(string name)
+        {
+            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(id, sid);
+            return sid.Identifier;
+        }
+
+        private Identifier Reg16(string name)
+        {
+            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word16);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(id, sid);
+            return sid.Identifier;
+        }
+
+
+        private Identifier Reg8(string name)
+        {
+            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Byte);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(id, sid);
+            return sid.Identifier;
+        }
+
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
-			RunTest("Fragments/addsubcarries.asm", "Analysis/VpAddSubCarries.txt");
-		}
+			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			dfa.UntangleProcedures();
+			foreach (Procedure proc in prog.Procedures.Values)
+			{
+				writer.WriteLine("= {0} ========================", proc.Name);
+				var gr = proc.CreateBlockDominatorGraph();
+				Aliases alias = new Aliases(proc, prog.Architecture);
+				alias.Transform();
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, gr);
+				SsaState ssa = sst.SsaState;
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
+                cce.Transform();
+				ssa.Write(writer);
+				proc.Write(false, writer);
+				writer.WriteLine();
 
+				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+				vp.Transform();
+
+				ssa.Write(writer);
+				proc.Write(false, writer);
+			}
+		}
 		[Test]
 		public void VpChainTest()
 		{
 			RunTest("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
 		}
-
 
 		[Test]
 		public void VpConstPropagation()
@@ -63,10 +112,11 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
 		}
 
-
 		[Test]
 		public void VpGlobalHandle()
 		{
+            Given_FakeWin32Platform(mr);
+            mr.ReplayAll();
 			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
 		}
 
@@ -138,7 +188,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -291,7 +341,6 @@ namespace Decompiler.UnitTests.Analysis
 				Constant.Create(t, 2));
 			Expression e = vp.VisitBinaryExpression(b);
 			Assert.AreEqual("id *s 20", e.ToString());
-
 		}
 
 		[Test]
@@ -341,7 +390,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void MkSequenceToAddress()
+        public void VpMkSequenceToAddress()
         {
             Constant seg = Constant.Create(PrimitiveType.SegmentSelector, 0x4711);
             Constant off = Constant.Word16(0x4111);
@@ -352,59 +401,24 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("4711:4111", e.ToString());
         }
 
-		private Identifier Reg32(string name)
-		{
-			var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
-			Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, mr);
-			SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-			ssaIds.Add(sid);
-			return sid.Identifier;
-		}
-
-        private Identifier Reg16(string name)
+        [Test]
+        [Ignore("Making this pass breaks a lot of older unit tests. Re-enable once transition to new ProcedureFlow is complete.")]
+        public void VpPhiWithConstants()
         {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word16);
-            Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(sid);
-            return sid.Identifier;
+            Constant c1 = Constant.Word16(0x4711);
+            Constant c2 = Constant.Word16(0x4711);
+            Identifier r1 = Reg16("r1");
+            Identifier r2 = Reg16("r2");
+            Identifier r3 = Reg16("r3");
+            var stm1 = new Statement(1, new Assignment(r1, c1), null);
+            var stm2 = new Statement(2, new Assignment(r2, c2), null);
+            ssaIds[r1].DefStatement = stm1;
+            ssaIds[r2].DefStatement = stm2;
+            var vp = new ValuePropagator(ssaIds, null);
+            Instruction instr = new PhiAssignment(r3, new PhiFunction(r1.DataType, r1, r2));
+            instr = instr.Accept(vp);
+            Assert.AreEqual("r3 = 0x4711", instr.ToString());
         }
-
-
-        private Identifier Reg8(string name)
-        {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Byte);
-            Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(sid);
-            return sid.Identifier;
-        }
-
-        protected override void RunTest(Program prog, TextWriter writer)
-		{
-			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
-				writer.WriteLine("= {0} ========================", proc.Name);
-				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
-				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
-                cce.Transform();
-				ssa.Write(writer);
-				proc.Write(false, writer);
-				writer.WriteLine();
-
-				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
-				vp.Transform();
-
-				ssa.Write(writer);
-				proc.Write(false, writer);
-			}
-		}
 
 		private class DpbMock : ProcedureBuilder
 		{
@@ -421,6 +435,35 @@ namespace Decompiler.UnitTests.Analysis
 				Assign(edx, Int32(0));
                 Assign(edx, Dpb(edx, dl, 0, 8));
 				Return(edx);
+			}
+		}
+
+        [Test]
+        public void VpDbpDbp()
+        {
+            var m = new ProcedureBuilder();
+            var d1 = m.Reg32("d32");
+            var a1 = m.Reg32("a32");
+            var tmp = m.Frame.CreateTemporary(PrimitiveType.Word16);
+
+            m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0, 16));
+            m.Assign(d1, m.Dpb(d1, m.LoadW(m.IAdd(a1, 4)), 0, 16));
+
+			Procedure proc = m.Procedure;
+			var gr = proc.CreateBlockDominatorGraph();
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+			SsaState ssa = sst.SsaState;
+
+            ssa.DebugDump(true);
+
+			var vp = new ValuePropagator(ssa.Identifiers, proc);
+			vp.Transform();
+
+			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
+			{
+				proc.Write(false, fut.TextWriter);
+				fut.TextWriter.WriteLine();
+				fut.AssertFilesEqual();
 			}
 		}
 	}

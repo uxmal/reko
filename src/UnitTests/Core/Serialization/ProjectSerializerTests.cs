@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,34 +18,65 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Loading;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Loading;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
     [TestFixture]
     public class ProjectSerializerTests
     {
-        [Test]
-        public void Ps_Load()
-        {
-            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
-            var proj = ps.LoadProject(FileUnitTester.MapTestPath("fragments/multiple/termination.xml"));
+        private MockRepository mr;
+        private ILoader loader;
+        private IProcessorArchitecture arch;
 
-            Assert.AreEqual(1, ((InputFile)proj.InputFiles[0]).UserProcedures.Count);
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+            loader = mr.Stub<ILoader>();
+            arch = mr.StrictMock<IProcessorArchitecture>();
+            Address dummy;
+            arch.Stub(a => a.TryParseAddress(null, out dummy)).IgnoreArguments().WhenCalled(m =>
+            {
+                Address addr;
+                var sAddr = (string)m.Arguments[0];
+                var iColon = sAddr.IndexOf(':');
+                if (iColon > 0)
+                {
+                    addr = Address.SegPtr(
+                        Convert.ToUInt16(sAddr.Remove(iColon)),
+                        Convert.ToUInt16(sAddr.Substring(iColon+1)));
+                    m.ReturnValue = true;
+                }
+                else
+                {
+                    m.ReturnValue = Address32.TryParse32((string)m.Arguments[0], out addr);
+                }
+                m.Arguments[1] = addr;
+            }).Return(false);
         }
 
         [Test]
         public void Ps_Load_v1()
         {
+            var bytes = new byte[100];
+            loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
+            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(
+                new Program { Architecture = arch });
+
+            mr.ReplayAll();
+
             var sp = new Project_v1
             {
                 Input = new DecompilerInput_v1
@@ -83,12 +114,26 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
+            var ps = new ProjectLoader(loader);
             var p = ps.LoadProject(sp);
-            Assert.AreEqual(1, p.InputFiles.Count);
-            var inputFile = (InputFile) p.InputFiles[0]; 
+            Assert.AreEqual(1, p.Programs.Count);
+            var inputFile = p.Programs[0]; 
             Assert.AreEqual(1, inputFile.UserProcedures.Count);
             Assert.AreEqual("Fn", inputFile.UserProcedures.First().Value.Name);
+        }
+
+        [Test]
+        public void foo()
+        {
+            var sp = new Project_v2
+            {
+                Inputs = new List<ProjectFile_v2> {
+                    new AssemblerFile_v2 { Filename="foo.asm", Assembler="x86-att" }
+                }
+            };
+            var sw = new StringWriter();
+            new ProjectLoader(loader).Save(sp, sw);
+            Console.WriteLine(sw);
         }
     }
 }

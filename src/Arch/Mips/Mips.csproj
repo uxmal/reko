@@ -7,8 +7,8 @@
     <ProjectGuid>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.Mips</RootNamespace>
-    <AssemblyName>Decompiler.Arch.Mips</AssemblyName>
+    <RootNamespace>Reko.Arch.Mips</RootNamespace>
+    <AssemblyName>Reko.Arch.Mips</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

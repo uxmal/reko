@@ -1,22 +1,23 @@
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem7[ds:bx + 0x0000:word32] = Mem0[ds:bx + 0x0004:word32]
+	Mem6[ds:bx + 0x0000:word32] = Mem0[ds:bx + 0x0004:word32]
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct)
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment)
 	T_2 (in ds : selector)
 Eq_3: (struct (0 word32 dw0000) (4 word32 dw0004))
 	T_3 (in bx : word16)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))
@@ -48,7 +49,7 @@ T_8: (in bx + 0x0000 : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_9: (in Mem7[ds:bx + 0x0000:word32] : word32)
+T_9: (in Mem6[ds:bx + 0x0000:word32] : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32

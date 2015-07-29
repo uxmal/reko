@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,12 @@
 
 using System;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
 	public class CmdSets
 	{
-		public const string Decompiler = "6D65B38B-4275-4892-BD3C-05AC0645373F";
-		public static Guid GuidDecompiler = new Guid("6D65B38B-4275-4892-BD3C-05AC0645373F");
+		public const string Reko = "6D65B38B-4275-4892-BD3C-05AC0645373F";
+		public static Guid GuidReko = new Guid("6D65B38B-4275-4892-BD3C-05AC0645373F");
 	
 	}
 	
@@ -45,9 +45,12 @@ namespace Decompiler.Gui
 		public const int WindowsMenu = 6;
 		public const int HelpMenu = 7;
 		public const int CtxMemoryControl = 8;
-		public const int CtxBrowser = 9;
-		public const int CtxProcedure = 10;
-		public const int MainToolbar = 11;
+		public const int CtxDisassembler = 9;
+		public const int CtxBrowser = 10;
+		public const int CtxProcedure = 11;
+		public const int CtxAddressSearch = 12;
+		public const int CtxCodeView = 13;
+		public const int MainToolbar = 14;
 	}
 	
 	public class GroupIds
@@ -65,12 +68,16 @@ namespace Decompiler.Gui
 		public const int GrpWindows = 11 + 1000;
 		public const int GrpHelp = 12 + 1000;
 		public const int GrpMemoryControl = 13 + 1000;
-		public const int GrpBrowser = 14 + 1000;
-		public const int GrpBrowserProc = 15 + 1000;
-		public const int GrpBrowserSegm = 16 + 1000;
-		public const int GrpToolbarFileOps = 17 + 1000;
-		public const int GrpToolbarActions = 18 + 1000;
-		public const int GrpProcedure = 19 + 1000;
+		public const int GrpDisassemblerNav = 14 + 1000;
+		public const int GrpDisassemblerEdit = 15 + 1000;
+		public const int GrpCodeView = 16 + 1000;
+		public const int GrpBrowser = 17 + 1000;
+		public const int GrpBrowserProc = 18 + 1000;
+		public const int GrpBrowserSegm = 19 + 1000;
+		public const int GrpToolbarFileOps = 20 + 1000;
+		public const int GrpToolbarActions = 21 + 1000;
+		public const int GrpProcedure = 22 + 1000;
+		public const int GrpAddressSearch = 23 + 1000;
 	}
 	
 	public class CmdIds
@@ -80,31 +87,41 @@ namespace Decompiler.Gui
 		public const int FileSave = 3 + 2000;
 		public const int FileAddBinary = 4 + 2000;
 		public const int FileAddMetadata = 5 + 2000;
-		public const int FileCloseProject = 6 + 2000;
-		public const int FileExit = 7 + 2000;
-		public const int EditFind = 8 + 2000;
-		public const int EditCopy = 9 + 2000;
-		public const int ViewMemory = 10 + 2000;
-		public const int ViewDisassembly = 11 + 2000;
-		public const int ViewGoToAddress = 12 + 2000;
-		public const int ViewFindAllProcedures = 13 + 2000;
-		public const int ViewShowAllFragments = 14 + 2000;
-		public const int ViewShowUnscanned = 15 + 2000;
-		public const int ViewFindFragments = 16 + 2000;
-		public const int ViewFindWhatPointsHere = 17 + 2000;
-		public const int ActionNextSearchHit = 18 + 2000;
-		public const int ActionPrevSearchHit = 19 + 2000;
-		public const int ActionNextPhase = 20 + 2000;
-		public const int ActionFinishDecompilation = 21 + 2000;
-		public const int ActionMarkProcedure = 22 + 2000;
-		public const int ActionEditSignature = 23 + 2000;
-		public const int ActionMarkType = 24 + 2000;
-		public const int WindowsCascade = 25 + 2000;
-		public const int WindowsTileVertical = 26 + 2000;
-		public const int WindowsTileHorizontal = 27 + 2000;
-		public const int WindowsCloseAll = 28 + 2000;
-		public const int HelpAbout = 29 + 2000;
-		public const int ShowProcedureCallHierarchy = 30 + 2000;
+		public const int FileAssemble = 6 + 2000;
+		public const int FileCloseProject = 7 + 2000;
+		public const int FileExit = 8 + 2000;
+		public const int EditFind = 9 + 2000;
+		public const int EditCopy = 10 + 2000;
+		public const int EditCopyAll = 11 + 2000;
+		public const int EditRename = 12 + 2000;
+		public const int EditSelectAll = 13 + 2000;
+		public const int EditProperties = 14 + 2000;
+		public const int ViewMemory = 15 + 2000;
+		public const int ViewDisassembly = 16 + 2000;
+		public const int OpenLink = 17 + 2000;
+		public const int OpenLinkInNewWindow = 18 + 2000;
+		public const int ViewGoToAddress = 19 + 2000;
+		public const int ViewFindAllProcedures = 20 + 2000;
+		public const int ViewShowAllFragments = 21 + 2000;
+		public const int ViewShowUnscanned = 22 + 2000;
+		public const int ViewFindPattern = 23 + 2000;
+		public const int ViewFindFragments = 24 + 2000;
+		public const int ViewFindWhatPointsHere = 25 + 2000;
+		public const int ActionNextSearchHit = 26 + 2000;
+		public const int ActionPrevSearchHit = 27 + 2000;
+		public const int ActionRestartDecompilation = 28 + 2000;
+		public const int ActionNextPhase = 29 + 2000;
+		public const int ActionFinishDecompilation = 30 + 2000;
+		public const int ActionMarkProcedure = 31 + 2000;
+		public const int ActionScanHeuristically = 32 + 2000;
+		public const int ActionEditSignature = 33 + 2000;
+		public const int ActionMarkType = 34 + 2000;
+		public const int WindowsCascade = 35 + 2000;
+		public const int WindowsTileVertical = 36 + 2000;
+		public const int WindowsTileHorizontal = 37 + 2000;
+		public const int WindowsCloseAll = 38 + 2000;
+		public const int HelpAbout = 39 + 2000;
+		public const int ShowProcedureCallHierarchy = 40 + 2000;
 		public const int FileMru = 2200;
 	}
 }

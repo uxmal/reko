@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,30 +18,36 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedSequenceTests
 	{
 		private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+        private X86ProcedureSerializer ser;
+
+        private void Given_X86ProcedureSerializer()
+        {
+            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(arch, true), "stdapi");
+        }
 
 		[Test]
 		public void SseqCreate()
 		{
-			Identifier head = new Identifier(Registers.dx.Name, 0, Registers.dx.DataType, Registers.dx);
-			Identifier tail = new Identifier(Registers.ax.Name, 1, Registers.ax.DataType, Registers.ax);
-			Identifier seq = new Identifier("dx_ax", 2, PrimitiveType.Word32, new SequenceStorage(head, tail));
+			Identifier head = new Identifier(Registers.dx.Name, Registers.dx.DataType, Registers.dx);
+			Identifier tail = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
+			Identifier seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(head, tail));
 			SerializedSequence sq = new SerializedSequence((SequenceStorage) seq.Storage);
 			Assert.AreEqual("dx", sq.Registers[0].Name);
 			Assert.AreEqual("ax", sq.Registers[1].Name);
@@ -69,7 +75,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature ssig = new SerializedSignature();
 			ssig.Arguments = new Argument_v1[] { sa };
 
-			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
+            Given_X86ProcedureSerializer();
 			ProcedureSignature ps = ser.Deserialize(ssig, f);
 			Assert.AreEqual("void foo(Sequence word32 dx_ax)", ps.ToString("foo"));
 		}
@@ -78,10 +84,10 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void VoidFunctionSignature()
 		{
 			SerializedSignature sig = new SerializedSignature();
-			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
+            Given_X86ProcedureSerializer();
             ProcedureSignature ps = ser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
-			Assert.IsTrue(ps.ArgumentsValid);
+			Assert.IsTrue(ps.ParametersValid);
 		}
 	}
 }

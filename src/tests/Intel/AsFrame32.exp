@@ -10,7 +10,7 @@
 10000006 50              	push	eax
 10000007 E8 0B 00 00 00  	call	10000017
 1000000C 83 C4 04        	add	esp,04
-1000000F 66 89 05 28 34 00 10 	mov	word ptr [10003428],ax
+1000000F 66 89 05 28 34 00 10 	mov	[10003428],ax
 10000016 C3              	ret	
 10000017 55              	push	ebp
 10000018 8B EC           	mov	ebp,esp
@@ -30,7 +30,7 @@
 10000047 7D 11           	jge	1000005A
 10000049 66 8B 4D FC     	mov	cx,[ebp-04]
 1000004D 66 83 C1 01     	add	cx,01
-10000051 66 89 4D FC     	mov	word ptr [ebp-04],cx
+10000051 66 89 4D FC     	mov	[ebp-04],cx
 10000055 E9 D5 FF FF FF  	jmp	1000002F
 1000005A 66 8B 45 FC     	mov	ax,[ebp-04]
 1000005E 8B E5           	mov	esp,ebp

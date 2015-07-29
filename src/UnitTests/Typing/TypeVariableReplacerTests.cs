@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Typing;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypeVariableReplacerTests
@@ -38,8 +38,8 @@ namespace Decompiler.UnitTests.Typing
 			TypeStore store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
 
-			Identifier pptr = new Identifier("pptr", 0, PrimitiveType.Word32, null);
-			Identifier ptr = new Identifier("ptr", 0, PrimitiveType.Word32, null);
+			Identifier pptr = new Identifier("pptr", PrimitiveType.Word32, null);
+			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 		}
 
 		private MemoryAccess MemLoad(Identifier id, int offset, PrimitiveType size)

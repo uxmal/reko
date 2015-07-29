@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	/// <summary>
 	/// Intel x86 opcode disassembler 
@@ -45,6 +45,9 @@ namespace Decompiler.Arch.X86
 		private ImageReader	rdr;
         private bool useRexPrefix;
         private byte rexPrefix;
+        private bool dataSizeOverride;
+        private bool f2PrefixSeen;
+        private bool f3PrefixSeen;
 
 		/// <summary>
 		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
@@ -63,29 +66,33 @@ namespace Decompiler.Arch.X86
             this.useRexPrefix = useRexPrefix;
         }
 
-        public override IntelInstruction Current { get { return instrCur; } }
-
         /// <summary>
         /// Disassembles the current instruction. The address is incremented
         /// to point at the first address after the instruction and returned to the caller.
         /// </summary>
         /// <returns>A single disassembled instruction.</returns>
-        public override bool MoveNext()
+        public override IntelInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
+
             dataWidth = defaultDataWidth;
             addressWidth = defaultAddressWidth;
             isModrmValid = false;
             rexPrefix = 0;
             segmentOverride = RegisterStorage.None;
-            byte op = rdr.ReadByte();
+            byte op;
+            if (!rdr.TryReadByte(out op))
+                return null;
             instrCur = s_aOpRec[op].Decode(this, op, "");
+            if (instrCur == null)
+                return null;
             instrCur.Address = addr;
-            instrCur.Length = rdr.Address - addr;
-            return true;
+            instrCur.Length = (int)(rdr.Address - addr);
+            return instrCur;
         }
+
         private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
             return GpRegFromBits((bits & 7) | ((rexPrefix & 8)), dataWidth);
@@ -94,6 +101,24 @@ namespace Decompiler.Arch.X86
         private RegisterStorage RegFromBitsRexR(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             return fnReg((bits & 7) | ((rexPrefix & 4) << 1), dataWidth);
+        }
+
+        private RegisterStorage MmxRegFromBits(int bits, PrimitiveType dataWidth)
+        {
+            switch (bits & 7)
+            {
+            case 0: return Registers.mm0;
+            case 1: return Registers.mm1;
+            case 2: return Registers.mm2;
+            case 3: return Registers.mm3;
+            case 4: return Registers.mm4;
+            case 5: return Registers.mm5;
+            case 6: return Registers.mm6;
+            case 7: return Registers.mm7;
+            }
+            throw new ArgumentOutOfRangeException(string.Format(
+                "Unsupported register {0} or data width {1}.",
+                bits, dataWidth));
         }
 
         private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
@@ -201,30 +226,24 @@ namespace Decompiler.Arch.X86
 
         private RegisterStorage XmmRegFromBits(int bits, PrimitiveType dataWidth)
         {
-            switch (dataWidth.BitSize)
+            switch (bits)
             {
-            default: throw new NotImplementedException();
-            case 128:
-                switch (bits)
-                {
-                case 0: return Registers.xmm0;
-                case 1: return Registers.xmm1;
-                case 2: return Registers.xmm2;
-                case 3: return Registers.xmm3;
-                case 4: return Registers.xmm4;
-                case 5: return Registers.xmm5;
-                case 6: return Registers.xmm6;
-                case 7: return Registers.xmm7;
-                case 8: return Registers.xmm8;
-                case 9: return Registers.xmm9;
-                case 10: return Registers.xmm10;
-                case 11: return Registers.xmm11;
-                case 12: return Registers.xmm12;
-                case 13: return Registers.xmm13;
-                case 14: return Registers.xmm14;
-                case 15: return Registers.xmm15;
-                }
-                break;
+            case 0: return Registers.xmm0;
+            case 1: return Registers.xmm1;
+            case 2: return Registers.xmm2;
+            case 3: return Registers.xmm3;
+            case 4: return Registers.xmm4;
+            case 5: return Registers.xmm5;
+            case 6: return Registers.xmm6;
+            case 7: return Registers.xmm7;
+            case 8: return Registers.xmm8;
+            case 9: return Registers.xmm9;
+            case 10: return Registers.xmm10;
+            case 11: return Registers.xmm11;
+            case 12: return Registers.xmm12;
+            case 13: return Registers.xmm13;
+            case 14: return Registers.xmm14;
+            case 15: return Registers.xmm15;
             }
             throw new NotImplementedException();
         }
@@ -292,6 +311,30 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
+        /// <summary>
+        /// Use this OpRec when an instruction encoding is dependent on whether the processor
+        /// is in 64-bit mode or not.
+        /// </summary>
+        public class Alternative64OpRec : OpRec
+        {
+            private OpRec oprec32;
+            private OpRec oprec64;
+
+            public Alternative64OpRec(OpRec oprec32, OpRec oprec64)
+            {
+                this.oprec32 = oprec32;
+                this.oprec64 = oprec64;
+            }
+
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.defaultAddressWidth.BitSize == 64)
+                    return oprec64.Decode(disasm, op, opFormat);
+                else
+                    return oprec32.Decode(disasm, op, opFormat);
+            }
+        }
+
         public class Rex_SingleByteOpRec : SingleByteOpRec
         {
             public Rex_SingleByteOpRec(Opcode op, string fmt)
@@ -305,7 +348,9 @@ namespace Decompiler.Arch.X86
                 {
                     disasm.rexPrefix = op;
                     if ((op & 8) != 0)
+                    {
                         disasm.dataWidth = PrimitiveType.Word64;
+                    }
                     op = disasm.rdr.ReadByte();
                     return s_aOpRec[op].Decode(disasm, op, opFormat);
                 }
@@ -345,16 +390,47 @@ namespace Decompiler.Arch.X86
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 int grp = Group - 1;
-                OpRec opRec = s_aOpRecGrp[grp * 8 + ((disasm.EnsureModRM() >> 3) & 0x07)];
+                byte modRm;
+                if (!disasm.TryEnsureModRM(out modRm))
+                    return null;
+                OpRec opRec = s_aOpRecGrp[grp * 8 + ((modRm >> 3) & 0x07)];
                 return opRec.Decode(disasm, op, opFormat + format);
             }
         }
 
+        // Uses the 2 high bits of the ModRM word for further discrimination
+		public class Group7OpRec : OpRec
+        {
+            private OpRec memInstr;
+            private OpRec[] regInstrs;
+
+            public Group7OpRec(
+                OpRec memInstr,
+                params OpRec[] regInstrs)
+            {
+                this.memInstr = memInstr;
+                this.regInstrs = regInstrs;
+            }
+
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                byte modRm;
+                if (!disasm.TryEnsureModRM(out modRm))
+                    return null;
+                if ((modRm & 0xC0) == 0xC0)
+                    return regInstrs[modRm & 0x07].Decode(disasm, op, opFormat);
+                else
+                    return memInstr.Decode(disasm, op, opFormat);
+            }
+        }
+        
         public class FpuOpRec : OpRec
         {
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                byte modRM = disasm.EnsureModRM();
+                byte modRM;
+                if (!disasm.TryEnsureModRM(out modRM))
+                    return null;
                 OpRec opRec;
                 int iOpRec = (op & 0x07) * 0x48;
                 if (modRM < 0xC0)
@@ -378,10 +454,61 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        public class ThreeByteOpRec : OpRec
+        {
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                switch (op)
+                {
+                case 0x3A:
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec0F3A[op].Decode(disasm, op, "");
+                default: return null;
+                }
+            }
+        }
+        public class F2ByteOpRec : OpRec
+        {
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.rdr.PeekByte(0) == 0x0F)
+                {
+                    disasm.f2PrefixSeen = true;
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec[op].Decode(disasm, op, opFormat);
+                }
+                return disasm.DecodeOperands(Opcode.repne, 0xF2, opFormat);
+            }
+        }
+
+        public class F3ByteOpRec : OpRec
+        {
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                byte b = disasm.rdr.PeekByte(0);
+                if (b == 0x0F)
+                {
+                    disasm.f3PrefixSeen = true;
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec[op].Decode(disasm, op, opFormat);
+                }
+                if (b == 0xC3)
+                {
+                    op = disasm.rdr.ReadByte();
+                    return s_aOpRec[b].Decode(disasm, op, opFormat);
+                }
+                return disasm.DecodeOperands(Opcode.rep, 0xF3, opFormat);
+            }
+        }
+
         public class ChangeDataWidth : OpRec
         {
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
+                disasm.dataSizeOverride = true;
                 disasm.dataWidth = (disasm.dataWidth == PrimitiveType.Word16)
                         ? PrimitiveType.Word32
                         : PrimitiveType.Word16;
@@ -402,18 +529,101 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        public class PrefixedOpRec : OpRec
+        {
+            private Opcode op;
+            private Opcode op66;
+            private Opcode opWide;
+            private Opcode op66Wide;
+            private Opcode opF3;
+            private Opcode opF2;
+            private string opFmt;
+            private string op66Fmt;
+            private string opF3Fmt;
+            private string opF2Fmt;
+
+            public PrefixedOpRec(
+                Opcode op,
+                string opFmt,
+                Opcode op66 = Opcode.illegal,
+                string op66Fmt = null,
+                Opcode opF3 = Opcode.illegal,
+                string opF3Fmt = null,
+                Opcode opF2 = Opcode.illegal,
+                string opF2Fmt = null)
+            {
+                this.op =   this.opWide = op;
+                this.op66 = this.op66Wide = op66;
+                this.opF3 = opF3;
+                this.opF2 = opF2;
+                this.opFmt = opFmt;
+                this.op66Fmt = op66Fmt;
+                this.opF3Fmt = opF3Fmt;
+                this.opF2Fmt = opF2Fmt;
+            }
+
+            public PrefixedOpRec(
+                Opcode op,
+                Opcode opWide, 
+                string opFmt, 
+                Opcode op66,
+                Opcode op66Wide,
+                string op66Fmt,
+                Opcode opF3 = Opcode.illegal,
+                string opF3Fmt = null)
+            {
+                this.op = op;
+                this.opWide = opWide;
+                this.op66 = op66;
+                this.op66Wide = op66Wide;
+                this.opF3 = opF3;
+                this.opF2 = Opcode.illegal;
+                this.opFmt = opFmt;
+                this.op66Fmt = op66Fmt;
+                this.opF3Fmt = opF3Fmt;
+                this.opF2Fmt = null;
+            }
+
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.f2PrefixSeen)
+                    return disasm.DecodeOperands(this.opF2, op, opF2Fmt);
+                else if (disasm.f3PrefixSeen)
+                    return disasm.DecodeOperands(this.opF3, op, opF3Fmt);
+                else if (disasm.dataSizeOverride)
+                {
+                    if (disasm.useRexPrefix && (disasm.rexPrefix & 8) != 0)
+                        return disasm.DecodeOperands(this.op66Wide, op, op66Fmt);
+                    else
+                        return disasm.DecodeOperands(this.op66, op, op66Fmt);
+                }
+                else
+                {
+                    if (disasm.useRexPrefix && (disasm.rexPrefix & 8) != 0)
+                        return disasm.DecodeOperands(this.opWide, op, opFmt);
+                    else
+                        return disasm.DecodeOperands(this.op, op, opFmt);
+                }
+            }
+        }
+
 		/// <summary>
 		/// If the ModR/M byte hasn't been read yet, do so now.
 		/// </summary>
 		/// <returns></returns>
-		private byte EnsureModRM()
+		private bool TryEnsureModRM(out byte modRm)
 		{
-			if (!isModrmValid)
-			{
-				this.modrm = rdr.ReadByte();
-				isModrmValid = true;
-			}
-			return this.modrm;
+            if (!isModrmValid)
+            {
+                if (!rdr.TryReadByte(out this.modrm))
+                {
+                    modRm = 0;
+                    return false;
+                }
+                isModrmValid = true;
+            }
+            modRm = this.modrm;
+            return true;
 		}
 
         private IntelInstruction DecodeOperands(Opcode opcode, byte op, string strFormat)
@@ -421,7 +631,7 @@ namespace Decompiler.Arch.X86
             MachineOperand pOperand;
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;
-
+            byte modRm;
             List<MachineOperand> ops = new List<MachineOperand>();
             int i = 0;
             while (i != strFormat.Length)
@@ -448,15 +658,27 @@ namespace Decompiler.Arch.X86
                     ++i;
                     ushort off = rdr.ReadLeUInt16();
                     ushort seg = rdr.ReadLeUInt16();
-                    pOperand = addrOp = new X86AddressOperand(new Address(seg, off));
+                    pOperand = addrOp = new X86AddressOperand(Address.SegPtr(seg, off));
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);
                     pOperand = DecodeModRM(width, segmentOverride, GpRegFromBits);
                     break;
+                case 'Q':		// memory or register MMX operand specified by mod & r/m fields.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = DecodeModRM(width, segmentOverride, MmxRegFromBits);
+                    break;
                 case 'G':		// register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, GpRegFromBits));
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
+                    break;
+                case 'P':		// MMX register operand specified by the reg field of the modRM byte.
+                    width = OperandWidth(strFormat[i++]);
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, MmxRegFromBits));
                     break;
                 case 'I':		// Immediate operand.
                     if (strFormat[i] == 'x')
@@ -470,10 +692,16 @@ namespace Decompiler.Arch.X86
                     ++i;
                     pOperand = CreateImmediateOperand(width, dataWidth);
                     break;
-                case 'J':		// Relative jump.
+                case 'J':		// Relative ("near") jump.
                     width = OperandWidth(strFormat[i++]);
                     offset = rdr.ReadLeSigned(width);
-                    pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, (uint) (rdr.Address.Offset + offset)));
+                    ulong uAddr = (ulong) ((long)rdr.Address.Offset + (long)offset);
+                    if (defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
+                        pOperand = AddressOperand.Ptr64(uAddr);
+                    else if (defaultAddressWidth.BitSize == 32)
+                        pOperand = AddressOperand.Ptr32((uint)uAddr);
+                    else
+                        pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, uAddr));
                     break;
                 case 'M':		// modRM may only refer to memory.
                     width = OperandWidth(strFormat[i++]);
@@ -486,11 +714,15 @@ namespace Decompiler.Arch.X86
                     break;
                 case 'S':		// Segment register encoded by reg field of modRM byte.
                     ++i;        // Skip over the 'w'.
-                    pOperand = new RegisterOperand(SegFromBits(EnsureModRM() >> 3));
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(SegFromBits(modRm >> 3));
                     break;
                 case 'V':		// XMM operand specified by the reg field of the modRM byte.
                     width = SseOperandWidth(strFormat, ref i);
-                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, XmmRegFromBits));
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, XmmRegFromBits));
                     break;
                 case 'W':		// memory or XMM operand specified by mod & r/m fields.
                     width = SseOperandWidth(strFormat, ref i);
@@ -518,7 +750,9 @@ namespace Decompiler.Arch.X86
                     pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
                     break;
                 case 'F':		// Floating-point ST(x)
-                    pOperand = new FpuOperand(EnsureModRM() & 0x07);
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new FpuOperand(modRm & 0x07);
                     break;
                 case 'f':		// ST(0)
                     pOperand = new FpuOperand(0);
@@ -574,6 +808,12 @@ namespace Decompiler.Arch.X86
             case 'q':
                 dataWidth = PrimitiveType.Word64;
                 break;
+            case 'y':
+                dataWidth = (useRexPrefix && (rexPrefix & 8) != 0) ? PrimitiveType.Word64: PrimitiveType.Word32;
+                break;
+            case 'z':
+                dataWidth = this.dataWidth.BitSize == 64 ? PrimitiveType.Int32 : this.dataWidth;
+                break;
             }
 			return dataWidth;
 		}
@@ -588,10 +828,16 @@ namespace Decompiler.Arch.X86
                 case 's': return PrimitiveType.Word128;
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
+            case 'q':
+                return PrimitiveType.Word64;
             case 'x':
                 return defaultDataWidth != dataWidth
                     ? PrimitiveType.Word128
                     : PrimitiveType.Word256;
+            case 'y':
+                return dataSizeOverride
+                    ? PrimitiveType.Word128
+                    : PrimitiveType.Word64;
             default: throw new NotImplementedException(string.Format("Unknown operand width {0}", fmt[i-1]));
             }
         }
@@ -627,7 +873,9 @@ namespace Decompiler.Arch.X86
 
 		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
 		{
-			EnsureModRM();
+            byte modRm;
+            if (!TryEnsureModRM(out modRm))
+                return null;
 
 			int  rm = this.modrm & 0x07;
 			int  mod = this.modrm >> 6;
@@ -679,8 +927,16 @@ namespace Decompiler.Arch.X86
 				case 0:
 					if (rm == 0x05)
 					{
-						offsetWidth = PrimitiveType.Word32;
-						b = RegisterStorage.None;
+                        if (defaultAddressWidth.BitSize == 64)      //$REFACTOR: should subclass this type of behaviour.
+                        {
+                            b = Registers.rip;
+                            offsetWidth = PrimitiveType.Int32;
+                        }
+                        else
+                        {
+                            offsetWidth = PrimitiveType.Pointer32;
+                            b = RegisterStorage.None;
+                        }
 					}
 					else
 					{
@@ -741,16 +997,9 @@ namespace Decompiler.Arch.X86
 			return op is RegisterOperand || op is X86AddressOperand;
 		}
 
-		// A - direct address
-		// E - modrm specifies the argument
-		// G - reg part of modrm specifies the argument, which is a reg.
-		// J - relative from offset.
-		// r - register is encoded in the last 3 bits of the instruction.
-
-		// 'X' means the opcode hasn't been tested in the disassembler.
-
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
+		private static OpRec [] s_aOpRec0F3A;
 		private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
 
@@ -758,9 +1007,11 @@ namespace Decompiler.Arch.X86
 		{
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
+            s_aOpRec0F3A = Create0F3AOprecs();
 
             s_aOpRecGrp = CreateGroupOprecs();
             s_aFpOpRec = CreateFpuOprecs();
+            Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
 		}
 	}
 }	

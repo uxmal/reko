@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,11 +23,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Services
+namespace Reko.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
         TypeLibrary LoadLibrary(IProcessorArchitecture arch, string name);
+        CharacteristicsLibrary LoadCharacteristics(string name);
     }
 
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
@@ -36,17 +37,34 @@ namespace Decompiler.Core.Services
         {
             try
             {
-                TypeLibrary lib = new TypeLibrary();
                 string libFileName = ImportFileLocation(name);
                 if (!File.Exists(libFileName))
                     return null;
-                lib.Load(arch, libFileName);
+
+                var lib = TypeLibrary.Load(arch, libFileName);
+                lib.Filename = libFileName;
                 return lib;
             }
             catch
             {
                 return null;
             }
+        }
+
+        public CharacteristicsLibrary LoadCharacteristics(string name)
+        {
+            var filename = InstalledFileLocation(name);
+            if (!File.Exists(filename))
+                return new CharacteristicsLibrary();
+            var lib = CharacteristicsLibrary.Load(filename);
+            return lib;
+        }
+
+        [Obsolete("Let the configuration service do this.")]
+        public string InstalledFileLocation(string name)
+        {
+            string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
+            return Path.Combine(assemblyDir, name);
         }
 
         public string ImportFileLocation(string dllName)

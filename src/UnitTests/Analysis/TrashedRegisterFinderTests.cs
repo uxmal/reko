@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     public class TrashedRegisterFinderTests : AnalysisTestBase
     {
@@ -263,7 +263,7 @@ namespace Decompiler.UnitTests.Analysis
         public void TrfCallInstruction()
         {
             var callee = new Procedure("Callee", prog.Architecture.CreateFrame());
-            var stm = m.Call(callee);
+            var stm = m.Call(callee, 4);
             var pf = new ProcedureFlow(callee, prog.Architecture);
             pf.TrashedRegisters[Registers.ebx.Number] = true;
             flow[callee] = pf;
@@ -402,7 +402,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Return();
 
             Procedure proc = m.Procedure;
-            prog.Procedures.Add(new Address(0x10000), proc);
+            prog.Procedures.Add(Address.Ptr32(0x10000), proc);
             prog.CallGraph.AddProcedure(proc);
             flow = new ProgramDataFlow(prog);
 
@@ -433,7 +433,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             var eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
             m.Assign(eax, m.Word32(0x40));
-            m.Call(exit);
+            m.Call(exit, 4);
 
             flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
             flow[exit] = new ProcedureFlow(exit, prog.Architecture);
@@ -451,7 +451,7 @@ namespace Decompiler.UnitTests.Analysis
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var tmp = m.Local32("tmp");
                 m.Assign(tmp, eax);
-                m.Call("TrashEaxEbx");
+                m.Call("TrashEaxEbx", 4);
                 m.Assign(eax, tmp);     // eax is preserved!
                 m.Return();
             });

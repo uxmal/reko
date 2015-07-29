@@ -1,4 +1,4 @@
-﻿namespace Decompiler.WindowsItp
+﻿namespace Reko.WindowsItp
 {
     partial class MemoryControlDialog
     {
@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             this.chkShowData = new System.Windows.Forms.CheckBox();
-            this.memoryControl1 = new Decompiler.Gui.Windows.Controls.MemoryControl();
+            this.memoryControl1 = new Reko.Gui.Windows.Controls.MemoryControl();
+            this.imageMapView1 = new Reko.Gui.Windows.Controls.ImageMapView();
             this.SuspendLayout();
             // 
             // chkShowData
@@ -45,26 +46,44 @@
             // 
             // memoryControl1
             // 
-            this.memoryControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.memoryControl1.BytesPerRow = 16;
+            this.memoryControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.memoryControl1.Architecture = null;
+            this.memoryControl1.BytesPerRow = ((uint)(16u));
             this.memoryControl1.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.memoryControl1.Location = new System.Drawing.Point(0, 32);
+            this.memoryControl1.ImageMap = null;
+            this.memoryControl1.Location = new System.Drawing.Point(0, 71);
             this.memoryControl1.Name = "memoryControl1";
             this.memoryControl1.ProgramImage = null;
             this.memoryControl1.SelectedAddress = null;
-            this.memoryControl1.Size = new System.Drawing.Size(404, 163);
+            this.memoryControl1.Services = null;
+            this.memoryControl1.Size = new System.Drawing.Size(404, 124);
             this.memoryControl1.TabIndex = 0;
             this.memoryControl1.Text = "memoryControl1";
             this.memoryControl1.TopAddress = null;
-            this.memoryControl1.WordSize = 1;
+            this.memoryControl1.WordSize = ((uint)(1u));
+            // 
+            // imageMapView1
+            // 
+            this.imageMapView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imageMapView1.Granularity = 0;
+            this.imageMapView1.Image = null;
+            this.imageMapView1.ImageMap = null;
+            this.imageMapView1.Location = new System.Drawing.Point(0, 33);
+            this.imageMapView1.Name = "imageMapView1";
+            this.imageMapView1.Offset = 0;
+            this.imageMapView1.Size = new System.Drawing.Size(404, 32);
+            this.imageMapView1.TabIndex = 2;
+            this.imageMapView1.Text = "imageMapView1";
             // 
             // MemoryControlDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 194);
+            this.Controls.Add(this.imageMapView1);
             this.Controls.Add(this.chkShowData);
             this.Controls.Add(this.memoryControl1);
             this.Name = "MemoryControlDialog";
@@ -76,7 +95,8 @@
 
         #endregion
 
-        private Decompiler.Gui.Windows.Controls.MemoryControl memoryControl1;
+        private Reko.Gui.Windows.Controls.MemoryControl memoryControl1;
         private System.Windows.Forms.CheckBox chkShowData;
+        private Gui.Windows.Controls.ImageMapView imageMapView1;
     }
 }

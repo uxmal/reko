@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +20,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Represents a file that only used for the  metdata it contains.
     /// </summary>
+    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko")]
     public class MetadataFile : ProjectFile
     {
         public override T Accept<T>(IProjectFileVisitor<T> visitor)
@@ -35,8 +37,11 @@ namespace Decompiler.Core
             return visitor.VisitMetadataFile(this);
         }
 
+        public string ModuleName { get; set; }
+
         public string MetadataType { get; set; }
 
         public TypeLibrary TypeLibrary { get; set; }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Globalization;
@@ -26,8 +26,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Foratter that writes to a TextWriter.
+    /// </summary>
+    /// <remarks>
+    /// Useful when writing decompiler output to a text file.
+    /// </remarks>
     public class TextFormatter : Formatter
     {
         public TextFormatter(TextWriter writer)
@@ -54,6 +60,12 @@ namespace Decompiler.Core.Output
         public override void Write(string s)
         {
             TextWriter.Write(s);
+        }
+
+        public override Formatter Write(char ch)
+        {
+            TextWriter.Write(ch);
+            return this;
         }
 
         public override void Write(string format, params object[] arguments)

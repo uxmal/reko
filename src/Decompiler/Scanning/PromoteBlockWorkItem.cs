@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     public class PromoteBlockWorkItem : WorkItem
     {
@@ -39,6 +39,7 @@ namespace Decompiler.Scanning
         public Block Block;
         public Procedure ProcNew;
         public IScanner Scanner;
+        public Program Program;
 
         public override void Process()
         {
@@ -79,6 +80,7 @@ namespace Decompiler.Scanning
             }
         }
 
+        [Conditional("DEBUG_VERBOSE")]
         private void DumpBlocks(Procedure procedure)
         {
             Debug.Print("{0}", procedure.Name);
@@ -92,12 +94,24 @@ namespace Decompiler.Scanning
         {
             // Get all blocks that are from "outside" blocks.
             var inboundBlocks = blockToPromote.Pred.Where(p => p.Procedure != ProcNew).ToArray();
-            foreach (var inboundBlock in inboundBlocks)
+            foreach (var inb in inboundBlocks)
             {
-                var lastAddress = GetAddressOfLastInstruction(inboundBlock);
-                var callRetThunkBlock = Scanner.CreateCallRetThunk(lastAddress, inboundBlock.Procedure, ProcNew);
-                ReplaceSuccessorsWith(inboundBlock, blockToPromote, callRetThunkBlock);
-                callRetThunkBlock.Pred.Add(inboundBlock);
+                if (inb.Statements.Count > 0)
+                {
+                    var lastAddress = GetAddressOfLastInstruction(inb);
+                    var callRetThunkBlock = Scanner.CreateCallRetThunk(lastAddress, inb.Procedure, ProcNew);
+                    ReplaceSuccessorsWith(inb, blockToPromote, callRetThunkBlock);
+                    callRetThunkBlock.Pred.Add(inb);
+                }
+                else
+                {
+                    inb.Statements.Add(0, new CallInstruction(
+                                    new ProcedureConstant(Program.Platform.PointerType, ProcNew),
+                                    new CallSite(ProcNew.Signature.ReturnAddressOnStack, 0)));
+                    Program.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
+                    inb.Statements.Add(0, new ReturnInstruction());
+                    inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);
+                }
             }
             foreach (var p in inboundBlocks)
             {
@@ -109,7 +123,7 @@ namespace Decompiler.Scanning
         {
             return inboundBlock.Address != null
                 ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : new Address(0);
+                : Address.Ptr32(0); //$BUGBUG: use platform to create null pointer.
         }
 
         public void FixOutboundEdges(Block block)

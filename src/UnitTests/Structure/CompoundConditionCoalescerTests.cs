@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Structure;
+using Reko.Core;
+using Reko.Structure;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 	[TestFixture]
 	public class CompoundConditionCoalescerTests : StructureTestBase
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Structure
 		{
 			using (FileUnitTester fut = new FileUnitTester(outFilename))
 			{
-				RewriteProgram(sourceFilename, new Address(0xC00, 0));
+				RewriteProgramMsdos(sourceFilename, Address.SegPtr(0xC00, 0));
 				foreach (Procedure proc in program.Procedures.Values)
 				{
 					proc.Write(false, fut.TextWriter);

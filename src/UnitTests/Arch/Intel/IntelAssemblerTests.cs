@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class IntelAssemblerTests
@@ -34,13 +34,13 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void IntegralConstant32()
 		{
 			Constant c;
-			c = IntelAssembler.IntegralConstant(-2, PrimitiveType.Word32);
+			c = X86Assembler.IntegralConstant(-2, PrimitiveType.Word32);
 			Assert.AreSame(PrimitiveType.SByte, c.DataType);
-			c = IntelAssembler.IntegralConstant(-128, PrimitiveType.Word32);
+			c = X86Assembler.IntegralConstant(-128, PrimitiveType.Word32);
 			Assert.AreSame(PrimitiveType.SByte, c.DataType);
-			c = IntelAssembler.IntegralConstant(-129, PrimitiveType.Word32);
+			c = X86Assembler.IntegralConstant(-129, PrimitiveType.Word32);
 			Assert.AreSame(PrimitiveType.Word32, c.DataType);
-			c = IntelAssembler.IntegralConstant(-129, PrimitiveType.Word16);
+			c = X86Assembler.IntegralConstant(-129, PrimitiveType.Word16);
 			Assert.AreSame(PrimitiveType.Word16, c.DataType);
 		}
 	}

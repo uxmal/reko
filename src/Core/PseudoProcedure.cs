@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@
 
 using System;
 using System.IO;
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Core.Types;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Represents predefined functions or processor instructions that don't have a 
@@ -36,6 +36,23 @@ namespace Decompiler.Core
         private DataType returnType;
 		private ProcedureSignature sig;
 
+        /// <summary>
+        /// Well-known operations that many processors support but most high- or 
+        /// medium level languages do not support.
+        /// </summary>
+        public const string Ror = "__ror";      // binary: Rotate right
+        public const string Rol = "__rol";      // binary: Rotate left
+        public const string RorC = "__rcr";     // ternary: rotate right, passing in the contents of a processor flag (not necessarily the Carry flag)
+        public const string RolC = "__rcl";     // ternary: rotate left, passing in the contents of a processor flag
+
+        /// <summary>
+        /// Use this constructor for pseudoprocedures that model operators that may have parameters of varying sizes.
+        /// </summary>
+        /// <remarks>
+        /// E.g. the rotate pseudoprocedures.</remarks>
+        /// <param name="name"></param>
+        /// <param name="returnType"></param>
+        /// <param name="arity"></param>
 		public PseudoProcedure(string name, DataType returnType, int arity) : base(name)
 		{
             this.returnType = returnType;
@@ -50,8 +67,8 @@ namespace Decompiler.Core
 		public int Arity
 		{
 			get 
-            { return sig != null && sig.FormalArguments != null
-                ? sig.FormalArguments.Length 
+            { return sig != null && sig.Parameters != null
+                ? sig.Parameters.Length 
                 : arity; 
             }
 		}
@@ -64,7 +81,7 @@ namespace Decompiler.Core
 		public override ProcedureSignature Signature
 		{
 			get { return sig; }
-			set { throw new InvalidOperationException("Not allowed to change the signature of a PseudoProcedure."); }
+			set { throw new InvalidOperationException("Changing the signature of a PseudoProcedure is not allowed."); }
 		}
 
 		public override string ToString()
@@ -78,6 +95,5 @@ namespace Decompiler.Core
 				return string.Format("{0} {1}({2} args)", ReturnType, Name, arity);
 			}
 		}
-
 	}
 }

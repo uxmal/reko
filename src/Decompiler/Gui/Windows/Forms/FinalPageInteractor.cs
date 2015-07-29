@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public interface IFinalPageInteractor : IPhasePageInteractor
     {
@@ -58,7 +59,7 @@ namespace Decompiler.Gui.Windows.Forms
             catch (Exception ex)
             {
                 //$REVIEW: need a new exception type which when thrown contains the activity we were doing.
-                workerDialogSvc.ShowError("An error occurred while reconstructing types.", ex);
+                workerDialogSvc.Error(new NullCodeLocation(""), ex, "An error occurred while reconstructing types.");
             }
         }
 

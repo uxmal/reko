@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Types;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class IsLiveHelperTests
@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void IsRegisterLive()
 		{
-			liveness.BitSet = new Decompiler.Core.Lib.BitSet(64);
+			liveness.BitSet = new Reko.Core.Lib.BitSet(64);
 			liveness.BitSet[Registers.ecx.Number] = true;
 			var eax = f.EnsureRegister(Registers.eax);
 			var ecx = f.EnsureRegister(Registers.ecx);

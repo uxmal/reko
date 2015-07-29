@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Output;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class AbsynCodeGeneratorTests
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Structure
         {
             try
             {
-                AbsynCodeGenerator acg = new AbsynCodeGenerator();
+                var acg = new AbsynCodeGenerator();
                 acg.GenerateCode(curProc, proc.Body);
                 GenCode(proc, sb);
                 Assert.AreEqual(sExp, sb.ToString());
@@ -349,7 +349,6 @@ namespace Decompiler.UnitTests.Structure
                 "	}" + nl +
                 "\treturn;" + nl +
                 "}" + nl);
-
         }
 
         [Test]

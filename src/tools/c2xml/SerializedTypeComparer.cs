@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     public class SerializedTypeComparer :
             IEqualityComparer<SerializedType>,
@@ -49,7 +49,7 @@ namespace Decompiler.Tools.C2Xml
             var ptr = obj as PointerType_v1;
             if (ptr != null)
                 return hash ^ GetHashCode(ptr.DataType);
-            var arr = obj as SerializedArrayType;
+            var arr = obj as ArrayType_v1;
             if (arr != null)
                 return hash ^ GetHashCode(arr.ElementType);
             var str = obj as SerializedStructType;
@@ -59,6 +59,11 @@ namespace Decompiler.Tools.C2Xml
             if (uni != null)
                 return hash ^ (uni.Name != null ? uni.Name.GetHashCode() : 0);
 
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCode(CodeType_v1 code)
+        {
             throw new NotImplementedException();
         }
 
@@ -90,9 +95,10 @@ namespace Decompiler.Tools.C2Xml
             y = mpY.MemberType;
             return mpX.MemberType.Accept(this);
         }
-        public bool VisitArray(SerializedArrayType aX)
+
+        public bool VisitArray(ArrayType_v1 aX)
         {
-            var aY = ((SerializedArrayType) y);
+            var aY = ((ArrayType_v1) y);
             if (aX.Length != aY.Length)
                 return false;
             y = aY.ElementType;
@@ -113,6 +119,11 @@ namespace Decompiler.Tools.C2Xml
         {
             var sY = (SerializedStructType) y;
             return sX.Name == sY.Name && sX.Name != null;
+        }
+
+        public bool VisitString(StringType_v2 typedef)
+        {
+            throw new NotImplementedException();
         }
 
         public bool VisitTypedef(SerializedTypedef typedef)

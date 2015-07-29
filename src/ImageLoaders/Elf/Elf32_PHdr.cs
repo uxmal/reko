@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,14 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf
 {
     public class Elf32_PHdr
     {
@@ -36,9 +38,9 @@ namespace Decompiler.ImageLoaders.Elf
         public uint p_flags;
         public uint p_align;
 
-        public static Elf32_PHdr Load(Core.ImageReader rdr)
+        public static Elf32_PHdr Load(ImageReader rdr)
         {
-            return new Elf32_PHdr
+            var hdr = new Elf32_PHdr
             {
                 p_type = (ProgramHeaderType)rdr.ReadUInt32(),
                 p_offset = rdr.ReadUInt32(),
@@ -49,6 +51,35 @@ namespace Decompiler.ImageLoaders.Elf
                 p_flags = rdr.ReadUInt32(),
                 p_align = rdr.ReadUInt32(),
             };
+            return hdr;
+        }
+    }
+
+    public class Elf64_PHdr
+    {
+        public ProgramHeaderType p_type;
+        public uint p_flags;
+        public ulong p_offset;
+        public ulong p_vaddr;
+        public ulong p_paddr;
+        public ulong p_filesz;
+        public ulong p_pmemsz;
+        public ulong p_align;
+
+        public static Elf64_PHdr Load(ImageReader rdr)
+        {
+            var hdr = new Elf64_PHdr
+            {
+                p_type = (ProgramHeaderType)rdr.ReadUInt32(),
+                p_flags = rdr.ReadUInt32(),
+                p_offset = rdr.ReadUInt64(),
+                p_vaddr = rdr.ReadUInt64(),
+                p_paddr = rdr.ReadUInt64(),
+                p_filesz = rdr.ReadUInt64(),
+                p_pmemsz = rdr.ReadUInt64(),
+                p_align = rdr.ReadUInt64(),
+            };
+            return hdr;
         }
     }
 }

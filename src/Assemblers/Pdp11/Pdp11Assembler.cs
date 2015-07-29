@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.Pdp11;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Types;
+using Reko.Arch.Pdp11;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Assemblers.Pdp11
+namespace Reko.Assemblers.Pdp11
 {
     public class Pdp11Assembler
     {
@@ -47,14 +47,14 @@ namespace Decompiler.Assemblers.Pdp11
 
         public Address BaseAddress { get; private set; }
 
-        public LoaderResults GetImage()
+        public Program GetImage()
         {
             var image = new LoadedImage(BaseAddress, emitter.GetBytes());
-            return new LoaderResults(
+            return new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
-                new DefaultPlatform(null, null));
+                new DefaultPlatform(null, arch));
         }
 
         public Dictionary<string, object> Equates { get; private set; }
@@ -128,14 +128,14 @@ namespace Decompiler.Assemblers.Pdp11
             case AddressMode.RegDef:
                 break;
             case AddressMode.Immediate:
-                emitter.EmitLeUInt16((int) BaseAddress.Linear + op.Offset);
+                emitter.EmitLeUInt16((int) BaseAddress.ToLinear() + op.Offset);
                 if (op.Symbol != null)
                 {
                     ReferToSymbol(op.Symbol, emitter.Length - 2, PrimitiveType.Word16);
                 }
                 break;
             case AddressMode.Absolute:
-                emitter.EmitLeUInt16((int) BaseAddress.Linear);
+                emitter.EmitLeUInt16((int) BaseAddress.ToLinear());
                 if (op.Symbol != null)
                 {
                     ReferToSymbol(op.Symbol, emitter.Length - 2, PrimitiveType.Word16);

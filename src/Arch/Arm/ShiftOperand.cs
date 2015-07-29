@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class ShiftOperand : MachineOperand
     {
@@ -43,7 +43,7 @@ namespace Decompiler.Arch.Arm
         }
 
         public ShiftOperand(MachineOperand op, Opcode opcode, int shAmt)
-            : this(op, opcode, new ImmediateOperand(Constant.Byte((byte)shAmt)))
+            : this(op, opcode, ArmImmediateOperand.Byte((byte)shAmt))
         {
         }
 
@@ -58,9 +58,13 @@ namespace Decompiler.Arch.Arm
         public Opcode Opcode { get; set; }
         public MachineOperand Shift { get; set; }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return string.Format("{0},{1} {2}", Operand, Opcode, Shift);
+            Operand.Write(fExplicit, writer);
+            writer.Write(",");
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Write(' ');
+            Shift.Write(fExplicit, writer);
         }
     }
 }

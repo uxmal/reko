@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,31 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
     /// <summary>
     /// Collect type information by pulling type information from the leaves of expression trees to their roots.
     /// </summary>
     public class ExpressionTypeAscender : ExpressionVisitor<DataType>
     {
-        private IProcessorArchitecture arch;
+        private Platform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
 
-        public ExpressionTypeAscender(IProcessorArchitecture arch, TypeStore store, TypeFactory factory)
+        public ExpressionTypeAscender(Platform platform, TypeStore store, TypeFactory factory)
         {
-            this.arch = arch;
+            this.platform = platform;
             this.store = store;
             this.factory = factory;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
@@ -263,7 +263,7 @@ namespace Decompiler.Typing
 
         private DataType PointerTo(TypeVariable tv)
         {
-            return new Pointer(tv, arch.PointerType.Size);
+            return new Pointer(tv, platform.PointerType.Size);
         }
 
         private DataType RecordDataType(DataType dt, Expression exp)

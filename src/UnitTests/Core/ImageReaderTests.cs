@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     public class ImageReaderTests
     {
@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Core
             var img =
                 new LeImageReader(
                     new LoadedImage(
-                        new Address(0x10000),
+                        Address.Ptr32(0x10000),
                         new byte[] { 0x12, 0x34, 0x03, 0x00, 0x00, 0x00, 0x46, 0x00, 0x6f, 0x00, 0x6f, 0x00, 0x02, 0x02}),
                     2);
             StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar);

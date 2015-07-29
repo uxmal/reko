@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class EditProjectInteractorTests
@@ -52,7 +53,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void EditProjectAndCancel()
         {
-            FakeUiService uiSvc = new FakeUiService();
+            FakeShellUiService uiSvc = new FakeShellUiService();
             uiSvc.SimulateUserCancel = true;
             var project = CreateTestProject();
             var epi = new EditProjectInteractor();
@@ -72,7 +73,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void EditProjectAndSave()
         {
-            FakeUiService uiSvc = new FakeUiService();
+            var uiSvc = new FakeShellUiService();
             var epi = new EditProjectInteractor();
             var p = CreateTestProject();
 

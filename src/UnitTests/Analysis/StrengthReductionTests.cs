@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.UnitTests;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.UnitTests.Mocks;
+using Reko.UnitTests;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class StrengthReductionTests
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Analysis
             Procedure proc = BuildSimpleLoop();
 
             var dom = proc.CreateBlockDominatorGraph();
-            SsaTransform ssa = new SsaTransform(proc, dom);
+            SsaTransform ssa = new SsaTransform(new ProgramDataFlow(), proc, dom);
             proc.Write(false, Console.Out);
             LinearInductionVariableFinder lif = new LinearInductionVariableFinder(proc, ssa.SsaState.Identifiers, dom);
             lif.Find();
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Analysis
 
         private SsaIdentifier AddSid(string name)
         {
-            Identifier id = new Identifier(name, -1, null, null);
+            Identifier id = new Identifier(name, null, null);
             SsaIdentifier sid = sids.Add(id, new Statement(0, new DefInstruction(id), null), null, false);
             return sid;
         }

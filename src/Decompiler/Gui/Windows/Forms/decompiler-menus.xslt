@@ -2,7 +2,7 @@
 <stylesheet version="1.0" xmlns="http://www.w3.org/1999/XSL/Transform" xmlns:c="urn:Decompiler.Schemata.MenuDefinitions">
   <template match="/c:menu-definitions">#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,22 +26,25 @@
 // stylesheet. The intent of this file is to automatically generate the menus for the Windows Decompiler based on 
 // the XML file. This saves developer effort when menu item verbs are added, removed, or changed.
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    <for-each select="c:menu">
+<for-each select="c:menu">
         <choose>
-			<when test="@type='ContextMenu'">	public readonly System.Windows.Forms.ContextMenu <value-of select="@id"/>;</when>
-			<when test="@type='MainMenu'">	public readonly System.Windows.Forms.MainMenu <value-of select="@id"/>;</when>
-          <when test="@type='ToolStrip'">	public readonly System.Windows.Forms.ToolStrip <value-of select="@id"/>;</when>
+			<when test="@type='ContextMenu'">	public readonly System.Windows.Forms.ContextMenu <value-of select="@id"/>;
+</when>
+			<when test="@type='MainMenu'">	public readonly System.Windows.Forms.MainMenu <value-of select="@id"/>;
+</when>
+          <when test="@type='ToolStrip'">	public readonly System.Windows.Forms.ToolStrip <value-of select="@id"/>;
+</when>
         </choose></for-each>
     
         public DecompilerMenus(ICommandTarget target) : base(target)

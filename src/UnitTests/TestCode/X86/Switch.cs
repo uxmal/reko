@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.TestCode
+namespace Reko.UnitTests.TestCode
 {
     public partial class X86 
     {
-        public static void Switch(IntelAssembler m)
+        public static void Switch(X86Assembler m)
         {
             m.Proc("foo");
             m.Push(m.cs);
@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.TestCode
             m.Ret();
         }
 
-        public static void Switch32(IntelAssembler m)
+        public static void Switch32(X86Assembler m)
         {
             m.Proc("foo");
             m.Mov(m.eax, m.MemDw(Registers.esp, 4));

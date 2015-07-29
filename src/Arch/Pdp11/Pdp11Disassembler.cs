@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Reko.Arch.Pdp11
 {
     public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction>
     {
@@ -42,17 +42,15 @@ namespace Decompiler.Arch.Pdp11
             this.arch = arch;
         }
 
-        public override Pdp11Instruction Current { get { return instrCur; } }
-
-        public override bool MoveNext()
+        public override Pdp11Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             instrCur = Disassemble();
             instrCur.Address = addr;
-            instrCur.Length = rdr.Address - addr;
-            return true;
+            instrCur.Length = (int)(rdr.Address - addr);
+            return instrCur;
         }
 
         private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcodes opcode, string fmt)
@@ -278,7 +276,7 @@ namespace Decompiler.Arch.Pdp11
                 case 0x03: op= null;oc = Opcodes.bpt; break;
                 case 0x04: op= null;oc = Opcodes.iot; break;
                 case 0x05: op= null;oc = Opcodes.reset; break;
-                case 0x06: op= null;oc = Opcodes.rtt; break;
+                case 0x06: op = null; oc = Opcodes.rtt; break;
                 case 0x07: op = null;  oc = Opcodes.illegal; break;
                 }
                 break;

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,21 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
+using Reko.Arch.X86;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Coff
+namespace Reko.ImageLoaders.Coff
 {
     public class CoffLoader : ImageLoader
     {
         private IProcessorArchitecture arch;
 
-        public CoffLoader(IServiceProvider services, byte[] rawBytes)
-            : base(services, rawBytes)
+        public CoffLoader(IServiceProvider services, string filename, byte[] rawBytes)
+            : base(services, filename, rawBytes)
         {
             this.header = LoadHeader();
         }
@@ -40,9 +40,10 @@ namespace Decompiler.ImageLoaders.Coff
         public override Address PreferredBaseAddress
         {
             get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             throw new NotImplementedException();
         }

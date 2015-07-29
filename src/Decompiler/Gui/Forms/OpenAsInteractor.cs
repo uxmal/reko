@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Forms
+namespace Reko.Gui.Forms
 {
     public class OpenAsInteractor
     {
@@ -43,7 +43,7 @@ namespace Decompiler.Gui.Forms
 
         private void dlg_Load(object sender, EventArgs e)
         {
-            var dcCfg = dlg.Services.RequireService<IDecompilerConfigurationService>();
+            var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateArchitectures(dcCfg);
             PopulatePlatforms(dcCfg);
             dlg.AddressTextBox.Text = "0";
@@ -51,22 +51,14 @@ namespace Decompiler.Gui.Forms
 
         private void EnableControls()
         {
-            Address addr;
-            if (!Address.TryParse(dlg.AddressTextBox.Text, 16, out addr))
-            {
-                dlg.OkButton.Enabled = false;
-            }
-            else
-            {
-                dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0;
-            }
+            dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0;
         }
 
-        private void PopulatePlatforms(IDecompilerConfigurationService dcCfg)
+        private void PopulatePlatforms(IConfigurationService dcCfg)
         {
             var noneOption = new ListOption
             {
-                Text = "- None -",
+                Text = "(None)",
                 Value = typeof(DefaultPlatform).AssemblyQualifiedName
             };
             var platforms = new ListOption[] { noneOption }
@@ -74,11 +66,12 @@ namespace Decompiler.Gui.Forms
                     dcCfg.GetEnvironments()
                     .OfType<OperatingEnvironment>()
                     .OrderBy(p => p.Description)
+                    .Where(p => !string.IsNullOrEmpty(p.TypeName))
                     .Select(p => new ListOption { Text = p.Description, Value = p.TypeName }));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }
 
-        private void PopulateArchitectures(IDecompilerConfigurationService dcCfg)
+        private void PopulateArchitectures(IConfigurationService dcCfg)
         {
             var archs = dcCfg.GetArchitectures()
                 .OfType<Architecture>()

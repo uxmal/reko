@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using StringWriter = System.IO.StringWriter;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class ExternalProcedureTest
@@ -37,10 +37,10 @@ namespace Decompiler.UnitTests.Core
 		public void ExtpBind()
 		{
 			var sig = new ProcedureSignature(
-				new Identifier(Registers.ax.Name, 0, PrimitiveType.Word16, Registers.ax),
+				new Identifier(Registers.ax.Name, PrimitiveType.Word16, Registers.ax),
 				new Identifier [] {
-					new Identifier(Registers.bx.Name, 1, PrimitiveType.Word16, Registers.bx),
-					new Identifier(Registers.cl.Name, 2, PrimitiveType.Byte, Registers.cl) } );
+					new Identifier(Registers.bx.Name, PrimitiveType.Word16, Registers.bx),
+					new Identifier(Registers.cl.Name, PrimitiveType.Byte, Registers.cl) } );
 			var ep = new ExternalProcedure("foo", sig);
 			Assert.AreEqual("Register word16 foo(Register word16 bx, Register byte cl)", ep.ToString());
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, ep);

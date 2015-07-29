@@ -1,19 +1,16 @@
 // DpbMock
+// Return size: 0
 void DpbMock()
 DpbMock_entry:
-	def Mem0
-	def fp
 	def dl
-	def dx
-	def edx
 	// succ:  l1
 l1:
-	edx_5 = 0x0AAA00AA
-	edx_6 = 0x0AAA55AA
-	Mem7[0x01000000:word32] = 0x0AAA55AA
-	edx_8 = 0x00000000
-	edx_9 = (word32) dl
-	return edx_9
+	edx_0 = 0x0AAA00AA
+	edx_1 = 0x0AAA55AA
+	Mem2[0x01000000:word32] = 0x0AAA55AA
+	edx_3 = 0x00000000
+	edx_5 = (word32) dl
+	return edx_5
 	// succ:  DpbMock_exit
 DpbMock_exit:
 

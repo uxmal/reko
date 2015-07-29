@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Gathers the traits for each expression in a program.
@@ -58,7 +58,7 @@ namespace Decompiler.Typing
 			this.store = store;
 			this.handler = handler;
             this.prog = prog;
-			this.aem = new ArrayExpressionMatcher(prog.Architecture.PointerType);
+			this.aem = new ArrayExpressionMatcher(prog.Platform.PointerType);
 			this.atrco = new AddressTraitCollector(factory, store, handler, prog);
 		}
 
@@ -83,14 +83,14 @@ namespace Decompiler.Typing
                 return;
 
             ProcedureSignature sig = pc.Procedure.Signature;
-            if (appl.Arguments.Length != sig.FormalArguments.Length)
+            if (appl.Arguments.Length != sig.Parameters.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-                    pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
+                    pc.Procedure.Name, appl.Arguments.Length, sig.Parameters.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                handler.EqualTrait(appl.Arguments[i], sig.FormalArguments[i]);
-                sig.FormalArguments[i].Accept(this);
+                handler.EqualTrait(appl.Arguments[i], sig.Parameters[i]);
+                sig.Parameters[i].Accept(this);
             }
             if (sig.ReturnValue != null)
                 handler.EqualTrait(appl, sig.ReturnValue);
@@ -201,7 +201,7 @@ namespace Decompiler.Typing
                 call.Callee, 
                 new Pointer(
                     new CodeType(), 
-                    prog.Architecture.PointerType.Size));
+                    prog.Platform.PointerType.Size));
             return call.Callee.Accept(this);
         }
 
@@ -249,7 +249,8 @@ namespace Decompiler.Typing
 
 		public DataType VisitUseInstruction(UseInstruction u)
 		{
-			throw new NotImplementedException();
+            u.Expression.Accept(this);
+            return VoidType.Instance;
 		}
 
 		#endregion
@@ -467,7 +468,7 @@ namespace Decompiler.Typing
                 handler.MemAccessTrait(
                     null, 
                     prog.Globals,
-                    prog.Architecture.PointerType.Size,
+                    prog.Platform.PointerType.Size,
                     c,
                     c.ToInt32() * 0x10);   //$REVIEW Platform-dependent
             }
@@ -496,7 +497,7 @@ namespace Decompiler.Typing
 		public DataType VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);
-			return handler.MemAccessTrait(null, deref.Expression, 0, deref, 0);
+            return handler.MemAccessTrait(null, deref.Expression, deref.Expression.DataType.Size, deref, 0);
 		}
 
 		public DataType VisitFieldAccess(FieldAccess acc)
@@ -515,7 +516,7 @@ namespace Decompiler.Typing
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);
-			return handler.DataTypeTrait(mps, prog.Architecture.PointerType);
+			return handler.DataTypeTrait(mps, prog.Platform.PointerType);
 		}
 
 		public DataType VisitMemoryAccess(MemoryAccess access)
@@ -538,6 +539,7 @@ namespace Decompiler.Typing
 
         public DataType VisitOutArgument(OutArgument outArg)
         {
+            outArg.Expression.Accept(this);
             return handler.PointerTrait(
                 outArg,
                 outArg.DataType.Size,
@@ -551,7 +553,7 @@ namespace Decompiler.Typing
 			{
 				phi.Arguments[i].Accept(this);
 			}
-            throw new NotImplementedException();
+            return handler.DataTypeTrait(phi, phi.DataType);
         }
 
 		public DataType VisitPointerAddition(PointerAddition pa)
@@ -563,12 +565,12 @@ namespace Decompiler.Typing
 		{
 			ProcedureSignature sig = pc.Procedure.Signature;
 			DataType [] argTypes = null;
-			if (sig != null && sig.FormalArguments != null)
+			if (sig != null && sig.Parameters != null)
 			{
-				argTypes = new DataType[sig.FormalArguments.Length];
+				argTypes = new DataType[sig.Parameters.Length];
 				for (int i = 0; i < argTypes.Length; ++i)
 				{
-					argTypes[i] = sig.FormalArguments[i].TypeVariable;
+					argTypes[i] = sig.Parameters[i].TypeVariable;
 				}
 			} 
 			else

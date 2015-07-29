@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     public class UnionType_v1 : SerializedTaggedType
     {
@@ -47,7 +47,7 @@ namespace Decompiler.Core.Serialization
             return visitor.VisitUnion(this);
         }
 
-        public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
+        public override DataType BuildDataType(Reko.Core.Types.TypeFactory factory)
         {
             UnionType u = factory.CreateUnionType(Name, null);
             foreach (var alt in Alternatives)

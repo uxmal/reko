@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// We are keenly interested in discovering the register linkage 
@@ -70,50 +70,58 @@ namespace Decompiler.Analysis
                 eventListener.ShowProgress("Building complex expressions.", i, program.Procedures.Values.Count);
                 ++i;
 
-                LongAddRewriter larw = new LongAddRewriter(proc, program.Architecture);
-                larw.Transform();
+                try
+                {
+                    var larw = new LongAddRewriter(proc, program.Architecture);
+                    larw.Transform();
 
-				Aliases alias = new Aliases(proc, program.Architecture, flow);
-				alias.Transform();
-                var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                var sst = new SsaTransform(proc, doms);
-				var ssa = sst.SsaState;
+                    Aliases alias = new Aliases(proc, program.Architecture, flow);
+                    alias.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
-				cce.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+                    var sst = new SsaTransform(flow, proc, doms);
+                    var ssa = sst.SsaState;
 
-				var vp = new ValuePropagator(ssa.Identifiers, proc);
-				vp.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
+                    cce.Transform();
+                    DeadCode.Eliminate(proc, ssa);
 
-				// Build expressions. A definition with a single use can be subsumed
-				// into the using expression. 
+                    var vp = new ValuePropagator(ssa.Identifiers, proc);
+                    vp.Transform();
+                    DeadCode.Eliminate(proc, ssa);
 
-				var coa = new Coalescer(proc, ssa);
-				coa.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    // Build expressions. A definition with a single use can be subsumed
+                    // into the using expression. 
 
-				var liv = new LinearInductionVariableFinder(
-					proc, 
-					ssa.Identifiers, 
-					new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
-				liv.Find();
+                    var coa = new Coalescer(proc, ssa);
+                    coa.Transform();
+                    DeadCode.Eliminate(proc, ssa);
 
-				foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
-				{
-					var str = new StrengthReduction(ssa, de.Key, de.Value);
-					str.ClassifyUses();
-					str.ModifyUses();
-				}
-				var opt = new OutParameterTransformer(proc, ssa.Identifiers);
-				opt.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    var liv = new LinearInductionVariableFinder(
+                        proc,
+                        ssa.Identifiers,
+                        new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
+                    liv.Find();
 
-                // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
-				web.Transform();
-				ssa.ConvertBack(false);
+                    foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
+                    {
+                        var str = new StrengthReduction(ssa, de.Key, de.Value);
+                        str.ClassifyUses();
+                        str.ModifyUses();
+                    }
+                    var opt = new OutParameterTransformer(proc, ssa.Identifiers);
+                    opt.Transform();
+                    DeadCode.Eliminate(proc, ssa);
+
+                    // Definitions with multiple uses and variables joined by PHI functions become webs.
+                    var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                    web.Transform();
+                    ssa.ConvertBack(false);
+                }
+                catch (Exception ex)
+                {
+                    eventListener.Error(new NullCodeLocation(proc.Name), ex, "An error occurred during data flow analysis.");
+                }
 			} 
 		}
 
@@ -179,5 +187,94 @@ namespace Decompiler.Analysis
             eventListener.ShowStatus("Rewriting calls.");
 			GlobalCallRewriter.Rewrite(program, flow);
 		}
+
+        public void UntangleProcedures2()
+        {
+            eventListener.ShowStatus("Eliminating intra-block dead registers.");
+            IntraBlockDeadRegisters.Apply(program);
+
+            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
+            foreach (var procedure in program.Procedures.Values)
+            {
+                sscf.Find(procedure);
+            }
+        }
+
+        private void UntangleProcedureScc(IList<Procedure> procs)
+        {
+            if (procs.Count == 1)
+            {
+                var proc = procs[0];
+                Aliases alias = new Aliases(proc, program.Architecture, flow);
+                alias.Transform();
+                
+                // Transform the procedure to SSA state. When encountering 'call' instructions,
+                // they can be to functions already visited. If so, they have a "ProcedureFlow" 
+                // associated with them. If they have not been visited, or are computed destinations
+                // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
+                // which case the the SSA treats the call as a "hell node".
+                var doms = proc.CreateBlockDominatorGraph();
+                var sst = new SsaTransform(flow, proc, doms);
+                var ssa = sst.SsaState;
+
+                // Propagate condition codes and registers. At the end, the hope is that 
+                // all statements like (x86) mem[esp_42+4] will have been converted to
+                // mem[fp - 30]. We also hope that procedure constants kept in registers
+                // are propagated to the corresponding call sites.
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
+                cce.Transform();
+                var vp = new ValuePropagator(ssa.Identifiers, proc);
+                vp.Transform();
+
+                // Now compute SSA for the stack-based variables as well. That is:
+                // mem[fp - 30] becomes wLoc30, while 
+                // mem[fp + 30] becomes wArg30.
+                // This allows us to compute the dataflow of this procedure.
+                sst.RenameFrameAccesses = true;
+                sst.AddUseInstructions = true;
+                sst.Transform();
+
+                // Propagate those newly discovered identifiers.
+                vp.Transform();
+
+                // At this point, the computation of _actual_ ProcedureFlow should be possible.
+                var tid = new TrashedRegisterFinder2(program.Architecture, flow, proc, ssa.Identifiers, this.eventListener);
+                tid.Compute();
+                DeadCode.Eliminate(proc, ssa);
+
+                // Build expressions. A definition with a single use can be subsumed
+                // into the using expression. 
+
+                var coa = new Coalescer(proc, ssa);
+                coa.Transform();
+                DeadCode.Eliminate(proc, ssa);
+
+                var liv = new LinearInductionVariableFinder(
+                    proc,
+                    ssa.Identifiers,
+                    new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
+                liv.Find();
+
+                foreach (var de in liv.Contexts)
+                {
+                    var str = new StrengthReduction(ssa, de.Key, de.Value);
+                    str.ClassifyUses();
+                    str.ModifyUses();
+                }
+                proc.Dump(true);
+                //var opt = new OutParameterTransformer(proc, ssa.Identifiers);
+                //opt.Transform();
+                DeadCode.Eliminate(proc, ssa);
+
+                // Definitions with multiple uses and variables joined by PHI functions become webs.
+                var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                web.Transform();
+                ssa.ConvertBack(false);
+            }
+            else
+            {
+
+            }
+        }
 	}
 }

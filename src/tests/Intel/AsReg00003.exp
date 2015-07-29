@@ -4,7 +4,7 @@
 0B00:0000 E8 0C 00        	call	000F
 0B00:0003 E8 0A 00        	call	0010
 0B00:0006 66 33 C9        	xor	ecx,ecx
-0B00:0009 66 89 0E 10 03  	mov	dword ptr [0310],ecx
+0B00:0009 66 89 0E 10 03  	mov	[0310],ecx
 0B00:000E C3              	ret	
 0B00:000F C3              	ret	
 0B00:0010 32 ED           	xor	ch,ch

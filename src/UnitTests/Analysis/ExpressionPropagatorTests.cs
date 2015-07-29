@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,21 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class ExpressionPropagatorTests
@@ -188,6 +188,34 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("r3 = r2", instr3.ToString());
             Assert.AreEqual("<invalid>", ctx.GetValue(r2).ToString());
             Assert.AreEqual("<invalid>", ctx.GetValue(r3).ToString());
+        }
+
+        [Test]
+        public void EP_LValue()
+        {
+            var arch = new FakeArchitecture();
+            var p = new ProgramBuilder(arch);
+            Identifier r2 = null;
+            Identifier sp = null;
+            var proc = p.Add("main", (m) =>
+            {
+                r2 = m.Register("r2");
+                sp = m.Frame.EnsureRegister(arch.StackRegister);
+                m.Store(m.ISub(sp, 12), m.ISub(sp, 16));
+                m.Store(m.ISub(sp, 12), 2);
+            });
+
+            var ctx = new SymbolicEvaluationContext (arch, proc.Frame);
+            var simplifier = new ExpressionSimplifier(ctx);
+            var ep = new ExpressionPropagator(arch,simplifier,ctx, new ProgramDataFlow());
+
+            ctx.RegisterState[arch.StackRegister]= proc.Frame.FramePointer;
+
+            var stms = proc.EntryBlock.Succ[0].Statements;
+            var instr1 = stms[0].Instruction.Accept(ep);
+            Assert.AreEqual("dwLoc0C = fp - 0x00000010", instr1.ToString());
+            var instr2 = stms[1].Instruction.Accept(ep);
+            Assert.AreEqual("dwLoc0C = 0x00000002", instr2.ToString());
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.Pdp11;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Arch.Pdp11;
+using Reko.Core;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Pdp11
+namespace Reko.UnitTests.Arch.Pdp11
 {
     [TestFixture]   
     public class DisassemblerTests
@@ -46,12 +46,11 @@ namespace Decompiler.UnitTests.Arch.Pdp11
             {
                 writer.WriteLeUInt16(word);
             }
-            var image = new LoadedImage(new Address(0x200), bytes);
+            var image = new LoadedImage(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var arch = new Pdp11Architecture();
             var dasm = new Pdp11Disassembler(rdr, arch);
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         [Test]

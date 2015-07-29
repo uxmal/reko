@@ -6,8 +6,8 @@
     <ProjectGuid>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Assemblers.M68k</RootNamespace>
-    <AssemblyName>Decompiler.Assemblers.M68k</AssemblyName>
+    <RootNamespace>Reko.Assemblers.M68k</RootNamespace>
+    <AssemblyName>Reko.Assemblers.M68k</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

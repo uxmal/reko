@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.Mips;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
+using Reko.Arch.Mips;
+using Reko.Core;
+using Reko.Core.Rtl;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Mips
+namespace Reko.UnitTests.Arch.Mips
 {
     [TestFixture]
     public class MipsRewriterTests : RewriterTestBase
@@ -37,19 +37,19 @@ namespace Decompiler.UnitTests.Arch.Mips
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-        public override Address LoadAddress { get { return new Address(0x00100000); } }
+        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
         private void RunTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte) (u >> 24), (byte) (u >> 16), (byte) (u >> 8), (byte) u })
                 .ToArray();
-            dasm = new MipsDisassembler(arch, new BeImageReader(new LoadedImage(new Address(0x00100000), bytes), 0));
+            dasm = new MipsDisassembler(arch, new BeImageReader(new LoadedImage(Address.Ptr32(0x00100000), bytes), 0));
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new MipsRewriter(arch, dasm, frame);
+            return new MipsRewriter(arch, dasm, frame, host);
         }
 
         [Test]

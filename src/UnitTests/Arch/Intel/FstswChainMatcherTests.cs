@@ -18,18 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     [Ignore("Disabled until we come up with a mechanism to perform architecture-specific expression simplifications, at which point this should go to Analysis")]
@@ -37,22 +38,22 @@ namespace Decompiler.UnitTests.Arch.Intel
     {
         IntelArchitecture arch;
         ProcedureBuilder emitter;
-        IntelAssembler asm;
+        X86Assembler asm;
         OperandRewriter orw;
         List<IntelInstruction> instrs;
 
         [SetUp]
-        public void Setup()
+        public void Fstsw_Setup()
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            asm = new IntelAssembler(arch, new Address(0x10000), new List<EntryPoint>());
+            asm = new X86Assembler(arch, Address.Ptr32(0x10000), new List<EntryPoint>());
             Procedure proc = new Procedure("test", arch.CreateFrame());
-            orw = new OperandRewriter(arch, proc.Frame, null);
+            orw = new OperandRewriter32(arch, proc.Frame, null);
             emitter = new ProcedureBuilder();
         }
 
         [Test]
-        public void FailMatch()
+        public void Fstsw_FailMatch()
         {
             asm.Mov(asm.ax, asm.Const(1));
             var m = GetMatcher();
@@ -60,7 +61,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void MatchSahfSequence()
+        public void Fstsw_MatchSahfSequence()
         {
             asm.Fstsw(asm.ax);
             asm.Sahf();
@@ -69,7 +70,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void EmitSahf()
+        public void Fstsw_EmitSahf()
         {
             asm.Fstsw(asm.ax);
             asm.Sahf();
@@ -82,7 +83,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
         
         [Test]
-        public void MatchTestAh40()
+        public void Fstsw_MatchTestAh40()
         {
             asm.Fstsw(asm.ax);
             asm.Test(asm.ah, asm.Const(0x40));
@@ -92,7 +93,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void EmitTestAh40()
+        public void Fstsw_EmitTestAh40()
         {
             asm.Fstsw(asm.ax);
             asm.Test(asm.ah, asm.Const(0x40));
@@ -107,7 +108,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void EmitTestAx01()
+        public void Fstsw_EmitTestAx01()
         {
             asm.Fstsw(asm.ax);
             asm.Test(asm.ax, asm.Const(0x0100));
@@ -120,18 +121,14 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private FstswChainMatcher GetMatcher()
         {
-            LoaderResults lr = asm.GetImage();
+            Program lr = asm.GetImage();
             X86Disassembler dasm = new X86Disassembler(
                 lr.Image.CreateLeReader(0),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
             instrs = new List<IntelInstruction>();
-            while (dasm.MoveNext())
-            {
-                instrs.Add(dasm.Current);
-            }
-            return new FstswChainMatcher(instrs.ToArray(), orw);
+            return new FstswChainMatcher(dasm.ToArray(), orw);
         }
     }
 }

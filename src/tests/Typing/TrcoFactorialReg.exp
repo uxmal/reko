@@ -1,35 +1,37 @@
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem8[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	Mem4[ds:0x0064:word16] = fn0C00_000B(0x0005)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // fn0C00_000B
+// Return size: 0
 word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
-	word16 ax_18
+	word16 ax_11
 	branch cx <= 0x0001 l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	ax_18 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+	ax_11 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
-	ax_18 = 0x0001
+	ax_11 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	return ax_18
+	return ax_11
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
 
-globals_t (in globals : (ptr (struct)))
-	trait_primitive((ptr (struct)))
+globals_t (in globals : (ptr (struct "Globals")))
+	trait_primitive((ptr (struct "Globals")))
 T_2 (in fn0C00_000B : ptr32)
 	trait_func(T_5 -> T_6)
 T_4 (in cx : word16)
@@ -53,13 +55,13 @@ T_7 (in ds : selector)
 T_8 (in 0x0064 : word16)
 	trait_primitive(word16)
 	trait_mem(T_7:T_9, 0)
-T_9 (in Mem8[ds:0x0064:word16] : word16)
+T_9 (in Mem4[ds:0x0064:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_6)
 T_10 (in ax : word16)
 	trait_primitive(word16)
 	trait_equal(T_11)
-T_11 (in ax_18 : word16)
+T_11 (in ax_11 : word16)
 	trait_primitive(word16)
 	trait_primitive(word16)
 	trait_primitive(word16)

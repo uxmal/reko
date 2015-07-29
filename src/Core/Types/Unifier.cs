@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Performs type unification, returning a general unifier for the two parameters.
@@ -54,6 +55,15 @@ namespace Decompiler.Core.Types
 					return false;
 				return (pa.Domain &  pb.Domain) != 0;
 			}
+
+            TypeReference tra = a as TypeReference;
+            TypeReference trb = b as TypeReference;
+            if (tra != null && trb != null)
+                return tra == trb;
+            if (tra != null)
+                return AreCompatible(tra.Referent, b);
+            if (trb != null)
+                return AreCompatible(a, trb.Referent);
 
 			TypeVariable tva = a as TypeVariable;
 			TypeVariable tvb = b as TypeVariable;
@@ -168,9 +178,20 @@ namespace Decompiler.Core.Types
 			return false;
 		}
 
+        private int recDepth;
+
 		public DataType Unify(DataType a, DataType b)
 		{
-			return UnifyInternal(a, b);
+            if (++recDepth > 100)
+            {
+               //$BUG: should emit warning in the error log.
+                --recDepth;
+                Debug.Print("Exceeded stack depth, giving up");
+                return factory.CreateUnionType(null, null, new[] { a, b });
+            }
+            var u = UnifyInternal(a, b);
+            --recDepth;
+            return u;
 		}
 
 		private DataType UnifyInternal(DataType a, DataType b)
@@ -226,6 +247,26 @@ namespace Decompiler.Core.Types
 			{
 				MakeUnion(a, b);
 			}
+
+            TypeReference trA = a as TypeReference;
+            TypeReference trB = b as TypeReference;
+            if (trA != null && trB != null)
+            {
+                if (trA == trB)
+                    return trA;
+                else 
+                    return MakeUnion(a, b);
+            }
+            if (trA != null)
+            {
+                if (AreCompatible(trA.Referent, b))
+                    return a;
+            }
+            if (trB != null)
+            {
+                if (AreCompatible(a, trB.Referent))
+                    return b;
+            }
 
 			EquivalenceClass eqA = a as EquivalenceClass;
 			EquivalenceClass eqB = b as EquivalenceClass;

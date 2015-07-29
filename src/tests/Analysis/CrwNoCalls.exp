@@ -4,6 +4,7 @@ void fn0C00_0000(Register word16 ax, Register word16 bx, Register selector ds)
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -17,6 +18,7 @@ void fn0C00_0000(word16 ax, word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	SCZO = cond(ax - bx)
 	branch Test(EQ,Z) l0C00_000A
 	// succ:  l0C00_0004 l0C00_000A

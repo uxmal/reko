@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +18,34 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
-using Decompiler.Environments.Msdos;
-using Decompiler.Scanning;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Environments.Msdos;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	public abstract class AnalysisTestBase
 	{
+        private Platform platform;
+
 		protected void DumpProcedureFlows(Program prog, DataFlowAnalysis dfa, RegisterLiveness live, TextWriter w)
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
@@ -108,15 +114,15 @@ namespace Decompiler.UnitTests.Analysis
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            Program prog;
-            Assembler asm = new IntelTextAssembler();
+            Program program;
+            Assembler asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                var lr = asm.Assemble(new Address(0xC00, 0), rdr);
-                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new MsdosPlatform(null, arch));
+                program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
+                program.Platform = new MsdosPlatform(null, arch);
             }
-            Rewrite(prog, asm, configFile);
-            return prog;
+            Rewrite(program, asm, configFile);
+            return program;
         }
 
         protected Program RewriteFile32(string sourceFile)
@@ -126,41 +132,53 @@ namespace Decompiler.UnitTests.Analysis
 
         private Program RewriteFile32(string relativePath, string configFile)
         {
-            Program prog;
-            Assembler asm = new IntelTextAssembler();
+            Program program;
+            var asm = new X86TextAssembler(new X86ArchitectureReal());
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                var lr = asm.Assemble(new Address(0x10000000), rdr);
-                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
+                if (this.platform == null)
+                {
+                    this.platform = new Reko.Environments.Win32.Win32Platform(null, new X86ArchitectureFlat32());
+                }
+                asm.Platform = this.platform;
+                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
             }
-            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            foreach (var item in asm.ImportReferences)
             {
-                prog.ImportThunks.Add(item.Key, item.Value);
+                program.ImportReferences.Add(item.Key, item.Value);
             }
-            Rewrite(prog, asm, configFile);
-            return prog;
+            Rewrite(program, asm, configFile);
+            return program;
         }
 
         protected Program RewriteCodeFragment(string s)
         {
-            Assembler asm = new IntelTextAssembler();
-            var lr = asm.AssembleFragment(new Address(0xC00, 0), s);
-            var prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
-            Rewrite(prog, asm, null);
-            return prog;
+            Assembler asm = new X86TextAssembler(new X86ArchitectureReal());
+            var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            Rewrite(program, asm, null);
+            return program;
         }
 
         private static void Rewrite(Program prog, Assembler asm, string configFile)
         {
-            var scan = new Scanner(prog, 
-                new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
-            var loader = new Loader(new ServiceContainer());
+            var fakeDiagnosticsService = new FakeDiagnosticsService();
+            var fakeConfigService = new FakeDecompilerConfiguration();
+            var sc = new ServiceContainer();
+            sc.AddService(typeof(IDiagnosticsService), fakeDiagnosticsService);
+            sc.AddService(typeof(IConfigurationService), fakeConfigService);
+            var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
-                : new ProjectSerializer(new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
+                : new ProjectLoader(loader).LoadProject(FileUnitTester.MapTestPath(configFile));
+            var scan = new Scanner(
+                prog,
+                new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
-            foreach (var f in project.InputFiles.OfType<InputFile>())
+            foreach (var f in project.Programs)
             {
                 foreach (var sp in f.UserProcedures.Values)
                 {
@@ -223,5 +241,62 @@ namespace Decompiler.UnitTests.Analysis
                 fut.AssertFilesEqual();
 			}
 		}
+
+        protected void Given_Platform(Platform platform)
+        {
+            this.platform = platform;
+        }
+
+        protected void Given_FakeWin32Platform(MockRepository mr)
+        {
+            var platform = mr.StrictMock<Platform>(null, null);
+            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
+            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
+            var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
+            platform.Stub(p => p.LookupProcedureByName(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Equal("GlobalHandle")))
+                .Return(
+                    new ExternalProcedure(
+                        "GlobalHandle",
+                        new ProcedureSignature(
+                            new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax),
+                            new Identifier("pv",  tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                        {
+                            StackDelta = 4,
+                        }));
+            platform.Stub(p => p.LookupProcedureByName(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Equal("GlobalUnlock")))
+                .Return(new ExternalProcedure(
+                    "GlobalUnlock",
+                    new ProcedureSignature(
+                        new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
+                        new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                    {
+                        StackDelta = 4,
+                    }));
+
+            platform.Stub(p => p.LookupProcedureByName(
+             Arg<string>.Is.Anything,
+             Arg<string>.Is.Equal("GlobalFree")))
+             .Return(new ExternalProcedure(
+                 "GlobalFree",
+                 new ProcedureSignature(
+                     new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
+                     new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                 {
+                     StackDelta = 4,
+                 }));
+            platform.Stub(p => p.GetTrampolineDestination(
+                Arg<ImageReader>.Is.NotNull,
+                Arg<IRewriterHost>.Is.NotNull))
+                .Return(null);
+
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
+                new Reko.Arch.X86.X86ArchitectureFlat32().CreateRegisterBitset());
+            Given_Platform(platform);
+        }
 	}
 }

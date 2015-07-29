@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     public class IndexedOperand : MachineOperand, M68kOperand
     {
@@ -65,6 +65,66 @@ namespace Decompiler.Arch.M68k
         public T Accept<T>(M68kOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            //@base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+            //outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+            //if (EXT_BASE_REGISTER_PRESENT(extension))
+            //    base_reg = string.Format("A{0}", instruction & 7);
+            //else
+            //    base_reg = "";
+            //if (EXT_INDEX_REGISTER_PRESENT(extension))
+            //{
+            //    index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+            //    if (EXT_INDEX_SCALE(extension) != 0)
+            //        index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+            //}
+            //else
+            //    index_reg = "";
+            //preindex = (extension & 7) > 0 && (extension & 7) < 4;
+            //postindex = (extension & 7) > 4;
+
+            writer.Write("(");
+            if (preindex || postindex)
+                writer.Write("[");
+            var sep = "";
+            if (Base != null)
+            {
+                writer.Write(MachineOperand.FormatValue(Base));
+                sep = ",";
+            }
+            if (base_reg != null)
+            {
+                writer.Write(sep);
+                writer.Write(base_reg.ToString());
+                sep = ",";
+            }
+            if (postindex)
+            {
+                writer.Write("]");
+                sep = ",";
+            }
+            if (index_reg != null)
+            {
+                writer.Write(sep);
+                writer.Write(index_reg.Name);
+                if (index_scale > 1)
+                    writer.Write("*{0}", index_scale);
+                sep = ",";
+            }
+            if (preindex)
+            {
+                writer.Write("]");
+                sep = ",";
+            }
+            if (outer != null)
+            {
+                writer.Write(sep);
+                writer.Write(MachineOperand.FormatSignedValue(outer));
+            }
+            writer.Write(")");
         }
     }
 }

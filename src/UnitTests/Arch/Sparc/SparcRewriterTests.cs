@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Arch.Sparc;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Arch.Sparc;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,13 +31,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Sparc
+namespace Reko.UnitTests.Arch.Sparc
 {
     [TestFixture]
     class SparcRewriterTests : RewriterTestBase 
     {
         private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
-        private Address baseAddr = new Address(0x00100000);
+        private Address baseAddr = Address.Ptr32(0x00100000);
         private SparcProcessorState state;
         private IRewriterHost host;
         private IEnumerable<RtlInstructionCluster> e;
@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             get { return baseAddr; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             return e;
         }

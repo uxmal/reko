@@ -1,5 +1,6 @@
 // Before ///////
 // proc1
+// Return size: 0
 void proc1()
 proc1_entry:
 	// succ:  l1
@@ -11,6 +12,7 @@ proc1_exit:
 
 // After ///////
 // proc1
+// Return size: 0
 void proc1()
 proc1_entry:
 	// succ:  l1
@@ -22,7 +24,7 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct "Eq_2" (5400 bool f5400) (5404 (ptr Eq_6) ptr5404))
 	T_2 (in ds : word32)
 	T_3 (in ds2 : word32)
@@ -30,7 +32,7 @@ Eq_6: (struct "Eq_6" (4 ci16 w0004))
 	T_6 (in Mem0[ds + 0x00005404:word32] : word32)
 	T_18 (in Mem0[ds2 + 0x00005404:word32] : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Design;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Design;
+using Reko.Core;
+using Reko.Core.Types;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Design
+namespace Reko.UnitTests.Gui.Design
 {
     [TestFixture]
     public class ProcedureDesignerTests
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Gui.Design
         public void ProcDesigner_DefaultAction_ShowProcedure()
         {
             var proc = new Procedure("foo", new Frame(PrimitiveType.Pointer32));
-            var des = new ProcedureDesigner(new Program(), proc, new Address(0x001100000));
+            var des = new ProcedureDesigner(new Program(), proc, null, Address.Ptr32(0x001100000));
             des.Services = services;
             var codeSvc = mr.StrictMock<ICodeViewerService>();
             Given_Service<ICodeViewerService>(codeSvc);

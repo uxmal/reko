@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Reko.Core.Configuration
 {
     public class LoaderElementCollection : ConfigurationElementCollection
     {
@@ -39,7 +39,12 @@ namespace Decompiler.Core.Configuration
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((LoaderElement) element).MagicNumber; 
+            var magic = ((LoaderElement)element).MagicNumber;
+            var label = ((LoaderElement)element).Label;
+            if (string.IsNullOrEmpty(magic))
+                return label;
+            else
+                return magic;
         }
     }
 }

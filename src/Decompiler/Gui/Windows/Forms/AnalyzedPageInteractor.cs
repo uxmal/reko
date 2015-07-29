@@ -1,6 +1,6 @@
 #region License
 /* 
-* Copyright (C) 1999-2014 John Källén.
+* Copyright (C) 1999-2015 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Gui;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +29,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public interface IAnalyzedPageInteractor : IPhasePageInteractor
     {
@@ -81,7 +81,7 @@ namespace Decompiler.Gui.Windows.Forms
         { 
             //$TODO: need "current program"
             IProcessorArchitecture arch = null; // Decompiler.Program.Architecture;
-            var ser = new ProcedureSerializer(arch, "stdapi");
+            var ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");
             var proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
             var i = new ProcedureDialogInteractor(arch, proc);
             using (ProcedureDialog dlg = i.CreateDialog())
@@ -89,10 +89,10 @@ namespace Decompiler.Gui.Windows.Forms
                 if (DialogResult.OK == UIService.ShowModalDialog(dlg))
                 {
                     //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-                    var inputFile = (InputFile) Decompiler.Project.InputFiles[0]; 
-                    inputFile.UserProcedures[SelectedProcedureEntry.Key] =
+                    var program =  Decompiler.Project.Programs[0]; 
+                    program.UserProcedures[SelectedProcedureEntry.Key] =
                         i.SerializedProcedure;
-                    ser = new ProcedureSerializer(arch, "stdapi");
+                    ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");
                     SelectedProcedureEntry.Value.Signature =
                         ser.Deserialize(i.SerializedProcedure.Signature, SelectedProcedureEntry.Value.Frame);
 
@@ -112,7 +112,7 @@ namespace Decompiler.Gui.Windows.Forms
         #region ICommandTarget interface 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -128,7 +128,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {

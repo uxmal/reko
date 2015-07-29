@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,39 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     public class EntryPointWorkitem : WorkItem
     {
         private IScanner scanner;
+        private Program program;
         private EntryPoint ep;
 
-        public EntryPointWorkitem(IScanner scanner, EntryPoint ep)
+        public EntryPointWorkitem(IScanner scanner, Program program, EntryPoint ep)
         {
             this.scanner = scanner;
+            this.program = program;
             this.ep = ep;
         }
 
         public override void Process()
         {
-            var pb = scanner.ScanProcedure(ep.Address, ep.Name, scanner.Architecture.CreateProcessorState());
-            var proc = pb as Procedure;
-            if (proc != null)
+            try
             {
-                scanner.CallGraph.AddEntryPoint(proc);
+                var pb = scanner.ScanProcedure(ep.Address, ep.Name, ep.ProcessorState);
+                var proc = pb as Procedure;
+                if (proc != null)
+                {
+                    program.CallGraph.AddEntryPoint(proc);
+                }
+            } catch (AddressCorrelatedException aex)
+            {
+                scanner.Error(aex.Address, aex.Message);
             }
         }
     }

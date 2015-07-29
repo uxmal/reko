@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Archives;
-using Decompiler.Core.Services;
-using Decompiler.Environments.MacOS;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Core.Services;
+using Reko.Environments.MacOS;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
 
-namespace Decompiler.ImageLoaders.BinHex
+namespace Reko.ImageLoaders.BinHex
 {
     public class BinHexImageLoader : ImageLoader
     {
@@ -37,11 +37,11 @@ namespace Decompiler.ImageLoaders.BinHex
         private LoadedImage image;
         private ImageMap imageMap;
 
-        public BinHexImageLoader(IServiceProvider services, byte [] imgRaw) : base(services, imgRaw)
+        public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
         {
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
@@ -65,13 +65,13 @@ namespace Decompiler.ImageLoaders.BinHex
                         this.rsrcFork = new ResourceFork(image, arch);
                         this.image = new LoadedImage(addrLoad, image);
                         this.imageMap = new ImageMap(addrLoad, image.Length);
-                        return new LoaderResults(this.image, new ImageMap(this.image), arch, platform);
+                        return new Program(this.image, this.imageMap, arch, platform);
                     }
                 }
             }
 
             var li = new LoadedImage(addrLoad, dataFork);
-            return new LoaderResults(li, new ImageMap(li), arch, platform);
+            return new Program(li, li.CreateImageMap(), arch, platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)
@@ -89,7 +89,8 @@ namespace Decompiler.ImageLoaders.BinHex
 
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0x10000000); }
+            get { return Address.Ptr32(0x00100000); }
+            set { throw new NotImplementedException(); }
         }
 
         public override RelocationResults Relocate(Address addrLoad)

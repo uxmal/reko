@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Tools.C2Xml
+namespace Reko.Tools.C2Xml
 {
     /// <summary>
     /// Returns the size of a type in bytes.
@@ -45,6 +45,11 @@ namespace Decompiler.Tools.C2Xml
             return size;
         }
 
+        public int VisitCode(CodeType_v1 code)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitPrimitive(PrimitiveType_v1 primitive)
         {
             return primitive.ByteSize;
@@ -59,7 +64,7 @@ namespace Decompiler.Tools.C2Xml
         {
             return 4;       //$BUGBUG: architecture dependent
         }
-        public int VisitArray(SerializedArrayType array)
+        public int VisitArray(ArrayType_v1 array)
         {
             return Align(array.ElementType.Accept(this)) * array.Length;
         }
@@ -72,6 +77,11 @@ namespace Decompiler.Tools.C2Xml
         public int VisitSignature(SerializedSignature signature)
         {
             return 0;
+        }
+
+        public int VisitString(StringType_v2 str)
+        {
+            throw new NotImplementedException();
         }
 
         public int VisitStructure(SerializedStructType structure)

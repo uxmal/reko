@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Displays the contents of memory and allows selection of memory ranges. 
@@ -107,6 +107,14 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
+        public void SetAddressRange(Address addrAnchor, Address addrSelected)
+        {
+            this.addrAnchor = addrAnchor;
+            this.addrSelected = addrSelected;
+            Invalidate();
+            OnSelectionChanged();
+        }
+
 		public uint BytesPerRow
 		{
 			get { return cbRow; }
@@ -151,7 +159,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             if (addr == null || TopAddress == null)
                 return Point.Empty;
-            int cbOffset = addr - TopAddress;
+            int cbOffset = (int)(addr - TopAddress);
             int yRow = cbOffset / (int)cbRow;
             if (yTopRow <= yRow && yRow < yTopRow + cyPage)
             {
@@ -165,7 +173,7 @@ namespace Decompiler.Gui.Windows.Controls
 		{
 			if (addr == null || TopAddress == null)
 				return false;
-			int cbOffset = addr - TopAddress;
+			int cbOffset = (int)(addr - TopAddress);
 			int yRow = cbOffset / (int)cbRow;
 			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
 		}
@@ -174,7 +182,7 @@ namespace Decompiler.Gui.Windows.Controls
 		{
             if (SelectedAddress == null)
                 return;
-            uint linAddr = (uint)(SelectedAddress.Linear + offset);
+            ulong linAddr = (ulong)((long)SelectedAddress.ToLinear() + offset);
             if (!image.IsValidLinearAddress(linAddr))
                 return;
             Address addr = imageMap.MapLinearAddressToAddress(linAddr);
@@ -214,8 +222,20 @@ namespace Decompiler.Gui.Windows.Controls
                 MoveSelection((int)wordSize, e.Modifiers);
 				break;
             default:
-			    base.OnKeyDown(e);
-                return;
+                switch (e.KeyData)
+                {
+                case Keys.Shift | Keys.F10:
+                    var addrRange = GetAddressRange();
+                    if (ContextMenu != null && addrRange.IsValid)
+                    {
+                        ContextMenu.Show(this, AddressToPoint(addrRange.Begin));
+                    }
+                    break;
+                default:
+                    base.OnKeyDown(e);
+                    return;
+                }
+                break;
             }
             e.Handled = true;
 		}
@@ -267,6 +287,15 @@ namespace Decompiler.Gui.Windows.Controls
             base.OnMouseUp(e);
         }
 
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            var newTopAddress = TopAddress + (int)(e.Delta > 0 ? -cbRow : cbRow);
+            if (image.IsValidAddress(newTopAddress))
+            {
+                TopAddress = newTopAddress;
+            }
+        }
+
         private void AffectSelection(MouseEventArgs e)
         {
             using (Graphics g = this.CreateGraphics())
@@ -302,9 +331,9 @@ namespace Decompiler.Gui.Windows.Controls
         {
             if (addr == null || addrAnchor == null || addrSelected == null)
                 return false;
-            var linAddr = addr.Linear;
-            var linAnch = addrAnchor.Linear;
-            var linSel = addrSelected.Linear;
+            var linAddr = addr.ToLinear();
+            var linAnch = addrAnchor.ToLinear();
+            var linSel = addrSelected.ToLinear();
             if (linAnch <= linSel)
             {
                 return linAnch <= linAddr && linAddr <= linSel;
@@ -340,7 +369,6 @@ namespace Decompiler.Gui.Windows.Controls
 			base.OnSizeChanged(e);
 			UpdateScroll();
 		}
-		
 
 		[Browsable(false)]
 		public LoadedImage ProgramImage
@@ -365,7 +393,14 @@ namespace Decompiler.Gui.Windows.Controls
         public ImageMap ImageMap
         {
             get { return imageMap; }
-            set { imageMap = value; Invalidate(); }
+            set { 
+                if (imageMap != null) 
+                    imageMap.MapChanged -= imageMap_MapChanged;
+                imageMap = value;
+                if (imageMap != null)
+                    imageMap.MapChanged += imageMap_MapChanged;
+                Invalidate();
+            }
         }
 
         [Browsable(false)]
@@ -377,7 +412,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		private Address RoundToNearestRow(Address addr)
 		{
-			uint rows = addr.Linear / cbRow;
+			ulong rows = addr.ToLinear() / cbRow;
 			return imageMap.MapLinearAddressToAddress(rows * cbRow);
 		}
 
@@ -401,7 +436,9 @@ namespace Decompiler.Gui.Windows.Controls
 			get { return addrTopVisible; }
 			set
 			{
-				addrTopVisible = value;
+                addrTopVisible = value;
+                if (value != null)
+                    addrTopVisible -= (int)(value.ToLinear() % cbRow);
 				UpdateScroll();
 				Invalidate();
 			}
@@ -442,7 +479,7 @@ namespace Decompiler.Gui.Windows.Controls
 			cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
 			vscroller.LargeChange = cyPage;
             vscroller.Maximum = cRows;
-            int newValue = (int)((addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow);
+            int newValue = (int)((addrTopVisible.ToLinear() - image.BaseAddress.ToLinear()) / cbRow);
             vscroller.Value = Math.Max(Math.Min(newValue, vscroller.Maximum), vscroller.Minimum); 
 		}
 
@@ -457,19 +494,17 @@ namespace Decompiler.Gui.Windows.Controls
 			}
 		}
 
+        public void imageMap_MapChanged(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
+
 		private void vscroller_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (e.Type == ScrollEventType.ThumbTrack)
 				return;
-            Address newTopAddress;
-			if (image.BaseAddress.Selector != 0)
-			{
-				newTopAddress = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint)e.NewValue * cbRow);
-			}
-			else
-			{
-				newTopAddress = image.BaseAddress + (uint)e.NewValue * cbRow;
-			}
+            Address newTopAddress = imageMap.MapLinearAddressToAddress(
+                image.BaseAddress.ToLinear() + (uint)e.NewValue * cbRow);
             if (image.IsValidAddress(newTopAddress))
             {
                 TopAddress = newTopAddress;
@@ -498,30 +533,33 @@ namespace Decompiler.Gui.Windows.Controls
             public Address PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
             {
                 this.cellSize = cellSize;
+                //$TODO: these should be user-configurable.
                 codeTheme = new BrushTheme { Background = Brushes.Pink, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Red };
                 dataTheme = new BrushTheme { Background = Brushes.LightBlue, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Blue };
                 defaultTheme = new BrushTheme { Background = SystemBrushes.Window, Foreground = SystemBrushes.ControlText };
                 selectTheme = new BrushTheme { Background = SystemBrushes.Highlight, Foreground = SystemBrushes.HighlightText };
 
+                if (ctrl.arch == null || ctrl.imageMap == null)
+                    return null;
                 // Enumerate all segments visible on screen.
 
-                uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
-                if (ctrl.addrTopVisible.Linear >= laEnd)
+                ulong laEnd = ctrl.ProgramImage.BaseAddress.ToLinear() + (uint) ctrl.image.Bytes.Length;
+                if (ctrl.addrTopVisible.ToLinear() >= laEnd || !ctrl.image.IsValidAddress(ctrl.addrTopVisible))
                     return null;
                 ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;
                 Size cell = ctrl.CellSize;
                 rc.Height = cell.Height;
 
-                uint laSegEnd = 0;
-                while (rc.Top < ctrl.Height && rdr.Address.Linear < laEnd)
+                ulong laSegEnd = 0;
+                while (rc.Top < ctrl.Height && rdr.Address.ToLinear() < laEnd)
                 {
                     ImageMapSegment seg;
                     if (!ctrl.ImageMap.TryFindSegment(ctrl.addrTopVisible, out seg))
                         return null;
-                    if (rdr.Address.Linear >= laSegEnd)
+                    if (rdr.Address.ToLinear() >= laSegEnd)
                     {
-                        laSegEnd = seg.Address.Linear + seg.Size;
+                        laSegEnd = seg.Address.ToLinear() + seg.Size;
                         rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, seg.Address + (rdr.Address - seg.Address));
                     }
                     Address addr = PaintLine(g, rc, rdr, ptAddr, render);
@@ -564,20 +602,20 @@ namespace Decompiler.Gui.Windows.Controls
                 rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
 
                 uint rowBytesLeft = ctrl.cbRow;
-                uint linearSelected = ctrl.addrSelected != null ? ctrl.addrSelected.Linear : ~0U;
-                uint linearAnchor = ctrl.addrAnchor != null ? ctrl.addrAnchor.Linear : ~0U;
-                uint linearBeginSelection = Math.Min(linearSelected, linearAnchor);
-                uint linearEndSelection = Math.Max(linearSelected, linearAnchor);
+                ulong linearSelected = ctrl.addrSelected != null ? ctrl.addrSelected.ToLinear() : ~0UL;
+                ulong linearAnchor = ctrl.addrAnchor != null ? ctrl.addrAnchor.ToLinear() : ~0UL;
+                ulong linearBeginSelection = Math.Min(linearSelected, linearAnchor);
+                ulong linearEndSelection = Math.Max(linearSelected, linearAnchor);
 
                 do
                 {
                     Address addr = rdr.Address;
-                    uint linear = addr.Linear;
+                    ulong linear = addr.ToLinear();
 
                     ImageMapItem item;
                     if (!ctrl.ImageMap.TryFindItem(addr, out item))
                         break;
-                    uint cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
+                    ulong cbIn = (linear - item.Address.ToLinear());			// # of bytes 'inside' the block we are.
                     uint cbToDraw = 16; // item.Size - cbIn;
 
                     // See if the chunk goes off the edge of the line. If so, clip it.
@@ -590,8 +628,8 @@ namespace Decompiler.Gui.Windows.Controls
                     {
                         Address addrByte = rdr.Address;
                         ctrl.ImageMap.TryFindItem(addrByte, out item);
-                        bool isSelected = linearBeginSelection <= addrByte.Linear && addrByte.Linear <= linearEndSelection;
-                        bool isCursor = addrByte.Linear == linearSelected;
+                        bool isSelected = linearBeginSelection <= addrByte.ToLinear() && addrByte.ToLinear() <= linearEndSelection;
+                        bool isCursor = addrByte.ToLinear() == linearSelected;
                         if (rdr.IsValid)
                         {
                             byte b = rdr.ReadByte();
@@ -617,7 +655,7 @@ namespace Decompiler.Gui.Windows.Controls
 
                         var theme = GetBrushTheme(item, isSelected);
                         g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
-                        if (!isSelected && theme.StartMarker != null && addrByte.Linear == item.Address.Linear)
+                        if (!isSelected && theme.StartMarker != null && addrByte.ToLinear() == item.Address.ToLinear())
                         {
                             var pts = new Point[] 
                             {

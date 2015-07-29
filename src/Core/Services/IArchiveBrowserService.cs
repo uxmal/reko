@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Archives;
+using Reko.Core.Archives;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Services
+namespace Reko.Core.Services
 {
     /// <summary>
-    /// Used by loaders that have encountered an archive and need the user to select the file in the archive that is to be 
-    /// decompiled.
+    /// Used by loaders that have encountered an archive and need the user to select 
+    /// the file in the archive that is to be decompiled.
     /// </summary>
     public interface IArchiveBrowserService
     {

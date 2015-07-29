@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Hunk
+namespace Reko.ImageLoaders.Hunk
 {
+    /// <summary>
+    /// Parses an AmigaOS HUNK file.
+    /// </summary>
     public class HunkFileParser
     {
         public HunkFile hunk_file;
@@ -73,13 +76,6 @@ namespace Decompiler.ImageLoaders.Hunk
                         throw new BadImageFormatException("Invalid hunk file. The file is empty.");
                     break;
                 }
-                else if (rawHunkType < 0)
-                {
-                    if (isFirstHunk)
-                        throw new BadImageFormatException("Invalid hunk file. The file is too short.");
-                    else
-                        throw new BadImageFormatException(string.Format("Error reading hunk type @{0:X8}.", f.Offset));
-                }
                 var hunkType = (HunkType) (rawHunkType & Hunk.HUNK_TYPE_MASK);
                 var hunkFlags = rawHunkType & Hunk.HUNK_FLAGS_MASK;
 
@@ -124,7 +120,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 Action<Hunk> hunk = h =>
                 {
                     h.HunkType = hunkType;
-                    h.FileOffset = hunkFileOffset;
+                    h.FileOffset = (uint)hunkFileOffset;
                     hunk_file.hunks.Add(h);
                     h.memf = this.SetMemoryFlags(hunkFlags, 30);
                     
@@ -226,7 +222,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 default:
                     throw new BadImageFormatException(string.Format("Unsupported hunk {0}.", (int) hunkType));
                 }
-                last_file_offset = hunkFileOffset;
+                last_file_offset = (uint)hunkFileOffset;
             }
             return hunk_file;
         }
@@ -352,6 +348,7 @@ namespace Decompiler.ImageLoaders.Hunk
             {
                 var hunk_info = new HunkInfo();
                 int hunk_size = this.read_long();
+                hunk_size &= 0x3FFFFFFF;           // Top 2 bits not handled yet.
                 if (hunk_size < 0)
                     throw new BadImageFormatException("Head hunk contains invalid hunk_size.");
                 int hunk_bytes = (hunk_size & ~Hunk.HUNKF_ALL) * 4;
@@ -376,7 +373,7 @@ namespace Decompiler.ImageLoaders.Hunk
             hunk.alloc_size = size & ~Hunk.HUNKF_ALL;
             var flags = size & Hunk.HUNKF_ALL;
             hunk.memf = this.SetMemoryFlags(flags, 30);
-            hunk.data_file_offset = f.Offset;
+            hunk.data_file_offset = (uint)f.Offset;
             hunk.Data = f.ReadBytes(hunk.alloc_size);
             Debug.WriteLineIf(trace.TraceVerbose, string.Format("  alloc_size:  {0:X8}", hunk.alloc_size));
             Debug.WriteLineIf(trace.TraceVerbose, string.Format("  file_offset: {0:X8}", hunk.data_file_offset));
@@ -505,7 +502,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 var value = this.read_long();
                 if (value < 0)
                     throw new NotImplementedException(string.Format("{0} has invalid symbol value", hunk.HunkType));
-                symbols.Add(x, value);
+                symbols[x] = value;
             }
         }
 
@@ -516,11 +513,16 @@ namespace Decompiler.ImageLoaders.Hunk
             if (num_longs < 0)
                 throw new BadImageFormatException(string.Format("{0} has invalid size.", hunk.HunkType));
             var size = num_longs * 4;
+            if (num_longs < 2)
+            {
+                f.Offset += (ulong)size;
+                return;
+            }
             var offset = (uint) this.read_long();
             hunk.debug_offset = offset;
             var tag = this.ReadTag();
             hunk.debug_type = tag;
-            size -= 8;
+            size -= 8;  //  skip offset and tag.
             if (tag == "LINE")
             {
                 // LINE
@@ -600,7 +602,7 @@ namespace Decompiler.ImageLoaders.Hunk
             var hunk = new LibraryHunk();
             h(hunk);
             var lib_size = this.read_long();
-            hunk.lib_file_offset = f.Offset;
+            hunk.lib_file_offset = (uint)f.Offset;
             return lib_size * 4;
         }
 
@@ -817,6 +819,7 @@ namespace Decompiler.ImageLoaders.Hunk
             if (!f.IsValidOffset(3))
                 throw new BadImageFormatException();
             var s = textEncoding.GetString(f.Bytes, (int) f.Offset, 4);
+            f.Offset += 4;
             return s;
         }
 

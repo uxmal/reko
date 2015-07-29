@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Assigns a type to each expression node in a program and builds equivalence classes.
@@ -80,7 +80,7 @@ namespace Decompiler.Typing
 
 			if (sig != null)
 			{
-				if (sig.FormalArguments.Length != appl.Arguments.Length)
+				if (sig.Parameters.Length != appl.Arguments.Length)
 					throw new InvalidOperationException("Parameter count must match.");
 			}
 
@@ -89,8 +89,8 @@ namespace Decompiler.Typing
 				appl.Arguments[i].Accept(this);
 				if (sig != null)
 				{
-					EnsureTypeVariable(sig.FormalArguments[i]);
-					store.MergeClasses(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
+					EnsureTypeVariable(sig.Parameters[i]);
+					store.MergeClasses(appl.Arguments[i].TypeVariable, sig.Parameters[i].TypeVariable);
 				}
 			}
 			EnsureTypeVariable(appl);
@@ -275,12 +275,12 @@ namespace Decompiler.Typing
 				{
 					proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
 						factory,
-                        new Identifier("signature of " + proc.Name, 0, VoidType.Instance, null),
+                        new Identifier("signature of " + proc.Name, VoidType.Instance, null),
 						null);
 				}
-				if (proc.Signature.FormalArguments != null)
+				if (proc.Signature.Parameters != null)
 				{
-					foreach (Identifier id in proc.Signature.FormalArguments)
+					foreach (Identifier id in proc.Signature.Parameters)
 					{
 						id.Accept(this);
 					}

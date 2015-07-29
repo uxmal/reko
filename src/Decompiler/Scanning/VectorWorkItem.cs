@@ -1,12 +1,12 @@
-﻿using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
+﻿using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     public class VectorWorkItem : WorkItem
     {
@@ -17,13 +17,15 @@ namespace Decompiler.Scanning
         public ushort SegBase;
 
         private IScanner scanner;
+        private Program program;
         private Procedure proc;
         private Dictionary<Address, VectorUse> vectorUses;
 
-        public VectorWorkItem(IScanner scanner, ImageMapVectorTable table, Procedure proc)
+        public VectorWorkItem(IScanner scanner, Program program, ImageMapVectorTable table, Procedure proc)
             : base()
         {
             this.scanner = scanner;
+            this.program = program;
             this.Table = table;
             this.proc = proc;
             this.vectorUses = new Dictionary<Address, VectorUse>();
@@ -31,15 +33,15 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            var builder = new VectorBuilder(scanner, new DirectedGraphImpl<object>());
+            var builder = new VectorBuilder(scanner,  program, new DirectedGraphImpl<object>());
             var vector = builder.Build(Table.TableAddress, AddrFrom, State);
             if (vector.Count == 0)
             {
                 Address addrNext = Table.TableAddress + Stride.Size;
-                if (scanner.Image.IsValidAddress(addrNext))
+                if (program.Image.IsValidAddress(addrNext))
                 {
                     // Can't determine the size of the table, but surely it has one entry?
-                   scanner.ImageMap.AddItem(addrNext, new ImageMapItem());
+                   program.ImageMap.AddItem(addrNext, new ImageMapItem());
                 }
                 return;
             }
@@ -59,7 +61,7 @@ namespace Decompiler.Scanning
                 }
             }
             vectorUses[AddrFrom] = new VectorUse(Table.TableAddress, builder.IndexRegister);
-            scanner.ImageMap.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
+            program.ImageMap.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
         }
     }
 }

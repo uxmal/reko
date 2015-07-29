@@ -6,6 +6,7 @@
 // Preserved: esp
 // Stack args: Stack +0004(32)
 // fn10000000
+// Return size: 0
 void fn10000000(word32 dwArg04)
 fn10000000_entry:
 fn10000000_frame_asgn:
@@ -19,14 +20,14 @@ l10000000:
 	goto l10000027
 	// succ:  l10000027
 l10000023:
-	eax_15 = eax_15 + Mem0[fp - 0x0000000C + ecx_18 * 0x00000004:word32]
-	ecx_18 = ecx_18 + 0x00000001
+	eax_14 = eax_14 + Mem0[(fp - 0x0000000C) + ecx_15 * 0x00000004:word32]
+	ecx_15 = ecx_15 + 0x00000001
 	// succ:  l10000027
 l10000027:
-	branch ecx_18 <= 0x00000003 l10000023
+	branch ecx_15 <= 0x00000003 l10000023
 	// succ:  l1000002C l10000023
 l1000002C:
-	Mem29[dwArg04:word32] = eax_15
+	Mem26[dwArg04:word32] = eax_14
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,47 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System.Linq;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public partial class ArmRewriter
     {
-        private void RewriteBinOp(Operator op)
+        private void RewriteBinOp(Operator op, bool setflags)
         {
             var opDst = this.Operand(instr.Dst);
             var opSrc1 = this.Operand(instr.Src1);
             var opSrc2 = this.Operand(instr.Src2);
             ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
+            if (setflags)
+            {
+                ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+            }
+        }
+
+        private void RewriteRevBinOp(Operator op, bool setflags)
+        {
+            var opDst = this.Operand(instr.Dst);
+            var opSrc1 = this.Operand(instr.Src2);
+            var opSrc2 = this.Operand(instr.Src1);
+            ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
+            if (setflags)
+            {
+                ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+            }
+        }
+
+        private void RewriteUnaryOp(UnaryOperator op)
+        {
+            var opDst = this.Operand(instr.Dst);
+            var opSrc = this.Operand(instr.Src1);
+            ConditionalAssign(opDst, new UnaryExpression(op,  PrimitiveType.Word32, opSrc));
             if (instr.OpFlags == OpFlags.S)
             {
                 ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
@@ -91,7 +115,16 @@ namespace Decompiler.Arch.Arm
         {
             var opSrc = this.Operand(instr.Src1);
             var opDst = this.Operand(instr.Dst);
+            Identifier dst = (Identifier)opDst;
+            var rDst = dst.Storage as RegisterStorage;
+            if (rDst == A32Registers.pc)
+            {
+                // Assignment to PC is the same as a jump
+                emitter.Goto(opSrc);
+                return;
+            }
             emitter.Assign(opDst, opSrc);
+            MaybePostOperand(instr.Src1);
         }
 
         private void RewriteStr(DataType size)
@@ -99,6 +132,7 @@ namespace Decompiler.Arch.Arm
             var opSrc = this.Operand(instr.Dst);
             var opDst = this.Operand(instr.Src1);
             emitter.Assign(opDst, opSrc);
+            MaybePostOperand(instr.Src1);
         }
 
         private void RewriteMov()
@@ -135,7 +169,7 @@ namespace Decompiler.Arch.Arm
                     : (Expression) dst;
                 var reg = arch.GetRegister(r);
                 var srcReg = frame.EnsureRegister(reg);
-                emitter.Assign(emitter.LoadDw(ea), srcReg);
+                emitter.Assign(srcReg, emitter.LoadDw(ea));
                 offset += srcReg.DataType.Size;
                 if (reg == A32Registers.pc)
                     pcRestored = true;
@@ -162,6 +196,26 @@ namespace Decompiler.Arch.Arm
                 var srcReg = frame.EnsureRegister(arch.GetRegister(r));
                 emitter.Assign(emitter.LoadDw(ea), srcReg);
                 offset += srcReg.DataType.Size;
+            }
+            if (offset != 0 && instr.Update)
+            {
+                emitter.Assign(dst, emitter.ISub(dst, offset));
+            }
+        }
+
+        private void RewriteStmib()
+        {
+            var dst = frame.EnsureRegister(((RegisterOperand)instr.Dst).Register);
+            var range = (RegisterRangeOperand)instr.Src1;
+            int offset = 0;
+            foreach (var r in range.GetRegisters())
+            {
+                var srcReg = frame.EnsureRegister(arch.GetRegister(r));
+                offset += srcReg.DataType.Size;
+                Expression ea = offset != 0
+                    ? emitter.ISub(dst, offset)
+                    : (Expression)dst;
+                emitter.Assign(emitter.LoadDw(ea), srcReg);
             }
             if (offset != 0 && instr.Update)
             {

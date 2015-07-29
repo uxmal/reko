@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,28 +17,30 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Output;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Output;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core.Output
+namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
     public class GlobalDataWriterTests
     {
         private LoadedImage image;
         private Program prog;
+        private ServiceContainer sc;
 
         private ImageWriter Memory(uint address)
         {
-            image = new LoadedImage(new Address(address), new byte[1024]);
+            image = new LoadedImage(Address.Ptr32(address), new byte[1024]);
             var mem = new LeImageWriter(image.Bytes);
             return mem;
         }
@@ -48,19 +50,22 @@ namespace Decompiler.UnitTests.Core.Output
             var arch = new Mocks.FakeArchitecture();
             this.prog = new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new DefaultPlatform(null, arch));
             var globalStruct = new StructureType();
             globalStruct.Fields.AddRange(fields);
             prog.Globals.TypeVariable = new TypeVariable("globals_t", 1) { DataType = globalStruct };
-            prog.Globals.TypeVariable.DataType = globalStruct;
+            var eq = new EquivalenceClass(prog.Globals.TypeVariable);
+            eq.DataType = globalStruct;
+            var ptr = new Pointer(eq, 4);
+            prog.Globals.TypeVariable.DataType = ptr;
         }
 
         private void RunTest(string sExp)
         {
             var sw = new StringWriter();
-            var gdw = new GlobalDataWriter(prog);
+            var gdw = new GlobalDataWriter(prog, sc);
             gdw.WriteGlobals(new TextFormatter(sw)
             {
                 Indentation = 0,
@@ -72,6 +77,12 @@ namespace Decompiler.UnitTests.Core.Output
         private StructureField Field(int offset, DataType dt)
         {
             return new StructureField(offset, dt);
+        }
+
+        [SetUp]
+        public void SEtup()
+        {
+            this.sc = new ServiceContainer();
         }
 
         [Test]
@@ -143,7 +154,7 @@ char g_b1004 = 'H';
                 Field(0x1008, PrimitiveType.Int32));
 
             RunTest(
-@"int32 * g_ptr1000 = &g_dw1008;
+@"int32* g_ptr1000 = &g_dw1008;
 int32 g_dw1008 = 1234;
 ");
         }
@@ -153,7 +164,7 @@ int32 g_dw1008 = 1234;
         {
             Memory(0x1000)
                 .WriteLeUInt16(4)
-                .WriteLeUInt16(unchecked((ushort)-104));
+                .WriteLeUInt16(unchecked((ushort) -104));
             var eqStr = new EquivalenceClass(new TypeVariable(2));
             var str = new StructureType
             {
@@ -209,7 +220,47 @@ Eq_2 g_t1008 =
     2,
     null,
 };
-Eq_2 * g_ptr1010 = &g_t1000;
+Eq_2* g_ptr1010 = &g_t1000;
+");
+        }
+
+        [Test]
+        public void GdwNullTerminatedString()
+        {
+            Memory(0x1000)
+                .WriteString("Hello, world!", Encoding.UTF8)
+                .WriteByte(0);
+            Globals(
+                Field(0x1000, StringType.NullTerminated(PrimitiveType.Char)));
+            RunTest(
+@"char g_str1000[] = ""Hello, world!"";
+");
+        }
+
+        [Test]
+        public void GdwArrayStrings()
+        {
+            Memory(0x1000)
+                .WriteString("Low", Encoding.UTF8)
+                .WriteBytes(0, 5)
+                .WriteString("High", Encoding.UTF8)
+                .WriteBytes(0, 4)
+                .WriteString("Medium", Encoding.UTF8)
+                .WriteBytes(0, 2);
+            Globals(
+                Field(0x1000, new ArrayType(
+                    new StringType(
+                        PrimitiveType.Char,
+                        null,
+                        0) { Length = 8 },
+                    3)));
+            RunTest(
+@"char g_a1000[3][8] = 
+{
+    ""Low"",
+    ""High"",
+    ""Medium"",
+};
 ");
         }
     }

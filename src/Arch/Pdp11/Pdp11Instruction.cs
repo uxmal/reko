@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Reko.Arch.Pdp11
 {
     public class Pdp11Instruction : MachineInstruction
     {
@@ -33,9 +33,11 @@ namespace Decompiler.Arch.Pdp11
         public MachineOperand op1;
         public MachineOperand op2;
 
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(Opcode.ToString());
+            writer.WriteOpcode(Opcode.ToString());
             if (op1 != null)
             {
                 writer.Tab();

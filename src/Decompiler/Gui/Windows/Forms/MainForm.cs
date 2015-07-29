@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +29,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public partial class MainForm :
         Form,
@@ -59,6 +59,11 @@ namespace Decompiler.Gui.Windows.Forms
             this.toolBar = toolBar;
         }
 
+        public TabControl DocumentTabs
+        {
+            get { return tabDocuments; }
+        }
+
         public TabControl TabControl
         {
             get { return tabControl1; }
@@ -79,6 +84,11 @@ namespace Decompiler.Gui.Windows.Forms
         public TabPage FindResultsPage
         {
             get {return tabFindResults; }
+        }
+
+        public TabPage DiagnosticsPage
+        {
+            get { return tabDiagnostics; }
         }
 
         public TabPage ConsolePage
@@ -157,12 +167,10 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 var e = new KeyEventArgs(keyData);
                 eh(this, e);
-                return e.Handled;
+                if (e.Handled)
+                    return true;
             }
-            else
-            {
-                return false;
-            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         #endregion

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Absyn
+namespace Reko.Core.Absyn
 {
 	/// <summary>
 	/// Interface for visiting abstract syntax nodes.
@@ -31,14 +31,17 @@ namespace Decompiler.Core.Absyn
 		void VisitBreak(AbsynBreak brk);
         void VisitCase(AbsynCase absynCase);
 		void VisitContinue(AbsynContinue cont);
-		void VisitDeclaration(AbsynDeclaration decl);
+        void VisitDeclaration(AbsynDeclaration decl);
+        void VisitDefault(AbsynDefault decl);
 		void VisitDoWhile(AbsynDoWhile loop);
 		void VisitGoto(AbsynGoto gotoStm);
 		void VisitIf(AbsynIf ifStm);
 		void VisitLabel(AbsynLabel lbl);
-		void VisitReturn(AbsynReturn ret);
+        void VisitLineComment(AbsynLineComment comment);
+        void VisitReturn(AbsynReturn ret);
 		void VisitSideEffect(AbsynSideEffect side);
         void VisitSwitch(AbsynSwitch absynSwitch);
         void VisitWhile(AbsynWhile loop);
+
     }
 }

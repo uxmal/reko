@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents an equivalence class of types; i.e. types that are joined by equalities, function 
@@ -103,7 +104,17 @@ namespace Decompiler.Core.Types
 		
 		public override int Size
 		{
-			get { return DataType.Size; }
+            get
+            {
+                if (DataType == null)
+                {
+                    Debug.Print("DataType of {0} is NULL!", Name); return 4;
+                }
+                else
+                {
+                    return DataType.Size;
+                }
+            }
 			set { ThrowBadSize(); }
 		}
 

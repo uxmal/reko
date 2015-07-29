@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,35 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Loading;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Loading;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedProjectTests
 	{
+        private MockRepository mr;
+        private ILoader loader;
+        private IProcessorArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+        }
+
 		[Test]
 		public void SudWrite()
 		{
@@ -82,17 +93,17 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
             Project project = new Project
             {
-                InputFiles = 
+                Programs = 
                 {
-                    new InputFile
+                    new Program
                     {
-                        BaseAddress = new Address(0x1000, 0),
+                        Image = new LoadedImage(Address.SegPtr(0x1000, 0), new byte[100]),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
                         UserProcedures = new SortedList<Address,Procedure_v1> 
                         {
                             { 
-                                new Address(0x1000, 0x10), 
+                                Address.SegPtr(0x1000, 0x10), 
                                 new Procedure_v1
                                 {
                                     Name = "foo",
@@ -115,6 +126,19 @@ namespace Decompiler.UnitTests.Core.Serialization
                                     }
                                 }
                             }
+                        },
+                        UserGlobalData =
+                        {
+                            { 
+                              Address.SegPtr(0x2000, 0) ,
+                              new GlobalDataItem_v2 {
+                                   Address = Address.SegPtr(0x2000, 0).ToString(),
+                                   DataType = new StringType_v2 { 
+                                       Termination=StringType_v2.ZeroTermination, 
+                                       CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
+                                   }
+                              }
+                              }
                         }
                     }
                 }
@@ -124,7 +148,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
-                Project_v2 ud = project.Save();
+                Project_v2 ud = new ProjectSaver().Save(project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -146,77 +170,29 @@ namespace Decompiler.UnitTests.Core.Serialization
 		}
 
         [Test]
-        public void SudLoadProject()
+        public void Sud_LoadProject_Inputs_v2()
         {
-            string input = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler"">
-  <input>
-    <address>10003330</address>
-  </input>
-  <output>
-    <disassembly>foo.asm</disassembly>
-    <intermediate-code>foo.cod</intermediate-code>
-  </output>
-  <procedure name=""foo"">
-    <address>10004000</address>
-    <signature>
-      <arg>
-        <stack size=""4"" />
-      </arg>
-      <arg>
-        <stack size=""4"" />
-      </arg>
-    </signature>
-  </procedure>
-  <procedure name=""bar"">
-    <address>10005000</address>
-    <signature>
-      <return><reg>eax</reg></return>
-      <arg><reg>ecx</reg></arg>
-    </signature>
-  </procedure>
-</project>";
-            Project_v1 proj = null;
-            using (StringReader rdr = new StringReader(input))
-            {
-                var ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v1));
-                proj = (Project_v1)ser.Deserialize(rdr);
-            }
-            var project = new ProjectSerializer().LoadProject(proj);
-            var inputFile = (InputFile)project.InputFiles[0];
-            Assert.AreEqual(0x10003330, inputFile.BaseAddress.Linear);
-            Assert.AreEqual("foo.cod", inputFile.IntermediateFilename);
-            Assert.AreEqual(2, inputFile.UserProcedures.Count);
-            Assert.AreEqual("foo.asm", inputFile.DisassemblyFilename);
-            Assert.AreEqual(0x10004000, inputFile.UserProcedures.Keys[0].Linear);
-            Procedure_v1 proc = inputFile.UserProcedures.Values[0];
-            Assert.IsNull(proc.Signature.ReturnValue);
-        }
+            Given_Loader();
+            Given_Architecture();
+            Expect_Arch_ParseAddress("1000:0400", Address.SegPtr(0x1000, 0x0400));
+            Given_ExecutableProgram("foo.exe", Address.SegPtr(0x1000, 0x0000));
+            Given_BinaryFile("foo.bin", Address.SegPtr(0x1000, 0x0000));
 
-		[Test]
-		public void SudReadAlloca()
-		{
-			Project proj;
-            using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"), FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                proj = new ProjectSerializer().LoadProject(stm);
-            }
-            var inputFile = (InputFile) proj.InputFiles[0];
-			var proc = (Procedure_v1) inputFile.UserProcedures.Values[0];
-			Assert.AreEqual("alloca", proc.Name);
-			Assert.IsTrue(proc.Characteristics.IsAlloca);
-		}
 
-        [Test]
-        public void LoadProject_Inputs_v2()
-        {
             var sProject = new Project_v2
             {
                 Inputs = {
                     new DecompilerInput_v2 {
                         Filename = "foo.exe",
                         Address = "1000:0000",
-                        Comment = "main file" 
+                        Comment = "main file",
+                        UserGlobalData = new List<GlobalDataItem_v2>
+                        {
+                            new GlobalDataItem_v2 { Address = "1000:0400", DataType = new StringType_v2 { 
+                                Termination=StringType_v2.ZeroTermination,
+                                CharType= new PrimitiveType_v1 { ByteSize = 1, Domain=Domain.Character} } 
+                            }
+                        }
                     },
                     new DecompilerInput_v2 {
                         Filename = "foo.bin",
@@ -226,9 +202,165 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
+            mr.ReplayAll();
+
+            var ps = new ProjectLoader(loader);
             var project = ps.LoadProject(sProject);
-            Assert.AreEqual(2, project.InputFiles.Count);
+            Assert.AreEqual(2, project.Programs.Count);
+            var input0 = project.Programs[0];
+            Assert.AreEqual(1, input0.UserGlobalData.Count);
+            Assert.AreEqual("1000:0400", input0.UserGlobalData.Values[0].Address);
+            var str_t = (StringType_v2)input0.UserGlobalData.Values[0].DataType;
+            Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
+            mr.VerifyAll();
+        }
+
+        private void Given_BinaryFile(string exeName, Address address)
+        {
+            var bytes = new byte[0x10];
+            var program = new Program
+            {
+                Architecture = arch,
+                Image = new LoadedImage(address, bytes)
+            };
+            loader.Stub(l => l.LoadImageBytes(
+                Arg<string>.Is.Equal(exeName),
+                Arg<int>.Is.Anything)).Return(bytes);
+            loader.Stub(l => l.LoadExecutable(
+                Arg<string>.Is.Equal(exeName),
+                Arg<byte[]>.Is.NotNull,
+                Arg<Address>.Is.Null)).Return(program);
+        }
+
+        private void Given_ExecutableProgram(string exeName, Address address)
+        {
+            var bytes = new byte[0x1000];
+            var image = new LoadedImage(address, bytes);
+
+            var program = new Program
+            {
+                Architecture = arch,
+                Image = image,
+                ImageMap = image.CreateImageMap(),
+            };
+            loader.Stub(l => l.LoadImageBytes(
+                Arg<string>.Is.Equal(exeName),
+                Arg<int>.Is.Anything)).Return(bytes);
+            loader.Stub(l => l.LoadExecutable(
+                Arg<string>.Is.Equal(exeName),
+                Arg<byte[]>.Is.NotNull,
+                Arg<Address>.Is.Null)).Return(program);
+        }
+
+        private void Expect_Arch_ParseAddress(string sExp, Address result)
+        {
+            arch.Stub(a => a.TryParseAddress(
+                Arg<string>.Is.Equal("1000:0400"),
+                out Arg<Address>.Out(Address.SegPtr(0x1000, 0x0400)).Dummy)).Return(true);
+        }
+
+        private void Given_Architecture()
+        {
+            this.arch = mr.StrictMock<IProcessorArchitecture>();
+        }
+
+        private void Given_Loader()
+        {
+            this.loader = mr.Stub<ILoader>();
+        }
+
+        [Test]
+        public void Sud_SaveMetadataReference()
+        {
+            var project = new Project
+            {
+                Programs =
+                {
+                    new Program
+                    {
+                        Filename = "c:\\test\\foo.exe",
+                    }
+                },
+                MetadataFiles =
+                {
+                    new MetadataFile
+                    {
+                        Filename = "c:\\test\\foo.def",
+                        ModuleName = "foo.def",
+                    }
+                }
+            };
+            var ps = new ProjectSaver();
+            var sProject = ps.Save(project);
+            Assert.AreEqual(1, project.MetadataFiles.Count);
+            Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
+            Assert.AreEqual("foo.def", project.MetadataFiles[0].ModuleName);
+        }
+
+        [Test]
+        public void SudLoadMetadata()
+        {
+            var sProject = new Project_v2 {
+                Inputs =
+                {
+                    new MetadataFile_v2
+                    {
+                        Filename = "c:\\tmp\\foo.def"
+                    }
+                }
+            };
+            var loader = mr.Stub<ILoader>();
+            var typelib = new TypeLibrary();
+            loader.Stub(l => l.LoadMetadata("")).IgnoreArguments().Return(typelib);
+            mr.ReplayAll();
+
+            var ploader = new ProjectLoader(loader);
+            var project = ploader.LoadProject(sProject);
+            Assert.AreEqual(1, project.MetadataFiles.Count);
+            Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
+        }
+
+        [Test]
+        public void SudLoadProgramOptions()
+        {
+            var sProject = new Project_v2
+            {
+                Inputs = 
+                {
+                    new DecompilerInput_v2
+                    {
+                        Options = new ProgramOptions_v2
+                        {
+                            HeuristicScanning = true,
+                        }
+                    }
+                }
+            };
+            var loader = mr.Stub<ILoader>();
+            loader.Stub(l => l.LoadImageBytes(null, 0))
+                .IgnoreArguments()
+                .Return(new byte[10]);
+            loader.Stub(l => l.LoadExecutable(null, null, null))
+                .IgnoreArguments()
+                .Return(new Program());
+            mr.ReplayAll();
+
+            var ploader = new ProjectLoader(loader);
+            var project = ploader.LoadProject(sProject);
+            Assert.IsTrue(project.Programs[0].Options.HeuristicScanning);
+        }
+
+        [Test]
+        public void SudSaveProgramOptions()
+        {
+            var program = new Program();
+            program.Options.HeuristicScanning = true;
+            
+            var pSaver = new ProjectSaver();
+            var file = pSaver.VisitProgram(program);
+            var ip = (DecompilerInput_v2)file;
+            Assert.IsTrue(ip.Options.HeuristicScanning);
+
         }
 	}
 }

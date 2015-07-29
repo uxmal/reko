@@ -1,50 +1,42 @@
-Mem0:Global memory
-    def:  def Mem0
-fp:fp
-    def:  def fp
 esp:esp
     def:  def esp
-    uses: esp_5 = esp - 0x00000004
+    uses: esp_1 = esp - 0x00000004
+esp_1: orig: esp
+    def:  esp_1 = esp - 0x00000004
+    uses: Mem3[esp_1:word32] = ebp
+          ebp_4 = esp_1
+          ebp_6 = Mem3[esp_1:word32]
+          esp_7 = esp_1 + 0x00000004
 ebp:ebp
     def:  def ebp
-    uses: Mem6[esp_5:word32] = ebp
-eax:eax
-    def:  def eax
-esp_5: orig: esp
-    def:  esp_5 = esp - 0x00000004
-    uses: Mem6[esp_5:word32] = ebp
-          ebp_7 = esp_5
-          ebp_9 = Mem6[esp_5:word32]
-          esp_10 = esp_5 + 0x00000004
-Mem6: orig: Mem0
-    def:  Mem6[esp_5:word32] = ebp
-    uses: eax_8 = Mem6[ebp_7 + 0x00000008:word32]
-          ebp_9 = Mem6[esp_5:word32]
-ebp_7: orig: ebp
-    def:  ebp_7 = esp_5
-    uses: eax_8 = Mem6[ebp_7 + 0x00000008:word32]
-eax_8: orig: eax
-    def:  eax_8 = Mem6[ebp_7 + 0x00000008:word32]
-ebp_9: orig: ebp
-    def:  ebp_9 = Mem6[esp_5:word32]
-esp_10: orig: esp
-    def:  esp_10 = esp_5 + 0x00000004
+    uses: Mem3[esp_1:word32] = ebp
+Mem3: orig: Mem0
+    def:  Mem3[esp_1:word32] = ebp
+    uses: eax_5 = Mem3[ebp_4 + 0x00000008:word32]
+          ebp_6 = Mem3[esp_1:word32]
+ebp_4: orig: ebp
+    def:  ebp_4 = esp_1
+    uses: eax_5 = Mem3[ebp_4 + 0x00000008:word32]
+eax_5: orig: eax
+    def:  eax_5 = Mem3[ebp_4 + 0x00000008:word32]
+ebp_6: orig: ebp
+    def:  ebp_6 = Mem3[esp_1:word32]
+esp_7: orig: esp
+    def:  esp_7 = esp_1 + 0x00000004
 // SsaPushAndPop
+// Return size: 0
 void SsaPushAndPop()
 SsaPushAndPop_entry:
-	def Mem0
-	def fp
 	def esp
 	def ebp
-	def eax
 	// succ:  l1
 l1:
-	esp_5 = esp - 0x00000004
-	Mem6[esp_5:word32] = ebp
-	ebp_7 = esp_5
-	eax_8 = Mem6[ebp_7 + 0x00000008:word32]
-	ebp_9 = Mem6[esp_5:word32]
-	esp_10 = esp_5 + 0x00000004
+	esp_1 = esp - 0x00000004
+	Mem3[esp_1:word32] = ebp
+	ebp_4 = esp_1
+	eax_5 = Mem3[ebp_4 + 0x00000008:word32]
+	ebp_6 = Mem3[esp_1:word32]
+	esp_7 = esp_1 + 0x00000004
 	return
 	// succ:  SsaPushAndPop_exit
 SsaPushAndPop_exit:

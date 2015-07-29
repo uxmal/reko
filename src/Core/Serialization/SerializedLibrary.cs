@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,16 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary
     {
         public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
+
+        [XmlAttribute("module")]
+        public string ModuleName;
 
         [XmlAttribute("case")]
         public string Case;
@@ -84,16 +87,19 @@ namespace Decompiler.Core.Serialization
         {
             typeof(PrimitiveType_v1),
             typeof(PointerType_v1),
-            typeof(SerializedArrayType),
+            typeof(ArrayType_v1),
+            typeof(CodeType_v1),
             typeof(SerializedEnumType),
             typeof(SerializedStructType),
-            typeof(SerializedStructField),
+            typeof(StructField_v1),
             typeof(UnionType_v1),
             typeof(SerializedUnionAlternative),
+            typeof(StringType_v2),
             typeof(SerializedSignature),
             typeof(SerializedTypedef),
             typeof(SerializedLibrary),
             typeof(Argument_v1),
+            typeof(GlobalDataItem_v2)
         };
     }
 }

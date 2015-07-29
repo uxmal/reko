@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 
 using System;
+using System.Diagnostics;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Given an expression with a complex type, rebuilds it to accomodate the 
@@ -34,8 +35,8 @@ namespace Decompiler.Typing
     /// Complex expressions are assumed to take the form of a + b, where a is of complex type
     /// (such as pointer, structure, array etc) and b is "simple", such as an constant of integer type
     /// or an expression of integer type. Expressions where both a and b are complex make no sense:
-    /// what do you get if you add two pointers? Also, expressions where both a and b are simple should never reach this
-    /// class, as such expressions are by definition simple also.
+    /// what do you get if you add two pointers? Also, expressions where both a and b are simple 
+    /// should never reach this class, as such expressions are by definition simple also.
     /// </remarks>
 	public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
 	{
@@ -137,7 +138,9 @@ namespace Decompiler.Typing
                 dtPointee is CodeType ||
                 comp.Compare(dtPtr, dtResult) == 0)
 			{
-                if (offset == 0 || dtPointee is ArrayType || offset % dtPointee.Size == 0)
+                if (dtPointee.Size == 0)
+                    Debug.Print("WARNING: {0} has size 0, which should be impossible", dtPointee);
+                if (offset == 0 || dtPointee is ArrayType || dtPointee.Size > 0 && offset % dtPointee.Size == 0)
                 {
                     int idx = (offset == 0 || dtPointee is ArrayType)
                         ? 0
@@ -164,15 +167,15 @@ namespace Decompiler.Typing
                 // Drill down.
 				dtOriginal = dtPointeeOriginal;
 				complexExp = CreateDereference(dtPointee, complexExp);
-				//bool deref = Dereferenced;  //$REVIEW: causes problems with arrayType
+				bool deref = Dereferenced;  //$REVIEW: causes problems with arrayType
 				Dereferenced = true;       //$REVUEW: causes problems with arrayType
 				basePointer = null;
 				result = dtPointee.Accept(this);
-				if (!dereferenced)
+				if (!deref)
 				{
 					result = new UnaryExpression(UnaryOperator.AddrOf, dtPtr, result);
 				}
-				//Dereferenced = deref;       //$REVIEW: causes problems with arrayType
+				Dereferenced = deref;       //$REVIEW: causes problems with arrayType
 			}
 			seenPtr = false;
             return result;
@@ -251,24 +254,16 @@ namespace Decompiler.Typing
             return complexExp;
         }
 
-		public Expression VisitEquivalenceClass(EquivalenceClass eq)
-		{
-			EquivalenceClass eqOriginal = dtOriginal as EquivalenceClass;
-			if (eqOriginal != null && eq.Number == eqOriginal.Number)
-			{
-				complexExp.DataType = eq;
-                return complexExp;
-			}
-			else
-			{
-				dt = eq.DataType;
-				return dt.Accept(this);
-			}
-		}
+        public Expression VisitEquivalenceClass(EquivalenceClass eq)
+        {
+            dt = eq.DataType;
+            dtOriginal = eq.DataType;
+            return dt.Accept(this);
+        }
 
 		public Expression VisitPointer(Pointer ptr)
 		{
-			return RewritePointer(ptr, ptr.Pointee, ((Pointer) this.dtOriginal).Pointee);
+			return RewritePointer(ptr, ptr.Pointee, ptr.Pointee);
 		}
 
 		public Expression VisitMemberPointer(MemberPointer memptr)
@@ -276,7 +271,7 @@ namespace Decompiler.Typing
             //if (!(dtOriginal is MemberPointer))
             //    throw new TypeInferenceException("MemberPointer expression {0}  was expected to have MemberPointer as its " +
             //        "original type, but was {1}.", memptr, dtOriginal);
-			return RewritePointer(memptr, memptr.Pointee, ((MemberPointer) dtOriginal).Pointee);
+			return RewritePointer(memptr, memptr.Pointee,  dtOriginal.ResolveAs<MemberPointer>().Pointee);
 		}
 
         public Expression VisitString(StringType str)
@@ -288,7 +283,7 @@ namespace Decompiler.Typing
 		{
 			StructureField field = str.Fields.LowerBound(this.offset);
 			if (field == null)
-				throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1}.", str.Name, offset);
+				throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
 		
 			dt = field.DataType;
 			dtOriginal = field.DataType;
@@ -299,7 +294,7 @@ namespace Decompiler.Typing
 
         public Expression VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref.Referent.Accept(this);
         }
 
         public Expression VisitTypeVariable(TypeVariable tv)

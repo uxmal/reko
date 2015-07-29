@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class IntraBlockDeadRegistersTests
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Analysis
             {
                 var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
                 m.Assign(a, 2);
-                m.Call("foo");
+                m.Call("foo", 4);
                 m.Assign(a, 3);
             });
             Assert.AreEqual("\ta = 0x00000002\r\n\tcall <invalid> (retsize: 4;)\r\n\ta = 0x00000003\r\n", testResult);

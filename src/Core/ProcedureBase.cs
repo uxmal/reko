@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Output;
+using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Output;
 using System;
 using System.ComponentModel;
 using System.IO;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Abstract base class for all applicable procedure-like entities.
@@ -42,7 +42,9 @@ namespace Decompiler.Core
         /// <summary>
         /// The name of the procedure.
         /// </summary>
-		public string Name { get; private set; }
+        public string Name { get { return name; } set { name = value; NameChanged.Fire(this); } }
+        public event EventHandler NameChanged;
+        private string name;
 
 		public abstract ProcedureSignature Signature { get; set; }
 
@@ -56,6 +58,5 @@ namespace Decompiler.Core
             Signature.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new TextFormatter(sw));
             return sw.ToString();
         }
-
 	}
 }

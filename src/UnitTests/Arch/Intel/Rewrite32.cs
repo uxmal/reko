@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,41 +18,60 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Environments.Win32;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Environments.Win32;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class Rewrite32
 	{
-        private MockRepository repository;
+        private MockRepository mr;
         private Win32Platform win32;
         private IntelArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
-            var services = repository.Stub<IServiceProvider>();
-            var tlSvc = repository.Stub<ITypeLibraryLoaderService>();
+            mr = new MockRepository();
+            var services = mr.Stub<IServiceProvider>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            var configSvc = mr.StrictMock<IConfigurationService>();
+            var win32env = new OperatingEnvironmentElement
+            {
+                TypeLibraries = 
+                {
+                    new TypeLibraryElement {  Name= "msvcrt.xml" },
+                    new TypeLibraryElement {  Name= "windows32.xml" },
+                }
+            };
+            configSvc.Stub(c => c.GetEnvironment("win32")).Return(win32env);
+            configSvc.Stub(c => c.GetPath(null)).IgnoreArguments()
+                .Do(new Func<string, string>(s => s));
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
+            services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
+            tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
+                .Do(new Func<IProcessorArchitecture, string, TypeLibrary>((a, n) =>
+                {
+                    var lib = TypeLibrary.Load(a, Path.ChangeExtension(n, ".xml"));
+                    return lib;
+                }));
             services.Replay();
             tlSvc.Replay();
+            configSvc.Replay();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            win32 = new Decompiler.Environments.Win32.Win32Platform(services, arch);
+            win32 = new Reko.Environments.Win32.Win32Platform(services, arch);
         }
 
 		[Test]
@@ -109,7 +128,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 			RunTest("Fragments/regressions/r00006.asm", "Intel/RwReg00006.txt");
 		}
 
-
 		[Test]
 		public void RwSwitch32()
 		{
@@ -119,21 +137,22 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
-            var asm = new IntelTextAssembler();
+            var asm = new X86TextAssembler(new X86ArchitectureFlat32());
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                var lr = asm.Assemble(new Address(0x10000000), rdr);
-                program = new Program(
-                    lr.Image,
-                    lr.ImageMap,
-                    arch,
-                    win32);
+                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+                program.Platform = win32;
             }
-            foreach (var item in asm.ImportThunks)
+            foreach (var item in asm.ImportReferences)
             {
-                program.ImportThunks.Add(item.Key, item.Value);
+                program.ImportReferences.Add(item.Key, item.Value);
             }
-            Scanner scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var project = new Project { Programs = { program } };
+            Scanner scan = new Scanner(
+                program,
+                new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
             foreach (var ep in asm.EntryPoints)
             {
                 scan.EnqueueEntryPoint(ep);

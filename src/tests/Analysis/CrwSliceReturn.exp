@@ -4,6 +4,7 @@ void fn0C00_0000(Register selector ds)
 // Trashed: ax si al ah
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -16,6 +17,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	si = 0x0200
 	ax = fn0C00_0015(si, ds)
 	Mem0[ds:0x0202:word16] = ax
@@ -31,6 +33,7 @@ Register word16 fn0C00_0015(Register word16 si, Register selector ds)
 // Trashed: ax al ah
 // Preserved: sp
 // fn0C00_0015
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -42,6 +45,7 @@ word16 fn0C00_0015(word16 si, selector ds)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
+	sp = fp
 	ax = Mem0[ds:si:word16]
 	return ax
 	// succ:  fn0C00_0015_exit

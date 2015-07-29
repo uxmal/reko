@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,18 @@
  */
 #endregion
 
-using Decompiler;
 using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Decompiler.Core.Assemblers
+namespace Reko.Core.Assemblers
 {
 	public interface Assembler
 	{
-        LoaderResults Assemble(Address baseAddress, TextReader reader);
-        LoaderResults AssembleFragment(Address baseAddress, string fragment);
+        Program Assemble(Address baseAddress, TextReader reader);
+        Program AssembleFragment(Address baseAddress, string fragment);
 		Address StartAddress { get; }
         ICollection<EntryPoint> EntryPoints { get; }
-        Dictionary<uint, PseudoProcedure> ImportThunks { get; }
+        Dictionary<Address, ImportReference> ImportReferences { get; }
     }
 }

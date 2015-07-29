@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Describes an address range [begin...end)
@@ -60,6 +60,6 @@ namespace Decompiler.Core
             get { return e; }
         }
 
-        private static AddressRange e = new AddressRange(new Address(0), new Address(0));
+        private static AddressRange e = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
     }
 }

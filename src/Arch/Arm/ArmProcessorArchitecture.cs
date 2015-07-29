@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Reko.Core.Serialization;
+using System.Globalization;
+using Reko.Core.Operators;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class ArmProcessorArchitecture : IProcessorArchitecture
     {
@@ -38,9 +42,10 @@ namespace Decompiler.Arch.Arm
 
         #region IProcessorArchitecture Members
 
-        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            return new ArmDisassembler2(this, imageReader);
+            return new ArmDisassembler(this, imageReader);
+            //return new ArmDisassembler2(this, imageReader);
         }
 
         public ProcessorState CreateProcessorState()
@@ -50,7 +55,7 @@ namespace Decompiler.Arch.Arm
 
         public BitSet CreateRegisterBitset()
         {
-            throw new NotImplementedException();
+            return new BitSet(16);
         }
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -58,23 +63,25 @@ namespace Decompiler.Arch.Arm
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             if (flags != PointerScannerFlags.Calls)
                 throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
             while (rdr.IsValid)
             {
-                uint linAddrCall = rdr.Address.Linear;
+                uint linAddrCall =  rdr.Address.ToUInt32();
                 var opcode = rdr.ReadLeUInt32();
                 if ((opcode & 0x0F000000) == 0x0B000000)         // BL
                 {
-                    int offset = ((int) opcode << 8) >> 6;
-                    uint target = (uint) (linAddrCall + 8 + offset);
+                    int offset = ((int)opcode << 8) >> 6;
+                    uint target = (uint)(linAddrCall + 8 + offset);
                     if (knownLinAddresses.Contains(target))
-                        yield return linAddrCall;
+                        yield return Address.Ptr32(linAddrCall);
                 }
             }
         }
+
 
         public Frame CreateFrame()
         {
@@ -86,9 +93,14 @@ namespace Decompiler.Arch.Arm
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            return new ArmProcedureSerializer(this, typeLoader, defaultCc);
         }
 
         public RegisterStorage GetRegister(int i)
@@ -98,7 +110,16 @@ namespace Decompiler.Arch.Arm
 
         public RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            if (name == null) throw new ArgumentNullException("name");
+            RegisterStorage reg;
+            if (!A32Registers.RegistersByName.TryGetValue(name, out reg))
+                reg = null;
+            return reg;
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public bool TryGetRegister(string name, out RegisterStorage reg)
@@ -118,7 +139,10 @@ namespace Decompiler.Arch.Arm
 
         public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            return new MemoryAccess(new BinaryExpression(
+                         Operator.IAdd, FramePointerType,
+                         frame.EnsureRegister(StackRegister), Constant.Word32(cbOffset)),
+                         dataType);
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
@@ -128,14 +152,14 @@ namespace Decompiler.Arch.Arm
 
         public int InstructionBitSize { get { return 32; } }
 
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public PrimitiveType FramePointerType
@@ -163,6 +187,10 @@ namespace Decompiler.Arch.Arm
             get { throw new NotImplementedException(); }
         }
 
+        public bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse32(txtAddress, out addr);
+        }
         #endregion
     }
 

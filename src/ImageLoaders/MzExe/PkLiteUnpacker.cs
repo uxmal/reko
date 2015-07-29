@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Environments.Msdos;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// A loader that understands how to unpack a binary packed with PkLite.
@@ -47,8 +47,9 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const uint signatureOffset = 0x1C;
 		private const uint PspSize = 0x0100;
 
-		public PkLiteUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
+		public PkLiteUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
 		{
+            var exe = new ExeImageLoader(services, filename, rawImg);
             arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(services, arch);
 
@@ -73,7 +74,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			return LoadedImage.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
 		{
 			uint dst = PspSize;
 
@@ -204,8 +205,8 @@ l01C8:
 */
 			l01C8:
 			imgU = new LoadedImage(addrLoad, abU);
-            imageMap = new ImageMap(imgU);
-			return new LoaderResults(imgU, imageMap, arch, platform);
+            imageMap = imgU.CreateImageMap();
+			return new Program(imgU, imageMap, arch, platform);
 		}
 
 		public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)
@@ -227,8 +228,9 @@ l01C8:
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(0x800, 0); }
-		}
+			get { return Address.SegPtr(0x800, 0); }
+            set { throw new NotImplementedException(); }
+        }
 
 		public override RelocationResults Relocate(Address addrLoad)
 		{
@@ -249,7 +251,7 @@ l01C8:
 
 					imgU.WriteLeUInt16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
-					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+					imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 				} while (--relocs != 0);
 			}
 
@@ -272,7 +274,7 @@ l01C8:
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
             return new RelocationResults(
-                new List<EntryPoint> {new EntryPoint(new Address(pklCs, pklIp), state) },
+                new List<EntryPoint> {new EntryPoint(Address.SegPtr(pklCs, pklIp), state) },
                 relocations);
 		}
 

@@ -1,4 +1,5 @@
 // fn10000000
+// Return size: 0
 void fn10000000(word32 dwArg04)
 fn10000000_entry:
 	// succ:  l10000000

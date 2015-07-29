@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,24 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {
         public Opcode Code;
         public Operand Operand;
 
+        public override int OpcodeAsInteger { get { return (int)Code; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(Code.ToString());
+            writer.WriteOpcode(Code.ToString());
             if (Operand != null)
             {
                 writer.Tab();

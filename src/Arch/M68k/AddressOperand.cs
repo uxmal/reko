@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     public class M68kAddressOperand : Core.Machine.AddressOperand, M68kOperand
     {
@@ -33,13 +33,18 @@ namespace Decompiler.Arch.M68k
         }
 
         public M68kAddressOperand(uint addr)
-            : this(new Address(addr))
+            : this(Address.Ptr32(addr))
         { 
         }
 
         public T Accept<T>(M68kOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
+        }
+
+        public override void Write(bool fExplicit, Core.Machine.MachineInstructionWriter writer)
+        {
+            writer.WriteAddress(string.Format("${0:X8}", Address.Offset), Address);
         }
     }
 }

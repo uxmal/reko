@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Assemblers;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Assemblers.x86
+namespace Reko.Assemblers.x86
 {
 	/// <summary>
 	/// This class is in charge of parsing an operand or several operands and 
@@ -187,7 +187,7 @@ namespace Decompiler.Assemblers.x86
 						if (addrWidth == null || sym != null)
 							memOp.Offset = Constant.Create(defaultAddressWidth, totalInt);
 						else
-							memOp.Offset = IntelAssembler.IntegralConstant(totalInt, addrWidth);
+							memOp.Offset = X86Assembler.IntegralConstant(totalInt, addrWidth);
 					}
 					return new ParsedOperand(memOp, sym);
 				case Token.PLUS:
@@ -210,7 +210,7 @@ namespace Decompiler.Assemblers.x86
 			}
 			else
 			{
-				return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, defaultWordWidth)));
+				return new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(totalInt, defaultWordWidth)));
 			}
 		}
 		public ParsedOperand ParseOperand()

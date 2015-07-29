@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +27,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Knows how to persist and depersist Decompiler type libraries (which are just XML files).
@@ -38,11 +38,11 @@ namespace Decompiler.Core
         private Dictionary<string, DataType> types;
         private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
-        private Dictionary<string, ProcedureSignature> procedures;
+        private Dictionary<string, ProcedureSignature> signaturesByName;
         private string defaultConvention;
         private Dictionary<string, SystemService> servicesByName;
         private Dictionary<int, SystemService> servicesByOrdinal;
-        private string libraryName;
+        private string moduleName;
 
         public TypeLibraryLoader(IProcessorArchitecture arch, bool caseInsensitive)
         {
@@ -53,28 +53,33 @@ namespace Decompiler.Core
                 { "va_list", arch.FramePointerType } ,  
                 { "size_t", arch.WordWidth },
             };
-            this.procedures = new Dictionary<string, ProcedureSignature>(cmp);
+            this.signaturesByName = new Dictionary<string, ProcedureSignature>(cmp);
             this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
             this.servicesByName = new Dictionary<string, SystemService>(cmp);
             this.servicesByOrdinal = new Dictionary<int, SystemService>();
         }
 
-        public TypeLibrary Load(SerializedLibrary serializedLibrary)
+        public TypeLibrary Load(SerializedLibrary sLib)
         {
-            ReadDefaults(serializedLibrary.Defaults);
-            LoadTypes(serializedLibrary);
-            LoadProcedures(serializedLibrary);
+            moduleName = sLib.ModuleName;
+            ReadDefaults(sLib.Defaults);
+            LoadTypes(sLib);
+            LoadProcedures(sLib);
             return BuildLibrary();
         }
 
         public TypeLibrary BuildLibrary()
         {
-            var lib = new TypeLibrary(types, procedures);
-            lib.LibraryName = libraryName;
+            var lib = new TypeLibrary(types, signaturesByName);
+            lib.ModuleName = moduleName;
             foreach (var de in servicesByName)
             {
                 lib.ServicesByName.Add(de.Key, de.Value);
+            }
+            foreach (var de in servicesByOrdinal)
+            {
+                lib.ServicesByVector.Add(de.Key, de.Value);
             }
             return lib;
         }
@@ -90,6 +95,11 @@ namespace Decompiler.Core
                     {
                         LoadProcedure(sp);
                     }
+                    SerializedService svc = o as SerializedService;
+                    if (svc != null)
+                    {
+                        LoadService(svc);
+                    }
                 }
             }
         }
@@ -98,15 +108,30 @@ namespace Decompiler.Core
         {
             try
             {
-                ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
-                procedures[sp.Name] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+                var sser = arch.CreateProcedureSerializer(this, this.defaultConvention);
+                var signature = sser.Deserialize(sp.Signature, arch.CreateFrame());
+                signaturesByName[sp.Name] =  signature;   //$BUGBUG: catch dupes?   
+                if (sp.Ordinal != Procedure_v1.NoOrdinal)
+                {
+                    servicesByOrdinal[sp.Ordinal] = new SystemService { 
+                        Name = sp.Name,
+                        Signature = signature,
+                    };
+                }
             }
             catch (Exception ex)
             {
+                Debug.Print("An error occurred when loading the signature of procedure {0}.", sp.Name);
                 throw new ApplicationException(
                     string.Format("An error occurred when loading the signature of procedure {0}.", sp.Name),
                     ex);
             }
+        }
+
+        public void LoadService(SerializedService ssvc)
+        {
+            var svc = ssvc.Build(arch);
+            servicesByOrdinal[svc.SyscallInfo.Vector] = svc;
         }
 
         private void LoadTypes(SerializedLibrary serializedLibrary)
@@ -161,10 +186,23 @@ namespace Decompiler.Core
             return new MemberPointer(baseType, dt, arch.PointerType.Size);
         }
 
-        public DataType VisitArray(SerializedArrayType array)
+        public DataType VisitArray(ArrayType_v1 array)
         {
             var dt = array.ElementType.Accept(this);
             return new ArrayType(dt, array.Length);
+        }
+
+        public DataType VisitCode(CodeType_v1 code)
+        {
+            return new CodeType();
+        }
+
+        public DataType VisitString(StringType_v2 str)
+        {
+            var dt = str.CharType.Accept(this);
+            if (str.Termination ==  StringType_v2.ZeroTermination)
+                return StringType.NullTerminated(dt);
+            throw new NotImplementedException();
         }
 
         public DataType VisitSignature(SerializedSignature signature)
@@ -246,9 +284,9 @@ namespace Decompiler.Core
             this.servicesByName[entryName] = svc;
         }
 
-        public void SetLibraryName(string libName)
+        public void SetModuleName(string libName)
         {
-            this.libraryName = libName;
+            this.moduleName = libName;
         }
 
         public void LoadService(int ordinal, SystemService svc)

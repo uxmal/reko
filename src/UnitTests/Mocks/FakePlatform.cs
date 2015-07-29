@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,24 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakePlatform : Platform
     {
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -42,9 +48,14 @@ namespace Decompiler.UnitTests.Mocks
             get { throw new NotImplementedException(); }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return null;
+        }
+
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        {
+            return null;
         }
     }
 }

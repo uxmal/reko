@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="IBM437"?>
+<library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="Display">
+      <struct name="_XDisplay" />
+    </typedef>
+  </Types>
+  <procedure name="XOpenDisplay">
+    <signature>
+      <return>
+        <ptr>
+          <type>Display</type>
+        </ptr>
+      </return>
+      <arg name="display_name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="XCloseDisplay">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="display_name">
+        <ptr>
+          <type>Display</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="XtFree">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr>
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="XtMalloc">
+    <signature>
+      <return>
+        <ptr>
+          <void />
+        </ptr>
+      </return>
+      <arg name="size">
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+</library>

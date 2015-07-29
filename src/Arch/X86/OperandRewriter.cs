@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,24 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core;
 using System;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
-    public class OperandRewriter
+    /// <summary>
+    /// Helper class used by the X86 rewriter to turn machine code operands into
+    /// IL expressions.
+    /// </summary>
+    public abstract class OperandRewriter
     {
-        private IntelArchitecture arch;
-        private Frame frame;
-        private IRewriterHost host;
+        private readonly IntelArchitecture arch;
+        private readonly Frame frame;
+        private readonly IRewriterHost host;
 
         public OperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
         {
@@ -41,21 +44,21 @@ namespace Decompiler.Arch.X86
             this.host = host;
         }
 
-        public Expression Transform(MachineOperand op, PrimitiveType opWidth, X86State state)
+        public Expression Transform(IntelInstruction instr, MachineOperand op, PrimitiveType opWidth, X86State state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
                 return AluRegister(reg);
             var mem = op as MemoryOperand;
             if (mem != null)
-                return CreateMemoryAccess(mem, opWidth, state);
+                return CreateMemoryAccess(instr, mem, opWidth, state);
             var imm = op as ImmediateOperand;
             if (imm != null)
                 return CreateConstant(imm, opWidth);
             var fpu = op as FpuOperand;
             if (fpu != null)
                 return FpuRegister(fpu.StNumber, state);
-            var addr = op as X86AddressOperand;
+            var addr = op as AddressOperand;
             if (addr != null)
                 return addr.Address;
             throw new NotImplementedException(string.Format("Operand {0}", op));
@@ -84,14 +87,15 @@ namespace Decompiler.Arch.X86
                 return Constant.Create(imm.Width, imm.Value.ToUInt32());
         }
 
-        public Expression CreateMemoryAccess(MemoryOperand mem, DataType dt, X86State state)
+        public Expression CreateMemoryAccess(IntelInstruction instr, MemoryOperand mem, DataType dt, X86State state)
         {
-            PseudoProcedure ppp = ImportedProcedureName(mem.Width, mem);
-            if (ppp != null)
-                return new ProcedureConstant(arch.PointerType, ppp);
+            var exp = ImportedProcedureName(instr.Address, mem.Width, mem);
+            if (exp != null)
+                return new ProcedureConstant(arch.PointerType, exp);
 
-            Expression expr = EffectiveAddressExpression(mem, state);
-            if (arch.ProcessorMode != ProcessorMode.Protected32)
+            Expression expr = EffectiveAddressExpression(instr, mem, state);
+            if (IsSegmentedAccessRequired ||
+                (mem.DefaultSegment != Registers.ds && mem.DefaultSegment != Registers.ss))
             {
                 Expression seg = ReplaceCodeSegment(mem.DefaultSegment, state);
                 if (seg == null)
@@ -104,21 +108,16 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        public Expression CreateMemoryAccess(MemoryOperand memoryOperand, X86State state)
+        public virtual bool IsSegmentedAccessRequired { get { return false; } }
+
+        public Expression CreateMemoryAccess(IntelInstruction instr, MemoryOperand memoryOperand, X86State state)
         {
-            return CreateMemoryAccess(memoryOperand, memoryOperand.Width, state);
+            return CreateMemoryAccess(instr, memoryOperand, memoryOperand.Width, state);
         }
 
-        public MemoryAccess StackAccess(Expression expr, DataType dt)
+        public virtual MemoryAccess StackAccess(Expression expr, DataType dt)
         {
-            if (arch.ProcessorMode != ProcessorMode.Protected32)
-            {
-                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, AluRegister(Registers.ss), expr, dt);
-            }
-            else
-            {
-                return new MemoryAccess(MemoryIdentifier.GlobalMemory, expr, dt);
-            }
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, expr, dt);
         }
 
         /// <summary>
@@ -127,33 +126,45 @@ namespace Decompiler.Arch.X86
         /// <param name="mem"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public Expression EffectiveAddressExpression(MemoryOperand mem, X86State state)
+        public Expression EffectiveAddressExpression(IntelInstruction instr, MemoryOperand mem, X86State state)
         {
             Expression eIndex = null;
             Expression eBase = null;
             Expression expr = null;
             PrimitiveType type = PrimitiveType.CreateWord(mem.Width.Size);
+            bool ripRelative = false;
 
             if (mem.Base != RegisterStorage.None)
             {
-                eBase = AluRegister(mem.Base);
-                if (expr != null)
+                if (mem.Base == Registers.rip)
                 {
-                    expr = new BinaryExpression(Operator.IAdd, eBase.DataType, eBase, expr);
+                    ripRelative = true;
                 }
                 else
                 {
-                    expr = eBase;
+                    eBase = AluRegister(mem.Base);
+                    if (expr != null)
+                    {
+                        expr = new BinaryExpression(Operator.IAdd, eBase.DataType, eBase, expr);
+                    }
+                    else
+                    {
+                        expr = eBase;
+                    }
                 }
             }
 
             if (mem.Offset.IsValid)
             {
-                if (expr != null)
+                if (ripRelative)
+                {
+                    expr = instr.Address + (instr.Length + mem.Offset.ToInt64());
+                }
+                else if (expr != null)
                 {
                     BinaryOperator op = Operator.IAdd;
                     long l = mem.Offset.ToInt64();
-                    if (l < 0)
+                    if (l < 0 && l > -0x800)
                     {
                         l = -l;
                         op = Operator.ISub;
@@ -200,12 +211,12 @@ namespace Decompiler.Arch.X86
             return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
         }
 
-        public PseudoProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
+        public ExternalProcedure ImportedProcedureName(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
         {
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                return (PseudoProcedure)host.GetImportedProcedure(mem.Offset.ToUInt32());
+                return host.GetImportedProcedure(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
             }
             return null;
         }
@@ -222,6 +233,45 @@ namespace Decompiler.Arch.X86
         {
             return new UnaryExpression(Operator.AddrOf,
                 PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), expr);
+        }
+
+        public abstract Address ImmediateAsAddress(Address address, ImmediateOperand imm);
+    }
+
+    public class OperandRewriter16 : OperandRewriter
+    {
+        public OperandRewriter16(IntelArchitecture arch, Frame frame, IRewriterHost host) : base(arch, frame, host) { }
+
+        public override bool IsSegmentedAccessRequired { get { return true; } }
+
+        public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
+        {
+            return Address.SegPtr(address.Selector, imm.Value.ToUInt32());
+        }
+
+        public override MemoryAccess StackAccess(Expression expr, DataType dt)
+        {
+            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, AluRegister(Registers.ss), expr, dt);
+        }
+    }
+
+    public class OperandRewriter32 : OperandRewriter
+    {
+        public OperandRewriter32(IntelArchitecture arch, Frame frame, IRewriterHost host) : base(arch, frame, host) { }
+
+        public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
+        {
+            return Address.Ptr32(imm.Value.ToUInt32());
+        }
+    }
+
+    public class OperandRewriter64 : OperandRewriter
+    {
+        public OperandRewriter64(IntelArchitecture arch, Frame frame, IRewriterHost host) : base(arch, frame, host) { }
+
+        public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
+        {
+            return Address.Ptr64(imm.Value.ToUInt64());
         }
     }
 }

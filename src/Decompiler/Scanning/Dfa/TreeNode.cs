@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning.Dfa
+namespace Reko.Scanning.Dfa
 {
     public class TreeNode
     {
@@ -35,6 +35,13 @@ namespace Decompiler.Scanning.Dfa
                     if (x)
                         yield return (byte) i;
                     ++i;
+                }
+            } 
+            else if (Type == NodeType.Any)
+            {
+                for (int i = 0; i < 0x100; ++i)
+                {
+                    yield return (byte) i;
                 }
             }
         }

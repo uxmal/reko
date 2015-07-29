@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
     public partial class X86Rewriter
     {
@@ -106,7 +106,7 @@ namespace Decompiler.Arch.X86
         private void RewriteFcom(int pops)
         {
             Identifier op1 = FpuRegister(0);
-            Expression op2 = (instrCur.code == Opcode.fcompp)
+            Expression op2 = (instrCur.code == Opcode.fcompp || instrCur.code == Opcode.fucompp)
                 ? FpuRegister(1)
                 : SrcOp(instrCur.op1);
             emitter.Assign(

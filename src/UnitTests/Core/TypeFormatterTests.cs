@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class TypeFormatterTests
 	{
 		private StringWriter sw;
-		private TypeFormatter tyfo;
+        private TypeFormatter tyfo;
+        private TypeReferenceFormatter tyreffo;
 		private string nl = Environment.NewLine;
 
         [SetUp]
@@ -39,13 +40,14 @@ namespace Decompiler.UnitTests.Core
         {
             sw = new StringWriter();
             tyfo = new TypeFormatter(new TextFormatter(sw), false);
+            tyreffo = new TypeReferenceFormatter(new TextFormatter(sw), false);
         }
         
         [Test]
 		public void TyfoInt()
 		{
 			DataType dt = PrimitiveType.Int32;
-			tyfo.Write(dt, "test");
+			tyreffo.WriteDeclaration(dt, "test");
 			Assert.AreEqual("int32 test", sw.ToString());
 		}
 
@@ -53,7 +55,7 @@ namespace Decompiler.UnitTests.Core
 		public void TyfoBareInt()
 		{
 			DataType dt = PrimitiveType.Int32;
-			tyfo.Write(dt, null);
+			tyreffo.WriteTypeReference(dt);
 			Assert.AreEqual("int32", sw.ToString());
 		}
 
@@ -61,16 +63,16 @@ namespace Decompiler.UnitTests.Core
 		public void TyfoPtrReal()
 		{
 			DataType dt = new Pointer(PrimitiveType.Real32, 4);
-			tyfo.Write(dt, "test");
-			Assert.AreEqual("real32 * test", sw.ToString());
+			tyreffo.WriteDeclaration(dt, "test");
+			Assert.AreEqual("real32* test", sw.ToString());
 		}
 
 		[Test]
 		public void TyfoBarePtrReal()
 		{
 			DataType dt = new Pointer(PrimitiveType.Real32, 4);
-			tyfo.Write(dt, null);
-			Assert.AreEqual("real32 *", sw.ToString());
+            tyreffo.WriteTypeReference(dt);
+			Assert.AreEqual("real32*", sw.ToString());
 		}
 
 		[Test]
@@ -139,18 +141,18 @@ struct a {
 		{
 			FunctionType fn = new FunctionType(null, PrimitiveType.Int32, 
 				new DataType[] { PrimitiveType.Word32 }, null);
-			tyfo.Write(fn, "fn");
-			Assert.AreEqual("int32 (fn)(word32)", 
+			tyreffo.WriteDeclaration(fn, "fn");
+			Assert.AreEqual("int32 fn(word32)", 
 				sw.ToString());
 		}
 
 		[Test]
-		public void Tyfopfn()
+		public void TyfoPfn()
 		{
 			FunctionType fn = new FunctionType(null, null, 
 				new DataType[] { PrimitiveType.Word32 }, null);
 			Pointer pfn = new Pointer(fn, 4);
-			tyfo.Write(pfn, "pfn");
+			tyreffo.WriteDeclaration(pfn, "pfn");
 			Assert.AreEqual("void (* pfn)(word32)", 
 				sw.ToString());
 		}
@@ -158,10 +160,10 @@ struct a {
 		[Test]
 		public void TyfoMembptr()
 		{
-			StructureType s = new StructureType("s", 0);
+            var s = new StructureType("s", 0);
 			MemberPointer mp = new MemberPointer(new Pointer(s, 4), PrimitiveType.Int32, 2);
-			tyfo.Write(mp, "mp");
-			Assert.AreEqual("int32 s::*mp", sw.ToString());
+			tyreffo.WriteDeclaration(mp, "mp");
+			Assert.AreEqual("int32 s::* mp", sw.ToString());
 		}
 
 		[Test]
@@ -169,14 +171,14 @@ struct a {
 		{
 			FunctionType fn = new FunctionType(null, null, 
 				new DataType[] { PrimitiveType.Pointer32, PrimitiveType.Int64 }, null);
-			tyfo.Write(fn, "fn");
-			Assert.AreEqual("void (fn)(ptr32, int64)", sw.ToString());
+			tyreffo.WriteDeclaration(fn, "fn");
+			Assert.AreEqual("void fn(ptr32, int64)", sw.ToString());
 		}
 
         [Test]
         public void TypeReference()
         {
-            tyfo = new TypeFormatter(new TextFormatter(sw), true);
+            tyreffo = new TypeReferenceFormatter(new TextFormatter(sw), true);
             EquivalenceClass b = new EquivalenceClass(new TypeVariable(1));
             b.DataType = new StructureType("b", 0) { Fields = { { 4, PrimitiveType.Word32 } } };
 
@@ -191,9 +193,7 @@ struct a {
 
             StructureType s = new StructureType("s", 0);
             s.Fields.Add(
-                42,
-                new MemberPointer(seg, PrimitiveType.Word32, 2));
-
+                42, new MemberPointer(seg, PrimitiveType.Word32, 2));
             tyfo.Write(s, "meeble");
             string sExp = 
 @"struct s {
@@ -206,10 +206,10 @@ struct a {
         [Ignore("This test isn't working presently; focus on passing more important tests first then fix")]
         public void TyfoMemberPointerCycle()
         {
-            StructureType seg = new StructureType("seg", 100);
+            var seg = new StructureType("seg", 100);
 
-            StructureType a = new StructureType("a", 0);
-            StructureType b = new StructureType("b", 0);
+            var a = new StructureType("a", 0);
+            var b = new StructureType("b", 0);
 
             a.Fields.Add(0, new MemberPointer(seg, b, 2));
             b.Fields.Add(0, new MemberPointer(seg, a, 2));
@@ -226,6 +226,38 @@ struct a {
                 "\tstruct a seg::*ptr0000;\t// 0" + nl +
                 "};" + nl;
             
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void TyfoArray()
+        {
+            ArrayType arr = new ArrayType(PrimitiveType.Int32, 10);
+            tyreffo.WriteDeclaration(arr, "a");
+
+            string sExp = "int32 a[10]";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void TyfoArrayArray()
+        {
+            ArrayType arr = new ArrayType(PrimitiveType.Int32, 10);
+            ArrayType arr2 = new ArrayType(arr, 4);
+            tyreffo.WriteDeclaration(arr2, "a");
+
+            string sExp = "int32 a[4][10]";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void TyfoPtrPtr()
+        {
+            var ptr = new Pointer(PrimitiveType.Int32, 4);
+            var ptr2 = new Pointer(ptr, 4);
+            tyreffo.WriteDeclaration(ptr2, "ppi");
+
+            string sExp = "int32** ppi";
             Assert.AreEqual(sExp, sw.ToString());
         }
 	}

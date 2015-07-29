@@ -11,9 +11,9 @@
 0C00:000B 03 DB           	add	bx,bx
 0C00:000D FF A7 11 00     	jmp	word ptr [bx+0011]
 0C00:0011 17              	pop	ss
-0C00:0012 00 1B           	add	byte ptr [bp+di],bl
-0C00:0014 00 1F           	add	byte ptr [bx],bl
-0C00:0016 00 B8 01 00     	add	byte ptr [bx+si+0001],bh
+0C00:0012 00 1B           	add	[bp+di],bl
+0C00:0014 00 1F           	add	[bx],bl
+0C00:0016 00 B8 01 00     	add	[bx+si+0001],bh
 0C00:001A C3              	ret	
 0C00:001B B8 02 00        	mov	ax,0002
 0C00:001E C3              	ret	

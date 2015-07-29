@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Arch.M68k;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Assemblers.M68k
+namespace Reko.Assemblers.M68k
 {
     public class M68kTextAssembler : Assembler
     {
@@ -52,7 +52,7 @@ namespace Decompiler.Assemblers.M68k
 
         #region Assembler Members
 
-        public LoaderResults Assemble(Address baseAddress, TextReader rdr)
+        public Program Assemble(Address baseAddress, TextReader rdr)
         {
             this.addrBase = baseAddress;
             this.lexer = new Lexer(rdr);
@@ -545,7 +545,7 @@ namespace Decompiler.Assemblers.M68k
             throw new AssemblerException(sb.ToString());
         }
 
-        public LoaderResults AssembleFragment(Address baseAddress, string fragment)
+        public Program AssembleFragment(Address baseAddress, string fragment)
         {
             var rdr = new StringReader(fragment);
             return Assemble(baseAddress, rdr);
@@ -578,9 +578,9 @@ namespace Decompiler.Assemblers.M68k
             get { throw new NotImplementedException(); }
         }
 
-        public Dictionary<uint, PseudoProcedure> ImportThunks
+        public Dictionary<Address, ImportReference> ImportReferences
         {
-            get { return new Dictionary<uint,PseudoProcedure>(); }
+            get { return new Dictionary<Address,ImportReference>(); }
         }
 
         #endregion

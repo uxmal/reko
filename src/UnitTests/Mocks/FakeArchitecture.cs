@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using Reko.Core.Serialization;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
 	/// <summary>
 	/// A fake architecture.
@@ -41,7 +42,6 @@ namespace Decompiler.UnitTests.Mocks
 	public class FakeArchitecture : IProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
-		private BitSet implicitRegs;
         private RtlTraceBuilder rewriters;
 
 		internal const int RegisterCount = 64;
@@ -50,9 +50,6 @@ namespace Decompiler.UnitTests.Mocks
 
 		public FakeArchitecture()
 		{
-			this.implicitRegs = new BitSet(RegisterCount);
-			implicitRegs[iStackRegister]  = true;
-			implicitRegs[iReturnRegister] = true;
             this.rewriters = new RtlTraceBuilder();
 		}
 
@@ -72,6 +69,12 @@ namespace Decompiler.UnitTests.Mocks
             rewriters.Add(trace);
         }
 
+        public void Test_AddTraces(IEnumerable<RtlTrace> traces)
+        {
+            foreach (var t in traces)
+                rewriters.Add(t);
+        }
+
 		public static RegisterStorage GetMachineRegister(int i)
 		{
 			return registers[i];
@@ -79,17 +82,16 @@ namespace Decompiler.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            var linAddr = rdr.Address.Linear;
+            var linAddr = rdr.Address.ToLinear();
             RtlTrace trace;
             if (!rewriters.Traces.TryGetValue(rdr.Address, out trace))
                 NUnit.Framework.Assert.Fail(string.Format("Unexpected request for a rewriter at address {0}", rdr.Address));
             return trace;
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddrs, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -104,9 +106,14 @@ namespace Decompiler.UnitTests.Mocks
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotImplementedException();
         }
 
         public FlagGroupStorage GetFlagGroup(uint grf)
@@ -143,11 +150,6 @@ namespace Decompiler.UnitTests.Mocks
             return null;
 		}
 
-		public BitSet ImplicitArgumentRegisters
-		{
-			get { return implicitRegs; }
-		}
-
         public int InstructionBitSize { get { return 32; } }
 
 		public string RegisterToString(int reg)
@@ -155,7 +157,7 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
 		}
 
-		public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader rdr)
+		public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, DisassemblyStream.GetEnumerator());
 		}
@@ -202,11 +204,20 @@ namespace Decompiler.UnitTests.Mocks
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
         public RegisterStorage StackRegister { get { return GetRegister(FakeArchitecture.iStackRegister); } }
 
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
+        }
+
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
+        public bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse32(txtAddress, out addr);
+        }
 
         #endregion
     }

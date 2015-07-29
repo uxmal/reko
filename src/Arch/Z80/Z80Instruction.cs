@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Z80
+namespace Reko.Arch.Z80
 {
     public class Z80Instruction : MachineInstruction
     {
@@ -32,15 +32,18 @@ namespace Decompiler.Arch.Z80
         public MachineOperand Op1;
         public MachineOperand Op2;
 
+        public override int OpcodeAsInteger { get { return (int)Code; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             if (Code == Opcode.ex_af)
             {
-                writer.Opcode("ex");
+                writer.WriteOpcode("ex");
                 writer.Tab();
                 writer.Write("af,af'");
+                return;
             }
-            writer.Opcode(Code.ToString());
+            writer.WriteOpcode(Code.ToString());
             if (Op1 != null)
             {
                 writer.Tab();

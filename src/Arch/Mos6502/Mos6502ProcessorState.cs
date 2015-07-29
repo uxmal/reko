@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,28 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public class Mos6502ProcessorState : ProcessorState
     {
         private Mos6502ProcessorArchitecture arch;
+        private byte[] regs;
+        private bool[] valid;
+        private Address ip;
 
         public Mos6502ProcessorState(Mos6502ProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.regs = new byte[4];
+            this.valid = new bool[4];
         }
 
         public override IProcessorArchitecture Architecture
@@ -42,40 +49,54 @@ namespace Decompiler.Arch.Mos6502
 
         public override ProcessorState Clone()
         {
-            throw new NotImplementedException();
+            return new Mos6502ProcessorState(arch)
+            {
+                regs = (byte[])regs.Clone(),
+                valid = (bool[])valid.Clone(),
+                ip = ip
+            };
         }
 
-        public override Core.Expressions.Constant GetRegister(RegisterStorage r)
+        public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            if (valid[r.Number])
+                return Constant.Byte(regs[r.Number]);
+            else
+                return Constant.Invalid;
         }
 
         public override void SetRegister(RegisterStorage r, Core.Expressions.Constant v)
         {
-            throw new NotImplementedException();
+            if (v != null && v.IsValid)
+            {
+                valid[r.Number] = true;
+                regs[r.Number] = v.ToByte();
+            }
+            else
+            {
+                valid[r.Number] = false;
+            }
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
+            this.ip = addr;
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
-        public override Core.Code.CallSite OnBeforeCall(Core.Expressions.Identifier stackReg, int returnAddressSize)
+        public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
             throw new NotImplementedException();
         }
 
-        public override void OnAfterCall(Core.Expressions.Identifier stackReg, ProcedureSignature sigCallee, Core.Expressions.ExpressionVisitor<Core.Expressions.Expression> eval)
+        public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Core.Expressions.Expression> eval)
         {
             throw new NotImplementedException();
         }

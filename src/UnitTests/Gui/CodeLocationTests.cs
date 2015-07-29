@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Gui;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class CodeLocationTests
@@ -44,20 +44,21 @@ namespace Decompiler.UnitTests.Gui
         public void NavigateToAddress()
         {
             var program = new Program();
+            var project = new Project { Programs = { program } };
             var memSvc = mr.DynamicMock<ILowLevelViewService>();
             var decSvc = mr.DynamicMock<IDecompilerService>();
             var dec = mr.DynamicMock<IDecompiler>();
             memSvc.Expect(x => x.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
-                Arg<Address>.Matches(a => a.Linear == 0x1234)));
+                Arg<Address>.Matches(a => a.ToLinear() == 0x1234)));
             decSvc.Stub(d => d.Decompiler).Return(dec);
-            dec.Stub(d => d.Programs).Return(new [] {program});
+            dec.Stub(d => d.Project).Return(project);
             mr.ReplayAll();
 
             var sc = new ServiceContainer();
             sc.AddService<ILowLevelViewService>(memSvc);
             sc.AddService<IDecompilerService>(decSvc);
-            var nav = new AddressNavigator(program, new Address(0x1234), sc);
+            var nav = new AddressNavigator(program, Address.Ptr32(0x1234), sc);
             nav.NavigateTo();
 
             mr.VerifyAll();

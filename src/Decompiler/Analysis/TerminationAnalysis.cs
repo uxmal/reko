@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     public class TerminationAnalysis : InstructionVisitorBase
     {
@@ -64,7 +64,7 @@ namespace Decompiler.Analysis
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {
-            if (proc.Characteristics.Terminates)
+            if (proc.Characteristics != null && proc.Characteristics.Terminates)
                 return true;
             var callee = proc as Procedure;
             if (callee == null)
@@ -114,53 +114,10 @@ namespace Decompiler.Analysis
 
         public void Analyze(Program program)
         {
-            var gr = new ProgramGraph(program);
+            var gr = new ProcedureGraph(program);
             foreach (var proc in new DfsIterator<Procedure>(gr).PostOrder())
             {
                 Analyze(proc);
-            }
-        }
-
-        private class ProgramGraph : DirectedGraph<Procedure>
-        {
-            private CallGraph cg;
-            private ICollection<Procedure> procs;
-
-            public ProgramGraph(Program prog)
-            {
-                this.cg = prog.CallGraph;
-                this.procs = prog.Procedures.Values;
-            }
-
-            public ICollection<Procedure> Predecessors(Procedure node)
-            {
-                throw new NotSupportedException();
-            }
-
-            public ICollection<Procedure> Successors(Procedure node)
-            {
-                var succs = new List<Procedure>(cg.Callees(node));
-                return succs;
-            }
-
-            public ICollection<Procedure> Nodes
-            {
-                get { return procs; } 
-            }
-
-            public void AddEdge(Procedure nodeFrom, Procedure nodeTo)
-            {
-                throw new NotSupportedException();
-            }
-
-            public void RemoveEdge(Procedure nodeFrom, Procedure nodeTo)
-            {
-                throw new NotSupportedException();
-            }
-
-            public bool ContainsEdge(Procedure nodeFrom, Procedure nodeTo)
-            {
-                throw new NotSupportedException();
             }
         }
     }

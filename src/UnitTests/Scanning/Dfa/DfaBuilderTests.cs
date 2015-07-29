@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Scanning.Dfa;
+using Reko.Scanning.Dfa;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning.Dfa
+namespace Reko.UnitTests.Scanning.Dfa
 {
     [TestFixture]
     public class DfaBuilderTests
@@ -78,6 +78,18 @@ namespace Decompiler.UnitTests.Scanning.Dfa
             dfab.BuildAutomaton();
             Debug.WriteLine(dfab.ParseTree.ToString());
             Assert.IsTrue(dfab.States[2].Starts);
+        }
+
+        [Test]
+        public void Dfab_MatchAny()
+        {
+            var dfab = new DfaBuilder("??");
+            dfab.ExtendWithEos();
+            dfab.BuildNodeSets();
+            dfab.BuildAutomaton();
+            Debug.WriteLine(dfab.ParseTree.ToString());
+            Assert.AreEqual(2, dfab.States.Length, "Should have 2 states");
+            Assert.AreEqual(1, dfab.Transitions[0, 0xAF]);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     public abstract class Conditional
     {
@@ -187,7 +187,7 @@ namespace Decompiler.Structure
             codeGen.EmitLinearBlockStatements(node, emitter);
 
             Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;
-            AbsynSwitch switchStm = emitter.EmitSwitch(node, exp);
+            AbsynSwitch switchStm = emitter.EmitSwitch(node, exp, new List<AbsynStatement>());
             AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);
 
             if (Follow == null)

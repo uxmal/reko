@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Configuration;
-using Decompiler.Gui;
-using Decompiler.Loading;
+using Reko.Core.Assemblers;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Configuration;
+using Reko.Gui;
+using Reko.Loading;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
     {
         bool OpenBinary(string file, DecompilerHost host);
         bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host);
+        bool Assemble(string file, Assembler asm, DecompilerHost host);
     }
 
     /// <summary>
@@ -53,7 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid== CmdSets.GuidDecompiler)
+            if (cmdId.Guid== CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
@@ -97,12 +99,14 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 isOldProject = Decompiler.Load(file);
             });
-            if (Decompiler.Programs.Count > 0)
+            if (Decompiler.Project == null)
+                return false;
+            var browserSvc = Services.RequireService<IProjectBrowserService>();
+            browserSvc.Load(Decompiler.Project);
+            if (Decompiler.Project.Programs.Count > 0)
             {
-                var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Programs.First());
+                memSvc.ViewImage(Decompiler.Project.Programs.First());
             }
             return isOldProject;
         }
@@ -121,16 +125,38 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 Decompiler.LoadRawImage(file, arch, platform, addrBase);
                 svc.SetCaption("Scanning source program.");
-                Decompiler.ScanProgram();
+                Decompiler.ScanPrograms();
             });
-            if (Decompiler.Programs.Count > 0)
+            var browserSvc = Services.RequireService<IProjectBrowserService>();
+            browserSvc.Load(Decompiler.Project);
+            if (Decompiler.Project.Programs.Count > 0)
             {
-                var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Programs.First());
+                memSvc.ViewImage(Decompiler.Project.Programs.First());
             }
             return false;   // We never open projects this way.
         }
+
+        public bool Assemble(string file, Assembler asm, DecompilerHost host)
+        {
+            var ldr = Services.RequireService<ILoader>();
+            this.Decompiler = CreateDecompiler(ldr, host);
+            var svc = Services.RequireService<IWorkerDialogService>();
+            svc.StartBackgroundWork("Loading program", delegate()
+            {
+                Decompiler.Assemble(file, asm);
+            });
+            if (Decompiler.Project == null)
+                return false;
+            var browserSvc = Services.RequireService<IProjectBrowserService>();
+            browserSvc.Load(Decompiler.Project);
+            if (Decompiler.Project.Programs.Count > 0)
+            {
+                var memSvc = Services.RequireService<ILowLevelViewService>();
+                memSvc.ViewImage(Decompiler.Project.Programs.First());
+            }
+            return false;
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Assemblers.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Machine;
+using Reko.Arch.M68k;
+using Reko.Assemblers.M68k;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -30,13 +30,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.M68k
+namespace Reko.UnitTests.Arch.M68k
 {
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
         private M68kArchitecture arch = new M68kArchitecture();
-        private Address addrBase = new Address(0x00010000);
+        private Address addrBase = Address.Ptr32(0x00010000);
         private LoadedImage image;
 
         public override IProcessorArchitecture Architecture
@@ -49,9 +49,9 @@ namespace Decompiler.UnitTests.Arch.M68k
             get { return addrBase; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return arch.CreateRewriter(image.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), new RewriterHost());
+            return arch.CreateRewriter(image.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
         }
 
         private void Rewrite(params ushort[] opcodes)
@@ -70,19 +70,6 @@ namespace Decompiler.UnitTests.Arch.M68k
             var asm = new M68kAssembler(arch, addrBase, new List<EntryPoint>());
             build(asm);
             image = asm.GetImage().Image;
-        }
-
-        private class RewriterHost : IRewriterHost
-        {
-            public PseudoProcedure EnsurePseudoProcedure(string name, Decompiler.Core.Types.DataType returnType, int arity)
-            {
-                return new PseudoProcedure(name, returnType, arity);
-            }
-
-            public PseudoProcedure GetImportedProcedure(uint addrThunk)
-            {
-                throw new NotImplementedException();
-            }
         }
 
         [Test]
@@ -106,7 +93,7 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "3|L--|ZN = cond(v4)",
                 "4|L--|C = false",
                 "5|L--|V = false");
-        }        
+        }
 
         [Test]
         public void M68krw_Eor_l()
@@ -300,7 +287,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68krw_neg_w_post()
         {
-            Rewrite( 0x445B);
+            Rewrite(0x445B);
             AssertCode(
                 "0|00010000(2): 4 instructions",
                 "1|L--|v3 = -Mem0[a3:word16]",
@@ -324,7 +311,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68krw_negx_8()
         {
             Rewrite(0x4021);        // negx.b -(a1)
- 
+
             AssertCode(
                 "0|00010000(2): 4 instructions",
                 "1|L--|a1 = a1 - 0x00000001",
@@ -467,7 +454,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0x4E90);    // jsr (a0)
             AssertCode(
                 "0|00010000(2): 1 instructions",
-                "1|T--|call Mem0[a0:word32] (4)");
+                "1|T--|call a0 (4)");
         }
 
         [Test]
@@ -889,12 +876,12 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68krw_rol()
         {
-             Rewrite(0xE199);
-             AssertCode(
-                "0|00010000(2): 3 instructions",
-                "1|L--|d1 = __rol(d1, 0x00000008)",
-                "2|L--|CZN = cond(d1)",
-                "3|L--|V = false");
+            Rewrite(0xE199);
+            AssertCode(
+               "0|00010000(2): 3 instructions",
+               "1|L--|d1 = __rol(d1, 0x00000008)",
+               "2|L--|CZN = cond(d1)",
+               "3|L--|V = false");
         }
 
         [Test]
@@ -903,7 +890,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0xE391);
             AssertCode(
                "0|00010000(2): 3 instructions",
-               "1|L--|d1 = __roxl(d1, 0x00000001, X)",
+               "1|L--|d1 = __rcl(d1, 0x00000001, X)",
                "2|L--|CZNX = cond(d1)",
                "3|L--|V = false");
         }
@@ -926,6 +913,129 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|L--|ZN = cond(Mem0[0x000013F8:word32] - 0x00000000)",
                 "2|L--|C = false",
                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_rorx()
+        {
+            Rewrite(0xE014);
+            AssertCode(
+                "0|00010000(2): 4 instructions",
+                "1|L--|v4 = __rcr((byte) d4, 0x08, X)",
+                "2|L--|d4 = DPB(d4, v4, 0, 8)",
+                "3|L--|CZNX = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_ror_ea()
+        {
+            Rewrite(0xE6D4);
+            AssertCode(
+                "0|00010000(2): 4 instructions",
+                "1|L--|v3 = __ror(Mem0[a4:word32], 0x01)",
+                "2|L--|Mem0[a4:word32] = v3",
+                "3|L--|CZN = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_jsr_pc()
+        {
+            Rewrite(0x4EBA, 0x0030);
+            AssertCode(
+                "0|00010000(4): 1 instructions",
+                "1|T--|call 00010032 (4)");
+        }
+
+        [Test]
+        public void M68krw_clr_addr()
+        {
+            Rewrite(0x42B9, 0x0000, 0x15E8);
+            AssertCode(
+                "0|00010000(6): 5 instructions",
+                "1|L--|Mem0[0x000015E8:word32] = 0x00000000",
+                "2|L--|Z = true",
+                "3|L--|C = false",
+                "4|L--|N = false",
+                "5|L--|V = false");
+        }
+
+
+
+        [Test]
+        public void M68krw_bset_addr()
+        {
+            Rewrite(0x08e8, 0x0001, 0x0010); //                 bset #1,%a0@(1)
+            AssertCode(
+                "0|00010000(6): 1 instructions",
+                "1|L--|Z = __bset(Mem0[a0 + 16:byte], 0x0001, out Mem0[a0 + 16:byte])");
+            //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
+        }
+
+        [Test]
+        public void M68krw_bclr_addr()
+        {
+            Rewrite(0x08A8, 0x0001, 0x0010); //                 bclr #1,%a0@(1)
+            AssertCode(
+                "0|00010000(6): 1 instructions",
+                "1|L--|Z = __bclr(Mem0[a0 + 16:byte], 0x01, out Mem0[a0 + 16:byte])");
+            //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
+        }
+
+        [Test]
+        public void M68krw_addi()
+        {
+            Rewrite(0x0646, 0x000F);            // addiw #15,%d6
+            AssertCode(
+                "0|00010000(4): 3 instructions",
+                "1|L--|v3 = (word16) d6 + 0x000F",
+                "2|L--|d6 = DPB(d6, v3, 0, 16)",
+                "3|L--|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_eori()
+        {
+            Rewrite(0x0A40, 0x000F);     //                    eoriw #15,%d0    
+            AssertCode(
+                "0|00010000(4): 5 instructions",
+                "1|L--|v3 = (word16) d0 ^ 0x000F",
+                "2|L--|d0 = DPB(d0, v3, 0, 16)",
+                "3|L--|ZN = cond(v3)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_address_mode()
+        {
+            Rewrite(0x2432, 0x04fc);    // move.l\t(-04,a2,d0*2),d2",
+            AssertCode(
+                "0|00010000(4): 2 instructions",
+                "1|L--|d2 = Mem0[a2 + -4 + d0 * 2:word32]"
+                );
+
+        }
+
+        [Test]
+        public void M68krw_movem()
+        {
+            Rewrite(0x4CB9, 0x0003, 0x0004, 0x000A); // , "movem.w\t$0004000A,d0-d1");
+            AssertCode(
+               "0|00010000(8): 5 instructions",
+               "1|L--|v2 = 0004000A",
+               "2|L--|d0 = Mem0[v2:word16]",
+               "3|L--|v2 = v2 + 0x0002",
+               "4|L--|d1 = Mem0[v2:word16]",
+               "5|L--|v2 = v2 + 0x0002");
+        }
+
+        [Test]
+        public void M68krw_indexedOperand()
+        {
+            Rewrite(0x2C70, 0xE9B5, 0x0001, 0x7FEC);
+            AssertCode(
+               "0|00010000(8): 1 instructions",
+               "1|L--|a6 = Mem0[Mem0[0x00017FEC:word32] + a6:word32]");
         }
     }
 }

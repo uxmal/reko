@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,29 +18,30 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Serialization;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : IProcessorArchitecture
     {
-        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Disassembler(imageReader.Clone());
         }
 
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Mos6502ProcessorState(this);
         }
 
         public BitSet CreateRegisterBitset()
@@ -50,10 +51,10 @@ namespace Decompiler.Arch.Mos6502
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Rewriter(this, rdr.Clone(), state, frame);
+            return new Rewriter(this, rdr.Clone(), state, frame, host);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -69,9 +70,14 @@ namespace Decompiler.Arch.Mos6502
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotImplementedException();
         }
 
         public RegisterStorage GetRegister(int i)
@@ -104,14 +110,14 @@ namespace Decompiler.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr16(c.ToUInt16());
+        }
+
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
-        }
-
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
         }
 
         public int InstructionBitSize { get { return 8; } }
@@ -145,6 +151,12 @@ namespace Decompiler.Arch.Mos6502
         {
             get { return (uint) FlagM.CF; }
         }
+
+        public bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse16(txtAddress, out addr);
+        }
+
     }
 
     public static class Registers

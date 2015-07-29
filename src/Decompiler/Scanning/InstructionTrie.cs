@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,29 +20,19 @@
 
 using System;
 using IComparer = System.Collections.IComparer;
-#if MONO
-using IHashCodeProvider = System.Collections.IHashCodeProvider;
-#else
 using IEqualityComparer = System.Collections.IEqualityComparer;
-#endif
 using Hashtable = System.Collections.Hashtable;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	/// <summary>
 	/// An InstructionTrie tallies instruction frequencies and instruction sequence lengths.
 	/// </summary>
-	public class InstructionTrie
+	public class InstructionTrie<TInstr>
 	{
 		private int count;
 		private TrieNode root;
-
-
-#if MONO
-		public InstructionTrie(IHashCodeProvider hasher, IComparer comparer)
-#else
 		public InstructionTrie(IEqualityComparer hasher, IComparer comparer)
-#endif
 		{
 			this.root = new TrieNode(hasher, comparer);
 		}
@@ -52,10 +42,10 @@ namespace Decompiler.Scanning
 			get { return count; }
 		}
 
-		public void AddInstructions(object [] instrs)
+		public void AddInstructions(TInstr [] instrs)
 		{
 			TrieNode node = root;
-			foreach (object instr in instrs)
+			foreach (TInstr instr in instrs)
 			{
 				node = node.Add(instr);
 				++node.Tally;
@@ -63,7 +53,7 @@ namespace Decompiler.Scanning
 			}
 		}
 
-		public long ScoreInstructions(object [] instrs)
+		public long ScoreInstructions(TInstr [] instrs)
 		{
 			TrieNode node = root;
 			long score = 0;
@@ -80,36 +70,24 @@ namespace Decompiler.Scanning
 
 		private class TrieNode
 		{
-			public object Instruction;
+			public TInstr Instruction;
 			public Hashtable Successors;
-#if MONO
-			public IHashCodeProvider hasher;
-#else
 			public IEqualityComparer hasher;
-#endif
 			public IComparer cmp;
 			public int Tally;
 
-#if MONO
-			public TrieNode(IHashCodeProvider hasher, IComparer cmp)
-#else
 			public TrieNode(IEqualityComparer hasher, IComparer cmp)
-#endif
 			{
 				Init(hasher, cmp);
 			}
 
-#if MONO
-			public TrieNode(object instruction, IHashCodeProvider hasher, IComparer cmp)
-#else
-			public TrieNode(object instruction, IEqualityComparer hasher, IComparer cmp)
-#endif
+			public TrieNode(TInstr instruction, IEqualityComparer hasher, IComparer cmp)
 			{
 				Instruction = instruction;
 				Init(hasher, cmp);
 			}
 
-			public TrieNode Add(object instr)
+			public TrieNode Add(TInstr instr)
 			{
 				TrieNode subNode = Next(instr);
 				if (subNode == null)
@@ -120,19 +98,11 @@ namespace Decompiler.Scanning
 				return subNode;
 			}
 
-#if MONO
-			private void Init(IHashCodeProvider hasher, IComparer cmp)
-#else
 			private void Init(IEqualityComparer hasher, IComparer cmp)
-#endif
 			{
 				this.hasher = hasher;
 				this.cmp = cmp;
-#if MONO
-				Successors = new Hashtable(hasher, cmp);
-#else
 				Successors = new Hashtable(hasher);
-#endif
 			}
 
 			public TrieNode Next(object instr)

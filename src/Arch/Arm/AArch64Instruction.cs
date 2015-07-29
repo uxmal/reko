@@ -1,6 +1,6 @@
-﻿#region License
+﻿ #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class AArch64Instruction : MachineInstruction
     {
-        public static AArch64Instruction Create(AA64Opcode opcode,List<MachineOperand> ops)
+        public static AArch64Instruction Create(AA64Opcode opcode, List<MachineOperand> ops)
         {
             var instr = new AArch64Instruction();
             instr.Opcode = opcode;
@@ -50,36 +50,23 @@ namespace Decompiler.Arch.Arm
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public void Write(TextWriter writer)
-        {
-            writer.Write(Opcode);
-            if (op1 == null)
-                return;
-            writer.Write("\t{0}", op1);
-            if (op2 == null)
-                return;
-            writer.Write(",{0}", op2);
-            if (op3 == null)
-                return;
-            writer.Write(",{0}", op3);
-        }
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(Opcode.ToString());
+            writer.WriteOpcode(Opcode.ToString());
             if (op1 == null)
                 return;
             writer.Tab();
-            writer.Write(op1.ToString());
+            op1.Write(false, writer);
             if (op2 == null)
                 return;
             writer.Write(",");
-            writer.Write(op2.ToString());
+            op2.Write(false, writer);
             if (op3 == null)
                 return;
             writer.Write(",");
-            writer.Write(op3.ToString());
+            op3.Write(false, writer);
         }
-
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,21 @@
  */
 #endregion
 
-using Decompiler.Typing;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Typing;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
+using Reko.Core;
+using Reko.UnitTests.Mocks;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypedMemoryExpressionRewriterTests
 	{
+        private Program program;
 		private TypeStore store;
 		private TypeFactory  factory;
 		private StructureType point;
@@ -37,8 +40,17 @@ namespace Decompiler.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-			store = new TypeStore();
-			factory = new TypeFactory();
+            var image = new LoadedImage(Address.Ptr32(0x00400000), new byte[1024]);
+            var arch = new FakeArchitecture();
+            program = new Program
+            {
+                Architecture = arch,
+                Image = image,
+                ImageMap = image.CreateImageMap(),
+                Platform = new DefaultPlatform(null, arch)
+            };
+            store = program.TypeStore;
+            factory = program.TypeFactory;
 			point = new StructureType(null, 0);
 			point.Fields.Add(0, PrimitiveType.Word32, null);
 			point.Fields.Add(4, PrimitiveType.Word32, null);
@@ -53,16 +65,16 @@ namespace Decompiler.UnitTests.Typing
         }
 
 		[Test]
-		public void PointerToSingleItem()
+		public void Tmer_PointerToSingleItem()
 		{
-			var ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
+			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			var tv = store.EnsureExpressionTypeVariable(factory, ptr);
 			tv.OriginalDataType = new Pointer(point, 4);
 			var eq = new EquivalenceClass(tv);
 			eq.DataType = point;
 			tv.DataType = new Pointer(eq, 4);
 
-			TypedExpressionRewriter tmer = new TypedExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
+			TypedExpressionRewriter tmer = new TypedExpressionRewriter(program);
             var access = Wrap(new MemoryAccess(ptr, PrimitiveType.Word32));
             TypeVariable tvAccess = access.TypeVariable;
             tvAccess.DataType = PrimitiveType.Word32;
@@ -71,9 +83,9 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void PointerToSecondItemOfPoint()
+		public void Tmer_PointerToSecondItemOfPoint()
 		{
-			Identifier ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
+			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			store.EnsureExpressionTypeVariable(factory, ptr);
 			EquivalenceClass eqPtr = new EquivalenceClass(ptr.TypeVariable);
 			eqPtr.DataType = point;
@@ -83,7 +95,7 @@ namespace Decompiler.UnitTests.Typing
 			var c = Wrap(Constant.Word32(4));
 			var bin = Wrap(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
             var mem = Wrap(new MemoryAccess(bin, PrimitiveType.Word32));
-			var tmer = new TypedExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
+			var tmer = new TypedExpressionRewriter(program);
 			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());
 		}

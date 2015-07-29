@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Gui;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui
+namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class ProcedureSearchResultTests
@@ -52,8 +52,8 @@ namespace Decompiler.UnitTests.Gui
         {
             var psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
 
-            procs.Add(new ProcedureSearchHit(program,  new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program,  Address.Ptr32(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
 
             var view = mr.StrictMock<ISearchResultView>();
             view.Expect(s => view.AddColumn(
@@ -68,7 +68,8 @@ namespace Decompiler.UnitTests.Gui
 
             mr.ReplayAll();
 
-            psr.CreateColumns(view);
+            psr.View = view;
+            psr.CreateColumns();
 
             mr.VerifyAll();
         }
@@ -77,11 +78,11 @@ namespace Decompiler.UnitTests.Gui
         public void GetItemData()
         {
             ISearchResult psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
-            procs.Add(new ProcedureSearchHit(program, new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
 
-            Assert.AreEqual(-1, psr.GetItemImageIndex(0));
-            string [] str = psr.GetItemStrings(0);
+            Assert.AreEqual(-1, psr.GetItem(0).ImageIndex);
+            string [] str = psr.GetItem(0).Items;
             Assert.AreEqual(3, str.Length);
 
             Assert.AreEqual("Proggie", str[0]);
@@ -107,13 +108,13 @@ namespace Decompiler.UnitTests.Gui
             cvs.Stub(c => c.DisplayProcedure(null)).IgnoreArguments();
             mvs.Expect(s => s.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
-                Arg<Address>.Is.Equal(new Address(0x4234))));
+                Arg<Address>.Is.Equal(Address.Ptr32(0x4234))));
             decSvc.Stub(d => d.Decompiler).Return(dec);
-            dec.Stub(d => d.Programs).Return(new [] {new Program()});
+            dec.Stub(d => d.Project).Return(new Project { Programs = { new Program() } });
             mr.ReplayAll();
 
             ISearchResult psr = new ProcedureSearchResult(sc, procs);
-            procs.Add(new ProcedureSearchHit(program, new Address(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32))));
             psr.NavigateTo(0);
             mr.VerifyAll();
         }

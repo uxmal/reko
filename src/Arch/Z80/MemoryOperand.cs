@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Z80
+namespace Reko.Arch.Z80
 {
     public class MemoryOperand : MachineOperand
     {
         public RegisterStorage Base;
         public Constant Offset;
-        private RegisterStorage baseReg;
-        private sbyte offset;
-        private PrimitiveType primitiveType;
 
         public MemoryOperand(RegisterStorage baseReg, PrimitiveType type): base(type)
         {
@@ -53,7 +50,7 @@ namespace Decompiler.Arch.Z80
             this.Offset = Constant.SByte(offset);
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             if (Base != null)
             {
@@ -74,16 +71,18 @@ namespace Decompiler.Arch.Z80
                     {
                         fmt = "({0})";
                     }
-                    return string.Format(fmt, Base, offset);
+                    writer.Write(string.Format(fmt, Base, offset));
                 }
                 else
                 {
-                    return string.Format("({0})", Base);
+                    writer.Write(string.Format("({0})", Base));
                 }
             }
             else
             {
-                return string.Format("({0:X4})", Offset.ToUInt16());
+                writer.Write("(");
+                writer.WriteAddress(string.Format("{0:X4}", Offset.ToUInt16()), Address.Ptr16(Offset.ToUInt16()));
+                writer.Write(")");
             }
         }
     }

@@ -4,6 +4,7 @@ void main(Register selector ds)
 // Trashed: SCZO ax bx al bl ah bh
 // Preserved: sp
 // main
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -14,6 +15,7 @@ void main(selector ds)
 main_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = Mem0[ds:0x0300:word16]
 	memfoo()
 	Mem0[ds:0x0302:word16] = ax
@@ -29,6 +31,7 @@ void memfoo()
 // Trashed: SCZO ax cx bx al cl bl ah ch bh
 // Preserved: sp
 // memfoo
+// Return size: 2
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -43,6 +46,7 @@ void memfoo()
 memfoo_entry:
 	// succ:  l0C00_0017
 l0C00_0017:
+	sp = fp
 	Mem0[ds:0x0400:word16] = ax
 	Mem0[ds:0x0402:word16] = bx
 	Mem0[ds:0x0404:word16] = cx
@@ -64,6 +68,7 @@ Register word16 membar(Register word16 ax, Register selector ds)
 // Trashed: SCZO ax bx al bl ah bh
 // Preserved: sp
 // membar
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -76,6 +81,7 @@ word16 membar(word16 ax, selector ds)
 membar_entry:
 	// succ:  l0C00_0040
 l0C00_0040:
+	sp = fp
 	Mem0[ds:0x0500:word16] = ax
 	bx = Mem0[ds:0x1000:word16]
 	ax = Mem0[ds:bx:word16]

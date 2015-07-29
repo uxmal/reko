@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
-* Copyright (C) 1999-2014 John Källén.
+* Copyright (C) 1999-2015 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
 */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Services;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.Loading;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
+using Reko.Loading;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Decouples the creation of services, so that proper unit testing can be done.
@@ -37,7 +37,7 @@ namespace Decompiler.Gui
     public interface IServiceFactory
     {
         IArchiveBrowserService CreateArchiveBrowserService();
-        IDecompilerConfigurationService CreateDecompilerConfiguration();
+        IConfigurationService CreateDecompilerConfiguration();
         DecompilerEventListener CreateDecompilerEventListener();
         IDecompilerService CreateDecompilerService();
         IDiagnosticsService CreateDiagnosticsService(ListView list);
@@ -47,6 +47,7 @@ namespace Decompiler.Gui
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
+        ISearchResultService CreateSearchResultService(ListView listView);
         IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
         ITabControlHostService CreateTabControlHost(TabControl tabControl);
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
@@ -68,7 +69,7 @@ namespace Decompiler.Gui
             return new ArchiveBrowserService(services);
         }
 
-        public IDecompilerConfigurationService CreateDecompilerConfiguration()
+        public IConfigurationService CreateDecompilerConfiguration()
         {
             return new DecompilerConfiguration();
         }
@@ -82,7 +83,7 @@ namespace Decompiler.Gui
 
         public IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm)
         {
-            return new DecompilerShellUiService((Form)form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
+            return new DecompilerShellUiService(form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
         }
 
         public ILowLevelViewService CreateMemoryViewService()
@@ -130,6 +131,11 @@ namespace Decompiler.Gui
             return new ProjectBrowserService(services, treeView);
         }
 
+        public ISearchResultService CreateSearchResultService(ListView listView)
+        {
+            return new SearchResultServiceImpl(services, listView);
+        }
+
         public ITabControlHostService CreateTabControlHost(TabControl tabControl)
         {
             return new TabControlHost(services, tabControl);
@@ -137,7 +143,7 @@ namespace Decompiler.Gui
 
         public IUiPreferencesService CreateUiPreferencesService()
         {
-            var configSvc = services.RequireService<IDecompilerConfigurationService>();
+            var configSvc = services.RequireService<IConfigurationService>();
             var settingsSvc = services.RequireService<ISettingsService>();
             return new UiPreferencesService(configSvc, settingsSvc);
         }

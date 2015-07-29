@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Environments.Win32;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Environments.Win32;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Win32
 {
     [TestFixture]
     public class ModuleDefinitionLoaderTests
@@ -36,31 +36,21 @@ namespace Decompiler.UnitTests.Environments.Win32
         private ModuleDefinitionLoader dfl;
         private readonly string nl = "\r\n";    // DEF files are from the Windows world, and have CR-LFs in them.
 
-        private void CreateDefFileLoader(string str)
+        private void CreateDefFileLoader(string filename, string contents)
         {
-            dfl = new ModuleDefinitionLoader(new StringReader(str), new X86ArchitectureFlat32());
-        }
-
-        [Test][Ignore("Use as a test driver")]
-        public void DFL_Acc()
-        {
-            dfl = new ModuleDefinitionLoader(
-                new StreamReader(@"c:\dev\jkl\decompiler\src\Environments\Win32\mfc71d.def"),
-                new X86ArchitectureFlat32());
-            var lib = dfl.Load();
-            lib.ToString();
+            dfl = new ModuleDefinitionLoader(new StringReader(contents), filename, new X86ArchitectureFlat32());
         }
 
         [Test]
         public void DFL_Create()
         {
-            CreateDefFileLoader("");
+            CreateDefFileLoader("c:\\bar\\foo.def", "");
         }
 
         [Test]
         public void DFL_CommentLine()
         {
-            CreateDefFileLoader("; hello\r\n");
+            CreateDefFileLoader("c:\\bar\\foo.def", "; hello\r\n");
             TypeLibrary lib = dfl.Load();
             Assert.AreEqual(2, lib.Types.Count);
             Assert.AreEqual(0, lib.Signatures.Count);
@@ -70,20 +60,22 @@ namespace Decompiler.UnitTests.Environments.Win32
         public void DFL_Read_StdapiExport()
         {
             CreateDefFileLoader(
+                "c:\\bar\\foo.def",
                 "EXPORTS" + nl +
                 " _Foo@4 @4" + nl);
             var lib = dfl.Load();
             var svc = lib.ServicesByName["_Foo@4"];
             Assert.AreEqual("_Foo@4", svc.Name);
-            Assert.IsFalse(svc.Signature.ArgumentsValid, "We don't know the arguments");
+            Assert.AreEqual("FOO.DLL", lib.ModuleName);
+            Assert.IsFalse(svc.Signature.ParametersValid, "We don't know the arguments");
             Assert.AreEqual(8, svc.Signature.StackDelta, "StackDelta includes the return address, which stdapi calls pop.");
         }
-
 
         [Test]
         public void DFL_Read_StdapiExport_With_Extra_Spaces()
         {
             CreateDefFileLoader(
+                "c:\\bar\\foo.def",
                 "EXPORTS" + nl +
                 " _Foo@4 @ 4" + nl);
             var lib = dfl.Load();
@@ -96,9 +88,10 @@ namespace Decompiler.UnitTests.Environments.Win32
         public void DFL_LibraryStatement()
         {
             CreateDefFileLoader(
+                "c:\\bar\\foo.def",
                 " LIBRARY foo" + nl);
             var lib = dfl.Load();
-            Assert.AreEqual("foo", lib.LibraryName);
+            Assert.AreEqual("foo", lib.ModuleName);
         }
     }
 }

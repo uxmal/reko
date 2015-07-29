@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.ImageLoaders.Hunk;
+using Reko.Core;
+using Reko.ImageLoaders.Hunk;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.ImageLoaders.Hunk
+namespace Reko.UnitTests.ImageLoaders.Hunk
 {
     [TestFixture]
     public class HunkLoaderTests
@@ -46,8 +46,8 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
         {
             var bytes = File.ReadAllBytes(
                 FileUnitTester.MapTestPath("../UnitTests/Arch/M68k/images/FIBO"));
-            var ldr = new HunkLoader(null, bytes);
-            ldr.Load(new Address(0x10000)); 
+            var ldr = new HunkLoader(null, "FIBO", bytes);
+            ldr.Load(Address.Ptr32(0x10000)); 
         }
 
         [Test]
@@ -60,10 +60,10 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
                 0,
                 0,
                 0);
-            var ldr = new HunkLoader(null, bytes);
-            var ldImg = ldr.Load(new Address(0x00010000));
+            var ldr = new HunkLoader(null, "foo.bar", bytes);
+            var ldImg = ldr.Load(Address.Ptr32(0x00010000));
             Assert.AreEqual(1, ldImg.ImageMap.Segments.Count);
-            Assert.AreEqual(new Address(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
+            Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
         }
 
         [Test]
@@ -82,11 +82,11 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
                 (ushort) 0x4E75,
                 (ushort) 0,
                 HunkType.HUNK_END);
-            var ldr = new HunkLoader(null, bytes);
-            var ldImg = ldr.Load(new Address(0x00010000));
-            var rlImg = ldr.Relocate(new Address(0x00010000));
+            var ldr = new HunkLoader(null, "foo.bar", bytes);
+            var ldImg = ldr.Load(Address.Ptr32(0x00010000));
+            var rlImg = ldr.Relocate(Address.Ptr32(0x00010000));
             Assert.AreEqual(1, rlImg.EntryPoints.Count);
-            Assert.AreEqual(0x00010000, rlImg.EntryPoints[0].Address.Linear);
+            Assert.AreEqual(0x00010000ul, rlImg.EntryPoints[0].Address.ToLinear());
 
         }
     }

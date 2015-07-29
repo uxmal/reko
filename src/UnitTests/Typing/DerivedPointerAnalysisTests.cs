@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class DerivedPointerAnalysisTests
@@ -45,11 +45,16 @@ namespace Decompiler.UnitTests.Typing
         private void RunTest(Program prog, string outputFile)
         {
             EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
             eqb.Build(prog);
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
             trco.CollectProgramTraits(prog);
             dtb.BuildEquivalenceClassDataTypes();
+            var tv = new TypeVariableReplacer(store);
+            tv.ReplaceTypeVariables();
+            store.CopyClassDataTypesToTypeVariables();
+            var ppr = new PtrPrimitiveReplacer(factory, store, prog);
+            ppr.ReplaceAll();
 
             var dpa = new DerivedPointerAnalysis(factory, store, prog);
             dpa.FollowDerivedPointers();
@@ -60,31 +65,13 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DpaSimple()
 		{
-			var prog = new Program();
-            prog.Architecture = new FakeArchitecture();
-
-			var eqb = new EquivalenceClassBuilder(factory, store);
-			var dtb = new DataTypeBuilder(factory, store, prog.Architecture);
-
-			var c = Constant.Word32(0x10000000);
-			var mem = new MemoryAccess(c, PrimitiveType.Real32);
-
-			prog.Globals.Accept(eqb);
-			mem.Accept(eqb);
-
-			var tc = new TraitCollector(factory, store, dtb, prog);
-			prog.Globals.Accept(tc);
-			mem.Accept(tc);
-			dtb.BuildEquivalenceClassDataTypes();
-
-            var tvr = new TypeVariableReplacer(store);
-            tvr.ReplaceTypeVariables();
-            var ppr = new PtrPrimitiveReplacer(factory, store, prog);
-            ppr.ReplaceAll();
-            var cf = new DerivedPointerAnalysis(factory, store, prog);
-			mem.Accept(cf);
-
-			Verify(null, "Typing/DpaSimple.txt");
+			var prog = new ProgramBuilder();
+            prog.Add("test", m=>
+               {
+                   var r1 = m.Register(1);
+                   m.Assign(r1, m.Load(PrimitiveType.Real32, m.Word32(0x10000000)));
+               });
+			RunTest(prog.BuildProgram(), "Typing/DpaSimple.txt");
 		}
 
 		[Test]
@@ -126,7 +113,6 @@ namespace Decompiler.UnitTests.Typing
 
 		private void Verify(Program prog, string outputFile)
 		{
-			store.CopyClassDataTypesToTypeVariables();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				if (prog != null)

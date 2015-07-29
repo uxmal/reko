@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,23 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Scanning;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.UnitTests.Fragments;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Scanning;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
+using Reko.UnitTests.Fragments;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TraitCollectorTests : TypingTestBase
@@ -54,55 +53,55 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoFactorial()
 		{
-			RunTest("Fragments/factorial.asm", "Typing/TrcoFactorial.txt");
+			RunTest16("Fragments/factorial.asm", "Typing/TrcoFactorial.txt");
 		}
 
 		[Test]
 		public void TrcoFactorialReg()
 		{
-			RunTest("Fragments/factorial_reg.asm", "Typing/TrcoFactorialReg.txt");
+			RunTest16("Fragments/factorial_reg.asm", "Typing/TrcoFactorialReg.txt");
 		}
 
 		[Test]
 		public void TrcoFloatingPoint()
 		{
-			RunTest("Fragments/fpuops.asm", "Typing/TrcoFloatingPoint.txt");
+			RunTest16("Fragments/fpuops.asm", "Typing/TrcoFloatingPoint.txt");
 		}
 
 		[Test]
 		public void TrcoLength()
 		{
-			RunTest("Fragments/type/listlength.asm", "Typing/TrcoLength.txt");
+			RunTest16("Fragments/type/listlength.asm", "Typing/TrcoLength.txt");
 		}
 
 		[Test]
 		public void TrcoNestedStructs()
 		{
-			RunTest("Fragments/type/nestedstructs.asm", "Typing/TrcoNestedStructs.txt");
+			RunTest16("Fragments/type/nestedstructs.asm", "Typing/TrcoNestedStructs.txt");
 		}
 
 		[Test]
 		public void TrcoSimpleLinearCode()
 		{
-			RunTest("Fragments/simple_memoperations.asm", "Typing/TrcoSimpleLinearCode.txt");
+			RunTest16("Fragments/simple_memoperations.asm", "Typing/TrcoSimpleLinearCode.txt");
 		}
 
 		[Test]
 		public void TrcoUnknown()
 		{
-			RunTest("Fragments/type/unknown.asm", "Typing/TrcoUnknown.txt");
+			RunTest16("Fragments/type/unknown.asm", "Typing/TrcoUnknown.txt");
 		}
 
         [Test]
         public void TrcoReals()
         {
-            RunTest("Fragments/fpuops.asm", "Typing/TrcoReals.txt");
+            RunTest16("Fragments/fpuops.asm", "Typing/TrcoReals.txt");
         }
 
 		[Test]
 		public void TrcoMemAccesses()
 		{
-			RunTest("Fragments/multiple/memaccesses.asm", "Typing/TrcoMemAccesses.txt");
+			RunTest16("Fragments/multiple/memaccesses.asm", "Typing/TrcoMemAccesses.txt");
 		}
 
 		[Test]
@@ -136,8 +135,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoArrayExpression()
 		{
-			var b = new Identifier("base", 0, PrimitiveType.Word32, null);
-			var i = new Identifier("idx", 1, PrimitiveType.Word32, null);
+			var b = new Identifier("base", PrimitiveType.Word32, null);
+			var i = new Identifier("idx", PrimitiveType.Word32, null);
 			var s = Constant.Word32(4);
 
 			ProcedureBuilder m = new ProcedureBuilder();
@@ -157,9 +156,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoInductionVariable()
 		{
-			Identifier i = new Identifier("i", 0, PrimitiveType.Word32, null);
+			Identifier i = new Identifier("i", PrimitiveType.Word32, null);
 			MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
-			Identifier i2 = new Identifier("i2", 1, PrimitiveType.Word32, null);
+			Identifier i2 = new Identifier("i2", PrimitiveType.Word32, null);
 			MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
 
 			LinearInductionVariable iv = new LinearInductionVariable(
@@ -271,9 +270,12 @@ namespace Decompiler.UnitTests.Typing
 
         private static Program CreateProgram()
         {
+            var arch = new FakeArchitecture();
+
             return new Program
             {
-                Architecture = new FakeArchitecture()
+                Architecture = arch,
+                Platform = new DefaultPlatform(null, arch),
             };
         }
 
@@ -304,25 +306,25 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoReg00008()
 		{
-			RunTest("Fragments/regressions/r00008.asm", "Typing/TrcoReg00008.txt");
+			RunTest16("Fragments/regressions/r00008.asm", "Typing/TrcoReg00008.txt");
 		}
 
         [Test]
         public void TrcoReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
+            RunTest16("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
         }
 
         [Test]
         public void TrcoReg00012()
         {
-            RunTest("Fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
+            RunTest16("Fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
         }
 
         [Test]
         public void TrcoReg00014()
         {
-            RunTest("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
+            RunTest32("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
         }
 
         [Test]
@@ -666,6 +668,11 @@ namespace Decompiler.UnitTests.Typing
         public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
         {
             return Traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable: null, structPtrSize, tField.TypeVariable, offset));
+        }
+
+        public DataType MemFieldTrait(Expression tBase, Expression tStruct, Expression tField, int offset)
+        {
+            return Traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable : null, 0, tField.TypeVariable, offset));
         }
 
         public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)

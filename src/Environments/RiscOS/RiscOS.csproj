@@ -6,8 +6,8 @@
     <ProjectGuid>{1976B356-7C5E-411A-A409-D3EB349E44FA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environments.RiscOS</RootNamespace>
-    <AssemblyName>Decompiler.Environments.RiscOS</AssemblyName>
+    <RootNamespace>Reko.Environments.RiscOS</RootNamespace>
+    <AssemblyName>Reko.Environments.RiscOS</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
-      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
       <Name>Arm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">

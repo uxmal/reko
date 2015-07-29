@@ -1,6 +1,6 @@
  #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>Performs transformations on the generated data types to make them 
 	/// legal C-like data types.</summary>
@@ -44,6 +45,7 @@ namespace Decompiler.Typing
         private DecompilerEventListener eventListener;
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
+        private HashSet<DataType> visitedTypes;
 
         public TypeTransformer(TypeFactory factory, TypeStore store, Program prog)
             : this(factory, store, prog, new NullDecompilerEventListener())
@@ -235,13 +237,14 @@ namespace Decompiler.Typing
 			do
 			{
 				++iteration;
-                if (iteration > 500)
+                if (iteration > 50)
                 {
-                    eventListener.AddDiagnostic(new NullCodeLocation(""),
-                        new WarningDiagnostic(string.Format("Type transformer has looped {0} times, quitting prematurely.", iteration)));
+                    eventListener.Warn(new NullCodeLocation(""),
+                        string.Format("Type transformer has looped {0} times, quitting prematurely.", iteration));
                     return;
                 }
 				Changed = false;
+                this.visitedTypes = new HashSet<DataType>();
 				foreach (TypeVariable tv in store.TypeVariables)
 				{
 					tvCur = tv;
@@ -254,6 +257,7 @@ namespace Decompiler.Typing
                     {
                         tv.DataType = tv.DataType.Accept(this);
                     }
+                    // Debug.Print("Transformed {0}:{1}", tv, tv.Class.DataType);
 				}
 				if (ppr.ReplaceAll())
 					Changed = true;
@@ -342,6 +346,9 @@ namespace Decompiler.Typing
 
         public DataType VisitStructure(StructureType str)
 		{
+            if (visitedTypes.Contains(str))
+                return str;
+            visitedTypes.Add(str);
             foreach (var field in str.Fields)
             {
                 field.DataType = field.DataType.Accept(this);

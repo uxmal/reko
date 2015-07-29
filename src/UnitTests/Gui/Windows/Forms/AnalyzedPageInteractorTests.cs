@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Gui;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Gui;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
+using Reko.Gui.Forms;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -39,7 +39,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class AnalyzedPageInteractorTests
@@ -59,9 +59,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [SetUp]
         public void Setup()
         {
-            form = new MainForm();
             mr = new MockRepository();
 
+            form = mr.StrictMock<IMainForm>();
             sc = new ServiceContainer();
             uiSvc = AddService<IDecompilerShellUiService>();
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
@@ -70,13 +70,24 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             disasmViewSvc = AddService<IDisassemblyViewService>();
             pbSvc = AddService<IProjectBrowserService>();
 
-            TestLoader ldr = new TestLoader(sc);
+            form.Stub(f => f.Show());
+
+            var loadAddress =  Address.Ptr32(0x100000);
+            var bytes = new byte[4711];
+            Program prog = new Program();
+            prog.Image = new LoadedImage(loadAddress, bytes);
+            prog.ImageMap = prog.Image.CreateImageMap();
+            prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            ILoader ldr = mr.StrictMock<ILoader>();
+            ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(prog);
+            ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
+            ldr.Replay();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             this.decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.Load("test.exe");
-            program = decSvc.Decompiler.Programs.First();
-            decSvc.Decompiler.ScanProgram();
+            program = decSvc.Decompiler.Project.Programs.First();
+            decSvc.Decompiler.ScanPrograms();
             sc.AddService(typeof(IDecompilerService), decSvc);
 
             sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
@@ -85,7 +96,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [TearDown]
         public void TearDown()
         {
-            form.Close();
         }
 
         private T AddService<T>() where T : class
@@ -101,15 +111,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Interactor();
             pbSvc.Expect(p => p.Reload());
             mr.ReplayAll();
-            
+
             form.Show();
-            program.Procedures.Add(new Address(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
+            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
             interactor.EnterPage();
 
-            //Assert.AreEqual(1, form.BrowserList.Items.Count);
-            //KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) form.BrowserList.Items[0].Tag;
-            //Assert.AreEqual(0x12345, entry.Key.Offset);
-            //Assert.AreEqual("foo", entry.Value.Name);
             mr.VerifyAll();
         }
 
@@ -123,99 +129,25 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             codeViewSvc.Stub(s => s.DisplayProcedure(
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
-            //memViewSvc.Expect(s => s.ShowMemoryAtAddress(
-            //    Arg<Program>.Is.NotNull,
-            //    Arg<Address>.Matches(address => address.Linear == 0x12346)));
-
-            //disasmViewSvc.Expect(s => s.DisassembleStartingAtAddress(
-            //    Arg<Address>.Matches(address => address.Linear == 0x12346)));
             mr.ReplayAll();
 
             Given_Interactor();
             form.Show();
             Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
-                new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
+                new Identifier("eax", PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
-                    new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
+                    new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
 
-            program.Procedures.Add(new Address(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
-            program.Procedures.Add(new Address(0x12346), p);
+            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
+            program.Procedures.Add(Address.Ptr32(0x12346), p);
             interactor.EnterPage();
 
             //form.BrowserList.Items[1].Selected = true;
             //form.BrowserList.FocusedItem = form.BrowserList.Items[1];
 
             mr.VerifyAll();
-        }
-
-        [Test]
-        [Ignore("Other mechanism needed")]
-        public void Anpi_ShowEditProcedureDialog()
-        {
-            uiSvc.Expect(s => s.ShowModalDialog(
-                    Arg<ProcedureDialog>.Is.TypeOf))
-                .Return(DialogResult.Cancel);
-            mr.ReplayAll();
-
-            Given_Interactor();
-
-            form.Show();
-            Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
-            p.Signature = new ProcedureSignature(
-                new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
-                new Identifier[] {
-                    new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
-                });
-            program.Procedures.Add(new Address(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
-            interactor.EnterPage();
-            //form.BrowserList.Items[0].Selected = true;
-
-            Assert.IsTrue(interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionEditSignature)), "Should have executed command.");
-            mr.VerifyAll();
-        }
-
-        private class TestLoader : ILoader
-        {
-            public TestLoader(IServiceProvider services)
-            {
-            }
-
-            public byte[] LoadImageBytes(string fileName, int offset)
-            {
-                return new byte[4711];
-            }
-
-            public Program LoadExecutable(InputFile file)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)
-            {
-                loadAddress = loadAddress ?? new Address(0x100000);
-                Program prog = new Program();
-                prog.Image = new LoadedImage(loadAddress, bytes);
-                prog.ImageMap = new ImageMap(prog.Image);
-                prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
-                return prog;
-            }
-
-            public Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress)
-            {
-                throw new NotImplementedException();
-            }
-
-            public TypeLibrary LoadMetadata(string fileName)
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }

@@ -1,33 +1,31 @@
-﻿using Decompiler.Assemblers.x86;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+﻿using Reko.Assemblers.x86;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class RewriteFpuInstructionTests : Arch.RewriterTestBase
     {
         private X86ArchitectureFlat32 arch;
-        private IntelAssembler asm;
-        private LoaderResults asmResult;
-        private Address loadAddress = new Address(0x0010000);
-        private FakeRewriterHost host;
+        private X86Assembler asm;
+        private Program asmResult;
+        private Address loadAddress = Address.Ptr32(0x0010000);
 
         [SetUp]
         public void Setup()
         {
             arch = new X86ArchitectureFlat32();
-            asm = new IntelAssembler(arch, loadAddress, new List<EntryPoint>());
-            host = new FakeRewriterHost(null);
+            asm = new X86Assembler(arch, loadAddress, new List<EntryPoint>());
         }
 
         public override IProcessorArchitecture Architecture
@@ -35,7 +33,12 @@ namespace Decompiler.UnitTests.Arch.Intel
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IRewriterHost CreateHost()
+        {
+            return new FakeRewriterHost(null);
+        }
+
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             return new X86Rewriter(arch, host, new X86State(arch), asmResult.Image.CreateLeReader(0), frame);
         }
@@ -45,7 +48,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             get { return loadAddress; } 
         }
 
-        private void BuildTest(Action<IntelAssembler> m)
+        private void BuildTest(Action<X86Assembler> m)
         {
             m(asm);
             asmResult = asm.GetImage();

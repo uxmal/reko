@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Deep-compares expressions.
@@ -100,15 +100,18 @@ namespace Decompiler.Core.Expressions
                     return 0x10101010 * GetHashCodeImpl(((ConditionOf) obj).Expression);
                 });
             Add(typeof(Address),
-                delegate(Expression ea, Expression eb)
-                {
-                    Address a = (Address) ea, b = (Address) eb;
-                    return object.Equals(a.Linear, b.Linear);
-                },
-                delegate(Expression obj)
-                {
-                    return ((Address) obj).Linear.GetHashCode();
-                });
+                addrComp,
+                addrHash);
+            Add(typeof(Address16),
+                addrComp,
+                addrHash);
+            Add(typeof(Address32),
+                addrComp,
+                addrHash);
+            Add(typeof(Address64),
+                addrComp,
+                addrHash);
+
             Add(typeof(Constant),
                 delegate(Expression ea, Expression eb)
                 {
@@ -144,19 +147,16 @@ namespace Decompiler.Core.Expressions
                     return GetHashCodeImpl(((Dereference) obj).Expression) * 129;
                 });
 
-
-
             Add(
                 typeof(Identifier),
                 delegate(Expression x, Expression y)
                 {
-                    return ((Identifier) x).Number == ((Identifier) y).Number;
+                    return ((Identifier) x).Name == ((Identifier) y).Name;
                 },
                 delegate(Expression x)
                 {
-                    return ((Identifier) x).Number.GetHashCode();
+                    return ((Identifier) x).Name.GetHashCode();
                 });
-
             Add(typeof(MemoryAccess),
                 delegate(Expression ea, Expression eb)
                 {
@@ -174,11 +174,11 @@ namespace Decompiler.Core.Expressions
             Add(typeof(MemoryIdentifier),
                 delegate(Expression ea, Expression eb)
                 {
-                    return ((MemoryIdentifier)ea).Number == ((Identifier)eb).Number;
+                    return ((MemoryIdentifier)ea).Name == ((Identifier)eb).Name;
                 },
                 delegate(Expression x)
                 {
-                    return ((Identifier)x).Number.GetHashCode();
+                    return ((Identifier)x).Name.GetHashCode();
                 });
             Add(typeof(MkSequence),
                 delegate(Expression ea, Expression eb)
@@ -287,6 +287,17 @@ namespace Decompiler.Core.Expressions
                     UnaryExpression u = (UnaryExpression) obj;
                     return GetHashCodeImpl(u.Expression) ^ u.Operator.GetHashCode();
                 });
+        }
+
+        private static bool addrComp(Expression ea, Expression eb)
+        {
+            Address a = (Address)ea, b = (Address)eb;
+            return a.ToLinear() == b.ToLinear();
+        }
+
+        private static int addrHash(Expression obj)
+        {
+            return ((Address)obj).ToLinear().GetHashCode();
         }
 
         private static void Add(Type t, EqualsFn eq, HashFn hash)

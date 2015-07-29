@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class TrashedRegisterSummarizerTests
@@ -116,10 +116,11 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore("This may go away with SSA2 implemented.")]
         public void TrsMergeSubregisterWithRegister()
         {
-            var cl = Decompiler.Arch.X86.Registers.cl;
-            var cx = Decompiler.Arch.X86.Registers.cx;
+            var cl = Reko.Arch.X86.Registers.cl;
+            var cx = Reko.Arch.X86.Registers.cx;
             ctx.RegisterState[cl] = Constant.Zero(cl.DataType);
             trs.PropagateToProcedureSummary();
             ctx.RegisterState[cx] = Constant.Invalid;

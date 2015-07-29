@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Arch.Mips
+namespace Reko.Arch.Mips
 {
     public class MipsDisassembler : DisassemblerBase<MipsInstruction>
     {
@@ -43,12 +43,10 @@ namespace Decompiler.Arch.Mips
             this.rdr = imageReader;
         }
 
-        public override MipsInstruction Current { get { return instrCur; } }
-
-        public override bool MoveNext()
+        public override MipsInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false; 
+                return null; 
             this.addr = rdr.Address; 
             var wInstr = rdr.ReadBeUInt32();
             var opRec = opRecs[wInstr >> 26];
@@ -56,7 +54,7 @@ namespace Decompiler.Arch.Mips
             if (opRec == null)
                 throw new NotImplementedException((wInstr >> 26).ToString());    //$REVIEW: remove this when all oprecs are in place.
             instrCur = opRec.Decode(wInstr, this);
-            return true;
+            return instrCur;
         }
 
         private static OpRec[] opRecs = new OpRec[]
@@ -207,13 +205,13 @@ namespace Decompiler.Arch.Mips
         {
             int off = (short) wInstr;
             off <<= 2;
-            return AddressOperand.Ptr32((uint)(off + rdr.Address.Offset));
+            return AddressOperand.Ptr32((uint)(off + rdr.Address.ToUInt32()));
         }
 
         private AddressOperand LargeBranch(uint wInstr)
         {
             var off = (wInstr & 0x03FFFFFF) << 2;
-            return AddressOperand.Ptr32((uint)((rdr.Address.Offset & 0xF0000000) | off));
+            return AddressOperand.Ptr32((rdr.Address.ToUInt32() & 0xF0000000u) | off);
         }
 
         private IndirectOperand Ea(uint wInstr, char wCode)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,26 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Arch.Mos6502;
+using Reko.Core;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Mos6502
+namespace Reko.UnitTests.Arch.Mos6502
 {
     [TestFixture]   
     public class DisassemblerTests
     {
         private MachineInstruction RunTest(params byte[] bytes)
         {
-            var image = new LoadedImage(new Address(0x200), bytes);
+            var image = new LoadedImage(Address.Ptr32(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Disassembler(rdr);
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         [Test]

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
 	/// <summary>
-	/// Formats types using indentation settings specified by caller.
+	/// Formats type declarations using indentation settings specified by caller.
 	/// </summary>
 	public class TypeFormatter : IDataTypeVisitor<Formatter>
 	{
@@ -40,7 +40,7 @@ namespace Decompiler.Core.Output
 		private readonly object Declared = 1;
 		private readonly object Defined = 2;
 
-		private enum Mode { Writing, Scanning }
+		public enum Mode { Writing, Scanning }
 
 		public TypeFormatter(Formatter writer, bool typeReference)
 		{
@@ -182,11 +182,7 @@ namespace Decompiler.Core.Output
 
         public Formatter VisitString(StringType str)
         {
-            //$REVIEW: yes, totally inadequate
-            str.CharType.Accept(this);
-            writer.Write(name);
-            writer.Write("[]");
-            return writer;
+            return VisitArray(str);
         }
 
 		public Formatter VisitStructure(StructureType str)
@@ -327,7 +323,8 @@ namespace Decompiler.Core.Output
 			{
 				BeginLine();
 				name = alt.MakeName(i);
-				alt.DataType.Accept(this);
+                var trf = new TypeReferenceFormatter(writer, true);
+                trf.WriteDeclaration(alt.DataType, name);
 				EndLine(";");
 				++i;
 			}

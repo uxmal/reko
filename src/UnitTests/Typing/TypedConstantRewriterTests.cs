@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypedConstantRewriterTests
@@ -38,9 +40,18 @@ namespace Decompiler.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-			store = new TypeStore();
-			factory = new TypeFactory();
-			globals = new Identifier("globals", 0, PrimitiveType.Pointer32, null);
+            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[1024]);
+            var arch = new FakeArchitecture();
+            var program = new Program
+            {
+                Image = image,
+                Architecture = arch,
+                ImageMap = image.CreateImageMap(),
+                Platform = new DefaultPlatform(null, arch),
+            };
+            store = program.TypeStore;
+            factory = program.TypeFactory;
+            globals = program.Globals;
 			store.EnsureExpressionTypeVariable(factory, globals);
 
 			StructureType s = new StructureType(null, 0);
@@ -52,11 +63,11 @@ namespace Decompiler.UnitTests.Typing
 			globals.TypeVariable.DataType = new Pointer(eqGlobals, 4);
 			globals.DataType = globals.TypeVariable.DataType;
 
-			tcr = new TypedConstantRewriter(new Mocks.FakeArchitecture(), store, globals);
+            tcr = new TypedConstantRewriter(program);
 		}
 
 		[Test]
-		public void RewriteWord32()
+		public void Tcr_RewriteWord32()
 		{
 			Constant c = Constant.Word32(0x0131230);
 			store.EnsureExpressionTypeVariable(factory, c);
@@ -67,7 +78,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void RewriterRealBitpattern()
+        public void Tcr_RewriterRealBitpattern()
 		{
 			Constant c = Constant.Word32(0x3F800000);
 			store.EnsureExpressionTypeVariable(factory, c);
@@ -78,7 +89,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void RewritePointer()
+        public void Tcr_RewritePointer()
 		{
 			Constant c = Constant.Word32(0x00100000);
 			store.EnsureExpressionTypeVariable(factory, c);
@@ -86,7 +97,29 @@ namespace Decompiler.UnitTests.Typing
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			Expression e = tcr.Rewrite(c, false);
 			Assert.AreEqual("&globals->dw100000", e.ToString());
-
 		}
+
+
+        [Test]
+        public void Tcr_RewriteNullPointer()
+        {
+            Constant c = Constant.Word32(0x00000000);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 4);
+            c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
+            Expression e = tcr.Rewrite(c, false);
+            Assert.AreEqual("00000000", e.ToString());
+        }
+
+        [Test]
+        public void Tcr_OffImagePointer()
+        {
+            Constant c = Constant.Word32(0xFFFFFFFF);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 4);
+            c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
+            Expression e = tcr.Rewrite(c, false);
+            Assert.AreEqual("(word32 *) 0xFFFFFFFF", e.ToString());
+        }
 	}
 }

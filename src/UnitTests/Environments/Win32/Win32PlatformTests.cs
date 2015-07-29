@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core.Configuration;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Environments.Win32;
+using Reko.Arch.X86;
+using Reko.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Environments.Win32;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -34,7 +34,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Decompiler.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Win32
 {
     [TestFixture]
     public class Win32PlatformTests
@@ -44,9 +44,9 @@ namespace Decompiler.UnitTests.Environments.Win32
         private ServiceContainer sc;
         private Win32Platform win32;
         private IntelArchitecture arch;
-        private ProcedureSignature sig;
+        private ExternalProcedure extProc;
         private OperatingEnvironment opEnv;
-        private IDecompilerConfigurationService dcSvc;
+        private IConfigurationService dcSvc;
 
         [SetUp]
         public void Setup()
@@ -54,13 +54,13 @@ namespace Decompiler.UnitTests.Environments.Win32
             repository = new MockRepository();
             sc = new ServiceContainer();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            dcSvc = repository.StrictMock<IDecompilerConfigurationService>();
+            dcSvc = repository.StrictMock<IConfigurationService>();
             opEnv = repository.StrictMock<OperatingEnvironment>();
         }
 
-        private void When_Lookup_Procedure(string procName)
+        private void When_Lookup_Procedure(string moduleName, string procName)
         {
-            this.sig = this.win32.LookupProcedure(procName);
+            this.extProc = this.win32.LookupProcedureByName(moduleName, procName);
         }
 
         private void Given_Win32_TypeLibraries(string name)
@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             repository.ReplayAll();
 
             When_Creating_Win32_Platform();
-            When_Lookup_Procedure("foo");
+            When_Lookup_Procedure("kernel32","foo");
 
             repository.VerifyAll();
         }
@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Environments.Win32
 
         private void Given_Configuration_With_Win32_Element()
         {
-            var dcSvc = repository.Stub<IDecompilerConfigurationService>();
+            var dcSvc = repository.Stub<IConfigurationService>();
             var opEnv = new OperatingEnvironmentElement 
             {
                 TypeLibraries =
@@ -117,7 +117,10 @@ namespace Decompiler.UnitTests.Environments.Win32
                 }
             };
             dcSvc.Expect(d => d.GetEnvironment("win32")).Return(opEnv);
-            sc.AddService<IDecompilerConfigurationService>(dcSvc);
+            dcSvc.Stub(c => c.GetPath(null)).IgnoreArguments()
+                .Do(new Func<string, string>(s => s));
+            
+            sc.AddService<IConfigurationService>(dcSvc);
         }
 
         private void When_Creating_Win32_Platform()
@@ -150,7 +153,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             var fnName = "_foo@4";
             When_Creating_Win32_Platform();
 
-            var sig = win32.SignatureFromName(fnName, arch);
+            var sig = win32.SignatureFromName(fnName);
 
             Assert.AreEqual("void ()()\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
         }

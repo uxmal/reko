@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	public class SerializedStructType : SerializedTaggedType
 	{
@@ -37,8 +37,8 @@ namespace Decompiler.Core.Serialization
 		{
 		}
 
-		[XmlElement("field", typeof (SerializedStructField))]
-		public SerializedStructField[]  Fields;
+		[XmlElement("field", typeof (StructField_v1))]
+		public StructField_v1[]  Fields;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
@@ -48,7 +48,7 @@ namespace Decompiler.Core.Serialization
 		public override DataType BuildDataType(TypeFactory factory)
 		{
 			StructureType str = factory.CreateStructureType(null, 0);
-			foreach (SerializedStructField f in Fields)
+			foreach (StructField_v1 f in Fields)
 			{
 				str.Fields.Add(new StructureField(f.Offset, f.Type.BuildDataType(factory), f.Name));
 			}
@@ -63,7 +63,7 @@ namespace Decompiler.Core.Serialization
                 sb.AppendFormat("{0}, ", Name);
             if (ByteSize > 0)
                 sb.AppendFormat("{0}, ", ByteSize);
-			foreach (SerializedStructField f in Fields)
+			foreach (StructField_v1 f in Fields)
 			{
 				sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null?f.Name: "?", f.Type);
 			}
@@ -72,7 +72,7 @@ namespace Decompiler.Core.Serialization
 		}
 	}
 
-	public class SerializedStructField
+	public class StructField_v1
 	{
 		[XmlAttribute("offset")]
 		public int Offset;
@@ -84,11 +84,11 @@ namespace Decompiler.Core.Serialization
 		[XmlElement("ptr", typeof (PointerType_v1))]
 		public SerializedType Type;
 
-		public SerializedStructField()
+		public StructField_v1()
 		{
 		}
 
-		public SerializedStructField(int offset, string name, SerializedType type)
+		public StructField_v1(int offset, string name, SerializedType type)
 		{
 			this.Offset = offset;
 			this.Name = name;

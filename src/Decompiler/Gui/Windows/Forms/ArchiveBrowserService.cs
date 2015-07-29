@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,28 @@
  */
 #endregion
 
-using Decompiler.Core.Archives;
-using Decompiler.Core.Services;
+using Reko.Core;
+using Reko.Core.Archives;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class ArchiveBrowserService : IArchiveBrowserService
     {
-        private IServiceProvider sp;
+        private IServiceProvider services;
 
         public ArchiveBrowserService(IServiceProvider sp)
         {
-            this.sp = sp;
+            this.services = sp;
         }
 
         public ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
-            IDecompilerUIService uiSvc = (IDecompilerUIService)sp.GetService(typeof(IDecompilerUIService));
+            var uiSvc = services.GetService<IDecompilerShellUiService>();
             if (uiSvc == null)
                 return null;
             using (var dlg = new ArchiveBrowserDialog())
@@ -82,8 +83,6 @@ namespace Decompiler.Gui.Windows.Forms
                 }
             }
 
-
-
             void dlg_Load(object sender, EventArgs e)
             {
                 Populate(dlg.ArchiveEntries, dlg.ArchiveTree.Nodes);
@@ -104,8 +103,6 @@ namespace Decompiler.Gui.Windows.Forms
                     treeNodeCollection.Add(node);
                 }
             }
-
-
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,27 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Design
+namespace Reko.Gui.Design
 {
     public class ProgramDesigner : TreeNodeDesigner
     {
+        private Program program;
+
         public override void Initialize(object obj)
         {
             base.Initialize(obj);
-            var program = (Program) obj;
-            Host.AddComponents(program, program.ImageMap.Segments.Values);
+            program = (Program) obj;
+            if (program.ImageMap != null)
+                Host.AddComponents(program, program.ImageMap.Segments.Values);
 
             SetTreeNodeProperties(program);
         }
@@ -44,9 +48,40 @@ namespace Decompiler.Gui.Design
             TreeNode.Text = program.Name;
             TreeNode.ImageName = "Binary.ico";
             TreeNode.ToolTipText = string.Format("{0}{1}{2}",
-                program.InputFile != null ? program.InputFile.Filename : "(No file name)",
+                program.Filename != null ? program.Filename : "(No file name)",
                 Environment.NewLine,
                 program.Image.BaseAddress);
+        }
+
+        public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditProperties: 
+                    status.Status = MenuStatus.Enabled|MenuStatus.Visible;
+                    return true;
+                }
+            }
+            return base.QueryStatus(cmdId, status, text);
+        }
+
+        public override bool Execute(CommandID cmdId)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditProperties:
+                    var dlgFactory = Services.RequireService<IDialogFactory>();
+                    var dlg = dlgFactory.CreateProgramPropertiesDialog((Program)this.Component);
+                    var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+                    uiSvc.ShowModalDialog(dlg);
+                    return true;
+                }
+            }
+            return base.Execute(cmdId);
         }
     }
 }

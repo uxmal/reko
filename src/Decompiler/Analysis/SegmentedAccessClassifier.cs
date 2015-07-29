@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Looks at member pointer uses, to see if they always are associated with the same base pointer / segment.
@@ -38,7 +38,7 @@ namespace Decompiler.Analysis
 		private SsaIdentifierCollection ssaIds;
 		private Dictionary<Identifier,Identifier> assocs;
 		private Dictionary<Identifier,Constant> consts;
-		private Identifier overAssociatedId = new Identifier("overAssociated", -1, VoidType.Instance, null);
+		private Identifier overAssociatedId = new Identifier("overAssociated", VoidType.Instance, null);
         private Constant overAssociatedConst = Constant.Real64(0.0);
 
 		private int sequencePoint;

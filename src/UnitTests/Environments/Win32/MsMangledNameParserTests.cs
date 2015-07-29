@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Environments.Win32;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Environments.Win32;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Win32
 {
     [TestFixture]
     public class MsMangledNameParserTests
@@ -127,7 +127,12 @@ namespace Decompiler.UnitTests.Environments.Win32
                 return sb;
             }
 
-            public StringBuilder VisitArray(SerializedArrayType array)
+            public StringBuilder VisitArray(ArrayType_v1 array)
+            {
+                throw new NotImplementedException();
+            }
+
+            public StringBuilder VisitCode(CodeType_v1 array)
             {
                 throw new NotImplementedException();
             }
@@ -157,6 +162,11 @@ namespace Decompiler.UnitTests.Environments.Win32
                 }
                 sb.Append(")");
                 return sb;
+            }
+
+            public StringBuilder VisitString(StringType_v2 str)
+            {
+                throw new NotImplementedException();
             }
 
             public StringBuilder VisitStructure(SerializedStructType structure)
@@ -448,6 +458,14 @@ namespace Decompiler.UnitTests.Environments.Win32
             RunTest(
                 "__thiscall public: CNoTrackObject * CProcessLocalObject::GetData(__stdcall public: CNoTrackObject *() *)",
                 "?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z");
+        }
+
+        [Test]
+        public void PMNP_regression9()
+        {
+            RunTest(
+                "__cdecl public: void CLASS_DESCRIPTOR::CLASS_DESCRIPTOR()",
+                "??0CLASS_DESCRIPTOR@@QEAA@XZ");
         }
     }
 }

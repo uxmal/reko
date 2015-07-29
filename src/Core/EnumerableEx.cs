@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Extension methods for Enumerable classes
@@ -66,6 +66,17 @@ namespace Decompiler.Core
             this IEnumerable<TElement> source)
         {
             return new HashSet<TElement>(source);
+        }
+
+        public static SortedSet<TElement> ToSortedSet<TElement>(
+            this IEnumerable<TElement> source)
+        {
+            SortedSet<TElement> set = new SortedSet<TElement>();
+            foreach (var element in source)
+            {
+                set.Add(element);
+            }
+            return set;
         }
     }
 }

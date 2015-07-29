@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,23 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Arch.Cil;
+using Reko.Core;
+using Reko.Arch.Cil;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Cil
+namespace Reko.UnitTests.Arch.Cil
 {
     [TestFixture]
     public class CilDisassemblerTests
     {
         private void RunTest(string sExp, params byte[] bytes)
         {
-            var image = new LoadedImage(new Address(0x0100000), bytes);
-            var dasm = new CilDisassembler(image.CreateLeReader(0));
+            var image = new LoadedImage(Address.Ptr32(0x0100000), bytes);
+            var dasm = new CilDisassembler(image.CreateLeReader(0)).GetEnumerator();
             Assert.IsTrue(dasm.MoveNext());
             var instr = dasm.Current;
             Assert.AreEqual(sExp, instr.ToString());

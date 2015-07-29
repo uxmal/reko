@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis.Fragments
+namespace Reko.UnitTests.Analysis.Fragments
 {
     public static class EvenOdd
     {
@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Analysis.Fragments
             var r1 = m.Register(1);
             m.BranchIf(m.Eq0(r1), "done");
             m.Assign(r1, m.ISub(r1, 1));
-            m.Call("odd");
+            m.Call("odd", 4);
             m.Assign(r1, m.Not(r1));
             m.Return();
 
@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Analysis.Fragments
             r1 = m.Register(1);
             m.BranchIf(m.Eq(r1, 1), "done");
             m.Assign(r1, m.ISub(r1, 1));
-            m.Call("event");
+            m.Call("event", 4);
             m.Assign(r1, m.Not(r1));
             m.Return();
 

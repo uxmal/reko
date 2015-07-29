@@ -1,5 +1,6 @@
 // Before ///////
 // VectorFragment
+// Return size: 0
 void VectorFragment()
 VectorFragment_entry:
 	// succ:  l1
@@ -9,6 +10,7 @@ VectorFragment_exit:
 
 // After ///////
 // VectorFragment
+// Return size: 0
 void VectorFragment()
 VectorFragment_entry:
 	// succ:  l1
@@ -18,11 +20,11 @@ VectorFragment_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))
 	T_2 (in v : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

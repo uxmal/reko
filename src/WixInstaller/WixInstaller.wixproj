@@ -6,7 +6,7 @@
     <ProductVersion>3.7</ProductVersion>
     <ProjectGuid>b1916638-ef20-4692-8c95-1c5ad6c67d30</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>decompiler-0.2.5</OutputName>
+    <OutputName>decompiler-0.4.5.0</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -25,17 +25,25 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arch\Arm\Arm-2010.csproj">
-      <Name>Arm-2010</Name>
+    <ProjectReference Include="..\Arch\Arm\Arm.csproj">
+      <Name>Arm</Name>
       <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\M68k\M68k-2010.csproj">
-      <Name>M68k-2010</Name>
+    <ProjectReference Include="..\Arch\M68k\M68k.csproj">
+      <Name>M68k</Name>
       <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Mips\Mips.csproj">
+      <Name>Mips</Name>
+      <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -49,32 +57,32 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Pdp11\Pdp11-2010.csproj">
-      <Name>Pdp11-2010</Name>
+    <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
+      <Name>Pdp11</Name>
       <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\PowerPC\PowerPC-2010.csproj">
-      <Name>PowerPC-2010</Name>
+    <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
+      <Name>PowerPC</Name>
       <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Sparc\Sparc-2010.csproj">
-      <Name>Sparc-2010</Name>
+    <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
+      <Name>Sparc</Name>
       <Project>{454d9734-edf3-4646-8c7f-8449c68eb826}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
-      <Name>X86-2010</Name>
+    <ProjectReference Include="..\Arch\X86\X86.csproj">
+      <Name>X86</Name>
       <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
@@ -89,17 +97,33 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Core\Core-2010.csproj">
-      <Name>Core-2010</Name>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Name>Core</Name>
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Decompiler\Decompiler-2010.csproj">
-      <Name>Decompiler-2010</Name>
+    <ProjectReference Include="..\Decompiler\Decompiler.csproj">
+      <Name>Decompiler</Name>
       <Project>{5e21c722-f9c6-4192-95ec-89fcef2acdb7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Drivers\CmdLine\CmdLine.csproj">
+      <Name>CmdLine</Name>
+      <Project>{d439868b-c78f-472f-82f2-1e3e5c88163b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Drivers\WindowsDecompiler\WindowsDecompiler.csproj">
+      <Name>WindowsDecompiler</Name>
+      <Project>{1c5dac93-1202-4704-abd5-3e49adcf0e81}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -113,24 +137,56 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\MacOS\MacOS-2010.csproj">
-      <Name>MacOS-2010</Name>
+    <ProjectReference Include="..\Environments\C64\C64.csproj">
+      <Name>C64</Name>
+      <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
+      <Name>MacOS</Name>
       <Project>{d0d1798c-08f7-4de6-94e9-cc382e1fbec8}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Msdos\Msdos-2010.csproj">
-      <Name>Msdos-2010</Name>
+    <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
+      <Name>Msdos</Name>
       <Project>{a943cf9b-7fcd-413a-b6d9-a199a69af217}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Win32\Win32-2010.csproj">
-      <Name>Win32-2010</Name>
+    <ProjectReference Include="..\Environments\Ps3\Ps3.csproj">
+      <Name>Ps3</Name>
+      <Project>{1a60f017-4e4c-48f8-bb97-47d52186c7fd}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\RiscOS\RiscOS.csproj">
+      <Name>RiscOS</Name>
+      <Project>{1976b356-7c5e-411a-a409-d3eb349e44fa}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\SysV\SysV.csproj">
+      <Name>SysV</Name>
+      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Win32\Win32.csproj">
+      <Name>Win32</Name>
       <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
@@ -145,24 +201,24 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex-2010.csproj">
-      <Name>BinHex-2010</Name>
+    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj">
+      <Name>BinHex</Name>
       <Project>{3f73b4eb-4ee6-45df-aa07-06ecdefa5bd9}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\Coff\Coff-2010.csproj">
-      <Name>Coff-2010</Name>
+    <ProjectReference Include="..\ImageLoaders\Coff\Coff.csproj">
+      <Name>Coff</Name>
       <Project>{02595a47-2592-441d-b44d-8ea8c19ee5e2}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\Elf\Elf-2010.csproj">
-      <Name>Elf-2010</Name>
+    <ProjectReference Include="..\ImageLoaders\Elf\Elf.csproj">
+      <Name>Elf</Name>
       <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
@@ -177,25 +233,25 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\MachO\MachO-2010.csproj">
-      <Name>MachO-2010</Name>
+    <ProjectReference Include="..\ImageLoaders\MachO\MachO.csproj">
+      <Name>MachO</Name>
       <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe-2010.csproj">
-      <Name>MzExe-2010</Name>
+    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
+      <Name>MzExe</Name>
       <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\WindowsDecompiler\WindowsDecompiler-2010.csproj">
-      <Name>WindowsDecompiler-2010</Name>
-      <Project>{1c5dac93-1202-4704-abd5-3e49adcf0e81}</Project>
+    <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj">
+      <Name>OdbgScript</Name>
+      <Project>{2882376f-663a-4fc8-842c-b0300a6829e8}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

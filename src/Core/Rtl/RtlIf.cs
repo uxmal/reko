@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Decompiler.Core.Rtl
+namespace Reko.Core.Rtl
 {
     /// <summary>
     /// Models conditionally executed statements, like those that appear in the ARM architecture.

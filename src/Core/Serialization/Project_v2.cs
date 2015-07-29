@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     /// <summary>
     /// Seralization format for decompiler projects.
@@ -48,6 +48,7 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("input", typeof(DecompilerInput_v2))]
         [XmlElement("metadata",typeof(MetadataFile_v2))]
+        [XmlElement("asm", typeof(AssemblerFile_v2))]
         public List<ProjectFile_v2> Inputs;
 
         [XmlElement("output")]
@@ -74,11 +75,17 @@ namespace Decompiler.Core.Serialization
     public interface IProjectFileVisitor_v2<T>
     {
         T VisitInputFile(DecompilerInput_v2 input);
-        T VisitMetadataFile(MetadataFile_v2 input);
+        T VisitMetadataFile(MetadataFile_v2 metadata);
+        T VisitAssemblerFile(AssemblerFile_v2 asm);
     }
 
     public class DecompilerInput_v2 : ProjectFile_v2
     {
+        public DecompilerInput_v2()
+        {
+            UserGlobalData = new List<GlobalDataItem_v2>(); 
+        }
+
         [XmlElement("address")]
         public string Address;
 
@@ -93,6 +100,9 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("call")]
         public List<SerializedCall_v1> UserCalls;
+
+        [XmlElement("global")]
+        public List<GlobalDataItem_v2> UserGlobalData;
 
         [XmlElement("disassembly")]
         public string DisassemblyFilename;
@@ -109,6 +119,12 @@ namespace Decompiler.Core.Serialization
         [XmlElement("global-vars")]
         public string GlobalsFilename;
 
+        [XmlElement("onLoad")]
+        public Script_v2 OnLoadedScript;
+
+        [XmlElement("options")]
+        public ProgramOptions_v2 Options;
+
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
             return visitor.VisitInputFile(this);
@@ -120,9 +136,35 @@ namespace Decompiler.Core.Serialization
         [XmlElement("loader")]
         public string LoaderTypeName;
 
+        [XmlElement("module")]
+        public string ModuleName;
+
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
             return visitor.VisitMetadataFile(this);
         }
+    }
+
+    public class AssemblerFile_v2 : ProjectFile_v2
+    {
+        [XmlElement("assembler")]
+        public string Assembler;
+
+        public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
+        {
+            return visitor.VisitAssemblerFile(this);
+        }
+    }
+
+    public class Script_v2
+    {
+        [XmlAttribute]
+        public bool Enabled;
+
+        [XmlAttribute]
+        public string Interpreter;
+
+        [XmlText]
+        public string Script;
     }
 }

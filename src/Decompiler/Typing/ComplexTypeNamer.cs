@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Gives names to complex types.
@@ -126,7 +126,7 @@ namespace Decompiler.Typing
 
         public DataType VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref;
         }
 
         public DataType VisitTypeVariable(TypeVariable tv)

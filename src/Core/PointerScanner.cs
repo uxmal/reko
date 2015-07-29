@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,43 +24,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
-    /// PointerScanners are used by the user to guess at pointers based on byte patterns.
+    /// PointerScanners are used by the user to guess at pointers based on bit patterns.
     /// </summary>
-    public abstract class PointerScanner : IEnumerable<uint>
+    /// <remarks>
+    /// Each architecture should create its own class derived from this class and implement
+    /// the abstract method.s
+    /// </remarks>
+    public abstract class PointerScanner<T> : IEnumerable<T>
     {
         private ImageReader rdr;
-        private HashSet<uint> knownLinAddresses;
+        private HashSet<T> knownLinAddresses;
         private PointerScannerFlags flags;
 
-        public PointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public PointerScanner(ImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
         {
             this.rdr = rdr;
             this.knownLinAddresses = knownLinAddresses;
             this.flags = flags;
         }
 
-        public IEnumerator<uint> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new Enumerator(this, this.rdr.Clone());
         }
 
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
-        private class Enumerator : IEnumerator<uint>
+        private class Enumerator : IEnumerator<T>
         {
-            private PointerScanner scanner;
+            private PointerScanner<T> scanner;
             private ImageReader r;
 
-            public Enumerator(PointerScanner scanner, ImageReader rdr)
+            public Enumerator(PointerScanner<T> scanner, ImageReader rdr)
             {
                 this.scanner = scanner;
                 this.r = rdr;
             }
 
-            public uint Current { get; set; }
+            public T Current { get; set; }
 
             object System.Collections.IEnumerator.Current { get { return Current; } }
 
@@ -69,7 +73,7 @@ namespace Decompiler.Core
                 while (r.IsValid)
                 {
                     var rdr = this.r;
-                    uint linAddrInstr;
+                    T linAddrInstr;
                     if (scanner.ProbeForPointer(rdr, out linAddrInstr))
                     {
                         Current = linAddrInstr;
@@ -87,47 +91,60 @@ namespace Decompiler.Core
             public void Dispose() { }
         }
 
-        public virtual bool ProbeForPointer(ImageReader rdr, out uint linAddrInstr)
+        public virtual bool ProbeForPointer(ImageReader rdr, out T linAddrInstr)
         {
-            linAddrInstr = rdr.Address.Linear;
-            uint target;
-            var opcode = ReadOpcode(rdr);
-            if ((flags & PointerScannerFlags.Calls) != 0)
+            linAddrInstr = GetLinearAddress(rdr.Address);
+            T target;
+            uint opcode;
+            if (TryPeekOpcode(rdr, out opcode))
             {
-                if (MatchCall(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                if ((flags & PointerScannerFlags.Calls) != 0)
                 {
-                    rdr.Seek(PointerAlignment);
-                    return true;
+                    if (MatchCall(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                    {
+                        rdr.Seek(PointerAlignment);
+                        return true;
+                    }
                 }
-            }
-            if ((flags & PointerScannerFlags.Jumps) != 0)
-            {
-                if (MatchJump(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                if ((flags & PointerScannerFlags.Jumps) != 0)
                 {
-                    rdr.Seek(PointerAlignment);
-                    return true;
+                    if (MatchJump(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                    {
+                        rdr.Seek(PointerAlignment);
+                        return true;
+                    }
                 }
-            }
-            if ((flags & PointerScannerFlags.Pointers) != 0)
-            {
-                if (PeekPointer(rdr, out target) && knownLinAddresses.Contains(target))
+                if ((flags & PointerScannerFlags.Pointers) != 0)
                 {
-                    rdr.Seek(PointerAlignment);
-                    return true;
+                    if (TryPeekPointer(rdr, out target) && knownLinAddresses.Contains(target))
+                    {
+                        rdr.Seek(PointerAlignment);
+                        return true;
+                    }
                 }
             }
             rdr.Seek(PointerAlignment);
             return false;
         }
 
+        public abstract T GetLinearAddress(Address address);
+
         public abstract int PointerAlignment { get; }
 
-        public abstract uint ReadOpcode(ImageReader rdr);
+        /// <summary>
+        /// The implementations of this abstract method should read a chunk of bytes
+        /// equal to the size of an opcode in the relevant architecture.
+        /// </summary>
+        /// <remarks>Most architectures have opcode whose size <= 32 bits, which should
+        /// fit comfortably in a System.UInt32.</remarks>
+        /// <param name="rdr"></param>
+        /// <returns>The opcode at the current position of the reader.</returns>
+        public abstract bool TryPeekOpcode(ImageReader rdr, out uint opcode);
 
-        public abstract bool PeekPointer(ImageReader rdr, out uint target);
+        public abstract bool TryPeekPointer(ImageReader rdr, out T target);
 
-        public abstract bool MatchCall(ImageReader rdr, uint opcode, out uint target);
+        public abstract bool MatchCall(ImageReader rdr, uint opcode, out T target);
 
-        public abstract bool MatchJump(ImageReader rdr, uint opcode, out uint target);
+        public abstract bool MatchJump(ImageReader rdr, uint opcode, out T target);
     }
 }

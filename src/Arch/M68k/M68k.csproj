@@ -6,8 +6,8 @@
     <ProjectGuid>{38A94634-B2B2-4A89-AF02-2A2898B93343}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.M68k</RootNamespace>
-    <AssemblyName>Decompiler.Arch.M68k</AssemblyName>
+    <RootNamespace>Reko.Arch.M68k</RootNamespace>
+    <AssemblyName>Reko.Arch.M68k</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -60,10 +60,10 @@
   <ItemGroup>
     <Compile Include="AddressOperand.cs" />
     <Compile Include="IndexedOperand.cs" />
-    <Compile Include="InstructionFormatter.cs" />
     <Compile Include="M68kArchitecture.cs" />
     <Compile Include="M68kDisassembler.cs" />
     <Compile Include="M68kInstruction.cs" />
+    <Compile Include="M68kProcedureSerializer.cs" />
     <Compile Include="M68kState.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />

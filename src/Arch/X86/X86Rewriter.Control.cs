@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
+    /// <summary>
+    /// Rewrite rules for control flow instructions.
+    /// </summary>
     public partial class X86Rewriter
     {
         private Expression CreateTestCondition(ConditionCode cc, Opcode opcode)
@@ -121,7 +124,7 @@ namespace Decompiler.Arch.X86
             if (IsRealModeReboot(instrCur))
 			{
                 PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", VoidType.Instance, 0);
-                reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
+                reboot.Characteristics = new Core.Serialization.ProcedureCharacteristics();
                 reboot.Characteristics.Terminates = true;
                 emitter.SideEffect(PseudoProc(reboot, VoidType.Instance));
 				return;
@@ -222,25 +225,20 @@ namespace Decompiler.Arch.X86
         /// <returns></returns>
         private bool IsRealModeReboot(IntelInstruction instrCur)
         {
-            X86AddressOperand addrOp = instrCur.op1 as X86AddressOperand;
-            bool isRealModeReboot = addrOp != null && addrOp.Address.Linear == 0xFFFF0;
+            var addrOp = instrCur.op1 as X86AddressOperand;
+            bool isRealModeReboot = addrOp != null && addrOp.Address.ToLinear() == 0xFFFF0;
             return isRealModeReboot;
         }
 
         public Address OperandAsCodeAddress(MachineOperand op)
         {
-            X86AddressOperand ado = op as X86AddressOperand;
+            AddressOperand ado = op as AddressOperand;
             if (ado != null)
                 return ado.Address;
             ImmediateOperand imm = op as ImmediateOperand;
             if (imm != null)
             {
-                if (arch.ProcessorMode == ProcessorMode.Protected32)
-                {
-                    return new Address(imm.Value.ToUInt32());
-                }
-                else
-                    return new Address(instrCur.Address.Selector, imm.Value.ToUInt32());
+                return orw.ImmediateAsAddress(instrCur.Address, imm);
             }
             return null;
         }

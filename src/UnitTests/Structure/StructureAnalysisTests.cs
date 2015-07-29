@@ -1,16 +1,16 @@
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
+using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class StructureAnalysisTests
     {
         [Test]
-        public void UnstructuredJumpOutOfLoop()
+        public void StrAn_UnstructuredJumpOutOfLoop()
         {
             string sExp =
 @"Node 1: Block: ProcedureBuilder_entry
@@ -90,7 +90,7 @@ unstructuredexit
             Assert.IsTrue(sa.ProcedureStructure.Nodes[1].Loop is TestlessLoop);
         }
 
-        private void RunTest(ProcGenerator gen, string sExp)
+        private void RunTest(Action<ProcedureBuilder> gen, string sExp)
         {
             ProcedureBuilder mock = new ProcedureBuilder();
             gen(mock);

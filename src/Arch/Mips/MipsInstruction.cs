@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Reko.Core.Machine;
 
-namespace Decompiler.Arch.Mips
+namespace Reko.Arch.Mips
 {
     public class MipsInstruction : MachineInstruction
     {
@@ -36,9 +29,11 @@ namespace Decompiler.Arch.Mips
         public MachineOperand op2;
         public MachineOperand op3;
 
+        public override int OpcodeAsInteger { get { return (int) opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(opcode.ToString());
+            writer.WriteOpcode(opcode.ToString());
             if (op1 != null)
             {
                 writer.Tab();

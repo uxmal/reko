@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Core.Output;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Core.Output;
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Base class for all decompiled expressions.
@@ -61,6 +61,12 @@ namespace Decompiler.Core.Expressions
         public abstract T Accept<T,C>(ExpressionVisitor<T, C> visitor, C context);
         public abstract Expression CloneExpression();
         
+        public bool As<T>(out T value) where T : Expression
+        {
+            value = this as T;
+            return value != null;
+        }
+
         /// <summary>
         /// Applies logical (not-bitwise) negation to the expression.
         /// </summary>

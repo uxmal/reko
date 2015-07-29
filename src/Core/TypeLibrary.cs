@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
-	public class TypeLibrary
+    public class TypeLibrary
 	{
 		public TypeLibrary() : this(
             new Dictionary<string, DataType>(),
@@ -37,7 +39,9 @@ namespace Decompiler.Core
         {
         }
 
-        public TypeLibrary(IDictionary<string,DataType> types, IDictionary<string, ProcedureSignature> procedures)
+        public TypeLibrary(
+            IDictionary<string,DataType> types,
+            IDictionary<string, ProcedureSignature> procedures)
         {
             this.Types = types;
             this.Signatures = procedures;
@@ -45,7 +49,8 @@ namespace Decompiler.Core
             this.ServicesByVector = new Dictionary<int, SystemService>();
         }
 
-        public string LibraryName { get; set; }
+        public string Filename { get; set; }
+        public string ModuleName { get; set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
         public IDictionary<string, SystemService> ServicesByName { get; private set; }
@@ -65,28 +70,28 @@ namespace Decompiler.Core
 			}
 		}
 
-		public void Load(IProcessorArchitecture arch, string fileName)
+		public static TypeLibrary Load(IProcessorArchitecture arch, string fileName)
 		{
-			string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR") ?? ".";
-			// TODO: extract runtime files ( like "realmodeintservices.xml") to their own directory ?
-
-			string libPath = Path.Combine(prefix,"src","Environments","Win32");
-			libPath = Path.Combine(libPath,fileName);
+            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var libPath = Path.Combine(prefix, fileName);
+            if (!File.Exists(libPath))
+            {
+                libPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            }
 			XmlSerializer ser = SerializedLibrary.CreateSerializer();
 			SerializedLibrary slib;
 			using (FileStream stm = new FileStream(libPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-            Load(arch, slib);
+            return Load(arch, slib);
 		}
 
-        public void Load(IProcessorArchitecture arch, SerializedLibrary slib)
+        public static TypeLibrary Load(IProcessorArchitecture arch, SerializedLibrary slib)
         {
             var tlldr = new TypeLibraryLoader(arch, true);
             var tlib = tlldr.Load(slib);
-            Signatures = tlib.Signatures;
-            Types = tlib.Types;
+            return tlib;
         }
 
 		public ProcedureSignature Lookup(string procedureName)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	/// <summary>
 	/// Serialization format for procedure arguments.
@@ -49,7 +49,7 @@ namespace Decompiler.Core.Serialization
         [XmlElement("stack", typeof(StackVariable_v1))]
         [XmlElement("fpustack", typeof(FpuStackVariable_v1))]
         [XmlElement("seq", typeof(SerializedSequence))]
-        [XmlElement("flag", typeof(SerializedFlag))]
+        [XmlElement("flag", typeof(FlagGroup_v1))]
         [ReadOnly(true)]
         public SerializedKind Kind { get; set; }
 

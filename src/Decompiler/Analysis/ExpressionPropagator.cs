@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// Propagates expressions used in TrashedRegisters to replace expressions of the type
@@ -260,9 +260,11 @@ namespace Decompiler.Analysis
             if (simp is Constant)
                 return new Result { Value = simp, PropagatedExpression = simp };
 
-            if (IsConstantOffsetFromFramePointer(simp))
+            if (IsConstantOffsetFromFramePointer(simp) &&
+                !(e is MemoryAccess || e is SegmentedAccess))
+            {
                 return new Result { Value = simp, PropagatedExpression = simp };
-
+            }
             return new Result { Value = simp, PropagatedExpression = e };
         }
 

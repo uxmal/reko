@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
     /// <summary>
-    /// Refers to another type, perhaps by name
+    /// Refers to another type by name
     /// </summary>
     public class TypeReference : DataType
     {
@@ -54,7 +54,7 @@ namespace Decompiler.Core.Types
 
         public override DataType Clone()
         {
-            return new TypeReference(this.Name, this.Referent.Clone());
+            return this;
         }
     }
 }

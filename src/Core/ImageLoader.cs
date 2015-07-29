@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Abstract base class for image loaders. These examine a raw image, and generate a new,
@@ -30,32 +30,47 @@ namespace Decompiler.Core
 	/// </summary>
 	public abstract class ImageLoader
 	{
-        public ImageLoader(IServiceProvider services, byte[] imgRaw)
+        public ImageLoader(IServiceProvider services, string filename, byte[] imgRaw)
         {
             this.Services = services;
+            this.Filename = filename;
             this.RawImage = imgRaw;
         }
 
-        public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get; private set; }
+        public IServiceProvider Services { get; private set; }
 
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.
         /// </summary>
-        public abstract Address PreferredBaseAddress { get; }
+        public abstract Address PreferredBaseAddress { get; set; }
+
+        /// <summary>
+        /// Optional loader-specific argument specified in app.config.
+        /// </summary>
+        public string Argument { get; set; }
 
         /// <summary>
         /// The image as it appears on the storage medium before being loaded.
         /// </summary>
         public byte[] RawImage { get; private set; }
 
-        public IServiceProvider Services { get; private set; }
+        /// <summary>
+        /// The name of the file the image was loaded from.
+        /// </summary>
+        public string Filename { get; private set; }
+
+        /// <summary>
+        /// Loads the header of the executable, so that its contents can be summarized. 
+        /// </summary>
+        /// <returns></returns>
+        public ImageHeader LoadHeader(string argument) { throw new NotImplementedException();  }
 
         /// <summary>
 		/// Loads the image into memory starting at the specified address
 		/// </summary>
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
-        public abstract LoaderResults Load(Address addrLoad);
+        public abstract Program Load(Address addrLoad);
 
         /// <summary>
         /// Performs fix-ups of the loaded image, adding findings to the supplied collections.

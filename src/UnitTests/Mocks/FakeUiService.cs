@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
  */
 #endregion
 
-using Decompiler.Gui;
+using Reko.Core.Services;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -26,9 +27,9 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
-    public class FakeUiService: IDecompilerUIService
+    public class FakeUiService : IDecompilerUIService
     {
         private bool simulateUserCancel;
         private string lastFileName;
@@ -39,6 +40,11 @@ namespace Decompiler.UnitTests.Mocks
             Debug.Print("*** Exception reported: {0}", ex);
             Debug.Print("{0}", ex.StackTrace);
             throw new ApplicationException(string.Format(format, args), ex);
+        }
+
+        public bool Prompt(string s)
+        {
+            throw new NotImplementedException();
         }
 
         public DialogResult ShowModalDialog(Form dlg)
@@ -95,6 +101,12 @@ namespace Decompiler.UnitTests.Mocks
         {
             get { return lastDialogShown; }
         }
+
+
+        public void ShowMessage(string msg)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class FakeShellUiService : 
@@ -102,6 +114,10 @@ namespace Decompiler.UnitTests.Mocks
         IDecompilerShellUiService,
         ICommandTarget
     {
+        public IEnumerable<IWindowFrame> DocumentWindows { get; set; }
+
+        public IEnumerable<IWindowFrame> ToolWindows { get; set; }
+
         public ContextMenu GetContextMenu(int menuId)
         {
             return new ContextMenu();

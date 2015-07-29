@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class RtlStatementStream : ExpressionEmitter
     {
@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Emit(RtlInstruction instr)
         {
-            stms.Add(new RtlInstructionCluster(new Address(linAddress), 4, instr));
+            stms.Add(new RtlInstructionCluster(Address.Ptr32(linAddress), 4, instr));
             linAddress += 4;
             return instr;
         }
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Goto(uint target)
         {
-            var g = new RtlGoto(new Address(target), RtlClass.Transfer);
+            var g = new RtlGoto(Address.Ptr32(target), RtlClass.Transfer);
             return Emit(g);
         }
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Arch.Arm;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Arch.Arm;
+using Reko.Core;
+using Reko.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,21 +28,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Arm
+namespace Reko.UnitTests.Arch.Arm
 {
     public abstract class ArmTestBase
     {
         protected static ArmInstruction Disassemble(byte[] bytes)
         {
-            var image = new LoadedImage(new Address(0x00100000), bytes);
+            var image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
             var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateLeReader(0));
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         protected MachineInstruction Disassemble(uint instr)
         {
-            var image = new LoadedImage(new Address(0x00100000), new byte[4]);
+            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             w.WriteLeUInt32(0, instr);
             var arch = CreateArchitecture();
@@ -53,12 +52,12 @@ namespace Decompiler.UnitTests.Arch.Arm
 
         protected virtual IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
         {
-            return arch.CreateDisassembler(rdr);
+            return arch.CreateDisassembler(rdr).GetEnumerator();
         }
 
         protected MachineInstruction DisassembleBits(string bitPattern)
         {
-            var image = new LoadedImage(new Address(0x00100000), new byte[4]);
+            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);
@@ -66,8 +65,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]);
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateLeReader(0));
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         protected abstract IProcessorArchitecture CreateArchitecture();
@@ -104,10 +102,10 @@ namespace Decompiler.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_Cond_Eq()
+        public void ArmDasm_andseq()
         {
-            var instr = Disassemble(0x00111111);
-            Assert.AreEqual(Condition.eq, ((ArmInstruction) instr).Cond);
+            var instr = Disassemble(0x00121003);
+            Assert.AreEqual("andseq\tr1,r2,r3", instr.ToString());
         }
 
         [Test]
@@ -135,42 +133,42 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_eorcss_rr()
         {
             var instr = Disassemble(0x20321003);
-            Assert.AreEqual("eorcss\tr1,r2,r3", instr.ToString());
+            Assert.AreEqual("eorscs\tr1,r2,r3", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_subccs_rr_lsl_3()
         {
             var instr = Disassemble(0x30521183);
-            Assert.AreEqual("subccs\tr1,r2,r3,lsl #3", instr.ToString());
+            Assert.AreEqual("subscc\tr1,r2,r3,lsl #&3", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_rsbmis_rr_lsr_32()
         {
             var instr = Disassemble(0x40721023);
-            Assert.AreEqual("rsbmis\tr1,r2,r3,lsr #&20", instr.ToString());
+            Assert.AreEqual("rsbsmi\tr1,r2,r3,lsr #&20", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_addpls_rr_asr_32()
         {
             var instr = Disassemble(0x50921043);
-            Assert.AreEqual("addpls\tr1,r2,r3,asr #&20", instr.ToString());
+            Assert.AreEqual("addspl\tr1,r2,r3,asr #&20", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_adcvss_rr_rrx_32()
         {
             var instr = Disassemble(0x60B21063);
-            Assert.AreEqual("adcvss\tr1,r2,r3,rrx #1", instr.ToString());
+            Assert.AreEqual("adcsvs\tr1,r2,r3,rrx #&1", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_sbcvcs_r1_r2_r3_lsl_r4()
         {
             var instr = Disassemble(0x70D21413);
-            Assert.AreEqual("sbcvcs\tr1,r2,r3,lsl r4", instr.ToString());
+            Assert.AreEqual("sbcsvc\tr1,r2,r3,lsl r4", instr.ToString());
         }
 
         [Test]
@@ -191,7 +189,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_mulges_r13_r14_r15()
         {
             var instr = Disassemble(0xA01D8F9Eu);
-            Assert.AreEqual("mulges\tsp,lr,pc", instr.ToString());
+            Assert.AreEqual("mulsge\tsp,lr,pc", instr.ToString());
         }
 
         [Test]
@@ -233,7 +231,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_strb_r5_r9_post_r1_lsr_3_writeback()
         {
             var instr = DisassembleBits("1110 01 110110 1001 0101 00001 000 0001");
-            Assert.AreEqual("strb\tr5,[r9,-r1,lsl #1]!", instr.ToString());
+            Assert.AreEqual("strb\tr5,[r9,-r1,lsl #&1]!", instr.ToString());
         }
 
         [Test]
@@ -244,7 +242,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_ldr_r5_r7_neg_r1()
+        public void ArmDasm_ldrble_r5_r7_neg_r1()
         {
             var instr = DisassembleBits("1101 01 111101 0111 0101 00000 000 0001");
             Assert.AreEqual("ldrble\tr5,[r7,r1]", instr.ToString());
@@ -255,13 +253,6 @@ namespace Decompiler.UnitTests.Arch.Arm
         {
             var instr = DisassembleBits("1110 00010 100 0001 0010 00001001 0011");
             Assert.AreEqual("swpb\tr2,r3,[r1]", instr.ToString());
-        }
-
-        [Test]
-        public void ArmDasm_Cmp()
-        {
-            var instr = DisassembleBits("1110 0001 0100 0101 0110 000000000000");
-            Assert.AreEqual("cmp\tr5,r0", instr.ToString());
         }
 
         [Test]
@@ -284,21 +275,28 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_ldr()
         {
             var instr = Disassemble(0xE5940008);
-            Assert.AreEqual("ldr\tr0,[r4,#8]", instr.ToString());
+            Assert.AreEqual("ldr\tr0,[r4,#&8]", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_lsl()
         {
             var instr = Disassemble(0xE1a00200);
-            Assert.AreEqual("mov\tr0,r0,lsl #4", instr.ToString());
+            Assert.AreEqual("mov\tr0,r0,lsl #&4", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_ldm()
         {
             var instr = Disassemble(0xE89B000F);
-            Assert.AreEqual("ldmia\tfp,{r0-r3}", instr.ToString());
+            Assert.AreEqual("ldm\tfp,{r0-r3}", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_ldmia()
+        {
+            var instr = Disassemble(0xE8BB000F);
+            Assert.AreEqual("ldm\tfp!,{r0-r3}", instr.ToString());
         }
 
         [Test]
@@ -320,6 +318,57 @@ namespace Decompiler.UnitTests.Arch.Arm
         {
             var instr = Disassemble(0xE92CCFF3);
             Assert.AreEqual("stmdb\tip!,{r0,r1,r4-fp,lr,pc}", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_ldrsb()
+        {
+            var instr = Disassemble(0xE1F322D1);
+            Assert.AreEqual("ldrsb\tr2,[r3,#&21]!", instr.ToString());
+            instr = Disassemble(0xE19120D3);
+            Assert.AreEqual("ldrsb\tr2,[r1,r3]", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mov()
+        {
+            var instr = Disassemble(0xE3A0B000);
+            Assert.AreEqual("mov\tfp,#0", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mov_pc()
+        {
+            var instr = Disassemble(0xE59F0010);
+            Assert.AreEqual("ldr\tr0,[pc,#&10]", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_orr()
+        {
+            var instr = Disassemble(0xe3812001);
+            Assert.AreEqual("orr\tr2,r1,#1", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mvn()
+        {
+            var instr = Disassemble(0xe3e03102);
+            Assert.AreEqual("mvn\tr3,#&80000000", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_cmn()
+        {
+            var instr = Disassemble(0xE3730001);
+            Assert.AreEqual("cmn\tr3,#1", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_strdeq()
+        {
+            var instr = Disassemble(0x00EB0FFC);
+            Assert.AreEqual("strdeq\tr0,[fp],#&FC", instr.ToString());
         }
     }
 }

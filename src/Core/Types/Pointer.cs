@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,10 @@
 using System;
 using System.IO;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
-	/// Represents a pointer type.
+	/// Represents a pointer type. Pointers point to another type, and have a size.
 	/// </summary>
 	public class Pointer : DataType
 	{
@@ -33,8 +33,8 @@ namespace Decompiler.Core.Types
 
 		public Pointer(DataType pointee, int byteSize)
 		{
-            if (byteSize == 0)
-                throw new ArgumentOutOfRangeException("byteSize", "Zero-sized pointers are not allowed.");
+            if (byteSize <= 0)
+                throw new ArgumentOutOfRangeException("byteSize", "Invalid pointer size.");
 			this.Pointee = pointee;
 			this.byteSize = byteSize;
 		}

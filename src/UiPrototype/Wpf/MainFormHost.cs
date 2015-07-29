@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 
-namespace Decompiler.UiPrototype.Wpf
+namespace Reko.UiPrototype.Wpf
 {
     public partial class MainFormHost : Form
     {

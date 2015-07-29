@@ -1,23 +1,23 @@
-liveIn: 
+// LiveLoopMock
+void LiveLoopMock()
+	// liveIn: 
 LiveLoopMock_entry:
-	def Mem0
 	def i
-liveOut: Mem0 i
-
-liveIn: 
-LiveLoopMock_exit:
-liveOut:
-
-liveIn:  Mem0
-loop:
-	i_4 = PHI(i, i_6)
-	i_6 = i_4 + 0x00000001
-	branch Mem0[i_4 + 0x00000001:byte] != 0 loop
-liveOut: Mem0 i_4 i_6
-
-liveIn:  i_4
+	def Mem0
+	goto loop
+	// liveOut: i Mem0
+	// liveIn: i_1
 l1:
-	return i_4
-liveOut:
-
+	return i_1
+	// liveOut: 
+	// liveIn: Mem0
+loop:
+	i_1 = PHI(i, i_3)
+	i_3 = i_1 + 0x00000001
+	branch Mem0[i_3:byte] != 0 loop
+	goto l1
+	// liveOut: i_1 i_3 Mem0
+	// liveIn: 
+LiveLoopMock_exit:
+	// liveOut: 
 =======================

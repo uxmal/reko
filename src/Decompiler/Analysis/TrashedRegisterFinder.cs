@@ -1,6 +1,6 @@
  #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.Typing;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Uses an interprocedural reaching definition analysis to detect which 
@@ -65,7 +65,7 @@ namespace Decompiler.Analysis
             this.prog = prog;
             this.procedures = procedures;
             this.flow = flow;
-            this.eventListener = eventListener;
+            this.eventListener = eventListener ?? NullDecompilerEventListener.Instance;
             this.worklist = new WorkList<Block>();
             this.visited = new HashSet<Block>();
             this.ecomp = new ExpressionValueComparer();
@@ -98,11 +98,10 @@ namespace Decompiler.Analysis
         {
             int initial = worklist.Count;
             Block block;
+            var e = eventListener;
             while (worklist.GetWorkItem(out block))
             {
-                var e = eventListener;
-                if (e != null)
-                    eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
+                eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
                 ProcessBlock(block);
             }
         }
@@ -121,7 +120,7 @@ namespace Decompiler.Analysis
             foreach (var proc in procedures)
             {
                 SetInitialValueOfStackPointer(proc);
-                foreach (var block in proc.ControlGraph.Blocks)
+                foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
                 {
                     RewriteBlock(block);
                 }
@@ -155,7 +154,16 @@ namespace Decompiler.Analysis
         {
             visited.Add(block);
             StartProcessingBlock(block);
-            block.Statements.ForEach(stm => stm.Instruction.Accept(this));
+            try
+            {
+                block.Statements.ForEach(stm => stm.Instruction.Accept(this));
+            } catch (Exception ex)
+            {
+                eventListener.Error(
+                    eventListener.CreateBlockNavigator(block),
+                    ex,
+                    "Error while analyzing trashed registers.");
+            }
             if (block == block.Procedure.ExitBlock)
             {
                 PropagateToProcedureSummary(block.Procedure);
@@ -169,13 +177,15 @@ namespace Decompiler.Analysis
         public void RewriteBlock(Block block)
         {
             StartProcessingBlock(block);
+            if (block.Procedure.Name.EndsWith("2BE4")) //$DEBUG
+                block.ToString();
             var propagator = new ExpressionPropagator(prog.Architecture, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)
             {
                 try
                 {
                     Instruction instr = stm.Instruction.Accept(propagator);
-#if DEBUG
+#if _DEBUG
                     string sInstr = stm.Instruction.ToString();
                     string sInstrNew = instr.ToString();
                     if (sInstr != sInstrNew)
@@ -190,10 +200,10 @@ namespace Decompiler.Analysis
                 catch (Exception ex)
                 {
                     var location = eventListener.CreateBlockNavigator(block);
-                    eventListener.AddDiagnostic(location,
-                        new ErrorDiagnostic(
-                            string.Format("An error occurred while rewriting at linear address {0:X}.", stm.LinearAddress),
-                            ex));
+                    eventListener.Error(
+                        location,
+                        ex,
+                        string.Format("An error occurred while rewriting at linear address {0:X}.", stm.LinearAddress));
                 }
             }
         }
@@ -393,7 +403,7 @@ namespace Decompiler.Analysis
             if (pc == null)
                 return false;
             var proc = pc.Procedure;
-            if (proc.Characteristics.Terminates)
+            if (proc.Characteristics != null && proc.Characteristics.Terminates)
                 return true;
             var p = proc as Procedure;
             return (p != null && flow[p].TerminatesProcess);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     /// <summary>
     /// Given an interval and its constituent nodes, finds a strongly connected component 
@@ -112,7 +112,7 @@ namespace Decompiler.Structure
         {
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
             {
-                Dump(scc);
+                // Dump(scc);
                 loopNodeSet.UnionWith(scc);
             }
         }

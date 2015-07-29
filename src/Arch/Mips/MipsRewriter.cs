@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,37 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mips
+namespace Reko.Arch.Mips
 {
+    /// <summary>
+    /// Rewrites MIPS instructions into clusters of RTL instructions.
+    /// </summary>
     public class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<MipsInstruction> dasm;
         private Frame frame;
         private RtlEmitter emitter;
         private MipsProcessorArchitecture arch;
+        private IRewriterHost host;
 
-        public MipsRewriter(MipsProcessorArchitecture arch, IEnumerator<MipsInstruction> instrs, Frame frame)
+        public MipsRewriter(MipsProcessorArchitecture arch, IEnumerable<MipsInstruction> instrs, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;
-            this.dasm = instrs;
+            this.dasm = instrs.GetEnumerator();
+            this.host = host;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -60,36 +66,153 @@ namespace Decompiler.Arch.Mips
                 instr.opcode);
             case Opcode.add:
             case Opcode.addi:
-                RewriteAdd(instr); break;
+            case Opcode.addiu:
+            case Opcode.addu:
+                RewriteAdd(instr, PrimitiveType.Word32); break;
             case Opcode.and:
             case Opcode.andi:
                 RewriteAnd(instr); break;
+            case Opcode.beq:
+            case Opcode.beql:
+                RewriteBranch0(instr, Operator.Eq, false); break;
+            case Opcode.bgez:
+            case Opcode.bgezl:
+                RewriteBranch0(instr, Operator.Ge, false); break;
+            case Opcode.bgezal:
+            case Opcode.bgezall:
+                RewriteBranch0(instr, Operator.Ge, true); break;
             case Opcode.bgtz:
-                RewriteBranch0(instr, Operator.Gt); break;
+            case Opcode.bgtzl:
+                RewriteBranch0(instr, Operator.Gt, false); break;
+            case Opcode.blez:
+            case Opcode.blezl:
+                RewriteBranch0(instr, Operator.Le, false); break;
+            case Opcode.bltz:
+            case Opcode.bltzl:
+                RewriteBranch0(instr, Operator.Lt, false); break;
+            case Opcode.bltzal:
+            case Opcode.bltzall:
+                RewriteBranch0(instr, Operator.Lt, true); break;
+            case Opcode.bne:
+            case Opcode.bnel:
+                RewriteBranch0(instr, Operator.Ne, true); break;
+            case Opcode.@break:
+                this.host.EnsurePseudoProcedure("__break", VoidType.Instance, 0); break;
+            case Opcode.dadd:
+            case Opcode.daddi:
+                RewriteAdd(instr, PrimitiveType.Word64); break;
+            case Opcode.daddiu:
+            case Opcode.daddu:
+            case Opcode.ddiv:
+            case Opcode.ddivu:
+            case Opcode.div:
+            case Opcode.divu:
+            case Opcode.dmult:
+            case Opcode.dmultu:
+            case Opcode.dsll:
+            case Opcode.dsll32:
+            case Opcode.dsllv:
+            case Opcode.dsra:
+            case Opcode.dsra32:
+            case Opcode.dsrav:
+            case Opcode.dsrl:
+            case Opcode.dsrl32:
+            case Opcode.dsrlv:
+            case Opcode.dsub:
+            case Opcode.dsubu:
+                goto default;
             case Opcode.j:
                 RewriteJump(instr); break;
+            case Opcode.jal:
+            case Opcode.jalr:
+            case Opcode.jr:
+            case Opcode.lb:
+            case Opcode.lbu:
+            case Opcode.ld:
+            case Opcode.ldl:
+            case Opcode.ldr:
+                goto default;
             case Opcode.lh:
             case Opcode.lhu:
                 RewriteLoad(instr); break;
+            case Opcode.ll:
+            case Opcode.lld:
+                goto default;
             case Opcode.lui: RewriteLui(instr); break;
+            case Opcode.lw:
+            case Opcode.lwl:
+            case Opcode.lwr:
+            case Opcode.lwu:
+            case Opcode.mfhi:
+            case Opcode.mflo:
+            case Opcode.mthi:
+            case Opcode.mtlo:
+            case Opcode.movn:
+            case Opcode.movz:
+            case Opcode.mult:
+            case Opcode.multu:
+            case Opcode.nor:
+                goto default;
             case Opcode.or:
-            case Opcode.ori: 
+            case Opcode.ori:
                 RewriteOr(instr); break;
+            case Opcode.pref:
+            case Opcode.sb:
+            case Opcode.sc:
+            case Opcode.scd:
+            case Opcode.sd:
+            case Opcode.sdl:
+            case Opcode.sdr:
+            case Opcode.sh:
+            case Opcode.slti:
+            case Opcode.sltiu:
+            case Opcode.sw:
+            case Opcode.swl:
+            case Opcode.swr:
+            case Opcode.swu:
+            case Opcode.xor:
+            case Opcode.xori:
+                goto default;
             }
             yield return cluster;
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        private void RewriteBranch0(MipsInstruction instr, BinaryOperator condOp)
+
+        //$REVIEW: push PseudoProc into the RewriterHost interface"
+        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
         {
-            var reg = RewriteOperand(instr.op1);
-            var addr = (Address) RewriteOperand(instr.op2);
-            var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
-            emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
+            return PseudoProc(ppp, retType, args);
+        }
+
+        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+        {
+            if (args.Length != ppp.Arity)
+                throw new ArgumentOutOfRangeException(
+                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                    ppp.Name,
+                    ppp.Arity,
+                    args.Length));
+
+            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
+        }
+
+        private void RewriteBranch0(MipsInstruction instr, BinaryOperator condOp, bool link)
+        {
+            if (!link)
+            {
+                var reg = RewriteOperand(instr.op1);
+                var addr = (Address)RewriteOperand(instr.op2);
+                var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
+                emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+            }
+            else
+                throw new NotImplementedException("Linked branches not implemented yet.");
         }
 
         private void RewriteJump(MipsInstruction instr)
@@ -107,14 +230,14 @@ namespace Decompiler.Arch.Mips
 
         private void RewriteLui(MipsInstruction instr)
         {
-            var immOp = (ImmediateOperand) instr.op2;
+            var immOp = (ImmediateOperand)instr.op2;
             long v = immOp.Value.ToInt16();
-            var opSrc =  Constant.Create(arch.WordWidth, v << 16);
+            var opSrc = Constant.Create(arch.WordWidth, v << 16);
             var opDst = RewriteOperand(instr.op1);
             emitter.Assign(opDst, opSrc);
         }
 
-        private void RewriteAdd(MipsInstruction instr)
+        private void RewriteAdd(MipsInstruction instr, PrimitiveType size)
         {
             var opLeft = RewriteOperand(instr.op2);
             var opRight = RewriteOperand(instr.op3);
@@ -153,7 +276,7 @@ namespace Decompiler.Arch.Mips
                 opSrc = opRight;
             else if (opRight.IsZero)
                 opSrc = opLeft;
-            else 
+            else
                 opSrc = emitter.Or(opLeft, opRight);
             var opDst = RewriteOperand(instr.op1);
             emitter.Assign(opDst, opSrc);

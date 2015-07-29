@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
-using Decompiler.Scanning;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public partial class SearchDialog : Form, ISearchDialog
     {
@@ -44,11 +44,13 @@ namespace Decompiler.Gui.Windows.Forms
             SearchButton = new ButtonWrapper(btnSearch);
             StartAddress = new TextBoxWrapper(txtStartAddress);
             EndAddress = new TextBoxWrapper(txtEndAddress);
-
+            ScannedMemory = new CheckBoxWrapper(chkScanned);
+            UnscannedMemory = new CheckBoxWrapper(chkUnscanned);
             new SearchDialogInteractor().Attach(this);
         }
 
         public IServiceProvider Services { get; set; }
+        public string InitialPattern { get; set; }
 
         public IComboBox Patterns { get; private set; }
         public ICheckBox RegexCheckbox { get; private set; }
@@ -57,6 +59,8 @@ namespace Decompiler.Gui.Windows.Forms
         public ITextBox StartAddress { get; private set; }
         public ITextBox EndAddress { get; private set; }
         public IButton SearchButton { get; private set; }
+        public ICheckBox ScannedMemory { get; private set; }
+        public ICheckBox UnscannedMemory { get; private set;}
 
         public StringSearch<byte> ImageSearcher { get; set; }
     }

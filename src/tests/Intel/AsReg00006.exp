@@ -86,13 +86,13 @@
 10004910 C3              	ret	
 10004911 66 83 FF 01     	cmp	di,01
 10004915 75 06           	jnz	1000491D
-10004917 88 9E 04 02 00 00 	mov	byte ptr [esi+00000204],bl
+10004917 88 9E 04 02 00 00 	mov	[esi+00000204],bl
 1000491D 56              	push	esi
 1000491E E8 CA 01 00 00  	call	10004AED
 10004923 8B 06           	mov	eax,[esi]
 10004925 33 ED           	xor	ebp,ebp
 10004927 83 C4 04        	add	esp,04
-1000492A 66 39 28        	cmp	word ptr [eax],bp
+1000492A 66 39 28        	cmp	[eax],bp
 1000492D 0F 85 AB 01 00 00 	jnz	10004ADE
 10004933 66 3B FD        	cmp	di,bp
 10004936 0F 8E 80 01 00 00 	jle	10004ABC
@@ -112,21 +112,21 @@
 10004970 75 70           	jnz	100049E2
 10004972 8B 56 04        	mov	edx,[esi+04]
 10004975 56              	push	esi
-10004976 89 6A 30        	mov	dword ptr [edx+30],ebp
+10004976 89 6A 30        	mov	[edx+30],ebp
 10004979 E8 6F 01 00 00  	call	10004AED
 1000497E 8B 46 04        	mov	eax,[esi+04]
 10004981 6A 01           	push	01
-10004983 89 68 30        	mov	dword ptr [eax+30],ebp
+10004983 89 68 30        	mov	[eax+30],ebp
 10004986 8B 46 04        	mov	eax,[esi+04]
 10004989 05 10 00 00 00  	add	eax,00000010
 1000498E 66 8B 48 02     	mov	cx,[eax+02]
-10004992 66 89 8E B4 00 00 00 	mov	word ptr [esi+000000B4],cx
+10004992 66 89 8E B4 00 00 00 	mov	[esi+000000B4],cx
 10004999 66 8B 10        	mov	dx,[eax]
-1000499C 66 89 96 B2 00 00 00 	mov	word ptr [esi+000000B2],dx
+1000499C 66 89 96 B2 00 00 00 	mov	[esi+000000B2],dx
 100049A3 66 8B 48 06     	mov	cx,[eax+06]
-100049A7 66 89 8E B8 00 00 00 	mov	word ptr [esi+000000B8],cx
+100049A7 66 89 8E B8 00 00 00 	mov	[esi+000000B8],cx
 100049AE 66 8B 50 04     	mov	dx,[eax+04]
-100049B2 66 89 96 B6 00 00 00 	mov	word ptr [esi+000000B6],dx
+100049B2 66 89 96 B6 00 00 00 	mov	[esi+000000B6],dx
 100049B9 8B 46 04        	mov	eax,[esi+04]
 100049BC 05 10 00 00 00  	add	eax,00000010
 100049C1 50              	push	eax
@@ -149,20 +149,20 @@
 100049F6 66 83 FF 04     	cmp	di,04
 100049FA 75 AC           	jnz	100049A8
 100049FC 8B 4E 04        	mov	ecx,[esi+04]
-100049FF 39 A9 E0 00 00 00 	cmp	dword ptr [ecx+000000E0],ebp
+100049FF 39 A9 E0 00 00 00 	cmp	[ecx+000000E0],ebp
 10004A05 0F 95 C3        	setnz	bl
 10004A08 56              	push	esi
 10004A09 E8 F3 00 00 00  	call	10004B01
 10004A0E 8B 06           	mov	eax,[esi]
 10004A10 83 C4 04        	add	esp,04
-10004A13 66 39 28        	cmp	word ptr [eax],bp
+10004A13 66 39 28        	cmp	[eax],bp
 10004A16 74 07           	jz	10004A1F
 10004A18 C6 86 AC 00 00 00 00 	mov	byte ptr [esi+000000AC],00
 10004A1F 80 BE AD 00 00 00 01 	cmp	byte ptr [esi+000000AD],01
 10004A26 75 05           	jnz	10004A2D
-10004A28 66 39 28        	cmp	word ptr [eax],bp
+10004A28 66 39 28        	cmp	[eax],bp
 10004A2B 74 DB           	jz	10004A08
-10004A2D 66 39 28        	cmp	word ptr [eax],bp
+10004A2D 66 39 28        	cmp	[eax],bp
 10004A30 75 09           	jnz	10004A3B
 10004A32 56              	push	esi
 10004A33 E8 B0 00 00 00  	call	10004AE8
@@ -174,9 +174,9 @@
 10004A48 8B 56 04        	mov	edx,[esi+04]
 10004A4B FF 92 E0 00 00 00 	call	dword ptr [edx+000000E0]
 10004A51 8B 0E           	mov	ecx,[esi]
-10004A53 66 89 01        	mov	word ptr [ecx],ax
+10004A53 66 89 01        	mov	[ecx],ax
 10004A56 8B 16           	mov	edx,[esi]
-10004A58 66 39 2A        	cmp	word ptr [edx],bp
+10004A58 66 39 2A        	cmp	[edx],bp
 10004A5B 75 64           	jnz	10004AC1
 10004A5D E9 A6 FF FF FF  	jmp	10004A08
 10004A62 56              	push	esi
@@ -259,28 +259,28 @@
 10004B26 C3              	ret	
 10004B27 8B 15 00 00 00 20 	mov	edx,[20000000]
 10004B2D 8B 44 24 04     	mov	eax,[esp+04]
-10004B31 89 42 04        	mov	dword ptr [edx+04],eax
+10004B31 89 42 04        	mov	[edx+04],eax
 10004B34 8B 44 24 08     	mov	eax,[esp+08]
-10004B38 89 42 08        	mov	dword ptr [edx+08],eax
+10004B38 89 42 08        	mov	[edx+08],eax
 10004B3B 8B 44 24 0C     	mov	eax,[esp+0C]
-10004B3F 89 42 0C        	mov	dword ptr [edx+0C],eax
+10004B3F 89 42 0C        	mov	[edx+0C],eax
 10004B42 8B 44 24 10     	mov	eax,[esp+10]
-10004B46 89 42 10        	mov	dword ptr [edx+10],eax
+10004B46 89 42 10        	mov	[edx+10],eax
 10004B49 8B 44 24 14     	mov	eax,[esp+14]
-10004B4D 89 42 14        	mov	dword ptr [edx+14],eax
+10004B4D 89 42 14        	mov	[edx+14],eax
 10004B50 8B 44 24 18     	mov	eax,[esp+18]
-10004B54 89 42 1C        	mov	dword ptr [edx+1C],eax
+10004B54 89 42 1C        	mov	[edx+1C],eax
 10004B57 C3              	ret	
 10004B58 C3              	ret	
 10004B59 8B 15 00 00 00 20 	mov	edx,[20000000]
 10004B5F 8B 44 24 04     	mov	eax,[esp+04]
-10004B63 89 42 04        	mov	dword ptr [edx+04],eax
+10004B63 89 42 04        	mov	[edx+04],eax
 10004B66 8B 44 24 08     	mov	eax,[esp+08]
-10004B6A 89 42 08        	mov	dword ptr [edx+08],eax
+10004B6A 89 42 08        	mov	[edx+08],eax
 10004B6D 8B 44 24 0C     	mov	eax,[esp+0C]
-10004B71 89 42 0C        	mov	dword ptr [edx+0C],eax
+10004B71 89 42 0C        	mov	[edx+0C],eax
 10004B74 8B 44 24 10     	mov	eax,[esp+10]
-10004B78 89 42 10        	mov	dword ptr [edx+10],eax
+10004B78 89 42 10        	mov	[edx+10],eax
 10004B7B 8B 44 24 14     	mov	eax,[esp+14]
-10004B7F 89 42 14        	mov	dword ptr [edx+14],eax
+10004B7F 89 42 14        	mov	[edx+14],eax
 10004B82 C3              	ret	

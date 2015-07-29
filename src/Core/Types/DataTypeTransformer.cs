@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Implements the "Visitor" pattern on types, with the intent of returning
@@ -79,9 +79,9 @@ namespace Decompiler.Core.Types
 
         public virtual DataType VisitMemberPointer(MemberPointer memptr)
 		{
-			memptr.Pointee = memptr.Pointee.Accept(this);
-			memptr.BasePointer = memptr.BasePointer.Accept(this);
-			return memptr;
+			var pointee = memptr.Pointee.Accept(this);
+			var basePointer = memptr.BasePointer.Accept(this);
+            return new MemberPointer(basePointer, pointee, memptr.Size);
 		}
 
         public virtual DataType VisitPointer(Pointer ptr)
@@ -92,7 +92,6 @@ namespace Decompiler.Core.Types
 
         public virtual DataType VisitString(StringType str)
         {
-            return str.CharType.Accept(this);
             return str;
         }
 

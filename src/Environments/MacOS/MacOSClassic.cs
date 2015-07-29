@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,45 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Lib;
+using Reko.Core.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.MacOS
+namespace Reko.Environments.MacOS
 {
     public class MacOSClassic : Platform
     {
         private MacOsRomanEncoding encoding;
+        private TypeLibrary[] TypeLibs;
 
         public MacOSClassic(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
             encoding = new MacOsRomanEncoding();
+            LoadMacOsServices();
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.a7.SetAliases(bitset, true);
+            return bitset;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            if (TypeLibs.Length == 0)
+                return null;
+            SystemService svc;
+            this.TypeLibs[0].ServicesByVector.TryGetValue(vector&0xFFFF , out svc);
+            return svc;
         }
 
         public override string DefaultCallingConvention
@@ -50,9 +69,30 @@ namespace Decompiler.Environments.MacOS
             get { return encoding; }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            return base.LookupProcedureByOrdinal(moduleName, ordinal);
+        }
+
+        public void LoadMacOsServices()
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var envCfg = cfgSvc.GetEnvironment("macOs");
+            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+            this.TypeLibs = ((IEnumerable)envCfg.TypeLibraries)
+                .OfType<ITypeLibraryElement>()
+                .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
+                .Where(tl => tl != null).ToArray();
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Decompiler.Core;
-using Decompiler.ImageLoaders;
+﻿using Reko.Core;
+using Reko.ImageLoaders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,16 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Decompiler.UnitTests
+namespace Reko.UnitTests
 {
     class DchexLoader : ImageLoader
     {
         private Address addrStart;
         private MemoryStream memStm;
-        private LoaderResults results;
+        private Program results;
 
         public DchexLoader(string filename, IServiceProvider services, byte[] imgRaw) :
-            base(services, imgRaw)
+            base(services, filename, imgRaw)
         {
             using (TextReader rdr = new StreamReader(filename))
             {
@@ -27,9 +27,10 @@ namespace Decompiler.UnitTests
         public override Address PreferredBaseAddress
         {
             get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             return results;
         }
@@ -45,9 +46,9 @@ namespace Decompiler.UnitTests
                 ProcessLine(line);
             }
             var img = new LoadedImage(addrStart, memStm.ToArray());
-            results = new LoaderResults(
+            results = new Program(
                 img,
-                new ImageMap(img),
+                img.CreateImageMap(),
                 arch,
                 new DefaultPlatform(Services, arch));
 
@@ -57,7 +58,7 @@ namespace Decompiler.UnitTests
         {
             switch (archName)
             {
-            case "m68k": return new Decompiler.Arch.M68k.M68kArchitecture();
+            case "m68k": return new Reko.Arch.M68k.M68kArchitecture();
             default: throw new NotImplementedException();
             }
         }
@@ -73,7 +74,8 @@ namespace Decompiler.UnitTests
             int i = 0;
             if (tokens.Length > 1 && line[0] != ' ')
             {
-                var address = Address.Parse(tokens[0]);
+                Address address;
+                Address.TryParse32(tokens[0], out address);
                 if (this.addrStart == null)
                 {
                     addrStart = address;

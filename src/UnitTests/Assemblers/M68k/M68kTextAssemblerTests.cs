@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Assemblers.M68k;
-using Decompiler.Core;
+using Reko.Assemblers.M68k;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Assemblers.M68k
+namespace Reko.UnitTests.Assemblers.M68k
 {
     [TestFixture]
     public class M68kTextAssemblerTests
@@ -55,25 +55,25 @@ namespace Decompiler.UnitTests.Assemblers.M68k
 
         private void RenderResult(Program prog, string outputFile)
         {
-            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            foreach (var item in asm.ImportReferences)
             {
-                prog.ImportThunks.Add(item.Key, item.Value);
+                prog.ImportReferences.Add(item.Key, item.Value);
             }
 
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                Dumper dumper = new Dumper(asm.Architecture);
+                Dumper dumper = new Dumper(prog.Architecture);
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
                 dumper.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
                 fut.TextWriter.WriteLine();
                 dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
-                if (prog.ImportThunks.Count > 0)
+                if (prog.ImportReferences.Count > 0)
                 {
-                    SortedList<uint, PseudoProcedure> list = new SortedList<uint, PseudoProcedure>(prog.ImportThunks);
-                    foreach (KeyValuePair<uint, PseudoProcedure> de in list)
+                    var list = new SortedList<Address, ImportReference>(prog.ImportReferences);
+                    foreach (var de in list)
                     {
-                        fut.TextWriter.WriteLine("{0:X8}: {1}", de.Key, de.Value);
+                        fut.TextWriter.WriteLine("{0}: {1}", de, de.Value);
                     }
                 }
                 fut.AssertFilesEqual();
@@ -84,22 +84,24 @@ namespace Decompiler.UnitTests.Assemblers.M68k
         {
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                var lr = asm.Assemble(addrBase, rdr);
-                return new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
+                var program = asm.Assemble(addrBase, rdr);
+                program.Platform = new DefaultPlatform(null, program.Architecture);
+                return program;
             }
         }
 
         private Program RunTestFromFragment(string fragment, Address addrBase)
         {
-            var lr = asm.AssembleFragment(addrBase, fragment);
-            return new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
+            var program = asm.AssembleFragment(addrBase, fragment);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            return program;
         }
 
         [Test]
         [Ignore("Branches proving a little hairy here.")]
         public void M68kta_Max()
         {
-            RunTest("Fragments/m68k/MAX.asm", "M68k/M68kta_Max.txt", new Address(0x04000000));
+            RunTest("Fragments/m68k/MAX.asm", "M68k/M68kta_Max.txt", Address.Ptr32(0x04000000));
         }
 
         [Test]
@@ -112,7 +114,7 @@ lupe
     bne     lupe
     rts
 ";
-            RunFragment(txt, "M68k/M68kta_BackJump.txt", new Address(0x00010000));
+            RunFragment(txt, "M68k/M68kta_BackJump.txt", Address.Ptr32(0x00010000));
         }
 
         [Test]
@@ -126,7 +128,7 @@ lupe
 return
     rts
 ";
-            RunFragment(txt, "M68k/M68kta_FwdJump.txt", new Address(0x00010000));
+            RunFragment(txt, "M68k/M68kta_FwdJump.txt", Address.Ptr32(0x00010000));
         }
 
         [Test]
@@ -143,7 +145,7 @@ mutate
     addq.l  #2,d0
     rts
 ";
-            RunFragment(txt, "M68k/M68kta_Jsr.txt", new Address(0x00010000));
+            RunFragment(txt, "M68k/M68kta_Jsr.txt", Address.Ptr32(0x00010000));
         }
     }
 }

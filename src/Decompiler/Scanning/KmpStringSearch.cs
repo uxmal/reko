@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
     /// <summary>
     /// Knuth-Morris-Pratt string search algorithm.
@@ -33,13 +33,14 @@ namespace Decompiler.Scanning
         private int[] failureTable;
         private C[] keyword;
 
-        public KmpStringSearch(C [] W) : base(W)
+        public KmpStringSearch(C[] W, bool scannedMemory, bool unscannedMemory)
+            : base(W,  scannedMemory,  unscannedMemory)
         {
             this.keyword = W;
             failureTable = BuildFailureTable(W);
         }
 
-        public override IEnumerator<int> GetMatchPositions(C [] text)
+        public override IEnumerable<int> GetMatchPositions(C [] text)
         {
             int m = 0; // the beginning of the current match in S
             int i = 0; // the position of the current character in W

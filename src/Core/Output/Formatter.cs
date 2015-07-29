@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Globalization;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
 	/// <summary>
 	/// Base class for all formatting classes. 
@@ -80,13 +80,15 @@ namespace Decompiler.Core.Output
         /// <param name="s"></param>
         public abstract void Write(string s);
 
-        public void Write(object o)
-        {
-            if (o != null)
-                Write(o.ToString());
-        }
+        /// <summary>
+        /// Write the character <paramref name="ch"/> with no special formatting.
+        /// </summary>
+        /// <param name="ch"></param>
+        public abstract Formatter Write(char ch);
 
         public abstract void Write(string format, params object[] arguments);
+
+        public abstract void WriteLine(string format, params object[] arguments);
 
         public abstract void WriteComment(string comment);
 
@@ -100,14 +102,18 @@ namespace Decompiler.Core.Output
 
         public abstract void WriteLine(string s);
 
+        public void Write(object o)
+        {
+            if (o != null)
+                Write(o.ToString());
+        }
+
         public void WriteLine(object o)
         {
             if (o != null)
                 Write(o);
             WriteLine();
         }
-
-        public abstract void WriteLine(string format, params object[] arguments);
 
 		public void WriteSpaces(int n)
 		{

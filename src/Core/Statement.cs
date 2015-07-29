@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,16 +19,16 @@
 #endregion
 
 using System;
-using Decompiler.Core.Code;
+using Reko.Core.Code;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Statements constitute the contents basic blocks.
     /// </summary>
 	public class Statement
 	{
-        public Statement(uint linearAddress, Instruction instr, Block block)
+        public Statement(ulong linearAddress, Instruction instr, Block block)
         {
             this.LinearAddress = linearAddress;
             this.Instruction = instr;
@@ -37,7 +37,7 @@ namespace Decompiler.Core
 
         public Block Block { get; set; }
         public Instruction Instruction { get; set; }
-        public uint LinearAddress { get; private set; }
+        public ulong LinearAddress { get; private set; }
 
 		public override string ToString()
 		{

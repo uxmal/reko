@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,59 +28,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
-    public class Project : IProjectFileVisitor<ProjectFile_v2>
+    public class Project 
     {
         public Project()
         {
-            UserGlobalData = new SortedList<Address, SerializedType>();
-            InputFiles = new ObservableRangeCollection<InputFile>();
+            Programs = new ObservableRangeCollection<Program>();
+            MetadataFiles = new ObservableRangeCollection<MetadataFile>();
         }
 
-        public ObservableRangeCollection<InputFile> InputFiles { get; private set; }
+        public ObservableRangeCollection<Program> Programs { get; private set; }
+        public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
 
-        /// <summary>
-        /// Global data identified by the user.
-        /// </summary>
-        public SortedList<Address, SerializedType> UserGlobalData { get; private set; }
-
-        public Project_v2 Save()
-        {
-            var inputs = this.InputFiles.Select(i => i.Accept(this));
-            var sp = new Project_v2()
-            {
-                Inputs = inputs.ToList()
-            };
-            foreach (var de in UserGlobalData)
-            {
-            }
-            return sp;
-        }
-
-        public ProjectFile_v2 VisitInputFile(InputFile i)
-        {
-            return new DecompilerInput_v2
-            {
-                Address = i.BaseAddress.ToString(),
-                Filename = i.Filename,
-                UserProcedures = i.UserProcedures
-                    .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
-                    .ToList(),
-                UserCalls = i.UserCalls
-                    .Select(uc => uc.Value)
-                    .ToList(),
-                DisassemblyFilename = i.DisassemblyFilename,
-                IntermediateFilename = i.IntermediateFilename,
-                OutputFilename = i.OutputFilename,
-                TypesFilename = i.TypesFilename,
-                GlobalsFilename = i.GlobalsFilename,
-            };
-        }
-
-        public ProjectFile_v2 VisitMetadataFile(MetadataFile metadata)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

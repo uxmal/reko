@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
 	/// <summary>
 	/// Represents a C-style dereferenced pointer: *foo
@@ -32,7 +32,7 @@ namespace Decompiler.Core.Expressions
 
 		public Dereference(DataType ptrType, Expression exp) : base(ptrType)
 		{
-			this.exp = exp;
+            this.exp = exp; if (exp == null) throw new ArgumentNullException();
 		}
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -58,7 +58,7 @@ namespace Decompiler.Core.Expressions
 		public Expression Expression
 		{
 			get { return exp; }
-			set { exp = value; }
+            set { exp = value; if (exp == null) throw new ArgumentNullException(); }
 		}
 
 	}

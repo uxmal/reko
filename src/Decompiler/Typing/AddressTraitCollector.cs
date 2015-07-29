@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Generates traits based on an effective address expression.
@@ -95,7 +95,7 @@ namespace Decompiler.Typing
 
         public void VisitAddress(Address addr)
         {
-            var offset = (int) addr.Linear;
+            var offset = (int) addr.ToLinear();
             HandleConstantOffset(addr, offset);
         }
 
@@ -177,7 +177,7 @@ namespace Decompiler.Typing
             if (basePointer != null)
                 handler.MemAccessTrait(null, basePointer, basePointerSize, eField, v);
             else
-                handler.MemAccessTrait(null, prog.Globals, c.DataType.Size, eField, v);
+                handler.MemAccessTrait(null, prog.Globals, prog.Platform.PointerType.Size, eField, v);
             // C is a pointer to tvField: [[c]] = ptr(tvField)
             handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField, 0);
         }
@@ -311,7 +311,7 @@ namespace Decompiler.Typing
 
 		public void VisitProcedureConstant(ProcedureConstant pc)
 		{
-			throw new NotImplementedException();
+			handler.DataTypeTrait(pc, prog.Platform.PointerType);
 		}
 
 		public void VisitSlice(Slice slice)

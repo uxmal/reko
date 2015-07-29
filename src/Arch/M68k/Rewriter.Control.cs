@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     public partial class Rewriter
     {
@@ -56,6 +57,9 @@ namespace Decompiler.Arch.M68k
         private void RewriteJsr()
         {
             var src = orw.RewriteSrc(di.op1, di.Address, true);
+            var mem = src as MemoryAccess;
+            if (mem != null)
+                src = mem.EffectiveAddress;
             emitter.Call(src, 4);
         }
 
@@ -75,6 +79,14 @@ namespace Decompiler.Arch.M68k
                 emitter.Ne(src, emitter.Int32(-1)),
                 (Address) orw.RewriteSrc(di.op2, di.Address, true),
                 RtlClass.ConditionalTransfer);
+        }
+
+        private bool RewriteIllegal()
+        {
+            if (dasm.Current.op1 == null)
+                return false;
+            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance,  RewriteSrcOperand(dasm.Current.op1)));
+            return true;
         }
     }
 }

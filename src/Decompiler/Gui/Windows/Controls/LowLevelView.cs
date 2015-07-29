@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,9 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Windows;
+using Reko.Core;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,26 +30,39 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
     /// Provides a unified view of Memory and Disassembly.
     /// </summary>
-    public partial class LowLevelView : UserControl
+    public partial class LowLevelView : UserControl, INavigableControl
     {
         ITextBox txtAddressWrapped;
         IButton btnGoWrapped;
+        IButton btnBackWrapped;
+        IButton btnFwdWrapped;
+        Address addrCurrent;
 
         public LowLevelView()
         {
             InitializeComponent();
             txtAddressWrapped = new ToolStripTextBoxWrapper(txtAddress);
+            btnBackWrapped = new ToolStripButtonWrapper(btnBack);
+            btnFwdWrapped = new ToolStripButtonWrapper(btnForward);
             btnGoWrapped = new ToolStripButtonWrapper(btnGo);
         }
 
+        public IButton ToolbarBackButton { get { return btnBackWrapped; } }
+        public IButton ToolbarForwardButton { get { return btnFwdWrapped; } }
         public ITextBox ToolBarAddressTextbox { get { return txtAddressWrapped; } }
-        public IButton ToolBarGoButton { get { return btnGoWrapped; } } 
+        public IButton ToolBarGoButton { get { return btnGoWrapped; } }
+        public ImageMapView ImageMapView { get { return imageMapControl1; } }
         public MemoryControl MemoryView { get { return this.memCtrl; } }
         public DisassemblyControl DisassemblyView { get { return this.dasmCtrl; } }
+
+        IButton INavigableControl.BackButton { get { return btnBackWrapped; } }
+        IButton INavigableControl.ForwardButton { get { return btnFwdWrapped; } }
+        public Address CurrentAddress { get { return addrCurrent; } set { addrCurrent = value; CurrentAddressChanged.Fire(this); } }
+        public event EventHandler CurrentAddressChanged;
     }
 }

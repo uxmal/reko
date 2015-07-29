@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class ThumbDisassembler : DisassemblerBase<MachineInstruction>
     {
@@ -44,20 +44,18 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override MachineInstruction Current { get { return thumb; } }
-
-        public override bool MoveNext()
+        public override MachineInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
 
             thumb = new ThumbInstruction
             {
                 Address = rdr.Address,
             };
             Disassemble();
-            thumb.Length = rdr.Address - thumb.Address;
-            return true;
+            thumb.Length = (int)(rdr.Address - thumb.Address);
+            return thumb;
         }
 
         public ThumbInstruction Disassemble()

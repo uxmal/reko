@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,22 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Core.Services
+namespace Reko.Core.Services
 {
     public interface DecompilerEventListener
     {
         ICodeLocation CreateAddressNavigator(Program program, Address address);
         ICodeLocation CreateProcedureNavigator(Procedure proc);
         ICodeLocation CreateBlockNavigator(Block block);
-        void AddDiagnostic(ICodeLocation location, Diagnostic d);
+        void Warn(ICodeLocation location, string message);
+        void Error(ICodeLocation location, string message);
+        void Error(ICodeLocation location, Exception ex, string message);
 
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
@@ -44,14 +47,19 @@ namespace Decompiler.Core.Services
 
         #region DecompilerEventListener Members
 
-        public void AddErrorDiagnostic(Address address, string format, params object[] args)
+        public void Warn(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            Debug.Print("Warning: {0}: {1}", location, message);
         }
 
-        public void AddWarningDiagnostic(Address address, string format, params object[] args)
+        public void Error(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            Debug.Print("Error: {0}: {1}", location, message);
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message)
+        {
+            Debug.Print("Error: {0}: {1} {2}", location, message, ex.Message);
         }
 
         public void AddDiagnostic(Diagnostic d)
@@ -103,6 +111,11 @@ namespace Decompiler.Core.Services
 
         public void NavigateTo()
         {
+        }
+
+        public override string ToString()
+        {
+            return Text;
         }
     }
 }

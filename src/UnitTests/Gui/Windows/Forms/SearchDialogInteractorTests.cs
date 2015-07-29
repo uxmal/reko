@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.Scanning;
+using Reko.Gui;
+using Reko.Gui.Windows.Forms;
+using Reko.Scanning;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class SearchDialogInteractorTests
@@ -65,6 +65,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_UiSettings("SearchDialog/Encoding", 0, 1);
             Given_UiSettings("SearchDialog/Scope", 0, 0);
             Given_UiSettings("SearchDialog/Regexp", 0, 1);
+            Given_UiSettings("SearchDialog/Scanned", 1, 0);
+            Given_UiSettings("SearchDialog/Unscanned", 1, 0);
             mr.ReplayAll();
 
             When_CreateDialog();
@@ -76,6 +78,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsTrue(dlg.RegexCheckbox.Checked);
             Assert.IsFalse(dlg.StartAddress.Enabled);
             Assert.IsFalse(dlg.EndAddress.Enabled);
+            Assert.IsFalse(dlg.ScannedMemory.Checked);
+            Assert.IsFalse(dlg.UnscannedMemory.Checked);
             mr.VerifyAll();
         }
 

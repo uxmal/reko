@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Reko.Arch.Pdp11
 {
     public class MemoryOperand : MachineOperand
     {
@@ -48,7 +48,7 @@ namespace Decompiler.Arch.Pdp11
         public bool PostInc { get; set; }
         public ushort EffectiveAddress { get; set; }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             string fmt;
             switch (Mode)
@@ -57,12 +57,11 @@ namespace Decompiler.Arch.Pdp11
             case AddressMode.AutoIncr: fmt = "({0})+"; break;
             case AddressMode.AutoDecr: fmt = "-({0})"; break;
             case AddressMode.Indexed: fmt = "{1:X4}({0})"; break;
-
             //case AddressMode.Immediate : fmt = "#{1:X4}"; break;
             case AddressMode.Absolute: fmt = "@#{1:X4}"; break;
             default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));
             }
-            return string.Format(fmt, Register, EffectiveAddress);
+            writer.Write(string.Format(fmt, Register, EffectiveAddress));
         }
     }
 
@@ -79,5 +78,4 @@ namespace Decompiler.Arch.Pdp11
         AutoDecrDef,
         IndexedDef,
     }
-
 }

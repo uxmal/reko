@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,18 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Scanning;
-using Decompiler.Core.Types;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class ImageMapTests
 	{
-		private Address addrBase = new Address(0x8000, 0);
+		private Address addrBase = Address.SegPtr(0x8000, 0);
 		private byte [] img = new Byte [] { 0x00, 0x00, 0x00, 0x00 };
 
 		public ImageMapTests()
@@ -43,9 +41,9 @@ namespace Decompiler.UnitTests.Core
 		{
 			ImageMap im = new ImageMap(addrBase, img.Length);
 
-			im.AddSegment(new Address(0x8000, 2), "",  AccessMode.ReadWrite);
-			im.AddSegment(new Address(0x8000, 3), "", AccessMode.ReadWrite);
-			im.AddSegment(new Address(0x8000, 0), "", AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite);
 
 			// Verify
 
@@ -68,8 +66,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ImageMapOverlaps()
 		{
-			ImageMap im = new ImageMap(new Address(0x8000, 0), 40);
-			im.AddSegment(new Address(0x8000, 10), "", AccessMode.ReadWrite);
+			ImageMap im = new ImageMap(Address.SegPtr(0x8000, 0), 40);
+			im.AddSegment(Address.SegPtr(0x8000, 10), "", AccessMode.ReadWrite);
 		}
 
 		private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
@@ -87,8 +85,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void AddNamedSegment()
 		{
-			ImageMap map = new ImageMap(new Address(0x0B00, 0), 40000);
-			map.AddSegment(new Address(0xC00, 0), "0C00", AccessMode.ReadWrite);
+			ImageMap map = new ImageMap(Address.SegPtr(0x0B00, 0), 40000);
+			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite);
 			IEnumerator<KeyValuePair<Address,ImageMapSegment>> e = map.Segments.GetEnumerator();
 			GetNextMapSegment(e);
 			ImageMapSegment s = GetNextMapSegment(e);
@@ -134,6 +132,17 @@ namespace Decompiler.UnitTests.Core
             Assert.AreEqual("(arr byte 16)", item.DataType.ToString());
             Assert.IsTrue(map.TryFindItemExact(addrBase + 0x10, out item));
             Assert.IsInstanceOf<UnknownType>(item.DataType);
+        }
+
+        [Test]
+        public void ImageMap_FireChangeEvent()
+        {
+            var map = new ImageMap(addrBase, 0x100);
+            var mapChangedFired = false;
+            map.MapChanged += (sender, e) => { mapChangedFired = true; };
+            map.AddItem(addrBase, new ImageMapItem { DataType = new CodeType() });
+            Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
+
         }
 	}
 }

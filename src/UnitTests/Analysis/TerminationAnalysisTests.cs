@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
-using Decompiler.Evaluation;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class TerminationAnalysisTests
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Analysis
         public void Setup()
         {
             exit = new ExternalProcedure("exit", 
-                new ProcedureSignature(null, new Identifier("retCode", 0, PrimitiveType.Int32, new StackArgumentStorage(0, PrimitiveType.Int32))));
+                new ProcedureSignature(null, new Identifier("retCode", PrimitiveType.Int32, new StackArgumentStorage(0, PrimitiveType.Int32))));
             exit.Characteristics = new ProcedureCharacteristics();
             exit.Characteristics.Terminates = true;
 
@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Analysis
         public void BlockTerminates()
         {
             var m = new ProcedureBuilder();
-            m.Call(exit);
+            m.Call(exit, 4);
             var b = m.CurrentBlock;
             m.Return();
 
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
             {
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.Return();
             });
             var prog = progMock.BuildProgram();
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Analysis
             var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "bye");
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.Label("bye");
                 m.Return();
             });
@@ -128,13 +128,13 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void ProcedureTerminatesIfAllBranchesDo()
         {
-            var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
+            var proc = CompileProcedure("proc", m => 
             {
                 m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "whee");
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.FinishProcedure();
                 m.Label("whee");
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.FinishProcedure();
             });
             var prog = progMock.BuildProgram();
@@ -147,15 +147,15 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void TerminatingSubProcedure()
         {
-            var sub = CompileProcedure("sub", delegate(ProcedureBuilder m)
+            var sub = CompileProcedure("sub", m =>
             {
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.FinishProcedure();
             });
 
-            Procedure caller = CompileProcedure("caller", delegate(ProcedureBuilder m)
+            Procedure caller = CompileProcedure("caller", m =>
             {
-                m.Call(sub);
+                m.Call(sub, 4);
                 m.Return();
             });
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Z80
+namespace Reko.Arch.Z80
 {
     /// <summary>
     /// Disassembles both 8080 and Z80 instructions, with respective syntax.
@@ -43,12 +43,10 @@ namespace Decompiler.Arch.Z80
             this.rdr = rdr;
         }
 
-        public override Z80Instruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override Z80Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             this.instr = new Z80Instruction
             {
@@ -59,8 +57,8 @@ namespace Decompiler.Arch.Z80
             this.IndexRegister = null;
             instr = opRef.Decode(this, op, "");
             instr.Address = addr;
-            instr.Length = rdr.Address - addr;
-            return true;
+            instr.Length = (int)(rdr.Address - addr);
+            return instr;
         }
 
         public Z80Instruction DecodeOperands(Opcode opcode, byte op, string fmt)
@@ -120,7 +118,7 @@ namespace Decompiler.Arch.Z80
                 case 'J':       // Relative jump
                     var width = OperandSize(fmt[i++]);
                     int ipOffset = rdr.ReadLeSigned(width);
-                    ops[iOp++] = AddressOperand.Ptr16((uint)(rdr.Address.Offset + ipOffset));
+                    ops[iOp++] = AddressOperand.Ptr16((ushort)(rdr.Address.ToUInt16() + ipOffset));
                     break;
                 case 'x':       // 2-digit Inline hexadecimal byte
                     int val = (Hex(fmt[i++]) << 4);
@@ -137,7 +135,7 @@ namespace Decompiler.Arch.Z80
                 }
             }
             instr.Code = opcode;
-            instr.Length = rdr.Address - instr.Address;
+            instr.Length = (int)(rdr.Address - instr.Address);
             instr.Op1 = ops[0];
             instr.Op2 = ops[1];
             return instr;

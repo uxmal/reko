@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Builds expression trees out of identifier assignment statements and 
@@ -123,7 +123,7 @@ namespace Decompiler.Analysis
 		{
             PreCoalesceDump(sid, def, use);
 			def.Instruction.Accept(new UsedIdentifierAdjuster(def, ssa.Identifiers, use));
-			use.Instruction.Accept(new IdentifierReplacer(sid.Identifier, defExpr));
+            use.Instruction.Accept(new IdentifierReplacer(ssa, use, sid.Identifier, defExpr));
 
 			List<SsaIdentifier> sids;
 			if (defsByStatement.TryGetValue(def, out sids))
@@ -182,14 +182,14 @@ namespace Decompiler.Analysis
 			{
 				Coalesced = false;
 
-				bool[] visited = new bool[ssa.Identifiers.Count];
+				var visited = new HashSet<Identifier>();
 				for (int i = 0; i < block.Statements.Count; ++i)
 				{
 					Statement stmDef = block.Statements[i];
 					Assignment ass = stmDef.Instruction as Assignment;
-					if (ass != null && !visited[ass.Dst.Number])
+					if (ass != null && !visited.Contains(ass.Dst))
 					{
-						visited[ass.Dst.Number] = true;
+						visited.Add(ass.Dst);
 						SsaIdentifier sidDef = ssa.Identifiers[ass.Dst];
 						if (TryMoveAssignment(stmDef, sidDef, ass.Src, block, i))
 						{
@@ -253,11 +253,15 @@ namespace Decompiler.Analysis
 	/// </summary>
     public class IdentifierReplacer : InstructionTransformer
     {
+        private SsaState ssaIds;
+        private Statement use;
         private Identifier idOld;
         private Expression exprNew;
 
-        public IdentifierReplacer(Identifier idOld, Expression exprNew)
+        public IdentifierReplacer(SsaState ssaIds, Statement use, Identifier idOld, Expression exprNew)
         {
+            this.ssaIds = ssaIds;
+            this.use = use;
             this.idOld = idOld;
             this.exprNew = exprNew;
         }
@@ -265,7 +269,10 @@ namespace Decompiler.Analysis
         public override Expression VisitIdentifier(Identifier id)
         {
             if (idOld == id)
+            {
+                ssaIds.Identifiers[id].Uses.Remove(use);
                 return exprNew;
+            }
             else
                 return id;
         }

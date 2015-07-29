@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,24 @@
  */
 #endregion
 
-using Decompiler.Arch.Arm;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Arch.Arm;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Arm
+namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     class ArmRewriterTests : RewriterTestBase
     {
         private ArmProcessorArchitecture arch = new ArmProcessorArchitecture();
         private LoadedImage image;
-        private Address baseAddress = new Address(0x00100000);
+        private Address baseAddress = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture
         {
@@ -47,9 +47,9 @@ namespace Decompiler.UnitTests.Arch.Arm
             get { return baseAddress; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, null);
+            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
         }
 
         private void BuildTest(params string[] bitStrings)
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
-            image = new LoadedImage(new Address(0x00100000), bytes);
+            image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
         }
 
         private void BuildTest(params uint[] words)
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             var bytes = words
                 .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
-            image = new LoadedImage(new Address(0x00100000), bytes);
+            image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
         }
 
         [Test]
@@ -189,6 +189,62 @@ namespace Decompiler.UnitTests.Arch.Arm
             AssertCode(
                 "0|00100000(4): 1 instructions",
                 "1|T--|return (0,0)");
+        }
+
+        [Test]
+        public void ArmRw_ldrsb()
+        {
+            BuildTest(0xE1F120D1);  // ldrsb r2,[r1,#1]!
+            AssertCode(
+                "0|00100000(4): 2 instructions",
+                "1|L--|r1 = r1 + 0x00000001",
+                "2|L--|r2 = Mem0[r1:int8]");
+        }
+
+        [Test]
+        public void ArmRw_mov_pc()
+        {
+            BuildTest(0xE59F0010);  // ldr\tr0,[pc,#&10]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = Mem0[0x00100018:word32]");
+        }
+
+        [Test]
+        public void ArmRw_cmp()
+        {
+            BuildTest(0xE3530000);  // cmp r3,#0
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|SZCO = cond(r3 - 0x00000000)");
+        }
+
+        [Test]
+        public void ArmRw_cmn()
+        {
+            BuildTest(0xE3730001); /// cmn r3,#1
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|SZCO = cond(r3 + 0x00000001)");
+        }
+
+        [Test]
+        public void ArmRw_ldr_pc()
+        {
+            BuildTest(0xE59CF000); // ldr pc,[ip]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|T--|goto Mem0[ip:word32]");
+        }
+
+        [Test]
+        public void ArmRw_ldr_post()
+        {
+            BuildTest(0xE4D43001);// ldrb r3,[r4],#1
+            AssertCode(
+                "0|00100000(4): 2 instructions",
+                "1|L--|r3 = Mem0[r4:byte]",
+                "2|L--|r4 = r4 + 0x00000001");
         }
     }
 }

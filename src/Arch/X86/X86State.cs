@@ -1,7 +1,7 @@
 
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,19 +19,22 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
+    /// <summary>
+    /// The state of an X86 processor. Used in the Scanning phase of the decompiler.
+    /// </summary>
 	public class X86State : ProcessorState
 	{
 		private ulong [] regs;
@@ -65,7 +68,7 @@ namespace Decompiler.Arch.X86
 			Constant c = GetRegister(seg);
 			if (c.IsValid)
 			{
-				return new Address((ushort) c.ToUInt32(), offset & 0xFFFF);
+				return Address.SegPtr((ushort) c.ToUInt32(), offset & 0xFFFF);
 			}
 			else
 				return null;
@@ -107,10 +110,12 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
-		public override void SetInstructionPointer(Address addr)
-		{
-			SetRegister(Registers.cs, Constant.Word16(addr.Selector));
-		}
+        public override void SetInstructionPointer(Address addr)
+        {
+            var segAddr = addr as SegAddress32;
+            if (segAddr != null)
+                SetRegister(Registers.cs, Constant.Word16(segAddr.Selector));
+        }
 
         public override void OnProcedureEntered()
         {
@@ -147,7 +152,9 @@ namespace Decompiler.Arch.X86
 
         public override void OnAfterCall(Identifier sp, ProcedureSignature sig, ExpressionVisitor<Expression> eval)
         {
-            var spReg = (RegisterStorage) sp.Storage;
+            if (sig == null)
+                return;
+            var spReg = (RegisterStorage)sp.Storage;
             var spVal = GetValue(spReg);
             var stackOffset = SetValue(
                 spReg,

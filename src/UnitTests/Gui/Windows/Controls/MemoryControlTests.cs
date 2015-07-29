@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows.Controls
+namespace Reko.UnitTests.Gui.Windows.Controls
 {
 	[TestFixture]
 	public class MemoryControlTests
@@ -64,12 +64,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
         [Test]
         public void SetSelectedAddressShouldResetAnchor()
         {
-            memctl.SelectedAddress = new Address(0x010);
+            memctl.SelectedAddress = Address.Ptr32(0x010);
             AddressRange ar = memctl.GetAddressRange();
-            Assert.AreEqual(0x010, ar.Begin.Linear);
-            Assert.AreEqual(0x010, ar.End.Linear);
-
+            Assert.AreEqual(0x010, ar.Begin.ToLinear());
+            Assert.AreEqual(0x010, ar.End.ToLinear());
         }
+
 		private byte [] GenerateTestMemory()
 		{
 			System.IO.MemoryStream stm = new System.IO.MemoryStream();

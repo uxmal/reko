@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Fragments;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Fragments;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class TypeTransformTests : TypingTestBase
@@ -83,49 +83,49 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TtranUnknown()
         {
-            RunTest("Fragments/type/unknown.asm", "Typing/TtranUnknown.txt");
+            RunTest16("Fragments/type/unknown.asm", "Typing/TtranUnknown.txt");
         }
 
         [Test]
         public void TtranFactorial()
         {
-            RunTest("Fragments/factorial.asm", "Typing/TtranFactorial.txt");
+            RunTest16("Fragments/factorial.asm", "Typing/TtranFactorial.txt");
         }
 
         [Test]
         public void TtranFactorialReg()
         {
-            RunTest("Fragments/factorial_reg.asm", "Typing/TtranFactorialReg.txt");
+            RunTest16("Fragments/factorial_reg.asm", "Typing/TtranFactorialReg.txt");
         }
 
         [Test]
         public void TtranLength()
         {
-            RunTest("Fragments/type/listlength.asm", "Typing/TtranLength.txt");
+            RunTest16("Fragments/type/listlength.asm", "Typing/TtranLength.txt");
         }
 
         [Test]
         public void TtranIntegers()
         {
-            RunTest("Fragments/type/integraltypes.asm", "Typing/TtranIntegers.txt");
+            RunTest16("Fragments/type/integraltypes.asm", "Typing/TtranIntegers.txt");
         }
 
         [Test]
         public void TtranReals()
         {
-            RunTest("Fragments/fpuops.asm", "Typing/TtranReals.txt");
+            RunTest16("Fragments/fpuops.asm", "Typing/TtranReals.txt");
         }
 
         [Test]
         public void TtranReg00008()
         {
-            RunTest("Fragments/regressions/r00008.asm", "Typing/TtranReg00008.txt");
+            RunTest16("Fragments/regressions/r00008.asm", "Typing/TtranReg00008.txt");
         }
 
         [Test]
         public void TtranMemAccesses()
         {
-            RunTest("Fragments/multiple/memaccesses.asm", "Typing/TtranMemAccesses.txt");
+            RunTest16("Fragments/multiple/memaccesses.asm", "Typing/TtranMemAccesses.txt");
         }
 
         [Test]
@@ -338,18 +338,6 @@ namespace Decompiler.UnitTests.Typing
             var m = new ProgramBuilder();
             m.Add(new ArrayExpressionFragment());
             RunTest(m.BuildProgram(), "Typing/TtranArrayExpression.txt");
-        }
-
-        [Test]
-        public void TtranGlobalArray()
-        {
-            var p = new ProgramBuilder();
-            p.Add("GlobalArray", m =>
-            {
-                var i = m.Local32("i");
-                m.SideEffect(m.LoadDw(m.IAdd(p.Program.Globals, m.IAdd(m.Shl(i, 2), 0x3000))));
-            });
-            RunTest(p.BuildProgram(), "Typing/TtranGlobalArray.txt");
         }
 
         [Test]

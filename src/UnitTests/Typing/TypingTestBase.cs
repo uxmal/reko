@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,39 +18,52 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	/// <summary>
 	/// Base class for all typing tests.
 	/// </summary>
 	public abstract class TypingTestBase
 	{
-		protected Program RewriteFile(string relativePath)
+		protected Program RewriteFile16(string relativePath) { return RewriteFile(relativePath, Address.SegPtr(0xC00, 0)); }
+
+		protected Program RewriteFile32(string relativePath) { return RewriteFile(relativePath, Address.Ptr32(0x00100000)); }
+
+		protected Program RewriteFile(string relativePath, Address addrBase)
 		{
-            ILoader ldr = new Loader(new ServiceContainer());
+            var services = new ServiceContainer();
+            var config = new FakeDecompilerConfiguration();
+            services.AddService<IConfigurationService>(config);
+            ILoader ldr = new Loader(services);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new IntelTextAssembler(),
-                new Address(0xC00, 0));
+                new X86TextAssembler(new IntelArchitecture(ProcessorMode.Real)),
+                addrBase);
+            program.Platform = new DefaultPlatform(services, program.Architecture);
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
-			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var project = new Project { Programs = { program } };
+			var scan = new Scanner(
+                program,
+                new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
 			scan.EnqueueEntryPoint(ep);
 			scan.ScanImage();
 
@@ -62,12 +75,15 @@ namespace Decompiler.UnitTests.Typing
         protected void RunHexTest(string hexFile, string outputFile)
         {
             var svc = new ServiceContainer();
+            var cfg = new FakeDecompilerConfiguration();
+            svc.AddService<IConfigurationService>(cfg);
             ILoader ldr = new Loader(svc);
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var img = imgLoader.Load(null);
-            var program = new Program(img.Image, new ImageMap(img.Image), img.Architecture, img.Platform);
+            var program = new Program(img.Image, img.Image.CreateImageMap(), img.Architecture, img.Platform);
+            var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), new FakeDecompilerEventListener());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 
@@ -76,9 +92,14 @@ namespace Decompiler.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
-        protected void RunTest(string srcfile, string outputFile)
+        protected void RunTest16(string srcfile, string outputFile)
         {
-            RunTest(RewriteFile(srcfile), outputFile);
+            RunTest(RewriteFile16(srcfile), outputFile);
+        }
+
+        protected void RunTest32(string srcfile, string outputFile)
+        {
+            RunTest(RewriteFile32(srcfile), outputFile);
         }
         
         protected void RunTest(ProgramBuilder mock, string outputFile)
@@ -90,7 +111,7 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog, outputFile);
         }
 
-        protected void RunTest(ProcGenerator pg, string outputFile)
+        protected void RunTest(Action<ProcedureBuilder> pg, string outputFile)
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);

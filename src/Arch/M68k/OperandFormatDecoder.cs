@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Reko.Arch.M68k
 {
     /// <summary>
     /// Decodes M86k operands using a simple format language.
@@ -86,10 +86,10 @@ namespace Decompiler.Arch.M68k
                 case 'm':   // Register bitset reversed
                     return RegisterSetOperand.CreateReversed(bitSet);
                 case 'q':   // "Small" quick constant (3-bit part of the opcode)
-                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.Byte);
+                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0x07, 8, PrimitiveType.Byte);
                 case 'Q':   // "Large" quick constant (8-bit part of the opcode)
                     return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
-                case 'R': // relative -- //$TODO: seems like a duplicate with 'J'?
+                case 'R': // relative
                     addr = rdr.Address;
                     int relative = 0;
                     switch (args[i++])
@@ -170,6 +170,7 @@ namespace Decompiler.Arch.M68k
             {
             case 'b': return PrimitiveType.Byte;
             case 'v': return dataWidth;
+            case 'u': return PrimitiveType.UInt16;
             case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
             default: return SizeField(opcode, GetOpcodeOffset(c)); ;
@@ -272,8 +273,6 @@ namespace Decompiler.Arch.M68k
         private MachineOperand AddressRegisterIndirectWithIndex(PrimitiveType dataWidth, ImageReader rdr)
         {
             ushort extension = rdr.ReadBeUInt16();
-            if (EXT_INDEX_SCALE(extension) != 0)
-                throw new FormatException("Illegal address mode.");
             if (EXT_FULL(extension))
             {
                 if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
@@ -317,9 +316,9 @@ namespace Decompiler.Arch.M68k
                     EXT_8BIT_DISPLACEMENT(extension),
                     Registers.AddressRegister(opcode & 7),
                     EXT_INDEX_AR(extension)
-                        ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
-                        : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension)),
-                    EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                        ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
+                    EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
                     EXT_INDEX_SCALE(extension));
             }
         }

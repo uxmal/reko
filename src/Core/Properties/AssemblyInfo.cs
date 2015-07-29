@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,26 +26,26 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Decompiler core")]
-[assembly: AssemblyDescription("Core functionality for decompiler.")]
+[assembly: AssemblyTitle("Reko core")]
+[assembly: AssemblyDescription("Core functionality for Reko decompiler.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]
+[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
 
-namespace Decompiler
+namespace Reko
 {
     public static class AssemblyMetadata
     {
-        public const string AssemblyVersion = "0.3.0.0";
-        public const string AssemblyFileVersion = "0.3.0.0";
-        public const string Product = "Decompiler";
-        public const string Copyright = "Copyright © 1999-2014 John Källén";
+        public const string AssemblyVersion = "0.5.0.0";
+        public const string AssemblyFileVersion = "0.5.0.0";
+        public const string Product = "Reko";
+        public const string Copyright = "Copyright © 1999-2015 John Källén";
         public const string Company = "John Källén Konsult AB";
     }
 }

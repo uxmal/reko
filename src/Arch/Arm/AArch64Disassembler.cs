@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class AArch64Disassembler2 : DisassemblerBase<AArch64Instruction>
     {
@@ -38,18 +38,16 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override AArch64Instruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override AArch64Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             uint opcode = rdr.ReadLeUInt32();
             instr = oprecs[(opcode >> 25) & 0xF].Decode(this, opcode);
             instr.Address = addr;
-            instr.Length = rdr.Address - addr;
-            return true;
+            instr.Length = (int)(rdr.Address - addr);
+            return instr;
         }
 
         private abstract class OpDecoder2
@@ -92,11 +90,11 @@ namespace Decompiler.Arch.Arm
                         break;
                     case 'H':   // 16-bit Immediate constant
                         off = GetOffset(fmt, ref i);
-                        op = new ImmediateOperand(Constant.Word32(GetImm(instr, off, 16)));
+                        op = ArmImmediateOperand.Word32(GetImm(instr, off, 16));
                         break;
                     case 'I':   // 12-bit Immediate constant
                         off = GetOffset(fmt, ref i);
-                        op = new ImmediateOperand(Constant.Word32(GetImm(instr, off, 12)));
+                        op = ArmImmediateOperand.Word32(GetImm(instr, off, 12));
                         break;
                     case 'J':   // long relative branch
                         int offset = (((int) instr) << 6) >> 4;
@@ -163,17 +161,16 @@ namespace Decompiler.Arch.Arm
 
             /* Decode logical immediate for e.g. ORR <Wd|WSP>, <Wn>, #<imm>.  */
 
-            ImmediateOperand LogicalBitmask(uint value, bool is64)
+            ArmImmediateOperand LogicalBitmask(uint value, bool is64)
             {
                 ulong imm, mask;
-                uint sf;
                 uint N, R, S;
                 uint simd_size;
 
                 // value = extract_fields (code, 0, 3, FLD_N, FLD_immr, FLD_imms);
                 //sf = aarch64_get_qualifier_esize (inst->operands[0].qualifier) != 4;
                 // value is N:immr:imms.
-                S = (value >> 10) & 0x3Fu;
+                S = (value >> 10) & 0x3F;
                 R = (value >> 16) & 0x3F;
                 N = (value >> 22) & 0x01;
 
@@ -294,8 +291,8 @@ namespace Decompiler.Arch.Arm
                 }
 
                 return is64
-                    ? ImmediateOperand.Word64(imm)
-                    : ImmediateOperand.Word32((int) imm);
+                    ? ArmImmediateOperand.Word64(imm)
+                    : ArmImmediateOperand.Word32((int) imm);
             }
         }
 
@@ -330,12 +327,7 @@ namespace Decompiler.Arch.Arm
         }
 
         private static OpDecoder2[] oprecs;
-        private static OpDecoder2[] opLdStRecs;             // Load and Store instructions
-        private static OpDecoder2[] opDataRegRecs;          // Data processing - register
-        private static OpDecoder2[] opSimdFpRecs0;          // Data processSIMD and FP  
-        private static OpDecoder2 opDataIRecs;            // Data processing - immediate
         private static OpDecoder2[] opBesRecs;              // Branch; Exception and system instructions
-        private static OpDecoder2[] opSimdFpRecs1;          // Data processSIMD and FP  
 
         private class MaskDecoder : OpDecoder2
         {
@@ -499,18 +491,16 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override AArch64Instruction Current { get { return instr; } }
-    
-        public override bool MoveNext()
+        public override AArch64Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             uint opcode = rdr.ReadLeUInt32();
             instr = oprecs[(opcode >> 24) & 0xFF].Decode(this, opcode);
             instr.Address = addr;
-            instr.Length = rdr.Address - addr;
-            return true;
+            instr.Length = (int)(rdr.Address - addr);   //$REFACTOR: this happens in all disassemblers, common code oppo?
+            return instr;
         }
 
         private class RootDecoder : OpDecoder
@@ -911,6 +901,16 @@ namespace Decompiler.Arch.Arm
             null,
             null, 
         };
+
+        internal ArmImmediateOperand Word64(ulong imm)
+        {
+            return ArmImmediateOperand.Word64(imm);
+        }
+
+        internal ArmImmediateOperand Word32(int imm)
+        {
+            return ArmImmediateOperand.Word32(imm);
+        }
     }
     /*
 Ronald Maas (rmaas.delete@this.wiwo.nl) on August 25, 2012 6:59 pm wrote:

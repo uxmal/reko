@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Reko.Arch.Pdp11
 {
     public class AddressOperand : MachineOperand
     {
@@ -38,12 +38,14 @@ namespace Decompiler.Arch.Pdp11
             Address = a;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
+            string s;
             if (base.Width.Size == 2)
-                return string.Format("{0:X4}", Address.Linear);
+                s = string.Format("{0:X4}", Address.ToLinear());
             else
-                return Address.ToString();
+                s = Address.ToString();
+            writer.WriteAddress(s, Address);
         }
     }
 }

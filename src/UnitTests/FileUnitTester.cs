@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,11 @@
 
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests
+namespace Reko.UnitTests
 {
 	public class FileUnitTester : IDisposable
 	{
@@ -62,10 +63,12 @@ namespace Decompiler.UnitTests
 		public static string TestDirectory
 		{
 			get 
-			{ 
-				string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR");
-                Assert.IsNotNullOrEmpty(prefix, "Must define the environment variable DECOMPILERROOTDIR.");
-				return Path.Combine(prefix,"src","tests");
+			{
+                string assemblyName = typeof(FileUnitTester).Assembly.Location;
+                var iUnitTests = assemblyName.IndexOf("UnitTests");
+                if (iUnitTests <= 0)
+                    throw new NotSupportedException("Directory structure is expected to be '.../UnitTests/...'");
+                return Path.Combine(assemblyName.Remove(iUnitTests), "tests");
 			}
 		}
 		
@@ -84,7 +87,7 @@ namespace Decompiler.UnitTests
 			}
 		}
 
-		[System.Diagnostics.DebuggerHidden]
+		[DebuggerHidden]
 		public void CompareFiles(StreamReader expected, StreamReader test)
 		{
 			int line = 1;
@@ -101,7 +104,6 @@ namespace Decompiler.UnitTests
 				Assert.AreEqual(expLine, tstLine, string.Format("File differs on line {0}", line));
 				++line;
 			}
-
 		}
 
 		public void Dispose()
@@ -110,8 +112,7 @@ namespace Decompiler.UnitTests
 			System.GC.SuppressFinalize(this);
 		}
 
-
-		[System.Diagnostics.DebuggerHidden]
+		[DebuggerHidden]
 		public void AssertFilesEqual()
 		{
 			CloseTestStream();

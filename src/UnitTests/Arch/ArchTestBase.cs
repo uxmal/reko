@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch
+namespace Reko.UnitTests.Arch
 {
     public abstract class ArchTestBase 
     {
@@ -35,16 +37,51 @@ namespace Decompiler.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
-        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             yield break;
+        }
+
+        private class RewriterHost : IRewriterHost
+        {
+            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            {
+                return new PseudoProcedure(name, returnType, arity);
+            }
+
+            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            {
+                throw new NotImplementedException();
+            }
+
+
+            public void Error(Address address, string message)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected virtual IRewriterHost CreateRewriterHost()
+        {
+            return new RewriterHost();
         }
 
         protected void AssertCode(params string[] expected)
         {
             int i = 0;
             var frame = Architecture.CreateFrame();
-            var rewriter = GetInstructionStream(frame).GetEnumerator();
+            var host = CreateRewriterHost();
+            var rewriter = GetInstructionStream(frame, host).GetEnumerator();
             while (i < expected.Length && rewriter.MoveNext())
             {
                 Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, rewriter.Current));

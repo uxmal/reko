@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Core
+namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class AddressTests
@@ -30,7 +30,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void Addr_ToString()
         {
-            Address addr = new Address(0xC00, 0x1234);
+            Address addr = Address.SegPtr(0xC00, 0x1234);
             string str = addr.ToString();
             Assert.AreEqual("0C00:1234", addr.ToString());
         }
@@ -39,9 +39,9 @@ namespace Decompiler.UnitTests.Core
         [Category("Regressions")]
         public void Addr_Ge()
         {
-            Assert.IsTrue(new Address(4001) >= new Address(4000));
-            Assert.IsTrue(new Address(4000) >= new Address(4000));
-            Assert.IsFalse(new Address(3999) >= new Address(4000));
+            Assert.IsTrue(Address.Ptr32(4001) >= Address.Ptr32(4000));
+            Assert.IsTrue(Address.Ptr32(4000) >= Address.Ptr32(4000));
+            Assert.IsFalse(Address.Ptr32(3999) >= Address.Ptr32(4000));
         }
     }
 }

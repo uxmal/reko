@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Arch.Arm;
+using Reko.Core;
+using Reko.Arch.Arm;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Arm
+namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     public class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
         private IProcessorArchitecture arch = new AArch64();
-        private Address baseAddress = new Address(0x00100000);
+        private Address baseAddress = Address.Ptr64(0x00100000);
 
         public override IProcessorArchitecture Architecture
         {
@@ -53,14 +53,14 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void Arm64_b_label()
         {
             var instr = DisassembleBits("00010111 11111111 11111111 00000000");
-            Assert.AreEqual("b\t000FFC04", instr.ToString());
+            Assert.AreEqual("b\t$00000000000FFC04", instr.ToString());
         }
 
         [Test]
         public void Arm64_bl_label()
         {
             var instr = DisassembleBits("10010111 11111111 11111111 00000000");
-            Assert.AreEqual("bl\t000FFC04", instr.ToString());
+            Assert.AreEqual("bl\t$00000000000FFC04", instr.ToString());
         }
 
         [Test]
@@ -74,56 +74,56 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void Arm64_add_Wn_imm()
         {
             var instr = DisassembleBits("000 10001 01 011111111111 10001 10011");
-            Assert.AreEqual("add\tw19,w17,000007FF,lsl 0C", instr.ToString());
+            Assert.AreEqual("add\tw19,w17,#&7FF,lsl #&C", instr.ToString());
         }
 
         [Test]
         public void Arm64_adds_Xn_imm()
         {
             var instr = DisassembleBits("101 10001 00 011111111111 10001 10011");
-            Assert.AreEqual("adds\tx19,x17,000007FF", instr.ToString());
+            Assert.AreEqual("adds\tx19,x17,#&7FF", instr.ToString());
         }
 
         [Test]
         public void Arm64_subs_Wn_imm()
         {
             var instr = DisassembleBits("011 10001 00 011111111111 10001 10011");
-            Assert.AreEqual("subs\tw19,w17,000007FF", instr.ToString());
+            Assert.AreEqual("subs\tw19,w17,#&7FF", instr.ToString());
         }
 
         [Test]
         public void Arm64_sub_Xn_imm()
         {
             var instr = DisassembleBits("110 10001 00 011111111111 10001 10011");
-            Assert.AreEqual("sub\tx19,x17,000007FF", instr.ToString());
+            Assert.AreEqual("sub\tx19,x17,#&7FF", instr.ToString());
         }
 
         [Test]
         public void Arm64_and_Wn_imm()
         {
             var instr = DisassembleWord(0x120F3041);
-            Assert.AreEqual("and\tw1,w2,3FFE0000", instr.ToString());
+            Assert.AreEqual("and\tw1,w2,#&3FFE0000", instr.ToString());
         }
 
         [Test]
         public void Arm64_and_Xn_imm()
         {
             var instr = DisassembleWord(0x920F3041);
-            Assert.AreEqual("and\tx1,x2,3FFE00003FFE0000", instr.ToString());
+            Assert.AreEqual("and\tx1,x2,#&3FFE00003FFE0000", instr.ToString());
         }
 
         [Test]
         public void Arm64_ands_Xn_imm()
         {
             var instr = DisassembleBits("111 100100 0 010101 010101 00100 00111");
-            Assert.AreEqual("ands\tx7,x4,FFFFF801FFFFF801", instr.ToString());
+            Assert.AreEqual("ands\tx7,x4,#&FFFFF801FFFFF801", instr.ToString());
         }
 
         [Test]
         public void Arm64_movk_imm()
         {
             var instr = DisassembleBits("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
-            Assert.AreEqual("movk\tx7,0000AAA4", instr.ToString());
+            Assert.AreEqual("movk\tx7,#&AAA4", instr.ToString());
         }
     }
 }

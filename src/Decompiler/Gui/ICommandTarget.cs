@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using System;
 using System.ComponentModel.Design;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
 	/// <summary>
 	/// An ICommandTarget handles the issuing of commands. It is inspired by IOleCommandTarget.

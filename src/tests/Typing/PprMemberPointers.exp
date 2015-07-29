@@ -1,4 +1,5 @@
 // ProcedureBuilder
+// Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
@@ -7,8 +8,8 @@ l1:
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct)
-	globals_t (in globals : (ptr (struct)))
+Eq_1: (struct "Globals")
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment (1B58 word16 w1B58) (5321 (memptr (ptr Eq_2) Eq_4) ptr5321))
 	T_2 (in ds : selector)
 Eq_3: (struct (0 (memptr (ptr Eq_2) Eq_4) ptr0000))
@@ -18,10 +19,10 @@ Eq_4: (struct (0 word16 w0000))
 Eq_6: (struct (0 word16 w0000))
 	T_6 (in 0x00001B58 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

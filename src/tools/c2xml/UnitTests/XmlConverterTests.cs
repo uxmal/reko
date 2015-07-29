@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ using System.Text;
 using System.Xml;
 
 #if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class XmlConverterTests
@@ -129,13 +129,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature convention=""__cdecl"">
       <return>
         <type>size_t</type>
-        <reg>eax</reg>
       </return>
       <arg>
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -208,13 +206,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""pfoo"">
         <ptr>
           <type>FOO</type>
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -297,7 +293,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
     <typedef name=""PunchCard"">
-      <arr length=""0"">
+      <arr>
         <prim domain=""Character"" size=""1"" />
       </arr>
     </typedef>
@@ -423,17 +419,14 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature convention=""__stdcall"">
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""bar"">
         <prim domain=""SignedInt"" size=""4"" />
-        <stack />
       </arg>
       <arg name=""foo"">
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -526,11 +519,9 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""bar"">
         <type>HANDLE</type>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -555,17 +546,14 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <type>SHORT</type>
-        <reg>eax</reg>
       </return>
       <arg name=""inp"">
         <type>SHORT</type>
-        <stack />
       </arg>
       <arg name=""outp"">
         <ptr>
           <type>SHORT</type>
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -612,11 +600,9 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         <fn>
           <return>
             <prim domain=""SignedInt"" size=""4"" />
-            <reg>eax</reg>
           </return>
           <arg name=""RunOnce"">
             <prim domain=""SignedInt"" size=""4"" />
-            <stack />
           </arg>
         </fn>
       </ptr>
@@ -629,7 +615,6 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       </return>
       <arg name=""q"">
         <type>PRTL_RUN_ONCE_INIT_FN</type>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -648,13 +633,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""arr"">
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -692,7 +675,6 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""matrix"">
         <ptr>
@@ -700,7 +682,6 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             <prim domain=""Character"" size=""1"" />
           </arr>
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -728,13 +709,98 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""pfoo"">
         <ptr>
           <struct name=""foo"" />
         </ptr>
-        <stack />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(cCode, sExp);
+        }
+
+        [Test]
+        public void C2X_fn_with_pfn_args()
+        {
+            var cCode =
+                "int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));";
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""__libc_start_main"">
+    <signature>
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+      </return>
+      <arg name=""main"">
+        <ptr>
+          <fn>
+            <return>
+              <prim domain=""SignedInt"" size=""4"" />
+            </return>
+            <arg>
+              <prim domain=""SignedInt"" size=""4"" />
+            </arg>
+            <arg>
+              <ptr>
+                <ptr>
+                  <prim domain=""Character"" size=""1"" />
+                </ptr>
+              </ptr>
+            </arg>
+            <arg>
+              <ptr>
+                <ptr>
+                  <prim domain=""Character"" size=""1"" />
+                </ptr>
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""argc"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </arg>
+      <arg name=""ubp_av"">
+        <ptr>
+          <ptr>
+            <prim domain=""Character"" size=""1"" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg name=""init"">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""fini"">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""rtld_fini"">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""stack_end"">
+        <ptr>
+          <void />
+        </ptr>
       </arg>
     </signature>
   </procedure>

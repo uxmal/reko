@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,37 @@
  */
 #endregion
 
-using Decompiler.Arch.Arm;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Arch.Arm;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.RiscOS
+namespace Reko.Environments.RiscOS
 {
     public class RiscOSPlatform : Platform
     {
         public RiscOSPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
         {
+        }
+
+        public override string DefaultCallingConvention
+        {
+            get { return ""; }
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -53,20 +64,22 @@ namespace Decompiler.Environments.RiscOS
                         Terminates = true,
                     },
                     Signature = new ProcedureSignature(null,
-                        new Identifier("r0", 0, PrimitiveType.Pointer32, A32Registers.r0))
+                        new Identifier("r0", PrimitiveType.Pointer32, A32Registers.r0))
                 };
             }
             throw new NotSupportedException(string.Format("Unknown RiscOS vector &{0:X}.", vector)); 
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
+
     }
 }

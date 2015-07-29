@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Analysis;
-using Decompiler.Evaluation;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Analysis;
+using Reko.Evaluation;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class TrashRegisterFinderUpdateCodeTests
@@ -95,6 +95,7 @@ namespace Decompiler.UnitTests.Analysis
             });
 
             var sExp = @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -125,7 +126,7 @@ main_exit:
                 m.Assign(ebx, 0x1234);
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
-                m.Call("foo");
+                m.Call("foo", 4);
                 m.Assign(ebx, eax);
                 m.Return();
             });
@@ -138,6 +139,7 @@ main_exit:
             });
 
             var sExp = @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -153,6 +155,7 @@ l1:
 main_exit:
 
 // foo
+// Return size: 0
 void foo()
 foo_entry:
 	// succ:  l1
@@ -174,7 +177,7 @@ foo_exit:
                 var ecx = m.Frame.EnsureRegister(Registers.ecx);
                 var esi = m.Frame.EnsureRegister(Registers.esi);
                 m.Assign(esi, ecx);
-                m.Call("foo");
+                m.Call("foo", 4);
                 m.Assign(esi, m.IAdd(esi, 1));
                 m.Return();
             });
@@ -194,6 +197,7 @@ foo_exit:
             });
 
             var sExp = @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -206,6 +210,7 @@ l1:
 main_exit:
 
 // foo
+// Return size: 0
 void foo()
 foo_entry:
 	// succ:  l1
@@ -244,6 +249,7 @@ foo_exit:
 
             var sExp =
 @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -290,6 +296,7 @@ main_exit:
 
             var sExp =
 @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -377,6 +384,7 @@ main_exit:
             p.Add(new LiveLoopMock().Procedure);
 
             var sExp = @"// LiveLoopMock
+// Return size: 0
 void LiveLoopMock()
 LiveLoopMock_entry:
 	goto loop

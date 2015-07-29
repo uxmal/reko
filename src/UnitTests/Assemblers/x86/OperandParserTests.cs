@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Code;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Code;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Assemblers.x86
+namespace Reko.UnitTests.Assemblers.x86
 {
 	[TestFixture]
 	public class OperandParserTests
@@ -107,12 +107,12 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
 		private OperandParser Create16BitParser(string data)
 		{
-			return new OperandParser(new Lexer(new StringReader(data)), symtab, new Address(0x0C00, 0x0000), PrimitiveType.Word16, PrimitiveType.Word16);
+			return new OperandParser(new Lexer(new StringReader(data)), symtab, Address.SegPtr(0x0C00, 0x0000), PrimitiveType.Word16, PrimitiveType.Word16);
 		}
 
 		private OperandParser Create32BitParser(string data)
 		{
-			return new OperandParser(new Lexer(new StringReader(data)), symtab, new Address(0x0C00, 0x0000), PrimitiveType.Word32, PrimitiveType.Word32);
+            return new OperandParser(new Lexer(new StringReader(data)), symtab, Address.SegPtr(0x0C00, 0x0000), PrimitiveType.Word32, PrimitiveType.Word32);
 		}
 	}
 }

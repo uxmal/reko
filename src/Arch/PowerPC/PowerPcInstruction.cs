@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.PowerPC
+namespace Reko.Arch.PowerPC
 {
     public class PowerPcInstruction : MachineInstruction
     {
@@ -34,6 +34,7 @@ namespace Decompiler.Arch.PowerPC
         public MachineOperand op2;
         public MachineOperand op3;
         public MachineOperand op4;
+        public MachineOperand op5;
         public bool setsCR0;
 
         public PowerPcInstruction(Opcode opcode)
@@ -50,6 +51,8 @@ namespace Decompiler.Arch.PowerPC
             this.setsCR0 = setsCR0;
         }
 
+        public override int OpcodeAsInteger { get { return (int)opcode; } }
+
         public int Operands
         {
             get
@@ -60,7 +63,11 @@ namespace Decompiler.Arch.PowerPC
                     return 1;
                 if (op3 == null)
                     return 2;
-                return 3;
+                if (op4 == null)
+                    return 3;
+                if (op5 == null)
+                    return 4;
+                return 5;
             }
         }
 	
@@ -71,9 +78,10 @@ namespace Decompiler.Arch.PowerPC
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(opcode.ToString());
-            if (setsCR0)
-                writer.Write('.');
+            var op = string.Format("{0}{1}", 
+                opcode,
+                setsCR0 ? "." : "");
+            writer.WriteOpcode(op);
             if (op1 != null)
             {
                 writer.Tab();
@@ -90,6 +98,11 @@ namespace Decompiler.Arch.PowerPC
                         {
                             writer.Write(",");
                             op4.Write(true, writer);
+                            if (op5 != null)
+                            {
+                                writer.Write(",");
+                                op5.Write(true, writer);
+                            }
                         }
                     }
                 }
@@ -114,9 +127,34 @@ namespace Decompiler.Arch.PowerPC
             Address = a;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return "$" + Address.ToString();
+            writer.WriteAddress("$" + Address.ToString(), Address);
+        }
+    }
+
+    public class ConditionOperand : MachineOperand
+    {
+        public uint condition;
+
+        public ConditionOperand(uint condition) : base(PrimitiveType.Byte)
+        {
+            this.condition = condition;
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            if (condition > 3)
+                writer.Write("cr{0}+", condition >> 2);
+            var s = "";
+            switch (condition & 3)
+            {
+            case 0: s = "lt"; break;
+            case 1: s = "gt"; break;
+            case 2: s = "eq"; break;
+            case 3: s = "so"; break;
+            }
+            writer.Write(s);
         }
     }
 }

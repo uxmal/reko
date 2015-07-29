@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,21 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
+using Reko.Arch.Mos6502;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Reko.Environments.C64
 {
+    /// <summary>
+    /// Implementation of the C64 platform.
+    /// </summary>
     public class C64Platform : Platform
     {
         private Mos6502ProcessorArchitecture arch;
@@ -43,6 +48,11 @@ namespace Decompiler.Environments.C64
             get { return ""; }
         }
 
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
+        }
+
         public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {
             return base.FindService(rtl, state);
@@ -53,9 +63,19 @@ namespace Decompiler.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr16(c.ToUInt16());
         }
     }
 }

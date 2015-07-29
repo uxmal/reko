@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Machine
+namespace Reko.Core.Machine
 {
     /// <summary>
     /// Abstract base class for low-level machine instructions.
@@ -44,11 +44,24 @@ namespace Decompiler.Core.Machine
         {
         }
 
+        /// <summary>
+        /// Each different supported opcode should have a different numerical value, exposed here.
+        /// </summary>
+        public abstract int OpcodeAsInteger { get; }
+
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();
             this.Render(renderer);
             return renderer.ToString();
+        }
+
+        public string ToString(Platform platform)
+        {
+            var renderer = new StringRenderer(platform);
+            this.Render(renderer);
+            return renderer.ToString();
+
         }
     }
 }

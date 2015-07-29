@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// An EvaluationContext is used by the SymbolicEvaluator to provide a statement context for the
@@ -53,13 +53,13 @@ namespace Decompiler.Core
         Expression GetValue(MemoryAccess access);
         Expression GetValue(SegmentedAccess access);
         Expression GetValue(Application appl);
+        Expression GetDefiningExpression(Identifier id);
         void RemoveIdentifierUse(Identifier id);
         void UseExpression(Expression expr);
         void SetValue(Identifier id, Expression value);
         void SetValueEa(Expression ea, Expression value);
         void SetValueEa(Expression basePointer, Expression ea, Expression value);
 
-        [Obsolete]
         bool IsUsedInPhi(Identifier id);
     }
 }

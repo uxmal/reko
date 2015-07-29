@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Reko.Arch.Pdp11
 {
     public class Registers
     {
@@ -67,7 +68,7 @@ namespace Decompiler.Arch.Pdp11
         public RegisterStorage StackRegister { get { return Registers.sp; } }
         public uint CarryFlagMask { get { throw new NotImplementedException(); } }
 
-        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader rdr)
+        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return new Pdp11Disassembler(rdr, this);
         }
@@ -82,7 +83,7 @@ namespace Decompiler.Arch.Pdp11
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -97,7 +98,12 @@ namespace Decompiler.Arch.Pdp11
             return new BitSet(16);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotImplementedException();
         }
@@ -143,11 +149,6 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public int InstructionBitSize { get { return 16; } }
 
         public string GrfToString(uint grf)
@@ -180,9 +181,19 @@ namespace Decompiler.Arch.Pdp11
             return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame);
         }
 
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr16(c.ToUInt16());
+        }
+
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse16(txtAddress, out addr);
         }
 
         #endregion

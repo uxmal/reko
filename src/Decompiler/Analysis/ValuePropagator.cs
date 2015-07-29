@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Evaluation;
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Evaluation;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// Performs propagation by replacing occurences of expressions with simpler expressions if these are beneficial. 
@@ -52,7 +52,6 @@ namespace Decompiler.Analysis
             this.proc = proc;
             this.evalCtx = new SsaEvaluationContext(ssaIds);
             this.eval = new ExpressionSimplifier(evalCtx);
-            trace.Level = TraceLevel.Verbose;
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -116,7 +115,12 @@ namespace Decompiler.Analysis
 
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
-            return phi;
+            var src = phi.Src.Accept(eval);
+            PhiFunction f = src as PhiFunction;
+            if (f != null)
+                return new PhiAssignment(phi.Dst, f);
+            else
+                return new Assignment(phi.Dst, src);
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)

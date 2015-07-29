@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public enum Opcode : short
     {
@@ -42,6 +42,7 @@ namespace Decompiler.Arch.Arm
         b,
         beq,
         bic,
+        bics,
         bkpt,
         bl,
         blx,
@@ -53,6 +54,8 @@ namespace Decompiler.Arch.Arm
         cpy,
         cps,
         eor,
+        eret,
+        hvc,
 
         ldc,
         ldm,
@@ -62,6 +65,9 @@ namespace Decompiler.Arch.Arm
         ldrbt,
         ldrd,
         ldrex,
+        ldrexb,
+        ldrexd,
+        ldrexh,
         ldrh,
         ldrsb,
         ldrsh,
@@ -71,8 +77,10 @@ namespace Decompiler.Arch.Arm
         mla,
         mov,
         mvn,
+        mvns,
         mul,
         orr,
+        orrs,
         pkhbt,
         pkhtb,
         rev,
@@ -86,6 +94,7 @@ namespace Decompiler.Arch.Arm
         setendbe,
         setendle,
         sfm,
+        smc,
         smlad,
         smlald,
         smlalxy,
@@ -110,6 +119,9 @@ namespace Decompiler.Arch.Arm
         strbt,
         strd,
         strex,
+        strexb,
+        strexd,
+        strexh,
         strh,
         strt,
         sub,
@@ -183,6 +195,19 @@ namespace Decompiler.Arch.Arm
         asr,
         ror,
         rrx,
+        stmda,
+        ldmda,
+        pop,
+        stmdb,
+        push,
+        ldmdb,
+        stmib,
+        ldmib,
+        mls,
+        muls,
+        mlas,
+        ldmfd,
+        ldmia,
 
 
 

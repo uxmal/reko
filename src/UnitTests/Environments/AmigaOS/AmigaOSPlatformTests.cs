@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Services;
-using Decompiler.Environments.AmigaOS;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Environments.AmigaOS;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,7 +31,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Environments.AmigaOS
+namespace Reko.UnitTests.Environments.AmigaOS
 {
     [TestFixture]
     public class AmigaOSPlatformTests
@@ -70,9 +70,9 @@ namespace Decompiler.UnitTests.Environments.AmigaOS
             var svc = platform.FindService(rtls.Last(), state);
 
             Assert.AreEqual("Allocate", svc.Name);
-            Assert.AreEqual(2, svc.Signature.FormalArguments.Length);
-            Assert.AreEqual("a1", svc.Signature.FormalArguments[0].Storage.ToString());
-            Assert.AreEqual("d0", svc.Signature.FormalArguments[1].Storage.ToString());
+            Assert.AreEqual(2, svc.Signature.Parameters.Length);
+            Assert.AreEqual("a1", svc.Signature.Parameters[0].Storage.ToString());
+            Assert.AreEqual("d0", svc.Signature.Parameters[1].Storage.ToString());
             mr.VerifyAll();
         }
 

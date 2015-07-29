@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.Mips;
-using Decompiler.Core;
+using Reko.Arch.Mips;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Mips
+namespace Reko.UnitTests.Arch.Mips
 {
     [TestFixture]
     public class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Mips
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-        public override Address LoadAddress { get { return new Address(0x00100000); } }
+        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
         protected override ImageWriter CreateImageWriter(byte[] bytes)
         {

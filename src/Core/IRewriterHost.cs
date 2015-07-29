@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
-    public interface IRewriterHost
+    public interface IRewriterHost 
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
-        PseudoProcedure GetImportedProcedure(uint addrThunk);
+        Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
+
+        ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
+        ExternalProcedure GetInterceptedCall(Address addrImportThunk);
+
+        void Error(Address address, string message);
     }
 }
 

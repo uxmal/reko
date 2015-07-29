@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
     /// <summary>
     /// If an induction variable i is being used in an addition with a constant (i + c) and it
@@ -87,19 +87,16 @@ namespace Decompiler.Analysis
         {
             if (ctx.TestStatement == null)
                 return;
-            Branch branch = ctx.TestStatement.Instruction as Branch;
-            if (branch == null)
-                return;
-            BinaryExpression exp = branch.Condition as BinaryExpression;
-            if (exp == null)
-                return;
-            Constant c = exp.Right as Constant;
-            if (c != null)
+            Branch branch;
+            BinaryExpression exp ;
+            Constant c ;
+            if (ctx.TestStatement.Instruction.As(out branch) &&
+                branch.Condition.As(out exp) &&
+                exp.Right.As(out c))
             {
                 exp.Right = Operator.ISub.ApplyConstants(c, use.Increment);
             }
         }
-
 
         private bool ModifyInitialAssigment(IncrementedUse use)
         {

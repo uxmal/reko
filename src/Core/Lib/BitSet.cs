@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// Represents a set of bits. The System.Collection.BitArray class has bugs, so we circumvent them here.
 	/// </summary>
-	public class BitSet : ICloneable, IEnumerable
+	public class BitSet : ICloneable, IEnumerable<int>
 	{
 		private int [] bits;
 		private int bitMax;
@@ -178,14 +179,19 @@ namespace Decompiler.Core.Lib
 
 		#region IEnumerable Members
 
-		public System.Collections.IEnumerator GetEnumerator()
+        public IEnumerator<int> GetEnumerator()
+        {
+            return new BitSetEnumerator(this);
+        }
+
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return new BitSetEnumerator(this);
 		}
 
 		#endregion
 
-		private class BitSetEnumerator : IEnumerator
+		private class BitSetEnumerator : IEnumerator<int>
 		{
 			private BitSet bitset;
 			private int bit;
@@ -202,7 +208,9 @@ namespace Decompiler.Core.Lib
 				bit = -1;
 			}
 
-			public object Current
+            public void Dispose() { }
+
+			public int Current
 			{
 				get
 				{
@@ -213,6 +221,8 @@ namespace Decompiler.Core.Lib
 					return bit;
 				}
 			}
+
+            object IEnumerator.Current { get { return Current; } }
 
 			public bool MoveNext()
 			{

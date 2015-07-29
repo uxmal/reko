@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Serialization;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
-namespace Decompiler.Environments.Msdos
+namespace Reko.Environments.Msdos
 {
 	public class MsdosPlatform : Platform
 	{
@@ -34,6 +37,16 @@ namespace Decompiler.Environments.Msdos
 		{
 			LoadRealmodeServices(arch);
 		}
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.cs.SetAliases(bitset, true);
+            Registers.ss.SetAliases(bitset, true);
+            Registers.sp.SetAliases(bitset, true);
+            Registers.esp.SetAliases(bitset, true);
+            return bitset;
+        }
 
 		public override SystemService FindService(int vector, ProcessorState state)
 		{
@@ -45,39 +58,42 @@ namespace Decompiler.Environments.Msdos
 			return null;
 		}
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        /// <summary>
+        /// MS-DOS has no concept of "trampolines".
+        /// </summary>
+        /// <param name="imageReader"></param>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+        
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }
 
-		public void LoadRealmodeServices(IProcessorArchitecture arch)
-		{
-			string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR") ?? ".";
-			// TODO: extract runtime files ( like "realmodeintservices.xml") to their own directory ?
-			string libPath = Path.Combine(prefix,"src","Environments","Msdos","realmodeintservices.xml");
-			if (!File.Exists (libPath))
-			{
-				prefix = Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location);
-				libPath = Path.Combine(prefix,"realmodeintservices.xml");
-				if (!File.Exists(libPath))
-				{
-					libPath = Path.Combine(Directory.GetCurrentDirectory() , "realmodeintservices.xml");
-				}
-			}
+        public void LoadRealmodeServices(IProcessorArchitecture arch)
+        {
+            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var libPath = Path.Combine(prefix, "realmodeintservices.xml");
+            if (!File.Exists(libPath))
+            {
+                libPath = Path.Combine(Directory.GetCurrentDirectory(), "realmodeintservices.xml");
+            }
 
             SerializedLibrary lib;
             using (FileStream stm = new FileStream(libPath, FileMode.Open))
-			{
+            {
                 lib = SerializedLibrary.LoadFromStream(stm);
-			}
+            }
 
-            int i = 0;
-			realModeServices = new SystemService[lib.Procedures.Count];
-			foreach (SerializedService ssvc in lib.Procedures)
-			{
-				realModeServices[i++] = ssvc.Build(arch);
-			}
-		}
+            realModeServices = lib.Procedures
+                .Cast<SerializedService>()
+                .Select(s => s.Build(arch))
+                .ToArray();
+        }
 
         public override string DefaultCallingConvention
         {

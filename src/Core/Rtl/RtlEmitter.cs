@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Reko.Core.Rtl
 {
     /// <summary>
     /// Builder class that accumulates RtlInstructions.
@@ -42,6 +42,13 @@ namespace Decompiler.Core.Rtl
         public RtlEmitter Assign(Expression dst, Expression src)
         {
             var ass = new RtlAssignment(dst, src);
+            instrs.Add(ass);
+            return this;
+        }
+
+        public RtlEmitter Assign(Expression dst, int src)
+        {
+            var ass = new RtlAssignment(dst, Constant.Create(dst.DataType, src));
             instrs.Add(ass);
             return this;
         }
@@ -149,5 +156,6 @@ namespace Decompiler.Core.Rtl
             instrs.Add(new RtlIf(test, rtl));
             return this;
         }
+
     }
 }

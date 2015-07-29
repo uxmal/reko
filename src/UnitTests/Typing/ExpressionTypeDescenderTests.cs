@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class ExpressionTypeDescenderTests
@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Typing
             this.store = new TypeStore();
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
-            var prog = new Program { Architecture = arch };
-            this.exa = new ExpressionTypeAscender(arch, store, factory);
+            var prog = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
+            this.exa = new ExpressionTypeAscender(prog.Platform, store, factory);
             this.exd = new ExpressionTypeDescender(prog, store, factory);
             store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
         }
@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Typing
         }
         private static Identifier Id(string name, DataType dt)
         {
-            return new Identifier(name, 1, dt, TemporaryStorage.None);
+            return new Identifier(name, dt, TemporaryStorage.None);
         }
 
         private void Verify(string outputFileName)

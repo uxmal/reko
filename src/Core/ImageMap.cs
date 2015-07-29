@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,44 +18,39 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
-	public delegate void ItemSplitHandler(object o, ItemSplitArgs isa);
-
 	/// <summary>
 	/// Describes the contents of the image in terms of regions. The image map is two-tier:
 	/// Segments lie on the first level, and under these, we find the procedures.
 	/// </summary>
 	public class ImageMap
 	{
+        public event EventHandler MapChanged;
+
+        private Address addrBase;
 		private Map<Address,ImageMapItem> items;
         private Map<Address,ImageMapSegment> segments;
 
-        public ImageMap(LoadedImage image)
-            : this(image.BaseAddress, image.Bytes.Length)
-        {
-        }
-
-		public ImageMap(Address addrBase, int imageSize)
+		public ImageMap(Address addrBase, long imageSize)
 		{
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
+            this.addrBase = addrBase;
             items = new Map<Address, ImageMapItem>(new ItemComparer());
             segments = new Map<Address, ImageMapSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, (uint) imageSize);
 		}
 
         /// <summary>
-        /// Adds an image map item at the specified address. If <paramref name="addr"/> is 
-        /// located inside of an existing address, a notification is sent that that location has
-        /// been split.
+        /// Adds an image map item at the specified address. 
         /// </summary>
         /// <param name="addr"></param>
         /// <param name="itemNew"></param>
@@ -68,11 +63,12 @@ namespace Decompiler.Core
             {
                 // Outside of range.
                 items.Add(itemNew.Address, itemNew);
+                MapChanged.Fire(this);
                 return itemNew;
             }
             else
             {
-                int delta = addr - item.Address;
+                long delta = addr - item.Address;
                 Debug.Assert(delta >= 0, "TryFindItem is supposed to find a block whose address is <= the supplied address");
                 if (delta > 0)
                 {
@@ -81,7 +77,7 @@ namespace Decompiler.Core
                     itemNew.Size = (uint) (item.Size - delta);
                     item.Size = (uint) delta;
                     items.Add(itemNew.Address, itemNew);
-
+                    MapChanged.Fire(this);
                     return itemNew;
                 }
                 else
@@ -93,6 +89,7 @@ namespace Decompiler.Core
                         item.Address += itemNew.Size;
                         items[itemNew.Address] = itemNew;
                         items[item.Address] = item;
+                        MapChanged.Fire(this);
                         return itemNew;
                     }
                     if (item.GetType() != itemNew.GetType())    //$BUGBUG: replaces the type.
@@ -100,6 +97,7 @@ namespace Decompiler.Core
                         items[itemNew.Address] = itemNew;
                         itemNew.Size = item.Size;
                     }
+                    MapChanged.Fire(this);
                     return item;
                 }
             }
@@ -112,7 +110,7 @@ namespace Decompiler.Core
             {
                 throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));
             }
-            int delta = addr - item.Address;
+            long delta = addr - item.Address;
             Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
             if (delta > 0)
             {
@@ -125,7 +123,7 @@ namespace Decompiler.Core
                 };
 
                 item.Size = (uint) delta;
-                item.DataType = ChopAfter(item.DataType, delta);      // Shrink the existing mofo.
+                item.DataType = ChopAfter(item.DataType, (int)delta);      // Shrink the existing mofo.
 
                 items.Add(addr, itemNew);
                 items.Add(itemAfter.Address, itemAfter);
@@ -141,6 +139,7 @@ namespace Decompiler.Core
                 items.Add(addr, itemNew);
                 items.Add(item.Address, item);
             }
+            MapChanged.Fire(this);
         }
 
         private DataType ChopAfter(DataType type, int offset)
@@ -166,7 +165,7 @@ namespace Decompiler.Core
             ImageMapItem item;
             if (!TryFindItem(addr, out item))
                 return;
-            int delta = addr - item.Address;
+            long delta = addr - item.Address;
             if (delta == 0)
                 return;
             
@@ -186,15 +185,16 @@ namespace Decompiler.Core
 				segNew.Address = addr;
 				segNew.Size = ~0U;
 				segments.Add(segNew.Address, segNew);
-				return segNew;
+                MapChanged.Fire(this);
+                return segNew;
 			}
-			int delta = addr - seg.Address;
+			long delta = addr - seg.Address;
 			Debug.Assert(delta >= 0);
 			if (delta > 0)
 			{
-				// Need to split the segment.
+				// Need to split the segment. //$REVIEW: or do we? x86 segments can overlap.
 
-				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
+				var segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
 				segNew.Size = (uint)(seg.Size - delta);
 				seg.Size = (uint) delta;
@@ -203,7 +203,8 @@ namespace Decompiler.Core
 				// And split any items in the segment.
 
 				AddItem(addr, new ImageMapItem());
-				return segNew;
+                MapChanged.Fire(this);
+                return segNew;
 			}
 			return seg;
 		}
@@ -259,24 +260,23 @@ namespace Decompiler.Core
         /// </summary>
         /// <param name="linearAddress"></param>
         /// <returns></returns>
-		public Address MapLinearAddressToAddress(uint linearAddress)
+		public Address MapLinearAddressToAddress(ulong linearAddress)
 		{
-			foreach (ImageMapSegment seg in segments.Values)
+            //$REVIEW: slow; use binary search at least?
+            foreach (ImageMapSegment seg in segments.Values)
 			{
                 if (seg.IsInRange(linearAddress))
                 {
-                    if (seg.Address.Selector != 0)
-                    {
-                        return new Address(seg.Address.Selector, (uint)(linearAddress - seg.Address.Linear));
-                    }
-                    else
-                        return new Address((uint)linearAddress);
+                    long offset = (long)linearAddress- (long)seg.Address.ToLinear();
+                    return seg.Address + offset;
                 }
 			}			
 			throw new ArgumentOutOfRangeException(
                 string.Format("Linear address {0:X8} exceeeds known address range.",
                 linearAddress));
 		}
+
+        public ImageMapSegmentRenderer Renderer { get; set; }
 
 		public Map<Address, ImageMapItem> Items
 		{
@@ -294,7 +294,7 @@ namespace Decompiler.Core
 		{
 			public virtual int Compare(Address a, Address b)
 			{
-                return a - b;
+                return a.ToLinear().CompareTo(b.ToLinear());
 			}
 		}
 
@@ -304,6 +304,16 @@ namespace Decompiler.Core
             foreach (var item in Items)
             {
                 Debug.Print("Key: {0}, Value: size: {1}, Type: {2}", item.Key, item.Value.Size, item.Value.DataType);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpSections()
+        {
+            foreach (var item in Segments)
+            {
+                Debug.Print("Key: {0}, Value: name:{1,-18} size: {2:X8}, Access: {3}", item.Key, item.Value.Name,  item.Value.Size, item.Value.Access);
+
             }
         }
     }
@@ -329,42 +339,18 @@ namespace Decompiler.Core
 
 		public bool IsInRange(Address addr)
 		{
-			return IsInRange(addr.Linear);
+			return IsInRange(addr.ToLinear());
 		}
 
-		public bool IsInRange(uint linearAddress)
+		public bool IsInRange(ulong linearAddress)
 		{
-			uint linItem = this.Address.Linear;
+            ulong linItem = this.Address.ToLinear();
 			return (linItem <= linearAddress && linearAddress < linItem + Size);
 		}
 
 		public override string ToString()
 		{
             return string.Format("{0}, size: {1}, type:{2}", Address, Size, DataType);
-		}
-	}
-
-	public class SegmentSplitArgs : EventArgs
-	{
-		public ImageMapSegment SegmentOld;
-		public ImageMapSegment SegmentNew;
-
-		public SegmentSplitArgs(ImageMapSegment seg, ImageMapSegment segNew)
-		{
-			SegmentOld = seg;
-			SegmentNew = segNew;
-		}
-	}
-
-	public class ItemSplitArgs : EventArgs
-	{
-		public ImageMapItem ItemOld;
-		public ImageMapItem ItemNew;
-
-		public ItemSplitArgs(ImageMapItem it, ImageMapItem itNew)
-		{
-			ItemOld = it;
-			ItemNew = itNew;
 		}
 	}
 }

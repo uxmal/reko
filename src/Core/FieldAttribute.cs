@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class FieldAttribute : Attribute

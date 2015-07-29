@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
     public class FakeDecompilerEventListener : DecompilerEventListener, IWorkerDialogService
     {
@@ -43,13 +44,27 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0} - {1} - {2}", d.GetType().Name, location.Text, d.Message);
             lastDiagnostic = sb.ToString();
-            System.Diagnostics.Debug.WriteLine(lastDiagnostic);
+            Debug.WriteLine(lastDiagnostic);
+        }
+
+        public void Warn(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new WarningDiagnostic(message));
+        }
+
+        public void Error(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(message));
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(message, ex));
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,9 +26,10 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
     /// <summary>
+    /// Reads Microsoft module definition (.def) files.
     /// http://msdn.microsoft.com/en-us/library/28d6s79h.aspx
     /// </summary>
     public class ModuleDefinitionLoader : MetadataLoader
@@ -36,16 +37,19 @@ namespace Decompiler.Environments.Win32
         private Lexer lexer;
         private Token bufferedTok;
         private IProcessorArchitecture arch;
+        private string filename;
 
-        public ModuleDefinitionLoader(IServiceProvider services, byte[] bytes) : base(services, bytes)
+        public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[] bytes) : base(services, filename, bytes)
         {
+            this.filename = filename;
             this.lexer = new Lexer( new StreamReader(new MemoryStream(bytes)));
             this.bufferedTok = null;
-            this.arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
+            this.arch = new Reko.Arch.X86.X86ArchitectureFlat32();
         }
 
-        public ModuleDefinitionLoader(TextReader rdr, IProcessorArchitecture arch) : base(null, null)
+        public ModuleDefinitionLoader(TextReader rdr, string filename, IProcessorArchitecture arch) : base(null, filename, null)
         {
+            this.filename = filename;
             this.lexer = new Lexer(rdr);
             this.bufferedTok = null;
             this.arch = arch;
@@ -54,6 +58,7 @@ namespace Decompiler.Environments.Win32
         public override TypeLibrary Load()
         {
             var loader = new TypeLibraryLoader(arch, true);
+            loader.SetModuleName(DefaultModuleName(filename));
             for (; ; )
             {
                 var tok = Get();
@@ -69,6 +74,11 @@ namespace Decompiler.Environments.Win32
                     tok.LineNumber));
                 }
             }
+        }
+
+        private string DefaultModuleName(string filename)
+        {
+            return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
         }
 
         private void ParseExports(TypeLibraryLoader lib)
@@ -95,6 +105,7 @@ namespace Decompiler.Environments.Win32
                     Name = entryName,
                     Signature = ParseSignature(entryName, lib),
                 };
+                Debug.Print("Loaded {0} @ {1}", entryName, ordinal);
                 if (ordinal != -1)
                 {
                     svc.SyscallInfo = new SyscallInfo { Vector = ordinal };
@@ -108,7 +119,7 @@ namespace Decompiler.Environments.Win32
         {
             if (Peek().Type == TokenType.Id)
             {
-                lib.SetLibraryName(Get().Text);
+                lib.SetModuleName(Get().Text);
             }
             if (PeekAndDiscard(TokenType.BASE))
             {

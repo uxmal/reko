@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core.Code;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 
-namespace Decompiler.UnitTests.Fragments
+namespace Reko.UnitTests.Fragments
 {
 	public class VectorFragment : ProcedureBuilder
 	{

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Contains information about one input file, gathered during loading, scanning and data analysis,
@@ -37,31 +37,30 @@ namespace Decompiler.Core
     /// <remarks>
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
-    [Designer("Decompiler.Gui.Design.ProgramDesigner,Decompiler")]
+    [Designer("Reko.Gui.Design.ProgramDesigner,Reko")]
     public class Program
 	{
-		private SortedList<Address,Procedure> procedures;
         private SortedList<Address, ImageMapVectorTable> vectors;
-        private Dictionary<uint, PseudoProcedure> mpuintfn;
-        private Dictionary<uint, PseudoProcedure> trampolines;
 		private Identifier globals;
         private StructureType globalFields;
 		private Dictionary<string, PseudoProcedure> pseudoProcs;
-        private Dictionary<Identifier, LinearInductionVariable> ivs;
-		private TypeFactory typefactory;
 
 		public Program()
 		{
             this.EntryPoints = new List<EntryPoint>();
-			this.procedures = new SortedList<Address,Procedure>();
+			this.Procedures = new SortedList<Address,Procedure>();
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
 			this.CallGraph = new CallGraph();
-            this.mpuintfn = new Dictionary<uint, PseudoProcedure>();		// uint (offset) -> string
-			this.trampolines = new Dictionary<uint, PseudoProcedure>();	// linear address -> string
+            this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
+            this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
-            this.ivs = new Dictionary<Identifier, LinearInductionVariable>();
-			this.typefactory = new TypeFactory();
+            this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
+			this.TypeFactory = new TypeFactory();
 			this.TypeStore = new TypeStore();
+            this.UserProcedures = new SortedList<Address, Serialization.Procedure_v1>();
+            this.UserCalls = new SortedList<Address, Serialization.SerializedCall_v1>();
+            this.UserGlobalData = new SortedList<Address, Serialization.GlobalDataItem_v2>();
+            this.Options = new ProgramOptions();
 		}
 
         public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
@@ -75,12 +74,14 @@ namespace Decompiler.Core
         public string Name { get; set; }
 
         /// <summary>
-        /// Project file that was used to load this program -- if any.
+        /// The processor architecture to use for decompilation
         /// </summary>
-        public InputFile InputFile { get; set; }
-
 		public IProcessorArchitecture Architecture { get; set; }
 
+        /// <summary>
+        /// The callgraph expresses the relationships between the callers (statements and procedures)
+        /// and their callees (procedures).
+        /// </summary>
         public CallGraph CallGraph { get; private set; }
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
@@ -94,6 +95,13 @@ namespace Decompiler.Core
 			return p;
 		}
 
+        /// <summary>
+        /// Represents a pointer to a structure that contains all the global variables of the program. 
+        /// </summary>
+        /// <remarks>
+        /// This property is used heavily in the type inference phases of the decompiler to provide a place in which
+        /// to collect global variables.
+        /// </remarks>
         public Identifier Globals
         {
             get
@@ -110,9 +118,9 @@ namespace Decompiler.Core
         {
             if (Architecture == null)
                 throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
-            globalFields = TypeFactory.CreateStructureType(null, 0);
-            var ptrGlobals = TypeFactory.CreatePointer(globalFields, Architecture.PointerType.Size);
-            globals = new Identifier("globals", 0,  ptrGlobals, new MemoryStorage());
+            globalFields = TypeFactory.CreateStructureType("Globals", 0);
+            var ptrGlobals = TypeFactory.CreatePointer(globalFields, Platform.PointerType.Size);
+            globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }
 		
         /// <summary>
@@ -122,45 +130,45 @@ namespace Decompiler.Core
 
         public ImageMap ImageMap { get; set; }
 
-        public List<EntryPoint> EntryPoints { get; private set; }
-
-		public Dictionary<uint, PseudoProcedure> ImportThunks
-		{
-			get { return mpuintfn; }
-		}
-
-        public Dictionary<Identifier, LinearInductionVariable> InductionVariables
-        {
-            get { return ivs; }
-        }
-
 		public Platform Platform { get; set; }
 
-		/// <summary>
-		/// Provides access to the program's procedures, indexed by address.
+        /// <summary>
+        /// The list of known entry points to the program.
+        /// </summary>
+        public List<EntryPoint> EntryPoints { get; private set; }
+
+        public string Filename { get; set; }
+
+        /// <summary>
+        /// A collection of memory locations and the external library references
+        /// they each refer to.
+        /// </summary>
+		public Dictionary<Address, ImportReference> ImportReferences { get; private set; }
+
+        public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
+
+        //$REVIEW: shouldnt these belong in Procedure?
+        public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
+
+        /// <summary>
+        /// User-specified options that control the decompilation of a program.
+        /// </summary>
+        public ProgramOptions Options { get; private set; }
+		
+        /// <summary>
+		/// The program's decompiled procedures, indexed by address.
 		/// </summary>
-		public SortedList<Address, Procedure> Procedures
-		{
-			get { return procedures; }
-		}
+		public SortedList<Address, Procedure> Procedures { get; private set; }
 
 		/// <summary>
-		/// Provides access to the program's pseudo procedures, indexed by name.
+		/// The program's pseudo procedures, indexed by name.
 		/// </summary>
 		public Dictionary<string,PseudoProcedure> PseudoProcedures
 		{
 			get { return pseudoProcs; }
 		}
 
-        public Dictionary<uint, PseudoProcedure> Trampolines
-		{
-			get { return trampolines; }
-		}
-
-		public TypeFactory TypeFactory
-		{
-			get { return typefactory; }
-		}
+		public TypeFactory TypeFactory { get; private set; }
 		
 		public TypeStore TypeStore { get; private set; }
 
@@ -171,6 +179,111 @@ namespace Decompiler.Core
 		{
 			get { return vectors; }
 		}
+
+        // 'Oracular' information provided by the user.
+        public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get; set; }
+        public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
+        public SortedList<Address, Serialization.GlobalDataItem_v2> UserGlobalData { get; set; }
+
+        /// <summary>
+        /// The name of the file in which disassemblies are dumped.
+        /// </summary>
+        public string DisassemblyFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which intermediate results are stored.
+        /// </summary>
+        public string IntermediateFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which final output is stored
+        /// </summary>
+        public string OutputFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which recovered types are written.
+        /// </summary>
+        public string TypesFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which the global variables are written.
+        /// </summary>
+        public string GlobalsFilename { get; set; }
+
+        public void EnsureFilenames(string fileName)
+        {
+            this.DisassemblyFilename = DisassemblyFilename ?? Path.ChangeExtension(fileName, ".asm");
+            this.IntermediateFilename = IntermediateFilename ?? Path.ChangeExtension(fileName, ".dis");
+            this.OutputFilename = OutputFilename ?? Path.ChangeExtension(fileName, ".c");
+            this.TypesFilename = TypesFilename ?? Path.ChangeExtension(fileName, ".h");
+            this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
+        }
+
+        /// <summary>
+        /// A script to run after the image is loaded.
+        /// </summary>
+        public Serialization.Script_v2 OnLoadedScript { get; set; }
+
+        public ImageReader CreateImageReader(Address addr)
+        {
+            return Architecture.CreateImageReader(Image, addr);
+        }
+
+        public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
+        {
+            return Architecture.CreateDisassembler(
+                Architecture.CreateImageReader(Image, addr));
+        }
+
+        // Mutators /////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// This method is called when the user has created a global item.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        public ImageMapItem AddUserGlobalItem(Address address, DataType dataType)
+        {
+            var size = GetDataSize(address, dataType);
+            var item = new ImageMapItem
+            {
+                Address = address,
+                Size = size,
+                DataType = dataType,
+            };
+            if (size != 0)
+                this.ImageMap.AddItemWithSize(address, item);
+            else
+                this.ImageMap.AddItem(address, item);
+
+            this.UserGlobalData.Add(address, new Serialization.GlobalDataItem_v2
+            {
+                Address = address.ToString(),
+                DataType = dataType.Accept(new  Serialization.DataTypeSerializer()),
+            });
+            return item;
+        }
+
+        public uint GetDataSize(Address addr, DataType dt)
+        {
+            var strDt = dt as StringType;
+            if (strDt == null)
+                return (uint)dt.Size;
+            if (strDt.LengthPrefixType == null)
+            {
+                // Zero-terminated string.
+                var rdr = this.Architecture.CreateImageReader(this.Image, addr);
+                while (rdr.IsValid)
+                {
+                    var ch = rdr.ReadChar(strDt.ElementType);
+                    if (ch == 0)
+                        break;
+                }
+                return (uint)(rdr.Address - addr);
+            }
+            throw new NotImplementedException();
+        }
     } 
 
 	public class VectorUse

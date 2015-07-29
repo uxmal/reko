@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
     public class ArmInstruction : MachineInstruction
     {
@@ -38,9 +38,11 @@ namespace Decompiler.Arch.Arm
         public MachineOperand Src2;
         public MachineOperand Src3;
 
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(string.Format("{0}{1}{2}",
+            writer.WriteOpcode(string.Format("{0}{1}{2}",
                 Opcode,
                 Cond != Condition.al ? Cond.ToString() : "",
                 OpFlags != OpFlags.None ? OpFlags.ToString().ToLower() : ""));
@@ -107,47 +109,19 @@ namespace Decompiler.Arch.Arm
             var adr = op as AddressOperand;
             if (adr != null)
             {
-                writer.Write("$");
-                writer.Write("{0,8:X}", adr.Address);
+                adr.Write(false, writer);
                 return;
             }
             var mem = op as ArmMemoryOperand;
             if (mem != null)
             {
-                writer.Write('[');
-                writer.Write(mem.Base.ToString());
-                if (mem.Offset != null)
-                {
-                    if (mem.Preindexed)
-                    {
-                        writer.Write(",");
-                        if (mem.Subtract)
-                            writer.Write("-");
-                        Write(mem.Offset, writer);
-                        writer.Write("]");
-                        if (mem.Writeback)
-                            writer.Write("!");
-                    }
-                    else
-                    {
-                        writer.Write("],");
-                        if (mem.Subtract)
-                            writer.Write("-");
-                        Write(mem.Offset, writer);
-                    }
-                }
-                else
-                    writer.Write(']');
+                mem.Write(false, writer);
                 return;
             }
             var sh = op as ShiftOperand;
             if (sh != null)
             {
-                Write(sh.Operand, writer);
-                writer.Write(",");
-                writer.Opcode(sh.Opcode.ToString());
-                writer.Write(' ');
-                Write(sh.Shift, writer);
+                sh.Write(false, writer);
                 return;
             }
             if (op == null)

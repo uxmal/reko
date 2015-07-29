@@ -1,3 +1,6 @@
+ELF plt's and byte signatures
+
+
 The challenge of SSA and Type information
 ---
 After scanning, we have translated machine code to IL. We now want to convert the resulting IL into SSA 
@@ -50,9 +53,11 @@ main proc
 	ret
 	endp
 
-When scanning foo, the decompiler can detect that none of the return instructions in the scanned function has an argument, and thus the function is a __cdecl which 
-expects the caller to clean up. When scanning bar, the decompiler can also detect that all of the return instructions have the same return argument (4), and thus the the function
-is a __stdcall with 4 bytes of stack parameters.
+When scanning foo, Reko can detect that none of the return instructions in the 
+scanned function has an argument, and thus the function is a __cdecl which 
+expects the caller to clean up. When scanning bar, the decompiler can also 
+detect that all of the return instructions have the same return argument (4), 
+and thus the the function is a __stdcall with 4 bytes of stack parameters.
 
 Calling through function pointers really messes this up:
 

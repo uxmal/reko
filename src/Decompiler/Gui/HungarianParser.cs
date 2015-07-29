@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     /// <summary>
     /// Parses "hungarian strings" into DataTypes.
@@ -71,11 +71,11 @@ namespace Decompiler.Gui
 
     <dimension-size> ::=
 
-        <decimal integer>     // size in decimal
+        <decimal integer>   // size in decimal
 
-        $<hex integer>    // size in hexadecimal
+        $<hex integer>      // size in hexadecimal
 
-        x<hex integer>    // size in hexadecimal
+        x<hex integer>      // size in hexadecimal
 
         o<octal integer>    // size in octal
 
@@ -111,7 +111,7 @@ Some examples:
 
     a4,4r32    (4 x 4 array of 32-bit floats -- homogeneous matrix)
 
-    a,4r32        (array of arrays of 4 32-bit floats  --compare float (*)[4])
+    a,4r32     (array of arrays of 4 32-bit floats  --compare float (*)[4])
 
     qu8        (16-bit offset to unsigned 8-bit integer -- in x86 segmented architecture)
 
@@ -164,7 +164,7 @@ Some examples:
             case 'i':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
-                    return PrimitiveType.Int32;         // Convenient for 2014... most ints are 32 in C code.
+                    return PrimitiveType.Int32;         // Convenient for 2015... most ints are 32 in C code.
                 return PrimitiveType.Create(Domain.SignedInt, bitSize / 8);
             case 'u':
                 bitSize = ParseBitSize();
@@ -207,6 +207,8 @@ Some examples:
                     return dt;
                 }
                 return PrimitiveType.Word32;
+            case 'x':
+                return new CodeType();
             }
             return new UnknownType();
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BitSet = Decompiler.Core.Lib.BitSet;
-using Expression = Decompiler.Core.Expressions.Expression;
-using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
+using BitSet = Reko.Core.Lib.BitSet;
+using Expression = Reko.Core.Expressions.Expression;
+using IProcessorArchitecture = Reko.Core.IProcessorArchitecture;
 using SortedList = System.Collections.SortedList;
-using Storage = Decompiler.Core.Storage;
+using Storage = Reko.Core.Storage;
 using StringWriter = System.IO.StringWriter;
 using TextWriter = System.IO.TextWriter;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Abstract base class for summary information kept with procedures or blocks.

@@ -1,4 +1,4 @@
-﻿namespace Decompiler.WindowsItp
+﻿namespace Reko.WindowsItp
 {
     partial class ItpForm
     {
@@ -34,11 +34,15 @@
             this.rTFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disassemblyControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disassemblyControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ollyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +50,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.controlsToolStripMenuItem,
-            this.dialogsToolStripMenuItem});
+            this.dialogsToolStripMenuItem,
+            this.loadingToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(284, 24);
@@ -93,12 +98,20 @@
             this.treeViewToolStripMenuItem.Text = "&Tree View";
             this.treeViewToolStripMenuItem.Click += new System.EventHandler(this.treeViewToolStripMenuItem_Click);
             // 
+            // disassemblyControlToolStripMenuItem
+            // 
+            this.disassemblyControlToolStripMenuItem.Name = "disassemblyControlToolStripMenuItem";
+            this.disassemblyControlToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.disassemblyControlToolStripMenuItem.Text = "&Disassembly Control";
+            this.disassemblyControlToolStripMenuItem.Click += new System.EventHandler(this.disassemblyControlToolStripMenuItem_Click);
+            // 
             // dialogsToolStripMenuItem
             // 
             this.dialogsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.searchToolStripMenuItem,
             this.projectBrowserToolStripMenuItem,
-            this.activationToolStripMenuItem});
+            this.activationToolStripMenuItem,
+            this.preferencesToolStripMenuItem});
             this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
             this.dialogsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.dialogsToolStripMenuItem.Text = "&Dialogs";
@@ -124,12 +137,35 @@
             this.activationToolStripMenuItem.Text = "&Activation...";
             this.activationToolStripMenuItem.Click += new System.EventHandler(this.activationToolStripMenuItem_Click);
             // 
-            // disassemblyControlToolStripMenuItem
+            // preferencesToolStripMenuItem
             // 
-            this.disassemblyControlToolStripMenuItem.Name = "disassemblyControlToolStripMenuItem";
-            this.disassemblyControlToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.disassemblyControlToolStripMenuItem.Text = "&Disassembly Control";
-            this.disassemblyControlToolStripMenuItem.Click += new System.EventHandler(this.disassemblyControlToolStripMenuItem_Click);
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.preferencesToolStripMenuItem.Text = "&Preferences...";
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
+            // 
+            // loadingToolStripMenuItem
+            // 
+            this.loadingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.emulatorToolStripMenuItem,
+            this.ollyScriptToolStripMenuItem});
+            this.loadingToolStripMenuItem.Name = "loadingToolStripMenuItem";
+            this.loadingToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.loadingToolStripMenuItem.Text = "&Loading";
+            // 
+            // emulatorToolStripMenuItem
+            // 
+            this.emulatorToolStripMenuItem.Name = "emulatorToolStripMenuItem";
+            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.emulatorToolStripMenuItem.Text = "X86 &Emulator";
+            this.emulatorToolStripMenuItem.Click += new System.EventHandler(this.emulatorToolStripMenuItem_Click);
+            // 
+            // ollyScriptToolStripMenuItem
+            // 
+            this.ollyScriptToolStripMenuItem.Name = "ollyScriptToolStripMenuItem";
+            this.ollyScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
+            this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -160,6 +196,10 @@
         private System.Windows.Forms.ToolStripMenuItem projectBrowserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem activationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disassemblyControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem emulatorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ollyScriptToolStripMenuItem;
     }
 }
 

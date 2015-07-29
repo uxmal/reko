@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Sparc
+namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
@@ -36,9 +36,11 @@ namespace Decompiler.Arch.Sparc
         public MachineOperand Op2;
         public MachineOperand Op3;
 
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(
+            writer.WriteOpcode(
                 string.Format("{0}{1}",
                 Opcode.ToString(),
                 Annul ? ",a" : ""));
@@ -77,19 +79,13 @@ namespace Decompiler.Arch.Sparc
             var mem = op as MemoryOperand;
             if (mem != null)
             {
-                writer.Write("[%{0}", mem.Base.Name);
-                if (!mem.Offset.IsNegative)
-                {
-                    writer.Write("+");
-                }
-                writer.Write(mem.Offset.ToString());
-                writer.Write("]");
+                mem.Write(false, writer);
                 return;
             }
             var idx = op as IndexedMemoryOperand;
             if (idx != null)
             {
-                writer.Write("[%{0}+%{1}]", idx.Base, idx.Index);
+                idx.Write(false, writer);
                 return;
             }
             writer.Write(op.ToString());

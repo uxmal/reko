@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
-* Copyright (C) 1999-2014 John Källén.
+* Copyright (C) 1999-2015 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
 */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     public class WindowsFormsSettingsService : ISettingsService
     {
@@ -38,7 +38,7 @@ namespace Decompiler.Gui.Windows
         private IRegistryKey GetRegistryKey(string appRelativeKeyName, bool writeable)
         {
             var regSvc = services.RequireService<IRegistryService>();
-            var keyName = "Software\\jklSoft\\Decompiler";
+            var keyName = "Software\\jklSoft\\Reko";
             if (!string.IsNullOrEmpty(appRelativeKeyName))
                 keyName = string.Join("\\", keyName, appRelativeKeyName);
             return regSvc.CurrentUser.OpenSubKey(keyName, writeable);

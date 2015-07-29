@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Z80
+namespace Reko.Arch.Z80
 {
     public class Z80Rewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -45,7 +45,7 @@ namespace Decompiler.Arch.Z80
             this.state = state;
             this.frame = frame;
             this.host = host;
-            this.dasm = new Z80Disassembler(rdr);
+            this.dasm = new Z80Disassembler(rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -60,21 +60,43 @@ namespace Decompiler.Arch.Z80
                     dasm.Current.Address,
                     "Rewriting of Z80 instruction {0} not implemented yet.",
                     dasm.Current.Code);
+                case Opcode.adc: RewriteAdc(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.call: RewriteCall(dasm.Current); break;
+                case Opcode.cp: RewriteCp(); break;
+                case Opcode.cpl: RewriteCpl(); break;
+                case Opcode.dec: RewriteDec(); break;
                 case Opcode.djnz: RewriteDjnz(dasm.Current.Op1); break;
+                case Opcode.inc: RewriteInc(); break;
                 case Opcode.jp: RewriteJp(dasm.Current); break;
+                case Opcode.jr: RewriteJr(); break;
                 case Opcode.ld: emitter.Assign(
                     RewriteOp(dasm.Current.Op1),
                     RewriteOp(dasm.Current.Op2));
                     break;
+                    case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
+                    case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
+                    case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
+                    case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
                 case Opcode.ldir: RewriteBlockInstruction(); break;
+                case Opcode.neg: RewriteNeg(); break;
                 case Opcode.or: RewriteOr(); break;
-                case Opcode.sub: RewriteSub(); break;
+                case Opcode.pop: RewritePop(); break;
                 case Opcode.push: RewritePush(dasm.Current); break;
+                case Opcode.ret: RewriteRet(); break;
+                case Opcode.sbc: RewriteSbc(); break;
+                case Opcode.sub: RewriteSub(); break;
                 }
                 yield return rtlc;
             }
+        }
+
+        private void RewriteAdc()
+        {
+            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Op2);
+            emitter.Assign(dst, emitter.IAdd(emitter.IAdd(dst, src), FlagGroup(FlagM.CF)));
+            AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
 
         private void RewriteAdd()
@@ -82,8 +104,7 @@ namespace Decompiler.Arch.Z80
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             emitter.Assign(dst, emitter.IAdd(dst, src));
-            var flags = FlagGroup(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF );
-            emitter.Assign(flags, emitter.Cond(dst));
+            AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
 
         private void RewriteBlockInstruction()
@@ -99,24 +120,62 @@ namespace Decompiler.Arch.Z80
             emitter.BranchInMiddleOfInstruction(emitter.Ne0(bc), dasm.Current.Address, RtlClass.Transfer);
             emitter.Assign(V, emitter.Const(PrimitiveType.Bool, 0));
         }
-        
+
+        private void RewriteNeg()
+        {
+            var a = frame.EnsureRegister(Registers.a);
+            emitter.Assign(a, emitter.Neg(a));
+            AssignCond(FlagM.SF | FlagM.ZF | FlagM.PF | FlagM.CF, a);
+        }
 
         private void RewriteOr()
         {
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             emitter.Assign(dst, emitter.ISub(dst, src));
-            var flags = FlagGroup(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF);
-            emitter.Assign(flags, emitter.Cond(dst));
-        } 
+            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            emitter.Assign(FlagGroup(FlagM.CF), Constant.False());
+        }
+
+        private void RewriteSbc()
+        {
+            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Op2);
+            emitter.Assign(dst, emitter.ISub(emitter.ISub(dst, src), FlagGroup(FlagM.CF)));
+            AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
+        }
+        private void RewriteRotation(string pseudoOp, bool useCarry)
+        {
+            var a = frame.EnsureRegister(Registers.a);
+                var C = FlagGroup(FlagM.CF);
+            Expression src;
+            if (useCarry)
+            {
+                src = emitter.Fn(
+                    new PseudoProcedure(pseudoOp, a.DataType, 2),
+                    a, C);
+            }
+            else 
+            {
+                src = emitter.Fn(
+                    new PseudoProcedure(pseudoOp, a.DataType, 1),
+                    a);
+            }
+            emitter.Assign(a, src);
+            emitter.Assign(C, emitter.Cond(a));
+        }
 
         private void RewriteSub()
         {
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             emitter.Assign(dst, emitter.ISub(dst, src));
-            var flags = FlagGroup(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF);
-            emitter.Assign(flags, emitter.Cond(dst));
+            AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+        }
+
+        private void AssignCond(FlagM flags, Expression dst)
+        {
+            emitter.Assign(FlagGroup(flags), emitter.Cond(dst));
         }
 
         public Identifier FlagGroup(FlagM flags)
@@ -181,6 +240,37 @@ namespace Decompiler.Arch.Z80
             }
         }
 
+        private void RewriteCp()
+        {
+            var a = this.RewriteOp(dasm.Current.Op1);
+            var b = this.RewriteOp(dasm.Current.Op2);
+            emitter.Assign(
+                FlagGroup(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.PF),
+                emitter.ISub(a, b));
+        }
+
+        private void RewriteCpl()
+        {
+            var a = frame.EnsureRegister(Registers.a);
+            emitter.Assign(a, emitter.Comp(a));
+        }
+
+        private void RewriteInc()
+        {
+            var src = RewriteOp( dasm.Current.Op1);
+            var dst = RewriteOp( dasm.Current.Op1);
+            emitter.Assign(dst, emitter.IAdd(src, 1));
+            AssignCond(FlagM.ZF | FlagM.SF | FlagM.PF, dst);
+        }
+
+        private void RewriteDec()
+        {
+            var src = RewriteOp(dasm.Current.Op1);
+            var dst = RewriteOp(dasm.Current.Op1);
+            emitter.Assign(dst, emitter.ISub(src, 1));
+            AssignCond(FlagM.ZF | FlagM.SF | FlagM.PF, dst);
+        }
+
         private void RewriteJp(Z80Instruction instr)
         {
             var cOp = instr.Op1 as ConditionOperand;
@@ -193,6 +283,12 @@ namespace Decompiler.Arch.Z80
                 var target = (ImmediateOperand) instr.Op1;
                 emitter.Goto(target.Value);
             }
+        }
+
+        private void RewriteJr()
+        {
+            var target = (AddressOperand) dasm.Current.Op1;
+            emitter.Goto(target.Address);
         }
 
         private Expression RewriteOp(MachineOperand op)
@@ -231,11 +327,25 @@ namespace Decompiler.Arch.Z80
             throw new NotImplementedException(string.Format("Rewriting of Z80 operand type {0} is not implemented yet.", op.GetType().FullName));
         }
 
+        private void RewritePop()
+        {
+            var sp = frame.EnsureRegister(Registers.sp);
+            var op = RewriteOp(dasm.Current.Op1);
+            emitter.Assign(op, emitter.Load(PrimitiveType.Word16, sp));
+            emitter.Assign(sp, emitter.IAdd(sp, op.DataType.Size));
+        }
+
         private void RewritePush(Z80Instruction instr)
         {
             var sp = frame.EnsureRegister(Registers.sp);
-            emitter.Assign(sp, emitter.ISub(sp, 2));
-            emitter.Assign(emitter.Load(PrimitiveType.Word16, sp), RewriteOp(instr.Op1));
+            var op = RewriteOp(instr.Op1);
+            emitter.Assign(sp, emitter.ISub(sp, op.DataType.Size));
+            emitter.Assign(emitter.Load(PrimitiveType.Word16, sp), op);
+        }
+
+        private void RewriteRet()
+        {
+            emitter.Return(2, 0);
         }
     }
 }

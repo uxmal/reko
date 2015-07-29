@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Gui;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Forms;
+using Reko.Core.Configuration;
+using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -31,7 +31,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class OpenAsInteractorTests
@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IOpenAsDialog dlg;
         private ListOption[] archNames;
         private ListOption[] platformNames;
-        private IDecompilerConfigurationService dcSvc;
+        private IConfigurationService dcSvc;
         private IComboBox ddlPlatform;
         private IComboBox ddlArchitecture;
         private ServiceContainer sc;
@@ -49,9 +49,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             mr = new MockRepository();
-            dcSvc = mr.Stub<IDecompilerConfigurationService>();
+            dcSvc = mr.Stub<IConfigurationService>();
             sc = new ServiceContainer();
-            sc.AddService(typeof(IDecompilerConfigurationService), dcSvc);
+            sc.AddService(typeof(IConfigurationService), dcSvc);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
-            Assert.AreEqual("- None -", platformNames[0].Text);
+            Assert.AreEqual("(None)", platformNames[0].Text);
             Assert.AreEqual("0", dlg.AddressTextBox.Text);
             mr.VerifyAll();
         }
@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
-            Assert.AreEqual("- None -", platformNames[0].Text);
+            Assert.AreEqual("(None)", platformNames[0].Text);
         }
 
         private void When_Dialog_Loaded()

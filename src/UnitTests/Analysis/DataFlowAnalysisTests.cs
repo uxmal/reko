@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,31 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Lib;
-using Decompiler.Analysis;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.UnitTests.TestCode;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Analysis;
+using Reko.UnitTests.Mocks;
+using Reko.UnitTests.TestCode;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Rhino.Mocks;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class DataFlowAnalysisTests : AnalysisTestBase
 	{
 		private DataFlowAnalysis dfa;
+        private MockRepository mr;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+        }
 
 		[Test]
 		public void DfaAsciiHex()
@@ -43,6 +51,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
+        [Ignore("Stack arrays are not supported yet")]
 		public void DfaAutoArray32()
 		{
 			RunTest32("Fragments/autoarray32.asm", "Analysis/DfaAutoArray32.txt");
@@ -88,7 +97,9 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DfaGlobalHandle()
 		{
-			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
+            Given_FakeWin32Platform(mr);
+            mr.ReplayAll();
+            RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
 
 		[Test]
@@ -108,7 +119,6 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			RunTest("Fragments/multiple/preserved_alias.asm", "Analysis/DfaPreservedAlias.txt");
 		}
-
 
 		[Test]
 		public void DfaReadFile()

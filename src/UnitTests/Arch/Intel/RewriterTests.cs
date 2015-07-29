@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,21 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
-using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Code;
-using Decompiler.Core.Serialization;
-using Decompiler.Loading;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
-using System;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Code;
+using Reko.Core.Serialization;
+using Reko.Loading;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Arch.Intel
 {
 	public class RewriterTestBase
 	{
@@ -47,15 +44,15 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		public RewriterTestBase()
 		{
-			baseAddress = new Address(0x0C00, 0);
+			baseAddress = Address.SegPtr(0x0C00, 0);
 		}
 
 		[SetUp]
 		public void SetUp()
 		{
-			prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            asm = new IntelTextAssembler();
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            prog = new Program() { Architecture = arch };
+            asm = new X86TextAssembler(arch);
 			configFile = null;
 		}
 
@@ -67,22 +64,22 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		protected Procedure DoRewrite(string code)
 		{
-            var lr = asm.AssembleFragment(baseAddress, code);
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
+            prog = asm.AssembleFragment(baseAddress, code);
 			DoRewriteCore();
-			return scanner.Procedures.Values[0];
+			return prog.Procedures.Values[0];
 		}
 
         private void DoRewriteCore()
         {
             Project project = LoadProject();
-            scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            project.Programs.Add(prog);
+            scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
-            //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            var inputFile = (InputFile) project.InputFiles[0];
-            foreach (Procedure_v1 sp in inputFile.UserProcedures.Values)
+            var program =  project.Programs[0];
+            foreach (Procedure_v1 sp in program.UserProcedures.Values)
             {
                 scanner.EnqueueUserProcedure(sp);
             }
@@ -94,14 +91,15 @@ namespace Decompiler.UnitTests.Arch.Intel
             Project project = null;
             if (configFile != null)
             {
-                using (Stream stm = new FileStream(FileUnitTester.MapTestPath(configFile), FileMode.Open, FileAccess.Read, FileShare.Read))
+                var absFile = FileUnitTester.MapTestPath(configFile);
+                using (Stream stm = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    project = new ProjectSerializer(new Loader(new ServiceContainer())).LoadProject(stm);
+                    project = new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(stm);
                 }
             }
             else
             {
-                project = new Project { InputFiles = { new InputFile() } };
+                project = new Project();
             }
             return project;
         }
@@ -113,7 +111,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 var lr = asm.Assemble(baseAddress, stm);
                 prog.Image = lr.Image;
                 prog.ImageMap = lr.ImageMap;
-                prog.Platform = lr.Platform;
+                prog.Platform = lr.Platform ?? new DefaultPlatform(null, lr.Architecture);
             }
 			DoRewriteCore();
 		}
@@ -127,7 +125,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 	public class RewriterTests : RewriterTestBase
 	{
 		[Test]
-		public void SimpleTest()
+		public void RwSimpleTest()
 		{
 			DoRewrite(
 				@"	.i86
@@ -142,9 +140,9 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.AreEqual(3, proc.ControlGraph.Blocks.Count);		// Entry, code, Exit
 
             Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];
-			Assert.AreEqual(5, block.Statements.Count);
+			Assert.AreEqual(6, block.Statements.Count);
 			Assignment instr1 = (Assignment) block.Statements[0].Instruction;
-			Assert.IsTrue(block.Statements[1].Instruction is Assignment);
+			Assert.AreEqual("ax = 0x0000", block.Statements[1].Instruction.ToString());
 
 			Assert.AreSame(new List<Block>(proc.ControlGraph.Successors(block))[0], proc.ExitBlock);
 		}
@@ -285,6 +283,5 @@ join:
         {
             RunTest("Fragments/pushpop.asm", "Intel/RwPushPop.txt");
         }
-
 	}
 }

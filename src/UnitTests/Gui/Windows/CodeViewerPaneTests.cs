@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
-using Decompiler.Gui.Windows.Forms;
-using Decompiler.UnitTests.Mocks;
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
+using Reko.Gui.Windows.Forms;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using NUnit.Framework;
 using System;
@@ -33,7 +33,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class CodeViewerPaneTests
@@ -45,6 +45,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
         private IUiPreferencesService uiPreferencesSvc;
+        private IDecompilerShellUiService uiSvc;
         private Font font;
 
         [SetUp]
@@ -55,11 +56,13 @@ namespace Decompiler.UnitTests.Gui.Windows
             decompilerSvc = mr.Stub<IDecompilerService>();
             decompiler = mr.Stub<IDecompiler>();
             uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
+            uiSvc = mr.Stub<IDecompilerShellUiService>();
             font = new Font("Arial", 10);
             var sc = new ServiceContainer();
             decompilerSvc.Decompiler = decompiler;
             sc.AddService<IDecompilerService>(decompilerSvc);
             sc.AddService<IUiPreferencesService>(uiPreferencesSvc);
+            sc.AddService<IDecompilerShellUiService>(uiSvc);
             codeViewer.SetSite(sc);
         }
 
@@ -73,10 +76,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         private string Flatten(TextViewModel model)
         {
             var sb = new StringBuilder();
-            for (int i = 0; i < model.LineCount; ++i)
+            var lines = model.GetLineSpans(model.LineCount);
+            foreach (var line in lines)
             {
-                var spans = model.GetLineSpans(i);
-                foreach (var span in spans)
+                foreach (var span in line)
                 {
                     EmitSpanWrapper(span, sb);
                     sb.Append(span.GetText());
@@ -102,7 +105,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void Cvp_Create()
         {
-
             using (Form f = new Form())
             {
                 f.Controls.Add(codeViewer.CreateControl());
@@ -119,8 +121,8 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             using (mr.Record())
             {
-                var prog = new Program();
-                decompiler.Stub(d => d.Programs).Return(new[] { prog});
+                var project = new Project { Programs = { new Program() } };
+                decompiler.Stub(d => d.Project).Return(project);
                 uiPreferencesSvc.SourceCodeFont = font;
             }
 

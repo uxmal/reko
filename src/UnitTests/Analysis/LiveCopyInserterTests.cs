@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class LiveCopyInserterTests : AnalysisTestBase
@@ -49,11 +52,11 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
-			var i = ssaIds[2].Identifier;
-			var i_6 = ssaIds[6].Identifier;
+			var i = ssaIds.Where(s => s.Identifier.Name == "i").Single().Identifier;
+			var i_3 = ssaIds.Where(s => s.Identifier.Name == "i_3").Single().Identifier;
             var loopHdr = proc.ControlGraph.Blocks[2];
 			Assert.IsFalse(lci.IsLiveAtCopyPoint(i, loopHdr));
-            Assert.IsTrue(lci.IsLiveAtCopyPoint(i_6, loopHdr), "i_6 should be live");
+            Assert.IsTrue(lci.IsLiveAtCopyPoint(i_3, loopHdr), "i_3 should be live");
 		}
 
 		[Test]
@@ -62,12 +65,12 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
-			var reg   = ssaIds[3].Identifier;
-			var reg_5 = ssaIds[5].Identifier;
-			var reg_6 = ssaIds[6].Identifier;
+			var reg   = ssaIds.Where(s => s.Identifier.Name == "reg").Single();
+			var reg_5 = ssaIds.Where(s => s.Identifier.Name == "reg_2").Single();
+            var reg_6 = ssaIds.Where(s => s.Identifier.Name == "reg_3").Single();
 
-			Assert.AreEqual("reg_5 = PHI(reg, reg_6)", ssaIds[5].DefStatement.Instruction.ToString());
-			Assert.IsTrue(lci.IsLiveOut(reg, ssaIds[5].DefStatement));
+			Assert.AreEqual("reg_2 = PHI(reg, reg_3)", reg_5.DefStatement.Instruction.ToString());
+			Assert.IsTrue(lci.IsLiveOut(reg.Identifier, reg_5.DefStatement));
 		}
 
 		[Test]
@@ -78,9 +81,9 @@ namespace Decompiler.UnitTests.Analysis
 
 			int i = lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2]);
 			Assert.AreEqual(i, 0);
-			var idNew = lci.InsertAssignmentNewId(ssaIds[3].Identifier, proc.ControlGraph.Blocks[2], i);
-			Assert.AreEqual("reg_7 = reg", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
-			Assert.AreSame(proc.ControlGraph.Blocks[2].Statements[0], ssaIds[idNew].DefStatement);
+            var idNew = lci.InsertAssignmentNewId(ssaIds.Where(s => s.Identifier.Name == "reg").Single().Identifier, proc.ControlGraph.Blocks[2], i);
+            Assert.AreEqual("reg_4 = reg", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
+            Assert.AreSame(proc.ControlGraph.Blocks[2].Statements[0], ssaIds[idNew].DefStatement);
 		}
 
 		[Test]
@@ -89,8 +92,9 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
-			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.ControlGraph.Blocks[2], 2);
-			Assert.AreEqual("i_7 = i_4", proc.ControlGraph.Blocks[2].Statements[2].Instruction.ToString());
+            var i_4 = ssaIds.Where(s => s.Identifier.Name == "i_1").Single();
+			var idNew = lci.InsertAssignmentNewId(i_4.Identifier, proc.ControlGraph.Blocks[2], 2);
+			Assert.AreEqual("i_5 = i_1", proc.ControlGraph.Blocks[2].Statements[2].Instruction.ToString());
 			Assert.AreSame(proc.ControlGraph.Blocks[2].Statements[2], ssaIds[idNew].DefStatement);
 		}
 
@@ -100,9 +104,10 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
             proc.ControlGraph.Blocks[1].Dump();
-			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.ControlGraph.Blocks[2], 2);
-			lci.RenameDominatedIdentifiers(ssaIds[4], ssaIds[idNew]);
-            Assert.AreEqual("return i_7", proc.ControlGraph.Blocks[2].ElseBlock.Statements[0].Instruction.ToString());
+            var i_1 = ssaIds.Where(s => s.Identifier.Name == "i_1").Single();
+            var idNew = lci.InsertAssignmentNewId(i_1.Identifier, proc.ControlGraph.Blocks[2], 2);
+			lci.RenameDominatedIdentifiers(i_1, ssaIds[idNew]);
+            Assert.AreEqual("return i_5", proc.ControlGraph.Blocks[2].ElseBlock.Statements[0].Instruction.ToString());
 		}
 
 		[Test]
@@ -164,15 +169,16 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void Build(Procedure proc, IProcessorArchitecture arch)
 		{
+            var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
 			Aliases alias = new Aliases(proc, arch);
 			alias.Transform();
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 			SsaState ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, arch);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, platform);
 			cce.Transform();
 			DeadCode.Eliminate(proc, ssa);
 

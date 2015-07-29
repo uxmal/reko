@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,22 @@
  */
 #endregion
 
-using Decompiler.Gui.Controls;
-using Decompiler.Scanning;
+using Reko.Gui.Controls;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Reko.Gui
 {
     public interface ISearchDialog : IDialog
     {
         event EventHandler Load;
+        event EventHandler Closed;
 
         IServiceProvider Services { get; }
+        string InitialPattern { get; set; }
 
         IComboBox Patterns { get; }
         ICheckBox RegexCheckbox { get; }
@@ -40,6 +42,8 @@ namespace Decompiler.Gui
         ITextBox StartAddress { get; }
         ITextBox EndAddress { get; }
         IButton SearchButton { get; }
+        ICheckBox ScannedMemory { get; }
+        ICheckBox UnscannedMemory { get; }
 
         StringSearch<byte> ImageSearcher { get; set; }
     }

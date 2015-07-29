@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Gui.Controls;
+using Reko.Core;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,13 +27,20 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Wraps a Windows forms TreeView in the platform independent ITreeView interface.
     /// </summary>
     public class TreeViewWrapper : ITreeView
     {
+        public event EventHandler AfterSelect;
+        public event DragEventHandler DragEnter;
+        public event DragEventHandler DragOver;
+        public event DragEventHandler DragDrop;
+        public event MouseEventHandler MouseWheel;
+        public event EventHandler DragLeave;
+
         private TreeView treeView;
 
         public TreeViewWrapper(TreeView treeView)
@@ -41,6 +48,11 @@ namespace Decompiler.Gui.Windows
             this.treeView = treeView;
             this.Nodes = new WrappedNodeList(treeView.Nodes);
             this.treeView.AfterSelect += treeView_AfterSelect;
+            this.treeView.DragEnter += treeView_DragEnter;
+            this.treeView.DragLeave += treeView_DragLeave;
+            this.treeView.DragOver += treeView_DragOver;
+            this.treeView.DragDrop += treeView_DragDrop;
+            this.treeView.MouseWheel += treeView_MouseWheel;
         }
 
         public ContextMenu ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = value; } }
@@ -62,11 +74,44 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        public event EventHandler AfterSelect;
-
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             AfterSelect.Fire(this);
+        }
+
+        void treeView_DragDrop(object sender, DragEventArgs e)
+        {
+            var eh = DragDrop;
+            if (eh != null)
+                eh(this, e);
+        }
+
+        void treeView_DragOver(object sender, DragEventArgs e)
+        {
+ 	        var eh = DragOver;
+            if (eh != null)
+                eh(this, e);
+        }
+
+        void treeView_DragLeave(object sender, EventArgs e)
+        {
+ 	        var eh = DragLeave;
+            if (eh != null)
+                eh(this, e);
+        }
+
+        void treeView_DragEnter(object sender, DragEventArgs e)
+        {
+            var eh = DragEnter;
+            if (eh != null)
+                eh(this, e);
+        }
+
+        void treeView_MouseWheel(object sender, MouseEventArgs e)
+        {
+            var eh = MouseWheel;
+            if (eh != null)
+                eh(this, e);
         }
 
         private TreeNode NodeOf(TreeNodeCollection nodes, object value)

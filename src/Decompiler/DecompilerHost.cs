@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Core;
+using Reko.Core.Configuration;
+using Reko.Core;
 using System;
 using System.IO;
 
-namespace Decompiler
+namespace Reko
 {
 	/// <summary>
 	/// Interface used by the decompiler's components to talk to the outside world.
 	/// </summary>
 	public interface DecompilerHost
 	{
-        void WriteDisassembly(Action<TextWriter> writer);
-        void WriteIntermediateCode(Action<TextWriter> writer);
-        void WriteTypes(Action<TextWriter> writer);
-        void WriteDecompiledCode(Action<TextWriter> writer);
-        void WriteGlobals(Action<TextWriter> writer);
+        void WriteDisassembly(Program program, Action<TextWriter> writer);
+        void WriteIntermediateCode(Program program, Action<TextWriter> writer);
+        void WriteTypes(Program program, Action<TextWriter> writer);
+        void WriteDecompiledCode(Program program, Action<TextWriter> writer);
+        void WriteGlobals(Program program, Action<TextWriter> writer);
 
-        IDecompilerConfigurationService Configuration { get; }
+        IConfigurationService Configuration { get; }
 	}
 
 	/// <summary>
@@ -48,36 +48,32 @@ namespace Decompiler
 
 		#region DecompilerHost Members
 
-        public IDecompilerConfigurationService Configuration
+        public IConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }
 
-		#endregion
-
-        #region DecompilerHost Members
-
-        public void WriteDisassembly(Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteIntermediateCode(Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteTypes(Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteDecompiledCode(Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteGlobals(Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }

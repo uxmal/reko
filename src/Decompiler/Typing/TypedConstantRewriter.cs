@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,33 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Rewrites a constant based on its type.
 	/// </summary>
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
-        private IProcessorArchitecture arch;
+        private Program program;
+        private Platform platform;
 		private TypeStore store;
 		private Identifier globals;
 		private Constant c;
 		private PrimitiveType pOrig;
 		private bool dereferenced;
 
-		public TypedConstantRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
+		public TypedConstantRewriter(Program program)
 		{
-            this.arch = arch;
-			this.store = store;
-			this.globals = globals;
+            this.program = program;
+            this.platform = program.Platform;
+            this.store = program.TypeStore;
+            this.globals = program.Globals;
 		}
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace Decompiler.Typing
         public Expression Rewrite(Constant c, bool dereferenced)
         {
             this.c = c;
-            DataType dtInferred = store.ResolvePossibleTypeVar(c.TypeVariable.DataType);
+            DataType dtInferred = c.TypeVariable.DataType.ResolveAs<DataType>();
             this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
             this.dereferenced = dereferenced;
             return dtInferred.Accept(this);
@@ -62,8 +64,8 @@ namespace Decompiler.Typing
 
         public Expression Rewrite(Address addr, bool dereferenced)
         {
-            this.c = Constant.UInt32(addr.Linear);  //$BUG: won't work for x86.
-            var dtInferred = store.ResolvePossibleTypeVar(addr.TypeVariable.DataType);
+            this.c = Constant.UInt32(addr.ToUInt32());  //$BUG: won't work for x86.
+            var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
             this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
             this.dereferenced = dereferenced;
             return dtInferred.Accept(this);
@@ -78,8 +80,7 @@ namespace Decompiler.Typing
                     var pGlob = globals.TypeVariable.DataType as Pointer;
                     if (pGlob != null)
                     {
-                        object o = store.ResolvePossibleTypeVar(pGlob.Pointee);
-                        return (StructureType) o;
+                        return pGlob.Pointee.ResolveAs<StructureType>();
                     }
                     pGlob = globals.DataType as Pointer;
                     if (pGlob != null)
@@ -117,7 +118,7 @@ namespace Decompiler.Typing
         {
             string name;
             if (e.Members.TryGetValue(c.ToInt64(), out name))
-                return new Identifier(name, 0, e, TemporaryStorage.None);
+                return new Identifier(name, e, TemporaryStorage.None);
             return new Cast(e, c);
         }
 
@@ -140,7 +141,7 @@ namespace Decompiler.Typing
 			StructureType baseType = (StructureType) eq.DataType;
 			Expression baseExpr = new ScopeResolution(baseType);
 
-            var dt = store.ResolvePossibleTypeVar(memptr.Pointee);
+            var dt = memptr.Pointee.ResolveAs<DataType>();
             var f = EnsureFieldAtOffset(baseType, dt, c.ToInt32());
             Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f.Name);
 			if (dereferenced)
@@ -152,7 +153,7 @@ namespace Decompiler.Typing
                 var array = f.DataType as ArrayType;
                 if (array != null)
                 {
-                    ex.DataType = new MemberPointer(p, array.ElementType, arch.PointerType.Size);
+                    ex.DataType = new MemberPointer(p, array.ElementType, platform.PointerType.Size);
                 }
                 else
                 {
@@ -174,14 +175,25 @@ namespace Decompiler.Typing
                 // Null pointer.
                 if (c.IsZero)
                 {
-                    var np = new Address(0);
+                    var np = Address.Create(ptr, 0);
                     np.TypeVariable = c.TypeVariable;
                     np.DataType = c.DataType;
                     return np;
                 }
-                var dt = store.ResolvePossibleTypeVar(ptr.Pointee);
+
+                // An invalid pointer -- often used as sentinels in code.
+                if (!program.Image.IsValidLinearAddress(c.ToUInt64()))
+                {
+                    //$TODO: probably should use a reinterpret_cast here.
+                    var ce = new Cast(c.DataType, c);
+                    ce.TypeVariable = c.TypeVariable;
+                    ce.DataType = ptr;
+                    return ce;
+                }
+                
+                var dt = ptr.Pointee.ResolveAs<DataType>();
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
-                var ptrGlobals = new Pointer(GlobalVars, arch.PointerType.Size);
+                var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.Size);
                 e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f.Name);
                 if (dereferenced)
                 {
@@ -193,7 +205,7 @@ namespace Decompiler.Typing
                     if (array != null) // C language rules 'promote' arrays to pointers.
                     {
                         //$BUG: no factory?
-                        e.DataType = new Pointer(array.ElementType, arch.PointerType.Size);
+                        e.DataType = new Pointer(array.ElementType, platform.PointerType.Size);
                     }
                     else
                     {
@@ -257,7 +269,7 @@ namespace Decompiler.Typing
 
         public Expression VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref.Referent.Accept(this);
         }
 
 		public Expression VisitTypeVariable(TypeVariable tv)

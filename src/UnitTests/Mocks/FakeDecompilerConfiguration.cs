@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
 using System;
 using System.Collections;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
-    public class FakeDecompilerConfiguration : IDecompilerConfigurationService
+    public class FakeDecompilerConfiguration : IConfigurationService
     {
         private ArrayList imageLoaders = new ArrayList();
 
@@ -35,6 +37,26 @@ namespace Decompiler.UnitTests.Mocks
         }
 
         public System.Collections.ICollection GetArchitectures()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection GetAssemblers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection GetRawFiles()
+        {
+            throw new NotImplementedException();
+
+        }
+        public IProcessorArchitecture GetArchitecture(string sArch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Assembler GetAssembler(string sAsm)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +71,24 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public RawFileElement GetRawFile(string rawFileFormat)
+        {
+            throw new NotImplementedException();
+        }
+
         public DefaultPreferences GetDefaultPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public ICollection GetSignatureFiles()
+        {
+            return new SignatureFileElement[0];
+        }
+
+
+        public string GetPath(string path)
         {
             throw new NotImplementedException();
         }

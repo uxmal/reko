@@ -1,129 +1,117 @@
-Mem0:Global memory
 fp:fp
-sp:sp
-cx:cx
-ss:ss
-SCZO:Flags
+sp_1: orig: sp
+cx_2: orig: cx
+sp_3: orig: sp
+wLoc02_4: orig: wLoc02
+    def:  wLoc02_4 = 0x0064
+    uses: ax_5 = fn0C00_000F(wLoc02_4)
+ax_5: orig: ax
+    def:  ax_5 = fn0C00_000F(wLoc02_4)
+    uses: Mem8[ds:0x0064:word16] = ax_5
+sp_6: orig: sp
+SCZO_7: orig: SCZO
+Mem8: orig: Mem0
+    def:  Mem8[ds:0x0064:word16] = ax_5
 ds:ds
     def:  def ds
-    uses: Mem15[ds:0x0064:word16] = ax_12
-ax:ax
-wLoc02:Local -0002
-cx_9: orig: cx
-sp_10: orig: sp
-wLoc02_11: orig: wLoc02
-    def:  wLoc02_11 = 0x0064
-    uses: ax_12 = fn0C00_000F(wLoc02_11)
-ax_12: orig: ax
-    def:  ax_12 = fn0C00_000F(wLoc02_11)
-    uses: Mem15[ds:0x0064:word16] = ax_12
-sp_13: orig: sp
-SCZO_14: orig: SCZO
-Mem15: orig: Mem0
-    def:  Mem15[ds:0x0064:word16] = ax_12
+    uses: Mem8[ds:0x0064:word16] = ax_5
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	wLoc02_11 = 0x0064
-	ax_12 = fn0C00_000F(wLoc02_11)
-	Mem15[ds:0x0064:word16] = ax_12
+	wLoc02_4 = 0x0064
+	ax_5 = fn0C00_000F(wLoc02_4)
+	Mem8[ds:0x0064:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Mem0:Global memory
 fp:fp
-sp:sp
+sp_1: orig: sp
+sp_2: orig: sp
 bp:bp
-ss:ss
-ax:ax
-SZO:Flags
-Z:Flags
-dx:dx
-dx_ax:Sequence dx:ax
-SCZO:Flags
-wLoc02:Local -0002
+wLoc02_4: orig: wLoc02
+bp_5: orig: bp
 wArg02:Stack +0002
     def:  def wArg02
-    uses: ax_17 = wArg02
-          dx_37 = wArg02
+    uses: ax_7 = wArg02
+          dx_28 = wArg02
+ax_7: orig: ax
+    def:  ax_7 = wArg02
+    uses: ax_8 = ax_7 - 0x0001
+ax_8: orig: ax
+    def:  ax_8 = ax_7 - 0x0001
+    uses: wLoc04_24 = ax_8
+          branch ax_8 == 0x0000 l0C00_0026
+dx:dx
+dx_ax_10: orig: dx_ax
+SZO_11: orig: SZO
+Z_12: orig: Z
+SCZO_13: orig: SCZO
+wLoc04_14: orig: wLoc04
+dx_ax_15: orig: dx_ax
+ax_16: orig: ax
+    def:  ax_16 = PHI(ax_30, ax_35)
+    uses: return ax_16
+dx_17: orig: dx
+SCZO_18: orig: SCZO
+SZO_19: orig: SZO
+Z_20: orig: Z
+bp_21: orig: bp
+sp_22: orig: sp
+sp_23: orig: sp
+wLoc04_24: orig: wLoc04
+    def:  wLoc04_24 = ax_8
+    uses: ax_25 = fn0C00_000F(wLoc04_24)
+ax_25: orig: ax
+    def:  ax_25 = fn0C00_000F(wLoc04_24)
+    uses: dx_ax_29 = dx_28 *s ax_25
+sp_26: orig: sp
+sp_27: orig: sp
+dx_28: orig: dx
+    def:  dx_28 = wArg02
+    uses: dx_ax_29 = dx_28 *s ax_25
+dx_ax_29: orig: dx_ax
+    def:  dx_ax_29 = dx_28 *s ax_25
+    uses: ax_30 = (word16) dx_ax_29 (alias)
+ax_30: orig: ax
+    def:  ax_30 = (word16) dx_ax_29 (alias)
+    uses: ax_16 = PHI(ax_30, ax_35)
+dx_31: orig: dx
+SCZO_32: orig: SCZO
+SZO_33: orig: SZO
+Z_34: orig: Z
+ax_35: orig: ax
+    def:  ax_35 = 0x0001
+    uses: ax_16 = PHI(ax_30, ax_35)
+dx_ax_36: orig: dx_ax
 wLoc04:Local -0004
-sp_14: orig: sp
-wLoc02_15: orig: wLoc02
-bp_16: orig: bp
-ax_17: orig: ax
-    def:  ax_17 = wArg02
-    uses: ax_18 = ax_17 - 0x0001
-ax_18: orig: ax
-    def:  ax_18 = ax_17 - 0x0001
-    uses: wLoc04_33 = ax_18
-          branch ax_18 == 0x0000 l0C00_0026
-dx_ax_19: orig: dx_ax
-SZO_20: orig: SZO
-Z_21: orig: Z
-SCZO_22: orig: SCZO
-wLoc04_23: orig: wLoc04
-SCZO_24: orig: SCZO
-dx_ax_25: orig: dx_ax
-dx_26: orig: dx
-Z_27: orig: Z
-SZO_28: orig: SZO
-ax_29: orig: ax
-    def:  ax_29 = PHI(ax_39, ax_44)
-    uses: return ax_29
-bp_30: orig: bp
-sp_31: orig: sp
-sp_32: orig: sp
-wLoc04_33: orig: wLoc04
-    def:  wLoc04_33 = ax_18
-    uses: ax_34 = fn0C00_000F(wLoc04_33)
-ax_34: orig: ax
-    def:  ax_34 = fn0C00_000F(wLoc04_33)
-    uses: dx_ax_38 = dx_37 *s ax_34
-sp_35: orig: sp
-sp_36: orig: sp
-dx_37: orig: dx
-    def:  dx_37 = wArg02
-    uses: dx_ax_38 = dx_37 *s ax_34
-dx_ax_38: orig: dx_ax
-    def:  dx_ax_38 = dx_37 *s ax_34
-    uses: ax_39 = (word16) dx_ax_38 (alias)
-ax_39: orig: ax
-    def:  ax_39 = (word16) dx_ax_38 (alias)
-    uses: ax_29 = PHI(ax_39, ax_44)
-dx_40: orig: dx
-SCZO_41: orig: SCZO
-SZO_42: orig: SZO
-Z_43: orig: Z
-ax_44: orig: ax
-    def:  ax_44 = 0x0001
-    uses: ax_29 = PHI(ax_39, ax_44)
-dx_ax_45: orig: dx_ax
 // fn0C00_000F
+// Return size: 0
 word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	def wArg02
 	// succ:  l0C00_000F
 l0C00_000F:
-	ax_17 = wArg02
-	ax_18 = ax_17 - 0x0001
-	branch ax_18 == 0x0000 l0C00_0026
+	ax_7 = wArg02
+	ax_8 = ax_7 - 0x0001
+	branch ax_8 == 0x0000 l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	wLoc04_33 = ax_18
-	ax_34 = fn0C00_000F(wLoc04_33)
-	dx_37 = wArg02
-	dx_ax_38 = dx_37 *s ax_34
-	ax_39 = (word16) dx_ax_38 (alias)
+	wLoc04_24 = ax_8
+	ax_25 = fn0C00_000F(wLoc04_24)
+	dx_28 = wArg02
+	dx_ax_29 = dx_28 *s ax_25
+	ax_30 = (word16) dx_ax_29 (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
-	ax_44 = 0x0001
+	ax_35 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	ax_29 = PHI(ax_39, ax_44)
-	return ax_29
+	ax_16 = PHI(ax_30, ax_35)
+	return ax_16
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:

@@ -6,8 +6,8 @@
     <ProjectGuid>{32F09304-51BE-4797-A86A-C0BEFED2422B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.Arm</RootNamespace>
-    <AssemblyName>Decompiler.Arch.Arm</AssemblyName>
+    <RootNamespace>Reko.Arch.Arm</RootNamespace>
+    <AssemblyName>Reko.Arch.Arm</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -69,6 +69,7 @@
     <Compile Include="ArmImmediateOperand.cs" />
     <Compile Include="ArmInstruction.cs" />
     <Compile Include="ArmMemoryOperand.cs" />
+    <Compile Include="ArmProcedureSerializer.cs" />
     <Compile Include="ArmProcessorArchitecture.cs" />
     <Compile Include="ArmProcessorState.cs" />
     <Compile Include="ArmRewriter.Alu.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="ShiftOperand.cs" />
     <Compile Include="ThumbDisassembler.cs" />
     <Compile Include="ThumbInstruction.cs" />
+    <Compile Include="ThumbOpcode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

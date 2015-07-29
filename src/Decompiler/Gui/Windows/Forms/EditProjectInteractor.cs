@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
     public class EditProjectInteractor
     {
@@ -36,7 +37,7 @@ namespace Decompiler.Gui.Windows.Forms
         /// </summary>
         /// <param name="project"></param>
         public bool EditProjectProperties(
-            IDecompilerUIService uiSvc,
+            IDecompilerShellUiService uiSvc,
             Project_v1 project,
             Action<Project_v1> updater)
         {

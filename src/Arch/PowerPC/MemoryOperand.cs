@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.PowerPC
+namespace Reko.Arch.PowerPC
 {
     public class MemoryOperand : MachineOperand
     {
@@ -37,12 +37,12 @@ namespace Decompiler.Arch.PowerPC
             this.Offset = offset;
         }
 
-        public override string ToString()
-        {
-            return string.Format("{0}({1})", Offset, BaseRegister);
-        }
-
         public RegisterStorage BaseRegister { get; private set; }
         public Constant Offset { get; private set; } 
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write(string.Format("{0}({1})", Offset, BaseRegister));
+        }
     }
 }

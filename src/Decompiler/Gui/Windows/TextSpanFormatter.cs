@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core.Output;
+using Reko.Core.Types;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
+    /// <summary>
+    /// Implements a formatter that renders text into
+    /// a TextViewModel that can be used with a TextView.
+    /// </summary>
     public class TextSpanFormatter : Formatter
     {
         private List<List<TextSpan>> textLines;
@@ -55,6 +59,12 @@ namespace Decompiler.Gui.Windows
         public override void Write(string s)
         {
             EnsureSpan().Text.Append(s);
+        }
+
+        public override Formatter Write(char ch)
+        {
+            EnsureSpan().Text.Append(ch);
+            return this;
         }
 
         public override void Write(string format, params object[] arguments)
@@ -137,9 +147,8 @@ namespace Decompiler.Gui.Windows
 
         private class TextSpanModel : TextViewModel
         {
-            public event EventHandler ModelChanged { add { } remove { } }
-
             private TextSpan[][] lines;
+            private int position;
 
             public TextSpanModel(TextSpan[][] lines)
             {
@@ -148,13 +157,44 @@ namespace Decompiler.Gui.Windows
 
             public int LineCount { get { return lines.Length; } }
 
-            public IEnumerable<TextSpan> GetLineSpans(int index)
-            {
-                return lines[index];
-            }
-
             public void CacheHint(int index, int count)
             {
+            }
+
+            public object CurrentPosition { get { return position; } }
+
+            public object StartPosition { get { return position; } }
+
+            public object EndPosition { get { return position; } }
+
+            public void MoveTo(object position, int offset)
+            {
+                this.position = (int)position + offset;
+                if (this.position < 0)
+                    this.position = 0;
+                if (this.position >= lines.Length)
+                    this.position = lines.Length - 1;
+            }
+
+            public TextSpan[][] GetLineSpans(int count)
+            {
+                int p = (int)position;
+                int c = Math.Min(count, lines.Length - p);
+                if (c <= 0)
+                    return new TextSpan[0][];
+                var spans = new TextSpan[c][];
+                Array.Copy(lines, p, spans, 0, c);
+                return spans;
+            }
+
+            public Tuple<int, int> GetPositionAsFraction()
+            {
+                return Tuple.Create((int)position, lines.Length);
+            }
+
+            public void SetPositionAsFraction(int numer, int denom)
+            {
+                position = (int) (Math.BigMul(numer, lines.Length) / denom);
             }
         }
 

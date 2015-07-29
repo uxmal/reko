@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -33,7 +35,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Forms
+namespace Reko.Gui.Forms
 {
     /// <summary>
     /// Provices a component Container implementation, and specifically handles interactions 
@@ -67,7 +69,7 @@ namespace Decompiler.Gui.Forms
         private DecompilerMenus dm;
         private string projectFileName;
         private IServiceContainer sc;
-        private IDecompilerConfigurationService config;
+        private IConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
         private static string dirSettings;
 
@@ -126,11 +128,10 @@ namespace Decompiler.Gui.Forms
             return form;
         }
 
-
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
         {
             config = svcFactory.CreateDecompilerConfiguration();
-            sc.AddService(typeof(IDecompilerConfigurationService), config);
+            sc.AddService(typeof(IConfigurationService), config);
 
             sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
 
@@ -147,6 +148,8 @@ namespace Decompiler.Gui.Forms
 
             var codeViewSvc = new CodeViewerServiceImpl(sc);
             sc.AddService(typeof(ICodeViewerService), codeViewSvc);
+            var segmentViewSvc = new ImageSegmentServiceImpl(sc);
+            sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 
             var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
@@ -177,9 +180,10 @@ namespace Decompiler.Gui.Forms
             this.searchResultsTabControl = svcFactory.CreateTabControlHost(form.TabControl);
             sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 
-            srSvc = new SearchResultServiceImpl(sc, form.FindResultsList);
-            sc.AddService(typeof(ISearchResultService), srSvc);
+            srSvc = svcFactory.CreateSearchResultService(form.FindResultsList);
+            sc.AddService<ISearchResultService>(srSvc);
             searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
+            searchResultsTabControl.Attach((IWindowPane) diagnosticsSvc, form.DiagnosticsPage);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -205,6 +209,11 @@ namespace Decompiler.Gui.Forms
             OpenBinary(file, (f) => pageInitial.OpenBinary(f, this));
         }
 
+        /// <summary>
+        /// Master function for opening a new project.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="openAction"></param>
         public void OpenBinary(string file, Func<string,bool> openAction)
         {
             try
@@ -248,7 +257,35 @@ namespace Decompiler.Gui.Forms
             if (fileName == null)
                 return;
             mru.Use(fileName);
-            var loader = decompilerSvc.Decompiler.LoadMetadata(fileName);
+            var typelib = decompilerSvc.Decompiler.LoadMetadata(fileName);
+            decompilerSvc.Decompiler.Project.MetadataFiles.Add(new MetadataFile {
+                Filename = fileName,
+                ModuleName = Path.GetFileName(fileName),
+                TypeLibrary = typelib
+            });
+        }
+
+        public bool AssembleFile()
+        {
+            IAssembleFileDialog dlg = null;
+            try
+            {
+                dlg = dlgFactory.CreateAssembleFileDialog();
+                dlg.Services = sc;
+                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                    return true;
+                mru.Use(dlg.FileName.Text);
+
+                var typeName = dlg.SelectedArchitectureTypeName;
+                var t = Type.GetType(typeName, true);
+                var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm, this));
+            }
+            catch (Exception e)
+            {
+                uiSvc.ShowError(e, "An error occurred while assembling {0}.", dlg.FileName.Text);
+            }
+            return true;
         }
 
         public bool OpenBinaryAs()
@@ -267,19 +304,18 @@ namespace Decompiler.Gui.Forms
 
                 var typeName = (string) ((ListOption) dlg.Architectures.SelectedValue).Value;
                 Type t = Type.GetType(typeName, true);
-                arch = (IProcessorArchitecture) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+                arch = (IProcessorArchitecture)Activator.CreateInstance(t);
 
                 typeName = (string) ((ListOption) dlg.Platforms.SelectedValue).Value;
                 t = Type.GetType(typeName);
                 if (t == null)
                     throw new TypeLoadException(string.Format("Unable to load type {0}.", typeName));
-                platform = (Platform) t.GetConstructor(new Type[] { 
-                        typeof(IServiceProvider),
-                        typeof(IProcessorArchitecture)
-                    })
-                    .Invoke(new object[] { sc, arch });
+                platform = (Platform) Activator.CreateInstance(t, sc, arch);
 
-                var addrBase = new Address(arch.PointerType, Convert.ToUInt32(dlg.AddressTextBox.Text, 16));
+                Address addrBase;
+                var sAddr = dlg.AddressTextBox.Text.Trim();
+                if (!arch.TryParseAddress(sAddr, out addrBase))
+                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
                 OpenBinary(dlg.FileName.Text, (f) =>
                     pageInitial.OpenBinaryAs(
                         f,
@@ -290,19 +326,36 @@ namespace Decompiler.Gui.Forms
             }
             catch (Exception ex)
             {
-                uiSvc.ShowError(ex, "An error occurred when opening the binary.");
+                uiSvc.ShowError(
+                    ex,
+                    string.Format("An error occurred when opening the binary file {0}.", dlg.FileName.Text));
             }
             return true;
         }
 
         public void CloseProject()
         {
-            if (decompilerSvc.Decompiler != null && !Save())
-                return;
-            form.CloseAllDocumentWindows();
+            if (decompilerSvc.Decompiler != null && decompilerSvc.Decompiler.Project != null)
+            {
+                if (uiSvc.Prompt("Do you want to save any changes made to the decompiler project?"))
+                {
+                    if (!Save())
+                        return;
+                }
+            }
+
+            CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
+        }
+
+        private void CloseAllDocumentWindows()
+        {
+            foreach (var frame in uiSvc.DocumentWindows.ToArray())
+            {
+                frame.Close();
+            }
         }
 
         public InitialPageInteractor InitialPageInteractor
@@ -328,6 +381,16 @@ namespace Decompiler.Gui.Forms
         private static string MruListFile
         {
             get { return SettingsDirectory + "\\mru.txt"; }
+        }
+
+        public void RestartRecompilation()
+        {
+            if (decompilerSvc.Decompiler == null ||
+                decompilerSvc.Decompiler.Project == null)
+                return;
+
+            SwitchInteractor(this.InitialPageInteractor);
+            CloseAllDocumentWindows();
         }
 
         public void NextPhase()
@@ -395,14 +458,18 @@ namespace Decompiler.Gui.Forms
             {
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
+                    Func<int, Program, bool> filter = GetScannedFilter(dlg);
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
-                    var hits = this.decompilerSvc.Decompiler.Programs
+                    if (re == null)
+                        return;
+                    var hits = this.decompilerSvc.Decompiler.Project.Programs
                         .SelectMany(program => 
                               re.GetMatches(program.Image.Bytes, 0)
+                              .Where(o => filter(o, program))
                                 .Select(offset => new AddressSearchHit 
                                 {
                                     Program = program,
-                                    LinearAddress = (uint)(program.Image.BaseAddress.Linear + offset)
+                                    Address = program.Image.BaseAddress + offset
                                 }));
                     srSvc.ShowSearchResults(new AddressSearchResult(
                         this.sc,
@@ -411,9 +478,43 @@ namespace Decompiler.Gui.Forms
             }
         }
 
+        private Func<int, Program, bool> GetScannedFilter(ISearchDialog dlg)
+        {
+            if (dlg.ScannedMemory.Checked)
+            {
+                if (dlg.UnscannedMemory.Checked)
+                    return (o, map) => true;
+                else
+                    return (o, program) =>
+                    {
+                        var addr = program.ImageMap.MapLinearAddressToAddress(
+                            (ulong)
+                             ((long)program.Image.BaseAddress.ToLinear() + o));
+                        ImageMapItem item;
+                        return program.ImageMap.TryFindItem(addr, out item)
+                            && item.DataType != null &&
+                            !(item.DataType is UnknownType);
+                    };
+            }
+            else if (dlg.UnscannedMemory.Checked)
+            {
+                return (o, program) =>
+                    {
+                        var addr = program.ImageMap.MapLinearAddressToAddress(
+                              (uint)((long) program.Image.BaseAddress.ToLinear() + o));
+                        ImageMapItem item;
+                        return program.ImageMap.TryFindItem(addr, out item)
+                            && item.DataType == null ||
+                            item.DataType is UnknownType;
+                    };
+            }
+            else
+                throw new NotSupportedException();
+        }
+
         public void FindProcedures(ISearchResultService svc)
         {
-            var hits = this.decompilerSvc.Decompiler.Programs
+            var hits = this.decompilerSvc.Decompiler.Project.Programs
                 .SelectMany(program => program.Procedures.Select(proc =>
                     new ProcedureSearchHit(program, proc.Key, proc.Value)))
                 .ToList();
@@ -430,7 +531,7 @@ namespace Decompiler.Gui.Forms
         {
             var memService = sc.GetService<ILowLevelViewService>();
             //$TODO: determine "current program".
-            memService.ViewImage(this.decompilerSvc.Decompiler.Programs.First());
+            memService.ViewImage(this.decompilerSvc.Decompiler.Project.Programs.First());
             memService.ShowWindow();
         }
 
@@ -444,7 +545,7 @@ namespace Decompiler.Gui.Forms
             {
                 string newName = PromptForFilename(
                     Path.ChangeExtension(
-                        decompilerSvc.Decompiler.Project.InputFiles[0].Filename,
+                        decompilerSvc.Decompiler.Project.Programs[0].Filename,
                         Project_v1.FileExtension));
                 if (newName == null)
                     return false;
@@ -455,8 +556,8 @@ namespace Decompiler.Gui.Forms
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
                 //$REFACTOR: rule of Demeter, push this into a Save() method.
-                var sp = decompilerSvc.Decompiler.Project.Save();
-                new ProjectSerializer(loader).Save(sp, sw);
+                var sp =  new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
+                new ProjectLoader(loader).Save(sp, sw);
             }
             return true;
         }
@@ -514,29 +615,35 @@ namespace Decompiler.Gui.Forms
                 //    sb.Append('*');
                 sb.Append(" - ");
             }
-            sb.Append("Decompiler");
+            sb.Append("Reko Decompiler");
             MainForm.TitleText = sb.ToString();
         }
 
         #region ICommandTarget members
 
+        /// <summary>
+        /// Determines a command target that should be handling commands. This 
+        /// is in essence the "router" that routes commands.
+        /// </summary>
+        /// <returns></returns>
+        private ICommandTarget GetSubCommandTarget()
+        {
+            if (form.TabControl.ContainsFocus)
+                return searchResultsTabControl;
+            if (form.ProjectBrowser.Focused)
+                return projectBrowserSvc;
+            return subWindowCommandTarget;
+        }
+
         public bool QueryStatus(CommandID cmdId, CommandStatus cmdStatus, CommandText cmdText)
         {
-            if (searchResultsTabControl.QueryStatus(cmdId, cmdStatus, cmdText))
+            var ct = GetSubCommandTarget();
+            if (ct != null && ct.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
-            if (MainForm.ProjectBrowser.Focused)
-            {
-                if (this.projectBrowserSvc.QueryStatus(cmdId, cmdStatus, cmdText))
-                    return true;
-            }
-            else
-            {
-                if (subWindowCommandTarget.QueryStatus(cmdId, cmdStatus, cmdText))
-                    return true;
-            }
+            
             if (currentPhase != null && currentPhase.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 if (QueryMruItem(cmdId.ID, cmdStatus, cmdText))
                     return true;
@@ -546,6 +653,7 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.FileOpen:
                 case CmdIds.FileExit:
                 case CmdIds.FileOpenAs:
+                case CmdIds.FileAssemble:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
                 case CmdIds.WindowsTileHorizontal:
@@ -556,6 +664,9 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.FileMru:
                     cmdStatus.Status = MenuStatus.Visible;
                     return true;
+                case CmdIds.ActionRestartDecompilation:
+                    cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    break;
                 case CmdIds.ActionNextPhase:
                     cmdStatus.Status = currentPhase.CanAdvance
                         ? MenuStatus.Enabled | MenuStatus.Visible
@@ -596,21 +707,13 @@ namespace Decompiler.Gui.Forms
         /// <returns></returns>
         public bool Execute(CommandID cmdId)
         {
-            if (searchResultsTabControl.Execute(cmdId))
+            var ct = GetSubCommandTarget();
+            if (ct != null && ct.Execute(cmdId))
                 return true;
-            if (MainForm.ProjectBrowser.Focused)
-            {
-                if (this.projectBrowserSvc.Execute(cmdId))
-                    return true;
-            }
-            else
-            {
-                if (subWindowCommandTarget.Execute(cmdId))
-                    return true;
-            } 
+          
             if (currentPhase != null && currentPhase.Execute(cmdId))
                 return true;
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 if (ExecuteMruFile(cmdId.ID))
                     return false;
@@ -619,11 +722,13 @@ namespace Decompiler.Gui.Forms
                 {
                 case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
                 case CmdIds.FileOpenAs: return OpenBinaryAs();
+                case CmdIds.FileAssemble: return AssembleFile();
                 case CmdIds.FileSave: Save(); return true;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); return true;
                 case CmdIds.FileCloseProject: CloseProject(); return true;
                 case CmdIds.FileExit: form.Close(); return true;
 
+                case CmdIds.ActionRestartDecompilation: RestartRecompilation(); return true;
                 case CmdIds.ActionNextPhase: NextPhase(); return true;
                 case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
 
@@ -636,7 +741,7 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); return true;
                 case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); return true;
                 case CmdIds.WindowsTileHorizontal: LayoutMdi(DocumentWindowLayout.TiledHorizontal); return true;
-                case CmdIds.WindowsCloseAll: form.CloseAllDocumentWindows(); return true;
+                case CmdIds.WindowsCloseAll: CloseAllDocumentWindows(); return true;
 
                 case CmdIds.HelpAbout: ShowAboutBox(); return true;
                 }
@@ -649,7 +754,7 @@ namespace Decompiler.Gui.Forms
             int iMru = cmdId - CmdIds.FileMru;
             if (0 <= iMru && iMru < mru.Items.Count)
             {
-                string file = (string)mru.Items[iMru];
+                string file = mru.Items[iMru];
                 OpenBinary(file, (f) => pageInitial.OpenBinary(file, this));
                 mru.Use(file);
                 return true;
@@ -663,7 +768,7 @@ namespace Decompiler.Gui.Forms
             {
                 if (decompilerSvc.Decompiler == null)
                     return false;
-                return decompilerSvc.Decompiler.Programs.Count > 0;
+                return decompilerSvc.Decompiler.Project != null;
             }
         }
         #endregion
@@ -681,7 +786,7 @@ namespace Decompiler.Gui.Forms
 
         #region DecompilerHost Members //////////////////////////////////
 
-        public IDecompilerConfigurationService Configuration
+        public IConfigurationService Configuration
         {
             get { return config; }
         }
@@ -691,58 +796,43 @@ namespace Decompiler.Gui.Forms
             return new StreamWriter(fileName, false, new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
             {
-                using (TextWriter output = CreateTextWriter(inputFile.DisassemblyFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteIntermediateCode(Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            using (TextWriter output = CreateTextWriter(program.IntermediateFilename))
             {
-                using (TextWriter output = CreateTextWriter(inputFile.IntermediateFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteTypes(Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            using (TextWriter output = CreateTextWriter(program.TypesFilename))
             {
-                using (TextWriter output = CreateTextWriter(inputFile.TypesFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteDecompiledCode(Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            using (TextWriter output = CreateTextWriter(program.OutputFilename))
             {
-                using (TextWriter output = CreateTextWriter(inputFile.OutputFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteGlobals(Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            using (TextWriter output = CreateTextWriter(program.GlobalsFilename))
             {
-                using (TextWriter output = CreateTextWriter(inputFile.GlobalsFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,15 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
+using Reko.Analysis;
+using Reko.Core;
 using NUnit.Framework;
-using Decompiler.UnitTests.Mocks;
+using Reko.UnitTests.Mocks;
 using System;
 using System.IO;
+using Reko.Core.Expressions;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class GrfDefinitionFinderTests : AnalysisTestBase
@@ -56,12 +57,13 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
 				SsaState ssa = sst.SsaState;
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)
 				{
-					if (!(sid.OriginalIdentifier.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
+                    var id = sid.OriginalIdentifier as Identifier;
+					if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
 						continue;
 					writer.Write("{0}: ", sid.DefStatement.Instruction);
 					grfd.FindDefiningExpression(sid);

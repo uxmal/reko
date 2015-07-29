@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Reko.UnitTests.Mocks
 {
 	/// <summary>
 	/// Supports building a intermediate code program directly without having to first generate machine code and scanning it.
@@ -48,12 +48,22 @@ namespace Decompiler.UnitTests.Mocks
             };
         }
 
+        public ProgramBuilder(LoadedImage loadedImage)
+        {
+            Program = new Program
+            {
+                Image = loadedImage,
+                ImageMap = loadedImage.CreateImageMap(),
+                Architecture = new FakeArchitecture()
+            };
+        }
+
 		public Program Program { get; set; }
 
         public void Add(Procedure proc)
         {
             ++procCount;
-            Program.Procedures[new Address(procCount * 0x1000u)] = proc;
+            Program.Procedures[Address.Ptr32(procCount * 0x1000u)] = proc;
             Program.CallGraph.AddProcedure(proc);
             nameToProcedure[proc.Name] = proc;
         }
@@ -106,9 +116,10 @@ namespace Decompiler.UnitTests.Mocks
             Program.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
-            Program.ImageMap = new ImageMap(new Address(0x1000), Program.Procedures.Count * 0x1000);
-            var seg = Program.ImageMap.AddSegment(new Address(0x1000), ".text", AccessMode.Execute);
+            Program.ImageMap = new ImageMap(Address.Ptr32(0x1000), Program.Procedures.Count * 0x1000);
+            var seg = Program.ImageMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute);
             seg.Size = (uint)(Program.Procedures.Count * 0x1000);
+            Program.Platform = new DefaultPlatform(null, arch);
 			return Program;
 		}
 
@@ -121,6 +132,7 @@ namespace Decompiler.UnitTests.Mocks
 					throw new ApplicationException("Unresolved procedure name: " + pcu.Name);
 				pcu.Update(proc);
 			}
+            unresolvedProcedures.Clear();
 		}
 	}
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,10 @@
  */
 #endregion
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Arch.X86;
-using Decompiler.Scanning;
 using NUnit.Framework;
-using System;
+using Reko.Core;
 
-namespace Decompiler.UnitTests.Assemblers.x86
+namespace Reko.UnitTests.Assemblers.x86
 {
 	[TestFixture]
 	public class AssemblerOverrides : AssemblerBase
@@ -34,7 +30,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		public void DataOverrides()
 		{
 			var lr = asm.AssembleFragment(
-				new Address(0xC00, 0),
+				Address.SegPtr(0xC00, 0),
 				@".86
 		mov	eax,32
 		mov si,0x2234

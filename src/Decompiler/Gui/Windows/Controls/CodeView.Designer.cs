@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Controls
+﻿namespace Reko.Gui.Windows.Controls
 {
     partial class CodeView
     {
@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Decompiler.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Decompiler.Gui.Windows.Controls.EmptyEditorModel();
+            Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.textView1 = new Decompiler.Gui.Windows.Controls.TextView();
+            this.textView1 = new Reko.Gui.Windows.Controls.TextView();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +51,7 @@
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::Decompiler.Properties.Resources.Back;
+            this.toolStripButton1.Image = global::Reko.Properties.Resources.Back;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
@@ -60,7 +60,7 @@
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::Decompiler.Properties.Resources.Forward;
+            this.toolStripButton2.Image = global::Reko.Properties.Resources.Forward;
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);

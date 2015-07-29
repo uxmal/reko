@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion 
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Xml;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Summarizes the effects of calling a procedure, as seen by the caller. Procedure signatures
@@ -36,7 +36,8 @@ namespace Decompiler.Core
 	/// Calling a procedure affects a few things: the registers, the stack depth, and in the case of the Intel x86
 	/// architecture the FPU stack depth. These effects are summarized by the signature.
     /// <para>
-    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move these into processor-specific subclasses
+    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move these into processor-specific subclasses.
+    /// Also, some architectures -- like the FORTH language -- have multiple stacks.
     /// </para>
 	/// </remarks>
     public class ProcedureSignature
@@ -50,11 +51,11 @@ namespace Decompiler.Core
             : this()
         {
             this.ReturnValue = returnId;
-            this.FormalArguments = formalArguments;
+            this.Parameters = formalArguments;
         }
 
         public TypeVariable TypeVariable { get; set; }
-        public Identifier[] FormalArguments { get; private set; }   //$REFACTOR: should be "Parameters".
+        public Identifier[] Parameters { get; private set; } 
         public Identifier ReturnValue { get; private set; }
         public int ReturnAddressOnStack { get; set; }           // The size of the return address if pushed on stack.
 
@@ -80,18 +81,18 @@ namespace Decompiler.Core
         public int FpuStackArgumentMax { get; set; }
 
         /// <summary>
+        /// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are written.
+        /// </summary>
+        public int FpuStackOutArgumentMax { get; set; }
+
+        /// <summary>
         /// True if the medium-level arguments have been discovered. Otherwise, the signature just contains the net effect
         /// on the processor state.
         /// </summary>
-        public bool ArgumentsValid
+        public bool ParametersValid
         {
-            get { return FormalArguments != null || ReturnValue != null; }
+            get { return Parameters != null || ReturnValue != null; }
         }
-
-        /// <summary>
-        /// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are used.
-        /// </summary>
-        public int FpuStackOutArgumentMax { get; set; }
 
         #region Output methods
         public void Emit(string fnName, EmitFlags f, TextWriter writer)
@@ -131,13 +132,13 @@ namespace Decompiler.Core
                 fmt.Write("(");
             }
             var sep = "";
-            if (FormalArguments != null)
+            if (Parameters != null)
             {
-                for (int i = 0; i < FormalArguments.Length; ++i)
+                for (int i = 0; i < Parameters.Length; ++i)
                 {
                     fmt.Write(sep);
                     sep = ", ";
-                    w.WriteFormalArgument(FormalArguments[i], emitStorage, t);
+                    w.WriteFormalArgument(Parameters[i], emitStorage, t);
                 }
             }
             fmt.Write(")");
@@ -179,9 +180,5 @@ namespace Decompiler.Core
         }
         #endregion
 
-        public ProcedureSignature Clone()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

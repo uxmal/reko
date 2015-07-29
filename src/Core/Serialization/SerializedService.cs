@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
 	public class SerializedService : SerializedProcedureBase_v1
 	{
@@ -59,7 +59,7 @@ namespace Decompiler.Core.Serialization
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
             TypeLibraryLoader loader = new TypeLibraryLoader(arch, true);
-			ProcedureSerializer sser = new ProcedureSerializer(arch, loader, "stdapi");
+			ProcedureSerializer sser = arch.CreateProcedureSerializer(loader, "stdapi");
             svc.Signature = sser.Deserialize(Signature, arch.CreateFrame());
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;
 			return svc;

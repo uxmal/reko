@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,33 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.Win32
+namespace Reko.Environments.Win32
 {
     public class SignatureGuesser
     {
+        /// <summary>
+        /// Guesses the signature of a procedure based on its name.
+        /// </summary>
+        /// <param name="fnName"></param>
+        /// <param name="loader"></param>
+        /// <param name="arch"></param>
+        /// <returns></returns>
         public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryLoader loader, IProcessorArchitecture arch)
         {
             int argBytes;
             if (fnName[0] == '_')
             {
+                // Win32 prefixes cdecl and stdcall functions with '_'. Stdcalls will have @<nn> 
+                // where <nn> is the number of bytes pushed on the stack. If 0 bytes are pushed
+                // the result is indistinguishable from the corresponding cdecl call, which is OK.
                 int lastAt = fnName.LastIndexOf('@');
                 if (lastAt < 0)
                     return CdeclSignature(fnName.Substring(1), arch);
@@ -46,6 +56,7 @@ namespace Decompiler.Environments.Win32
             }
             else if (fnName[0] == '@')
             {
+                // Win32 prefixes fastcall functions with '@'.
                 int lastAt = fnName.LastIndexOf('@');
                 if (lastAt <= 0)
                     return CdeclSignature(fnName.Substring(1), arch);
@@ -57,8 +68,9 @@ namespace Decompiler.Environments.Win32
             }
             else if (fnName[0] == '?')
             {
+                // Microsoft-mangled signatures begin with '?'
                 var pmnp = new MsMangledNameParser(fnName);
-                SerializedStructField field = null;
+                StructField_v1 field = null;
                 try
                 {
                     field = pmnp.Parse();
@@ -72,17 +84,11 @@ namespace Decompiler.Environments.Win32
                 var sproc = field.Type as SerializedSignature;
                 if (sproc != null)
                 {
-                    Debug.Print("Deserializing: {0}", sproc);
-                    var sser = new ProcedureSerializer(arch, loader, "__cdecl");
+                    var sser = arch.CreateProcedureSerializer(loader, "__cdecl");
                     return sser.Deserialize(sproc, arch.CreateFrame());    //$BUGBUG: catch dupes?   
                 }
-                else
-                {
-                    return null;
-                }
             }
-            else
-                return null;
+            return null;
         }
 
         private static ProcedureSignature CdeclSignature(string name, IProcessorArchitecture arch)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,139 +18,248 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Arch.Arm;
-using Decompiler.Arch.X86;
-using Decompiler.Scanning;
+using Reko.Arch.Arm;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Scanning;
 using NUnit.Framework;
-using System;
+using Rhino.Mocks;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
-    public class HeuristicScannerTests
+    public class HeuristicScannerTests : HeuristicTestBase
     {
-        private LoadedImage CreateImage(Address addr, params uint[] opcodes)
+
+        [SetUp]
+        public override void Setup()
         {
-            byte[] bytes = new byte[0x20];
-            var writer = new LeImageWriter(bytes);
-            uint offset = 0;
-            for (int i = 0; i < opcodes.Length; ++i, offset += 4)
-            {
-                writer.WriteLeUInt32(offset, opcodes[i]);
-            }
-            return new LoadedImage(addr, bytes);
+            base.Setup();
         }
 
         [Test]
         public void HSC_x86_FindCallOpcode()
         {
-            var image = new LoadedImage(new Address(0x001000), new byte[] {
-                0xE8, 0x03, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
-                0xC3
-            });
-            var prog = new Program
-            {
-                Image = image,
-                Architecture = new IntelArchitecture(ProcessorMode.Protected32),
-            };
-            var hsc = new HeuristicScanner(prog);
+            Given_Image32(
+                0x001000, 
+                "E8 03 00 00  00 00 00 00 " +
+                "C3");
+            Given_x86_32();
+            Given_RewriterHost();
+            mr.ReplayAll();
 
+            var hsc = new HeuristicScanner(prog, host);
             var addr = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x1008)
+                Address.Ptr32(0x1008)
             }).ToList();
 
             Assert.AreEqual(1, addr.Count);
-            Assert.AreEqual(0x001000, addr[0]);
+            Assert.AreEqual(0x001000, (uint)addr[0].ToLinear());
         }
+
 
         [Test]
         public void HSC_x86_FindCallsToProcedure()
         {
-            var image = new LoadedImage(new Address(0x001000), new byte[] {
+#if OLD
+            var image = new LoadedImage(Address.Ptr32(0x001000), new byte[] {
                 0xE8, 0x0B, 0x00, 0x00,  0x00, 0xE8, 0x07, 0x00,
                 0x00, 0x00, 0xC3, 0x00,  0x00, 0x00, 0x00, 0x00,
                 0xC3, 0xC3                                      // 1010, 1011
             });
-            var prog = new Program
+            prog = new Program
             {
                 Image = image,
+                ImageMap = image.CreateImageMap(),
                 Architecture = new IntelArchitecture(ProcessorMode.Protected32),
             };
-            var hsc = new HeuristicScanner(prog);
+#else
+            Given_Image32(0x001000, 
+                "E8 0B 00 00 00 E8 07 00 " +
+                "00 00 C3 00 00 00 00 00 " +
+                "C3 C3 ");                                     // 1010, 1011
+            Given_x86_32();
+#endif
+            Given_RewriterHost();
+            mr.ReplayAll();
 
+            Assert.AreEqual(18, prog.Image.Length);
+
+            var hsc = new HeuristicScanner(prog, host);
             var linAddrs = hsc.FindCallOpcodes(new Address[]{
-                new Address(0x1010),
-                new Address(0x1011)}).ToList();
+                Address.Ptr32(0x1010),
+                Address.Ptr32(0x1011)}).ToList();
 
             Assert.AreEqual(2, linAddrs.Count);
-            Assert.IsTrue(linAddrs.Contains(0x1000));
-            Assert.IsTrue(linAddrs.Contains(0x1005));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1000)));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1005)));
         }
+
 
         [Test]
         public void HSC_x86_16bitNearCall()
         {
-            var image = new LoadedImage(new Address(0xC00, 0), new byte[] {
-                0xC3, 0x90, 0xE8, 0xFB, 0xFF, 0xC3, 
-            });
-            var prog = new Program
-            {
-                Image = image,
-                Architecture = new IntelArchitecture(ProcessorMode.Real),
-            };
-            var hsc = new HeuristicScanner(prog);
+            base.Given_ImageSeg(0xC00, 0,
+                "C3 90 E8 FB FF C3");
+            base.Given_x86_16();
+            Given_RewriterHost();
+            mr.ReplayAll();
 
+            var hsc = new HeuristicScanner(prog, host);
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x0C00, 0)}).ToList();
+                Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
-            Assert.AreEqual(0xC002, linAddrs[0]);
+            Assert.AreEqual("0C00:0002", linAddrs[0].ToString());
         }
 
         [Test]
         public void HSC_x86_16bitFarCall()
         {
-            var image = new LoadedImage(new Address(0xC00, 0), new byte[] {
-                0xC3, 0x90, 0x9A, 0x00, 0x00, 0x00, 0x0C, 0xC3 
-            });
-            var prog = new Program
-            {
-                Image = image,
-                Architecture = new IntelArchitecture(ProcessorMode.Real),
-            };
-            var hsc = new HeuristicScanner(prog);
+            Given_ImageSeg(0xC00, 0, 
+               "C3 90 9A 00 00 00 0C C3 ");
+            Given_x86_16();
+            Given_RewriterHost();
+            mr.ReplayAll();
+
+            var hsc = new HeuristicScanner(prog, host);
 
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x0C00, 0)}).ToList();
+                Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
-            Assert.AreEqual(0xC002, linAddrs[0]);
+            Assert.AreEqual("0C00:0002", linAddrs[0].ToString());
         }
 
         [Test]
         public void HSC_ARM32_Calls()
         {
-            var image = CreateImage(new Address(0x1000),
+            var image = CreateImage(Address.Ptr32(0x1000),
                 0xE1A0F00E,     // mov r15,r14 (return)
                 0xEBFFFFFD,
                 0xEBFFFFFC);
-            var prog = new Program
+            prog = new Program
             {
                 Image = image,
                 Architecture = new ArmProcessorArchitecture(),
             };
-            var hsc = new HeuristicScanner(prog);
+            var host = mr.Stub<IRewriterHost>();
+            mr.ReplayAll();
+
+            var hsc = new HeuristicScanner(prog, host);
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x1000),
+                Address.Ptr32(0x1000),
             }).ToList();
 
             Assert.AreEqual(2, linAddrs.Count);
-            Assert.IsTrue(linAddrs.Contains(0x1004));
-            Assert.IsTrue(linAddrs.Contains(0x1008));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1004)));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1008)));
+        }
+
+
+        [Test]
+        public void HSC_FindPossibleProcedureEntries() // "Starts"
+        {
+            Given_Image32(0x10000, "CC CC CC 55 8B EC C3 00   00 00 55 8B EC");
+            Given_x86_32();
+            var host = mr.Stub<IRewriterHost>();
+            mr.ReplayAll();
+
+            var hsc = new HeuristicScanner(prog, host);
+            var r = hsc.FindUnscannedRanges();
+            var ranges = hsc.FindPossibleFunctions(r).ToArray();
+            Assert.AreEqual(0x10003, ranges[0].Item1.ToLinear());
+            Assert.AreEqual(0x1000A, ranges[0].Item2.ToLinear());
+            Assert.AreEqual(0x1000A, ranges[1].Item1.ToLinear());
+            Assert.AreEqual(0x1000D, ranges[1].Item2.ToLinear());
+        }
+
+
+        [Test]
+        public void HSC_HeuristicDisassembleProc()
+        {
+            Given_Image32(
+                0x10000,
+                TrickyProc);
+            Given_x86_32();
+            Given_RewriterHost();
+            host.Stub(h => h.GetImportedProcedure(null, null))
+                .IgnoreArguments()
+                .Return(null);
+            mr.ReplayAll();
+
+            var hsc = new HeuristicScanner(prog, host);
+            var proc = hsc.DisassembleProcedure(
+                prog.Image.BaseAddress,
+                prog.Image.BaseAddress + prog.Image.Length);
+            var sExp =
+                #region Expected
+ @"l00010000:  // pred:
+    push ebp
+l00010001:  // pred: l00010000
+    mov ebp,esp
+l00010002:  // pred:
+    in eax,E8
+l00010003:  // pred: l00010001
+    call 11750008
+l00010004:  // pred: l00010002
+    add [eax],al
+l00010005:  // pred:
+    add [ecx+edx+0A],dh
+l00010006:  // pred: l00010004
+    jz 00010019
+l00010007:  // pred:
+    adc [edx],ecx
+l00010008:  // pred: l00010006
+    or al,[0675003C]
+l00010009:  // pred: l00010005 l00010007
+    add eax,0675003C
+l0001000A:  // pred:
+    cmp al,00
+l0001000B:  // pred:
+    add [ebp+06],dh
+l0001000C:  // pred: l0001000A
+    jnz 00010014
+l0001000D:  // pred:
+    push es
+l0001000E:  // pred: l00010008 l00010009 l0001000B l0001000C l0001000D
+    mov al,00
+l0001000F:  // pred:
+    add bl,ch
+l00010010:  // pred: l0001000E
+    jmp 00010019
+l00010011:  // pred: l0001000F
+    pop es
+l00010012:  // pred: l00010011
+    or al,[740000A1]
+l00010013:  // pred:
+    add eax,740000A1
+l00010014:  // pred: l0001000C
+    mov eax,[01740000]
+l00010015:  // pred:
+    add [eax],al
+l00010016:  // pred:
+    add [ecx+eax-77],dh
+l00010017:  // pred: l00010015
+    jz 0001001A
+l00010018:  // pred: l00010012 l00010013
+    add [ecx+90C35DEC],ecx
+l00010019:  // pred: l00010006 l00010010 l00010014 l00010017
+    mov esp,ebp
+l0001001A:  // pred: l00010016 l00010017
+    in al,dx
+l0001001B:  // pred: l00010019 l0001001A
+    pop ebp
+l0001001C:  // pred: l0001001B
+    ret 
+";
+            #endregion
+            AssertBlocks(sExp, proc.Cfg);
         }
     }
 }

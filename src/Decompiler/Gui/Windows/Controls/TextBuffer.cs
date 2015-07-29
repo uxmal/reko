@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Controls
 {
     public class TextBuffer<T>
     {
@@ -34,14 +34,26 @@ namespace Decompiler.Gui.Windows.Controls
 
         public TextBuffer() : this(new T[4096])
         {
+            iGapStart = 0;
+            iGapEnd = elements.Length;
         }
 
         public TextBuffer(T[] elements)
         {
             iGapStart = 0;
-            iGapEnd = 0;
+            iGapEnd = elements.Length;
             iLast = elements.Length;
             this.elements = elements;
+        }
+
+        public int Count
+        {
+            get { return iGapStart + (elements.Length - iGapEnd); }
+        }
+
+        public void Insert(T elem)
+        {
+            elements[iGapStart++] = elem;
         }
     }
 }

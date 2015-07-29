@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,14 @@
 
 using System;
 using System.ComponentModel;
-namespace Decompiler.Core
+
+namespace Reko.Core
 {
 	/// <summary>
 	/// Represent a segment of memory, corresponding to an 16-bit segment for intel real and protected modes, and 
 	/// executable sections for flat processor modes.
 	/// </summary>
-    [Designer("Decompiler.Gui.Design.ImageMapSegmentDesigner,Decompiler")]
+    [Designer("Reko.Gui.Design.ImageMapSegmentNodeDesigner,Reko")]
 	public class ImageMapSegment : ImageMapItem
 	{
 		public ImageMapSegment(string name, AccessMode access) : base() 
@@ -46,13 +47,19 @@ namespace Decompiler.Core
 		}
 
 		public AccessMode Access { get; private set; }
+
+        public bool IsDiscardable { get; set; }
+
+        public ImageMapSegmentRenderer Designer { get; set; }
+
 		public string Name { get;set; }
 
 		public override string ToString()
 		{
 			return string.Format("Segment {0} at {1}, {2} bytes", Name, Address.ToString(), Size);
 		}
-	}
+
+    }
 
 	[Flags]
 	public enum AccessMode
@@ -61,6 +68,8 @@ namespace Decompiler.Core
 		Write = 2,
 		Execute = 1,
 
-		ReadWrite = Read|Write,
+        ReadExecute = Read | Execute,
+        ReadWrite = Read | Write,
+        ReadWriteExecute = Read|Write|Execute,
 	}
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
-using Decompiler.Scanning;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Scanning;
 using NUnit.Framework; 
 using System;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Reko.UnitTests.Scanning
 {
 	[TestFixture]
 	public class InstructionTrieTests
@@ -39,20 +39,20 @@ namespace Decompiler.UnitTests.Scanning
 		public void Creation()
 		{
 			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			InstructionTrie trie = new InstructionTrie(cmp, cmp);
+			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
 		}
 
 		[Test]
 		public void AddInstructions()
 		{
 			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			InstructionTrie trie = new InstructionTrie(cmp, cmp);
+			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
 			IntelInstruction inst = CreatePush(Registers.bp);
 			
-			trie.AddInstructions(new object [] { inst });
+			trie.AddInstructions(new [] { inst });
 			Assert.AreEqual(trie.Count, 1);
 
-			trie.AddInstructions(new object [] {
+			trie.AddInstructions(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });
 			Assert.AreEqual(trie.Count, 3);
@@ -65,26 +65,26 @@ namespace Decompiler.UnitTests.Scanning
 		public void ScoreInstructions()
 		{
 			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			InstructionTrie trie = new InstructionTrie(cmp, cmp);
-			trie.AddInstructions(new object [] {
+			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
+			trie.AddInstructions(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });
-			trie.AddInstructions(new object [] {
+			trie.AddInstructions(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp),
 				CreatePush(Registers.si),
 				CreatePush(Registers.di) });
 
-			long score = trie.ScoreInstructions(new object [] {
+			long score = trie.ScoreInstructions(new [] {
 				CreatePush(Registers.bp) });
 			Assert.AreEqual(2, score);
-			score = trie.ScoreInstructions(new object [] {
+			score = trie.ScoreInstructions(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) } );
 			Assert.AreEqual(4, score);
 
 			// This sequqnce matches one of the trie's strings exactly.
-			score = trie.ScoreInstructions(new object [] {
+			score = trie.ScoreInstructions(new  [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp),
 				CreatePush(Registers.si),
@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Scanning
 
 			// A longer sequence runs 'off' the trie, so it should have the same score
 			// as the previous test
-			score = trie.ScoreInstructions(new object [] {
+			score = trie.ScoreInstructions(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp),
 				CreatePush(Registers.si),
@@ -103,7 +103,7 @@ namespace Decompiler.UnitTests.Scanning
 
 			// This doesn't exist in the trie at all, so it should score 0.
 
-			score = trie.ScoreInstructions(new object [] {
+			score = trie.ScoreInstructions(new [] {
 				CreateMov(Registers.ax, Registers.bx) });
 			Assert.AreEqual(0, score);
 		}

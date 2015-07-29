@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using Decompiler.UnitTests.Mocks;
+using Reko.Analysis;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Mocks;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Typing
+namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class PtrPrimitiveReplacerTests : TypingTestBase
@@ -38,7 +38,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PprReplaceInts()
 		{
-            var program = new Program { Architecture = new FakeArchitecture() };
+            var arch = new FakeArchitecture(); 
+            var program = new Program { Architecture = arch, Platform = new DefaultPlatform(null, arch) };
 
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
@@ -114,7 +115,7 @@ namespace Decompiler.UnitTests.Typing
 			store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
 			eqb.Build(prog);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();

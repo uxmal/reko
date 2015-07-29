@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Structure;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Structure;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     public abstract class GraphNode<T>
     {
@@ -95,7 +95,7 @@ namespace Decompiler.Structure
             WriteNode(this.EntryNode, new HashSet<StructureNode>(), writer);
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("VERBOSE_DEBUG")]
         private void WriteNode(StructureNode node, HashSet<StructureNode> visited, TextWriter writer)
         {
             if (visited.Contains(node))

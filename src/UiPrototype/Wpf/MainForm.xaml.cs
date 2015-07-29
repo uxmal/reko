@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Decompiler.UiPrototype.Wpf
+namespace Reko.UiPrototype.Wpf
 {
     /// <summary>
     /// Interaction logic for MainForm.xaml

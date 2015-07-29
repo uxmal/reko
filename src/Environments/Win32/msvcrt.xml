@@ -56,7 +56,8 @@
   </procedure>
   <procedure name="rand">
 	<signature>
-	  <return type="int">
+	  <return>
+      <prim domain="SignedInt" size="4" />
 		<reg>eax</reg>
 	  </return>
 	</signature>
@@ -99,7 +100,8 @@
   </procedure>
   <procedure name="atol">
 	<signature>
-	  <return type="long">
+	  <return>
+      <prim domain="SignedInt" size="4" />
 		<reg>eax</reg>
 	  </return>
     <arg>
@@ -123,9 +125,7 @@
   <procedure name="srand">
 	<signature>
 	  <return>
-      <type>
-        <void />
-      </type>
+      <void />
 		  <reg>eax</reg>
 	  </return>
 	  <arg>
@@ -145,6 +145,16 @@
 		  <fpustack />
 	  </arg>
 	</signature>
+  </procedure>
+  <procedure name="printf">
+    <signature>
+    <return><prim domain="SignedInt" size="4"/><reg>eax</reg></return>
+    <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+      <stack size="4"/>
+    </arg>
+    <!-- TODO: what about varargs? -->
+    </signature>
   </procedure>
   <procedure name="sprintf">
 	<signature>
@@ -207,4 +217,62 @@
       </arg>
     </signature>
   </procedure>
+  <procedure name="__p__fmode">
+    <signature>
+      <return>
+        <ptr><prim domain="SignedInt" size="4" /></ptr>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="__p__commode">
+    <signature>
+      <return>
+        <ptr>
+        <ptr><prim domain="SignedInt" size="4" /></ptr>
+          <reg>eax</reg>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="__getmainargs">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+        <reg>eax</reg>
+      </return>
+      <arg>
+        <ptr><prim domain="SignedInt" size="4" /></ptr>
+        <stack />
+      </arg>
+      <arg>
+        <ptr><ptr><ptr><prim domain="Character" size="1" /></ptr></ptr></ptr>
+        <stack />
+      </arg>
+      <arg>
+        <ptr><ptr><ptr><prim domain="Character" size="1" /></ptr></ptr></ptr>
+        <stack />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+        <stack />
+      </arg>
+      <arg>
+        <ptr><void /></ptr>
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+
+  <procedure name="exit">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+
 </library>

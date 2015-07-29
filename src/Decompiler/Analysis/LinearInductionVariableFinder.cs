@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Operators;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Finds linear induction variables and annotates the identifiers with that information.
@@ -121,6 +121,7 @@ namespace Decompiler.Analysis
                 ctx.TestStatement.Block.ThenBlock ==
                 ctx.PhiStatement.Block;
         }
+
         /// <summary>
         /// Operator is a relation-equals operator.
         /// </summary>
@@ -167,8 +168,10 @@ namespace Decompiler.Analysis
 					Branch b = u.Instruction as Branch;
                     if (b == null)
                         continue;
-					BinaryExpression bin = b.Condition as BinaryExpression;
-					if (bin != null && bin.Operator is ConditionalOperator)
+					BinaryExpression bin;
+					if (b.Condition.As<BinaryExpression>(out bin) && 
+                        bin.Left is Identifier && 
+                        bin.Operator is ConditionalOperator)
 					{
 						ctx.TestOperator = bin.Operator;
 						ctx.TestStatement = u;
@@ -184,21 +187,17 @@ namespace Decompiler.Analysis
 		{
 			if (phi.Arguments.Length != 2)
 				return null;
-			Identifier id0 = (Identifier)phi.Arguments[0];
-			Identifier id1 = (Identifier)phi.Arguments[1];
-			if (id0.Number > id1.Number)
-			{
-                id0 = id1;
-			}
-			SsaIdentifier sid = ssaIds[id0];
-			if (sid.DefStatement == null)
-				return null;
-
+            var sid0 = ssaIds[(Identifier)phi.Arguments[0]];
+            var sid1 = ssaIds[(Identifier)phi.Arguments[1]];
+            if (sid0.DefStatement == null || sid1.DefStatement == null)
+                return null;
+            var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
+                ? sid1 : sid0;
 			Assignment ass = sid.DefStatement.Instruction as Assignment;
 			if (ass == null)
 				return null;
 
-			if (ass.Dst != id0)
+			if (ass.Dst != sid.Identifier)
 				return null;
 
             ctx.InitialStatement = sid.DefStatement;

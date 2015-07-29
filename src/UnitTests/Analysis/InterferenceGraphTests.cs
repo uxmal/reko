@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Analysis;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]	
 	public class InterferenceGraphTests
@@ -40,8 +40,8 @@ namespace Decompiler.UnitTests.Analysis
 		public void IgAddEdge()
 		{
 			var ig = new InterferenceGraph();
-			var id1 = new Identifier("id1", 1, PrimitiveType.Word32, null);
-			var id2 = new Identifier("id2", 2, PrimitiveType.Word32, null);
+			var id1 = new Identifier("id1", PrimitiveType.Word32, null);
+			var id2 = new Identifier("id2", PrimitiveType.Word32, null);
 			ig.Add(id1, id2);
 			Assert.IsTrue(ig.Interfere(id1, id2), "id1 inteferes with id2", null);
 			Assert.IsTrue(ig.Interfere(id2, id1), "id2 inteferes with id1", null);

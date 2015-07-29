@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core.Lib;
+using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Lib
 {
     [TestFixture]
     public class LookaheadEnumeratorTests
@@ -119,6 +119,21 @@ namespace Decompiler.UnitTests.Core.Lib
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual('c', e.Current);
             Assert.IsFalse(e.MoveNext());
+        }
+
+        [Test]
+        public void LAET_Regression1()
+        {
+            var e = new LookaheadEnumerator<char>("abcd".GetEnumerator());
+            e.MoveNext();
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('c', e.Peek(2));
+            Assert.AreEqual('c', e.Peek(2));
+            Assert.AreEqual('d', e.Peek(3));
+            Assert.AreEqual('d', e.Peek(3));
         }
     }
 }

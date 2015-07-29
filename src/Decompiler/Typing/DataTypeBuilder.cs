@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Typing
+namespace Reko.Typing
 {
 	/// <summary>
 	/// Builds data types incrementally by accepting traits and modifying the corresponding
@@ -41,14 +41,14 @@ namespace Decompiler.Typing
 		private ITypeStore store;
 		private TypeFactory factory;
 		private DataTypeBuilderUnifier unifier;
-        private IProcessorArchitecture arch;
+        private Platform platform;
 
-		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IProcessorArchitecture arch)
+		public DataTypeBuilder(TypeFactory factory, ITypeStore store, Platform platform)
 		{
 			this.store = store;
 			this.factory = factory;
 			this.unifier = new DataTypeBuilderUnifier(factory, store);
-            this.arch = arch;
+            this.platform = platform;
 		}
 
 		public void BuildEquivalenceClassDataTypes()
@@ -149,6 +149,14 @@ namespace Decompiler.Typing
 			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable, structPtrSize);
 		}
 
+		public DataType MemFieldTrait(Expression tBase, Expression tStruct, Expression tField, int offset)
+        {
+            var s = factory.CreateStructureType(null, 0);
+            var field = new StructureField(offset, tField.TypeVariable);
+            s.Fields.Add(field);
+            return MergeIntoDataType(tStruct, s);
+        }
+
         public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
         {
             var s = factory.CreateStructureType(null, 0);
@@ -167,8 +175,8 @@ namespace Decompiler.Typing
 				throw new ArgumentOutOfRangeException("size must be positive");
 			var s = factory.CreateStructureType(null, size);
 			var ptr = tBase != null
-                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, arch.FramePointerType.Size)
-				: (DataType)factory.CreatePointer(s, arch.PointerType.Size);
+                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, platform.FramePointerType.Size)
+				: (DataType)factory.CreatePointer(s, platform.PointerType.Size);
 			return MergeIntoDataType(tStruct, ptr);
 		}
 

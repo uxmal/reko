@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
-using Decompiler.Arch.X86;
-using Decompiler.Core;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Loading;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -32,7 +32,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests
+namespace Reko.UnitTests
 {
     [TestFixture]
     public class DecompilerTests
@@ -50,7 +50,9 @@ namespace Decompiler.UnitTests
             var sp = new ServiceContainer();
             loader = mr.StrictMock<ILoader>();
             sp.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            loader.Replay();
             decompiler = new TestDecompiler(loader, host, sp);
+            loader.BackToRecord();
         }
 
         [Test]
@@ -61,12 +63,12 @@ namespace Decompiler.UnitTests
                 .Return(new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
                     "<input><filename>foo.bar</filename></input></project>"));
             loader.Stub(l => l.LoadImageBytes("foo.bar", 0)).Return(bytes);
-            loader.Stub(l => l.LoadExecutable(null)).IgnoreArguments().Return(new Program());
+            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
             mr.ReplayAll();
 
             decompiler.Load("test.dcproject");
 
-            Assert.AreEqual("foo.bar", decompiler.Project.InputFiles[0].Filename);
+            Assert.AreEqual("foo.bar", decompiler.Project.Programs[0].Filename);
             mr.VerifyAll();
         }
 
@@ -74,9 +76,11 @@ namespace Decompiler.UnitTests
         public void Dec_LoadCallSignatures()
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            Program program = new Program();
-            program.Architecture = arch;
-            decompiler.Programs.Add(program);
+            Program program = new Program { Architecture = arch };
+            decompiler.Project = new Project
+            {
+                Programs = { program }
+            };
             List<SerializedCall_v1> al = new List<SerializedCall_v1>();
             SerializedSignature sig = new SerializedSignature();
             sig.Arguments = new Argument_v1[] {
@@ -87,10 +91,10 @@ namespace Decompiler.UnitTests
 			        Kind = new Register_v1("bx"),
                 }
             };
-            al.Add(new SerializedCall_v1(new Address(0x0C32, 0x3200), sig));
+            al.Add(new SerializedCall_v1(Address.SegPtr(0x0C32, 0x3200), sig));
             var sigs = decompiler.LoadCallSignatures(program, al);
 
-            ProcedureSignature ps = sigs[new Address(0x0C32, 0x3200)];
+            ProcedureSignature ps = sigs[Address.SegPtr(0x0C32, 0x3200)];
             Assert.IsNotNull(ps, "Expected a call signature for address");
         }
     }

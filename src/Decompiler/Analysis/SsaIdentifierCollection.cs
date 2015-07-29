@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,43 +18,103 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Expressions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
-	public class SsaIdentifierCollection : List<SsaIdentifier>
+	public class SsaIdentifierCollection : IEnumerable<SsaIdentifier>
 	{
+        private Dictionary<Identifier, SsaIdentifier> sids =
+            new Dictionary<Identifier, SsaIdentifier>();
+
 		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
-			int i = Count;
+			int i = sids.Count;
 			Identifier idNew;
 			if (stmDef != null)
 			{
 				idNew = idOld is MemoryIdentifier
 					? new MemoryIdentifier(i, idOld.DataType)
-					: new Identifier(FormatSsaName(idOld.Name, i), i, idOld.DataType, idOld.Storage);
+					: new Identifier(FormatSsaName(idOld, i), idOld.DataType, StorageOf(idOld));
 			}
 			else
 			{
-				idNew = idOld;
+				idNew = (Identifier)idOld;
 			}
 			var sid = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
-			Add(sid);
+			sids.Add(idNew, sid);
 			return sid;
 		}
 
 		public SsaIdentifier this[Identifier id]
 		{
-			get { return base[id.Number]; }
-			set { base[id.Number] = value; }
+			get { return sids[id]; }
+			set { sids[id] = value; }
 		}
 
-		public string FormatSsaName(string prefix, int v)
+        public void Add(Identifier id, SsaIdentifier sid)
+        {
+            sids.Add(id, sid);
+        }
+
+        public int Count
+        {
+            get { return sids.Count; }
+        }
+
+        public IEnumerator<SsaIdentifier> GetEnumerator()
+        {
+            return sids.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
+        public bool TryGetValue(Identifier id, out SsaIdentifier sid)
+        {
+            return sids.TryGetValue(id, out sid);
+        }
+
+		public string FormatSsaName(Expression e, int v)
 		{
-			return string.Format("{0}_{1}", prefix, v);
+            string prefix = null;
+            var id = e as Identifier;
+            if (id != null)
+            {
+                prefix = id.Name;
+            }
+            var bin = e as BinaryExpression;
+            if (bin != null)
+            {
+                int offset = ((Constant)bin.Right).ToInt32();
+                if (offset < 0)
+                    prefix = "loc";
+                else
+                    prefix = "arg";
+
+            }
+            if (prefix == null)
+                throw new NotImplementedException(e.ToString());
+            return string.Format("{0}_{1}", prefix, v);
 		}
-	}
+
+        private Storage StorageOf(Expression e)
+        {
+            var id = e as Identifier;
+            if (id != null)
+                return id.Storage;
+            var bin = (BinaryExpression) e;
+            int offset = ((Constant)bin.Right).ToInt32();
+            if (offset < 0)
+                return new StackLocalStorage(offset, e.DataType);
+            else 
+                return new StackArgumentStorage(offset, e.DataType);
+        }
+    }
 }

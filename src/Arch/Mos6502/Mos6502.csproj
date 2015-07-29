@@ -7,8 +7,8 @@
     <ProjectGuid>{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Arch.Mos6502</RootNamespace>
-    <AssemblyName>Decompiler.Arch.Mos6502</AssemblyName>
+    <RootNamespace>Reko.Arch.Mos6502</RootNamespace>
+    <AssemblyName>Reko.Arch.Mos6502</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

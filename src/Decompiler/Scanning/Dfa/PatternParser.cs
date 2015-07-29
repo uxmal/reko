@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning.Dfa
+namespace Reko.Scanning.Dfa
 {
     /// <summary>
     /// Parses a regexp pattern into a tree of TreeNodes.
@@ -136,7 +136,8 @@ namespace Decompiler.Scanning.Dfa
             if (PeekAndDiscard('('))
             {
                 var head = Parse();
-                Expect(']');
+                EatSpaces();
+                Expect(')');
                 return head;
             }
             if (Peek('['))
@@ -144,14 +145,26 @@ namespace Decompiler.Scanning.Dfa
                 return ParseCharClass();
             }
             int d = MaybeHexByte();
-            if (d < 0)
-                return null;
-            return new TreeNode
+            if (d >= 0)
             {
-                Type = NodeType.Char,
-                Value = (byte) d,
-                Number = ++significantNodes,
-            };
+                return new TreeNode
+                {
+                    Type = NodeType.Char,
+                    Value = (byte)d,
+                    Number = ++significantNodes,
+                };
+            }
+            if (Peek('?'))
+            {
+                Expect('?');
+                Expect('?');
+                return new TreeNode
+                {
+                    Type = NodeType.Any,
+                    Number = ++significantNodes
+                };
+            }
+            return null;
         }
 
         private bool EatSpaces()

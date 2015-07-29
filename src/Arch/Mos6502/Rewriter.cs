@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Reko.Arch.Mos6502
 {
     public class Rewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -35,16 +35,17 @@ namespace Decompiler.Arch.Mos6502
         private Frame frame;
         private IRewriterHost host;
         private Mos6502ProcessorArchitecture arch;
-        private IEnumerator<Instruction> instrs;
+        private IEnumerable<Instruction> instrs;
         private Instruction instrCur;
         private RtlInstructionCluster ric;
         private RtlEmitter emitter;
 
-        public Rewriter(Mos6502ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame)
+        public Rewriter(Mos6502ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;
             this.frame = frame;
+            this.host = host;
             this.instrs = new Disassembler(rdr.CreateLeReader());
         }
 
@@ -58,9 +59,10 @@ namespace Decompiler.Arch.Mos6502
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            while (instrs.MoveNext())
+            var dasm = this.instrs.GetEnumerator();
+            while (dasm.MoveNext())
             {
-                this.instrCur = instrs.Current;
+                this.instrCur = dasm.Current;
                 this.ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
                 this.emitter = new RtlEmitter(ric.Instructions);
                 switch (instrCur.Code)
@@ -104,8 +106,8 @@ namespace Decompiler.Arch.Mos6502
                 case Opcode.pha: Push(Registers.a); break;
                 case Opcode.php: Push(AllRegs()); break;
                 case Opcode.pla: Pull(Registers.a); break;
-                case Opcode.rol: Rotate("__rol"); break;
-                case Opcode.ror: Rotate("__ror"); break;
+                case Opcode.rol: Rotate(PseudoProcedure.Rol); break;
+                case Opcode.ror: Rotate(PseudoProcedure.Ror); break;
                 case Opcode.rti: Rti(); break;
                 case Opcode.rts: Rts(); break;
                 case Opcode.sbc: Sbc(); break;
@@ -155,7 +157,7 @@ namespace Decompiler.Arch.Mos6502
             var f = FlagGroupStorage(flags);
             emitter.Branch(
                 emitter.Test(cc, f),
-                new Address(instrCur.Operand.Offset.ToUInt16()),
+                Address.Ptr16(instrCur.Operand.Offset.ToUInt16()),
                 RtlClass.ConditionalTransfer);
         }
 
@@ -412,6 +414,8 @@ namespace Decompiler.Arch.Mos6502
             default: throw new NotImplementedException("Unimplemented address mode " + op.Mode);
             case AddressMode.Accumulator:
                 return frame.EnsureRegister(Registers.a);
+            case AddressMode.Immediate:
+                return op.Offset;
             case AddressMode.IndirectIndexed:
                 var y = frame.EnsureRegister(Registers.y);
                 offset = Constant.Word16((ushort) op.Offset.ToByte());
@@ -428,7 +432,6 @@ namespace Decompiler.Arch.Mos6502
                         emitter.IAdd(
                             offset,
                             emitter.Cast(PrimitiveType.UInt16, x))));
-                break;
             case AddressMode.Absolute:
                 return emitter.LoadB(op.Offset);
             case AddressMode.AbsoluteX:

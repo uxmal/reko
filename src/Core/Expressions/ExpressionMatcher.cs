@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Used to match expressions to a pattern and possibly capture identifiers and constants.
@@ -96,7 +96,7 @@ namespace Decompiler.Core.Expressions
 
         #region ExpressionVisitor<bool> Members
 
-        bool ExpressionVisitor<bool>.VisitAddress(Decompiler.Core.Address addr)
+        bool ExpressionVisitor<bool>.VisitAddress(Reko.Core.Address addr)
         {
             var anyC = p as WildConstant;
             if (anyC != null)
@@ -108,7 +108,7 @@ namespace Decompiler.Core.Expressions
             var cP = p as Address;
             if (cP == null)
                 return false;
-            return addr.Linear == cP.Linear;
+            return addr.ToLinear() == cP.ToLinear();
         }
 
         bool ExpressionVisitor<bool>.VisitApplication(Application appl)
@@ -373,6 +373,41 @@ namespace Decompiler.Core.Expressions
             {
                 throw new InvalidOperationException();
             }
+
+            public override byte ToByte()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override ushort ToUInt16()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override uint ToUInt32()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override ulong ToUInt64()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override short ToInt16()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override int ToInt32()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override long ToInt64()
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         private class WildExpression : Expression, IWildExpression
@@ -408,7 +443,7 @@ namespace Decompiler.Core.Expressions
 
         private class WildId : Identifier
         {
-            public WildId(string label) : base(label, 0, VoidType.Instance, null)
+            public WildId(string label) : base(label, VoidType.Instance, null)
             {
                 this.Label = label;
             }

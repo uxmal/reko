@@ -14,6 +14,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	cx = 0x002A
 	sp = fp - 0x0002
 	wLoc02 = 0x0001
@@ -71,6 +72,7 @@ fn0C00_0023_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0023:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = cx
 	sp = fp - 0x0004
@@ -109,6 +111,7 @@ fn0C00_0034_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0034:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bx
 	sp = fp - 0x0004
@@ -177,6 +180,7 @@ fn0C00_005D_entry:
 
 // SymbolicIn: sp:fp
 l0C00_005D:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = cx
 	sp = fp - 0x0004
@@ -213,6 +217,7 @@ fn0C00_0069_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0069:
+	sp = fp
 	Mem0[ds:0x0200:word16] = bx
 	Mem0[ds:0x0300:word16] = cx
 	return

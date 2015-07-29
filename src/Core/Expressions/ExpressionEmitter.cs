@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Expressions
+namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Factory class that has the extra benefit of reducing the verbosity of the code.
@@ -55,7 +55,7 @@ namespace Decompiler.Core.Expressions
             return new UnaryExpression(UnaryOperator.AddrOf, PrimitiveType.Pointer32, e);
         }
 
-        public BinaryExpression And(Expression left, int right)
+        public BinaryExpression And(Expression left, ulong right)
         {
             return And(left, Constant.Create(left.DataType, right));
         }
@@ -115,9 +115,24 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, Constant.Create(exp.DataType, 0));
         }
 
+        public Expression FAdd(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FAdd, PrimitiveType.Real64, a, b);
+        }
+
+        public Expression FDiv(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FDiv, PrimitiveType.Real64, a, b);
+        }
+
         public FieldAccess Field(DataType dt, Expression e, string name)
         {
             return new FieldAccess(dt, e, name);
+        }
+
+        public Expression FMul(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FMul, PrimitiveType.Real64, a, b);
         }
 
         public Application Fn(Expression e, params Expression[] exps)
@@ -130,9 +145,22 @@ namespace Decompiler.Core.Expressions
             return new Application(fn, retType, exps);
         }
 
+        public Application Fn(ExternalProcedure ep, params Expression[] args)
+        {
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Pointer32, ep), 
+                ep.Signature.ReturnValue.DataType,
+                args);
+        }
+
         public Application Fn(PseudoProcedure ppp, params Expression[] args)
         {
             return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
+        }
+
+        public Expression FSub(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);
         }
 
         public Expression Ge(Expression a, Expression b)
@@ -250,6 +278,12 @@ namespace Decompiler.Core.Expressions
                 Operator.IMod,
                 b.DataType,
                 a, b);
+        }
+
+        public BinaryExpression SDiv(Expression a, Expression b)
+        {
+            return new BinaryExpression(
+                Operator.SDiv, b.DataType, a, b);
         }
 
         public MkSequence Seq(Expression head, Expression tail)
@@ -381,6 +415,11 @@ namespace Decompiler.Core.Expressions
         public TestCondition Test(ConditionCode cc, Expression expr)
         {
             return new TestCondition(cc, expr);
+        }
+
+        public BinaryExpression USub(Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.USub, left.DataType, left, right);
         }
 
         public BinaryExpression UDiv(Expression a, Expression b)

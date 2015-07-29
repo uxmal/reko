@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ContextMenu = System.Windows.Forms.ContextMenu;
+using DragEventHandler = System.Windows.Forms.DragEventHandler;
+using MouseEventHandler = System.Windows.Forms.MouseEventHandler;
 
-namespace Decompiler.Gui.Controls
+namespace Reko.Gui.Controls
 {
     public interface ITreeView
     {
         event EventHandler AfterSelect;
+        event DragEventHandler DragEnter;
+        event DragEventHandler DragOver;
+        event DragEventHandler DragDrop;
+        event EventHandler DragLeave;
+        event MouseEventHandler MouseWheel;
 
         bool Focused { get; }
         ITreeNode SelectedNode { get; set; }

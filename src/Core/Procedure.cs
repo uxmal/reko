@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Output;
-using Decompiler.Core.Serialization;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Lib;
+using Reko.Core.Output;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Represents a procedure that has been decompiled from machine code.
@@ -87,13 +87,13 @@ namespace Decompiler.Core
 		}
 
         [Conditional("DEBUG")]
-		public void Dump(bool dump, bool emitFrame)
+		public void Dump(bool dump)
 		{
 			if (!dump)
 				return;
 			
 			StringWriter sb = new StringWriter();
-			Write(emitFrame, sb);
+			Write(false, sb);
 			Debug.WriteLine(sb.ToString());
 		}
 
@@ -140,6 +140,7 @@ namespace Decompiler.Core
 		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
         {
 			writer.WriteLine("// {0}", Name);
+            writer.WriteLine("// Return size: {0}", this.Signature.ReturnAddressOnStack);
 			if (emitFrame)
 				Frame.Write(writer);
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new TextFormatter(writer));

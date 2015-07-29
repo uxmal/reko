@@ -5,11 +5,12 @@
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem7[ds:0x0302:word16] = fn0C00_000C(Mem0[ds:0x0300:word16])
+	Mem6[ds:0x0302:word16] = fn0C00_000C(Mem0[ds:0x0300:word16])
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -21,6 +22,7 @@ fn0C00_0000_exit:
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_000C
+// Return size: 0
 word16 fn0C00_000C(word16 ax)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C

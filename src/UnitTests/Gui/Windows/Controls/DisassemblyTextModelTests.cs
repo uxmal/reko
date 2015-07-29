@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Gui.Controls;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -29,34 +29,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Controls
+namespace Reko.UnitTests.Gui.Windows.Controls
 {
     [TestFixture]
     public class DisassemblyTextModelTests
     {
-        private IProcessorArchitecture arch;
-        private LoadedImage image;
         private MockRepository mr;
         private DisassemblyTextModel model;
         private List<MachineInstruction> instrs;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
-            arch = mr.Stub<IProcessorArchitecture>();
+            program = new Program
+            {
+                Architecture = mr.Stub<IProcessorArchitecture>()
+            };
         }
 
-        private LoadedImage Image(int size)
+        private LoadedImage Given_Image(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
-            image = new LoadedImage(new Address(0x1000000), bytes);
-            return image;
+            program.Image = new LoadedImage(Address.Ptr32(0x1000000), bytes);
+            program.ImageMap = new ImageMap(program.Image.BaseAddress, program.Image.Length);
+            return program.Image;
         }
 
         private void Given_Model()
         {
-             model = new DisassemblyTextModel(arch, Image(1000));
+            Given_Image(1000);
+            model = new DisassemblyTextModel(program);
         }
 
         [Test]
@@ -129,17 +133,22 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
 
         private void Given_Disassembler()
         {
-            arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
+            program.Architecture.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
                 .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
-            arch.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
-                .Return(instrs.GetEnumerator());
+            program.Architecture.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
+                .Return(instrs);
         }
 
         private class TestInstruction : MachineInstruction
         {
+            public override int OpcodeAsInteger
+            {
+                get { throw new NotImplementedException(); }
+            }
+
             public override void Render(MachineInstructionWriter writer)
             {
-                writer.Opcode("opcode.l");
+                writer.WriteOpcode("opcode.l");
             }
         }
 
@@ -150,7 +159,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
             {
                 instrs.Add(new TestInstruction
                 {
-                    Address = image.BaseAddress + i,
+                    Address = program.Image.BaseAddress + i,
                     Length = c % 5
                 });
             }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedLibraryTests
@@ -33,10 +34,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SlibWriteOneProcedure()
 		{
-			SerializedLibrary slib = new SerializedLibrary();
-
+			var slib = new SerializedLibrary();
 			slib.Procedures.Add(MkMalloc());
-
 			Verify(slib, "Core/SlibWriteOneProcedure.txt");
 		}
 
@@ -65,7 +64,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(15, lib.Procedures.Count);
+			Assert.AreEqual(20, lib.Procedures.Count);
 		}
 
 		[Test]
@@ -85,20 +84,28 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
 
         }
+
 		private Procedure_v1 MkMalloc()
 		{
-			Procedure_v1 proc = new Procedure_v1();
-			proc.Name = "malloc";
-			proc.Signature = new SerializedSignature();
-			proc.Signature.Convention = "cdecl";
-			proc.Signature.ReturnValue = new Argument_v1();
-			proc.Signature.ReturnValue.Kind = new Register_v1("eax");
+			Procedure_v1 proc = new Procedure_v1
+			{
+				Name = "malloc",
+				Signature = new SerializedSignature
+				{
+					Convention = "cdecl",
+					ReturnValue = new Argument_v1
+					{
+						Kind = new Register_v1("eax"),
+					},
 
-			proc.Signature.Arguments = new Argument_v1[1];
-			proc.Signature.Arguments[0] = new Argument_v1();
-			proc.Signature.Arguments[0].Name = "cb";
-			proc.Signature.Arguments[0].Kind = new StackVariable_v1();
-
+					Arguments = new Argument_v1[] {
+						new Argument_v1 {
+							Name = "cb",
+							Kind = new StackVariable_v1(),
+						}
+					}
+				}
+			};
 			return proc;
 		}
 
@@ -114,5 +121,88 @@ namespace Decompiler.UnitTests.Core.Serialization
 				fut.AssertFilesEqual();
 			}
 		}
-	}
+
+        [Test]
+        public void SlibCodeWrite()
+        {
+            var proj = new Project_v2
+            {
+                Inputs = {
+                    new DecompilerInput_v2 {
+                        UserGlobalData = {
+                            new GlobalDataItem_v2 
+                            {
+                                 Address = "00100000",
+                                 Name = "foo",
+                                 DataType = new ArrayType_v1 {
+                                     ElementType = new PointerType_v1 {
+                                          PointerSize = 4,
+                                          DataType = new CodeType_v1()
+                                     },
+                                     Length = 10,
+                                 }
+                            }
+                        }
+                    }
+                }
+            };
+            var ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
+            var sw = new StringWriter();
+            var writer = new FilteringXmlWriter(sw);
+            writer.Formatting = Formatting.Indented;
+            ser.Serialize(writer, proj);
+
+            Debug.Print(sw.ToString());
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
+  <input>
+    <global>
+      <Address>00100000</Address>
+      <arr length=""10"">
+        <ptr size=""4"">
+          <code />
+        </ptr>
+      </arr>
+      <Name>foo</Name>
+    </global>
+  </input>
+  <output />
+</project>";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void SlibCodeRead()
+        {
+            var src = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
+  <input>
+    <procedure name=""Nilz"">
+      <address>00112233</address>
+    </procedure>
+    <global>
+      <Address>00100000</Address>
+      <arr length=""10"">
+        <ptr size=""4"">
+          <code />
+        </ptr>
+      </arr>
+      <Name>foo</Name>
+    </global>
+  </input>
+  <output />
+</project>";
+
+            var ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
+            var sr = new StringReader(src);
+            var rdr = new XmlTextReader(sr);
+            var proj = (Project_v2)ser.Deserialize(rdr);
+
+            Assert.AreEqual(1, proj.Inputs.Count);
+            var input = (DecompilerInput_v2)proj.Inputs[0];
+            Assert.AreEqual(1, input.UserGlobalData.Count);
+            Assert.AreEqual("arr(ptr(code),10)", input.UserGlobalData[0].DataType.ToString());
+        }
+    }
 }
+

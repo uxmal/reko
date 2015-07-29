@@ -1,12 +1,12 @@
-using Decompiler.Core;
-using Decompiler.UnitTests.Mocks;
-using Decompiler.Structure;
+using Reko.Core;
+using Reko.UnitTests.Mocks;
+using Reko.Structure;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Structure
+namespace Reko.UnitTests.Structure
 {
 
     [TestFixture]
@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual("Interval 0: [case0,case1,case2,case3,default,done,l1,l2,MockSwitch_entry,MockSwitch_exit]", intervals[0].ToString());
         }
 
-        protected virtual void RunTest(ProcGenerator pg)
+        protected virtual void RunTest(Action<ProcedureBuilder> pg)
         {
             ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);

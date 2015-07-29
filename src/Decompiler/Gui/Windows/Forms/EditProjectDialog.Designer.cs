@@ -1,4 +1,4 @@
-﻿namespace Decompiler.Gui.Windows.Forms
+﻿namespace Reko.Gui.Windows.Forms
 {
     partial class EditProjectDialog
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditProjectDialog));
-            this.dirtyManager = new Decompiler.Gui.Windows.Controls.DirtyManager();
+            this.dirtyManager = new Reko.Gui.Windows.Controls.DirtyManager();
             this.txtIntermediateFile = new System.Windows.Forms.TextBox();
             this.txtAssemblerFile = new System.Windows.Forms.TextBox();
             this.txtSourceFile = new System.Windows.Forms.TextBox();
@@ -49,7 +49,7 @@
             this.chkIntermediateFile = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnBrowseInputFile = new System.Windows.Forms.Button();
-            this.addressValidator = new Decompiler.Gui.Windows.Controls.RegexValidator();
+            this.addressValidator = new Reko.Gui.Windows.Controls.RegexValidator();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
@@ -303,7 +303,7 @@
 
         #endregion
 
-        private Decompiler.Gui.Windows.Controls.DirtyManager dirtyManager;
+        private Reko.Gui.Windows.Controls.DirtyManager dirtyManager;
         private System.Windows.Forms.TextBox txtIntermediateFile;
         private System.Windows.Forms.TextBox txtAssemblerFile;
         private System.Windows.Forms.TextBox txtSourceFile;
@@ -323,7 +323,7 @@
         private System.Windows.Forms.CheckBox chkIntermediateFile;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnBrowseInputFile;
-        private Decompiler.Gui.Windows.Controls.RegexValidator addressValidator;
+        private Reko.Gui.Windows.Controls.RegexValidator addressValidator;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;

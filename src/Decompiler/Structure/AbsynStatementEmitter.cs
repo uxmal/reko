@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Absyn;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Structure
+namespace Reko.Structure
 {
     public class AbsynStatementEmitter : InstructionVisitor, IAbsynVisitor
     {
@@ -97,9 +97,9 @@ namespace Decompiler.Structure
             stms.Add(new AbsynWhile(expr, body));
         }
 
-        public AbsynSwitch EmitSwitch(StructureNode node, Expression exp)
+        public AbsynSwitch EmitSwitch(StructureNode node, Expression exp, List<AbsynStatement> stmts)
         {
-            AbsynSwitch switchStm = new AbsynSwitch(exp);
+            AbsynSwitch switchStm = new AbsynSwitch(exp, stmts);
             stms.Add(switchStm);
             return switchStm;
         }
@@ -141,7 +141,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
-            throw new NotImplementedException();
+            stms.Add(new AbsynLineComment(def.ToString()));
         }
 
         void InstructionVisitor.VisitGotoInstruction(GotoInstruction g)
@@ -151,7 +151,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            stms.Add(new AbsynLineComment(phi.ToString()));
         }
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
@@ -208,6 +208,11 @@ namespace Decompiler.Structure
             stms.Add(decl);
         }
 
+        public void VisitDefault(AbsynDefault def)
+        {
+            stms.Add(def);
+        }
+
         public void VisitDoWhile(AbsynDoWhile loop)
         {
             stms.Add(loop);
@@ -226,6 +231,11 @@ namespace Decompiler.Structure
         public void VisitLabel(AbsynLabel lbl)
         {
             stms.Add(lbl);
+        }
+
+        public void VisitLineComment(AbsynLineComment comment)
+        {
+            stms.Add(comment);
         }
 
         public void VisitReturn(AbsynReturn ret)

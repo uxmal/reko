@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Core.Lib
+namespace Reko.Core.Lib
 {
     /// <summary>
     /// An extension of IEnumerator&lt;T&gt; that wraps an IEnumerator and 
@@ -93,15 +93,16 @@ namespace Decompiler.Core.Lib
         {
             int itemsInBuffer = peeked.Count - iCur;
             Debug.Assert(itemsInBuffer >= 0);
-            if (ahead < itemsInBuffer)
-            {
-                return peeked[iCur + ahead];
-            }
             if (itemsInBuffer == 0 && ahead == 0)
             {
                 return e.Current;
             }
-            peeked.Add(e.Current);
+            if (ahead < itemsInBuffer)
+            {
+                return peeked[iCur + ahead];
+            }
+            if (itemsInBuffer == 0)
+                peeked.Add(e.Current);
             for (int i = 0; i < ahead; ++i)
             {
                 e.MoveNext();

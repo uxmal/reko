@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Lib;
-using Decompiler.Core.Types;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Output
+namespace Reko.Core.Output
 {
     public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor<int>
     {
@@ -54,6 +54,7 @@ namespace Decompiler.Core.Output
             mpopstr.Add(Operator.UMul, "UMul");
             mpopstr.Add(Operator.Or, "Or");
             mpopstr.Add(Operator.ISub, "ISub");
+            mpopstr.Add(Operator.USub, "USub");
             mpopstr.Add(Operator.Uge, "Uge");
             mpopstr.Add(Operator.Ugt, "Ugt");
             mpopstr.Add(Operator.Ule, "Ule");
@@ -253,7 +254,19 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitAddress(Address addr)
         {
-            writer.Write("new Address(0x{0:X},0x{1:X})", addr.Selector, addr.Offset);
+            var addr16 = addr as Address16;
+            if (addr16!= null)
+                writer.Write("Address.Ptr16(0x{0:X}", addr16.ToUInt32());       //$REVIEW: need a ToUInt16
+            var segAddr = addr as SegAddress32;
+            if (segAddr != null)
+                writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X}", segAddr.Selector, segAddr.Offset);
+            var addr32 = addr as Address32;
+            if (addr32 != null)
+                writer.Write("Address.Ptr32(0x{0:X}", addr32.ToUInt32());
+            var addr64 = addr as Address64;
+            if (addr64 != null)
+                writer.Write("Address.Ptr64(0x{0:X}", addr64.ToLinear());
+            throw new NotSupportedException();
         }
 
         void IExpressionVisitor.VisitApplication(Application appl)

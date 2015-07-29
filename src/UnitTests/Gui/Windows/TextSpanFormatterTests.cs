@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
+using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class TextSpanFormatterTests
@@ -35,10 +35,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var model = tsf.GetModel();
             var sb= new StringBuilder();
-            for (int i = 0; i < model.LineCount; ++i)
+            var lines = model.GetLineSpans(model.LineCount);
+            foreach (var line in lines)
             {
-                var spans = model.GetLineSpans(i);
-                foreach (var span in spans)
+                foreach (var span in line)
                 {
                     EmitSpanWrapper(span, sb);
                     sb.Append(span.GetText());

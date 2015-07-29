@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 
 #if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class CParserTests
@@ -162,7 +162,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             var sExp =
                 "(fndecl (decl __Inline PVOID " +
                     "((init-decl (func GetFiberData ((Void )))))) " +
-                    "(Decompiler.Tools.C2Xml.ReturnStat))";
+                    "(Reko.Tools.C2Xml.ReturnStat))";
             Assert.AreEqual(sExp, decl.ToString());
         }
 
@@ -171,7 +171,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         {
             Lex("typedef enum _S { Item = 1, Folder } S;");
             var decl = parser.Parse_ExternalDecl();
-            var sExp = "(decl Typedef Decompiler.Tools.C2Xml.EnumeratorTypeSpec " +
+            var sExp = "(decl Typedef Reko.Tools.C2Xml.EnumeratorTypeSpec " +
                 "((init-decl S)))";
             Assert.AreEqual(sExp, decl.ToString());
         }
@@ -1068,6 +1068,33 @@ MemoryBarrier (
                 Debug.WriteLine("");
             }
             Assert.AreEqual(185, decls.Count);
+        }
+
+        [Test]
+        public void CParser_FunctionPtr_Parameters()
+        {
+            Lex("int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = 
+                "(decl Int ((init-decl (func __libc_start_main (" +
+                    "(Int (func (ptr main) ((Int ) (Char (ptr (ptr ))) (Char (ptr (ptr )))))) " +
+                    "(Int argc) " +
+                    "(Char (ptr (ptr ubp_av))) " +
+                    "(Void (func (ptr init) ((Void )))) " +
+                    "(Void (func (ptr fini) ((Void )))) " +
+                    "(Void (func (ptr rtld_fini) ((Void )))) " +
+                    "(Void (ptr stack_end))" +
+                    ")))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_FunctionPtr_AbstractParameters()
+        {
+            Lex("int main(int, char **, char **);");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Int ((init-decl (func main ((Int ) (Char (ptr (ptr ))) (Char (ptr (ptr ))))))))";
+            Assert.AreEqual(sExp, decl.ToString());
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Core.Types
+namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Compares two data types to see if they are equal or
@@ -169,6 +169,13 @@ namespace Decompiler.Core.Types
             {
                 return Compare(strX, strY, ++count);
             }
+
+            FunctionType fnX = x as FunctionType;
+            FunctionType fnY = y as FunctionType;
+            if (fnX != null && fnY != null)
+            {
+                return Compare(fnX, fnY, ++count);
+            }
 			throw new NotImplementedException(string.Format("NYI: comparison between {0} and {1}", x.GetType(), y.GetType()));
 		}
 
@@ -200,7 +207,7 @@ namespace Decompiler.Core.Types
 
         public int Compare(StringType x, StringType y, int count)
         {
-            int d = Compare(x.CharType, y.CharType, ++count);
+            int d = Compare(x.ElementType, y.ElementType, ++count);
             if (d != 0)
                 return d;
             if (x.LengthPrefixType == null && y.LengthPrefixType == null)
@@ -242,6 +249,21 @@ namespace Decompiler.Core.Types
 			}
 			return 0;
 		}
+
+        public int Compare(FunctionType x, FunctionType y, int count)
+        {
+            int d = x.ArgumentTypes.Length - y.ArgumentTypes.Length;
+            if (d != 0)
+                return d;
+            ++count;
+            for (int i = 0; i < x.ArgumentTypes.Length; ++i)
+            {
+                d = Compare(x.ArgumentTypes[i], y.ArgumentTypes[i], count);
+                if (d != 0)
+                    return d;
+            }
+            return Compare(x.ReturnType, y.ReturnType, count);
+        }
 
 		#region IDataTypeVisitor Members /////////////////////////////////////////
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,17 +22,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
-    public abstract class StringSearch<TChar>
+    public abstract class StringSearch<TSymbol>
     {
-        public StringSearch(TChar[] pattern)
+        public StringSearch(TSymbol[] pattern, bool scannedMemory, bool unscannedMemory)
         {
             this.Pattern = pattern;
+            this.ScannedMemory = scannedMemory;
+            this.UnscannedMemory = unscannedMemory;
         }
 
-        public abstract IEnumerator<int> GetMatchPositions(TChar[] stringToSearch);
+        public abstract IEnumerable<int> GetMatchPositions(TSymbol[] stringToSearch);
 
-        public TChar[] Pattern { get; private set; }
+        public TSymbol[] Pattern { get; private set; }
+        public bool ScannedMemory { get; private set; }
+        public bool UnscannedMemory { get; private set; }
     }
 }

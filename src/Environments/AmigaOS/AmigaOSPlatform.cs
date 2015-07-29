@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,22 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Services;
-using Decompiler.Core.Types;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.AmigaOS
+namespace Reko.Environments.AmigaOS
 {
     /// <summary>
     /// Represents the AmigaOS platform.
@@ -56,6 +57,13 @@ namespace Decompiler.Environments.AmigaOS
                         PrimitiveType.Word32),
                     4,
                     RtlClass.Transfer));
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.a7.SetAliases(bitset, true);
+            return bitset;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -82,16 +90,26 @@ namespace Decompiler.Environments.AmigaOS
             get { return ""; }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
         }
 
         private Dictionary<int, SystemService> LoadFuncs()
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = new ProcedureSerializer(
-                Architecture,
+            var sser = Architecture.CreateProcedureSerializer(
                 new TypeLibraryLoader(Architecture,true),
                 DefaultCallingConvention);
 

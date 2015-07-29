@@ -13,20 +13,20 @@
 10000019 83 C4 04        	add	esp,04
 1000001C C7 00 00 00 00 00 	mov	dword ptr [eax],00000000
 10000022 C7 40 04 00 00 00 00 	mov	dword ptr [eax+04],00000000
-10000029 89 07           	mov	dword ptr [edi],eax
+10000029 89 07           	mov	[edi],eax
 1000002B 4E              	dec	esi
 1000002C 83 C7 04        	add	edi,04
 1000002F 0B F6           	or	esi,esi
 10000031 75 E2           	jnz	10000015
 10000033 C3              	ret	
-10000034 00 00           	add	byte ptr [eax],al
-10000036 00 00           	add	byte ptr [eax],al
-10000038 00 00           	add	byte ptr [eax],al
-1000003A 00 00           	add	byte ptr [eax],al
-1000003C 00 00           	add	byte ptr [eax],al
-1000003E 00 00           	add	byte ptr [eax],al
-10000040 00 00           	add	byte ptr [eax],al
-10000042 00 00           	add	byte ptr [eax],al
-10000044 00 00           	add	byte ptr [eax],al
-10000046 00 00           	add	byte ptr [eax],al
-10000044: Register word32 malloc(Stack size_t arg0)
+10000034 00 00           	add	[eax],al
+10000036 00 00           	add	[eax],al
+10000038 00 00           	add	[eax],al
+1000003A 00 00           	add	[eax],al
+1000003C 00 00           	add	[eax],al
+1000003E 00 00           	add	[eax],al
+10000040 00 00           	add	[eax],al
+10000042 00 00           	add	[eax],al
+10000044 00 00           	add	[eax],al
+10000046 00 00           	add	[eax],al
+10000044: msvcrt!malloc

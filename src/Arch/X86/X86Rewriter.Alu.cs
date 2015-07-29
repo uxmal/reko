@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,23 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Serialization;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
+    /// <summary>
+    /// Rewrite rules for simple ALU operations.
+    /// </summary>
     public partial class X86Rewriter
     {
         private void RewriteAaa()
@@ -43,6 +46,12 @@ namespace Decompiler.Arch.X86
                     orw.AluRegister(Registers.ah),
                             orw.AddrOf(orw.AluRegister(Registers.al)),
                             orw.AddrOf(orw.AluRegister(Registers.ah))));
+        }
+
+        private void RewriteCli()
+        {
+            var ppp = host.EnsurePseudoProcedure("__cli", VoidType.Instance, 0);
+            emitter.SideEffect(PseudoProc(ppp, VoidType.Instance));
         }
 
         private void RewriteHlt()
@@ -110,6 +119,41 @@ namespace Decompiler.Arch.X86
                     orw.AddrOf(SrcOp(instrCur.op1))));
         }
 
+        private void RewriteCpuid()
+        {
+            emitter.SideEffect(
+                PseudoProc("__cpuid", VoidType.Instance,
+                    orw.AluRegister(Registers.eax),
+                    orw.AluRegister(Registers.ecx),
+                    orw.AddrOf(orw.AluRegister(Registers.eax)),
+                    orw.AddrOf(orw.AluRegister(Registers.ebx)),
+                    orw.AddrOf(orw.AluRegister(Registers.ecx)),
+                    orw.AddrOf(orw.AluRegister(Registers.edx))));
+        }
+
+        private void RewriteXgetbv()
+        {
+            Identifier edx_eax = frame.EnsureSequence(
+                orw.AluRegister(Registers.edx),
+                orw.AluRegister(Registers.eax),
+                PrimitiveType.Word64);
+            emitter.Assign(edx_eax,
+                PseudoProc("__xgetbv", 
+                edx_eax.DataType,
+                orw.AluRegister(Registers.ecx)));
+        }
+
+        private void RewriteRdtsc()
+        {
+            Identifier edx_eax = frame.EnsureSequence(
+                orw.AluRegister(Registers.edx),
+                orw.AluRegister(Registers.eax),
+                PrimitiveType.Word64);
+            emitter.Assign(edx_eax,
+                PseudoProc("__rdtsc",
+                edx_eax.DataType));
+        }
+
         public void RewriteBinOp(BinaryOperator opr)
         {
             EmitBinOp(opr, instrCur.op1, instrCur.dataWidth, SrcOp(instrCur.op1), SrcOp(instrCur.op2), CopyFlags.ForceBreak|CopyFlags.EmitCc);
@@ -127,6 +171,28 @@ namespace Decompiler.Arch.X86
 		    emitter.Assign(
                 orw.FlagGroup(FlagM.CF),
 				PseudoProc("__bt", PrimitiveType.Bool, SrcOp(instrCur.op1), SrcOp(instrCur.op2)));
+        }
+
+        private void RewriteBtr()
+        {
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF),                    // lhs
+                PseudoProc(
+                        "__btr", PrimitiveType.Bool,      // rhs
+                        SrcOp(instrCur.op1),
+                        SrcOp(instrCur.op2),
+                        emitter.Out(instrCur.op1.Width, SrcOp(instrCur.op1))));
+        }
+
+        private void RewriteBts()
+        {
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF),                    // lhs
+                PseudoProc(
+                        "__bts", PrimitiveType.Bool,      // rhs
+                        SrcOp(instrCur.op1),
+                        SrcOp(instrCur.op2),
+                        emitter.Out(instrCur.op1.Width, SrcOp(instrCur.op1))));
         }
 
         public void RewriteBswap()
@@ -190,6 +256,19 @@ namespace Decompiler.Arch.X86
             emitter.Assign(
                 orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
                 new ConditionOf(emitter.ISub(op1, op2)));
+        }
+
+        private void RewriteCmpxchg()
+        {
+            var op1 = SrcOp(instrCur.op1);
+            var op2 = SrcOp(instrCur.op2, instrCur.op1.Width);
+            var acc = orw.AluRegister(Registers.eax, instrCur.dataWidth);
+            var Z = orw.FlagGroup(FlagM.ZF);
+            emitter.Assign(
+                Z,
+                PseudoProc("__cmpxchg",
+                    PrimitiveType.Bool,
+                    op1, op2, acc, emitter.Out(instrCur.dataWidth, acc)));
         }
 
         private void RewriteCwd()
@@ -302,6 +381,12 @@ namespace Decompiler.Arch.X86
                 CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
+        private void RewriteLock()
+        {
+            emitter.SideEffect(
+                PseudoProc("__lock", VoidType.Instance));
+        }
+
         private void RewriteLogical(BinaryOperator op)
         {
             if (instrCur.code == Opcode.and)
@@ -332,39 +417,36 @@ namespace Decompiler.Arch.X86
             switch (instrCur.Operands)
             {
             case 1:
-                {
-                    Identifier multiplicator;
+                Identifier multiplicator;
 
-                    switch (instrCur.op1.Width.Size)
-                    {
-                    case 1:
-                        multiplicator = orw.AluRegister(Registers.al);
-                        product = orw.AluRegister(Registers.ax);
-                        break;
-                    case 2:
-                        multiplicator = orw.AluRegister(Registers.ax);
-                        product = frame.EnsureSequence(
-                            orw.AluRegister(Registers.dx), multiplicator, PrimitiveType.Word32);
-                        break;
-                    case 4:
-                        multiplicator = orw.AluRegister(Registers.eax);
-                        product = frame.EnsureSequence(
-                            orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
-                        break;
-                    default:
-                        throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
-                    };
-                    emitter.Assign(
-                        product,
-                        new BinaryExpression(
-                            op, 
-                            PrimitiveType.Create(resultDomain, product.DataType.Size),
-                            SrcOp(instrCur.op1),
-                            multiplicator));
-                    EmitCcInstr(product, IntelInstruction.DefCc(instrCur.code));
-                    return;
-                }
-                break;
+                switch (instrCur.op1.Width.Size)
+                {
+                case 1:
+                    multiplicator = orw.AluRegister(Registers.al);
+                    product = orw.AluRegister(Registers.ax);
+                    break;
+                case 2:
+                    multiplicator = orw.AluRegister(Registers.ax);
+                    product = frame.EnsureSequence(
+                        orw.AluRegister(Registers.dx), multiplicator, PrimitiveType.Word32);
+                    break;
+                case 4:
+                    multiplicator = orw.AluRegister(Registers.eax);
+                    product = frame.EnsureSequence(
+                        orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
+                    break;
+                default:
+                    throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
+                };
+                emitter.Assign(
+                    product,
+                    new BinaryExpression(
+                        op, 
+                        PrimitiveType.Create(resultDomain, product.DataType.Size),
+                        SrcOp(instrCur.op1),
+                        multiplicator));
+                EmitCcInstr(product, IntelInstruction.DefCc(instrCur.code));
+                return;
             case 2:
                 EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), SrcOp(instrCur.op1), SrcOp(instrCur.op2), 
                     CopyFlags.ForceBreak|CopyFlags.EmitCc);
@@ -811,6 +893,12 @@ namespace Decompiler.Arch.X86
                 emitter.Assign(MemDi(), RegAl);
                 incDi = true;
                 break;
+            case Opcode.ret:
+                // "AMD recommends to avoid the penalty by adding rep prefix instead of nop
+                // because it saves decode bandwidth."
+                RewriteRet();
+                return;
+
             }
 
             if (incSi)
@@ -857,6 +945,16 @@ namespace Decompiler.Arch.X86
         private void RewriteUnaryOperator(UnaryOperator op, MachineOperand opDst, MachineOperand opSrc, CopyFlags flags)
         {
             EmitCopy(opDst, new UnaryExpression(op, opSrc.Width, SrcOp(opSrc)), flags);
+        }
+
+        private void RewriteXadd()
+        {
+            var dst = SrcOp(instrCur.op1);
+            var src = SrcOp(instrCur.op2);
+            emitter.Assign(
+                dst,
+                PseudoProc("__xadd", instrCur.op1.Width, dst, src));
+            EmitCcInstr(dst, IntelInstruction.DefCc(instrCur.code));
         }
 
         private void RewriteXlat()

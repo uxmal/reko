@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Scanning
+namespace Reko.Scanning
 {
 	/// <summary>
 	/// If a procedure has an escaping frame, rewrite any local stack variable accesses
@@ -51,7 +51,7 @@ namespace Decompiler.Scanning
 		private Expression EffectiveAddress(Identifier id)
 		{
 			Identifier fp = proc.Frame.FramePointer;
-			StackLocalStorage local = proc.Frame.Identifiers[id.Number].Storage as StackLocalStorage;
+			StackLocalStorage local = id.Storage as StackLocalStorage;
 
 			int offset = local.StackOffset + proc.Frame.FrameOffset;
 			BinaryOperator op;

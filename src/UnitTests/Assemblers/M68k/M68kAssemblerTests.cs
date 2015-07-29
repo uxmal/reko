@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Decompiler.Arch.M68k;
-using Decompiler.Assemblers.M68k;
-using Decompiler.Core;
+using Reko.Arch.M68k;
+using Reko.Assemblers.M68k;
+using Reko.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Assemblers.M68k
+namespace Reko.UnitTests.Assemblers.M68k
 {
     [TestFixture]
     public class M68kAssemblerTests
@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Assemblers.M68k
         public void Setup()
         {
             arch = new M68kArchitecture();
-            asm = new M68kAssembler(arch, new Address(0x00010000), new List<EntryPoint>());
+            asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<EntryPoint>());
         }
 
         private void BuildTest(Action<M68kAssembler> builder)
@@ -51,8 +51,7 @@ namespace Decompiler.UnitTests.Assemblers.M68k
 
         private void Expect(string expectedInstr)
         {
-            Assert.IsTrue(dasm.MoveNext());
-            var instr = dasm.Current;
+            var instr = dasm.First();
             Assert.AreEqual(expectedInstr, instr.ToString());
         }
 

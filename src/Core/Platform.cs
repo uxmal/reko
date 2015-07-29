@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,18 @@
  */
 #endregion
 
-using Decompiler.Core.Rtl;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// A Platform is an abstraction of the operating environment,
@@ -33,10 +40,6 @@ namespace Decompiler.Core
         /// <summary>
         /// Initializes a Platform instance
         /// </summary>
-        /// <remarks>We don't actually need the architecture in the base class, but we have to force a 
-        /// uniform constructor signature across all derived classes. All subclasses must implement this 
-        /// constructor.
-        /// </remarks>
         /// <param name="arch"></param>
         protected Platform(IServiceProvider services, IProcessorArchitecture arch) 
         {
@@ -44,21 +47,13 @@ namespace Decompiler.Core
             this.Architecture = arch;
         }
 
-        public IServiceProvider Services { get; private set; }
         public IProcessorArchitecture Architecture { get; private set; }
+        public IServiceProvider Services { get; private set; }
+        public TypeLibrary[] TypeLibs { get; private set; }
+        public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
 
-		public abstract SystemService FindService(int vector, ProcessorState state);
-
-        public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
-        {
-            return null;
-        }
-
-  
-        public virtual SystemService FindService(string name)
-        {
-            throw new NotSupportedException();
-        }
+        public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
+        public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 
         /// <summary>
         /// The default encoding for byte-encoded text.
@@ -71,13 +66,106 @@ namespace Decompiler.Core
 
         public abstract string DefaultCallingConvention { get; }
 
-        public abstract ProcedureSignature LookupProcedure(string procName);
+        /// <summary>
+        /// Creates a bitset that represents those registers that are never used as arguments to a 
+        /// procedure. 
+        /// </summary>
+        /// <remarks>
+        /// Typically, the stack pointer register is one of these registers. Some architectures define
+        /// global registers that are preserved across calls; these should also be present in this set.
+        /// </remarks>
+        public abstract BitSet CreateImplicitArgumentRegisters();
 
-        public virtual ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, Address[] address, PointerScannerFlags pointerScannerFlags)
         {
-            throw new NotImplementedException();
+            return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }
-    }
+
+        /// <summary>
+        /// Utility function for subclasses that loads all type libraries and characteristics libraries 
+        /// </summary>
+        /// <param name="envName"></param>
+        protected void EnsureTypeLibraries(string envName)
+        {
+            if (TypeLibs == null)
+            {
+                var cfgSvc = Services.RequireService<IConfigurationService>();
+                var envCfg = cfgSvc.GetEnvironment(envName);
+                if (envCfg == null)
+                    throw new ApplicationException(string.Format(
+                        "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
+                        envName));
+                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
+                    .OfType<ITypeLibraryElement>()
+                    .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
+                    .Where(tl => tl != null).ToArray();
+                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
+                    .OfType<ITypeLibraryElement>()
+                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
+                    .Where(cl => cl != null).ToArray();
+            }
+        }
+
+		public abstract SystemService FindService(int vector, ProcessorState state);
+
+        public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
+        {
+            return null;
+        }
+
+        public virtual SystemService FindService(string name)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// If the instructions located at the address the image reader is reading are a 
+        /// trampoline, returns the procedure where the destination is located, otherwise
+        /// returns null.
+        /// </summary>
+        /// <param name="imageReader"></param>
+        /// <returns></returns>
+        public abstract ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+
+        public virtual Address MakeAddressFromConstant(Constant c)
+        {
+            return Architecture.MakeAddressFromConstant(c);
+        }
+
+        /// <summary>
+        /// Given a linear address, converts it to an Address instance. By default,
+        /// use the architecture pointer size for the address.
+        /// </summary>
+        /// <remarks>
+        /// The method is virtual to allow a platform to override the pointer size. For instance
+        /// although the PowerPC 64 has 64-bit addresses, the Playstation3 implementation 
+        /// uses 32-bit addresses.
+        /// </remarks>
+        /// <param name="uAddr"></param>
+        /// <returns></returns>
+        public virtual Address MakeAddressFromLinear(ulong uAddr)
+        {
+            return Address.Create(Architecture.PointerType, uAddr);
+        }
+
+        public abstract ExternalProcedure LookupProcedureByName(string moduleName, string procName);
+
+        /// <summary>
+        /// Guess signature from the name of the procedure.
+        /// </summary>
+        /// <param name="fnName"></param>
+        /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
+        public virtual ProcedureSignature SignatureFromName(string fnName)
+        {
+            return null;
+        }
+
+        public virtual ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            return null;
+        }
+   }
 
     /// <summary>
     /// The default platform is used when a specific platform cannot be determind.
@@ -86,6 +174,19 @@ namespace Decompiler.Core
     {
         public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
         {
+            this.TypeLibraries = new List<TypeLibrary>();
+        }
+
+        public List<TypeLibrary> TypeLibraries { get; private set; }
+
+        public override string DefaultCallingConvention
+        {
+            get { return ""; }
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -93,14 +194,20 @@ namespace Decompiler.Core
             throw new NotSupportedException();
         }
 
-        public override string DefaultCallingConvention
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            get { return ""; }
+            // No trampolines are supported.
+            return null;
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            return null;
+            //$IDentical to Win32, move into base class?
+            return TypeLibraries
+                .Select(t => t.Lookup(procName))
+                .Where(sig => sig != null)
+                .Select(sig => new ExternalProcedure(procName, sig))
+                .FirstOrDefault();
         }
     }
 }

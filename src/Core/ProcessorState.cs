@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Machine;
+using Reko.Core.Code;
+using Reko.Core.Operators;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// ProcessorState simulates the state of the processor and a part of the stack during scanning.
@@ -101,10 +101,14 @@ namespace Decompiler.Core
             var bin = ea as BinaryExpression;
             if (bin != null && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub) && IsStackRegister(bin.Left))
             {
-                offset = ((Constant) bin.Right).ToInt32();
-                if (bin.Operator == Operator.ISub)
-                    offset = -offset;
-                return true;
+                var cOffset = bin.Right as Constant;
+                if (cOffset != null)
+                {
+                    offset = ((Constant)bin.Right).ToInt32();
+                    if (bin.Operator == Operator.ISub)
+                        offset = -offset;
+                    return true;
+                }
             }
             offset = 0;
             return false;
@@ -158,6 +162,11 @@ namespace Decompiler.Core
         public Expression GetValue(Application appl)
         {
             return Constant.Invalid;
+        }
+
+        public Expression GetDefiningExpression(Identifier id)
+        {
+            return null;
         }
 
         public void RemoveIdentifierUse(Identifier id)

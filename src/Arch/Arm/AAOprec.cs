@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Reko.Arch.Arm
 {
      internal abstract class OpDecoder
      {
@@ -64,15 +64,15 @@ namespace Decompiler.Arch.Arm
                 case ',':
                     continue;
                 case 'B':   // Logical Bitmask
-                    op = LogicalBitmask(instr, fmt[i++] == 'x');
+                    op = LogicalBitmask(dasm, instr, fmt[i++] == 'x');
                     break;
                 case 'H':   // 16-bit Immediate constant
                     off = GetOffset(fmt, ref i);
-                    op = new ImmediateOperand(Constant.Word32(GetImm(instr, off, 16)));
+                    op = ArmImmediateOperand.Word32(GetImm(instr, off, 16));
                     break;
                 case 'I':   // 12-bit Immediate constant
                     off = GetOffset(fmt, ref i);
-                    op = new ImmediateOperand(Constant.Word32(GetImm(instr, off, 12)));
+                    op = ArmImmediateOperand.Word32(GetImm(instr, off, 12));
                     break;
                 case 'J':   // long relative branch
                     int offset = (((int) instr) << 6) >> 4;
@@ -139,10 +139,9 @@ namespace Decompiler.Arch.Arm
 
         /* Decode logical immediate for e.g. ORR <Wd|WSP>, <Wn>, #<imm>.  */
 
-        ImmediateOperand LogicalBitmask(uint value, bool is64)
+        ArmImmediateOperand LogicalBitmask(AArch64Disassembler dasm, uint value, bool is64)
         {
             ulong imm, mask;
-            uint sf;
             uint N, R, S;
             uint simd_size;
 
@@ -271,8 +270,8 @@ namespace Decompiler.Arch.Arm
             }
 
             return is64
-                ? ImmediateOperand.Word64(imm)
-                : ImmediateOperand.Word32((int) imm);
+                ? dasm.Word64(imm)
+                : dasm.Word32((int) imm);
         }
     }
 

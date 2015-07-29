@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,19 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Arch.Z80;
+using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.ZX81
+namespace Reko.Environments.ZX81
 {
+    /// <summary>
+    /// Implements the very meager ZX81 environment.
+    /// </summary>
     public class ZX81Environment : Platform
     {
         private ZX81Encoding encoding;
@@ -34,6 +39,13 @@ namespace Decompiler.Environments.ZX81
             : base(services, arch)
         {
             encoding = new ZX81Encoding();
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.sp.SetAliases(bitset, true);
+            return bitset;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -46,7 +58,12 @@ namespace Decompiler.Environments.ZX81
             get { throw new NotImplementedException(); }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }

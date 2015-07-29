@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,35 +20,23 @@
 
 using System;
 using System.Collections.Generic;
-using Application = Decompiler.Core.Expressions.Application;
-using Assignment = Decompiler.Core.Code.Assignment;
-using BitSet = Decompiler.Core.Lib.BitSet;
-using Block = Decompiler.Core.Block;
-using CallInstruction = Decompiler.Core.Code.CallInstruction;
-using CallRewriter = Decompiler.Core.CallRewriter;
-using CallSite = Decompiler.Core.Code.CallSite;
-using Debug = System.Diagnostics.Debug;
-using Expression = Decompiler.Core.Expressions.Expression;
-using FpuStackStorage = Decompiler.Core.FpuStackStorage;
-using Frame = Decompiler.Core.Frame;
-using Identifier = Decompiler.Core.Expressions.Identifier;
-using Instruction = Decompiler.Core.Code.Instruction;
-using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
-using Operator = Decompiler.Core.Operators.Operator;
-using OutArgumentStorage = Decompiler.Core.OutArgumentStorage;
-using PrimtiveType = Decompiler.Core.Types.PrimitiveType;
-using Procedure = Decompiler.Core.Procedure;
-using ProcedureSignature = Decompiler.Core.ProcedureSignature;
-using Program = Decompiler.Core.Program;
-using RegisterStorage = Decompiler.Core.RegisterStorage;
-using ReturnInstruction = Decompiler.Core.Code.ReturnInstruction;
-using SignatureBuilder = Decompiler.Core.SignatureBuilder;
-using StackArgumentStorage= Decompiler.Core.StackArgumentStorage;
-using Statement = Decompiler.Core.Statement;
-using UnaryExpr = Decompiler.Core.Expressions.UnaryExpression;
-using UseInstruction = Decompiler.Core.Code.UseInstruction;
+using BitSet = Reko.Core.Lib.BitSet;
+using CallRewriter = Reko.Core.CallRewriter;
+using FpuStackStorage = Reko.Core.FpuStackStorage;
+using Frame = Reko.Core.Frame;
+using Identifier = Reko.Core.Expressions.Identifier;
+using OutArgumentStorage = Reko.Core.OutArgumentStorage;
+using PrimtiveType = Reko.Core.Types.PrimitiveType;
+using Procedure = Reko.Core.Procedure;
+using Program = Reko.Core.Program;
+using RegisterStorage = Reko.Core.RegisterStorage;
+using ReturnInstruction = Reko.Core.Code.ReturnInstruction;
+using SignatureBuilder = Reko.Core.SignatureBuilder;
+using StackArgumentStorage= Reko.Core.StackArgumentStorage;
+using Statement = Reko.Core.Statement;
+using UseInstruction = Reko.Core.Code.UseInstruction;
 
-namespace Decompiler.Analysis
+namespace Reko.Analysis
 {
 	/// <summary>
 	/// Rewrites a program, based on summary live-in and live-out information, so that all
@@ -59,12 +47,10 @@ namespace Decompiler.Analysis
 	/// </remarks>
 	public class GlobalCallRewriter : CallRewriter
 	{
-		private Program prog;
 		private ProgramDataFlow mpprocflow;
 
-		public GlobalCallRewriter(Program prog, ProgramDataFlow mpprocflow)
+		public GlobalCallRewriter(Program prog, ProgramDataFlow mpprocflow) : base(prog)
 		{
-			this.prog = prog;
 			this.mpprocflow = mpprocflow;
 		}
 
@@ -88,7 +74,7 @@ namespace Decompiler.Analysis
 
 		public void AddUseInstructionsForOutArguments(Procedure proc)
 		{
-			foreach (Identifier id in proc.Signature.FormalArguments)
+			foreach (Identifier id in proc.Signature.Parameters)
 			{
 				var os = id.Storage as OutArgumentStorage;
 				if (os == null)
@@ -161,17 +147,18 @@ namespace Decompiler.Analysis
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
 		{
-			if (proc.Signature != null && proc.Signature.ArgumentsValid)
+			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-			SignatureBuilder sb = new SignatureBuilder(proc, prog.Architecture);
+			SignatureBuilder sb = new SignatureBuilder(proc, Program.Architecture);
 			Frame frame = proc.Frame;
 			if (flow.grfLiveOut != 0)
 			{
 				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);
 			}
 
-			BitSet mayUse = flow.MayUse - prog.Architecture.ImplicitArgumentRegisters;
+            var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
+            BitSet mayUse = flow.MayUse - implicitRegs;
 			foreach (int r in mayUse)
 			{
 				if (!IsSubRegisterOfRegisters(r, mayUse))
@@ -190,12 +177,12 @@ namespace Decompiler.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-			BitSet liveOut = flow.LiveOut - prog.Architecture.ImplicitArgumentRegisters;
+            BitSet liveOut = flow.LiveOut - implicitRegs;
 			foreach (int r in liveOut)
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
-					sb.AddArgument(frame.EnsureRegister(prog.Architecture.GetRegister(r)), true);
+					sb.AddArgument(frame.EnsureRegister(Program.Architecture.GetRegister(r)), true);
 				}
 			}
 
@@ -257,10 +244,12 @@ namespace Decompiler.Analysis
 		/// <returns></returns>
 		private bool IsSubRegisterOfRegisters(int r, BitSet regs)
 		{
-			var rr = prog.Architecture.GetRegister(r);
+            var rr = Program.Architecture.GetRegister(r);
+            if (rr == null)
+                return false;
 			foreach (int r2 in regs)
 			{
-				if (rr.IsSubRegisterOf(prog.Architecture.GetRegister(r2)))
+				if (rr.IsSubRegisterOf(Program.Architecture.GetRegister(r2)))
 					return true;
 			}
 			return false;

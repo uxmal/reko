@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Sparc
+namespace Reko.Arch.Sparc
 {
     public class SparcDisassembler : DisassemblerBase<SparcInstruction>
     {
@@ -42,7 +42,6 @@ namespace Decompiler.Arch.Sparc
             this.imageReader = imageReader;
         }
 
-        public override SparcInstruction Current { get { return instrCur; } }
 
         // Format 1 (op == 1)
         // +----+-------------------------------------------------------------+
@@ -66,10 +65,10 @@ namespace Decompiler.Arch.Sparc
         // | op |    rd    |   op3  |  rs1 |           opf            |  rs2  |
         // +----+----------+--------+------+--------------------------+-------+
         // 31   29         24       18     13    12                   4
-        public override bool MoveNext()
+        public override SparcInstruction DisassembleInstruction()
         {
             if (!imageReader.IsValid)
-                return false;
+                return null;
             var addr = imageReader.Address;
             uint wInstr = imageReader.ReadBeUInt32();
             switch (wInstr >> 30)
@@ -95,7 +94,7 @@ namespace Decompiler.Arch.Sparc
             }
             instrCur.Address = addr;
             instrCur.Length = 4;
-            return true;
+            return instrCur;
         }
 
         private class OpRec

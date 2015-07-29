@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
 	/// <summary>
 	/// Describes a block of executable code. 
@@ -32,8 +32,7 @@ namespace Decompiler.Core
 
         public ImageMapBlock()
         {
-            //$REVIEW: need a raw data type for "executable code".
-            DataType = new ArrayType(PrimitiveType.Byte, 0);
+            DataType = new CodeType();
         }
 
 		public override string ToString()

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Reko.Core;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Reko.Gui.Windows.Forms
 {
 	/// <summary>
 	/// Summary description for GotoDialogInteractor.
@@ -49,13 +49,14 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 			try
 			{
-				Address = Address.Parse(dlg.MemoryAddress.Text, 16);
+                Address addr;
+				Address.TryParse32(dlg.MemoryAddress.Text, out addr);
+                Address = addr;
 			} 
 			catch 
 			{
 				MessageBox.Show(dlg, "The address is in an invalid format. Please use only hexadecimal digits.", dlg.Text);
 			}
 		}
-
     }
 }

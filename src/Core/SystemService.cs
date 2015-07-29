@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,20 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Serialization;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Serialization;
 using System;
+using System.ComponentModel;
 
-namespace Decompiler.Core
+namespace Reko.Core
 {
     /// <summary>
     /// Models a system service. The syscallinfo member indicates how the system service
     /// is selected (typically by loading specific values in processor registers).
     /// </summary>
+    
+    [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko")]
 	public class SystemService
 	{
 		public string Name;

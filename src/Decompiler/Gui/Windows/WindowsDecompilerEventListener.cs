@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
-using Decompiler.Core;
-using Decompiler.Core.Services;
-using Decompiler.Gui.Windows.Forms;
+using Reko.Core.Configuration;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +29,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows
+namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Implements the IWorkerDialogService and DecompilerEventListener services for the Windows Forms GUI.
@@ -39,7 +39,7 @@ namespace Decompiler.Gui.Windows
         private WorkerDialog dlg;
         private Action task;
         private IServiceProvider sp;
-        private IDecompilerUIService uiSvc;
+        private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticSvc;
         private Exception lastException;
 
@@ -49,7 +49,7 @@ namespace Decompiler.Gui.Windows
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
             this.sp = sp;
-            uiSvc = sp.GetService<IDecompilerUIService>();
+            uiSvc = sp.GetService<IDecompilerShellUiService>();
             diagnosticSvc = sp.GetService<IDiagnosticsService>();
         }
 
@@ -146,7 +146,7 @@ namespace Decompiler.Gui.Windows
             }
             catch (Exception ex)
             {
-                AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(ex.Message));
+                Error(new NullCodeLocation(""), ex, "An internal error occurred.");
             }
         }
 
@@ -160,7 +160,6 @@ namespace Decompiler.Gui.Windows
             }
             dlg.Detail.Text = status;
         }
-
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -180,15 +179,21 @@ namespace Decompiler.Gui.Windows
             dlg.Close();
         }
 
-
         #region DecompilerEventListener Members
 
-        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
+        public void Warn(ICodeLocation location, string message)
         {
-            if (dlg != null)
-                dlg.Invoke(new Action<ICodeLocation, Diagnostic>(diagnosticSvc.AddDiagnostic), location, d);
-            else
-                diagnosticSvc.AddDiagnostic(location, d);
+            diagnosticSvc.Warn(location, message);
+        }
+
+        public void Error(ICodeLocation location, string message)
+        {
+            diagnosticSvc.Error(location, message);
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message)
+        {
+            diagnosticSvc.Error(location, ex, message);
         }
 
         void DecompilerEventListener.ShowStatus(string caption)
@@ -210,7 +215,6 @@ namespace Decompiler.Gui.Windows
         {
             return new ProcedureNavigator(proc, sp);
         }
-
 
         private void ShowStatus(string newStatus)
         {

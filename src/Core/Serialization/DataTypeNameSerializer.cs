@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Serialization
+namespace Reko.Core.Serialization
 {
     public class DataTypeSerializer : IDataTypeVisitor<SerializedType>
     {
         public SerializedType VisitArray(ArrayType at)
         {
-            throw new NotImplementedException();
+            var et = at.ElementType.Accept(this);
+            return new ArrayType_v1 { ElementType = et, Length = at.Length };
         }
-
+         
         public SerializedType VisitCode(CodeType c)
         {
-            throw new NotImplementedException();
+            return new CodeType_v1();
         }
 
         public SerializedType VisitEnum(EnumType e)
@@ -69,12 +70,19 @@ namespace Decompiler.Core.Serialization
 
         public SerializedType VisitPointer(Pointer ptr)
         {
-            throw new NotImplementedException();
+            return new PointerType_v1
+            {
+                DataType = ptr.Pointee.Accept(this),
+                PointerSize = ptr.Size
+            };
         }
 
         public SerializedType VisitString(StringType str)
         {
-            throw new NotImplementedException();
+            return new StringType_v2 { 
+                Termination = StringType_v2.ZeroTermination,    //$TODO: hardwired
+                CharType = str.ElementType.Accept(this)
+            };
         }
 
         public SerializedType VisitStructure(StructureType str)
