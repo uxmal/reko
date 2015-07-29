@@ -52,6 +52,7 @@ namespace Reko.Gui.Windows.Forms
 			SortedList slEditMenu = CreatePriorityList();
 			SortedList slViewMenu = CreatePriorityList();
 			SortedList slActionMenu = CreatePriorityList();
+			SortedList slToolsMenu = CreatePriorityList();
 			SortedList slWindowsMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
 			SortedList slCtxMemoryControl = CreatePriorityList();
@@ -84,6 +85,8 @@ namespace Reko.Gui.Windows.Forms
 			slActionMenu.Add(0, slGrpActionsScanned);
 			SortedList slGrpActionsRewritten = CreatePriorityList();
 			slActionMenu.Add(0, slGrpActionsRewritten);
+			SortedList slGrpTools = CreatePriorityList();
+			slToolsMenu.Add(0, slGrpTools);
 			SortedList slGrpWindows = CreatePriorityList();
 			slWindowsMenu.Add(0, slGrpWindows);
 			SortedList slGrpHelp = CreatePriorityList();
@@ -212,6 +215,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slActionMarkType = new CommandMenuItem("Mark _Type", new Guid(CmdSets.Reko), CmdIds.ActionMarkType);
             slActionMarkType.IsDynamic = false;
             
+            CommandMenuItem slToolsOptions = new CommandMenuItem("_Options", new Guid(CmdSets.Reko), CmdIds.ToolsOptions);
+            slToolsOptions.IsDynamic = false;
+            slGrpTools.Add(0, slToolsOptions);
             CommandMenuItem slWindowsCascade = new CommandMenuItem("_Cacade", new Guid(CmdSets.Reko), CmdIds.WindowsCascade);
             slWindowsCascade.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsCascade);
@@ -241,6 +247,8 @@ namespace Reko.Gui.Windows.Forms
             slGrpMain.Add(0, miViewMenu);
             CommandMenuItem miActionMenu = new CommandMenuItem("_Actions");
             slGrpMain.Add(0, miActionMenu);
+            CommandMenuItem miToolsMenu = new CommandMenuItem("_Tools");
+            slGrpMain.Add(0, miToolsMenu);
             CommandMenuItem miWindowsMenu = new CommandMenuItem("_Windows");
             slGrpMain.Add(0, miWindowsMenu);
             CommandMenuItem miHelpMenu = new CommandMenuItem("_Help");
@@ -338,6 +346,8 @@ namespace Reko.Gui.Windows.Forms
 			BuildMenu(slViewMenu, miViewMenu.MenuItems);
 			
 			BuildMenu(slActionMenu, miActionMenu.MenuItems);
+			
+			BuildMenu(slToolsMenu, miToolsMenu.MenuItems);
 			
 			BuildMenu(slWindowsMenu, miWindowsMenu.MenuItems);
 			

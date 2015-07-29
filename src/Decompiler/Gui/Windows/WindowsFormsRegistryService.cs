@@ -64,7 +64,10 @@ namespace Reko.Gui.Windows
 
             public void SetValue(string name, object value)
             {
-                key.SetValue(name, value);
+                if (value == null)
+                    key.DeleteValue(name, false);
+                else
+                    key.SetValue(name, value);
             }
 
             public void Dispose()
@@ -72,7 +75,6 @@ namespace Reko.Gui.Windows
                 if (key != null)
                     key.Dispose();
             }
-
 
         }
     }

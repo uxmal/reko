@@ -42,15 +42,16 @@ namespace Reko.Gui
 		public const int EditMenu = 3;
 		public const int ViewMenu = 4;
 		public const int ActionMenu = 5;
-		public const int WindowsMenu = 6;
-		public const int HelpMenu = 7;
-		public const int CtxMemoryControl = 8;
-		public const int CtxDisassembler = 9;
-		public const int CtxBrowser = 10;
-		public const int CtxProcedure = 11;
-		public const int CtxAddressSearch = 12;
-		public const int CtxCodeView = 13;
-		public const int MainToolbar = 14;
+		public const int ToolsMenu = 6;
+		public const int WindowsMenu = 7;
+		public const int HelpMenu = 8;
+		public const int CtxMemoryControl = 9;
+		public const int CtxDisassembler = 10;
+		public const int CtxBrowser = 11;
+		public const int CtxProcedure = 12;
+		public const int CtxAddressSearch = 13;
+		public const int CtxCodeView = 14;
+		public const int MainToolbar = 15;
 	}
 	
 	public class GroupIds
@@ -65,19 +66,20 @@ namespace Reko.Gui
 		public const int GrpActions = 8 + 1000;
 		public const int GrpActionsScanned = 9 + 1000;
 		public const int GrpActionsRewritten = 10 + 1000;
-		public const int GrpWindows = 11 + 1000;
-		public const int GrpHelp = 12 + 1000;
-		public const int GrpMemoryControl = 13 + 1000;
-		public const int GrpDisassemblerNav = 14 + 1000;
-		public const int GrpDisassemblerEdit = 15 + 1000;
-		public const int GrpCodeView = 16 + 1000;
-		public const int GrpBrowser = 17 + 1000;
-		public const int GrpBrowserProc = 18 + 1000;
-		public const int GrpBrowserSegm = 19 + 1000;
-		public const int GrpToolbarFileOps = 20 + 1000;
-		public const int GrpToolbarActions = 21 + 1000;
-		public const int GrpProcedure = 22 + 1000;
-		public const int GrpAddressSearch = 23 + 1000;
+		public const int GrpTools = 11 + 1000;
+		public const int GrpWindows = 12 + 1000;
+		public const int GrpHelp = 13 + 1000;
+		public const int GrpMemoryControl = 14 + 1000;
+		public const int GrpDisassemblerNav = 15 + 1000;
+		public const int GrpDisassemblerEdit = 16 + 1000;
+		public const int GrpCodeView = 17 + 1000;
+		public const int GrpBrowser = 18 + 1000;
+		public const int GrpBrowserProc = 19 + 1000;
+		public const int GrpBrowserSegm = 20 + 1000;
+		public const int GrpToolbarFileOps = 21 + 1000;
+		public const int GrpToolbarActions = 22 + 1000;
+		public const int GrpProcedure = 23 + 1000;
+		public const int GrpAddressSearch = 24 + 1000;
 	}
 	
 	public class CmdIds
@@ -116,12 +118,13 @@ namespace Reko.Gui
 		public const int ActionScanHeuristically = 32 + 2000;
 		public const int ActionEditSignature = 33 + 2000;
 		public const int ActionMarkType = 34 + 2000;
-		public const int WindowsCascade = 35 + 2000;
-		public const int WindowsTileVertical = 36 + 2000;
-		public const int WindowsTileHorizontal = 37 + 2000;
-		public const int WindowsCloseAll = 38 + 2000;
-		public const int HelpAbout = 39 + 2000;
-		public const int ShowProcedureCallHierarchy = 40 + 2000;
+		public const int ToolsOptions = 35 + 2000;
+		public const int WindowsCascade = 36 + 2000;
+		public const int WindowsTileVertical = 37 + 2000;
+		public const int WindowsTileHorizontal = 38 + 2000;
+		public const int WindowsCloseAll = 39 + 2000;
+		public const int HelpAbout = 40 + 2000;
+		public const int ShowProcedureCallHierarchy = 41 + 2000;
 		public const int FileMru = 2200;
 	}
 }

@@ -36,32 +36,32 @@ namespace Reko.Core.Configuration
 
     public class UiStyleElement : ConfigurationElement, UiStyle
     {
-        [ConfigurationProperty("name", IsRequired=true)]
+        [ConfigurationProperty("Name", IsRequired = true)]
         public string Name
         {
-            get { return (string)this["name"]; }
-            set {  this["name"] = value; }
+            get { return (string)this["Name"]; }
+            set { this["Name"] = value; }
         }
 
-        [ConfigurationProperty("font", IsRequired = true)]
+        [ConfigurationProperty("Font", IsRequired = false)]
         public string FontName
         {
-            get { return (string)this["font"]; }
-            set {  this["font"] = value; }
-        }        
-
-        [ConfigurationProperty("color", IsRequired = true)]
-        public string ForeColor
-        {
-             get { return (string)this["color"]; }
-            set {  this["color"] = value; }  
+            get { return (string)this["Font"]; }
+            set { this["Font"] = value; }
         }
 
-        [ConfigurationProperty("background-color", IsRequired = true)]
+        [ConfigurationProperty("ForeColor", IsRequired = false)]
+        public string ForeColor
+        {
+            get { return (string)this["ForeColor"]; }
+            set { this["ForeColor"] = value; }
+        }
+
+        [ConfigurationProperty("BackColor", IsRequired = false)]
         public string BackColor
         {
-            get { return (string)this["background-color"]; }
-            set { this["background-color"] = value; }
+            get { return (string)this["BackColor"]; }
+            set { this["BackColor"] = value; }
         }
     }
 }

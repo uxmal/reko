@@ -49,7 +49,7 @@ namespace Reko.Gui
         public const string MemoryCode = "mem-code";
         public const string MemoryCodeForeColor = "mem-code-fore";
         public const string MemoryCodeBackColor = "mem-codeback";
-        public const string MemoryHeuristic = "mem-heu";
+        public const string MemoryHeuristic = "mem-heur";
         public const string MemoryHeuristicForeColor = "mem-heur-fore";
         public const string MemoryHeuristicBackColor = "mem-heur-fore";
         public const string MemoryData = "mem-data";
@@ -81,10 +81,7 @@ namespace Reko.Gui
 
         IDictionary<string, UiStyle> Styles { get; }
 
-        [Obsolete] UiStyle MemoryWindowStyle { get; set; }
         [Obsolete] Font DisassemblerFont { get; set; }
-        [Obsolete] UiStyle DisassemblerWindowStyle { get; set; }
-        [Obsolete] UiStyle CodeWindowStyle { get; set; }
         [Obsolete] Font SourceCodeFont { get; set; }
         [Obsolete] Color SourceCodeForegroundColor { get; set; }
         [Obsolete] Color SourceCodeBackgroundColor { get; set; }
@@ -246,12 +243,16 @@ namespace Reko.Gui
 
         private string SaveFont(Font font)
         {
+            if (font == null)
+                return null;
             return string.Format(CultureInfo.InvariantCulture, "{0}, {1}pt", font.Name, font.Size);
         }
 
         private string SaveBrush(SolidBrush brush)
         {
-            return string.Format(CultureInfo.InvariantCulture, "#{0:6}", brush.Color.ToArgb());
+            if (brush == null)
+                return null;
+            return string.Format(CultureInfo.InvariantCulture, "#{0:X6}", brush.Color.ToArgb() & 0xFFFFFF);
         }
 
         private void AddStyle(UiStyle s)
@@ -285,7 +286,7 @@ namespace Reko.Gui
             settingsSvc.Set(UiStyles.DisassemblerFont, SaveFont(disStyle.Font));
 
             var disOpStyle = Styles[UiStyles.DisassemblerOpcode];
-            settingsSvc.Set(UiStyles.DisassemblerOpcodeColor, disOpStyle.ForeBrush);
+            settingsSvc.Set(UiStyles.DisassemblerOpcodeColor, SaveBrush(disOpStyle.ForeBrush));
             
             var codeStyle = Styles[UiStyles.CodeWindow];
             settingsSvc.Set(UiStyles.CodeForeColor, SaveBrush(codeStyle.ForeBrush));
@@ -318,43 +319,6 @@ namespace Reko.Gui
             catch
             {
                 return default(T);
-            }
-        }
-
-
-        public UiStyle MemoryWindowStyle
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public UiStyle DisassemblerWindowStyle
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public UiStyle CodeWindowStyle
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
             }
         }
     }

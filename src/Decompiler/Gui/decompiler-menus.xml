@@ -9,7 +9,8 @@
 	<menu id="FileMenu" cmdSet="Reko" container="GrpMain">_File</menu>
   <menu id="EditMenu" cmdSet="Reko" container="GrpMain">_Edit</menu>
 	<menu id="ViewMenu" cmdSet="Reko" container="GrpMain">_View</menu>
-	<menu id="ActionMenu" cmdSet="Reko" container="GrpMain">_Actions</menu>
+  <menu id="ActionMenu" cmdSet="Reko" container="GrpMain">_Actions</menu>
+  <menu id="ToolsMenu" cmdSet="Reko" container="GrpMain">_Tools</menu>
   <menu id="WindowsMenu" cmdSet="Reko" container="GrpMain">_Windows</menu>
 	<menu id="HelpMenu" cmdSet="Reko" container="GrpMain">_Help</menu>
 
@@ -40,6 +41,8 @@
 	<group id="GrpActions" cmdSet="Reko" container="ActionMenu"/>
 	<group id="GrpActionsScanned" cmdSet="Reko" container="ActionMenu"/>
   <group id="GrpActionsRewritten" cmdSet="Reko" container="ActionMenu"/>
+
+  <group id="GrpTools" cmdSet="Reko" container="ToolsMenu"/>
 
   <group id="GrpWindows" cmdSet="Reko" container="WindowsMenu"/>
 
@@ -78,6 +81,7 @@
   <cmd id="EditCopyAll" cmdSet="Reko" container="EditCopyAll">_Copy All</cmd>
   <cmd id="EditRename" cmdSet="Reko" container="GrpEdit">_Rename</cmd>
   <cmd id="EditSelectAll" cmdSet="Reko" container="GrpEdit">Select _all</cmd>
+
   <cmd id="EditProperties" cmdSet="Reko" container="EditProperties">P_roperties</cmd>
 
   <cmd id="ViewMemory" cmdSet="Reko" container="GrpLowLevel">_Memory</cmd>
@@ -104,6 +108,8 @@
   <cmd id="ActionEditSignature" cmdSet="Reko" container="ActionEditSignature">Edit _Signature...</cmd>
   <cmd id="ActionMarkType" cmdSet="Reko" container="ActionMarkType">Mark _Type</cmd>
 
+  <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options</cmd>
+  
   <cmd id="WindowsCascade" cmdSet="Reko" container="GrpWindows">_Cacade</cmd>
   <cmd id="WindowsTileVertical" cmdSet="Reko" container="GrpWindows">Tile _Vertically</cmd>
   <cmd id="WindowsTileHorizontal" cmdSet="Reko" container="GrpWindows">Tile _Horizontally</cmd>

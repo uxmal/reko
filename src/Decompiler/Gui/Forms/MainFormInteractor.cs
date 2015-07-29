@@ -535,6 +535,14 @@ namespace Reko.Gui.Forms
             memService.ShowWindow();
         }
 
+        public void ToolsOptions()
+        {
+            using (var dlg = dlgFactory.CreateUserPreferencesDialog())
+            {
+                uiSvc.ShowModalDialog(dlg);
+            }
+        }
+
         /// <summary>
         /// Saves the project. 
         /// </summary>
@@ -654,6 +662,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileExit:
                 case CmdIds.FileOpenAs:
                 case CmdIds.FileAssemble:
+                case CmdIds.ToolsOptions:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
                 case CmdIds.WindowsTileHorizontal:
@@ -737,6 +746,8 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); return true;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); return true;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); return true;
+
+                case CmdIds.ToolsOptions: ToolsOptions(); return true;
 
                 case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); return true;
                 case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); return true;

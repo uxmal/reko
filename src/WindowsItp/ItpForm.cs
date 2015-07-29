@@ -201,43 +201,7 @@ namespace Reko.WindowsItp
             }
             public IDictionary<string,Gui.UiStyle> Styles { get; private set; }
 
-            public Gui.UiStyle MemoryWindowStyle
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
             public System.Drawing.Font DisassemblerFont
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public Gui.UiStyle DisassemblerWindowStyle
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public Gui.UiStyle CodeWindowStyle
             {
                 get
                 {

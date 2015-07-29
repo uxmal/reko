@@ -604,8 +604,8 @@ namespace Reko.Gui.Windows.Controls
                 }
                 else
                 {
-                    g.FillRectangle(SystemBrushes.Window, rc.X, rc.Y, cx, rc.Height);
-                    g.DrawString(s, ctrl.Font, SystemBrushes.ControlText, rc.X, rc.Y, StringFormat.GenericTypographic);
+                    g.FillRectangle(this.defaultTheme.Background, rc.X, rc.Y, cx, rc.Height);
+                    g.DrawString(s, ctrl.Font, defaultTheme.Foreground, rc.X, rc.Y, StringFormat.GenericTypographic);
                 }
                 cx -= cellSize.Width / 2;
                 rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
@@ -688,8 +688,8 @@ namespace Reko.Gui.Windows.Controls
 
                 if (render)
                 {
-                    g.FillRectangle(SystemBrushes.Window, rc);
-                    g.DrawString(sbCode.ToString(), ctrl.Font, SystemBrushes.WindowText, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
+                    g.FillRectangle(this.defaultTheme.Background, rc);
+                    g.DrawString(sbCode.ToString(), ctrl.Font, this.defaultTheme.Foreground, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
                 }
                 return null;
             }
