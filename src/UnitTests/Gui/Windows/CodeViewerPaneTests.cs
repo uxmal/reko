@@ -123,7 +123,6 @@ namespace Reko.UnitTests.Gui.Windows
             {
                 var project = new Project { Programs = { new Program() } };
                 decompiler.Stub(d => d.Project).Return(project);
-                uiPreferencesSvc.SourceCodeFont = font;
             }
 
             codeViewer.DisplayProcedure(m.Procedure);

@@ -51,28 +51,10 @@ namespace Reko.Gui.Windows
 
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
-            this.TextView.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F);
+            this.TextView.Font = new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
 
             this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
-
-            this.TextView.Styles.Add("kw", new EditorStyle
-            {
-                Foreground = new SolidBrush(Color.Blue),
-            });
-            this.TextView.Styles.Add("link", new EditorStyle
-            {
-                Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x80)),
-                Cursor = Cursors.Hand,
-            });
-            this.TextView.Styles.Add("cmt", new EditorStyle
-            {
-                Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x00)),
-            });
-            this.TextView.Styles.Add("type", new EditorStyle
-            {
-                Foreground = new SolidBrush(Color.FromArgb(0x00, 0x60, 0x60)),
-            });
 
             this.TextView.Navigate += textView_Navigate;
             return this.codeView;

@@ -32,6 +32,8 @@ namespace Reko.Core.Configuration
         string FontName { get; }
         string ForeColor { get; }
         string BackColor { get; }
+        string Cursor { get; }
+        string Width { get; }
     }
 
     public class UiStyleElement : ConfigurationElement, UiStyle
@@ -62,6 +64,21 @@ namespace Reko.Core.Configuration
         {
             get { return (string)this["BackColor"]; }
             set { this["BackColor"] = value; }
+        }
+
+        [ConfigurationProperty("Cursor", IsRequired = false)]
+        public string Cursor
+        {
+            get { return (string)this["Cursor"]; }
+            set { this["Cursor"] = value; }
+        }
+
+
+        [ConfigurationProperty("Width", IsRequired = false)]
+        public string Width
+        {
+            get { return (string)this["Width"]; }
+            set { this["Width"] = value; }
         }
     }
 }

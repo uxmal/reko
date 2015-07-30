@@ -47,7 +47,7 @@ namespace Reko.Gui.Windows
 
         public void WriteOpcode(string opcode)
         {
-            line.Add(new DisassemblyTextModel.InertTextSpan(opcode, "opcode"));
+            line.Add(new DisassemblyTextModel.InertTextSpan(opcode, UiStyles.DisassemblerOpcode));
         }
 
         public void WriteAddress(string formattedAddress, Address addr)
@@ -79,7 +79,7 @@ namespace Reko.Gui.Windows
             {
                 Text = sb.ToString(),
                 Tag = null,
-                Style = "",
+                Style = UiStyles.Disassembler,
             };
             line.Add(span);
             sb = new StringBuilder();

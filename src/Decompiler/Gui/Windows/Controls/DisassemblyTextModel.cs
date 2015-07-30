@@ -60,8 +60,8 @@ namespace Reko.Gui.Windows.Controls
                 {
                     var line = new List<TextSpan>();
                     var addr = dasm.Current.Address;
-                    line.Add(new AddressSpan(addr.ToString() + " ", addr, "addr"));
-                    line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
+                    line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
+                    line.Add(new InertTextSpan(BuildBytes(dasm.Current), "dasm-bytes"));
                     var dfmt = new DisassemblyFormatter(program, line);
                     dasm.Current.Render(dfmt);
                     dfmt.NewLine();
@@ -156,7 +156,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 this.Tag = address;
                 this.txtAddress = addrAsText;
-                this.Style = "addrText";
+                this.Style = "dasm-addrText";
             }
 
             public override string GetText()
@@ -173,7 +173,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 this.proc = proc;
                 this.Tag = addr;
-                this.Style = "addrText";
+                this.Style = "dasm-addrText";
             }
 
             public override string GetText()

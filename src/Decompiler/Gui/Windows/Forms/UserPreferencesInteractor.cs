@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Types;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -134,38 +135,38 @@ namespace Reko.Gui.Windows.Forms
             public Color GetForeColor()
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                return style.ForeBrush != null
-                    ? style.ForeBrush.Color
+                return style.Foreground != null
+                    ? style.Foreground.Color
                     : Color.Empty;
             }
 
             public Color GetBackColor()
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                return style.BackBrush != null
-                    ? style.BackBrush.Color
+                return style.Background != null
+                    ? style.Background.Color
                     : Color.Empty;
             }
 
             public void SetForeColor(Color color)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.ForeBrush != null)
+                if (style.Foreground != null)
                 {
-                    style.ForeBrush.Dispose();
+                    style.Foreground.Dispose();
                 }
-                style.ForeBrush = new SolidBrush(color);
+                style.Foreground = new SolidBrush(color);
                 Control.Refresh();
             }
 
             public void SetBackColor(Color color)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.BackBrush != null)
+                if (style.Background != null)
                 {
-                    style.BackBrush.Dispose();
+                    style.Background.Dispose();
                 }
-                style.BackBrush = new SolidBrush(color);
+                style.Background = new SolidBrush(color);
                 Control.Refresh();
             }
         }
@@ -185,8 +186,8 @@ namespace Reko.Gui.Windows.Forms
             dlg.MemoryControl.ProgramImage = program.Image;
             dlg.MemoryControl.ImageMap = program.ImageMap;
             dlg.MemoryControl.Architecture = program.Architecture;
-            dlg.MemoryControl.Font = localSettings.DisassemblerFont ?? new System.Drawing.Font("Lucida Console", 9.0f);
-            dlg.DisassemblyControl.Model = null;/**/
+            dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
+            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program);
             dlg.CodeControl.Model = null; /*;*/ 
         }
 

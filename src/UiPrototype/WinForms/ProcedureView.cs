@@ -18,20 +18,6 @@ namespace Reko.UiPrototype.WinForms
         public ProcedureView()
         {
             InitializeComponent();
-
-            this.editorView1.Styles.Add("keyword", new EditorStyle
-            {
-                Foreground = new SolidBrush(Color.Blue),
-            });
-            this.editorView1.Styles.Add("fn", new EditorStyle
-            {
-                Foreground = new SolidBrush(Color.FromArgb(0x00,0x80,0x80)),
-                Cursor = Cursors.Hand,
-            });
-            this.editorView1.Styles.Add("cmt", new EditorStyle
-            {
-                Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x00)),
-            });
             this.editorView1.Navigate += editorView1_Navigate;
         }
 

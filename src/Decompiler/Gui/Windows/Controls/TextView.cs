@@ -50,7 +50,6 @@ namespace Reko.Gui.Windows.Controls
             InitializeComponent();
 
             this.model = new EmptyEditorModel();
-            this.styles = new Dictionary<string, EditorStyle>();
             this.stringFormat = StringFormat.GenericTypographic;
             this.ModelChanged += model_ModelChanged;
             this.vScroll.ValueChanged += vScroll_ValueChanged;
@@ -69,6 +68,10 @@ namespace Reko.Gui.Windows.Controls
             base.OnKeyDown(e);
         }
 
+        /// <summary>
+        /// The ClientSize is the client area minus the space taken up by
+        /// the scrollbars.
+        /// </summary>
         public new Size ClientSize
         {
             get
@@ -86,17 +89,19 @@ namespace Reko.Gui.Windows.Controls
 
         private Font GetFont(string styleSelector)
         {
-            EditorStyle style;
-            if (!string.IsNullOrEmpty(styleSelector) &&
-                Styles.TryGetValue(styleSelector, out style) && 
-                style.Font != null)
-                return style.Font;
+            UiStyle style;
+            if (!string.IsNullOrEmpty(styleSelector))
+            {
+                style = GetStyle(styleSelector);
+                if (style != null && style.Font != null)
+                    return style.Font;
+            }
             return this.Font;
         }
 
         private Brush GetForeground(string styleSelector)
         {
-            EditorStyle style = GetStyle(styleSelector);
+            UiStyle style = GetStyle(styleSelector);
             if (style != null && style.Foreground != null)
                 return style.Foreground;
             return CacheBrush(ref fgBrush, new SolidBrush(ForeColor));
@@ -104,7 +109,7 @@ namespace Reko.Gui.Windows.Controls
 
         private Brush GetBackground(string styleSelector)
         {
-            EditorStyle style = GetStyle(styleSelector);
+            UiStyle style = GetStyle(styleSelector);
             if (style != null && style.Background != null)
                 return style.Background;
             return CacheBrush(ref bgBrush, new SolidBrush(BackColor));
@@ -125,7 +130,9 @@ namespace Reko.Gui.Windows.Controls
         private SizeF GetSize(TextSpan span, string text, Font font, Graphics g)
         {
             var size = span.GetSize(text, font, g);
-            EditorStyle style = GetStyle(span.Style);
+            if (span.Style == "dasm-bytes") //$DEBUG
+                span.Style.ToString();
+            UiStyle style = GetStyle(span.Style);
             if (style != null && style.Width.HasValue)
             {
                 size.Width = style.Width.Value;
@@ -133,18 +140,21 @@ namespace Reko.Gui.Windows.Controls
             return size;
         }
 
-        private EditorStyle GetStyle(string styleSelector)
+        private UiStyle GetStyle(string styleSelector)
         {
-            EditorStyle style;
-            if (!string.IsNullOrEmpty(styleSelector) &&
-                Styles.TryGetValue(styleSelector, out style))
+            UiStyle style;
+            if (!string.IsNullOrEmpty(styleSelector) && Services != null)
+            {
+                var uipSvc = Services.RequireService<IUiPreferencesService>();
+                uipSvc.Styles.TryGetValue(styleSelector, out style);
                 return style;
+            }
             return null;
         }
 
         private Cursor GetCursor(string styleSelector)
         {
-            EditorStyle style = GetStyle(styleSelector);
+            UiStyle style = GetStyle(styleSelector);
             if (style != null && style.Cursor != null)
                 return style.Cursor;
             return Cursors.Default;
@@ -402,8 +412,6 @@ namespace Reko.Gui.Windows.Controls
             return this.Font.Height;
         }
 
-        public Dictionary<string, EditorStyle> Styles { get { return styles; } }
-        private Dictionary<string, EditorStyle> styles;
         
         void model_ModelChanged(object sender, EventArgs e)
         {
@@ -441,15 +449,6 @@ namespace Reko.Gui.Windows.Controls
             vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
             this.ignoreScroll = false;
         }
-    }
-
-    public class EditorStyle
-    {
-        public Font Font { get; set; }
-        public Brush Foreground { get; set; }
-        public Brush Background { get; set; }
-        public Cursor Cursor { get; set; }
-        public int? Width { get; set; } // If set, the width is fixed at a certain size.
     }
 
     public class EditorNavigationArgs : EventArgs

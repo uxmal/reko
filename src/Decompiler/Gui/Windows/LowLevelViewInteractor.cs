@@ -83,7 +83,7 @@ namespace Reko.Gui.Windows
             var uiService = services.RequireService<IDecompilerShellUiService>();
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
-            this.Control.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F); //$TODO: use user preference
+            this.Control.Font = new Font("Lucida Console", 10F); //$TODO: use user preference
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
 
             this.Control.ImageMapView.SelectedAddressChanged += ImageMapView_SelectedAddressChanged;
@@ -94,6 +94,7 @@ namespace Reko.Gui.Windows
 
             this.Control.DisassemblyView.SelectedObjectChanged += DisassemblyView_SelectedObjectChanged;
             this.Control.DisassemblyView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxDisassembler);
+            this.Control.DisassemblyView.Services = this.services;
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
