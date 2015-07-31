@@ -188,57 +188,61 @@ conditions to be inverses.
         /// <returns></returns>
         public Region MatchAcyclic(Region n)
         {
-            if (n.Type == RegionType.Condition)
+            for (; ; )
             {
-                var ss = regionGraph.Successors(n).ToArray();
-                var el = ss[0];
-                var th = ss[1];
-                var elS = SingleSuccessor(el);
-                var thS = SingleSuccessor(th);
-                if (elS == th)
+                if (n.Type == RegionType.Condition)
                 {
-                    // Collapse (If then) into n.
-                    n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements));
-                    regionGraph.RemoveEdge(n, el);
-                    regionGraph.RemoveEdge(el, elS);
-                    regionGraph.Nodes.Remove(el);
-                    n.Type = RegionType.Linear;
+                    var ss = regionGraph.Successors(n).ToArray();
+                    var el = ss[0];
+                    var th = ss[1];
+                    var elS = SingleSuccessor(el);
+                    var thS = SingleSuccessor(th);
+                    if (elS == th || el.Type == RegionType.Tail)
+                    {
+                        // Collapse (If then) into n.
+                        n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements));
+                        regionGraph.RemoveEdge(n, el);
+                        if (elS != null)
+                            regionGraph.RemoveEdge(el, elS);
+                        regionGraph.Nodes.Remove(el);
+                        n.Type = RegionType.Linear;
+                        continue;
+                    }
+                    if (elS != null && elS == thS)
+                    {
+                        // Collapse (If then else) into n.
+                        n.Statements.Add(new AbsynIf(n.Expression, th.Statements, el.Statements));
+                        regionGraph.RemoveEdge(n, el);
+                        regionGraph.RemoveEdge(n, th);
+                        regionGraph.RemoveEdge(el, elS);
+                        regionGraph.RemoveEdge(th, thS);
+                        regionGraph.Nodes.Remove(th);
+                        regionGraph.Nodes.Remove(el);
+                        regionGraph.AddEdge(n, elS);
+                        n.Type = RegionType.Linear;
+                        continue;
+                    }
                     return n;
                 }
-                if (elS != null && elS == thS)
+
+                if (this.regionGraph.Successors(n).Count == 1)
                 {
-                    // Collapse (If then else) into n.
-                    n.Statements.Add(new AbsynIf(n.Expression, th.Statements, el.Statements));
-                    regionGraph.RemoveEdge(n, el);
-                    regionGraph.RemoveEdge(n, th);
-                    regionGraph.RemoveEdge(el, elS);
-                    regionGraph.RemoveEdge(th, thS);
-                    regionGraph.Nodes.Remove(th);
-                    regionGraph.Nodes.Remove(el);
-                    regionGraph.AddEdge(n, elS);
-                    n.Type = RegionType.Linear;
-                    return n;
+                    var s = regionGraph.Successors(n).First();
+                    if (regionGraph.Predecessors(s).Count == 1)
+                    {
+                        // Sequence!
+                        Debug.Print("Concatenated {0} and {1}", n.Block.Name, s.Block.Name);
+                        n.Type = s.Type;
+                        n.Expression = s.Expression;
+                        n.Statements.AddRange(s.Statements);
+                        regionGraph.RemoveEdge(n, s);
+                        ReplaceSuccessors(s, n);
+                        regionGraph.Nodes.Remove(s);
+                        continue;
+                    }
                 }
                 return n;
             }
-
-            if (this.regionGraph.Successors(n).Count == 1)
-            {
-                var s = regionGraph.Successors(n).First();
-                if (regionGraph.Predecessors(s).Count == 1)
-                {
-                    // Sequence!
-                    Debug.Print("Concatenated {0} and {1}", n.Block.Name, s.Block.Name);
-                    n.Type = s.Type;
-                    n.Expression = s.Expression;
-                    n.Statements.AddRange(s.Statements);
-                    regionGraph.RemoveEdge(n, s);
-                    ReplaceSuccessors(s, n);
-                    regionGraph.Nodes.Remove(s);
-                    return n;
-                }
-            }
-            return n;
         }
 
         /// <summary>

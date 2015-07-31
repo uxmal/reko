@@ -314,5 +314,47 @@ namespace Reko.UnitTests.Structure.Schwartz
             RunTest(sExp, m.Procedure);
         }
 
+        [Test(Description="Here, the block leaving the loop does some work first.")]
+        public void ProcStr_WhileBreak2()
+        {
+            var r1 = m.Reg32("r1");
+            var r2 = m.Reg32("r2");
+
+            m.Label("head");
+            m.BranchIf(m.Eq(r1, r2), "done");
+
+            m.Label("loop");
+            m.Store(r1, m.LoadDw(r2));
+            m.BranchIf(m.Not(m.LoadDw(r2)), "rest");
+
+            m.Label("leaving");
+            m.Assign(r2, 0);
+            m.Jump("done");
+
+            m.Label("rest");
+            m.Assign(r1, m.IAdd(r1, 4));
+            m.Assign(r2, m.IAdd(r2, 4));
+            m.Jump("head");
+
+            m.Label("done");
+            m.Return(r2);
+
+            var sExp =
+@"    while (r1 != r2)
+    {
+        Mem0[r1:word32] = Mem0[r2:word32];
+        if (Mem0[r2:word32])
+        {
+            r2 = 0x00000000;
+            break;
+        }
+        r1 = r1 + 0x00000004;
+        r2 = r2 + 0x00000004;
+    }
+    return r2;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
     }
 }
