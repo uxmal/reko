@@ -38,7 +38,7 @@ namespace Reko.Structure.Schwartz
         public Region Create(Block b)
         {
             this.stms = new List<AbsynStatement>();
-            this.regType = RegionType.Linear;
+            this.regType = b.Succ.Count != 0 ? RegionType.Linear : RegionType.Tail;
             this.exp = null;
             foreach (var stm in b.Statements)
             {
@@ -99,7 +99,7 @@ namespace Reko.Structure.Schwartz
 
         public AbsynStatement VisitSideEffect(SideEffect side)
         {
-            throw new NotImplementedException();
+            return new AbsynSideEffect(side.Expression);
         }
 
         public AbsynStatement VisitStore(Store store)

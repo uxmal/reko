@@ -7,5 +7,6 @@ namespace Reko.Structure
 {
     public interface IStructureAnalysis
     {
+        void Structure();
     }
 }

@@ -40,8 +40,8 @@ namespace Reko.UnitTests.Structure.Schwartz
 
         private void RunTest(string sExp, Procedure proc)
         {
-            var ps = new ProcedureStructurer();
-            var reg = ps.Execute(proc);
+            var ps = new ProcedureStructurer(proc);
+            var reg = ps.Execute();
             var sb = new StringWriter();
             reg.Write(sb);
             sb.GetStringBuilder().Replace("\t", "    ");
@@ -100,10 +100,10 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Return(r1);
 
             var sExp =
-@"    if (r1 <= 0x00000000)
-        r1 = 0x00000001;
-    else
+@"    if (r1 > 0x00000000)
         r1 = 0x00000000;
+    else
+        r1 = 0x00000001;
     return r1;
 ";
             RunTest(sExp, m.Procedure);
@@ -404,5 +404,38 @@ end_fn:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void ProcStr_DoWhileIf()
+        {
+            var r1 = m.Reg32("r1");
+            var r2 = m.Reg32("r2");
+
+            m.Label("loop");
+            m.Store(r1, m.LoadDw(r2));
+            m.Assign(r1, m.IAdd(r1, 4));
+            m.Assign(r2, m.IAdd(r2, 4));
+            m.BranchIf(m.Eq(r1, r2), "loop");
+
+            m.Label("done");
+            m.Return(r2);
+
+            var sExp =
+@"    while (r1 != r2)
+    {
+        Mem0[r1:word32] = Mem0[r2:word32];
+        if (Mem0[r2:word32])
+        {
+            r2 = 0x00000000;
+            goto end_fn;
+        }
+        r1 = r1 + 0x00000004;
+        r2 = r2 + 0x00000004;
+    }
+    r2 = 0xFFFFFFFF;
+end_fn:
+    return r2;
+";
+            RunTest(sExp, m.Procedure);
+        }
     }
 }

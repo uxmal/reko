@@ -34,20 +34,28 @@ namespace Reko.Structure.Schwartz
     // Based on:
     // Native x86 Decompilation using Semantics-Preserving Structural Analysis
     // and Iterative Control-Flow Structuring.
-
-    public class ProcedureStructurer
+    public class ProcedureStructurer : IStructureAnalysis
     {
         private DirectedGraph<Region> regionGraph;
-        private DirectedGraph<Region> newGraph;
         private  DominatorGraph<Region> doms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
+        private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
+        private Procedure proc;
 
-        public ProcedureStructurer()
+        public ProcedureStructurer(Procedure proc)
         {
-
+            this.proc = proc;
         }
 
-        public Region Execute(Procedure proc)
+        public void Structure()
+        {
+            var ccc = new CompoundConditionCoalescer(proc);
+            ccc.Transform();
+            var reg = Execute();
+            proc.Body.AddRange(reg.Statements);
+        }
+
+        public Region Execute()
         {
 #if NILZ
         We focus on the novel aspects of our algorithm in this
@@ -79,21 +87,27 @@ ensure that progress can be made in the next iteration.
             var result = BuildRegionGraph(proc);
             this.regionGraph = result.Item1;
             var entry = result.Item2;
+            int oldCount;
+            int newCount;
             DumpGraph();
-            newGraph = new DiGraph<Region>();
             do
             {
+                oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
-                this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>(); 
+                this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
+                this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
-                Debug.Print("Iterating....");
+                Debug.Print("== Graph contains {0} nodes", regionGraph.Nodes.Count);
                 DumpGraph();
                 foreach (var n in postOrder) 
                 {
                     entry = Dfs(n);
                 }
-                ProcessUnresolvedCycles();
-            } while (regionGraph.Nodes.Count > 1);
+                ProcessUnresolvedRegions();
+                newCount = regionGraph.Nodes.Count;
+            } while (newCount > 1 && newCount < oldCount);
+            if (newCount > 1)
+                Debug.WriteLine("WARNING: could not reduce graph");
             return entry;
         }
 
@@ -102,7 +116,7 @@ ensure that progress can be made in the next iteration.
             Debug.Print("DFS: visiting node {0}", n.Block.Name);
             if (!IsCyclic(n))
             {
-                return MatchAcyclic(n);
+                return ReduceAcyclic(n);
             }
             else
             {
@@ -110,12 +124,21 @@ ensure that progress can be made in the next iteration.
             }
         }
 
-        public void ProcessUnresolvedCycles()
+        public bool ProcessUnresolvedRegions()
         {
-            if (unresolvedCycles.Count == 0)
-                return;
-            var cycle = unresolvedCycles.Dequeue();
-            RefineLoop(cycle.Item1, cycle.Item2);
+            if (unresolvedCycles.Count != 0)
+            {
+                var cycle = unresolvedCycles.Dequeue();
+                RefineLoop(cycle.Item1, cycle.Item2);
+                return true;
+            }
+            if (unresolvedNoncycles.Count != 0)
+            {
+                var acycle = unresolvedNoncycles.Dequeue();
+                LastResort(acycle.Item2);
+                return true;
+            }
+            return false; 
         }
 
         /// <summary>
@@ -130,12 +153,16 @@ ensure that progress can be made in the next iteration.
             var regionFactory = new RegionFactory();
             foreach (var b in proc.ControlGraph.Blocks)
             {
+                if (b.Pred.Count == 0 && b != proc.EntryBlock)
+                    continue;
                 var reg = regionFactory.Create(b);
                 btor.Add(b, reg);
                 regs.AddNode(reg);
             }
             foreach (var b in proc.ControlGraph.Blocks)
             {
+                if (b.Pred.Count == 0 && b != proc.EntryBlock)
+                    continue;
                 foreach (var s in b.Succ)
                 {
                     var from = btor[b];
@@ -155,7 +182,6 @@ ensure that progress can be made in the next iteration.
         {
             return doms.DominatesStrictly(b, a);
         }
-
 
 #if NILZ
 3.2
@@ -182,67 +208,120 @@ because the semantics of if-then-else requires the outgoing
 conditions to be inverses.
 #endif
         /// <summary>
-        /// Attempts to match an acyclic region.
+        /// Attempts to match and reduce acyclic region.
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public Region MatchAcyclic(Region n)
+        public Region ReduceAcyclic(Region n)
         {
-            for (; ; )
+            bool didReduce;
+            do
             {
+                didReduce = false;
                 if (n.Type == RegionType.Condition)
                 {
-                    var ss = regionGraph.Successors(n).ToArray();
-                    var el = ss[0];
-                    var th = ss[1];
-                    var elS = SingleSuccessor(el);
-                    var thS = SingleSuccessor(th);
-                    if (elS == th || el.Type == RegionType.Tail)
-                    {
-                        // Collapse (If then) into n.
-                        n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements));
-                        regionGraph.RemoveEdge(n, el);
-                        if (elS != null)
-                            regionGraph.RemoveEdge(el, elS);
-                        regionGraph.Nodes.Remove(el);
-                        n.Type = RegionType.Linear;
-                        continue;
-                    }
-                    if (elS != null && elS == thS)
-                    {
-                        // Collapse (If then else) into n.
-                        n.Statements.Add(new AbsynIf(n.Expression, th.Statements, el.Statements));
-                        regionGraph.RemoveEdge(n, el);
-                        regionGraph.RemoveEdge(n, th);
-                        regionGraph.RemoveEdge(el, elS);
-                        regionGraph.RemoveEdge(th, thS);
-                        regionGraph.Nodes.Remove(th);
-                        regionGraph.Nodes.Remove(el);
-                        regionGraph.AddEdge(n, elS);
-                        n.Type = RegionType.Linear;
-                        continue;
-                    }
-                    return n;
+                    didReduce = ReduceIfRegion(n);
                 }
-
-                if (this.regionGraph.Successors(n).Count == 1)
+                else if (this.regionGraph.Successors(n).Count == 1)
                 {
-                    var s = regionGraph.Successors(n).First();
-                    if (regionGraph.Predecessors(s).Count == 1)
-                    {
-                        // Sequence!
-                        Debug.Print("Concatenated {0} and {1}", n.Block.Name, s.Block.Name);
-                        n.Type = s.Type;
-                        n.Expression = s.Expression;
-                        n.Statements.AddRange(s.Statements);
-                        regionGraph.RemoveEdge(n, s);
-                        ReplaceSuccessors(s, n);
-                        regionGraph.Nodes.Remove(s);
-                        continue;
-                    }
+                    didReduce = ReduceSequence(n);
                 }
-                return n;
+                else
+                {
+                    //$NYI: switches.
+                    didReduce = false;
+                    break;
+                }
+            } while (didReduce);
+            return n;
+        }
+
+        private bool ReduceIfRegion(Region n)
+        {
+            var ss = regionGraph.Successors(n).ToArray();
+            var el = ss[0];
+            var th = ss[1];
+            var elS = SingleSuccessor(el);
+            var thS = SingleSuccessor(th);
+            if (elS == th || el.Type == RegionType.Tail)
+            {
+                if (RefinePredecessor(n, el))
+                    return false;
+                // Collapse (If then) into n.
+                n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements));
+                regionGraph.RemoveEdge(n, el);
+                if (elS != null)
+                    regionGraph.RemoveEdge(el, elS);
+                RemoveRegion(el);
+                n.Type = RegionType.Linear;
+                return true;
             }
+            else if (thS == el || th.Type == RegionType.Tail)
+            {
+                if (RefinePredecessor(n, th))
+                    return false;
+                n.Statements.Add(new AbsynIf(n.Expression, th.Statements));
+                regionGraph.RemoveEdge(n, th);
+                if (thS != null)
+                    regionGraph.RemoveEdge(th, thS);
+                RemoveRegion(th);
+                n.Type = RegionType.Linear;
+                return true;
+            }
+            else if (elS != null && elS == thS)
+            {
+                if (RefinePredecessor(n, th) | 
+                    RefinePredecessor(n, el))
+                    return false;
+
+                // Collapse (If then else) into n.
+                n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements, th.Statements));
+                regionGraph.RemoveEdge(n, el);
+                regionGraph.RemoveEdge(n, th);
+                regionGraph.RemoveEdge(el, elS);
+                regionGraph.RemoveEdge(th, thS);
+                RemoveRegion(th);
+                RemoveRegion(el);
+                regionGraph.AddEdge(n, elS);
+                n.Type = RegionType.Linear;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private bool ReduceSequence(Region n)
+        {
+            var s = regionGraph.Successors(n).First();
+            if (regionGraph.Predecessors(s).Count == 1)
+            {
+                // Sequence!
+                Debug.Print("Concatenated {0} and {1}", n.Block.Name, s.Block.Name);
+                n.Type = s.Type;
+                n.Expression = s.Expression;
+                n.Statements.AddRange(s.Statements);
+                regionGraph.RemoveEdge(n, s);
+                ReplaceSuccessors(s, n);
+                RemoveRegion(s);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private bool RefinePredecessor(Region n, Region s)
+        {
+            ISet<Region> unstructuredPreds = regionGraph.Predecessors(s).Where(p => p != n).ToHashSet();
+            if (unstructuredPreds.Count == 0)
+                return false;
+            this.unresolvedNoncycles.Enqueue(Tuple.Create(n, unstructuredPreds));
+            return true;
+
+        }
+        private void RemoveRegion(Region n)
+        {
+            Debug.Print("Removing region {0} from graph", n.Block.Name);
+            regionGraph.Nodes.Remove(n);
         }
 
         /// <summary>
@@ -264,11 +343,15 @@ conditions to be inverses.
         {
             foreach (var n in regionGraph.Nodes)
             {
-                Debug.Print("Node: {0}", n.Block.Name);
+                Debug.Print("Node: {0} ({1})", n.Block.Name, n.Type);
                 Debug.Print("  Pred: {0}", string.Join(" ", regionGraph.Predecessors(n).Select(p => p.Block.Name)));
                 var sb = new StringWriter();
                 n.Write(sb);
                 Debug.Write(sb.ToString());
+                if (n.Expression != null)
+                {
+                    Debug.Print("    Condition: {0}", n.Expression);
+                }
                 Debug.Print("  Succ: {0}", string.Join(" ", regionGraph.Successors(n).Select(s => s.Block.Name)));
                 Debug.WriteLine("");
             }
@@ -322,25 +405,25 @@ doing future pattern matches.
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
-        public void VirtualizeEdge(Region from, Region to, VirtualEdgeType type)
+        public void VirtualizeEdge(VirtualEdge vEdge)
         {
             AbsynStatement stm;
-            switch (type)
+            switch (vEdge.Type)
             {
             case VirtualEdgeType.Continue: stm = new AbsynContinue(); break;
             case VirtualEdgeType.Break: stm = new AbsynBreak(); break;
             case VirtualEdgeType.Goto:
-                stm = new AbsynGoto(to.Block.Name);
-                if (to.Statements.Count > 0 && !(to.Statements[0] is AbsynLabel))
+                stm = new AbsynGoto(vEdge.To.Block.Name);
+                if (vEdge.To.Statements.Count > 0 && !(vEdge.To.Statements[0] is AbsynLabel))
                 {
-                    to.Statements.Insert(0, new AbsynLabel(to.Block.Name));
+                    vEdge.To.Statements.Insert(0, new AbsynLabel(vEdge.To.Block.Name));
                 }
                 break;
             default:
                 throw new InvalidOperationException();
             }
-            CollapseToTailRegion(from, to, stm);
-            regionGraph.RemoveEdge(from, to);
+            CollapseToTailRegion(vEdge.From, vEdge.To, stm);
+            regionGraph.RemoveEdge(vEdge.From, vEdge.To);
 
         }
 
@@ -508,7 +591,7 @@ are added during loop refinement, which we discuss next.
                     n.Expression = null;
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
-                    regionGraph.Nodes.Remove(s);
+                    RemoveRegion(s);
                     DumpGraph();
                     return n;
                 }
@@ -635,10 +718,16 @@ refinement on the loop body, which we describe below.
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
             {
+                // If the head is a Conditional node and one of the nodes 
                 if (!loopNodes.Contains(headSucc[0]))
                     return headSucc[0];
                 if (!loopNodes.Contains(headSucc[1]))
                     return headSucc[1];
+            }
+            foreach (var headPred in regionGraph.Predecessors(head).ToArray())
+            {
+                if (IsBackEdge(headPred, head))
+                    return headPred;
             }
             throw new NotImplementedException();
         }
@@ -693,6 +782,11 @@ refinement on the loop body, which we describe below.
             Continue,
         }
 
+        private bool VirtualizeIrregularEntries(Region header, ISet<Region> loopRegions)
+        {
+            return false;
+        }
+
         /// <summary>
         /// Virtualizes any edge leaving the lexically
         /// contained loop nodes other than the exit edge. Edges that
@@ -709,7 +803,7 @@ refinement on the loop body, which we describe below.
             bool didVirtualize = false;
             foreach (var n in lexicalNodes)
             {
-                var vEdges = new List<Tuple<Region, Region, VirtualEdgeType>>();
+                var vEdges = new List<VirtualEdge>();
                 foreach (var s in regionGraph.Successors(n))
                 {
                     if (!lexicalNodes.Contains(s))
@@ -722,13 +816,13 @@ refinement on the loop body, which we describe below.
                         else
                             vType = VirtualEdgeType.Goto;
 
-                        vEdges.Add(Tuple.Create(n, s, vType));
+                        vEdges.Add(new VirtualEdge(n, s, vType));
                     }
                 }
                 foreach (var edge in vEdges)
                 {
                     didVirtualize = true;
-                    VirtualizeEdge(edge.Item1, edge.Item2, edge.Item3);
+                    VirtualizeEdge(edge);
                 }
             }
             return didVirtualize;
@@ -750,12 +844,34 @@ structure because they reflect a dominator relationship
         {
             foreach (var n in nodes)
             {
+                var vEdges = new List<VirtualEdge>();
+
                 foreach (var s in regionGraph.Successors(n))
                 {
                     if (!doms.DominatesStrictly(n, s))
-                        VirtualizeEdge(n, s, VirtualEdgeType.Goto);
+                        vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
+                }
+                foreach (var vEdge in vEdges)
+                {
+                    VirtualizeEdge(vEdge);
                 }
             }
         }
+
+        public class VirtualEdge
+        {
+            public Region From;
+            public Region To;
+            public VirtualEdgeType Type;
+
+            public VirtualEdge(Region from, Region to, VirtualEdgeType type)
+            {
+                this.From = from;
+                this.To = to;
+                this.Type = type;
+            }
+        }
     }
+
+
 }

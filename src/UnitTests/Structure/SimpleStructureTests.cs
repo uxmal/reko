@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Structure
                 proc.Write(false, fut.TextWriter);
                 fut.TextWriter.WriteLine();
 
-                StructureAnalysis sa = new StructureAnalysis(proc);
+                var sa = new Reko.Structure.Schwartz.ProcedureStructurer(proc);
                 sa.Structure();
                 CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
                 fmt.Write(proc);
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Structure
                     proc.Write(false, fut.TextWriter);
                     fut.TextWriter.WriteLine();
 
-                    var sa = new StructureAnalysis(proc);
+                    var sa = new Reko.Structure.Schwartz.ProcedureStructurer(proc);
                     sa.Structure();
                     var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
                     fmt.Write(proc);
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Structure
                     proc.Write(false, fut.TextWriter);
                     fut.TextWriter.WriteLine();
 
-                    var sa = new StructureAnalysis(proc);
+                    var sa = new Reko.Structure.Schwartz.ProcedureStructurer(proc);
                     sa.Structure();
                     var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
                     fmt.Write(proc);
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Structure
                 proc.Write(false, fut.TextWriter);
                 fut.TextWriter.WriteLine();
 
-                StructureAnalysis sa = new StructureAnalysis(proc);
+                var sa = new Reko.Structure.Schwartz.ProcedureStructurer(proc);
                 sa.Structure();
                 CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
                 fmt.Write(proc);
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Structure
             {
                 var cfgc = new ControlFlowGraphCleaner(proc);
                 cfgc.Transform();
-                var sa = new StructureAnalysis(proc);
+                var sa = new Reko.Structure.Schwartz.ProcedureStructurer(proc);
                 sa.Structure();
                 var fmt = new CodeFormatter(new TextFormatter(sw));
                 fmt.Write(proc);
@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Structure
             {
                 var cfgc = new ControlFlowGraphCleaner(proc);
                 cfgc.Transform();
-                var sa = new StructureAnalysis(proc);
+                var sa = new Reko.Structure.Schwartz.ProcedureStructurer(proc);
                 sa.Structure();
                 var fmt = new CodeFormatter(new TextFormatter(sw));
                 fmt.Write(proc);
