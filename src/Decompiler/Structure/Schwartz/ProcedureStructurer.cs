@@ -101,7 +101,14 @@ ensure that progress can be made in the next iteration.
                 DumpGraph();
                 foreach (var n in postOrder) 
                 {
-                    entry = Dfs(n);
+                    if (IsCyclic(n))
+                    {
+                        ReduceCyclic(n);
+                    }
+                    else
+                    {
+                        ReduceAcyclic(n);
+                    }
                 }
                 ProcessUnresolvedRegions();
                 newCount = regionGraph.Nodes.Count;
@@ -109,36 +116,6 @@ ensure that progress can be made in the next iteration.
             if (newCount > 1)
                 Debug.WriteLine("WARNING: could not reduce graph");
             return entry;
-        }
-
-        private Region Dfs(Region n)
-        {
-            Debug.Print("DFS: visiting node {0}", n.Block.Name);
-            if (!IsCyclic(n))
-            {
-                return ReduceAcyclic(n);
-            }
-            else
-            {
-                return MatchCyclic(n);
-            }
-        }
-
-        public bool ProcessUnresolvedRegions()
-        {
-            if (unresolvedCycles.Count != 0)
-            {
-                var cycle = unresolvedCycles.Dequeue();
-                RefineLoop(cycle.Item1, cycle.Item2);
-                return true;
-            }
-            if (unresolvedNoncycles.Count != 0)
-            {
-                var acycle = unresolvedNoncycles.Dequeue();
-                LastResort(acycle.Item2);
-                return true;
-            }
-            return false; 
         }
 
         /// <summary>
@@ -235,6 +212,24 @@ conditions to be inverses.
             } while (didReduce);
             return n;
         }
+
+        public bool ProcessUnresolvedRegions()
+        {
+            if (unresolvedCycles.Count != 0)
+            {
+                var cycle = unresolvedCycles.Dequeue();
+                RefineLoop(cycle.Item1, cycle.Item2);
+                return true;
+            }
+            if (unresolvedNoncycles.Count != 0)
+            {
+                var acycle = unresolvedNoncycles.Dequeue();
+                LastResort(acycle.Item2);
+                return true;
+            }
+            return false;
+        }
+
 
         private bool ReduceIfRegion(Region n)
         {
@@ -544,7 +539,7 @@ are added during loop refinement, which we discuss next.
 
 #endif
 
-        public Region MatchCyclic(Region n)
+        public Region ReduceCyclic(Region n)
         {
             var loopNodes = new LoopFinder<Region>(regionGraph, n, doms).LoopNodes;
             var succs = regionGraph.Successors(n).ToArray();
@@ -552,9 +547,18 @@ are added during loop refinement, which we discuss next.
             {
                 if (s == n)
                 {
-                    // DoWhile!
-                    var loop = new AbsynDoWhile(s.Statements, s.Expression);
-                    n.Statements = new List<AbsynStatement> { loop };
+                    AbsynStatement loopStm;
+                    if (succs.Length == 1)
+                    {
+                        // Infinite loop.
+                        loopStm = new AbsynWhile(Constant.True(), s.Statements);
+                    }
+                    else
+                    {
+                        // DoWhile!
+                        loopStm = new AbsynDoWhile(s.Statements, s.Expression);
+                    }
+                    n.Statements = new List<AbsynStatement> { loopStm };
                     n.Type = RegionType.Linear;
                     n.Expression = null;
                     regionGraph.RemoveEdge(n, s);

@@ -405,35 +405,55 @@ end_fn:
         }
 
         [Test]
-        public void ProcStr_DoWhileIf()
+        public void ProcStr_UnstructuredExit()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            m.Label("loopheader");
+            m.BranchIf(m.Fn("foo"), "done");
 
-            m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
-            m.Assign(r1, m.IAdd(r1, 4));
-            m.Assign(r2, m.IAdd(r2, 4));
-            m.BranchIf(m.Eq(r1, r2), "loop");
+            m.SideEffect(m.Fn("bar"));
+            m.BranchIf(m.Fn("foo"), "unstructuredexit");
+            m.SideEffect(m.Fn("bar"));
+            m.Jump("loopheader");
 
             m.Label("done");
-            m.Return(r2);
+            m.SideEffect(m.Fn("bar"));
+
+            m.Label("unstructuredexit");
+            m.SideEffect(m.Fn("bar"));
+            m.Return();
 
             var sExp =
-@"    while (r1 != r2)
+@"    while (!foo())
     {
-        Mem0[r1:word32] = Mem0[r2:word32];
-        if (Mem0[r2:word32])
-        {
-            r2 = 0x00000000;
-            goto end_fn;
-        }
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        bar();
+        if (foo())
+            goto unstructuredexit;
+        bar();
     }
-    r2 = 0xFFFFFFFF;
-end_fn:
-    return r2;
+    bar();
+unstructuredexit:
+    bar();
+    return;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void ProcStr_InfiniteLoop()
+        {
+            var r1 = m.Reg32("r1");
+
+            m.Label("head");
+            m.Assign(r1, 0);
+
+            m.Label("loop");
+            m.Assign(r1, m.IAdd(r1, 1));
+            m.Jump("loop");
+
+            var sExp =
+@"    r1 = 0x00000000;
+    while (true)
+        r1 = r1 + 0x00000001;
 ";
             RunTest(sExp, m.Procedure);
         }
