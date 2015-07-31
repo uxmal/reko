@@ -50,6 +50,11 @@ namespace Reko.Structure.Schwartz
         }
 
         public Expression Expression { get; set; }
+
+        public override string ToString()
+        {
+            return Block.Name;
+        }
     }
 
     public enum RegionType

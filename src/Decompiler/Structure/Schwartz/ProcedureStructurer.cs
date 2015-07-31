@@ -33,20 +33,19 @@ namespace Reko.Structure.Schwartz
 {
     // Based on:
     // Native x86 Decompilation using Semantics-Preserving Structural Analysis
-    // and Iterative Control-Flow Structuring
+    // and Iterative Control-Flow Structuring.
+
     public class ProcedureStructurer
     {
         private DirectedGraph<Region> regionGraph;
         private DirectedGraph<Region> newGraph;
         private  DominatorGraph<Region> doms;
-        private List<Tuple<Region, ISet<Region>>> unresolvedCycles;
+        private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
 
         public ProcedureStructurer()
         {
 
         }
-
-        public bool Changed { get; set; }
 
         public Region Execute(Procedure proc)
         {
@@ -84,9 +83,8 @@ ensure that progress can be made in the next iteration.
             newGraph = new DiGraph<Region>();
             do
             {
-                this.Changed = false;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
-                this.unresolvedCycles = new List<Tuple<Region, ISet<Region>>>(); 
+                this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>(); 
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
                 Debug.Print("Iterating....");
                 DumpGraph();
@@ -94,7 +92,8 @@ ensure that progress can be made in the next iteration.
                 {
                     entry = Dfs(n);
                 }
-            } while (Changed);
+                ProcessUnresolvedCycles();
+            } while (regionGraph.Nodes.Count > 1);
             return entry;
         }
 
@@ -109,6 +108,14 @@ ensure that progress can be made in the next iteration.
             {
                 return MatchCyclic(n);
             }
+        }
+
+        public void ProcessUnresolvedCycles()
+        {
+            if (unresolvedCycles.Count == 0)
+                return;
+            var cycle = unresolvedCycles.Dequeue();
+            RefineLoop(cycle.Item1, cycle.Item2);
         }
 
         /// <summary>
@@ -190,25 +197,26 @@ conditions to be inverses.
                 var thS = SingleSuccessor(th);
                 if (elS == th)
                 {
-                    // If then!
+                    // Collapse (If then) into n.
                     n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements));
                     regionGraph.RemoveEdge(n, el);
                     regionGraph.RemoveEdge(el, elS);
+                    regionGraph.Nodes.Remove(el);
                     n.Type = RegionType.Linear;
-                    Changed = true;
                     return n;
                 }
                 if (elS != null && elS == thS)
                 {
-                    // If then else
+                    // Collapse (If then else) into n.
                     n.Statements.Add(new AbsynIf(n.Expression, th.Statements, el.Statements));
                     regionGraph.RemoveEdge(n, el);
                     regionGraph.RemoveEdge(n, th);
                     regionGraph.RemoveEdge(el, elS);
                     regionGraph.RemoveEdge(th, thS);
+                    regionGraph.Nodes.Remove(th);
+                    regionGraph.Nodes.Remove(el);
                     regionGraph.AddEdge(n, elS);
                     n.Type = RegionType.Linear;
-                    Changed = true;
                     return n;
                 }
                 return n;
@@ -226,7 +234,7 @@ conditions to be inverses.
                     n.Statements.AddRange(s.Statements);
                     regionGraph.RemoveEdge(n, s);
                     ReplaceSuccessors(s, n);
-                    Changed = true;
+                    regionGraph.Nodes.Remove(s);
                     return n;
                 }
             }
@@ -310,17 +318,52 @@ doing future pattern matches.
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
-        public void VirtualizeEdge(Region from, Region to)
+        public void VirtualizeEdge(Region from, Region to, VirtualEdgeType type)
         {
+            AbsynStatement stm;
+            switch (type)
+            {
+            case VirtualEdgeType.Continue: stm = new AbsynContinue(); break;
+            case VirtualEdgeType.Break: stm = new AbsynBreak(); break;
+            case VirtualEdgeType.Goto:
+                stm = new AbsynGoto(to.Block.Name);
+                if (to.Statements.Count > 0 && !(to.Statements[0] is AbsynLabel))
+                {
+                    to.Statements.Insert(0, new AbsynLabel(to.Block.Name));
+                }
+                break;
+            default:
+                throw new InvalidOperationException();
+            }
+            CollapseToTailRegion(from, to, stm);
             regionGraph.RemoveEdge(from, to);
-            string labelName = to.Block.Name;
-            to.Statements.Insert(0, new AbsynLabel(labelName));
-            CollapseToTailRegion(from, labelName);
+
         }
 
-        public void CollapseToTailRegion(Region from, string labelName)
+        public void CollapseToTailRegion(Region from, Region to, AbsynStatement stm)
         {
-            throw new NotImplementedException();
+            if (from.Type == RegionType.Condition)
+            {
+                var succs = regionGraph.Successors(from).ToArray();
+                if (succs[0] == to)
+                {
+                    from.Expression = from.Expression.Invert();
+                }
+                var ifStm = new AbsynIf
+                {
+                    Condition = from.Expression,
+                    Then = { stm }
+                };
+                from.Statements.Add(ifStm);
+                from.Type = RegionType.Linear;
+            }
+            else if (from.Type == RegionType.Linear)
+            {
+                from.Statements.Add(stm);
+                from.Type = RegionType.Tail;
+            }
+            else
+                throw new NotImplementedException();
         }
 
 #if NILZ
@@ -430,7 +473,6 @@ are added during loop refinement, which we discuss next.
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
                     DumpGraph();
-                    Changed = true;
                     return n;
                 }
             }
@@ -462,11 +504,14 @@ are added during loop refinement, which we discuss next.
                     n.Expression = null;
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
+                    regionGraph.Nodes.Remove(s);
                     DumpGraph();
-                    Changed = true;
                     return n;
                 }
             }
+
+            // It's a cyclic region, but we are unable to collapse it. Schedule it for refinement after the whole graph has been traversed.
+            this.unresolvedCycles.Enqueue(Tuple.Create(n, loopNodes));
             // RefineLoop(n, loopNodes);
             //this.unresolvedCycles.Add(Tuple.Create(n, loopNodes));
             return n;
@@ -539,19 +584,19 @@ refinement steps did not remove any edges during the latest
 iteration of the algorithm. For this, we use the last resort
 refinement on the loop body, which we describe below.
 #endif
-        private void RefineLoop(Region n, ISet<Region> loopNodes)
+        private void RefineLoop(Region head, ISet<Region> loopNodes)
         {
-           n = EnsureSingleEntry(n, loopNodes);
-           var follow = DetermineFollowRegion(n, loopNodes);
-           var lexicalNodes = GetLexicalNodes(follow, loopNodes);
-           var virtualized = VirtualizeIrregularExits(n, follow, lexicalNodes);
+           head = EnsureSingleEntry(head, loopNodes);
+           var follow = DetermineFollowRegion(head, loopNodes);
+           var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
+           var virtualized = VirtualizeIrregularExits(head, follow, lexicalNodes);
            if (virtualized)
                return;
            LastResort(lexicalNodes);
         }
 
         /// <summary>
-        /// Ensure the loop /// has a single entrance (nodes with 
+        /// Ensure the loop has a single entrance (nodes with 
         /// incoming edges from outside the loop).  If there are 
         /// multiple entrances to the loop, we select the one with 
         /// the most incoming edges, and virtualize the other 
@@ -602,20 +647,87 @@ refinement on the loop body, which we describe below.
         /// excluding any nodes reachable from the loop’s successor
         /// without going through the loop header.   
         /// </summary>
-        private ISet<Region> GetLexicalNodes(Region follow, ISet<Region> loopNodes)
+        private ISet<Region> GetLexicalNodes(Region head, Region follow, ISet<Region> loopNodes)
         {
+            var excluded = new HashSet<Region>();
+            FindReachableRegions(follow, head, excluded);
             var lexNodes = new HashSet<Region>();
             var wl = new  WorkList<Region>(loopNodes);
             Region item;
             while (wl.GetWorkItem(out item))
             {
+                if (loopNodes.Contains(item))
+                {
+                    lexNodes.Add(item);
+                    wl.AddRange(regionGraph.Successors(item).Where(s => !lexNodes.Contains(s)));
+                }
+                else if (doms.DominatesStrictly(head, item) && 
+                    !excluded.Contains(item))
+                {
+                    lexNodes.Add(item);
+                    wl.AddRange(regionGraph.Successors(item).Where(s => !lexNodes.Contains(s)));
+                }
             }
-            throw new NotImplementedException();
+            lexNodes.Remove(head);
+            return lexNodes;
         }
 
-        private bool VirtualizeIrregularExits(Region n, Region follow, ISet<Region> lexicalNodes)
+        void FindReachableRegions(Region n, Region head, ISet<Region> regions)
         {
-            throw new NotImplementedException();
+            regions.Add(n);
+            foreach (var succ in regionGraph.Successors(n))
+            {
+                if (!regions.Contains(succ) && succ != head)
+                    FindReachableRegions(succ, head, regions);
+            }
+        }
+
+        public enum VirtualEdgeType
+        {
+            Goto,
+            Break,
+            Continue,
+        }
+
+        /// <summary>
+        /// Virtualizes any edge leaving the lexically
+        /// contained loop nodes other than the exit edge. Edges that
+        /// go to the loop header use the continue tail regions, while
+        /// edges that go to the loop successor use the break
+        /// regions. Any other virtualized edge becomes a goto.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="follow"></param>
+        /// <param name="lexicalNodes"></param>
+        /// <returns>True if at least one edge was virtualized.</returns>
+        private bool VirtualizeIrregularExits(Region header, Region follow, ISet<Region> lexicalNodes)
+        {
+            bool didVirtualize = false;
+            foreach (var n in lexicalNodes)
+            {
+                var vEdges = new List<Tuple<Region, Region, VirtualEdgeType>>();
+                foreach (var s in regionGraph.Successors(n))
+                {
+                    if (!lexicalNodes.Contains(s))
+                    {
+                        VirtualEdgeType vType;
+                        if (s == header)
+                            continue; // vType = VirtualEdgeType.Continue;
+                        else if (s == follow)
+                            vType = VirtualEdgeType.Break;
+                        else
+                            vType = VirtualEdgeType.Goto;
+
+                        vEdges.Add(Tuple.Create(n, s, vType));
+                    }
+                }
+                foreach (var edge in vEdges)
+                {
+                    didVirtualize = true;
+                    VirtualizeEdge(edge.Item1, edge.Item2, edge.Item3);
+                }
+            }
+            return didVirtualize;
         }
 #if NILZ
 3.7 Last Resort Refinement
@@ -637,7 +749,7 @@ structure because they reflect a dominator relationship
                 foreach (var s in regionGraph.Successors(n))
                 {
                     if (!doms.DominatesStrictly(n, s))
-                        VirtualizeEdge(n, s);
+                        VirtualizeEdge(n, s, VirtualEdgeType.Goto);
                 }
             }
         }

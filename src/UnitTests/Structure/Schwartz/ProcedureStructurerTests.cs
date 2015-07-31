@@ -301,12 +301,11 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Return(r2);
 
             var sExp =
-@"    while (true)
+@"    while (r1 != r2)
     {
-        Mem0[0x00001000:word32] = r2;
-        if (r1 != r2)
-            break;
         Mem0[r1:word32] = Mem0[r2:word32];
+        if (Mem0[r2:word32])
+            break;
         r1 = r1 + 0x00000004;
         r2 = r2 + 0x00000004;
     }
