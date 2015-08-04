@@ -18,6 +18,10 @@ other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompiler the binary
 (for instance if the binary is your own.) 
 
+## Version 0.5.1.0
+-14. Function code preview bug  
+-17. Improve numeric formatting
+
 ## Version 0.5.0.0
 * Moved project from SourceForge
 * Renamed project to 'Reko'
