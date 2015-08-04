@@ -289,19 +289,17 @@ l0C00_0251:
 			fn0C00_0265();
 			do
 				;
-			while (Mem171[0x0800:0x81B0:word16] == 0x0000 || Mem171[0x0800:0x5404:word16] >= 0x0046);
+			while (Mem140[0x0800:0x81B0:word16] == 0x0000 || Mem140[0x0800:0x5404:word16] >= 0x0046);
 			fn0C00_028F(0x53E7, 0x0800);
 			fn0C00_028B();
 			fn0C00_027F();
 			fn0C00_0280();
 			fn0C00_027B();
 			fn0C00_0266();
-			while (true)
+			while ((Mem187[0x0800:0x919E:word16] & 0x01FF) != 0x0000)
 			{
-				if ((Mem187[0x0800:0x919E:word16] & 0x01FF) != 0x0000)
-				{
-					fn0C00_0289();
-					if (Mem187[0x0800:0x0480:word16] != 0x0000)
+				fn0C00_0289();
+				if (Mem187[0x0800:0x0480:word16] != 0x0000)
 						fn0C00_028D();
 					else
 						Mem193[0x0800:0xC3CF:word16] = 0x0000;

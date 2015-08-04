@@ -317,7 +317,7 @@ namespace Reko
             WriteHeaderComment(Path.GetFileName(program.OutputFilename), program, w);
             w.WriteLine("#include \"{0}\"", Path.GetFileName(program.TypesFilename));
             w.WriteLine();
-            var fmt = new CodeFormatter(new TextFormatter(w));
+            var fmt = new AbsynCodeFormatter(new TextFormatter(w));
             foreach (Procedure proc in program.Procedures.Values)
             {
                 try

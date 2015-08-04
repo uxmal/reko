@@ -40,6 +40,7 @@ namespace Reko.Structure.Schwartz
         private  DominatorGraph<Region> doms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
+        private Queue<Region> tailRegions;
         private Procedure proc;
 
         public ProcedureStructurer(Procedure proc)
@@ -96,25 +97,42 @@ ensure that progress can be made in the next iteration.
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
+                this.tailRegions = new Queue<Region>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
                 Debug.Print("== Graph contains {0} nodes", regionGraph.Nodes.Count);
                 DumpGraph();
-                foreach (var n in postOrder) 
+                foreach (var n in postOrder)
                 {
-                    if (IsCyclic(n))
-                    {
-                        ReduceCyclic(n);
-                    }
-                    else
-                    {
-                        ReduceAcyclic(n);
-                    }
+                    bool didReduce = false;
+                    do {
+                        if (IsCyclic(n))
+                        {
+                            didReduce = ReduceCyclic(n);
+                        }
+                        else
+                        {
+                            didReduce = ReduceAcyclic(n, false);
+                        }
+                    } while (didReduce);
                 }
-                ProcessUnresolvedRegions();
+
                 newCount = regionGraph.Nodes.Count;
-            } while (newCount > 1 && newCount < oldCount);
-            if (newCount > 1)
-                Debug.WriteLine("WARNING: could not reduce graph");
+                if (newCount == oldCount)
+                {
+                    bool didreduce = false;
+                    // Didn't make any progress, try removing tail blocks.
+                    foreach (var n in postOrder.Where(n => regionGraph.Nodes.Contains(n)))
+                    {
+                        didreduce = !IsCyclic(n) &&  ReduceAcyclic(n, true);
+                        if (didreduce)
+                            break;
+                            
+                    }
+                    // Didn't make any progress, try to trim away stray gotos.
+                    if (!didreduce)
+                        ProcessUnresolvedRegions();
+                }
+            } while (regionGraph.Nodes.Count > 1);
             return entry;
         }
 
@@ -188,16 +206,13 @@ conditions to be inverses.
         /// Attempts to match and reduce acyclic region.
         /// </summary>
         /// <param name="n"></param>
-        /// <returns></returns>
-        public Region ReduceAcyclic(Region n)
+        /// <returns>True if a reduction occurred</returns>
+        public bool ReduceAcyclic(Region n, bool reduceTailregions)
         {
-            bool didReduce;
-            do
-            {
-                didReduce = false;
+            bool didReduce = false;
                 if (n.Type == RegionType.Condition)
                 {
-                    didReduce = ReduceIfRegion(n);
+                    didReduce = ReduceIfRegion(n, reduceTailregions);
                 }
                 else if (this.regionGraph.Successors(n).Count == 1)
                 {
@@ -207,10 +222,8 @@ conditions to be inverses.
                 {
                     //$NYI: switches.
                     didReduce = false;
-                    break;
                 }
-            } while (didReduce);
-            return n;
+               return didReduce;
         }
 
         public bool ProcessUnresolvedRegions()
@@ -231,14 +244,14 @@ conditions to be inverses.
         }
 
 
-        private bool ReduceIfRegion(Region n)
+        private bool ReduceIfRegion(Region n, bool reduceTailregions)
         {
             var ss = regionGraph.Successors(n).ToArray();
             var el = ss[0];
             var th = ss[1];
             var elS = SingleSuccessor(el);
             var thS = SingleSuccessor(th);
-            if (elS == th || el.Type == RegionType.Tail)
+            if (elS == th || (reduceTailregions && el.Type == RegionType.Tail))
             {
                 if (RefinePredecessor(n, el))
                     return false;
@@ -251,7 +264,7 @@ conditions to be inverses.
                 n.Type = RegionType.Linear;
                 return true;
             }
-            else if (thS == el || th.Type == RegionType.Tail)
+            else if (thS == el || (reduceTailregions && th.Type == RegionType.Tail))
             {
                 if (RefinePredecessor(n, th))
                     return false;
@@ -539,10 +552,18 @@ are added during loop refinement, which we discuss next.
 
 #endif
 
-        public Region ReduceCyclic(Region n)
+        public bool ReduceCyclic(Region n)
         {
+            bool didReduce = false;
             var loopNodes = new LoopFinder<Region>(regionGraph, n, doms).LoopNodes;
-            var succs = regionGraph.Successors(n).ToArray();
+            Region[] succs;
+            for (; ; )
+            {
+                succs = regionGraph.Successors(n).ToArray();
+                if (succs.Length != 1 || !ReduceSequence(n))
+                    break;
+                didReduce = true;
+            }
             foreach (var s in succs)
             {
                 if (s == n)
@@ -564,7 +585,7 @@ are added during loop refinement, which we discuss next.
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
                     DumpGraph();
-                    return n;
+                    return true;
                 }
             }
             foreach (var s in succs)
@@ -597,15 +618,13 @@ are added during loop refinement, which we discuss next.
                     regionGraph.RemoveEdge(s, n);
                     RemoveRegion(s);
                     DumpGraph();
-                    return n;
+                    return true;
                 }
             }
 
             // It's a cyclic region, but we are unable to collapse it. Schedule it for refinement after the whole graph has been traversed.
             this.unresolvedCycles.Enqueue(Tuple.Create(n, loopNodes));
-            // RefineLoop(n, loopNodes);
-            //this.unresolvedCycles.Add(Tuple.Create(n, loopNodes));
-            return n;
+            return didReduce;
         }
 #if NILZ
 3.6 Loop Refinement 

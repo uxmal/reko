@@ -148,6 +148,7 @@
     <Compile Include="Assemblers\M68k\M68kAssemblerTests.cs" />
     <Compile Include="Assemblers\M68k\M68kTextAssemblerTests.cs" />
     <Compile Include="Assemblers\Pdp11\Pdp11TextAssemblerTests.cs" />
+    <Compile Include="Core\AbsynCodeFormatterTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ImportResolverTests.cs" />

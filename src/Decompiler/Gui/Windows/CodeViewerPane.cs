@@ -81,7 +81,7 @@ namespace Reko.Gui.Windows
 
             this.proc = proc;
             var tsf = new TextSpanFormatter();
-            var fmt = new CodeFormatter(tsf);
+            var fmt = new AbsynCodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
             this.TextView.Model = tsf.GetModel();

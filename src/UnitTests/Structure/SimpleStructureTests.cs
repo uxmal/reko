@@ -352,21 +352,22 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 	word32 edx_21 = 0x00000000;
 	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C;
 	if (true)
-	{
-l00100031:
-		do
+		while (true)
 		{
 			word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32];
-			if (dwArg08 >=u ecx_56 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
-				goto l0010004D;
+			if (dwArg08 <u ecx_56 || dwArg08 >=u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
+				break;
 			edx_21 = edx_21 + 0x00000001;
 			eax_24 = eax_24 + 0x00000028;
-		} while (edx_21 <u esi_20);
+			if (edx_21 >=u esi_20)
+				goto l0010004B;
+		}
+		else
+		{
 l0010004B:
 		eax_24 = 0x00000000;
 	}
 	else
-		goto l0010004B;
 	return eax_24;
 }
 ===

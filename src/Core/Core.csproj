@@ -225,6 +225,7 @@
     <Compile Include="Operators\CommaOperator.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
     <Compile Include="Output\GlobalDataWriter.cs" />
+    <Compile Include="Output\AbsynCodeFormatter.cs" />
     <Compile Include="Output\TextFormatter.cs" />
     <Compile Include="Output\TypeReferenceFormatter.cs" />
     <Compile Include="PointerScanner.cs" />

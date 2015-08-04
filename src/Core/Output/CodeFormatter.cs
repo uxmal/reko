@@ -678,13 +678,32 @@ namespace Reko.Core.Output
 			}
 		}
 
+        protected virtual string SignedFormatString(PrimitiveType type, long value)
+        {
+            return "{0}";
+        }
+
+        protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
+        {
+            switch (type.Size)
+            {
+            case 1: return "0x{0:X2}";
+            case 2: return "0x{0:X4}";
+            case 4: return "0x{0:X8}";
+            case 8: return "0x{0:X16}";
+            case 16: return "0x{0:X16}";
+            default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bytes are not supported.", type.Size));
+            }
+
+        }
+
         private string FormatString(PrimitiveType type, object value)
         {
             string format;
             switch (type.Domain)
             {
             case Domain.SignedInt:
-                return "{0}";
+                return SignedFormatString(type, Math.Abs(Convert.ToInt64(value)));
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -706,16 +725,7 @@ namespace Reko.Core.Output
                 default: throw new ArgumentOutOfRangeException("Only real types of size 4 and 8 are supported.");
                 }
             default:
-                var iVal = Convert.ToUInt64(value);
-                switch (type.Size)
-                {
-                case 1: return "0x{0:X2}";
-                case 2: return "0x{0:X4}";
-                case 4: return "0x{0:X8}";
-                case 8: return "0x{0:X16}";
-                case 16: return "0x{0:X16}";
-                default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bytes are not supported.", type.Size));
-                }
+                return UnsignedFormatString(type,  Convert.ToUInt64(value));
             }
         }
 
