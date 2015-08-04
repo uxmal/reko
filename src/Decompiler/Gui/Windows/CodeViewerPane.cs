@@ -74,6 +74,10 @@ namespace Reko.Gui.Windows
 
         #endregion
 
+        /// <summary>
+        /// Displace the procedure <paramref name="proc"/> in the code window.
+        /// </summary>
+        /// <param name="proc"></param>
         public void DisplayProcedure(Procedure proc)
         {
             if (codeView == null || proc == null)
@@ -93,6 +97,11 @@ namespace Reko.Gui.Windows
             if (procDst == null)
                 return;
             DisplayProcedure(procDst);
+            var pbSvc = services.GetService<IProjectBrowserService>();
+            if (pbSvc != null)
+            {
+                pbSvc.SelectedObject = procDst;
+            }
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

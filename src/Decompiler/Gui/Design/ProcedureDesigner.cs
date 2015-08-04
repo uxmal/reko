@@ -38,6 +38,7 @@ namespace Reko.Gui.Design
 
         public ProcedureDesigner(Program program, Procedure procedure, Procedure_v1 userProc, Address address)
         {
+            base.Component = procedure;
             this.program = program;
             this.procedure = procedure;
             this.userProc = userProc;
@@ -52,6 +53,8 @@ namespace Reko.Gui.Design
 
         public override void Initialize(object obj)
         {
+            base.Initialize(obj);
+            base.Component = obj;
             SetTreeNodeText();
         }
 

@@ -37,14 +37,14 @@ namespace Reko.UnitTests.Mocks
                 Label("very_positive");
                     Assign(ax,12);
                 Label("small");
-                Jump("join");
+                Goto("join");
             Label("negatory");
                 Assign(cl, 1);
                 BranchIf(Ge(ax, -12), "negsmall");
                 Label("very_negative");
                     Assign(ax,-12);
                 Label("negsmall");
-                Jump("join");
+                Goto("join");
             Label("join");
             Return();
         }

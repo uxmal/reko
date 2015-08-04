@@ -36,22 +36,22 @@ namespace Reko.UnitTests.Structure
 
 			BranchIf(Ne(r, 0), "not_0");
 			Assign(x, 0);
-			Jump("done");
+			Goto("done");
 
 			Label("not_0");
 			BranchIf(Ne(r, 1), "not_1");
 			Assign(x, 1);
-			Jump("done");
+			Goto("done");
 
 			Label("not_1");
 			BranchIf(Ne(r, 2), "not_2");
 			Assign(x, 2);
-			Jump("done");
+			Goto("done");
 
 			Label("not_2");
 			BranchIf(Ne(r, 3), "default");
 			Assign(x, 3);
-			Jump("done");
+			Goto("done");
 
 			Label("default");
 			Assign(x, -1);

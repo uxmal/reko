@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Scanning
             {
                 var r1 = m.Register("r1");
                 m.Assign(r1, m.LoadDw(r1));
-                m.Jump("next");
+                m.Goto("next");
                 m.Label("next");
                 m.Assign(r1, m.LoadDw(m.Word32(0x123123)));
                 m.Return();

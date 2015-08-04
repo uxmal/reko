@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Mocks
 			var i = base.Local32("i");
 			var a = base.Local32("a");
 			Assign(i, 0);
-			Jump("loopHdr");
+			Goto("loopHdr");
 			
 			Label("loop");
 			Store(IAdd(a, IMul(i, 4)), 0);
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Mocks
 			var i = base.Local32("i");
 			var a = base.Local32("a");
 			Assign(i, 100);
-			Jump("loopHdr");
+			Goto("loopHdr");
 			
 			Label("loop");
 			Sub(i, i, 1);

@@ -220,7 +220,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Assign(r1, 0);
-                m.Jump("done");
+                m.Goto("done");
 
                 m.Label("ge3");
                 m.Assign(r1, 1);
@@ -293,7 +293,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Store(m.IAdd(bp, 8), m.Word16(3));
-                m.Jump("done");
+                m.Goto("done");
 
                 m.Label("ge3");
                 m.Store(m.IAdd(bp, 8), Constant.Int16(-3));
@@ -413,7 +413,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Store(m.IAdd(bp, -8), r1);
-                m.Jump("done");
+                m.Goto("done");
 
                 m.Label("ge3");
                 m.Store(m.IAdd(bp, -8), r1);

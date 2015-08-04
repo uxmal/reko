@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Mocks
 			BranchIf(Eq(v, vv), "l5_found");
 			BranchIf(Lt(v, vv), "l4_lt");
 			Assign(t, Load(PrimitiveType.Word32, IAdd(t, 8)));
-			Jump("l0_seek");
+			Goto("l0_seek");
 
 			Label("l4_lt");
 			Assign(t, Load(PrimitiveType.Word32, IAdd(t, 4)));

@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Mocks
             BranchIf(Ge(i, 100), "done");
                 Assign(sum, IAdd(sum, i));
                 Assign(i, IAdd(i, 1));
-                Jump("loopHeader");
+                Goto("loopHeader");
 
             Label("done");
             Return(sum);

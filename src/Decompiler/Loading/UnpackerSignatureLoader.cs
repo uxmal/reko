@@ -29,6 +29,10 @@ using System.Xml.Serialization;
 
 namespace Reko.Loading
 {
+    /// <summary>
+    /// Loads unpacker signatures from the (large) XML files that
+    /// store them.
+    /// </summary>
     public class UnpackerSignatureLoader : SignatureLoader
     {
         public override IEnumerable<ImageSignature> Load(string filename)

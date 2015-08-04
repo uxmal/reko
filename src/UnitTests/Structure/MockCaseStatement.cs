@@ -34,10 +34,10 @@ namespace Reko.UnitTests.Structure
             Switch(w, "case0", "case1", "case2");
             Label("case0");
             SideEffect(Fn("fn0"));
-            Jump("done");
+            Goto("done");
             Label("case1");
             SideEffect(Fn("fn1"));
-            Jump("done");
+            Goto("done");
             Label("case2");
             SideEffect(Fn("fn2"));
             Label("done");

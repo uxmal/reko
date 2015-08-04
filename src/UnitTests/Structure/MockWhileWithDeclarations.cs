@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Structure
             BranchIf(Eq(v, 0x20), "exit_loop");
 
             Store(Word32(0x00300000), v);
-            Jump("loopHeader");
+            Goto("loopHeader");
             Label("exit_loop");
             Return();
         }

@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Mocks
 			Label("body");
 			Store(IAdd(a, i), Int8(0));
 			Assign(i, IAdd(i, 1));
-			Jump("loop");
+			Goto("loop");
 		}
 	}
 }

@@ -32,6 +32,10 @@ using System.Text;
 /// 
 namespace Reko.Loading
 {
+    /// <summary>
+    /// UnpackingService is used by loaders that want to look up a particular
+    /// packer based on its signature.
+    /// </summary>
     public class UnpackingService : IUnpackerService
     {
         public UnpackingService(IServiceProvider services)

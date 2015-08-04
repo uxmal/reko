@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Structure
 
 			BranchIf(a0, "b2");
 			SideEffect(Fn("foo", a0));
-			Jump("b3");
+			Goto("b3");
 			Label("b2");
 			SideEffect(Fn("foo", a2));
 			BranchIf(a2, "b4");

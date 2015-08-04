@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Mocks
             return appl;
         }
 
-        public void Jump(string name)
+        public void Goto(string name)
         {
             EnsureBlock(null);
             Block blockTo = BlockOf(name);

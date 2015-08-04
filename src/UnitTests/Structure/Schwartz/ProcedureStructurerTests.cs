@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.BranchIf(m.Le(r1, 0), "thenn");
             m.Label("elsee");
             m.Assign(r1, 0);
-            m.Jump("tail");
+            m.Goto("tail");
 
             m.Label("thenn");
             m.Assign(r1, 1);
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Store(r1, m.LoadDw(r2));
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
-            m.Jump("head");
+            m.Goto("head");
 
             m.Label("done");
             m.Return(r2);
@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             var r2 = m.Reg32("r2");
 
             m.Label("start");
-            m.Jump("head");
+            m.Goto("head");
 
             m.Label("loop");
             m.Store(r1, m.LoadDw(r2));
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Store(r1, m.LoadDw(r2));
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
-            m.Jump("head");
+            m.Goto("head");
 
             m.Label("done");
             m.Return(r2);
@@ -253,11 +253,11 @@ namespace Reko.UnitTests.Structure.Schwartz
                             r2)),
                         m.Byte(0));
                     m.Assign(r2, m.IAdd(r2, 1));
-                    m.Jump("head2");
+                    m.Goto("head2");
 
                 m.Label("done2");
                 m.Assign(r1, m.IAdd(r1, 1));
-                m.Jump("head1");
+                m.Goto("head1");
 
             m.Label("done1");
             m.Return();
@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.BranchIf(m.LoadDw(r2), "done");
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
-            m.Jump("head");
+            m.Goto("head");
 
             m.Label("done");
             m.Return(r2);
@@ -329,12 +329,12 @@ namespace Reko.UnitTests.Structure.Schwartz
 
             m.Label("leaving");
             m.Assign(r2, 0);
-            m.Jump("done");
+            m.Goto("done");
 
             m.Label("rest");
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
-            m.Jump("head");
+            m.Goto("head");
 
             m.Label("done");
             m.Return(r2);
@@ -372,12 +372,12 @@ namespace Reko.UnitTests.Structure.Schwartz
 
             m.Label("leaving");
             m.Assign(r2, 0);
-            m.Jump("end_fn");
+            m.Goto("end_fn");
 
             m.Label("rest");
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
-            m.Jump("head");
+            m.Goto("head");
 
             m.Label("done");
             m.Assign(r2, -1);
@@ -413,7 +413,7 @@ end_fn:
             m.SideEffect(m.Fn("bar"));
             m.BranchIf(m.Fn("foo"), "unstructuredexit");
             m.SideEffect(m.Fn("bar"));
-            m.Jump("loopheader");
+            m.Goto("loopheader");
 
             m.Label("done");
             m.SideEffect(m.Fn("bar"));
@@ -448,7 +448,7 @@ unstructuredexit:
 
             m.Label("loop");
             m.Assign(r1, m.IAdd(r1, 1));
-            m.Jump("loop");
+            m.Goto("loop");
 
             var sExp =
 @"    r1 = 0x00000000;

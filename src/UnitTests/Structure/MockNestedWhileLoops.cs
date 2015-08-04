@@ -42,10 +42,10 @@ namespace Reko.UnitTests.Structure
 
                 Store(Word32(0x1234), IAdd(Load(PrimitiveType.Int32, Word32(0x1234)), j));
                     Assign(j,IAdd(j,1));
-                    Jump("inner");
+                    Goto("inner");
                 Label("done_inner");
                 Assign(i, IAdd(i, 1));
-                Jump("outer");
+                Goto("outer");
             Label("done");
             Return();
         }

@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Structure
                 m.BranchIf(m.LocalBool("a"), "branch_true");
 
                 m.SideEffect(m.Fn("foo"));
-                m.Jump("join");
+                m.Goto("join");
                 m.Label("branch_true");
                 m.SideEffect(m.Fn("bar"));
                 m.Label("join");

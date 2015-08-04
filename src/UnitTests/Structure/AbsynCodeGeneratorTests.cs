@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Structure
                 m.BranchIf(m.Fn("foo"), "else");
                 m.Label("then");
                     m.SideEffect(m.Fn("Then"));
-                    m.Jump("end");
+                    m.Goto("end");
                 m.Label("else");
                     m.SideEffect(m.Fn("Else"));
                 m.Label("end");
@@ -383,7 +383,7 @@ namespace Reko.UnitTests.Structure
                 m.Assign(m.Local32("done"), m.Fn("fn"));
                 m.BranchIf(m.Local32("breakomatic"), "done");
                 m.Assign(m.Local32("grux"), m.Fn("foo"));
-                m.Jump("head");
+                m.Goto("head");
                 m.Label("loop_done");
                 m.SideEffect(m.Fn("extra"));
                 m.Label("done");
@@ -496,7 +496,7 @@ namespace Reko.UnitTests.Structure
                 m.Label("hop");
                 m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
                 m.SideEffect(m.Fn("bar"));
-                m.Jump("Infinity");
+                m.Goto("Infinity");
                 m.Return();
             });
             RunTest(

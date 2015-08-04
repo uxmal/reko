@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Structure
 
                 m.Label("left");
                 m.SideEffect(m.Fn("Left"));
-                m.Jump("right");
+                m.Goto("right");
 
                 m.Label("right");
                 m.SideEffect(m.Fn("Right"));

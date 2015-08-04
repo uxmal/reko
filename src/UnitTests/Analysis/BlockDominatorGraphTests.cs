@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Analysis
 			BranchIf(f, "true");
 			Label("false");
 			Assign(r, 1);
-			Jump("join");
+			Goto("join");
 			Label("true");
 			Assign(r, 0);
 			Label("join");

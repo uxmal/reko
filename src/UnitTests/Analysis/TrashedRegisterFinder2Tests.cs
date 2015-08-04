@@ -220,7 +220,7 @@ Constants: cl:0x00
                 m.BranchIf(m.Eq0(ax), "zero");
                 m.Assign(cl, 0);
                 m.Assign(cx, m.Dpb(cx, cl, 0, 8));
-                m.Jump("done");
+                m.Goto("done");
 
                 m.Label("zero");
                 m.Assign(cl, 0);

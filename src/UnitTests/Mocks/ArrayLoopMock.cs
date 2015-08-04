@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Mocks
 			BranchIf(Uge(ptr, 0x04001000), "done");
 			Store(ptr, 0);
 			Assign(ptr, IAdd(ptr, 4));
-			Jump("looptest");
+			Goto("looptest");
 			Label("done");
 			Return();
 		}

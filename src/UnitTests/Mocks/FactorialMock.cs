@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Mocks
 
 			Assign(acc, SMul(acc, n));
 			Sub(n, n, Int32(1));
-			Jump("test");
+			Goto("test");
 
 			Label("done");
 			Return(acc);

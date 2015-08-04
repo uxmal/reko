@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Scanning
                 var r1 = m.Reg32("r1");
                 m.Label("ext_1");
                 m.Assign(r1, 4);
-                m.Jump("Real_entry");
+                m.Goto("Real_entry");
             });
             return b.BuildProgram();
         }
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Scanning
                 var r1 = m.Reg32("r1");
                 m.Label("ext_1");
                 m.Assign(r1, 4);
-                m.Jump("Real_entry");
+                m.Goto("Real_entry");
             });
             return b.BuildProgram();
         }

@@ -58,6 +58,11 @@ namespace Reko.Gui
         }
 
         public IServiceProvider Services { get; private set; }
+        public object SelectedObject
+        {
+            get { return GetSelectedObject(); }
+            set { SetSelectedObject(value); }
+        }
 
         public void Clear()
         {
@@ -120,6 +125,13 @@ namespace Reko.Gui
             if (o == null)
                 return null;
             TreeNodeDesigner des = o as TreeNodeDesigner;
+            if (des != null)
+            {
+                if (des.Component != null)
+                {
+                    o = des.Component;
+                }
+            }
             if (des == null)
             {
                 var attr = o.GetType().GetCustomAttributes(typeof(DesignerAttribute), true);
@@ -142,7 +154,7 @@ namespace Reko.Gui
         private ITreeNode CreateTreeNode(object o, TreeNodeDesigner des, TreeNodeDesigner parentDes)
         {
             var node = tree.CreateNode();
-            node.Tag = o;
+            node.Tag = des;
             node.Expand();
             des.Services = Services;
             des.Host = this;
@@ -183,7 +195,25 @@ namespace Reko.Gui
         {
             if (tree.SelectedNode == null)
                 return null;
-            return GetDesigner(tree.SelectedNode.Tag);
+            return (TreeNodeDesigner) tree.SelectedNode.Tag;
+        }
+
+        private object GetSelectedObject()
+        {
+            var des = GetSelectedDesigner();
+            if (des == null)
+                return null;
+            return des.Component;
+        }
+
+        private void SetSelectedObject(object component)
+        {
+            if (component == null)
+                return;
+            TreeNodeDesigner des;
+            if (!mpitemToDesigner.TryGetValue(component, out des))
+                return;
+            tree.SelectedNode = des.TreeNode;
         }
 
         void TypeLibraries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

@@ -52,10 +52,10 @@ namespace Reko.UnitTests.Structure
                 BranchIf(Not(Fn("foo")), "skip");
                     Label("unstruct_branch");
                     SideEffect(Fn("extraordinary"));
-                    Jump("end");
+                    Goto("end");
                 Label("skip");
                 SideEffect(Fn("bar2"));
-                Jump("LoopHead");
+                Goto("LoopHead");
             Label("LoopFollow");
             SideEffect(Fn("bar3"));
             Label("end");
@@ -75,14 +75,14 @@ namespace Reko.UnitTests.Structure
             var di = Local16("di");
 
             Assign(bx, si);
-            Jump("LoopTest");
+            Goto("LoopTest");
 
             Label("LoopBody");
             Store(di, al);
             BranchIf(Ne(al, 0), "ok");
 
             Assign(ax, -1);
-            Jump("Done");
+            Goto("Done");
 
             Label("ok");
             BranchIf(Ne(al,0x0D), "LoopTest");

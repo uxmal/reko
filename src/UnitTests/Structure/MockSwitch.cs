@@ -38,19 +38,19 @@ namespace Reko.UnitTests.Structure
 			Switch(r1, "case0", "case1", "case2", "case3");
 			Label("case0");
 			Assign(r2, Int32(0));
-			Jump("done");
+			Goto("done");
 
 			Label("case1");
 			Assign(r2, Int32(1));
-			Jump("done");
+			Goto("done");
 
 			Label("case2");
 			Assign(r2, Int32(4));
-			Jump("done");
+			Goto("done");
 
 			Label("case3");
 			Assign(r2, Int32(9));
-			Jump("done");
+			Goto("done");
 
 			Label("default");
 			Assign(r2, SMul(r1, r1));

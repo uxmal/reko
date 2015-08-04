@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Structure
             ProcedureBuilder m = new ProcedureBuilder();
             m.BranchIf(m.Local32("a"), "then");
             m.Assign(m.Local32("b"), m.Int32(0));
-            m.Jump("join");
+            m.Goto("join");
             m.Label("then");
             m.Assign(m.Local32("c"), m.Int32(0));
             m.Label("join");
@@ -85,12 +85,12 @@ namespace Reko.UnitTests.Structure
         public void Pdg_PostdominateLoop()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            m.Jump("test");
+            m.Goto("test");
             m.Label("test");
             m.BranchIf(m.LocalBool("f"), "done");
             m.Label("body");
             m.Store(m.Int32(30), m.Int32(0));
-            m.Jump("test");
+            m.Goto("test");
             m.Label("done");
             m.Return();
 
@@ -117,10 +117,10 @@ namespace Reko.UnitTests.Structure
             m.BranchIf(f, "then");
             m.Label("else");
             m.SideEffect(m.Fn("CallElse"));
-            m.Jump("loopHead");
+            m.Goto("loopHead");
             m.Label("then");
             m.SideEffect(m.Fn("CallThen"));
-            m.Jump("loopHead");
+            m.Goto("loopHead");
             m.Label("done");
             m.Return();
 
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Structure
             m.Label("hop");
             m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
             m.SideEffect(m.Fn("bar"));
-            m.Jump("Infinity");
+            m.Goto("Infinity");
             m.Return();
 
             FindPostDominators(m);

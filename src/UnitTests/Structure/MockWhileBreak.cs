@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Structure
 			BranchIf(Eq(r3, Int32(0)), "done");
 
 			LoadId(r1, IAdd(r1, Int32(0x00C)));
-			Jump("looptest");
+			Goto("looptest");
 
 			Label("done");
 			Return(r2);

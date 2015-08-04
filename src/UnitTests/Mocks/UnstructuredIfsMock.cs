@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Mocks
             SideEffect(Fn("quux"));
             Label("inside");
             SideEffect(Fn("niz"));
-            Jump("done");
+            Goto("done");
 
             Label("then1");
             BranchIf(Declare(PrimitiveType.Bool, "bar"), "inside");

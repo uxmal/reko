@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Structure
                 m.BranchIf(m.LocalBool("f"), "done");
 
                 m.SideEffect(m.Fn("foo", m.Int32(4)));
-                m.Jump("loop");
+                m.Goto("loop");
 
                 m.Label("done");
                 m.Return();
@@ -68,13 +68,13 @@ namespace Reko.UnitTests.Structure
                 m.BranchIf(m.LocalBool("f"), "loop2");
 
                 m.SideEffect(m.Fn("foo", m.Int32(4)));
-                m.Jump("loop1");
+                m.Goto("loop1");
 
                 m.Label("loop2");
                 m.BranchIf(m.LocalBool("f"), "done");
 
                 m.SideEffect(m.Fn("foo", m.Int32(4)));
-                m.Jump("loop2");
+                m.Goto("loop2");
 
                 m.Label("done");
                 m.Return();

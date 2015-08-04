@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Mocks
             BranchIf(Fn("IsDone"), "done");
             Label("loopBody");
                 SideEffect(Fn("LoopWork"));
-                Jump("loopHeader");
+                Goto("loopHeader");
             Label("done");
             Return();
         }

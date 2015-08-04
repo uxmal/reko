@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +70,8 @@ namespace Reko.Structure.Schwartz
 
         public AbsynStatement VisitCallInstruction(CallInstruction ci)
         {
-            throw new NotImplementedException();
+            return new AbsynSideEffect(
+                new Application(ci.Callee, VoidType.Instance));
         }
 
         public AbsynStatement VisitDeclaration(Declaration decl)

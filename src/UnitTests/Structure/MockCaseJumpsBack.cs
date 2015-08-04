@@ -37,11 +37,11 @@ namespace Reko.UnitTests.Structure
 
             Label("case0");
             SideEffect(Fn("print", n));
-            Jump("done");
+            Goto("done");
 
             Label("case1");
             Assign(n, IAdd(n, 1));
-            Jump("JumpBack");           // The odd jump!
+            Goto("JumpBack");           // The odd jump!
 
             Label("case2");
             SideEffect(Fn("print", n));

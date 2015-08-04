@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Analysis
                 m.BranchIf(m.Uge(i, 10), "done");
                 m.Store(m.Word32(0x4204), i);
                 m.Assign(i, m.IAdd(i, 1));
-                m.Jump("test");
+                m.Goto("test");
                 m.Label("done");
                 m.Store(m.Word32(0x4200), i);
                 m.Return();

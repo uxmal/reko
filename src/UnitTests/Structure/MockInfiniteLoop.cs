@@ -11,7 +11,7 @@ namespace Reko.UnitTests.Structure
         {
             Label("Infinite");
             SideEffect(Fn("DispatchEvents"));
-            Jump("Infinite");
+            Goto("Infinite");
         }
     }
 }
