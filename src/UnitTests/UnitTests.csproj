@@ -6,8 +6,8 @@
     <ProjectGuid>{6528DBD9-8129-48D8-AA21-C169F1679646}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.UnitTests</RootNamespace>
-    <AssemblyName>Decompiler.UnitTests</AssemblyName>
+    <RootNamespace>Reko.UnitTests</RootNamespace>
+    <AssemblyName>Reko.UnitTests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -83,7 +83,7 @@
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
-    <Compile Include="Analysis\Fragments\EvenOdd.cs" />
+    <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
@@ -177,6 +177,7 @@
     <Compile Include="Fragments\FramePointerFragment.cs" />
     <Compile Include="Fragments\IndirectCallFragment.cs" />
     <Compile Include="Fragments\PointerChainFragment.cs" />
+    <Compile Include="Fragments\Regressions\Reg00001.cs" />
     <Compile Include="Fragments\RepeatedLoadsFragment.cs" />
     <Compile Include="Fragments\SegmentedCallFragment.cs" />
     <Compile Include="Fragments\StaggeredArrayFragment.cs" />
@@ -609,7 +610,9 @@
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Analysis\Fragments\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
