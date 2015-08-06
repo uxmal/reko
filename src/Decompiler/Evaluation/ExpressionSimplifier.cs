@@ -164,6 +164,11 @@ namespace Reko.Evaluation
                 Changed = true;
                 return left;
             }
+            else if (cRight != null && cRight.IsIntegerZero && binExp.Operator == Operator.Or)
+            {
+                Changed = true;
+                return left;
+            }
             if (left == Constant.Invalid || right == Constant.Invalid)
                 return Constant.Invalid;
 
