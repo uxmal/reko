@@ -117,13 +117,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CceAdcMock()
 		{
-			RunTest(new AdcMock(), "Analysis/CceAdcMock.txt");
+			RunFileTest(new AdcMock(), "Analysis/CceAdcMock.txt");
 		}
 
 		[Test]
 		public void CceCmpMock()
 		{
-			RunTest(new CmpMock(), "Analysis/CceCmpMock.txt");
+			RunFileTest(new CmpMock(), "Analysis/CceCmpMock.txt");
 		}
 
 		[Test]

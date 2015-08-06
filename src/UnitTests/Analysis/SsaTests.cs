@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Analysis
             m.Store(m.Int32(0x400), m.Fn("foo", m.Out(PrimitiveType.Pointer32, r4)));
             m.Return();
 
-            RunTest(m, "Analysis/SsaOutParameters.txt");
+            RunFileTest(m, "Analysis/SsaOutParameters.txt");
         }
 
         [Test]

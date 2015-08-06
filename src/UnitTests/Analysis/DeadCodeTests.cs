@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void DeadCmpMock()
 		{
-			RunTest(new CmpMock(), "Analysis/DeadCmpMock.txt");
+			RunFileTest(new CmpMock(), "Analysis/DeadCmpMock.txt");
 		}
 
 		[Test]
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier unused = m.Local32("unused");
 			m.Assign(unused, m.Fn("foo", Constant.Word32(1)));
 			m.Return();
-			RunTest(m, "Analysis/DeadFnReturn.txt");
+			RunFileTest(m, "Analysis/DeadFnReturn.txt");
 		}
 
 		protected override void RunTest(Program prog, TextWriter writer)

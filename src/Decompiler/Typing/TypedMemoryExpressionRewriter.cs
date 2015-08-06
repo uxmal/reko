@@ -367,7 +367,7 @@ namespace Reko.Typing
 
 		public Expression VisitProcedureConstant(ProcedureConstant pc)
 		{
-			throw new NotImplementedException();
+            return pc;
 		}
 
 		public Expression VisitSegmentedAccess(SegmentedAccess access)

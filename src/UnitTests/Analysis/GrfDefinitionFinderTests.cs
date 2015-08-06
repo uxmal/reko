@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void GrfdAdcMock()
 		{
-			RunTest(new AdcMock(), "Analysis/GrfdAdcMock.txt");
+			RunFileTest(new AdcMock(), "Analysis/GrfdAdcMock.txt");
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void GrfdCmpMock()
 		{
-			RunTest(new CmpMock(), "Analysis/GrfdCmpMock.txt");
+			RunFileTest(new CmpMock(), "Analysis/GrfdCmpMock.txt");
 		}
 
 		protected override void RunTest(Program prog, TextWriter writer)
