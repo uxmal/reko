@@ -31,13 +31,20 @@ using System.Text;
 
 namespace Reko.Structure.Schwartz
 {
-    // Based on:
-    // Native x86 Decompilation using Semantics-Preserving Structural Analysis
-    // and Iterative Control-Flow Structuring.
+    /// <summary>
+    /// Takes the basic block control graph of a decompiled procedure
+    /// and converts it into high-level structured code.
+    /// </summary>
+    /// <remarks>
+    /// Inspired by the algorithm described:
+    ///  Native x86 Decompilation using Semantics-Preserving Structural Analysis
+    ///  and Iterative Control-Flow Structuring.
+    /// language 
+    /// </remarks>
     public class ProcedureStructurer : IStructureAnalysis
     {
         private DirectedGraph<Region> regionGraph;
-        private  DominatorGraph<Region> doms;
+        private DominatorGraph<Region> doms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
         private Queue<Region> tailRegions;
@@ -56,35 +63,33 @@ namespace Reko.Structure.Schwartz
             proc.Body.AddRange(reg.Statements);
         }
 
+        /// <summary>
+        /// </summary>
+        /// <remarks>
+        /// The algorithm visits nodes in post-order in each iteration. This
+        /// means that all descendants of a node will be visited (and
+        /// hence had the chance to be reduced) before the node itself.
+        /// The algorithm’s behavior when visiting node _n_
+        /// depends on hether the region at _n_
+        /// is acyclic (has no loop) or not. For an acyclic region, the 
+        /// algorithm tries to match the subgraph
+        /// at _n_to an acyclic schemas (3.2). If there is no match,
+        /// and the region is a switch candidate, then it attempts to
+        /// refine the region at _n_ into a switch region.
+        ///             
+        /// If _n_ is cyclic, the algorithm 
+        /// compares the region at _n_ to the cyclic schemata.
+        /// If this fails, it refines _n_ into a loop (3.6).
+        /// 
+        /// If both matching and refinement do not make progress, the
+        /// current node _n_ is then skipped for the current iteration of
+        /// the algorithm.  If there is an iteration in which all
+        /// nodes are skipped, i.e., the algorithm makes no progress, then
+        /// the algorithm employs a last resort refinement (3.7) to
+        /// ensure that progress can be made in the next iteration.
+        /// </remarks>
         public Region Execute()
         {
-#if NILZ
-        We focus on the novel aspects of our algorithm in this
-paper and refer readers interested in any structural analysis
-details elided to standard sources 
-         
-Like vanilla structural analysis, our algorithm visits
-nodes in post-order in each iteration.   Intuitively,  this
-means that all descendants of a node will be visited (and
-hence had the chance to be reduced) before the node itself.
-The algorithm’s behavior when visiting node _n_
-depends on hether the region at _n_
-is acyclic (has no loop) or not. For an acyclic region, the 
-algorithm tries to match the subgraph
-at _n_to an acyclic schemas (3.2). If there is no match,
-and the region is a switch candidate, then it attempts to
-refine the region at _n_ into a switch region (3.4).
-            
-If _n_ is cyclic, the algorithm 
-compares the region at _n_ to the cyclic schemas (3.5)
-If this fails, it refines _n_ into a loop (3.6).
-If both matching and refinement do not make progress, the
-current node _n_ is then skipped for the current iteration of
-the algorithm.  If there is an iteration in which all
-nodes are skipped, i.e., the algorithm makes no progress, then
-the algorithm employs a last resort refinement (3.7) to
-ensure that progress can be made in the next iteration.
-#endif
             var result = BuildRegionGraph(proc);
             this.regionGraph = result.Item1;
             var entry = result.Item2;
@@ -99,7 +104,7 @@ ensure that progress can be made in the next iteration.
                 this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.tailRegions = new Queue<Region>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
-                Debug.Print("== Graph contains {0} nodes", regionGraph.Nodes.Count);
+                Debug.Print("== Graph contains {0} nodes ===================================", regionGraph.Nodes.Count);
                 DumpGraph();
                 foreach (var n in postOrder)
                 {
@@ -126,7 +131,6 @@ ensure that progress can be made in the next iteration.
                         didreduce = !IsCyclic(n) &&  ReduceAcyclic(n, true);
                         if (didreduce)
                             break;
-                            
                     }
                     // Didn't make any progress, try to trim away stray gotos.
                     if (!didreduce)
@@ -262,6 +266,7 @@ conditions to be inverses.
                     regionGraph.RemoveEdge(el, elS);
                 RemoveRegion(el);
                 n.Type = RegionType.Linear;
+                n.Expression = null;
                 return true;
             }
             else if (thS == el || (reduceTailregions && th.Type == RegionType.Tail))
@@ -274,6 +279,7 @@ conditions to be inverses.
                     regionGraph.RemoveEdge(th, thS);
                 RemoveRegion(th);
                 n.Type = RegionType.Linear;
+                n.Expression = null;
                 return true;
             }
             else if (elS != null && elS == thS)
@@ -292,6 +298,7 @@ conditions to be inverses.
                 RemoveRegion(el);
                 regionGraph.AddEdge(n, elS);
                 n.Type = RegionType.Linear;
+                n.Expression = null;
                 return true;
             }
             else
@@ -432,9 +439,16 @@ doing future pattern matches.
             }
             CollapseToTailRegion(vEdge.From, vEdge.To, stm);
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
-
         }
 
+        /// <summary>
+        /// Appends the statement <paramref name="stm"/> to the list
+        /// of statements in the <paramref name="from"/> region.
+        /// 
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="stm"></param>
         public void CollapseToTailRegion(Region from, Region to, AbsynStatement stm)
         {
             if (from.Type == RegionType.Condition)
@@ -450,6 +464,7 @@ doing future pattern matches.
                     Then = { stm }
                 };
                 from.Statements.Add(ifStm);
+                from.Expression = null;
                 from.Type = RegionType.Linear;
             }
             else if (from.Type == RegionType.Linear)
@@ -696,13 +711,14 @@ refinement on the loop body, which we describe below.
 #endif
         private void RefineLoop(Region head, ISet<Region> loopNodes)
         {
-           head = EnsureSingleEntry(head, loopNodes);
-           var follow = DetermineFollowRegion(head, loopNodes);
-           var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
-           var virtualized = VirtualizeIrregularExits(head, follow, lexicalNodes);
-           if (virtualized)
-               return;
-           LastResort(lexicalNodes);
+            head = EnsureSingleEntry(head, loopNodes);
+            var follow = DetermineFollowRegion(head, loopNodes);
+            var latch = DetermineFollowRegion(head, loopNodes);
+            var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
+            var virtualized = VirtualizeIrregularExits(head, follow, latch, lexicalNodes);
+            if (virtualized)
+                return;
+            LastResort(lexicalNodes);
         }
 
         /// <summary>
@@ -753,6 +769,11 @@ refinement on the loop body, which we describe below.
                     return headPred;
             }
             throw new NotImplementedException();
+        }
+        
+        private Region DetermineLatchRegion(Region head, ISet<Region> loopRegions)
+        {
+            return null;
         }
 
         /// <summary>
@@ -821,7 +842,7 @@ refinement on the loop body, which we describe below.
         /// <param name="follow"></param>
         /// <param name="lexicalNodes"></param>
         /// <returns>True if at least one edge was virtualized.</returns>
-        private bool VirtualizeIrregularExits(Region header, Region follow, ISet<Region> lexicalNodes)
+        private bool VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet<Region> lexicalNodes)
         {
             bool didVirtualize = false;
             foreach (var n in lexicalNodes)
