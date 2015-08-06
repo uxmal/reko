@@ -94,12 +94,24 @@ namespace Reko.Assemblers.Pdp11
             case TokenType.LParen:
                 regStr = (string) lexer.Expect(TokenType.Register);
                 lexer.Expect(TokenType.RParen);
-                lexer.Expect(TokenType.Plus);
-                return new ParsedOperand
+                if (lexer.PeekAndDiscard(TokenType.Plus))
                 {
-                    Type = AddressMode.AutoIncr,
-                    Register = arch.GetRegister(regStr)
-                };
+                    lexer.Expect(TokenType.Plus);
+                    return new ParsedOperand
+                    {
+                        Type = AddressMode.AutoIncr,
+                        Register = arch.GetRegister(regStr)
+                    };
+                }
+                else
+                {
+                    return new ParsedOperand
+                    {
+                        Type = AddressMode.RegDef,
+                        Register = arch.GetRegister(regStr)
+                    };
+                }
+                break;
             default:
                 return new ParsedOperand
                 {

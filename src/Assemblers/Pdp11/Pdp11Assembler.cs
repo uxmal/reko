@@ -39,7 +39,7 @@ namespace Reko.Assemblers.Pdp11
         public Pdp11Assembler(Pdp11Architecture arch, Address addrBase, IEmitter emitter)
         {
             this.arch = arch;
-            this.BaseAddress = addrBase;
+            this.BaseAddress = addrBase ?? Address.Ptr16(0x100);
             this.emitter = emitter;
             this.Equates = new Dictionary<string, object>();
             this.symtab = new SymbolTable();
@@ -175,7 +175,7 @@ namespace Reko.Assemblers.Pdp11
             return enc;
         }
 
-        private void ReferToSymbol(Symbol psym, int off, DataType width)
+        public void ReferToSymbol(Symbol psym, int off, DataType width)
         {
             if (psym.fResolved)
             {

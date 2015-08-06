@@ -75,5 +75,42 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
+
+        [Test]
+        public void Pdp11Rw_mov()
+        {
+            BuildTest(0x12C2);
+            AssertCode(
+                "0|0200(2): 3 instructions",
+                "1|L--|r2 = Mem0[r3:word16]",
+                "2|L--|NZ = cond(r2)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_movb()
+        {
+            BuildTest(0x92C2);
+            AssertCode(
+                "0|0200(2): 3 instructions",
+                "1|L--|r2 = (int16) Mem0[r3:byte]",
+                "2|L--|NZ = cond(r2)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_clrb()
+        {
+            BuildTest(0x8A10);
+            AssertCode(
+                "0|0200(2): 7 instructions",
+                "1|L--|v3 = 0x00", 
+                "2|L--|Mem0[r0:byte] = v3",
+                "3|L--|r0 = r0 + 0x0001",
+                "4|L--|N = false",
+                "5|L--|V = false",
+                "6|L--|C = false",
+                "7|L--|Z = true");
+        }
     }
 }

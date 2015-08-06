@@ -41,6 +41,11 @@ namespace Reko.Arch.Pdp11
         public static RegisterStorage r5 = new RegisterStorage("r5", 5, PrimitiveType.Word16);
         public static RegisterStorage sp = new RegisterStorage("sp", 6, PrimitiveType.Word16);
         public static RegisterStorage pc = new RegisterStorage("pc", 7, PrimitiveType.Word16);
+
+        public static RegisterStorage N = new RegisterStorage("N", 8,  PrimitiveType.Bool);
+        public static RegisterStorage Z = new RegisterStorage("Z", 9,  PrimitiveType.Bool);
+        public static RegisterStorage V = new RegisterStorage("V", 10, PrimitiveType.Bool);
+        public static RegisterStorage C = new RegisterStorage("C", 11, PrimitiveType.Bool);
     }
 
     [Flags]
@@ -55,12 +60,19 @@ namespace Reko.Arch.Pdp11
     public class Pdp11Architecture : IProcessorArchitecture
     {
         private RegisterStorage[] regs;
+        private RegisterStorage[] flagRegs;
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Pdp11Architecture()
         {
             regs = new RegisterStorage[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 
                 Registers.r4, Registers.r5, Registers.sp, Registers.pc, };
+            flagRegs = new RegisterStorage[] 
+            {
+                Registers.N, Registers.Z, Registers.V, Registers.C
+            };
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         #region IProcessorArchitecture Members
@@ -140,9 +152,16 @@ namespace Reko.Arch.Pdp11
         }
 
         public FlagGroupStorage GetFlagGroup(uint grf)
-        {
-            throw new NotImplementedException();
-        }
+		{
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+                return f;
+
+			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(grf, GrfToString(grf), dt);
+			flagGroups.Add(grf, fl);
+			return fl;
+		}
 
         public FlagGroupStorage GetFlagGroup(string name)
         {
@@ -153,8 +172,17 @@ namespace Reko.Arch.Pdp11
 
         public string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
-        }
+			var s = new StringBuilder();
+			foreach (var r in flagRegs)
+			{
+                if (grf == 0)
+                    break;
+				if ((grf & 1) != 0)
+					s.Append(r.Name);
+                grf >>= 1;
+			}
+			return s.ToString();
+		}
 
         public PrimitiveType FramePointerType
         {

@@ -56,23 +56,64 @@ namespace Reko.Arch.Pdp11
                 var instr = instrs.Current;
                 var rtlCluster = new RtlInstructionCluster(instr.Address, instr.Length);
                 emitter = new RtlEmitter(rtlCluster.Instructions);
+                Expression src;
+                Expression dst;
                 switch (instr.Opcode)
                 {
                 default: throw new AddressCorrelatedException(
                     instr.Address,
                     "Rewriting of PDP-11 instruction {0} not supported yet.", instr.Opcode);
+                case Opcodes.clrb:
+                    dst = RewriteDst(instr.op1, emitter.Byte(0), s => s);
+                    SetFlags(dst, 0, FlagM.NF | FlagM.CF | FlagM.VF, FlagM.ZF);
+                    break;
+                case Opcodes.mov:
+                    src = RewriteSrc(instr.op1);
+                    dst = RewriteDst(instr.op2, src, s => s);
+                    SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
+                    break;
+                case Opcodes.movb:
+                    src = RewriteSrc(instr.op1);
+                    dst = RewriteDst(instr.op2, src, s => emitter.Cast(PrimitiveType.Int16, s));
+                    SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
+                    break;
                 case Opcodes.xor:
-                    var src = RewriteSrc(instr.op1);
-                    var dst = RewriteDst(instr.op2);
-                    emitter.Assign(dst, emitter.Xor(dst, src));
-                    emitter.Assign(
-                        frame.EnsureFlagGroup((uint) (FlagM.NF | FlagM.ZF), "NZ", PrimitiveType.Byte), 
-                        emitter.Cond(dst));
-                    emitter.Assign(frame.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool), Constant.False());
-                    emitter.Assign(frame.EnsureFlagGroup((uint) FlagM.VF, "V", PrimitiveType.Bool), Constant.False());
+                    src = RewriteSrc(instr.op1);
+                    dst = RewriteDst(instr.op2, src, (s, d) => emitter.Xor(d, s));
+                    SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF, FlagM.VF);
                     break;
                 }
                 yield return rtlCluster;
+            }
+        }
+
+        private void SetFlags(Expression e, FlagM changed, FlagM zeroed, FlagM set)
+        {
+            uint uChanged = (uint)changed;
+            if (uChanged != 0)
+            {
+                var grfChanged = frame.EnsureFlagGroup(this.arch.GetFlagGroup(uChanged));
+                emitter.Assign(grfChanged, emitter.Cond(e));
+            }
+            uint grfMask = 1;
+            while (grfMask <= (uint)zeroed)
+            {
+                if ((grfMask & (uint)zeroed) != 0)
+                {
+                    var grfZeroed = frame.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
+                    emitter.Assign(grfZeroed, 0);
+                }
+                grfMask <<= 1;
+            }
+            grfMask = 1;
+            while (grfMask <= (uint)set)
+            {
+                if ((grfMask & (uint)set) != 0)
+                {
+                    var grfZeroed = frame.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
+                    emitter.Assign(grfZeroed, 1);
+                }
+                grfMask <<= 1;
             }
         }
 
@@ -88,11 +129,16 @@ namespace Reko.Arch.Pdp11
             {
                 var r = frame.EnsureRegister(memOp.Register);
                 var tmp = frame.CreateTemporary(op.Width);
-                if (memOp.Mode == AddressMode.AutoIncr)
+                switch (memOp.Mode)
                 {
+                default:
+                    throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", memOp.Mode));
+                case AddressMode.RegDef:
+                    return emitter.Load(this.instrs.Current.DataWidth, r);
+                case AddressMode.AutoIncr:
                     emitter.Assign(tmp, emitter.Load(op.Width, r));
                     emitter.Assign(r, emitter.IAdd(r, memOp.Width.Size));
-                    return tmp;
+                    break;
                 }
                 return tmp;
             }
@@ -104,9 +150,63 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        private Expression RewriteDst(MachineOperand op)
+        private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression> gen)
         {
-            return RewriteSrc(op);
+            var regOp = op as RegisterOperand;
+            if (regOp != null)
+            {
+                var dst = frame.EnsureRegister(regOp.Register);
+                emitter.Assign(dst, gen(src));
+                return dst;
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null)
+            {
+                var r = frame.EnsureRegister(memOp.Register);
+                var tmp = frame.CreateTemporary(instrs.Current.DataWidth);
+                switch (memOp.Mode)
+                {
+                default:
+                    throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", memOp.Mode));
+                case AddressMode.AutoIncr:
+                    emitter.Assign(tmp, gen(src));
+                    emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
+                    emitter.Assign(r, emitter.IAdd(r, tmp.DataType.Size));
+                    break;
+                }
+                return tmp;
+            }
+            throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", op.GetType().Name));
+
+        }
+
+        private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> gen)
+        {
+            var regOp = op as RegisterOperand;
+            if (regOp != null)
+            {
+                var dst = frame.EnsureRegister(regOp.Register);
+                emitter.Assign(dst, gen(src, dst));
+                return dst;
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null)
+            {
+                var r = frame.EnsureRegister(memOp.Register);
+                var tmp = frame.CreateTemporary(instrs.Current.DataWidth);
+                switch (memOp.Mode)
+                {
+                default:
+                    throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", memOp.Mode));
+                case AddressMode.AutoIncr:
+                    emitter.Assign(tmp, gen(src, emitter.Load(tmp.DataType, r)));
+                    emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
+                    emitter.Assign(r, emitter.IAdd(r, tmp.DataType.Size));
+                    break;
+                }
+                return tmp;
+            }
+            throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", op.GetType().Name));
         }
     }
 }

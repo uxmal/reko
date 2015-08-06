@@ -195,6 +195,22 @@ lupe: dec r0
 ");
             AssertWords(ldr.Image.Bytes, 0x0AC0, 0x03FE);
         }
+
+        [Test]
+        public void Pdp11Tasm_macro()
+        {
+            Assemble("  IN1=R0\r\n");
+            Assert.AreEqual("R0", asm.Assembler.Equates["IN1"].ToString());
+        }
+
+        [Test]
+        public void Pdp11Tasm_symbol_fwd_reference()
+        {
+            Assemble(
+                "  .WORD SYMX\r\n" + 
+                "SYMX: clrb (r2)\r\n");
+            AssertWords(ldr.Image.Bytes, 0x0002, 0x8A0A);
+        }
     }
 
     public static class MoreLinq

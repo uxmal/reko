@@ -155,7 +155,9 @@ namespace Reko.Assemblers.Pdp11
                     switch (c)
                     {
                     case -1: return new Token(TokenType.EOF, lineNumber);
-                    case '\n': return EatTokenize(TokenType.EOL);
+                    case '\n': 
+                        ++lineNumber;
+                        return EatTokenize(TokenType.EOL);
                     default: st = Transition(State.Comment); break;
                     }
                     break;

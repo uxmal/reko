@@ -37,6 +37,10 @@ namespace Reko.Assemblers.Pdp11
         private IEmitter emitter;
         private Pdp11Architecture arch;
 
+        public Pdp11TextAssembler() : this(new Emitter())
+        {
+        }
+
         public Pdp11TextAssembler(IEmitter emitter)
         {
             this.emitter = emitter;
@@ -68,6 +72,8 @@ namespace Reko.Assemblers.Pdp11
 
         private void ProcessLine()
         {
+            if (lexer.Peek().Linenumber == 171) //$DEBUG
+                lexer.ToString();
             if (lexer.PeekAndDiscard(TokenType.EOL))
                 return;
             if (lexer.PeekAndDiscard(TokenType._Page))
@@ -93,6 +99,9 @@ namespace Reko.Assemblers.Pdp11
             }
             switch (lexer.Peek().Type)
             {
+            case TokenType.EOL:
+                lexer.Get();
+                return;
             case TokenType._Word:
                 lexer.Get();
                 ProcessWords(PrimitiveType.Word16);
@@ -174,6 +183,14 @@ namespace Reko.Assemblers.Pdp11
                 return;
             }
             var exp = ParseExpression();
+            if (exp is string)
+            {
+                // A symbol!
+                var sym = Assembler.Symtab.CreateSymbol((string)exp);
+                Assembler.ReferToSymbol(sym, emitter.Position, wordSize);
+                emitter.EmitLeUInt16(0);
+                return;
+            }
             emitter.EmitLe(wordSize, (int) exp);
         }
 
@@ -192,19 +209,24 @@ namespace Reko.Assemblers.Pdp11
         private object ParseTerm()
         {
             object exp;
-            if (lexer.Peek().Type == TokenType.Id)
+            var token = lexer.Peek();
+            if (token.Type == TokenType.Id)
             {
                 return Evaluate((string) lexer.Expect(TokenType.Id));
             }
-            if (lexer.Peek().Type == TokenType._Dot)
+            if (token.Type == TokenType._Dot)
             {
                 lexer.Get();
                 return emitter.Position + (int) Assembler.BaseAddress.ToLinear();
             }
-            if (lexer.Peek().Type == TokenType.Number)
+            if (token.Type == TokenType.Number)
             {
                 exp = (int) lexer.Expect(TokenType.Number);
                 return exp;
+            }
+            if (token.Type == TokenType.Register)
+            {
+                return lexer.Expect(TokenType.Register);
             }
             lexer.Unexpected(lexer.Get());
             return null;
