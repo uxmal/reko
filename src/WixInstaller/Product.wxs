@@ -124,7 +124,11 @@
         <File Source="$(var.Sparc.TargetPath)" />
         <File Source="$(var.X86.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
-        
+
+        <!-- Assemblers -->
+        <File Source="$(var.Pdp11Assemblers.TargetPath)" />
+        <File Source="$(var.X86Assembler.TargetPath)" />
+
         <!-- Unpacker signatures -->
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml" />
