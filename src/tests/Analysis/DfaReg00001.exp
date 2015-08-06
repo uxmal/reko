@@ -1,0 +1,60 @@
+// void fn0C00_0000(Register word32 esp, Register selector ss, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  esp ss ds
+// LiveOut:
+// Trashed: SCZO eax ecx edx ax cx dx al cl dl ah ch dh
+// Preserved: sp
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word32 esp, selector ss, selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	Mem7[ds:0x0000:word32] = fn0C00_0009(DPB(esp, fp, 0, 16), ss, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// Register word32 fn0C00_0009(Register word32 esp, Register selector ss)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  esp ss ds
+// LiveOut: eax
+// Trashed: SCZO eax ecx edx ax cx dx al cl dl ah ch dh
+// Preserved: ebx ebp esi edi sp
+// fn0C00_0009
+// Return size: 0
+word32 fn0040000C(word32 dwArg04, word32 dwArg08)
+fn0040000C_entry:
+	// succ:  l0040000C
+l0040000C:
+	word32 ecx_12 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04
+	word32 esi_20 = (word32) Mem0[ecx_12 + 0x00000006:word16]
+	word32 edx_21 = 0x00000000
+	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C
+	branch esi_20 <= 0x0000000 l0C00_0067
+	// succ:  l00400002E l0040004B
+l0040002E:
+	// succ:  l00400031
+l00400031:
+	word32 ecx_58 = Mem0[ds:eax_27 + 0x00000000:word32]
+	branch edi_54 <u ecx_58 l0C00_005A
+	word32 edi_54 = Mem0[ss:esp_6 + 0x0000000C:word32]
+	// succ:  l0C00_0043
+l0C00_0043:
+	// succ:  l0C00_004D l0C00_005A
+l0C00_004D:
+	branch edi_54 <u Mem0[ds:eax_27 + 0x00000008:word32] + ecx_58 l0C00_006A
+	// succ:  l0C00_005A l0C00_006A
+l0C00_005A:
+	edx_24 = edx_24 + 0x00000001
+	eax_27 = eax_27 + 0x00000028
+	branch edx_24 <u esi_23 l0C00_0043
+	// succ:  l0C00_0067 l0C00_0043
+l0C00_0067:
+	eax_27 = 0x00000000
+	// succ:  l0C00_006A
+l0C00_006A:
+	return eax_27
+	// succ:  fn0C00_0009_exit
+fn0C00_0009_exit:
+
