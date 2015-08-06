@@ -282,61 +282,7 @@ ret
         [Test]
         public void StrReg00001()
         {
-            var program = RewriteX86_32Fragment(
-                @"
-mane proc
-        call testproc
-        mov [0x02000000],eax
-        ret
-    endp
-
-testproc proc
-
-    mov edi,edi
-    push ebp	      
-    mov ebp,esp	      
-    mov eax,DWORD PTR [ebp+8]	      
-    mov ecx,DWORD PTR [eax+0x3c]      
-    add ecx,eax	      
-    movzx eax,WORD PTR [ecx+0x14]	;char* dst = arg[0]
-    push ebx	      
-    push esi	      
-    movzx esi,WORD PTR [ecx+0x6]	      
-    xor edx,edx	      
-    push edi	      
-    lea eax,[eax+ecx*1+18]
-    test esi,esi	      
-    jbe loc_0000003d 
-	      
-    mov edi,DWORD PTR [ebp+0xc]	      
-
-loc_00000025:
-        mov ecx,DWORD PTR [eax+0xc]	      
-        cmp edi,ecx	      
-        jb loc_00000035 
-	      
-        mov ebx,DWORD PTR [eax+0x8]	      
-        add ebx,ecx	      
-        cmp edi,ebx	      
-        jb loc_0000003f
-
-loc_00000035:
-        inc edx	      
-        add eax,0x28	      
-        cmp edx,esi	      
-        jb loc_00000025 
-	      
-loc_0000003d:
-xor eax,eax	      
-
-loc_0000003f:
-pop edi	      
-pop esi	      
-pop ebx	      
-pop ebp
-ret
-endp
-",
+            var program = RewriteX86_32Fragment(Fragments.Regressions.Reg00001.Text,
     Address.Ptr32(0x00100000));
             var sExp =
 @"void fn00100000()

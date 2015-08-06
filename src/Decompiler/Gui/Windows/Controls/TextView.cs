@@ -380,7 +380,6 @@ namespace Reko.Gui.Windows.Controls
             g.Dispose();
 
             Invalidate();
-           
         }
 
         public object GetTagFromPoint(Point ptClient)

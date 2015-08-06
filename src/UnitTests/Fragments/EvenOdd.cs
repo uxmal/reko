@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Analysis.Fragments
+namespace Reko.UnitTests.Fragments
 {
     public static class EvenOdd
     {

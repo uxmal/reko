@@ -256,7 +256,7 @@ namespace Reko.Gui
 
         private void AddStyle(UiStyle s)
         {
-            Styles.Add(s.Name, s);
+            Styles[s.Name] = s;
         }
 
         public void Save()
