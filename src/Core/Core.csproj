@@ -218,6 +218,7 @@
     <Compile Include="IPlatformEmulator.cs" />
     <Compile Include="IProcessorEmulator.cs" />
     <Compile Include="IScriptInterpreter.cs" />
+    <Compile Include="Lib\Bits.cs" />
     <Compile Include="Lib\DiGraph.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />

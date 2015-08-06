@@ -21,10 +21,10 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.IO;
+using System.Linq;
 namespace Reko.Core.Lib
 {
     /// <summary>
@@ -199,7 +199,7 @@ namespace Reko.Core.Lib
                         if (!fronts[r].Contains(bb))
                             fronts[r].Add(bb);
 
-                        r = idoms[r];
+                        idoms.TryGetValue(r, out r);
                     }
                 }
             }

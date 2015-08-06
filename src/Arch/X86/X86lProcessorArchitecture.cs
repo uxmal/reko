@@ -36,6 +36,7 @@ using System.Xml;
 using System.Xml.Serialization;
 
 using BitSet = Reko.Core.Lib.BitSet;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.X86
 {
@@ -156,7 +157,7 @@ namespace Reko.Arch.X86
 					return f;
 			}
 
-			PrimitiveType dt = IsSingleBit(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(grf, GrfToString(grf), dt);
 			flagGroups.Add(fl);
 			return fl;
@@ -210,13 +211,6 @@ namespace Reko.Arch.X86
 					s.Append(Registers.GetRegister(r).Name);
 			}
 			return s.ToString();
-		}
-
-		public static bool IsSingleBit(uint u)
-		{
-			if (u == 0)
-				return false;
-			return (u & (u - 1)) == 0;
 		}
 
 		public ProcessorMode ProcessorMode

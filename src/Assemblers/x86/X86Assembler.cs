@@ -783,8 +783,6 @@ namespace Reko.Assemblers.x86
             }
         }
 
-
-
         internal void EmitModRM(int reg, ParsedOperand op)
         {
             RegisterOperand regOp = op.Operand as RegisterOperand;

@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,18 +19,20 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Reko.Core.Assemblers
+namespace Reko.Core.Lib
 {
-	public interface Assembler
-	{
-        Address StartAddress { get; }
-        ICollection<EntryPoint> EntryPoints { get; }
-        Dictionary<Address, ImportReference> ImportReferences { get; }
-
-        Program Assemble(Address baseAddress, TextReader reader);
-        Program AssembleFragment(Address baseAddress, string fragment);
+    /// <summary>
+    /// Bit manipulation methods.
+    /// </summary>
+    public static class Bits
+    {
+        public static bool IsSingleBitSet(uint w)
+        {
+            return w != 0 && (w & (w - 1)) == 0;
+        }
     }
 }

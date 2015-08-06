@@ -22,6 +22,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -209,7 +210,7 @@ namespace Reko.Arch.X86
 
         public Constant GetFlagGroup(uint mask)
         {
-            bool sigle = IntelArchitecture.IsSingleBit(mask);
+            bool sigle = Bits.IsSingleBitSet(mask);
             if ((mask & validFlags) == mask)
             {
                 if (sigle)

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -45,14 +46,9 @@ namespace Reko.Core
 			args = new List<Identifier>();
 		}
 
-		private bool SingleBitSet(uint w)
-		{
-			return ((w & (w - 1)) == 0);
-		}
-
 		public void AddFlagGroupReturnValue(uint grf, Frame frame)
 		{
-			PrimitiveType dt = SingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
 			ret = frame.EnsureFlagGroup(grf, arch.GrfToString(grf), dt);
 		}
 

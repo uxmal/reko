@@ -145,6 +145,18 @@ namespace Reko.Core
         /// </summary>
 		public Dictionary<Address, ImportReference> ImportReferences { get; private set; }
 
+        /// <summary>
+        /// A collection of pseudo-addresses and the external library function
+        /// they should be resolved to.
+        /// </summary>
+        /// <remarks>
+        /// This is used by platform emulators to handle functions like Win32's 
+        /// GetProcAddress(). When the emulator is called with GetProcAddress()
+        /// it will return a new pseudo-address guaranteed not to be a valid 
+        /// address in the LoadedImage. Later, when a call is made to that 
+        /// pseudo-address, it is translated to one of the registered 
+        /// ExternalProcedures.
+        /// </remarks>
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
 
         //$REVIEW: shouldnt these belong in Procedure?
