@@ -30,7 +30,7 @@ using System.Text;
 namespace Reko.Structure
 {
     /// <summary>
-    /// Generates Abstract syntax trees of high-level statements from the given StructureNodes.
+    /// Generates Abstract syntax trees of high-level statements from the given StructureNodes. 
     /// </summary>
     public class AbsynCodeGenerator
     {
