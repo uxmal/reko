@@ -65,6 +65,16 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void Acf_EvenPower()
         {
+            var c = Constant.UInt32(unchecked((uint)-256));
+            var sw = new StringWriter();
+            var acf = new AbsynCodeFormatter(new TextFormatter(sw));
+            c.Accept(acf);
+            Assert.AreEqual("~0x0100", sw.ToString());
+        }
+
+        [Test]
+        public void Acf_NegativeSigned()
+        {
             var c = Constant.Int32(-256);
             var sw = new StringWriter();
             var acf = new AbsynCodeFormatter(new TextFormatter(sw));
