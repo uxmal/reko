@@ -37,14 +37,17 @@ namespace Reko.Gui.Windows.Forms
         public AssembleFileDialog()
         {
             InitializeComponent();
-            new AssembleFileInteractor().Attach(this);
             FileName = new TextBoxWrapper(txtFileName);
             AssemblerList = ddlAssembler;
+            BrowseButton = new ButtonWrapper(btnBrowse);
+            new AssembleFileInteractor().Attach(this);
         }
 
         public IServiceProvider Services { get; set; }
         public ITextBox FileName {get; private set;}
         public ComboBox AssemblerList { get; private set; }
+        public IButton BrowseButton { get; private set; }
+
         public string SelectedArchitectureTypeName
         {
             get { return ((AssemblerElement)((ListOption)ddlAssembler.SelectedValue).Value).TypeName; }

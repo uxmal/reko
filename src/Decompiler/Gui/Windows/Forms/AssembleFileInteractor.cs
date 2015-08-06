@@ -32,7 +32,7 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Forms
 {
-    public  class AssembleFileInteractor 
+    public class AssembleFileInteractor 
     {
         private AssembleFileDialog dlg;
 
@@ -40,15 +40,27 @@ namespace Reko.Gui.Windows.Forms
         {
             this.dlg = dlg;
             dlg.Load += dlg_Load;
+            dlg.BrowseButton.Click += BrowseButton_Click;
         }
+
 
         void dlg_Load(object sender, EventArgs e)
         {
             var asms = dlg.Services.RequireService<IConfigurationService>()
                 .GetAssemblers()
                 .OfType<AssemblerElement>()
-                .Select(elem => new ListOption { Text = elem.Description, Value = e }).ToList();
+                .Select(elem => new ListOption { Text = elem.Description, Value = elem }).ToList();
             dlg.AssemblerList.DataSource = asms;
+        }
+
+        void BrowseButton_Click(object sender, EventArgs e)
+        {
+            var uiSvc = dlg.Services.RequireService<IDecompilerShellUiService>();
+            var fileName = uiSvc.ShowOpenFileDialog(dlg.FileName.Text);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                dlg.FileName.Text = fileName;
+            }
         }
     }
 }

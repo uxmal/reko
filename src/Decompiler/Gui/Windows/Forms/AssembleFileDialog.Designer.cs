@@ -61,7 +61,7 @@ namespace Reko.Gui.Windows.Forms
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(297, 12);
+            this.btnOK.Location = new System.Drawing.Point(313, 12);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -72,7 +72,7 @@ namespace Reko.Gui.Windows.Forms
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(297, 41);
+            this.btnCancel.Location = new System.Drawing.Point(313, 41);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -104,13 +104,13 @@ namespace Reko.Gui.Windows.Forms
             this.txtFileName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtFileName.Location = new System.Drawing.Point(9, 84);
             this.txtFileName.Name = "txtFileName";
-            this.txtFileName.Size = new System.Drawing.Size(238, 20);
+            this.txtFileName.Size = new System.Drawing.Size(254, 20);
             this.txtFileName.TabIndex = 4;
             // 
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(253, 82);
+            this.btnBrowse.Location = new System.Drawing.Point(269, 82);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(26, 23);
             this.btnBrowse.TabIndex = 6;
@@ -125,7 +125,7 @@ namespace Reko.Gui.Windows.Forms
             this.ddlAssembler.FormattingEnabled = true;
             this.ddlAssembler.Location = new System.Drawing.Point(12, 24);
             this.ddlAssembler.Name = "ddlAssembler";
-            this.ddlAssembler.Size = new System.Drawing.Size(267, 21);
+            this.ddlAssembler.Size = new System.Drawing.Size(283, 21);
             this.ddlAssembler.TabIndex = 7;
             // 
             // AssembleFileDialog
@@ -134,7 +134,7 @@ namespace Reko.Gui.Windows.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(384, 121);
+            this.ClientSize = new System.Drawing.Size(400, 121);
             this.Controls.Add(this.ddlAssembler);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.txtFileName);
@@ -143,6 +143,7 @@ namespace Reko.Gui.Windows.Forms
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(640, 160);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(354, 160);
             this.Name = "AssembleFileDialog";
