@@ -179,7 +179,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine", "Drivers\CmdLine\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "website", "Drivers\WebSite\website.csproj", "{0D35C524-CA16-4C68-80CD-538897144B47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Decompiler\Gui\Gui.csproj", "{1CA14C64-92E8-452E-A380-637F3DBB4D28}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{1CA14C64-92E8-452E-A380-637F3DBB4D28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

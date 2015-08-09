@@ -548,10 +548,6 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Decompiler\Gui\Gui.csproj">
-      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
-      <Name>Gui</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
       <Project>{0B2DCD75-44FF-4AF6-AA08-AAF4EA30C402}</Project>
       <Name>AmigaOS</Name>
@@ -575,6 +571,10 @@
     <ProjectReference Include="..\Environments\Win32\Win32.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Win32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gui\Gui.csproj">
+      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
+      <Name>Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj">
       <Project>{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}</Project>

@@ -18,30 +18,39 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Core
+namespace Reko.Gui.Windows.Forms
 {
-    /// <summary>
-    /// Represents a file that only used for the  metdata it contains.
-    /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public partial class AssembleFileDialog : Form, IAssembleFileDialog
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
+        public AssembleFileDialog()
         {
-            return visitor.VisitMetadataFile(this);
+            InitializeComponent();
+            FileName = new TextBoxWrapper(txtFileName);
+            AssemblerList = ddlAssembler;
+            BrowseButton = new ButtonWrapper(btnBrowse);
+            new AssembleFileInteractor().Attach(this);
         }
 
-        public string ModuleName { get; set; }
+        public IServiceProvider Services { get; set; }
+        public ITextBox FileName {get; private set;}
+        public ComboBox AssemblerList { get; private set; }
+        public IButton BrowseButton { get; private set; }
 
-        public string MetadataType { get; set; }
-
-        public TypeLibrary TypeLibrary { get; set; }
-
+        public string SelectedArchitectureTypeName
+        {
+            get { return ((AssemblerElement)((ListOption)ddlAssembler.SelectedValue).Value).TypeName; }
+        }
     }
 }

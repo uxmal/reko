@@ -18,30 +18,39 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Core
+namespace Reko.Gui.Windows.Forms
 {
-    /// <summary>
-    /// Represents a file that only used for the  metdata it contains.
-    /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public partial class ProgramPropertiesDialog : Form, IProgramPropertiesDialog
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
+        public ProgramPropertiesDialog() : this(new ProgramPropertiesInteractor())
         {
-            return visitor.VisitMetadataFile(this);
+
         }
 
-        public string ModuleName { get; set; }
+        public ProgramPropertiesDialog(ProgramPropertiesInteractor interactor)
+        {
+            InitializeComponent();
+            interactor.Attach(this);
+        }
 
-        public string MetadataType { get; set; }
+        public IServiceProvider Services { get; set; }
 
-        public TypeLibrary TypeLibrary { get; set; }
+        public Program Program { get; set; }
 
+        public TextBox LoadScript { get { return txtScript; } }
+        public CheckBox EnableScript { get { return chkRunScript; } }
+        public CheckBox HeuristicScanning { get { return chkHeuristicScanning; } }
+        public Button OkButton { get { return btnOk; } }
     }
 }

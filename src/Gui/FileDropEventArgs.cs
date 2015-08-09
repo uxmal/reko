@@ -20,28 +20,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Gui
 {
-    /// <summary>
-    /// Represents a file that only used for the  metdata it contains.
-    /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public class FileDropEventArgs : EventArgs
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
+        public FileDropEventArgs(string filename)
         {
-            return visitor.VisitMetadataFile(this);
+            this.Filename = filename;
         }
 
-        public string ModuleName { get; set; }
-
-        public string MetadataType { get; set; }
-
-        public TypeLibrary TypeLibrary { get; set; }
-
+        public string Filename { get; private set; }
     }
 }

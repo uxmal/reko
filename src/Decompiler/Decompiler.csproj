@@ -438,8 +438,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)tools\xslt" "$(ProjectDir)Gui\Windows\Forms\cmdids.xslt" "$(ProjectDir)Gui\decompiler-menus.xml" "$(ProjectDir)Gui\Windows\Forms\CmdIds.cs"
-"$(SolutionDir)tools\xslt" "$(ProjectDir)Gui\Windows\Forms\decompiler-menus.xslt" "$(ProjectDir)Gui\decompiler-menus.xml" "$(ProjectDir)Gui\Windows\Forms\DecompilerMenus.cs"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
