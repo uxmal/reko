@@ -31,7 +31,7 @@ namespace Reko.Core
     /// is selected (typically by loading specific values in processor registers).
     /// </summary>
     
-    [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko")]
+    [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko.Gui")]
 	public class SystemService
 	{
 		public string Name;

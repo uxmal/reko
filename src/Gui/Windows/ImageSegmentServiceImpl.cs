@@ -18,30 +18,29 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Gui.Windows
 {
-    /// <summary>
-    /// Represents a file that only used for the  metdata it contains.
-    /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public class ImageSegmentServiceImpl : ViewService, ImageSegmentService
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
+        private ImageSegmentPane pane;
+
+        public ImageSegmentServiceImpl(IServiceProvider sp) : base (sp)
         {
-            return visitor.VisitMetadataFile(this);
+            pane = new ImageSegmentPane();
         }
 
-        public string ModuleName { get; set; }
-
-        public string MetadataType { get; set; }
-
-        public TypeLibrary TypeLibrary { get; set; }
-
+        public void DisplayImageSegment(ImageMapSegment segment, Program program)
+        {
+            if (segment == null)
+                return;
+            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, pane);
+            pane.DisplaySegment(segment, program);
+        }
     }
 }

@@ -21,27 +21,21 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Core
+namespace Reko.Gui.Windows.Controls
 {
-    /// <summary>
-    /// Represents a file that only used for the  metdata it contains.
-    /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public partial class ImageSegmentView : UserControl
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
+        public ImageSegmentView()
         {
-            return visitor.VisitMetadataFile(this);
+            InitializeComponent();
         }
 
-        public string ModuleName { get; set; }
-
-        public string MetadataType { get; set; }
-
-        public TypeLibrary TypeLibrary { get; set; }
-
+        public TextView TextView { get { return textView1; } }
     }
 }

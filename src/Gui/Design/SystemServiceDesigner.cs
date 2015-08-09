@@ -18,30 +18,29 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Gui.Design
 {
-    /// <summary>
-    /// Represents a file that only used for the  metdata it contains.
-    /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public class SystemServiceDesigner : TreeNodeDesigner
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
+        public override void Initialize(object obj)
         {
-            return visitor.VisitMetadataFile(this);
+            base.Initialize(obj);
+            var svc = (SystemService) obj;
+            SetTreeNodeProperties(svc);
         }
 
-        public string ModuleName { get; set; }
-
-        public string MetadataType { get; set; }
-
-        public TypeLibrary TypeLibrary { get; set; }
-
+        public void SetTreeNodeProperties(SystemService svc)
+        {
+            TreeNode.Text = svc.Name;
+            TreeNode.ImageName = "Binary.ico";
+        }
     }
 }

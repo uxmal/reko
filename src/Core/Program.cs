@@ -37,7 +37,7 @@ namespace Reko.Core
     /// <remarks>
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
-    [Designer("Reko.Gui.Design.ProgramDesigner,Reko")]
+    [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
     public class Program
 	{
         private SortedList<Address, ImageMapVectorTable> vectors;

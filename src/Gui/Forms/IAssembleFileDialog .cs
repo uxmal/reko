@@ -18,30 +18,19 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Gui.Forms
 {
-    /// <summary>
-    /// Represents a file that only used for the  metdata it contains.
-    /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public interface IAssembleFileDialog : IDialog
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
-        {
-            return visitor.VisitMetadataFile(this);
-        }
+        IServiceProvider Services { get; set; }
 
-        public string ModuleName { get; set; }
-
-        public string MetadataType { get; set; }
-
-        public TypeLibrary TypeLibrary { get; set; }
-
+        ITextBox FileName { get; }
+        string SelectedArchitectureTypeName { get; }
     }
 }
