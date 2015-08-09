@@ -69,25 +69,25 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void AlFactorialReg()
         {
-            RunTest("Fragments/factorial_reg.asm", "Analysis/AlFactorialReg.txt");
+            RunFileTest("Fragments/factorial_reg.asm", "Analysis/AlFactorialReg.txt");
         }
 
         [Test]
         public void AlAddSubCarries()
         {
-            RunTest("Fragments/addsubcarries.asm", "Analysis/AlAddSubCarries.txt");
+            RunFileTest("Fragments/addsubcarries.asm", "Analysis/AlAddSubCarries.txt");
         }
 
         [Test]
         public void AlPreservedAlias()
         {
-            RunTest("Fragments/multiple/preserved_alias.asm", "Analysis/AlPreservedAlias.txt");
+            RunFileTest("Fragments/multiple/preserved_alias.asm", "Analysis/AlPreservedAlias.txt");
         }
 
         [Test]
         public void AlReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Analysis/AlReg00011.txt");
+            RunFileTest("Fragments/regressions/r00011.asm", "Analysis/AlReg00011.txt");
         }
 
         [Test]

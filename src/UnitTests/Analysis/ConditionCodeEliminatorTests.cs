@@ -105,13 +105,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CceAsciiHex()
 		{
-			RunTest("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
+			RunFileTest("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
 		}
 
 		[Test]
 		public void CceAddSubCarries()
 		{
-			RunTest("Fragments/addsubcarries.asm", "Analysis/CceAddSubCarries.txt");
+			RunFileTest("Fragments/addsubcarries.asm", "Analysis/CceAddSubCarries.txt");
 		}
 
 		[Test]
@@ -129,25 +129,25 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CceFrame32()
 		{
-			RunTest32("Fragments/multiple/frame32.asm", "Analysis/CceFrame32.txt");
+			RunFileTest32("Fragments/multiple/frame32.asm", "Analysis/CceFrame32.txt");
 		}
 
 		[Test]
 		public void CceWhileLoop()
 		{
-			RunTest("Fragments/while_loop.asm", "Analysis/CceWhileLoop.txt");
+			RunFileTest("Fragments/while_loop.asm", "Analysis/CceWhileLoop.txt");
 		}
 
 		[Test]
 		public void CceReg00005()
 		{
-			RunTest("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
+			RunFileTest("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
 		}
 
 		[Test]
 		public void CceReg00007()
 		{
-			RunTest("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
+			RunFileTest("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
 		}
 
         [Test]
@@ -426,7 +426,7 @@ done:
         [Ignore("Think about how to deal with long variables (edx:eax)")]
         public void CceIsqrt()
         {
-            RunTest("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
+            RunFileTest("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
         }
 	}
 }

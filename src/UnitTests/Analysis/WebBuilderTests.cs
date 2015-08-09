@@ -45,13 +45,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void WebNestedRepeats()
 		{
-			RunTest("Fragments/nested_repeats.asm", "Analysis/WebNestedRepeats.txt");
+			RunFileTest("Fragments/nested_repeats.asm", "Analysis/WebNestedRepeats.txt");
 		}
 
 		[Test]
 		public void WebWhileLoop()
 		{
-			RunTest("Fragments/while_loop.asm", "Analysis/WebWhileLoop.txt");
+			RunFileTest("Fragments/while_loop.asm", "Analysis/WebWhileLoop.txt");
 		}
 
 		[Test]
@@ -61,13 +61,13 @@ namespace Reko.UnitTests.Analysis
 
             mr.ReplayAll();
 
-			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
+			RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
 		}
 
 		[Test]
 		public void WebSuccessiveDecs()
 		{
-			RunTest("Fragments/multiple/successivedecs.asm", "Analysis/WebSuccessiveDecs.txt");
+			RunFileTest("Fragments/multiple/successivedecs.asm", "Analysis/WebSuccessiveDecs.txt");
 		}
 
 		private void Build(Program prog)

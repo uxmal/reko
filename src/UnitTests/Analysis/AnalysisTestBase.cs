@@ -206,7 +206,7 @@ namespace Reko.UnitTests.Analysis
             SaveRunOutput(prog, test, outputFile);
         }
 
-		protected void RunTest(string sourceFile, string outputFile)
+		protected void RunFileTest(string sourceFile, string outputFile)
 		{
 			Program prog = RewriteMsdosAssembler(sourceFile, null);
             SaveRunOutput(prog, RunTest, outputFile);
@@ -226,24 +226,24 @@ namespace Reko.UnitTests.Analysis
             AssertRunOutput(program, RunTest, sExp);
         }
 
-		protected void RunTest(string sourceFile, string configFile, string outputFile)
+		protected void RunFileTest(string sourceFile, string configFile, string outputFile)
 		{
 			Program prog = RewriteMsdosAssembler(sourceFile, configFile);
             SaveRunOutput(prog, RunTest, outputFile);
 		}
 
-        protected void RunTest(Program prog, string outputFile)
+        protected void RunFileTest(Program prog, string outputFile)
         {
             SaveRunOutput(prog, RunTest, outputFile);
         }
 
-		protected void RunTest32(string sourceFile, string outputFile)
+		protected void RunFileTest32(string sourceFile, string outputFile)
 		{
 			Program prog = RewriteFile32(sourceFile);
             SaveRunOutput(prog, RunTest, outputFile);
 		}
 
-		protected void RunTest32(string sourceFile, string configFile, string outputFile)
+		protected void RunFileTest32(string sourceFile, string configFile, string outputFile)
 		{
 			Program prog = RewriteFile32(sourceFile, configFile);
 			SaveRunOutput(prog, RunTest, outputFile);

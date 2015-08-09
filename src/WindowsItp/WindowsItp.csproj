@@ -179,6 +179,10 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Decompiler\Gui\Gui.csproj">
+      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
+      <Name>Gui</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Win32\Win32.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Win32</Name>

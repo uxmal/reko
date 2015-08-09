@@ -110,6 +110,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Decompiler\Gui\Gui.csproj">
+      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
+      <Name>Gui</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
       <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
       <Name>MzExe</Name>

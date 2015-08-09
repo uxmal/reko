@@ -117,7 +117,7 @@
             // btnBack
             // 
             this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnBack.Image = global::Reko.Properties.Resources.Back;
+            this.btnBack.Image = global::Reko.Gui.Resources.Back;
             this.btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(23, 22);
@@ -126,7 +126,7 @@
             // btnForward
             // 
             this.btnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnForward.Image = global::Reko.Properties.Resources.Forward;
+            this.btnForward.Image = global::Reko.Gui.Resources.Forward;
             this.btnForward.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnForward.Name = "btnForward";
             this.btnForward.Size = new System.Drawing.Size(23, 22);

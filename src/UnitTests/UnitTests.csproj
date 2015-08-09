@@ -173,6 +173,7 @@
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Fragments\ArrayExpressionFragment.cs" />
+    <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Fragments\FnPointerFragment.cs" />
     <Compile Include="Fragments\FramePointerFragment.cs" />
     <Compile Include="Fragments\IndirectCallFragment.cs" />
@@ -547,6 +548,10 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Decompiler\Gui\Gui.csproj">
+      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
+      <Name>Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
       <Project>{0B2DCD75-44FF-4AF6-AA08-AAF4EA30C402}</Project>
