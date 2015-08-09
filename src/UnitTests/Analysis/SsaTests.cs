@@ -40,67 +40,67 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SsaSimple()
 		{
-			RunTest("Fragments/ssasimple.asm", "Analysis/SsaSimple.txt");
+			RunFileTest("Fragments/ssasimple.asm", "Analysis/SsaSimple.txt");
 		}
 
 		[Test]
 		public void SsaConverge()
 		{
-			RunTest("Fragments/3converge.asm", "Analysis/SsaConverge.txt");
+			RunFileTest("Fragments/3converge.asm", "Analysis/SsaConverge.txt");
 		}
 
 		[Test]
 		public void SsaMemoryTest()
 		{
-			RunTest("Fragments/memory_simple.asm", "Analysis/SsaMemoryTest.txt");			
+			RunFileTest("Fragments/memory_simple.asm", "Analysis/SsaMemoryTest.txt");			
 		}
 
 		[Test]
 		public void SsaReg00004()
 		{
-			RunTest32("Fragments/regressions/r00004.asm", "Analysis/SsaReg00004.txt");
+			RunFileTest32("Fragments/regressions/r00004.asm", "Analysis/SsaReg00004.txt");
 		}
 
 		[Test]
 		public void SsaReg00005()
 		{
-			RunTest("Fragments/regressions/r00005.asm", "Analysis/SsaReg00005.txt");
+			RunFileTest("Fragments/regressions/r00005.asm", "Analysis/SsaReg00005.txt");
 		}
 
 		[Test]
 		public void SsaAddSubCarries()
 		{
-			RunTest("Fragments/addsubcarries.asm", "Analysis/SsaAddSubCarries.txt");			
+			RunFileTest("Fragments/addsubcarries.asm", "Analysis/SsaAddSubCarries.txt");			
 		}
 
 		[Test]
 		public void SsaSwitch()
 		{
-			RunTest("Fragments/Switch.asm", "Analysis/SsaSwitch.txt");
+			RunFileTest("Fragments/Switch.asm", "Analysis/SsaSwitch.txt");
 		}
 		
 		[Test]
 		public void SsaFactorial()
 		{
-			RunTest("Fragments/factorial.asm", "Analysis/SsaFactorial.txt");
+			RunFileTest("Fragments/factorial.asm", "Analysis/SsaFactorial.txt");
 		}
 
 		[Test]
 		public void SsaFactorialReg()
 		{
-			RunTest("Fragments/factorial_reg.asm", "Analysis/SsaFactorialReg.txt");
+			RunFileTest("Fragments/factorial_reg.asm", "Analysis/SsaFactorialReg.txt");
 		}
 
 		[Test]
 		public void SsaForkedLoop()
 		{
-			RunTest("Fragments/forkedloop.asm", "Analysis/SsaForkedLoop.txt");
+			RunFileTest("Fragments/forkedloop.asm", "Analysis/SsaForkedLoop.txt");
 		}
 
 		[Test]
 		public void SsaNestedRepeats()
 		{
-			RunTest("Fragments/nested_repeats.asm", "Analysis/SsaNestedRepeats.txt");
+			RunFileTest("Fragments/nested_repeats.asm", "Analysis/SsaNestedRepeats.txt");
 		}
 
         [Test]

@@ -47,51 +47,51 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void DfaAsciiHex()
 		{
-			RunTest("Fragments/ascii_hex.asm", "Analysis/DfaAsciiHex.txt");
+			RunFileTest("Fragments/ascii_hex.asm", "Analysis/DfaAsciiHex.txt");
 		}
 
 		[Test]
         [Ignore("Stack arrays are not supported yet")]
 		public void DfaAutoArray32()
 		{
-			RunTest32("Fragments/autoarray32.asm", "Analysis/DfaAutoArray32.txt");
+			RunFileTest32("Fragments/autoarray32.asm", "Analysis/DfaAutoArray32.txt");
 		}
 
 		[Test]
 		public void DfaFactorial()
 		{
-			RunTest("Fragments/factorial.asm", "Analysis/DfaFactorial.txt");
+			RunFileTest("Fragments/factorial.asm", "Analysis/DfaFactorial.txt");
 		}
 
 		[Test]
 		public void DfaFactorialReg()
 		{
-			RunTest("Fragments/factorial_reg.asm", "Analysis/DfaFactorialReg.txt");
+			RunFileTest("Fragments/factorial_reg.asm", "Analysis/DfaFactorialReg.txt");
 		}
 
 		[Test]
 		public void DfaFibonacci()
 		{
-			RunTest32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");
+			RunFileTest32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");
 		}
 
 
 		[Test]
 		public void DfaFpuOps()
 		{
-			RunTest("Fragments/fpuops.asm", "Analysis/DfaFpuOps.txt");
+			RunFileTest("Fragments/fpuops.asm", "Analysis/DfaFpuOps.txt");
 		}
 
 		[Test]
 		public void DfaMutualTest()
 		{
-			RunTest("Fragments/multiple/mutual.asm", "Analysis/DfaMutualTest.txt");
+			RunFileTest("Fragments/multiple/mutual.asm", "Analysis/DfaMutualTest.txt");
 		}
 
 		[Test]
 		public void DfaChainTest()
 		{
-			RunTest("Fragments/multiple/chaincalls.asm", "Analysis/DfaChainTest.txt");
+			RunFileTest("Fragments/multiple/chaincalls.asm", "Analysis/DfaChainTest.txt");
 		}
 
 		[Test]
@@ -99,91 +99,91 @@ namespace Reko.UnitTests.Analysis
 		{
             Given_FakeWin32Platform(mr);
             mr.ReplayAll();
-            RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
+            RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
 
 		[Test]
 		public void DfaMoveChain()
 		{
-			RunTest("Fragments/move_sequence.asm", "Analysis/DfaMoveChain.txt");
+			RunFileTest("Fragments/move_sequence.asm", "Analysis/DfaMoveChain.txt");
 		}
 
 		[Test]
 		public void DfaNegsNots()
 		{
-			RunTest("Fragments/negsnots.asm", "Analysis/DfaNegsNots.txt");
+			RunFileTest("Fragments/negsnots.asm", "Analysis/DfaNegsNots.txt");
 		}
 
 		[Test]
 		public void DfaPreservedAlias()
 		{
-			RunTest("Fragments/multiple/preserved_alias.asm", "Analysis/DfaPreservedAlias.txt");
+			RunFileTest("Fragments/multiple/preserved_alias.asm", "Analysis/DfaPreservedAlias.txt");
 		}
 
 		[Test]
 		public void DfaReadFile()
 		{
-			RunTest("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");
+			RunFileTest("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");
 		}
 
 		[Test]
 		public void DfaStackPointerMessing()
 		{
-			RunTest("Fragments/multiple/stackpointermessing.asm", "Analysis/DfaStackPointerMessing.txt");
+			RunFileTest("Fragments/multiple/stackpointermessing.asm", "Analysis/DfaStackPointerMessing.txt");
 		}
 
 		[Test]
 		public void DfaStringInstructions()
 		{
-			RunTest("Fragments/stringinstr.asm", "Analysis/DfaStringInstructions.txt");
+			RunFileTest("Fragments/stringinstr.asm", "Analysis/DfaStringInstructions.txt");
 		}
 
 		[Test]
 		public void DfaSuccessiveDecs()
 		{
-			RunTest("Fragments/multiple/successivedecs.asm", "Analysis/DfaSuccessiveDecs.txt");
+			RunFileTest("Fragments/multiple/successivedecs.asm", "Analysis/DfaSuccessiveDecs.txt");
 		}
 
 		[Test]
 		public void DfaWhileBigHead()
 		{
-			RunTest("Fragments/while_bighead.asm", "Analysis/DfaWhileBigHead.txt");
+			RunFileTest("Fragments/while_bighead.asm", "Analysis/DfaWhileBigHead.txt");
 		}
 
 		[Test]
 		public void DfaWhileGoto()
 		{
-			RunTest("Fragments/while_goto.asm", "Analysis/DfaWhileGoto.txt");
+			RunFileTest("Fragments/while_goto.asm", "Analysis/DfaWhileGoto.txt");
 		}
 
 		[Test]
 		public void DfaRecurseWithPushes()
 		{
-			RunTest("Fragments/multiple/recurse_with_pushes.asm", "Analysis/DfaRecurseWithPushes.txt");
+			RunFileTest("Fragments/multiple/recurse_with_pushes.asm", "Analysis/DfaRecurseWithPushes.txt");
 		}
 
 		[Test]
 		public void DfaReg00009()
 		{
-			RunTest("Fragments/regressions/r00009.asm", "Analysis/DfaReg00009.txt");
+			RunFileTest("Fragments/regressions/r00009.asm", "Analysis/DfaReg00009.txt");
 		}
 
 		[Test]
 		public void DfaReg00010()
 		{
-			RunTest("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
+			RunFileTest("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
 		}
 
         [Test]
         public void DfaReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Analysis/DfaReg00011.txt");
+            RunFileTest("Fragments/regressions/r00011.asm", "Analysis/DfaReg00011.txt");
         }
 
         [Test]
         public void DfaReg00015()
         {
-            RunTest("Fragments/regressions/r00015.asm", "Analysis/DfaReg00015.txt");
+            RunFileTest("Fragments/regressions/r00015.asm", "Analysis/DfaReg00015.txt");
         }
 
         [Test]
@@ -204,7 +204,7 @@ done:
         [Test]
         public void DfaManyIncrements()
         {
-            RunTest(new ManyIncrements(), "Analysis/DfaManyIncrements.txt");
+            RunFileTest(new ManyIncrements(), "Analysis/DfaManyIncrements.txt");
         }
 
 		protected override void RunTest(Program prog, TextWriter writer)

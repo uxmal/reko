@@ -103,13 +103,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpChainTest()
 		{
-			RunTest("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
+			RunFileTest("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
 		}
 
 		[Test]
 		public void VpConstPropagation()
 		{
-			RunTest("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
+			RunFileTest("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
 		}
 
 		[Test]
@@ -117,43 +117,43 @@ namespace Reko.UnitTests.Analysis
 		{
             Given_FakeWin32Platform(mr);
             mr.ReplayAll();
-			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
+			RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
 		}
 
 		[Test]
 		public void VpNegsNots()
 		{
-			RunTest("Fragments/negsnots.asm", "Analysis/VpNegsNots.txt");
+			RunFileTest("Fragments/negsnots.asm", "Analysis/VpNegsNots.txt");
 		}
 
 		[Test]
 		public void VpNestedRepeats()
 		{
-			RunTest("Fragments/nested_repeats.asm", "Analysis/VpNestedRepeats.txt");
+			RunFileTest("Fragments/nested_repeats.asm", "Analysis/VpNestedRepeats.txt");
 		}
 
 		[Test]
 		public void VpStringInstructions()
 		{
-			RunTest("Fragments/stringinstr.asm", "Analysis/VpStringInstructions.txt");
+			RunFileTest("Fragments/stringinstr.asm", "Analysis/VpStringInstructions.txt");
 		}
 
 		[Test]
 		public void VpSuccessiveDecs()
 		{
-			RunTest("Fragments/multiple/successivedecs.asm", "Analysis/VpSuccessiveDecs.txt");
+			RunFileTest("Fragments/multiple/successivedecs.asm", "Analysis/VpSuccessiveDecs.txt");
 		}
 
 		[Test]
 		public void VpWhileGoto()
 		{
-			RunTest("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
+			RunFileTest("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
 		}
 
         [Test]
         public void VpReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");
+            RunFileTest("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Analysis
 
                 m.Return();
             });
-            RunTest(b.BuildProgram(), "Analysis/VpLoop.txt");
+            RunFileTest(b.BuildProgram(), "Analysis/VpLoop.txt");
         }
 
 		[Test]

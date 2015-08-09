@@ -30,6 +30,9 @@ namespace Reko.Core.Output
 {
     public class AbsynCodeFormatter : CodeFormatter
     {
+        private const string DecimalSymbols = "0123456789";
+        private const string HexSymbols = "0123456789ABCDEF";
+
         public AbsynCodeFormatter(Formatter writer) : base(writer)
         {
 
@@ -48,27 +51,90 @@ namespace Reko.Core.Output
                     base.VisitConstant(c);
                     return;
                 case Domain.SignedInt:
-                    InnerFormatter.Write(SignedRepresentation(c.ToInt64());
+                    InnerFormatter.Write(SignedRepresentation(c.ToInt64()));
                     return;
                 default:
-                    InnerFormatter.Write(UnsignedRepresentation(c.ToUInt64());
-                    break;
+                    InnerFormatter.Write(UnsignedRepresentation(c.ToUInt64()));
+                    return;
                 }
             }
             base.VisitConstant(c);
         }
 
-        protected override string SignedFormatString(PrimitiveType type, long value)
+        private string UnsignedRepresentation(ulong p)
         {
-            return ChooseFormatStringBasedOnPattern(
-                value.ToString(CultureInfo.InvariantCulture),
-                value.ToString("X", CultureInfo.InvariantCulture),
+            var c = ~p;
+            var decRep = p.ToString(CultureInfo.InvariantCulture);
+            var hexRep = p.ToString("X", CultureInfo.InvariantCulture);
+            var chexRep = c.ToString("X", CultureInfo.InvariantCulture);
+            var decEntropy = Entropy(decRep, DecimalSymbols);
+            var hexEntropy = Entropy(hexRep, HexSymbols);
+            var chexEntropy = Entropy(chexRep, HexSymbols);
+            var sb = new StringBuilder();
+            if (chexEntropy < hexEntropy)
+            {
+                hexEntropy = chexEntropy;
+                sb.Append('~');
+            }
+            if (decEntropy < hexEntropy)
+            {
+                return decRep;
+            }
+            else
+            {
+                sb.Append("0x");
+                int length = hexRep.Length;
+                int pad;
+                if (length < 2)
+                    pad = 2 - length;
+                else if (length < 4)
+                    pad = 4 - length;
+                else if (length < 8)
+                    pad = 8 - length;
+                else
+                    pad = 0;
+                sb.Append('0', pad);
+                sb.Append(hexRep);
+                return sb.ToString();
+            }
         }
+
+        private string SignedRepresentation(long p)
+        {
+            var n = Math.Abs(p);
+            var decRep = n.ToString(CultureInfo.InvariantCulture);
+            var hexRep = n.ToString("X", CultureInfo.InvariantCulture);
+            var decEntropy = Entropy(decRep, DecimalSymbols);
+            var hexEntropy = Entropy(hexRep, HexSymbols);
+            if (decEntropy < hexEntropy)
+                return Convert.ToString(p, 10);
+            else
+            {
+                var sb = new StringBuilder();
+                if (p < 0)
+                    sb.Append('-');
+                sb.Append("0x");
+                int length = hexRep.Length;
+                int pad;
+                if (length < 2)
+                    pad = 2 - length;
+                else if (length < 4)
+                    pad = 4 - length;
+                else if (length < 8)
+                    pad = 8 - length;
+                else
+                    pad = 0;
+                sb.Append('0', pad);
+                sb.Append(hexRep);
+                return sb.ToString();
+            }
+        }
+
 
         public string ChooseFormatStringBasedOnPattern(string decRep, string hexRep, string decInverted, string hexInverted)
         {
-            var decEntropy = Entropy(decRep, "0123456789");
-            var hexEntropy = Entropy(hexRep, "0123456789ABCDEF");
+            var decEntropy = Entropy(decRep, DecimalSymbols);
+            var hexEntropy = Entropy(hexRep, HexSymbols);
             if (hexEntropy < decEntropy)
             {
                 int length = hexRep.Length;
@@ -86,13 +152,6 @@ namespace Reko.Core.Output
             }
         }
 
-        protected override string UnsignedFormatString(PrimitiveType type, ulong value)
-        {
-            return ChooseFormatStringBasedOnPattern(
-                value.ToString(CultureInfo.InvariantCulture),
-                value.ToString("X", CultureInfo.InvariantCulture));
-        }
-        
         // Entropy =  -\sum prob_i * ln prob_i
         /// <summary>
         /// Calculates the entropy of the sequence <paramref name="seq"/> 
