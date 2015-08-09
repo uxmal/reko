@@ -30,6 +30,10 @@ namespace Reko.UnitTests.Fragments
 {
     public static class EvenOdd
     {
+        /// <summary>
+        /// Mutually recursive functions that jump into each other's bodies.
+        /// </summary>
+        /// <returns></returns>
         public static Program BuildProgram()
         {
             var prog = new ProgramBuilder();

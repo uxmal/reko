@@ -126,7 +126,7 @@
         <File Source="$(var.Z80.TargetPath)" />
 
         <!-- Assemblers -->
-        <File Source="$(var.Pdp11Assemblers.TargetPath)" />
+        <File Source="$(var.Pdp11Assembler.TargetPath)" />
         <File Source="$(var.X86Assembler.TargetPath)" />
 
         <!-- Unpacker signatures -->
