@@ -204,7 +204,14 @@ done:
         [Test]
         public void DfaManyIncrements()
         {
-            RunTest(new ManyIncrements(), "Analysis/DfaManyIncrements.txt");
+            RunFileTest(new ManyIncrements(), "Analysis/DfaManyIncrements.txt");
+        }
+
+        [Test]
+        public void DfaReg00001()
+        {
+            var prog = RewriteCodeFragment32(UnitTests.Fragments.Regressions.Reg00001.Text);
+            SaveRunOutput(prog, RunTest, "Analysis/DfaReg00001.txt");
         }
 
 		protected override void RunTest(Program prog, TextWriter writer)

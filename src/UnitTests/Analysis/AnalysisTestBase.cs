@@ -18,6 +18,7 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
@@ -38,6 +39,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 
 namespace Reko.UnitTests.Analysis
@@ -160,6 +162,16 @@ namespace Reko.UnitTests.Analysis
             return program;
         }
 
+
+        protected Program RewriteCodeFragment32(string s)
+        {
+            Assembler asm = new X86TextAssembler(new X86ArchitectureFlat32());
+            var program = asm.AssembleFragment(Address.Ptr32(0x00400000), s);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            Rewrite(program, asm, null);
+            return program;
+        }
+
         private static void Rewrite(Program prog, Assembler asm, string configFile)
         {
             var fakeDiagnosticsService = new FakeDiagnosticsService();
@@ -200,11 +212,19 @@ namespace Reko.UnitTests.Analysis
             SaveRunOutput(prog, RunTest, outputFile);
 		}
 
-		protected void RunTest(ProcedureBuilder mock, string outputFile)
+		protected void RunFileTest(ProcedureBuilder mock, string outputFile)
 		{
 			Program prog = BuildProgramMock(mock);
             SaveRunOutput(prog, RunTest, outputFile);
 		}
+
+        protected void RunStringTest(string sExp, Action<ProcedureBuilder> m)
+        {
+            var pb = new ProcedureBuilder();
+            m(pb);
+            var program = BuildProgramMock(pb);
+            AssertRunOutput(program, RunTest, sExp);
+        }
 
 		protected void RunTest(string sourceFile, string configFile, string outputFile)
 		{
@@ -241,6 +261,18 @@ namespace Reko.UnitTests.Analysis
                 fut.AssertFilesEqual();
 			}
 		}
+
+        protected static void AssertRunOutput(Program program, Action<Program, TextWriter> test, string sExp)
+        {
+            var sw = new StringWriter();
+            test(program, sw);
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.Print(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
+        }
 
         protected void Given_Platform(Platform platform)
         {

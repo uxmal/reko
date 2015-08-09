@@ -35,14 +35,37 @@ namespace Reko.Core.Output
 
         }
 
+        public override void VisitConstant(Constant c)
+        {
+            var pt = c.DataType as PrimitiveType;
+            if (pt != null)
+            {
+                switch (pt.Domain)
+                {
+                case Domain.Boolean:
+                case Domain.Character:
+                case Domain.Real:
+                    base.VisitConstant(c);
+                    return;
+                case Domain.SignedInt:
+                    InnerFormatter.Write(SignedRepresentation(c.ToInt64());
+                    return;
+                default:
+                    InnerFormatter.Write(UnsignedRepresentation(c.ToUInt64());
+                    break;
+                }
+            }
+            base.VisitConstant(c);
+        }
+
         protected override string SignedFormatString(PrimitiveType type, long value)
         {
             return ChooseFormatStringBasedOnPattern(
                 value.ToString(CultureInfo.InvariantCulture),
-                value.ToString("X", CultureInfo.InvariantCulture));
+                value.ToString("X", CultureInfo.InvariantCulture),
         }
 
-        public string ChooseFormatStringBasedOnPattern(string decRep, string hexRep)
+        public string ChooseFormatStringBasedOnPattern(string decRep, string hexRep, string decInverted, string hexInverted)
         {
             var decEntropy = Entropy(decRep, "0123456789");
             var hexEntropy = Entropy(hexRep, "0123456789ABCDEF");
