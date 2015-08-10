@@ -43,12 +43,13 @@ namespace Reko.Structure.Schwartz
     /// </remarks>
     public class ProcedureStructurer : IStructureAnalysis
     {
+        private Procedure proc;
         private DirectedGraph<Region> regionGraph;
         private DominatorGraph<Region> doms;
+        private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
         private Queue<Region> tailRegions;
-        private Procedure proc;
 
         public ProcedureStructurer(Procedure proc)
         {
@@ -100,6 +101,7 @@ namespace Reko.Structure.Schwartz
             {
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
+                this.postDoms = BuildPostDoms();
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.tailRegions = new Queue<Region>();
@@ -138,6 +140,19 @@ namespace Reko.Structure.Schwartz
                 }
             } while (regionGraph.Nodes.Count > 1);
             return entry;
+        }
+
+        private DominatorGraph<Region> BuildPostDoms()
+        {
+            var revGraph = new ReverseGraph(regionGraph);
+            var exitNode = new Region(new Block(proc, "DummyExitBlock")) { Type = RegionType.Tail };
+            revGraph.Nodes.Add(exitNode);
+            var tailRegions = regionGraph.Nodes.Where(n => n.Type == RegionType.Tail);
+            foreach (var r in tailRegions)
+            {
+                revGraph.AddEdge(exitNode, r);
+            }
+            return new DominatorGraph<Region>(revGraph, exitNode);
         }
 
         /// <summary>
@@ -369,12 +384,12 @@ conditions to be inverses.
             var stms = new List<AbsynStatement>();
             for (int i = 0; i < succs.Length; ++i)
             {
-                stms.Add(new AbsynCase(i));
+                stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, i)));
                 stms.AddRange(succs[i].Statements);
                 stms.Add(new AbsynBreak());
                 regionGraph.RemoveEdge(n, succs[i]);
                 regionGraph.RemoveEdge(succs[i], follow);
-                regionGraph.Nodes.Remove(succs[i]);
+                RemoveRegion(succs[i]);
             }
             var sw = new AbsynSwitch(n.Expression, stms);
             n.Statements.Add(sw);
@@ -391,8 +406,8 @@ conditions to be inverses.
                 return false;
             this.unresolvedNoncycles.Enqueue(Tuple.Create(n, unstructuredPreds));
             return true;
-
         }
+
         private void RemoveRegion(Region n)
         {
             Debug.Print("Removing region {0} from graph", n.Block.Name);
@@ -982,6 +997,7 @@ structure because they reflect a dominator relationship
                 this.Type = type;
             }
         }
+
     }
 
 

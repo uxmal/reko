@@ -71,7 +71,7 @@ namespace Reko.Core.Output
             var chexRep = c.ToString("X", CultureInfo.InvariantCulture);
             var decEntropy = Entropy(decRep, DecimalSymbols);
             var hexEntropy = Entropy(hexRep, HexSymbols);
-            var chexEntropy = Entropy(chexRep, HexSymbols);
+            var chexEntropy = Entropy(chexRep, HexSymbols) + 0.2; // Bias towards no '~'.
             var sb = new StringBuilder();
             if (chexEntropy < hexEntropy)
             {
