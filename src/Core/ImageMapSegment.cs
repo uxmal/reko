@@ -27,7 +27,7 @@ namespace Reko.Core
 	/// Represent a segment of memory, corresponding to an 16-bit segment for intel real and protected modes, and 
 	/// executable sections for flat processor modes.
 	/// </summary>
-    [Designer("Reko.Gui.Design.ImageMapSegmentNodeDesigner,Reko")]
+    [Designer("Reko.Gui.Design.ImageMapSegmentNodeDesigner,Reko.Gui")]
 	public class ImageMapSegment : ImageMapItem
 	{
 		public ImageMapSegment(string name, AccessMode access) : base() 

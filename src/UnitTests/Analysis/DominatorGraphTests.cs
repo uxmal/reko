@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void DgWhileGoto()
         {
-			RunTest("Fragments/while_goto.asm", "Analysis/DgWhileGoto.txt");
+			RunFileTest("Fragments/while_goto.asm", "Analysis/DgWhileGoto.txt");
         }
 
         protected override void RunTest(Program prog, TextWriter writer)

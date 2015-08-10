@@ -29,7 +29,7 @@ namespace Reko.Core
     /// <summary>
     /// Represents a file that only used for the  metdata it contains.
     /// </summary>
-    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko")]
+    [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
     public class MetadataFile : ProjectFile
     {
         public override T Accept<T>(IProjectFileVisitor<T> visitor)

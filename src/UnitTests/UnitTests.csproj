@@ -6,8 +6,8 @@
     <ProjectGuid>{6528DBD9-8129-48D8-AA21-C169F1679646}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.UnitTests</RootNamespace>
-    <AssemblyName>Decompiler.UnitTests</AssemblyName>
+    <RootNamespace>Reko.UnitTests</RootNamespace>
+    <AssemblyName>Reko.UnitTests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -83,7 +83,7 @@
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
-    <Compile Include="Analysis\Fragments\EvenOdd.cs" />
+    <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
@@ -177,6 +177,7 @@
     <Compile Include="Fragments\FramePointerFragment.cs" />
     <Compile Include="Fragments\IndirectCallFragment.cs" />
     <Compile Include="Fragments\PointerChainFragment.cs" />
+    <Compile Include="Fragments\Regressions\Reg00001.cs" />
     <Compile Include="Fragments\RepeatedLoadsFragment.cs" />
     <Compile Include="Fragments\SegmentedCallFragment.cs" />
     <Compile Include="Fragments\StaggeredArrayFragment.cs" />
@@ -570,6 +571,10 @@
     <ProjectReference Include="..\Environments\Win32\Win32.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Win32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gui\Gui.csproj">
+      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
+      <Name>Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj">
       <Project>{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}</Project>

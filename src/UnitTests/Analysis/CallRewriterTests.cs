@@ -37,110 +37,110 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CrwAsciiHex()
 		{
-			RunTest("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
+			RunFileTest("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
 		}
 
 		[Test]
 		public void CrwNoCalls()
 		{
-			RunTest("Fragments/diamond.asm", "Analysis/CrwNoCalls.txt");
+			RunFileTest("Fragments/diamond.asm", "Analysis/CrwNoCalls.txt");
 		}
 
 		[Test]
 		public void CrwEvenOdd()
 		{
-			RunTest("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
+			RunFileTest("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
 		}
 
 		[Test]
 		public void CrwFactorial()
 		{
-			RunTest("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
+			RunFileTest("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
 		}
 
 		[Test]
 		public void CrwFactorialReg()
 		{
-			RunTest("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
+			RunFileTest("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
 		}
 
 		[Test]
 		public void CrwLeakyLiveness()
 		{
-			RunTest("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
+			RunFileTest("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
 		}
 
 		[Test]
 		public void CrwManyStackArgs()
 		{
-			RunTest("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
+			RunFileTest("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
 		}
 
 		[Test]
 		public void CrwStackVariables()
 		{
-			RunTest("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
+			RunFileTest("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
 		}
 
 		[Test]
 		[Ignore("Won't pass until ProcedureSignatures for call tables and call pointers are implemented")]
 		public void CrwCallTables()
 		{
-			RunTest("Fragments/multiple/calltables.asm", "Analysis/CrwCallTables.txt");
+			RunFileTest("Fragments/multiple/calltables.asm", "Analysis/CrwCallTables.txt");
 		}
 
 		[Test]
 		public void CrwFpuArgs()
 		{
-			RunTest("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
+			RunFileTest("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
 		}
 
 		[Test]
 		public void CrwFpuOps()
 		{
-			RunTest("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
+			RunFileTest("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
 		}
 
 		[Test]
 		public void CrwIpLiveness()
 		{
-			RunTest("Fragments/multiple/ipliveness.asm", "Analysis/CrwIpLiveness.txt");
+			RunFileTest("Fragments/multiple/ipliveness.asm", "Analysis/CrwIpLiveness.txt");
 		}
 
 		[Test]
 		public void CrwVoidFunctions()
 		{
-			RunTest("Fragments/multiple/voidfunctions.asm", "Analysis/CrwVoidFunctions.txt");
+			RunFileTest("Fragments/multiple/voidfunctions.asm", "Analysis/CrwVoidFunctions.txt");
 		}
 
 		[Test]
 		public void CrwMutual()
 		{
-			RunTest("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
+			RunFileTest("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
 		}
 
 		[Test]
 		public void CrwMemPreserve()
 		{
-			RunTest("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
+			RunFileTest("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
 		}
 
 		[Test]
 		public void CrwSliceReturn()
 		{
-			RunTest("Fragments/multiple/slicereturn.asm", "Analysis/CrwSliceReturn.txt");
+			RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/CrwSliceReturn.txt");
 		}
 
 		[Test]
 		public void CrwProcIsolation()
 		{
-			RunTest("Fragments/multiple/procisolation.asm", "Analysis/CrwProcIsolation.txt");
+			RunFileTest("Fragments/multiple/procisolation.asm", "Analysis/CrwProcIsolation.txt");
 		}
 
 		[Test]
 		public void CrwFibonacci()
 		{
-			RunTest32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
+			RunFileTest32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
 		}
 
 		protected override void RunTest(Program prog, TextWriter writer)
