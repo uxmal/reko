@@ -54,16 +54,18 @@ namespace Reko.Core.Output
                     InnerFormatter.Write(SignedRepresentation(c.ToInt64()));
                     return;
                 default:
-                    InnerFormatter.Write(UnsignedRepresentation(c.ToUInt64()));
+                    InnerFormatter.Write(UnsignedRepresentation(c));
                     return;
                 }
             }
             base.VisitConstant(c);
         }
 
-        private string UnsignedRepresentation(ulong p)
+        private string UnsignedRepresentation(Constant u)
         {
-            var c = ~p;
+            ulong m = (1UL << u.DataType.BitSize) - 1;
+            ulong p = u.ToUInt64();
+            var c = ~p & m;
             var decRep = p.ToString(CultureInfo.InvariantCulture);
             var hexRep = p.ToString("X", CultureInfo.InvariantCulture);
             var chexRep = c.ToString("X", CultureInfo.InvariantCulture);
@@ -74,6 +76,7 @@ namespace Reko.Core.Output
             if (chexEntropy < hexEntropy)
             {
                 hexEntropy = chexEntropy;
+                hexRep = chexRep;
                 sb.Append('~');
             }
             if (decEntropy < hexEntropy)
@@ -85,11 +88,11 @@ namespace Reko.Core.Output
                 sb.Append("0x");
                 int length = hexRep.Length;
                 int pad;
-                if (length < 2)
+                if (length <= 2)
                     pad = 2 - length;
-                else if (length < 4)
+                else if (length <= 4)
                     pad = 4 - length;
-                else if (length < 8)
+                else if (length <= 8)
                     pad = 8 - length;
                 else
                     pad = 0;
