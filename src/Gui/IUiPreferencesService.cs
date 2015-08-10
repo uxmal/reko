@@ -185,7 +185,8 @@ namespace Reko.Gui
             var disOpStyle = new UiStyle
             {
                 Name = UiStyles.DisassemblerOpcode,
-                Foreground = GetBrush((string)settingsSvc.Get(UiStyles.DisassemblerOpcodeColor, defDisOpStyle.ForeColor))
+                Foreground = GetBrush((string)settingsSvc.Get(UiStyles.DisassemblerOpcodeColor, defDisOpStyle.ForeColor)),
+                Width = string.IsNullOrEmpty(defDisOpStyle.Width) ? default(int?) : Convert.ToInt32(defDisOpStyle.Width),
             };
             AddStyle(disOpStyle);
 
