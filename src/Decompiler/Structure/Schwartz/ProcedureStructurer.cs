@@ -214,20 +214,26 @@ conditions to be inverses.
         public bool ReduceAcyclic(Region n, bool reduceTailregions)
         {
             bool didReduce = false;
-                if (n.Type == RegionType.Condition)
-                {
-                    didReduce = ReduceIfRegion(n, reduceTailregions);
-                }
-                else if (this.regionGraph.Successors(n).Count == 1)
-                {
-                    didReduce = ReduceSequence(n);
-                }
-                else
-                {
-                    //$NYI: switches.
-                    didReduce = false;
-                }
-               return didReduce;
+            switch (n.Type)
+            {
+            case RegionType.Condition:
+                didReduce = ReduceIfRegion(n, reduceTailregions);
+                break;
+            case RegionType.IncSwitch:
+                didReduce = ReduceSwitchRegion(n);
+                break;
+            case RegionType.Linear:
+                didReduce = ReduceSequence(n);
+                break;
+            case RegionType.Tail:
+                didReduce = false;
+                break;
+            default:
+                throw new NotImplementedException();
+                didReduce = false;
+                break;
+            }
+            return didReduce;
         }
 
         public bool ProcessUnresolvedRegions()
@@ -322,6 +328,60 @@ conditions to be inverses.
             }
             else
                 return false;
+        }
+
+        /// <summary>
+        /// Switch regions.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private bool ReduceSwitchRegion(Region n)
+        {
+            var follow = GetSwitchFollow(n);
+            if (follow != null)
+            {
+                return ReduceIncSwitch(n, follow);
+            }
+            return false;
+        }
+
+        private Region GetSwitchFollow(Region n)
+        {
+            Region follow = null;
+            foreach (var s in regionGraph.Successors(n))
+            {
+                if (regionGraph.Predecessors(s).Count != 1)
+                    return null;
+                var ss = SingleSuccessor(s);
+                if (ss == null)
+                    return null;
+                if (follow == null)
+                    follow = ss;
+                else if (ss != follow)
+                    return null;
+            }
+            return follow;
+        }
+
+        private bool ReduceIncSwitch(Region n, Region follow)
+        {
+            var succs = regionGraph.Successors(n).ToArray();
+            var stms = new List<AbsynStatement>();
+            for (int i = 0; i < succs.Length; ++i)
+            {
+                stms.Add(new AbsynCase(i));
+                stms.AddRange(succs[i].Statements);
+                stms.Add(new AbsynBreak());
+                regionGraph.RemoveEdge(n, succs[i]);
+                regionGraph.RemoveEdge(succs[i], follow);
+                regionGraph.Nodes.Remove(succs[i]);
+            }
+            var sw = new AbsynSwitch(n.Expression, stms);
+            n.Statements.Add(sw);
+            n.Expression = null;
+            n.Type = RegionType.Linear;
+            regionGraph.AddEdge(n, follow);
+            return true;
         }
 
         private bool RefinePredecessor(Region n, Region s)
@@ -588,14 +648,15 @@ are added during loop refinement, which we discuss next.
                     {
                         // Infinite loop.
                         loopStm = new AbsynWhile(Constant.True(), s.Statements);
+                        n.Type = RegionType.Tail;
                     }
                     else
                     {
                         // DoWhile!
                         loopStm = new AbsynDoWhile(s.Statements, s.Expression);
+                        n.Type = RegionType.Linear;
                     }
                     n.Statements = new List<AbsynStatement> { loopStm };
-                    n.Type = RegionType.Linear;
                     n.Expression = null;
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
@@ -842,8 +903,10 @@ refinement on the loop body, which we describe below.
         /// edges that go to the loop successor use the break
         /// regions. Any other virtualized edge becomes a goto.
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="follow"></param>
+        /// <param name="header">The loop header</param>
+        /// <param name="latch">The node that takes us back 
+        /// to the top of the loop.</param>
+        /// <param name="follow">The node that follows the loop.</param>
         /// <param name="lexicalNodes"></param>
         /// <returns>True if at least one edge was virtualized.</returns>
         private bool VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet<Region> lexicalNodes)

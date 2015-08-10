@@ -461,7 +461,42 @@ unstructuredexit:
         [Test]
         public void ProcStr_Switch()
         {
+            var r1 = m.Reg32("r1");
 
+            m.Label("head");
+            m.Switch(r1, "case_0", "case_1", "case_2");
+
+            m.Label("case_0");
+            m.Assign(r1, 3);
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Assign(r1, 2);
+            m.Goto("done");
+
+            m.Label("case_2");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0:
+        r1 = 0x00000003;
+        break;
+    case 1:
+        r1 = 0x00000002;
+        break;
+    case 2:
+        r1 = 0x00000001;
+        break;
+    }
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
         }
     }
 }

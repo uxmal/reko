@@ -111,7 +111,9 @@ namespace Reko.Structure.Schwartz
 
         public AbsynStatement VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new NotImplementedException();
+            regType = RegionType.IncSwitch; // Tentative, will be refined later.
+            exp = si.Expression;
+            return null;            
         }
 
         public AbsynStatement VisitUseInstruction(UseInstruction use)
