@@ -560,7 +560,7 @@ while (1)
 }
 
 which has no exits, the body of the loop must trigger any
-loop exits. In Phoenix, the loop exits are represented by
+loop exits. The loop exits are represented by
 a tail region,  which corresponds to a goto , break,  or
 continue in the decompiled output.  These tail regions
 are added during loop refinement, which we discuss next.
@@ -637,7 +637,9 @@ are added during loop refinement, which we discuss next.
                 }
             }
 
-            // It's a cyclic region, but we are unable to collapse it. Schedule it for refinement after the whole graph has been traversed.
+            // It's a cyclic region, but we are unable to collapse it.
+            // Schedule it for refinement after the whole graph has been 
+            // traversed.
             this.unresolvedCycles.Enqueue(Tuple.Create(n, loopNodes));
             return didReduce;
         }
@@ -713,7 +715,7 @@ refinement on the loop body, which we describe below.
         {
             head = EnsureSingleEntry(head, loopNodes);
             var follow = DetermineFollowRegion(head, loopNodes);
-            var latch = DetermineFollowRegion(head, loopNodes);
+            var latch = DetermineLatchRegion(head, loopNodes);
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, follow, latch, lexicalNodes);
             if (virtualized)
@@ -757,7 +759,9 @@ refinement on the loop body, which we describe below.
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
             {
-                // If the head is a Conditional node and one of the nodes 
+                // If the head is a Conditional node and one of the edges 
+                // leaves the loop, the head of that edge is the follow 
+                // node of the 
                 if (!loopNodes.Contains(headSucc[0]))
                     return headSucc[0];
                 if (!loopNodes.Contains(headSucc[1]))
@@ -773,7 +777,7 @@ refinement on the loop body, which we describe below.
         
         private Region DetermineLatchRegion(Region head, ISet<Region> loopRegions)
         {
-            return null;
+            return null; 
         }
 
         /// <summary>
