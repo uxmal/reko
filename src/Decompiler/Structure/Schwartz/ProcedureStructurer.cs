@@ -357,7 +357,153 @@ conditions to be inverses.
             {
                 return ReduceIncSwitch(n, follow);
             }
-            return false;
+            RefineIncSwitch(n);
+            return true;
+        }
+
+#if NILZ
+A switch candidate is refined by first virtualizing incoming
+edges to any node other than the switch head.
+The next step is to ensure there is a single successor of
+all nodes in the switch. The immediate post-dominator
+of the switch head is selected as the successor if it is the
+successor of any of the case nodes. Otherwise, the node
+that (1) is a successor of a case node, (2) is not a case
+node itself, and (3) has the highest number of incoming
+edges from case nodes is chosen as the successor. After
+the successor has been identified, any outgoing edge from
+the switch that does not go to the successor is virtualized.
+After refinement, a switch candidate is usually collapsed
+to a IncSwitch[·] region. For instance, a common
+implementation strategy for switches is to redirect inputs
+handled by the default case (e.g., x > 20) to a default
+node, and use a jump table for the remaining cases (e.g.,
+x in [0,20]). This relationship is depicted in Figure 4,
+along with the corresponding region types. Because the
+jump table only handles a few cases, it is recognized as an
+IncSwitch[·]. However, because the default node handles
+all other cases, together they constitute a Switch[·].
+#endif
+
+
+#if NILZ
+3.4  Switch Refinement
+If the subgraph at node _n_ is acyclic but fails to match a
+known schema, we try to refine the subgraph into a switch.
+Regions that would match a switch schema in Table 3
+but contain extra edges are switch candidates. A switch
+candidate can fail to match the switch schema if it has
+extra incoming edges or multiple successors. For instance,
+the nodes in the IncSwitch [] box in Figure  4  would not
+be identified as an IncSwitch [] region because there is an
+extra incoming edge to the default case node.
+
+We first refine switch candidates by ensuring that the
+switch head is the only predecessor for each case node.
+We remove any other incoming edge by virtualizing them.
+The next step is to ensure there is a single successor of all
+nodes in the switch. To find the successor, we first identify
+the immediate post-dominator of the switch head. If this
+node is the successor of any of the case nodes, we select
+it as the switch successor. If not, we select the node that
+(1) is a successor of a case node, (2) is not a case node
+itself, and (3) has the highest number of incoming edges
+from case nodes. After we have identified the successor,
+we remove all outgoing edges from the case nodes to other
+nodes by virtualizing them
+
+After  refinement,  a  switch  candidate  is  usually  col-
+lapsed to a IncSwitch[] region. For instance, a common
+implementation strategy for switches is to redirect inputs
+handled by the default case (e.g., x > 20) to a default
+node, and use a jump table for the remaining cases (e.g.,
+x in {0..20}.   This relationship is depicted in Figure
+ 4,
+along with the corresponding region types. Because the
+jump table only handles a few cases, it is recognized as an
+IncSwitch[]. However, because the default node handles
+all other cases, together they constitute a Switch[].
+
+#endif
+        private void RefineIncSwitch(Region n)
+        {
+            VirtualizeIrregularSwitchEntries(n);
+            Region follow = FindIrregularSwitchFollowRegion(n);
+            VirtualizeIrregularSwitchExits(n, follow);
+        }
+
+
+        private void VirtualizeIrregularSwitchEntries(Region n)
+        {
+            var vEdges = new List<VirtualEdge>();
+            foreach (var s in regionGraph.Successors(n))
+            {
+                foreach (var sp in regionGraph.Predecessors(s))
+                {
+                    if (sp != n)
+                        vEdges.Add(new VirtualEdge(sp, s, VirtualEdgeType.Goto));
+                }
+            }
+            foreach (var vEdge in vEdges)
+            {
+                VirtualizeEdge(vEdge);
+            }
+        }
+
+        /// <summary>
+        ///  To find the successor, we first identify
+        /// the immediate post-dominator of the switch head. If this
+        /// node is the successor of any of the case nodes, we select
+        /// it as the switch successor. If not, we select the node that
+        /// (1) is a successor of a case node, (2) is not a case node
+        /// itself, and (3) has the highest number of incoming edges
+        /// from case nodes.
+        /// </summary>
+        private Region FindIrregularSwitchFollowRegion(Region n)
+        {
+            var immPDom = this.postDoms.ImmediateDominator(n);
+            var caseNodes = regionGraph.Successors(n).ToHashSet();
+            if (caseNodes.Any(s => regionGraph.Successors(s).Contains(immPDom)))
+                return immPDom;
+
+            Func<Region, int> incoming = (r) => {
+                return regionGraph.Predecessors(r)
+                    .Where(p => caseNodes.Contains(p))
+                    .Count();
+            };
+            var candidates = caseNodes.SelectMany(c => regionGraph.Successors(c))
+                .Where(c => !caseNodes.Contains(c))
+                .ToList();
+            var best = candidates
+                .Select(c => new {
+                    Region = c,
+                    Score = incoming(c)
+                })
+                .OrderByDescending(c => c.Score)
+                .First();
+            return best.Region;
+        }
+
+        /// <summary>
+        /// After we have identified the successor, we remove all 
+        /// outgoing edges from the case nodes to other nodes by 
+        /// virtualizing them.
+        /// </summary>
+        private void VirtualizeIrregularSwitchExits(Region n, Region follow)
+        {
+            var caseNodes = regionGraph.Successors(n).ToHashSet();
+            var vEdges = new List<VirtualEdge>();
+            foreach (var c in caseNodes)
+            {
+                foreach (var s in regionGraph.Successors(c).Where(cs => cs != follow))
+                {
+                    vEdges.Add(new VirtualEdge(c, s, VirtualEdgeType.Goto));
+                }
+            }
+            foreach (var vEdge in vEdges)
+            {
+                VirtualizeEdge(vEdge);
+            }
         }
 
         private Region GetSwitchFollow(Region n)
@@ -368,12 +514,15 @@ conditions to be inverses.
                 if (regionGraph.Predecessors(s).Count != 1)
                     return null;
                 var ss = SingleSuccessor(s);
-                if (ss == null)
-                    return null;
-                if (follow == null)
-                    follow = ss;
-                else if (ss != follow)
-                    return null;
+                if (s.Type != RegionType.Tail)
+                {
+                    if (ss == null)
+                        return null;
+                    if (follow == null)
+                        follow = ss;
+                    else if (ss != follow)
+                        return null;
+                }
             }
             return follow;
         }
@@ -386,7 +535,10 @@ conditions to be inverses.
             {
                 stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, i)));
                 stms.AddRange(succs[i].Statements);
-                stms.Add(new AbsynBreak());
+                if (succs[i].Type != RegionType.Tail)
+                {
+                    stms.Add(new AbsynBreak());
+                }
                 regionGraph.RemoveEdge(n, succs[i]);
                 regionGraph.RemoveEdge(succs[i], follow);
                 RemoveRegion(succs[i]);
@@ -551,45 +703,6 @@ doing future pattern matches.
                 throw new NotImplementedException();
         }
 
-#if NILZ
-3.4  Switch Refinement
-If the subgraph at node _n_ is acyclic but fails to match a
-known schema, we try to refine the subgraph into a switch.
-Regions that would match a switch schema in Table 3
-but contain extra edges are switch candidates. A switch
-candidate can fail to match the switch schema if it has
-extra incoming edges or multiple successors. For instance,
-the nodes in the IncSwitch [] box in Figure  4  would not
-be identified as an IncSwitch [] region because there is an
-extra incoming edge to the default case node.
-
-We first refine switch candidates by ensuring that the
-switch head is the only predecessor for each case node.
-We remove any other incoming edge by virtualizing them.
-The next step is to ensure there is a single successor of all
-nodes in the switch. To find the successor, we first identify
-the immediate post-dominator of the switch head. If this
-node is the successor of any of the case nodes, we select
-it as the switch successor. If not, we select the node that
-(1) is a successor of a case node, (2) is not a case node
-itself, and (3) has the highest number of incoming edges
-from case nodes. After we have identified the successor,
-we remove all outgoing edges from the case nodes to other
-nodes by virtualizing them
-
-After  refinement,  a  switch  candidate  is  usually  col-
-lapsed to a IncSwitch[] region. For instance, a common
-implementation strategy for switches is to redirect inputs
-handled by the default case (e.g., x > 20) to a default
-node, and use a jump table for the remaining cases (e.g.,
-x in {0..20}.   This relationship is depicted in Figure
- 4,
-along with the corresponding region types. Because the
-jump table only handles a few cases, it is recognized as an
-IncSwitch[]. However, because the default node handles
-all other cases, together they constitute a Switch[].
-
-#endif
 
 #if NILZ
 

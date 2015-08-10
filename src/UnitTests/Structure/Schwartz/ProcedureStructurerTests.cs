@@ -498,5 +498,47 @@ unstructuredexit:
 ";
             RunTest(sExp, m.Procedure);
         }
+
+        [Test]
+        public void ProcStr_Switch_Fallthru()
+        {
+            var r1 = m.Reg32("r1");
+
+            m.Label("head");
+            m.Switch(r1, "case_0", "case_1", "case_2");
+
+            m.Label("case_0");
+            m.Assign(r1, 3);
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Assign(r1, 2);
+            // Fallthru
+
+            m.Label("case_2");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0x00:
+        r1 = 0x03;
+        break;
+    case 0x01:
+        r1 = 0x02;
+        goto case_2;
+    case 0x02:
+case_2:
+        r1 = 0x01;
+        break;
+    }
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
     }
 }
