@@ -425,5 +425,43 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsaFlagRegisters()
+        {
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def esi
+	// succ:  l1
+l1:
+	SZ_1 = cond(esi)
+	C_2 = false
+	CZ_3 = false (alias)
+	al_4 = Test(ULE,false)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use al_4
+	use C_2
+	use CZ_3
+	use esi
+	use SZ_1
+";
+            RunTest(sExp, m =>
+            {
+                var scz = m.Frame.EnsureFlagGroup(7, "SZ", PrimitiveType.Byte);
+                var cz = m.Frame.EnsureFlagGroup(3, "CZ", PrimitiveType.Byte);
+                var c = m.Frame.EnsureFlagGroup(1, "C", PrimitiveType.Bool);
+                var al = m.Reg8("al");
+                var esi = m.Reg32("esi");
+                m.Assign(scz, m.Cond(m.And(esi, esi)));
+                m.Assign(c, Constant.False());
+                m.Emit(new AliasAssignment(cz, c));
+                m.Assign(al, m.Test(ConditionCode.ULE, cz));
+                m.Return();
+            });
+        }
     }
 }

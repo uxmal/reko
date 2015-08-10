@@ -51,13 +51,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void RlDataConstraint()
 		{
-			RunTest("Fragments/data_constraint.asm", "Analysis/RlDataConstraint.txt");
+			RunFileTest("Fragments/data_constraint.asm", "Analysis/RlDataConstraint.txt");
 		}
 
 		[Test]
 		public void RlOneProcedure()
 		{
-			RunTest("Fragments/one_procedure.asm", "Analysis/RlOneProcedure.txt");
+			RunFileTest("Fragments/one_procedure.asm", "Analysis/RlOneProcedure.txt");
 		}
 
 		/// <summary>
@@ -66,140 +66,140 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void RlFactorialReg()
 		{
-			RunTest("Fragments/factorial_reg.asm", "Analysis/RlFactorialReg.txt");
+			RunFileTest("Fragments/factorial_reg.asm", "Analysis/RlFactorialReg.txt");
 		}
 
 		[Test]
 		public void RlFactorial()
 		{
-			RunTest("Fragments/factorial.asm", "Analysis/RlFactorial.txt");
+			RunFileTest("Fragments/factorial.asm", "Analysis/RlFactorial.txt");
 		}
 
 		[Test]
 		public void RlCalleeSave()
 		{
-			RunTest("Fragments/callee_save.asm", "Analysis/RlCalleeSave.txt");
+			RunFileTest("Fragments/callee_save.asm", "Analysis/RlCalleeSave.txt");
 		}
 
 		[Test]
 		public void RlDeepNest()
 		{
-			RunTest("Fragments/deep_nest.asm", "Analysis/RlDeepNest.txt");
+			RunFileTest("Fragments/deep_nest.asm", "Analysis/RlDeepNest.txt");
 		}
 
 		[Test]
 		public void RlSequence()
 		{
-			RunTest("Fragments/sequence_calls_reg.asm", "Analysis/RlSequence.txt");
+			RunFileTest("Fragments/sequence_calls_reg.asm", "Analysis/RlSequence.txt");
 		}
 
 		[Test]
 		public void RlMiniFloats()
 		{
-			RunTest("Fragments/mini_msfloats_regs.asm", "Analysis/RlMiniFloats.txt");
+			RunFileTest("Fragments/mini_msfloats_regs.asm", "Analysis/RlMiniFloats.txt");
 		}
 
 		[Test]
 		[Ignore("Won't pass until ProcedureSignatures for call tables and call pointers are implemented")]
 		public void RlCallTables()
 		{
-			RunTest("Fragments/multiple/calltables.asm", "Analysis/RlCallTables.txt");
+			RunFileTest("Fragments/multiple/calltables.asm", "Analysis/RlCallTables.txt");
 		}
 
 		[Test]
 		public void RlConditionals()
 		{
-			RunTest("Fragments/multiple/conditionals.asm", "Analysis/RlConditionals.txt");
+			RunFileTest("Fragments/multiple/conditionals.asm", "Analysis/RlConditionals.txt");
 		}
 
 		[Test]
 		public void RlFpuOps()
 		{
-			RunTest("Fragments/fpuops.asm", "Analysis/RlFpuOps.txt");
+			RunFileTest("Fragments/fpuops.asm", "Analysis/RlFpuOps.txt");
 		}
 
 		[Test]
 		public void RlIpLiveness()
 		{
-			RunTest("Fragments/multiple/ipliveness.asm", "Analysis/RlIpLiveness.txt");
+			RunFileTest("Fragments/multiple/ipliveness.asm", "Analysis/RlIpLiveness.txt");
 		}
 
 		[Test]
 		public void RlMutual()
 		{
-			RunTest("Fragments/multiple/mutual.asm", "Analysis/RlMutual.txt");
+			RunFileTest("Fragments/multiple/mutual.asm", "Analysis/RlMutual.txt");
 		}
 
 		[Test]
 		public void RlStackVariables()
 		{
-			RunTest("Fragments/stackvars.asm", "Analysis/RlStackVariables.txt");
+			RunFileTest("Fragments/stackvars.asm", "Analysis/RlStackVariables.txt");
 		}
 
 		[Test]
 		public void RlProcIsolation()
 		{
-			RunTest("Fragments/multiple/procisolation.asm", "Analysis/RlProcIsolation.txt");
+			RunFileTest("Fragments/multiple/procisolation.asm", "Analysis/RlProcIsolation.txt");
 		}
 
 		[Test]
 		public void RlLeakyLiveness()
 		{
-			RunTest("Fragments/multiple/leaky_liveness.asm", "Analysis/RlLeakyLiveness.txt");
+			RunFileTest("Fragments/multiple/leaky_liveness.asm", "Analysis/RlLeakyLiveness.txt");
 		}
 
 		[Test]
 		public void RlStringInstructions()
 		{
-			RunTest("Fragments/stringinstr.asm", "Analysis/RlStringInstructions.txt");
+			RunFileTest("Fragments/stringinstr.asm", "Analysis/RlStringInstructions.txt");
 		}
 
 		[Test]
 		public void RlTermination()
 		{
-			RunTest("Fragments/multiple/termination.asm", "Fragments/multiple/termination.xml", "Analysis/RlTermination.txt");
+			RunFileTest("Fragments/multiple/termination.asm", "Fragments/multiple/termination.xml", "Analysis/RlTermination.txt");
 		}
 
 		[Test]
 		public void RlLivenessAfterCall()
 		{
-			RunTest("Fragments/multiple/livenessaftercall.asm", "Analysis/RlLivenessAfterCall.txt");
+			RunFileTest("Fragments/multiple/livenessaftercall.asm", "Analysis/RlLivenessAfterCall.txt");
 		}
 
         [Test]
         public void RlPushedRegisters()
         {
-            RunTest("Fragments/multiple/pushed_registers.asm", "Analysis/RlPushedRegisters.txt");
+            RunFileTest("Fragments/multiple/pushed_registers.asm", "Analysis/RlPushedRegisters.txt");
         }
 
         [Test]
         public void RlReg00005()
         {
-            RunTest("Fragments/regressions/r00005.asm", "Analysis/RlReg00005.txt");
+            RunFileTest("Fragments/regressions/r00005.asm", "Analysis/RlReg00005.txt");
         }
 
         [Test]
         public void RlReg00007()
         {
-            RunTest("Fragments/regressions/r00007.asm", "Analysis/RlReg00007.txt");
+            RunFileTest("Fragments/regressions/r00007.asm", "Analysis/RlReg00007.txt");
         }
 
         [Test]
         public void RlReg00010()
         {
-            RunTest("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
+            RunFileTest("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
         }
 
         [Test]
         public void RlReg00015()
         {
-            RunTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
+            RunFileTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
         }
 
         [Test]
         public void RlPushPop()
         {
-            RunTest("Fragments/pushpop.asm", "Analysis/RlPushPop.txt");
+            RunFileTest("Fragments/pushpop.asm", "Analysis/RlPushPop.txt");
         }
 	}
 }

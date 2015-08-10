@@ -69,25 +69,25 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void AlFactorialReg()
         {
-            RunTest("Fragments/factorial_reg.asm", "Analysis/AlFactorialReg.txt");
+            RunFileTest("Fragments/factorial_reg.asm", "Analysis/AlFactorialReg.txt");
         }
 
         [Test]
         public void AlAddSubCarries()
         {
-            RunTest("Fragments/addsubcarries.asm", "Analysis/AlAddSubCarries.txt");
+            RunFileTest("Fragments/addsubcarries.asm", "Analysis/AlAddSubCarries.txt");
         }
 
         [Test]
         public void AlPreservedAlias()
         {
-            RunTest("Fragments/multiple/preserved_alias.asm", "Analysis/AlPreservedAlias.txt");
+            RunFileTest("Fragments/multiple/preserved_alias.asm", "Analysis/AlPreservedAlias.txt");
         }
 
         [Test]
         public void AlReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Analysis/AlReg00011.txt");
+            RunFileTest("Fragments/regressions/r00011.asm", "Analysis/AlReg00011.txt");
         }
 
         [Test]
@@ -148,6 +148,25 @@ namespace Reko.UnitTests.Analysis
             Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);
             Assignment ass = alias.CreateAliasInstruction(argOff, argPtr);
             Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0, 16) (alias)", ass.ToString());
+        }
+
+        [Test]
+        public void AliasFlags()
+        {
+            var sExp = "@@@";
+            RunStringTest(sExp, m =>
+            {
+                var scz = m.Frame.EnsureFlagGroup(7, "SZ", PrimitiveType.Byte);
+                var cz = m.Frame.EnsureFlagGroup(3, "CZ", PrimitiveType.Byte);
+                var c = m.Frame.EnsureFlagGroup(1, "C", PrimitiveType.Bool);
+                var al = m.Reg8("al");
+                var esi = m.Reg32("esi");
+                m.Assign(scz, m.Cond(m.And(esi, esi)));
+                m.Assign(c, Constant.False());
+                m.Emit(new AliasAssignment(cz, c));
+                m.Assign(al, m.Test(ConditionCode.ULE, cz));
+                m.Return();
+            });
         }
     }
 }

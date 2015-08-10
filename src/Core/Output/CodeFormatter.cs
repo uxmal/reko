@@ -206,7 +206,7 @@ namespace Reko.Core.Output
 			writer.Write(")");
 		}
 
-        public void VisitConstant(Constant c)
+        public virtual void VisitConstant(Constant c)
         {
             if (!c.IsValid)
             {
@@ -678,11 +678,6 @@ namespace Reko.Core.Output
 			}
 		}
 
-        protected virtual string SignedFormatString(PrimitiveType type, long value)
-        {
-            return "{0}";
-        }
-
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
         {
             switch (type.Size)
@@ -703,7 +698,7 @@ namespace Reko.Core.Output
             switch (type.Domain)
             {
             case Domain.SignedInt:
-                return SignedFormatString(type, Math.Abs(Convert.ToInt64(value)));
+                return "{0}";
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -725,7 +720,7 @@ namespace Reko.Core.Output
                 default: throw new ArgumentOutOfRangeException("Only real types of size 4 and 8 are supported.");
                 }
             default:
-                return UnsignedFormatString(type,  Convert.ToUInt64(value));
+                return UnsignedFormatString(type, Convert.ToUInt64(value));
             }
         }
 

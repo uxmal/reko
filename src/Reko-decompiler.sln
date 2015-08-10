@@ -141,6 +141,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler", "Driver
 		{4DEC7ADA-E512-43C5-8312-CA076818C2A9} = {4DEC7ADA-E512-43C5-8312-CA076818C2A9}
 		{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA} = {B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}
 		{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9} = {3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}
+		{3BB6B0FB-6686-428B-9DC9-A32F349E50E6} = {3BB6B0FB-6686-428B-9DC9-A32F349E50E6}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDecompiler", "Drivers\MonoDecompiler\MonoDecompiler.csproj", "{3269A135-4077-4BA0-B358-7974CCF09974}"
@@ -178,6 +179,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine", "Drivers\CmdLine\
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "website", "Drivers\WebSite\website.csproj", "{0D35C524-CA16-4C68-80CD-538897144B47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{1CA14C64-92E8-452E-A380-637F3DBB4D28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -838,6 +841,20 @@ Global
 		{0D35C524-CA16-4C68-80CD-538897144B47}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0D35C524-CA16-4C68-80CD-538897144B47}.Release|Win32.ActiveCfg = Release|Any CPU
 		{0D35C524-CA16-4C68-80CD-538897144B47}.Release|x86.ActiveCfg = Release|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Release|.NET.ActiveCfg = Release|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Release|Win32.ActiveCfg = Release|Any CPU
+		{1CA14C64-92E8-452E-A380-637F3DBB4D28}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
