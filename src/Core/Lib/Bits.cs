@@ -34,5 +34,21 @@ namespace Reko.Core.Lib
         {
             return w != 0 && (w & (w - 1)) == 0;
         }
+
+        /// <summary>
+        /// Sign-extend the <paramref name="b"/>-bit number 
+        /// <paramref name="w"/>.
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static ulong SignExtend(ulong w, int b)
+        {
+            ulong r;      // resulting sign-extended number
+            ulong m = 1LU << (b - 1); // mask can be pre-computed if b is fixed
+            w = w & ((1U << b) - 1);  // (Skip this if bits in x above position b are already zero.)
+            r = (w ^ m) - m;
+            return r;
+        }
     }
 }
