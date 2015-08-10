@@ -717,7 +717,7 @@ refinement on the loop body, which we describe below.
             var follow = DetermineFollowRegion(head, loopNodes);
             var latch = DetermineLatchRegion(head, loopNodes);
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
-            var virtualized = VirtualizeIrregularExits(head, follow, latch, lexicalNodes);
+            var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
             if (virtualized)
                 return;
             LastResort(lexicalNodes);

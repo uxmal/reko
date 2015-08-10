@@ -457,5 +457,11 @@ unstructuredexit:
 ";
             RunTest(sExp, m.Procedure);
         }
+
+        [Test]
+        public void ProcStr_Switch()
+        {
+
+        }
     }
 }
