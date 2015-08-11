@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Arm
         protected static ArmInstruction Disassemble(byte[] bytes)
         {
             var image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
-            var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateLeReader(0));
+            var dasm = new ArmDisassembler(new ArmProcessorArchitecture(), image.CreateLeReader(0));
             return dasm.First();
         }
 

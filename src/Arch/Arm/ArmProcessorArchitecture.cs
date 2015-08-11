@@ -18,19 +18,19 @@
  */
 #endregion
 
+using Gee.External.Capstone;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Serialization;
-using System.Globalization;
-using Reko.Core.Operators;
 
 namespace Reko.Arch.Arm
 {
@@ -45,7 +45,6 @@ namespace Reko.Arch.Arm
         public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new ArmDisassembler(this, imageReader);
-            //return new ArmDisassembler2(this, imageReader);
         }
 
         public ProcessorState CreateProcessorState()

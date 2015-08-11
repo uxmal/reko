@@ -115,7 +115,7 @@ namespace Reko.Arch.Arm
                         {
                         case 0: break;
                         case 1:
-                            op = new ShiftOperand(op, Opcode.lsl, 12); break;
+                            op = new ShiftOperand(op, Opcode2.lsl, 12); break;
                         default: throw new FormatException("Reserved value for shift code.");
                         }
                         break;

@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public enum Opcode : short
+    public enum Opcode2 : short
     {
         illegal,
 

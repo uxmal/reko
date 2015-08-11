@@ -31,23 +31,23 @@ namespace Reko.Arch.Arm
 {
     public class ShiftOperand : MachineOperand
     {
-        public ShiftOperand(Opcode opcode, MachineOperand op) : base(op.Width)
+        public ShiftOperand(Opcode2 opcode, MachineOperand op) : base(op.Width)
         {
             this.Opcode = opcode;
             this.Shift = op;
         }
 
-        public ShiftOperand(Opcode opcode, PrimitiveType width) : base(width)
+        public ShiftOperand(Opcode2 opcode, PrimitiveType width) : base(width)
         {
             this.Opcode = opcode;
         }
 
-        public ShiftOperand(MachineOperand op, Opcode opcode, int shAmt)
+        public ShiftOperand(MachineOperand op, Opcode2 opcode, int shAmt)
             : this(op, opcode, ArmImmediateOperand.Byte((byte)shAmt))
         {
         }
 
-        public ShiftOperand(MachineOperand op, Opcode opcode, MachineOperand shAmt)
+        public ShiftOperand(MachineOperand op, Opcode2 opcode, MachineOperand shAmt)
             : base(op.Width)
         {
             this.Operand = op;
@@ -55,7 +55,7 @@ namespace Reko.Arch.Arm
             this.Shift = shAmt;
         }
         public MachineOperand Operand { get; set; }
-        public Opcode Opcode { get; set; }
+        public Opcode2 Opcode { get; set; }
         public MachineOperand Shift { get; set; }
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)

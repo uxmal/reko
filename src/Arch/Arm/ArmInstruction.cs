@@ -27,9 +27,31 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ArmInstruction : MachineInstruction
+    using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
+
+    public class ArmInstruction : MachineInstruction 
     {
-        public Opcode Opcode;
+        private CapstoneArmInstruction instruction;
+
+        public ArmInstruction(CapstoneArmInstruction instruction)
+        {
+            this.instruction = instruction;
+        }
+
+        public override int OpcodeAsInteger {
+            get { return (int) instruction.Id; }
+        }
+
+        public override void Render(MachineInstructionWriter writer) {
+            base.Render(writer);
+        }
+
+        public CapstoneArmInstruction Internal { get { return instruction; } }
+    }
+
+    public class ArmInstruction2 : MachineInstruction
+    {
+        public Opcode2 Opcode;
         public OpFlags OpFlags;
         public Condition Cond;
         public bool Update;
