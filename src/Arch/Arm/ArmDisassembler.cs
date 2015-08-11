@@ -39,8 +39,14 @@ namespace Reko.Arch.Arm {
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
 
         public ArmDisassembler(ArmProcessorArchitecture arch, ImageReader rdr) {
-            var dasm = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.Arm32 | DisassembleMode.LittleEndian);
-            this.stream = dasm.DisassembleStream(rdr.Bytes, (int)rdr.Offset, (long)(rdr.Address.ToLinear() - rdr.Offset)).GetEnumerator();
+            var dasm = CapstoneDisassembler.CreateArmDisassembler(
+                DisassembleMode.Arm32 | DisassembleMode.LittleEndian);
+            dasm.EnableDetails = true;
+            this.stream = dasm.DisassembleStream(
+                rdr.Bytes, 
+                (int)rdr.Offset, 
+                (long)(rdr.Address.ToLinear() - rdr.Offset))
+                .GetEnumerator();
         }
 
         protected override void Dispose(bool disposing) {
@@ -53,7 +59,9 @@ namespace Reko.Arch.Arm {
 
         public override ArmInstruction DisassembleInstruction() {
             if (stream.MoveNext())
+            {
                 return new ArmInstruction(stream.Current);
+            }
             else
                 return null;
         }

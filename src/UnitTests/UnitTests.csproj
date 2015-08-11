@@ -643,7 +643,8 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>copy /y "$(SolutionDir)Environments\Win32\*.xml" "$(TargetDir)"
-copy /y "$(SolutionDir)..\external\Capstone.NET-1.2.0\capstone.dll" "$(TargetDir)"
+copy /y "$(SolutionDir)..\external\Capstone.NET-1.2.0\*.dll" "$(TargetDir)"
+copy /y "$(SolutionDir)..\external\Capstone.NET-1.2.0\*.pdb" "$(TargetDir)"
 
 </PreBuildEvent>
   </PropertyGroup>

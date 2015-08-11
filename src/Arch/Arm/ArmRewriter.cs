@@ -531,32 +531,29 @@ namespace Reko.Arch.Arm
 
         private void RewriteB(bool link)
         {
-            throw new NotImplementedException();
-#if NYI
-            Address addr = ((AddressOperand)Dst).Address;
+            Address addr = Address.Ptr32((uint)Dst.ImmediateValue.Value);
             if (link)
             {
-                if (instr.Cond == Condition.al)
+                if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
                     emitter.Call(addr, 0);
                 }
                 else
                 {
-                    emitter.If(TestCond(instr.Cond), new RtlCall(addr, 0, RtlClass.Transfer));
+                    emitter.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(addr, 0, RtlClass.Transfer));
                 }
             }
             else
             {
-                if (instr.Cond == Condition.al)
+                if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
                     emitter.Goto(addr);
                 }
                 else
                 {
-                    emitter.Branch(TestCond(instr.Cond), addr, RtlClass.ConditionalTransfer);
+                    emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
                 }
             }
-#endif
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -585,30 +582,29 @@ namespace Reko.Arch.Arm
 
         private Expression Operand(Gee.External.Capstone.Arm.ArmInstructionOperand op)
         {
-            throw new NotImplementedException();
-
-#if NYI
             switch (op.Type)
             {
             case ArmInstructionOperandType.Register:
-                return frame.EnsureRegister(op.RegisterValue.Value);
+                var reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value]);
+                return MaybeShiftOperand(reg, op);
             case ArmInstructionOperandType.Immediate:
-                throw new NotImplementedException(" return op.iimmOp.Value;");
-            }
-            var shOp = op as ShiftOperand;
-            if (shOp != null)
-            {
-                var r = Operand(shOp.Operand);
-                var sh = Operand(shOp.Shift);
-                switch (shOp.Opcode)
+                return Constant.Word32(op.ImmediateValue.Value);
+            case ArmInstructionOperandType.Memory:
+                Expression baseReg = Reg(op.MemoryValue.BaseRegister);
+                if (op.MemoryValue.BaseRegister == ArmRegister.PC)  // PC-relative address
                 {
-                case Opcode.lsl: return emitter.Shl(r, sh);
-                case Opcode.lsr: return emitter.Shr(r, sh);
-                case Opcode.asr: return emitter.Sar(r, sh);
-                case Opcode.ror: return host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, r, sh);
-                default: throw new NotSupportedException(string.Format("Unsupported shift operation {0}.", shOp.Opcode));
+                    if (op.MemoryValue.Displacement != 0)
+                    {
+                        var dst = (uint)((int)instrs.Current.Address.ToUInt32() + op.MemoryValue.Displacement) + 8u;
+                        return emitter.Load(SizeFromLoadStore(instr), Address.Ptr32(dst));
+                    }
                 }
+                throw new NotImplementedException();
             }
+            throw new NotImplementedException(op.Type.ToString());
+#if NYI
+
+
             var memOp = op as ArmMemoryOperand;
             if (memOp != null)
             {
@@ -642,6 +638,44 @@ namespace Reko.Arch.Arm
             }
             throw new NotSupportedException(string.Format("Unsupported operand {0}.", op));
 #endif
+        }
+
+        private DataType SizeFromLoadStore(CapstoneArmInstruction instr)
+        {
+            switch (instr.Id)
+            {
+            case Opcode.LDR: return PrimitiveType.Word32;
+            case Opcode.LDRSB: return PrimitiveType.SByte;
+            }
+            throw new NotImplementedException(instr.Id.ToString());
+        }
+
+        private Identifier Reg(int nReg)
+        {
+            return frame.EnsureRegister(A32Registers.RegisterByCapstoneID[(ArmRegister)nReg]);
+        }
+
+        private Identifier Reg(ArmRegister reg)
+        {
+            return frame.EnsureRegister(A32Registers.RegisterByCapstoneID[reg]);
+        }
+
+        private Expression MaybeShiftOperand(Expression exp, ArmInstructionOperand op)
+        {
+            switch (op.Shifter.Type)
+            {
+            case ArmShifterType.ASR: return emitter.Sar(exp, op.Shifter.Value);
+            case ArmShifterType.LSL: return emitter.Shl(exp, op.Shifter.Value);
+            case ArmShifterType.LSR: return emitter.Shr(exp, op.Shifter.Value);
+            case ArmShifterType.ROR: return host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, exp, Constant.Int32(op.Shifter.Value)); 
+            case ArmShifterType.RRX: return host.PseudoProcedure("rrx", PrimitiveType.Word32, exp, Constant.Int32(op.Shifter.Value));
+            case ArmShifterType.ASR_REG: return emitter.Sar(exp, Reg(op.Shifter.Value));
+            case ArmShifterType.LSL_REG: return emitter.Shl(exp, Reg(op.Shifter.Value));
+            case ArmShifterType.LSR_REG: return emitter.Shr(exp, Reg(op.Shifter.Value));
+            case ArmShifterType.ROR_REG: return host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, exp, Reg(op.Shifter.Value));
+            case ArmShifterType.RRX_REG: return host.PseudoProcedure("rrx", PrimitiveType.Word32, exp, Reg(op.Shifter.Value));
+            default: return exp;
+            }
         }
 
         private void MaybePostOperand(ArmInstructionOperand op)

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -139,13 +140,9 @@ namespace Reko.Arch.Arm
 
         private void RewriteMov()
         {
-            throw new NotImplementedException();
-#if NYI
-            var regDst = Dst as RegisterOperand;
-            if (regDst != null && regDst.Register == A32Registers.pc)
+            if (Dst.Type == ArmInstructionOperandType.Register && Dst.RegisterValue.Value == ArmRegister.PC)
             {
-                var regSrc = Src1 as RegisterOperand;
-                if (regSrc != null && regSrc.Register == A32Registers.lr)
+                if (Src1.Type == ArmInstructionOperandType.Register && Src1.RegisterValue.Value == ArmRegister.LR)
                 {
                     AddConditional(new RtlReturn(0, 0, RtlClass.Transfer));
                 }
@@ -158,7 +155,6 @@ namespace Reko.Arch.Arm
             var opDst = Operand(Dst);
             var opSrc = Operand(Src1);
             ConditionalAssign(opDst, opSrc);
-#endif
         }
 
         private void RewriteLdm()

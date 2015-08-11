@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -27,7 +28,9 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
+    using Gee.External.Capstone.Arm;
     using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
+    using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
     public class ArmInstruction : MachineInstruction 
     {
@@ -36,120 +39,189 @@ namespace Reko.Arch.Arm
         public ArmInstruction(CapstoneArmInstruction instruction)
         {
             this.instruction = instruction;
+            this.Address = Address.Ptr32((uint)instruction.Address);
         }
+
+        public CapstoneArmInstruction Internal { get { return instruction; } }
 
         public override int OpcodeAsInteger {
             get { return (int) instruction.Id; }
         }
 
-        public override void Render(MachineInstructionWriter writer) {
-            base.Render(writer);
-        }
-
-        public CapstoneArmInstruction Internal { get { return instruction; } }
-    }
-
-    public class ArmInstruction2 : MachineInstruction
-    {
-        public Opcode2 Opcode;
-        public OpFlags OpFlags;
-        public Condition Cond;
-        public bool Update;
-        public MachineOperand Dst;
-        public MachineOperand Src1;
-        public MachineOperand Src2;
-        public MachineOperand Src3;
-
-        public override int OpcodeAsInteger { get { return (int)Opcode; } }
-
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(string.Format("{0}{1}{2}",
-                Opcode,
-                Cond != Condition.al ? Cond.ToString() : "",
-                OpFlags != OpFlags.None ? OpFlags.ToString().ToLower() : ""));
-            if (Dst != null)
+            writer.WriteOpcode(Internal.Mnemonic);
+            var ops = Internal.ArchitectureDetail.Operands;
+            if (ops.Length < 1)
+                return;
+            writer.Tab();
+            Write(ops[0], writer);
+            if (ops.Length < 2)
+                return;
+            writer.Write(",");
+            Write(ops[1], writer);
+            if (ops.Length < 3)
+                return;
+            writer.Write(",");
+            Write(ops[2], writer);
+            if (ops.Length < 4)
+                return;
+            writer.Write(",");
+            Write(ops[3], writer);
+        }
+
+        public void Write(ArmInstructionOperand op, MachineInstructionWriter writer)
+        {
+            switch (op.Type)
             {
-                writer.Tab();
-                Write(Dst, writer);
-                if (Update) writer.Write("!");
-                if (Src1 != null)
+            case ArmInstructionOperandType.Immediate:
+                if (Internal.Id == Opcode.B ||
+                    Internal.Id == Opcode.BL ||
+                    Internal.Id == Opcode.BLX)
                 {
-                    writer.Write(",");
-                    Write(Src1, writer);
-                    if (Src2 != null)
-                    {
-                        writer.Write(",");
-                        Write(Src2, writer);
-                        if (Src3 != null)
-                        {
-                            writer.Write(",");
-                            Write(Src3, writer);
-                        }
-                    }
+                    writer.Write("$");
+                    writer.WriteAddress(
+                        string.Format("{0:X8}", op.ImmediateValue.Value),
+                        Address.Ptr32((uint)op.ImmediateValue.Value));
+                    break;
                 }
+                writer.Write("#");
+                WriteImmediateValue(op.ImmediateValue.Value, writer);
+                break;
+            case ArmInstructionOperandType.Register:
+                if (op.IsSubtracted)
+                    writer.Write('-');
+                writer.Write(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
+                WriteShift(op, writer);
+                break;
+            case ArmInstructionOperandType.Memory:
+                WriteMemoryOperand(op, writer);
+                break;
+            case ArmInstructionOperandType.SetEnd:
+                writer.Write(op.SetEndValue.ToString().ToLowerInvariant());
+                break;
+            default:
+                throw new NotImplementedException(op.Type.ToString());
             }
         }
 
-        public void Write(MachineOperand op, MachineInstructionWriter writer)
+        private void WriteShift(ArmInstructionOperand op, MachineInstructionWriter writer)
         {
-            var imm = op as ImmediateOperand;
-            if (imm != null)
+            switch (op.Shifter.Type)
             {
-                writer.Write("#");
-                int imm8 = imm.Value.ToInt32();
-                if (imm8 > 256 && ((imm8 & (imm8 - 1)) == 0))
+            case ArmShifterType.ASR: WriteImmShift("asr", op.Shifter.Value, writer); break;
+            case ArmShifterType.LSL: WriteImmShift("lsl", op.Shifter.Value, writer); break;
+            case ArmShifterType.LSR: WriteImmShift("lsr", op.Shifter.Value, writer); break;
+            case ArmShifterType.ROR: WriteImmShift("ror", op.Shifter.Value, writer); break;
+            case ArmShifterType.RRX: writer.Write(",rrx"); break;
+            case ArmShifterType.ASR_REG: WriteRegShift("asr", op.Shifter.Value, writer); break;
+            case ArmShifterType.LSL_REG: WriteRegShift("lsl", op.Shifter.Value, writer); break;
+            case ArmShifterType.LSR_REG: WriteRegShift("lsr", op.Shifter.Value, writer); break;
+            case ArmShifterType.ROR_REG: WriteRegShift("ror", op.Shifter.Value, writer); break;
+            case ArmShifterType.RRX_REG: WriteRegShift("rrx", op.Shifter.Value, writer); break;
+            case ArmShifterType.Invalid: break;
+            }
+        }
+
+        private void WriteMemoryOperand(ArmInstructionOperand op, MachineInstructionWriter writer)
+        {
+            writer.Write('[');
+            writer.Write(A32Registers.RegisterByCapstoneID[op.MemoryValue.BaseRegister].Name);
+            int displacement = op.MemoryValue.Displacement;
+            if (displacement != 0)
+            {
+                if (true) // preincInternal.ArchitectureDetail)
                 {
-                    /* only one bit set, and that later than bit 8.
-                     * Represent as 1<<... .
-                     */
-                    writer.Write("1<<");
+                    writer.Write(",");
+                    if (displacement < 0)
                     {
-                        uint n = 0;
-                        while ((imm8 & 15) == 0)
-                        {
-                            n += 4; imm8 = imm8 >> 4;
-                        }
-                        // Now imm8 is 1, 2, 4 or 8. 
-                        n += (uint)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
-                        writer.Write(n);
+                        displacement = -displacement;
+                        writer.Write("-");
                     }
+                    writer.Write("#");
+                    WriteImmediateValue(displacement, writer);
+                    writer.Write("]");
+                    if (Internal.ArchitectureDetail.WriteBack)
+                        writer.Write("!");
                 }
                 else
                 {
-                    var fmt = (-9 <= imm8 && imm8 <= 9) ? "{0}{1}" : "&{0}{1:X}";
-                    var sign = "";
-                    if (((int)imm8) < 0 && ((int)imm8) > -100)
+                    writer.Write("],");
+                    if (displacement < 0)
                     {
-                        imm8 = -imm8;
-                        sign = "-";
+                        displacement = -displacement;
+                        writer.Write("-");
                     }
-                    writer.Write(fmt,sign,imm8);
+                    WriteImmediateValue(displacement, writer);
                 }
-                return;
             }
-            var adr = op as AddressOperand;
-            if (adr != null)
+            else
             {
-                adr.Write(false, writer);
-                return;
+                if (op.MemoryValue.IndexRegister != ArmRegister.Invalid)
+                {
+                    writer.Write(",");
+                    // NOTE: capstone.NET seems to reverse the sense of this scale parameter.
+                    if (op.MemoryValue.IndexRegisterScale > 0)
+                        writer.Write("-");
+                    writer.Write(A32Registers.RegisterByCapstoneID[op.MemoryValue.IndexRegister].Name);
+                }
+                if (op.Shifter.Type != ArmShifterType.Invalid)
+                {
+                    WriteShift(op, writer);
+                }
+                writer.Write(']');
+                if (Internal.ArchitectureDetail.WriteBack)
+                    writer.Write("!");
+            
             }
-            var mem = op as ArmMemoryOperand;
-            if (mem != null)
+        }
+
+        private void WriteImmShift(string op, int value, MachineInstructionWriter writer)
+        {
+            writer.Write(",");
+            writer.WriteOpcode(op);
+            writer.Write(" #");
+            WriteImmediateValue(value, writer);
+        }
+
+        private void WriteRegShift(string op, int value, MachineInstructionWriter writer)
+        {
+            writer.Write(",");
+            writer.WriteOpcode(op);
+            writer.Write(' ');
+            writer.Write(A32Registers.RegisterByCapstoneID[(ArmRegister)value].Name);
+        }
+
+        private static void WriteImmediateValue(int imm8, MachineInstructionWriter writer)
+        {
+            if (imm8 > 256 && ((imm8 & (imm8 - 1)) == 0))
             {
-                mem.Write(false, writer);
-                return;
+                /* only one bit set, and that later than bit 8.
+                 * Represent as 1<<... .
+                 */
+                writer.Write("1<<");
+                {
+                    uint n = 0;
+                    while ((imm8 & 15) == 0)
+                    {
+                        n += 4; imm8 = imm8 >> 4;
+                    }
+                    // Now imm8 is 1, 2, 4 or 8. 
+                    n += (uint)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
+                    writer.Write(n);
+                }
             }
-            var sh = op as ShiftOperand;
-            if (sh != null)
+            else
             {
-                sh.Write(false, writer);
-                return;
+                var fmt = (-9 <= imm8 && imm8 <= 9) ? "{0}{1}" : "&{0}{1:X}";
+                var sign = "";
+                if (((int)imm8) < 0 && ((int)imm8) > -100)
+                {
+                    imm8 = -imm8;
+                    sign = "-";
+                }
+                writer.Write(fmt, sign, imm8);
             }
-            if (op == null)
-                writer.Write("<null>");
-            else 
-                op.Write(false, writer);
         }
     }
 }
