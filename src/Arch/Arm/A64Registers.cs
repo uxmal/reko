@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Gee.External.Capstone.Arm64;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -166,5 +167,77 @@ namespace Reko.Arch.Arm
         w30,
         w31,
     };
+
+        public static Dictionary<Arm64Register, RegisterStorage> RegisterByCapstoneID { get; private set; }
+
+        static A64Registers()
+        {
+            RegisterByCapstoneID = new Dictionary<Arm64Register, RegisterStorage>
+            {
+                { Arm64Register. X0,      x0},
+                { Arm64Register. X1,      x1},
+                { Arm64Register. X2,      x2},
+                { Arm64Register. X3,      x3},
+                { Arm64Register. X4,      x4},
+                { Arm64Register. X5,      x5},
+                { Arm64Register. X6,      x6},
+                { Arm64Register. X7,      x7},
+                { Arm64Register. X8,      x8},
+                { Arm64Register. X9,      x9},
+                { Arm64Register. X10,     x10 },
+                { Arm64Register. X11,     x11 },
+                { Arm64Register. X12,     x12 },
+                { Arm64Register. X13,     x13 },
+                { Arm64Register. X14,     x14 },
+                { Arm64Register. X15,     x15 },
+                { Arm64Register. X16,     x16 },
+                { Arm64Register. X17,     x17 },
+                { Arm64Register. X18,     x18 },
+                { Arm64Register. X19,     x19 },
+                { Arm64Register. X20,     x20 },
+                { Arm64Register. X21,     x21 },
+                { Arm64Register. X22,     x22 },
+                { Arm64Register. X23,     x23 },
+                { Arm64Register. X24,     x24 },
+                { Arm64Register. X25,     x25 },
+                { Arm64Register. X26,     x26 },
+                { Arm64Register. X27,     x27 },
+                { Arm64Register. X28,     x28 },
+                { Arm64Register. X29,     x29 },
+                { Arm64Register. X30,     x30 },
+
+                { Arm64Register.W0,      w0},
+                { Arm64Register.W1,      w1},
+                { Arm64Register.W2,      w2},
+                { Arm64Register.W3,      w3},
+                { Arm64Register.W4,      w4},
+                { Arm64Register.W5,      w5},
+                { Arm64Register.W6,      w6},
+                { Arm64Register.W7,      w7},
+                { Arm64Register.W8,      w8},
+                { Arm64Register.W9,      w9},
+                { Arm64Register.W10,     w10 },
+                { Arm64Register.W11,     w11 },
+                { Arm64Register.W12,     w12 },
+                { Arm64Register.W13,     w13 },
+                { Arm64Register.W14,     w14 },
+                { Arm64Register.W15,     w15 },
+                { Arm64Register.W16,     w16 },
+                { Arm64Register.W17,     w17 },
+                { Arm64Register.W18,     w18 },
+                { Arm64Register.W19,     w19 },
+                { Arm64Register.W20,     w20 },
+                { Arm64Register.W21,     w21 },
+                { Arm64Register.W22,     w22 },
+                { Arm64Register.W23,     w23 },
+                { Arm64Register.W24,     w24 },
+                { Arm64Register.W25,     w25 },
+                { Arm64Register.W26,     w26 },
+                { Arm64Register.W27,     w27 },
+                { Arm64Register.W28,     w28 },
+                { Arm64Register.W29,     w29 },
+                { Arm64Register.W30,     w30 }
+            };
+        }
     }
 }

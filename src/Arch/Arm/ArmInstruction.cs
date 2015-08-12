@@ -42,7 +42,7 @@ namespace Reko.Arch.Arm
             this.Address = Address.Ptr32((uint)instruction.Address);
         }
 
-        public CapstoneArmInstruction Internal { get { return instruction; } }
+        internal CapstoneArmInstruction Internal { get { return instruction; } }
 
         public override int OpcodeAsInteger {
             get { return (int) instruction.Id; }

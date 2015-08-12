@@ -34,7 +34,6 @@ using ArmInstruction = Reko.Arch.Arm.ArmInstruction;
 namespace Reko.Arch.Arm {
 
     public class ArmDisassembler : DisassemblerBase<ArmInstruction> {
-        private ArmProcessorArchitecture arch;
         private CapstoneDisassembler<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
 

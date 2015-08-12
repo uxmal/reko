@@ -52,8 +52,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gee.External.Capstone">
-      <HintPath>..\..\..\external\Capstone.NET-1.2.0\Gee.External.Capstone.dll</HintPath>
+    <Reference Include="Gee.External.Capstone, Version=1.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\external\Capstone.NET-1.2.1\Gee.External.Capstone.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,25 +67,16 @@
     <Compile Include="AArch64.cs" />
     <Compile Include="AArch64Disassembler.cs" />
     <Compile Include="AArch64Instruction.cs" />
-    <Compile Include="AAOprec.cs" />
-    <Compile Include="AddressOperand.cs" />
     <Compile Include="ArmDisassembler.cs" />
-    <Compile Include="ArmImmediateOperand.cs" />
     <Compile Include="ArmInstruction.cs" />
-    <Compile Include="ArmMemoryOperand.cs" />
     <Compile Include="ArmProcedureSerializer.cs" />
     <Compile Include="ArmProcessorArchitecture.cs" />
     <Compile Include="ArmProcessorState.cs" />
     <Compile Include="ArmRewriter.Alu.cs" />
     <Compile Include="ArmRewriter.cs" />
-    <Compile Include="Condition.cs" />
-    <Compile Include="ExtractDecoder.cs" />
-    <Compile Include="Opcode.cs" />
-    <Compile Include="OpFlags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="A32Registers.cs" />
     <Compile Include="RegisterRangeOperand.cs" />
-    <Compile Include="ShiftOperand.cs" />
     <Compile Include="ThumbDisassembler.cs" />
     <Compile Include="ThumbInstruction.cs" />
     <Compile Include="ThumbOpcode.cs" />

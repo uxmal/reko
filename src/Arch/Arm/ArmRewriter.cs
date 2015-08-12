@@ -615,42 +615,6 @@ namespace Reko.Arch.Arm
                 return emitter.Load(SizeFromLoadStore(instr), ea);
             }
             throw new NotImplementedException(op.Type.ToString());
-#if NYI
-
-
-            var memOp = op as ArmMemoryOperand;
-            if (memOp != null)
-            {
-                Expression baseReg = frame.EnsureRegister(memOp.Base);
-                Expression ea = baseReg;
-                if (memOp.Base.Number == 0x0F)  // PC-relative address
-                {
-                    var imm = memOp.Offset as ArmImmediateOperand;
-                    if (imm != null)
-                    {
-                        if (memOp.Writeback)
-                            throw new NotImplementedException();
-                        var dst = (uint)((int)instr.Address.ToUInt32() + imm.Value.ToInt32()) + 8u;
-
-                        return emitter.Load(memOp.Width, Address.Ptr32(dst));
-                    }
-                }
-                if (memOp.Offset != null && memOp.Preindexed)
-                {
-                    var offset = Operand(memOp.Offset);
-                    ea = memOp.Subtract
-                        ? emitter.ISub(ea, offset)
-                        : emitter.IAdd(ea, offset);
-                }
-                if (memOp.Preindexed && memOp.Writeback)
-                {
-                    emitter.Assign(baseReg, ea);
-                    ea = baseReg;
-                }
-                return emitter.Load(memOp.Width, ea);
-            }
-            throw new NotSupportedException(string.Format("Unsupported operand {0}.", op));
-#endif
         }
 
         private DataType SizeFromLoadStore(CapstoneArmInstruction instr)
