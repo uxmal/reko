@@ -32,11 +32,11 @@ namespace Reko.Arch.Arm
     using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
     using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
-    public class ArmInstruction : MachineInstruction 
+    public class Arm32Instruction : MachineInstruction 
     {
         private CapstoneArmInstruction instruction;
 
-        public ArmInstruction(CapstoneArmInstruction instruction)
+        public Arm32Instruction(CapstoneArmInstruction instruction)
         {
             this.instruction = instruction;
             this.Address = Address.Ptr32((uint)instruction.Address);
@@ -161,7 +161,7 @@ namespace Reko.Arch.Arm
                 {
                     writer.Write(",");
                     // NOTE: capstone.NET seems to reverse the sense of this scale parameter.
-                    if (op.MemoryValue.IndexRegisterScale > 0)
+                    if (op.MemoryValue.IndexRegisterScale < 0)
                         writer.Write("-");
                     writer.Write(A32Registers.RegisterByCapstoneID[op.MemoryValue.IndexRegister].Name);
                 }

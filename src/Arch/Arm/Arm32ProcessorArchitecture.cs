@@ -34,9 +34,9 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ArmProcessorArchitecture : IProcessorArchitecture
+    public class Arm32ProcessorArchitecture : IProcessorArchitecture
     {
-        public ArmProcessorArchitecture()
+        public Arm32ProcessorArchitecture()
         {
         }
 
@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm
 
         public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            return new ArmDisassembler(this, imageReader);
+            return new Arm32Disassembler(this, imageReader);
         }
 
         public ProcessorState CreateProcessorState()

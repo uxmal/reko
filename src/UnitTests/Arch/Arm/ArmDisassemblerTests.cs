@@ -32,10 +32,10 @@ namespace Reko.UnitTests.Arch.Arm
 {
     public abstract class ArmTestBase
     {
-        protected static ArmInstruction Disassemble(byte[] bytes)
+        protected static Arm32Instruction Disassemble(byte[] bytes)
         {
             var image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
-            var dasm = new ArmDisassembler(new ArmProcessorArchitecture(), image.CreateLeReader(0));
+            var dasm = new Arm32Disassembler(new Arm32ProcessorArchitecture(), image.CreateLeReader(0));
             return dasm.First();
         }
 
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new ArmProcessorArchitecture();
+            return new Arm32ProcessorArchitecture();
         }
 
         [Test]
@@ -247,9 +247,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_ldrble_r5_r7_neg_r1()
         {
-            //var instr = DisassembleBits("1101 01 111101 0111 0101 00000 000 0001");
             var instr = Disassemble(0xD7D75001);
-            Assert.AreEqual("ldrble\tr5,[r7,r1]", instr.ToString());
+            Assert.AreEqual("ldrble\tr5,[r7,-r1]", instr.ToString());
         }
 
         [Test]
@@ -325,11 +324,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void xxxx_ArmDasm_ldrsb()
+        public void ArmDasm_ldrsb()
         {                             
             var instr = Disassemble(0xE1F322D1);
             Assert.AreEqual("ldrsb\tr2,[r3,#&21]!", instr.ToString());
-            instr = Disassemble(0xE19120D3);
+        }
+
+        [Test]
+        public void ArmDasm_ldrsb_indexed()
+        {
+            var instr = Disassemble(0xE19120D3);
             Assert.AreEqual("ldrsb\tr2,[r1,r3]", instr.ToString());
         }
 

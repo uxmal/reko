@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new ArmProcessorArchitecture();
+            return new Arm32ProcessorArchitecture();
         }
 
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)

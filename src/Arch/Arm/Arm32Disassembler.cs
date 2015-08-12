@@ -29,15 +29,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using ArmInstruction = Reko.Arch.Arm.ArmInstruction;
+using ArmInstruction = Reko.Arch.Arm.Arm32Instruction;
 
 namespace Reko.Arch.Arm {
 
-    public class ArmDisassembler : DisassemblerBase<ArmInstruction> {
+    public class Arm32Disassembler : DisassemblerBase<Arm32Instruction> {
         private CapstoneDisassembler<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
 
-        public ArmDisassembler(ArmProcessorArchitecture arch, ImageReader rdr) {
+        public Arm32Disassembler(Arm32ProcessorArchitecture arch, ImageReader rdr) {
             var dasm = CapstoneDisassembler.CreateArmDisassembler(
                 DisassembleMode.Arm32 | DisassembleMode.LittleEndian);
             dasm.EnableDetails = true;
@@ -56,10 +56,10 @@ namespace Reko.Arch.Arm {
             base.Dispose(disposing);
         }
 
-        public override ArmInstruction DisassembleInstruction() {
+        public override Arm32Instruction DisassembleInstruction() {
             if (stream.MoveNext())
             {
-                return new ArmInstruction(stream.Current);
+                return new Arm32Instruction(stream.Current);
             }
             else
                 return null;
