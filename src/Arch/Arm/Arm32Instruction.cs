@@ -92,6 +92,7 @@ namespace Reko.Arch.Arm
         {
             switch (Internal.Id)
             {
+            case Opcode.POP:
             case Opcode.PUSH:
                 return true;
             default:

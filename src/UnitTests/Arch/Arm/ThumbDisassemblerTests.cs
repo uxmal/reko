@@ -60,23 +60,71 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         /*
-  00402704: 46EB      mov         r11,sp
-  00402706: B082      sub         sp,sp,#8
-  00402708: F000 FA06 bl          00402B18
-  0040270C: F7FF FE58 bl          004023C0
-  00402710: 9000      str         r0,[sp]
-  00402712: 9B00      ldr         r3,[sp]
-  00402714: 9301      str         r3,[sp,#4]
-  00402716: 9801      ldr         r0,[sp,#4]
-  00402718: B002      add         sp,sp,#8
   0040271A: E8BD 8800 pop         {r11,pc}
   0040271E: 0000      movs        r0,r0
   00402720: 0000      movs        r0,r0         */
+
         [Test]
         public void ThumbDis_push()
         {
             var instr = Disassemble16(0xE92D, 0x4800);
             Assert.AreEqual("push.w\t{fp,lr}", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_mov()
+        {
+            var instr = Disassemble16(0x46EB);
+            Assert.AreEqual("mov\tfp,sp", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_sub()
+        {
+            var instr = Disassemble16(0xB082);
+            Assert.AreEqual("sub\tsp,#8", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_bl()
+        {
+            var instr = Disassemble16(0xF000, 0xFA06);
+            Assert.AreEqual("bl\t$00100410", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_str()
+        {
+            var instr = Disassemble16(0x9000);
+            Assert.AreEqual("str\tr0,[sp]", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_ldr()
+        {
+            var instr = Disassemble16(0x9B00);
+            Assert.AreEqual("ldr\tr3,[sp]", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_ldr_displacement()
+        {
+            var instr = Disassemble16(0x9801);
+            Assert.AreEqual("ldr\tr0,[sp,#4]", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_add()
+        {
+            var instr = Disassemble16(0xB002);
+            Assert.AreEqual("add\tsp,#8", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_pop()
+        {
+            var instr = Disassemble16(0xE8BD, 0x8800);
+            Assert.AreEqual("pop.w\t{fp,pc}", instr.ToString());
         }
     }
 }
