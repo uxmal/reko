@@ -540,5 +540,92 @@ case_2:
 ";
             RunTest(sExp, m.Procedure);
         }
+
+        [Test(Description="A do-while with a nested if-then-else")]
+        public void ProcStr_DoWhile_NestedIfElse()
+        {
+            var r1 = m.Reg32("r1");
+
+            m.Label("head");
+            m.SideEffect(m.Fn("foo", r1));
+            m.BranchIf(m.Eq(r1, 3), "not_3");
+
+            m.Label("eq_3");
+            m.SideEffect(m.Fn("bar", r1));
+            m.Goto("join");
+
+            m.Label("not_3");
+            m.SideEffect(m.Fn("b"));
+
+            m.Label("join");
+            m.SideEffect(m.Fn("bloo"));
+            m.BranchIf(m.Eq(r1, 2), "head");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        foo(r1);
+        if (r1 != 0x03)
+            bar(r1);
+        else
+            b();
+        bloo();
+    } while (r1 == 0x02);
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test(Description="A do-while loop with many continue statements.")]
+        public void ProcStr_DoWhile_ManyContinues()
+        {
+            var r1 = m.Reg32("r1");
+
+                m.Label("head");
+                m.SideEffect(m.Fn("foo", r1));
+                m.BranchIf(m.Eq(r1, 3), "not_3");
+
+                    m.Label("eq_3");
+                    m.SideEffect(m.Fn("bar", r1));
+                    m.BranchIf(m.Eq(r1, 2), "not_2");
+
+                        m.Label("eq_2");
+                        m.SideEffect(m.Fn("b"));
+                        m.BranchIf(m.Eq(r1, 1), "head");    // this should be a "continue" node.
+
+                    m.Label("not_2");
+                    m.SideEffect(m.Fn("bloo"));
+
+                m.Label("not_3");
+                m.SideEffect(m.Fn("baz", r1));
+                m.BranchIf(m.Eq(r1, 2), "head");
+
+            m.Label("done");
+            m.Return(r1);
+            
+            var sExp =
+@"    do
+    {
+        foo(r1);
+        if (r1 != 0x03)
+        {
+            bar(r1);
+            if (r1 != 0x02)
+            {
+                b();
+                if (r1 == 0x01)
+                    continue;
+            }
+            bloo();
+        }
+        baz(r1);
+    } while (r1 == 0x02);
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
     }
 }

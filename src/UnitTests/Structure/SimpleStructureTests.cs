@@ -308,17 +308,14 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 			if (edx_21 >=u esi_20)
 				goto l0010004B;
 		}
-		else
-		{
+	else
+	{
 l0010004B:
 		eax_24 = 0x00000000;
 	}
-	else
 	return eax_24;
 }
 ===
-
-
 ";
             RunTest(sExp, program);
         }

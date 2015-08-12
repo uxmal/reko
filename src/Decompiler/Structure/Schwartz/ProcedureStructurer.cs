@@ -32,14 +32,13 @@ using System.Text;
 namespace Reko.Structure.Schwartz
 {
     /// <summary>
-    /// Takes the basic block control graph of a decompiled procedure
-    /// and converts it into high-level structured code.
+    /// This class starts with the basic block control graph of a decompiled 
+    /// procedure and converts it into high-level structured code.
     /// </summary>
     /// <remarks>
     /// Inspired by the algorithm described:
     ///  Native x86 Decompilation using Semantics-Preserving Structural Analysis
     ///  and Iterative Control-Flow Structuring.
-    /// language 
     /// </remarks>
     public class ProcedureStructurer : IStructureAnalysis
     {
@@ -108,17 +107,16 @@ namespace Reko.Structure.Schwartz
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
                 Debug.Print("== Graph contains {0} nodes ===================================", regionGraph.Nodes.Count);
                 DumpGraph();
+
+                bool didReduce = false;
                 foreach (var n in postOrder)
                 {
-                    bool didReduce = false;
+                    didReduce = false;
                     do {
-                        if (IsCyclic(n))
+                        didReduce = ReduceAcyclic(n, false);
+                        if (!didReduce && IsCyclic(n))
                         {
                             didReduce = ReduceCyclic(n);
-                        }
-                        else
-                        {
-                            didReduce = ReduceAcyclic(n, false);
                         }
                     } while (didReduce);
                 }
@@ -126,16 +124,18 @@ namespace Reko.Structure.Schwartz
                 newCount = regionGraph.Nodes.Count;
                 if (newCount == oldCount)
                 {
-                    bool didreduce = false;
+#if NYI
+                    didReduce = false;
                     // Didn't make any progress, try removing tail blocks.
                     foreach (var n in postOrder.Where(n => regionGraph.Nodes.Contains(n)))
                     {
-                        didreduce = !IsCyclic(n) &&  ReduceAcyclic(n, true);
+                        didreduce = !IsCyclic(n) && ReduceAcyclic(n, true);
                         if (didreduce)
                             break;
-                    }
+                    } 
+#endif
                     // Didn't make any progress, try to trim away stray gotos.
-                    if (!didreduce)
+           //         if (!didReduce)
                         ProcessUnresolvedRegions();
                 }
             } while (regionGraph.Nodes.Count > 1);
@@ -167,7 +167,8 @@ namespace Reko.Structure.Schwartz
             var regionFactory = new RegionFactory();
             foreach (var b in proc.ControlGraph.Blocks)
             {
-                if (b.Pred.Count == 0 && b != proc.EntryBlock)
+                if (b.Pred.Count == 0 && b != proc.EntryBlock ||
+                    b == proc.ExitBlock)
                     continue;
                 var reg = regionFactory.Create(b);
                 btor.Add(b, reg);
@@ -179,6 +180,8 @@ namespace Reko.Structure.Schwartz
                     continue;
                 foreach (var s in b.Succ)
                 {
+                    if (s == proc.ExitBlock)
+                        continue;
                     var from = btor[b];
                     var to = btor[s];
                     regs.AddEdge(from, to);
@@ -580,6 +583,14 @@ all other cases, together they constitute a Switch[].
             return succ.First();
         }
 
+        private Region SinglePredecessor(Region n)
+        {
+            var succ = regionGraph.Predecessors(n);
+            if (succ.Count != 1)
+                return null;
+            return succ.First();
+        }
+
         [Conditional("DEBUG")]
         private void DumpGraph()
         {
@@ -900,16 +911,52 @@ refinement steps did not remove any edges during the latest
 iteration of the algorithm. For this, we use the last resort
 refinement on the loop body, which we describe below.
 #endif
-        private void RefineLoop(Region head, ISet<Region> loopNodes)
+        private bool RefineLoop(Region head, ISet<Region> loopNodes)
         {
             head = EnsureSingleEntry(head, loopNodes);
-            var follow = DetermineFollowRegion(head, loopNodes);
-            var latch = DetermineLatchRegion(head, loopNodes);
+            var fl = DetermineFollowLatch(head, loopNodes);
+            var follow = fl.Item1;
+            var latch = fl.Item2;
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
             if (virtualized)
-                return;
+            {
+                CoalesceTailRegions(lexicalNodes);
+                return true;
+            }
             LastResort(lexicalNodes);
+            return true;
+        }
+
+        private void CoalesceTailRegions(ISet<Region> regions)
+        {
+            foreach (var n in regions)
+            {
+                if (!regionGraph.Nodes.Contains(n))
+                    continue;
+                var succs = regionGraph.Successors(n).ToArray();
+                if (succs.Length == 2 && n.Type == RegionType.Condition)
+                {
+                    Debug.Assert(succs[0].Type != RegionType.Tail || succs[1].Type  != RegionType.Tail,
+                        "Can both be tails?");
+                    if (succs[0].Type == RegionType.Tail && SinglePredecessor(succs[1]) == n)
+                    {
+                        var e = n.Expression.Invert();
+                        n.Statements.Add(new AbsynIf(e, succs[0].Statements));
+                        regionGraph.RemoveEdge(n, succs[0]);
+                        RemoveRegion(succs[0]);
+                        n.Type = RegionType.Linear;
+                    }
+                    if (succs[1].Type == RegionType.Tail && SinglePredecessor(succs[0]) == n)
+                    {
+                        var e = n.Expression;
+                        n.Statements.Add(new AbsynIf(e, succs[1].Statements));
+                        regionGraph.RemoveEdge(n, succs[1]);
+                        RemoveRegion(succs[1]);
+                        n.Type = RegionType.Linear;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -943,7 +990,7 @@ refinement on the loop body, which we describe below.
                     .Count();
         }
 
-        private Region DetermineFollowRegion(Region head, ISet<Region> loopNodes)
+        private Tuple<Region,Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
         {
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
@@ -951,24 +998,39 @@ refinement on the loop body, which we describe below.
                 // If the head is a Conditional node and one of the edges 
                 // leaves the loop, the head of that edge is the follow 
                 // node of the 
+                Region follow = null;
                 if (!loopNodes.Contains(headSucc[0]))
-                    return headSucc[0];
-                if (!loopNodes.Contains(headSucc[1]))
-                    return headSucc[1];
+                    follow = headSucc[0];
+                else if (!loopNodes.Contains(headSucc[1]))
+                    follow = headSucc[1];
+                if (follow != null)
+                {
+                    foreach (var latch in regionGraph.Predecessors(head))
+                    {
+                        if (IsBackEdge(latch, head) && SingleSuccessor(latch) == head)
+                        {
+                            return Tuple.Create(follow, latch);
+                        }
+                    }
+                }
             }
-            foreach (var headPred in regionGraph.Predecessors(head).ToArray())
+            foreach (var latch in regionGraph.Predecessors(head))
             {
-                if (IsBackEdge(headPred, head))
-                    return headPred;
+                if (IsBackEdge(latch, head))
+                {
+                    var latchSuccs = regionGraph.Successors(latch).ToArray();
+                    if (latchSuccs.Length == 2)
+                    {
+                        if (!loopNodes.Contains(latchSuccs[0]))
+                            return Tuple.Create(latchSuccs[0], latch);
+                        if (!loopNodes.Contains(latchSuccs[1]))
+                            return Tuple.Create(latchSuccs[1], latch);
+                    }
+                }
             }
             throw new NotImplementedException();
         }
         
-        private Region DetermineLatchRegion(Region head, ISet<Region> loopRegions)
-        {
-            return null; 
-        }
-
         /// <summary>
         /// Nodes lexically contained consist of the loop body
         /// and any nodes that execute after the loop body but before the
@@ -1047,15 +1109,18 @@ refinement on the loop body, which we describe below.
                 {
                     if (!lexicalNodes.Contains(s))
                     {
-                        VirtualEdgeType vType;
                         if (s == header)
-                            continue; // vType = VirtualEdgeType.Continue;
+                        {
+                            if (n != latch)
+                                vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Continue));
+                        }
                         else if (s == follow)
-                            vType = VirtualEdgeType.Break;
+                        {
+                            if (n != latch)
+                                vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Break));
+                        }
                         else
-                            vType = VirtualEdgeType.Goto;
-
-                        vEdges.Add(new VirtualEdge(n, s, vType));
+                            vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
                     }
                 }
                 foreach (var edge in vEdges)

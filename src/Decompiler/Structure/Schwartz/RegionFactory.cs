@@ -96,6 +96,7 @@ namespace Reko.Structure.Schwartz
 
         public AbsynStatement VisitReturnInstruction(ReturnInstruction ret)
         {
+            regType = RegionType.Tail;
             return new AbsynReturn(ret.Expression);
         }
 
@@ -111,9 +112,9 @@ namespace Reko.Structure.Schwartz
 
         public AbsynStatement VisitSwitchInstruction(SwitchInstruction si)
         {
-            regType = RegionType.IncSwitch; // Tentative, will be refined later.
+            regType = RegionType.IncSwitch; 
             exp = si.Expression;
-            return null;            
+            return null;
         }
 
         public AbsynStatement VisitUseInstruction(UseInstruction use)
