@@ -18,138 +18,42 @@
  */
 #endregion
 
+using Gee.External.Capstone;
+using Gee.External.Capstone.Arm64;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ThumbDisassembler : DisassemblerBase<MachineInstruction>
+    public class ThumbDisassembler : DisassemblerBase<ThumbInstruction>
     {
-        private ThumbInstruction thumb;
-        private IProcessorArchitecture arch;
-        private ImageReader rdr;
-        private ushort lsw;
-        private ushort msw;
+        private CapstoneDisassembler<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> dasm;
+        private IEnumerator<Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail>> stream;
 
-        public ThumbDisassembler(IProcessorArchitecture arch, ImageReader rdr)
+        public ThumbDisassembler(ImageReader rdr)
         {
-            this.arch = arch;
-            this.rdr = rdr;
+            var dasm = CapstoneDisassembler.CreateArm64Disassembler(DisassembleMode.Arm32);
+            dasm.EnableDetails = true;
+            this.stream = dasm.DisassembleStream(
+                rdr.Bytes,
+                (int)rdr.Offset,
+                (long)(rdr.Address.ToLinear() - rdr.Offset))
+                .GetEnumerator();
         }
 
-        public override MachineInstruction DisassembleInstruction()
+        public override ThumbInstruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
+            if (stream.MoveNext())
+            {
+                return new ThumbInstruction(stream.Current);
+            }
+            else
                 return null;
-
-            thumb = new ThumbInstruction
-            {
-                Address = rdr.Address,
-            };
-            Disassemble();
-            thumb.Length = (int)(rdr.Address - thumb.Address);
-            return thumb;
-        }
-
-        public ThumbInstruction Disassemble()
-        {
-            this.lsw = rdr.ReadLeUInt16();
-            switch (this.lsw>> 11)
-            {
-            case 0x1D:
-            case 0x1E:
-            case 0x1F:
-                this.msw = rdr.ReadLeUInt16();
-                Disassemble32bitInstruction();
-                break;
-            default:
-                Disassemble16bitInstruction();
-                break;
-            }
-            return thumb;
-        }
-
-        private void Disassemble16bitInstruction()
-        {
-
-        }
-
-        private bool IsBitSet(uint w, int bit) { return ((w >> bit) & 1) != 0; }
-
-        private void Disassemble32bitInstruction() 
-        {
-            switch ((lsw >> 11) & 3)
-            {
-            case 1:
-                switch ((lsw >> 9) & 3)
-                {
-                case 0: LdmStmMultiDouble(); break;
-                case 1: DataProcessing(); break;
-                case 2:
-                case 3: Coprocessor(); break;
-                }
-                break;
-            case 2:
-                if (IsBitSet(msw, 15))
-                {
-                    Control();
-                }
-                else
-                {
-                    DataProcessing();
-                }
-                break;
-            case 3:
-                switch ((lsw >> 8) & 7)
-                {
-                case 0: StoreSingleDataItem(); break;
-                case 1: AdvancedSimdStructLdSt(); break;
-                case 2: LdbMemHints(); break;
-                }
-                break;
-            }
-        }
-
-        private void LdbMemHints()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AdvancedSimdStructLdSt()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void StoreSingleDataItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Control()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Coprocessor()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void DataProcessing()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void LdmStmMultiDouble()
-        {
-            throw new NotImplementedException();
         }
     }
 }

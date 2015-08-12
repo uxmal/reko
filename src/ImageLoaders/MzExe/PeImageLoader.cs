@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.MzExe
             var cfgSvc = Services.RequireService<IConfigurationService>();
 			switch (peMachineType)
 			{
-            case MACHINE_ARMNT: arch = "arm-thumb2"; break;
+            case MACHINE_ARMNT: arch = "arm-thumb"; break;
             case MACHINE_i386: arch = "x86-protected-32"; break;
             case MACHINE_x86_64: arch = "x86-protected-64"; break;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
@@ -133,7 +133,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
-            case MACHINE_ARMNT: return new Win32Thumb2Platform(sp, arch);
+            case MACHINE_ARMNT: return new Win32ThumbPlatform(sp, arch);
             case MACHINE_i386: return new Win32Platform(sp, arch);
             case MACHINE_x86_64: return new Win_x86_64_Platform(sp, arch);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
@@ -144,7 +144,9 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
-            case MACHINE_i386: return new Pe32Loader(this);
+            case MACHINE_ARMNT:
+            case MACHINE_i386: 
+                return new Pe32Loader(this);
             case MACHINE_x86_64: return new Pe64Loader(this);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
@@ -154,8 +156,9 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
-            case MACHINE_ARMNT: return 0x0FFF;
-            case MACHINE_i386: return 0x010B;
+            case MACHINE_ARMNT:
+            case MACHINE_i386: 
+                return 0x010B;
             case MACHINE_x86_64: return 0x020B;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
@@ -401,7 +404,11 @@ namespace Reko.ImageLoaders.MzExe
             case 0xA:
             break;
 			default:
-				throw new NotImplementedException(string.Format("Fixup type: {0:X}", fixup >> 12));
+                Services.RequireService<IDiagnosticsService>().Warn(
+                    new NullCodeLocation(""), 
+                    "Unsupported PE fixup type: {0:X}",
+                    fixup >> 12);
+                break;
 			}
 		}
 

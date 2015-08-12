@@ -27,9 +27,9 @@ using System.Text;
 
 namespace Reko.Environments.Win32
 {
-    public class Win32Thumb2Platform : Platform
+    public class Win32ThumbPlatform : Platform
     {
-        public Win32Thumb2Platform(IServiceProvider services, IProcessorArchitecture arch) : 
+        public Win32ThumbPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch)
         {
         }
@@ -51,7 +51,8 @@ namespace Reko.Environments.Win32
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            //$TODO: implement this.
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

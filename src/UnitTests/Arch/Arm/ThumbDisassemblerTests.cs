@@ -35,12 +35,12 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new Arm32ProcessorArchitecture();
+            return new ThumbProcessorArchitecture();
         }
 
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
         {
-            return new ThumbDisassembler(arch, rdr).GetEnumerator();
+            return new ThumbDisassembler(rdr).GetEnumerator();
         }
 
         [Test]

@@ -71,7 +71,7 @@
     <Compile Include="SignatureGuesser.cs" />
     <Compile Include="Win32Emulator.cs" />
     <Compile Include="Win32Platform.cs" />
-    <Compile Include="Win32Thumb2Platform.cs" />
+    <Compile Include="Win32ThumbPlatform.cs" />
     <Compile Include="Win_x86_64_Platform.cs" />
   </ItemGroup>
   <ItemGroup>
