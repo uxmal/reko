@@ -59,11 +59,6 @@ namespace Reko.UnitTests.Arch.Arm
             return new ThumbDisassembler(rdr).GetEnumerator();
         }
 
-        /*
-  0040271A: E8BD 8800 pop         {r11,pc}
-  0040271E: 0000      movs        r0,r0
-  00402720: 0000      movs        r0,r0         */
-
         [Test]
         public void ThumbDis_push()
         {

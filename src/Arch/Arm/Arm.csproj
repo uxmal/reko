@@ -81,6 +81,9 @@
     <Compile Include="ThumbProcessorState.cs" />
     <Compile Include="ThumbDisassembler.cs" />
     <Compile Include="ThumbInstruction.cs" />
+    <Compile Include="ThumbRewriter.Alu.cs" />
+    <Compile Include="ThumbRewriter.Control.cs" />
+    <Compile Include="ThumbRewriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

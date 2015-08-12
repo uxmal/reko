@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Gee.External.Capstone;
 using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -31,7 +32,7 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.Arm
 {
-    using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
+    using CapstoneArmInstruction = Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>;
     using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
     public partial class ArmRewriter : IEnumerable<RtlInstructionCluster>
