@@ -55,6 +55,11 @@ namespace Reko.Arch.Arm
             if (ops.Length < 1)
                 return;
             writer.Tab();
+            if (IsRegisterSetInstruction())
+            {
+                WriteRegisterSet(writer);
+                return;
+            }
             Write(ops[0], writer);
             if (ops.Length < 2)
                 return;
@@ -68,6 +73,30 @@ namespace Reko.Arch.Arm
                 return;
             writer.Write(",");
             Write(ops[3], writer);
+        }
+
+        private void WriteRegisterSet(MachineInstructionWriter writer)
+        {
+            writer.Write("{");
+            var sep = "";
+            foreach (var op in Internal.ArchitectureDetail.Operands)
+            {
+                writer.Write(sep);
+                writer.Write(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
+                sep = ",";
+            }
+            writer.Write("}");
+        }
+
+        private bool IsRegisterSetInstruction()
+        {
+            switch (Internal.Id)
+            {
+            case Opcode.PUSH:
+                return true;
+            default:
+                return false;
+            }
         }
 
         public void Write(ArmInstructionOperand op, MachineInstructionWriter writer)

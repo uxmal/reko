@@ -19,7 +19,7 @@
 #endregion
 
 using Gee.External.Capstone;
-using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Machine;
 using System;
@@ -29,9 +29,10 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
+    [Obsolete("Use Arm32Instruction")]
     public class ThumbInstruction : MachineInstruction
     {
-        public ThumbInstruction(Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> instruction)
+        public ThumbInstruction(Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> instruction)
         {
             this.Internal = instruction;
             this.Address = Address.Ptr32((uint)instruction.Address);
@@ -39,6 +40,6 @@ namespace Reko.Arch.Arm
 
         public override int OpcodeAsInteger { get { return (int) Internal.Id; } }
 
-        public Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> Internal { get; private set; }
+        public Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> Internal { get; private set; }
     }
 }

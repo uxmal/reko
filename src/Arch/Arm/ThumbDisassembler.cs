@@ -19,7 +19,7 @@
 #endregion
 
 using Gee.External.Capstone;
-using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -30,14 +30,14 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ThumbDisassembler : DisassemblerBase<ThumbInstruction>
+    public class ThumbDisassembler : DisassemblerBase<Arm32Instruction>
     {
-        private CapstoneDisassembler<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> dasm;
-        private IEnumerator<Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail>> stream;
+        private CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
+        private IEnumerator<Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
 
         public ThumbDisassembler(ImageReader rdr)
         {
-            var dasm = CapstoneDisassembler.CreateArm64Disassembler(DisassembleMode.Arm32);
+            var dasm = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.ArmThumb);
             dasm.EnableDetails = true;
             this.stream = dasm.DisassembleStream(
                 rdr.Bytes,
@@ -46,11 +46,11 @@ namespace Reko.Arch.Arm
                 .GetEnumerator();
         }
 
-        public override ThumbInstruction DisassembleInstruction()
+        public override Arm32Instruction DisassembleInstruction()
         {
             if (stream.MoveNext())
             {
-                return new ThumbInstruction(stream.Current);
+                return new Arm32Instruction(stream.Current);
             }
             else
                 return null;

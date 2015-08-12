@@ -38,17 +38,45 @@ namespace Reko.UnitTests.Arch.Arm
             return new ThumbProcessorArchitecture();
         }
 
+        protected MachineInstruction Disassemble16(params ushort[] instrs)
+        {
+            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
+            LeImageWriter w = new LeImageWriter(image.Bytes);
+            foreach (var instr in instrs)
+            {
+                w.WriteLeUInt16(instr);
+            }
+            var arch = CreateArchitecture();
+            var dasm = CreateDisassembler(arch, image.CreateLeReader(0));
+            Assert.IsTrue(dasm.MoveNext());
+            var armInstr = dasm.Current;
+            dasm.Dispose();
+            return armInstr;
+        }
+
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
         {
             return new ThumbDisassembler(rdr).GetEnumerator();
         }
 
+        /*
+  00402704: 46EB      mov         r11,sp
+  00402706: B082      sub         sp,sp,#8
+  00402708: F000 FA06 bl          00402B18
+  0040270C: F7FF FE58 bl          004023C0
+  00402710: 9000      str         r0,[sp]
+  00402712: 9B00      ldr         r3,[sp]
+  00402714: 9301      str         r3,[sp,#4]
+  00402716: 9801      ldr         r0,[sp,#4]
+  00402718: B002      add         sp,sp,#8
+  0040271A: E8BD 8800 pop         {r11,pc}
+  0040271E: 0000      movs        r0,r0
+  00402720: 0000      movs        r0,r0         */
         [Test]
-        [Ignore("Start here if you want to!")]
-        public void Thumb_Initial()
+        public void ThumbDis_push()
         {
-            var instr = Disassemble(0xE92CCFF3);
-            Assert.AreEqual("add.w\tr2,r1,r1,lsl #8", instr.ToString());
+            var instr = Disassemble16(0xE92D, 0x4800);
+            Assert.AreEqual("push.w\t{fp,lr}", instr.ToString());
         }
     }
 }
