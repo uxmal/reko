@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE5940008);  // ldr r0,[r4,#8]
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|L--|r0 = Mem0[r4 + 0x00000008:word32]");
+                "1|L--|r0 = Mem0[r4 + 8:word32]");
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE1F120D1);  // ldrsb r2,[r1,#1]!
             AssertCode(
                 "0|00100000(4): 2 instructions",
-                "1|L--|r1 = r1 + 0x00000001",
+                "1|L--|r1 = r1 + 1",
                 "2|L--|r2 = Mem0[r1:int8]");
         }
 

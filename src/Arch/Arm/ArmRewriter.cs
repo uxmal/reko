@@ -591,6 +591,7 @@ namespace Reko.Arch.Arm
                 return Constant.Word32(op.ImmediateValue.Value);
             case ArmInstructionOperandType.Memory:
                 Expression baseReg = Reg(op.MemoryValue.BaseRegister);
+                Expression ea = baseReg;
                 if (op.MemoryValue.BaseRegister == ArmRegister.PC)  // PC-relative address
                 {
                     if (op.MemoryValue.Displacement != 0)
@@ -599,7 +600,19 @@ namespace Reko.Arch.Arm
                         return emitter.Load(SizeFromLoadStore(instr), Address.Ptr32(dst));
                     }
                 }
-                throw new NotImplementedException();
+                if (op.MemoryValue.Displacement != 0 && instrs.Current.IsLastOperand(op))
+                {
+                    var offset = Constant.Int32(op.MemoryValue.Displacement);
+                    ea = op.MemoryValue.IndexRegisterScale < 0
+                        ? emitter.ISub(ea, offset)
+                        : emitter.IAdd(ea, offset);
+                }
+                if (instrs.Current.IsLastOperand(op) && instr.ArchitectureDetail.WriteBack)
+                {
+                    emitter.Assign(baseReg, ea);
+                    ea = baseReg;
+                }
+                return emitter.Load(SizeFromLoadStore(instr), ea);
             }
             throw new NotImplementedException(op.Type.ToString());
 #if NYI
@@ -645,6 +658,7 @@ namespace Reko.Arch.Arm
             switch (instr.Id)
             {
             case Opcode.LDR: return PrimitiveType.Word32;
+            case Opcode.LDRB: return PrimitiveType.Byte;
             case Opcode.LDRSB: return PrimitiveType.SByte;
             }
             throw new NotImplementedException(instr.Id.ToString());
@@ -680,8 +694,17 @@ namespace Reko.Arch.Arm
 
         private void MaybePostOperand(ArmInstructionOperand op)
         {
-            var memOp = op;
-            throw new NotImplementedException();
+            if (instrs.Current.IsLastOperand(op))
+                return;
+            if (op.Type != ArmInstructionOperandType.Memory)
+                return;
+            var lastOp = instr.ArchitectureDetail.Operands[instr.ArchitectureDetail.Operands.Length - 1];
+            Expression baseReg = Reg(op.MemoryValue.BaseRegister);
+            var offset = Operand(lastOp);
+            var ea = lastOp.IsSubtracted
+                ? emitter.ISub(baseReg, offset)
+                : emitter.IAdd(baseReg, offset);
+            emitter.Assign(baseReg, ea);
 #if NYI
             if (memOp == null || memOp.Offset == null)
                 return;

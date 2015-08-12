@@ -170,10 +170,21 @@ namespace Reko.Arch.Arm
                     WriteShift(op, writer);
                 }
                 writer.Write(']');
-                if (Internal.ArchitectureDetail.WriteBack)
+                if (Internal.ArchitectureDetail.WriteBack && IsLastOperand(op))
                     writer.Write("!");
             
             }
+        }
+
+        /// <summary>
+        /// Returns true if <paramref name="op"/> is the last operand of the instruction.
+        /// </summary>
+        /// <param name="op"></param>
+        /// <returns></returns>
+        public bool IsLastOperand(ArmInstructionOperand op)
+        {
+            var ops = Internal.ArchitectureDetail.Operands;
+            return op == ops[ops.Length-1];
         }
 
         private void WriteImmShift(string op, int value, MachineInstructionWriter writer)
