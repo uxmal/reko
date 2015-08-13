@@ -40,8 +40,9 @@ namespace Reko.Core.Lib
 
         public DominatorGraph(DirectedGraph<T> graph, T entryNode)
         {
+            this.idoms = new Dictionary<T, T>();
             this.idoms = Build(graph, entryNode);
-            this.idoms[entryNode] = null;		// No-one postdominates the root node.
+            this.idoms[entryNode] = null;		// No-one dominates the root node.
             this.domFrontier = BuildDominanceFrontiers(graph, idoms);
         }
 
@@ -134,7 +135,6 @@ namespace Reko.Core.Lib
 
         private Dictionary<T, T> Build(DirectedGraph<T> graph, T entryNode)
         {
-            Dictionary<T, T> idoms = new Dictionary<T, T>();
             idoms[entryNode] = entryNode;
             reversePostOrder = ReversePostorderNumbering(graph);
             SortedList<int, T> nodes = new SortedList<int, T>();

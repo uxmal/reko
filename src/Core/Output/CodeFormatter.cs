@@ -577,7 +577,7 @@ namespace Reko.Core.Output
             writer.Indent();
             writer.WriteKeyword("case");
             writer.Write(" ");
-            writer.Write("{0}", c.Number);
+            c.Constant.Accept(this);
             writer.Terminate(":");
             writer.Indentation += writer.TabSize;
         }

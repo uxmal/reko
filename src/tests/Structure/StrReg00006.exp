@@ -1,70 +1,70 @@
 // fn100048B0
 void fn100048B0(word16 wArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
-fn100048B0_entry:		// pred:
+fn100048B0_entry:
 	byte bl_50 = 0x00
 	branch wArg04 != 0x0000 l100048D1
 	// succ:  l100048C0 l100048D1
 l100048B0:
-l100048C0:		// pred: fn100048B0_entry
+l100048C0:
 	Mem281[0x1006B8E0:byte] = 0x00
 	fn10004B58()
 	return
 	// succ:  fn100048B0_exit
-fn100048B0_exit:		// pred: l10004ADE l10004906 l100048C0
+fn100048B0_exit:
 	// succ: 
-l100048D1:		// pred: fn100048B0_entry
+l100048D1:
 	branch Mem0[dwArg0C:word32] != 0x00000000 l100048DC
 	// succ:  l100048DA l100048DC
-l100048DA:		// pred: l100048D1
+l100048DA:
 	bl_50 = 0x01
 	// succ:  l100048DC
-l100048DC:		// pred: l100048D1 l100048DA
+l100048DC:
 	word32 ecx_69 = Mem0[dwArg08 + 0x000000D0:word32]
 	word32 eax_74 = fn10004B27(dwArg10, dwArg08, ecx_69, 0x00003158, dwArg0C, 0x1000A700)
 	branch eax_74 != 0x00000000 l10004911
 	// succ:  l10004906 l10004911
-l10004906:		// pred: l100048DC
+l10004906:
 	Mem277[dwArg10:word16] = 0xFF94
 	return
 	// succ:  fn100048B0_exit
-l10004911:		// pred: l100048DC
+l10004911:
 	branch wArg04 != 0x0001 l1000491D
 	// succ:  l10004917 l1000491D
-l10004917:		// pred: l10004911
+l10004917:
 	Mem81[eax_74 + 0x00000204:byte] = bl_50
 	// succ:  l1000491D
-l1000491D:		// pred: l10004911 l10004917
+l1000491D:
 	fn10004AED(eax_74)
 	word32 eax_84 = Mem82[eax_74:word32]
 	branch Mem82[eax_84:word16] != 0x0000 l10004ADE
 	// succ:  l10004933 l10004ADE
-l10004933:		// pred: l1000491D
+l10004933:
 	branch wArg04 <= 0x0000 l10004ABC
 	// succ:  l1000493C l10004ABC
-l1000493C:		// pred: l10004933
+l1000493C:
 	branch wArg04 > 0x0005 l10004ABC
 	// succ:  l10004946 l10004ABC
-l10004946:		// pred: l1000493C
+l10004946:
 	branch wArg04 != 0x0001 l1000496C
 	// succ:  l10004950 l1000496C
-l10004950:		// pred: l10004946
+l10004950:
 	fn10004AED(eax_74)
 	Mem204[Mem82[Mem82[Mem82[eax_74 + 0x00000004:word32] + 0x0000000C:word32]:word32]:word32] = 0x00000001
 	// succ:  l10004AC1
-l10004AC1:		// pred: l10004ABC l100049A8 l10004A62 l10004A44 l10004A48 l100049E8 l10004950
+l10004AC1:
 	word32 eax_235 = Mem233[dwArg0C:word32]
 	branch eax_235 == 0x00000000 l10004ADE
 	// succ:  l10004ACB l10004ADE
-l10004ACB:		// pred: l10004AC1
+l10004ACB:
 	fn10004B1E(Mem233[Mem233[eax_74 + 0x00000004:word32] + 0x000000D0:word32], eax_235)
 	// succ:  l10004ADE
-l10004ADE:		// pred: l1000491D l10004AC1 l10004ACB
+l10004ADE:
 	return
 	// succ:  fn100048B0_exit
-l1000496C:		// pred: l10004946
+l1000496C:
 	branch wArg04 != 0x0002 l100049E2
 	// succ:  l10004972 l100049E2
-l10004972:		// pred: l1000496C
+l10004972:
 	Mem167[Mem82[eax_74 + 0x00000004:word32] + 0x00000030:word32] = 0x00000000
 	fn10004AED(eax_74)
 	Mem170[Mem167[eax_74 + 0x00000004:word32] + 0x00000030:word32] = 0x00000000
@@ -76,7 +76,7 @@ l10004972:		// pred: l1000496C
 	Mem181[eax_74 + 0x000000B8:word16] = cx_179
 	ecx_69 = DPB(ecx_69, cx_179, 0, 16) (alias)
 	// succ:  l100049A8
-l100049A8:		// pred: l100049F6 l10004972
+l100049A8:
 	Mem190[eax_74 + 0x000000B8:word32] = ecx_69
 	Mem192[eax_74 + 0x000000B6:word16] = Mem190[eax_84 + 0x00000004:word16]
 	fn10004B10(eax_74, Mem192[eax_74 + 0x00000004:word32] + 0x00000010)
@@ -84,60 +84,60 @@ l100049A8:		// pred: l100049F6 l10004972
 	fn10004B19(eax_74)
 	fn10004AF2(eax_74)
 	// succ:  l10004AC1
-l100049E2:		// pred: l1000496C
+l100049E2:
 	branch wArg04 != 0x0003 l100049F6
 	// succ:  l100049E8 l100049F6
-l100049E8:		// pred: l100049E2
+l100049E8:
 	fn10004AE3(eax_74)
 	// succ:  l10004AC1
-l100049F6:		// pred: l100049E2
+l100049F6:
 	branch wArg04 != 0x0004 l100049A8
 	// succ:  l100049FC l100049A8
-l100049FC:		// pred: l100049F6
+l100049FC:
 	byte bl_105 = Mem82[Mem82[eax_74 + 0x00000004:word32] + 0x000000E0:word32] != 0x00000000
 	// succ:  l10004A08
-l10004A08:		// pred: l100049FC l10004A28 l10004A48
+l10004A08:
 	fn10004B01(eax_74)
 	word32 eax_112 = Mem110[eax_74:word32]
 	word16 ax_113 = (word16) eax_112
 	branch Mem110[eax_112:word16] == 0x0000 l10004A1F
 	// succ:  l10004A18 l10004A1F
-l10004A18:		// pred: l10004A08
+l10004A18:
 	Mem116[eax_74 + 0x000000AC:byte] = 0x00
 	// succ:  l10004A1F
-l10004A1F:		// pred: l10004A08 l10004A18
+l10004A1F:
 	branch Mem117[eax_74 + 0x000000AD:byte] != 0x01 l10004A2D
 	// succ:  l10004A28 l10004A2D
-l10004A28:		// pred: l10004A1F
+l10004A28:
 	branch Mem117[eax_112:word16] == 0x0000 l10004A08
 	// succ:  l10004A2D l10004A08
-l10004A2D:		// pred: l10004A1F l10004A28
+l10004A2D:
 	branch Mem117[eax_112:word16] != 0x0000 l10004A3B
 	// succ:  l10004A32 l10004A3B
-l10004A32:		// pred: l10004A2D
+l10004A32:
 	ax_113 = fn10004AE8(eax_74)
 	// succ:  l10004A3B
-l10004A3B:		// pred: l10004A2D l10004A32
+l10004A3B:
 	branch Mem117[eax_74 + 0x000000AC:byte] != 0x01 l10004A62
 	// succ:  l10004A44 l10004A62
-l10004A44:		// pred: l10004A3B
+l10004A44:
 	branch bl_105 == 0x00000000 l10004AC1
 	// succ:  l10004A48 l10004AC1
-l10004A48:		// pred: l10004A44
+l10004A48:
 	icall Mem117[Mem117[eax_74 + 0x00000004:word32] + 0x000000E0:word32]
 	Mem160[Mem117[eax_74:word32]:word16] = ax_113
 	branch Mem160[Mem160[eax_74:word32]:word16] != 0x0000 l10004AC1
 	// succ:  l10004A08 l10004AC1
-l10004A5D:		// pred:
+l10004A5D:
 	// succ:  l10004A08
-l10004A62:		// pred: l10004A3B
+l10004A62:
 	fn10004AFC(eax_74)
 	fn10004B06(eax_74)
 	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000034, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
 	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000040, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
 	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000060, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
 	// succ:  l10004AC1
-l10004ABC:		// pred: l10004933 l1000493C
+l10004ABC:
 	Mem207[eax_84:word16] = 0x8A6C
 	// succ:  l10004AC1
 

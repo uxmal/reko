@@ -83,7 +83,6 @@
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
-    <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
@@ -173,6 +172,7 @@
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Fragments\ArrayExpressionFragment.cs" />
+    <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Fragments\FnPointerFragment.cs" />
     <Compile Include="Fragments\FramePointerFragment.cs" />
     <Compile Include="Fragments\IndirectCallFragment.cs" />

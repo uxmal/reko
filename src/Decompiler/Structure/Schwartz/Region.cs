@@ -44,7 +44,7 @@ namespace Reko.Structure.Schwartz
 
         public virtual void Write(StringWriter sb)
         {
-            var f = new CodeFormatter(new TextFormatter(sb));
+            var f = new AbsynCodeFormatter(new TextFormatter(sb));
             foreach (var stm in Statements)
                 stm.Accept(f);
         }

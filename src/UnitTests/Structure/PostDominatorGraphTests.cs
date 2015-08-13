@@ -48,7 +48,6 @@ namespace Reko.UnitTests.Structure
             h = graphs.Build();
             sw = new StringWriter();
             graphs.AnalyzeGraph().Write(sw);
-
         }
 
         private string PostDom(string s)
@@ -160,7 +159,5 @@ namespace Reko.UnitTests.Structure
                 "ProcedureBuilder_exit (6): idom " + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
-
-       
     }
 }
