@@ -45,12 +45,14 @@ namespace Reko.Arch.Arm
                 throw new ArgumentNullException("instruction");
             this.instruction = instruction;
             this.Address = Address.Ptr32((uint)instruction.Address);
+            this.Length = instruction.Bytes.Length;
         }
 
         private Arm32Instruction(Address addr)
         {
             this.instruction = null;
             this.Address = addr;
+            this.Length = 2;
         }
 
         /// <summary>

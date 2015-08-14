@@ -313,14 +313,14 @@ namespace Reko.UnitTests.Structure
                 "	DoWorkBeforeSwitch();" + nl +
                 "	switch (n)" + nl +
                 "	{" + nl +
-                "	case 0:" + nl +
+                "	case 0x000000000:" + nl +
                 "		print(n);" + nl +
                 "		break;" + nl +
-                "	case 1:" + nl +
+                "	case 0x000000001:" + nl +
                 "		n = n + 0x00000001;" + nl +
                 "		goto JumpBack;" + nl +
                 "		break;" + nl +
-                "	case 2:" + nl +
+                "	case 0x000000002:" + nl +
                 "		print(n);" + nl +
                 "		break;" + nl +
                 "	}" + nl +
@@ -337,13 +337,13 @@ namespace Reko.UnitTests.Structure
                 "{" + nl +
                 "	switch (w)" + nl +
                 "	{" + nl +
-                "	case 0:" + nl +
+                "	case 0x000000000:" + nl +
                 "		fn0();" + nl +
                 "		break;" + nl +
-                "	case 1:" + nl +
+                "	case 0x000000001:" + nl +
                 "		fn1();" + nl +
                 "		break;" + nl +
-                "	case 2:" + nl +
+                "	case 0x000000002:" + nl +
                 "		fn2();" + nl +
                 "		break;" + nl +
                 "	}" + nl +

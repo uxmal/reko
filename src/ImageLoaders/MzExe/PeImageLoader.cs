@@ -39,6 +39,7 @@ namespace Reko.ImageLoaders.MzExe
 	{
         private IProcessorArchitecture arch;
         private Win32Platform platform;
+        private Program program;
         private SizeSpecificLoader innerLoader;
 
 		private short optionalHeaderSize;
@@ -173,7 +174,7 @@ namespace Reko.ImageLoaders.MzExe
                 imageMap = imgLoaded.CreateImageMap();
             }
             imgLoaded.BaseAddress = addrLoad;
-            var program = new Program(imgLoaded, imageMap, arch, platform);
+            this.program = new Program(imgLoaded, imageMap, arch, platform);
             this.importReferences = program.ImportReferences;
             return program;
         }
@@ -389,6 +390,7 @@ namespace Reko.ImageLoaders.MzExe
 		public void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
 		{
 			ushort fixup = rdr.ReadLeUInt16();
+			uint offset = page + (fixup & 0x0FFFu);
 			switch (fixup >> 12)
 			{
 			case RelocationAbsolute:
@@ -396,7 +398,6 @@ namespace Reko.ImageLoaders.MzExe
 				break;
 			case RelocationHighLow:
 			{
-				uint offset = page + (fixup & 0x0FFFu);
 				uint n = (uint) (imgLoaded.ReadLeUInt32(offset) + (baseOfImage - preferredBaseOfImage.ToLinear()));
 				imgLoaded.WriteLeUInt32(offset, n);
 				relocations.AddPointerReference(offset, n);
@@ -406,7 +407,8 @@ namespace Reko.ImageLoaders.MzExe
             break;
 			default:
                 Services.RequireService<IDiagnosticsService>().Warn(
-                    new NullCodeLocation(""), 
+                    Services.RequireService<DecompilerEventListener>()
+                        .CreateAddressNavigator(program, preferredBaseOfImage + offset),
                     "Unsupported PE fixup type: {0:X}",
                     fixup >> 12);
                 break;
