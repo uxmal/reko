@@ -256,11 +256,20 @@ namespace Reko.Arch.Arm
 
         private void Predicate(ArmCodeCondition cond, Expression dst, Expression src)
         {
-            var ass = new RtlAssignment(dst, src);
-            if (cond == ArmCodeCondition.AL)
-                emitter.Emit(ass);
+            RtlInstruction instr;
+            Identifier id;
+            if (dst.As<Identifier>(out id) && id.Storage == A32Registers.pc)
+            {
+                instr = new RtlGoto(src, RtlClass.Transfer);
+            }
             else
-                emitter.If(TestCond(cond), ass);
+            {
+                instr = new RtlAssignment(dst, src);
+            }
+            if (cond == ArmCodeCondition.AL)
+                emitter.Emit(instr);
+            else
+                emitter.If(TestCond(cond), instr);
         }
     }
 }

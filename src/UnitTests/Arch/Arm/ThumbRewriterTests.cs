@@ -5773,8 +5773,8 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|00100000(4): 3 instructions",
                 "1|L--|sp = sp - 8",
-                "2|L--|Mem0[sp + 0:word32] = lr",
-                "3|L--|Mem0[sp + 4:word32] = fp");
+                "2|L--|Mem0[sp + 0:word32] = fp",
+                "3|L--|Mem0[sp + 4:word32] = lr");
         }
 
         [Test]
@@ -5783,9 +5783,9 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE8BD, 0x8800); // pop.w\t{fp,pc}
             AssertCode(
                 "0|00100000(4): 3 instructions",
-                "1|L--|fp = Mem0[sp + 4:word32]",
-                "2|L--|pc = Mem0[sp + 0:word32]",
-                "3|L--|sp = sp + 8");
+                "1|L--|sp = sp + 8",
+                "2|L--|fp = Mem0[sp - 8:word32]",
+                "3|T--|goto Mem0[sp - 4:word32]");
         }
 
         [Test]
@@ -6150,7 +6150,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|00100000(4): 3 instructions",
                 "1|L--|v4 = Mem0[sp:word32]",
                 "2|L--|sp = sp + 12",
-                "3|L--|pc = v4");
+                "3|T--|goto v4");
         }
           [Test]
         public void ThumbRw_strb_preIndex()
@@ -6172,6 +6172,13 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|r2 = r2 + 1");
         }
 
-   
+        [Test]
+        public void ThumbRw_ldr_pc()
+        {
+            BuildTest(0xF8DC, 0xF000);  // ldr         pc,[r12]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|T--|goto Mem0[ip:word32]");
+        }
     }
 }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
@@ -120,12 +121,9 @@ namespace Reko.Arch.Arm
                 var baseReg = GetReg(ops[1].MemoryValue.BaseRegister);
                 Predicate(itStateCondition, tmp, src);
                 Predicate(itStateCondition, baseReg, emitter.IAdd(baseReg, RewriteOp(ops[2])));
-                Predicate(itStateCondition, dst, tmp);
+                src = tmp;
             }
-            else 
-            {
-                Predicate(itStateCondition, dst, src);
-            }
+            Predicate(itStateCondition, dst, src);
         }
 
         private void RewriteLdrex()
@@ -190,15 +188,16 @@ namespace Reko.Arch.Arm
         private void RewritePop()
         {
             var sp = frame.EnsureRegister(A32Registers.sp);
+            emitter.Assign(sp, emitter.IAdd(sp, Constant.Int32(ops.Length * 4)));
             int offset = ops.Length * 4;
             foreach (var op in ops.OrderByDescending(o => o.RegisterValue.Value))
             {
-                offset -= 4;
-                emitter.Assign(
+                Predicate(
+                    ArmCodeCondition.AL,
                     GetReg(op.RegisterValue.Value),
-                    emitter.LoadDw(emitter.IAdd(sp, Constant.Int32(offset))));
+                    emitter.LoadDw(emitter.ISub(sp, Constant.Int32(offset))));
+                offset -= 4;
             }
-            emitter.Assign(sp, emitter.IAdd(sp, Constant.Int32( ops.Length * 4)));
         }
 
         private void RewritePush()
@@ -206,9 +205,10 @@ namespace Reko.Arch.Arm
             var sp = frame.EnsureRegister(A32Registers.sp);
             emitter.Assign(sp, emitter.ISub(sp, Constant.Int32( ops.Length * 4)));
             int offset = 0;
-            foreach (var op in ops.OrderBy(o => o.RegisterValue.Value))
+            foreach (var op in ops.OrderByDescending(o => o.RegisterValue.Value))
             {
-                emitter.Assign(
+                Predicate(
+                    ArmCodeCondition.AL,
                     emitter.LoadDw(emitter.IAdd(sp, Constant.Int32(offset))),
                     GetReg(op.RegisterValue.Value));
                 offset += 4;
