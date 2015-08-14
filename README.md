@@ -18,6 +18,11 @@ other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompiler the binary
 (for instance if the binary is your own.) 
 
+## Version 0.5.1.0
+* Integrated the Capstone.NET disassembler, now used for the ARM and 
+  ARM Thumb architectures.
+* Support for Arm Thumb PE executables.
+
 ## Version 0.5.0.0
 * Moved project from SourceForge
 * Renamed project to 'Reko'

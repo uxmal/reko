@@ -36,18 +36,18 @@ namespace Reko.Arch.Arm
     {
         private ThumbProcessorArchitecture arch;
         private IEnumerator<Arm32Instruction> instrs;
-        private ThumbProcessorState state;
+        private ArmProcessorState state;
         private Frame frame;
         private IRewriterHost host;
         private Instruction<ArmInstruction,ArmRegister,ArmInstructionGroup,ArmInstructionDetail> instr;
         private ArmInstructionOperand[] ops;
-        private  RtlInstructionCluster ric;
-        private  RtlEmitter emitter;
+        private RtlInstructionCluster ric;
+        private RtlEmitter emitter;
         private int itState;
         private int itStateFirst;
         private ArmCodeCondition itStateCondition;
 
-        public ThumbRewriter(ThumbProcessorArchitecture arch, ImageReader rdr, ThumbProcessorState state, Frame frame, IRewriterHost host)
+        public ThumbRewriter(ThumbProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.instrs = CreateInstructionStream(rdr);
@@ -161,20 +161,30 @@ namespace Reko.Arch.Arm
                     return Constant.Int32(op.ImmediateValue.Value);
             case ArmInstructionOperandType.Memory:
                 var mem = op.MemoryValue;
-                var baseReg = GetReg(mem.BaseRegister);
-                var ea = baseReg;
-                if (mem.Displacement > 0)
-                {
-                    ea = emitter.IAdd(ea, Constant.Int32(mem.Displacement));
-                }
-                else if (mem.Displacement < 0)
-                {
-                    ea = emitter.ISub(ea, Constant.Int32(-mem.Displacement));
-                }
+                var ea = EffectiveAddress(mem);
                 return emitter.Load(accessSize, ea);
             default:
                 throw new NotImplementedException(op.Type.ToString());
             }
+        }
+
+        private Expression EffectiveAddress(ArmInstructionMemoryOperandValue mem)
+        {
+            var baseReg = GetReg(mem.BaseRegister);
+            var ea = baseReg;
+            if (mem.Displacement > 0)
+            {
+                ea = emitter.IAdd(ea, Constant.Int32(mem.Displacement));
+            }
+            else if (mem.Displacement < 0)
+            {
+                ea = emitter.ISub(ea, Constant.Int32(-mem.Displacement));
+            }
+            else if (mem.IndexRegister != ArmRegister.Invalid)
+            {
+                ea = emitter.IAdd(ea, GetReg(mem.IndexRegister));
+            }
+            return ea;
         }
 
         private TestCondition TestCond(ArmCodeCondition cond)

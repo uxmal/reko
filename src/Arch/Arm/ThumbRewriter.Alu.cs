@@ -96,12 +96,36 @@ namespace Reko.Arch.Arm
      
         private void RewriteLdr(DataType dtDst, DataType dtSrc)
         {
-            var dst = RewriteOp(ops[0]);
-            var src = RewriteOp(ops[1], dtSrc);
-            if (dtDst == dtSrc)
-                emitter.Assign(dst, src);
+            var mem = ops[1].MemoryValue;
+            Expression dst = RewriteOp(ops[0]);
+            Expression src;
+            if (ops.Length == 2 && instr.ArchitectureDetail.WriteBack)
+            {
+                // Pre-index operand.
+                Expression baseReg = GetReg(mem.BaseRegister);
+                Expression ea = EffectiveAddress(mem);
+                Predicate(itStateCondition, baseReg, ea);
+                src = emitter.Load(dtSrc, ea);
+            }
+            else
+            {
+                src = RewriteOp(ops[1], dtSrc);
+            }
+            if (dtDst != dtSrc)
+                src = emitter.Cast(dtDst, src);
+            if (ops.Length == 3)
+            {
+                // Post-index operand.
+                var tmp = frame.CreateTemporary(dtDst);
+                var baseReg = GetReg(ops[1].MemoryValue.BaseRegister);
+                Predicate(itStateCondition, tmp, src);
+                Predicate(itStateCondition, baseReg, emitter.IAdd(baseReg, RewriteOp(ops[2])));
+                Predicate(itStateCondition, dst, tmp);
+            }
             else 
-                emitter.Assign(dst, emitter.Cast(dtDst, src));
+            {
+                Predicate(itStateCondition, dst, src);
+            }
         }
 
         private void RewriteLdrex()
@@ -222,14 +246,25 @@ namespace Reko.Arch.Arm
             if (dtDst.Size < PrimitiveType.Word32.Size)
                 src = emitter.Cast(dtDst, src);
             var dst = RewriteOp(ops[1], dtDst);
+            var mem = ops[1].MemoryValue;
+            if (ops.Length == 2 && instr.ArchitectureDetail.WriteBack)
+            {
+                // Pre-index operand.
+                Expression baseReg = GetReg(mem.BaseRegister);
+                Expression ea = EffectiveAddress(mem);
+                Predicate(itStateCondition, baseReg, ea);
+                dst = emitter.Load(dtDst, baseReg);
+            }
+            else
+            {
+                dst = RewriteOp(ops[1], dtDst);
+            }
             Predicate(itStateCondition, dst, src);
-        }
-
-        private void RewriteStrb()
-        {
-            var src = emitter.Cast(PrimitiveType.Byte, RewriteOp(ops[0]));
-            var dst = RewriteOp(ops[1], PrimitiveType.Byte);
-            emitter.Assign(dst, src);
+            if (ops.Length == 3)
+            {
+                var baseReg = GetReg(mem.BaseRegister);
+                Predicate(itStateCondition, baseReg, emitter.IAdd(baseReg, RewriteOp(ops[2])));
+            }
         }
 
         private void RewriteStrex()

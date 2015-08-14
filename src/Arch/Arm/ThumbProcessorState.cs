@@ -27,6 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
+    [Obsolete("", true)]
     public class ThumbProcessorState : ProcessorState
     {
         private ThumbProcessorArchitecture arch;
@@ -68,7 +69,6 @@ namespace Reko.Arch.Arm
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)

@@ -1,0 +1,10 @@
+// fn004027E4
+// Return size: 0
+void fn004027E4()
+fn004027E4_entry:
+	// succ:  l004027E4
+l004027E4:
+	sp = fp
+fn004027E4_exit:
+
+
