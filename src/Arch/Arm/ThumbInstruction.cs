@@ -18,19 +18,28 @@
  */
 #endregion
 
+using Gee.External.Capstone;
+using Gee.External.Capstone.Arm;
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ThOpcode = Reko.Arch.Arm.ThumbOpcode;
 
 namespace Reko.Arch.Arm
 {
+    [Obsolete("Use Arm32Instruction")]
     public class ThumbInstruction : MachineInstruction
     {
-        public ThOpcode Opcode;
-        public override int OpcodeAsInteger { get { return (int) Opcode; } }
+        public ThumbInstruction(Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> instruction)
+        {
+            this.Internal = instruction;
+            this.Address = Address.Ptr32((uint)instruction.Address);
+        }
 
+        public override int OpcodeAsInteger { get { return (int) Internal.Id; } }
+
+        public Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> Internal { get; private set; }
     }
 }

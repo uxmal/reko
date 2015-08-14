@@ -19,65 +19,52 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Machine;
-using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ArmProcessorState : ProcessorState
+    [Obsolete("", true)]
+    public class ThumbProcessorState : ProcessorState
     {
-        private IProcessorArchitecture arch;
-        private uint isValid;
-        private uint[] regData;
+        private ThumbProcessorArchitecture arch;
 
-        public ArmProcessorState(IProcessorArchitecture arch)
+        public ThumbProcessorState(ThumbProcessorArchitecture arch)
         {
             this.arch = arch;
-            this.regData = new uint[16];
         }
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public ThumbProcessorState(ThumbProcessorState that)
+        {
+            this.arch = that.arch;
+        }
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
 
         public override ProcessorState Clone()
         {
-            var state = new ArmProcessorState(arch);
-            state.isValid = this.isValid;
-            state.regData = (uint[])regData.Clone();
-            return state;
+            return new ThumbProcessorState(this);
         }
 
-        public override Constant GetRegister(RegisterStorage r)
+        public override Core.Expressions.Constant GetRegister(RegisterStorage r)
         {
-            if (((isValid >> r.Number) & 1) != 0)
-                return Constant.Word32(regData[r.Number]);
-            else
-                return Constant.Invalid;
+            throw new NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            if (v.IsValid)
-            {
-                isValid |= 1u << r.Number;
-                regData[r.Number] = v.ToUInt32();
-            }
-            else
-            {
-                isValid &= ~(1u << r.Number);
-                regData[r.Number] = 0xCCCCCCCC;
-            }
+            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            regData[A32Registers.pc.Number] = addr.ToUInt32();
-            isValid |= 1u << A32Registers.pc.Number;
+            throw new NotImplementedException();
         }
 
         public override void OnProcedureEntered()
@@ -86,15 +73,17 @@ namespace Reko.Arch.Arm
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)
         {
+            throw new NotImplementedException();
         }
 
-        public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
+        public override Core.Code.CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(0, 0);
+            throw new NotImplementedException();
         }
 
         public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
         {
+            throw new NotImplementedException();
         }
     }
 }

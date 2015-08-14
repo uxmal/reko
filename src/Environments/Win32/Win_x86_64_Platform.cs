@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Environments.Win32
 {
-    public class Win_x86_64_Platform : Platform
+    public class Win_x86_64_Platform : Win32Platform
     {
         private SystemService int3svc;
 

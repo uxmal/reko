@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,34 +18,31 @@
  */
 #endregion
 
+using Reko;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
-//
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-//
-[assembly: AssemblyTitle("Reko core")]
-[assembly: AssemblyDescription("Core functionality for Reko decompiler.")]
+[assembly: AssemblyTitle("Capstone Adapter assembly")]
+[assembly: AssemblyDescription("Adapts the Capstone.NET disassembler to the Reko environment.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type.
+[assembly: ComVisible(false)]
 
-namespace Reko
-{
-    public static class AssemblyMetadata
-    {
-        public const string AssemblyVersion = "0.5.1.0";
-        public const string AssemblyFileVersion = "0.5.1.0";
-        public const string Product = "Reko decompiler";
-        public const string Copyright = "Copyright © 1999-2015 John Källén";
-        public const string Company = "John Källén Konsult AB";
-    }
-}
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("37369f47-181a-4cb0-9482-5f577c0ff6a6")]
+
+
+[assembly: AssemblyVersion(AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(AssemblyMetadata.AssemblyFileVersion)]

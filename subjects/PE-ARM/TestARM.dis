@@ -1,0 +1,10 @@
+// fn00402700
+// Return size: 0
+void fn00402700()
+fn00402700_entry:
+	// succ:  l00402700
+l00402700:
+	sp = fp
+fn00402700_exit:
+
+

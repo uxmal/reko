@@ -28,6 +28,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -37,7 +38,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class PeImageLoader : ImageLoader
 	{
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private Win32Platform platform;
         private SizeSpecificLoader innerLoader;
 
 		private short optionalHeaderSize;
@@ -56,6 +57,7 @@ namespace Reko.ImageLoaders.MzExe
         private Dictionary<Address, ImportReference> importReferences;
 		private const ushort MACHINE_i386 = (ushort) 0x014C;
         private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
+        private const ushort MACHINE_ARMNT = (ushort)0x1C4;
 		private const short ImageFileRelocationsStripped = 0x0001;
 		private const short ImageFileExecutable = 0x0002;
 
@@ -115,18 +117,23 @@ namespace Reko.ImageLoaders.MzExe
 
 		public IProcessorArchitecture CreateArchitecture(ushort peMachineType)
 		{
+            string arch;
+            var cfgSvc = Services.RequireService<IConfigurationService>();
 			switch (peMachineType)
 			{
-			case MACHINE_i386: return new IntelArchitecture(ProcessorMode.Protected32);
-            case MACHINE_x86_64: return new IntelArchitecture(ProcessorMode.Protected64);
+            case MACHINE_ARMNT: arch = "arm-thumb"; break;
+            case MACHINE_i386: arch = "x86-protected-32"; break;
+            case MACHINE_x86_64: arch = "x86-protected-64"; break;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
+            return cfgSvc.GetArchitecture(arch);
 		}
 
-        public Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
+        public Win32Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
         {
             switch (peMachineType)
             {
+            case MACHINE_ARMNT: return new Win32ThumbPlatform(sp, arch);
             case MACHINE_i386: return new Win32Platform(sp, arch);
             case MACHINE_x86_64: return new Win_x86_64_Platform(sp, arch);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
@@ -137,7 +144,9 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
-            case MACHINE_i386: return new Pe32Loader(this);
+            case MACHINE_ARMNT:
+            case MACHINE_i386: 
+                return new Pe32Loader(this);
             case MACHINE_x86_64: return new Pe64Loader(this);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
@@ -147,7 +156,9 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
-            case MACHINE_i386: return 0x010B;
+            case MACHINE_ARMNT:
+            case MACHINE_i386: 
+                return 0x010B;
             case MACHINE_x86_64: return 0x020B;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
@@ -349,7 +360,8 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.ToLinear(), relocations);
 			}
-            var entryPoints = new List<EntryPoint> { new EntryPoint(addrLoad + rvaStartAddress, arch.CreateProcessorState()) };
+            var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
+            var entryPoints = new List<EntryPoint> { new EntryPoint(addrEp, arch.CreateProcessorState()) };
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
@@ -393,7 +405,11 @@ namespace Reko.ImageLoaders.MzExe
             case 0xA:
             break;
 			default:
-				throw new NotImplementedException(string.Format("Fixup type: {0:X}", fixup >> 12));
+                Services.RequireService<IDiagnosticsService>().Warn(
+                    new NullCodeLocation(""), 
+                    "Unsupported PE fixup type: {0:X}",
+                    fixup >> 12);
+                break;
 			}
 		}
 

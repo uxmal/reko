@@ -20,32 +20,23 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
-using Reko.Core.Lib;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Serialization;
-using System.Globalization;
-using Reko.Core.Operators;
 
 namespace Reko.Arch.Arm
 {
-    public class ArmProcessorArchitecture : IProcessorArchitecture
+    public class ThumbProcessorArchitecture : IProcessorArchitecture
     {
-        public ArmProcessorArchitecture()
-        {
-        }
-
-        #region IProcessorArchitecture Members
-
         public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            return new ArmDisassembler(this, imageReader);
-            //return new ArmDisassembler2(this, imageReader);
+            return new ThumbDisassembler(imageReader);
         }
 
         public ProcessorState CreateProcessorState()
@@ -55,52 +46,37 @@ namespace Reko.Arch.Arm
 
         public BitSet CreateRegisterBitset()
         {
-            return new BitSet(16);
+            return new BitSet(0x30);
         }
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
+            return new ThumbRewriter(this, rdr, (ArmProcessorState) state, frame, host);
         }
 
         public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
-            if (flags != PointerScannerFlags.Calls)
-                throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
-            while (rdr.IsValid)
-            {
-                uint linAddrCall =  rdr.Address.ToUInt32();
-                var opcode = rdr.ReadLeUInt32();
-                if ((opcode & 0x0F000000) == 0x0B000000)         // BL
-                {
-                    int offset = ((int)opcode << 8) >> 6;
-                    uint target = (uint)(linAddrCall + 8 + offset);
-                    if (knownLinAddresses.Contains(target))
-                        yield return Address.Ptr32(linAddrCall);
-                }
-            }
+            throw new NotImplementedException();
         }
-
 
         public Frame CreateFrame()
         {
-            return new Frame(FramePointerType);
+            return new Frame(PrimitiveType.Pointer32);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public ImageReader CreateImageReader(LoadedImage img, Address addr)
         {
-            return new LeImageReader(image, addr);
+            return new LeImageReader(img, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public ImageReader CreateImageReader(LoadedImage img, ulong off)
         {
-            return new LeImageReader(image, offset);
+            throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            return new ArmProcedureSerializer(this, typeLoader, defaultCc);
+            throw new NotImplementedException();
         }
 
         public RegisterStorage GetRegister(int i)
@@ -110,16 +86,7 @@ namespace Reko.Arch.Arm
 
         public RegisterStorage GetRegister(string name)
         {
-            if (name == null) throw new ArgumentNullException("name");
-            RegisterStorage reg;
-            if (!A32Registers.RegistersByName.TryGetValue(name, out reg))
-                reg = null;
-            return reg;
-        }
-
-        public Address MakeAddressFromConstant(Constant c)
-        {
-            return Address.Ptr32(c.ToUInt32());
+            throw new NotImplementedException();
         }
 
         public bool TryGetRegister(string name, out RegisterStorage reg)
@@ -139,10 +106,7 @@ namespace Reko.Arch.Arm
 
         public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
-            return new MemoryAccess(new BinaryExpression(
-                         Operator.IAdd, FramePointerType,
-                         frame.EnsureRegister(StackRegister), Constant.Word32(cbOffset)),
-                         dataType);
+            throw new NotImplementedException();
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
@@ -150,21 +114,14 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 32; } }
-
         public string GrfToString(uint grf)
         {
-            StringBuilder s = new StringBuilder();
-            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
-            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
-            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
-            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
-            return s.ToString();
+            throw new NotImplementedException();
         }
 
         public PrimitiveType FramePointerType
         {
-            get { return StackRegister.DataType; }
+            get { throw new NotImplementedException(); }
         }
 
         public PrimitiveType PointerType
@@ -177,6 +134,11 @@ namespace Reko.Arch.Arm
             get { return PrimitiveType.Word32; }
         }
 
+        public int InstructionBitSize
+        {
+            get { return 16; }
+        }
+
         public RegisterStorage StackRegister
         {
             get { return A32Registers.sp; }
@@ -187,11 +149,14 @@ namespace Reko.Arch.Arm
             get { throw new NotImplementedException(); }
         }
 
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public bool TryParseAddress(string txtAddr, out Address addr)
         {
-            return Address.TryParse32(txtAddress, out addr);
+            throw new NotImplementedException();
         }
-        #endregion
-    }
 
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

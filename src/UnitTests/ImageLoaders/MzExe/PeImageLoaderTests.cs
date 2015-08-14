@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.ImageLoaders.MzExe
 {
@@ -57,7 +58,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         private const int RvaPeHdr = 0x0040;
         private const int RvaText = 0x1000;
         private const int RvaImportDescriptor = 0x2000;
-        private const int RvaData= 0x3000;
+        private const int RvaData = 0x3000;
+        private IProcessorArchitecture arch_386;
 
         [SetUp]
         public void Setup()
@@ -67,6 +69,19 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             addrLoad = Address.Ptr32(0x00100000);
             fileImage = new byte[0x4000];
             writer = new LeImageWriter(fileImage);
+            var cfgSvc = mr.StrictMock<IConfigurationService>();
+            Given_i386_Architecture();
+            cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch_386);
+            sc.AddService<IConfigurationService>(cfgSvc);
+        }
+
+        private void Given_i386_Architecture()
+        {
+            this.arch_386 = mr.StrictMock<IProcessorArchitecture>();
+            arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Pointer32));
+            arch_386.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
+            var state = mr.Stub<ProcessorState>();
+            arch_386.Stub(a => a.CreateProcessorState()).Return(state);
         }
 
         // PE section headers are always 40 bytes.
@@ -266,7 +281,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
         private void Given_PeLoader()
         {
-            peldr = new PeImageLoader(null, "test.exe", fileImage, RvaPeHdr);
+            peldr = new PeImageLoader(sc, "test.exe", fileImage, RvaPeHdr);
         }
 
         private int Given_ImportDescriptor32(
@@ -360,6 +375,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                         "GetFocus"
                     }
                 });
+            mr.ReplayAll();
+
             Given_PeLoader();
 
             var program = peldr.Load(addrLoad);
@@ -381,6 +398,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_Ilt32("malloc", "free", "realloc"),
                 "msvcrt.dll",
                 Given_Ilt32("malloc", "free", "realloc"));
+            mr.ReplayAll();
+
             Given_PeLoader();
             var program = peldr.Load(addrLoad);
 
@@ -404,7 +423,10 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_Ilt32("malloc", "free", "realloc"),
                 "msvcrt.dll",
                 Given_Ilt32(0u, 0u, 0u));
+            mr.ReplayAll();
+
             Given_PeLoader();
+
             var program = peldr.Load(addrLoad);
 
             var rdrId = new LeImageReader(fileImage, (uint)rvaId);

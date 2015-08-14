@@ -139,6 +139,11 @@
         
         <!-- Unpacker scripts -->
         <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" />
+        
+        <!-- External files -->
+        <File Source="$(var.SolutionDir)..\external\Capstone.NET\capstone.dll" />
+        <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.dll" />
+        <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.Proxy.dll" />
       </Component>
     </ComponentGroup>
 

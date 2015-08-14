@@ -318,7 +318,6 @@ namespace Reko.Core.Output
 			writer.Write("[");
 			WriteExpression(access.EffectiveAddress);
 			writer.Write(":");
-            Debug.Assert(access.DataType != null);
 			writer.Write(access.DataType.ToString());
 			writer.Write("]");
 		}
