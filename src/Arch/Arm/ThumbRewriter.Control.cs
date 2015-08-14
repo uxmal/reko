@@ -18,7 +18,11 @@
  */
 #endregion
 
+using Gee.External.Capstone.Arm;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +32,46 @@ namespace Reko.Arch.Arm
 {
     public partial class ThumbRewriter
     {
+        private void RewriteB()
+        {
+            var addr = Address.Ptr32((uint)ops[0].ImmediateValue.Value);
+            if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
+            {
+                emitter.Goto(addr);
+            }
+            else
+            {
+                emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
+            }
+        }
+
         private void RewriteBl()
         {
             emitter.Call(
                 Address.Ptr32((uint)ops[0].ImmediateValue.Value),
                 0);
+        }
+
+        private void RewriteBlx()
+        {
+            emitter.Call(RewriteOp(ops[0]), 0);
+        }
+
+        private void RewriteBx()
+        {
+            emitter.Goto(RewriteOp(ops[0]));
+        }
+
+        private void RewriteCbnz()
+        {
+            emitter.Branch(emitter.Ne0(RewriteOp(ops[0])),
+                Address.Ptr32((uint)ops[1].ImmediateValue.Value),
+                RtlClass.Transfer);
+        }
+
+        private void RewriteTrap()
+        {
+            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
         }
     }
 }

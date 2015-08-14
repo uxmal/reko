@@ -52,9 +52,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gee.External.Capstone, Version=1.2.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Gee.External.Capstone, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\external\Capstone.NET-1.2.1\Gee.External.Capstone.dll</HintPath>
+      <HintPath>..\..\..\external\Capstone.NET\Gee.External.Capstone.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

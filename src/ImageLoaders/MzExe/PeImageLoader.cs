@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class PeImageLoader : ImageLoader
 	{
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private Win32Platform platform;
         private SizeSpecificLoader innerLoader;
 
 		private short optionalHeaderSize;
@@ -129,7 +129,7 @@ namespace Reko.ImageLoaders.MzExe
             return cfgSvc.GetArchitecture(arch);
 		}
 
-        public Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
+        public Win32Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
         {
             switch (peMachineType)
             {
@@ -360,7 +360,8 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.ToLinear(), relocations);
 			}
-            var entryPoints = new List<EntryPoint> { new EntryPoint(addrLoad + rvaStartAddress, arch.CreateProcessorState()) };
+            var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
+            var entryPoints = new List<EntryPoint> { new EntryPoint(addrEp, arch.CreateProcessorState()) };
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);

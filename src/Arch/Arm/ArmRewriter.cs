@@ -69,7 +69,12 @@ namespace Reko.Arch.Arm
         {
             while (instrs.MoveNext())
             {
-                this.instr = instrs.Current.Internal;
+                if (!instrs.Current.TryGetInternal(out this.instr))
+                {
+                    throw new AddressCorrelatedException(
+                       instrs.Current.Address,
+                       "Invalid opcode cannot be rewritten to IR.");
+                }
                 this.ops = instr.ArchitectureDetail.Operands;
 
                 this.ric = new RtlInstructionCluster(instrs.Current.Address, instr.Bytes.Length);
@@ -581,7 +586,7 @@ namespace Reko.Arch.Arm
             ric.Instructions.Add(rtlInstr);
         }
 
-        private Expression Operand(Gee.External.Capstone.Arm.ArmInstructionOperand op)
+        private Expression Operand(ArmInstructionOperand op)
         {
             switch (op.Type)
             {

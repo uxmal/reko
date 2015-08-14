@@ -186,7 +186,7 @@
     <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Win32.*" />
   </ItemGroup>
   <ItemGroup>
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET-1.2.1\*.dll" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />

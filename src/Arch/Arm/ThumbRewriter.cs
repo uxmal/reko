@@ -62,7 +62,12 @@ namespace Reko.Arch.Arm
         {
             while (instrs.MoveNext())
             {
-                this.instr = instrs.Current.Internal;
+                if (!instrs.Current.TryGetInternal(out this.instr))
+                {
+                    throw new AddressCorrelatedException(
+                        instrs.Current.Address,
+                        "Invalid opcode cannot be rewritten to IR.");
+                }
                 this.ops = instr.ArchitectureDetail.Operands;
 
                 this.ric = new RtlInstructionCluster(instrs.Current.Address, instr.Bytes.Length);
@@ -72,16 +77,38 @@ namespace Reko.Arch.Arm
                 default:
                     throw new AddressCorrelatedException(
                       instrs.Current.Address,
-                      "Rewriting ARM opcode '{0}' is not supported yet.",
-                      instr.Mnemonic);
-                case ArmInstruction.ADD: RewriteBinop((a, b)=>emitter.IAdd(a, b)); break;
+                      "Rewriting ARM opcode '{0}' ({1}) is not supported yet.",
+                      instr.Mnemonic, instr.Id);
+                case ArmInstruction.ADD: RewriteBinop((a, b) => emitter.IAdd(a, b)); break;
+                case ArmInstruction.ADR: RewriteAdr(); break;
+                case ArmInstruction.AND: RewriteAnd(); break;
+                case ArmInstruction.B: RewriteB(); break;
+                case ArmInstruction.BIC: RewriteBic(); break;
                 case ArmInstruction.BL: RewriteBl(); break;
+                case ArmInstruction.BLX: RewriteBlx(); break;
+                case ArmInstruction.BX: RewriteBx(); break;
+                case ArmInstruction.CBNZ: RewriteCbnz(); break;
+                case ArmInstruction.CMP: RewriteCmp(); break;
+                case ArmInstruction.DMB: RewriteDmb(); break;
                 case ArmInstruction.LDR: RewriteLdr(); break;
+                case ArmInstruction.LDRB: RewriteLdrPart(PrimitiveType.Byte); break;
+                case ArmInstruction.LDREX: RewriteLdrex(); break;
+                case ArmInstruction.LDRH: RewriteLdrPart(PrimitiveType.Word16); break;
+                case ArmInstruction.LSL: RewriteLsl(); break;
                 case ArmInstruction.MOV: RewriteMov(); break;
+                case ArmInstruction.MOVT: RewriteMovt(); break;
+                case ArmInstruction.MOVW: RewriteMovw(); break;
+                case ArmInstruction.MRC: RewriteMrc(); break;
+                case ArmInstruction.MVN: RewriteMvn(); break;
                 case ArmInstruction.POP: RewritePop(); break;
                 case ArmInstruction.PUSH: RewritePush(); break;
+                case ArmInstruction.STM: RewriteStm(); break;
                 case ArmInstruction.STR: RewriteStr(); break;
-                case ArmInstruction.SUB: RewriteBinop((a, b)=> emitter.ISub(a, b)); break;
+                case ArmInstruction.STRB: RewriteStrb(); break;
+                case ArmInstruction.STREX: RewriteStrex(); break;
+                case ArmInstruction.SUB: RewriteBinop((a, b) => emitter.ISub(a, b)); break;
+                case ArmInstruction.TRAP: RewriteTrap(); break;
+                case ArmInstruction.TST: RewriteTst(); break;
                 }
                 yield return ric;
             }
@@ -104,7 +131,10 @@ namespace Reko.Arch.Arm
             case ArmInstructionOperandType.Register:
                 return GetReg(op.RegisterValue.Value);
             case ArmInstructionOperandType.Immediate:
-                return Constant.Int32(op.ImmediateValue.Value);
+                if (accessSize != null)
+                    return Constant.Create(accessSize, op.ImmediateValue.Value);
+                else 
+                    return Constant.Int32(op.ImmediateValue.Value);
             case ArmInstructionOperandType.Memory:
                 var mem = op.MemoryValue;
                 var baseReg = GetReg(mem.BaseRegister);
@@ -121,6 +151,65 @@ namespace Reko.Arch.Arm
             default:
                 throw new NotImplementedException(op.Type.ToString());
             }
+        }
+
+        private TestCondition TestCond(ArmCodeCondition cond)
+        {
+            switch (cond)
+            {
+            default:
+                throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
+            case ArmCodeCondition.HS:
+                return new TestCondition(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", PrimitiveType.Byte));
+            case ArmCodeCondition.LO:
+                return new TestCondition(ConditionCode.ULT, FlagGroup(FlagM.CF, "C", PrimitiveType.Byte));
+            case ArmCodeCondition.EQ:
+                return new TestCondition(ConditionCode.EQ, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case ArmCodeCondition.GE:
+                return new TestCondition(ConditionCode.GE, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case ArmCodeCondition.GT:
+                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case ArmCodeCondition.HI:
+                return new TestCondition(ConditionCode.UGT, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+            case ArmCodeCondition.LE:
+                return new TestCondition(ConditionCode.LE, FlagGroup(FlagM.ZF | FlagM.CF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case ArmCodeCondition.LS:
+                return new TestCondition(ConditionCode.ULE, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+            case ArmCodeCondition.LT:
+                return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte));
+            case ArmCodeCondition.MI:
+                return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF, "N", PrimitiveType.Byte));
+            case ArmCodeCondition.PL:
+                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF, "NZ", PrimitiveType.Byte));
+            case ArmCodeCondition.NE:
+                return new TestCondition(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case ArmCodeCondition.VS:
+                return new TestCondition(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
+            }
+        }
+
+        private Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
+        {
+            return frame.EnsureFlagGroup((uint)bits, name, type);
+        }
+
+        //$REVIEW: push PseudoProc into the RewriterHost interface"
+        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
+        {
+            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
+            return PseudoProc(ppp, retType, args);
+        }
+
+        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+        {
+            if (args.Length != ppp.Arity)
+                throw new ArgumentOutOfRangeException(
+                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                    ppp.Name,
+                    ppp.Arity,
+                    args.Length));
+
+            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
     }
 }

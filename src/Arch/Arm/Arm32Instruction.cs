@@ -29,20 +29,41 @@ using System.Text;
 namespace Reko.Arch.Arm
 {
     using Gee.External.Capstone.Arm;
+    using System.Diagnostics;
     using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
     using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
     public class Arm32Instruction : MachineInstruction 
     {
+        // If this instruction is NULL, then the instruction is invalid.
+        // Callers need to be aware of this.
         private CapstoneArmInstruction instruction;
-
+        
         public Arm32Instruction(CapstoneArmInstruction instruction)
         {
+            if (instruction == null)
+                throw new ArgumentNullException("instruction");
             this.instruction = instruction;
             this.Address = Address.Ptr32((uint)instruction.Address);
         }
 
-        internal CapstoneArmInstruction Internal { get { return instruction; } }
+        private Arm32Instruction(Address addr)
+        {
+            this.instruction = null;
+            this.Address = addr;
+        }
+
+        /// <summary>
+        /// Gets the inner, Capstone-originated instruction. If the instruction
+        /// is null, it means it is invalid (ie. a garbage opcode).
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns>True if the instruction is valid, false otherwise.</returns>
+        internal bool TryGetInternal(out CapstoneArmInstruction instr)
+        {
+            instr = instruction;
+            return instr != null;
+        }
 
         public override int OpcodeAsInteger {
             get { return (int) instruction.Id; }
@@ -50,8 +71,13 @@ namespace Reko.Arch.Arm
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(Internal.Mnemonic);
-            var ops = Internal.ArchitectureDetail.Operands;
+            if (instruction == null)
+            {
+                writer.Write("Invalid");
+                return;
+            }
+            writer.WriteOpcode(instruction.Mnemonic);
+            var ops = instruction.ArchitectureDetail.Operands;
             if (ops.Length < 1)
                 return;
             writer.Tab();
@@ -79,7 +105,7 @@ namespace Reko.Arch.Arm
         {
             writer.Write("{");
             var sep = "";
-            foreach (var op in Internal.ArchitectureDetail.Operands)
+            foreach (var op in instruction.ArchitectureDetail.Operands)
             {
                 writer.Write(sep);
                 writer.Write(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
@@ -90,10 +116,12 @@ namespace Reko.Arch.Arm
 
         private bool IsRegisterSetInstruction()
         {
-            switch (Internal.Id)
+            switch (instruction.Id)
             {
             case Opcode.POP:
             case Opcode.PUSH:
+            case Opcode.STM:
+            case Opcode.LDM:
                 return true;
             default:
                 return false;
@@ -105,9 +133,9 @@ namespace Reko.Arch.Arm
             switch (op.Type)
             {
             case ArmInstructionOperandType.Immediate:
-                if (Internal.Id == Opcode.B ||
-                    Internal.Id == Opcode.BL ||
-                    Internal.Id == Opcode.BLX)
+                if (instruction.Id == Opcode.B ||
+                    instruction.Id == Opcode.BL ||
+                    instruction.Id == Opcode.BLX)
                 {
                     writer.Write("$");
                     writer.WriteAddress(
@@ -117,6 +145,12 @@ namespace Reko.Arch.Arm
                 }
                 writer.Write("#");
                 WriteImmediateValue(op.ImmediateValue.Value, writer);
+                break;
+            case ArmInstructionOperandType.CImmediate:
+                writer.Write("c{0}", op.ImmediateValue);
+                break;
+            case ArmInstructionOperandType.PImmediate:
+                writer.Write("p{0}", op.ImmediateValue);
                 break;
             case ArmInstructionOperandType.Register:
                 if (op.IsSubtracted)
@@ -131,7 +165,11 @@ namespace Reko.Arch.Arm
                 writer.Write(op.SetEndValue.ToString().ToLowerInvariant());
                 break;
             default:
-                throw new NotImplementedException(op.Type.ToString());
+                throw new NotImplementedException(string.Format(
+                    "Can't disasseble {0} {1}. Unknown operand type: {2}",
+                    instruction.Mnemonic,
+                    instruction.Operand,
+                    op.Type));
             }
         }
 
@@ -171,7 +209,7 @@ namespace Reko.Arch.Arm
                     writer.Write("#");
                     WriteImmediateValue(displacement, writer);
                     writer.Write("]");
-                    if (Internal.ArchitectureDetail.WriteBack)
+                    if (instruction.ArchitectureDetail.WriteBack)
                         writer.Write("!");
                 }
                 else
@@ -200,7 +238,7 @@ namespace Reko.Arch.Arm
                     WriteShift(op, writer);
                 }
                 writer.Write(']');
-                if (Internal.ArchitectureDetail.WriteBack && IsLastOperand(op))
+                if (instruction.ArchitectureDetail.WriteBack && IsLastOperand(op))
                     writer.Write("!");
             
             }
@@ -213,7 +251,7 @@ namespace Reko.Arch.Arm
         /// <returns></returns>
         public bool IsLastOperand(ArmInstructionOperand op)
         {
-            var ops = Internal.ArchitectureDetail.Operands;
+            var ops = instruction.ArchitectureDetail.Operands;
             return op == ops[ops.Length-1];
         }
 
@@ -263,6 +301,11 @@ namespace Reko.Arch.Arm
                 }
                 writer.Write(fmt, sign, imm8);
             }
+        }
+
+        internal static Arm32Instruction CreateInvalid(Address addr)
+        {
+            return new Arm32Instruction(addr);
         }
     }
 }

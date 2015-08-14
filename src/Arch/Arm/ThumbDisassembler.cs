@@ -32,12 +32,14 @@ namespace Reko.Arch.Arm
 {
     public class ThumbDisassembler : DisassemblerBase<Arm32Instruction>
     {
-        private CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
+        private ImageReader rdr;
         private IEnumerator<Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
+        private CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
 
         public ThumbDisassembler(ImageReader rdr)
         {
-            var dasm = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.ArmThumb);
+            this.rdr = rdr;
+            this.dasm = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.ArmThumb);
             dasm.EnableDetails = true;
             this.stream = dasm.DisassembleStream(
                 rdr.Bytes,
@@ -48,12 +50,37 @@ namespace Reko.Arch.Arm
 
         public override Arm32Instruction DisassembleInstruction()
         {
+            // Check to see if we've hit the end of the address space, and return
+            // null if we are. We have to do this because the underlying Capstone
+            // disassembler doesn't distinguish between invalid opcodes and
+            // reaching the end of the image.
+            if (!rdr.IsValid)
+            {
+                return null;
+            }
             if (stream.MoveNext())
             {
+                // Capstone doesn't actually use the imageReader, but apparently
+                // reko components peek at the reader, so we have to simulate motion.
+                rdr.Offset += (ulong)stream.Current.Bytes.Length;
                 return new Arm32Instruction(stream.Current);
             }
             else
-                return null;
+            {
+                // We got an invalid instruction. Create a placeholder and then
+                // advance one opcode (which is 2 bytes for Thumb).
+                var instr = Arm32Instruction.CreateInvalid(rdr.Address);
+                rdr.Offset += 2;
+                this.stream.Dispose();
+
+                // Skip over the offending instruction and resume.
+                this.stream = dasm.DisassembleStream(
+                    rdr.Bytes,
+                    (int)rdr.Offset,
+                    (long)(rdr.Address.ToLinear() - rdr.Offset))
+                    .GetEnumerator();
+                return instr;
+            }
         }
     }
 }

@@ -103,8 +103,6 @@ namespace Reko.UnitTests.Arch.Arm
             return new Arm32ProcessorArchitecture();
         }
 
-
-
         [Test]
         public void ArmDasm_andseq()
         {

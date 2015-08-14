@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_push()
+       public void ThumbDis_push()
         {
             var instr = Disassemble16(0xE92D, 0x4800);
             Assert.AreEqual("push.w\t{fp,lr}", instr.ToString());
@@ -123,3 +123,4 @@ namespace Reko.UnitTests.Arch.Arm
         }
     }
 }
+
