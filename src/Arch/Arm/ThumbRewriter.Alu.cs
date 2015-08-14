@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace Reko.Arch.Arm
                     emitter.Cond(dst));
         }
 
+    
         private void RewriteBic()
         {
             var dst = RewriteOp(ops[0]);
@@ -81,18 +83,25 @@ namespace Reko.Arch.Arm
                     StringType.NullTerminated(PrimitiveType.Char))));
         }
 
-        private void RewriteLdr()
+        private void RewriteEor()
         {
             var dst = RewriteOp(ops[0]);
-            var src = RewriteOp(ops[1], PrimitiveType.Word32);
-            emitter.Assign(dst, src);
+            var src = RewriteOp(ops[1]);
+            emitter.Assign(dst, emitter.Xor(dst, src));
+            if (instr.ArchitectureDetail.UpdateFlags)
+                emitter.Assign(FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte),
+                    emitter.Cond(dst));
         }
 
-        private void RewriteLdrPart(DataType dt)
+     
+        private void RewriteLdr(DataType dtDst, DataType dtSrc)
         {
             var dst = RewriteOp(ops[0]);
-            var src = RewriteOp(ops[1], dt);
-            emitter.Assign(dst, emitter.Cast(PrimitiveType.UInt32, src));
+            var src = RewriteOp(ops[1], dtSrc);
+            if (dtDst == dtSrc)
+                emitter.Assign(dst, src);
+            else 
+                emitter.Assign(dst, emitter.Cast(dtDst, src));
         }
 
         private void RewriteLdrex()
@@ -105,15 +114,15 @@ namespace Reko.Arch.Arm
                     StringType.NullTerminated(PrimitiveType.Char))));
         }
 
-        private void RewriteLsl()
+        private void RewriteShift(Func<Expression,Expression, Expression> ctor)
         {
             var dst = RewriteOp(ops[0]);
             var src1 = RewriteOp(ops[1]);
             var src2 = RewriteOp(ops[2]);
-            emitter.Assign(dst, emitter.Shl(src1, src2));
+            emitter.Assign(dst, ctor(src1, src2));
             if (instr.ArchitectureDetail.UpdateFlags)
             {
-                emitter.Assign(frame.EnsureFlagGroup(0x1111, "NZCV", PrimitiveType.Byte), emitter.Cond(dst));
+                emitter.Assign(frame.EnsureFlagGroup(0xF, "NZCV", PrimitiveType.Byte), emitter.Cond(dst));
             }
         }
 
@@ -121,7 +130,7 @@ namespace Reko.Arch.Arm
         {
             var dst = GetReg(ops[0].RegisterValue.Value);
             var src = RewriteOp(ops[1]);
-            emitter.Assign(dst, src);
+            Predicate(itStateCondition, new RtlAssignment(dst, src));
         }
 
         private void RewriteMovt()
@@ -182,6 +191,14 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private void RewriteRsb()
+        {
+            var dst = RewriteOp(ops[0]);
+            var src1 = RewriteOp(ops[2]);    // _R_everse subtract/
+            var src2 = RewriteOp(ops[1]);
+            emitter.Assign(dst, emitter.ISub(src1, src2));
+        }
+
         private void RewriteStm()
         {
             var ptr = RewriteOp(ops[0]);
@@ -199,11 +216,13 @@ namespace Reko.Arch.Arm
             }
         }
 
-        private void RewriteStr()
+        private void RewriteStr(DataType dtDst)
         {
             var src = RewriteOp(ops[0]);
-            var dst = RewriteOp(ops[1], PrimitiveType.Word32);
-            emitter.Assign(dst, src);
+            if (dtDst.Size < PrimitiveType.Word32.Size)
+                src = emitter.Cast(dtDst, src);
+            var dst = RewriteOp(ops[1], dtDst);
+            Predicate(itStateCondition, dst, src);
         }
 
         private void RewriteStrb()
@@ -223,6 +242,23 @@ namespace Reko.Arch.Arm
                     StringType.NullTerminated(PrimitiveType.Char))));
         }
 
+
+        private void RewriteAddw()
+        {
+            var dst = RewriteOp(ops[0]);
+            var src1 = RewriteOp(ops[1]);
+            var src2 = RewriteOp(ops[2]);
+            Predicate(itStateCondition, new RtlAssignment(dst, emitter.IAdd(src1, src2)));
+        }
+
+        private void RewriteSubw()
+        {
+            var dst = RewriteOp(ops[0]);
+            var src1 = RewriteOp(ops[1]);
+            var src2 = RewriteOp(ops[2]);
+            Predicate(itStateCondition, new RtlAssignment(dst, emitter.ISub(src1, src2)));
+        }
+
         private void RewriteTst()
         {
             var dst = RewriteOp(ops[0]);
@@ -230,6 +266,20 @@ namespace Reko.Arch.Arm
             emitter.Assign(
                 FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte),
                 emitter.Cond(emitter.And(dst, src)));
+        }
+
+        private void RewriteUxth()
+        {
+            var dst = RewriteOp(ops[0]);
+            var src = RewriteOp(ops[1]);
+            Predicate(
+                itStateCondition,
+                dst,
+                emitter.Cast(
+                    PrimitiveType.UInt32,
+                    emitter.Cast(
+                        PrimitiveType.UInt16,
+                        src)));
         }
     }
 }

@@ -3224,5 +3224,110 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|NZC = cond(r3 & 0x80000000)");
         }
         
+        [Test]
+        public void ThumbRw_eors()
+        {
+            BuildTest(0x4053);  // eors        r3,r3,r2
+            AssertCode(
+                "0|00100000(2): 2 instructions",
+                "1|L--|r3 = r3 ^ r2",
+                "2|L--|NZC = cond(r3)");
+        }
+
+        [Test]
+        public void ThumbRw_cbz()
+        {
+            BuildTest(0xB103);  // cbz         r3,00402E50
+            AssertCode(
+                "0|00100000(2): 1 instructions",
+                "1|T--|if (r3 == 0x00000000) branch 00100004");
+        }
+
+        [Test]
+        public void ThumbRw_asrs()
+        {
+            BuildTest(0x1388);  // asrs        r0,r1,#0xE
+            AssertCode(
+                "0|00100000(2): 2 instructions",
+                "1|L--|r0 = r1 >> 14",
+                "2|L--|NZCV = cond(r0)");
+        }
+
+        [Test]
+        public void ThumbRw_rsb()
+        {
+            BuildTest(0xF1C4, 0x01F4);   // rsb         r1,r4,#0xF4
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|r1 = 244 - r4");
+        }
+
+        [Test]
+        public void ThumbRw_ldrsb()
+        {
+            BuildTest(0xF991, 0x3000);  // ldrsb       r3,[r1]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|r3 = (int32) Mem0[r1:int8]");
+        }
+
+        [Test]
+        public void ThumbRw_it()
+        {
+            BuildTest(
+                0xBF38,     //it          cc
+                0x4632,     // movcc       r2,r6
+                0x4632);   // mov       r2,r6
+            AssertCode(
+                "0|00100002(2): 1 instructions",
+                "1|L--|if (Test(ULT,C)) r2 = r6",
+                "2|00100004(2): 1 instructions",
+                "3|L--|r2 = r6");
+        }
+
+        [Test]
+        public void ThumbRw_subw()
+        {
+            BuildTest(0xF6AD, 0x6D48);  // sub         sp,sp,#0xE48
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|sp = sp - 3656");
+        }
+
+        [Test]
+        public void ThumbRw_addw()
+        {
+            BuildTest(0xF60D, 0x2348);  // add         r3,sp,#0xA48
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|r3 = sp + 2632");
+        }
+
+        [Test]
+        public void ThumbRw_strh()
+        {
+            BuildTest(0x800B);  // strh        r3,[r1]
+            AssertCode(
+                "0|00100000(2): 1 instructions",
+                "1|L--|Mem0[r1:word16] = (word16) r3");
+        }
+
+        [Test]
+        public void ThumbRw_uxth()
+        {
+            BuildTest(0xB2A9);  // uxth        r1,r5
+            AssertCode(
+                "0|00100000(2): 1 instructions",
+                "1|L--|r1 = (uint32) (uint16) r5");
+        }
+
+        [Test]
+        public void ThmbRw__fastfail()
+        {
+            BuildTest(0xDEFB);  // __fastfail
+            AssertCode(
+                "0|00100000(2): 1 instructions",
+                "1|L--|__syscall(0x000000FB)");
+        }
     }
 }

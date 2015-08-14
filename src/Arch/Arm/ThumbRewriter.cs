@@ -43,6 +43,9 @@ namespace Reko.Arch.Arm
         private ArmInstructionOperand[] ops;
         private  RtlInstructionCluster ric;
         private  RtlEmitter emitter;
+        private int itState;
+        private int itStateFirst;
+        private ArmCodeCondition itStateCondition;
 
         public ThumbRewriter(ThumbProcessorArchitecture arch, ImageReader rdr, ThumbProcessorState state, Frame frame, IRewriterHost host)
         {
@@ -51,6 +54,9 @@ namespace Reko.Arch.Arm
             this.state = state;
             this.frame = frame;
             this.host = host;
+            this.itState = 0;
+            this.itStateFirst = 0;
+            this.itStateCondition = ArmCodeCondition.AL;
         }
 
         private IEnumerator<Arm32Instruction> CreateInstructionStream(ImageReader rdr)
@@ -64,6 +70,7 @@ namespace Reko.Arch.Arm
             {
                 if (!instrs.Current.TryGetInternal(out this.instr))
                 {
+                    continue;
                     throw new AddressCorrelatedException(
                         instrs.Current.Address,
                         "Invalid opcode cannot be rewritten to IR.");
@@ -80,21 +87,28 @@ namespace Reko.Arch.Arm
                       "Rewriting ARM opcode '{0}' ({1}) is not supported yet.",
                       instr.Mnemonic, instr.Id);
                 case ArmInstruction.ADD: RewriteBinop((a, b) => emitter.IAdd(a, b)); break;
+                case ArmInstruction.ADDW: RewriteAddw(); break;
                 case ArmInstruction.ADR: RewriteAdr(); break;
                 case ArmInstruction.AND: RewriteAnd(); break;
+                case ArmInstruction.ASR: RewriteShift(emitter.Sar); break;
                 case ArmInstruction.B: RewriteB(); break;
                 case ArmInstruction.BIC: RewriteBic(); break;
                 case ArmInstruction.BL: RewriteBl(); break;
                 case ArmInstruction.BLX: RewriteBlx(); break;
                 case ArmInstruction.BX: RewriteBx(); break;
-                case ArmInstruction.CBNZ: RewriteCbnz(); break;
+                case ArmInstruction.CBZ: RewriteCbnz(emitter.Eq0); break;
+                case ArmInstruction.CBNZ: RewriteCbnz(emitter.Ne0); break;
                 case ArmInstruction.CMP: RewriteCmp(); break;
                 case ArmInstruction.DMB: RewriteDmb(); break;
-                case ArmInstruction.LDR: RewriteLdr(); break;
-                case ArmInstruction.LDRB: RewriteLdrPart(PrimitiveType.Byte); break;
+                case ArmInstruction.EOR: RewriteEor(); break;
+                case ArmInstruction.IT: RewriteIt(); continue;  // Don't emit anything yet.;
+                case ArmInstruction.LDR: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Word32); break;
+                case ArmInstruction.LDRB: RewriteLdr(PrimitiveType.UInt32,PrimitiveType.Byte); break;
+                case ArmInstruction.LDRSB: RewriteLdr(PrimitiveType.Int32,PrimitiveType.SByte); break;
                 case ArmInstruction.LDREX: RewriteLdrex(); break;
-                case ArmInstruction.LDRH: RewriteLdrPart(PrimitiveType.Word16); break;
-                case ArmInstruction.LSL: RewriteLsl(); break;
+                case ArmInstruction.LDRH: RewriteLdr(PrimitiveType.UInt32, PrimitiveType.Word16); break;
+                case ArmInstruction.LSL: RewriteShift(emitter.Shl); break;
+                case ArmInstruction.LSR: RewriteShift(emitter.Shr); break;
                 case ArmInstruction.MOV: RewriteMov(); break;
                 case ArmInstruction.MOVT: RewriteMovt(); break;
                 case ArmInstruction.MOVW: RewriteMovw(); break;
@@ -102,13 +116,23 @@ namespace Reko.Arch.Arm
                 case ArmInstruction.MVN: RewriteMvn(); break;
                 case ArmInstruction.POP: RewritePop(); break;
                 case ArmInstruction.PUSH: RewritePush(); break;
+                case ArmInstruction.RSB: RewriteRsb(); break;
                 case ArmInstruction.STM: RewriteStm(); break;
-                case ArmInstruction.STR: RewriteStr(); break;
-                case ArmInstruction.STRB: RewriteStrb(); break;
+                case ArmInstruction.STR: RewriteStr(PrimitiveType.Word32); break;
+                case ArmInstruction.STRH: RewriteStr(PrimitiveType.Word16); break;
+                case ArmInstruction.STRB: RewriteStr(PrimitiveType.Byte); break;
                 case ArmInstruction.STREX: RewriteStrex(); break;
                 case ArmInstruction.SUB: RewriteBinop((a, b) => emitter.ISub(a, b)); break;
+                case ArmInstruction.SUBW: RewriteSubw(); break;
                 case ArmInstruction.TRAP: RewriteTrap(); break;
                 case ArmInstruction.TST: RewriteTst(); break;
+                case ArmInstruction.UDF: RewriteUdf(); break;
+                case ArmInstruction.UXTH: RewriteUxth(); break;
+                }
+                itState = (itState << 1) & 0x0F;
+                if (itState == 0)
+                {
+                    itStateCondition = ArmCodeCondition.AL;
                 }
                 yield return ric;
             }
@@ -210,6 +234,23 @@ namespace Reko.Arch.Arm
                     args.Length));
 
             return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
+        }
+
+        private void Predicate(ArmCodeCondition cond, RtlInstruction instr)
+        {
+            if (cond == ArmCodeCondition.AL)
+                emitter.Emit(instr);
+            else
+                emitter.If(TestCond(cond), instr);
+        }
+
+        private void Predicate(ArmCodeCondition cond, Expression dst, Expression src)
+        {
+            var ass = new RtlAssignment(dst, src);
+            if (cond == ArmCodeCondition.AL)
+                emitter.Emit(ass);
+            else
+                emitter.If(TestCond(cond), ass);
         }
     }
 }
