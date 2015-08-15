@@ -527,8 +527,9 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Tries to determine if the instruction at <paramref name="addr"/> is a trampoline
-        /// instruction. If so, we return a call to the imported function directly.
+        /// Tries to determine if the instruction at <paramref name="addr"/> is 
+        /// a trampoline instruction. If so, we return a call to the imported 
+        /// function directly.
         /// procedure.
         /// </summary>
         /// <remarks>
@@ -549,6 +550,15 @@ namespace Reko.Scanning
             return target;
         }
 
+        /// <summary>
+        /// If <paramref name="addrImportThunk"/> is the known address of an
+        /// import thunk / trampoline, return the imported function as an
+        /// ExternaProcedure. Otherwise, check to see if the call is an
+        /// intercepted call.
+        /// </summary>
+        /// <param name="addrImportThunk"></param>
+        /// <param name="addrInstruction">Used to display diagnostics.</param>
+        /// <returns></returns>
         public ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
             ImportReference impref;

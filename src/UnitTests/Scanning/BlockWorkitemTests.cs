@@ -466,5 +466,23 @@ testProc_exit:
             Assert.AreEqual("SysSvc(r1)", block.Statements[0].ToString());
             mr.VerifyAll();
         }
+
+        [Test]
+        public void Bwi_IndirectJump()
+        {
+            var platform = mr.StrictMock<Platform>(null, arch);
+            var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14, PrimitiveType.Pointer32));
+            platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(null);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
+            mr.ReplayAll();
+            trace.Add(m => m.Goto(m.LoadDw(sp)));
+            var wi = CreateWorkItem(Address.Ptr32(0x0100000), arch.CreateProcessorState());
+            wi.ProcessInternal();
+
+            Assert.AreEqual("goto Mem0[sp:word32]", block.Statements[0].ToString());
+
+        }
     }
 }

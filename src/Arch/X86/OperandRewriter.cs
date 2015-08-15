@@ -89,7 +89,7 @@ namespace Reko.Arch.X86
 
         public Expression CreateMemoryAccess(IntelInstruction instr, MemoryOperand mem, DataType dt, X86State state)
         {
-            var exp = ImportedProcedureName(instr.Address, mem.Width, mem);
+            var exp = ImportedProcedure(instr.Address, mem.Width, mem);
             if (exp != null)
                 return new ProcedureConstant(arch.PointerType, exp);
 
@@ -211,7 +211,7 @@ namespace Reko.Arch.X86
             return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
         }
 
-        public ExternalProcedure ImportedProcedureName(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
+        public ExternalProcedure ImportedProcedure(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
         {
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
