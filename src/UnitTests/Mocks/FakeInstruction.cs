@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Mocks
 
     public enum Operation
     {
+        Nop,
         Add,
         Mul,
         Jump,

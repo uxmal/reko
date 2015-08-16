@@ -100,6 +100,11 @@ namespace Reko.Arch.Pdp11
             return new LeImageReader(image, offset);
         }
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new Pdp11ProcessorState(this);

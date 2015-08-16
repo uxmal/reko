@@ -140,6 +140,11 @@ namespace Reko.Arch.PowerPC
             return new BeImageReader(image, offset);
         }
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public abstract IEnumerable<Address> CreatePointerScanner(
             ImageMap map, 
             ImageReader rdr,

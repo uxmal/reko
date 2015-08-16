@@ -81,6 +81,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+            {
+                throw new NotImplementedException();
+            }
+
             public ProcessorState CreateProcessorState()
             {
                 throw new NotImplementedException();

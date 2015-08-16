@@ -42,6 +42,14 @@ namespace Reko.Environments.Win32
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
+            //$REVIEW: should probably be loaded from configuration.
+            Heuristics.ProcedurePrologs = new BytePattern[] {
+                new BytePattern
+                {
+                    Bytes = new byte[]{ 0x55, 0x8B, 0xEC },
+                    Mask =  new byte[]{ 0xFF, 0xFF, 0xFF }
+                }
+            };
             int3svc = new SystemService
             {
                 SyscallInfo = new SyscallInfo

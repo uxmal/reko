@@ -32,7 +32,7 @@ namespace Reko.Scanning
 {
 	/// <summary>
 	/// In the absence of any other information, scans address ranges in 
-    /// search of code sequences that may represent valid procedures. It
+    /// search of code sequences that may represent valid procedures. Reko
     /// needs help from the processor architecture to specify what byte 
     /// patterns to look for.
 	/// </summary>
@@ -89,7 +89,7 @@ namespace Reko.Scanning
         {
             foreach (var range in ranges)
             {
-                SortedSet<Address> possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2)
+                var possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2)
                     .Concat(prog.EntryPoints.Select(ep => ep.Address))
                     .ToSortedSet();
                 var e = possibleEntries.GetEnumerator();
@@ -108,14 +108,6 @@ namespace Reko.Scanning
             }
         }
 
-        private IEnumerable<Address> FindPossibleProcedureEntries(Address addrBegin, Address addrEnd)
-        {
-            var pattern = new byte[] { 0x55, 0x8B, 0xEC };  //$TODO: platform-dependent.
-            var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
-            return search.GetMatchPositions(prog.Image.Bytes)
-                .Select(i => prog.Image.BaseAddress + i);
-        }
-
         // Plan of attack:
         // For each "hole", look for signatures of program entry points.
         // These are procedure entry candidates of .
@@ -125,7 +117,19 @@ namespace Reko.Scanning
         //  - pointers to those candidates.
         // Each time we find a call, we increase the score of the candidate.
         // At the end we have a list of scored candidates.
-        //
+        private IEnumerable<Address> FindPossibleProcedureEntries(Address addrBegin, Address addrEnd)
+        {
+            var h = prog.Platform.Heuristics;
+            if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
+                return new Address[0];
+
+            byte[] pattern = h.ProcedurePrologs[0].Bytes;
+            var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
+            return search.GetMatchPositions(prog.Image.Bytes)
+                .Select(i => prog.Image.BaseAddress + i);
+        }
+
+  
         public HeuristicProcedure DisassembleProcedure(Address addrStart, Address addrEnd)
         {
             blockMap = new Dictionary<Address, HeuristicBlock>();
@@ -262,7 +266,7 @@ namespace Reko.Scanning
                     var rtlLast = rtl.Instructions.Last();
                     if (rtlLast is RtlCall || rtlLast is RtlReturn)
                     {
-                        // Since calls cannot be dependent on to return, 
+                        // Since calls cannot be depended on to return, 
                         // we stop disassembling.
                         return current;
                     }

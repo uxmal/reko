@@ -99,7 +99,7 @@
     <Compile Include="IntelInstruction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IntelInstructionComparer.cs">
+    <Compile Include="X86InstructionComparer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IntelRegister.cs" />

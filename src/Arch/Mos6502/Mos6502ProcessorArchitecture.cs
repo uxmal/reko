@@ -39,6 +39,27 @@ namespace Reko.Arch.Mos6502
             return new Disassembler(imageReader.Clone());
         }
 
+        public Frame CreateFrame()
+        {
+            //$HM. The stack pointer is 8 bits on this processor.
+            return new Frame(PrimitiveType.Ptr16);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new Mos6502ProcessorState(this);
@@ -57,22 +78,6 @@ namespace Reko.Arch.Mos6502
         public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
-        }
-
-        public Frame CreateFrame()
-        {
-            //$HM. The stack pointer is 8 bits on this processor.
-            return new Frame(PrimitiveType.Ptr16);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
         }
 
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)

@@ -221,7 +221,9 @@
     <Compile Include="Lib\Bits.cs" />
     <Compile Include="Lib\DiGraph.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
+    <Compile Include="Lib\Trie.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />
+    <Compile Include="Machine\InstructionComparer.cs" />
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="Operators\CommaOperator.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
@@ -229,6 +231,7 @@
     <Compile Include="Output\AbsynCodeFormatter.cs" />
     <Compile Include="Output\TextFormatter.cs" />
     <Compile Include="Output\TypeReferenceFormatter.cs" />
+    <Compile Include="PlatformHeuristics.cs" />
     <Compile Include="PointerScanner.cs" />
     <Compile Include="PointerScannerFlags.cs" />
     <Compile Include="Lib\LookaheadEnumerator.cs" />

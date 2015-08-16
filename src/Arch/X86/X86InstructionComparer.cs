@@ -32,29 +32,33 @@ namespace Reko.Arch.X86
 	/// Used by the InstructionTrie class.
 	/// </remarks>
 	/// 
-	public class IntelInstructionComparer : 
-		IComparer,
-		IEqualityComparer
+	public class X86InstructionComparer : 
+		InstructionComparer<IntelInstruction>
 	{
-		private int CompareOperands(MachineOperand opA, MachineOperand opB)
+        public X86InstructionComparer(Normalize norm) 
+            : base(norm)
+        {
+        }
+
+		public bool CompareOperands(MachineOperand opA, MachineOperand opB)
 		{
-			if (!opA.GetType().IsAssignableFrom(opB.GetType()))
-				return -1;
+			if (opA.GetType() != opB.GetType())
+				return false;
 
 			RegisterOperand regOpA = opA as RegisterOperand;
 			if (regOpA != null)
 			{
 				RegisterOperand regOpB = (RegisterOperand) opB;
-				return (int) regOpB.Register.Number - (int) regOpA.Register.Number;
+                return NormalizeRegisters || regOpA.Register == regOpB.Register;
 			}
 			ImmediateOperand immOpA = opA as ImmediateOperand;
 			if (immOpA != null)
 			{
-				ImmediateOperand immOpB = (ImmediateOperand) opB;
-				return 0;			// disregard immediate values.
+				return NormalizeConstants || immOpA.Value.Equals(opB);			// disregard immediate values.
 			}
 			throw new NotImplementedException("NYI");
 		}
+
 
 		/// <summary>
 		/// Implementation of IComparer.Compare. In reality, 
@@ -62,23 +66,21 @@ namespace Reko.Arch.X86
 		/// <param name="oInstrA"></param>
 		/// <param name="oInstrB"></param>
 		/// <returns></returns>
-		public int Compare(object oInstrA, object oInstrB)
+		public override bool CompareOperands(IntelInstruction instrA, IntelInstruction instrB)
 		{
-            IntelInstruction instrA = (IntelInstruction)oInstrA;
-            IntelInstruction instrB = (IntelInstruction)oInstrB;
 			if (instrA.code != instrB.code)
-				return (int) instrB.code - (int) instrA.code;
+				return false;
 			if (instrA.Operands != instrB.Operands)
-				return instrB.Operands - instrA.Operands;;
+				return false;
 
-			int retval = 0;
+			bool retval = true;
 			if (instrA.Operands > 0)
 			{
 				retval = CompareOperands(instrA.op1, instrB.op1);
-				if (retval == 0 && instrA.Operands > 1)
+				if (retval && instrA.Operands > 1)
 				{
 					retval = CompareOperands(instrA.op2, instrB.op2);
-					if (retval == 0 && instrA.Operands > 2)
+					if (retval && instrA.Operands > 2)
 					{
 						retval = CompareOperands(instrA.op3, instrB.op3);
 					}
@@ -87,12 +89,9 @@ namespace Reko.Arch.X86
 			return retval;
 		}
 
-		private int GetHashCodeInner(object obj)
-		{
-			IntelInstruction instr = (IntelInstruction) obj;
-			int hash = instr.code.GetHashCode();
-			hash = hash * 47 + instr.Operands.GetHashCode();
-
+        public override int GetOperandsHash(IntelInstruction instr)
+        {
+			int hash = instr.Operands.GetHashCode();
 			if (instr.Operands > 0)
 			{
 				hash = hash * 23 + GetHashCode(instr.op1);
@@ -114,40 +113,18 @@ namespace Reko.Arch.X86
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
 			{
-				return regOp.Register.Number;
+				return base.NormalizeRegisters
+                    ? 1 
+                    : regOp.Register.Number;
 			}
 			ImmediateOperand immOp = op as ImmediateOperand;
 			if (immOp != null)
 			{
-				return 0;			// disregard immediate values.
+                return base.NormalizeConstants
+                    ? 1 // disregard immediate values.
+                    : immOp.GetHashCode();
 			}
 			throw new NotImplementedException();
 		}
-
-
-#if VS2003 || MONO
-
-		#region IHashCodeProvider Members
-
-		public int GetHashCode(object obj)
-		{
-			return GetHashCodeInner(obj);
-		}
-
-		#endregion
-#else
-		#region IEqualityComparer Members
-
-		bool  IEqualityComparer.Equals(object x, object y)
-		{
-			return Compare(x, y) == 0;
-		}
-
-		int  IEqualityComparer.GetHashCode(object obj)
-		{
-			return GetHashCodeInner(obj);
-		}
-		#endregion
-#endif
 	}
 }

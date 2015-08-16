@@ -22,13 +22,13 @@ using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ImmediateOperand = Reko.Core.Machine.ImmediateOperand;
 
 namespace Reko.Environments.Ps3
 {

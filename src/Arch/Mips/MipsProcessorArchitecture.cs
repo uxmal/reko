@@ -44,6 +44,11 @@ namespace Reko.Arch.Mips
             return new MipsDisassembler(this, imageReader);
         }
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcessorState CreateProcessorState()
         {
             throw new NotImplementedException();

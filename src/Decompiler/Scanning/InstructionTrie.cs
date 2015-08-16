@@ -18,10 +18,10 @@
  */
 #endregion
 
-using System;
+using System.Collections.Generic;
+using Hashtable = System.Collections.Hashtable;
 using IComparer = System.Collections.IComparer;
 using IEqualityComparer = System.Collections.IEqualityComparer;
-using Hashtable = System.Collections.Hashtable;
 
 namespace Reko.Scanning
 {
@@ -32,9 +32,10 @@ namespace Reko.Scanning
 	{
 		private int count;
 		private TrieNode root;
-		public InstructionTrie(IEqualityComparer hasher, IComparer comparer)
+
+		public InstructionTrie(IEqualityComparer<TInstr> hasher)
 		{
-			this.root = new TrieNode(hasher, comparer);
+			this.root = new TrieNode(hasher);
 		}
 
 		public int Count
@@ -57,7 +58,7 @@ namespace Reko.Scanning
 		{
 			TrieNode node = root;
 			long score = 0;
-			foreach (object instr in instrs)
+			foreach (var instr in instrs)
 			{
 				TrieNode subNode = node.Next(instr);
 				if (subNode == null)
@@ -71,20 +72,20 @@ namespace Reko.Scanning
 		private class TrieNode
 		{
 			public TInstr Instruction;
-			public Hashtable Successors;
-			public IEqualityComparer hasher;
+			public Dictionary<TInstr, TrieNode> Successors;
+			public IEqualityComparer<TInstr> hasher;
 			public IComparer cmp;
 			public int Tally;
 
-			public TrieNode(IEqualityComparer hasher, IComparer cmp)
+			public TrieNode(IEqualityComparer<TInstr> hasher)
 			{
-				Init(hasher, cmp);
+				Init(hasher);
 			}
 
-			public TrieNode(TInstr instruction, IEqualityComparer hasher, IComparer cmp)
+			public TrieNode(TInstr instruction, IEqualityComparer<TInstr> hasher)
 			{
 				Instruction = instruction;
-				Init(hasher, cmp);
+				Init(hasher);
 			}
 
 			public TrieNode Add(TInstr instr)
@@ -92,22 +93,21 @@ namespace Reko.Scanning
 				TrieNode subNode = Next(instr);
 				if (subNode == null)
 				{
-					subNode = new TrieNode(instr, hasher, cmp);
+					subNode = new TrieNode(instr, hasher);
 					Successors.Add(instr, subNode);
 				}
 				return subNode;
 			}
 
-			private void Init(IEqualityComparer hasher, IComparer cmp)
+			private void Init(IEqualityComparer<TInstr> hasher)
 			{
 				this.hasher = hasher;
-				this.cmp = cmp;
-				Successors = new Hashtable(hasher);
+				Successors  = new Dictionary<TInstr,TrieNode>(hasher);
 			}
 
-			public TrieNode Next(object instr)
+			public TrieNode Next(TInstr instr)
 			{
-				return (TrieNode) Successors[instr];
+				return Successors[instr];
 			}
 		}
 	}

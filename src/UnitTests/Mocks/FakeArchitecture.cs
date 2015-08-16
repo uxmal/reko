@@ -162,6 +162,11 @@ namespace Reko.UnitTests.Mocks
             return new FakeDisassembler(rdr.Address, DisassemblyStream.GetEnumerator());
 		}
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public Frame CreateFrame()
         {
             return new Frame(FramePointerType);

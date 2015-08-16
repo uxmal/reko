@@ -57,6 +57,26 @@ namespace Reko.Environments.C64
             }
         }
 
+        public Frame CreateFrame()
+        {
+            return new Frame(PrimitiveType.Ptr16);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage img, Address addr)
+        {
+            return new LeImageReader(img, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage img, ulong off)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new C64BasicState(this);
@@ -73,21 +93,6 @@ namespace Reko.Environments.C64
         }
 
         public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Frame CreateFrame()
-        {
-            return new Frame(PrimitiveType.Ptr16);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage img, ulong off)
         {
             throw new NotImplementedException();
         }

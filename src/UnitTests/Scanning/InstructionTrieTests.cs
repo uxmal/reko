@@ -38,15 +38,15 @@ namespace Reko.UnitTests.Scanning
 		[Test]
 		public void Creation()
 		{
-			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
+			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
+			var trie = new InstructionTrie<IntelInstruction>(cmp);
 		}
 
 		[Test]
 		public void AddInstructions()
 		{
-			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
+            X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
+			var trie = new InstructionTrie<IntelInstruction>(cmp);
 			IntelInstruction inst = CreatePush(Registers.bp);
 			
 			trie.AddInstructions(new [] { inst });
@@ -64,8 +64,8 @@ namespace Reko.UnitTests.Scanning
 		[Test]
 		public void ScoreInstructions()
 		{
-			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
+			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
+			var trie = new InstructionTrie<IntelInstruction>(cmp);
 			trie.AddInstructions(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });

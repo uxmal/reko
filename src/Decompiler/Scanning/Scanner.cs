@@ -717,4 +717,57 @@ namespace Reko.Scanning
             }
         }
     }
+
+    /*
+     * State:
+     *   regs:
+     *      abstr_value
+     *      reaching_defs
+     *   stack:
+     *   globals:
+     *   
+     * Scanner:
+     *   q = stack of known code addresses
+     *   while q
+     *      b = blockat(q.addr)
+     *      if (exists)
+     *          split(q.addr)
+     *      else 
+     *          b = new block(q.addr)
+     *      successors = process block(b)
+     *      enqueue(successors)
+     *      
+     *  process block(b)
+     *      while i = reader:
+     *          if i.addr inside (other block)
+     *              successors += other_block
+     *              return;
+     *          if i is assign
+     *              b.add(i)
+     *              state = eval(i, state)
+     *          if i is goto
+     *              if goto.label const
+     *                  succs += goto.label
+     *                  return
+     *              if (calltable (state))
+     *                  return
+     *              if state(goto.label) = continuation
+     *                  cur_fn.returns = true
+     *                  emit return
+     *                  return
+     *          if i is call
+     *              if (eval(target)  = { set of constants }
+     *                  emit call(target)
+     *                  callsite += [ set of constants ]
+     *                  foreach (target) 
+     *                      if (fn = functions.completed(target))
+     *                          if fn.returns
+     *                              
+     *                          
+     *                  if 
+     *         
+     *                  
+     *              
+     *          
+     */
 }

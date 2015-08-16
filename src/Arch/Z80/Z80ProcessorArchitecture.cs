@@ -39,26 +39,6 @@ namespace Reko.Arch.Z80
             return new Z80Disassembler(imageReader);
         }
 
-        public ProcessorState CreateProcessorState()
-        {
-            return new Z80ProcessorState(this);
-        }
-
-        public BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
-        {
-            return new Z80Rewriter(this, rdr, state, frame, host);
-        }
-
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
         public Frame CreateFrame()
         {
             return new Frame(PrimitiveType.Ptr16);
@@ -74,9 +54,34 @@ namespace Reko.Arch.Z80
             return new LeImageReader(image, offset);
         }
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProcessorState CreateProcessorState()
+        {
+            return new Z80ProcessorState(this);
+        }
+
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotImplementedException();
+        }
+
+        public BitSet CreateRegisterBitset()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        {
+            return new Z80Rewriter(this, rdr, state, frame, host);
         }
 
         public RegisterStorage GetRegister(int i)

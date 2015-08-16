@@ -48,6 +48,26 @@ namespace Reko.Arch.Arm
             //return new ArmDisassembler2(this, imageReader);
         }
 
+        public Frame CreateFrame()
+        {
+            return new Frame(FramePointerType);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new ArmProcessorState(this);
@@ -80,22 +100,6 @@ namespace Reko.Arch.Arm
                         yield return Address.Ptr32(linAddrCall);
                 }
             }
-        }
-
-
-        public Frame CreateFrame()
-        {
-            return new Frame(FramePointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
         }
 
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
