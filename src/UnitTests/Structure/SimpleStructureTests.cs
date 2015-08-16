@@ -210,6 +210,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void StrReg00006()
         {
             RunTest32("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
@@ -235,12 +236,14 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void StrReg00011()
         {
             RunTest(new Reg00011Mock(), "Structure/StrReg00011.txt");
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void StrReg00013()
         {
             RunTest("Fragments/regressions/r00013.asm", "Structure/StrReg00013.txt");
@@ -280,6 +283,7 @@ ret
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void StrReg00001()
         {
             var program = RewriteX86_32Fragment(Fragments.Regressions.Reg00001.Text,

@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Scanning
 		}
 
 		[Test]
-		public void AddInstructions()
+		public void Trie_AddInstructions()
 		{
             X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
 			var trie = new InstructionTrie<IntelInstruction>(cmp);
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Scanning
 		/// Builds a trie with instrucion sequences, then generates subsequences of these and gets them scored.
 		/// </summary>
 		[Test]
-		public void ScoreInstructions()
+		public void Trie_ScoreInstructions()
 		{
 			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
 			var trie = new InstructionTrie<IntelInstruction>(cmp);

@@ -374,6 +374,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void AcgWhileReturn()
         {
             CompileTest(delegate(ProcedureBuilder m)

@@ -151,6 +151,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void AliasFlags()
         {
             var sExp = "@@@";

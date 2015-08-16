@@ -576,6 +576,7 @@ const eax:<invalid>
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TrfConstNonConst()
         {
             // Constant in one branch, not constant in other.
@@ -607,6 +608,7 @@ const ax:0x0000 cx:<invalid>
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TrfReg00005()
         {
             RunFileTest("Fragments/regressions/r00005.asm", "Analysis/TrfReg00005.txt");
@@ -625,6 +627,7 @@ const ax:0x0000 cx:<invalid>
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TrfMergeSubregisterRegister()
         {
             Given_Contexts();

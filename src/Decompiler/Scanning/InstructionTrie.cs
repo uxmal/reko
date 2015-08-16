@@ -60,8 +60,8 @@ namespace Reko.Scanning
 			long score = 0;
 			foreach (var instr in instrs)
 			{
-				TrieNode subNode = node.Next(instr);
-				if (subNode == null)
+				TrieNode subNode;
+                if (!node.Next(instr, out subNode))
 					break;
 				score = score * node.Successors.Count + subNode.Tally;
 				node = subNode;
@@ -90,8 +90,8 @@ namespace Reko.Scanning
 
 			public TrieNode Add(TInstr instr)
 			{
-				TrieNode subNode = Next(instr);
-				if (subNode == null)
+				TrieNode subNode;
+                if (!Successors.TryGetValue(instr, out subNode))
 				{
 					subNode = new TrieNode(instr, hasher);
 					Successors.Add(instr, subNode);
@@ -105,9 +105,9 @@ namespace Reko.Scanning
 				Successors  = new Dictionary<TInstr,TrieNode>(hasher);
 			}
 
-			public TrieNode Next(TInstr instr)
+			public bool Next(TInstr instr, out TrieNode node)
 			{
-				return Successors[instr];
+				return Successors.TryGetValue(instr, out node);
 			}
 		}
 	}
