@@ -629,17 +629,13 @@ namespace Reko.Scanning
             ProcessQueue();
         }
 
+        /// <summary>
+        /// Uses the HeuristicScanner to try to located code heuristically.
+        /// </summary>
         public void ScanImageHeuristically()
         {
             var heuristicScanner = new HeuristicScanner(program, this);
-            var ranges = heuristicScanner.FindUnscannedRanges();
-            foreach (var item in heuristicScanner.FindPossibleFunctions(ranges))
-            {
-                var hproc = heuristicScanner.DisassembleProcedure(item.Item1, item.Item2);
-                var hps = new HeuristicProcedureScanner(program, hproc);
-                hps.BlockConflictResolution();
-                // TODO: add all guessed code to image map -- clearly labelled.
-            }
+            heuristicScanner.ScanImageHeuristically();
         }
 
         [Conditional("DEBUG")]

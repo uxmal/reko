@@ -236,6 +236,12 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// The task of the gap completion phase is to improve the
+        /// results of our analysis by filling the gaps between basic
+        /// blocks in the control flow graph with instructions that
+        /// are likely to be valid
+        /// </summary>
         public void GapResolution()
         {
             foreach (var gap in GetGaps())

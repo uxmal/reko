@@ -30,12 +30,12 @@ using System.Text;
 
 namespace Reko.Scanning
 {
-	/// <summary>
-	/// In the absence of any other information, scans address ranges in 
+    /// <summary>
+    /// In the absence of any other information, scans address ranges in 
     /// search of code sequences that may represent valid procedures. Reko
     /// needs help from the processor architecture to specify what byte 
     /// patterns to look for.
-	/// </summary>
+    /// </summary>
     /// <remarks>
     /// Static Disassembly of Obfuscated Binaries
     /// Christopher Kruegel, William Robertson, Fredrik Valeur and Giovanni Vigna
@@ -45,14 +45,67 @@ namespace Reko.Scanning
     /// </remarks>
     public class HeuristicScanner
     {
-        private Program prog;
+        private Program program;
         private IRewriterHost host;
-        private Dictionary<Address, HeuristicBlock> blockMap;
 
         public HeuristicScanner(Program prog, IRewriterHost host)
         {
-            this.prog = prog;
+            this.program = prog;
             this.host = host;
+        }
+
+        /// Plan of attack:
+        /// In each unscanned "hole", look for signatures of procedure entries.
+        /// These are procedure entry candidates. 
+        /// Scan each of the procedure entry candidates heuristically.
+        /// 
+        /// Next scan all executable code segments for:
+        ///  - calls that reach those candidates
+        ///  - jmps to those candidates
+        ///  - pointers to those candidates.
+        /// Each time we find a call, we increase the score of the candidate.
+        /// At the end we have a list of scored candidates.
+        public void ScanImageHeuristically()
+        {
+            var ranges = FindUnscannedRanges();
+            foreach (var range in FindPossibleFunctions(ranges))
+            {
+                var hproc = DisassembleProcedure(range.Item1, range.Item2);
+                var hps = new HeuristicProcedureScanner(program, hproc);
+                hps.BlockConflictResolution();
+                hps.GapResolution();
+                // TODO: add all guessed code to image map -- clearly labelled.
+            }
+        }
+
+        /// <summary>
+        /// Scans the Program object looking for address ranges that have not
+        /// been identified as code/data yet.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Tuple<Address, Address>> FindUnscannedRanges()
+        {
+            return program.ImageMap.Items
+                .Where(de => de.Value.DataType is UnknownType)
+                .Select(de => Tuple.Create(de.Key, de.Key + de.Value.Size));
+        }
+
+        /// <summary>
+        /// Looks for byte patterns that look like 
+        /// </summary>
+        /// <param name="addrBegin"></param>
+        /// <param name="addrEnd"></param>
+        /// <returns></returns>
+        public IEnumerable<Address> FindPossibleProcedureEntries(Address addrBegin, Address addrEnd)
+        {
+            var h = program.Platform.Heuristics;
+            if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
+                return new Address[0];
+
+            byte[] pattern = h.ProcedurePrologs[0].Bytes;
+            var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
+            return search.GetMatchPositions(program.Image.Bytes)
+                .Select(i => program.Image.BaseAddress + i);
         }
 
         /// <summary>
@@ -65,18 +118,11 @@ namespace Reko.Scanning
         /// instructions are.</returns>
         public IEnumerable<Address> FindCallOpcodes(IEnumerable<Address> knownProcedureAddresses)
         {
-            return prog.Architecture.CreatePointerScanner(
-                prog.ImageMap,
-                prog.Architecture.CreateImageReader(prog.Image, 0),
+            return program.Architecture.CreatePointerScanner(
+                program.ImageMap,
+                program.Architecture.CreateImageReader(program.Image, 0),
                 knownProcedureAddresses,
                 PointerScannerFlags.Calls);
-        }
-
-        public IEnumerable<Tuple<Address,Address>> FindUnscannedRanges()
-        {
-            return prog.ImageMap.Items
-                .Where(de => de.Value.DataType is UnknownType)
-                .Select(de => Tuple.Create(de.Key, de.Key + de.Value.Size));
         }
 
         /// <summary>
@@ -90,7 +136,7 @@ namespace Reko.Scanning
             foreach (var range in ranges)
             {
                 var possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2)
-                    .Concat(prog.EntryPoints.Select(ep => ep.Address))
+                    .Concat(program.EntryPoints.Select(ep => ep.Address))
                     .ToSortedSet();
                 var e = possibleEntries.GetEnumerator();
                 Address aEnd = range.Item1;
@@ -108,59 +154,29 @@ namespace Reko.Scanning
             }
         }
 
-        // Plan of attack:
-        // For each "hole", look for signatures of program entry points.
-        // These are procedure entry candidates of .
-        // Next scan all executable code segments for:
-        //  - calls that reach those candidates
-        //  - jmps to those candidates
-        //  - pointers to those candidates.
-        // Each time we find a call, we increase the score of the candidate.
-        // At the end we have a list of scored candidates.
-        private IEnumerable<Address> FindPossibleProcedureEntries(Address addrBegin, Address addrEnd)
-        {
-            var h = prog.Platform.Heuristics;
-            if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
-                return new Address[0];
-
-            byte[] pattern = h.ProcedurePrologs[0].Bytes;
-            var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
-            return search.GetMatchPositions(prog.Image.Bytes)
-                .Select(i => prog.Image.BaseAddress + i);
-        }
-
-  
+        /// <summary>
+        /// Heuristically disassembles a procedure that has been assumed to 
+        /// be located between <paramref name="addrStart"/> and <paramref name="addrEnd"/>. 
+        /// </summary>
+        /// <param name="addrStart"></param>
+        /// <param name="addrEnd"></param>
+        /// <returns></returns>
         public HeuristicProcedure DisassembleProcedure(Address addrStart, Address addrEnd)
         {
-            blockMap = new Dictionary<Address, HeuristicBlock>();
             var proc = new HeuristicProcedure
             {
                 BeginAddress = addrStart,
                 EndAddress = addrEnd,
-                Frame = prog.Architecture.CreateFrame()
+                Frame = program.Architecture.CreateFrame()
             };
-            for (Address addr = addrStart; addr < addrEnd; addr = addr + prog.Architecture.InstructionBitSize / 8)
+            var dasm = new HeuristicDisassembler(program, proc, host);
+            int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
+            for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
             {
-                HeuristicDisassemble(addr, proc);
+                dasm.Disassemble(addr);
             }
             DumpBlocks(proc.Cfg.Nodes);
             return proc;
-        }
-
-        private void DumpBlocks(IEnumerable<HeuristicBlock> blocks)
-        {
-            foreach (var block in blocks.OrderBy(b => b.Address.ToLinear()))
-            {
-                var addrEnd = block.GetEndAddress();
-                var sb = new StringBuilder();
-                var rdr = prog.CreateImageReader(block.Address);
-                sb.AppendFormat("{0} - {1} ", block.Address, addrEnd);
-                while (rdr.Address < addrEnd)
-                {
-                    sb.AppendFormat("{0:X2} ", (int)rdr.ReadByte());
-                }
-                Debug.Print(sb.ToString());
-            }
         }
 
         // Partition memory into chunks betweeen each candidate.
@@ -191,113 +207,21 @@ namespace Reko.Scanning
         //instruction sequence of the current block and create a
         //link to the existing basic block in the control flow graph
 
-        private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr, HeuristicProcedure proc)
+        [Conditional("DEBUG")]
+        private void DumpBlocks(IEnumerable<HeuristicBlock> blocks)
         {
-            var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
-            proc.Cfg.Nodes.Add(newBlock);
-            newBlock.Statements.AddRange(
-                block.Statements.Where(r => r.Address >= addr).OrderBy(r => r.Address));
-            foreach (var de in blockMap.Where(d => d.Key >= addr && d.Value == block).ToList())
+            foreach (var block in blocks.OrderBy(b => b.Address.ToLinear()))
             {
-                blockMap[de.Key] = newBlock;
-            }
-            block.Statements.RemoveAll(r => r.Address >= addr);
-            var succs = proc.Cfg.Successors(block).ToArray();
-            foreach (var s in succs)
-            {
-                proc.Cfg.AddEdge(newBlock, s);
-                proc.Cfg.RemoveEdge(block, s);
-            }
-            proc.Cfg.AddEdge(block, newBlock);
-            return newBlock;
-        }
-
-        /// <summary>
-        /// Recursively disassembles the range of addresses specified by the guessed procedure.
-        /// <paramref name="proc"/>.
-        /// </summary>
-        /// <param name="addr"></param>
-        /// <param name="proc"></param>
-        /// <returns></returns>
-        public HeuristicBlock HeuristicDisassemble(Address addr, HeuristicProcedure proc)
-        {
-            var current = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
-            var rAddr = prog.Architecture.CreateRewriter(
-                     prog.CreateImageReader(addr),
-                     prog.Architecture.CreateProcessorState(),
-                     proc.Frame,
-                     host);
-            foreach (var rtl in rAddr.TakeWhile(r => r.Address < proc.EndAddress))
-            {
-                HeuristicBlock block;
-                if (blockMap.TryGetValue(rtl.Address, out block))
+                var addrEnd = block.GetEndAddress();
+                var sb = new StringBuilder();
+                var rdr = program.CreateImageReader(block.Address);
+                sb.AppendFormat("{0} - {1} ", block.Address, addrEnd);
+                while (rdr.Address < addrEnd)
                 {
-                    // This instruction was already disassembled before.
-                    if (rtl.Address.ToLinear() != block.Address.ToLinear())
-                    {
-                        block = SplitBlock(block, rtl.Address, proc);
-                    }
-                    if (current.Statements.Count == 0)
-                    {
-                        // Coincides exactly, return the old block.
-                        return block;
-                    }
-                    else
-                    {
-                        // Fell into 'block' while disassembling
-                        // 'current'. Create a fall-though edge
-                        if (!proc.Cfg.Nodes.Contains(current))
-                        {
-                            proc.Cfg.Nodes.Add(current);
-                        }
-                        proc.Cfg.AddEdge(current, block);
-                        return current;
-                    }
+                    sb.AppendFormat("{0:X2} ", (int)rdr.ReadByte());
                 }
-                else
-                {
-                    // Fresh instruction
-                    if (!proc.Cfg.Nodes.Contains(current))
-                    {
-                        proc.Cfg.Nodes.Add(current);
-                    }
-                    current.Statements.Add(rtl);
-                    blockMap.Add(rtl.Address, current);
-                    var rtlLast = rtl.Instructions.Last();
-                    if (rtlLast is RtlCall || rtlLast is RtlReturn)
-                    {
-                        // Since calls cannot be depended on to return, 
-                        // we stop disassembling.
-                        return current;
-                    }
-                    var rtlJump = rtlLast as RtlGoto;
-                    if (rtlJump != null)
-                    {
-                        var target = rtlJump.Target as Address;
-                        if (target == null ||
-                            target < proc.BeginAddress ||
-                            target >= proc.EndAddress)
-                        {
-                            // Stop disassembling if you get outside
-                            // the procedure or a computed goto.
-                            return current;
-                        }
-                        block = HeuristicDisassemble(target, proc);
-                        proc.Cfg.AddEdge(current, block);
-                        return current;
-                    }
-                    var rtlBranch = rtlLast as RtlBranch;
-                    if (rtlBranch != null)
-                    {
-                        block = HeuristicDisassemble(rtlBranch.Target, proc);
-                        proc.Cfg.AddEdge(current, block);
-                        block = HeuristicDisassemble(rtl.Address + rtl.Length, proc);
-                        proc.Cfg.AddEdge(current, block);
-                        return current;
-                    }
-                }
+                Debug.Print(sb.ToString());
             }
-            return current;
         }
     }
 }
