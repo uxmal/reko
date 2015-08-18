@@ -32,8 +32,7 @@ namespace Reko.Arch.X86
 	/// Used by the InstructionTrie class.
 	/// </remarks>
 	/// 
-	public class X86InstructionComparer : 
-		InstructionComparer<IntelInstruction>
+	public class X86InstructionComparer : InstructionComparer
 	{
         public X86InstructionComparer(Normalize norm) 
             : base(norm)
@@ -54,8 +53,27 @@ namespace Reko.Arch.X86
 			ImmediateOperand immOpA = opA as ImmediateOperand;
 			if (immOpA != null)
 			{
-				return NormalizeConstants || immOpA.Value.Equals(opB);			// disregard immediate values.
+                var immOpB = (ImmediateOperand) opB;
+				return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);			// disregard immediate values.
 			}
+            var addrOpA = opA as AddressOperand;
+            if (addrOpA != null)
+            {
+                var addrOpB = (AddressOperand)opB;
+                return NormalizeConstants || addrOpA.Address == addrOpB.Address;
+            }
+            var memOpA = opA as MemoryOperand;
+            if (memOpA != null)
+            {
+                var memOpB = (MemoryOperand)opB;
+                if (!base.CompareRegisters(memOpA.Base, memOpB.Base))
+                    return false;
+                if (!base.CompareRegisters(memOpA.Index, memOpB.Index))
+                    return false;
+                if (memOpA.Scale != memOpB.Scale)
+                    return false;
+                return base.CompareValues(memOpA.Offset, memOpB.Offset);
+            }
 			throw new NotImplementedException("NYI");
 		}
 
@@ -66,8 +84,11 @@ namespace Reko.Arch.X86
 		/// <param name="oInstrA"></param>
 		/// <param name="oInstrB"></param>
 		/// <returns></returns>
-		public override bool CompareOperands(IntelInstruction instrA, IntelInstruction instrB)
+		public override bool CompareOperands(MachineInstruction a, MachineInstruction b)
 		{
+            var instrA = (IntelInstruction)a;
+            var instrB = (IntelInstruction)b;
+
 			if (instrA.code != instrB.code)
 				return false;
 			if (instrA.Operands != instrB.Operands)
@@ -89,8 +110,9 @@ namespace Reko.Arch.X86
 			return retval;
 		}
 
-        public override int GetOperandsHash(IntelInstruction instr)
+        public override int GetOperandsHash(MachineInstruction inst)
         {
+            var instr = (IntelInstruction)inst;
 			int hash = instr.Operands.GetHashCode();
 			if (instr.Operands > 0)
 			{
@@ -107,24 +129,50 @@ namespace Reko.Arch.X86
 			return hash;
 		}
 
-
 		private int GetHashCode(MachineOperand op)
 		{
+            int h;
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
 			{
-				return base.NormalizeRegisters
-                    ? 1 
-                    : regOp.Register.Number;
+				return base.GetRegisterHash(regOp.Register);
 			}
 			ImmediateOperand immOp = op as ImmediateOperand;
 			if (immOp != null)
 			{
-                return base.NormalizeConstants
-                    ? 1 // disregard immediate values.
-                    : immOp.GetHashCode();
+                return base.GetConstantHash(immOp.Value);
 			}
-			throw new NotImplementedException();
+            var addrOp = op as AddressOperand;
+            if (addrOp != null)
+            {
+                return base.NormalizeConstants
+                    ? 1
+                    : addrOp.Address.GetHashCode();
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null)
+            {
+                h = 0;
+                if (memOp.Base != null)
+                {
+                    h = base.GetRegisterHash(memOp.Base);
+                }
+                if (memOp.Index != null)
+                {
+                    h = 13 * h ^ base.GetRegisterHash(memOp.Index);
+                    h = 17 * h ^ memOp.Scale;
+                }
+                if (memOp.Offset != null)
+                {
+                    h = 23 * h ^ GetConstantHash(memOp.Offset);
+                }
+                if (memOp.SegOverride != null)
+                {
+                    h = 29 * h ^ GetRegisterHash(memOp.SegOverride);
+                }
+                return h;
+            }
+			throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);
 		}
 	}
 }

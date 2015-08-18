@@ -26,8 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Machine
 {
-    public abstract class InstructionComparer<T> : IEqualityComparer<T>
-        where T : MachineInstruction
+    public abstract class InstructionComparer : IEqualityComparer<MachineInstruction>
     {
         private  Normalize norm;
 
@@ -36,10 +35,35 @@ namespace Reko.Core.Machine
             this.norm = norm;
         }
 
-        public bool NormalizeConstants { get { return (norm & Normalize.Constants) != 0; } }
-        public bool NormalizeRegisters { get { return (norm & Normalize.Registers) != 0; } }
+        public abstract bool CompareOperands(MachineInstruction x, MachineInstruction y);
 
-        public virtual bool Equals(T x, T y)
+        public bool CompareRegisters(RegisterStorage regA, RegisterStorage regB)
+        {
+            if (regA == null)
+            {
+                return regB == null;
+            }
+            if (regB == null)
+            {
+                return regA == null;
+            }
+            return NormalizeRegisters || regA == regB;
+        }
+
+        public bool CompareValues(Constant constA, Constant constB)
+        {
+            if (constA == null)
+            {
+                return constB == null;
+            }
+            if (constB == null)
+            {
+                return constA == null;
+            }
+            return NormalizeConstants || constA.GetValue().Equals(constB.GetValue());
+        }
+
+        public virtual bool Equals(MachineInstruction x, MachineInstruction y)
         {
             if (x.OpcodeAsInteger != y.OpcodeAsInteger)
                 return false;
@@ -53,14 +77,22 @@ namespace Reko.Core.Machine
             return c.GetValue().GetHashCode();
         }
 
-        public abstract bool CompareOperands(T x, T y);
+        public int GetRegisterHash(RegisterStorage r)
+        {
+            if ((norm & Normalize.Registers) != 0)
+                return 0;
+            return r.Number.GetHashCode();
+        }
 
-        public int GetHashCode(T instr)
+        public int GetHashCode(MachineInstruction instr)
         {
             int h = instr.OpcodeAsInteger.GetHashCode();
             return h ^ GetOperandsHash(instr);
         }
 
-        public abstract int GetOperandsHash(T instr);
+        public abstract int GetOperandsHash(MachineInstruction instr);
+
+        public bool NormalizeConstants { get { return (norm & Normalize.Constants) != 0; } }
+        public bool NormalizeRegisters { get { return (norm & Normalize.Registers) != 0; } }
     }
 }

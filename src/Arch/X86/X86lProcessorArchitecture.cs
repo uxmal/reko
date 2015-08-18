@@ -106,7 +106,7 @@ namespace Reko.Arch.X86
 
         public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new X86InstructionComparer(norm);
         }
 
 		IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)

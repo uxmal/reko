@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Reko.Core.Lib
 {
-    public class Trie<Key>
+    public class qTrie<Key>
     {
         //open Core_kernel.Std
         //open Format
@@ -28,7 +28,7 @@ namespace Reko.Core.Lib
         //let create () = {data = None; subs = Tokens.create ()}
 
         //let change trie k f {return} =
-        public Trie<Key> change(Key k, Func<bool> f)
+        public qTrie<Key> change(Key k, Func<bool> f)
         {
             throw new NotImplementedException();
 #if NYI

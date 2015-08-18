@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,9 @@ namespace Reko.UnitTests.Core.Machine
         private MachineOperand Op(object o)
         {
             if (o == null)
-                return null; 
+                return null;
+            if (o is MachineOperand)
+                return (MachineOperand)o;
             if (o is int)
             {
                 return new ImmediateOperand(Constant.Word32((int)o));
@@ -63,11 +66,28 @@ namespace Reko.UnitTests.Core.Machine
             return new IntelInstruction(op, PrimitiveType.Word32, PrimitiveType.Word32, ops.ToArray());
         }
 
-        private int NOP = 0;
-        private int NEG = 1;
+        private MachineOperand Mem32(RegisterStorage baseReg)
+        {
+            var mem = new MemoryOperand(PrimitiveType.Word32);
+            mem.Base = baseReg;
+            return mem;
+        }
+        private MachineOperand Mem32(RegisterStorage baseReg, int off)
+        {
+            var mem = new MemoryOperand(PrimitiveType.Word32);
+            mem.Base = baseReg;
+            mem.Offset = Constant.Word32(off);
+            return mem;
+        }
+        private MachineOperand Mem32(int off)
+        {
+            var mem = new MemoryOperand(PrimitiveType.Word32);
+            mem.Offset = Constant.Word32(off);
+            return mem;
+        }
 
         [Test]
-        public void Noco_CompareOpcodes()
+        public void X86ic_CompareOpcodes()
         {
             var a = Create(Opcode.nop);
             var b = Create(Opcode.nop);
@@ -77,7 +97,7 @@ namespace Reko.UnitTests.Core.Machine
         }
 
         [Test]
-        public void Noco_CompareRegisters_Pass()
+        public void X86ic_CompareRegisters_Pass()
         {
             var a = Create(Opcode.neg, "eax");
             var b = Create(Opcode.neg, "eax");
@@ -87,7 +107,7 @@ namespace Reko.UnitTests.Core.Machine
         }
 
         [Test]
-        public void Noco_CompareRegisters_NoNormalize_Fail()
+        public void X86ic_CompareRegisters_NoNormalize_Fail()
         {
             var a = Create(Opcode.neg, "eax");
             var b = Create(Opcode.neg, "ecx");
@@ -97,10 +117,30 @@ namespace Reko.UnitTests.Core.Machine
         }
 
         [Test]
-        public void Noco_CompareRegisters_Normalize_Succeed()
+        public void X86ic_CompareRegisters_Normalize_Succeed()
         {
             var a = Create(Opcode.neg, "eax");
             var b = Create(Opcode.neg, "ecx");
+            var cmp = new X86InstructionComparer(Normalize.Registers);
+            Assert.IsTrue(cmp.Equals(a, b));
+            Assert.IsTrue(cmp.GetHashCode(a) == cmp.GetHashCode(b));
+        }
+
+        [Test]
+        public void X86ic_CompareMem_Normalize_Succeed()
+        {
+            var a = Create(Opcode.neg, Mem32(Registers.eax));
+            var b = Create(Opcode.neg, Mem32(Registers.ecx));
+            var cmp = new X86InstructionComparer(Normalize.Registers);
+            Assert.IsTrue(cmp.Equals(a, b));
+            Assert.IsTrue(cmp.GetHashCode(a) == cmp.GetHashCode(b));
+        }
+
+        [Test]
+        public void X86ic_CompareMemOff_Normalize_Succeed()
+        {
+            var a = Create(Opcode.neg, Mem32(Registers.eax, 30));
+            var b = Create(Opcode.neg, Mem32(Registers.ecx, 30));
             var cmp = new X86InstructionComparer(Normalize.Registers);
             Assert.IsTrue(cmp.Equals(a, b));
             Assert.IsTrue(cmp.GetHashCode(a) == cmp.GetHashCode(b));

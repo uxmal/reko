@@ -246,6 +246,7 @@
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
     <Compile Include="Scanning\Backwalker.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
+    <Compile Include="Scanning\CommonPatternFinder.cs" />
     <Compile Include="Scanning\Dfa\DfaBuilder.cs" />
     <Compile Include="Scanning\Dfa\PatternParser.cs" />
     <Compile Include="Scanning\Dfa\State.cs" />
@@ -274,7 +275,7 @@
     <Compile Include="Scanning\HeuristicScanner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scanning\InstructionTrie.cs">
+    <Compile Include="Scanning\Trie.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scanning\Regexp.cs">

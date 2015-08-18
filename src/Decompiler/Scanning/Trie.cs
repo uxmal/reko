@@ -18,22 +18,23 @@
  */
 #endregion
 
+using Reko.Core;
 using System.Collections.Generic;
-using Hashtable = System.Collections.Hashtable;
-using IComparer = System.Collections.IComparer;
-using IEqualityComparer = System.Collections.IEqualityComparer;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Scanning
 {
 	/// <summary>
-	/// An InstructionTrie tallies instruction frequencies and instruction sequence lengths.
+	/// An InstructionTrie tallies instruction frequencies and instruction
+    /// sequence lengths.
 	/// </summary>
-	public class InstructionTrie<TInstr>
+	public class Trie<T>
 	{
 		private int count;
 		private TrieNode root;
 
-		public InstructionTrie(IEqualityComparer<TInstr> hasher)
+		public Trie(IEqualityComparer<T> hasher)
 		{
 			this.root = new TrieNode(hasher);
 		}
@@ -43,10 +44,10 @@ namespace Reko.Scanning
 			get { return count; }
 		}
 
-		public void AddInstructions(TInstr [] instrs)
+		public void Add(T [] instrs)
 		{
 			TrieNode node = root;
-			foreach (TInstr instr in instrs)
+			foreach (T instr in instrs)
 			{
 				node = node.Add(instr);
 				++node.Tally;
@@ -54,7 +55,7 @@ namespace Reko.Scanning
 			}
 		}
 
-		public long ScoreInstructions(TInstr [] instrs)
+		public long ScoreInstructions(T [] instrs)
 		{
 			TrieNode node = root;
 			long score = 0;
@@ -71,24 +72,23 @@ namespace Reko.Scanning
 
 		private class TrieNode
 		{
-			public TInstr Instruction;
-			public Dictionary<TInstr, TrieNode> Successors;
-			public IEqualityComparer<TInstr> hasher;
-			public IComparer cmp;
+			public T Instruction;
+			public Dictionary<T, TrieNode> Successors;
+			public IEqualityComparer<T> hasher;
 			public int Tally;
 
-			public TrieNode(IEqualityComparer<TInstr> hasher)
+			public TrieNode(IEqualityComparer<T> hasher) : this(default(T), hasher)
 			{
-				Init(hasher);
 			}
 
-			public TrieNode(TInstr instruction, IEqualityComparer<TInstr> hasher)
+			public TrieNode(T instruction, IEqualityComparer<T> hasher)
 			{
 				Instruction = instruction;
-				Init(hasher);
+				this.hasher = hasher;
+				Successors  = new Dictionary<T,TrieNode>(hasher);
 			}
 
-			public TrieNode Add(TInstr instr)
+			public TrieNode Add(T instr)
 			{
 				TrieNode subNode;
                 if (!Successors.TryGetValue(instr, out subNode))
@@ -99,16 +99,32 @@ namespace Reko.Scanning
 				return subNode;
 			}
 
-			private void Init(IEqualityComparer<TInstr> hasher)
-			{
-				this.hasher = hasher;
-				Successors  = new Dictionary<TInstr,TrieNode>(hasher);
-			}
-
-			public bool Next(TInstr instr, out TrieNode node)
+			public bool Next(T instr, out TrieNode node)
 			{
 				return Successors.TryGetValue(instr, out node);
 			}
 		}
+
+        public void Dump()
+        {
+            Dump(this.root, 0);
+        }
+
+        private void Dump(TrieNode n, int depth)
+        {
+            var sl = n.Successors
+                .ToSortedList(
+                    k => k.Key.ToString(),
+                    k => k.Value);
+            foreach (var de in sl)
+            {
+                Debug.Print(
+                    "{0}({1}: {2})",
+                    new string(' ', depth*4),
+                    de.Key,
+                    de.Value.Tally);
+                Dump(de.Value, depth + 1);
+            }
+        }
 	}
 }

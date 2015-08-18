@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,7 @@ namespace Reko.Scanning
         public void BlockConflictResolution()
         {
             var valid = TraceReachableBlocks();
+            ComputeStatistics(valid);
             RemoveBlocksConflictingWithValidBlocks(valid);
             RemoveParentsOfConflictingBlocks();
             RemoveBlocksWithFewPredecessors();
@@ -75,6 +77,19 @@ namespace Reko.Scanning
                 Debug.Print(" {0}", item.Address);
             }
             return valid;
+        }
+
+        private void ComputeStatistics(ISet<HeuristicBlock> valid)
+        {
+            var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
+            var trie = new Trie<MachineInstruction>(cmp);
+            foreach (var item in valid.OrderBy(i => i.Address))
+            {
+                var dasm = program.CreateDisassembler(item.Address);
+                var instrs = dasm.Take(5);
+                trie.Add(instrs.ToArray());
+            }
+            trie.Dump();
         }
 
         /// <summary>
@@ -255,14 +270,10 @@ namespace Reko.Scanning
             }
         }
 
-        private int ScoreSequence(Address sequence)
-        {
-            throw new NotImplementedException();
-        }
-
         private IEnumerable<Address> GetValidSequences(Tuple<Address, Address> gap)
         {
-            for (Address addr = gap.Item1; addr < gap.Item2; addr = addr + program.Architecture.InstructionBitSize / 8)
+            int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
+            for (Address addr = gap.Item1; addr < gap.Item2; addr = addr +instrByteGranularity)
             {
                 var block = new HeuristicBlock(addr, string.Format("l{0:X}" + addr));
                 var dasm = CreateRewriter(addr);
@@ -281,6 +292,11 @@ namespace Reko.Scanning
                 if (isValid)
                     yield return addr;
             }
+        }
+
+        private int ScoreSequence(Address sequence)
+        {
+            throw new NotImplementedException();
         }
 
         private IEnumerable<RtlInstructionCluster> CreateRewriter(Address addr)
@@ -395,7 +411,5 @@ namespace Reko.Scanning
         //        When all possible instruction sequences are determined,
         //the one with the highest sequence score is selected as the
         //valid instruction sequence between b1 and b2.
-   
     }
-
 }

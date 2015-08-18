@@ -39,20 +39,20 @@ namespace Reko.UnitTests.Scanning
 		public void Creation()
 		{
 			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
-			var trie = new InstructionTrie<IntelInstruction>(cmp);
+			var trie = new Trie<MachineInstruction>(cmp);
 		}
 
 		[Test]
 		public void Trie_AddInstructions()
 		{
             X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
-			var trie = new InstructionTrie<IntelInstruction>(cmp);
+            var trie = new Trie<MachineInstruction>(cmp);
 			IntelInstruction inst = CreatePush(Registers.bp);
 			
-			trie.AddInstructions(new [] { inst });
+			trie.Add(new [] { inst });
 			Assert.AreEqual(trie.Count, 1);
 
-			trie.AddInstructions(new [] {
+			trie.Add(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });
 			Assert.AreEqual(trie.Count, 3);
@@ -65,11 +65,11 @@ namespace Reko.UnitTests.Scanning
 		public void Trie_ScoreInstructions()
 		{
 			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
-			var trie = new InstructionTrie<IntelInstruction>(cmp);
-			trie.AddInstructions(new [] {
+			var trie = new Trie<IntelInstruction>(cmp);
+			trie.Add(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });
-			trie.AddInstructions(new [] {
+			trie.Add(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp),
 				CreatePush(Registers.si),
