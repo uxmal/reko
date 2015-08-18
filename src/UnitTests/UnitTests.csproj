@@ -120,6 +120,7 @@
     <Compile Include="Arch\Arm\ArmDisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
     <Compile Include="Arch\Arm\ThumbDisassemblerTests.cs" />
+    <Compile Include="Arch\Arm\ThumbRewriterTests.cs" />
     <Compile Include="Arch\Cil\CilDisassemblerTests.cs" />
     <Compile Include="Arch\DisassemblerTestBase.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Fragments\ArrayExpressionFragment.cs" />
+    <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Fragments\FnPointerFragment.cs" />
     <Compile Include="Fragments\FramePointerFragment.cs" />
     <Compile Include="Fragments\IndirectCallFragment.cs" />
@@ -651,6 +653,9 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>copy /y "$(SolutionDir)Environments\Win32\*.xml" "$(TargetDir)"
+copy /y "$(SolutionDir)..\external\Capstone.NET\*.dll" "$(TargetDir)"
+copy /y "$(SolutionDir)..\external\Capstone.NET\*.pdb" "$(TargetDir)"
+
 </PreBuildEvent>
   </PropertyGroup>
 </Project>

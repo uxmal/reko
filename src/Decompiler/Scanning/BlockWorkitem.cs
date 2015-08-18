@@ -105,7 +105,6 @@ namespace Reko.Scanning
             blockCur = scanner.FindContainingBlock(addrStart);
             if (BlockHasBeenScanned(blockCur))
                 return;
-            Debug.Print("Scanning jump target {0}", addrStart);
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
             rtlStream = scanner.GetTrace(addrStart, state, frame)
@@ -316,7 +315,9 @@ namespace Reko.Scanning
                     return false;
                 }
             }
-            ProcessIndirectControlTransfer(ric.Address, g);
+            if (ProcessIndirectControlTransfer(ric.Address, g))
+                return false;
+            Emit(new GotoInstruction(g.Target));
             return false;
         }
 

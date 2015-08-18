@@ -549,6 +549,8 @@ namespace Reko.Gui.Forms
         /// <returns>False if the user cancelled the save, true otherwise.</returns>
         public bool Save()
         {
+            if (decompilerSvc.Decompiler == null)
+                return true;
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
                 string newName = PromptForFilename(

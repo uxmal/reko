@@ -63,14 +63,13 @@ namespace Decompiler.UnitTests.Core
         }
 
         [Test]
-        [Ignore("Needs to truncate at 32 bits here")]
         public void Acf_EvenPower()
         {
             var c = Constant.UInt32(unchecked((uint)-256));
             var sw = new StringWriter();
             var acf = new AbsynCodeFormatter(new TextFormatter(sw));
             c.Accept(acf);
-            Assert.AreEqual("~0x0100", sw.ToString());
+            Assert.AreEqual("~0xFF", sw.ToString());
         }
 
         [Test]
@@ -81,6 +80,26 @@ namespace Decompiler.UnitTests.Core
             var acf = new AbsynCodeFormatter(new TextFormatter(sw));
             c.Accept(acf);
             Assert.AreEqual("-0x0100", sw.ToString());
+        }
+
+        [Test]
+        public void Acf_NegativeSigned_SmallInt()
+        {
+            var c = Constant.Word32(-4);
+            var sw = new StringWriter();
+            var acf = new AbsynCodeFormatter(new TextFormatter(sw));
+            c.Accept(acf);
+            Assert.AreEqual("~0x03", sw.ToString());
+        }
+
+        [Test]
+        public void Acf_Reg00001()
+        {
+            var c = Constant.Word32(0x00001000);
+            var sw = new StringWriter();
+            var acf = new AbsynCodeFormatter(new TextFormatter(sw));
+            c.Accept(acf);
+            Assert.AreEqual("0x1000", sw.ToString());
         }
     }
 }

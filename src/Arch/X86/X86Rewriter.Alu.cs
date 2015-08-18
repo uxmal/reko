@@ -327,6 +327,11 @@ namespace Reko.Arch.X86
                 regRemainder = orw.AluRegister(Registers.edx);
                 regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word64);
                 break;
+            case 8:
+                regQuotient = orw.AluRegister(Registers.rax);
+                regRemainder = orw.AluRegister(Registers.rdx);
+                regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word128);
+                break;
             default:
                 throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.dataWidth.Size));
             };
@@ -434,6 +439,11 @@ namespace Reko.Arch.X86
                     multiplicator = orw.AluRegister(Registers.eax);
                     product = frame.EnsureSequence(
                         orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
+                    break;
+                case 8:
+                    multiplicator = orw.AluRegister(Registers.rax);
+                    product = frame.EnsureSequence(
+                        orw.AluRegister(Registers.rdx), multiplicator, PrimitiveType.Word64);
                     break;
                 default:
                     throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
@@ -786,7 +796,7 @@ namespace Reko.Arch.X86
 
         public MemoryAccess MemDi()
 		{
-			if (arch.ProcessorMode != ProcessorMode.Protected32)
+			if (arch.ProcessorMode == ProcessorMode.Real)
 			{
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, instrCur.dataWidth);
 			}
@@ -796,7 +806,7 @@ namespace Reko.Arch.X86
 
 		public MemoryAccess MemSi()
 		{
-			if (arch.ProcessorMode != ProcessorMode.Protected32)
+			if (arch.ProcessorMode == ProcessorMode.Real)
 			{
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.ds), RegSi, instrCur.dataWidth);
 			}
@@ -816,17 +826,17 @@ namespace Reko.Arch.X86
 
 		public Identifier RegAl
 		{
-			get { return orw.AluRegister(Registers.eax, instrCur.dataWidth); }
+			get { return orw.AluRegister(Registers.rax, instrCur.dataWidth); }
 		}
 
 		public Identifier RegDi
 		{
-			get { return orw.AluRegister(Registers.edi, instrCur.addrWidth); }
+			get { return orw.AluRegister(Registers.rdi, instrCur.addrWidth); }
 		}
 
 		public Identifier RegSi
 		{
-			get { return orw.AluRegister(Registers.esi, instrCur.addrWidth); }
+			get { return orw.AluRegister(Registers.rsi, instrCur.addrWidth); }
 		}
 	
         private void RewriteStringInstruction()

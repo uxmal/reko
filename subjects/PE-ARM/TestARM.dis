@@ -1,0 +1,741 @@
+// fn0040100C
+// Return size: 0
+void fn0040100C()
+fn0040100C_entry:
+	// succ:  l0040100C
+l0040100C:
+	sp = fp
+	ip = 0x00002121
+	ip = DPB(0x00002121, 0x0040, 16, 16)
+	goto ip
+fn0040100C_exit:
+
+
+// fn004023A4
+// Return size: 0
+void fn004023A4()
+fn004023A4_entry:
+	// succ:  l004023A4
+l004023A4:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = fp
+	Mem0[sp + 4:word32] = lr
+	fp = sp
+	sp = sp - 8
+	__mrc("Not Yet Implemented")
+	Mem0[sp:word32] = r3
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 4:word32] = r3
+	r0 = Mem0[sp + 4:word32]
+	sp = sp + 8
+	sp = sp + 8
+	fp = Mem0[sp - 8:word32]
+	goto Mem0[sp - 4:word32]
+fn004023A4_exit:
+
+
+// fn004023C0
+// Return size: 0
+void fn004023C0()
+fn004023C0_entry:
+	// succ:  l004023C0
+l004023C0:
+	sp = fp
+	sp = sp - 16
+	Mem0[sp + 0:word32] = fp
+	Mem0[sp + 4:word32] = r7
+	Mem0[sp + 8:word32] = r4
+	Mem0[sp + 12:word32] = lr
+	fp = fp + sp
+	sp = sp - 80
+	r7 = sp
+	sp = sp - 8
+	r3 = 0
+	Mem0[r7 + 4:word32] = r3
+	call fn004023A4 (retsize: 0;)
+	Mem0[r7 + 40:word32] = r0
+	r3 = Mem0[r7 + 40:word32]
+	r3 = r3 + r3
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 8:word32] = r3
+	r3 = 0
+	Mem0[r7 + 12:word32] = r3
+	// succ:  l004023E4
+l004023E4:
+	__dmb("Not Yet Implemented")
+	r0 = Mem0[pc + 468:word32]
+	r1 = Mem0[r7 + 8:word32]
+	// succ:  l004023EC
+l004023EC:
+	__ldrex("Not Yet Implemented")
+	NZCV = cond(r2 - 0)
+	branch Test(NE,Z) l004023FC
+	// succ:  l004023F4 l004023FC
+l004023F4:
+	__strex("Not Yet Implemented")
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004023EC
+	// succ:  l004023FC l004023EC
+l004023FC:
+	r3 = r2
+	Mem0[r7 + 64:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 64:word32]
+	Mem0[r7 + 4:word32] = r3
+	r3 = Mem0[r7 + 4:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l0040241E
+	// succ:  l0040240E l0040241E
+l0040240E:
+	r2 = Mem0[r7 + 4:word32]
+	r3 = Mem0[r7 + 8:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l0040241C
+	// succ:  l00402416 l0040241C
+l00402416:
+	r3 = 1
+	Mem0[r7 + 12:word32] = r3
+	goto l0040241E
+	// succ:  l0040241E
+l0040241C:
+	goto l004023E4
+	// succ:  l004023E4
+l0040241E:
+	r3 = Mem0[pc + 436:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 32:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 32:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l00402436
+	// succ:  l0040242E l00402436
+l0040242E:
+	r0 = 31
+	call fn004028FC (retsize: 0;)
+	goto l00402472
+	// succ:  l00402472
+l00402436:
+	r3 = Mem0[pc + 412:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 56:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 56:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l0040246C
+	// succ:  l00402446 l0040246C
+l00402446:
+	__dmb("Not Yet Implemented")
+	r2 = Mem0[pc + 392:word32]
+	r3 = 1
+	Mem0[r2:word32] = r3
+	r1 = Mem0[pc + 400:word32]
+	r0 = Mem0[pc + 396:word32]
+	call fn00402EA0 (retsize: 0;)
+	Mem0[r7 + 20:word32] = r0
+	r3 = Mem0[r7 + 20:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l0040246A
+	// succ:  l00402460 l0040246A
+l00402460:
+	r3 = 255
+	Mem0[r7 + 72:word32] = r3
+	r3 = Mem0[r7 + 72:word32]
+	Mem0[r7 + 16:word32] = r3
+	goto l00402586
+	// succ:  l00402586
+l0040246A:
+	goto l00402472
+	// succ:  l00402472
+l0040246C:
+	r2 = Mem0[pc + 296:word32]
+	r3 = 1
+	Mem0[r2:word32] = r3
+	// succ:  l00402472
+l00402472:
+	r3 = Mem0[pc + 352:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 48:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 48:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l00402494
+	// succ:  l00402482 l00402494
+l00402482:
+	r1 = Mem0[pc + 344:word32]
+	r0 = Mem0[pc + 336:word32]
+	call fn00402EAC (retsize: 0;)
+	__dmb("Not Yet Implemented")
+	r2 = Mem0[pc + 324:word32]
+	r3 = 2
+	Mem0[r2:word32] = r3
+	// succ:  l00402494
+l00402494:
+	r3 = Mem0[pc + 316:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 24:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 24:word32]
+	NZCV = cond(r3 - 2)
+	branch Test(EQ,Z) l004024C6
+	// succ:  l004024A4 l004024C6
+l004024A4:
+	r3 = Mem0[pc + 296:word32]
+	Mem0[sp + 4:word32] = r3
+	r3 = Mem0[pc + 288:word32]
+	Mem0[sp:word32] = r3
+	r3 = 0
+	r2 = 0x00000229
+	r1 = Mem0[pc + 276:word32]
+	r0 = 2
+	r4 = Mem0[pc + 268:word32]
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	Mem0[r7 + 28:word32] = r0
+	r3 = Mem0[r7 + 28:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l004024C6
+	// succ:  l004024C4 l004024C6
+l004024C4:
+	call __debugbreak (retsize: 0;)
+	// succ:  l004024C6
+l004024C6:
+	r3 = Mem0[r7 + 12:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004024E4
+	// succ:  l004024CC l004024E4
+l004024CC:
+	__dmb("Not Yet Implemented")
+	r0 = Mem0[pc + 236:word32]
+	r1 = 0
+	// succ:  l004024D4
+l004024D4:
+	__ldrex("Not Yet Implemented")
+	__strex("Not Yet Implemented")
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004024D4
+	// succ:  l004024E0 l004024D4
+l004024E0:
+	__dmb("Not Yet Implemented")
+	// succ:  l004024E4
+l004024E4:
+	r3 = Mem0[pc + 212:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l00402506
+	// succ:  l004024EC l00402506
+l004024EC:
+	r0 = Mem0[pc + 204:word32]
+	call fn004029CC (retsize: 0;)
+	Mem0[r7 + 36:word32] = r0
+	r3 = Mem0[r7 + 36:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l00402506
+	// succ:  l004024FA l00402506
+l004024FA:
+	r2 = 0
+	r1 = 2
+	r0 = 0
+	r3 = Mem0[pc + 184:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00402506
+l00402506:
+	r0 = 1
+	r3 = Mem0[pc + 172:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = Mem0[pc + 160:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 160:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 148:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 140:word32]
+	r1 = Mem0[r3:word32]
+	r3 = Mem0[pc + 132:word32]
+	r0 = Mem0[r3:word32]
+	call fn0040100C (retsize: 0;)
+	Mem0[r7 + 44:word32] = r0
+	r2 = Mem0[r7 + 44:word32]
+	r3 = Mem0[pc + 96:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 108:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402542
+	// succ:  l00402538 l00402542
+l00402538:
+	r3 = Mem0[pc + 84:word32]
+	r0 = Mem0[r3:word32]
+	r3 = Mem0[pc + 100:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00402542
+l00402542:
+	r3 = Mem0[pc + 84:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402550
+	// succ:  l0040254A l00402550
+l0040254A:
+	r3 = Mem0[pc + 72:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00402550
+l00402550:
+	// succ:  l00402580
+l00402580:
+	r3 = Mem0[pc + 12:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 16:word32] = r3
+	// succ:  l00402586
+l00402586:
+	r0 = Mem0[r7 + 16:word32]
+	sp = sp + 88
+	sp = sp + 16
+	fp = Mem0[sp - 16:word32]
+	r7 = Mem0[sp - 12:word32]
+	r4 = Mem0[sp - 8:word32]
+	goto Mem0[sp - 4:word32]
+fn004023C0_exit:
+
+
+// fn00402700
+// Return size: 0
+void fn00402700()
+fn00402700_entry:
+	// succ:  l00402700
+l00402700:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = fp
+	Mem0[sp + 4:word32] = lr
+	fp = sp
+	sp = sp - 8
+	call fn00402B18 (retsize: 0;)
+	call fn004023C0 (retsize: 0;)
+	Mem0[sp:word32] = r0
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 4:word32] = r3
+	r0 = Mem0[sp + 4:word32]
+	sp = sp + 8
+	sp = sp + 8
+	fp = Mem0[sp - 8:word32]
+	goto Mem0[sp - 4:word32]
+fn00402700_exit:
+
+
+// fn004028FC
+// Return size: 0
+void fn004028FC()
+fn004028FC_entry:
+	// succ:  l004028FC
+l004028FC:
+	sp = fp
+	ip = 0x0000C0F8
+	ip = DPB(0x0000C0F8, 0x0040, 16, 16)
+	goto Mem0[ip:word32]
+fn004028FC_exit:
+
+
+// fn0040294C
+// Return size: 0
+void fn0040294C()
+fn0040294C_entry:
+	// succ:  l0040294C
+l0040294C:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r1
+	Mem0[sp + 4:word32] = r0
+	sp = sp - 8
+	Mem0[sp + 0:word32] = fp
+	Mem0[sp + 4:word32] = lr
+	fp = sp
+	sp = sp - 16
+	r3 = Mem0[sp + 24:word32]
+	r3 = r3 + 60
+	r2 = Mem0[sp + 24:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + r2
+	Mem0[sp + 4:word32] = r3
+	r3 = 0
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp + 4:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 20
+	r3 = (uint32) Mem0[r3:word16]
+	r3 = r3 + r2
+	Mem0[sp:word32] = r3
+	goto l00402984
+	// succ:  l00402984
+l00402978:
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 + r3
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp:word32]
+	r3 = r3 + 40
+	Mem0[sp:word32] = r3
+	// succ:  l00402984
+l00402984:
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + r3
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = Mem0[sp + 8:word32]
+	NZCV = cond(r3 - r2)
+	branch Test(UGE,C) l004029BA
+	// succ:  l00402990 l004029BA
+l00402990:
+	r3 = Mem0[sp:word32]
+	r3 = r3 + 12
+	r2 = Mem0[sp + 28:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(ULT,C) l004029B8
+	// succ:  l0040299C l004029B8
+l0040299C:
+	r3 = Mem0[sp:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp:word32]
+	r3 = r3 + 8
+	r2 = Mem0[r2:word32]
+	r3 = Mem0[r3:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp + 28:word32]
+	NZCV = cond(r3 - r2)
+	branch Test(UGE,C) l004029B8
+	// succ:  l004029B2 l004029B8
+l004029B2:
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 12:word32] = r3
+	goto l004029BE
+	// succ:  l004029BE
+l004029B8:
+	goto l00402978
+	// succ:  l00402978
+l004029BA:
+	r3 = 0
+	Mem0[sp + 12:word32] = r3
+	// succ:  l004029BE
+l004029BE:
+	r0 = Mem0[sp + 12:word32]
+	sp = sp + 16
+	v11 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v11
+	v13 = Mem0[sp:word32]
+	sp = sp + 12
+	goto v13
+fn0040294C_exit:
+
+
+// fn004029CC
+// Return size: 0
+void fn004029CC()
+fn004029CC_entry:
+	// succ:  l004029CC
+l004029CC:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r1
+	Mem0[sp + 4:word32] = r0
+	sp = sp - 12
+	Mem0[sp + 0:word32] = fp
+	Mem0[sp + 4:word32] = r7
+	Mem0[sp + 8:word32] = lr
+	fp = fp + sp
+	sp = sp - 60
+	r7 = sp
+	r3 = Mem0[pc + 124:word32]
+	Mem0[r7 + 4:word32] = r3
+	r0 = Mem0[r7 + 4:word32]
+	call fn00402A8C (retsize: 0;)
+	Mem0[r7 + 20:word32] = r0
+	r3 = Mem0[r7 + 20:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004029F6
+	// succ:  l004029EC l004029F6
+l004029EC:
+	r3 = 0
+	Mem0[r7 + 24:word32] = r3
+	r3 = Mem0[r7 + 24:word32]
+	Mem0[r7:word32] = r3
+	goto l00402A4A
+	// succ:  l00402A4A
+l004029F6:
+	r2 = Mem0[r7 + 72:word32]
+	r3 = Mem0[r7 + 4:word32]
+	r3 = r3 - r2
+	Mem0[r7 + 28:word32] = r3
+	r1 = Mem0[r7 + 28:word32]
+	r0 = Mem0[r7 + 4:word32]
+	call fn0040294C (retsize: 0;)
+	Mem0[r7 + 32:word32] = r0
+	r3 = Mem0[r7 + 32:word32]
+	Mem0[r7 + 8:word32] = r3
+	r3 = Mem0[r7 + 8:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402A1C
+	// succ:  l00402A12 l00402A1C
+l00402A12:
+	r3 = 0
+	Mem0[r7 + 36:word32] = r3
+	r3 = Mem0[r7 + 36:word32]
+	Mem0[r7:word32] = r3
+	goto l00402A4A
+	// succ:  l00402A4A
+l00402A1C:
+	r3 = Mem0[r7 + 8:word32]
+	r3 = r3 + 36
+	r3 = Mem0[r3:word32]
+	NZC = cond(r3 & 0x80000000)
+	branch Test(NE,Z) l00402A2E
+	// succ:  l00402A28 l00402A2E
+l00402A28:
+	r3 = 1
+	Mem0[r7 + 12:word32] = r3
+	goto l00402A32
+	// succ:  l00402A32
+l00402A2E:
+	r3 = 0
+	Mem0[r7 + 12:word32] = r3
+	// succ:  l00402A32
+l00402A32:
+	r3 = Mem0[r7 + 12:word32]
+	Mem0[r7 + 40:word32] = r3
+	r3 = Mem0[r7 + 40:word32]
+	Mem0[r7:word32] = r3
+	// succ:  l00402A4A
+l00402A4A:
+	r0 = Mem0[r7:word32]
+	sp = sp + 60
+	sp = sp + 8
+	fp = Mem0[sp - 8:word32]
+	r7 = Mem0[sp - 4:word32]
+	v13 = Mem0[sp:word32]
+	sp = sp + 12
+	goto v13
+fn004029CC_exit:
+
+
+// fn00402A8C
+// Return size: 0
+void fn00402A8C()
+fn00402A8C_entry:
+	// succ:  l00402A8C
+l00402A8C:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r1
+	Mem0[sp + 4:word32] = r0
+	sp = sp - 8
+	Mem0[sp + 0:word32] = fp
+	Mem0[sp + 4:word32] = lr
+	fp = sp
+	sp = sp - 16
+	r3 = Mem0[sp + 24:word32]
+	Mem0[sp + 4:word32] = r3
+	r3 = Mem0[sp + 4:word32]
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = 0x00005A4D
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402AAC
+	// succ:  l00402AA6 l00402AAC
+l00402AA6:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l00402AE6
+	// succ:  l00402AE6
+l00402AAC:
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 60
+	r2 = Mem0[sp + 4:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + r2
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp + 8:word32]
+	r2 = Mem0[r3:word32]
+	r3 = 0x00004550
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402ACA
+	// succ:  l00402AC4 l00402ACA
+l00402AC4:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l00402AE6
+	// succ:  l00402AE6
+l00402ACA:
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 + 24
+	Mem0[sp + 12:word32] = r3
+	r3 = Mem0[sp + 12:word32]
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = 0x0000010B
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402AE2
+	// succ:  l00402ADC l00402AE2
+l00402ADC:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l00402AE6
+	// succ:  l00402AE6
+l00402AE2:
+	r3 = 1
+	Mem0[sp:word32] = r3
+	// succ:  l00402AE6
+l00402AE6:
+	r0 = Mem0[sp:word32]
+	sp = sp + 16
+	v11 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v11
+	v13 = Mem0[sp:word32]
+	sp = sp + 12
+	goto v13
+fn00402A8C_exit:
+
+
+// fn00402B18
+// Return size: 0
+void fn00402B18()
+fn00402B18_entry:
+	// succ:  l00402B18
+l00402B18:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = fp
+	Mem0[sp + 4:word32] = lr
+	fp = sp
+	sp = sp - 40
+	r3 = 0
+	Mem0[sp + 16:word32] = r3
+	r3 = 0
+	Mem0[sp + 20:word32] = r3
+	r3 = Mem0[pc + 156:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 160:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402B3E
+	// succ:  l00402B32 l00402B3E
+l00402B32:
+	r3 = Mem0[pc + 148:word32]
+	r3 = Mem0[r3:word32]
+	r2 = ~r3
+	r3 = Mem0[pc + 136:word32]
+	Mem0[r3:word32] = r2
+	goto l00402BBE
+	// succ:  l00402BBE
+l00402B3E:
+	r0 = r0 + sp
+	r3 = Mem0[pc + 160:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = Mem0[sp + 16:word32]
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 20:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r3 = Mem0[pc + 140:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[sp + 4:word32] = r0
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r3 = Mem0[pc + 120:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[sp + 8:word32] = r0
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r3 = Mem0[pc + 100:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[sp + 28:word32] = r1
+	Mem0[sp + 24:word32] = r0
+	r2 = Mem0[sp + 24:word32]
+	r3 = Mem0[sp:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r0 = r0 + sp
+	r3 = Mem0[pc + 76:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 32:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 36:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = sp
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[pc + 40:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l00402BB0
+	// succ:  l00402BAC l00402BB0
+l00402BAC:
+	r3 = Mem0[pc + 28:word32]
+	Mem0[sp:word32] = r3
+	// succ:  l00402BB0
+l00402BB0:
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[pc + 20:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[sp:word32]
+	r2 = ~r3
+	r3 = Mem0[pc + 8:word32]
+	Mem0[r3:word32] = r2
+	// succ:  l00402BBE
+l00402BBE:
+	sp = sp + 40
+	sp = sp + 8
+	fp = Mem0[sp - 8:word32]
+	goto Mem0[sp - 4:word32]
+fn00402B18_exit:
+
+
+// fn00402EA0
+// Return size: 0
+void fn00402EA0()
+fn00402EA0_entry:
+	// succ:  l00402EA0
+l00402EA0:
+	sp = fp
+	ip = 0x0000C0D0
+	ip = DPB(0x0000C0D0, 0x0040, 16, 16)
+	goto Mem0[ip:word32]
+fn00402EA0_exit:
+
+
+// fn00402EAC
+// Return size: 0
+void fn00402EAC()
+fn00402EAC_entry:
+	// succ:  l00402EAC
+l00402EAC:
+	sp = fp
+	ip = 0x0000C0CC
+	ip = DPB(0x0000C0CC, 0x0040, 16, 16)
+	goto Mem0[ip:word32]
+fn00402EAC_exit:
+
+

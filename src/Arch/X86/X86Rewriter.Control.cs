@@ -173,7 +173,7 @@ namespace Reko.Arch.X86
         private void RewriteRep()
         {
             var topOfLoop = instrCur.Address;
-            var regCX = orw.AluRegister(Registers.ecx, instrCur.addrWidth);
+            var regCX = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
             dasm.MoveNext();
             instrCur = dasm.Current;
             ric.Length += (byte) instrCur.Length;

@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Scanning
             prog = new Program
             {
                 Image = image,
-                Architecture = new ArmProcessorArchitecture(),
+                Architecture = new Arm32ProcessorArchitecture(),
             };
             var host = mr.Stub<IRewriterHost>();
             mr.ReplayAll();

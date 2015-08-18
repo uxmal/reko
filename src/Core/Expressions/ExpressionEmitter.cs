@@ -370,6 +370,11 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.Sar, e.DataType, e, sh);
         }
 
+        public BinaryExpression Sar(Expression e, int sh)
+        {
+            return new BinaryExpression(Operator.Sar, e.DataType, e, Constant.Create(e.DataType, sh));
+        }
+
         public BinaryExpression Shl(Expression e, Expression sh)
         {
             return new BinaryExpression(Operator.Shl, e.DataType, e, sh);
@@ -377,7 +382,7 @@ namespace Reko.Core.Expressions
 
         public BinaryExpression Shl(Expression e, int sh)
         {
-            return new BinaryExpression(Operator.Shl, e.DataType, e, Constant.Create(e.DataType, sh));
+            return new BinaryExpression(Operator.Shl, e.DataType, e, Constant.Byte((byte)sh));
         }
 
         public BinaryExpression Shl(int c, Expression sh)
@@ -395,6 +400,11 @@ namespace Reko.Core.Expressions
         {
             Constant cc = Constant.Byte(c);
             return new BinaryExpression(Operator.Shr, exp.DataType, exp, cc);
+        }
+
+        public BinaryExpression Shr(Expression e, int sh)
+        {
+            return new BinaryExpression(Operator.Shr, e.DataType, e, Constant.Byte((byte) sh));
         }
 
         public BinaryExpression ISub(Expression left, Expression right)

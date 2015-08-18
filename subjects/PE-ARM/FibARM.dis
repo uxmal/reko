@@ -1,0 +1,10880 @@
+// fn0040100C
+// Return size: 0
+void fn0040100C()
+fn0040100C_entry:
+	// succ:  l0040100C
+l0040100C:
+	sp = fp
+	ip = 0x00002121
+	ip = DPB(0x00002121, 0x0040, 16, 16)
+fn0040100C_exit:
+
+
+// fn00401018
+// Return size: 0
+void fn00401018()
+fn00401018_entry:
+	// succ:  l00401018
+l00401018:
+	sp = fp
+	ip = 0x00002179
+	ip = DPB(0x00002179, 0x0040, 16, 16)
+fn00401018_exit:
+
+
+// fn0040103C
+// Return size: 0
+void fn0040103C()
+fn0040103C_entry:
+	// succ:  l0040103C
+l0040103C:
+	sp = fp
+	sp = sp - 4
+	ip = 0x0000A020
+	ip = DPB(0x0000A020, 0x0040, 16, 16)
+	ip = Mem0[ip:word32]
+	ip = ip - sp
+	Mem0[sp:word32] = ip
+fn0040103C_exit:
+
+
+// fn00401054
+// Return size: 0
+void fn00401054()
+fn00401054_entry:
+	// succ:  l00401054
+l00401054:
+	sp = fp
+	ip = 0x0000A020
+	ip = DPB(0x0000A020, 0x0040, 16, 16)
+	r3 = Mem0[sp:word32]
+	ip = Mem0[ip:word32]
+	r3 = r3 - sp
+	NZCV = cond(r3 - ip)
+	branch Test(NE,Z) l0040106E
+	// succ:  l0040106A l0040106E
+l0040106A:
+	sp = sp + 4
+l0040106E:
+	r0 = r3
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	r4 = sp
+	ip = sp
+	ip = ip & ~7
+	sp = ip
+	call fn004010A0 (retsize: 0;)
+	sp = r4
+	r4 = Mem0[sp + 4:word32]
+	lr = Mem0[sp + 0:word32]
+	sp = sp + 8
+fn00401054_exit:
+
+
+// fn004010A0
+// Return size: 0
+void fn004010A0()
+fn004010A0_entry:
+	// succ:  l004010A0
+l004010A0:
+	sp = fp
+	ip = Mem0[pc + 12:word32]
+	ip = Mem0[ip:word32]
+	NZCV = cond(r0 - ip)
+	branch Test(NE,Z) l004010B4
+	// succ:  l004010AC l004010B4
+l004010AC:
+l004010B4:
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r3
+	sp = sp - 8
+	ip = Mem0[pc + 28:word32]
+	ip = Mem0[ip:word32]
+	Mem0[sp + 4:word32] = ip
+	ip = Mem0[pc + 20:word32]
+	ip = Mem0[ip:word32]
+	Mem0[sp:word32] = ip
+	call fn00403EDC (retsize: 0;)
+	call __debugbreak (retsize: 0;)
+	r0 = r0
+	r0 = 0x0040116C
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = 0x00401160
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 16
+	r0 = sp
+	r1 = -858993460
+	r2 = 16
+	call fn004022DC (retsize: 0;)
+	r3 = Mem0[sp + 32:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402144
+	// succ:  l0040213E l00402144
+l0040213E:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l0040216C
+	// succ:  l0040216C
+l00402144:
+	r3 = Mem0[sp + 32:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l00402150
+	// succ:  l0040214A l00402150
+l0040214A:
+	r3 = 1
+	Mem0[sp:word32] = r3
+	goto l0040216C
+	// succ:  l0040216C
+l00402150:
+	r3 = Mem0[sp + 32:word32]
+	r0 = r0 - r3
+	call fn0040100C (retsize: 0;)
+	Mem0[sp + 4:word32] = r0
+	r3 = Mem0[sp + 32:word32]
+	r0 = r0 - r3
+	call fn0040100C (retsize: 0;)
+	Mem0[sp + 8:word32] = r0
+	r2 = Mem0[sp + 4:word32]
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 + r2
+	Mem0[sp:word32] = r3
+	// succ:  l0040216C
+l0040216C:
+	r0 = Mem0[sp:word32]
+	sp = sp + 16
+	fp = Mem0[sp + 8:word32]
+	r5 = Mem0[sp + 4:word32]
+	r4 = Mem0[sp + 0:word32]
+	sp = sp + 12
+	v16 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v16
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 16
+	r0 = sp
+	r1 = -858993460
+	r2 = 16
+	call fn004022DC (retsize: 0;)
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l0040219C
+	// succ:  l0040219C
+l00402196:
+	r3 = Mem0[sp:word32]
+	r3 = r3 + r3
+	Mem0[sp:word32] = r3
+	// succ:  l0040219C
+l0040219C:
+	r3 = Mem0[sp:word32]
+	NZCV = cond(r3 - 10)
+	branch Test(UGE,C) l004021B6
+	// succ:  l004021A2 l004021B6
+l004021A2:
+	r0 = Mem0[sp:word32]
+	call fn0040100C (retsize: 0;)
+	Mem0[sp + 8:word32] = r0
+	r1 = Mem0[sp + 8:word32]
+	r0 = Mem0[pc + 48:word32]
+	r3 = Mem0[pc + 40:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	goto l00402196
+	// succ:  l00402196
+l004021B6:
+	r0 = Mem0[pc + 36:word32]
+	r3 = Mem0[pc + 28:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = Mem0[pc + 20:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = 0
+	Mem0[sp + 4:word32] = r3
+	r0 = Mem0[sp + 4:word32]
+	sp = sp + 16
+	fp = Mem0[sp + 8:word32]
+	r5 = Mem0[sp + 4:word32]
+	r4 = Mem0[sp + 0:word32]
+	sp = sp + 12
+	v18 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v18
+	Mem0[r1 + 0:word32] = r4
+	r1 = r1 + 4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r1 + 0:word32] = r3
+	r1 = r1 + 4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r4 = (uint32) Mem0[r3 + 1:byte]
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = (uint32) Mem0[r3 + 1:byte]
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	ip = 0x0000C110
+	ip = DPB(0x0000C110, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C108
+	ip = DPB(0x0000C108, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r2
+	Mem0[sp + 8:word32] = r3
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	r2 = 0x0000A130
+	r2 = DPB(0x0000A130, 0x0040, 16, 16)
+	r3 = (uint32) Mem0[r2:byte]
+	branch r3 != 0x00000000 l00402274
+	// succ:  l0040225C l00402274
+l0040225C:
+	r3 = 1
+	Mem0[r2:byte] = (byte) r3
+	r3 = 0
+	Mem0[sp:word32] = r3
+	r3 = 1
+	r2 = 0
+	r1 = 0
+	r0 = 0
+	call fn004028EC (retsize: 0;)
+	call fn004028A8 (retsize: 0;)
+	// succ:  l00402274
+l00402274:
+	fp = Mem0[sp + 12:word32]
+	r3 = Mem0[sp + 8:word32]
+	r2 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r2
+	Mem0[sp + 8:word32] = r3
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	r3 = 1
+	r2 = 0
+	r1 = 0
+	r0 = 0
+	Mem0[sp:word32] = r3
+	call fn004028EC (retsize: 0;)
+	fp = Mem0[sp + 12:word32]
+	r3 = Mem0[sp + 8:word32]
+	r2 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l004022DA_thunk_fn004022DC
+l004022DA_thunk_fn004022DC:
+	call fn004022DC (retsize: 0;)
+	return
+	// succ:  fn004010A0_exit
+fn004010A0_exit:
+
+
+// fn004022DC
+// Return size: 0
+void fn004022DC()
+fn004022DC_entry:
+	// succ:  l004022DC
+l004022DC:
+	sp = fp
+	ip = 0x0000C104
+	ip = DPB(0x0000C104, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 16
+	call fn0040275C (retsize: 0;)
+	Mem0[sp:word32] = r0
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[pc + 164:word32]
+	Mem0[r3:word32] = r2
+	r0 = 1
+	r3 = Mem0[pc + 156:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r0 = ~0x00000000
+	r3 = Mem0[pc + 140:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[sp + 4:word32] = r0
+	r2 = Mem0[sp + 4:word32]
+	r3 = Mem0[pc + 128:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 124:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 116:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 108:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 100:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 88:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 80:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r3:word32] = r2
+	call fn00402F08 (retsize: 0;)
+	call fn004029E8 (retsize: 0;)
+	r3 = Mem0[pc + 64:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l0040234A
+	// succ:  l00402342 l0040234A
+l00402342:
+	r0 = Mem0[pc + 52:word32]
+	r3 = Mem0[pc + 44:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l0040234A
+l0040234A:
+	r3 = Mem0[pc + 36:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - -1)
+	branch Test(NE,Z) l0040235E
+	// succ:  l00402354 l0040235E
+l00402354:
+	r0 = ~0x00000000
+	r3 = Mem0[pc + 16:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l0040235E
+l0040235E:
+	r3 = 0
+	Mem0[sp + 8:word32] = r3
+	r0 = Mem0[sp + 8:word32]
+	sp = sp + 16
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	call __debugbreak (retsize: 0;)
+	Mem0[r0 + 0:word32] = r3
+	Mem0[r0 + 4:word32] = r4
+	Mem0[r0 + 8:word32] = r6
+	Mem0[r0 + 12:word32] = r7
+	r0 = r0 + 16
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = 0x00402384
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r4
+	Mem0[r0 + 8:word32] = r6
+	Mem0[r0 + 12:word32] = r7
+	r0 = r0 + 16
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	NZCV = cond(r4 - 201)
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = 0x00402380
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r3
+	Mem0[r0 + 8:word32] = r4
+	Mem0[r0 + 12:word32] = r5
+	Mem0[r0 + 16:word32] = r7
+	r0 = r0 + 20
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x004024F8
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r6
+	Mem0[r0 + 4:word32] = r7
+	r0 = r0 + 8
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402530
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r3 = 0x004025C4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r3 = 0x00402588
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r3
+	Mem0[r0 + 8:word32] = r6
+	r0 = r0 + 12
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r4
+	Mem0[r0 + 4:word32] = r5
+	Mem0[r0 + 8:word32] = r6
+	Mem0[r0 + 12:word32] = r7
+	r0 = r0 + 16
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402494
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 12
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = fp
+	fp = fp + sp
+	sp = sp - 12
+	r0 = Mem0[pc + 92:word32]
+	call fn00402EBC (retsize: 0;)
+	r3 = Mem0[pc + 80:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 72:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 68:word32]
+	Mem0[sp:word32] = r3
+	r3 = Mem0[pc + 60:word32]
+	r3 = Mem0[r3:word32]
+	r2 = Mem0[pc + 52:word32]
+	r1 = Mem0[pc + 48:word32]
+	r0 = Mem0[pc + 40:word32]
+	r4 = Mem0[pc + 36:word32]
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	Mem0[sp + 8:word32] = r0
+	r2 = Mem0[sp + 8:word32]
+	r3 = Mem0[pc + 20:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 16:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(GE,NZV) l0040242E
+	// succ:  l00402428 l0040242E
+l00402428:
+	r0 = 8
+	call fn004029DC (retsize: 0;)
+	// succ:  l0040242E
+l0040242E:
+	sp = sp + 12
+	fp = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 12
+	r1 = 0x00402568
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r4
+	Mem0[r0 + 8:word32] = r5
+	Mem0[r0 + 12:word32] = r6
+	Mem0[r0 + 16:word32] = r7
+	r0 = r0 + 20
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402540
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402554
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402568
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x004025CC
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402590
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x004025E4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	NZCV = cond(r7 - 57)
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	__mrc("Not Yet Implemented")
+	Mem0[sp:word32] = r3
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 4:word32] = r3
+	r0 = Mem0[sp + 4:word32]
+	sp = sp + 8
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	r0 = r0
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 80
+	r7 = sp
+	sp = sp - 8
+	r3 = 0
+	Mem0[r7 + 4:word32] = r3
+	call fn00402488 (retsize: 0;)
+	// succ:  l004024B6_thunk_fn004024BA
+l004024B6_thunk_fn004024BA:
+	call fn004024BA (retsize: 0;)
+	return
+	// succ:  fn004022DC_exit
+fn004022DC_exit:
+
+
+// fn00402488
+// Return size: 0
+void fn00402488()
+fn00402488_entry:
+	// succ:  l00402488
+l00402488:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	__mrc("Not Yet Implemented")
+	Mem0[sp:word32] = r3
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 4:word32] = r3
+	r0 = Mem0[sp + 4:word32]
+	sp = sp + 8
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	r0 = r0
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 80
+	r7 = sp
+	sp = sp - 8
+	r3 = 0
+	Mem0[r7 + 4:word32] = r3
+	call fn00402488 (retsize: 0;)
+	// succ:  l004024B6_thunk_fn004024BA
+l004024B6_thunk_fn004024BA:
+	call fn004024BA (retsize: 0;)
+	return
+	// succ:  fn00402488_exit
+fn00402488_exit:
+
+
+// fn004024A4
+// Return size: 0
+void fn004024A4()
+fn004024A4_entry:
+	// succ:  l004024A4
+l004024A4:
+	sp = fp
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 80
+	r7 = sp
+	sp = sp - 8
+	r3 = 0
+	Mem0[r7 + 4:word32] = r3
+	call fn00402488 (retsize: 0;)
+	// succ:  l004024B6_thunk_fn004024BA
+l004024B6_thunk_fn004024BA:
+	call fn004024BA (retsize: 0;)
+	return
+	// succ:  fn004024A4_exit
+fn004024A4_exit:
+
+
+// fn004024BA
+// Return size: 0
+void fn004024BA()
+fn004024BA_entry:
+	// succ:  l004024BA
+l004024BA:
+	sp = fp
+	Mem0[r7 + 40:word32] = r0
+	r3 = Mem0[r7 + 40:word32]
+	r3 = r3 + r3
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 8:word32] = r3
+	r3 = 0
+	Mem0[r7 + 12:word32] = r3
+	goto l004024C6_thunk_fn004024C8
+	// succ:  l004024C6_thunk_fn004024C8
+l004024BA:
+	Mem0[r7 + 40:word32] = r0
+	r3 = Mem0[r7 + 40:word32]
+	r3 = r3 + r3
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 8:word32] = r3
+	r3 = 0
+	Mem0[r7 + 12:word32] = r3
+	goto l004024C6_thunk_fn004024C8
+	// succ:  l004024C6_thunk_fn004024C8
+l004024C6_thunk_fn004024C8:
+	call fn004024C8 (retsize: 0;)
+	return
+	// succ:  fn004024BA_exit
+l004024C6_thunk_fn004024C8:
+	call fn004024C8 (retsize: 0;)
+	return
+	// succ:  fn004024BA_exit
+fn004024BA_exit:
+
+
+// fn004024C8
+// Return size: 0
+void fn004024C8()
+fn004024C8_entry:
+	// succ:  l004024C8
+l004024C8:
+	__dmb("Not Yet Implemented")
+	r0 = Mem0[pc + 468:word32]
+	r1 = Mem0[r7 + 8:word32]
+	// succ:  l004024D0
+l004024D0:
+	__ldrex("Not Yet Implemented")
+	NZCV = cond(r2 - 0)
+	branch Test(NE,Z) l004024E0
+	// succ:  l004024D8 l004024E0
+l004024D8:
+	__strex("Not Yet Implemented")
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004024D0
+	// succ:  l004024E0 l004024D0
+l004024E0:
+	r3 = r2
+	Mem0[r7 + 64:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 64:word32]
+	Mem0[r7 + 4:word32] = r3
+	r3 = Mem0[r7 + 4:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l00402502
+	// succ:  l004024F2 l00402502
+l004024F2:
+	r2 = Mem0[r7 + 4:word32]
+	r3 = Mem0[r7 + 8:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l00402500
+	// succ:  l004024FA l00402500
+l004024FA:
+	r3 = 1
+	Mem0[r7 + 12:word32] = r3
+	goto l00402502
+	// succ:  l00402502
+l00402500:
+	goto l004024C8
+	// succ:  l004024C8
+l00402502:
+	r3 = Mem0[pc + 436:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 32:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 32:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l0040251A
+	// succ:  l00402512 l0040251A
+l00402512:
+	r0 = 31
+	call fn004029DC (retsize: 0;)
+	goto l00402556
+	// succ:  l00402556
+l0040251A:
+	r3 = Mem0[pc + 412:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 56:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 56:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402550
+	// succ:  l0040252A l00402550
+l0040252A:
+	__dmb("Not Yet Implemented")
+	r2 = Mem0[pc + 392:word32]
+	r3 = 1
+	Mem0[r2:word32] = r3
+	r1 = Mem0[pc + 400:word32]
+	r0 = Mem0[pc + 396:word32]
+	call fn00402F80 (retsize: 0;)
+	Mem0[r7 + 20:word32] = r0
+	r3 = Mem0[r7 + 20:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l0040254E
+	// succ:  l00402544 l0040254E
+l00402544:
+	r3 = 255
+	Mem0[r7 + 72:word32] = r3
+	r3 = Mem0[r7 + 72:word32]
+	Mem0[r7 + 16:word32] = r3
+	goto l0040266A
+	// succ:  l0040266A
+l0040254E:
+	goto l00402556
+	// succ:  l00402556
+l00402550:
+	r2 = Mem0[pc + 296:word32]
+	r3 = 1
+	Mem0[r2:word32] = r3
+	// succ:  l00402556
+l00402556:
+	r3 = Mem0[pc + 352:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 48:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 48:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l00402578
+	// succ:  l00402566 l00402578
+l00402566:
+	r1 = Mem0[pc + 344:word32]
+	r0 = Mem0[pc + 336:word32]
+	call fn00402F8C (retsize: 0;)
+	__dmb("Not Yet Implemented")
+	r2 = Mem0[pc + 324:word32]
+	r3 = 2
+	Mem0[r2:word32] = r3
+	// succ:  l00402578
+l00402578:
+	r3 = Mem0[pc + 316:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 24:word32] = r3
+	__dmb("Not Yet Implemented")
+	r3 = Mem0[r7 + 24:word32]
+	NZCV = cond(r3 - 2)
+	branch Test(EQ,Z) l004025AA
+	// succ:  l00402588 l004025AA
+l00402588:
+	r3 = Mem0[pc + 296:word32]
+	Mem0[sp + 4:word32] = r3
+	r3 = Mem0[pc + 288:word32]
+	Mem0[sp:word32] = r3
+	r3 = 0
+	r2 = 0x00000229
+	r1 = Mem0[pc + 276:word32]
+	r0 = 2
+	r4 = Mem0[pc + 268:word32]
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	Mem0[r7 + 28:word32] = r0
+	r3 = Mem0[r7 + 28:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l004025AA
+	// succ:  l004025A8 l004025AA
+l004025A8:
+	call __debugbreak (retsize: 0;)
+	// succ:  l004025AA
+l004025AA:
+	r3 = Mem0[r7 + 12:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004025C8
+	// succ:  l004025B0 l004025C8
+l004025B0:
+	__dmb("Not Yet Implemented")
+	r0 = Mem0[pc + 236:word32]
+	r1 = 0
+	// succ:  l004025B8
+l004025B8:
+	__ldrex("Not Yet Implemented")
+	__strex("Not Yet Implemented")
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004025B8
+	// succ:  l004025C4 l004025B8
+l004025C4:
+	__dmb("Not Yet Implemented")
+	// succ:  l004025C8
+l004025C8:
+	r3 = Mem0[pc + 212:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l004025EA
+	// succ:  l004025D0 l004025EA
+l004025D0:
+	r0 = Mem0[pc + 204:word32]
+	call fn00402AAC (retsize: 0;)
+	Mem0[r7 + 36:word32] = r0
+	r3 = Mem0[r7 + 36:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l004025EA
+	// succ:  l004025DE l004025EA
+l004025DE:
+	r2 = 0
+	r1 = 2
+	r0 = 0
+	r3 = Mem0[pc + 184:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l004025EA
+l004025EA:
+	r0 = 1
+	r3 = Mem0[pc + 172:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = Mem0[pc + 160:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 160:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 148:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 140:word32]
+	r1 = Mem0[r3:word32]
+	r3 = Mem0[pc + 132:word32]
+	r0 = Mem0[r3:word32]
+	call fn00401018 (retsize: 0;)
+	Mem0[r7 + 44:word32] = r0
+	r2 = Mem0[r7 + 44:word32]
+	r3 = Mem0[pc + 96:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[pc + 108:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402626
+	// succ:  l0040261C l00402626
+l0040261C:
+	r3 = Mem0[pc + 84:word32]
+	r0 = Mem0[r3:word32]
+	r3 = Mem0[pc + 100:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00402626
+l00402626:
+	r3 = Mem0[pc + 84:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402634
+	// succ:  l0040262E l00402634
+l0040262E:
+	r3 = Mem0[pc + 72:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00402634
+l00402634:
+	// succ:  l00402664
+l00402664:
+	r3 = Mem0[pc + 12:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 16:word32] = r3
+	// succ:  l0040266A
+l0040266A:
+	r0 = Mem0[r7 + 16:word32]
+	sp = sp + 88
+	fp = Mem0[sp + 12:word32]
+	r7 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	call __debugbreak (retsize: 0;)
+	r1 = 0x00402758
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r3
+	Mem0[r0 + 8:word32] = r4
+	Mem0[r0 + 12:word32] = r6
+	Mem0[r0 + 16:word32] = r7
+	r0 = r0 + 20
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402750
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r5
+	Mem0[r0 + 4:word32] = r6
+	Mem0[r0 + 8:word32] = r7
+	r0 = r0 + 12
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402778
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r5
+	Mem0[r0 + 8:word32] = r6
+	Mem0[r0 + 12:word32] = r7
+	r0 = r0 + 16
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x00402790
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x004027A4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r1 = 0x004027B8
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r6
+	Mem0[r0 + 8:word32] = r7
+	r0 = r0 + 12
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r3
+	Mem0[r0 + 4:word32] = r5
+	Mem0[r0 + 8:word32] = r6
+	Mem0[r0 + 12:word32] = r7
+	r0 = r0 + 16
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r3 = 0x004028E4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r3 = 0x00402848
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r3
+	Mem0[r0 + 8:word32] = r5
+	Mem0[r0 + 12:word32] = r6
+	Mem0[r0 + 16:word32] = r7
+	r0 = r0 + 20
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = (uint32) Mem0[r7 + 2:byte]
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = (uint32) Mem0[r6 + 2:byte]
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = (uint32) Mem0[r4 + 1:byte]
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r3 = 0x0040289C
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0:byte] = (byte) r0
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r1 + 8:byte] = (byte) r0
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r1 + 12:byte] = (byte) r4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r3 + 28:byte] = (byte) r4
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l0040275A_thunk_fn0040275C
+l0040275A_thunk_fn0040275C:
+	call fn0040275C (retsize: 0;)
+	return
+	// succ:  fn004024C8_exit
+fn004024C8_exit:
+
+
+// fn0040275C
+// Return size: 0
+void fn0040275C()
+fn0040275C_entry:
+	// succ:  l0040275C
+l0040275C:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 16
+	r3 = Mem0[pc + 120:word32]
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp + 8:word32]
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = 0x00005A4D
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l0040277A
+	// succ:  l00402774 l0040277A
+l00402774:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l004027D6
+	// succ:  l004027D6
+l0040277A:
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 + 60
+	r2 = Mem0[sp + 8:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + r2
+	Mem0[sp + 4:word32] = r3
+	r3 = Mem0[sp + 4:word32]
+	r2 = Mem0[r3:word32]
+	r3 = 0x00004550
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402798
+	// succ:  l00402792 l00402798
+l00402792:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l004027D6
+	// succ:  l004027D6
+l00402798:
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 24
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = 0x0000010B
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l004027AC
+	// succ:  l004027A6 l004027AC
+l004027A6:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l004027D6
+	// succ:  l004027D6
+l004027AC:
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 116
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 14)
+	branch Test(UGT,ZC) l004027BC
+	// succ:  l004027B6 l004027BC
+l004027B6:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l004027D6
+	// succ:  l004027D6
+l004027BC:
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 120
+	r3 = r3 + 112
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l004027CE
+	// succ:  l004027C8 l004027CE
+l004027C8:
+	r3 = 1
+	Mem0[sp + 12:word32] = r3
+	goto l004027D2
+	// succ:  l004027D2
+l004027CE:
+	r3 = 0
+	Mem0[sp + 12:word32] = r3
+	// succ:  l004027D2
+l004027D2:
+	r3 = Mem0[sp + 12:word32]
+	Mem0[sp:word32] = r3
+	// succ:  l004027D6
+l004027D6:
+	r0 = Mem0[sp:word32]
+	sp = sp + 16
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	call __debugbreak (retsize: 0;)
+	r0 = r0
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	// succ:  l004027E2_thunk_fn004027E4
+l004027E2_thunk_fn004027E4:
+	call fn004027E4 (retsize: 0;)
+	return
+	// succ:  fn0040275C_exit
+fn0040275C_exit:
+
+
+// fn004027E4
+// Return size: 0
+void fn004027E4()
+fn004027E4_entry:
+	// succ:  l004027E4
+l004027E4:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	call fn00402BF8 (retsize: 0;)
+	call fn004024A4 (retsize: 0;)
+	Mem0[sp:word32] = r0
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 4:word32] = r3
+	r0 = Mem0[sp + 4:word32]
+	sp = sp + 8
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00402832_thunk_fn00402834
+l00402832_thunk_fn00402834:
+	call fn00402834 (retsize: 0;)
+	return
+	// succ:  fn004027E4_exit
+fn004027E4_exit:
+
+
+// fn00402834
+// Return size: 0
+void fn00402834()
+fn00402834_entry:
+	// succ:  l00402834
+l00402834:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r3 = 0x0000A154
+	r3 = DPB(0x0000A154, 0x0040, 16, 16)
+	r0 = Mem0[r3:word32]
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	// succ:  l00402844_thunk_fn00402848
+l00402844_thunk_fn00402848:
+	call fn00402848 (retsize: 0;)
+	return
+	// succ:  fn00402834_exit
+fn00402834_exit:
+
+
+// fn00402848
+// Return size: 0
+void fn00402848()
+fn00402848_entry:
+	// succ:  l00402848
+l00402848:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r3 = 0x0000A158
+	r3 = DPB(0x0000A158, 0x0040, 16, 16)
+	r0 = Mem0[r3:word32]
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	NZCV = cond(r0 - 4)
+	branch Test(UGT,ZC) l00402876
+	// succ:  l00402866 l00402876
+l00402866:
+	r3 = 0x00007910
+	r3 = DPB(0x00007910, 0x0040, 16, 16)
+	r0 = Mem0[r3 + r0:word32]
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	// succ:  l00402876
+l00402876:
+	r0 = 0
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	r0 = r0
+	r0 = r0
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r0 = 5
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r2 = 0x0000A154
+	r2 = DPB(0x0000A154, 0x0040, 16, 16)
+	r3 = r0
+	r0 = Mem0[r2:word32]
+	Mem0[r2:word32] = r3
+	r3 = 0
+	Mem0[r2 + 4:word32] = r3
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r2 = 0x0000A154
+	r2 = DPB(0x0000A154, 0x0040, 16, 16)
+	r3 = r0
+	r0 = Mem0[r2 + 4:word32]
+	Mem0[r2 + 4:word32] = r3
+	r3 = 0
+	Mem0[r2:word32] = r3
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r2 = r0
+	NZCV = cond(r2 - 4)
+	branch Test(UGT,ZC) l004028E4
+	// succ:  l004028CE_thunk_fn004028D0 l004028CE_thunk_fn004028E4
+l004028CE_thunk_fn004028D0:
+	call fn004028D0 (retsize: 0;)
+	return
+	// succ:  fn00402848_exit
+l004028CE_thunk_fn004028E4:
+	call fn004028E4 (retsize: 0;)
+	return
+	// succ:  fn00402848_exit
+fn00402848_exit:
+
+
+// fn004028A8
+// Return size: 0
+void fn004028A8()
+fn004028A8_entry:
+	// succ:  l004028A8
+l004028A8:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r2 = 0x0000A154
+	r2 = DPB(0x0000A154, 0x0040, 16, 16)
+	r3 = r0
+	r0 = Mem0[r2 + 4:word32]
+	Mem0[r2 + 4:word32] = r3
+	r3 = 0
+	Mem0[r2:word32] = r3
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r2 = r0
+	NZCV = cond(r2 - 4)
+	branch Test(UGT,ZC) l004028CE_thunk_fn004028E4
+	// succ:  l004028CE_thunk_fn004028D0 l004028CE_thunk_fn004028E4
+l004028CE_thunk_fn004028D0:
+	call fn004028D0 (retsize: 0;)
+	return
+	// succ:  fn004028A8_exit l004028CE_thunk_fn004028D0
+l004028CE_thunk_fn004028D0:
+	call fn004028D0 (retsize: 0;)
+	return
+	// succ:  fn004028A8_exit
+l004028CE_thunk_fn004028E4:
+	call fn004028E4 (retsize: 0;)
+	return
+	// succ:  fn004028A8_exit
+fn004028A8_exit:
+
+
+// fn004028D0
+// Return size: 0
+void fn004028D0()
+fn004028D0_entry:
+	// succ:  l004028D0
+l004028D0:
+	r3 = 0x0000A00C
+	r3 = DPB(0x0000A00C, 0x0040, 16, 16)
+	r0 = Mem0[r3 + r0:word32]
+	Mem0[r3 + r2:word32] = r1
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	// succ:  l004028E0_thunk_fn004028E4
+l004028E0_thunk_fn004028E4:
+	call fn004028E4 (retsize: 0;)
+	return
+	// succ:  fn004028D0_exit
+fn004028D0_exit:
+
+
+// fn004028E4
+// Return size: 0
+void fn004028E4()
+fn004028E4_entry:
+	// succ:  l004028E4
+l004028E4:
+	r0 = ~0x00000000
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	ip = 0x0000C100
+	ip = DPB(0x0000C100, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	r3 = Mem0[sp + 16:word32]
+	r3 = Mem0[r3:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 112:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l0040290C_thunk_fn0040295C
+	// succ:  l0040290C_thunk_fn0040290E l0040290C_thunk_fn0040295C
+l0040290C_thunk_fn0040290E:
+	call fn0040290E (retsize: 0;)
+	return
+	// succ:  fn004028E4_exit
+l0040290C_thunk_fn0040295C:
+	call fn0040295C (retsize: 0;)
+	return
+	// succ:  fn004028E4_exit
+fn004028E4_exit:
+
+
+// fn004028EC
+// Return size: 0
+void fn004028EC()
+fn004028EC_entry:
+	// succ:  l004028EC
+l004028EC:
+	sp = fp
+	ip = 0x0000C100
+	ip = DPB(0x0000C100, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	r3 = Mem0[sp + 16:word32]
+	r3 = Mem0[r3:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 112:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l0040290C_thunk_fn0040295C
+	// succ:  l0040290C_thunk_fn0040290E l0040290C_thunk_fn0040295C
+l0040290C_thunk_fn0040290E:
+	call fn0040290E (retsize: 0;)
+	return
+	// succ:  fn004028EC_exit l0040290C_thunk_fn0040290E
+l0040290C_thunk_fn0040290E:
+	call fn0040290E (retsize: 0;)
+	return
+	// succ:  fn004028EC_exit
+l0040290C_thunk_fn0040295C:
+	call fn0040295C (retsize: 0;)
+	return
+	// succ:  fn004028EC_exit
+fn004028EC_exit:
+
+
+// fn0040290E
+// Return size: 0
+void fn0040290E()
+fn0040290E_entry:
+	// succ:  l0040290E
+l0040290E:
+	r3 = Mem0[sp + 16:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + 16
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r3 - 4)
+	branch Test(NE,Z) l00402918_thunk_fn0040295C
+	goto l0040291A
+	// succ:  l0040291A l00402918_thunk_fn0040295C
+l00402918_thunk_fn0040295C:
+	call fn0040295C (retsize: 0;)
+	return
+	// succ:  fn0040290E_exit
+l0040291A:
+	r3 = Mem0[sp + 16:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + 20
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 84:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402926_thunk_fn00402952
+	goto l00402928
+	// succ:  l00402928 l00402926_thunk_fn00402952
+l00402926_thunk_fn00402952:
+	call fn00402952 (retsize: 0;)
+	return
+	// succ:  fn0040290E_exit
+l00402928:
+	r3 = Mem0[sp + 16:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + 20
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 64:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402934_thunk_fn00402952
+	goto l00402936
+	// succ:  l00402936 l00402934_thunk_fn00402952
+l00402934_thunk_fn00402952:
+	call fn00402952 (retsize: 0;)
+	return
+	// succ:  fn0040290E_exit
+l00402936:
+	r3 = Mem0[sp + 16:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + 20
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 48:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402942_thunk_fn00402952
+	goto l00402944
+	// succ:  l00402944 l00402942_thunk_fn00402952
+l00402942_thunk_fn00402952:
+	call fn00402952 (retsize: 0;)
+	return
+	// succ:  fn0040290E_exit
+l00402944:
+	r3 = Mem0[sp + 16:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + 20
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 28:word32]
+	// succ:  l0040294C_thunk_fn0040294E
+l0040294C_thunk_fn0040294E:
+	call fn0040294E (retsize: 0;)
+	return
+	// succ:  fn0040290E_exit
+fn0040290E_exit:
+
+
+// fn0040294E
+// Return size: 0
+void fn0040294E()
+fn0040294E_entry:
+	// succ:  l0040294E
+l0040294E:
+	sp = fp
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l0040295C
+	goto l00402950_thunk_fn00402952
+	// succ:  l00402950_thunk_fn00402952 l00402950_thunk_fn0040295C
+l0040294E:
+l00402950_thunk_fn00402952:
+	call fn00402952 (retsize: 0;)
+	return
+	// succ:  fn0040294E_exit
+l00402950_thunk_fn0040295C:
+	call fn0040295C (retsize: 0;)
+	return
+	// succ:  fn0040294E_exit
+fn0040294E_exit:
+
+
+// fn00402952
+// Return size: 0
+void fn00402952()
+fn00402952_entry:
+	// succ:  l00402952
+l00402952:
+	call fn004036F8 (retsize: 0;)
+	r3 = 1
+	Mem0[sp:word32] = r3
+	// succ:  l0040295A_thunk_fn00402960
+l0040295A_thunk_fn00402960:
+	call fn00402960 (retsize: 0;)
+	return
+	// succ:  fn00402952_exit
+fn00402952_exit:
+
+
+// fn0040295C
+// Return size: 0
+void fn0040295C()
+fn0040295C_entry:
+	// succ:  l0040295C
+l0040295C:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	// succ:  l0040295E_thunk_fn00402960
+l0040295E_thunk_fn00402960:
+	call fn00402960 (retsize: 0;)
+	return
+	// succ:  fn0040295C_exit
+fn0040295C_exit:
+
+
+// fn00402960
+// Return size: 0
+void fn00402960()
+fn00402960_entry:
+	// succ:  l00402960
+l00402960:
+	sp = fp
+	r0 = Mem0[sp:word32]
+	sp = sp + 8
+	v5 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v5
+	v7 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v7
+	r0 = r0 & r0
+	NZC = cond(r0)
+	r1 = r3 << 6
+	NZCV = cond(r1)
+	r2 = r4 << 20
+	NZCV = cond(r2)
+	r3 = r3 + r2
+	r1 = r4 << 20
+	NZCV = cond(r1)
+	r3 = r3 + r2
+	r0 = r4 << 20
+	NZCV = cond(r0)
+	r3 = r3 + r2
+	Mem0[r4 + 13:byte] = (byte) r3
+	goto l0040297E_thunk_fn00402A5C
+	// succ:  l0040297E_thunk_fn00402A5C
+l00402960:
+l0040297E_thunk_fn00402A5C:
+	call fn00402A5C (retsize: 0;)
+	return
+	// succ:  fn00402960_exit
+fn00402960_exit:
+
+
+// fn004029D0
+// Return size: 0
+void fn004029D0()
+fn004029D0_entry:
+	// succ:  l004029D0
+l004029D0:
+	sp = fp
+	ip = 0x0000C0FC
+	ip = DPB(0x0000C0FC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0F8
+	ip = DPB(0x0000C0F8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	r3 = 0
+	Mem0[sp:word32] = r3
+	r0 = Mem0[sp:word32]
+	sp = sp + 8
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	ip = 0x0000C0F4
+	ip = DPB(0x0000C0F4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0F0
+	ip = DPB(0x0000C0F0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0EC
+	ip = DPB(0x0000C0EC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0E8
+	ip = DPB(0x0000C0E8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 16
+	r3 = Mem0[sp + 24:word32]
+	r3 = r3 + 60
+	r2 = Mem0[sp + 24:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + r2
+	Mem0[sp + 4:word32] = r3
+	r3 = 0
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp + 4:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 20
+	r3 = (uint32) Mem0[r3:word16]
+	r3 = r3 + r2
+	Mem0[sp:word32] = r3
+	// succ:  l00402A54_thunk_fn00402A64
+l00402A54_thunk_fn00402A64:
+	call fn00402A64 (retsize: 0;)
+	return
+	// succ:  fn004029D0_exit
+fn004029D0_exit:
+
+
+// fn004029DC
+// Return size: 0
+void fn004029DC()
+fn004029DC_entry:
+	// succ:  l004029DC
+l004029DC:
+	sp = fp
+	ip = 0x0000C0F8
+	ip = DPB(0x0000C0F8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l004029E4_thunk_fn004029E8
+l004029E4_thunk_fn004029E8:
+	call fn004029E8 (retsize: 0;)
+	return
+	// succ:  fn004029DC_exit
+fn004029DC_exit:
+
+
+// fn004029E8
+// Return size: 0
+void fn004029E8()
+fn004029E8_entry:
+	// succ:  l004029E8
+l004029E8:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	r3 = 0
+	Mem0[sp:word32] = r3
+	r0 = Mem0[sp:word32]
+	sp = sp + 8
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	ip = 0x0000C0F4
+	ip = DPB(0x0000C0F4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0F0
+	ip = DPB(0x0000C0F0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0EC
+	ip = DPB(0x0000C0EC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0E8
+	ip = DPB(0x0000C0E8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00402A28_thunk_fn00402A2C
+l00402A28_thunk_fn00402A2C:
+	call fn00402A2C (retsize: 0;)
+	return
+	// succ:  fn004029E8_exit
+fn004029E8_exit:
+
+
+// fn00402A2C
+// Return size: 0
+void fn00402A2C()
+fn00402A2C_entry:
+	// succ:  l00402A2C
+l00402A2C:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 16
+	r3 = Mem0[sp + 24:word32]
+	r3 = r3 + 60
+	r2 = Mem0[sp + 24:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + r2
+	Mem0[sp + 4:word32] = r3
+	r3 = 0
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp + 4:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 20
+	r3 = (uint32) Mem0[r3:word16]
+	r3 = r3 + r2
+	Mem0[sp:word32] = r3
+	// succ:  l00402A56_thunk_fn00402A64
+l00402A56_thunk_fn00402A64:
+	call fn00402A64 (retsize: 0;)
+	return
+	// succ:  fn00402A2C_exit
+fn00402A2C_exit:
+
+
+// fn00402A5C
+// Return size: 0
+void fn00402A5C()
+fn00402A5C_entry:
+	// succ:  l00402A5C
+l00402A5C:
+	sp = fp
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp:word32]
+	r3 = r3 + 40
+	Mem0[sp:word32] = r3
+	goto l00402A62_thunk_fn00402A64
+	// succ:  l00402A62_thunk_fn00402A64
+l00402A5C:
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp:word32]
+	r3 = r3 + 40
+	Mem0[sp:word32] = r3
+	goto l00402A62_thunk_fn00402A64
+	// succ:  l00402A62_thunk_fn00402A64
+l00402A62_thunk_fn00402A64:
+	call fn00402A64 (retsize: 0;)
+	return
+	// succ:  fn00402A5C_exit
+l00402A62_thunk_fn00402A64:
+	call fn00402A64 (retsize: 0;)
+	return
+	// succ:  fn00402A5C_exit
+fn00402A5C_exit:
+
+
+// fn00402A64
+// Return size: 0
+void fn00402A64()
+fn00402A64_entry:
+	goto l00402A64
+	// succ:  l00402A64
+l00402A58:
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 + r3
+	// succ:  l00402A5A_thunk_fn00402A5C
+l00402A5A_thunk_fn00402A5C:
+	call fn00402A5C (retsize: 0;)
+	return
+	// succ:  fn00402A64_exit
+l00402A64:
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + r3
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = Mem0[sp + 8:word32]
+	NZCV = cond(r3 - r2)
+	branch Test(UGE,C) l00402A9A
+	// succ:  l00402A70 l00402A9A
+l00402A70:
+	r3 = Mem0[sp:word32]
+	r3 = r3 + 12
+	r2 = Mem0[sp + 28:word32]
+	r3 = Mem0[r3:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(ULT,C) l00402A98
+	// succ:  l00402A7C l00402A98
+l00402A7C:
+	r3 = Mem0[sp:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp:word32]
+	r3 = r3 + 8
+	r2 = Mem0[r2:word32]
+	r3 = Mem0[r3:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp + 28:word32]
+	NZCV = cond(r3 - r2)
+	branch Test(UGE,C) l00402A98
+	// succ:  l00402A92 l00402A98
+l00402A92:
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 12:word32] = r3
+	goto l00402A9E
+	// succ:  l00402A9E
+l00402A98:
+	goto l00402A58
+	// succ:  l00402A58
+l00402A9A:
+	r3 = 0
+	Mem0[sp + 12:word32] = r3
+	// succ:  l00402A9E
+l00402A9E:
+	r0 = Mem0[sp + 12:word32]
+	sp = sp + 16
+	v8 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v8
+	v10 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v10
+	r0 = r0
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 12
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r7
+	Mem0[sp + 8:word32] = fp
+	fp = fp + sp
+	sp = sp - 60
+	r7 = sp
+	r3 = Mem0[pc + 124:word32]
+	Mem0[r7 + 4:word32] = r3
+	r0 = Mem0[r7 + 4:word32]
+	call fn00402B6C (retsize: 0;)
+	Mem0[r7 + 20:word32] = r0
+	r3 = Mem0[r7 + 20:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402AD6
+	// succ:  l00402ACA_thunk_fn00402ACC l00402ACA_thunk_fn00402AD6
+l00402ACA_thunk_fn00402ACC:
+	call fn00402ACC (retsize: 0;)
+	return
+	// succ:  fn00402A64_exit
+l00402ACA_thunk_fn00402AD6:
+	call fn00402AD6 (retsize: 0;)
+	return
+	// succ:  fn00402A64_exit
+fn00402A64_exit:
+
+
+// fn00402AAC
+// Return size: 0
+void fn00402AAC()
+fn00402AAC_entry:
+	// succ:  l00402AAC
+l00402AAC:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 12
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r7
+	Mem0[sp + 8:word32] = fp
+	fp = fp + sp
+	sp = sp - 60
+	r7 = sp
+	r3 = Mem0[pc + 124:word32]
+	Mem0[r7 + 4:word32] = r3
+	r0 = Mem0[r7 + 4:word32]
+	call fn00402B6C (retsize: 0;)
+	Mem0[r7 + 20:word32] = r0
+	r3 = Mem0[r7 + 20:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402ACA_thunk_fn00402AD6
+	// succ:  l00402ACA_thunk_fn00402ACC l00402ACA_thunk_fn00402AD6
+l00402ACA_thunk_fn00402ACC:
+	call fn00402ACC (retsize: 0;)
+	return
+	// succ:  fn00402AAC_exit l00402ACA_thunk_fn00402ACC
+l00402ACA_thunk_fn00402ACC:
+	call fn00402ACC (retsize: 0;)
+	return
+	// succ:  fn00402AAC_exit
+l00402ACA_thunk_fn00402AD6:
+	call fn00402AD6 (retsize: 0;)
+	return
+	// succ:  fn00402AAC_exit
+fn00402AAC_exit:
+
+
+// fn00402ACC
+// Return size: 0
+void fn00402ACC()
+fn00402ACC_entry:
+	// succ:  l00402ACC
+l00402ACC:
+	r3 = 0
+	Mem0[r7 + 24:word32] = r3
+	r3 = Mem0[r7 + 24:word32]
+	Mem0[r7:word32] = r3
+	// succ:  l00402AD2_thunk_fn00402AD6
+l00402AD2_thunk_fn00402AD6:
+	call fn00402AD6 (retsize: 0;)
+	return
+	// succ:  fn00402ACC_exit
+fn00402ACC_exit:
+
+
+// fn00402AD6
+// Return size: 0
+void fn00402AD6()
+fn00402AD6_entry:
+	// succ:  l00402AD6
+l00402AD6:
+	r2 = Mem0[r7 + 72:word32]
+	r3 = Mem0[r7 + 4:word32]
+	r3 = r3 - r2
+	Mem0[r7 + 28:word32] = r3
+	r1 = Mem0[r7 + 28:word32]
+	r0 = Mem0[r7 + 4:word32]
+	call fn00402A2C (retsize: 0;)
+	Mem0[r7 + 32:word32] = r0
+	r3 = Mem0[r7 + 32:word32]
+	Mem0[r7 + 8:word32] = r3
+	r3 = Mem0[r7 + 8:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402AFC
+	// succ:  l00402AF2 l00402AFC
+l00402AF2:
+	r3 = 0
+	Mem0[r7 + 36:word32] = r3
+	r3 = Mem0[r7 + 36:word32]
+	Mem0[r7:word32] = r3
+	goto l00402B2A
+	// succ:  l00402B2A
+l00402AFC:
+	r3 = Mem0[r7 + 8:word32]
+	r3 = r3 + 36
+	r3 = Mem0[r3:word32]
+	NZC = cond(r3 & 0x80000000)
+	branch Test(NE,Z) l00402B0E
+	// succ:  l00402B08 l00402B0E
+l00402B08:
+	r3 = 1
+	Mem0[r7 + 12:word32] = r3
+	goto l00402B12
+	// succ:  l00402B12
+l00402B0E:
+	r3 = 0
+	Mem0[r7 + 12:word32] = r3
+	// succ:  l00402B12
+l00402B12:
+	r3 = Mem0[r7 + 12:word32]
+	Mem0[r7 + 40:word32] = r3
+	r3 = Mem0[r7 + 40:word32]
+	Mem0[r7:word32] = r3
+	// succ:  l00402B2A
+l00402B2A:
+	r0 = Mem0[r7:word32]
+	sp = sp + 60
+	fp = Mem0[sp + 4:word32]
+	r7 = Mem0[sp + 0:word32]
+	sp = sp + 8
+	v11 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v11
+	call __debugbreak (retsize: 0;)
+	r0 = r0
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00402B6A_thunk_fn00402B6C
+l00402B6A_thunk_fn00402B6C:
+	call fn00402B6C (retsize: 0;)
+	return
+	// succ:  fn00402AD6_exit
+fn00402AD6_exit:
+
+
+// fn00402B6C
+// Return size: 0
+void fn00402B6C()
+fn00402B6C_entry:
+	// succ:  l00402B6C
+l00402B6C:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 16
+	r3 = Mem0[sp + 24:word32]
+	Mem0[sp + 4:word32] = r3
+	r3 = Mem0[sp + 4:word32]
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = 0x00005A4D
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402B8C
+	// succ:  l00402B86 l00402B8C
+l00402B86:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l00402BC6
+	// succ:  l00402BC6
+l00402B8C:
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 + 60
+	r2 = Mem0[sp + 4:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 + r2
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp + 8:word32]
+	r2 = Mem0[r3:word32]
+	r3 = 0x00004550
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402BAA
+	// succ:  l00402BA4 l00402BAA
+l00402BA4:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l00402BC6
+	// succ:  l00402BC6
+l00402BAA:
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 + 24
+	Mem0[sp + 12:word32] = r3
+	r3 = Mem0[sp + 12:word32]
+	r2 = (uint32) Mem0[r3:word16]
+	r3 = 0x0000010B
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402BC2
+	// succ:  l00402BBC l00402BC2
+l00402BBC:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	goto l00402BC6
+	// succ:  l00402BC6
+l00402BC2:
+	r3 = 1
+	Mem0[sp:word32] = r3
+	// succ:  l00402BC6
+l00402BC6:
+	r0 = Mem0[sp:word32]
+	sp = sp + 16
+	v11 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v11
+	v13 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v13
+	r0 = r0
+	ip = 0x0000C0E4
+	ip = DPB(0x0000C0E4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0E0
+	ip = DPB(0x0000C0E0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0DC
+	ip = DPB(0x0000C0DC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00402BF4_thunk_fn00402BF8
+l00402BF4_thunk_fn00402BF8:
+	call fn00402BF8 (retsize: 0;)
+	return
+	// succ:  fn00402B6C_exit
+fn00402B6C_exit:
+
+
+// fn00402BF8
+// Return size: 0
+void fn00402BF8()
+fn00402BF8_entry:
+	// succ:  l00402BF8
+l00402BF8:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 40
+	r3 = 0
+	Mem0[sp + 16:word32] = r3
+	r3 = 0
+	Mem0[sp + 20:word32] = r3
+	r3 = Mem0[pc + 156:word32]
+	r2 = Mem0[r3:word32]
+	r3 = Mem0[pc + 160:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(EQ,Z) l00402C1E
+	// succ:  l00402C12 l00402C1E
+l00402C12:
+	r3 = Mem0[pc + 148:word32]
+	r3 = Mem0[r3:word32]
+	r2 = ~r3
+	r3 = Mem0[pc + 136:word32]
+	Mem0[r3:word32] = r2
+	goto l00402C9E
+	// succ:  l00402C9E
+l00402C1E:
+	r0 = r0 + sp
+	r3 = Mem0[pc + 160:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = Mem0[sp + 16:word32]
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 20:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r3 = Mem0[pc + 140:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[sp + 4:word32] = r0
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 4:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r3 = Mem0[pc + 120:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[sp + 8:word32] = r0
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r3 = Mem0[pc + 100:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[sp + 28:word32] = r1
+	Mem0[sp + 24:word32] = r0
+	r2 = Mem0[sp + 24:word32]
+	r3 = Mem0[sp:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r0 = r0 + sp
+	r3 = Mem0[pc + 76:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 32:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[sp + 36:word32]
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = sp
+	r3 = r3 ^ r2
+	NZC = cond(r3)
+	Mem0[sp:word32] = r3
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[pc + 40:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l00402C90
+	// succ:  l00402C8C l00402C90
+l00402C8C:
+	r3 = Mem0[pc + 28:word32]
+	Mem0[sp:word32] = r3
+	// succ:  l00402C90
+l00402C90:
+	r2 = Mem0[sp:word32]
+	r3 = Mem0[pc + 20:word32]
+	Mem0[r3:word32] = r2
+	r3 = Mem0[sp:word32]
+	r2 = ~r3
+	r3 = Mem0[pc + 8:word32]
+	Mem0[r3:word32] = r2
+	// succ:  l00402C9E
+l00402C9E:
+	sp = sp + 40
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	r0 = 0x00402D38
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = 0x00402D2C
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	// succ:  l00402CAC_thunk_fn0040294E
+l00402CAC_thunk_fn0040294E:
+	call fn0040294E (retsize: 0;)
+	return
+	// succ:  fn00402BF8_exit
+fn00402BF8_exit:
+
+
+// fn00402DB0
+// Return size: 0
+void fn00402DB0()
+fn00402DB0_entry:
+	// succ:  l00402DB0
+l00402DB0:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 12
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r7
+	Mem0[sp + 8:word32] = fp
+	fp = fp + sp
+	sp = sp - 52
+	r7 = sp
+	r3 = 0
+	Mem0[r7 + 8:word32] = r3
+	r3 = Mem0[pc + 164:word32]
+	r0 = Mem0[r3:word32]
+	r3 = Mem0[pc + 164:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[r7 + 16:word32] = r0
+	r3 = Mem0[r7 + 16:word32]
+	Mem0[r7:word32] = r3
+	r3 = Mem0[r7:word32]
+	NZCV = cond(r3 - -1)
+	branch Test(NE,Z) l00402DEA
+	// succ:  l00402DDA l00402DEA
+l00402DDA:
+	r0 = Mem0[r7 + 64:word32]
+	r3 = Mem0[pc + 144:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[r7 + 20:word32] = r0
+	r3 = Mem0[r7 + 20:word32]
+	Mem0[r7 + 12:word32] = r3
+	goto l00402E54
+	// succ:  l00402E54
+l00402DEA:
+	r0 = 8
+	call fn00403710 (retsize: 0;)
+	r3 = Mem0[pc + 116:word32]
+	r0 = Mem0[r3:word32]
+	r3 = Mem0[pc + 116:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[r7 + 24:word32] = r0
+	r3 = Mem0[r7 + 24:word32]
+	Mem0[r7:word32] = r3
+	r3 = Mem0[pc + 92:word32]
+	r0 = Mem0[r3:word32]
+	r3 = Mem0[pc + 100:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[r7 + 28:word32] = r0
+	r3 = Mem0[r7 + 28:word32]
+	Mem0[r7 + 4:word32] = r3
+	r0 = Mem0[r7 + 64:word32]
+	r3 = Mem0[pc + 80:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[r7 + 32:word32] = r0
+	r2 = r2 + r7
+	r1 = r7
+	r0 = Mem0[r7 + 32:word32]
+	call fn00403734 (retsize: 0;)
+	Mem0[r7 + 36:word32] = r0
+	r3 = Mem0[r7 + 36:word32]
+	Mem0[r7 + 8:word32] = r3
+	r0 = Mem0[r7:word32]
+	r3 = Mem0[pc + 52:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[r7 + 40:word32] = r0
+	r2 = Mem0[r7 + 40:word32]
+	r3 = Mem0[pc + 48:word32]
+	Mem0[r3:word32] = r2
+	r0 = Mem0[r7 + 4:word32]
+	r3 = Mem0[pc + 36:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	Mem0[r7 + 44:word32] = r0
+	r2 = Mem0[r7 + 44:word32]
+	r3 = Mem0[pc + 24:word32]
+	Mem0[r3:word32] = r2
+	r0 = 8
+	call fn0040371C (retsize: 0;)
+	r3 = Mem0[r7 + 8:word32]
+	Mem0[r7 + 12:word32] = r3
+	// succ:  l00402E54
+l00402E54:
+	r0 = Mem0[r7 + 12:word32]
+	sp = sp + 52
+	fp = Mem0[sp + 4:word32]
+	r7 = Mem0[sp + 0:word32]
+	sp = sp + 8
+	v13 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v13
+	r3 = 0x00403054
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r3
+	Mem0[r0 + 8:word32] = r6
+	r0 = r0 + 12
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r3 = 0x0040309C
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r4
+	Mem0[r0 + 8:word32] = r5
+	r0 = r0 + 12
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	Mem0[r0 + 0:word32] = r2
+	Mem0[r0 + 4:word32] = r5
+	Mem0[r0 + 8:word32] = r7
+	r0 = r0 + 12
+	r0 = r0 << 1
+	NZCV = cond(r0)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00402EBA_thunk_fn00402EBC
+l00402EBA_thunk_fn00402EBC:
+	call fn00402EBC (retsize: 0;)
+	return
+	// succ:  fn00402DB0_exit
+fn00402DB0_exit:
+
+
+// fn00402EBC
+// Return size: 0
+void fn00402EBC()
+fn00402EBC_entry:
+	// succ:  l00402EBC
+l00402EBC:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 16
+	r0 = Mem0[sp + 24:word32]
+	call fn00402DB0 (retsize: 0;)
+	Mem0[sp + 4:word32] = r0
+	r3 = Mem0[sp + 4:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00402EDC
+	// succ:  l00402ED4 l00402EDC
+l00402ED4:
+	r3 = ~0x00000000
+	Mem0[sp:word32] = r3
+	goto l00402EE0
+	// succ:  l00402EE0
+l00402EDC:
+	r3 = 0
+	Mem0[sp:word32] = r3
+	// succ:  l00402EE0
+l00402EE0:
+	r3 = Mem0[sp:word32]
+	Mem0[sp + 8:word32] = r3
+	r0 = Mem0[sp + 8:word32]
+	sp = sp + 16
+	v10 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v10
+	v12 = Mem0[sp:word32]
+	sp = sp + 12
+	pc = v12
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00402F06_thunk_fn00402F08
+l00402F06_thunk_fn00402F08:
+	call fn00402F08 (retsize: 0;)
+	return
+	// succ:  fn00402EBC_exit
+fn00402EBC_exit:
+
+
+// fn00402F08
+// Return size: 0
+void fn00402F08()
+fn00402F08_entry:
+	// succ:  l00402F08
+l00402F08:
+	sp = fp
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	r3 = 0x00008790
+	r3 = DPB(0x00008790, 0x0040, 16, 16)
+	r5 = 0x00008998
+	r5 = DPB(0x00008998, 0x0040, 16, 16)
+	r4 = r4 + r3
+	r3 = r3 + r3
+	NZCV = cond(r3 - r5)
+	branch Test(UGE,C) l00402F34
+	// succ:  l00402F28 l00402F34
+l00402F28:
+	v10 = Mem0[r4:word32]
+	r4 = r4 + 4
+	r3 = v10
+	branch r3 == 0x00000000 l00402F30
+	// succ:  l00402F2E l00402F30
+l00402F2E:
+	call r3 (retsize: 0;)
+	// succ:  l00402F30
+l00402F30:
+	NZCV = cond(r4 - r5)
+	branch Test(ULT,C) l00402F28
+	// succ:  l00402F34 l00402F28
+l00402F34:
+	fp = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	r3 = 0x00008A9C
+	r3 = DPB(0x00008A9C, 0x0040, 16, 16)
+	r5 = 0x00008CA4
+	r5 = DPB(0x00008CA4, 0x0040, 16, 16)
+	r4 = r4 + r3
+	r3 = r3 + r3
+	NZCV = cond(r3 - r5)
+	branch Test(UGE,C) l00402F64
+	fp = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	r3 = 0x00008A9C
+	r3 = DPB(0x00008A9C, 0x0040, 16, 16)
+	r5 = 0x00008CA4
+	r5 = DPB(0x00008CA4, 0x0040, 16, 16)
+	r4 = r4 + r3
+	r3 = r3 + r3
+	NZCV = cond(r3 - r5)
+	branch Test(UGE,C) l00402F64
+	// succ:  l00402F58 l00402F64
+l00402F58:
+	v12 = Mem0[r4:word32]
+	r4 = r4 + 4
+	r3 = v12
+	branch r3 == 0x00000000 l00402F60
+	v20 = Mem0[r4:word32]
+	r4 = r4 + 4
+	r3 = v20
+	branch r3 == 0x00000000 l00402F60
+	// succ:  l00402F5E l00402F60
+l00402F5E:
+	call r3 (retsize: 0;)
+	call r3 (retsize: 0;)
+	// succ:  l00402F60
+l00402F60:
+	NZCV = cond(r4 - r5)
+	branch Test(ULT,C) l00402F58
+	// succ:  l00402F64 l00402F58
+l00402F64:
+	fp = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	ip = 0x0000C0D8
+	ip = DPB(0x0000C0D8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0D4
+	ip = DPB(0x0000C0D4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0D0
+	ip = DPB(0x0000C0D0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0CC
+	ip = DPB(0x0000C0CC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0C8
+	ip = DPB(0x0000C0C8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 32
+	r7 = sp
+	r3 = 0
+	Mem0[r7:byte] = (byte) r3
+	r3 = 0x00001001
+	Mem0[r7 + 8:word32] = r3
+	Mem0[r7 + 12:word32] = r0
+	r3 = r7
+	Mem0[r7 + 16:word32] = r3
+	r3 = r3 + r7
+	r2 = 6
+	r1 = 0
+	r0 = Mem0[pc + 24:word32]
+	r4 = 0x0000C02C
+	r4 = DPB(0x0000C02C, 0x0040, 16, 16)
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	r0 = (uint32) Mem0[r7:byte]
+	fp = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	ip = 0x0000C0D8
+	ip = DPB(0x0000C0D8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0D4
+	ip = DPB(0x0000C0D4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0D0
+	ip = DPB(0x0000C0D0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0CC
+	ip = DPB(0x0000C0CC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0C8
+	ip = DPB(0x0000C0C8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 32
+	r7 = sp
+	r3 = 0
+	Mem0[r7:byte] = (byte) r3
+	r3 = 0x00001001
+	Mem0[r7 + 8:word32] = r3
+	Mem0[r7 + 12:word32] = r0
+	r3 = r7
+	Mem0[r7 + 16:word32] = r3
+	r3 = r3 + r7
+	r2 = 6
+	r1 = 0
+	r0 = Mem0[pc + 24:word32]
+	r4 = 0x0000C02C
+	r4 = DPB(0x0000C02C, 0x0040, 16, 16)
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	r0 = (uint32) Mem0[r7:byte]
+	// succ:  l00402FD6_thunk_fn00402FDC
+l00402FD6_thunk_fn00402FDC:
+	call fn00402FDC (retsize: 0;)
+	return
+	// succ:  fn00402F08_exit
+fn00402F08_exit:
+
+
+// fn00402F80
+// Return size: 0
+void fn00402F80()
+fn00402F80_entry:
+	// succ:  l00402F80
+l00402F80:
+	sp = fp
+	ip = 0x0000C0D0
+	ip = DPB(0x0000C0D0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00402F88_thunk_fn00402F8C
+l00402F88_thunk_fn00402F8C:
+	call fn00402F8C (retsize: 0;)
+	return
+	// succ:  fn00402F80_exit
+fn00402F80_exit:
+
+
+// fn00402F8C
+// Return size: 0
+void fn00402F8C()
+fn00402F8C_entry:
+	// succ:  l00402F8C
+l00402F8C:
+	sp = fp
+	ip = 0x0000C0CC
+	ip = DPB(0x0000C0CC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0C8
+	ip = DPB(0x0000C0C8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00402FA0_thunk_fn00402FA4
+l00402FA0_thunk_fn00402FA4:
+	call fn00402FA4 (retsize: 0;)
+	return
+	// succ:  fn00402F8C_exit
+fn00402F8C_exit:
+
+
+// fn00402FA4
+// Return size: 0
+void fn00402FA4()
+fn00402FA4_entry:
+	// succ:  l00402FA4
+l00402FA4:
+	sp = fp
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 32
+	r7 = sp
+	r3 = 0
+	Mem0[r7:byte] = (byte) r3
+	r3 = 0x00001001
+	Mem0[r7 + 8:word32] = r3
+	Mem0[r7 + 12:word32] = r0
+	r3 = r7
+	Mem0[r7 + 16:word32] = r3
+	r3 = r3 + r7
+	r2 = 6
+	r1 = 0
+	r0 = Mem0[pc + 24:word32]
+	r4 = 0x0000C02C
+	r4 = DPB(0x0000C02C, 0x0040, 16, 16)
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	r0 = (uint32) Mem0[r7:byte]
+	// succ:  l00402FD8_thunk_fn00402FDC
+l00402FD8_thunk_fn00402FDC:
+	call fn00402FDC (retsize: 0;)
+	return
+	// succ:  fn00402FA4_exit
+fn00402FA4_exit:
+
+
+// fn00402FDC
+// Return size: 0
+void fn00402FDC()
+fn00402FDC_entry:
+	// succ:  l00402FDC
+l00402FDC:
+	sp = sp + 32
+	fp = Mem0[sp + 12:word32]
+	r7 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	call __debugbreak (retsize: 0;)
+	r0 = r1 >> 14
+	NZCV = cond(r0)
+	r5 = r5 ^ r5
+	NZC = cond(r5)
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 32
+	r7 = sp
+	r4 = 0
+	Mem0[r7:byte] = (byte) r4
+	r4 = 0x00001002
+	Mem0[r7 + 8:word32] = r4
+	Mem0[r7 + 12:word32] = r0
+	Mem0[r7 + 16:word32] = r1
+	Mem0[r7 + 20:word32] = r2
+	r2 = r7
+	Mem0[r7 + 24:word32] = r2
+	Mem0[r7 + 28:word32] = r3
+	r3 = r3 + r7
+	r2 = 6
+	r1 = 0
+	r0 = Mem0[pc + 24:word32]
+	r4 = 0x0000C02C
+	r4 = DPB(0x0000C02C, 0x0040, 16, 16)
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	r0 = (uint32) Mem0[r7:byte]
+	// succ:  l00403020_thunk_fn00403026
+l00403020_thunk_fn00403026:
+	call fn00403026 (retsize: 0;)
+	return
+	// succ:  fn00402FDC_exit
+fn00402FDC_exit:
+
+
+// fn00402FE8
+// Return size: 0
+void fn00402FE8()
+fn00402FE8_entry:
+	// succ:  l00402FE8
+l00402FE8:
+	sp = fp
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r7
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	sp = sp - 32
+	r7 = sp
+	r4 = 0
+	Mem0[r7:byte] = (byte) r4
+	r4 = 0x00001002
+	Mem0[r7 + 8:word32] = r4
+	Mem0[r7 + 12:word32] = r0
+	Mem0[r7 + 16:word32] = r1
+	Mem0[r7 + 20:word32] = r2
+	r2 = r7
+	Mem0[r7 + 24:word32] = r2
+	Mem0[r7 + 28:word32] = r3
+	r3 = r3 + r7
+	r2 = 6
+	r1 = 0
+	r0 = Mem0[pc + 24:word32]
+	r4 = 0x0000C02C
+	r4 = DPB(0x0000C02C, 0x0040, 16, 16)
+	r4 = Mem0[r4:word32]
+	call r4 (retsize: 0;)
+	r0 = (uint32) Mem0[r7:byte]
+	// succ:  l00403022_thunk_fn00403026
+l00403022_thunk_fn00403026:
+	call fn00403026 (retsize: 0;)
+	return
+	// succ:  fn00402FE8_exit
+fn00402FE8_exit:
+
+
+// fn00403026
+// Return size: 0
+void fn00403026()
+fn00403026_entry:
+	// succ:  l00403026
+l00403026:
+	sp = sp + 32
+	fp = Mem0[sp + 12:word32]
+	r7 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	r0 = r1 >> 14
+	NZCV = cond(r0)
+	r5 = r5 ^ r5
+	NZC = cond(r5)
+	sp = sp - 24
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = r7
+	Mem0[sp + 20:word32] = fp
+	fp = fp + sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - 356
+	r3 = 0x0000A00C
+	r3 = DPB(0x0000A00C, 0x0040, 16, 16)
+	r6 = r1
+	r7 = r0
+	r5 = Mem0[r3 + 16:word32]
+	NZCV = cond(r5 - -1)
+	branch Test(EQ,Z) l00403102
+	// succ:  l00403052 l00403102
+l00403052:
+	branch r6 != 0x00000000 l0040305E
+	// succ:  l00403054 l0040305E
+l00403054:
+	r3 = 0x00007FA8
+	r3 = DPB(0x00007FA8, 0x0040, 16, 16)
+	goto l004030F8
+	// succ:  l004030F8
+l0040305E:
+	r3 = 0x00007FF4
+	r3 = DPB(0x00007FF4, 0x0040, 16, 16)
+	Mem0[sp + 20:word32] = r2
+	r2 = 0x00008090
+	r2 = DPB(0x00008090, 0x0040, 16, 16)
+	Mem0[sp + 24:word32] = r3
+	r3 = 0x00008000
+	r3 = DPB(0x00008000, 0x0040, 16, 16)
+	r4 = r4 + r6
+	r0 = r0 + sp
+	Mem0[sp + 16:word32] = r3
+	r3 = Mem0[r6 + 12:word32]
+	r1 = 244
+	Mem0[sp + 4:word32] = r4
+	r3 = r3 - 36
+	Mem0[sp + 12:word32] = r3
+	r3 = 0x0000802C
+	r3 = DPB(0x0000802C, 0x0040, 16, 16)
+	Mem0[sp + 8:word32] = r3
+	r3 = 0x00008034
+	r3 = DPB(0x00008034, 0x0040, 16, 16)
+	Mem0[sp:word32] = r3
+	r3 = 0x00008048
+	r3 = DPB(0x00008048, 0x0040, 16, 16)
+	call fn00403E00 (retsize: 0;)
+	r3 = Mem0[r6 + 12:word32]
+	r1 = r1 + sp
+	r0 = r0 + sp
+	r3 = r3 - 36
+	r2 = r4
+	call fn0040331C (retsize: 0;)
+	r0 = r0 + sp
+	call fn00403398 (retsize: 0;)
+	r4 = r0
+	r0 = r0 + sp
+	call fn00403398 (retsize: 0;)
+	r3 = 0x000080A4
+	r3 = DPB(0x000080A4, 0x0040, 16, 16)
+	r2 = 0x000080AC
+	r2 = DPB(0x000080AC, 0x0040, 16, 16)
+	r1 = 244 - r4
+	Mem0[sp + 8:word32] = r3
+	r3 = r3 + sp
+	Mem0[sp + 4:word32] = r3
+	r3 = 0x000080A8
+	r3 = DPB(0x000080A8, 0x0040, 16, 16)
+	r4 = r4 + sp
+	r0 = r0 + r4
+	Mem0[sp:word32] = r3
+	r3 = r3 + sp
+	call fn00403E00 (retsize: 0;)
+	r3 = r3 + sp
+	// succ:  l004030F8
+l004030F8:
+	r2 = 4
+	r1 = r5
+	r0 = r7
+	call fn004033B0 (retsize: 0;)
+	// succ:  l00403102
+l00403102:
+	sp = sp + 356
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 20:word32]
+	r7 = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 24
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 16
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r3
+	Mem0[sp + 8:word32] = r4
+	Mem0[sp + 12:word32] = fp
+	fp = fp + sp
+	NZCV = cond(r1 - 4)
+	branch Test(UGT,ZC) l004031D2
+	// succ:  l004031A8 l004031D2
+l004031A8:
+	r3 = 0x0000A00C
+	r3 = DPB(0x0000A00C, 0x0040, 16, 16)
+	r4 = Mem0[r3 + r1:word32]
+	r3 = 0x00007B3C
+	r3 = DPB(0x00007B3C, 0x0040, 16, 16)
+	NZCV = cond(r4 - -1)
+	r3 = Mem0[r3 + r1:word32]
+	branch Test(EQ,Z) l004031E8
+	// succ:  l004031C6 l004031E8
+l004031C6:
+	r2 = r1
+	r1 = r4
+	call fn004033B0 (retsize: 0;)
+	fp = Mem0[sp + 12:word32]
+	r4 = Mem0[sp + 8:word32]
+	r3 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	// succ:  l004031D2
+l004031D2:
+	r3 = 0x00007B3C
+	r3 = DPB(0x00007B3C, 0x0040, 16, 16)
+	r4 = 1
+	r1 = 5
+	r3 = Mem0[r3 + 20:word32]
+	r2 = r1
+	r1 = r4
+	call fn004033B0 (retsize: 0;)
+	// succ:  l004031E8
+l004031E8:
+	fp = Mem0[sp + 12:word32]
+	r4 = Mem0[sp + 8:word32]
+	r3 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 16
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 28
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = r7
+	Mem0[sp + 20:word32] = r8
+	Mem0[sp + 24:word32] = fp
+	fp = fp + sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - sp
+	r3 = 0x0000A00C
+	r3 = DPB(0x0000A00C, 0x0040, 16, 16)
+	r4 = r1
+	r8 = r0
+	r7 = Mem0[r3 + 8:word32]
+	NZCV = cond(r7 - -1)
+	branch Test(EQ,Z) l00403298
+	// succ:  l00403228 l00403298
+l00403228:
+	r3 = (int32) Mem0[r1:int8]
+	branch r3 == 0x00000000 l00403284
+	// succ:  l0040322E l00403284
+l0040322E:
+	r0 = r1
+	call fn00403398 (retsize: 0;)
+	r3 = r3 + r0
+	NZCV = cond(r3 - 1024)
+	branch Test(UGT,ZC) l00403284
+	// succ:  l0040323E l00403284
+l0040323E:
+	r5 = 0x00007B6C
+	r5 = DPB(0x00007B6C, 0x0040, 16, 16)
+	r0 = sp
+	r6 = sp
+	r1 = r5
+	call fn00403EAC (retsize: 0;)
+	r0 = sp
+	r2 = r2 - r0
+	// succ:  l00403254
+l00403254:
+	r2 = r2 + 1
+	r3 = (uint32) Mem0[r2 + 1:byte]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00403254
+	// succ:  l0040325C l00403254
+l0040325C:
+	v20 = (uint32) Mem0[r4:byte]
+	r4 = r4 + 1
+	r3 = v20
+	NZCV = cond(r3 - 0)
+	Mem0[r2:byte] = (byte) r3
+	r2 = r2 + 1
+	branch Test(NE,Z) l0040325C
+	// succ:  l00403268 l0040325C
+l00403268:
+	r1 = r1 + r5
+	r2 = r2 - r0
+	// succ:  l0040326E
+l0040326E:
+	r2 = r2 + 1
+	r3 = (uint32) Mem0[r2 + 1:byte]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l0040326E
+	// succ:  l00403276 l0040326E
+l00403276:
+	v21 = (uint32) Mem0[r1:byte]
+	r1 = r1 + 1
+	r3 = v21
+	NZCV = cond(r3 - 0)
+	Mem0[r2:byte] = (byte) r3
+	r2 = r2 + 1
+	branch Test(NE,Z) l00403276
+	// succ:  l00403282 l00403276
+l00403282:
+	goto l0040328C
+	// succ:  l0040328C
+l00403284:
+	r6 = 0x00007F78
+	r6 = DPB(0x00007F78, 0x0040, 16, 16)
+	// succ:  l0040328C
+l0040328C:
+	r3 = r6
+	r2 = 2
+	r1 = r7
+	r0 = r8
+	call fn004033B0 (retsize: 0;)
+	// succ:  l00403298
+l00403298:
+	sp = sp + sp
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 24:word32]
+	r8 = Mem0[sp + 20:word32]
+	r7 = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 28
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 48
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r1
+	Mem0[sp + 8:word32] = r2
+	Mem0[sp + 12:word32] = r3
+	Mem0[sp + 16:word32] = r4
+	Mem0[sp + 20:word32] = r5
+	Mem0[sp + 24:word32] = r6
+	Mem0[sp + 28:word32] = r7
+	Mem0[sp + 32:word32] = r8
+	Mem0[sp + 36:word32] = r9
+	Mem0[sp + 40:word32] = r10
+	Mem0[sp + 44:word32] = fp
+	fp = fp + sp
+	r6 = r3
+	r5 = 0
+	r7 = 0
+	r3 = r3 - r2
+	Mem0[sp:word32] = r3
+	r10 = r3
+	r8 = r1
+	Mem0[sp + 4:word32] = r0
+	r9 = r0
+	// succ:  l00403334_thunk_fn00403336
+l00403334_thunk_fn00403336:
+	call fn00403336 (retsize: 0;)
+	return
+	// succ:  fn00403026_exit
+fn00403026_exit:
+
+
+// fn0040331C
+// Return size: 0
+void fn0040331C()
+fn0040331C_entry:
+	// succ:  l0040331C
+l0040331C:
+	sp = fp
+	sp = sp - 48
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r1
+	Mem0[sp + 8:word32] = r2
+	Mem0[sp + 12:word32] = r3
+	Mem0[sp + 16:word32] = r4
+	Mem0[sp + 20:word32] = r5
+	Mem0[sp + 24:word32] = r6
+	Mem0[sp + 28:word32] = r7
+	Mem0[sp + 32:word32] = r8
+	Mem0[sp + 36:word32] = r9
+	Mem0[sp + 40:word32] = r10
+	Mem0[sp + 44:word32] = fp
+	fp = fp + sp
+	r6 = r3
+	r5 = 0
+	r7 = 0
+	r3 = r3 - r2
+	Mem0[sp:word32] = r3
+	r10 = r3
+	r8 = r1
+	Mem0[sp + 4:word32] = r0
+	r9 = r0
+	// succ:  l00403334_thunk_fn00403336
+l00403334_thunk_fn00403336:
+	call fn00403336 (retsize: 0;)
+	return
+	// succ:  fn0040331C_exit
+fn0040331C_exit:
+
+
+// fn00403336
+// Return size: 0
+void fn00403336()
+fn00403336_entry:
+	// succ:  l00403336
+l00403336:
+	NZCV = cond(r6 - 16)
+	branch Test(UGE,C) l0040333C
+	// succ:  l0040333A_1 l0040333C
+l0040333A_1:
+	r2 = r6
+	// succ:  l0040333C
+l0040333C:
+	branch Test(ULT,C) l00403340
+	// succ:  l0040333E_2 l00403340
+l0040333E_2:
+	r2 = 16
+	// succ:  l00403340
+l00403340:
+	NZCV = cond(r5 - r2)
+	branch Test(UGE,C) l00403368
+	// succ:  l00403344 l00403368
+l00403344:
+	r4 = (uint32) Mem0[r10 + r9:byte]
+	r2 = 0x00007FA0
+	r2 = DPB(0x00007FA0, 0x0040, 16, 16)
+	r1 = 49 - r7
+	r3 = r4
+	r0 = r0 + r7
+	call fn00403E00 (retsize: 0;)
+	r5 = r5 + r5
+	r7 = r7 + r7
+	Mem0[r9:byte] = (byte) r4
+	r9 = r9 + 1
+	goto l00403336
+	// succ:  l00403336
+l00403368:
+	r10 = Mem0[sp + 4:word32]
+	r2 = 0
+	r3 = r3 + r5
+	Mem0[r5 + r10:byte] = (byte) r2
+	Mem0[r3 + r8:byte] = (byte) r2
+	fp = Mem0[sp + 44:word32]
+	r10 = Mem0[sp + 40:word32]
+	r9 = Mem0[sp + 36:word32]
+	r8 = Mem0[sp + 32:word32]
+	r7 = Mem0[sp + 28:word32]
+	r6 = Mem0[sp + 24:word32]
+	r5 = Mem0[sp + 20:word32]
+	r4 = Mem0[sp + 16:word32]
+	r3 = Mem0[sp + 12:word32]
+	r2 = Mem0[sp + 8:word32]
+	r1 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 48
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00403396_thunk_fn00403398
+l00403396_thunk_fn00403398:
+	call fn00403398 (retsize: 0;)
+	return
+	// succ:  fn00403336_exit
+fn00403336_exit:
+
+
+// fn00403398
+// Return size: 0
+void fn00403398()
+fn00403398_entry:
+	// succ:  l00403398
+l00403398:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r2 = r0
+	// succ:  l004033A0
+l004033A0:
+	v8 = (int32) Mem0[r2:int8]
+	r2 = r2 + 1
+	r3 = v8
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l004033A0
+	// succ:  l004033A8 l004033A0
+l004033A8:
+	r3 = r3 - r2
+	r0 = r0 - r3
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	// succ:  l004033AC_thunk_fn004033B0
+l004033AC_thunk_fn004033B0:
+	call fn004033B0 (retsize: 0;)
+	return
+	// succ:  fn00403398_exit
+fn00403398_exit:
+
+
+// fn004033B0
+// Return size: 0
+void fn004033B0()
+fn004033B0_entry:
+	// succ:  l004033B0
+l004033B0:
+	sp = fp
+	sp = sp - 36
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = r7
+	Mem0[sp + 20:word32] = r8
+	Mem0[sp + 24:word32] = r9
+	Mem0[sp + 28:word32] = r10
+	Mem0[sp + 32:word32] = fp
+	fp = fp + sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - 3656
+	r8 = r3
+	Mem0[sp + 20:word32] = r3
+	r9 = r2
+	r10 = r1
+	r6 = r0
+	r7 = 0
+	call fn00402848 (retsize: 0;)
+	r5 = r0
+	branch r5 != 0x00000000 l004033DC
+	// succ:  l004033D4 l004033DC
+l004033D4:
+	r0 = r6
+	call fn00402834 (retsize: 0;)
+	r7 = r0
+	// succ:  l004033DC
+l004033DC:
+	r4 = 0x0000C028
+	r4 = DPB(0x0000C028, 0x0040, 16, 16)
+	r3 = 0
+	Mem0[sp + 4:word32] = r3
+	r4 = Mem0[r4:word32]
+	Mem0[sp:word32] = r3
+	r3 = ~r3
+	r2 = r8
+	r1 = 0
+	r0 = 0x0000FDE9
+	call r4 (retsize: 0;)
+	NZCV = cond(r0 - 512)
+	branch Test(UGE,C) l00403426
+	// succ:  l004033FE l00403426
+l004033FE:
+	r4 = 0x0000C028
+	r4 = DPB(0x0000C028, 0x0040, 16, 16)
+	r3 = sp + 2632
+	Mem0[sp + 4:word32] = r0
+	r4 = Mem0[r4:word32]
+	Mem0[sp:word32] = r3
+	r3 = ~0x00000000
+	r2 = r8
+	r1 = 0
+	r0 = 0x0000FDE9
+	call r4 (retsize: 0;)
+	branch r0 == 0x00000000 l00403426
+	// succ:  l00403420 l00403426
+l00403420:
+	r4 = sp + 2632
+	goto l0040342E
+	// succ:  l0040342E
+l00403426:
+	r4 = 0x00007E80
+	r4 = DPB(0x00007E80, 0x0040, 16, 16)
+	// succ:  l0040342E
+l0040342E:
+	r0 = 0x00001002
+	call fn00402FA4 (retsize: 0;)
+	branch r0 == 0x00000000 l00403456
+	// succ:  l00403438 l00403456
+l00403438:
+	r3 = 0x00007B54
+	r3 = DPB(0x00007B54, 0x0040, 16, 16)
+	r2 = r6
+	r0 = r9
+	r1 = Mem0[r3 + r9:word32]
+	r3 = r4
+	call fn00402FE8 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l00403530
+	// succ:  l00403452 l00403530
+l00403452:
+	r3 = 0
+	goto l00403458
+	// succ:  l00403458
+l00403456:
+	r3 = 1
+	// succ:  l00403458
+l00403458:
+	branch r7 != 0x00000000 l0040345E
+	// succ:  l0040345A l0040345E
+l0040345A:
+	NZCV = cond(r5 - 0)
+	branch Test(EQ,Z) l0040352E
+	// succ:  l0040345E l0040352E
+l0040345E:
+	branch r3 == 0x00000000 l00403470
+	// succ:  l00403460 l00403470
+l00403460:
+	r3 = 0x0000C030
+	r3 = DPB(0x0000C030, 0x0040, 16, 16)
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l0040352E
+	// succ:  l00403470 l0040352E
+l00403470:
+	r3 = r3 + sp
+	Mem0[sp:word32] = r3
+	r2 = 260
+	r3 = r3 + sp
+	r1 = r1 + sp
+	r0 = r0 - r6
+	Mem0[sp + 4:word32] = r2
+	call fn00403B20 (retsize: 0;)
+	branch r5 == 0x00000000 l004034A2
+	// succ:  l00403486 l004034A2
+l00403486:
+	r3 = 0x00007EF0
+	r3 = DPB(0x00007EF0, 0x0040, 16, 16)
+	r2 = Mem0[sp + 16:word32]
+	r0 = r10
+	Mem0[sp:word32] = r3
+	r3 = r3 + sp
+	r1 = r1 + sp
+	Mem0[sp + 8:word32] = r4
+	Mem0[sp + 4:word32] = r9
+	call r5 (retsize: 0;)
+	goto l0040352A
+	// succ:  l0040352A
+l004034A2:
+	r4 = 0x0000C024
+	r4 = DPB(0x0000C024, 0x0040, 16, 16)
+	r3 = 0
+	r2 = r2 + sp
+	r4 = Mem0[r4:word32]
+	r6 = 0x00007F30
+	r6 = DPB(0x00007F30, 0x0040, 16, 16)
+	Mem0[sp + 12:word32] = r3
+	Mem0[sp + 8:word32] = r3
+	r8 = 0x0000030A
+	Mem0[sp:word32] = r2
+	r3 = ~r3
+	r2 = r2 + sp
+	r1 = 0
+	r0 = 0x0000FDE9
+	Mem0[sp + 4:word32] = r8
+	call r4 (retsize: 0;)
+	branch r0 == 0x00000000 l004034DA
+	// succ:  l004034D6 l004034DA
+l004034D6:
+	r6 = r6 + sp
+	// succ:  l004034DA
+l004034DA:
+	r4 = 0x0000C024
+	r4 = DPB(0x0000C024, 0x0040, 16, 16)
+	r3 = 0
+	r2 = r2 + sp
+	r4 = Mem0[r4:word32]
+	r5 = 0x00007F44
+	r5 = DPB(0x00007F44, 0x0040, 16, 16)
+	Mem0[sp + 12:word32] = r3
+	Mem0[sp + 8:word32] = r3
+	Mem0[sp:word32] = r2
+	r3 = ~r3
+	r2 = r2 + sp
+	r1 = 0
+	r0 = 0x0000FDE9
+	Mem0[sp + 4:word32] = r8
+	call r4 (retsize: 0;)
+	branch r0 == 0x00000000 l0040350E
+	// succ:  l0040350A l0040350E
+l0040350A:
+	r5 = r5 + sp
+	// succ:  l0040350E
+l0040350E:
+	r2 = 0x00007F58
+	r2 = DPB(0x00007F58, 0x0040, 16, 16)
+	r3 = Mem0[sp + 20:word32]
+	r1 = r6
+	Mem0[sp:word32] = r2
+	r2 = Mem0[sp + 16:word32]
+	Mem0[sp + 8:word32] = r3
+	r3 = r5
+	r0 = r10
+	Mem0[sp + 4:word32] = r9
+	call r7 (retsize: 0;)
+	// succ:  l0040352A
+l0040352A:
+	NZCV = cond(r0 - 1)
+	branch Test(NE,Z) l00403530
+	// succ:  l0040352E l00403530
+l0040352E:
+	call __debugbreak (retsize: 0;)
+	// succ:  l00403530
+l00403530:
+	sp = sp + 3656
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 32:word32]
+	r10 = Mem0[sp + 28:word32]
+	r9 = Mem0[sp + 24:word32]
+	r8 = Mem0[sp + 20:word32]
+	r7 = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 36
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 24
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = r7
+	Mem0[sp + 20:word32] = fp
+	fp = fp + sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - 1028
+	r3 = 0x0000A00C
+	r3 = DPB(0x0000A00C, 0x0040, 16, 16)
+	r4 = r0
+	r7 = Mem0[r3 + 12:word32]
+	NZCV = cond(r7 - -1)
+	branch Test(EQ,Z) l00403672
+	// succ:  l00403606 l00403672
+l00403606:
+	branch r4 == 0x00000000 l0040365C
+	// succ:  l00403608 l0040365C
+l00403608:
+	call fn00403398 (retsize: 0;)
+	r3 = r3 + r0
+	NZCV = cond(r3 - 1024)
+	branch Test(UGT,ZC) l0040365C
+	// succ:  l00403616 l0040365C
+l00403616:
+	r5 = 0x00007B9C
+	r5 = DPB(0x00007B9C, 0x0040, 16, 16)
+	r0 = sp
+	r6 = sp
+	r1 = r5
+	call fn00403EAC (retsize: 0;)
+	r0 = sp
+	r2 = r2 - r0
+	// succ:  l0040362C
+l0040362C:
+	r2 = r2 + 1
+	r3 = (uint32) Mem0[r2 + 1:byte]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l0040362C
+	// succ:  l00403634 l0040362C
+l00403634:
+	v21 = (uint32) Mem0[r4:byte]
+	r4 = r4 + 1
+	r3 = v21
+	NZCV = cond(r3 - 0)
+	Mem0[r2:byte] = (byte) r3
+	r2 = r2 + 1
+	branch Test(NE,Z) l00403634
+	// succ:  l00403640 l00403634
+l00403640:
+	r1 = r1 + r5
+	r2 = r2 - r0
+	// succ:  l00403646
+l00403646:
+	r2 = r2 + 1
+	r3 = (uint32) Mem0[r2 + 1:byte]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00403646
+	// succ:  l0040364E l00403646
+l0040364E:
+	v22 = (uint32) Mem0[r1:byte]
+	r1 = r1 + 1
+	r3 = v22
+	NZCV = cond(r3 - 0)
+	Mem0[r2:byte] = (byte) r3
+	r2 = r2 + 1
+	branch Test(NE,Z) l0040364E
+	// succ:  l0040365A l0040364E
+l0040365A:
+	goto l00403664
+	// succ:  l00403664
+l0040365C:
+	r6 = 0x000080B8
+	r6 = DPB(0x000080B8, 0x0040, 16, 16)
+	// succ:  l00403664
+l00403664:
+	r0 = Mem0[sp + 1052:word32]
+	r3 = r6
+	r2 = 3
+	r1 = r7
+	call fn004033B0 (retsize: 0;)
+	// succ:  l00403672
+l00403672:
+	sp = sp + 1028
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 20:word32]
+	r7 = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 24
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l004036F6_thunk_fn004036F8
+l004036F6_thunk_fn004036F8:
+	call fn004036F8 (retsize: 0;)
+	return
+	// succ:  fn004033B0_exit
+fn004033B0_exit:
+
+
+// fn004036F8
+// Return size: 0
+void fn004036F8()
+fn004036F8_entry:
+	// succ:  l004036F8
+l004036F8:
+	sp = fp
+	ip = 0x0000C090
+	ip = DPB(0x0000C090, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C094
+	ip = DPB(0x0000C094, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C098
+	ip = DPB(0x0000C098, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C09C
+	ip = DPB(0x0000C09C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0A0
+	ip = DPB(0x0000C0A0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C10C
+	ip = DPB(0x0000C10C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - 1044
+	r2 = 0x0000A170
+	r2 = DPB(0x0000A170, 0x0040, 16, 16)
+	r3 = (uint32) Mem0[r2:byte]
+	branch r3 == 0x00000000 l00403768
+	// succ:  l00403758_thunk_fn0040375A l00403758_thunk_fn00403768
+l00403758_thunk_fn0040375A:
+	call fn0040375A (retsize: 0;)
+	return
+	// succ:  fn004036F8_exit
+l00403758_thunk_fn00403768:
+	call fn00403768 (retsize: 0;)
+	return
+	// succ:  fn004036F8_exit
+fn004036F8_exit:
+
+
+// fn00403710
+// Return size: 0
+void fn00403710()
+fn00403710_entry:
+	// succ:  l00403710
+l00403710:
+	sp = fp
+	ip = 0x0000C098
+	ip = DPB(0x0000C098, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C09C
+	ip = DPB(0x0000C09C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0A0
+	ip = DPB(0x0000C0A0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C10C
+	ip = DPB(0x0000C10C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l0040373C_thunk_fn00403740
+l0040373C_thunk_fn00403740:
+	call fn00403740 (retsize: 0;)
+	return
+	// succ:  fn00403710_exit
+fn00403710_exit:
+
+
+// fn0040371C
+// Return size: 0
+void fn0040371C()
+fn0040371C_entry:
+	// succ:  l0040371C
+l0040371C:
+	sp = fp
+	ip = 0x0000C09C
+	ip = DPB(0x0000C09C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0A0
+	ip = DPB(0x0000C0A0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00403730_thunk_fn00403734
+l00403730_thunk_fn00403734:
+	call fn00403734 (retsize: 0;)
+	return
+	// succ:  fn0040371C_exit
+fn0040371C_exit:
+
+
+// fn00403734
+// Return size: 0
+void fn00403734()
+fn00403734_entry:
+	// succ:  l00403734
+l00403734:
+	sp = fp
+	ip = 0x0000C10C
+	ip = DPB(0x0000C10C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l0040373C_thunk_fn00403740
+l0040373C_thunk_fn00403740:
+	call fn00403740 (retsize: 0;)
+	return
+	// succ:  fn00403734_exit
+fn00403734_exit:
+
+
+// fn00403740
+// Return size: 0
+void fn00403740()
+fn00403740_entry:
+	// succ:  l00403740
+l00403740:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - 1044
+	r2 = 0x0000A170
+	r2 = DPB(0x0000A170, 0x0040, 16, 16)
+	r3 = (uint32) Mem0[r2:byte]
+	branch r3 == 0x00000000 l00403758_thunk_fn00403768
+	// succ:  l00403758_thunk_fn0040375A l00403758_thunk_fn00403768
+l00403758_thunk_fn0040375A:
+	call fn0040375A (retsize: 0;)
+	return
+	// succ:  fn00403740_exit l00403758_thunk_fn0040375A
+l00403758_thunk_fn0040375A:
+	call fn0040375A (retsize: 0;)
+	return
+	// succ:  fn00403740_exit
+l00403758_thunk_fn00403768:
+	call fn00403768 (retsize: 0;)
+	return
+	// succ:  fn00403740_exit
+fn00403740_exit:
+
+
+// fn0040375A
+// Return size: 0
+void fn0040375A()
+fn0040375A_entry:
+	// succ:  l0040375A
+l0040375A:
+	r0 = 0
+	// succ:  l0040375A_thunk_fn0040375C
+l0040375A_thunk_fn0040375C:
+	call fn0040375C (retsize: 0;)
+	return
+	// succ:  fn0040375A_exit
+fn0040375A_exit:
+
+
+// fn0040375C
+// Return size: 0
+void fn0040375C()
+fn0040375C_entry:
+	// succ:  l0040375C
+l0040375C:
+	sp = fp
+	sp = sp + 1044
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	goto l00403764_thunk_fn00403768
+	// succ:  l00403764_thunk_fn00403768
+l0040375C:
+	sp = sp + 1044
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	goto l00403764_thunk_fn00403768
+	// succ:  l00403764_thunk_fn00403768
+l00403764_thunk_fn00403768:
+	call fn00403768 (retsize: 0;)
+	return
+	// succ:  fn0040375C_exit
+l00403764_thunk_fn00403768:
+	call fn00403768 (retsize: 0;)
+	return
+	// succ:  fn0040375C_exit
+fn0040375C_exit:
+
+
+// fn00403768
+// Return size: 0
+void fn00403768()
+fn00403768_entry:
+	// succ:  l00403768
+l00403768:
+	r3 = 1
+	Mem0[r2:byte] = (byte) r3
+	call fn0040384C (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l00403772_thunk_fn0040375C
+	goto l00403774
+	// succ:  l00403774 l00403772_thunk_fn0040375C
+l00403772_thunk_fn0040375C:
+	call fn0040375C (retsize: 0;)
+	return
+	// succ:  fn00403768_exit
+l00403774:
+	r3 = 0x0000C004
+	r3 = DPB(0x0000C004, 0x0040, 16, 16)
+	r0 = 0x0000812C
+	r0 = DPB(0x0000812C, 0x0040, 16, 16)
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	branch r0 == 0x00000000 l004037C4
+	// succ:  l0040378A l004037C4
+l0040378A:
+	r3 = 0x0000C008
+	r3 = DPB(0x0000C008, 0x0040, 16, 16)
+	r2 = 260
+	r1 = sp
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	branch r0 == 0x00000000 l004037C4
+	// succ:  l0040379E l004037C4
+l0040379E:
+	r1 = r1 + sp
+	r0 = sp
+	r2 = 260
+	call fn00403A14 (retsize: 0;)
+	branch r0 == 0x00000000 l004037C4
+	// succ:  l004037AC l004037C4
+l004037AC:
+	r3 = 0x0000C050
+	r3 = DPB(0x0000C050, 0x0040, 16, 16)
+	r2 = 2304
+	r1 = 0
+	r3 = Mem0[r3:word32]
+	r0 = r0 + sp
+	call r3 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l004037C2_thunk_fn0040375C
+	goto l004037C4
+	// succ:  l004037C4 l004037C2_thunk_fn0040375C
+l004037C2_thunk_fn0040375C:
+	call fn0040375C (retsize: 0;)
+	return
+	// succ:  fn00403768_exit
+l004037C4:
+	r3 = 0x0000C050
+	r3 = DPB(0x0000C050, 0x0040, 16, 16)
+	r0 = 0x00008250
+	r0 = DPB(0x00008250, 0x0040, 16, 16)
+	r2 = 2560
+	r3 = Mem0[r3:word32]
+	r1 = 0
+	call r3 (retsize: 0;)
+	sp = sp + 1044
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l0040384A_thunk_fn0040384C
+l0040384A_thunk_fn0040384C:
+	call fn0040384C (retsize: 0;)
+	return
+	// succ:  fn00403768_exit
+fn00403768_exit:
+
+
+// fn0040384C
+// Return size: 0
+void fn0040384C()
+fn0040384C_entry:
+	// succ:  l0040384C
+l0040384C:
+	sp = fp
+	sp = sp - 24
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = r7
+	Mem0[sp + 20:word32] = fp
+	fp = fp + sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - sp
+	r3 = 0x0000C050
+	r3 = DPB(0x0000C050, 0x0040, 16, 16)
+	r0 = 0x00008148
+	r0 = DPB(0x00008148, 0x0040, 16, 16)
+	r2 = 2048
+	r3 = Mem0[r3:word32]
+	r1 = 0
+	call r3 (retsize: 0;)
+	r5 = r0
+	branch r5 != 0x00000000 l004038A6
+	// succ:  l0040387A l004038A6
+l0040387A:
+	r3 = 0x0000C020
+	r3 = DPB(0x0000C020, 0x0040, 16, 16)
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	NZCV = cond(r0 - 87)
+	branch Test(NE,Z) l0040391C
+	// succ:  l0040388A l0040391C
+l0040388A:
+	r3 = 0x0000C050
+	r3 = DPB(0x0000C050, 0x0040, 16, 16)
+	r0 = 0x00008148
+	r0 = DPB(0x00008148, 0x0040, 16, 16)
+	r2 = 0
+	r3 = Mem0[r3:word32]
+	r1 = 0
+	call r3 (retsize: 0;)
+	r5 = r0
+	branch r5 == 0x00000000 l0040391C
+	// succ:  l004038A6 l0040391C
+l004038A6:
+	r3 = 0x0000C000
+	r3 = DPB(0x0000C000, 0x0040, 16, 16)
+	r1 = 0x00008190
+	r1 = DPB(0x00008190, 0x0040, 16, 16)
+	r0 = r5
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r4 = r0
+	branch r4 == 0x00000000 l0040391C
+	// succ:  l004038C0 l0040391C
+l004038C0:
+	r3 = 0x0000C000
+	r3 = DPB(0x0000C000, 0x0040, 16, 16)
+	r1 = 0x000081A0
+	r1 = DPB(0x000081A0, 0x0040, 16, 16)
+	r0 = r5
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r6 = r0
+	branch r6 == 0x00000000 l0040391C
+	// succ:  l004038DA l0040391C
+l004038DA:
+	r3 = 0x0000C000
+	r3 = DPB(0x0000C000, 0x0040, 16, 16)
+	r1 = 0x000081B4
+	r1 = DPB(0x000081B4, 0x0040, 16, 16)
+	r0 = r5
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r7 = r0
+	branch r7 == 0x00000000 l0040391C
+	// succ:  l004038F4 l0040391C
+l004038F4:
+	r1 = 0x000081C0
+	r1 = DPB(0x000081C0, 0x0040, 16, 16)
+	r3 = r3 + sp
+	r0 = -2147483648
+	Mem0[sp:word32] = r3
+	r3 = 1
+	r2 = 0
+	r0 = r0 + r0
+	call r4 (retsize: 0;)
+	branch r0 == 0x00000000 l0040392A
+	// succ:  l0040390E l0040392A
+l0040390E:
+	r3 = 0x0000C00C
+	r3 = DPB(0x0000C00C, 0x0040, 16, 16)
+	r0 = r5
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l0040391C
+l0040391C:
+	r0 = 0
+	sp = sp + sp
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 20:word32]
+	r7 = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 24
+	// succ:  l0040392A
+l0040392A:
+	r3 = 520
+	Mem0[sp + 8:word32] = r3
+	r3 = r3 + sp
+	Mem0[sp + 4:word32] = r3
+	r1 = 0x0000821C
+	r1 = DPB(0x0000821C, 0x0040, 16, 16)
+	r0 = Mem0[sp + 12:word32]
+	r3 = r3 + sp
+	Mem0[sp:word32] = r3
+	r3 = r3 + sp
+	r2 = 0
+	call r6 (retsize: 0;)
+	r4 = r0
+	r0 = Mem0[sp + 12:word32]
+	call r7 (retsize: 0;)
+	r3 = 0x0000C00C
+	r3 = DPB(0x0000C00C, 0x0040, 16, 16)
+	r0 = r5
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	NZCV = cond(r4 - 0)
+	branch Test(NE,Z) l0040391C
+	// succ:  l00403960 l0040391C
+l00403960:
+	r3 = Mem0[sp + 16:word32]
+	NZCV = cond(r3 - 1)
+	branch Test(NE,Z) l0040391C
+	// succ:  l00403966 l0040391C
+l00403966:
+	r3 = Mem0[sp + 8:word32]
+	NZC = cond(r3 & 0x00000001)
+	branch Test(NE,Z) l0040391C
+	// succ:  l0040396E l0040391C
+l0040396E:
+	r2 = r3 >>u 1
+	NZCV = cond(r2)
+	NZCV = cond(r2 - 2)
+	branch Test(ULT,C) l0040391C
+	// succ:  l00403974 l0040391C
+l00403974:
+	r2 = r2 - r2
+	r3 = r3 + sp
+	r1 = r1 + r3
+	r3 = (uint32) Mem0[r3 + r2:word16]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l0040391C
+	// succ:  l00403984 l0040391C
+l00403984:
+	r3 = (uint32) Mem0[r1 - 2:word16]
+	NZCV = cond(r3 - 92)
+	branch Test(EQ,Z) l00403992
+	// succ:  l0040398C l00403992
+l0040398C:
+	r3 = 92
+	Mem0[r1:word16] = (word16) r3
+	r2 = r2 + r2
+	// succ:  l00403992
+l00403992:
+	r3 = -1 - r2
+	NZCV = cond(r3 - 18)
+	branch Test(ULT,C) l0040391C
+	// succ:  l0040399A l0040391C
+l0040399A:
+	r3 = r3 + r2
+	NZCV = cond(r3 - 260)
+	branch Test(UGT,ZC) l0040391C
+	// succ:  l004039A4 l0040391C
+l004039A4:
+	r3 = r3 + sp
+	r2 = r2 + r3
+	r1 = 0x00008108
+	r1 = DPB(0x00008108, 0x0040, 16, 16)
+	r0 = r0 + r2
+	// succ:  l004039B6
+l004039B6:
+	v19 = (uint32) Mem0[r1:word16]
+	r1 = r1 + 2
+	r3 = v19
+	Mem0[r2:word16] = (word16) r3
+	r2 = r2 + 2
+	NZCV = cond(r2 - r0)
+	branch Test(NE,Z) l004039B6
+	// succ:  l004039C2 l004039B6
+l004039C2:
+	r3 = 0x0000C050
+	r3 = DPB(0x0000C050, 0x0040, 16, 16)
+	r1 = 0
+	r2 = 2304
+	r3 = Mem0[r3:word32]
+	r0 = r0 + sp
+	call r3 (retsize: 0;)
+	sp = sp + sp
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 20:word32]
+	r7 = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 24
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 20
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = fp
+	fp = fp + sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - sp
+	r3 = r3 + sp
+	Mem0[sp + 12:word32] = r3
+	r3 = r3 + sp
+	Mem0[sp + 4:word32] = r3
+	r5 = r2
+	r6 = r1
+	r4 = 256
+	r3 = r3 + sp
+	r1 = r1 + sp
+	r2 = 3
+	Mem0[sp + 16:word32] = r4
+	Mem0[sp + 8:word32] = r4
+	Mem0[sp:word32] = r4
+	call fn00403ED0 (retsize: 0;)
+	branch r0 == 0x00000000 l00403A56
+	goto l00403A46_thunk_fn00403A56
+	// succ:  l00403A46_thunk_fn00403A56 l00403A46_thunk_fn00403A56
+l00403A46_thunk_fn00403A56:
+	call fn00403A56 (retsize: 0;)
+	return
+	// succ:  fn0040384C_exit
+l00403A46_thunk_fn00403A56:
+	call fn00403A56 (retsize: 0;)
+	return
+	// succ:  fn0040384C_exit
+fn0040384C_exit:
+
+
+// fn00403A14
+// Return size: 0
+void fn00403A14()
+fn00403A14_entry:
+	// succ:  l00403A14
+l00403A14:
+	sp = fp
+	sp = sp - 20
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = fp
+	fp = fp + sp
+	call fn0040103C (retsize: 0;)
+	sp = sp - sp
+	r3 = r3 + sp
+	Mem0[sp + 12:word32] = r3
+	r3 = r3 + sp
+	Mem0[sp + 4:word32] = r3
+	r5 = r2
+	r6 = r1
+	r4 = 256
+	r3 = r3 + sp
+	r1 = r1 + sp
+	r2 = 3
+	Mem0[sp + 16:word32] = r4
+	Mem0[sp + 8:word32] = r4
+	Mem0[sp:word32] = r4
+	call fn00403ED0 (retsize: 0;)
+	branch r0 == 0x00000000 l00403A46_thunk_fn00403A56
+	// succ:  l00403A46_thunk_fn00403A48 l00403A46_thunk_fn00403A56
+l00403A46_thunk_fn00403A48:
+	call fn00403A48 (retsize: 0;)
+	return
+	// succ:  fn00403A14_exit l00403A46_thunk_fn00403A48
+l00403A46_thunk_fn00403A48:
+	call fn00403A48 (retsize: 0;)
+	return
+	// succ:  fn00403A14_exit
+l00403A46_thunk_fn00403A56:
+	call fn00403A56 (retsize: 0;)
+	return
+	// succ:  fn00403A14_exit
+fn00403A14_exit:
+
+
+// fn00403A48
+// Return size: 0
+void fn00403A48()
+fn00403A48_entry:
+	call fn00403A56 (retsize: 0;)
+	return
+	// succ:  l00403A48 fn00403A48_exit
+l00403A48:
+	r0 = 0
+	sp = sp + sp
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 20
+	// succ:  l00403A52_thunk_fn00403A56
+l00403A52_thunk_fn00403A56:
+	call fn00403A56 (retsize: 0;)
+	return
+	// succ:  fn00403A48_exit
+fn00403A48_exit:
+
+
+// fn00403A56
+// Return size: 0
+void fn00403A56()
+fn00403A56_entry:
+	// succ:  l00403A56
+l00403A56:
+	r2 = 0x0000823C
+	r2 = DPB(0x0000823C, 0x0040, 16, 16)
+	r0 = r0 + sp
+	r1 = 9
+	call fn00403EB8 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l00403A48
+	goto l00403A6A
+	// succ:  l00403A6A l00403A68_thunk_fn00403A48
+l00403A68_thunk_fn00403A48:
+	call fn00403A48 (retsize: 0;)
+	return
+	// succ:  fn00403A56_exit
+l00403A6A:
+	r2 = 0x00008234
+	r2 = DPB(0x00008234, 0x0040, 16, 16)
+	r0 = r0 + sp
+	r1 = 4
+	call fn00403EB8 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l00403A48
+	goto l00403A7E
+	// succ:  l00403A7E l00403A7C_thunk_fn00403A48
+l00403A7C_thunk_fn00403A48:
+	call fn00403A48 (retsize: 0;)
+	return
+	// succ:  fn00403A56_exit
+l00403A7E:
+	r3 = r3 + sp
+	Mem0[sp + 4:word32] = r3
+	r3 = r3 + sp
+	Mem0[sp:word32] = r3
+	r3 = r3 + sp
+	r2 = r2 + sp
+	r1 = r5
+	r0 = r6
+	call fn00403EC4 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l00403A48
+	goto l00403A98
+	// succ:  l00403A98 l00403A96_thunk_fn00403A48
+l00403A96_thunk_fn00403A48:
+	call fn00403A48 (retsize: 0;)
+	return
+	// succ:  fn00403A56_exit
+l00403A98:
+	r0 = 1
+	sp = sp + sp
+	call fn00401054 (retsize: 0;)
+	fp = Mem0[sp + 16:word32]
+	r6 = Mem0[sp + 12:word32]
+	r5 = Mem0[sp + 8:word32]
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 20
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00403B1E_thunk_fn00403B20
+l00403B1E_thunk_fn00403B20:
+	call fn00403B20 (retsize: 0;)
+	return
+	// succ:  fn00403A56_exit
+fn00403A56_exit:
+
+
+// fn00403B20
+// Return size: 0
+void fn00403B20()
+fn00403B20_entry:
+	// succ:  l00403B20
+l00403B20:
+	sp = fp
+	sp = sp - 16
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	Mem0[sp + 8:word32] = r2
+	Mem0[sp + 12:word32] = r3
+	sp = sp - 36
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 12:word32] = r6
+	Mem0[sp + 16:word32] = r7
+	Mem0[sp + 20:word32] = r8
+	Mem0[sp + 24:word32] = r9
+	Mem0[sp + 28:word32] = r10
+	Mem0[sp + 32:word32] = fp
+	fp = fp + sp
+	sp = sp - 92
+	r4 = 0x0000C010
+	r4 = DPB(0x0000C010, 0x0040, 16, 16)
+	r5 = r0
+	r8 = 0
+	r4 = Mem0[r4:word32]
+	Mem0[r3:word32] = r8
+	r5 = r5 - r5
+	Mem0[sp + 52:word32] = r1
+	Mem0[r1:word16] = (word16) r8
+	r2 = 28
+	r1 = r1 + sp
+	r0 = r5
+	Mem0[sp + 48:word32] = r3
+	call r4 (retsize: 0;)
+	branch r0 != 0x00000000 l00403B62
+	// succ:  l00403B54 l00403B62
+l00403B54:
+	r6 = 0
+	r0 = r6
+	sp = sp + 92
+	fp = Mem0[sp + 28:word32]
+	r10 = Mem0[sp + 24:word32]
+	r9 = Mem0[sp + 20:word32]
+	r8 = Mem0[sp + 16:word32]
+	r7 = Mem0[sp + 12:word32]
+	r6 = Mem0[sp + 8:word32]
+	r5 = Mem0[sp + 4:word32]
+	r4 = Mem0[sp + 0:word32]
+	sp = sp + 32
+	v17 = Mem0[sp:word32]
+	sp = sp + 20
+	pc = v17
+	// succ:  l00403B62
+l00403B62:
+	r3 = 0x0000C008
+	r3 = DPB(0x0000C008, 0x0040, 16, 16)
+	r2 = Mem0[sp + 148:word32]
+	r1 = Mem0[sp + 144:word32]
+	r3 = Mem0[r3:word32]
+	r0 = Mem0[sp + 68:word32]
+	call r3 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403B54
+	// succ:  l00403B78 l00403B54
+l00403B78:
+	r1 = Mem0[sp + 68:word32]
+	r3 = 0x00005A4D
+	r2 = (uint32) Mem0[r1:word16]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l00403B54
+	// succ:  l00403B84 l00403B54
+l00403B84:
+	r3 = Mem0[r1 + 60:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(LE,NZV) l00403B54
+	// succ:  l00403B8A l00403B54
+l00403B8A:
+	r2 = Mem0[r3 + r1:word32]
+	r4 = r4 + r3
+	r3 = 0x00004550
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l00403B54
+	// succ:  l00403B96 l00403B54
+l00403B96:
+	r3 = (uint32) Mem0[r4 + 20:word16]
+	r0 = (uint32) Mem0[r4 + 6:word16]
+	r1 = r1 - r5
+	r3 = r3 + r4
+	r7 = 0
+	r5 = 0
+	branch r0 == 0x00000000 l00403BBE
+	// succ:  l00403BA4 l00403BBE
+l00403BA4:
+	r2 = r2 + r3
+	// succ:  l00403BA8
+l00403BA8:
+	r3 = Mem0[r2 + 12:word32]
+	NZCV = cond(r1 - r3)
+	branch Test(ULT,C) l00403BB6
+	// succ:  l00403BAE l00403BB6
+l00403BAE:
+	r7 = r7 - r1
+	r3 = Mem0[r2 + 8:word32]
+	NZCV = cond(r1 - r3)
+	branch Test(ULT,C) l00403BBE
+	// succ:  l00403BB6 l00403BBE
+l00403BB6:
+	r5 = r5 + r5
+	r2 = r2 + 40
+	NZCV = cond(r5 - r0)
+	branch Test(ULT,C) l00403BA8
+	// succ:  l00403BBE l00403BA8
+l00403BBE:
+	NZCV = cond(r5 - r0)
+	branch Test(EQ,Z) l00403B54
+	// succ:  l00403BC2 l00403B54
+l00403BC2:
+	r6 = 0x0000A171
+	r6 = DPB(0x0000A171, 0x0040, 16, 16)
+	r4 = 0x0000A16C
+	r4 = DPB(0x0000A16C, 0x0040, 16, 16)
+	r5 = r5 + r5
+	r3 = (uint32) Mem0[r6:byte]
+	branch r3 != 0x00000000 l00403BEE
+	// succ:  l00403BD8 l00403BEE
+l00403BD8:
+	r3 = Mem0[r4:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(NE,Z) l00403B54
+	// succ:  l00403BDE l00403B54
+l00403BDE:
+	call fn00403740 (retsize: 0;)
+	Mem0[r4:word32] = r0
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403B54
+	// succ:  l00403BE8 l00403B54
+l00403BE8:
+	r3 = 1
+	Mem0[r6:byte] = (byte) r3
+	goto l00403BF0
+	// succ:  l00403BF0
+l00403BEE:
+	r0 = Mem0[r4:word32]
+	// succ:  l00403BF0
+l00403BF0:
+	r3 = 0x0000C000
+	r3 = DPB(0x0000C000, 0x0040, 16, 16)
+	r1 = 0x00008264
+	r1 = DPB(0x00008264, 0x0040, 16, 16)
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r4 = r0
+	NZCV = cond(r4 - 0)
+	branch Test(EQ,Z) l00403B54
+	// succ:  l00403C0A l00403B54
+l00403C0A:
+	r3 = r3 + sp
+	Mem0[sp + 12:word32] = r3
+	r0 = Mem0[sp + 144:word32]
+	r3 = r3 + sp
+	Mem0[sp:word32] = r3
+	r3 = 0
+	r2 = 0
+	r1 = 0
+	Mem0[sp + 8:word32] = r8
+	Mem0[sp + 4:word32] = r8
+	call r4 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403B54
+	// succ:  l00403C28 l00403B54
+l00403C28:
+	r3 = Mem0[sp + 32:word32]
+	r6 = 0
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = Mem0[pc + 428:word32]
+	NZCV = cond(r0 - r3)
+	branch Test(NE,Z) l00403DCC
+	// succ:  l00403C3C l00403DCC
+l00403C3C:
+	r4 = Mem0[sp + 32:word32]
+	r2 = 0x00008278
+	r2 = DPB(0x00008278, 0x0040, 16, 16)
+	r3 = r3 + sp
+	r0 = r4
+	r4 = Mem0[r4:word32]
+	r1 = 0
+	r4 = Mem0[r4 + 28:word32]
+	call r4 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403DCC
+	// succ:  l00403C58 l00403DCC
+l00403C58:
+	r4 = Mem0[sp + 40:word32]
+	r3 = r3 + sp
+	r2 = r7
+	r0 = r4
+	r4 = Mem0[r4:word32]
+	r1 = (uint32) (uint16) r5
+	Mem0[sp + 8:word32] = r8
+	r4 = Mem0[r4 + 32:word32]
+	Mem0[sp + 4:word32] = r8
+	Mem0[sp:word32] = r8
+	call r4 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403DC2
+	// succ:  l00403C7A l00403DC2
+l00403C7A:
+	r3 = 0
+	Mem0[sp + 20:word32] = r3
+	r3 = Mem0[sp + 28:word32]
+	r1 = r1 + sp
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3 + 104:word32]
+	call r3 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403DB8
+	// succ:  l00403C90 l00403DB8
+l00403C90:
+	r3 = Mem0[sp + 20:word32]
+	NZCV = cond(r3 - 0)
+	branch Test(EQ,Z) l00403DB8
+	// succ:  l00403C98 l00403DB8
+l00403C98:
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r8 = r6
+	r3 = Mem0[r3 + 8:word32]
+	call r3 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403D92
+	// succ:  l00403CA6 l00403D92
+l00403CA6:
+	r9 = r9 + sp
+	r10 = r10 + sp
+	// succ:  l00403CAE
+l00403CAE:
+	r4 = Mem0[sp + 20:word32]
+	r3 = 0
+	Mem0[sp + 8:word32] = r3
+	r0 = r4
+	r4 = Mem0[r4:word32]
+	r3 = r3 + sp
+	r2 = r2 + sp
+	r4 = Mem0[r4 + 12:word32]
+	r1 = 0
+	Mem0[sp + 4:word32] = r9
+	Mem0[sp:word32] = r10
+	call r4 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403DAE
+	// succ:  l00403CCE l00403DAE
+l00403CCE:
+	r3 = (uint32) Mem0[sp + 16:word16]
+	NZCV = cond(r3 - r5)
+	branch Test(NE,Z) l00403CE4
+	// succ:  l00403CD6 l00403CE4
+l00403CD6:
+	r2 = Mem0[sp + 36:word32]
+	NZCV = cond(r2 - r7)
+	branch Test(UGT,ZC) l00403CE4
+	// succ:  l00403CDC l00403CE4
+l00403CDC:
+	r3 = Mem0[sp + 44:word32]
+	r3 = r3 + r2
+	NZCV = cond(r7 - r3)
+	branch Test(ULT,C) l00403CF4
+	// succ:  l00403CE4 l00403CF4
+l00403CE4:
+	r3 = Mem0[sp + 20:word32]
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3 + 8:word32]
+	call r3 (retsize: 0;)
+	NZCV = cond(r0 - 0)
+	branch Test(NE,Z) l00403CAE
+	// succ:  l00403CF2 l00403CAE
+l00403CF2:
+	goto l00403D92
+	// succ:  l00403D92
+l00403CF4:
+	r2 = Mem0[sp + 24:word32]
+	NZCV = cond(r2 - 0)
+	branch Test(EQ,Z) l00403DAE
+	// succ:  l00403CFA l00403DAE
+l00403CFA:
+	r3 = ~0xE0000000
+	NZCV = cond(r2 - r3)
+	branch Test(UGE,C) l00403DAE
+	// succ:  l00403D02 l00403DAE
+l00403D02:
+	r3 = 0x0000C014
+	r3 = DPB(0x0000C014, 0x0040, 16, 16)
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = Mem0[sp + 24:word32]
+	r1 = 0
+	r2 = r3 << 3
+	NZCV = cond(r2)
+	r3 = 0x0000C01C
+	r3 = DPB(0x0000C01C, 0x0040, 16, 16)
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r8 = r0
+	NZCV = cond(r0 - 0)
+	branch Test(EQ,Z) l00403DAE
+	// succ:  l00403D26 l00403DAE
+l00403D26:
+	r4 = Mem0[sp + 20:word32]
+	Mem0[sp + 8:word32] = r0
+	r3 = r3 + sp
+	r0 = r4
+	r4 = Mem0[r4:word32]
+	Mem0[sp + 4:word32] = r3
+	r5 = 0
+	r4 = Mem0[r4 + 12:word32]
+	r3 = 0
+	r2 = 0
+	r1 = r1 + sp
+	Mem0[sp:word32] = r5
+	call r4 (retsize: 0;)
+	branch r0 == 0x00000000 l00403D92
+	// succ:  l00403D42 l00403D92
+l00403D42:
+	r3 = Mem0[sp + 36:word32]
+	r4 = r4 - r7
+	r3 = Mem0[r8:word32]
+	NZCV = cond(r4 - r3)
+	branch Test(ULT,C) l00403D92
+	// succ:  l00403D4E l00403D92
+l00403D4E:
+	r0 = Mem0[sp + 24:word32]
+	r2 = 1
+	NZCV = cond(r0 - 1)
+	branch Test(ULE,ZC) l00403D68
+	// succ:  l00403D56 l00403D68
+l00403D56:
+	r1 = r1 + r8
+	// succ:  l00403D5A
+l00403D5A:
+	v24 = Mem0[r1:word32]
+	r1 = r1 + 8
+	r3 = v24
+	NZCV = cond(r4 - r3)
+	branch Test(ULT,C) l00403D68
+	// succ:  l00403D62 l00403D68
+l00403D62:
+	r2 = r2 + r2
+	NZCV = cond(r2 - r0)
+	branch Test(ULT,C) l00403D5A
+	// succ:  l00403D68 l00403D5A
+l00403D68:
+	r3 = r3 + r8
+	r3 = Mem0[r3 - 4:word32]
+	r2 = Mem0[sp + 48:word32]
+	r4 = Mem0[sp + 28:word32]
+	r3 = r3 & ~-16777216
+	Mem0[r2:word32] = r3
+	r0 = r4
+	r4 = Mem0[r4:word32]
+	r2 = Mem0[sp + 52:word32]
+	r1 = Mem0[sp + 56:word32]
+	r4 = Mem0[r4 + 112:word32]
+	r3 = r3 + sp
+	Mem0[sp + 8:word32] = r5
+	Mem0[sp + 4:word32] = r5
+	Mem0[sp:word32] = r5
+	call r4 (retsize: 0;)
+	branch r0 == 0x00000000 l00403D92
+	// succ:  l00403D90 l00403D92
+l00403D90:
+	r6 = 1
+	// succ:  l00403D92
+l00403D92:
+	r3 = 0x0000C014
+	r3 = DPB(0x0000C014, 0x0040, 16, 16)
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	r3 = 0x0000C018
+	r3 = DPB(0x0000C018, 0x0040, 16, 16)
+	r2 = r8
+	r1 = 0
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00403DAE
+l00403DAE:
+	r3 = Mem0[sp + 20:word32]
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00403DB8
+l00403DB8:
+	r3 = Mem0[sp + 28:word32]
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3 + 64:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00403DC2
+l00403DC2:
+	r3 = Mem0[sp + 40:word32]
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3 + 56:word32]
+	call r3 (retsize: 0;)
+	// succ:  l00403DCC
+l00403DCC:
+	r3 = Mem0[sp + 32:word32]
+	r0 = r3
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3 + 44:word32]
+	call r3 (retsize: 0;)
+	r0 = r6
+	sp = sp + 92
+	fp = Mem0[sp + 28:word32]
+	r10 = Mem0[sp + 24:word32]
+	r9 = Mem0[sp + 20:word32]
+	r8 = Mem0[sp + 16:word32]
+	r7 = Mem0[sp + 12:word32]
+	r6 = Mem0[sp + 8:word32]
+	r5 = Mem0[sp + 4:word32]
+	r4 = Mem0[sp + 0:word32]
+	sp = sp + 32
+	v25 = Mem0[sp:word32]
+	sp = sp + 20
+	pc = v25
+	call __debugbreak (retsize: 0;)
+	Mem0[sp + 260:word32] = r1
+	r2 = r6 << 4
+	NZCV = cond(r2)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	ip = 0x0000C0A8
+	ip = DPB(0x0000C0A8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 16
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	Mem0[sp + 8:word32] = r2
+	Mem0[sp + 12:word32] = r3
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	r3 = Mem0[sp + 28:word32]
+	r3 = r3 + 28
+	r2 = Mem0[r3:word32]
+	r1 = Mem0[sp + 28:word32]
+	r0 = Mem0[sp + 20:word32]
+	call fn00403E4C (retsize: 0;)
+	r3 = 1
+	Mem0[sp:word32] = r3
+	r0 = Mem0[sp:word32]
+	sp = sp + 8
+	v27 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v27
+	v28 = Mem0[sp:word32]
+	sp = sp + 20
+	pc = v28
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00403E4A_thunk_fn00403E4C
+l00403E4A_thunk_fn00403E4C:
+	call fn00403E4C (retsize: 0;)
+	return
+	// succ:  fn00403B20_exit
+fn00403B20_exit:
+
+
+// fn00403E00
+// Return size: 0
+void fn00403E00()
+fn00403E00_entry:
+	// succ:  l00403E00
+l00403E00:
+	sp = fp
+	ip = 0x0000C0A8
+	ip = DPB(0x0000C0A8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	sp = sp - 16
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	Mem0[sp + 8:word32] = r2
+	Mem0[sp + 12:word32] = r3
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 8
+	r3 = Mem0[sp + 28:word32]
+	r3 = r3 + 28
+	r2 = Mem0[r3:word32]
+	r1 = Mem0[sp + 28:word32]
+	r0 = Mem0[sp + 20:word32]
+	call fn00403E4C (retsize: 0;)
+	r3 = 1
+	Mem0[sp:word32] = r3
+	r0 = Mem0[sp:word32]
+	sp = sp + 8
+	v11 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v11
+	v12 = Mem0[sp:word32]
+	sp = sp + 20
+	pc = v12
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00403E4A_thunk_fn00403E4C
+l00403E4A_thunk_fn00403E4C:
+	call fn00403E4C (retsize: 0;)
+	return
+	// succ:  fn00403E00_exit
+fn00403E00_exit:
+
+
+// fn00403E4C
+// Return size: 0
+void fn00403E4C()
+fn00403E4C_entry:
+	// succ:  l00403E4C
+l00403E4C:
+	sp = fp
+	sp = sp - 16
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	Mem0[sp + 8:word32] = r2
+	Mem0[sp + 12:word32] = r3
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	sp = sp - 16
+	r3 = Mem0[sp + 32:word32]
+	r3 = Mem0[r3:word32]
+	r3 = r3 & ~3
+	Mem0[sp + 8:word32] = r3
+	r3 = Mem0[sp + 24:word32]
+	Mem0[sp + 4:word32] = r3
+	r2 = Mem0[sp + 4:word32]
+	r3 = Mem0[sp + 8:word32]
+	r3 = r3 + r2
+	r3 = Mem0[r3:word32]
+	Mem0[sp:word32] = r3
+	r3 = Mem0[sp + 32:word32]
+	r3 = Mem0[r3:word32]
+	NZC = cond(r3 & 0x00000001)
+	branch Test(EQ,Z) l00403E84
+	// succ:  l00403E78 l00403E84
+l00403E78:
+	r2 = Mem0[sp + 4:word32]
+	r3 = Mem0[sp + 8:word32]
+	r2 = r2 + r3
+	r3 = Mem0[sp:word32]
+	r3 = r3 - r2
+	Mem0[sp:word32] = r3
+	// succ:  l00403E84
+l00403E84:
+	r0 = Mem0[sp:word32]
+	call fn004010A0 (retsize: 0;)
+	sp = sp + 16
+	v11 = Mem0[sp:word32]
+	sp = sp + 4
+	fp = v11
+	v13 = Mem0[sp:word32]
+	sp = sp + 20
+	pc = v13
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00403EAA_thunk_fn00403EAC
+l00403EAA_thunk_fn00403EAC:
+	call fn00403EAC (retsize: 0;)
+	return
+	// succ:  fn00403E4C_exit
+fn00403E4C_exit:
+
+
+// fn00403EAC
+// Return size: 0
+void fn00403EAC()
+fn00403EAC_entry:
+	// succ:  l00403EAC
+l00403EAC:
+	sp = fp
+	ip = 0x0000C0AC
+	ip = DPB(0x0000C0AC, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0B0
+	ip = DPB(0x0000C0B0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0B4
+	ip = DPB(0x0000C0B4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0B8
+	ip = DPB(0x0000C0B8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00403ED8_thunk_fn00403EDC
+l00403ED8_thunk_fn00403EDC:
+	call fn00403EDC (retsize: 0;)
+	return
+	// succ:  fn00403EAC_exit
+fn00403EAC_exit:
+
+
+// fn00403EB8
+// Return size: 0
+void fn00403EB8()
+fn00403EB8_entry:
+	// succ:  l00403EB8
+l00403EB8:
+	sp = fp
+	ip = 0x0000C0B0
+	ip = DPB(0x0000C0B0, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C0B4
+	ip = DPB(0x0000C0B4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00403ECC_thunk_fn00403ED0
+l00403ECC_thunk_fn00403ED0:
+	call fn00403ED0 (retsize: 0;)
+	return
+	// succ:  fn00403EB8_exit
+fn00403EB8_exit:
+
+
+// fn00403EC4
+// Return size: 0
+void fn00403EC4()
+fn00403EC4_entry:
+	// succ:  l00403EC4
+l00403EC4:
+	sp = fp
+	ip = 0x0000C0B4
+	ip = DPB(0x0000C0B4, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00403ECC_thunk_fn00403ED0
+l00403ECC_thunk_fn00403ED0:
+	call fn00403ED0 (retsize: 0;)
+	return
+	// succ:  fn00403EC4_exit
+fn00403EC4_exit:
+
+
+// fn00403ED0
+// Return size: 0
+void fn00403ED0()
+fn00403ED0_entry:
+	// succ:  l00403ED0
+l00403ED0:
+	sp = fp
+	ip = 0x0000C0B8
+	ip = DPB(0x0000C0B8, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	// succ:  l00403ED8_thunk_fn00403EDC
+l00403ED8_thunk_fn00403EDC:
+	call fn00403EDC (retsize: 0;)
+	return
+	// succ:  fn00403ED0_exit
+fn00403ED0_exit:
+
+
+// fn00403EDC
+// Return size: 0
+void fn00403EDC()
+fn00403EDC_entry:
+	// succ:  l00403EDC
+l00403EDC:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r0 = 2
+	call __fastfail (retsize: 0;)
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r0 = 8
+	call fn00403F10 (retsize: 0;)
+	call __debugbreak (retsize: 0;)
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	// succ:  l00403F0E_thunk_fn00403F10
+l00403F0E_thunk_fn00403F10:
+	call fn00403F10 (retsize: 0;)
+	return
+	// succ:  fn00403EDC_exit
+fn00403EDC_exit:
+
+
+// fn00403F10
+// Return size: 0
+void fn00403F10()
+fn00403F10_entry:
+	// succ:  l00403F10
+l00403F10:
+	sp = fp
+	sp = sp - 8
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r0 = Mem0[sp + 8:word32]
+	call __fastfail (retsize: 0;)
+	sp = sp - 16
+	Mem0[sp + 0:word32] = r0
+	Mem0[sp + 4:word32] = r1
+	Mem0[sp + 8:word32] = r2
+	Mem0[sp + 12:word32] = r3
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = fp
+	fp = sp
+	r0 = Mem0[sp + 8:word32]
+	call __fastfail (retsize: 0;)
+	ip = 0x0000C04C
+	ip = DPB(0x0000C04C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C048
+	ip = DPB(0x0000C048, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C044
+	ip = DPB(0x0000C044, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C040
+	ip = DPB(0x0000C040, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C03C
+	ip = DPB(0x0000C03C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C038
+	ip = DPB(0x0000C038, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C034
+	ip = DPB(0x0000C034, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C030
+	ip = DPB(0x0000C030, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C02C
+	ip = DPB(0x0000C02C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C028
+	ip = DPB(0x0000C028, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C024
+	ip = DPB(0x0000C024, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C020
+	ip = DPB(0x0000C020, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C01C
+	ip = DPB(0x0000C01C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C018
+	ip = DPB(0x0000C018, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C014
+	ip = DPB(0x0000C014, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C010
+	ip = DPB(0x0000C010, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C00C
+	ip = DPB(0x0000C00C, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C008
+	ip = DPB(0x0000C008, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C004
+	ip = DPB(0x0000C004, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C000
+	ip = DPB(0x0000C000, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	ip = 0x0000C050
+	ip = DPB(0x0000C050, 0x0040, 16, 16)
+	pc = Mem0[ip:word32]
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	sp = sp - 8
+	Mem0[sp + 0:word32] = lr
+	Mem0[sp + 4:word32] = r4
+	sp = sp - 8
+	Mem0[r7:word32] = r0
+	r3 = Mem0[r7:word32]
+	Mem0[r7 + 52:word32] = r3
+	r3 = Mem0[r7:word32]
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 60:word32] = r3
+	r1 = Mem0[r7 + 52:word32]
+	r0 = Mem0[r7 + 60:word32]
+	call fn004029D0 (retsize: 0;)
+	Mem0[r7 + 68:word32] = r0
+	r0 = Mem0[r7 + 68:word32]
+	sp = sp + 8
+	r4 = Mem0[sp + 4:word32]
+	pc = Mem0[sp + 0:word32]
+	sp = sp + 8
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	r0 = r0
+	Mem0[r7 + 44:word32] = r0
+	r3 = Mem0[r7 + 44:word32]
+	r3 = Mem0[r3:word32]
+	r3 = Mem0[r3:word32]
+	Mem0[r7 + 48:word32] = r3
+	r2 = Mem0[r7 + 48:word32]
+	r3 = Mem0[pc + 16:word32]
+	NZCV = cond(r2 - r3)
+	branch Test(NE,Z) l004057FC
+	// succ:  l004057F6 l004057FC
+l004057F6:
+	r3 = 1
+	Mem0[r7 + 16:word32] = r3
+	goto l00405800
+	// succ:  l00405800
+l004057FC:
+	r3 = 0
+	Mem0[r7 + 16:word32] = r3
+	// succ:  l00405800
+l00405800:
+	r0 = Mem0[r7 + 16:word32]
+fn00403F10_exit:
+
+

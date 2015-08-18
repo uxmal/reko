@@ -143,10 +143,12 @@ namespace Reko.Arch.X86
 			if (offset == 0)
 			{
 				if (size == 16)
-					return Registers.GetRegister(Number + Registers.di.Number - Registers.edi.Number);
-				if (size == 32)
-					return this;
-			}
+					return Registers.GetRegister(Number + Registers.di.Number - Registers.rdi.Number);
+                if (size == 32)
+                    return Registers.GetRegister(Number + Registers.edi.Number - Registers.rdi.Number);
+                if (size == 64)
+                    return this;
+            }
 			return null;
 		}
 

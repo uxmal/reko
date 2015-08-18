@@ -80,6 +80,17 @@ namespace Reko.Environments.Win32
             };
         }
 
+        /// <summary>
+        /// Some Win32 platforms (I'm looking at you ARM Thumb) will use addresses
+        /// that are offset by 1. 
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>Adjusted address</returns>
+        public virtual Address AdjustProcedureAddress(Address addr)
+        {
+            return addr;
+        }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             var bitset = Architecture.CreateRegisterBitset();

@@ -96,7 +96,7 @@ namespace Reko.Loading
 
             var program = imgLoader.Load(addrLoad);
             program.Name = Path.GetFileName(filename);
-            var relocations = imgLoader.Relocate(addrLoad);
+            var relocations = imgLoader.Relocate(program, addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
             return program;
         }

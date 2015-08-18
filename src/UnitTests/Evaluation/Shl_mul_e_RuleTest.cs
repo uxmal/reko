@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Evaluation
 			var rule = new Shl_mul_e_Rule(null);
 			Assert.IsTrue(rule.Match(b));
 			ass.Src = rule.Transform();
-			Assert.AreEqual("x = id *s 12", ass.ToString());
+			Assert.AreEqual("x = id *s 0x0000000C", ass.ToString());
 		}
 			
 		

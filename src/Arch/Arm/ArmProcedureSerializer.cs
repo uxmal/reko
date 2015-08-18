@@ -33,7 +33,7 @@ namespace Reko.Arch.Arm
     {
         private int gr;
 
-        public ArmProcedureSerializer(ArmProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public ArmProcedureSerializer(Arm32ProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
         {
         }

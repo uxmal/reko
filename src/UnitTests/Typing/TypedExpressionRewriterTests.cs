@@ -516,6 +516,29 @@ namespace Reko.UnitTests.Typing
                 });
             RunTest(pm, "Typing/TerShortArray.txt");
         }
+
+        [Test]
+        public void TerArray()
+        {
+            var pm = new ProgramBuilder();
+            pm.Add("proc1", m =>
+            {
+                var eax = m.Reg32("eax");
+                var ecx = m.Reg32("ecx");
+                var eax_2 = m.Reg32("eax_2");
+                m.Assign(
+                    eax_2,
+                    m.Cast(PrimitiveType.Int32,
+                    m.Load(PrimitiveType.Int16,
+                        m.IAdd(
+                            ecx,
+                            m.IAdd(
+                                m.IMul(eax, 2),
+                                100)))));
+                m.Store(m.Word32(0x010000), eax_2);
+            });
+            RunTest(pm, "Typing/TerArray.txt");
+        }
     }
 
 	public class SegmentedMemoryPointerMock : ProcedureBuilder

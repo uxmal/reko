@@ -19,18 +19,12 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
-using Reko.Gui;
-using Reko.Gui.Forms;
-using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Forms
 {
@@ -40,7 +34,7 @@ namespace Reko.Gui.Windows.Forms
 
     public class LoadedPageInteractor : PhasePageInteractorImpl, ILoadedPageInteractor
     {
-        private Hashtable mpCmdidToCommand;
+        private Dictionary<int, MenuCommand> mpCmdidToCommand;
         private IDecompilerService decompilerSvc;
         private IStatusBarService sbSvc;
         private ILowLevelViewService memSvc;
@@ -51,7 +45,7 @@ namespace Reko.Gui.Windows.Forms
             sbSvc = services.RequireService<IStatusBarService>();
             memSvc = services.RequireService<ILowLevelViewService>();
 
-            mpCmdidToCommand = new Hashtable();
+            mpCmdidToCommand = new Dictionary<int, MenuCommand>();
             AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowAllFragments));
             AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowUnscanned));
             AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewFindFragments));
@@ -116,8 +110,8 @@ namespace Reko.Gui.Windows.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId.ID];
-                if (cmd == null)
+                MenuCommand cmd;
+                if (!mpCmdidToCommand.TryGetValue(cmdId.ID, out cmd))
                     return false;
                 status.Status = (MenuStatus) cmd.OleStatus;
                 return true;

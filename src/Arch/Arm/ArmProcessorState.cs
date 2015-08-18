@@ -32,11 +32,11 @@ namespace Reko.Arch.Arm
 {
     public class ArmProcessorState : ProcessorState
     {
-        private ArmProcessorArchitecture arch;
+        private IProcessorArchitecture arch;
         private uint isValid;
         private uint[] regData;
 
-        public ArmProcessorState(ArmProcessorArchitecture arch)
+        public ArmProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
             this.regData = new uint[16];

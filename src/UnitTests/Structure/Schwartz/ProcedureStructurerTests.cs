@@ -76,8 +76,8 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Return(r1);
 
             var sExp =
-@"    if (r1 > 0x00000000)
-        r1 = 0x00000000;
+@"    if (r1 > 0x00)
+        r1 = 0x00;
     return r1;
 ";
             RunTest(sExp, m.Procedure);
@@ -100,10 +100,10 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Return(r1);
 
             var sExp =
-@"    if (r1 > 0x00000000)
-        r1 = 0x00000000;
+@"    if (r1 > 0x00)
+        r1 = 0x00;
     else
-        r1 = 0x00000001;
+        r1 = 0x01;
     return r1;
 ";
             RunTest(sExp, m.Procedure);
@@ -131,8 +131,8 @@ namespace Reko.UnitTests.Structure.Schwartz
 @"    while (r1 != r2)
     {
         Mem0[r1:word32] = Mem0[r2:word32];
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
     }
     return r2;
 ";
@@ -163,8 +163,8 @@ namespace Reko.UnitTests.Structure.Schwartz
 @"    while (r1 != r2)
     {
         Mem0[r1:word32] = Mem0[r2:word32];
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
     }
     return r2;
 ";
@@ -193,12 +193,12 @@ namespace Reko.UnitTests.Structure.Schwartz
             var sExp =
 @"    while (true)
     {
-        Mem0[0x00001000:word32] = r2;
+        Mem0[0x1000:word32] = r2;
         if (r1 != r2)
             break;
         Mem0[r1:word32] = Mem0[r2:word32];
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
     }
     return r2;
 ";
@@ -223,8 +223,8 @@ namespace Reko.UnitTests.Structure.Schwartz
 @"    do
     {
         Mem0[r1:word32] = Mem0[r2:word32];
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
     } while (r1 != r2);
     return r2;
 ";
@@ -264,15 +264,15 @@ namespace Reko.UnitTests.Structure.Schwartz
 
             var sExp =
             #region Expected 
- @"    while (r1 < 0x00000004)
+ @"    while (r1 < 0x04)
     {
-        word32 r2 = 0x00000000;
-        while (r2 < 0x00000004)
+        word32 r2 = 0x00;
+        while (r2 < 0x04)
         {
-            Mem0[0x01232100 + (r1 * 0x00000004 + r2):byte] = 0x00;
-            r2 = r2 + 0x00000001;
+            Mem0[0x01232100 + (r1 * 0x04 + r2):byte] = 0x00;
+            r2 = r2 + 0x01;
         }
-        r1 = r1 + 0x00000001;
+        r1 = r1 + 0x01;
     }
     return;
 ";
@@ -306,8 +306,8 @@ namespace Reko.UnitTests.Structure.Schwartz
         Mem0[r1:word32] = Mem0[r2:word32];
         if (Mem0[r2:word32])
             break;
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
     }
     return r2;
 ";
@@ -345,11 +345,11 @@ namespace Reko.UnitTests.Structure.Schwartz
         Mem0[r1:word32] = Mem0[r2:word32];
         if (Mem0[r2:word32])
         {
-            r2 = 0x00000000;
+            r2 = 0x00;
             break;
         }
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
     }
     return r2;
 ";
@@ -391,11 +391,11 @@ namespace Reko.UnitTests.Structure.Schwartz
         Mem0[r1:word32] = Mem0[r2:word32];
         if (Mem0[r2:word32])
         {
-            r2 = 0x00000000;
+            r2 = 0x00;
             goto end_fn;
         }
-        r1 = r1 + 0x00000004;
-        r2 = r2 + 0x00000004;
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
     }
     r2 = 0xFFFFFFFF;
 end_fn:
@@ -451,9 +451,179 @@ unstructuredexit:
             m.Goto("loop");
 
             var sExp =
-@"    r1 = 0x00000000;
+@"    r1 = 0x00;
     while (true)
-        r1 = r1 + 0x00000001;
+        r1 = r1 + 0x01;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void ProcStr_Switch()
+        {
+            var r1 = m.Reg32("r1");
+
+            m.Label("head");
+            m.Switch(r1, "case_0", "case_1", "case_2");
+
+            m.Label("case_0");
+            m.Assign(r1, 3);
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Assign(r1, 2);
+            m.Goto("done");
+
+            m.Label("case_2");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0x00:
+        r1 = 0x03;
+        break;
+    case 0x01:
+        r1 = 0x02;
+        break;
+    case 0x02:
+        r1 = 0x01;
+        break;
+    }
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void ProcStr_Switch_Fallthru()
+        {
+            var r1 = m.Reg32("r1");
+
+            m.Label("head");
+            m.Switch(r1, "case_0", "case_1", "case_2");
+
+            m.Label("case_0");
+            m.Assign(r1, 3);
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Assign(r1, 2);
+            // Fallthru
+
+            m.Label("case_2");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0x00:
+        r1 = 0x03;
+        break;
+    case 0x01:
+        r1 = 0x02;
+        goto case_2;
+    case 0x02:
+case_2:
+        r1 = 0x01;
+        break;
+    }
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test(Description="A do-while with a nested if-then-else")]
+        public void ProcStr_DoWhile_NestedIfElse()
+        {
+            var r1 = m.Reg32("r1");
+
+            m.Label("head");
+            m.SideEffect(m.Fn("foo", r1));
+            m.BranchIf(m.Eq(r1, 3), "not_3");
+
+            m.Label("eq_3");
+            m.SideEffect(m.Fn("bar", r1));
+            m.Goto("join");
+
+            m.Label("not_3");
+            m.SideEffect(m.Fn("b"));
+
+            m.Label("join");
+            m.SideEffect(m.Fn("bloo"));
+            m.BranchIf(m.Eq(r1, 2), "head");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        foo(r1);
+        if (r1 != 0x03)
+            bar(r1);
+        else
+            b();
+        bloo();
+    } while (r1 == 0x02);
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test(Description="A do-while loop with many continue statements.")]
+        public void ProcStr_DoWhile_ManyContinues()
+        {
+            var r1 = m.Reg32("r1");
+
+                m.Label("head");
+                m.SideEffect(m.Fn("foo", r1));
+                m.BranchIf(m.Eq(r1, 3), "not_3");
+
+                    m.Label("eq_3");
+                    m.SideEffect(m.Fn("bar", r1));
+                    m.BranchIf(m.Eq(r1, 2), "not_2");
+
+                        m.Label("eq_2");
+                        m.SideEffect(m.Fn("b"));
+                        m.BranchIf(m.Eq(r1, 1), "head");    // this should be a "continue" node.
+
+                    m.Label("not_2");
+                    m.SideEffect(m.Fn("bloo"));
+
+                m.Label("not_3");
+                m.SideEffect(m.Fn("baz", r1));
+                m.BranchIf(m.Eq(r1, 2), "head");
+
+            m.Label("done");
+            m.Return(r1);
+            
+            var sExp =
+@"    do
+    {
+        foo(r1);
+        if (r1 != 0x03)
+        {
+            bar(r1);
+            if (r1 != 0x02)
+            {
+                b();
+                if (r1 == 0x01)
+                    continue;
+            }
+            bloo();
+        }
+        baz(r1);
+    } while (r1 == 0x02);
+    return r1;
 ";
             RunTest(sExp, m.Procedure);
         }

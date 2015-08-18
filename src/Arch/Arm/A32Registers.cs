@@ -18,6 +18,7 @@
  */
 #endregion
 
+using ArmRegister = Gee.External.Capstone.Arm.ArmRegister;
 using Reko.Core;
 using Reko.Core.Types;
 using System;
@@ -48,28 +49,30 @@ namespace Reko.Arch.Arm
 
         public static readonly RegisterStorage[] GpRegs;
 
+        public static readonly Dictionary<ArmRegister, RegisterStorage> RegisterByCapstoneID;
+
         public static Dictionary<string, RegisterStorage> RegistersByName { get; set; }
 
         static A32Registers()
         {
-            r0  = new RegisterStorage("r0", 0, PrimitiveType.Word32);
-            r1  = new RegisterStorage("r1", 1, PrimitiveType.Word32);
-            r2  = new RegisterStorage("r2", 2, PrimitiveType.Word32);
-            r3  = new RegisterStorage("r3", 3, PrimitiveType.Word32);
-            r4  = new RegisterStorage("r4", 4, PrimitiveType.Word32);
-            r5  = new RegisterStorage("r5", 5, PrimitiveType.Word32);
-            r6  = new RegisterStorage("r6", 6, PrimitiveType.Word32);
-            r7  = new RegisterStorage("r7", 7, PrimitiveType.Word32);
-            r8  = new RegisterStorage("r8", 8, PrimitiveType.Word32);
-            r9  = new RegisterStorage("r9", 9, PrimitiveType.Word32);
+            r0 = new RegisterStorage("r0", 0, PrimitiveType.Word32);
+            r1 = new RegisterStorage("r1", 1, PrimitiveType.Word32);
+            r2 = new RegisterStorage("r2", 2, PrimitiveType.Word32);
+            r3 = new RegisterStorage("r3", 3, PrimitiveType.Word32);
+            r4 = new RegisterStorage("r4", 4, PrimitiveType.Word32);
+            r5 = new RegisterStorage("r5", 5, PrimitiveType.Word32);
+            r6 = new RegisterStorage("r6", 6, PrimitiveType.Word32);
+            r7 = new RegisterStorage("r7", 7, PrimitiveType.Word32);
+            r8 = new RegisterStorage("r8", 8, PrimitiveType.Word32);
+            r9 = new RegisterStorage("r9", 9, PrimitiveType.Word32);
             r10 = new RegisterStorage("r10", 10, PrimitiveType.Word32);
             r11 = new RegisterStorage("fp", 11, PrimitiveType.Word32);
-            ip  = new RegisterStorage("ip", 12, PrimitiveType.Word32);
-            sp  = new RegisterStorage("sp", 13, PrimitiveType.Word32);
-            lr  = new RegisterStorage("lr", 14, PrimitiveType.Word32);
-            pc  = new RegisterStorage("pc", 15, PrimitiveType.Word32);
+            ip = new RegisterStorage("ip", 12, PrimitiveType.Word32);
+            sp = new RegisterStorage("sp", 13, PrimitiveType.Word32);
+            lr = new RegisterStorage("lr", 14, PrimitiveType.Word32);
+            pc = new RegisterStorage("pc", 15, PrimitiveType.Word32);
 
-        GpRegs = new RegisterStorage[] {
+            GpRegs = new RegisterStorage[] {
                     r0, 
                     r1, 
                     r2, 
@@ -86,6 +89,26 @@ namespace Reko.Arch.Arm
                     sp, 
                     lr, 
                     pc, 
+            };
+
+            RegisterByCapstoneID = new Dictionary<ArmRegister, RegisterStorage>
+            {
+                  { ArmRegister.R0  ,     r0  },
+                  { ArmRegister.R1  ,     r1  },
+                  { ArmRegister.R2  ,     r2  },
+                  { ArmRegister.R3  ,     r3  },
+                  { ArmRegister.R4  ,     r4  },
+                  { ArmRegister.R5  ,     r5  },
+                  { ArmRegister.R6  ,     r6  },
+                  { ArmRegister.R7  ,     r7  },
+                  { ArmRegister.R8  ,     r8  },
+                  { ArmRegister.R9  ,     r9  },
+                  { ArmRegister.R10 ,     r10 },
+                  { ArmRegister.R11 ,     r11 },
+                  { ArmRegister.IP  ,     ip  },
+                  { ArmRegister.SP  ,     sp  },
+                  { ArmRegister.LR  ,     lr  },
+                  { ArmRegister.PC  ,     pc  },
             };
 
             RegistersByName = new Dictionary<string, RegisterStorage>(StringComparer.InvariantCultureIgnoreCase)

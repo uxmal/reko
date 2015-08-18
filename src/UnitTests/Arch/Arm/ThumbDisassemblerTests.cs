@@ -35,20 +35,92 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new ArmProcessorArchitecture();
+            return new ThumbProcessorArchitecture();
+        }
+
+        protected MachineInstruction Disassemble16(params ushort[] instrs)
+        {
+            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
+            LeImageWriter w = new LeImageWriter(image.Bytes);
+            foreach (var instr in instrs)
+            {
+                w.WriteLeUInt16(instr);
+            }
+            var arch = CreateArchitecture();
+            var dasm = CreateDisassembler(arch, image.CreateLeReader(0));
+            Assert.IsTrue(dasm.MoveNext());
+            var armInstr = dasm.Current;
+            dasm.Dispose();
+            return armInstr;
         }
 
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
         {
-            return new ThumbDisassembler(arch, rdr).GetEnumerator();
+            return new ThumbDisassembler(rdr).GetEnumerator();
         }
 
         [Test]
-        [Ignore("Start here if you want to!")]
-        public void Thumb_Initial()
+       public void ThumbDis_push()
         {
-            var instr = Disassemble(0xE92CCFF3);
-            Assert.AreEqual("add.w\tr2,r1,r1,lsl #8", instr.ToString());
+            var instr = Disassemble16(0xE92D, 0x4800);
+            Assert.AreEqual("push.w\t{fp,lr}", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_mov()
+        {
+            var instr = Disassemble16(0x46EB);
+            Assert.AreEqual("mov\tfp,sp", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_sub()
+        {
+            var instr = Disassemble16(0xB082);
+            Assert.AreEqual("sub\tsp,#8", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_bl()
+        {
+            var instr = Disassemble16(0xF000, 0xFA06);
+            Assert.AreEqual("bl\t$00100410", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_str()
+        {
+            var instr = Disassemble16(0x9000);
+            Assert.AreEqual("str\tr0,[sp]", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_ldr()
+        {
+            var instr = Disassemble16(0x9B00);
+            Assert.AreEqual("ldr\tr3,[sp]", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_ldr_displacement()
+        {
+            var instr = Disassemble16(0x9801);
+            Assert.AreEqual("ldr\tr0,[sp,#4]", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_add()
+        {
+            var instr = Disassemble16(0xB002);
+            Assert.AreEqual("add\tsp,#8", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_pop()
+        {
+            var instr = Disassemble16(0xE8BD, 0x8800);
+            Assert.AreEqual("pop.w\t{fp,pc}", instr.ToString());
         }
     }
 }
+

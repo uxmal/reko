@@ -325,6 +325,7 @@
     <Compile Include="Structure\Schwartz\ProcedureStructurer.cs" />
     <Compile Include="Structure\Schwartz\Region.cs" />
     <Compile Include="Structure\Schwartz\RegionFactory.cs" />
+    <Compile Include="Structure\Schwartz\ReverseGraph.cs" />
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>

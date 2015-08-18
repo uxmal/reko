@@ -18,138 +18,69 @@
  */
 #endregion
 
+using Gee.External.Capstone;
+using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ThumbDisassembler : DisassemblerBase<MachineInstruction>
+    public class ThumbDisassembler : DisassemblerBase<Arm32Instruction>
     {
-        private ThumbInstruction thumb;
-        private IProcessorArchitecture arch;
         private ImageReader rdr;
-        private ushort lsw;
-        private ushort msw;
+        private IEnumerator<Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
+        private CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
 
-        public ThumbDisassembler(IProcessorArchitecture arch, ImageReader rdr)
+        public ThumbDisassembler(ImageReader rdr)
         {
-            this.arch = arch;
             this.rdr = rdr;
+            this.dasm = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.ArmThumb);
+            dasm.EnableDetails = true;
+            this.stream = dasm.DisassembleStream(
+                rdr.Bytes,
+                (int)rdr.Offset,
+                (long)(rdr.Address.ToLinear()))
+                .GetEnumerator();
         }
 
-        public override MachineInstruction DisassembleInstruction()
+        public override Arm32Instruction DisassembleInstruction()
         {
+            // Check to see if we've hit the end of the address space, and return
+            // null if we are. We have to do this because the underlying Capstone
+            // disassembler doesn't distinguish between invalid opcodes and
+            // reaching the end of the image.
             if (!rdr.IsValid)
+            {
                 return null;
-
-            thumb = new ThumbInstruction
-            {
-                Address = rdr.Address,
-            };
-            Disassemble();
-            thumb.Length = (int)(rdr.Address - thumb.Address);
-            return thumb;
-        }
-
-        public ThumbInstruction Disassemble()
-        {
-            this.lsw = rdr.ReadLeUInt16();
-            switch (this.lsw>> 11)
-            {
-            case 0x1D:
-            case 0x1E:
-            case 0x1F:
-                this.msw = rdr.ReadLeUInt16();
-                Disassemble32bitInstruction();
-                break;
-            default:
-                Disassemble16bitInstruction();
-                break;
             }
-            return thumb;
-        }
-
-        private void Disassemble16bitInstruction()
-        {
-
-        }
-
-        private bool IsBitSet(uint w, int bit) { return ((w >> bit) & 1) != 0; }
-
-        private void Disassemble32bitInstruction() 
-        {
-            switch ((lsw >> 11) & 3)
+            if (stream.MoveNext())
             {
-            case 1:
-                switch ((lsw >> 9) & 3)
-                {
-                case 0: LdmStmMultiDouble(); break;
-                case 1: DataProcessing(); break;
-                case 2:
-                case 3: Coprocessor(); break;
-                }
-                break;
-            case 2:
-                if (IsBitSet(msw, 15))
-                {
-                    Control();
-                }
-                else
-                {
-                    DataProcessing();
-                }
-                break;
-            case 3:
-                switch ((lsw >> 8) & 7)
-                {
-                case 0: StoreSingleDataItem(); break;
-                case 1: AdvancedSimdStructLdSt(); break;
-                case 2: LdbMemHints(); break;
-                }
-                break;
+                // Capstone doesn't actually use the imageReader, but apparently
+                // reko components peek at the reader, so we have to simulate motion.
+                rdr.Offset += (ulong)stream.Current.Bytes.Length;
+                return new Arm32Instruction(stream.Current);
             }
-        }
+            else
+            {
+                // We got an invalid instruction. Create a placeholder and then
+                // advance one opcode (which is 2 bytes for Thumb).
+                var instr = Arm32Instruction.CreateInvalid(rdr.Address);
+                rdr.Offset += 2;
+                this.stream.Dispose();
 
-        private void LdbMemHints()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AdvancedSimdStructLdSt()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void StoreSingleDataItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Control()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Coprocessor()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void DataProcessing()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void LdmStmMultiDouble()
-        {
-            throw new NotImplementedException();
+                // Skip over the offending instruction and resume.
+                this.stream = dasm.DisassembleStream(
+                    rdr.Bytes,
+                    (int)rdr.Offset,
+                    (long)(rdr.Address.ToLinear() - rdr.Offset))
+                    .GetEnumerator();
+                return instr;
+            }
         }
     }
 }

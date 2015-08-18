@@ -31,17 +31,24 @@ using System.Text;
 
 namespace Reko.Structure.Schwartz
 {
-    // Based on:
-    // Native x86 Decompilation using Semantics-Preserving Structural Analysis
-    // and Iterative Control-Flow Structuring.
+    /// <summary>
+    /// This class starts with the basic block control graph of a decompiled 
+    /// procedure and converts it into high-level structured code.
+    /// </summary>
+    /// <remarks>
+    /// Inspired by the algorithm described:
+    ///  Native x86 Decompilation using Semantics-Preserving Structural Analysis
+    ///  and Iterative Control-Flow Structuring.
+    /// </remarks>
     public class ProcedureStructurer : IStructureAnalysis
     {
+        private Procedure proc;
         private DirectedGraph<Region> regionGraph;
-        private  DominatorGraph<Region> doms;
+        private DominatorGraph<Region> doms;
+        private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
         private Queue<Region> tailRegions;
-        private Procedure proc;
 
         public ProcedureStructurer(Procedure proc)
         {
@@ -56,35 +63,33 @@ namespace Reko.Structure.Schwartz
             proc.Body.AddRange(reg.Statements);
         }
 
+        /// <summary>
+        /// </summary>
+        /// <remarks>
+        /// The algorithm visits nodes in post-order in each iteration. This
+        /// means that all descendants of a node will be visited (and
+        /// hence had the chance to be reduced) before the node itself.
+        /// The algorithm’s behavior when visiting node _n_
+        /// depends on hether the region at _n_
+        /// is acyclic (has no loop) or not. For an acyclic region, the 
+        /// algorithm tries to match the subgraph
+        /// at _n_to an acyclic schemas (3.2). If there is no match,
+        /// and the region is a switch candidate, then it attempts to
+        /// refine the region at _n_ into a switch region.
+        ///             
+        /// If _n_ is cyclic, the algorithm 
+        /// compares the region at _n_ to the cyclic schemata.
+        /// If this fails, it refines _n_ into a loop (3.6).
+        /// 
+        /// If both matching and refinement do not make progress, the
+        /// current node _n_ is then skipped for the current iteration of
+        /// the algorithm.  If there is an iteration in which all
+        /// nodes are skipped, i.e., the algorithm makes no progress, then
+        /// the algorithm employs a last resort refinement (3.7) to
+        /// ensure that progress can be made in the next iteration.
+        /// </remarks>
         public Region Execute()
         {
-#if NILZ
-        We focus on the novel aspects of our algorithm in this
-paper and refer readers interested in any structural analysis
-details elided to standard sources 
-         
-Like vanilla structural analysis, our algorithm visits
-nodes in post-order in each iteration.   Intuitively,  this
-means that all descendants of a node will be visited (and
-hence had the chance to be reduced) before the node itself.
-The algorithm’s behavior when visiting node _n_
-depends on hether the region at _n_
-is acyclic (has no loop) or not. For an acyclic region, the 
-algorithm tries to match the subgraph
-at _n_to an acyclic schemas (3.2). If there is no match,
-and the region is a switch candidate, then it attempts to
-refine the region at _n_ into a switch region (3.4).
-            
-If _n_ is cyclic, the algorithm 
-compares the region at _n_ to the cyclic schemas (3.5)
-If this fails, it refines _n_ into a loop (3.6).
-If both matching and refinement do not make progress, the
-current node _n_ is then skipped for the current iteration of
-the algorithm.  If there is an iteration in which all
-nodes are skipped, i.e., the algorithm makes no progress, then
-the algorithm employs a last resort refinement (3.7) to
-ensure that progress can be made in the next iteration.
-#endif
             var result = BuildRegionGraph(proc);
             this.regionGraph = result.Item1;
             var entry = result.Item2;
@@ -95,23 +100,23 @@ ensure that progress can be made in the next iteration.
             {
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
+                this.postDoms = BuildPostDoms();
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.tailRegions = new Queue<Region>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
-                Debug.Print("== Graph contains {0} nodes", regionGraph.Nodes.Count);
+                Debug.Print("== Graph contains {0} nodes ===================================", regionGraph.Nodes.Count);
                 DumpGraph();
+
+                bool didReduce = false;
                 foreach (var n in postOrder)
                 {
-                    bool didReduce = false;
+                    didReduce = false;
                     do {
-                        if (IsCyclic(n))
+                        didReduce = ReduceAcyclic(n, false);
+                        if (!didReduce && IsCyclic(n))
                         {
                             didReduce = ReduceCyclic(n);
-                        }
-                        else
-                        {
-                            didReduce = ReduceAcyclic(n, false);
                         }
                     } while (didReduce);
                 }
@@ -119,21 +124,35 @@ ensure that progress can be made in the next iteration.
                 newCount = regionGraph.Nodes.Count;
                 if (newCount == oldCount)
                 {
-                    bool didreduce = false;
+#if NYI
+                    didReduce = false;
                     // Didn't make any progress, try removing tail blocks.
                     foreach (var n in postOrder.Where(n => regionGraph.Nodes.Contains(n)))
                     {
-                        didreduce = !IsCyclic(n) &&  ReduceAcyclic(n, true);
+                        didreduce = !IsCyclic(n) && ReduceAcyclic(n, true);
                         if (didreduce)
                             break;
-                            
-                    }
+                    } 
+#endif
                     // Didn't make any progress, try to trim away stray gotos.
-                    if (!didreduce)
+           //         if (!didReduce)
                         ProcessUnresolvedRegions();
                 }
             } while (regionGraph.Nodes.Count > 1);
             return entry;
+        }
+
+        private DominatorGraph<Region> BuildPostDoms()
+        {
+            var revGraph = new ReverseGraph(regionGraph);
+            var exitNode = new Region(new Block(proc, "DummyExitBlock")) { Type = RegionType.Tail };
+            revGraph.Nodes.Add(exitNode);
+            var tailRegions = regionGraph.Nodes.Where(n => n.Type == RegionType.Tail);
+            foreach (var r in tailRegions)
+            {
+                revGraph.AddEdge(exitNode, r);
+            }
+            return new DominatorGraph<Region>(revGraph, exitNode);
         }
 
         /// <summary>
@@ -148,7 +167,8 @@ ensure that progress can be made in the next iteration.
             var regionFactory = new RegionFactory();
             foreach (var b in proc.ControlGraph.Blocks)
             {
-                if (b.Pred.Count == 0 && b != proc.EntryBlock)
+                if (b.Pred.Count == 0 && b != proc.EntryBlock ||
+                    b == proc.ExitBlock)
                     continue;
                 var reg = regionFactory.Create(b);
                 btor.Add(b, reg);
@@ -160,6 +180,8 @@ ensure that progress can be made in the next iteration.
                     continue;
                 foreach (var s in b.Succ)
                 {
+                    if (s == proc.ExitBlock)
+                        continue;
                     var from = btor[b];
                     var to = btor[s];
                     regs.AddEdge(from, to);
@@ -210,20 +232,26 @@ conditions to be inverses.
         public bool ReduceAcyclic(Region n, bool reduceTailregions)
         {
             bool didReduce = false;
-                if (n.Type == RegionType.Condition)
-                {
-                    didReduce = ReduceIfRegion(n, reduceTailregions);
-                }
-                else if (this.regionGraph.Successors(n).Count == 1)
-                {
-                    didReduce = ReduceSequence(n);
-                }
-                else
-                {
-                    //$NYI: switches.
-                    didReduce = false;
-                }
-               return didReduce;
+            switch (n.Type)
+            {
+            case RegionType.Condition:
+                didReduce = ReduceIfRegion(n, reduceTailregions);
+                break;
+            case RegionType.IncSwitch:
+                didReduce = ReduceSwitchRegion(n);
+                break;
+            case RegionType.Linear:
+                didReduce = ReduceSequence(n);
+                break;
+            case RegionType.Tail:
+                didReduce = false;
+                break;
+            default:
+                throw new NotImplementedException();
+                didReduce = false;
+                break;
+            }
+            return didReduce;
         }
 
         public bool ProcessUnresolvedRegions()
@@ -262,6 +290,7 @@ conditions to be inverses.
                     regionGraph.RemoveEdge(el, elS);
                 RemoveRegion(el);
                 n.Type = RegionType.Linear;
+                n.Expression = null;
                 return true;
             }
             else if (thS == el || (reduceTailregions && th.Type == RegionType.Tail))
@@ -274,6 +303,7 @@ conditions to be inverses.
                     regionGraph.RemoveEdge(th, thS);
                 RemoveRegion(th);
                 n.Type = RegionType.Linear;
+                n.Expression = null;
                 return true;
             }
             else if (elS != null && elS == thS)
@@ -292,6 +322,7 @@ conditions to be inverses.
                 RemoveRegion(el);
                 regionGraph.AddEdge(n, elS);
                 n.Type = RegionType.Linear;
+                n.Expression = null;
                 return true;
             }
             else
@@ -317,6 +348,212 @@ conditions to be inverses.
                 return false;
         }
 
+        /// <summary>
+        /// Switch regions.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private bool ReduceSwitchRegion(Region n)
+        {
+            var follow = GetSwitchFollow(n);
+            if (follow != null)
+            {
+                return ReduceIncSwitch(n, follow);
+            }
+            RefineIncSwitch(n);
+            return true;
+        }
+
+#if NILZ
+A switch candidate is refined by first virtualizing incoming
+edges to any node other than the switch head.
+The next step is to ensure there is a single successor of
+all nodes in the switch. The immediate post-dominator
+of the switch head is selected as the successor if it is the
+successor of any of the case nodes. Otherwise, the node
+that (1) is a successor of a case node, (2) is not a case
+node itself, and (3) has the highest number of incoming
+edges from case nodes is chosen as the successor. After
+the successor has been identified, any outgoing edge from
+the switch that does not go to the successor is virtualized.
+After refinement, a switch candidate is usually collapsed
+to a IncSwitch[·] region. For instance, a common
+implementation strategy for switches is to redirect inputs
+handled by the default case (e.g., x > 20) to a default
+node, and use a jump table for the remaining cases (e.g.,
+x in [0,20]). This relationship is depicted in Figure 4,
+along with the corresponding region types. Because the
+jump table only handles a few cases, it is recognized as an
+IncSwitch[·]. However, because the default node handles
+all other cases, together they constitute a Switch[·].
+#endif
+
+
+#if NILZ
+3.4  Switch Refinement
+If the subgraph at node _n_ is acyclic but fails to match a
+known schema, we try to refine the subgraph into a switch.
+Regions that would match a switch schema in Table 3
+but contain extra edges are switch candidates. A switch
+candidate can fail to match the switch schema if it has
+extra incoming edges or multiple successors. For instance,
+the nodes in the IncSwitch [] box in Figure  4  would not
+be identified as an IncSwitch [] region because there is an
+extra incoming edge to the default case node.
+
+We first refine switch candidates by ensuring that the
+switch head is the only predecessor for each case node.
+We remove any other incoming edge by virtualizing them.
+The next step is to ensure there is a single successor of all
+nodes in the switch. To find the successor, we first identify
+the immediate post-dominator of the switch head. If this
+node is the successor of any of the case nodes, we select
+it as the switch successor. If not, we select the node that
+(1) is a successor of a case node, (2) is not a case node
+itself, and (3) has the highest number of incoming edges
+from case nodes. After we have identified the successor,
+we remove all outgoing edges from the case nodes to other
+nodes by virtualizing them
+
+After  refinement,  a  switch  candidate  is  usually  col-
+lapsed to a IncSwitch[] region. For instance, a common
+implementation strategy for switches is to redirect inputs
+handled by the default case (e.g., x > 20) to a default
+node, and use a jump table for the remaining cases (e.g.,
+x in {0..20}.   This relationship is depicted in Figure
+ 4,
+along with the corresponding region types. Because the
+jump table only handles a few cases, it is recognized as an
+IncSwitch[]. However, because the default node handles
+all other cases, together they constitute a Switch[].
+
+#endif
+        private void RefineIncSwitch(Region n)
+        {
+            VirtualizeIrregularSwitchEntries(n);
+            Region follow = FindIrregularSwitchFollowRegion(n);
+            VirtualizeIrregularSwitchExits(n, follow);
+        }
+
+
+        private void VirtualizeIrregularSwitchEntries(Region n)
+        {
+            var vEdges = new List<VirtualEdge>();
+            foreach (var s in regionGraph.Successors(n))
+            {
+                foreach (var sp in regionGraph.Predecessors(s))
+                {
+                    if (sp != n)
+                        vEdges.Add(new VirtualEdge(sp, s, VirtualEdgeType.Goto));
+                }
+            }
+            foreach (var vEdge in vEdges)
+            {
+                VirtualizeEdge(vEdge);
+            }
+        }
+
+        /// <summary>
+        ///  To find the successor, we first identify
+        /// the immediate post-dominator of the switch head. If this
+        /// node is the successor of any of the case nodes, we select
+        /// it as the switch successor. If not, we select the node that
+        /// (1) is a successor of a case node, (2) is not a case node
+        /// itself, and (3) has the highest number of incoming edges
+        /// from case nodes.
+        /// </summary>
+        private Region FindIrregularSwitchFollowRegion(Region n)
+        {
+            var immPDom = this.postDoms.ImmediateDominator(n);
+            var caseNodes = regionGraph.Successors(n).ToHashSet();
+            if (caseNodes.Any(s => regionGraph.Successors(s).Contains(immPDom)))
+                return immPDom;
+
+            Func<Region, int> incoming = (r) => {
+                return regionGraph.Predecessors(r)
+                    .Where(p => caseNodes.Contains(p))
+                    .Count();
+            };
+            var candidates = caseNodes.SelectMany(c => regionGraph.Successors(c))
+                .Where(c => !caseNodes.Contains(c))
+                .ToList();
+            var best = candidates
+                .Select(c => new {
+                    Region = c,
+                    Score = incoming(c)
+                })
+                .OrderByDescending(c => c.Score)
+                .First();
+            return best.Region;
+        }
+
+        /// <summary>
+        /// After we have identified the successor, we remove all 
+        /// outgoing edges from the case nodes to other nodes by 
+        /// virtualizing them.
+        /// </summary>
+        private void VirtualizeIrregularSwitchExits(Region n, Region follow)
+        {
+            var caseNodes = regionGraph.Successors(n).ToHashSet();
+            var vEdges = new List<VirtualEdge>();
+            foreach (var c in caseNodes)
+            {
+                foreach (var s in regionGraph.Successors(c).Where(cs => cs != follow))
+                {
+                    vEdges.Add(new VirtualEdge(c, s, VirtualEdgeType.Goto));
+                }
+            }
+            foreach (var vEdge in vEdges)
+            {
+                VirtualizeEdge(vEdge);
+            }
+        }
+
+        private Region GetSwitchFollow(Region n)
+        {
+            Region follow = null;
+            foreach (var s in regionGraph.Successors(n))
+            {
+                if (regionGraph.Predecessors(s).Count != 1)
+                    return null;
+                var ss = SingleSuccessor(s);
+                if (s.Type != RegionType.Tail)
+                {
+                    if (ss == null)
+                        return null;
+                    if (follow == null)
+                        follow = ss;
+                    else if (ss != follow)
+                        return null;
+                }
+            }
+            return follow;
+        }
+
+        private bool ReduceIncSwitch(Region n, Region follow)
+        {
+            var succs = regionGraph.Successors(n).ToArray();
+            var stms = new List<AbsynStatement>();
+            for (int i = 0; i < succs.Length; ++i)
+            {
+                stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, i)));
+                stms.AddRange(succs[i].Statements);
+                if (succs[i].Type != RegionType.Tail)
+                {
+                    stms.Add(new AbsynBreak());
+                }
+                regionGraph.RemoveEdge(n, succs[i]);
+                regionGraph.RemoveEdge(succs[i], follow);
+                RemoveRegion(succs[i]);
+            }
+            var sw = new AbsynSwitch(n.Expression, stms);
+            n.Statements.Add(sw);
+            n.Expression = null;
+            n.Type = RegionType.Linear;
+            regionGraph.AddEdge(n, follow);
+            return true;
+        }
+
         private bool RefinePredecessor(Region n, Region s)
         {
             ISet<Region> unstructuredPreds = regionGraph.Predecessors(s).Where(p => p != n).ToHashSet();
@@ -324,8 +561,8 @@ conditions to be inverses.
                 return false;
             this.unresolvedNoncycles.Enqueue(Tuple.Create(n, unstructuredPreds));
             return true;
-
         }
+
         private void RemoveRegion(Region n)
         {
             Debug.Print("Removing region {0} from graph", n.Block.Name);
@@ -341,6 +578,14 @@ conditions to be inverses.
         private Region SingleSuccessor(Region n)
         {
             var succ = regionGraph.Successors(n);
+            if (succ.Count != 1)
+                return null;
+            return succ.First();
+        }
+
+        private Region SinglePredecessor(Region n)
+        {
+            var succ = regionGraph.Predecessors(n);
             if (succ.Count != 1)
                 return null;
             return succ.First();
@@ -432,9 +677,16 @@ doing future pattern matches.
             }
             CollapseToTailRegion(vEdge.From, vEdge.To, stm);
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
-
         }
 
+        /// <summary>
+        /// Appends the statement <paramref name="stm"/> to the list
+        /// of statements in the <paramref name="from"/> region.
+        /// 
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="stm"></param>
         public void CollapseToTailRegion(Region from, Region to, AbsynStatement stm)
         {
             if (from.Type == RegionType.Condition)
@@ -450,6 +702,7 @@ doing future pattern matches.
                     Then = { stm }
                 };
                 from.Statements.Add(ifStm);
+                from.Expression = null;
                 from.Type = RegionType.Linear;
             }
             else if (from.Type == RegionType.Linear)
@@ -461,45 +714,6 @@ doing future pattern matches.
                 throw new NotImplementedException();
         }
 
-#if NILZ
-3.4  Switch Refinement
-If the subgraph at node _n_ is acyclic but fails to match a
-known schema, we try to refine the subgraph into a switch.
-Regions that would match a switch schema in Table 3
-but contain extra edges are switch candidates. A switch
-candidate can fail to match the switch schema if it has
-extra incoming edges or multiple successors. For instance,
-the nodes in the IncSwitch [] box in Figure  4  would not
-be identified as an IncSwitch [] region because there is an
-extra incoming edge to the default case node.
-
-We first refine switch candidates by ensuring that the
-switch head is the only predecessor for each case node.
-We remove any other incoming edge by virtualizing them.
-The next step is to ensure there is a single successor of all
-nodes in the switch. To find the successor, we first identify
-the immediate post-dominator of the switch head. If this
-node is the successor of any of the case nodes, we select
-it as the switch successor. If not, we select the node that
-(1) is a successor of a case node, (2) is not a case node
-itself, and (3) has the highest number of incoming edges
-from case nodes. After we have identified the successor,
-we remove all outgoing edges from the case nodes to other
-nodes by virtualizing them
-
-After  refinement,  a  switch  candidate  is  usually  col-
-lapsed to a IncSwitch[] region. For instance, a common
-implementation strategy for switches is to redirect inputs
-handled by the default case (e.g., x > 20) to a default
-node, and use a jump table for the remaining cases (e.g.,
-x in {0..20}.   This relationship is depicted in Figure
- 4,
-along with the corresponding region types. Because the
-jump table only handles a few cases, it is recognized as an
-IncSwitch[]. However, because the default node handles
-all other cases, together they constitute a Switch[].
-
-#endif
 
 #if NILZ
 
@@ -545,7 +759,7 @@ while (1)
 }
 
 which has no exits, the body of the loop must trigger any
-loop exits. In Phoenix, the loop exits are represented by
+loop exits. The loop exits are represented by
 a tail region,  which corresponds to a goto , break,  or
 continue in the decompiled output.  These tail regions
 are added during loop refinement, which we discuss next.
@@ -573,14 +787,15 @@ are added during loop refinement, which we discuss next.
                     {
                         // Infinite loop.
                         loopStm = new AbsynWhile(Constant.True(), s.Statements);
+                        n.Type = RegionType.Tail;
                     }
                     else
                     {
                         // DoWhile!
                         loopStm = new AbsynDoWhile(s.Statements, s.Expression);
+                        n.Type = RegionType.Linear;
                     }
                     n.Statements = new List<AbsynStatement> { loopStm };
-                    n.Type = RegionType.Linear;
                     n.Expression = null;
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
@@ -622,7 +837,9 @@ are added during loop refinement, which we discuss next.
                 }
             }
 
-            // It's a cyclic region, but we are unable to collapse it. Schedule it for refinement after the whole graph has been traversed.
+            // It's a cyclic region, but we are unable to collapse it.
+            // Schedule it for refinement after the whole graph has been 
+            // traversed.
             this.unresolvedCycles.Enqueue(Tuple.Create(n, loopNodes));
             return didReduce;
         }
@@ -694,15 +911,52 @@ refinement steps did not remove any edges during the latest
 iteration of the algorithm. For this, we use the last resort
 refinement on the loop body, which we describe below.
 #endif
-        private void RefineLoop(Region head, ISet<Region> loopNodes)
+        private bool RefineLoop(Region head, ISet<Region> loopNodes)
         {
-           head = EnsureSingleEntry(head, loopNodes);
-           var follow = DetermineFollowRegion(head, loopNodes);
-           var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
-           var virtualized = VirtualizeIrregularExits(head, follow, lexicalNodes);
-           if (virtualized)
-               return;
-           LastResort(lexicalNodes);
+            head = EnsureSingleEntry(head, loopNodes);
+            var fl = DetermineFollowLatch(head, loopNodes);
+            var follow = fl.Item1;
+            var latch = fl.Item2;
+            var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
+            var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
+            if (virtualized)
+            {
+                CoalesceTailRegions(lexicalNodes);
+                return true;
+            }
+            LastResort(lexicalNodes);
+            return true;
+        }
+
+        private void CoalesceTailRegions(ISet<Region> regions)
+        {
+            foreach (var n in regions)
+            {
+                if (!regionGraph.Nodes.Contains(n))
+                    continue;
+                var succs = regionGraph.Successors(n).ToArray();
+                if (succs.Length == 2 && n.Type == RegionType.Condition)
+                {
+                    Debug.Assert(succs[0].Type != RegionType.Tail || succs[1].Type  != RegionType.Tail,
+                        "Can both be tails?");
+                    if (succs[0].Type == RegionType.Tail && SinglePredecessor(succs[1]) == n)
+                    {
+                        var e = n.Expression.Invert();
+                        n.Statements.Add(new AbsynIf(e, succs[0].Statements));
+                        regionGraph.RemoveEdge(n, succs[0]);
+                        RemoveRegion(succs[0]);
+                        n.Type = RegionType.Linear;
+                    }
+                    if (succs[1].Type == RegionType.Tail && SinglePredecessor(succs[0]) == n)
+                    {
+                        var e = n.Expression;
+                        n.Statements.Add(new AbsynIf(e, succs[1].Statements));
+                        regionGraph.RemoveEdge(n, succs[1]);
+                        RemoveRegion(succs[1]);
+                        n.Type = RegionType.Linear;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -736,25 +990,47 @@ refinement on the loop body, which we describe below.
                     .Count();
         }
 
-        private Region DetermineFollowRegion(Region head, ISet<Region> loopNodes)
+        private Tuple<Region,Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
         {
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
             {
-                // If the head is a Conditional node and one of the nodes 
+                // If the head is a Conditional node and one of the edges 
+                // leaves the loop, the head of that edge is the follow 
+                // node of the 
+                Region follow = null;
                 if (!loopNodes.Contains(headSucc[0]))
-                    return headSucc[0];
-                if (!loopNodes.Contains(headSucc[1]))
-                    return headSucc[1];
+                    follow = headSucc[0];
+                else if (!loopNodes.Contains(headSucc[1]))
+                    follow = headSucc[1];
+                if (follow != null)
+                {
+                    foreach (var latch in regionGraph.Predecessors(head))
+                    {
+                        if (IsBackEdge(latch, head) && SingleSuccessor(latch) == head)
+                        {
+                            return Tuple.Create(follow, latch);
+                        }
+                    }
+                }
             }
-            foreach (var headPred in regionGraph.Predecessors(head).ToArray())
+            foreach (var latch in regionGraph.Predecessors(head))
             {
-                if (IsBackEdge(headPred, head))
-                    return headPred;
+                if (IsBackEdge(latch, head))
+                {
+                    var latchSuccs = regionGraph.Successors(latch).ToArray();
+                    if (latchSuccs.Length == 2)
+                    {
+                        if (!loopNodes.Contains(latchSuccs[0]))
+                            return Tuple.Create(latchSuccs[0], latch);
+                        if (!loopNodes.Contains(latchSuccs[1]))
+                            return Tuple.Create(latchSuccs[1], latch);
+                    }
+                }
             }
             throw new NotImplementedException();
         }
-
+        
         /// <summary>
         /// Nodes lexically contained consist of the loop body
         /// and any nodes that execute after the loop body but before the
@@ -817,11 +1093,13 @@ refinement on the loop body, which we describe below.
         /// edges that go to the loop successor use the break
         /// regions. Any other virtualized edge becomes a goto.
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="follow"></param>
+        /// <param name="header">The loop header</param>
+        /// <param name="latch">The node that takes us back 
+        /// to the top of the loop.</param>
+        /// <param name="follow">The node that follows the loop.</param>
         /// <param name="lexicalNodes"></param>
         /// <returns>True if at least one edge was virtualized.</returns>
-        private bool VirtualizeIrregularExits(Region header, Region follow, ISet<Region> lexicalNodes)
+        private bool VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet<Region> lexicalNodes)
         {
             bool didVirtualize = false;
             foreach (var n in lexicalNodes)
@@ -831,15 +1109,18 @@ refinement on the loop body, which we describe below.
                 {
                     if (!lexicalNodes.Contains(s))
                     {
-                        VirtualEdgeType vType;
                         if (s == header)
-                            continue; // vType = VirtualEdgeType.Continue;
+                        {
+                            if (n != latch)
+                                vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Continue));
+                        }
                         else if (s == follow)
-                            vType = VirtualEdgeType.Break;
+                        {
+                            if (n != latch)
+                                vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Break));
+                        }
                         else
-                            vType = VirtualEdgeType.Goto;
-
-                        vEdges.Add(new VirtualEdge(n, s, vType));
+                            vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
                     }
                 }
                 foreach (var edge in vEdges)
@@ -894,6 +1175,7 @@ structure because they reflect a dominator relationship
                 this.Type = type;
             }
         }
+
     }
 
 

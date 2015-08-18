@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("scanning-development")]
+        [Ignore("FIXME Spins forever")] //$TODO
         public void StrReg00006()
         {
             RunTest32("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
@@ -236,14 +236,14 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("scanning-development")]
+        [Ignore("FIXME Spins forever")] //$TODO
         public void StrReg00011()
         {
             RunTest(new Reg00011Mock(), "Structure/StrReg00011.txt");
         }
 
         [Test]
-        [Ignore("scanning-development")]
+        [Ignore("FIXME Spins forever")] //$TODO
         public void StrReg00013()
         {
             RunTest("Fragments/regressions/r00013.asm", "Structure/StrReg00013.txt");
@@ -283,7 +283,7 @@ ret
         }
 
         [Test]
-        [Ignore("scanning-development")]
+        [Ignore("FIXME Spins forever")] //$TODO
         public void StrReg00001()
         {
             var program = RewriteX86_32Fragment(Fragments.Regressions.Reg00001.Text,
@@ -312,17 +312,14 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 			if (edx_21 >=u esi_20)
 				goto l0010004B;
 		}
-		else
-		{
+	else
+	{
 l0010004B:
 		eax_24 = 0x00000000;
 	}
-	else
 	return eax_24;
 }
 ===
-
-
 ";
             RunTest(sExp, program);
         }

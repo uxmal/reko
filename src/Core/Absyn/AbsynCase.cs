@@ -31,7 +31,7 @@ namespace Reko.Core.Absyn
         [Obsolete("Use constructor with Constant parameter")]
         public AbsynCase(int i)
         {
-            this.Number = i;
+            this.Constant = Constant.Word32(i);
         }
 
         public AbsynCase(Constant c)
@@ -44,7 +44,6 @@ namespace Reko.Core.Absyn
             visitor.VisitCase(this);
         }
 
-        public int Number { get; private set; }
         public Constant Constant { get; private set; }
     }
 
