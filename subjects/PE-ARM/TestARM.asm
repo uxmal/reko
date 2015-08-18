@@ -254,8 +254,13 @@
 00400FD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 00400FE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 00400FF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00401000 00 00 00 00 00 00 00 00 00 00 00 00 42 F2 21 1C ............B.!.
-00401010 C0 F2 40 0C 60 47 00 00 00 00 00 00 00 00 00 00 ..@.`G..........
+00401000 00 00 00 00 00 00 00 00 00 00 00 00             ............   
+
+fn0040100C()
+	movw	ip,#&2121
+	movt	ip,#&40
+	bx	ip
+00401016                   00 00 00 00 00 00 00 00 00 00       ..........
 00401020 00 00 00 00 81 B0 4A F2 20 0C C0 F2 40 0C DC F8 ......J. ...@...
 00401030 00 C0 AD EB 0C 0C CD F8 00 C0 70 47 4A F2 20 0C ..........pGJ. .
 00401040 C0 F2 40 0C 00 9B DC F8 00 C0 AD EB 03 03 63 45 ..@...........cE
@@ -568,37 +573,276 @@
 00402370 59 2E 40 00 00 00 00 00 00 00 00 00 00 00 00 00 Y.@.............
 00402380 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 00402390 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-004023A0 00 00 00 00 2D E9 00 48 EB 46 82 B0 1D EE 50 3F ....-..H.F....P?
-004023B0 00 93 00 9B 01 93 01 98 02 B0 BD E8 00 88 00 00 ................
-004023C0 2D E9 90 48 0D F1 08 0B 94 B0 6F 46 82 B0 00 23 -..H......oF...#
-004023D0 7B 60 FF F7 E7 FF B8 62 BB 6A 1B 1D 1B 68 BB 60 {`.....b.j...h.`
-004023E0 00 23 FB 60 BF F3 5B 8F 75 48 B9 68 50 E8 00 2F .#.`..[.uH.hP../
-004023F0 00 2A 03 D1 40 E8 00 13 00 2B F7 D1 13 46 3B 64 .*..@....+...F;d
-00402400 BF F3 5B 8F 3B 6C 7B 60 7B 68 00 2B 07 D0 7A 68 ..[.;l{`{h.+..zh
-00402410 BB 68 9A 42 02 D1 01 23 FB 60 00 E0 E2 E7 6D 4B .h.B...#.`....mK
-00402420 1B 68 3B 62 BF F3 5B 8F 3B 6A 01 2B 03 D1 1F 20 .h;b..[.;j.+... 
-00402430 00 F0 64 FA 1D E0 67 4B 1B 68 BB 63 BF F3 5B 8F ..d...gK.h.c..[.
-00402440 BB 6B 00 2B 12 D1 BF F3 5B 8F 62 4A 01 23 13 60 .k.+....[.bJ.#.`
-00402450 64 49 63 48 00 F0 24 FD 78 61 7B 69 00 2B 04 D0 dIcH..$.xa{i.+..
-00402460 FF 23 BB 64 BB 6C 3B 61 8D E0 02 E0 4A 4A 01 23 .#.d.l;a....JJ.#
-00402470 13 60 58 4B 1B 68 3B 63 BF F3 5B 8F 3B 6B 01 2B .`XK.h;c..[.;k.+
-00402480 08 D1 56 49 54 48 00 F0 11 FD BF F3 5B 8F 51 4A ..VITH......[.QJ
-00402490 02 23 13 60 4F 4B 1B 68 BB 61 BF F3 5B 8F BB 69 .#.`OK.h.a..[..i
-004024A0 02 2B 10 D0 4A 4B 01 93 48 4B 00 93 00 23 40 F2 .+..JK..HK...#@.
-004024B0 29 22 45 49 02 20 43 4C 24 68 A0 47 F8 61 FB 69 )"EI. CL$h.G.a.i
-004024C0 01 2B 00 D1 FE DE FB 68 00 2B 0B D1 BF F3 5B 8F .+.....h.+....[.
-004024D0 3B 48 00 21 50 E8 00 2F 40 E8 00 13 00 2B F9 D1 ;H.!P../@....+..
-004024E0 BF F3 5B 8F 35 4B 1B 68 00 2B 0C D0 33 48 00 F0 ..[.5K.h.+..3H..
-004024F0 6D FA 78 62 7B 6A 00 2B 05 D0 00 22 02 21 00 20 m.xb{j.+...".!. 
-00402500 2E 4B 1B 68 98 47 01 20 2B 4B 1B 68 98 47 28 4B .K.h.G. +K.h.G(K
-00402510 1A 68 28 4B 1B 68 1A 60 25 4B 1A 68 23 4B 19 68 .h(K.h.`%K.h#K.h
-00402520 21 4B 18 68 FE F7 72 FD F8 62 FA 6A 18 4B 1A 60 !K.h..r..b.j.K.`
-00402530 1B 4B 1B 68 00 2B 04 D1 15 4B 18 68 19 4B 1B 68 .K.h.+...K.h.K.h
-00402540 98 47 15 4B 1B 68 00 2B 02 D1 12 4B 1B 68 98 47 .G.K.h.+...K.h.G
-00402550 16 E0 38 60 3B 68 FB 64 FA 6C 0D 4B 1A 60 10 4B ..8`;h.d.l.K.`.K
+004023A0 00 00 00 00                                     ....           
+
+fn004023A4()
+	push.w	{fp,lr}
+	mov	fp,sp
+	sub	sp,#8
+	mrc	p15,#0,r3,c13
+	str	r3,[sp]
+	ldr	r3,[sp]
+	str	r3,[sp,#4]
+	ldr	r0,[sp,#4]
+	add	sp,#8
+	pop.w	{fp,pc}
+004023BE                                           00 00               ..
+
+fn004023C0()
+	push.w	{r4,r7,fp,lr}
+	add.w	fp,sp,#8
+	sub	sp,#&50
+	mov	r7,sp
+	sub	sp,#8
+	movs	r3,#0
+	str	r3,[r7,#4]
+	bl	$004023A4
+	str	r0,[r7,#&28]
+	ldr	r3,[r7,#&28]
+	adds	r3,r3,#4
+	ldr	r3,[r3]
+	str	r3,[r7,#8]
+	movs	r3,#0
+	str	r3,[r7,#&C]
+
+l004023E4:
+	dmb
+	ldr	r0,[pc,#&1D4]
+	ldr	r1,[r7,#8]
+
+l004023EC:
+	ldrex	r2,[r0]
+	cmp	r2,#0
+	bne	$004023FC
+
+l004023F4:
+	strex	r3,r1,[r0]
+	cmp	r3,#0
+	bne	$004023EC
+
+l004023FC:
+	mov	r3,r2
+	str	r3,[r7,#&40]
+	dmb
+	ldr	r3,[r7,#&40]
+	str	r3,[r7,#4]
+	ldr	r3,[r7,#4]
+	cmp	r3,#0
+	beq	$0040241E
+
+l0040240E:
+	ldr	r2,[r7,#4]
+	ldr	r3,[r7,#8]
+	cmp	r2,r3
+	bne	$0040241C
+
+l00402416:
+	movs	r3,#1
+	str	r3,[r7,#&C]
+	b	$0040241E
+
+l0040241C:
+	b	$004023E4
+
+l0040241E:
+	ldr	r3,[pc,#&1B4]
+	ldr	r3,[r3]
+	str	r3,[r7,#&20]
+	dmb
+	ldr	r3,[r7,#&20]
+	cmp	r3,#1
+	bne	$00402436
+
+l0040242E:
+	movs	r0,#&1F
+	bl	$004028FC
+	b	$00402472
+
+l00402436:
+	ldr	r3,[pc,#&19C]
+	ldr	r3,[r3]
+	str	r3,[r7,#&38]
+	dmb
+	ldr	r3,[r7,#&38]
+	cmp	r3,#0
+	bne	$0040246C
+
+l00402446:
+	dmb
+	ldr	r2,[pc,#&188]
+	movs	r3,#1
+	str	r3,[r2]
+	ldr	r1,[pc,#&190]
+	ldr	r0,[pc,#&18C]
+	bl	$00402EA0
+	str	r0,[r7,#&14]
+	ldr	r3,[r7,#&14]
+	cmp	r3,#0
+	beq	$0040246A
+
+l00402460:
+	movs	r3,#&FF
+	str	r3,[r7,#&48]
+	ldr	r3,[r7,#&48]
+	str	r3,[r7,#&10]
+	b	$00402586
+
+l0040246A:
+	b	$00402472
+
+l0040246C:
+	ldr	r2,[pc,#&128]
+	movs	r3,#1
+	str	r3,[r2]
+
+l00402472:
+	ldr	r3,[pc,#&160]
+	ldr	r3,[r3]
+	str	r3,[r7,#&30]
+	dmb
+	ldr	r3,[r7,#&30]
+	cmp	r3,#1
+	bne	$00402494
+
+l00402482:
+	ldr	r1,[pc,#&158]
+	ldr	r0,[pc,#&150]
+	bl	$00402EAC
+	dmb
+	ldr	r2,[pc,#&144]
+	movs	r3,#2
+	str	r3,[r2]
+
+l00402494:
+	ldr	r3,[pc,#&13C]
+	ldr	r3,[r3]
+	str	r3,[r7,#&18]
+	dmb
+	ldr	r3,[r7,#&18]
+	cmp	r3,#2
+	beq	$004024C6
+
+l004024A4:
+	ldr	r3,[pc,#&128]
+	str	r3,[sp,#4]
+	ldr	r3,[pc,#&120]
+	str	r3,[sp]
+	movs	r3,#0
+	movw	r2,#&229
+	ldr	r1,[pc,#&114]
+	movs	r0,#2
+	ldr	r4,[pc,#&10C]
+	ldr	r4,[r4]
+	blx	r4
+	str	r0,[r7,#&1C]
+	ldr	r3,[r7,#&1C]
+	cmp	r3,#1
+	bne	$004024C6
+
+l004024C4:
+	trap
+
+l004024C6:
+	ldr	r3,[r7,#&C]
+	cmp	r3,#0
+	bne	$004024E4
+
+l004024CC:
+	dmb
+	ldr	r0,[pc,#&EC]
+	movs	r1,#0
+
+l004024D4:
+	ldrex	r2,[r0]
+	strex	r3,r1,[r0]
+	cmp	r3,#0
+	bne	$004024D4
+
+l004024E0:
+	dmb
+
+l004024E4:
+	ldr	r3,[pc,#&D4]
+	ldr	r3,[r3]
+	cmp	r3,#0
+	beq	$00402506
+
+l004024EC:
+	ldr	r0,[pc,#&CC]
+	bl	$004029CC
+	str	r0,[r7,#&24]
+	ldr	r3,[r7,#&24]
+	cmp	r3,#0
+	beq	$00402506
+
+l004024FA:
+	movs	r2,#0
+	movs	r1,#2
+	movs	r0,#0
+	ldr	r3,[pc,#&B8]
+	ldr	r3,[r3]
+	blx	r3
+
+l00402506:
+	movs	r0,#1
+	ldr	r3,[pc,#&AC]
+	ldr	r3,[r3]
+	blx	r3
+	ldr	r3,[pc,#&A0]
+	ldr	r2,[r3]
+	ldr	r3,[pc,#&A0]
+	ldr	r3,[r3]
+	str	r2,[r3]
+	ldr	r3,[pc,#&94]
+	ldr	r2,[r3]
+	ldr	r3,[pc,#&8C]
+	ldr	r1,[r3]
+	ldr	r3,[pc,#&84]
+	ldr	r0,[r3]
+	bl	$0040100C
+	str	r0,[r7,#&2C]
+	ldr	r2,[r7,#&2C]
+	ldr	r3,[pc,#&60]
+	str	r2,[r3]
+	ldr	r3,[pc,#&6C]
+	ldr	r3,[r3]
+	cmp	r3,#0
+	bne	$00402542
+
+l00402538:
+	ldr	r3,[pc,#&54]
+	ldr	r0,[r3]
+	ldr	r3,[pc,#&64]
+	ldr	r3,[r3]
+	blx	r3
+
+l00402542:
+	ldr	r3,[pc,#&54]
+	ldr	r3,[r3]
+	cmp	r3,#0
+	bne	$00402550
+
+l0040254A:
+	ldr	r3,[pc,#&48]
+	ldr	r3,[r3]
+	blx	r3
+
+l00402550:
+	b	$00402580
+00402552       38 60 3B 68 FB 64 FA 6C 0D 4B 1A 60 10 4B   8`;h.d.l.K.`.K
 00402560 1B 68 00 2B 04 D1 0A 4B 18 68 0C 4B 1B 68 98 47 .h.+...K.h.K.h.G
 00402570 09 4B 1B 68 00 2B 02 D1 06 4B 1B 68 98 47 FF E7 .K.h.+...K.h.G..
-00402580 03 4B 1B 68 3B 61 38 69 16 B0 BD E8 90 88 FE DE .K.h;a8i........
+
+l00402580:
+	ldr	r3,[pc,#&C]
+	ldr	r3,[r3]
+	str	r3,[r7,#&10]
+
+l00402586:
+	ldr	r0,[r7,#&10]
+	add	sp,#&58
+	pop.w	{r4,r7,fp,pc}
+0040258E                                           FE DE               ..
 00402590 38 A1 40 00 DC C0 40 00 34 A1 40 00 E0 C0 40 00 8.@...@.4.@...@.
 004025A0 3C A1 40 00 E4 C0 40 00 40 A1 40 00 44 A1 40 00 <.@...@.@.@.D.@.
 004025B0 48 A1 40 00 C4 C0 40 00 E8 C0 40 00 90 A3 40 00 H.@...@...@...@.
@@ -627,231 +871,57 @@ fn00402700()
 	push.w	{fp,lr}
 	mov	fp,sp
 	sub	sp,#8
-	bl	$00400418
-	bl	$003FFCC0
+	bl	$00402B18
+	bl	$004023C0
 	str	r0,[sp]
 	ldr	r3,[sp]
 	str	r3,[sp,#4]
 	ldr	r0,[sp,#4]
 	add	sp,#8
 	pop.w	{fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{fp,lr}
-	mov	fp,sp
-	movw	r3,#&A154
-	movt	r3,#&40
-	ldr	r0,[r3]
-	pop.w	{fp,pc}
-	push.w	{fp,lr}
-	mov	fp,sp
-	movw	r3,#&A158
-	movt	r3,#&40
-	ldr	r0,[r3]
-	pop.w	{fp,pc}
-	push.w	{fp,lr}
-	mov	fp,sp
-	cmp	r0,#4
-	bhi	$00400092
-	movw	r3,#&7918
-	movt	r3,#&40
-	ldr.w	r0,lsl #2,[r3,r0]
-	pop.w	{fp,pc}
-	movs	r0,#0
-	pop.w	{fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{fp,lr}
-	mov	fp,sp
-	movs	r0,#5
-	pop.w	{fp,pc}
-	push.w	{fp,lr}
-	mov	fp,sp
-	movw	r2,#&A154
-	movt	r2,#&40
-	mov	r3,r0
-	ldr	r0,[r2]
-	str	r3,[r2]
-	movs	r3,#0
-	str	r3,[r2,#4]
-	pop.w	{fp,pc}
-	push.w	{fp,lr}
-	mov	fp,sp
-	movw	r2,#&A154
-	movt	r2,#&40
-	mov	r3,r0
-	ldr	r0,[r2,#4]
-	str	r3,[r2,#4]
-	movs	r3,#0
-	str	r3,[r2]
-	pop.w	{fp,pc}
-	push.w	{fp,lr}
-	mov	fp,sp
-	mov	r2,r0
-	cmp	r2,#4
-	bhi	$00400104
-	movw	r3,#&A00C
-	movt	r3,#&40
-	ldr.w	r0,lsl #2,[r3,r0]
-	str.w	r1,lsl #2,[r3,r2]
-	pop.w	{fp,pc}
-	mvn	r0,#0
-	pop.w	{fp,pc}
-	movw	ip,#&C100
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	push	{r0,r1}
-	push.w	{fp,lr}
-	mov	fp,sp
-	sub	sp,#8
-	ldr	r3,[sp,#&10]
-	ldr	r3,[r3]
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&70]
-	cmp	r2,r3
-	bne	$0040017C
-	ldr	r3,[sp,#&10]
-	ldr	r3,[r3]
-	adds	r3,#&10
-	ldr	r3,[r3]
-	cmp	r3,#4
-	bne	$0040017C
-	ldr	r3,[sp,#&10]
-	ldr	r3,[r3]
-	adds	r3,#&14
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&54]
-	cmp	r2,r3
-	beq	$00400172
-	ldr	r3,[sp,#&10]
-	ldr	r3,[r3]
-	adds	r3,#&14
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&40]
-	cmp	r2,r3
-	beq	$00400172
-	ldr	r3,[sp,#&10]
-	ldr	r3,[r3]
-	adds	r3,#&14
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&30]
-	cmp	r2,r3
-	beq	$00400172
-	ldr	r3,[sp,#&10]
-	ldr	r3,[r3]
-	adds	r3,#&14
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&1C]
-	cmp	r2,r3
-	bne	$0040017C
-	bl	$00400F18
-	movs	r3,#1
-	str	r3,[sp]
-	b	$00400180
-	movs	r3,#0
-	str	r3,[sp]
-	ldr	r0,[sp]
-	add	sp,#8
-	ldr	fp,[sp],#4
-	ldr	pc,[sp],#&C
-	ands	r0,r0
-	lsls	r1,r3,#6
-	lsls	r2,r4,#&14
-	adds	r3,r2,r6
-	lsls	r1,r4,#&14
-	adds	r3,r2,r6
-	lsls	r0,r4,#&14
-	adds	r3,r2,r6
-	strb	r3,[r4,#&D]
-	b	$0040027C
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{fp,lr}
-	mov	fp,sp
-	sub	sp,#8
-	ldr	r0,[pc,#&10]
-	bl	$00400F24
-	movs	r3,#0
-	str	r3,[sp]
-	ldr	r0,[sp]
-	add	sp,#8
-	pop.w	{fp,pc}
-	trap
-	cmp	r0,#&19
-	lsls	r0,r0,#1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movw	ip,#&C0FC
-	movt	ip,#&40
-	ldr.w	pc,[ip]
+0040271E                                           00 00               ..
+00402720 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402730 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402740 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402750 2D E9 00 48 EB 46 4A F2 54 13 C0 F2 40 03 18 68 -..H.FJ.T...@..h
+00402760 BD E8 00 88 2D E9 00 48 EB 46 4A F2 58 13 C0 F2 ....-..H.FJ.X...
+00402770 40 03 18 68 BD E8 00 88 2D E9 00 48 EB 46 04 28 @..h....-..H.F.(
+00402780 07 D8 47 F6 18 13 C0 F2 40 03 53 F8 20 00 BD E8 ..G.....@.S. ...
+00402790 00 88 00 20 BD E8 00 88 00 00 00 00 00 00 00 00 ... ............
+004027A0 2D E9 00 48 EB 46 05 20 BD E8 00 88 2D E9 00 48 -..H.F. ....-..H
+004027B0 EB 46 4A F2 54 12 C0 F2 40 02 03 46 10 68 13 60 .FJ.T...@..F.h.`
+004027C0 00 23 53 60 BD E8 00 88 2D E9 00 48 EB 46 4A F2 .#S`....-..H.FJ.
+004027D0 54 12 C0 F2 40 02 03 46 50 68 53 60 00 23 13 60 T...@..FPhS`.#.`
+004027E0 BD E8 00 88 2D E9 00 48 EB 46 02 46 04 2A 09 D8 ....-..H.F.F.*..
+004027F0 4A F2 0C 03 C0 F2 40 03 53 F8 20 00 43 F8 22 10 J.....@.S. .C.".
+00402800 BD E8 00 88 6F F0 00 00 BD E8 00 88 4C F2 00 1C ....o.......L...
+00402810 C0 F2 40 0C DC F8 00 F0 03 B4 2D E9 00 48 EB 46 ..@.......-..H.F
+00402820 82 B0 04 9B 1B 68 1A 68 1C 4B 9A 42 26 D1 04 9B .....h.h.K.B&...
+00402830 1B 68 10 33 1B 68 04 2B 20 D1 04 9B 1B 68 14 33 .h.3.h.+ ....h.3
+00402840 1A 68 15 4B 9A 42 14 D0 04 9B 1B 68 14 33 1A 68 .h.K.B.....h.3.h
+00402850 10 4B 9A 42 0D D0 04 9B 1B 68 14 33 1A 68 0C 4B .K.B.....h.3.h.K
+00402860 9A 42 06 D0 04 9B 1B 68 14 33 1A 68 07 4B 9A 42 .B.....h.3.h.K.B
+00402870 04 D1 00 F0 D1 FE 01 23 00 93 01 E0 00 23 00 93 .......#.....#..
+00402880 00 98 02 B0 5D F8 04 BB 5D F8 0C FB 00 40 99 01 ....]...]....@..
+00402890 22 05 93 19 21 05 93 19 20 05 93 19 63 73 6D E0 "...!... ...csm.
+004028A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004028B0 00 00 00 00 00 00 00 00 2D E9 00 48 EB 46 82 B0 ........-..H.F..
+004028C0 04 48 00 F0 AF FE 00 23 00 93 00 98 02 B0 BD E8 .H.....#........
+004028D0 00 88 FE DE 19 28 40 00 00 00 00 00 00 00 00 00 .....(@.........
+004028E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004028F0 4C F2 FC 0C C0 F2 40 0C DC F8 00 F0             L.....@.....   
+
+fn004028FC()
 	movw	ip,#&C0F8
 	movt	ip,#&40
 	ldr.w	pc,[ip]
-	push.w	{fp,lr}
-	mov	fp,sp
-	sub	sp,#8
-	movs	r3,#0
-	str	r3,[sp]
-	ldr	r0,[sp]
-	add	sp,#8
-	pop.w	{fp,pc}
-	movw	ip,#&C0F4
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0F0
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0EC
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0E8
-	movt	ip,#&40
-	ldr.w	pc,[ip]
+00402908                         2D E9 00 48 EB 46 82 B0         -..H.F..
+00402910 00 23 00 93 00 98 02 B0 BD E8 00 88 4C F2 F4 0C .#..........L...
+00402920 C0 F2 40 0C DC F8 00 F0 4C F2 F0 0C C0 F2 40 0C ..@.....L.....@.
+00402930 DC F8 00 F0 4C F2 EC 0C C0 F2 40 0C DC F8 00 F0 ....L.....@.....
+00402940 4C F2 E8 0C C0 F2 40 0C DC F8 00 F0             L.....@.....   
+
+fn0040294C()
 	push	{r0,r1}
 	push.w	{fp,lr}
 	mov	fp,sp
@@ -871,25 +941,33 @@ fn00402700()
 	ldrh	r3,[r3]
 	add	r3,r2
 	str	r3,[sp]
-	b	$00400284
+	b	$00402984
+
+l00402978:
 	ldr	r3,[sp,#8]
 	adds	r3,r3,#1
 	str	r3,[sp,#8]
 	ldr	r3,[sp]
 	adds	r3,#&28
 	str	r3,[sp]
+
+l00402984:
 	ldr	r3,[sp,#4]
 	adds	r3,r3,#6
 	ldrh	r2,[r3]
 	ldr	r3,[sp,#8]
 	cmp	r3,r2
-	bhs	$004002BA
+	bhs	$004029BA
+
+l00402990:
 	ldr	r3,[sp]
 	adds	r3,#&C
 	ldr	r2,[sp,#&1C]
 	ldr	r3,[r3]
 	cmp	r2,r3
-	blo	$004002B8
+	blo	$004029B8
+
+l0040299C:
 	ldr	r3,[sp]
 	add.w	r2,r3,#&C
 	ldr	r3,[sp]
@@ -899,18 +977,28 @@ fn00402700()
 	add	r2,r3
 	ldr	r3,[sp,#&1C]
 	cmp	r3,r2
-	bhs	$004002B8
+	bhs	$004029B8
+
+l004029B2:
 	ldr	r3,[sp]
 	str	r3,[sp,#&C]
-	b	$004002BE
-	b	$00400278
+	b	$004029BE
+
+l004029B8:
+	b	$00402978
+
+l004029BA:
 	movs	r3,#0
 	str	r3,[sp,#&C]
+
+l004029BE:
 	ldr	r0,[sp,#&C]
 	add	sp,#&10
 	ldr	fp,[sp],#4
 	ldr	pc,[sp],#&C
-	movs	r0,r0
+004029CA                               00 00                       ..   
+
+fn004029CC()
 	push	{r0,r1}
 	push.w	{r7,fp,lr}
 	add.w	fp,sp,#4
@@ -919,87 +1007,77 @@ fn00402700()
 	ldr	r3,[pc,#&7C]
 	str	r3,[r7,#4]
 	ldr	r0,[r7,#4]
-	bl	$0040038C
+	bl	$00402A8C
 	str	r0,[r7,#&14]
 	ldr	r3,[r7,#&14]
 	cmp	r3,#0
-	bne	$004002F6
+	bne	$004029F6
+
+l004029EC:
 	movs	r3,#0
 	str	r3,[r7,#&18]
 	ldr	r3,[r7,#&18]
 	str	r3,[r7]
-	b	$0040034A
+	b	$00402A4A
+
+l004029F6:
 	ldr	r2,[r7,#&48]
 	ldr	r3,[r7,#4]
 	subs	r3,r2,r3
 	str	r3,[r7,#&1C]
 	ldr	r1,[r7,#&1C]
 	ldr	r0,[r7,#4]
-	bl	$0040024C
+	bl	$0040294C
 	str	r0,[r7,#&20]
 	ldr	r3,[r7,#&20]
 	str	r3,[r7,#8]
 	ldr	r3,[r7,#8]
 	cmp	r3,#0
-	bne	$0040031C
+	bne	$00402A1C
+
+l00402A12:
 	movs	r3,#0
 	str	r3,[r7,#&24]
 	ldr	r3,[r7,#&24]
 	str	r3,[r7]
-	b	$0040034A
+	b	$00402A4A
+
+l00402A1C:
 	ldr	r3,[r7,#8]
 	adds	r3,#&24
 	ldr	r3,[r3]
 	tst.w	r3,#&80000000
-	bne	$0040032E
+	bne	$00402A2E
+
+l00402A28:
 	movs	r3,#1
 	str	r3,[r7,#&C]
-	b	$00400332
+	b	$00402A32
+
+l00402A2E:
 	movs	r3,#0
 	str	r3,[r7,#&C]
+
+l00402A32:
 	ldr	r3,[r7,#&C]
 	str	r3,[r7,#&28]
 	ldr	r3,[r7,#&28]
 	str	r3,[r7]
-	b	$0040034A
-	b	$0040034A
-	movs	r3,#0
-	str	r3,[r7,#&34]
-	ldr	r3,[r7,#&34]
-	str	r3,[r7]
-	b	$0040034A
-	b	$0040034A
+	b	$00402A4A
+00402A3C                                     05 E0 00 23             ...#
+00402A40 7B 63 7B 6B 3B 60 00 E0 FF E7                   {c{k;`....     
+
+l00402A4A:
 	ldr	r0,[r7]
 	add	sp,#&3C
 	pop.w	{r7,fp}
 	ldr	pc,[sp],#&C
-	trap
-	movs	r0,r0
-	lsls	r0,r0,#1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
+00402A56                   FE DE 00 00 40 00 00 00 00 00       ....@.....
+00402A60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402A70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402A80 00 00 00 00 00 00 00 00 00 00 00 00             ............   
+
+fn00402A8C()
 	push	{r0,r1}
 	push.w	{fp,lr}
 	mov	fp,sp
@@ -1010,10 +1088,14 @@ fn00402700()
 	ldrh	r2,[r3]
 	movw	r3,#&5A4D
 	cmp	r2,r3
-	beq	$004003AC
+	beq	$00402AAC
+
+l00402AA6:
 	movs	r3,#0
 	str	r3,[sp]
-	b	$004003E6
+	b	$00402AE6
+
+l00402AAC:
 	ldr	r3,[sp,#4]
 	adds	r3,#&3C
 	ldr	r2,[sp,#4]
@@ -1024,10 +1106,14 @@ fn00402700()
 	ldr	r2,[r3]
 	movw	r3,#&4550
 	cmp	r2,r3
-	beq	$004003CA
+	beq	$00402ACA
+
+l00402AC4:
 	movs	r3,#0
 	str	r3,[sp]
-	b	$004003E6
+	b	$00402AE6
+
+l00402ACA:
 	ldr	r3,[sp,#8]
 	adds	r3,#&18
 	str	r3,[sp,#&C]
@@ -1035,26 +1121,27 @@ fn00402700()
 	ldrh	r2,[r3]
 	movw	r3,#&10B
 	cmp	r2,r3
-	beq	$004003E2
+	beq	$00402AE2
+
+l00402ADC:
 	movs	r3,#0
 	str	r3,[sp]
-	b	$004003E6
+	b	$00402AE6
+
+l00402AE2:
 	movs	r3,#1
 	str	r3,[sp]
+
+l00402AE6:
 	ldr	r0,[sp]
 	add	sp,#&10
 	ldr	fp,[sp],#4
 	ldr	pc,[sp],#&C
-	movs	r0,r0
-	movw	ip,#&C0E4
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0E0
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0DC
-	movt	ip,#&40
-	ldr.w	pc,[ip]
+00402AF2       00 00 4C F2 E4 0C C0 F2 40 0C DC F8 00 F0   ..L.....@.....
+00402B00 4C F2 E0 0C C0 F2 40 0C DC F8 00 F0 4C F2 DC 0C L.....@.....L...
+00402B10 C0 F2 40 0C DC F8 00 F0                         ..@.....       
+
+fn00402B18()
 	push.w	{fp,lr}
 	mov	fp,sp
 	sub	sp,#&28
@@ -1066,13 +1153,17 @@ fn00402700()
 	ldr	r2,[r3]
 	ldr	r3,[pc,#&A0]
 	cmp	r2,r3
-	beq	$0040043E
+	beq	$00402B3E
+
+l00402B32:
 	ldr	r3,[pc,#&94]
 	ldr	r3,[r3]
 	mvns	r2,r3
 	ldr	r3,[pc,#&88]
 	str	r2,[r3]
-	b	$004004BE
+	b	$00402BBE
+
+l00402B3E:
 	add	r0,sp,#&10
 	ldr	r3,[pc,#&A0]
 	ldr	r3,[r3]
@@ -1127,9 +1218,13 @@ fn00402700()
 	ldr	r2,[sp]
 	ldr	r3,[pc,#&28]
 	cmp	r2,r3
-	bne	$004004B0
+	bne	$00402BB0
+
+l00402BAC:
 	ldr	r3,[pc,#&1C]
 	str	r3,[sp]
+
+l00402BB0:
 	ldr	r2,[sp]
 	ldr	r3,[pc,#&14]
 	str	r2,[r3]
@@ -1137,10399 +1232,1111 @@ fn00402700()
 	mvns	r2,r3
 	ldr	r3,[pc,#8]
 	str	r2,[r3]
+
+l00402BBE:
 	add	sp,#&28
 	pop.w	{fp,pc}
-	adr	r0,#&90
-	lsls	r0,r0,#1
-	adr	r0,#&80
-	lsls	r0,r0,#1
-	b	$0040016E
-	cbnz	r0,#&400522
-	b	$00400170
-	cbnz	r0,#&400526
-	stm	{r0,r3,r6}
-	lsls	r0,r0,#1
-	stm	{r0,r3,r4,r5}
-	lsls	r0,r0,#1
-	stm	{r0,r2,r6}
-	lsls	r0,r0,#1
-	stm	{r0,r6}
-	lsls	r0,r0,#1
-	stm	{r0,r2,r3,r4,r5}
-	lsls	r0,r0,#1
-	push	{r0,r1}
-	push.w	{fp,lr}
-	mov	fp,sp
-	sub	sp,#8
-	movs	r3,#0
-	str	r3,[sp]
-	ldr	r0,[sp]
-	add	sp,#8
-	ldr	fp,[sp],#4
-	ldr	pc,[sp],#&C
-	movs	r0,r0
-	push.w	{r4,fp,lr}
-	add.w	fp,sp,#4
-	sub	sp,#&1C
-	ldr	r3,[pc,#&A0]
-	ldr	r3,[r3]
-	cmp	r3,#0
-	beq	$0040051E
-	ldr	r3,[pc,#&94]
-	ldr	r3,[r3]
-	cmp	r3,#0
-	bne	$0040054E
-	ldr	r3,[pc,#&90]
-	ldr	r3,[r3]
-	cmp	r3,#0
-	bne	$0040052E
-	ldr	r3,[pc,#&84]
-	ldr	r3,[r3]
-	cmp	r3,#0
-	beq	$0040054E
-	ldr	r3,[pc,#&9C]
-	str	r3,[sp,#4]
-	ldr	r3,[pc,#&94]
-	str	r3,[sp]
-	movs	r3,#0
-	movs	r2,#&45
-	ldr	r1,[pc,#&88]
-	movs	r0,#2
-	ldr	r4,[pc,#&80]
-	ldr	r4,[r4]
-	blx	r4
-	str	r0,[sp,#&10]
-	ldr	r3,[sp,#&10]
-	cmp	r3,#1
-	bne	$0040054E
-	trap
-	ldr	r3,[pc,#&60]
-	ldr	r3,[r3]
-	cmp	r3,#0
-	beq	$0040055C
-	movs	r3,#0
-	str	r3,[sp,#&C]
-	b	$004005A2
-	movs	r3,#&4D
-	str	r3,[sp]
-	ldr	r3,[pc,#&58]
-	movs	r2,#2
-	movs	r1,#4
-	movs	r0,#&20
-	ldr	r4,[pc,#&4C]
-	ldr	r4,[r4]
-	blx	r4
-	str	r0,[sp,#&14]
-	ldr	r3,[sp,#&14]
-	str	r3,[sp,#8]
-	ldr	r0,[sp,#8]
-	ldr	r3,[pc,#&3C]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[sp,#&18]
-	ldr	r2,[sp,#&18]
-	ldr	r3,[pc,#&2C]
-	str	r2,[r3]
-	ldr	r3,[pc,#&28]
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&20]
-	str	r2,[r3]
-	ldr	r3,[sp,#8]
-	cmp	r3,#0
-	bne	$00400598
-	movs	r3,#&18
-	str	r3,[sp,#&C]
-	b	$004005A2
-	ldr	r2,[sp,#8]
-	movs	r3,#0
-	str	r3,[r2]
-	movs	r3,#0
-	str	r3,[sp,#&C]
-	ldr	r0,[sp,#&C]
-	add	sp,#&1C
-	pop.w	{r4,fp,pc}
-	trap
-	adr	r3,#&1F0
-	lsls	r0,r0,#1
-	adr	r3,#&230
-	lsls	r0,r0,#1
-	stm	{r0,r2,r3,r6}
-	lsls	r0,r0,#1
-	stm	{r0,r3,r4,r7}
-	lsls	r0,r0,#1
-	ldrb	r4,[r2,#&C]
-	lsls	r0,r0,#1
-	stm	{r0,r2,r3,r5,r6,r7}
-	lsls	r0,r0,#1
-	ldrb	r0,[r7,#&A]
-	lsls	r0,r0,#1
-	ldrb	r0,[r7,#2]
-	lsls	r0,r0,#1
-	ldrb	r0,[r6,#7]
-	lsls	r0,r0,#1
-	push	{r0,r1}
-	push.w	{r7,fp,lr}
-	add.w	fp,sp,#4
-	sub	sp,#&34
-	mov	r7,sp
-	movs	r3,#0
-	str	r3,[r7,#8]
-	ldr	r3,[pc,#&A4]
-	ldr	r0,[r3]
-	ldr	r3,[pc,#&A4]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[r7,#&10]
-	ldr	r3,[r7,#&10]
-	str	r3,[r7]
-	ldr	r3,[r7]
-	cmp.w	r3,#-1
-	bne	$0040060A
-	ldr	r0,[r7,#&40]
-	ldr	r3,[pc,#&90]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[r7,#&14]
-	ldr	r3,[r7,#&14]
-	str	r3,[r7,#&C]
-	b	$00400674
-	movs	r0,#8
-	bl	$00400F30
-	ldr	r3,[pc,#&74]
-	ldr	r0,[r3]
-	ldr	r3,[pc,#&74]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[r7,#&18]
-	ldr	r3,[r7,#&18]
-	str	r3,[r7]
-	ldr	r3,[pc,#&5C]
-	ldr	r0,[r3]
-	ldr	r3,[pc,#&64]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[r7,#&1C]
-	ldr	r3,[r7,#&1C]
-	str	r3,[r7,#4]
-	ldr	r0,[r7,#&40]
-	ldr	r3,[pc,#&50]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[r7,#&20]
-	adds	r2,r7,#4
-	mov	r1,r7
-	ldr	r0,[r7,#&20]
-	bl	$00400F54
-	str	r0,[r7,#&24]
-	ldr	r3,[r7,#&24]
-	str	r3,[r7,#8]
-	ldr	r0,[r7]
-	ldr	r3,[pc,#&34]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[r7,#&28]
-	ldr	r2,[r7,#&28]
-	ldr	r3,[pc,#&30]
-	str	r2,[r3]
-	ldr	r0,[r7,#4]
-	ldr	r3,[pc,#&24]
-	ldr	r3,[r3]
-	blx	r3
-	str	r0,[r7,#&2C]
-	ldr	r2,[r7,#&2C]
-	ldr	r3,[pc,#&18]
-	str	r2,[r3]
-	movs	r0,#8
-	bl	$00400F3C
-	ldr	r3,[r7,#8]
-	str	r3,[r7,#&C]
-	ldr	r0,[r7,#&C]
-	add	sp,#&34
-	pop.w	{r7,fp}
-	ldr	pc,[sp],#&C
-	adr	r3,#&1F0
-	lsls	r0,r0,#1
-	stm	{r0,r2,r3,r6}
-	lsls	r0,r0,#1
-	adr	r3,#&230
-	lsls	r0,r0,#1
-	stm	{r0,r2,r4,r5}
-	lsls	r0,r0,#1
-	stm	{r1,r2}
-	lsls	r0,r0,#1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push	{r0,r1}
-	push.w	{fp,lr}
-	mov	fp,sp
-	sub	sp,#&10
-	ldr	r0,[sp,#&18]
-	bl	$004005D0
-	str	r0,[sp,#4]
-	ldr	r3,[sp,#4]
-	cmp	r3,#0
-	bne	$004006FC
-	mvn	r3,#0
-	str	r3,[sp]
-	b	$00400700
-	movs	r3,#0
-	str	r3,[sp]
-	ldr	r3,[sp]
-	str	r3,[sp,#8]
-	ldr	r0,[sp,#8]
-	add	sp,#&10
-	ldr	fp,[sp],#4
-	ldr	pc,[sp],#&C
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{r4,r5,fp,lr}
-	add.w	fp,sp,#8
-	movw	r3,#&879C
-	movt	r3,#&40
-	movw	r5,#&89A4
-	movt	r5,#&40
-	adds	r4,r3,#4
-	adds	r3,r3,#4
-	cmp	r3,r5
-	bhs	$00400754
-	ldr	r3,[r4],#4
-	cbz	r3,#&400750
-	blx	r3
-	cmp	r4,r5
-	blo	$00400748
-	pop.w	{r4,r5,fp,pc}
-	push.w	{r4,r5,fp,lr}
-	add.w	fp,sp,#8
-	movw	r3,#&8AA8
-	movt	r3,#&40
-	movw	r5,#&8CB0
-	movt	r5,#&40
-	adds	r4,r3,#4
-	adds	r3,r3,#4
-	cmp	r3,r5
-	bhs	$00400784
-	ldr	r3,[r4],#4
-	cbz	r3,#&400780
-	blx	r3
-	cmp	r4,r5
-	blo	$00400778
-	pop.w	{r4,r5,fp,pc}
-	movw	ip,#&C0D8
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0D4
-	movt	ip,#&40
-	ldr.w	pc,[ip]
+00402BC4             24 A0 40 00 20 A0 40 00 4F E6 40 BB     $.@. .@.O.@.
+00402BD0 4E E6 40 BB 48 C0 40 00 38 C0 40 00 44 C0 40 00 N.@.H.@.8.@.D.@.
+00402BE0 40 C0 40 00 3C C0 40 00 03 B4 2D E9 00 48 EB 46 @.@.<.@...-..H.F
+00402BF0 82 B0 00 23 00 93 00 98 02 B0 5D F8 04 BB 5D F8 ...#......]...].
+00402C00 0C FB 00 00 2D E9 10 48 0D F1 04 0B 87 B0 28 4B ....-..H......(K
+00402C10 1B 68 00 2B 03 D0 25 4B 1B 68 00 2B 17 D1 24 4B .h.+..%K.h.+..$K
+00402C20 1B 68 00 2B 03 D1 21 4B 1B 68 00 2B 0F D0 27 4B .h.+..!K.h.+..'K
+00402C30 01 93 25 4B 00 93 00 23 45 22 22 49 02 20 20 4C ..%K...#E""I.  L
+00402C40 24 68 A0 47 04 90 04 9B 01 2B 00 D1 FE DE 18 4B $h.G.....+.....K
+00402C50 1B 68 00 2B 02 D0 00 23 03 93 22 E0 4D 23 00 93 .h.+...#..".M#..
+00402C60 16 4B 02 22 04 21 20 20 13 4C 24 68 A0 47 05 90 .K.".!  .L$h.G..
+00402C70 05 9B 02 93 02 98 0F 4B 1B 68 98 47 06 90 06 9A .......K.h.G....
+00402C80 0B 4B 1A 60 0A 4B 1A 68 08 4B 1A 60 02 9B 00 2B .K.`.K.h.K.`...+
+00402C90 02 D1 18 23 03 93 04 E0 02 9A 00 23 13 60 00 23 ...#.......#.`.#
+00402CA0 03 93 03 98 07 B0 BD E8 10 88 FE DE 7C A3 40 00 ............|.@.
+00402CB0 8C A3 40 00 4C C0 40 00 98 C0 40 00 14 7B 40 00 ..@.L.@...@..{@.
+00402CC0 EC C0 40 00 B8 7A 40 00 B8 78 40 00 F0 79 40 00 ..@..z@..x@..y@.
+00402CD0 03 B4 2D E9 80 48 0D F1 04 0B 8D B0 6F 46 00 23 ..-..H......oF.#
+00402CE0 BB 60 29 4B 18 68 29 4B 1B 68 98 47 38 61 3B 69 .`)K.h)K.h.G8a;i
+00402CF0 3B 60 3B 68 B3 F1 FF 3F 07 D1 38 6C 24 4B 1B 68 ;`;h...?..8l$K.h
+00402D00 98 47 78 61 7B 69 FB 60 34 E0 08 20 00 F0 90 FC .Gxa{i.`4.. ....
+00402D10 1D 4B 18 68 1D 4B 1B 68 98 47 B8 61 BB 69 3B 60 .K.h.K.h.G.a.i;`
+00402D20 17 4B 18 68 19 4B 1B 68 98 47 F8 61 FB 69 7B 60 .K.h.K.h.G.a.i{`
+00402D30 38 6C 14 4B 1B 68 98 47 38 62 3A 1D 39 46 38 6A 8l.K.h.G8b:.9F8j
+00402D40 00 F0 88 FC 78 62 7B 6A BB 60 38 68 0D 4B 1B 68 ....xb{j.`8h.K.h
+00402D50 98 47 B8 62 BA 6A 0C 4B 1A 60 78 68 09 4B 1B 68 .G.b.j.K.`xh.K.h
+00402D60 98 47 F8 62 FA 6A 06 4B 1A 60 08 20 00 F0 66 FC .G.b.j.K.`. ..f.
+00402D70 BB 68 FB 60 F8 68 0D B0 BD E8 80 08 5D F8 0C FB .h.`.h......]...
+00402D80 7C A3 40 00 4C C0 40 00 8C A3 40 00 34 C0 40 00 |.@.L.@...@.4.@.
+00402D90 04 C1 40 00 00 00 00 00 00 00 00 00 00 00 00 00 ..@.............
+00402DA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402DB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402DC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402DD0 00 00 00 00 00 00 00 00 00 00 00 00 03 B4 2D E9 ..............-.
+00402DE0 00 48 EB 46 84 B0 06 98 FF F7 72 FF 01 90 01 9B .H.F......r.....
+00402DF0 00 2B 03 D1 6F F0 00 03 00 93 01 E0 00 23 00 93 .+..o........#..
+00402E00 00 9B 02 93 02 98 04 B0 5D F8 04 BB 5D F8 0C FB ........]...]...
+00402E10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00402E20 00 00 00 00 00 00 00 00 2D E9 30 48 0D F1 08 0B ........-.0H....
+00402E30 48 F2 9C 73 C0 F2 40 03 48 F6 A4 15 C0 F2 40 05 H..s..@.H.....@.
+00402E40 1C 1D 1B 1D AB 42 05 D2 54 F8 04 3B 03 B1 98 47 .....B..T..;...G
+00402E50 AC 42 F9 D3 BD E8 30 88 2D E9 30 48 0D F1 08 0B .B....0.-.0H....
+00402E60 48 F6 A8 23 C0 F2 40 03 48 F6 B0 45 C0 F2 40 05 H..#..@.H..E..@.
+00402E70 1C 1D 1B 1D AB 42 05 D2 54 F8 04 3B 03 B1 98 47 .....B..T..;...G
+00402E80 AC 42 F9 D3 BD E8 30 88 4C F2 D8 0C C0 F2 40 0C .B....0.L.....@.
+00402E90 DC F8 00 F0 4C F2 D4 0C C0 F2 40 0C DC F8 00 F0 ....L.....@.....
+
+fn00402EA0()
 	movw	ip,#&C0D0
 	movt	ip,#&40
 	ldr.w	pc,[ip]
+
+fn00402EAC()
 	movw	ip,#&C0CC
 	movt	ip,#&40
 	ldr.w	pc,[ip]
-	movw	ip,#&C0C8
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	push.w	{r4,r7,fp,lr}
-	add.w	fp,sp,#8
-	sub	sp,#&20
-	mov	r7,sp
-	movs	r3,#0
-	strb	r3,[r7]
-	movw	r3,#&1001
-	str	r3,[r7,#8]
-	str	r0,[r7,#&C]
-	mov	r3,r7
-	str	r3,[r7,#&10]
-	adds.w	r3,r7,#8
-	movs	r2,#6
-	movs	r1,#0
-	ldr	r0,[pc,#&18]
-	movw	r4,#&C02C
-	movt	r4,#&40
-	ldr	r4,[r4]
-	blx	r4
-	ldrb	r0,[r7]
-	b	$004007FC
-	ldr	r0,[r7,#4]
-	add	sp,#&20
-	pop.w	{r4,r7,fp,pc}
-	trap
-	asrs	r0,r1,#&E
-	eors	r5,r5
-	push.w	{r4,r7,fp,lr}
-	add.w	fp,sp,#8
-	sub	sp,#&20
-	mov	r7,sp
-	movs	r4,#0
-	strb	r4,[r7]
-	movw	r4,#&1002
-	str	r4,[r7,#8]
-	str	r0,[r7,#&C]
-	str	r1,[r7,#&10]
-	str	r2,[r7,#&14]
-	mov	r2,r7
-	str	r2,[r7,#&18]
-	str	r3,[r7,#&1C]
-	adds.w	r3,r7,#8
-	movs	r2,#6
-	movs	r1,#0
-	ldr	r0,[pc,#&18]
-	movw	r4,#&C02C
-	movt	r4,#&40
-	ldr	r4,[r4]
-	blx	r4
-	ldrb	r0,[r7]
-	b	$00400846
-	ldr	r0,[r7,#4]
-	add	sp,#&20
-	pop.w	{r4,r7,fp,pc}
-	asrs	r0,r1,#&E
-	eors	r5,r5
-	push.w	{r4,r5,r6,r7,fp,lr}
-	add.w	fp,sp,#&10
-	bl	$003FE924
-	sub	sp,#&164
-	movw	r3,#&A00C
-	movt	r3,#&40
-	mov	r6,r1
-	mov	r7,r0
-	ldr	r5,[r3,#&10]
-	cmp.w	r5,#-1
-	beq	$00400922
-	cbnz	r6,#&40087E
-	movw	r3,#&7FB0
-	movt	r3,#&40
-	b	$00400918
-	movw	r3,#&7FFC
-	movt	r3,#&40
-	str	r2,[sp,#&14]
-	movw	r2,#&8098
-	movt	r2,#&40
-	str	r3,[sp,#&18]
-	movw	r3,#&8008
-	movt	r3,#&40
-	add.w	r4,r6,#&20
-	add	r0,sp,#&70
-	str	r3,[sp,#&10]
-	ldr	r3,[r6,#&C]
-	movs	r1,#&F4
-	str	r4,[sp,#4]
-	subs	r3,#&24
-	str	r3,[sp,#&C]
-	movw	r3,#&8034
-	movt	r3,#&40
-	str	r3,[sp,#8]
-	movw	r3,#&803C
-	movt	r3,#&40
-	str	r3,[sp]
-	movw	r3,#&8050
-	movt	r3,#&40
-	bl	$00401620
-	ldr	r3,[r6,#&C]
-	add	r1,sp,#&38
-	add	r0,sp,#&20
-	subs	r3,#&24
-	mov	r2,r4
-	bl	$00400B3C
-	add	r0,sp,#&70
-	bl	$00400BB8
-	mov	r4,r0
-	add	r0,sp,#&70
-	bl	$00400BB8
-	movw	r3,#&80AC
-	movt	r3,#&40
-	movw	r2,#&80B4
-	movt	r2,#&40
-	rsb.w	r1,r4,#&F4
-	str	r3,[sp,#8]
-	add	r3,sp,#&38
-	str	r3,[sp,#4]
-	movw	r3,#&80B0
-	movt	r3,#&40
-	add	r4,sp,#&70
-	add	r0,r4
-	str	r3,[sp]
-	add	r3,sp,#&20
-	bl	$00401620
-	add	r3,sp,#&70
-	movs	r2,#4
-	mov	r1,r5
-	mov	r0,r7
-	bl	$00400BD0
-	add	sp,#&164
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,r7,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{r3,r4,fp,lr}
-	add.w	fp,sp,#8
-	cmp	r1,#4
-	bhi	$004009F2
-	movw	r3,#&A00C
-	movt	r3,#&40
-	ldr.w	r4,lsl #2,[r3,r1]
-	movw	r3,#&7B44
-	movt	r3,#&40
-	cmp.w	r4,#-1
-	ldr.w	r3,lsl #2,[r3,r1]
-	beq	$00400A08
-	mov	r2,r1
-	mov	r1,r4
-	bl	$00400BD0
-	pop.w	{r3,r4,fp,pc}
-	movw	r3,#&7B44
-	movt	r3,#&40
-	movs	r4,#1
-	movs	r1,#5
-	ldr	r3,[r3,#&14]
-	mov	r2,r1
-	mov	r1,r4
-	bl	$00400BD0
-	pop.w	{r3,r4,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{r4,r5,r6,r7,r8,fp,lr}
-	add.w	fp,sp,#&14
-	bl	$003FE924
-	sub.w	sp,sp,#1<<10
-	movw	r3,#&A00C
-	movt	r3,#&40
-	mov	r4,r1
-	mov	r8,r0
-	ldr	r7,[r3,#8]
-	cmp.w	r7,#-1
-	beq	$00400AB8
-	ldrsb.w	r3,[r1]
-	cbz	r3,#&400AA4
-	mov	r0,r1
-	bl	$00400BB8
-	add.w	r3,r0,#&2D
-	cmp.w	r3,#1<<10
-	bhi	$00400AA4
-	movw	r5,#&7B74
-	movt	r5,#&40
-	mov	r0,sp
-	mov	r6,sp
-	mov	r1,r5
-	bl	$004016CC
-	mov	r0,sp
-	subs	r2,r0,#1
-	ldrb	r3,[r2,#1]!
-	cmp	r3,#0
-	bne	$00400A74
-	ldrb	r3,[r4],#1
-	cmp	r3,#0
-	strb	r3,[r2],#1
-	bne	$00400A7C
-	add.w	r1,r5,#&1C
-	subs	r2,r0,#1
-	ldrb	r3,[r2,#1]!
-	cmp	r3,#0
-	bne	$00400A8E
-	ldrb	r3,[r1],#1
-	cmp	r3,#0
-	strb	r3,[r2],#1
-	bne	$00400A96
-	b	$00400AAC
-	movw	r6,#&7F80
-	movt	r6,#&40
-	mov	r3,r6
-	movs	r2,#2
-	mov	r1,r7
-	mov	r0,r8
-	bl	$00400BD0
-	add.w	sp,sp,#1<<10
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,r7,r8,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,fp,lr}
-	add.w	fp,sp,#&28
-	mov	r6,r3
-	movs	r5,#0
-	movs	r7,#0
-	subs	r3,r2,r0
-	str	r3,[sp]
-	mov	r10,r3
-	mov	r8,r1
-	str	r0,[sp,#4]
-	mov	r9,r0
-	cmp	r6,#&10
-	it
-	movlo	r2,r6
-	it
-	movhs	r2,#&10
-	cmp	r5,r2
-	bhs	$00400B88
-	ldrb.w	r4,[r10,r9]
-	movw	r2,#&7FA8
-	movt	r2,#&40
-	rsb.w	r1,r7,#&31
-	mov	r3,r4
-	add.w	r0,r7,r8
-	bl	$00401620
-	adds	r5,r5,#1
-	adds	r7,r7,#3
-	strb	r4,[r9],#1
-	b	$00400B56
-	ldr.w	r10,[sp,#4]
-	movs	r2,#0
-	add.w	r3,r5,r5,lsl #1
-	strb.w	r2,[r5,r10]
-	strb.w	r2,[r3,r8]
-	pop.w	{r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{fp,lr}
-	mov	fp,sp
-	mov	r2,r0
-	ldrsb	r3,[r2],#1
-	cmp	r3,#0
-	bne	$00400BC0
-	subs	r3,r2,r0
-	subs	r0,r3,#1
-	pop.w	{fp,pc}
-	push.w	{r4,r5,r6,r7,r8,r9,r10,fp,lr}
-	add.w	fp,sp,#&1C
-	bl	$003FE924
-	subw	sp,sp,#&E48
-	mov	r8,r3
-	str	r3,[sp,#&14]
-	mov	r9,r2
-	mov	r10,r1
-	mov	r6,r0
-	movs	r7,#0
-	bl	$00400064
-	mov	r5,r0
-	cbnz	r5,#&400BFC
-	mov	r0,r6
-	bl	$00400050
-	mov	r7,r0
-	movw	r4,#&C028
-	movt	r4,#&40
-	movs	r3,#0
-	str	r3,[sp,#4]
-	ldr	r4,[r4]
-	str	r3,[sp]
-	mvns	r3,r3
-	mov	r2,r8
-	movs	r1,#0
-	movw	r0,#&FDE9
-	blx	r4
-	cmp.w	r0,#1<<9
-	bhs	$00400C46
-	movw	r4,#&C028
-	movt	r4,#&40
-	addw	r3,sp,#&A48
-	str	r0,[sp,#4]
-	ldr	r4,[r4]
-	str	r3,[sp]
-	mvn	r3,#0
-	mov	r2,r8
-	movs	r1,#0
-	movw	r0,#&FDE9
-	blx	r4
-	cbz	r0,#&400C46
-	addw	r4,sp,#&A48
-	b	$00400C4E
-	movw	r4,#&7E88
-	movt	r4,#&40
-	movw	r0,#&1002
-	bl	$004007C4
-	cbz	r0,#&400C76
-	movw	r3,#&7B5C
-	movt	r3,#&40
-	mov	r2,r6
-	mov	r0,r9
-	ldr.w	r1,lsl #2,[r3,r9]
-	mov	r3,r4
-	bl	$00400808
-	cmp	r0,#0
-	bne	$00400D50
-	movs	r3,#0
-	b	$00400C78
-	movs	r3,#1
-	cbnz	r7,#&400C7E
-	cmp	r5,#0
-	beq	$00400D4E
-	cbz	r3,#&400C90
-	movw	r3,#&C030
-	movt	r3,#&40
-	ldr	r3,[r3]
-	blx	r3
-	cmp	r0,#0
-	bne	$00400D4E
-	add	r3,sp,#&18
-	str	r3,[sp]
-	mov.w	r2,#&104
-	add	r3,sp,#&10
-	add	r1,sp,#&220
-	subs	r0,r6,#4
-	str	r2,[sp,#4]
-	bl	$00401340
-	cbz	r5,#&400CC2
-	movw	r3,#&7EF8
-	movt	r3,#&40
-	ldr	r2,[sp,#&10]
-	mov	r0,r10
-	str	r3,[sp]
-	add	r3,sp,#&18
-	add	r1,sp,#&220
-	str	r4,[sp,#8]
-	str.w	r9,[sp,#4]
-	blx	r5
-	b	$00400D4A
-	movw	r4,#&C024
-	movt	r4,#&40
-	movs	r3,#0
-	add.w	r2,sp,#&428
-	ldr	r4,[r4]
-	movw	r6,#&7F38
-	movt	r6,#&40
-	str	r3,[sp,#&C]
-	str	r3,[sp,#8]
-	movw	r8,#&30A
-	str	r2,[sp]
-	mvns	r3,r3
-	add	r2,sp,#&220
-	movs	r1,#0
-	movw	r0,#&FDE9
-	str.w	r8,[sp,#4]
-	blx	r4
-	cbz	r0,#&400CFA
-	add.w	r6,sp,#&428
-	movw	r4,#&C024
-	movt	r4,#&40
-	movs	r3,#0
-	add.w	r2,sp,#&738
-	ldr	r4,[r4]
-	movw	r5,#&7F4C
-	movt	r5,#&40
-	str	r3,[sp,#&C]
-	str	r3,[sp,#8]
-	str	r2,[sp]
-	mvns	r3,r3
-	add	r2,sp,#&18
-	movs	r1,#0
-	movw	r0,#&FDE9
-	str.w	r8,[sp,#4]
-	blx	r4
-	cbz	r0,#&400D2E
-	add.w	r5,sp,#&738
-	movw	r2,#&7F60
-	movt	r2,#&40
-	ldr	r3,[sp,#&14]
-	mov	r1,r6
-	str	r2,[sp]
-	ldr	r2,[sp,#&10]
-	str	r3,[sp,#8]
-	mov	r3,r5
-	mov	r0,r10
-	str.w	r9,[sp,#4]
-	blx	r7
-	cmp	r0,#1
-	bne	$00400D50
-	trap
-	addw	sp,sp,#&E48
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,r7,r8,r9,r10,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{r4,r5,r6,r7,fp,lr}
-	add.w	fp,sp,#&10
-	bl	$003FE924
-	subw	sp,sp,#&404
-	movw	r3,#&A00C
-	movt	r3,#&40
-	mov	r4,r0
-	ldr	r7,[r3,#&C]
-	cmp.w	r7,#-1
-	beq	$00400E92
-	cbz	r4,#&400E7C
-	bl	$00400BB8
-	add.w	r3,r0,#&3A
-	cmp.w	r3,#1<<10
-	bhi	$00400E7C
-	movw	r5,#&7BA4
-	movt	r5,#&40
-	mov	r0,sp
-	mov	r6,sp
-	mov	r1,r5
-	bl	$004016CC
-	mov	r0,sp
-	subs	r2,r0,#1
-	ldrb	r3,[r2,#1]!
-	cmp	r3,#0
-	bne	$00400E4C
-	ldrb	r3,[r4],#1
-	cmp	r3,#0
-	strb	r3,[r2],#1
-	bne	$00400E54
-	add.w	r1,r5,#&10
-	subs	r2,r0,#1
-	ldrb	r3,[r2,#1]!
-	cmp	r3,#0
-	bne	$00400E66
-	ldrb	r3,[r1],#1
-	cmp	r3,#0
-	strb	r3,[r2],#1
-	bne	$00400E6E
-	b	$00400E84
-	movw	r6,#&80C0
-	movt	r6,#&40
-	ldr.w	r0,[sp,#&41C]
-	mov	r3,r6
-	movs	r2,#3
-	mov	r1,r7
-	bl	$00400BD0
-	addw	sp,sp,#&404
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,r7,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movw	ip,#&C0B8
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0A0
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C090
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C094
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C098
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C09C
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	push.w	{fp,lr}
-	mov	fp,sp
-	bl	$003FE924
-	subw	sp,sp,#&414
-	movw	r2,#&A170
-	movt	r2,#&40
-	ldrb	r3,[r2]
-	cbz	r3,#&400F88
-	movs	r0,#0
-	addw	sp,sp,#&414
-	bl	$003FE93C
-	pop.w	{fp,pc}
-	movs	r3,#1
-	strb	r3,[r2]
-	bl	$0040106C
-	cmp	r0,#0
-	bne	$00400F7C
-	movw	r3,#&C004
-	movt	r3,#&40
-	movw	r0,#&8134
-	movt	r0,#&40
-	ldr	r3,[r3]
-	blx	r3
-	cbz	r0,#&400FE4
-	movw	r3,#&C008
-	movt	r3,#&40
-	mov.w	r2,#&104
-	mov	r1,sp
-	ldr	r3,[r3]
-	blx	r3
-	cbz	r0,#&400FE4
-	add	r1,sp,#&208
-	mov	r0,sp
-	mov.w	r2,#&104
-	bl	$00401234
-	cbz	r0,#&400FE4
-	movw	r3,#&C050
-	movt	r3,#&40
-	mov.w	r2,#&900
-	movs	r1,#0
-	ldr	r3,[r3]
-	add	r0,sp,#&208
-	blx	r3
-	cmp	r0,#0
-	bne	$00400F7C
-	movw	r3,#&C050
-	movt	r3,#&40
-	movw	r0,#&8258
-	movt	r0,#&40
-	mov.w	r2,#&A00
-	ldr	r3,[r3]
-	movs	r1,#0
-	blx	r3
-	addw	sp,sp,#&414
-	bl	$003FE93C
-	pop.w	{fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{r4,r5,r6,r7,fp,lr}
-	add.w	fp,sp,#&10
-	bl	$003FE924
-	sub.w	sp,sp,#&224
-	movw	r3,#&C050
-	movt	r3,#&40
-	movw	r0,#&8150
-	movt	r0,#&40
-	mov.w	r2,#1<<11
-	ldr	r3,[r3]
-	movs	r1,#0
-	blx	r3
-	mov	r5,r0
-	cbnz	r5,#&4010C6
-	movw	r3,#&C020
-	movt	r3,#&40
-	ldr	r3,[r3]
-	blx	r3
-	cmp	r0,#&57
-	bne	$0040113C
-	movw	r3,#&C050
-	movt	r3,#&40
-	movw	r0,#&8150
-	movt	r0,#&40
-	movs	r2,#0
-	ldr	r3,[r3]
-	movs	r1,#0
-	blx	r3
-	mov	r5,r0
-	cbz	r5,#&40113C
-	movw	r3,#&C000
-	movt	r3,#&40
-	movw	r1,#&8198
-	movt	r1,#&40
-	mov	r0,r5
-	ldr	r3,[r3]
-	blx	r3
-	mov	r4,r0
-	cbz	r4,#&40113C
-	movw	r3,#&C000
-	movt	r3,#&40
-	movw	r1,#&81A8
-	movt	r1,#&40
-	mov	r0,r5
-	ldr	r3,[r3]
-	blx	r3
-	mov	r6,r0
-	cbz	r6,#&40113C
-	movw	r3,#&C000
-	movt	r3,#&40
-	movw	r1,#&81BC
-	movt	r1,#&40
-	mov	r0,r5
-	ldr	r3,[r3]
-	blx	r3
-	mov	r7,r0
-	cbz	r7,#&40113C
-	movw	r1,#&81C8
-	movt	r1,#&40
-	add	r3,sp,#&C
-	mov.w	r0,#&80000000
-	str	r3,[sp]
-	movs	r3,#1
-	movs	r2,#0
-	adds	r0,r0,#2
-	blx	r4
-	cbz	r0,#&40114A
-	movw	r3,#&C00C
-	movt	r3,#&40
-	mov	r0,r5
-	ldr	r3,[r3]
-	blx	r3
-	movs	r0,#0
-	add.w	sp,sp,#&224
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,r7,fp,pc}
-	mov.w	r3,#&208
-	str	r3,[sp,#8]
-	add	r3,sp,#8
-	str	r3,[sp,#4]
-	movw	r1,#&8224
-	movt	r1,#&40
-	ldr	r0,[sp,#&C]
-	add	r3,sp,#&18
-	str	r3,[sp]
-	add	r3,sp,#&10
-	movs	r2,#0
-	blx	r6
-	mov	r4,r0
-	ldr	r0,[sp,#&C]
-	blx	r7
-	movw	r3,#&C00C
-	movt	r3,#&40
-	mov	r0,r5
-	ldr	r3,[r3]
-	blx	r3
-	cmp	r4,#0
-	bne	$0040113C
-	ldr	r3,[sp,#&10]
-	cmp	r3,#1
-	bne	$0040113C
-	ldr	r3,[sp,#8]
-	tst.w	r3,#1
-	bne	$0040113C
-	lsrs	r2,r3,#1
-	cmp	r2,#2
-	blo	$0040113C
-	subs	r2,r2,#1
-	add	r3,sp,#&18
-	add.w	r1,r3,r2,lsl #1
-	ldrh.w	r3,lsl #1,[r3,r2]
-	cmp	r3,#0
-	bne	$0040113C
-	ldrh	r3,[r1,-#2]
-	cmp	r3,#&5C
-	beq	$004011B2
-	movs	r3,#&5C
-	strh	r3,[r1]
-	adds	r2,r2,#1
-	rsb.w	r3,r2,#-1
-	cmp	r3,#&12
-	blo	$0040113C
-	add.w	r3,r2,#&11
-	cmp.w	r3,#&104
-	bhi	$0040113C
-	add	r3,sp,#&18
-	add.w	r2,r3,r2,lsl #1
-	movw	r1,#&8110
-	movt	r1,#&40
-	add.w	r0,r2,#&22
-	ldrh	r3,[r1],#2
-	strh	r3,[r2],#2
-	cmp	r2,r0
-	bne	$004011D6
-	movw	r3,#&C050
-	movt	r3,#&40
-	movs	r1,#0
-	mov.w	r2,#&900
-	ldr	r3,[r3]
-	add	r0,sp,#&18
-	blx	r3
-	add.w	sp,sp,#&224
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,r7,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push.w	{r4,r5,r6,fp,lr}
-	add.w	fp,sp,#&C
-	bl	$003FE924
-	sub.w	sp,sp,#&620
-	add	r3,sp,#&20
-	str	r3,[sp,#&C]
-	add	r3,sp,#&220
-	str	r3,[sp,#4]
-	mov	r5,r2
-	mov	r6,r1
-	mov.w	r4,#&100
-	add.w	r3,sp,#&420
-	add	r1,sp,#&18
-	movs	r2,#3
-	str	r4,[sp,#&10]
-	str	r4,[sp,#8]
-	str	r4,[sp]
-	bl	$004016F0
-	cbz	r0,#&401276
-	movs	r0,#0
-	add.w	sp,sp,#&620
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,fp,pc}
-	movw	r2,#&8244
-	movt	r2,#&40
-	add	r0,sp,#&220
-	movs	r1,#9
-	bl	$004016D8
-	cmp	r0,#0
-	bne	$00401268
-	movw	r2,#&823C
-	movt	r2,#&40
-	add	r0,sp,#&20
-	movs	r1,#4
-	bl	$004016D8
-	cmp	r0,#0
-	bne	$00401268
-	add	r3,sp,#&20
-	str	r3,[sp,#4]
-	add	r3,sp,#&220
-	str	r3,[sp]
-	add.w	r3,sp,#&420
-	add	r2,sp,#&18
-	mov	r1,r5
-	mov	r0,r6
-	bl	$004016E4
-	cmp	r0,#0
-	bne	$00401268
-	movs	r0,#1
-	add.w	sp,sp,#&620
-	bl	$003FE93C
-	pop.w	{r4,r5,r6,fp,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push	{r0,r1,r2,r3}
-	push.w	{r4,r5,r6,r7,r8,r9,r10,fp,lr}
-	add.w	fp,sp,#&1C
-	sub	sp,#&5C
-	movw	r4,#&C010
-	movt	r4,#&40
-	mov	r5,r0
-	mov.w	r8,#0
-	ldr	r4,[r4]
-	str.w	r8,[r3]
-	subs	r5,r5,#1
-	str	r1,[sp,#&34]
-	strh.w	r8,[r1]
-	movs	r2,#&1C
-	add	r1,sp,#&40
-	mov	r0,r5
-	str	r3,[sp,#&30]
-	blx	r4
-	cbnz	r0,#&401382
-	movs	r6,#0
-	mov	r0,r6
-	add	sp,#&5C
-	pop.w	{r4,r5,r6,r7,r8,r9,r10,fp}
-	ldr	pc,[sp],#&14
-	movw	r3,#&C008
-	movt	r3,#&40
-	ldr	r2,[sp,#&94]
-	ldr	r1,[sp,#&90]
-	ldr	r3,[r3]
-	ldr	r0,[sp,#&44]
-	blx	r3
-	cmp	r0,#0
-	beq	$00401374
-	ldr	r1,[sp,#&44]
-	movw	r3,#&5A4D
-	ldrh	r2,[r1]
-	cmp	r2,r3
-	bne	$00401374
-	ldr	r3,[r1,#&3C]
-	cmp	r3,#0
-	ble	$00401374
-	ldr	r2,[r3,r1]
-	adds	r4,r3,r1
-	movw	r3,#&4550
-	cmp	r2,r3
-	bne	$00401374
-	ldrh	r3,[r4,#&14]
-	ldrh	r0,[r4,#6]
-	subs	r1,r5,r1
-	add	r3,r4
-	movs	r7,#0
-	movs	r5,#0
-	cbz	r0,#&4013DE
-	add.w	r2,r3,#&18
-	ldr	r3,[r2,#&C]
-	cmp	r1,r3
-	blo	$004013D6
-	subs	r7,r1,r3
-	ldr	r3,[r2,#8]
-	cmp	r1,r3
-	blo	$004013DE
-	adds	r5,r5,#1
-	adds	r2,#&28
-	cmp	r5,r0
-	blo	$004013C8
-	cmp	r5,r0
-	beq	$00401374
-	movw	r6,#&A171
-	movt	r6,#&40
-	movw	r4,#&A16C
-	movt	r4,#&40
-	adds	r5,r5,#1
-	ldrb	r3,[r6]
-	cbnz	r3,#&40140E
-	ldr	r3,[r4]
-	cmp	r3,#0
-	bne	$00401374
-	bl	$00400F60
-	str	r0,[r4]
-	cmp	r0,#0
-	beq	$00401374
-	movs	r3,#1
-	strb	r3,[r6]
-	b	$00401410
-	ldr	r0,[r4]
-	movw	r3,#&C000
-	movt	r3,#&40
-	movw	r1,#&826C
-	movt	r1,#&40
-	ldr	r3,[r3]
-	blx	r3
-	mov	r4,r0
-	cmp	r4,#0
-	beq	$00401374
-	add	r3,sp,#&20
-	str	r3,[sp,#&C]
-	ldr	r0,[sp,#&90]
-	add	r3,sp,#&3C
-	str	r3,[sp]
-	movs	r3,#0
-	movs	r2,#0
-	movs	r1,#0
-	str.w	r8,[sp,#8]
-	str.w	r8,[sp,#4]
-	blx	r4
-	cmp	r0,#0
-	beq	$00401374
-	ldr	r3,[sp,#&20]
-	movs	r6,#0
-	mov	r0,r3
-	ldr	r3,[r3]
-	ldr	r3,[r3]
-	blx	r3
-	ldr	r3,[pc,#&1AC]
-	cmp	r0,r3
-	bne.w	$004015EC
-	ldr	r4,[sp,#&20]
-	movw	r2,#&8280
-	movt	r2,#&40
-	add	r3,sp,#&28
-	mov	r0,r4
-	ldr	r4,[r4]
-	movs	r1,#0
-	ldr	r4,[r4,#&1C]
-	blx	r4
-	cmp	r0,#0
-	beq.w	$004015EC
-	ldr	r4,[sp,#&28]
-	add	r3,sp,#&1C
-	mov	r2,r7
-	mov	r0,r4
-	ldr	r4,[r4]
-	uxth	r1,r5
-	str.w	r8,[sp,#8]
-	ldr	r4,[r4,#&20]
-	str.w	r8,[sp,#4]
-	str.w	r8,[sp]
-	blx	r4
-	cmp	r0,#0
-	beq.w	$004015E2
-	movs	r3,#0
-	str	r3,[sp,#&14]
-	ldr	r3,[sp,#&1C]
-	add	r1,sp,#&14
-	mov	r0,r3
-	ldr	r3,[r3]
-	ldr	r3,[r3,#&68]
-	blx	r3
-	cmp	r0,#0
-	beq.w	$004015D8
-	ldr	r3,[sp,#&14]
-	cmp	r3,#0
-	beq.w	$004015D8
-	mov	r0,r3
-	ldr	r3,[r3]
-	mov	r8,r6
-	ldr	r3,[r3,#8]
-	blx	r3
-	cmp	r0,#0
-	beq	$004015B2
-	add.w	r9,sp,#&18
-	add.w	r10,sp,#&2C
-	ldr	r4,[sp,#&14]
-	movs	r3,#0
-	str	r3,[sp,#8]
-	mov	r0,r4
-	ldr	r4,[r4]
-	add	r3,sp,#&10
-	add	r2,sp,#&24
-	ldr	r4,[r4,#&C]
-	movs	r1,#0
-	str.w	r9,[sp,#4]
-	str.w	r10,[sp]
-	blx	r4
-	cmp	r0,#0
-	beq	$004015CE
-	ldrh.w	r3,[sp,#&10]
-	cmp	r3,r5
-	bne	$00401504
-	ldr	r2,[sp,#&24]
-	cmp	r2,r7
-	bhi	$00401504
-	ldr	r3,[sp,#&2C]
-	add	r3,r2
-	cmp	r7,r3
-	blo	$00401514
-	ldr	r3,[sp,#&14]
-	mov	r0,r3
-	ldr	r3,[r3]
-	ldr	r3,[r3,#8]
-	blx	r3
-	cmp	r0,#0
-	bne	$004014CE
-	b	$004015B2
-	ldr	r2,[sp,#&18]
-	cmp	r2,#0
-	beq	$004015CE
-	mvn	r3,#&E0000000
-	cmp	r2,r3
-	bhs	$004015CE
-	movw	r3,#&C014
-	movt	r3,#&40
-	ldr	r3,[r3]
-	blx	r3
-	ldr	r3,[sp,#&18]
-	movs	r1,#0
-	lsls	r2,r3,#3
-	movw	r3,#&C01C
-	movt	r3,#&40
-	ldr	r3,[r3]
-	blx	r3
-	mov	r8,r0
-	cmp	r0,#0
-	beq	$004015CE
-	ldr	r4,[sp,#&14]
-	str	r0,[sp,#8]
-	add	r3,sp,#&18
-	mov	r0,r4
-	ldr	r4,[r4]
-	str	r3,[sp,#4]
-	movs	r5,#0
-	ldr	r4,[r4,#&C]
-	movs	r3,#0
-	movs	r2,#0
-	add	r1,sp,#&38
-	str	r5,[sp]
-	blx	r4
-	cbz	r0,#&4015B2
-	ldr	r3,[sp,#&24]
-	subs	r4,r7,r3
-	ldr.w	r3,[r8]
-	cmp	r4,r3
-	blo	$004015B2
-	ldr	r0,[sp,#&18]
-	movs	r2,#1
-	cmp	r0,#1
-	bls	$00401588
-	add.w	r1,r8,#8
-	ldr	r3,[r1],#8
-	cmp	r4,r3
-	blo	$00401588
-	adds	r2,r2,#1
-	cmp	r2,r0
-	blo	$0040157A
-	add.w	r3,r8,r2,lsl #3
-	ldr	r3,[r3,-#4]
-	ldr	r2,[sp,#&30]
-	ldr	r4,[sp,#&1C]
-	bic	r3,r3,#&FF000000
-	str	r3,[r2]
-	mov	r0,r4
-	ldr	r4,[r4]
-	ldr	r2,[sp,#&34]
-	ldr	r1,[sp,#&38]
-	ldr	r4,[r4,#&70]
-	add	r3,sp,#&88
-	str	r5,[sp,#8]
-	str	r5,[sp,#4]
-	str	r5,[sp]
-	blx	r4
-	cbz	r0,#&4015B2
-	movs	r6,#1
-	movw	r3,#&C014
-	movt	r3,#&40
-	ldr	r3,[r3]
-	blx	r3
-	movw	r3,#&C018
-	movt	r3,#&40
-	mov	r2,r8
-	movs	r1,#0
-	ldr	r3,[r3]
-	blx	r3
-	ldr	r3,[sp,#&14]
-	mov	r0,r3
-	ldr	r3,[r3]
-	ldr	r3,[r3]
-	blx	r3
-	ldr	r3,[sp,#&1C]
-	mov	r0,r3
-	ldr	r3,[r3]
-	ldr	r3,[r3,#&40]
-	blx	r3
-	ldr	r3,[sp,#&28]
-	mov	r0,r3
-	ldr	r3,[r3]
-	ldr	r3,[r3,#&38]
-	blx	r3
-	ldr	r3,[sp,#&20]
-	mov	r0,r3
-	ldr	r3,[r3]
-	ldr	r3,[r3,#&2C]
-	blx	r3
-	mov	r0,r6
-	add	sp,#&5C
-	pop.w	{r4,r5,r6,r7,r8,r9,r10,fp}
-	ldr	pc,[sp],#&14
-	trap
-	str	r1,[sp,#&104]
-	lsls	r2,r6,#4
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movw	ip,#&C0A4
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	push	{r0,r1,r2,r3}
-	push.w	{fp,lr}
-	mov	fp,sp
-	sub	sp,#8
-	ldr	r3,[sp,#&1C]
-	adds	r3,#&1C
-	ldr	r2,[r3]
-	ldr	r1,[sp,#&1C]
-	ldr	r0,[sp,#&14]
-	bl	$0040166C
-	movs	r3,#1
-	str	r3,[sp]
-	ldr	r0,[sp]
-	add	sp,#8
-	ldr	fp,[sp],#4
-	ldr	pc,[sp],#&14
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push	{r0,r1,r2,r3}
-	push.w	{fp,lr}
-	mov	fp,sp
-	sub	sp,#&10
-	ldr	r3,[sp,#&20]
-	ldr	r3,[r3]
-	bic	r3,r3,#3
-	str	r3,[sp,#8]
-	ldr	r3,[sp,#&18]
-	str	r3,[sp,#4]
-	ldr	r2,[sp,#4]
-	ldr	r3,[sp,#8]
-	add	r3,r2
-	ldr	r3,[r3]
-	str	r3,[sp]
-	ldr	r3,[sp,#&20]
-	ldr	r3,[r3]
-	tst.w	r3,#1
-	beq	$004016A4
-	ldr	r2,[sp,#4]
-	ldr	r3,[sp,#8]
-	add	r2,r3
-	ldr	r3,[sp]
-	subs	r3,r2,r3
-	str	r3,[sp]
-	ldr	r0,[sp]
-	bl	$003FE988
-	add	sp,#&10
-	ldr	fp,[sp],#4
-	ldr	pc,[sp],#&14
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movw	ip,#&C0A8
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0AC
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0B0
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C0B4
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	push	{r0,r1}
-	push.w	{fp,lr}
-	mov	fp,sp
-	movs	r0,#2
-	udf	#&FB
-	push.w	{fp,lr}
-	mov	fp,sp
-	movs	r0,#8
-	bl	$00401730
-	trap
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push	{r0,r1}
-	push.w	{fp,lr}
-	mov	fp,sp
-	ldr	r0,[sp,#8]
-	udf	#&FB
-	push	{r0,r1,r2,r3}
-	push.w	{fp,lr}
-	mov	fp,sp
-	ldr	r0,[sp,#8]
-	udf	#&FB
-	movw	ip,#&C04C
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C048
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C044
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C040
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C03C
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C038
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C034
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C030
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C02C
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C028
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C024
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C020
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C01C
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C018
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C014
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C010
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C00C
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C008
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C004
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C000
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movw	ip,#&C050
-	movt	ip,#&40
-	ldr.w	pc,[ip]
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	push	{r4,lr}
-	sub	sp,#8
-	str	r0,[r7]
-	ldr	r3,[r7]
-	str	r3,[r7,#&34]
-	ldr	r3,[r7]
-	ldr	r3,[r3]
-	ldr	r3,[r3]
-	str	r3,[r7,#&3C]
-	ldr	r1,[r7,#&34]
-	ldr	r0,[r7,#&3C]
-	bl	$004001F0
-	str	r0,[r7,#&44]
-	ldr	r0,[r7,#&44]
-	add	sp,#8
-	pop	{r4,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	str	r0,[r7,#&2C]
-	ldr	r3,[r7,#&2C]
-	ldr	r3,[r3]
-	ldr	r3,[r3]
-	str	r3,[r7,#&30]
-	ldr	r2,[r7,#&30]
-	ldr	r3,[pc,#&10]
-	cmp	r2,r3
-	bne	$00403010
-	movs	r3,#1
-	str	r3,[r7,#&10]
-	b	$00403014
-	movs	r3,#0
-	str	r3,[r7,#&10]
-	ldr	r0,[r7,#&10]
-	bx	lr
-	movs	r5,r0
-	Invalid
-	push	{r4,lr}
-	movs	r0,#8
-	bl	$003FDF20
-	b	$0040000A
-	pop	{r4,pc}
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	ldr	r3,[r0]
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&C]
-	cmp	r2,r3
-	bne	$00400032
-	movs	r0,#1
-	b	$00400034
-	movs	r0,#0
-	bx	lr
-	trap
-	asrs	r0,r1,#&E
-	eors	r5,r5
-	ldr	r3,[r0]
-	ldr	r2,[r3]
-	ldr	r3,[pc,#&C]
-	cmp	r2,r3
-	bne	$0040004A
-	movs	r0,#1
-	b	$0040004C
-	movs	r0,#0
-	bx	lr
-	trap
-	asrs	r0,r1,#&E
-	eors	r5,r5
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r3,#9
-	lsls	r0,r0,#1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r2,#5
-	lsls	r0,r0,#1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	cmp	r4,#5
-	lsls	r0,r0,#1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	cmp	r0,#&B9
-	lsls	r0,r0,#1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	subs	r4,r0,#0
-	strb	r3,[r1,r7]
-	movs	r0,r0
-	movs	r0,r0
-	movs	r2,r0
-	movs	r0,r0
-	lsls	r5,r5,#1
-	movs	r0,r0
-	strh	r4,[r7,#&2E]
-	movs	r0,r0
-	strb	r4,[r7,#7]
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	subs	r4,r0,#0
-	strb	r3,[r1,r7]
-	movs	r0,r0
-	movs	r0,r0
-	movs	r4,r1
-	movs	r0,r0
-	movs	r4,r2
-	movs	r0,r0
-	strh	r4,[r5,#&32]
-	movs	r0,r0
-	strb	r4,[r5,#9]
-	movs	r0,r0
-	str	r0,[r1,#&54]
-	ldr	r4,[r5,#&44]
-	movs	r0,#&6F
-	strh	r1,[r0,r1]
-	movs	r1,#&4D
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	lsls	r7,r3,#1
-	lsls	r7,r3,#1
-	lsls	r6,r5,#1
-	lsls	r1,r4,#1
-	lsls	r4,r6,#1
-	lsls	r1,r5,#1
-	lsls	r6,r6,#1
-	lsls	r5,r4,#1
-	lsls	r7,r3,#1
-	lsls	r3,r6,#1
-	lsls	r4,r6,#1
-	lsls	r1,r4,#1
-	lsls	r2,r6,#1
-	lsls	r4,r6,#1
-	lsls	r5,r6,#1
-	lsls	r0,r6,#1
-	lsls	r7,r3,#1
-	lsls	r3,r6,#1
-	lsls	r4,r6,#1
-	lsls	r1,r4,#1
-	lsls	r4,r6,#1
-	lsls	r5,r4,#1
-	movs	r0,r4
-	movs	r5,r7
-	movs	r5,r7
-	movs	r0,r4
-	lsls	r7,r3,#1
-	lsls	r7,r3,#1
-	lsls	r1,r5,#1
-	lsls	r6,r5,#1
-	lsls	r1,r5,#1
-	lsls	r4,r6,#1
-	lsls	r1,r5,#1
-	lsls	r1,r4,#1
-	lsls	r4,r5,#1
-	lsls	r1,r5,#1
-	lsls	r2,r7,#1
-	lsls	r5,r4,#1
-	lsls	r4,r4,#1
-	movs	r0,r0
-	movs	r5,r4
-	lsls	r3,r6,#1
-	movs	r0,r0
-	movs	r0,r0
-	lsls	r6,r4,#1
-	movs	r2,r7
-	lsls	r4,r3,#1
-	lsls	r4,r4,#1
-	lsls	r4,r4,#1
-	lsls	r4,r3,#1
-	lsls	r6,r6,#1
-	lsls	r3,r4,#1
-	lsls	r4,r6,#1
-	lsls	r7,r5,#1
-	lsls	r7,r5,#1
-	lsls	r4,r5,#1
-	lsls	r3,r6,#1
-	lsls	r4,r3,#1
-	lsls	r3,r4,#1
-	lsls	r2,r6,#1
-	lsls	r4,r6,#1
-	lsls	r4,r3,#1
-	lsls	r3,r4,#1
-	lsls	r2,r6,#1
-	lsls	r4,r6,#1
-	lsls	r7,r6,#1
-	movs	r3,r6
-	movs	r2,r6
-	lsls	r4,r3,#1
-	lsls	r4,r4,#1
-	lsls	r4,r5,#1
-	lsls	r4,r5,#1
-	lsls	r3,r6,#1
-	lsls	r4,r6,#1
-	lsls	r5,r6,#1
-	lsls	r6,r4,#1
-	lsls	r6,r4,#1
-	lsls	r4,r3,#1
-	lsls	r3,r4,#1
-	lsls	r2,r6,#1
-	lsls	r4,r6,#1
-	lsls	r5,r4,#1
-	lsls	r0,r7,#1
-	lsls	r5,r4,#1
-	movs	r6,r5
-	lsls	r3,r4,#1
-	movs	r0,r0
-	movs	r0,r0
-	ldrb	r4,[r5,#4]
-	lsls	r0,r0,#1
-	ldrb	r0,[r1,#5]
-	lsls	r0,r0,#1
-	ldrb	r4,[r6,#5]
-	lsls	r0,r0,#1
-	ldrb	r4,[r1,#6]
-	lsls	r0,r0,#1
-	ldrb	r0,[r7,#6]
-	lsls	r0,r0,#1
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	ldr	r0,[r6,#&74]
-	ldr	r1,[r5,#&64]
-	str	r4,[r6,#&54]
-	movs	r0,#&72
-	ldr	r3,[r4,#&74]
-	strb	r2,[r6,#9]
-	strb	r5,[r6,#1]
-	ldr	r4,[r6,#&14]
-	ldr	r7,[r5,#&64]
-	movs	r0,r0
-	movs	r0,r0
-	str	r3,[r0,#&14]
-	strb	r3,[r6,#&11]
-	strb	r0,[r4,#&10]
-	movs	r0,#&6F
-	ldr	r3,[r6,#&54]
-	ldr	r1,[r4,#&44]
-	str	r4,[r5,#&54]
-	movs	r0,#&72
-	ldrb	r4,[r6,#5]
-	str	r0,[r6,#&54]
-	str	r0,[r4,#&30]
-	strb	r1,[r4,#&15]
-	ldr	r3,[r6,#&14]
-	str	r6,[r5,#&74]
-	ldr	r0,[r4,#&40]
-	strb	r7,[r5,#&D]
-	movs	r0,#&73
-	str	r7,[r5,#&64]
-	str	r0,[r4,#&40]
-	strb	r1,[r4,#&11]
-	lsls	r1,r4,#1
-	movs	r0,r0
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	str	r5,[r5,#&54]
-	ldr	r5,[r5,#&74]
-	ldrb	r2,[r6,#5]
-	str	r0,[r4,#&30]
-	strb	r7,[r5,#9]
-	strb	r2,[r6,#&15]
-	strb	r0,[r6,#&11]
-	ldr	r1,[r5,#&74]
-	lsls	r6,r5,#1
-	ldr	r4,[r1,#&74]
-	str	r3,[r4,#&14]
-	movs	r0,#&6C
-	str	r6,[r6,#&14]
-	ldr	r2,[r6,#&14]
-	str	r1,[r4,#&24]
-	str	r4,[r5,#&54]
-	strb	r0,[r4,#&14]
-	str	r3,[r6,#&54]
-	movs	r0,#&64
-	str	r2,[r4,#&54]
-	ldr	r6,[r4,#&74]
-	str	r2,[r6,#&54]
-	ldr	r0,[r4,#&10]
-	ldr	r6,[r5,#&14]
-	ldr	r4,[r6,#&14]
-	ldr	r1,[r4,#&44]
-	ldrb	r1,[r5,#9]
-	strb	r1,[r4,#&11]
-	ldr	r1,[r5,#&74]
-	lsls	r6,r5,#1
-	movs	r0,r0
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	strb	r1,[r4,#9]
-	strb	r7,[r5,#&15]
-	str	r6,[r5,#&44]
-	ldrsh	r0,[r4,r4]
-	ldr	r1,[r4,#&44]
-	ldr	r4,[r5,#&74]
-	str	r3,[r4,#&14]
-	str	r0,[r4,#&30]
-	strb	r7,[r5,#9]
-	strb	r2,[r6,#&15]
-	strb	r0,[r6,#&11]
-	str	r5,[r4,#&44]
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r1,r0
-	movs	r0,r0
-	movs	r2,r0
-	movs	r0,r0
-	movs	r3,r0
-	movs	r0,r0
-	movs	r4,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r5
-	lsls	r7,r3,#1
-	lsls	r7,r3,#1
-	lsls	r7,r5,#1
-	lsls	r6,r5,#1
-	lsls	r5,r4,#1
-	lsls	r0,r7,#1
-	lsls	r1,r5,#1
-	lsls	r4,r6,#1
-	lsls	r2,r4,#1
-	lsls	r5,r4,#1
-	lsls	r7,r4,#1
-	lsls	r1,r5,#1
-	lsls	r6,r5,#1
-	movs	r0,r4
-	movs	r1,r4
-	movs	r5,r7
-	movs	r0,r4
-	lsls	r6,r1,#1
-	lsls	r5,r2,#1
-	lsls	r4,r1,#1
-	lsls	r4,r1,#1
-	movs	r0,r4
-	movs	r6,r4
-	movs	r6,r4
-	movs	r0,r4
-	lsls	r7,r3,#1
-	lsls	r7,r3,#1
-	lsls	r7,r5,#1
-	lsls	r6,r5,#1
-	lsls	r5,r4,#1
-	lsls	r0,r7,#1
-	lsls	r1,r5,#1
-	lsls	r4,r6,#1
-	lsls	r5,r4,#1
-	lsls	r6,r5,#1
-	lsls	r4,r4,#1
-	movs	r0,r4
-	movs	r1,r4
-	movs	r5,r7
-	movs	r0,r4
-	lsls	r6,r1,#1
-	lsls	r5,r2,#1
-	lsls	r4,r1,#1
-	lsls	r4,r1,#1
-	movs	r1,r5
-	movs	r0,r4
-	lsls	r4,r7,#1
-	lsls	r4,r7,#1
-	movs	r0,r4
-	movs	r0,r5
-	lsls	r7,r3,#1
-	lsls	r7,r3,#1
-	lsls	r7,r5,#1
-	lsls	r6,r5,#1
-	lsls	r5,r4,#1
-	lsls	r0,r7,#1
-	lsls	r1,r5,#1
-	lsls	r4,r6,#1
-	lsls	r2,r4,#1
-	lsls	r5,r4,#1
-	lsls	r7,r4,#1
-	lsls	r1,r5,#1
-	lsls	r6,r5,#1
-	movs	r0,r4
-	movs	r5,r7
-	movs	r5,r7
-	movs	r0,r4
-	lsls	r6,r1,#1
-	lsls	r5,r2,#1
-	lsls	r4,r1,#1
-	lsls	r4,r1,#1
-	movs	r0,r4
-	movs	r6,r4
-	movs	r6,r4
-	movs	r0,r4
-	lsls	r7,r3,#1
-	lsls	r7,r3,#1
-	lsls	r7,r5,#1
-	lsls	r6,r5,#1
-	lsls	r5,r4,#1
-	lsls	r0,r7,#1
-	lsls	r1,r5,#1
-	lsls	r4,r6,#1
-	lsls	r5,r4,#1
-	lsls	r6,r5,#1
-	lsls	r4,r4,#1
-	movs	r0,r4
-	movs	r5,r7
-	movs	r5,r7
-	movs	r0,r4
-	lsls	r6,r1,#1
-	lsls	r5,r2,#1
-	lsls	r4,r1,#1
-	lsls	r4,r1,#1
-	movs	r1,r5
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	lsls	r6,r4,#1
-	movs	r2,r7
-	lsls	r4,r3,#1
-	lsls	r4,r4,#1
-	lsls	r4,r4,#1
-	lsls	r4,r3,#1
-	lsls	r6,r6,#1
-	lsls	r3,r4,#1
-	lsls	r4,r6,#1
-	lsls	r7,r5,#1
-	lsls	r7,r5,#1
-	lsls	r4,r5,#1
-	lsls	r3,r6,#1
-	lsls	r4,r3,#1
-	lsls	r3,r4,#1
-	lsls	r2,r6,#1
-	lsls	r4,r6,#1
-	lsls	r4,r3,#1
-	lsls	r3,r4,#1
-	lsls	r2,r6,#1
-	lsls	r4,r6,#1
-	lsls	r7,r6,#1
-	movs	r3,r6
-	movs	r2,r6
-	lsls	r4,r3,#1
-	lsls	r4,r4,#1
-	lsls	r4,r5,#1
-	lsls	r4,r5,#1
-	lsls	r3,r6,#1
-	lsls	r4,r6,#1
-	lsls	r5,r6,#1
-	lsls	r6,r4,#1
-	lsls	r6,r4,#1
-	lsls	r4,r3,#1
-	lsls	r1,r4,#1
-	lsls	r4,r6,#1
-	lsls	r7,r5,#1
-	lsls	r6,r5,#1
-	lsls	r5,r4,#1
-	lsls	r0,r7,#1
-	lsls	r1,r5,#1
-	lsls	r4,r6,#1
-	movs	r6,r5
-	lsls	r3,r4,#1
-	movs	r0,r0
-	movs	r0,r0
-	subs	r2,#&66
-	str	r4,[r3,#&44]
-	ldrb	r4,[r4,r1]
-	str	r6,[r6,#&34]
-	ldr	r4,[r6,#&74]
-	ldr	r7,[r5,#&44]
-	ldrb	r3,[r6,r1]
-	strb	r3,[r4,#9]
-	ldrb	r4,[r6,r1]
-	strb	r3,[r4,#9]
-	strb	r4,[r6,#&1D]
-	adds	r2,#&33
-	str	r4,[r3,#&44]
-	ldr	r4,[r5,#&44]
-	strb	r3,[r6,#&11]
-	str	r5,[r6,#&64]
-	ldrb	r6,[r4,r1]
-	strb	r1,[r4,#&11]
-	ldr	r7,[r5,#&64]
-	ldrb	r5,[r4,#1]
-	strb	r1,[r5,#&11]
-	str	r6,[r5,#&30]
-	movs	r0,r0
-	movs	r0,r0
-	ldrb	r0,[r4,#&F]
-	lsls	r0,r0,#1
-	ldrb	r0,[r0,#&13]
-	lsls	r0,r0,#1
-	ldrb	r0,[r4,#&17]
-	lsls	r0,r0,#1
-	ldrb	r0,[r0,#&18]
-	lsls	r0,r0,#1
-	ldrb	r0,[r7,#&18]
-	lsls	r0,r0,#1
-	ldrb	r4,[r4,#&19]
-	lsls	r0,r0,#1
-	movs	r1,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r1,r0
-	movs	r0,r0
-	movs	r1,r0
-	movs	r0,r0
-	movs	r1,r0
-	movs	r0,r0
-	movs	r1,r0
-	movs	r0,r0
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	strb	r1,[r4,#9]
-	strb	r7,[r5,#&15]
-	str	r6,[r5,#&44]
-	strb	r0,[r4,#&10]
-	str	r0,[r5,#&54]
-	strb	r0,[r4,#&18]
-	strb	r1,[r4,#9]
-	str	r1,[r5,#&14]
-	ldr	r2,[r4,#&44]
-	movs	r0,#&65
-	movs	r7,r4
-	movs	r0,#&27
-	str	r7,[r6,#&14]
-	movs	r0,#&73
-	ldr	r3,[r4,#&74]
-	strb	r2,[r6,#9]
-	strb	r5,[r6,#1]
-	str	r4,[r6,#&54]
-	cmp	r6,#&64
-	movs	r0,r0
-	movs	r0,r0
-	ldr	r4,[r2,#4]
-	movs	r0,#&65
-	str	r6,[r6,#&14]
-	ldr	r2,[r6,#&14]
-	str	r1,[r4,#&24]
-	str	r4,[r5,#&54]
-	movs	r7,#&20
-	movs	r0,r0
-	movs	r0,#&27
-	strb	r1,[r5,#&D]
-	str	r0,[r4,#&20]
-	ldr	r5,[r4,#&14]
-	str	r6,[r5,#&74]
-	strb	r0,[r4,#&14]
-	str	r3,[r6,#&54]
-	movs	r0,#&64
-	ldr	r7,[r6,#&14]
-	ldr	r4,[r6,#4]
-	strb	r7,[r5,#&15]
-	movs	r0,#&74
-	str	r2,[r4,#&54]
-	ldr	r1,[r5,#&64]
-	movs	r0,#&67
-	ldr	r1,[r5,#&64]
-	strb	r1,[r5,#&11]
-	str	r1,[r5,#&14]
-	ldr	r4,[r5,#&14]
-	str	r2,[r7,#&54]
-	cmp	r6,#&64
-	movs	r0,r0
-	ldr	r4,[r2,#4]
-	movs	r0,#&65
-	str	r6,[r6,#&14]
-	strb	r4,[r5,#&15]
-	movs	r0,#&65
-	str	r7,[r5,#&64]
-	cmp	r0,r4
-	str	r3,[r2,r1]
-	strb	r0,[r4,#&1C]
-	strb	r1,[r4,#&D]
-	ldr	r0,[r4,#&60]
-	strb	r7,[r5,#&11]
-	strb	r0,[r4]
-	ldr	r2,[r6,#&74]
-	str	r0,[r6,#&54]
-	ldr	r2,[r6,#&44]
-	movs	r0,#&79
-	str	r3,[r6,#&14]
-	str	r6,[r6,#&54]
-	movs	r0,#&64
-	str	r1,[r4,#&34]
-	ldr	r2,[r6,#&74]
-	strb	r3,[r6,#&D]
-	str	r0,[r4,#&10]
-	str	r0,[r4,#&60]
-	ldr	r5,[r6,#&64]
-	strb	r3,[r4,#&11]
-	ldr	r1,[r5,#&74]
-	movs	r0,#&6E
-	str	r3,[r4,#&14]
-	ldr	r4,[r5,#&44]
-	movs	r0,#&2E
-	strb	r0,[r4,r0]
-	ldr	r0,[r5,#&14]
-	movs	r0,#&73
-	strb	r1,[r5,#&D]
-	strb	r0,[r4,#&14]
-	strb	r3,[r6,#&15]
-	ldr	r1,[r4,#&44]
-	ldrb	r4,[r5,#5]
-	str	r0,[r4,#&10]
-	strb	r0,[r4,#8]
-	strb	r5,[r4,#&D]
-	ldr	r5,[r6,#&44]
-	movs	r0,#&74
-	str	r7,[r5,#&64]
-	str	r0,[r4,#&30]
-	ldr	r1,[r4,#&44]
-	ldr	r4,[r5,#&14]
-	str	r6,[r5,#&74]
-	str	r0,[r4,#&10]
-	str	r0,[r4,#&60]
-	ldr	r5,[r6,#&64]
-	strb	r3,[r4,#&11]
-	ldr	r1,[r5,#&74]
-	movs	r0,#&6E
-	str	r4,[r4,#&54]
-	ldr	r3,[r4,#&44]
-	strb	r1,[r4,#9]
-	str	r5,[r4,#&44]
-	strb	r0,[r4,#&1C]
-	strb	r1,[r5,#&11]
-	movs	r0,#&68
-	ldr	r7,[r5,#&64]
-	movs	r0,#&65
-	str	r3,[r4,#&14]
-	ldr	r4,[r5,#&44]
-	ldr	r1,[r5,#&64]
-	movs	r0,#&67
-	ldr	r3,[r4,#&74]
-	strb	r6,[r5,#&19]
-	ldr	r5,[r4,#&64]
-	ldr	r4,[r6,#&14]
-	ldr	r7,[r5,#&64]
-	strb	r0,[r4,#&1C]
-	strb	r1,[r5,#&11]
-	movs	r0,#&68
-	movs	r0,#&61
-	strb	r6,[r4,#&15]
-	str	r6,[r5,#&34]
-	ldr	r4,[r6,#&14]
-	ldr	r7,[r5,#&64]
-	strb	r0,[r4]
-	ldr	r7,[r5,#&14]
-	strb	r6,[r5,#&11]
-	strb	r5,[r4,#9]
-	str	r0,[r4,#&40]
-	str	r5,[r4,#&34]
-	str	r4,[r5,#&14]
-	str	r2,[r6,#&54]
-	movs	r0,#&64
-	ldr	r7,[r6,#&14]
-	ldr	r4,[r6,#4]
-	str	r0,[r4,#&10]
-	str	r0,[r4,#&40]
-	str	r1,[r5,#&64]
-	str	r6,[r4,#&54]
-	str	r2,[r6,#&54]
-	strb	r6,[r5,#&11]
-	str	r0,[r4,#&30]
-	ldr	r1,[r4,#&44]
-	ldr	r4,[r5,#&14]
-	str	r6,[r5,#&74]
-	str	r0,[r4,#&30]
-	ldr	r7,[r5,#&64]
-	str	r6,[r6,#&54]
-	strb	r6,[r5,#&11]
-	ldr	r1,[r5,#&74]
-	cmp	r6,#&6E
-	lsrs	r2,r1,#&14
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,#&41
-	str	r3,[r4,#&14]
-	strb	r3,[r6,#&11]
-	strb	r0,[r4,#&10]
-	movs	r0,#&6F
-	movs	r0,#&61
-	ldr	r3,[r6,#&54]
-	ldr	r1,[r4,#&44]
-	str	r4,[r5,#&54]
-	movs	r0,#&72
-	str	r4,[r4,#&14]
-	str	r4,[r6,#&14]
-	strb	r0,[r4,#&10]
-	strb	r1,[r7,#1]
-	movs	r0,#&65
-	str	r0,[r5,#&14]
-	movs	r0,#&73
-	str	r3,[r4,#&14]
-	strb	r5,[r6,#&D]
-	str	r5,[r4,#&44]
-	str	r0,[r4,#&10]
-	ldr	r0,[r4,#&40]
-	strb	r7,[r5,#&D]
-	movs	r0,#&73
-	str	r7,[r5,#&64]
-	str	r0,[r4,#&40]
-	strb	r1,[r4,#&11]
-	cmp	r6,#&61
-	movs	r0,#&20
-	str	r1,[r1,#&64]
-	strb	r0,[r4,#&10]
-	ldr	r0,[r5,#&14]
-	movs	r0,#&73
-	str	r7,[r6,#&14]
-	movs	r0,#&73
-	ldr	r1,[r5,#&64]
-	str	r4,[r6,#&54]
-	strb	r6,[r5,#&11]
-	ldr	r1,[r5,#&74]
-	str	r6,[r5,#&14]
-	cmp	r4,#&6C
-	ldrb	r0,[r4,#4]
-	strb	r7,[r5,#&15]
-	strb	r0,[r4,#&C]
-	ldr	r0,[r5,#&74]
-	ldr	r5,[r6,#&44]
-	movs	r0,#&64
-	str	r5,[r5,#&14]
-	ldr	r3,[r6,#&34]
-	strb	r0,[r4,#&10]
-	str	r0,[r5,#&54]
-	strb	r0,[r4,#&C]
-	strb	r7,[r5,#&15]
-	str	r2,[r6,#&34]
-	movs	r0,#&65
-	str	r7,[r5,#&64]
-	strb	r0,[r4,#&10]
-	str	r0,[r5,#&54]
-	str	r0,[r4,#&30]
-	strb	r1,[r4,#&D]
-	movs	r0,#&74
-	ldr	r7,[r6,#&14]
-	ldr	r4,[r6,#4]
-	strb	r0,[r4,#&10]
-	str	r0,[r5,#&54]
-	str	r0,[r4,#&10]
-	strb	r0,[r6,#1]
-	ldr	r2,[r6,#&74]
-	strb	r0,[r6,#9]
-	str	r1,[r5,#&14]
-	str	r4,[r6,#&54]
-	str	r0,[r4,#&20]
-	strb	r1,[r5,#&11]
-	str	r5,[r5,#&14]
-	ldr	r3,[r6,#&34]
-	movs	r0,#&2E
-	mov	r0,r4
-	strb	r7,[r5,#9]
-	str	r0,[r4,#&50]
-	str	r0,[r7,#&14]
-	strb	r5,[r5,#1]
-	str	r4,[r5,#&54]
-	movs	r0,#&3A
-	lsrs	r0,r4,#8
-	lsrs	r5,r1,#4
-	ldr	r3,[r4,#4]
-	strb	r1,[r4,#9]
-	str	r0,[r4,#&30]
-	subs	r5,#&20
-	cmp	r0,#&20
-	movs	r0,#&69
-	movs	r0,#&26
-	ldrb	r0,[r6]
-	mov	r6,r8
-	subs	r3,#&29
-	lsrs	r2,r1,#&14
-	ldr	r3,[r0,#4]
-	ldr	r1,[r4,#&64]
-	ldr	r7,[r4,#&14]
-	str	r6,[r5,#&74]
-	strb	r0,[r4,#&10]
-	str	r0,[r5,#&54]
-	str	r0,[r4,#&30]
-	str	r7,[r5,#&44]
-	movs	r0,#&65
-	ldr	r1,[r5,#&64]
-	strb	r0,[r4,#&10]
-	ldr	r0,[r5,#&14]
-	movs	r0,#&73
-	str	r7,[r6,#&14]
-	movs	r0,#&79
-	ldr	r7,[r6,#&14]
-	ldr	r4,[r5,#&44]
-	ldr	r0,[r4,#&60]
-	strb	r7,[r5,#&11]
-	str	r0,[r4,#&10]
-	str	r6,[r4,#&64]
-	str	r5,[r4,#&34]
-	movs	r0,#&74
-	ldr	r4,[r6,#4]
-	movs	r0,#&65
-	strb	r1,[r6,#&15]
-	ldr	r1,[r4,#&44]
-	strb	r1,[r5,#&11]
-	movs	r0,#&79
-	str	r7,[r5,#&64]
-	strb	r0,[r4,#&10]
-	str	r0,[r5,#&54]
-	strb	r0,[r4,#8]
-	strb	r5,[r4,#&D]
-	ldr	r5,[r6,#&44]
-	ldr	r4,[r6,#&14]
-	str	r6,[r5,#&74]
-	ldr	r0,[r4,#&70]
-	strb	r0,[r6,#&11]
-	ldr	r1,[r5,#&54]
-	ldrb	r1,[r5,#9]
-	str	r5,[r4,#&44]
-	str	r0,[r4,#&30]
-	str	r7,[r5,#&44]
-	cmp	r6,#&65
-	lsrs	r2,r1,#&14
-	movs	r0,r0
-	movs	r0,r0
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	str	r5,[r5,#&54]
-	ldr	r5,[r5,#&74]
-	ldrb	r2,[r6,#5]
-	strb	r0,[r4,#&1C]
-	strb	r1,[r4,#&D]
-	str	r0,[r4,#&30]
-	strb	r7,[r5,#9]
-	strb	r2,[r6,#&15]
-	strb	r0,[r6,#&11]
-	str	r5,[r4,#&44]
-	lsrs	r2,r1,#&14
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,#&41
-	ldr	r4,[r5,#&74]
-	str	r3,[r4,#&14]
-	movs	r0,#&6C
-	str	r6,[r6,#&14]
-	ldr	r2,[r6,#&14]
-	str	r1,[r4,#&24]
-	str	r4,[r5,#&54]
-	strb	r0,[r4,#&1C]
-	strb	r1,[r4,#&D]
-	strb	r0,[r4,#&14]
-	str	r3,[r6,#&54]
-	movs	r0,#&64
-	str	r2,[r4,#&54]
-	ldr	r6,[r4,#&74]
-	str	r2,[r6,#&54]
-	ldr	r0,[r4,#&10]
-	movs	r0,#&74
-	str	r7,[r6,#&14]
-	movs	r0,#&73
-	ldr	r1,[r5,#&64]
-	strb	r1,[r5,#&11]
-	str	r1,[r5,#&14]
-	ldr	r4,[r5,#&14]
-	str	r2,[r7,#&54]
-	lsrs	r4,r4,#9
-	movs	r5,r1
-	movs	r0,r0
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	str	r5,[r5,#&54]
-	ldr	r5,[r5,#&74]
-	ldrb	r2,[r6,#5]
-	str	r0,[r4,#&10]
-	ldr	r2,[r6,#&74]
-	ldr	r5,[r6,#&64]
-	movs	r0,#&64
-	str	r7,[r3,#&14]
-	ldr	r4,[r5,#&44]
-	str	r7,[r5,#&34]
-	movs	r0,#&61
-	str	r7,[r6,#&14]
-	movs	r0,#&73
-	ldr	r3,[r4,#&74]
-	strb	r2,[r6,#9]
-	strb	r5,[r6,#1]
-	str	r4,[r6,#&54]
-	lsrs	r4,r4,#9
-	movs	r5,r1
-	ldr	r5,[r2,#&64]
-	ldr	r3,[r5,#&64]
-	strb	r7,[r5,#&1D]
-	movs	r0,#&6E
-	strb	r2,[r2,#&15]
-	strb	r6,[r5,#&11]
-	ldr	r1,[r5,#&54]
-	movs	r0,#&65
-	ldr	r3,[r0,#4]
-	str	r5,[r4,#&34]
-	movs	r0,#&6B
-	strb	r5,[r0,#9]
-	ldr	r2,[r6,#&74]
-	lsrs	r2,r6,#9
-	movs	r5,r1
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	lsls	r2,r2,#1
-	lsls	r5,r6,#1
-	lsls	r6,r5,#1
-	lsls	r4,r6,#1
-	lsls	r1,r5,#1
-	lsls	r5,r5,#1
-	lsls	r5,r4,#1
-	movs	r0,r4
-	lsls	r3,r0,#1
-	lsls	r0,r5,#1
-	lsls	r5,r4,#1
-	lsls	r3,r4,#1
-	lsls	r3,r5,#1
-	movs	r0,r4
-	lsls	r5,r0,#1
-	lsls	r2,r6,#1
-	lsls	r2,r6,#1
-	lsls	r7,r5,#1
-	lsls	r2,r6,#1
-	movs	r6,r5
-	movs	r2,r1
-	movs	r5,r1
-	movs	r0,r4
-	lsls	r5,r2,#1
-	lsls	r6,r5,#1
-	lsls	r1,r4,#1
-	lsls	r2,r4,#1
-	lsls	r4,r5,#1
-	lsls	r5,r4,#1
-	movs	r0,r4
-	lsls	r4,r6,#1
-	lsls	r7,r5,#1
-	movs	r0,r4
-	lsls	r4,r4,#1
-	lsls	r1,r5,#1
-	lsls	r3,r6,#1
-	lsls	r0,r6,#1
-	lsls	r4,r5,#1
-	lsls	r1,r4,#1
-	lsls	r1,r7,#1
-	movs	r0,r4
-	lsls	r2,r2,#1
-	lsls	r4,r2,#1
-	lsls	r3,r0,#1
-	movs	r0,r4
-	lsls	r5,r1,#1
-	lsls	r5,r4,#1
-	lsls	r3,r6,#1
-	lsls	r3,r6,#1
-	lsls	r1,r4,#1
-	lsls	r7,r4,#1
-	lsls	r5,r4,#1
-	movs	r6,r5
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	lsls	r2,r2,#1
-	lsls	r5,r6,#1
-	lsls	r6,r5,#1
-	movs	r5,r5
-	lsls	r4,r2,#1
-	lsls	r1,r5,#1
-	lsls	r5,r5,#1
-	lsls	r5,r4,#1
-	movs	r0,r4
-	lsls	r3,r0,#1
-	lsls	r0,r5,#1
-	lsls	r5,r4,#1
-	lsls	r3,r4,#1
-	lsls	r3,r5,#1
-	movs	r0,r4
-	lsls	r6,r0,#1
-	lsls	r1,r4,#1
-	lsls	r1,r5,#1
-	lsls	r4,r5,#1
-	lsls	r5,r6,#1
-	lsls	r2,r6,#1
-	lsls	r5,r4,#1
-	movs	r0,r4
-	movs	r3,r4
-	movs	r5,r4
-	lsls	r4,r4,#1
-	movs	r0,r4
-	movs	r5,r5
-	movs	r0,r4
-	movs	r5,r4
-	lsls	r3,r6,#1
-	movs	r0,r0
-	ldr	r5,[r2,#&64]
-	ldr	r3,[r5,#&64]
-	strb	r7,[r5,#&1D]
-	movs	r0,#&6E
-	ldr	r6,[r0,#&14]
-	str	r4,[r5,#&54]
-	str	r6,[r5,#&14]
-	str	r5,[r5,#&54]
-	movs	r0,r0
-	movs	r0,r0
-	ldr	r5,[r2,#&64]
-	ldr	r3,[r5,#&64]
-	strb	r7,[r5,#&1D]
-	movs	r0,#&6E
-	ldr	r5,[r1,#&74]
-	strb	r4,[r4,#&15]
-	str	r4,[r5,#&54]
-	ldr	r6,[pc,#&80]
-	ldr	r1,[r4,#&54]
-	lsls	r5,r4,#1
-	strb	r2,[r2,#&15]
-	cmp	r5,#&6E
-	ldr	r4,[r2,#&14]
-	str	r5,[r5,#&54]
-	orrs	r0,r4
-	str	r0,[r5,#&54]
-	ldr	r3,[r4,#&34]
-	mov	r0,r4
-	ldr	r1,[r4,#&14]
-	strb	r4,[r5,#&15]
-	str	r2,[r6,#&54]
-	movs	r3,#&20
-	str	r5,[r4,#&40]
-	cmp	r5,#&20
-	movs	r5,#&20
-	lsls	r3,r6,#1
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	ldr	r3,[r4,#&74]
-	strb	r2,[r6,#9]
-	strb	r5,[r6,#1]
-	str	r4,[r6,#&54]
-	movs	r0,#&64
-	str	r6,[r5,#&54]
-	strb	r1,[r4,#9]
-	strb	r0,[r4,#&14]
-	ldr	r6,[r5,#&34]
-	ldr	r6,[r5,#&74]
-	ldr	r7,[r6,#&64]
-	strb	r0,[r4,#&18]
-	strb	r1,[r4,#9]
-	str	r1,[r5,#&14]
-	ldr	r2,[r4,#&44]
-	lsls	r5,r4,#1
-	movs	r0,r0
-	cmp	r6,#&25
-	ldr	r2,[r6,r0]
-	movs	r0,r4
-	movs	r0,r0
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	strb	r1,[r4,#9]
-	str	r5,[r4,#&14]
-	str	r0,[r4,#&10]
-	ldr	r2,[r6,#&74]
-	ldr	r5,[r6,#&64]
-	movs	r0,#&64
-	str	r7,[r3,#&14]
-	ldr	r4,[r5,#&44]
-	str	r7,[r5,#&34]
-	movs	r0,#&61
-	str	r5,[r5,#&54]
-	ldr	r5,[r5,#&74]
-	ldrb	r2,[r6,#5]
-	strb	r0,[r4,#8]
-	strb	r5,[r4,#&D]
-	strb	r5,[r4,#9]
-	str	r6,[r6,#&54]
-	movs	r0,#&64
-	ldrb	r2,[r4,#5]
-	strb	r0,[r4,#&10]
-	ldr	r0,[r5,#&14]
-	movs	r0,#&73
-	strb	r6,[r4,#&15]
-	str	r6,[r5,#&34]
-	ldr	r4,[r6,#&14]
-	ldr	r7,[r5,#&64]
-	ldr	r0,[r4,#&10]
-	movs	r0,#&73
-	ldr	r3,[r4,#&74]
-	strb	r2,[r6,#9]
-	strb	r5,[r6,#1]
-	str	r4,[r6,#&54]
-	lsrs	r4,r4,#9
-	movs	r0,r0
-	movs	r0,r0
-	add	r2,r1
-	strb	r1,[r4,#&11]
-	subs	r2,#&61
-	subs	r4,#&20
-	movs	r0,r0
-	movs	r0,r0
-	asrs	r2,r1
-	ldr	r4,[r5,#&44]
-	str	r7,[r5,#&34]
-	strb	r1,[r4,#&11]
-	ldr	r1,[r5,#&74]
-	movs	r0,#&6E
-	strb	r6,[r5,#&15]
-	str	r5,[r5,#&24]
-	strb	r5,[r4,#9]
-	strb	r0,[r4,#&1C]
-	strb	r1,[r5,#&11]
-	ldr	r0,[r5,#&14]
-	movs	r0,#&6E
-	ldr	r4,[r6,#4]
-	strb	r1,[r5,#&D]
-	str	r0,[r4,#&60]
-	ldr	r5,[r6,#&64]
-	strb	r3,[r4,#&11]
-	ldr	r1,[r5,#&74]
-	subs	r2,#&6E
-	movs	r0,r4
-	movs	r0,r0
-	strh	r2,[r1,r4]
-	ldrb	r1,[r5,#9]
-	subs	r2,#&65
-	movs	r0,r4
-	asrs	r2,r1
-	str	r4,[r4,#&44]
-	str	r2,[r6,#&54]
-	strb	r3,[r6,#&D]
-	movs	r0,#&3A
-	ldrb	r0,[r6]
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,r0
-	strb	r3,[r2,#&11]
-	str	r1,[r4,#&34]
-	movs	r0,#&6B
-	strb	r1,[r4,#9]
-	str	r5,[r4,#&14]
-	str	r0,[r4,#&10]
-	ldr	r2,[r6,#&74]
-	ldr	r5,[r6,#&64]
-	movs	r0,#&64
-	str	r7,[r3,#&14]
-	ldr	r4,[r5,#&44]
-	str	r7,[r5,#&34]
-	movs	r0,#&61
-	str	r5,[r5,#&54]
-	ldr	r5,[r5,#&74]
-	ldrb	r2,[r6,#5]
-	strb	r0,[r4,#8]
-	strb	r5,[r4,#&D]
-	strb	r5,[r4,#9]
-	str	r6,[r6,#&54]
-	movs	r0,#&64
-	ldrb	r2,[r4,#5]
-	strb	r0,[r4,#&10]
-	ldr	r0,[r5,#&14]
-	movs	r0,#&73
-	strb	r6,[r4,#&15]
-	str	r6,[r5,#&34]
-	ldr	r4,[r6,#&14]
-	ldr	r7,[r5,#&64]
-	ldr	r0,[r4,#&10]
-	movs	r0,#&73
-	ldr	r3,[r4,#&74]
-	strb	r2,[r6,#9]
-	strb	r5,[r6,#1]
-	str	r4,[r6,#&54]
-	lsls	r4,r4,#1
-	strb	r5,[r4,#&C]
-	strb	r5,[r4,#&C]
-	strb	r5,[r4]
-	strb	r5,[r4,#&C]
-	ldr	r5,[r4,#&40]
-	movs	r5,#&64
-	movs	r5,#&73
-	movs	r5,#&64
-	lsls	r3,r6,#1
-	movs	r0,r0
-	movs	r2,r1
-	movs	r0,r0
-	movs	r0,#&3E
-	movs	r0,r0
-	strb	r5,[r4,#&C]
-	strb	r5,[r4,#&C]
-	strb	r5,[r4,#&C]
-	strb	r5,[r4,#&C]
-	movs	r0,r0
-	movs	r0,r0
-	movs	r0,#&41
-	str	r6,[r6,#&14]
-	ldr	r2,[r6,#&14]
-	str	r1,[r4,#&24]
-	str	r4,[r5,#&54]
-	ldr	r0,[r4,#&10]
-	movs	r0,#&73
-	str	r2,[r4,#&54]
-	ldr	r1,[r5,#&64]
-	movs	r0,#&67
-	strb	r5,[r6,#&D]
-	str	r5,[r4,#&44]
-	strb	r0,[r4,#&1C]
-	strb	r1,[r5,#&11]
-	ldr	r0,[r5,#&74]
-	strb	r5,[r6,#&11]
-	str	r0,[r4,#&20]
-	ldr	r5,[r4,#&14]
-	str	r6,[r5,#&74]
-	ldr	r0,[r4,#&10]
-	ldr	r6,[r5,#&14]
-	ldr	r4,[r6,#&14]
-	ldr	r1,[r4,#&44]
-	ldrb	r1,[r5,#9]
-	str	r5,[r4,#&44]
-	movs	r6,r5
-	movs	r4,r2
-	movs	r0,r0
-	movs	r3,r1
-	movs	r0,r0
-	movs	r0,r0
-	strh	r0,[r0]
+00402EB8                         4C F2 C8 0C C0 F2 40 0C         L.....@.
+00402EC0 DC F8 00 F0 2D E9 90 48 0D F1 08 0B 88 B0 6F 46 ....-..H......oF
+00402ED0 00 23 3B 70 41 F2 01 03 BB 60 F8 60 3B 46 3B 61 .#;pA....`.`;F;a
+00402EE0 17 F1 08 03 06 22 00 21 06 48 4C F2 2C 04 C0 F2 .....".!.HL.,...
+00402EF0 40 04 24 68 A0 47 38 78 00 E0 78 68 08 B0 BD E8 @.$h.G8x..xh....
+00402F00 90 88 FE DE 88 13 6D 40 2D E9 90 48 0D F1 08 0B ......m@-..H....
+00402F10 88 B0 6F 46 00 24 3C 70 41 F2 02 04 BC 60 F8 60 ..oF.$<pA....`.`
+00402F20 39 61 7A 61 3A 46 BA 61 FB 61 17 F1 08 03 06 22 9aza:F.a.a....."
+00402F30 00 21 06 48 4C F2 2C 04 C0 F2 40 04 24 68 A0 47 .!.HL.,...@.$h.G
+00402F40 38 78 00 E0 78 68 08 B0 BD E8 90 88 88 13 6D 40 8x..xh........m@
+00402F50 2D E9 F0 48 0D F1 10 0B FE F7 64 F8 D9 B0 4A F2 -..H......d...J.
+00402F60 0C 03 C0 F2 40 03 0E 46 07 46 1D 69 B5 F1 FF 3F ....@..F.F.i...?
+00402F70 57 D0 26 B9 47 F6 B0 73 C0 F2 40 03 4C E0 47 F6 W.&.G..s..@.L.G.
+00402F80 FC 73 C0 F2 40 03 05 92 48 F2 98 02 C0 F2 40 02 .s..@...H.....@.
+00402F90 06 93 48 F2 08 03 C0 F2 40 03 06 F1 20 04 1C A8 ..H.....@... ...
+00402FA0 04 93 F3 68 F4 21 01 94 24 3B 03 93 48 F2 34 03 ...h.!..$;..H.4.
+00402FB0 C0 F2 40 03 02 93 48 F2 3C 03 C0 F2 40 03 00 93 ..@...H.<...@...
+00402FC0 48 F2 50 03 C0 F2 40 03 00 F0 AA FE F3 68 0E A9 H.P...@......h..
+00402FD0 08 A8 24 3B 22 46 00 F0 31 F9 1C A8 00 F0 6C F9 ..$;"F..1.....l.
+00402FE0 04 46 1C A8 00 F0 68 F9 48 F2 AC 03 C0 F2 40 03 .F....h.H.....@.
+00402FF0 48 F2 B4 02 C0 F2 40 02 C4 F1 F4 01 02 93 0E AB H.....@.........
+00403000 01 93 48 F2 B0 03 C0 F2 40 03 1C AC 20 44 00 93 ..H.....@... D..
+00403010 08 AB 00 F0 85 FE 1C AB 04 22 29 46 38 46 00 F0 .........")F8F..
+00403020 57 F9 59 B0 FE F7 0A F8 BD E8 F0 88 00 00 00 00 W.Y.............
+00403030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403060 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403080 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403090 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004030A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004030B0 00 00 00 00 00 00 00 00 00 00 00 00 2D E9 18 48 ............-..H
+004030C0 0D F1 08 0B 04 29 14 D8 4A F2 0C 03 C0 F2 40 03 .....)..J.....@.
+004030D0 53 F8 21 40 47 F6 44 33 C0 F2 40 03 B4 F1 FF 3F S.!@G.D3..@....?
+004030E0 53 F8 21 30 10 D0 0A 46 21 46 00 F0 F1 F8 BD E8 S.!0...F!F......
+004030F0 18 88 47 F6 44 33 C0 F2 40 03 01 24 05 21 5B 69 ..G.D3..@..$.![i
+00403100 0A 46 21 46 00 F0 E4 F8 BD E8 18 88 00 00 00 00 .F!F............
+00403110 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403120 00 00 00 00 2D E9 F0 49 0D F1 14 0B FD F7 7A FF ....-..I......z.
+00403130 AD F5 80 6D 4A F2 0C 03 C0 F2 40 03 0C 46 80 46 ...mJ.....@..F.F
+00403140 9F 68 B7 F1 FF 3F 37 D0 91 F9 00 30 53 B3 08 46 .h...?7....0S..F
+00403150 00 F0 B2 F8 00 F1 2D 03 B3 F5 80 6F 22 D8 47 F6 ......-....o".G.
+00403160 74 35 C0 F2 40 05 68 46 6E 46 29 46 00 F0 2E FE t5..@.hFnF)F....
+00403170 68 46 42 1E 12 F8 01 3F 00 2B FB D1 14 F8 01 3B hFB....?.+.....;
+00403180 00 2B 02 F8 01 3B F9 D1 05 F1 1C 01 42 1E 12 F8 .+...;......B...
+00403190 01 3F 00 2B FB D1 11 F8 01 3B 00 2B 02 F8 01 3B .?.+.....;.+...;
+004031A0 F9 D1 03 E0 47 F6 80 76 C0 F2 40 06 33 46 02 22 ....G..v..@.3F."
+004031B0 39 46 40 46 00 F0 8C F8 0D F5 80 6D FD F7 3E FF 9F@F.......m..>.
+004031C0 BD E8 F0 89 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004031D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004031E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004031F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403200 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403210 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403220 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403230 00 00 00 00 00 00 00 00 00 00 00 00 2D E9 FE 4F ............-..O
+00403240 0D F1 28 0B 1E 46 00 25 00 27 13 1A 00 93 9A 46 ..(..F.%.'.....F
+00403250 88 46 01 90 81 46 10 2E 38 BF 32 46 28 BF 10 22 .F...F..8.2F(.."
+00403260 95 42 11 D2 1A F8 09 40 47 F6 A8 72 C0 F2 40 02 .B.....@G..r..@.
+00403270 C7 F1 31 01 23 46 07 EB 08 00 00 F0 51 FD 6D 1C ..1.#F......Q.m.
+00403280 FF 1C 09 F8 01 4B E6 E7 DD F8 04 A0 00 22 05 EB .....K......."..
+00403290 45 03 05 F8 0A 20 03 F8 08 20 BD E8 FE 8F 00 00 E.... ... ......
+004032A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004032B0 00 00 00 00 00 00 00 00 2D E9 00 48 EB 46 02 46 ........-..H.F.F
+004032C0 12 F9 01 3B 00 2B FB D1 13 1A 58 1E BD E8 00 88 ...;.+....X.....
+004032D0 2D E9 F0 4F 0D F1 1C 0B FD F7 A4 FE AD F6 48 6D -..O..........Hm
+004032E0 98 46 05 93 91 46 8A 46 06 46 00 27 FF F7 3A FA .F...F.F.F.'..:.
+004032F0 05 46 1D B9 30 46 FF F7 2B FA 07 46 4C F2 28 04 .F..0F..+..FL.(.
+00403300 C0 F2 40 04 00 23 01 93 24 68 00 93 DB 43 42 46 ..@..#..$h...CBF
+00403310 00 21 4F F6 E9 50 A0 47 B0 F5 00 7F 13 D2 4C F2 .!O..P.G......L.
+00403320 28 04 C0 F2 40 04 0D F6 48 23 01 90 24 68 00 93 (...@...H#..$h..
+00403330 6F F0 00 03 42 46 00 21 4F F6 E9 50 A0 47 10 B1 o...BF.!O..P.G..
+00403340 0D F6 48 24 03 E0 47 F6 88 64 C0 F2 40 04 41 F2 ..H$..G..d..@.A.
+00403350 02 00 FF F7 B7 FD 70 B1 47 F6 5C 33 C0 F2 40 03 ......p.G.\3..@.
+00403360 32 46 48 46 53 F8 29 10 23 46 FF F7 CD FD 00 28 2FHFS.).#F.....(
+00403370 6E D1 00 23 00 E0 01 23 0F B9 00 2D 67 D0 3B B1 n..#...#...-g.;.
+00403380 4C F2 30 03 C0 F2 40 03 1B 68 98 47 00 28 5E D1 L.0...@..h.G.(^.
+00403390 06 AB 00 93 4F F4 82 72 04 AB 88 A9 30 1F 01 92 ....O..r....0...
+004033A0 00 F0 4E FB 6D B1 47 F6 F8 63 C0 F2 40 03 04 9A ..N.m.G..c..@...
+004033B0 50 46 00 93 06 AB 88 A9 02 94 CD F8 04 90 A8 47 PF.............G
+004033C0 43 E0 4C F2 24 04 C0 F2 40 04 00 23 0D F5 85 62 C.L.$...@..#...b
+004033D0 24 68 47 F6 38 76 C0 F2 40 06 03 93 02 93 40 F2 $hG.8v..@.....@.
+004033E0 0A 38 00 92 DB 43 88 AA 00 21 4F F6 E9 50 CD F8 .8...C...!O..P..
+004033F0 04 80 A0 47 08 B1 0D F5 85 66 4C F2 24 04 C0 F2 ...G.....fL.$...
+00403400 40 04 00 23 0D F5 E7 62 24 68 47 F6 4C 75 C0 F2 @..#...b$hG.Lu..
+00403410 40 05 03 93 02 93 00 92 DB 43 06 AA 00 21 4F F6 @........C...!O.
+00403420 E9 50 CD F8 04 80 A0 47 08 B1 0D F5 E7 65 47 F6 .P.....G.....eG.
+00403430 60 72 C0 F2 40 02 05 9B 31 46 00 92 04 9A 02 93 `r..@...1F......
+00403440 2B 46 50 46 CD F8 04 90 B8 47 01 28 00 D1 FE DE +FPF.....G.(....
+00403450 0D F6 48 6D FD F7 F2 FD BD E8 F0 8F 00 00 00 00 ..Hm............
+00403460 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403470 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403480 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403490 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004034A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004034B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004034C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004034D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004034E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004034F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403500 00 00 00 00 2D E9 F0 48 0D F1 10 0B FD F7 8A FD ....-..H........
+00403510 AD F2 04 4D 4A F2 0C 03 C0 F2 40 03 04 46 DF 68 ...MJ.....@..F.h
+00403520 B7 F1 FF 3F 35 D0 4C B3 FF F7 C6 FE 00 F1 3A 03 ...?5.L.......:.
+00403530 B3 F5 80 6F 22 D8 47 F6 A4 35 C0 F2 40 05 68 46 ...o".G..5..@.hF
+00403540 6E 46 29 46 00 F0 42 FC 68 46 42 1E 12 F8 01 3F nF)F..B.hFB....?
+00403550 00 2B FB D1 14 F8 01 3B 00 2B 02 F8 01 3B F9 D1 .+.....;.+...;..
+00403560 05 F1 10 01 42 1E 12 F8 01 3F 00 2B FB D1 11 F8 ....B....?.+....
+00403570 01 3B 00 2B 02 F8 01 3B F9 D1 03 E0 48 F2 C0 06 .;.+...;....H...
+00403580 C0 F2 40 06 DD F8 1C 04 33 46 03 22 39 46 FF F7 ..@.....3F."9F..
+00403590 9F FE 0D F2 04 4D FD F7 51 FD BD E8 F0 88 00 00 .....M..Q.......
+004035A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004035B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004035C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004035D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004035E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004035F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403600 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403610 00 00 00 00 00 00 00 00 4C F2 B8 0C C0 F2 40 0C ........L.....@.
+00403620 DC F8 00 F0 4C F2 A0 0C C0 F2 40 0C DC F8 00 F0 ....L.....@.....
+00403630 4C F2 90 0C C0 F2 40 0C DC F8 00 F0 4C F2 94 0C L.....@.....L...
+00403640 C0 F2 40 0C DC F8 00 F0 4C F2 98 0C C0 F2 40 0C ..@.....L.....@.
+00403650 DC F8 00 F0 4C F2 9C 0C C0 F2 40 0C DC F8 00 F0 ....L.....@.....
+00403660 2D E9 00 48 EB 46 FD F7 DD FC AD F2 14 4D 4A F2 -..H.F.......MJ.
+00403670 70 12 C0 F2 40 02 13 78 33 B1 00 20 0D F2 14 4D p...@..x3.. ...M
+00403680 FD F7 DC FC BD E8 00 88 01 23 13 70 00 F0 6E F8 .........#.p..n.
+00403690 00 28 F3 D1 4C F2 04 03 C0 F2 40 03 48 F2 34 10 .(..L.....@.H.4.
+004036A0 C0 F2 40 00 1B 68 98 47 E0 B1 4C F2 08 03 C0 F2 ..@..h.G..L.....
+004036B0 40 03 4F F4 82 72 69 46 1B 68 98 47 90 B1 82 A9 @.O..riF.h.G....
+004036C0 68 46 4F F4 82 72 00 F0 35 F9 58 B1 4C F2 50 03 hFO..r..5.X.L.P.
+004036D0 C0 F2 40 03 4F F4 10 62 00 21 1B 68 82 A8 98 47 ..@.O..b.!.h...G
+004036E0 00 28 CB D1 4C F2 50 03 C0 F2 40 03 48 F2 58 20 .(..L.P...@.H.X 
+004036F0 C0 F2 40 00 4F F4 20 62 1B 68 00 21 98 47 0D F2 ..@.O. b.h.!.G..
+00403700 14 4D FD F7 9B FC BD E8 00 88 00 00 00 00 00 00 .M..............
+00403710 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403720 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403730 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403740 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403750 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403760 00 00 00 00 00 00 00 00 00 00 00 00 2D E9 F0 48 ............-..H
+00403770 0D F1 10 0B FD F7 56 FC AD F5 09 7D 4C F2 50 03 ......V....}L.P.
+00403780 C0 F2 40 03 48 F2 50 10 C0 F2 40 00 4F F4 00 62 ..@.H.P...@.O..b
+00403790 1B 68 00 21 98 47 05 46 AD B9 4C F2 20 03 C0 F2 .h.!.G.F..L. ...
+004037A0 40 03 1B 68 98 47 57 28 48 D1 4C F2 50 03 C0 F2 @..h.GW(H.L.P...
+004037B0 40 03 48 F2 50 10 C0 F2 40 00 00 22 1B 68 00 21 @.H.P...@..".h.!
+004037C0 98 47 05 46 D5 B3 4C F2 00 03 C0 F2 40 03 48 F2 .G.F..L.....@.H.
+004037D0 98 11 C0 F2 40 01 28 46 1B 68 98 47 04 46 6C B3 ....@.(F.h.G.Fl.
+004037E0 4C F2 00 03 C0 F2 40 03 48 F2 A8 11 C0 F2 40 01 L.....@.H.....@.
+004037F0 28 46 1B 68 98 47 06 46 06 B3 4C F2 00 03 C0 F2 (F.h.G.F..L.....
+00403800 40 03 48 F2 BC 11 C0 F2 40 01 28 46 1B 68 98 47 @.H.....@.(F.h.G
+00403810 07 46 9F B1 48 F2 C8 11 C0 F2 40 01 03 AB 4F F0 .F..H.....@...O.
+00403820 00 40 00 93 01 23 00 22 80 1C A0 47 68 B1 4C F2 .@...#."...Gh.L.
+00403830 0C 03 C0 F2 40 03 28 46 1B 68 98 47 00 20 0D F5 ....@.(F.h.G. ..
+00403840 09 7D FD F7 FB FB BD E8 F0 88 4F F4 02 73 02 93 .}........O..s..
+00403850 02 AB 01 93 48 F2 24 21 C0 F2 40 01 03 98 06 AB ....H.$!..@.....
+00403860 00 93 04 AB 00 22 B0 47 04 46 03 98 B8 47 4C F2 .....".G.F...GL.
+00403870 0C 03 C0 F2 40 03 28 46 1B 68 98 47 00 2C DD D1 ....@.(F.h.G.,..
+00403880 04 9B 01 2B DA D1 02 9B 13 F0 01 0F D6 D1 5A 08 ...+..........Z.
+00403890 02 2A D3 D3 52 1E 06 AB 03 EB 42 01 33 F8 12 30 .*..R.....B.3..0
+004038A0 00 2B CB D1 31 F8 02 3C 5C 2B 02 D0 5C 23 0B 80 .+..1..<\+..\#..
+004038B0 52 1C C2 F1 FF 33 12 2B C0 D3 02 F1 11 03 B3 F5 R....3.+........
+004038C0 82 7F BB D8 06 AB 03 EB 42 02 48 F2 10 11 C0 F2 ........B.H.....
+004038D0 40 01 02 F1 22 00 31 F8 02 3B 22 F8 02 3B 82 42 @...".1..;"..;.B
+004038E0 F9 D1 4C F2 50 03 C0 F2 40 03 00 21 4F F4 10 62 ..L.P...@..!O..b
+004038F0 1B 68 06 A8 98 47 0D F5 09 7D FD F7 9F FB BD E8 .h...G...}......
+00403900 F0 88 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403910 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403920 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403930 00 00 00 00 2D E9 70 48 0D F1 0C 0B FD F7 72 FB ....-.pH......r.
+00403940 AD F5 C4 6D 08 AB 03 93 88 AB 01 93 15 46 0E 46 ...m.........F.F
+00403950 4F F4 80 74 0D F5 84 63 06 A9 03 22 04 94 02 94 O..t...c..."....
+00403960 00 94 00 F0 45 FA 30 B1 00 20 0D F5 C4 6D FD F7 ....E.0.. ...m..
+00403970 65 FB BD E8 70 88 48 F2 44 22 C0 F2 40 02 88 A8 e...p.H.D"..@...
+00403980 09 21 00 F0 29 FA 00 28 EE D1 48 F2 3C 22 C0 F2 .!..)..(..H.<"..
+00403990 40 02 08 A8 04 21 00 F0 1F FA 00 28 E4 D1 08 AB @....!.....(....
+004039A0 01 93 88 AB 00 93 0D F5 84 63 06 AA 29 46 30 46 .........c..)F0F
+004039B0 00 F0 18 FA 00 28 D7 D1 01 20 0D F5 C4 6D FD F7 .....(... ...m..
+004039C0 3D FB BD E8 70 88 00 00 00 00 00 00 00 00 00 00 =...p...........
+004039D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004039E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004039F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403A00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403A10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403A20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403A30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403A40 0F B4 2D E9 F0 4F 0D F1 1C 0B 97 B0 4C F2 10 04 ..-..O......L...
+00403A50 C0 F2 40 04 05 46 4F F0 00 08 24 68 C3 F8 00 80 ..@..FO...$h....
+00403A60 6D 1E 0D 91 A1 F8 00 80 1C 22 10 A9 28 46 0C 93 m........"..(F..
+00403A70 A0 47 30 B9 00 26 30 46 17 B0 BD E8 F0 0F 5D F8 .G0..&0F......].
+00403A80 14 FB 4C F2 08 03 C0 F2 40 03 25 9A 24 99 1B 68 ..L.....@.%.$..h
+00403A90 11 98 98 47 00 28 ED D0 11 99 45 F6 4D 23 0A 88 ...G.(....E.M#..
+00403AA0 9A 42 E7 D1 CB 6B 00 2B E4 DD 5A 58 5C 18 44 F2 .B...k.+..ZX\.D.
+00403AB0 50 53 9A 42 DE D1 A3 8A E0 88 69 1A 23 44 00 27 PS.B......i.#D.'
+00403AC0 00 25 60 B1 03 F1 18 02 D3 68 99 42 03 D3 CF 1A .%`......h.B....
+00403AD0 93 68 99 42 03 D3 6D 1C 28 32 85 42 F4 D3 85 42 .h.B..m.(2.B...B
+00403AE0 C8 D0 4A F2 71 16 C0 F2 40 06 4A F2 6C 14 C0 F2 ..J.q...@.J.l...
+00403AF0 40 04 6D 1C 33 78 53 B9 23 68 00 2B BA D1 FF F7 @.m.3xS.#h.+....
+00403B00 AF FD 20 60 00 28 B5 D0 01 23 33 70 00 E0 20 68 .. `.(...#3p.. h
+00403B10 4C F2 00 03 C0 F2 40 03 48 F2 6C 21 C0 F2 40 01 L.....@.H.l!..@.
+00403B20 1B 68 98 47 04 46 00 2C A4 D0 08 AB 03 93 24 98 .h.G.F.,......$.
+00403B30 0F AB 00 93 00 23 00 22 00 21 CD F8 08 80 CD F8 .....#.".!......
+00403B40 04 80 A0 47 00 28 95 D0 08 9B 00 26 18 46 1B 68 ...G.(.....&.F.h
+00403B50 1B 68 98 47 6B 4B 98 42 40 F0 C8 80 08 9C 48 F2 .h.GkK.B@.....H.
+00403B60 80 22 C0 F2 40 02 0A AB 20 46 24 68 00 21 E4 69 ."..@... F$h.!.i
+00403B70 A0 47 00 28 00 F0 BA 80 0A 9C 07 AB 3A 46 20 46 .G.(........:F F
+00403B80 24 68 A9 B2 CD F8 08 80 24 6A CD F8 04 80 CD F8 $h......$j......
+00403B90 00 80 A0 47 00 28 00 F0 A4 80 00 23 05 93 07 9B ...G.(.....#....
+00403BA0 05 A9 18 46 1B 68 9B 6E 98 47 00 28 00 F0 94 80 ...F.h.n.G.(....
+00403BB0 05 9B 00 2B 00 F0 90 80 18 46 1B 68 B0 46 9B 68 ...+.....F.h.F.h
+00403BC0 98 47 00 28 75 D0 0D F1 18 09 0D F1 2C 0A 05 9C .G.(u.......,...
+00403BD0 00 23 02 93 20 46 24 68 04 AB 09 AA E4 68 00 21 .#.. F$h.....h.!
+00403BE0 CD F8 04 90 CD F8 00 A0 A0 47 00 28 6F D0 BD F8 .........G.(o...
+00403BF0 10 30 AB 42 06 D1 09 9A BA 42 03 D8 0B 9B 13 44 .0.B.....B.....D
+00403C00 9F 42 07 D3 05 9B 18 46 1B 68 9B 68 98 47 00 28 .B.....F.h.h.G.(
+00403C10 DD D1 4E E0 06 9A 00 2A 59 D0 6F F0 60 43 9A 42 ..N....*Y.o.`C.B
+00403C20 55 D2 4C F2 14 03 C0 F2 40 03 1B 68 98 47 06 9B U.L.....@..h.G..
+00403C30 00 21 DA 00 4C F2 1C 03 C0 F2 40 03 1B 68 98 47 .!..L.....@..h.G
+00403C40 80 46 00 28 43 D0 05 9C 02 90 06 AB 20 46 24 68 .F.(C....... F$h
+00403C50 01 93 00 25 E4 68 00 23 00 22 0E A9 00 95 A0 47 ...%.h.#.".....G
+00403C60 38 B3 09 9B FC 1A D8 F8 00 30 9C 42 21 D3 06 98 8........0.B!...
+00403C70 01 22 01 28 08 D9 08 F1 08 01 51 F8 08 3B 9C 42 .".(......Q..;.B
+00403C80 02 D3 52 1C 82 42 F8 D3 08 EB C2 03 53 F8 04 3C ..R..B......S..<
+00403C90 0C 9A 07 9C 23 F0 7F 43 13 60 20 46 24 68 0D 9A ....#..C.` F$h..
+00403CA0 0E 99 24 6F 22 AB 02 95 01 95 00 95 A0 47 00 B1 ..$o"........G..
+00403CB0 01 26 4C F2 14 03 C0 F2 40 03 1B 68 98 47 4C F2 .&L.....@..h.GL.
+00403CC0 18 03 C0 F2 40 03 42 46 00 21 1B 68 98 47 05 9B ....@.BF.!.h.G..
+00403CD0 18 46 1B 68 1B 68 98 47 07 9B 18 46 1B 68 1B 6C .F.h.h.G...F.h.l
+00403CE0 98 47 0A 9B 18 46 1B 68 9B 6B 98 47 08 9B 18 46 .G...F.h.k.G...F
+00403CF0 1B 68 DB 6A 98 47 30 46 17 B0 BD E8 F0 0F 5D F8 .h.j.G0F......].
+00403D00 14 FB FE DE 41 91 32 01 00 00 00 00 00 00 00 00 ....A.2.........
+00403D10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403D20 4C F2 A4 0C C0 F2 40 0C DC F8 00 F0 0F B4 2D E9 L.....@.......-.
+00403D30 00 48 EB 46 82 B0 07 9B 1C 33 1A 68 07 99 05 98 .H.F.....3.h....
+00403D40 00 F0 14 F8 01 23 00 93 00 98 02 B0 5D F8 04 BB .....#......]...
+00403D50 5D F8 14 FB 00 00 00 00 00 00 00 00 00 00 00 00 ]...............
+00403D60 00 00 00 00 00 00 00 00 00 00 00 00 0F B4 2D E9 ..............-.
+00403D70 00 48 EB 46 84 B0 08 9B 1B 68 23 F0 03 03 02 93 .H.F.....h#.....
+00403D80 06 9B 01 93 01 9A 02 9B 13 44 1B 68 00 93 08 9B .........D.h....
+00403D90 1B 68 13 F0 01 0F 05 D0 01 9A 02 9B 1A 44 00 9B .h...........D..
+00403DA0 D3 1A 00 93 00 98 FD F7 6F F9 04 B0 5D F8 04 BB ........o...]...
+00403DB0 5D F8 14 FB 00 00 00 00 00 00 00 00 00 00 00 00 ]...............
+00403DC0 00 00 00 00 00 00 00 00 00 00 00 00 4C F2 A8 0C ............L...
+00403DD0 C0 F2 40 0C DC F8 00 F0 4C F2 AC 0C C0 F2 40 0C ..@.....L.....@.
+00403DE0 DC F8 00 F0 4C F2 B0 0C C0 F2 40 0C DC F8 00 F0 ....L.....@.....
+00403DF0 4C F2 B4 0C C0 F2 40 0C DC F8 00 F0 03 B4 2D E9 L.....@.......-.
+00403E00 00 48 EB 46 02 20 FB DE 2D E9 00 48 EB 46 08 20 .H.F. ..-..H.F. 
+00403E10 00 F0 0E F8 FE DE 00 00 00 00 00 00 00 00 00 00 ................
+00403E20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403E30 03 B4 2D E9 00 48 EB 46 02 98 FB DE 0F B4 2D E9 ..-..H.F......-.
+00403E40 00 48 EB 46 02 98 FB DE 4C F2 4C 0C C0 F2 40 0C .H.F....L.L...@.
+00403E50 DC F8 00 F0 4C F2 48 0C C0 F2 40 0C DC F8 00 F0 ....L.H...@.....
+00403E60 4C F2 44 0C C0 F2 40 0C DC F8 00 F0 4C F2 40 0C L.D...@.....L.@.
+00403E70 C0 F2 40 0C DC F8 00 F0 4C F2 3C 0C C0 F2 40 0C ..@.....L.<...@.
+00403E80 DC F8 00 F0 4C F2 38 0C C0 F2 40 0C DC F8 00 F0 ....L.8...@.....
+00403E90 4C F2 34 0C C0 F2 40 0C DC F8 00 F0 4C F2 30 0C L.4...@.....L.0.
+00403EA0 C0 F2 40 0C DC F8 00 F0 4C F2 2C 0C C0 F2 40 0C ..@.....L.,...@.
+00403EB0 DC F8 00 F0 4C F2 28 0C C0 F2 40 0C DC F8 00 F0 ....L.(...@.....
+00403EC0 4C F2 24 0C C0 F2 40 0C DC F8 00 F0 4C F2 20 0C L.$...@.....L. .
+00403ED0 C0 F2 40 0C DC F8 00 F0 4C F2 1C 0C C0 F2 40 0C ..@.....L.....@.
+00403EE0 DC F8 00 F0 4C F2 18 0C C0 F2 40 0C DC F8 00 F0 ....L.....@.....
+00403EF0 4C F2 14 0C C0 F2 40 0C DC F8 00 F0 4C F2 10 0C L.....@.....L...
+00403F00 C0 F2 40 0C DC F8 00 F0 4C F2 0C 0C C0 F2 40 0C ..@.....L.....@.
+00403F10 DC F8 00 F0 4C F2 08 0C C0 F2 40 0C DC F8 00 F0 ....L.....@.....
+00403F20 4C F2 04 0C C0 F2 40 0C DC F8 00 F0 4C F2 00 0C L.....@.....L...
+00403F30 C0 F2 40 0C DC F8 00 F0 4C F2 50 0C C0 F2 40 0C ..@.....L.P...@.
+00403F40 DC F8 00 F0 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403F50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403F60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403F70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403F80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403F90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403FA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403FB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403FC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403FD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403FE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00403FF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404060 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404080 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404090 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004040A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004040B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004040C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004040D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004040E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004040F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404100 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404110 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404120 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404130 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404140 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404150 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404160 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404170 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404180 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404190 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004041A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004041B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004041C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004041D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004041E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004041F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404200 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404210 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404220 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404230 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404240 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404250 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404260 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404270 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404280 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404290 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004042A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004042B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004042C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004042D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004042E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004042F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404300 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404310 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404320 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404330 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404340 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404350 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404360 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404370 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404380 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404390 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004043A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004043B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004043C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004043D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004043E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004043F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404400 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404410 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404420 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404430 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404440 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404450 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404460 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404470 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404480 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404490 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004044A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004044B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004044C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004044D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004044E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004044F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404500 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404510 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404520 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404530 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404540 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404550 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404560 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404570 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404580 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404590 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004045A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004045B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004045C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004045D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004045E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004045F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404600 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404610 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404620 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404630 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404640 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404650 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404660 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404670 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404680 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404690 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004046A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004046B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004046C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004046D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004046E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004046F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404700 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404710 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404720 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404730 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404740 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404750 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404760 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404770 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404780 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404790 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004047A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004047B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004047C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004047D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004047E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004047F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404800 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404810 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404820 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404830 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404840 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404850 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404860 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404870 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404880 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404890 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004048A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004048B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004048C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004048D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004048E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004048F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404900 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404910 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404920 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404930 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404940 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404950 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404960 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404970 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404980 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404990 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004049A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004049B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004049C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004049D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004049E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004049F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404A90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404AA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404AB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404AC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404AD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404AE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404AF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404B90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404BA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404BB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404BC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404BD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404BE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404BF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404C90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404CA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404CB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404CC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404CD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404CE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404CF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404D90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404DA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404DB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404DC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404DD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404DE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404DF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404E90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404EA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404EB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404EC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404ED0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404EE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404EF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404F90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404FA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404FB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404FC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404FD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404FE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00404FF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405060 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405080 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405090 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004050A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004050B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004050C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004050D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004050E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004050F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405100 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405110 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405120 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405130 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405140 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405150 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405160 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405170 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405180 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405190 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004051A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004051B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004051C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004051D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004051E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004051F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405200 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405210 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405220 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405230 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405240 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405250 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405260 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405270 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405280 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405290 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004052A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004052B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004052C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004052D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004052E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004052F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405300 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405310 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405320 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405330 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405340 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405350 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405360 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405370 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405380 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405390 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004053A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004053B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004053C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004053D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004053E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004053F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405400 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405410 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405420 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405430 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405440 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405450 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405460 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405470 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405480 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405490 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004054A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004054B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004054C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004054D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004054E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004054F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405500 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405510 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405520 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405530 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405540 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405550 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405560 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405570 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405580 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405590 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004055A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004055B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004055C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004055D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004055E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004055F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405600 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405610 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405620 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405630 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405640 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405650 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405660 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405670 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405680 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405690 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004056A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004056B0 00 00 00 00 00 00 00 00 00 00 00 00 10 B5 82 B0 ................
+004056C0 38 60 3B 68 7B 63 3B 68 1B 68 1B 68 FB 63 79 6B 8`;h{c;h.h.h.cyk
+004056D0 F8 6B FD F7 0D F9 78 64 78 6C 02 B0 10 BD 00 00 .k....xdxl......
+004056E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004056F0 00 00 00 00 00 00 00 00 F8 62 FB 6A 1B 68 1B 68 .........b.j.h.h
+00405700 3B 63 3A 6B 04 4B 9A 42 02 D1 01 23 3B 61 01 E0 ;c:k.K.B...#;a..
+00405710 00 23 3B 61 38 69 70 47 05 00 00 C0 10 B5 08 20 .#;a8ipG....... 
+00405720 FD F7 8C FF FF E7 10 BD 00 00 00 00 00 00 00 00 ................
+00405730 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405740 03 68 1A 68 03 4B 9A 42 01 D1 01 20 00 E0 00 20 .h.h.K.B... ... 
+00405750 70 47 FE DE 88 13 6D 40 03 68 1A 68 03 4B 9A 42 pG....m@.h.h.K.B
+00405760 01 D1 01 20 00 E0 00 20 70 47 FE DE 88 13 6D 40 ... ... pG....m@
+00405770 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405780 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405790 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004057A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004057B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004057C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004057D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004057E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004057F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405800 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405810 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405820 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405830 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405840 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405850 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405860 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405870 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405880 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405890 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004058A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004058B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004058C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004058D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004058E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004058F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405900 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405910 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405920 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405930 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405940 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405950 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405960 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405970 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405980 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405990 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004059A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004059B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004059C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004059D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004059E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004059F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405A90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405AA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405AB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405AC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405AD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405AE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405AF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405B90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405BA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405BB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405BC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405BD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405BE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405BF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405C90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405CA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405CB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405CC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405CD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405CE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405CF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405D90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405DA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405DB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405DC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405DD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405DE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405DF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405E90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405EA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405EB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405EC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405ED0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405EE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405EF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405F90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405FA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405FB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405FC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405FD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405FE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00405FF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406060 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406080 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406090 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004060A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004060B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004060C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004060D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004060E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004060F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406100 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406110 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406120 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406130 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406140 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406150 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406160 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406170 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406180 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406190 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004061A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004061B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004061C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004061D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004061E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004061F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406200 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406210 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406220 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406230 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406240 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406250 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406260 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406270 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406280 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406290 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004062A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004062B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004062C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004062D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004062E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004062F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406300 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406310 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406320 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406330 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406340 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406350 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406360 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406370 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406380 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406390 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004063A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004063B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004063C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004063D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004063E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004063F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406400 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406410 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406420 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406430 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406440 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406450 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406460 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406470 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406480 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406490 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004064A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004064B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004064C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004064D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004064E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004064F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406500 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406510 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406520 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406530 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406540 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406550 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406560 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406570 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406580 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406590 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004065A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004065B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004065C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004065D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004065E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004065F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406600 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406610 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406620 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406630 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406640 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406650 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406660 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406670 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406680 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406690 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004066A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004066B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004066C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004066D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004066E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004066F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406700 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406710 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406720 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406730 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406740 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406750 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406760 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406770 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406780 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406790 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004067A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004067B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004067C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004067D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004067E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004067F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406800 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406810 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406820 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406830 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406840 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406850 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406860 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406870 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406880 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406890 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004068A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004068B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004068C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004068D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004068E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004068F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406900 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406910 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406920 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406930 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406940 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406950 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406960 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406970 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406980 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406990 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004069A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004069B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004069C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004069D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004069E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+004069F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406A90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406AA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406AB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406AC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406AD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406AE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406AF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406B90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406BA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406BB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406BC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406BD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406BE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406BF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406C90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406CA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406CB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406CC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406CD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406CE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406CF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406D90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406DA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406DB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406DC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406DD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406DE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406DF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406E90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406EA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406EB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406EC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406ED0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406EE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406EF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406F90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406FA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406FB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406FC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406FD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406FE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00406FF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 00407000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 00407010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 00407020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
