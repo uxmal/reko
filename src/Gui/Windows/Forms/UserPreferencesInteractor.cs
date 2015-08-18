@@ -19,7 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Absyn;
 using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui.Windows.Controls;
 using System;
@@ -183,19 +186,21 @@ namespace Reko.Gui.Windows.Forms
             CopyStyles(uipSvc, localSettings);
 
             GenerateSimulatedProgram();
+            dlg.MemoryControl.Services = sc;
             dlg.MemoryControl.ProgramImage = program.Image;
             dlg.MemoryControl.ImageMap = program.ImageMap;
             dlg.MemoryControl.Architecture = program.Architecture;
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
+            dlg.DisassemblyControl.Services = sc;
             dlg.DisassemblyControl.Model = new DisassemblyTextModel(program);
-            dlg.CodeControl.Model = null; /*;*/ 
+            dlg.CodeControl.Model = GenerateSimulatedHllCode();
         }
 
-        private void CopyStyles(IUiPreferencesService from,IUiPreferencesService to)
+        private void CopyStyles(IUiPreferencesService from, IUiPreferencesService to)
         {
             foreach (var style in from.Styles.Values)
             {
-                to.Styles[style.Name] = style;
+                to.Styles[style.Name] = style.Clone();
             }
         }
 
@@ -222,6 +227,26 @@ namespace Reko.Gui.Windows.Forms
                 ImageMap = imageMap,
                 Architecture = arch,
             };
+        }
+
+        private TextViewModel GenerateSimulatedHllCode()
+        {
+            var code = new List<AbsynStatement>();
+            var ase = new Structure.AbsynStatementEmitter(code);
+            var m = new ExpressionEmitter();
+            var a_id = new Identifier("a", null, null);
+            var sum_id = new Identifier("sum", null, null);
+            ase.EmitAssign(a_id, Constant.Int32(10));
+            ase.EmitAssign(sum_id, Constant.Int32(0));
+
+            var tsf = new TextSpanFormatter();
+            var fmt = new AbsynCodeFormatter(tsf);
+            fmt.InnerFormatter.UseTabs = false;
+            foreach (var stm in code)
+            {
+                stm.Accept(fmt);
+            }
+            return tsf.GetModel();
         }
 
         void ImagebarBgButton_Click(object sender, EventArgs e)

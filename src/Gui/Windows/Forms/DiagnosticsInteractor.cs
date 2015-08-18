@@ -30,6 +30,9 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Forms
 {
+    /// <summary>
+    /// Interactor that controls the Diagnostics pane.
+    /// </summary>
     public class DiagnosticsInteractor : IDiagnosticsService, IWindowPane, ICommandTarget
     {
         private ListView listView;

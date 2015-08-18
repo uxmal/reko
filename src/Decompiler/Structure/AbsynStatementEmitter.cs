@@ -48,6 +48,13 @@ namespace Reko.Structure
             stms.Add(stm);
         }
 
+        public AbsynAssignment EmitAssign(Expression dst, Expression src)
+        {
+            var ass = new AbsynAssignment(dst, src);
+            stms.Add(ass);
+            return ass;
+        }
+
         public void EmitCaseLabel(StructureNode node, int i)
         {
             stms.Add(new AbsynCase(i));
@@ -259,5 +266,6 @@ namespace Reko.Structure
         }
 
         #endregion
+
     }
 }

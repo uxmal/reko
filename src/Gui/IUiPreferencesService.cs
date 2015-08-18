@@ -39,6 +39,19 @@ namespace Reko.Gui
         public SolidBrush Background { get; set; }
         public Cursor Cursor { get; set; }
         public int? Width { get; set; } // If set, the width is fixed at a certain size.
+
+        public UiStyle Clone()
+        {
+            return new UiStyle
+            {
+                Name = Name,
+                Font = Font,
+                Foreground = Foreground,
+                Background = Background,
+                Cursor = Cursor,
+                Width = Width,
+            };
+        }
     }
 
     public static class UiStyles

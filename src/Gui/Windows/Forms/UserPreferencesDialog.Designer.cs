@@ -34,9 +34,6 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabWindows = new System.Windows.Forms.TabPage();
-            this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
-            this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
-            this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.btnWindowBgColor = new System.Windows.Forms.Button();
             this.btnWindowFgColor = new System.Windows.Forms.Button();
@@ -49,6 +46,9 @@
             this.lbxUiElements = new System.Windows.Forms.ListBox();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
             this.fontPicker = new System.Windows.Forms.FontDialog();
+            this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
+            this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
+            this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
             this.tabControl1.SuspendLayout();
             this.tabWindows.SuspendLayout();
             this.tabColors.SuspendLayout();
@@ -106,53 +106,6 @@
             this.tabWindows.Text = "Windows";
             this.tabWindows.UseVisualStyleBackColor = true;
             // 
-            // dasmCtl
-            // 
-            this.dasmCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dasmCtl.Location = new System.Drawing.Point(180, 37);
-            this.dasmCtl.Model = emptyEditorModel1;
-            this.dasmCtl.Name = "dasmCtl";
-            this.dasmCtl.SelectedObject = null;
-            this.dasmCtl.Services = null;
-            this.dasmCtl.Size = new System.Drawing.Size(374, 138);
-            this.dasmCtl.StartAddress = null;
-            this.dasmCtl.TabIndex = 8;
-            this.dasmCtl.TopAddress = null;
-            // 
-            // codeCtl
-            // 
-            this.codeCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.codeCtl.Location = new System.Drawing.Point(183, 37);
-            this.codeCtl.Model = emptyEditorModel2;
-            this.codeCtl.Name = "codeCtl";
-            this.codeCtl.Services = null;
-            this.codeCtl.Size = new System.Drawing.Size(371, 142);
-            this.codeCtl.TabIndex = 7;
-            this.codeCtl.Text = "textView1";
-            // 
-            // memCtl
-            // 
-            this.memCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.memCtl.Architecture = null;
-            this.memCtl.BytesPerRow = ((uint)(16u));
-            this.memCtl.ImageMap = null;
-            this.memCtl.Location = new System.Drawing.Point(183, 37);
-            this.memCtl.Name = "memCtl";
-            this.memCtl.ProgramImage = null;
-            this.memCtl.SelectedAddress = null;
-            this.memCtl.Services = null;
-            this.memCtl.Size = new System.Drawing.Size(371, 142);
-            this.memCtl.TabIndex = 6;
-            this.memCtl.Text = "memoryControl1";
-            this.memCtl.TopAddress = null;
-            this.memCtl.WordSize = ((uint)(1u));
-            // 
             // treeView1
             // 
             this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -166,18 +119,18 @@
             // 
             // btnWindowBgColor
             // 
-            this.btnWindowBgColor.Location = new System.Drawing.Point(342, 6);
+            this.btnWindowBgColor.Location = new System.Drawing.Point(376, 8);
             this.btnWindowBgColor.Name = "btnWindowBgColor";
-            this.btnWindowBgColor.Size = new System.Drawing.Size(80, 23);
+            this.btnWindowBgColor.Size = new System.Drawing.Size(94, 23);
             this.btnWindowBgColor.TabIndex = 3;
             this.btnWindowBgColor.Text = "Background...";
             this.btnWindowBgColor.UseVisualStyleBackColor = true;
             // 
             // btnWindowFgColor
             // 
-            this.btnWindowFgColor.Location = new System.Drawing.Point(261, 7);
+            this.btnWindowFgColor.Location = new System.Drawing.Point(278, 7);
             this.btnWindowFgColor.Name = "btnWindowFgColor";
-            this.btnWindowFgColor.Size = new System.Drawing.Size(75, 23);
+            this.btnWindowFgColor.Size = new System.Drawing.Size(92, 23);
             this.btnWindowFgColor.TabIndex = 2;
             this.btnWindowFgColor.Text = "Foreground...";
             this.btnWindowFgColor.UseVisualStyleBackColor = true;
@@ -186,7 +139,7 @@
             // 
             this.btnWindowFont.Location = new System.Drawing.Point(180, 7);
             this.btnWindowFont.Name = "btnWindowFont";
-            this.btnWindowFont.Size = new System.Drawing.Size(75, 23);
+            this.btnWindowFont.Size = new System.Drawing.Size(92, 23);
             this.btnWindowFont.TabIndex = 1;
             this.btnWindowFont.Text = "Font...";
             this.btnWindowFont.UseVisualStyleBackColor = true;
@@ -260,11 +213,59 @@
             this.lbxUiElements.Size = new System.Drawing.Size(164, 172);
             this.lbxUiElements.TabIndex = 1;
             // 
+            // dasmCtl
+            // 
+            this.dasmCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dasmCtl.Location = new System.Drawing.Point(180, 37);
+            this.dasmCtl.Model = emptyEditorModel1;
+            this.dasmCtl.Name = "dasmCtl";
+            this.dasmCtl.SelectedObject = null;
+            this.dasmCtl.Services = null;
+            this.dasmCtl.Size = new System.Drawing.Size(374, 138);
+            this.dasmCtl.StartAddress = null;
+            this.dasmCtl.TabIndex = 8;
+            this.dasmCtl.TopAddress = null;
+            // 
+            // codeCtl
+            // 
+            this.codeCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.codeCtl.Location = new System.Drawing.Point(180, 37);
+            this.codeCtl.Model = emptyEditorModel2;
+            this.codeCtl.Name = "codeCtl";
+            this.codeCtl.Services = null;
+            this.codeCtl.Size = new System.Drawing.Size(374, 138);
+            this.codeCtl.TabIndex = 7;
+            this.codeCtl.Text = "textView1";
+            // 
+            // memCtl
+            // 
+            this.memCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.memCtl.Architecture = null;
+            this.memCtl.BytesPerRow = ((uint)(16u));
+            this.memCtl.ImageMap = null;
+            this.memCtl.Location = new System.Drawing.Point(180, 37);
+            this.memCtl.Name = "memCtl";
+            this.memCtl.ProgramImage = null;
+            this.memCtl.SelectedAddress = null;
+            this.memCtl.Services = null;
+            this.memCtl.Size = new System.Drawing.Size(374, 138);
+            this.memCtl.TabIndex = 6;
+            this.memCtl.Text = "memoryControl1";
+            this.memCtl.TopAddress = null;
+            this.memCtl.WordSize = ((uint)(1u));
+            // 
             // UserPreferencesDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(564, 261);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancel);

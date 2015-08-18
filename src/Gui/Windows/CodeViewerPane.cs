@@ -33,7 +33,8 @@ using System.Windows.Forms;
 namespace Reko.Gui.Windows
 {
     /// <summary>
-    /// Pane that displays decompiled code.
+    /// Pane that displays decompiled code, allows the user to navigate code,
+    /// and annotate it.
     /// </summary>
     public class CodeViewerPane : IWindowPane, ICommandTarget
     {
