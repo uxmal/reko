@@ -62,7 +62,7 @@ namespace Reko.ImageLoaders.MzExe
             return new Program(imgLoaded, imgLoadedMap, arch, platform);
         }
 
-		public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
 			ImageMap imageMap = imgLoadedMap;
 			ImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);

@@ -40,6 +40,7 @@ namespace Reko.ImageLoaders.MzExe
         private IProcessorArchitecture arch;
         private Win32Platform platform;
         private SizeSpecificLoader innerLoader;
+        private Program program;
 
 		private short optionalHeaderSize;
 		private int sections;
@@ -173,7 +174,7 @@ namespace Reko.ImageLoaders.MzExe
                 imageMap = imgLoaded.CreateImageMap();
             }
             imgLoaded.BaseAddress = addrLoad;
-            var program = new Program(imgLoaded, imageMap, arch, platform);
+            this.program = new Program(imgLoaded, imageMap, arch, platform);
             this.importReferences = program.ImportReferences;
             return program;
         }
@@ -351,7 +352,7 @@ namespace Reko.ImageLoaders.MzExe
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
-		public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
             AddSectionsToImageMap(addrLoad, imageMap);
             var relocations = imgLoaded.Relocations;
@@ -405,10 +406,12 @@ namespace Reko.ImageLoaders.MzExe
             case 0xA:
             break;
 			default:
-                Services.RequireService<IDiagnosticsService>().Warn()
-                    new AddressContext(null, Address.Ptr32() 
-                    "Unsupported PE fixup type: {0:X}",
-                    fixup >> 12);
+                var dc = Services.RequireService<DecompilerEventListener>();
+                dc.Warn(
+                    dc.CreateAddressNavigator(program, Address.Ptr32((uint)offset)),
+                    string.Format(
+                        "Unsupported PE fixup type: {0:X}",
+                        fixup >> 12));
                 break;
 			}
 		}

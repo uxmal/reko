@@ -93,7 +93,7 @@ namespace Reko.ImageLoaders.BinHex
             set { throw new NotImplementedException(); }
         }
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var entryPoints = new List<EntryPoint>();
             var relocations = new RelocationDictionary();

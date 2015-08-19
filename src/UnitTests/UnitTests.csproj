@@ -175,7 +175,6 @@
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Fragments\ArrayExpressionFragment.cs" />
-    <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Fragments\FnPointerFragment.cs" />
     <Compile Include="Fragments\FramePointerFragment.cs" />
     <Compile Include="Fragments\IndirectCallFragment.cs" />

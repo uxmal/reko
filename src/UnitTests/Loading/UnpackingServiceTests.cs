@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Loading
             throw new NotImplementedException();
         }
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             throw new NotImplementedException();
         }

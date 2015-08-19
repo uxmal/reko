@@ -620,7 +620,7 @@ print "args: %s (%d)" % (arg_text, arg_len)
 print arg_mem
 */
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var entries = new List<EntryPoint>
             {

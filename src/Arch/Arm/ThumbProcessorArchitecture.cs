@@ -39,26 +39,6 @@ namespace Reko.Arch.Arm
             return new ThumbDisassembler(imageReader);
         }
 
-        public ProcessorState CreateProcessorState()
-        {
-            return new ArmProcessorState(this);
-        }
-
-        public BitSet CreateRegisterBitset()
-        {
-            return new BitSet(0x30);
-        }
-
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
-        {
-            return new ThumbRewriter(this, rdr, (ArmProcessorState) state, frame, host);
-        }
-
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
         public Frame CreateFrame()
         {
             return new Frame(PrimitiveType.Pointer32);
@@ -74,9 +54,34 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             throw new NotImplementedException();
+        }
+
+        public ProcessorState CreateProcessorState()
+        {
+            return new ArmProcessorState(this);
+        }
+
+        public BitSet CreateRegisterBitset()
+        {
+            return new BitSet(0x30);
+        }
+
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        {
+            return new ThumbRewriter(this, rdr, (ArmProcessorState) state, frame, host);
         }
 
         public RegisterStorage GetRegister(int i)

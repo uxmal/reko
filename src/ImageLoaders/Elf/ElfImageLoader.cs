@@ -595,7 +595,7 @@ namespace Reko.ImageLoaders.Elf
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             if (image == null)
                 throw new InvalidOperationException(); // No file loaded
