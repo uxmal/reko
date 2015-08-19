@@ -36,24 +36,40 @@ namespace Reko.Mono
         {
             this.services = services;
         }
+        private Reko.Gui.Windows.IRegistryKey GetRegistryKey(string appRelativeKeyName, bool writeable)
+        {
+            var regSvc = services.RequireService<Reko.Gui.Windows.IRegistryService>();
+            var keyName = "Software\\jklSoft\\Reko";
+            if (!string.IsNullOrEmpty(appRelativeKeyName))
+                keyName = string.Join("\\", keyName, appRelativeKeyName);
+            return regSvc.CurrentUser.OpenSubKey(keyName, writeable);
+        }
 
         public object Get(string settingName, object defaultValue)
         {
-            throw new NotImplementedException();
+            string keyName; string valName;
+            SplitIntoKeyValueName(settingName, out keyName, out valName);
+            var key = GetRegistryKey(keyName, false);
+            return key.GetValue(valName, defaultValue);
         }
 
         public string[] GetList(string settingName)
         {
-            throw new NotImplementedException();
+            byte[] bytes = (byte[]) Get(settingName, new byte[] { });
+            return Encoding.UTF8.GetString(bytes).Split((char) 0);
         }
 
         public void SetList(string name, IEnumerable<string> settings)
         {
-            throw new NotImplementedException();
+            Set(name, Encoding.UTF8.GetBytes( string.Join("\0", settings)));
         }
 
         public void Set(string name, object value)
         {
+            string keyName; string valName;
+            SplitIntoKeyValueName(name, out keyName, out valName); 
+            var key = GetRegistryKey(keyName, true);
+            key.SetValue(valName, value);
         }
 
         private void SplitIntoKeyValueName(string name, out string keyName, out string valName)
@@ -73,7 +89,7 @@ namespace Reko.Mono
                 }
                 else
                 {
-                    keyName = name.Remove(i).Replace('/', '\\');
+                    keyName = name.Remove(i).Replace('/','\\');
                     valName = name.Substring(i + 1);
                 }
             }
@@ -81,23 +97,12 @@ namespace Reko.Mono
 
         public void Load()
         {
-            var configFile = Path.Combine(
-                Environment.GetEnvironmentVariable("HOME"),
-                ".config/.decompilerrc");
-            //$TODO: load from configFile.
+            // Doesn't need an implementation, since we load live values from the MONO registry.
         }
 
         public void Save()
         {
-            var configDir = Path.Combine(
-                Environment.GetEnvironmentVariable("HOME"),
-                ".config"); 
-            //$REVIEW: if the .config dir doesn't exist, should we create it?
-            if (Directory.Exists(configDir))
-            {
-                var configFile = Path.Combine(configDir, ".decompilerrc");
-                throw new NotImplementedException("Write file into configFile");
-            }
+            // Doesn't need an implementation, since we save values to the MONO registry immediately in the Set method.
         }
     }
 }
