@@ -150,7 +150,6 @@ namespace Reko.Arch.Arm
             }
         }
 
-        
         private void WriteImmShift(string op, int value, MachineInstructionWriter writer)
         {
             writer.Write(",");

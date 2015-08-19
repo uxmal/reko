@@ -264,7 +264,7 @@ namespace Reko.Arch.Arm
                 {
                     writer.Write(",");
                     // NOTE: capstone.NET seems to reverse the sense of this scale parameter.
-                    if (op.MemoryValue.IndexRegisterScale < 0)
+                    if (op.IsSubtracted)
                         writer.Write("-");
                     writer.Write(A32Registers.RegisterByCapstoneID[op.MemoryValue.IndexRegister].Name);
                 }

@@ -46,7 +46,7 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Recursively disassembles the range of addresses specified by the guessed procedure.
+        /// Recursively disassembles the range of addresses.
         /// <paramref name="proc"/>.
         /// </summary>
         /// <param name="addr"></param>
@@ -106,13 +106,13 @@ namespace Reko.Scanning
                     var rtlJump = rtlLast as RtlGoto;
                     if (rtlJump != null)
                     {
+                        // Stop disassembling if you get outside
+                        // the procedure or a computed goto.
                         var target = rtlJump.Target as Address;
                         if (target == null ||
                             target < proc.BeginAddress ||
                             target >= proc.EndAddress)
                         {
-                            // Stop disassembling if you get outside
-                            // the procedure or a computed goto.
                             return current;
                         }
                         block = Disassemble(target);
@@ -132,7 +132,6 @@ namespace Reko.Scanning
             }
             return current;
         }
-
 
         private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr)
         {
