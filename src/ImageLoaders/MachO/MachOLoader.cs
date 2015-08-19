@@ -129,7 +129,7 @@ namespace Reko.ImageLoaders.MachO
             throw new BadImageFormatException("Invalid Mach-O header.");
         }
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary());
         }

@@ -232,7 +232,7 @@ l01C8:
             set { throw new NotImplementedException(); }
         }
 
-		public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
             var relocations = new RelocationDictionary();
 			ushort segCode = (ushort) (addrLoad.Selector + (PspSize >> 4));

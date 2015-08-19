@@ -174,9 +174,9 @@ namespace Reko.ImageLoaders.MzExe
 			e_lfanew = rdr.ReadLeUInt32();
 		}
 
-		public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-			return GetDeferredLoader().Relocate(addrLoad);
+			return GetDeferredLoader().Relocate(program, addrLoad);
 		}
 
 		void RelocateNewExe(object neHeader)

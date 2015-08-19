@@ -101,7 +101,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		// Fix up the relocations.
 
-		public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
 			// Seed the scanner with the start location.
 

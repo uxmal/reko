@@ -62,7 +62,7 @@ namespace Reko.Loading
                 Platform ?? new DefaultPlatform(Services, Architecture));
         }
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             return new RelocationResults(EntryPoints, new RelocationDictionary());
         }
