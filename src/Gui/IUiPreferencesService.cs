@@ -206,7 +206,7 @@ namespace Reko.Gui
             {
                 Name = UiStyles.CodeKeyword,
                 Foreground = GetBrush((string)settingsSvc.Get(UiStyles.CodeKeywordColor, defCodeKwStyle.ForeColor)),
-                Font = GetFont((string)settingsSvc.Get(UiStyles.CodeKeywordFont, defCodeStyle))
+                Font = GetFont((string)settingsSvc.Get(UiStyles.CodeKeywordFont, defCodeStyle.FontName))
             };
             AddStyle(codeKwStyle);
 

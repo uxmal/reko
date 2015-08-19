@@ -213,7 +213,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             Lex("do {__noop(TagBase);} while((0,0));");
             var stat = parser.Parse_Stat();
             var sExp =
-                "(do \r\n" +
+                "(do " + Environment.NewLine +
                 "(((__noop TagBase)))) " +
                 "(Comma 0 0))";
             Assert.AreEqual(sExp, stat.ToString());
