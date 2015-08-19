@@ -174,6 +174,5 @@ namespace Reko.ImageLoaders.BinHex
                 throw FormatError();
             return (ushort)n;
         }
-
     }
 }

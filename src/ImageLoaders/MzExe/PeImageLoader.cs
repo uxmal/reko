@@ -406,9 +406,9 @@ namespace Reko.ImageLoaders.MzExe
             case 0xA:
             break;
 			default:
-                var dc = Services.RequireService<DecompilerEventListener>();
-                dc.Warn(
-                    dc.CreateAddressNavigator(program, Address.Ptr32((uint)offset)),
+                var dcSvc = Services.RequireService<DecompilerEventListener>();
+                dcSvc.Warn(
+                    dcSvc.CreateAddressNavigator(program, Address.Ptr32(offset)),
                     string.Format(
                         "Unsupported PE fixup type: {0:X}",
                         fixup >> 12));
