@@ -87,7 +87,12 @@ namespace Reko.Arch.Arm
                 else 
                 {
                     WriteImmediateValue(op.ImmediateValue.Value, writer);
-                }return;
+                    if (op.Shifter != null)
+                    {
+                        this.WriteShift(op, writer);
+                    }
+                }
+                return;
             }
             throw new NotImplementedException(op.Type.ToString());
         }
@@ -150,7 +155,6 @@ namespace Reko.Arch.Arm
         {
             writer.Write(",");
             writer.WriteOpcode(op);
-            writer.Write(" #");
             WriteImmediateValue(value, writer);
         }
     }

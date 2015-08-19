@@ -234,6 +234,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_strb_r5_r9_post_r1_lsr_3_writeback()
         {
             var instr = DisassembleBits("1110 01 110110 1001 0101 00001 000 0001");
+            instr = Disassemble32(0xE7695081);
             Assert.AreEqual("strb\tr5,[r9,-r1,lsl #1]!", instr.ToString());
         }
 
@@ -247,7 +248,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_ldrble_r5_r7_neg_r1()
         {
-            var instr = Disassemble32(0xD7D75001);
+            var instr = Disassemble32(0xD7575001);
             Assert.AreEqual("ldrble\tr5,[r7,-r1]", instr.ToString());
         }
 
@@ -303,6 +304,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_ldmia_2()
+        {
+            var instr = Disassemble32(0xE8BB000A);
+            Assert.AreEqual("ldm\tfp!,{r1,r3}", instr.ToString());
+        }
+
+
+        [Test]
         public void ArmDasm_blx()
         {
             var instr = Disassemble32(0xFB000000);
@@ -320,7 +329,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stm()
         {
             var instr = Disassemble32(0xE92CCFF3);
-            Assert.AreEqual("stmdb\tip!,{r0,r1,r4-fp,lr,pc}", instr.ToString());
+            Assert.AreEqual("stmdb\tip!,{r0-r1,r4-fp,lr-pc}", instr.ToString());
         }
 
         [Test]
@@ -384,14 +393,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             var instr = Disassemble32(0xE4D43001); 
             Assert.AreEqual("ldrb\tr3,[r4],#1", instr.ToString());
-        }
-
-        [Test]
-        [Ignore("This is an invalid operation")]
-        public void ArmDasm_strdeq()
-        {
-            var instr = Disassemble32(0x00EB0FFC);
-            Assert.AreEqual("strdeq\tr0,[fp],#&FC", instr.ToString());
         }
     }
 }

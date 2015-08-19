@@ -189,25 +189,22 @@ namespace Reko.Arch.Arm
 
         private void RewriteStm()
         {
-            throw new NotImplementedException();
-#if NYI
-            var dst = frame.EnsureRegister(((RegisterOperand) Dst).Register);
-            var range = (RegisterRangeOperand) Src1;
+            var dst = this.Operand(Dst);
+            var range = instr.ArchitectureDetail.Operands.Skip(1);
             int offset = 0;
-            foreach (var r in range.GetRegisters())
+            foreach (var r in range)
             {
                 Expression ea = offset != 0
                     ? emitter.ISub(dst, offset)
                     : (Expression) dst;
-                var srcReg = frame.EnsureRegister(arch.GetRegister(r));
+                var srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
                 emitter.Assign(emitter.LoadDw(ea), srcReg);
                 offset += srcReg.DataType.Size;
             }
-            if (offset != 0 && instr.Update)
+            if (offset != 0 && instr.ArchitectureDetail.WriteBack)
             {
                 emitter.Assign(dst, emitter.ISub(dst, offset));
             }
-#endif
         }
 
         private void RewriteStmib()

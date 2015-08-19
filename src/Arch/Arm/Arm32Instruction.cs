@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.Arm
@@ -83,11 +84,8 @@ namespace Reko.Arch.Arm
             if (ops.Length < 1)
                 return;
             writer.Tab();
-            if (IsRegisterSetInstruction())
-            {
-                WriteRegisterSet(writer);
+            if (WriteRegisterSetInstruction(writer))
                 return;
-            }
             Write(ops[0], writer);
             if (ops.Length < 2)
                 return;
@@ -103,31 +101,66 @@ namespace Reko.Arch.Arm
             Write(ops[3], writer);
         }
 
-        private void WriteRegisterSet(MachineInstructionWriter writer)
+        private bool WriteRegisterSetInstruction(MachineInstructionWriter writer)
         {
-            writer.Write("{");
-            var sep = "";
-            foreach (var op in instruction.ArchitectureDetail.Operands)
-            {
-                writer.Write(sep);
-                writer.Write(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
-                sep = ",";
-            }
-            writer.Write("}");
-        }
-
-        private bool IsRegisterSetInstruction()
-        {
+            IEnumerable<ArmInstructionOperand> ops = 
+                instruction.ArchitectureDetail.Operands;
             switch (instruction.Id)
             {
             case Opcode.POP:
             case Opcode.PUSH:
-            case Opcode.STM:
+                break;
             case Opcode.LDM:
-                return true;
+            case Opcode.STM:
+            case Opcode.STMDB:
+                Write(ops.First(), writer);
+                if (instruction.ArchitectureDetail.WriteBack)
+                    writer.Write("!");
+                ops = ops.Skip(1);
+                writer.Write(",");
+                break;
             default:
                 return false;
             }
+
+            writer.Write("{");
+            var sep = "";
+            RegisterStorage regPrev = null;
+            RegisterStorage reg = null;
+            foreach (var op in ops)
+            {
+                reg = A32Registers.RegisterByCapstoneID[op.RegisterValue.Value];
+                if (regPrev == null)
+                {
+                    writer.Write(sep);
+                    writer.Write(reg.Name);
+                    sep = ",";
+                }
+                else if (regPrev.Number + 1 < reg.Number)
+                {
+                    if (sep == "-")
+                    {
+                        writer.Write(sep);
+                        writer.Write(regPrev.Name);
+                        sep = ",";
+                    }
+                    writer.Write(sep);
+                    writer.Write(reg.Name);
+                    sep = ",";
+                }
+                else
+                {
+                    sep = "-";
+                }
+                regPrev = reg;
+            }
+            if (sep == "-")
+            {
+                writer.Write("-");
+                writer.Write(reg.Name);
+            }
+            writer.Write("}");
+            return true;
         }
 
         public void Write(ArmInstructionOperand op, MachineInstructionWriter writer)
