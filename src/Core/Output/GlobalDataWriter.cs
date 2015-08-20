@@ -49,7 +49,7 @@ namespace Reko.Core.Output
         {
             this.codeFormatter = new CodeFormatter(formatter);
             var tw = new TypeReferenceFormatter(formatter, true);
-            this.globals = (StructureType)((EquivalenceClass) ((Pointer)program.Globals.TypeVariable.DataType).Pointee).DataType;
+            this.globals = (StructureType)(((Pointer)program.Globals.TypeVariable.DataType).Pointee);
             foreach (var field in globals.Fields)
             {
                 var name = string.Format("g_{0:X}", field.Name);

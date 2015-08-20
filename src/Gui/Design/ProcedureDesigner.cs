@@ -173,7 +173,11 @@ namespace Reko.Gui.Design
 
         private void SetAssumedRegisterValues(Address Address, Dictionary<RegisterStorage, string> dictionary)
         {
-            userProc = program.EnsureUserProcedure(this.Address, procedure.Name);
+            userProc = program.EnsureUserProcedure(
+                this.Address,
+                procedure != null
+                    ? procedure.Name
+                    : userProc.Name);
             userProc.Assume = dictionary
                 .Select(de => new Core.Serialization.RegisterValue_v2
                 {

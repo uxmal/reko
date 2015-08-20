@@ -66,7 +66,7 @@ namespace Reko.Gui.Windows.Forms
             RegisterStorage reg;
             if (!dlg.Architecture.TryGetRegister((string)oRegName, out reg))
                 return;
-            var pattern = string.Format(@"\*|([0-9a-f]{0}{1}{2})",
+            var pattern = string.Format(@"\*|([0-9a-f]{0}1,{1}{2})",
                 "{",
                 reg.DataType.Size * 2,
                 "}");
