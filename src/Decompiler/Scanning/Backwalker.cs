@@ -137,7 +137,16 @@ namespace Reko.Scanning
                         }
                         if (binSrc.Operator is IMulOperator && immSrc != null)
                         {
-                            Operations.Add(new BackwalkOperation(BackwalkOperator.mul, immSrc.ToInt32()));
+                            var m = immSrc.ToInt32();
+                            Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
+                            Stride *= m;
+                            return true;
+                        }
+                        if (binSrc.Operator is ShlOperator && immSrc != null)
+                        {
+                            var m = 1 << immSrc.ToInt32();
+                            Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
+                            Stride *= m;
                             return true;
                         }
                     }
@@ -228,10 +237,18 @@ namespace Reko.Scanning
             if (bra != null)
             {
                 var cond = bra.Condition as TestCondition;
-                if (cond != null && cond.ConditionCode == ConditionCode.UGT)
+                if (cond != null)
                 {
-                    Operations.Add(new BackwalkBranch(ConditionCode.UGT));
-                    UsedFlagIdentifier = (Identifier) cond.Expression;
+                    if (cond.ConditionCode == ConditionCode.UGT)
+                    {
+                        Operations.Add(new BackwalkBranch(ConditionCode.UGT));
+                        UsedFlagIdentifier = (Identifier)cond.Expression;
+                    }
+                    else if (cond.ConditionCode == ConditionCode.ULE)
+                    {
+                        Operations.Add(new BackwalkBranch(ConditionCode.ULE));
+                        UsedFlagIdentifier = (Identifier)cond.Expression;
+                    }
                 }
                 return true;
             }
