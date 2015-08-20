@@ -121,7 +121,8 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaReadFile()
+        [Ignore("scanning-development")]
+        public void DfaReadFile()
 		{
 			RunFileTest("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");
 		}
@@ -169,7 +170,8 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaReg00010()
+        [Ignore("scanning-development")]
+        public void DfaReg00010()
 		{
 			RunFileTest("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
 		}
@@ -205,6 +207,14 @@ done:
         public void DfaManyIncrements()
         {
             RunFileTest(new ManyIncrements(), "Analysis/DfaManyIncrements.txt");
+        }
+
+        [Test]
+        [Ignore("scanning-development")]
+        public void DfaReg00001()
+        {
+            var prog = RewriteCodeFragment32(UnitTests.Fragments.Regressions.Reg00001.Text);
+            SaveRunOutput(prog, RunTest, "Analysis/DfaReg00001.txt");
         }
 
 		protected override void RunTest(Program prog, TextWriter writer)

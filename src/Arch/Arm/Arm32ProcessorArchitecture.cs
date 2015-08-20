@@ -18,25 +18,25 @@
  */
 #endregion
 
+using Gee.External.Capstone;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Serialization;
-using System.Globalization;
-using Reko.Core.Operators;
 
 namespace Reko.Arch.Arm
 {
-    public class ArmProcessorArchitecture : IProcessorArchitecture
+    public class Arm32ProcessorArchitecture : IProcessorArchitecture
     {
-        public ArmProcessorArchitecture()
+        public Arm32ProcessorArchitecture()
         {
         }
 
@@ -44,8 +44,27 @@ namespace Reko.Arch.Arm
 
         public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            return new ArmDisassembler(this, imageReader);
-            //return new ArmDisassembler2(this, imageReader);
+            return new Arm32Disassembler(this, imageReader);
+        }
+
+        public Frame CreateFrame()
+        {
+            return new Frame(FramePointerType);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
         }
 
         public ProcessorState CreateProcessorState()
@@ -80,22 +99,6 @@ namespace Reko.Arch.Arm
                         yield return Address.Ptr32(linAddrCall);
                 }
             }
-        }
-
-
-        public Frame CreateFrame()
-        {
-            return new Frame(FramePointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
         }
 
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)

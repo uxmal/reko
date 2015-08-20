@@ -39,27 +39,12 @@ namespace Reko.Arch.Arm
             return new AArch64Disassembler(imageReader);
         }
 
-        public ProcessorState CreateProcessorState()
-        {
-            throw new NotImplementedException();
-        }
-
-        public BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public Frame CreateFrame()
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Frame CreateFrame()
         {
             throw new NotImplementedException();
         }
@@ -74,7 +59,28 @@ namespace Reko.Arch.Arm
             return new LeImageReader(image, offset);
         }
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public ProcessorState CreateProcessorState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public BitSet CreateRegisterBitset()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();
         }

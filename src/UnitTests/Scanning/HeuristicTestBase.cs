@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Scanning
             prog = new Program
             {
                 Image = imag,
-                ImageMap = imag.CreateImageMap()
+                ImageMap = imag.CreateImageMap(),
             };
         }
 
@@ -93,6 +93,14 @@ namespace Reko.UnitTests.Scanning
         protected void Given_x86_32()
         {
             prog.Architecture = new X86ArchitectureFlat32();
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
+            prog.Platform.Heuristics.ProcedurePrologs = new BytePattern[] {
+                new BytePattern
+                {   
+                    Bytes = new byte[] {0x55, 0x8B, 0xEC },
+                    Mask = new byte[] { 0xFF, 0xFF, 0xff }
+                }
+            };
         }
 
         internal void Given_x86_16()

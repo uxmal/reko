@@ -149,5 +149,25 @@ namespace Reko.UnitTests.Analysis
             Assignment ass = alias.CreateAliasInstruction(argOff, argPtr);
             Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0, 16) (alias)", ass.ToString());
         }
+
+        [Test]
+        [Ignore("scanning-development")]
+        public void AliasFlags()
+        {
+            var sExp = "@@@";
+            RunStringTest(sExp, m =>
+            {
+                var scz = m.Frame.EnsureFlagGroup(7, "SZ", PrimitiveType.Byte);
+                var cz = m.Frame.EnsureFlagGroup(3, "CZ", PrimitiveType.Byte);
+                var c = m.Frame.EnsureFlagGroup(1, "C", PrimitiveType.Bool);
+                var al = m.Reg8("al");
+                var esi = m.Reg32("esi");
+                m.Assign(scz, m.Cond(m.And(esi, esi)));
+                m.Assign(c, Constant.False());
+                m.Emit(new AliasAssignment(cz, c));
+                m.Assign(al, m.Test(ConditionCode.ULE, cz));
+                m.Return();
+            });
+        }
     }
 }

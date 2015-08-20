@@ -49,6 +49,11 @@ namespace Reko.Arch.M68k
             return CreateDisassembler(rdr);
         }
 
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new M68kState(this);

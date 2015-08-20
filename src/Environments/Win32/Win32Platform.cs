@@ -42,6 +42,14 @@ namespace Reko.Environments.Win32
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
+            //$REVIEW: should probably be loaded from configuration.
+            Heuristics.ProcedurePrologs = new BytePattern[] {
+                new BytePattern
+                {
+                    Bytes = new byte[]{ 0x55, 0x8B, 0xEC },
+                    Mask =  new byte[]{ 0xFF, 0xFF, 0xFF }
+                }
+            };
             int3svc = new SystemService
             {
                 SyscallInfo = new SyscallInfo
@@ -70,6 +78,17 @@ namespace Reko.Environments.Win32
                     Terminates = true
                 }
             };
+        }
+
+        /// <summary>
+        /// Some Win32 platforms (I'm looking at you ARM Thumb) will use addresses
+        /// that are offset by 1. 
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>Adjusted address</returns>
+        public virtual Address AdjustProcedureAddress(Address addr)
+        {
+            return addr;
         }
 
         public override BitSet CreateImplicitArgumentRegisters()

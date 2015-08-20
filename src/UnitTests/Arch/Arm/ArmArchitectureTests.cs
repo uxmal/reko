@@ -30,12 +30,12 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public class ArmArchitectureTests
     {
-        private ArmProcessorArchitecture arch;
+        private Arm32ProcessorArchitecture arch;
 
         [Test]
         public void ArmArch_GetPltEntry()
         {
-            this.arch = new ArmProcessorArchitecture();
+            this.arch = new Arm32ProcessorArchitecture();
         }
     }
 }

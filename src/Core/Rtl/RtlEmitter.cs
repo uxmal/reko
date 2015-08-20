@@ -94,6 +94,11 @@ namespace Reko.Core.Rtl
             return this;
         }
 
+        public void Emit(RtlInstruction instr)
+        {
+            instrs.Add(instr); 
+        }
+
         /// <summary>
         /// Standard goto, for architectures where there are no delay slots.
         /// </summary>
@@ -156,6 +161,5 @@ namespace Reko.Core.Rtl
             instrs.Add(new RtlIf(test, rtl));
             return this;
         }
-
     }
 }

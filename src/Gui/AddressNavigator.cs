@@ -25,10 +25,6 @@ using System.Text;
 
 namespace Reko.Gui
 {
-    /// <summary>
-    /// When items of this kind are clicked on, it will take you to the
-    /// Low Level view to display the contents of the memory at that address.
-    /// </summary>
     public class AddressNavigator : ICodeLocation
     {
         private IServiceProvider sp;

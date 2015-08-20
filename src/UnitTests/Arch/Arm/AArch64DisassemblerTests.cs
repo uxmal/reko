@@ -53,14 +53,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void Arm64_b_label()
         {
             var instr = DisassembleBits("00010111 11111111 11111111 00000000");
-            Assert.AreEqual("b\t$00000000000FFC04", instr.ToString());
+            Assert.AreEqual("b\t$00000000000FFC00", instr.ToString());
         }
 
         [Test]
         public void Arm64_bl_label()
         {
             var instr = DisassembleBits("10010111 11111111 11111111 00000000");
-            Assert.AreEqual("bl\t$00000000000FFC04", instr.ToString());
+            Assert.AreEqual("bl\t$00000000000FFC00", instr.ToString());
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void Arm64_add_Wn_imm()
         {
             var instr = DisassembleBits("000 10001 01 011111111111 10001 10011");
-            Assert.AreEqual("add\tw19,w17,#&7FF,lsl #&C", instr.ToString());
+            Assert.AreEqual("add\tw19,w17,#&7FF,lsl#&C", instr.ToString());
         }
 
         [Test]
@@ -109,14 +109,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void Arm64_and_Xn_imm()
         {
             var instr = DisassembleWord(0x920F3041);
-            Assert.AreEqual("and\tx1,x2,#&3FFE00003FFE0000", instr.ToString());
+            Assert.AreEqual("and\tx1,x2,#&3FFE0000", instr.ToString());
         }
 
         [Test]
         public void Arm64_ands_Xn_imm()
         {
             var instr = DisassembleBits("111 100100 0 010101 010101 00100 00111");
-            Assert.AreEqual("ands\tx7,x4,#&FFFFF801FFFFF801", instr.ToString());
+            Assert.AreEqual("ands\tx7,x4,#&FFFFFFFFFFFFF801", instr.ToString());
         }
 
         [Test]

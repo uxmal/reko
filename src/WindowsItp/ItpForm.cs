@@ -370,7 +370,7 @@ namespace Reko.WindowsItp
             var peLdr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); 
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.Load(addr);
-            var rr = peLdr.Relocate(addr);
+            var rr = peLdr.Relocate(program, addr);
             var win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
             var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
@@ -391,7 +391,7 @@ namespace Reko.WindowsItp
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
             var program = ldr.Load(addr);
-            var rr = ldr.Relocate(addr);
+            var rr = ldr.Relocate(program, addr);
         }
     }
 }

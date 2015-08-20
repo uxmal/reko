@@ -96,7 +96,6 @@ namespace Reko.Assemblers.Pdp11
                 lexer.Expect(TokenType.RParen);
                 if (lexer.PeekAndDiscard(TokenType.Plus))
                 {
-                    lexer.Expect(TokenType.Plus);
                     return new ParsedOperand
                     {
                         Type = AddressMode.AutoIncr,

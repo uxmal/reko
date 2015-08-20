@@ -72,8 +72,8 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "2|L--|r1 = r1 + 0x0002",
                 "3|L--|r0 = r0 ^ v3",
                 "4|L--|NZ = cond(r0)",
-                "5|L--|C = false",
-                "6|L--|V = false");
+                "5|L--|V = false",
+                "6|L--|C = false");
         }
 
         [Test]

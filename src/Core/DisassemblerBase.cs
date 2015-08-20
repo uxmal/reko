@@ -29,7 +29,7 @@ namespace Reko.Core
     /// A disassembler can be considered an enumerator of disassembled instructions.
     /// </summary>
     /// <typeparam name="TInstr"></typeparam>
-    public abstract class DisassemblerBase<TInstr> : IEnumerable<TInstr>
+    public abstract class DisassemblerBase<TInstr> : IDisposable, IEnumerable<TInstr>
     {
         public IEnumerator<TInstr> GetEnumerator()
         {
@@ -48,5 +48,21 @@ namespace Reko.Core
         }
 
         public abstract TInstr DisassembleInstruction();
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~DisassemblerBase()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+
+        }
     }
 }

@@ -246,12 +246,14 @@
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
     <Compile Include="Scanning\Backwalker.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
+    <Compile Include="Scanning\CommonPatternFinder.cs" />
     <Compile Include="Scanning\Dfa\DfaBuilder.cs" />
     <Compile Include="Scanning\Dfa\PatternParser.cs" />
     <Compile Include="Scanning\Dfa\State.cs" />
     <Compile Include="Scanning\Dfa\TreeNode.cs" />
     <Compile Include="Scanning\Dfa\Automaton.cs" />
     <Compile Include="Scanning\HeuristicBlock.cs" />
+    <Compile Include="Scanning\HeuristicDisassembler.cs" />
     <Compile Include="Scanning\HeuristicProcedure.cs" />
     <Compile Include="Scanning\HeuristicProcedureScanner.cs" />
     <Compile Include="Scanning\IdentifierReplacer.cs" />
@@ -273,7 +275,7 @@
     <Compile Include="Scanning\HeuristicScanner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scanning\InstructionTrie.cs">
+    <Compile Include="Scanning\Trie.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scanning\Regexp.cs">
@@ -323,6 +325,7 @@
     <Compile Include="Structure\Schwartz\ProcedureStructurer.cs" />
     <Compile Include="Structure\Schwartz\Region.cs" />
     <Compile Include="Structure\Schwartz\RegionFactory.cs" />
+    <Compile Include="Structure\Schwartz\ReverseGraph.cs" />
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>

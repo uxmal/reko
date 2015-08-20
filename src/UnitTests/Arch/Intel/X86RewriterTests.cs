@@ -227,6 +227,12 @@ namespace Reko.UnitTests.Arch.Intel
             return new X86Rewriter(arch32, host, state, new LeImageReader(image, 0), new Frame(arch32.WordWidth));
         }
 
+        private X86Rewriter CreateRewriter64(byte[] bytes)
+        {
+            state = new X86State(arch64);
+            return new X86Rewriter(arch64, host, state, new LeImageReader(image, 0), new Frame(arch64.WordWidth));
+        }
+
         [Test]
         public void X86Rw_MovStackArgument()
         {
@@ -1289,10 +1295,27 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86rw_64_sub_immediate_dword()
         {
             Run64bitTest(0x48, 0x81, 0xEC, 0x08, 0x05, 0x00, 0x00); // "sub\trsp,+00000508", 
-           AssertCode(
-                "0|0000000140000000(7): 2 instructions",
-                "1|L--|rsp = rsp - 1288",
-                "2|L--|SCZO = cond(rsp)");
+            AssertCode(
+                 "0|0000000140000000(7): 2 instructions",
+                 "1|L--|rsp = rsp - 1288",
+                 "2|L--|SCZO = cond(rsp)");
+        }
+
+        [Test]
+        [Ignore("Something fishy with REP")]
+        public void X86rw_64_repne()
+        {
+            Run64bitTest(0xF3, 0x48, 0xA5);   // "rep\rmovsd"
+            AssertCode(
+                 "0|0000000140000000(3): 7 instructions",
+                 "1|T--|if (rcx == 0x0000000000000000) branch 0000000140000001",
+                 "2|L--|v3 = Mem0[rsi:word64]",
+                 "3|L--|Mem0[rdi:word64] = v3",
+                 "4|L--|rsi = rsi + 0x0000000000000008",
+                 "5|L--|rdi = rdi + 0x0000000000000008",
+                 "6|L--|rcx = rcx - 0x0000000000000001",
+                 "7|T--|goto 0000000140000000");
+
         }
     }
 }

@@ -52,6 +52,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -81,6 +82,7 @@ test_exit:
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -132,6 +134,7 @@ test_exit:
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void Dfa2_CallProc()
         {
             pb = new ProgramBuilder();

@@ -288,7 +288,8 @@ namespace Reko.Analysis
 
         public bool VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
-            throw new NotImplementedException();
+            gotoInstruction.Target.Accept(expVisitor);
+            return true;
         }
 
         public bool VisitPhiAssignment(PhiAssignment phi)

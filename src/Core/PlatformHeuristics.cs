@@ -23,25 +23,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Arm
+namespace Reko.Core
 {
-    public enum Condition : byte
+    public class PlatformHeuristics
     {
-        eq,
-        ne,
-        cs,
-        cc,
-        mi,
-        pl,
-        vs,
-        vc,
-        hi,
-        ls,
-        ge,
-        lt,
-        gt,
-        le,
-        al,
-        nv,
+        public BytePattern[] ProcedurePrologs;
+    }
+
+    public class BytePattern
+    {
+        public byte[] Bytes;
+        public byte[] Mask;
     }
 }

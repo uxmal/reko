@@ -100,6 +100,14 @@ namespace Reko.Core
         ImageReader CreateImageReader(LoadedImage img, ulong off);
 
         /// <summary>
+        /// Creates a comparer that compares instructions for equality. Normalization means
+        /// some attributes of the instruction are trated as wildcards.
+        /// </summary>
+        /// <param name="norm"></param>
+        /// <returns></returns>
+        IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
+
+        /// <summary>
         /// Creates a procedure serializer that understands the calling conventions used on this
         /// processor.
         /// </summary>
@@ -133,5 +141,17 @@ namespace Reko.Core
         bool TryParseAddress(string txtAddr, out Address addr);
 
         Address MakeAddressFromConstant(Constant c);
+    }
+
+    /// <summary>
+    /// Normalize enumeration controls the operation of instruction comparer. 
+    /// </summary>
+    [Flags]
+    public enum Normalize
+    {
+        Nothing,        // Match identically
+        Constants,      // all constants treated as wildcards
+        Registers,      // all registers treated as wildcards.
+
     }
 }

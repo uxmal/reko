@@ -155,7 +155,8 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void RlTermination()
+        [Ignore("scanning-development")]
+        public void RlTermination()
 		{
 			RunFileTest("Fragments/multiple/termination.asm", "Fragments/multiple/termination.xml", "Analysis/RlTermination.txt");
 		}
@@ -191,6 +192,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void RlReg00015()
         {
             RunFileTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");

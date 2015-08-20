@@ -77,6 +77,6 @@ namespace Reko.Core
         /// </summary>
         /// <param name="addrLoad">The address at which the program image is loaded.</param>
         /// <returns></returns>
-		public abstract RelocationResults Relocate(Address addrLoad);
+		public abstract RelocationResults Relocate(Program program, Address addrLoad);
     }
 }

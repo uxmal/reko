@@ -356,11 +356,11 @@ namespace Reko.UnitTests.Gui.Windows
                 "<node " +
                     "text=\"foo.exe\" " +
                     "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
-                    "tag=\"Program\">" +
+                    "tag=\"ProgramDesigner\">" +
                     "<node " + 
                         "text=\"Image base\" " +
                         "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
-                        "tag=\"ImageMapSegment\" />" +
+                        "tag=\"ImageMapSegmentNodeDesigner\" />" +
                 "</node>" +
                 "</root>");
         }
@@ -382,8 +382,8 @@ namespace Reko.UnitTests.Gui.Windows
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
-                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"Program\">" +
-                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegment\" />" +
+                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"ProgramDesigner\">" +
+                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegmentNodeDesigner\" />" +
                  "</node>" +
                  "</root>");
             mr.VerifyAll();
@@ -424,11 +424,11 @@ namespace Reko.UnitTests.Gui.Windows
                 "<node " +
                     "text=\"foo.exe\" " +
                     "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
-                    "tag=\"Program\">" +
+                    "tag=\"ProgramDesigner\">" +
                     "<node " +
                         "text=\"Image base\" " +
                         "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
-                        "tag=\"ImageMapSegment\">" +
+                        "tag=\"ImageMapSegmentNodeDesigner\">" +
                         "<node " +
                             "text=\"MyFoo\" " +
                             "tip=\"12340500\" " +

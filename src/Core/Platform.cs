@@ -45,12 +45,14 @@ namespace Reko.Core
         {
             this.Services = services;
             this.Architecture = arch;
+            this.Heuristics = new PlatformHeuristics();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
         public TypeLibrary[] TypeLibs { get; private set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
+        public PlatformHeuristics Heuristics { get; private set; }
 
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
@@ -165,7 +167,8 @@ namespace Reko.Core
         {
             return null;
         }
-   }
+
+    }
 
     /// <summary>
     /// The default platform is used when a specific platform cannot be determind.

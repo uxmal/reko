@@ -89,11 +89,6 @@ namespace Reko.Arch.X86
             return mode.CreateDisassembler(imageReader);
         }
 
-		IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
-		{
-            return CreateDisassembler(imageReader);
-		}
-
         public virtual Frame CreateFrame()
         {
             return new Frame(FramePointerType);
@@ -108,6 +103,16 @@ namespace Reko.Arch.X86
         {
             return new LeImageReader(image, offset);
         }
+
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            return new X86InstructionComparer(norm);
+        }
+
+		IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
+		{
+            return CreateDisassembler(imageReader);
+		}
 
         public virtual BitSet CreateRegisterBitset()
 		{

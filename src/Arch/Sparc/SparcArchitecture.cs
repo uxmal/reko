@@ -50,6 +50,26 @@ namespace Reko.Arch.Sparc
             return new SparcDisassembler(this, imageReader);
         }
 
+        public Frame CreateFrame()
+        {
+            return new Frame(pointerType);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new BeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new BeImageReader(image, offset);
+        }
+
+        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new SparcProcessorState(this);
@@ -68,21 +88,6 @@ namespace Reko.Arch.Sparc
         public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
-        }
-
-        public Frame CreateFrame()
-        {
-            return new Frame(pointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
         }
 
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)

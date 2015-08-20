@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Analysis
 			Expression e = m.Shl(m.Shl(id, 1), 4);
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 			e = e.Accept(vp);
-			Assert.AreEqual("id << 0x00000005", e.ToString());
+			Assert.AreEqual("id << 0x05", e.ToString());
 		}
 
 		[Test]

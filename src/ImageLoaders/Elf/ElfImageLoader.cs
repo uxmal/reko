@@ -94,7 +94,8 @@ namespace Reko.ImageLoaders.Elf
         private const ushort EM_ME16 = 59;          // Toyota ME16 processor 
         private const ushort EM_ST100 = 60;         // STMicroelectronics ST100 processor 
         private const ushort EM_TINYJ = 61;         // Advanced Logic Corp. TinyJ embedded processor family 
-        //private const ushort Reserved 62-65 Reserved for future use 
+        private const ushort EM_X86_64 = 62;        // AMD x86-64 architecture
+        //private const ushort Reserved 63-65 Reserved for future use 
         private const ushort EM_FX66 = 66;          // Siemens FX66 microcontroller 
         private const ushort EM_ST9PLUS = 67;       // STMicroelectronics ST9+ 8/16 bit microcontroller 
         private const ushort EM_ST7 = 68;           // STMicroelectronics ST7 8-bit microcontroller 
@@ -448,6 +449,7 @@ namespace Reko.ImageLoaders.Elf
             case EM_NONE: return null; // No machine
             case EM_SPARC: arch = "sparc"; break;
             case EM_386: arch = "x86-protected-32"; break;
+            case EM_X86_64: arch = "x86-protected-64"; break;
             case EM_68K: arch = "m68k"; break;
             case EM_PPC: arch = "ppc32"; break;
             case EM_PPC64: arch = "ppc64"; break;
@@ -593,12 +595,12 @@ namespace Reko.ImageLoaders.Elf
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             if (image == null)
                 throw new InvalidOperationException(); // No file loaded
-            List<EntryPoint> entryPoints = new List<EntryPoint>();
-            RelocationDictionary relocations = new RelocationDictionary();
+            var entryPoints = new List<EntryPoint>();
+            var relocations = new RelocationDictionary();
             var addrEntry = GetEntryPointAddress();
             if (addrEntry != null)
             {

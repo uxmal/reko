@@ -527,8 +527,9 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Tries to determine if the instruction at <paramref name="addr"/> is a trampoline
-        /// instruction. If so, we return a call to the imported function directly.
+        /// Tries to determine if the instruction at <paramref name="addr"/> is 
+        /// a trampoline instruction. If so, we return a call to the imported 
+        /// function directly.
         /// procedure.
         /// </summary>
         /// <remarks>
@@ -549,6 +550,15 @@ namespace Reko.Scanning
             return target;
         }
 
+        /// <summary>
+        /// If <paramref name="addrImportThunk"/> is the known address of an
+        /// import thunk / trampoline, return the imported function as an
+        /// ExternaProcedure. Otherwise, check to see if the call is an
+        /// intercepted call.
+        /// </summary>
+        /// <param name="addrImportThunk"></param>
+        /// <param name="addrInstruction">Used to display diagnostics.</param>
+        /// <returns></returns>
         public ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
             ImportReference impref;
@@ -629,17 +639,13 @@ namespace Reko.Scanning
             ProcessQueue();
         }
 
+        /// <summary>
+        /// Uses the HeuristicScanner to try to located code heuristically.
+        /// </summary>
         public void ScanImageHeuristically()
         {
             var heuristicScanner = new HeuristicScanner(program, this);
-            var ranges = heuristicScanner.FindUnscannedRanges();
-            foreach (var item in heuristicScanner.FindPossibleFunctions(ranges))
-            {
-                var hproc = heuristicScanner.DisassembleProcedure(item.Item1, item.Item2);
-                var hps = new HeuristicProcedureScanner(program, hproc);
-                hps.BlockConflictResolution();
-                // TODO: add all guessed code to image map -- clearly labelled.
-            }
+            heuristicScanner.ScanImageHeuristically();
         }
 
         [Conditional("DEBUG")]
@@ -717,4 +723,57 @@ namespace Reko.Scanning
             }
         }
     }
+
+    /*
+     * State:
+     *   regs:
+     *      abstr_value
+     *      reaching_defs
+     *   stack:
+     *   globals:
+     *   
+     * Scanner:
+     *   q = stack of known code addresses
+     *   while q
+     *      b = blockat(q.addr)
+     *      if (exists)
+     *          split(q.addr)
+     *      else 
+     *          b = new block(q.addr)
+     *      successors = process block(b)
+     *      enqueue(successors)
+     *      
+     *  process block(b)
+     *      while i = reader:
+     *          if i.addr inside (other block)
+     *              successors += other_block
+     *              return;
+     *          if i is assign
+     *              b.add(i)
+     *              state = eval(i, state)
+     *          if i is goto
+     *              if goto.label const
+     *                  succs += goto.label
+     *                  return
+     *              if (calltable (state))
+     *                  return
+     *              if state(goto.label) = continuation
+     *                  cur_fn.returns = true
+     *                  emit return
+     *                  return
+     *          if i is call
+     *              if (eval(target)  = { set of constants }
+     *                  emit call(target)
+     *                  callsite += [ set of constants ]
+     *                  foreach (target) 
+     *                      if (fn = functions.completed(target))
+     *                          if fn.returns
+     *                              
+     *                          
+     *                  if 
+     *         
+     *                  
+     *              
+     *          
+     */
 }

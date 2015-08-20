@@ -515,7 +515,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0x575a1838, // rlwinm  r26,r26,3,0,28 
                 "0|00100000(4): 1 instructions",
-                "1|L--|r26 = r26 << 0x00000003");
+                "1|L--|r26 = r26 << 0x03");
 
             AssertCode(0x7c03db96, // divwu   r0,r3,r27
                 "0|00100000(4): 1 instructions",
@@ -659,7 +659,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7ce03897, //"mulhw.\tr7,r0,r7");
                 "0|00100000(4): 2 instructions",
-                "1|L--|r7 = r0 * r7 >> 0x20",
+                "1|L--|r7 = r0 * r7 >> 0x00000020",
                 "2|L--|cr0 = cond(r7)");
         }
 
@@ -802,7 +802,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|r4 = r8 & 0x00000000FFFFFFFF");
             AssertCode(0x78840fe2, // rldicl  r4,r4,33,63	
                 "0|00100000(4): 1 instructions",
-                "1|L--|r4 = r4 << 0x00000021 & 0x00000001");
+                "1|L--|r4 = r4 << 0x21 & 0x00000001");
         }
 
         [Test]

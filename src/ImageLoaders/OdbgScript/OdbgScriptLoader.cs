@@ -71,7 +71,7 @@ namespace Reko.ImageLoaders.OdbgScript
             // the packed entry point.
             var pe = CreatePeImageLoader();
             var program = pe.Load(pe.PreferredBaseAddress);
-            var rr = pe.Relocate(pe.PreferredBaseAddress);
+            var rr = pe.Relocate(program, pe.PreferredBaseAddress);
             this.Image = program.Image;
             this.ImageMap = program.ImageMap;
             this.Architecture = (IntelArchitecture)program.Architecture;
@@ -100,7 +100,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return program;
         }
 
-        public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var eps = new List<EntryPoint>();
             if (OriginalEntryPoint != null)

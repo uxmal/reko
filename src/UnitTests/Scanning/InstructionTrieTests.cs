@@ -38,21 +38,21 @@ namespace Reko.UnitTests.Scanning
 		[Test]
 		public void Creation()
 		{
-			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
+			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
+			var trie = new Trie<MachineInstruction>(cmp);
 		}
 
 		[Test]
-		public void AddInstructions()
+		public void Trie_AddInstructions()
 		{
-			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
+            X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
+            var trie = new Trie<MachineInstruction>(cmp);
 			IntelInstruction inst = CreatePush(Registers.bp);
 			
-			trie.AddInstructions(new [] { inst });
+			trie.Add(new [] { inst });
 			Assert.AreEqual(trie.Count, 1);
 
-			trie.AddInstructions(new [] {
+			trie.Add(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });
 			Assert.AreEqual(trie.Count, 3);
@@ -62,14 +62,14 @@ namespace Reko.UnitTests.Scanning
 		/// Builds a trie with instrucion sequences, then generates subsequences of these and gets them scored.
 		/// </summary>
 		[Test]
-		public void ScoreInstructions()
+		public void Trie_ScoreInstructions()
 		{
-			IntelInstructionComparer cmp = new IntelInstructionComparer();
-			var trie = new InstructionTrie<IntelInstruction>(cmp, cmp);
-			trie.AddInstructions(new [] {
+			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
+			var trie = new Trie<IntelInstruction>(cmp);
+			trie.Add(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });
-			trie.AddInstructions(new [] {
+			trie.Add(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp),
 				CreatePush(Registers.si),

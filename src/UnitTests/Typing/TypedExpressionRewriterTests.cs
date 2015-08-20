@@ -160,6 +160,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerUnionIntReal()
         {
             ProgramBuilder mock = new ProgramBuilder();
@@ -168,6 +169,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerConstantUnion()
         {
             ProgramBuilder mock = new ProgramBuilder();
@@ -264,11 +266,13 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/TerReg00011.txt");
         }
 
+        [Ignore("scanning-development")]
         [Test]
         public void TerReg00012()
         {
@@ -368,6 +372,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerUnionConstants()
         {
             ProgramBuilder prog = new ProgramBuilder();
@@ -424,18 +429,21 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerReg00016()
         {
             RunHexTest("fragments/regressions/r00016.dchex", "Typing/TerReg00016.txt");
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerReg00017()
         {
             RunTest32("Fragments/regressions/r00017.asm", "Typing/TerReg00017.txt");
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerCallTable()
         {
             var pb = new ProgramBuilder();
@@ -444,6 +452,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerSegmentedCall()
         {
             var pb = new ProgramBuilder();
@@ -460,6 +469,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerStaggeredArrays()
         {
             ProgramBuilder prog = new ProgramBuilder();
@@ -505,6 +515,29 @@ namespace Reko.UnitTests.Typing
                     m.Store(m.Word32(0x1234), eax);
                 });
             RunTest(pm, "Typing/TerShortArray.txt");
+        }
+
+        [Test]
+        public void TerArray()
+        {
+            var pm = new ProgramBuilder();
+            pm.Add("proc1", m =>
+            {
+                var eax = m.Reg32("eax");
+                var ecx = m.Reg32("ecx");
+                var eax_2 = m.Reg32("eax_2");
+                m.Assign(
+                    eax_2,
+                    m.Cast(PrimitiveType.Int32,
+                    m.Load(PrimitiveType.Int16,
+                        m.IAdd(
+                            ecx,
+                            m.IAdd(
+                                m.IMul(eax, 2),
+                                100)))));
+                m.Store(m.Word32(0x010000), eax_2);
+            });
+            RunTest(pm, "Typing/TerArray.txt");
         }
     }
 

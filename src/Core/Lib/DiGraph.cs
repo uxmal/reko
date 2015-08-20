@@ -27,6 +27,10 @@ using System.Text;
 
 namespace Reko.Core.Lib
 {
+    /// <summary>
+    /// Simple implementation of DirectedGraph&lt;T&gt;. 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class DiGraph<T> : DirectedGraph<T>
     {
         private Dictionary<T, Node> nodes;

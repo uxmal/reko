@@ -80,7 +80,7 @@ namespace Reko.Arch.Pdp11
                 case Opcodes.xor:
                     src = RewriteSrc(instr.op1);
                     dst = RewriteDst(instr.op2, src, (s, d) => emitter.Xor(d, s));
-                    SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF, FlagM.VF);
+                    SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF| FlagM.VF, 0);
                     break;
                 }
                 yield return rtlCluster;

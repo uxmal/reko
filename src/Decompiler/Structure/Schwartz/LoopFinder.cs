@@ -86,10 +86,10 @@ namespace Reko.Structure.Schwartz
 
         /// <summary>
         /// Visits given node and, if the node is not entry, recursively
-        /// visits all its WHITE predecessors. All the visited nodes are
-        /// painted GRAY.
+        /// visits all its unvisited predecessors. All the visited nodes are
+        /// painted Gray.
         /// </summary>
-        /// <param name="node">Reference to a WHITE node.</param>
+        /// <param name="node">Reference to an unvisited node.</param>
         void BackwardVisit(T node)
         {
             Debug.Assert(node != null);
@@ -113,9 +113,9 @@ namespace Reko.Structure.Schwartz
 
         /// <summary>
         /// Visits given node and recursively visits all its GRAY successors.
-        /// All the visited nodes are painted BLACK.
+        /// All the visited nodes are painted Black.
         /// </summary>
-        /// <param name="node">Reference to a GRAY node.</param> 
+        /// <param name="node">Reference to a Gray node.</param> 
         void ForwardVisit(T node)
         {
             Debug.Assert(node != null);
