@@ -61,7 +61,7 @@ namespace Reko.Arch.M68k
         public static readonly RegisterStorage usp;
         public static readonly AddressRegister pc;
 
-        private static RegisterStorage[] regs;
+        internal static RegisterStorage[] regs;
         internal static int Max;
 
         static Registers()

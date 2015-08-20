@@ -159,8 +159,7 @@ namespace Reko.Arch.X86
 
         public static readonly RegisterStorage rip;
 
-
-        private static readonly RegisterStorage[] regs;
+        internal static readonly RegisterStorage[] All;
 
         static Registers()
         {
@@ -286,7 +285,7 @@ namespace Reko.Arch.X86
 
             rip = new RegisterStorage("rip", 23, PrimitiveType.Pointer64);
 
-            regs = new RegisterStorage[] {
+            All = new RegisterStorage[] {
 				eax,
 				ecx,
 				edx,
@@ -389,24 +388,24 @@ namespace Reko.Arch.X86
 
         public static RegisterStorage GetRegister(int i)
         {
-            return (0 <= i && i < regs.Length)
-                ? regs[i]
+            return (0 <= i && i < All.Length)
+                ? All[i]
                 : null;
         }
 
         public static RegisterStorage GetRegister(string name)
         {
-            for (int i = 0; i < regs.Length; ++i)
+            for (int i = 0; i < All.Length; ++i)
             {
-                if (regs[i] != null && String.Compare(regs[i].Name, name, true) == 0)
-                    return regs[i];
+                if (All[i] != null && String.Compare(All[i].Name, name, true) == 0)
+                    return All[i];
             }
             return RegisterStorage.None;
         }
 
         public static int Max
         {
-            get { return regs.Length; }
+            get { return All.Length; }
         }
     }
 }

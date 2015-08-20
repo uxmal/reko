@@ -240,6 +240,11 @@ namespace Reko.Arch.PowerPC
             return this.regs.Where(r => r.Name == name).SingleOrDefault();
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return regs.ToArray();
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();

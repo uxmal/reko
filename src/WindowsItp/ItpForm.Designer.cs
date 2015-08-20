@@ -43,6 +43,7 @@
             this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ollyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assumeRegistesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,7 +112,8 @@
             this.searchToolStripMenuItem,
             this.projectBrowserToolStripMenuItem,
             this.activationToolStripMenuItem,
-            this.preferencesToolStripMenuItem});
+            this.preferencesToolStripMenuItem,
+            this.assumeRegistesToolStripMenuItem});
             this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
             this.dialogsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.dialogsToolStripMenuItem.Text = "&Dialogs";
@@ -156,16 +158,23 @@
             // emulatorToolStripMenuItem
             // 
             this.emulatorToolStripMenuItem.Name = "emulatorToolStripMenuItem";
-            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.emulatorToolStripMenuItem.Text = "X86 &Emulator";
             this.emulatorToolStripMenuItem.Click += new System.EventHandler(this.emulatorToolStripMenuItem_Click);
             // 
             // ollyScriptToolStripMenuItem
             // 
             this.ollyScriptToolStripMenuItem.Name = "ollyScriptToolStripMenuItem";
-            this.ollyScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ollyScriptToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
             this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
+            // 
+            // assumeRegistesToolStripMenuItem
+            // 
+            this.assumeRegistesToolStripMenuItem.Name = "assumeRegistesToolStripMenuItem";
+            this.assumeRegistesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.assumeRegistesToolStripMenuItem.Text = "&Assume registers";
+            this.assumeRegistesToolStripMenuItem.Click += new System.EventHandler(this.assumeRegistesToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -200,6 +209,7 @@
         private System.Windows.Forms.ToolStripMenuItem loadingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem emulatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ollyScriptToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem assumeRegistesToolStripMenuItem;
     }
 }
 

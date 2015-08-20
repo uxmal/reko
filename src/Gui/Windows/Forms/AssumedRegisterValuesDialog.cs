@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
 * Copyright (C) 1999-2015 John Källén.
 *
@@ -19,20 +19,25 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Gui.Forms;
-using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
-namespace Reko.Gui
+namespace Reko.Gui.Windows.Forms
 {
-    public interface IDialogFactory
+    public partial class AssumedRegisterValuesDialog : Form, IAssumedRegisterValuesDialog
     {
-        IAssembleFileDialog CreateAssembleFileDialog();
-        IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
-        IAddressPromptDialog CreateAddressPromptDialog();
-        IMainForm CreateMainForm();
-        IOpenAsDialog CreateOpenAsDialog();
-        IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
-        ISearchDialog CreateSearchDialog();
-        IUserPreferencesDialog CreateUserPreferencesDialog();
+        public AssumedRegisterValuesDialog()
+        {
+            InitializeComponent();
+            new AssumedRegisterValuesInteractor().Attach(this);
+        }
+
+        public IProcessorArchitecture Architecture { get; set; }
+
+        public DataGridView RegisterGrid { get { return registerGrid; } }
+
+        public Dictionary<RegisterStorage, string> Values {get; set;}
     }
 }

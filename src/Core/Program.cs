@@ -95,6 +95,21 @@ namespace Reko.Core
 			return p;
 		}
 
+        public Serialization.Procedure_v1 EnsureUserProcedure(Address address, string name)
+        {
+            Serialization.Procedure_v1 up;
+            if (!UserProcedures.TryGetValue(address, out up))
+            {
+                up = new Serialization.Procedure_v1
+                {
+                    Address = address.ToString(),
+                    Name = name,
+                };
+                UserProcedures.Add(address, up);
+            }
+            return up;
+        }
+
         /// <summary>
         /// Represents a pointer to a structure that contains all the global variables of the program. 
         /// </summary>

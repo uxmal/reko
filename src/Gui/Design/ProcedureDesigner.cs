@@ -19,12 +19,14 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Procedure_v1 = Reko.Core.Serialization.Procedure_v1;
 
 namespace Reko.Gui.Design
@@ -77,11 +79,15 @@ namespace Reko.Gui.Design
                 switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
-                case CmdIds.ActionEditSignature:
                 case CmdIds.ViewFindWhatPointsHere:
+                case CmdIds.ActionEditSignature:
                 case CmdIds.EditRename:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
+                case CmdIds.ActionAssumeRegisterValues:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+
                 }
             }
             return false;
@@ -97,6 +103,9 @@ namespace Reko.Gui.Design
                     Services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);
                     return true;
                 case CmdIds.ActionEditSignature:
+                    return true;
+                case CmdIds.ActionAssumeRegisterValues:
+                    AssumeRegisterValues();
                     return true;
                 case CmdIds.ViewFindWhatPointsHere:
                     ViewWhatPointsHere();
@@ -129,6 +138,49 @@ namespace Reko.Gui.Design
 
         private void Rename()
         {
+        }
+
+        private void AssumeRegisterValues()
+        {
+            var dlgFactory = Services.RequireService<IDialogFactory>();
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            using (var dlg = dlgFactory.CreateAssumedRegisterValuesDialog(program.Architecture))
+            {
+                dlg.Values = GetAssumedRegisterValues(Address);
+                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                    return;
+                SetAssumedRegisterValues(Address, dlg.Values);
+                SetTreeNodeText();
+            }
+        }
+
+        private Dictionary<RegisterStorage, string> GetAssumedRegisterValues(Address Address)
+        {
+            Procedure_v1 up;
+            if (!program.UserProcedures.TryGetValue(this.Address, out up))
+                return new Dictionary<RegisterStorage, string>();
+            return up.Assume
+                .Select(ass => new
+                {
+                    Register = program.Architecture.GetRegister(ass.Register),
+                    Value = ass.Value
+                })
+                .Where(ass => ass.Register != null)
+                .ToDictionary(
+                    ass => ass.Register,
+                    ass => ass.Value);
+        }
+
+        private void SetAssumedRegisterValues(Address Address, Dictionary<RegisterStorage, string> dictionary)
+        {
+            userProc = program.EnsureUserProcedure(this.Address, procedure.Name);
+            userProc.Assume = dictionary
+                .Select(de => new Core.Serialization.RegisterValue_v2
+                {
+                    Register = de.Key.Name,
+                    Value = de.Value
+                })
+                .ToArray();
         }
 
         void tv_BeforeLabelEdit(object sender, System.Windows.Forms.NodeLabelEditEventArgs e)

@@ -120,6 +120,11 @@ namespace Reko.Arch.Arm
             return reg;
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return A32Registers.GpRegs.ToArray();
+        }
+
         public Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());

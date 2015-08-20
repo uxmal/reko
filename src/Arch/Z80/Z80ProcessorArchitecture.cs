@@ -94,6 +94,11 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return Registers.All;
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
@@ -229,11 +234,11 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage P = new RegisterStorage("P", 22, PrimitiveType.Bool);
         public static readonly RegisterStorage C = new RegisterStorage("C", 23, PrimitiveType.Bool);
 
-        private static RegisterStorage[] regs;
+        internal static RegisterStorage[] All;
 
         static Registers()
         {
-            regs = new RegisterStorage[] {
+            All = new RegisterStorage[] {
              b ,
              c ,
              d ,
@@ -267,7 +272,7 @@ namespace Reko.Arch.Z80
 
         internal static RegisterStorage GetRegister(int r)
         {
-            return regs[r];
+            return All[r];
         }
     }
 

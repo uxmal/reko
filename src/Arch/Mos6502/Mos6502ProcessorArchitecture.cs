@@ -95,6 +95,11 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return Registers.All;
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
@@ -178,16 +183,16 @@ namespace Reko.Arch.Mos6502
         public static readonly RegisterStorage I = new RegisterStorage("I", 8, PrimitiveType.Byte);
         public static readonly RegisterStorage D = new RegisterStorage("D", 9, PrimitiveType.Byte);
         
-        private static RegisterStorage[] regs;
+        internal static RegisterStorage[] All;
 
         public static RegisterStorage GetRegister(int reg)
         {
-            return regs[reg];
+            return All[reg];
         }
 
         static Registers()
         {
-            regs = new RegisterStorage[]
+            All = new RegisterStorage[]
             {
                 a,
                 x,

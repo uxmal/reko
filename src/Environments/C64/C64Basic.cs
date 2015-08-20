@@ -112,6 +112,11 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return new RegisterStorage[0];
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();

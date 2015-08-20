@@ -215,6 +215,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slActionMarkType = new CommandMenuItem("Mark _Type", new Guid(CmdSets.Reko), CmdIds.ActionMarkType);
             slActionMarkType.IsDynamic = false;
             
+            CommandMenuItem slActionAssumeRegisterValues = new CommandMenuItem("_Register values...", new Guid(CmdSets.Reko), CmdIds.ActionAssumeRegisterValues);
+            slActionAssumeRegisterValues.IsDynamic = false;
+            
             CommandMenuItem slToolsOptions = new CommandMenuItem("_Options", new Guid(CmdSets.Reko), CmdIds.ToolsOptions);
             slToolsOptions.IsDynamic = false;
             slGrpTools.Add(0, slToolsOptions);
@@ -287,8 +290,9 @@ namespace Reko.Gui.Windows.Forms
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			slGrpBrowser.Add(0, slEditProperties);
 			slGrpBrowserProc.Add(0, slViewGoToAddress);
-			slGrpBrowserProc.Add(0, slActionEditSignature);
 			slGrpBrowserProc.Add(0, slViewFindWhatPointsHere);
+			slGrpBrowserProc.Add(0, slActionEditSignature);
+			slGrpBrowserProc.Add(0, slActionAssumeRegisterValues);
 			slGrpAddressSearch.Add(0, slViewFindWhatPointsHere);
 			slGrpAddressSearch.Add(0, slActionMarkProcedure);
 			slGrpAddressSearch.Add(0, slActionScanHeuristically);

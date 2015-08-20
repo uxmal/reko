@@ -155,5 +155,22 @@ namespace Reko.Core.Serialization
         [XmlElement("decompile")]
         [DefaultValue(true)]
         public bool Decompile = true;
+
+        /// <summary>
+        /// The registers in Assume are assumed to have specific values. These
+        /// are considered oracular and will override anything Reko has deduced
+        /// through analyses.
+        /// </summary>
+        [XmlElement("assume")]
+        public RegisterValue_v2[] Assume;
+    }
+
+    public class RegisterValue_v2
+    {
+        [XmlAttribute("reg")]
+        public string Register;
+
+        [XmlAttribute("value")]
+        public string Value;
     }
 }

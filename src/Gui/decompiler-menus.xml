@@ -107,6 +107,7 @@
   <cmd id="ActionScanHeuristically" cmdSet="Reko" container="ActionScanHeuristically">Scan _heuristically</cmd>
   <cmd id="ActionEditSignature" cmdSet="Reko" container="ActionEditSignature">Edit _Signature...</cmd>
   <cmd id="ActionMarkType" cmdSet="Reko" container="ActionMarkType">Mark _Type</cmd>
+  <cmd id="ActionAssumeRegisterValues" cmdSet="Reko" container="ActionAssumeRegisterValues">_Register values...</cmd>
 
   <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options</cmd>
   
@@ -160,9 +161,10 @@
 
   <placement item="EditProperties" container="GrpBrowser" />
   <placement item="ViewGoToAddress" container="GrpBrowserProc"/>
-  <placement item="ActionEditSignature" container="GrpBrowserProc"/>
   <placement item="ViewFindWhatPointsHere" container="GrpBrowserProc" />
-
+  <placement item="ActionEditSignature" container="GrpBrowserProc"/>
+  <placement item="ActionAssumeRegisterValues" container="GrpBrowserProc" />
+  
   <placement item="ViewFindWhatPointsHere" container="GrpAddressSearch" />
   <placement item="ActionMarkProcedure" container="GrpAddressSearch"/>
   <placement item="ActionScanHeuristically" container="GrpAddressSearch"/>

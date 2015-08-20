@@ -95,6 +95,11 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return A64Registers.XRegs;
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();

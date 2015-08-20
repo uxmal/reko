@@ -105,6 +105,11 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException();
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();

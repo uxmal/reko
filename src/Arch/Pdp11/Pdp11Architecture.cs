@@ -142,6 +142,11 @@ namespace Reko.Arch.Pdp11
             return null;
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return regs;
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage result)
         {
             result = null;

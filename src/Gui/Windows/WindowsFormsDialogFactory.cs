@@ -47,6 +47,15 @@ namespace Reko.Gui.Windows
             };
         }
 
+        public IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(
+            IProcessorArchitecture arch)
+        {
+            return new AssumedRegisterValuesDialog
+            {
+                Architecture = arch,
+            };
+        }
+
         public IMainForm CreateMainForm()
         {
             return new MainForm();

@@ -393,5 +393,12 @@ namespace Reko.WindowsItp
             var program = ldr.Load(addr);
             var rr = ldr.Relocate(program, addr);
         }
+
+        private void assumeRegistesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dlg = new AssumedRegisterValuesDialog();
+            dlg.Architecture = new X86ArchitectureFlat64();
+            dlg.ShowDialog(this);
+        }
     }
 }

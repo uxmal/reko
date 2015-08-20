@@ -117,6 +117,7 @@ namespace Reko.Core
 
 		RegisterStorage GetRegister(int i);			        // Returns register corresponding to number i.
 		RegisterStorage GetRegister(string name);	        // Returns register whose name is 'name'
+        RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
@@ -141,6 +142,7 @@ namespace Reko.Core
         bool TryParseAddress(string txtAddr, out Address addr);
 
         Address MakeAddressFromConstant(Constant c);
+
     }
 
     /// <summary>

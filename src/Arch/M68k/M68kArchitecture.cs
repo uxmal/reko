@@ -103,6 +103,11 @@ namespace Reko.Arch.M68k
             return r;
         }
 
+        public RegisterStorage[] GetRegisters()
+        {
+            return Registers.regs;
+        }
+
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();

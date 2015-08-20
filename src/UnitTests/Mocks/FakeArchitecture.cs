@@ -133,12 +133,6 @@ namespace Reko.UnitTests.Mocks
             return null;
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage result)
-        {
-            result = null;
-            return false;
-        }
-
 		public RegisterStorage GetRegister(string s)
 		{
             if (s[0] == 'r')
@@ -149,6 +143,17 @@ namespace Reko.UnitTests.Mocks
             }
             return null;
 		}
+
+        public RegisterStorage[] GetRegisters()
+        {
+            return registers;
+        }
+
+        public bool TryGetRegister(string name, out RegisterStorage result)
+        {
+            result = null;
+            return false;
+        }
 
         public int InstructionBitSize { get { return 32; } }
 

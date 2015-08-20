@@ -69,7 +69,6 @@ namespace Reko.Arch.X86
 		{
 			this.mode = mode;
             this.flagGroups = new List<FlagGroupStorage>();
-		
 		}
 
 		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
@@ -198,6 +197,11 @@ namespace Reko.Arch.X86
 				throw new ArgumentException(string.Format("'{0}' is not a register name.", name));
 			return r;
 		}
+
+        public RegisterStorage[] GetRegisters()
+        {
+            return Registers.All.Where(a => a != null).ToArray();
+        }
 
         public bool TryGetRegister(string name, out RegisterStorage reg)
         {
