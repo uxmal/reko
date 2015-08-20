@@ -395,8 +395,8 @@ namespace Reko.Scanning
                 return OnAfterCall(sig, null);  //$TODO: make characteristics available
             }
 
-            var id = call.Target as Identifier;
-            if (id != null)
+            Identifier id; 
+            if (call.Target.As<Identifier>(out id))
             {
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
@@ -424,6 +424,7 @@ namespace Reko.Scanning
             {
                 return !EmitSystemServiceCall(syscall);
             }
+
             ProcessIndirectControlTransfer(ric.Address, call);
 
             var ic = new CallInstruction(call.Target, site);
@@ -607,7 +608,6 @@ namespace Reko.Scanning
                 }
             }
 
-            //$TODO: mark the vector
             ScanVectorTargets(xfer, vector);
 
             if (xfer is RtlGoto)
@@ -628,8 +628,12 @@ namespace Reko.Scanning
                 Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
-            program.ImageMap.AddItem(bw.VectorAddress,
-                new ImageMapVectorTable(xfer is RtlCall, vector.ToArray(), builder.TableByteSize));
+            program.ImageMap.AddItem(
+                bw.VectorAddress,
+                new ImageMapVectorTable(
+                    xfer is RtlCall,
+                    vector.ToArray(),
+                    builder.TableByteSize));
             return true;
         }
 
