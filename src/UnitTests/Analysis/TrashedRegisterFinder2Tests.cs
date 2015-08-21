@@ -234,7 +234,7 @@ Constants: cl:0x00
         [Test(Description="Tests propagation between caller and callee.")]
         public void TrfSubroutine_WithRegisterParameters()
         {
-            var sExp1 = "Preserved: r2\r\nTrashed: r1\r\n";
+            var sExp1 = String.Join(Environment.NewLine,new []{"Preserved: r2","Trashed: r1",""});
 
             // Subroutine does a small calculation in registers
             RunTest(sExp1, "Addition", m =>
@@ -245,7 +245,7 @@ Constants: cl:0x00
                 m.Return();
             });
 
-            var sExp2 = "Preserved: \r\nTrashed: Global memory,r1,r2\r\n";
+            var sExp2 = String.Join(Environment.NewLine,new []{"Preserved: ","Trashed: Global memory,r1,r2",""});
 
             RunTest(sExp2, m =>
             {
