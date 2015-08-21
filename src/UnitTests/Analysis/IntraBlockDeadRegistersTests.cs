@@ -36,9 +36,9 @@ namespace Reko.UnitTests.Analysis
     public class IntraBlockDeadRegistersTests
     {
         private string testResult;
-        private string toExpectedString(string [] lines)
+        private static string ToExpectedString(params string [] lines)
         {
-            List<string> stringlist = new List<string>();
+            var stringlist = new List<string>();
             foreach (var i in lines)
                 stringlist.Add("\t" + i);
             stringlist.Add ("");
@@ -66,9 +66,9 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(a, 2);
                 m.Assign(a, 3);
             });
-            string expected = toExpectedString(new []{
+            string expected = ToExpectedString(
                 "a = 0x00000003"
-            });
+            );
             Assert.AreEqual(expected, testResult);
         }
 
@@ -82,11 +82,11 @@ namespace Reko.UnitTests.Analysis
                 m.Call("foo", 4);
                 m.Assign(a, 3);
             });
-            string expected = toExpectedString(new []{
+            string expected = ToExpectedString(
                 "a = 0x00000002",
                 "call <invalid> (retsize: 4;)",
                 "a = 0x00000003"
-            });
+            );
 
             Assert.AreEqual(expected, testResult);
         }
@@ -106,11 +106,11 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(C, m.Cond(a));
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
-            string expected = toExpectedString(new []{
+            string expected = ToExpectedString(
                 "N = cond(a)",
                 "C = cond(a)",
                 "branch Test(LE,CN) foo"
-            });
+            );
             Assert.AreEqual(expected, testResult);
         }
 
@@ -130,12 +130,12 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(N, m.Cond(a));
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
-            string expected = toExpectedString(new []{
+            string expected = ToExpectedString(
                 "a = a + 0x00000003",
                 "a = a + a",
                 "N = cond(a)",
                 "branch Test(LE,CN) foo"
-            });
+            );
 
             Assert.AreEqual(expected, testResult);
         }
