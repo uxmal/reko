@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SsaSwitch()
 		{
-			RunFileTest("Fragments/Switch.asm", "Analysis/SsaSwitch.txt");
+			RunFileTest("Fragments/switch.asm", "Analysis/SsaSwitch.txt");
 		}
 		
 		[Test]
