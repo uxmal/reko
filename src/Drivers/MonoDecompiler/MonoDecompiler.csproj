@@ -151,6 +151,7 @@
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
+    <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\$(OutDir)Reko.Environments.AmigaOS.Design.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Reko.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Win32.*" />

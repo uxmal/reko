@@ -383,6 +383,12 @@ namespace Reko.Gui.Windows.Controls
             Invalidate();
         }
 
+        /// <summary>
+        /// Given a point in client coordinates, locate the tag associated
+        /// with the clicked span -- if there is one.
+        /// </summary>
+        /// <param name="ptClient"></param>
+        /// <returns></returns>
         public object GetTagFromPoint(Point ptClient)
         {
             var span = GetSpan(ptClient);

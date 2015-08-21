@@ -63,6 +63,7 @@ namespace Reko.Gui
     public interface ITreeNodeDesignerHost
     {
         void AddComponents(System.Collections.IEnumerable components);
+        void AddComponent(object parent, object component);
         void AddComponents(object parent, System.Collections.IEnumerable components);
         void RemoveComponent(object component);
         TreeNodeDesigner GetDesigner(object component);

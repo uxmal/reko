@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -51,7 +52,9 @@ namespace Reko.ImageLoaders.MzExe
 		{
             var exe = new ExeImageLoader(services, filename, rawImg);
             arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(services, arch);
+            platform = services.RequireService<IConfigurationService>()
+                .GetEnvironment("ms-dos")
+                .Load(services, arch);
 
 			uint pkLiteHdrOffset = (uint) (exe.e_cparHeader * 0x10);
 

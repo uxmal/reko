@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.Hunk
 {
@@ -68,7 +69,9 @@ namespace Reko.ImageLoaders.Hunk
                 image,
                 image.CreateImageMap(),
                 arch,
-                new AmigaOSPlatform(Services, arch));
+                Services.RequireService<IConfigurationService>()
+                    .GetEnvironment("amigaOS")
+                    .Load(Services, arch));
         }
 
         public bool BuildLoadSegments()

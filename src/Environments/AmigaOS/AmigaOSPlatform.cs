@@ -29,6 +29,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,7 @@ namespace Reko.Environments.AmigaOS
     /// <summary>
     /// Represents the AmigaOS platform.
     /// </summary>
+    [Designer("Reko.Environments.AmigaOS.Design.AmigaOSPlatformDesigner,Reko.Environments.AmigaOS.Design")]
     public class AmigaOSPlatform : Platform
     {
         private RtlInstructionMatcher a6Pattern;

@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -35,6 +36,7 @@ namespace Reko.Core
 	/// A Platform is an abstraction of the operating environment,
     /// say MS-DOS, Win32, or Posix.
 	/// </summary>
+    [Designer("Reko.Gui.Design.PlatformDesigner,Reko.Gui")]
 	public abstract class Platform
 	{
         /// <summary>
@@ -52,6 +54,7 @@ namespace Reko.Core
         public IServiceProvider Services { get; private set; }
         public TypeLibrary[] TypeLibs { get; private set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
+        public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
 
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
