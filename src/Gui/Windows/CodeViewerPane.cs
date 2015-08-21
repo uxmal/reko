@@ -42,6 +42,7 @@ namespace Reko.Gui.Windows
         private IServiceProvider services;
         private Procedure proc;
         private NavigationInteractor<Procedure> navInteractor;
+        private bool ignoreEvents;
 
         public TextView TextView { get { return codeView.TextView; } }
 
@@ -53,8 +54,10 @@ namespace Reko.Gui.Windows
 
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
+            this.codeView.CurrentAddressChanged += codeView_CurrentAddressChanged;
             this.TextView.Font = new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
+            this.TextView.Services = services;
 
             this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
 
@@ -63,6 +66,14 @@ namespace Reko.Gui.Windows
             this.TextView.Navigate += textView_Navigate;
             return this.codeView;
         }
+
+        void codeView_CurrentAddressChanged(object sender, EventArgs e)
+        {
+            if (ignoreEvents)
+                return;
+            var value = codeView.CurrentAddress;
+            DisplayProcedure(value);
+        }        
 
         public void SetSite(IServiceProvider sp)
         {
@@ -93,6 +104,9 @@ namespace Reko.Gui.Windows
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
             this.TextView.Model = tsf.GetModel();
+            this.ignoreEvents = true;
+            this.codeView.CurrentAddress = proc;
+            ignoreEvents = false;
         }
 
         void textView_Navigate(object sender, EditorNavigationArgs e)
@@ -100,7 +114,11 @@ namespace Reko.Gui.Windows
             var procDst = e.Destination as Procedure;
             if (procDst == null)
                 return;
-            DisplayProcedure(procDst);
+            navInteractor.RememberAddress(this.proc);
+            DisplayProcedure(procDst);    // ...and move to the new position.
+
+            //$REVIEW: should this fire an event on a ISelectionService interface
+            // and let interested parties track that?
             var pbSvc = services.GetService<IProjectBrowserService>();
             if (pbSvc != null)
             {

@@ -34,7 +34,6 @@ namespace Reko.Gui.Windows.Controls
             this.Forward = new ToolStripButtonWrapper(btnForward);
         }
 
-
         public TextView TextView { get { return textView1; } }
         public IButton Back { get; set; }
         public IButton Forward { get; set; }

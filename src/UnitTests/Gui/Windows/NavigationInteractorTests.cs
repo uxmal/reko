@@ -89,9 +89,9 @@ namespace Reko.UnitTests.Gui.Windows
             When_Attached();
             navControl.CurrentAddress = addr42;
             Assert.IsFalse(btnBack.Enabled);
-            ni.UserNavigateTo(addr43);
+            ni.RememberAddress(addr43);
             Assert.IsTrue(btnBack.Enabled);
-            Assert.AreEqual(addr43, navControl.CurrentAddress);
+            Assert.IsFalse(btnForward.Enabled);
 
             mr.VerifyAll();
         }
@@ -104,12 +104,11 @@ namespace Reko.UnitTests.Gui.Windows
 
             When_Attached();
             navControl.CurrentAddress = addr42;
-            ni.UserNavigateTo(addr43);
+            ni.RememberAddress(addr43);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
 
             Assert.IsFalse(btnBack.Enabled);
             Assert.IsTrue(btnForward.Enabled);
-            Assert.AreSame(addr42, navControl.CurrentAddress);
         }
 
         [Test]
@@ -120,17 +119,16 @@ namespace Reko.UnitTests.Gui.Windows
 
             When_Attached();
             navControl.CurrentAddress = addr42;
-            ni.UserNavigateTo(addr43);
-            ni.UserNavigateTo(addr44);
+            ni.RememberAddress(addr43);
+            ni.RememberAddress(addr44);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
 
             Assert.IsFalse(btnBack.Enabled);
             Assert.IsTrue(btnForward.Enabled);
 
-            ni.UserNavigateTo(addr44);
+            ni.RememberAddress(addr44);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreSame(addr42, navControl.CurrentAddress);
         }
     }
 }

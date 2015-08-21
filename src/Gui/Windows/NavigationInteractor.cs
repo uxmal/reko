@@ -72,7 +72,7 @@ namespace Reko.Gui.Windows
         /// to the "stack".
         /// </summary>
         /// <param name="address"></param>
-        public void UserNavigateTo(T address)
+        public void RememberAddress(T address)
         {
             int itemsAhead = navStack.Count - stackPosition;
             if (stackPosition >= 0 && itemsAhead > 0)
@@ -83,7 +83,6 @@ namespace Reko.Gui.Windows
             navStack.Add(navControl.CurrentAddress);    // Remember where we were...
             ++stackPosition;
             EnableControls();
-            navControl.CurrentAddress = address;        // ...and move to the new position.
         }
 
         void btnBack_Click(object sender, EventArgs e)

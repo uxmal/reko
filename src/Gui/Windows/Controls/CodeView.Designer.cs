@@ -56,6 +56,7 @@
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(23, 22);
             this.btnBack.Text = "toolStripButton1";
+            this.btnBack.ToolTipText = "Back";
             // 
             // btnForward
             // 
@@ -65,6 +66,7 @@
             this.btnForward.Name = "btnForward";
             this.btnForward.Size = new System.Drawing.Size(23, 22);
             this.btnForward.Text = "toolStripButton2";
+            this.btnForward.ToolTipText = "Forward";
             // 
             // textView1
             // 

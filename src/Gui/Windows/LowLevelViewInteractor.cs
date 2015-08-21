@@ -143,7 +143,8 @@ namespace Reko.Gui.Windows
         {
             if (!program.Image.IsValidAddress(addrTo))
                 return;
-            navInteractor.UserNavigateTo(addrTo);
+            navInteractor.RememberAddress(addrFrom);
+            control.CurrentAddress = addrTo;        // ...and move to the new position.
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
