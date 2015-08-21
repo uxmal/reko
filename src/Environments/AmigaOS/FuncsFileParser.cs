@@ -43,7 +43,7 @@ namespace Reko.Environments.AmigaOS
         { 
             this.arch = arch;
             this.streamReader = streamReader;
-            this.FunctionsByA6Offset = new Dictionary<int, AmigaSystemFunction>();
+            this.FunctionsByLibBaseOffset = new Dictionary<int, AmigaSystemFunction>();
         }
 
         public void Parse()
@@ -55,7 +55,7 @@ namespace Reko.Environments.AmigaOS
                     break;
                 AmigaSystemFunction func = ParseLine(line);
                 if (func != null)
-                    FunctionsByA6Offset.Add(func.Offset, func);
+                    FunctionsByLibBaseOffset.Add(func.Offset, func);
             }
         }
 
@@ -132,7 +132,7 @@ namespace Reko.Environments.AmigaOS
             return tok.Value;
         }
         
-        public Dictionary<int, AmigaSystemFunction> FunctionsByA6Offset { get; private set; }
+        public Dictionary<int, AmigaSystemFunction> FunctionsByLibBaseOffset { get; private set; }
 
         private class Lexer
         {
