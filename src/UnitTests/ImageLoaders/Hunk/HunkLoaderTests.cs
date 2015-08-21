@@ -45,7 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         public void Hunk_LoadFile()
         {
             var bytes = File.ReadAllBytes(
-                FileUnitTester.MapTestPath("../UnitTests/Arch/M68k/images/FIBO"));
+                FileUnitTester.MapTestPath("../../subjects/Hunk-m68k/FIBO"));
             var ldr = new HunkLoader(null, "FIBO", bytes);
             ldr.Load(Address.Ptr32(0x10000)); 
         }
