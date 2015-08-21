@@ -82,11 +82,10 @@ namespace Reko.UnitTests.Analysis
                 m.Call("foo", 4);
                 m.Assign(a, 3);
             });
-            string expected = String.Join(Environment.NewLine,new []{
-                "\ta = 0x00000002",
-                "\tcall <invalid> (retsize: 4;)",
-                "\ta = 0x00000003",
-                ""
+            string expected = toExpectedString(new []{
+                "a = 0x00000002",
+                "call <invalid> (retsize: 4;)",
+                "a = 0x00000003"
             });
 
             Assert.AreEqual(expected, testResult);
