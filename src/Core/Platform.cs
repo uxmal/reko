@@ -174,13 +174,14 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// The default platform is used when a specific platform cannot be determind.
+    /// The default platform is used when a specific platform cannot be determined.
     /// </summary>
     public class DefaultPlatform : Platform
     {
         public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
         {
             this.TypeLibraries = new List<TypeLibrary>();
+            this.Description = "(Unknown operating environment)";
         }
 
         public List<TypeLibrary> TypeLibraries { get; private set; }
