@@ -68,7 +68,7 @@ namespace Reko.Environments.AmigaOS
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override SystemService FindService(RtlInstruction rtl, ProcessorState state)

@@ -102,7 +102,9 @@ namespace Reko.Core
 			switch (cc)
 			{
 				case ConditionCode.UGT:
-					return ++limit;
+					return limit + 1;
+            case ConditionCode.ULE:
+                    return limit + 1;
 				default:
 					throw new NotImplementedException();
 			}

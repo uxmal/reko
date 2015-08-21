@@ -18,22 +18,21 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
+using Reko.UnitTests.Scanning.Fragments;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Rhino.Mocks;
-using Reko.UnitTests.Scanning.Fragments;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -57,9 +56,11 @@ namespace Reko.UnitTests.Scanning
             }
 
             public BlockWorkitem Test_LastBlockWorkitem { get; private set; }
+            public ProcessorState Test_State { get; private set; }
 
             public override BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState state)
             {
+                Test_State = state;
                 Test_LastBlockWorkitem = base.CreateBlockWorkItem(addrStart, proc, state);
                 return Test_LastBlockWorkitem;
             }
@@ -578,6 +579,30 @@ fn00001200_exit:
             program.InterceptedCalls.Add(addrEmulated, new ExternalProcedure("Foo", null));
             var ep = scanner.GetInterceptedCall(addrThunk);
             Assert.AreEqual("Foo", ep.Name);
+        }
+
+        [Test]
+        public void Scanner_ScanProcedure_AssumeRegisterValues()
+        {
+            var scanner = CreateScanner(0x1000, 0x2000);
+            program.UserProcedures.Add(Address.Ptr32(0x1000), new Reko.Core.Serialization.Procedure_v1
+            {
+                Assume = new RegisterValue_v2[] {
+                     new RegisterValue_v2 { Register="r1", Value="0DC0" }
+                 }
+            });
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => { m.Return(0, 0); }
+            });
+            var state = arch.CreateProcessorState();
+            var proc = (Procedure) scanner.ScanProcedure(
+                Address.Ptr32(0x1000), 
+                "fnFoo",
+                arch.CreateProcessorState());
+
+            var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
+            Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
         }
     }
 }

@@ -202,6 +202,7 @@ namespace Reko.Core
 		/// <summary>
 		/// Provides access to the program's jump and call tables, sorted by address.
 		/// </summary>
+        //$REVIEW: is this ever used? What for?
 		public SortedList<Address, ImageMapVectorTable> Vectors
 		{
 			get { return vectors; }

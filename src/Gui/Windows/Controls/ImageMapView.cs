@@ -156,6 +156,8 @@ namespace Reko.Gui.Windows.Controls
             var address = imageMap.MapLinearAddressToAddress(lin);
             if (!imageMap.TryFindItem(address, out item))
                 return brBack;
+            if (item is ImageMapVectorTable)
+                return brData;
             if (item.DataType is UnknownType)
                 return brBack;
             if (item is ImageMapBlock)

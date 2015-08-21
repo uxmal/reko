@@ -613,6 +613,10 @@ namespace Reko.ImageLoaders.Elf
                 {
                     //$TODO
                 }
+                else if (Header64.e_machine == EM_X86_64)
+                {
+                    //$TODO
+                }
                 else
                     throw new NotImplementedException(string.Format("Relocations for architecture {0} not implemented.", Header64.e_machine));
             }

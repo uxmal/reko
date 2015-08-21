@@ -702,6 +702,8 @@ namespace Reko.Gui.Windows.Controls
                     return codeTheme;
                 if (item.DataType != null && !(item.DataType is UnknownType))
                     return dataTheme;
+                if (item is ImageMapVectorTable)
+                    return dataTheme;
                 return defaultTheme;
             }
         }

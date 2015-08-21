@@ -459,6 +459,7 @@ namespace Reko.Scanning
             st.OnProcedureEntered();
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
             st.SetValue(sp, proc.Frame.FramePointer);
+            SetAssumedRegisterValues(addr, st);
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
@@ -697,6 +698,22 @@ namespace Reko.Scanning
             ProcedureSignature sig = null;
             callSigs.TryGetValue(addrCallInstruction, out sig);
             return sig;
+        }
+
+        public void SetAssumedRegisterValues(Address addr, ProcessorState st)
+        {
+            Procedure_v1 userProc;
+            if (!program.UserProcedures.TryGetValue(addr, out userProc) ||
+                userProc.Assume == null)
+                return;
+            foreach (var rv in userProc.Assume)
+            {
+                var reg = program.Architecture.GetRegister(rv.Register);
+                var val = rv.Value == "*"
+                    ? Constant.Invalid
+                    : Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
+                st.SetValue(reg, val);
+            }
         }
 
         public void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address)
