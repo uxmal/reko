@@ -30,8 +30,8 @@
         {
             Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.btnBack = new System.Windows.Forms.ToolStripButton();
+            this.btnForward = new System.Windows.Forms.ToolStripButton();
             this.textView1 = new Reko.Gui.Windows.Controls.TextView();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -40,31 +40,31 @@
             // 
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2});
+            this.btnBack,
+            this.btnForward});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(150, 25);
             this.toolStrip.TabIndex = 0;
             this.toolStrip.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // btnBack
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::Reko.Gui.Resources.Back;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnBack.Image = global::Reko.Gui.Resources.Back;
+            this.btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(23, 22);
+            this.btnBack.Text = "toolStripButton1";
             // 
-            // toolStripButton2
+            // btnForward
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::Reko.Gui.Resources.Forward;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.btnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnForward.Image = global::Reko.Gui.Resources.Forward;
+            this.btnForward.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnForward.Name = "btnForward";
+            this.btnForward.Size = new System.Drawing.Size(23, 22);
+            this.btnForward.Text = "toolStripButton2";
             // 
             // textView1
             // 
@@ -72,6 +72,7 @@
             this.textView1.Location = new System.Drawing.Point(0, 25);
             this.textView1.Model = emptyEditorModel1;
             this.textView1.Name = "textView1";
+            this.textView1.Services = null;
             this.textView1.Size = new System.Drawing.Size(150, 125);
             this.textView1.TabIndex = 1;
             this.textView1.Text = "textView1";
@@ -93,8 +94,8 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton btnBack;
+        private System.Windows.Forms.ToolStripButton btnForward;
         private TextView textView1;
     }
 }

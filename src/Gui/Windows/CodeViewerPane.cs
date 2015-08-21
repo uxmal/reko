@@ -41,6 +41,7 @@ namespace Reko.Gui.Windows
         private CodeView codeView; 
         private IServiceProvider services;
         private Procedure proc;
+        private NavigationInteractor<Procedure> navInteractor;
 
         public TextView TextView { get { return codeView.TextView; } }
 
@@ -57,6 +58,8 @@ namespace Reko.Gui.Windows
 
             this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
 
+            this.navInteractor = new NavigationInteractor<Procedure>();
+            this.navInteractor.Attach(codeView);
             this.TextView.Navigate += textView_Navigate;
             return this.codeView;
         }

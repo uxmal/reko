@@ -227,7 +227,7 @@ namespace Reko.Core
         }
     }
 
-    public class Address16 : Address
+    internal class Address16 : Address
     {
         private ushort uValue;
 

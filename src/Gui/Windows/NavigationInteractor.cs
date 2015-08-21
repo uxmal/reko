@@ -36,13 +36,13 @@ namespace Reko.Gui.Windows
     /// This interactor is connected to a navigable control, which will have a pair of buttons -- for "Back" and "Forward" -- a timer, and 
     /// a way to show a menu to the user if the timer times out.
     /// </remarks>
-    public class NavigationInteractor
+    public class NavigationInteractor<T>
     {
-        private INavigableControl navControl;
-        private List<Address> navStack = new List<Address>();
+        private INavigableControl<T> navControl;
+        private List<T> navStack = new List<T>();
         private int stackPosition = 0;
 
-        public void Attach(INavigableControl navControl)
+        public void Attach(INavigableControl<T> navControl)
         {
             this.navControl = navControl;
 
@@ -52,11 +52,11 @@ namespace Reko.Gui.Windows
             navControl.ForwardButton.Click += btnForward_Click;
         }
 
-        private Address Location
+        private T Location
         {
             get {
                 if (stackPosition >= navStack.Count)
-                    return null;
+                    return default(T);
                 return navStack[stackPosition];
             }
         }
@@ -72,7 +72,7 @@ namespace Reko.Gui.Windows
         /// to the "stack".
         /// </summary>
         /// <param name="address"></param>
-        public void UserNavigateTo(Address address)
+        public void UserNavigateTo(T address)
         {
             int itemsAhead = navStack.Count - stackPosition;
             if (stackPosition >= 0 && itemsAhead > 0)

@@ -40,11 +40,11 @@ namespace Reko.UnitTests.Gui.Windows
         private IButton btnBack;
         private IButton btnForward;
         private ITimer timer;
-        private NavigationInteractor ni;
+        private NavigationInteractor<Address> ni;
         private Address addr42;
         private Address addr43;
         private Address addr44;
-        private INavigableControl navControl;
+        private INavigableControl<Address> navControl;
 
         [SetUp]
         public void Setup()
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Gui.Windows
             btnBack = mr.Stub<IButton>();
             btnForward = mr.Stub<IButton>();
             timer = mr.Stub<ITimer>();
-            navControl = mr.Stub<INavigableControl>();
+            navControl = mr.Stub<INavigableControl<Address>>();
 
             navControl.Stub(n => n.BackButton).Return(btnBack);
             navControl.Stub(n => n.ForwardButton).Return(btnForward);
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Ni_Attach()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
             When_Attached();
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Ni_UserNavigateTo()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
 
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Ni_Back()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
             When_Attached();
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Ni_Back2_Then_Navigate()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
             When_Attached();

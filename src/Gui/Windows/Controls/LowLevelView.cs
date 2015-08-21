@@ -35,7 +35,7 @@ namespace Reko.Gui.Windows.Controls
     /// <summary>
     /// Provides a unified view of Memory and Disassembly.
     /// </summary>
-    public partial class LowLevelView : UserControl, INavigableControl
+    public partial class LowLevelView : UserControl, INavigableControl<Address>
     {
         ITextBox txtAddressWrapped;
         IButton btnGoWrapped;
@@ -60,8 +60,8 @@ namespace Reko.Gui.Windows.Controls
         public MemoryControl MemoryView { get { return this.memCtrl; } }
         public DisassemblyControl DisassemblyView { get { return this.dasmCtrl; } }
 
-        IButton INavigableControl.BackButton { get { return btnBackWrapped; } }
-        IButton INavigableControl.ForwardButton { get { return btnFwdWrapped; } }
+        IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
+        IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
         public Address CurrentAddress { get { return addrCurrent; } set { addrCurrent = value; CurrentAddressChanged.Fire(this); } }
         public event EventHandler CurrentAddressChanged;
     }
