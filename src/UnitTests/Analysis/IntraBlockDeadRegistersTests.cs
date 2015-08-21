@@ -36,7 +36,14 @@ namespace Reko.UnitTests.Analysis
     public class IntraBlockDeadRegistersTests
     {
         private string testResult;
-
+        private string toExpectedString(string [] lines)
+        {
+            List<string> stringlist = new List<string>();
+            foreach (var i in lines)
+                stringlist.Add("\t" + i);
+            stringlist.Add ("");
+            return String.Join (Environment.NewLine, stringlist.ToArray ());
+        }
         private void RunTest(Action<ProcedureBuilder> m)
         {
             var builder = new ProcedureBuilder();
@@ -59,7 +66,10 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(a, 2);
                 m.Assign(a, 3);
             });
-            Assert.AreEqual("\ta = 0x00000003\r\n", testResult);
+            string expected = toExpectedString(new []{
+                "a = 0x00000003"
+            });
+            Assert.AreEqual(expected, testResult);
         }
 
         [Test(Description = "Calls clear killed stuff.")]
@@ -72,7 +82,14 @@ namespace Reko.UnitTests.Analysis
                 m.Call("foo", 4);
                 m.Assign(a, 3);
             });
-            Assert.AreEqual("\ta = 0x00000002\r\n\tcall <invalid> (retsize: 4;)\r\n\ta = 0x00000003\r\n", testResult);
+            string expected = String.Join(Environment.NewLine,new []{
+                "\ta = 0x00000002",
+                "\tcall <invalid> (retsize: 4;)",
+                "\ta = 0x00000003",
+                ""
+            });
+
+            Assert.AreEqual(expected, testResult);
         }
 
         [Test(Description = "Flags used clear killed bits.")]
@@ -90,7 +107,12 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(C, m.Cond(a));
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
-            Assert.AreEqual("\tN = cond(a)\r\n\tC = cond(a)\r\n\tbranch Test(LE,CN) foo\r\n", testResult);
+            string expected = toExpectedString(new []{
+                "N = cond(a)",
+                "C = cond(a)",
+                "branch Test(LE,CN) foo"
+            });
+            Assert.AreEqual(expected, testResult);
         }
 
         [Test]
@@ -109,7 +131,14 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(N, m.Cond(a));
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
-            Assert.AreEqual("\ta = a + 0x00000003\r\n\ta = a + a\r\n\tN = cond(a)\r\n\tbranch Test(LE,CN) foo\r\n", testResult);
+            string expected = toExpectedString(new []{
+                "a = a + 0x00000003",
+                "a = a + a",
+                "N = cond(a)",
+                "branch Test(LE,CN) foo"
+            });
+
+            Assert.AreEqual(expected, testResult);
         }
     }
 }
