@@ -59,6 +59,7 @@ namespace Reko.Arch.M68k
             if (!rdr.IsValid)
                 return null;
             var addr = rdr.Address;
+            var offset = rdr.Offset;
             try
             {
                 instr = new M68kInstruction { Address = addr };
@@ -76,7 +77,10 @@ namespace Reko.Arch.M68k
                     Address = addr,
                     code = Opcode.illegal
                 };
-                return null;
+                instr.Address = addr;
+                instr.Length = 2;
+                rdr.Offset = offset + 2;
+                return instr;
             }
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
