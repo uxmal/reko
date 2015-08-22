@@ -109,9 +109,6 @@ namespace Reko.Arch.M68k
          * http://kstenerud.cjb.net
          */
 
-
-
-
         /* Bit Isolation Functions */
         internal static bool BIT_0(uint A) { return ((A) & 0x00000001) != 0; }
         internal static bool BIT_1(uint A) { return ((A) & 0x00000002) != 0; }

@@ -28,6 +28,13 @@ namespace Reko.Core.Services
     public interface ITypeLibraryLoaderService
     {
         TypeLibrary LoadLibrary(IProcessorArchitecture arch, string name);
+        
+        /// <summary>
+        /// Loads the characteristics library for the dynamic library
+        /// named 'name'.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         CharacteristicsLibrary LoadCharacteristics(string name);
     }
 

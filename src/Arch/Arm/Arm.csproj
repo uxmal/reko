@@ -78,9 +78,7 @@
     <Compile Include="A32Registers.cs" />
     <Compile Include="RegisterRangeOperand.cs" />
     <Compile Include="ThumbProcessorArchitecture.cs" />
-    <Compile Include="ThumbProcessorState.cs" />
     <Compile Include="ThumbDisassembler.cs" />
-    <Compile Include="ThumbInstruction.cs" />
     <Compile Include="ThumbRewriter.Alu.cs" />
     <Compile Include="ThumbRewriter.Control.cs" />
     <Compile Include="ThumbRewriter.cs" />
