@@ -57,7 +57,8 @@ namespace Reko.ImageLoaders.Hunk
 
         public override Program Load(Address addrLoad)
         {
-            arch = new M68kArchitecture();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            arch = (M68kArchitecture) cfgSvc.GetArchitecture("m68k");
             var imgReader = new BeImageReader(RawImage, 0);
             var parse = new HunkFileParser(imgReader, false);
             this.hunkFile = parse.Parse();
@@ -69,9 +70,7 @@ namespace Reko.ImageLoaders.Hunk
                 image,
                 image.CreateImageMap(),
                 arch,
-                Services.RequireService<IConfigurationService>()
-                    .GetEnvironment("amigaOS")
-                    .Load(Services, arch));
+                cfgSvc.GetEnvironment("amigaOS").Load(Services, arch));
         }
 
         public bool BuildLoadSegments()

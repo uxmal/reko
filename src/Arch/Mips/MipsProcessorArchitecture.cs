@@ -30,135 +30,116 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.Mips
 {
-    public class MipsProcessorArchitecture : IProcessorArchitecture
+    public class MipsProcessorArchitecture : ProcessorArchitecture
     {
         public MipsProcessorArchitecture()
         {
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Word32;
             this.FramePointerType = PrimitiveType.Word32;
+            this.InstructionBitSize = 32;
         }
 
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new MipsDisassembler(this, imageReader);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             throw new NotImplementedException();
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(FramePointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             return Registers.generalRegs[i];
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return Registers.generalRegs;
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 32; } }
 
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public PrimitiveType FramePointerType { get; private set; }
-        public PrimitiveType PointerType { get; private set; }
-        public PrimitiveType WordWidth { get; private set ; }
 
-        public RegisterStorage StackRegister
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public uint CarryFlagMask
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }
-
     }
 }

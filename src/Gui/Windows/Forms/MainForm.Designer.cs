@@ -106,6 +106,7 @@
             this.imlBrowser.Images.SetKeyName(8, "WxSection.ico");
             this.imlBrowser.Images.SetKeyName(9, "DiscardableSection.ico");
             this.imlBrowser.Images.SetKeyName(10, "Platform.ico");
+            this.imlBrowser.Images.SetKeyName(11, "Cpu.ico");
             // 
             // tabControl1
             // 

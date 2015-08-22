@@ -32,106 +32,110 @@ using System.Text;
 
 namespace Reko.Arch.Z80
 {
-    public class Z80ProcessorArchitecture : IProcessorArchitecture
+    public class Z80ProcessorArchitecture : ProcessorArchitecture
     {
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public Z80ProcessorArchitecture()
+        {
+            this.InstructionBitSize = 8;
+            this.FramePointerType = PrimitiveType.Ptr16;
+            this.PointerType = PrimitiveType.Ptr16;
+            this.WordWidth = PrimitiveType.Word16;
+            this.StackRegister = Registers.sp;
+            this.CarryFlagMask = (uint)FlagM.CF;
+        }
+
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Z80Disassembler(imageReader);
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(PrimitiveType.Ptr16);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new Z80ProcessorState(this);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotImplementedException();
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Z80Rewriter(this, rdr, state, frame, host);
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return Registers.All;
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 8; } }
 
-		public string GrfToString(uint grf)
+		public override string GrfToString(uint grf)
 		{
 			StringBuilder s = new StringBuilder();
 			for (int r = Registers.S.Number; grf != 0; ++r, grf >>= 1)
@@ -142,32 +146,7 @@ namespace Reko.Arch.Z80
 			return s.ToString();
 		}
 
-        public PrimitiveType FramePointerType
-        {
-            get { return PrimitiveType.Ptr16; }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Ptr16; }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { return PrimitiveType.Word16; }
-        }
-
-        public RegisterStorage StackRegister
-        {
-            get { return Registers.sp; }
-        }
-
-        public uint CarryFlagMask
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

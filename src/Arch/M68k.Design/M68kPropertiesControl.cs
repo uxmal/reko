@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,22 @@
  */
 #endregion
 
-using System.Configuration;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Core.Configuration
+namespace Reko.Arch.M68k.Design
 {
-    public interface ArchitectureReference
+    public partial class M68kPropertiesControl : UserControl
     {
-        string ArchitectureName { get; }
-    }
-
-    class ArchitectureReferenceElement: ConfigurationElement, ArchitectureReference
-    {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string ArchitectureName
+        public M68kPropertiesControl()
         {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
+            InitializeComponent();
         }
     }
 }

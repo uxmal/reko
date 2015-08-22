@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,31 @@
  */
 #endregion
 
-using System.Configuration;
+using Reko.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Reko.Core.Configuration
+namespace Reko.Gui.Design
 {
-    public interface ArchitectureReference
+    //$TODO: all IProcessorArchitectures should derive from an abstract
+    // ProcessorArchitecture class, so the following DesignerAttribute
+    // could be set only once.
+    public class ArchitectureDesigner : TreeNodeDesigner
     {
-        string ArchitectureName { get; }
-    }
-
-    class ArchitectureReferenceElement: ConfigurationElement, ArchitectureReference
-    {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string ArchitectureName
+        public override void Initialize(object obj)
         {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
+            base.Initialize(obj);
+            SetTreeNodeProperties();
+        }
+
+        private void SetTreeNodeProperties()
+        {
+            var arch = (IProcessorArchitecture)Component;
+
+            TreeNode.Text = arch.Description;
+            TreeNode.ImageName = "Cpu.ico";
         }
     }
 }
