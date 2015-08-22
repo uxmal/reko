@@ -95,6 +95,7 @@
         <!-- Environments -->
         <File Source="$(var.AmigaOS.TargetPath)" />
         <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" />
+        <File Source="$(var.AmigaOS_Design.TargetPath)" />
         <File Source="$(var.C64.TargetPath)" />
         <File Source="$(var.MacOS.TargetPath)" />
         <File Source="$(var.MacOS.ProjectDir)macos_classic.xml" />
@@ -118,6 +119,7 @@
         <!-- Architectures -->
         <File Source="$(var.Arm.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
+        <File Source="$(var.M68k.Design.TargetPath)" />
         <File Source="$(var.Mips.TargetPath)" />
         <File Source="$(var.Mos6502.TargetPath)" />
         <File Source="$(var.Pdp11.TargetPath)" />

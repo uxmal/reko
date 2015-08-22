@@ -28,74 +28,77 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.M68k
 {
-    public class M68kArchitecture : IProcessorArchitecture
+    [Designer("Reko.Arch.M68k.Design.M68kArchitectureDesigner,Reko.Arch.M68k.Design")]
+    public class M68kArchitecture : ProcessorArchitecture
     {
         public M68kArchitecture()
         {
+            InstructionBitSize = 16;
+            FramePointerType = PrimitiveType.Pointer32;
+            PointerType = PrimitiveType.Pointer32;
+            WordWidth = PrimitiveType.Word32;
+            CarryFlagMask = (uint)FlagM.CF;
+            StackRegister = Registers.a7;
         }
 
-        public M68kDisassembler CreateDisassembler(ImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return M68kDisassembler.Create68020(rdr);
         }
 
-        IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
+        public IEnumerable<M68kInstruction> CreateDisassemblerImpl(ImageReader rdr)
         {
-            return CreateDisassembler(rdr);
+            return M68kDisassembler.Create68020(rdr);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new M68kState(this);
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
-            return new BitSet((int) Registers.Max);
+            return new BitSet((int)Registers.Max);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(FramePointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             return new M68kProcedureSerializer(this, typeLoader, defaultCc);
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             return Registers.GetRegister(i);
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             var r = Registers.GetRegister(name);
             if (r == RegisterStorage.None)
@@ -103,32 +106,32 @@ namespace Reko.Arch.M68k
             return r;
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return Registers.regs;
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Rewriter(this, rdr, (M68kState) state, frame, host);
+            return new Rewriter(this, rdr, (M68kState)state, frame, host);
         }
 
-        public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return new MemoryAccess(new BinaryExpression(
                 Operator.IAdd, FramePointerType,
@@ -136,22 +139,16 @@ namespace Reko.Arch.M68k
                 dataType);
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public Address CreateSegmentedAddress(int size, ImageReader rdr, ushort segBase)
-        {
-            throw new NotSupportedException("M68k architecture doesn't support segmented pointers.");
-        }
-
-        public int InstructionBitSize { get { return 16; } }
 
         private static RegisterStorage[] flagRegisters = {
             new RegisterStorage("C", 0, PrimitiveType.Bool),
@@ -161,7 +158,7 @@ namespace Reko.Arch.M68k
             new RegisterStorage("X", 0, PrimitiveType.Bool),
         };
 
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             StringBuilder s = new StringBuilder();
             for (int r = 0; grf != 0; ++r, grf >>= 1)
@@ -172,26 +169,7 @@ namespace Reko.Arch.M68k
             return s.ToString();
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { return PrimitiveType.Pointer32; }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Pointer32; }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { return PrimitiveType.Word32; }
-        }
-
-        public uint CarryFlagMask { get { return (uint) FlagM.CF; } }
-
-        public RegisterStorage StackRegister { get { return Registers.a7; } }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

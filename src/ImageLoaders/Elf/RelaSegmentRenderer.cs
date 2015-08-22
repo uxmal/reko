@@ -31,7 +31,7 @@ namespace Reko.ImageLoaders.Elf
     public class RelaSegmentRenderer : ImageMapSegmentRenderer
     {
         private ElfImageLoader loader;
-        private  Elf32_SHdr shdr;
+        private Elf32_SHdr shdr;
 
         public RelaSegmentRenderer(ElfImageLoader loader, Elf32_SHdr shdr)
         {
@@ -58,7 +58,43 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = loader.GetSymbol(symtab, (int)sym);
-                formatter.Write("{0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info&0xFF, sym, addend, symStr);
+                formatter.Write("{0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                formatter.WriteLine();
+            }
+        }
+    }
+
+    public class RelaSegmentRenderer64 : ImageMapSegmentRenderer
+    {
+        private ElfImageLoader loader;
+        private Elf64_SHdr shdr;
+
+        public RelaSegmentRenderer64(ElfImageLoader loader, Elf64_SHdr shdr)
+        {
+            this.loader = loader;
+            this.shdr = shdr;
+        }
+
+        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        {
+            var entries = shdr.sh_size / shdr.sh_entsize;
+            var symtab = (int)shdr.sh_link;
+            var rdr = loader.CreateReader(shdr.sh_offset);
+            for (ulong i = 0; i < entries; ++i)
+            {
+                ulong offset;
+                if (!rdr.TryReadUInt64(out offset))
+                    return;
+                uint info;
+                if (!rdr.TryReadUInt32(out info))
+                    return;
+                ulong addend;
+                if (!rdr.TryReadUInt64(out addend))
+                    return;
+
+                uint sym = info >> 8;
+                string symStr = loader.GetSymbol(symtab, (int)sym);
+                formatter.Write("{0:X8} {1,3} {2:X16} {3:X16} {4}", offset, info & 0xFF, sym, addend, symStr);
                 formatter.WriteLine();
             }
         }

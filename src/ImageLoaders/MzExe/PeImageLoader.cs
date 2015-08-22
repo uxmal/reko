@@ -132,13 +132,17 @@ namespace Reko.ImageLoaders.MzExe
 
         public Win32Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
         {
+            string env;
             switch (peMachineType)
             {
-            case MACHINE_ARMNT: return new Win32ThumbPlatform(sp, arch);
-            case MACHINE_i386: return new Win32Platform(sp, arch);
-            case MACHINE_x86_64: return new Win_x86_64_Platform(sp, arch);
+            case MACHINE_ARMNT: env= "winArm"; break;
+            case MACHINE_i386: env = "win32"; break;
+            case MACHINE_x86_64: env = "win64"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
+            return (Win32Platform) Services.RequireService<IConfigurationService>()
+                .GetEnvironment(env)
+                .Load(Services, this.arch);
         }
 
         private SizeSpecificLoader CreateInnerLoader(ushort peMachineType)

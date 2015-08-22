@@ -26,6 +26,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -54,7 +55,9 @@ namespace Reko.ImageLoaders.MzExe
             : base(services, filename, imgRaw)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(Services, arch);
+            platform = services.RequireService<IConfigurationService>()
+                .GetEnvironment("ms-dos")
+                .Load(Services, arch);
 
             var exe = new ExeImageLoader(services, filename, imgRaw);
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);

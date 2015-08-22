@@ -20,12 +20,16 @@
 
 using Reko.Core;
 using Reko.ImageLoaders.Hunk;
+using Reko.Environments.AmigaOS;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Rhino.Mocks;
+using System.ComponentModel.Design;
+using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.ImageLoaders.Hunk
 {
@@ -33,26 +37,40 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
     public class HunkLoaderTests
     {
         private HunkMaker mh;
+        private MockRepository mr;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             mh = new HunkMaker();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var opEnv = mr.Stub<OperatingEnvironment>();
+            cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(opEnv);
+            opEnv.Stub(o => o.Load(null, null))
+                .IgnoreArguments()
+                .Do(new Func<IServiceProvider, IProcessorArchitecture, Platform>((sp, arch) =>
+                new AmigaOSPlatform(sp, arch)));
+            sc = new ServiceContainer();
+            sc.AddService<IConfigurationService>(cfgSvc);
         }
 
 
         [Test]
         public void Hunk_LoadFile()
         {
+            mr.ReplayAll();
             var bytes = File.ReadAllBytes(
                 FileUnitTester.MapTestPath("../../subjects/Hunk-m68k/FIBO"));
-            var ldr = new HunkLoader(null, "FIBO", bytes);
+            var ldr = new HunkLoader(sc, "FIBO", bytes);
             ldr.Load(Address.Ptr32(0x10000)); 
         }
 
         [Test]
         public void Hunk_LoadEmpty()
         {
+            mr.ReplayAll();
             var bytes = mh.MakeBytes(
                 HunkType.HUNK_HEADER,
                 "",
@@ -60,7 +78,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 0,
                 0,
                 0);
-            var ldr = new HunkLoader(null, "foo.bar", bytes);
+            var ldr = new HunkLoader(sc, "foo.bar", bytes);
             var ldImg = ldr.Load(Address.Ptr32(0x00010000));
             Assert.AreEqual(1, ldImg.ImageMap.Segments.Count);
             Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
@@ -69,6 +87,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         [Test]
         public void Hunk_LoadCode()
         {
+            mr.ReplayAll();
             var bytes = mh.MakeBytes(
                 HunkType.HUNK_HEADER,
                 "CODE",
@@ -82,7 +101,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 (ushort) 0x4E75,
                 (ushort) 0,
                 HunkType.HUNK_END);
-            var ldr = new HunkLoader(null, "foo.bar", bytes);
+            var ldr = new HunkLoader(sc, "foo.bar", bytes);
             var program = ldr.Load(Address.Ptr32(0x00010000));
             var rlImg = ldr.Relocate(program, Address.Ptr32(0x00010000));
             Assert.AreEqual(1, rlImg.EntryPoints.Count);

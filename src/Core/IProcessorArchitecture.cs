@@ -25,6 +25,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using BitSet = Reko.Core.Lib.BitSet;
 
@@ -132,6 +133,7 @@ namespace Reko.Core
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
         RegisterStorage StackRegister { get; }              // Stack pointer used by this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
+        string Description { get; set; }                    // Typically loaded from app.config
 
         /// <summary>
         /// Parses an address according to the preferred base of the architecture.
@@ -154,6 +156,40 @@ namespace Reko.Core
         Nothing,        // Match identically
         Constants,      // all constants treated as wildcards
         Registers,      // all registers treated as wildcards.
+    }
 
+    [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
+    public abstract class ProcessorArchitecture : IProcessorArchitecture
+    {
+        public string Description {get; set; }
+        public PrimitiveType FramePointerType { get; protected set; }
+        public PrimitiveType PointerType { get; protected set; }
+        public PrimitiveType WordWidth { get; protected set; }
+        public int InstructionBitSize { get; protected set; }
+        public RegisterStorage StackRegister { get; protected set; }
+        public uint CarryFlagMask { get; protected set; }
+
+        public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
+        public Frame CreateFrame() { return new Frame(FramePointerType); }
+        public abstract ImageReader CreateImageReader(LoadedImage img, Address addr);
+        public abstract ImageReader CreateImageReader(LoadedImage img, ulong off);
+        public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
+        public abstract ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        public abstract ProcessorState CreateProcessorState();
+        public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        public abstract BitSet CreateRegisterBitset();
+        public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
+        public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
+
+        public abstract RegisterStorage GetRegister(int i);
+        public abstract RegisterStorage GetRegister(string name);
+        public abstract RegisterStorage[] GetRegisters();
+        public abstract bool TryGetRegister(string name, out RegisterStorage reg);
+        public abstract FlagGroupStorage GetFlagGroup(uint grf);
+        public abstract FlagGroupStorage GetFlagGroup(string name);
+        public abstract string GrfToString(uint grf);
+        public abstract Address MakeAddressFromConstant(Constant c);
+        public abstract Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
+        public abstract bool TryParseAddress(string txtAddr, out Address addr);
     }
 }

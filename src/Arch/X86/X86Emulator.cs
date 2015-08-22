@@ -76,7 +76,7 @@ namespace Reko.Arch.X86
             {
                 ip = value;
                 var rdr = arch.CreateImageReader(img, value);
-                dasm = arch.CreateDisassembler(rdr).GetEnumerator();
+                dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
             }
         }
 

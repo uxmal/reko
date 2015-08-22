@@ -23,6 +23,7 @@ using Reko.Environments.Msdos;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -41,7 +42,9 @@ namespace Reko.ImageLoaders.MzExe
 		{
 			this.exe = exe;
             this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = new MsdosPlatform(services, arch);
+            this.platform = this.platform = services.RequireService<IConfigurationService>()
+                .GetEnvironment("ms-dos")
+                .Load(services, arch);
 		}
 
 		public override Address PreferredBaseAddress

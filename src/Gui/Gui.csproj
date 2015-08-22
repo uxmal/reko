@@ -92,6 +92,8 @@
   <ItemGroup>
     <Compile Include="AddressNavigator.cs" />
     <Compile Include="AddressSearchResult.cs" />
+    <Compile Include="Design\ArchitectureDesigner.cs" />
+    <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
@@ -399,6 +401,7 @@
     <Content Include="Images\Binary.ico" />
     <Content Include="Images\CloseTab.ico" />
     <Content Include="Images\Code.ico" />
+    <Content Include="Images\Cpu.ico" />
     <Content Include="Images\Data.ico" />
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\DiscardableSection.ico" />
@@ -409,6 +412,7 @@
     <Content Include="Images\NewBo.ico" />
     <Content Include="Images\NextPhase.ico" />
     <Content Include="Images\Open.ico" />
+    <Content Include="Images\Platform.ico" />
     <Content Include="Images\Procedure.ico" />
     <Content Include="Images\RestartDecompilation.ico" />
     <Content Include="Images\RwSection.ico" />

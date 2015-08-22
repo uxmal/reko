@@ -357,6 +357,7 @@ namespace Reko.UnitTests.Gui.Windows
                     "text=\"foo.exe\" " +
                     "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
                     "tag=\"ProgramDesigner\">" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node " + 
                         "text=\"Image base\" " +
                         "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
@@ -383,6 +384,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
                 "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"ProgramDesigner\">" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegmentNodeDesigner\" />" +
                  "</node>" +
                  "</root>");
@@ -425,6 +427,7 @@ namespace Reko.UnitTests.Gui.Windows
                     "text=\"foo.exe\" " +
                     "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
                     "tag=\"ProgramDesigner\">" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node " +
                         "text=\"Image base\" " +
                         "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +

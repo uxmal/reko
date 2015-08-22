@@ -32,117 +32,110 @@ using System.Text;
 
 namespace Reko.Arch.Sparc
 {
-    public class SparcArchitecture : IProcessorArchitecture
+    public class SparcArchitecture : ProcessorArchitecture
     {
-        private PrimitiveType wordWidth;
-        private PrimitiveType pointerType;
-
         public SparcArchitecture(PrimitiveType wordWidth)
         {
-            this.wordWidth = wordWidth;
-            this.pointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            this.WordWidth = wordWidth;
+            this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            this.FramePointerType = PointerType;
+            this.InstructionBitSize = 32;
         }
 
         #region IProcessorArchitecture Members
 
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new SparcDisassembler(this, imageReader);
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(pointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new SparcProcessorState(this);
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new SparcRewriter(this, rdr, (SparcProcessorState) state, frame, host);
+            return new SparcRewriter(this, rdr, (SparcProcessorState)state, frame, host);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 32; } }
 
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             StringBuilder s = new StringBuilder();
             if ((grf & Registers.N.FlagGroupBits) != 0) s.Append(Registers.N.Name);
@@ -158,34 +151,10 @@ namespace Reko.Arch.Sparc
             return s.ToString();
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public PrimitiveType WordWidth { get { return wordWidth; } }
-
-        public RegisterStorage StackRegister
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public uint CarryFlagMask
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
-
-
         #endregion
     }
 }

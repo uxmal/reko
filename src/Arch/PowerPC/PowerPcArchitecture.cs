@@ -33,10 +33,8 @@ using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
-    public abstract class PowerPcArchitecture : IProcessorArchitecture
+    public abstract class PowerPcArchitecture : ProcessorArchitecture
     {
-        private PrimitiveType wordWidth;
-        private PrimitiveType ptrType;
         private ReadOnlyCollection<RegisterStorage> regs;
         private ReadOnlyCollection<RegisterStorage> fpregs;
         private ReadOnlyCollection<RegisterStorage> vregs;
@@ -54,8 +52,10 @@ namespace Reko.Arch.PowerPC
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
         public PowerPcArchitecture(PrimitiveType wordWidth)
         {
-            this.wordWidth = wordWidth;
-            this.ptrType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            WordWidth = wordWidth;
+            PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            FramePointerType = PointerType;
+            InstructionBitSize = 32;
 
             this.lr = new RegisterStorage("lr", 0x68,   wordWidth);
             this.cr = new RegisterStorage("cr", 0x69,   wordWidth);
@@ -113,49 +113,44 @@ namespace Reko.Arch.PowerPC
 
         #region IProcessorArchitecture Members
 
-        public PowerPcDisassembler CreateDisassembler(ImageReader rdr)
+        public PowerPcDisassembler CreateDisassemblerImpl(ImageReader rdr)
         {
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(FramePointerType); 
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, offset);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public abstract IEnumerable<Address> CreatePointerScanner(
+        public override abstract IEnumerable<Address> CreatePointerScanner(
             ImageMap map, 
             ImageReader rdr,
             IEnumerable<Address> addrs, 
             PointerScannerFlags flags);
 
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            var dasm = new PowerPcDisassembler(this, rdr, WordWidth);
-            return GetTrampolineDestination(dasm, host);
-        }
+        //public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        //{
+        //    var dasm = new PowerPcDisassembler(this, rdr, WordWidth);
+        //    return GetTrampolineDestination(dasm, host);
+        //}
 
         /// <summary>
         /// Detects the presence of a PowerPC trampoline and returns the imported function 
@@ -212,22 +207,22 @@ namespace Reko.Arch.PowerPC
             return host.GetInterceptedCall(addr);
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             return new PowerPcProcedureSerializer(this, typeLoader, defaultCc);
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new PowerPcState(this);
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             return new BitSet(0x80);
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < regs.Count)
                 return regs[i];
@@ -235,73 +230,56 @@ namespace Reko.Arch.PowerPC
                 return null;
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             return this.regs.Where(r => r.Name == name).SingleOrDefault();
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return regs.ToArray();
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 32; } }
-
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             //$BUG: this needs to be better conceved. There are 
             // 32 (!) condition codes in the PowerPC architecture
             return "crX";
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { return ptrType; }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { return ptrType; }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { return this.wordWidth; } 
-        }
-
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new PowerPcRewriter(this, rdr, frame, host);
         }
 
-        public abstract Address MakeAddressFromConstant(Constant c);
+        public override abstract Address MakeAddressFromConstant(Constant c);
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
@@ -328,7 +306,7 @@ namespace Reko.Arch.PowerPC
                 .Select(u => Address.Ptr32(u));
         }
 
-        public override  Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
         }

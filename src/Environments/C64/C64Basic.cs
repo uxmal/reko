@@ -36,7 +36,7 @@ namespace Reko.Environments.C64
     /// Oh why the hell not. C64 Basic can be interpreted as a machine
     /// language of sorts.
     /// </summary>
-    public class C64Basic : IProcessorArchitecture
+    public class C64Basic : ProcessorArchitecture
     {
         private SortedList<ushort, C64BasicInstruction> prog;
         private RegisterStorage stackRegister = new RegisterStorage("sp", 1, PrimitiveType.Ptr16);
@@ -44,9 +44,12 @@ namespace Reko.Environments.C64
         public C64Basic(SortedList<ushort, C64BasicInstruction> prog)
         {
             this.prog = prog;
+            this.PointerType = PrimitiveType.Ptr16;
+            this.InstructionBitSize = 8;
+            this.StackRegister = stackRegister;
         }
 
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             int i = prog.IndexOfKey(imageReader.Address.ToUInt16());
             if (i < 0)
@@ -57,132 +60,99 @@ namespace Reko.Environments.C64
             }
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(PrimitiveType.Ptr16);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage img, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage img, Address addr)
         {
             return new LeImageReader(img, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage img, ulong off)
+        public override ImageReader CreateImageReader(LoadedImage img, ulong off)
         {
             throw new NotImplementedException();
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new C64BasicState(this);
         }
 
-        public Core.Lib.BitSet CreateRegisterBitset()
+        public override Core.Lib.BitSet CreateRegisterBitset()
         {
             return new Core.Lib.BitSet(0x10);
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new C64BasicRewriter(this, rdr.Address, prog, host);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotSupportedException();  //$Makes no sense in C64 Basic!
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return new RegisterStorage[0];
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public Core.Types.PrimitiveType FramePointerType
-        {
-            get { throw new NotImplementedException(); }
-        }
 
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Ptr16; }
-        }
 
-        public Core.Types.PrimitiveType WordWidth
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public int InstructionBitSize
-        {
-            get { return 8; }
-        }
-
-        public RegisterStorage StackRegister
-        {
-            get { return stackRegister; }
-        }
-
-        public uint CarryFlagMask
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }
