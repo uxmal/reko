@@ -95,7 +95,7 @@
         <!-- Environments -->
         <File Source="$(var.AmigaOS.TargetPath)" />
         <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" />
-        <File Source="$(var.AmigaOS_Design.TargetPath)" />
+        <File Source="$(var.AmigaOS.Design.TargetPath)" />
         <File Source="$(var.C64.TargetPath)" />
         <File Source="$(var.MacOS.TargetPath)" />
         <File Source="$(var.MacOS.ProjectDir)macos_classic.xml" />

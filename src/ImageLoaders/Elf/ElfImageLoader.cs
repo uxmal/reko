@@ -326,7 +326,14 @@ namespace Reko.ImageLoaders.Elf
 
         private ImageMapSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
         {
-            return null;        //$NYI
+            switch (shdr.sh_type)
+            {
+            case SectionHeaderType.SHT_DYNAMIC:
+                return new DynamicSectionRenderer64(this, shdr);
+            case SectionHeaderType.SHT_RELA:
+                return new RelaSegmentRenderer64(this, shdr);
+            default: return null;
+            }
         }
 
 
