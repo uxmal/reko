@@ -1416,12 +1416,13 @@ namespace Reko.Arch.M68k
         private static M68kInstruction d68020_cpscc(M68kDisassembler dasm)
         {
             uint extension1;
-            uint extension2;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            // 0 - MMU
+            // 1 - MC68881/2 FPU
+            int cooprocessor_id = (dasm.instruction >> 9) & 7;
             extension1 = dasm.read_imm_16();
-            extension2 = dasm.read_imm_16();
-            dasm.g_dasm_str = string.Format("%ds%-4s  %s; (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.get_ea_mode_str_8(dasm.instruction), extension2);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("{0}cpS{1}  %s; (extension = %x) (2-3)", cooprocessor_id, g_cpcc[extension1 & 0x3f], dasm.get_ea_mode_str_8(dasm.instruction));
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cptrapcc_0(M68kDisassembler dasm)
@@ -1431,7 +1432,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension1 = dasm.read_imm_16();
             extension2 = dasm.read_imm_16();
-            dasm.g_dasm_str = string.Format("%dtrap%-4s; (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
+            dasm.g_dasm_str = string.Format("%dcptrap%-4s; (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
             throw new NotImplementedException();
         }
 
