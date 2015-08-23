@@ -27,12 +27,12 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class SymtabSegmentRenderer : ImageMapSegmentRenderer
+    public class SymtabSegmentRenderer32 : ImageMapSegmentRenderer
     {
         private ElfImageLoader loader;
         private Elf32_SHdr shdr;
 
-        public SymtabSegmentRenderer(ElfImageLoader loader, Elf32_SHdr shdr)
+        public SymtabSegmentRenderer32(ElfImageLoader loader, Elf32_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -70,5 +70,49 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
+    }
+
+    public class SymtabSegmentRenderer64 : ImageMapSegmentRenderer
+    {
+        private ElfImageLoader loader;
+        private Elf64_SHdr shdr;
+
+        public SymtabSegmentRenderer64(ElfImageLoader loader, Elf64_SHdr shdr)
+        {
+            this.loader = loader;
+            this.shdr = shdr;
+        }
+
+        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        {
+            var entries = (int)shdr.sh_size / (int) shdr.sh_entsize;
+            var symtab = (int) shdr.sh_link;
+            var rdr = loader.CreateReader(shdr.sh_offset);
+            for (var i = 0; i < entries; ++i)
+            {
+                uint iName;
+                if (!rdr.TryReadUInt32(out iName))
+                    return;
+                byte info;
+                if (!rdr.TryReadByte(out info))
+                    return;
+                byte other;
+                if (!rdr.TryReadByte(out other))
+                    return;
+                ushort shIndex;
+                if (!rdr.TryReadUInt16(out shIndex))
+                    return;
+                ulong value;
+                if (!rdr.TryReadUInt64(out value))
+                    return;
+                ulong size;
+                if (!rdr.TryReadUInt64(out size))
+                    return;
+                string symStr = loader.GetStrPtr64(symtab, iName);
+                string segName = loader.GetSectionName(shIndex);
+                formatter.Write("{0,4} {1,-40} {2:X8} {3:X8} {4:X2} {5}", i, symStr, value, size, info & 0xFF, segName);
+                formatter.WriteLine();
+            }
+        }
     }
 }

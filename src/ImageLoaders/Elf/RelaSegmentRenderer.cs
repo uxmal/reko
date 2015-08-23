@@ -58,7 +58,7 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = loader.GetSymbol(symtab, (int)sym);
-                formatter.Write("{0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                formatter.Write("{0:X8} {1,3} {2:X8} {3:X8} {4} ({5})", offset, info & 0xFF, sym, addend, symStr, sym);
                 formatter.WriteLine();
             }
         }
@@ -85,16 +85,16 @@ namespace Reko.ImageLoaders.Elf
                 ulong offset;
                 if (!rdr.TryReadUInt64(out offset))
                     return;
-                uint info;
-                if (!rdr.TryReadUInt32(out info))
+                ulong info;
+                if (!rdr.TryReadUInt64(out info))
                     return;
                 ulong addend;
                 if (!rdr.TryReadUInt64(out addend))
                     return;
 
-                uint sym = info >> 8;
-                string symStr = loader.GetSymbol(symtab, (int)sym);
-                formatter.Write("{0:X8} {1,3} {2:X16} {3:X16} {4}", offset, info & 0xFF, sym, addend, symStr);
+                ulong sym = info >> 32;
+                string symStr = loader.GetSymbol64(symtab, (int)sym);
+                formatter.Write("{0:X8} {1,3} {2:X8} {3:X16} {4} ({5})", offset, info & 0xFFFFFFFF, sym, addend, symStr, sym);
                 formatter.WriteLine();
             }
         }
