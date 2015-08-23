@@ -113,7 +113,124 @@ namespace Reko.ImageLoaders.Elf
         private const ushort EM_MMIX = 80;          // Donald Knuth's educational 64-bit processor 
         private const ushort EM_HUANY = 81;         // Harvard University machine-independent object files 
         private const ushort EM_PRISM = 82;         // SiTera Prism 
-
+        private const ushort EM_AVR           = 83; // Atmel AVR 8-bit microcontroller
+        private const ushort EM_FR30          = 84; // Fujitsu FR30
+        private const ushort EM_D10V          = 85; // Mitsubishi D10V
+        private const ushort EM_D30V          = 86; // Mitsubishi D30V
+        private const ushort EM_V850          = 87; // NEC v850
+        private const ushort EM_M32R          = 88; // Mitsubishi M32R
+        private const ushort EM_MN10300       = 89; // Matsushita MN10300
+        private const ushort EM_MN10200       = 90; // Matsushita MN10200
+        private const ushort EM_PJ            = 91; // picoJava
+        private const ushort EM_OPENRISC      = 92; // OpenRISC 32-bit embedded processor
+        private const ushort EM_ARC_COMPACT   = 93; // ARC International ARCompact processor (old
+                                                    // spelling/synonym: EM_ARC_A5)
+        private const ushort EM_XTENSA        = 94; // Tensilica Xtensa Architecture
+        private const ushort EM_VIDEOCORE     = 95; // Alphamosaic VideoCore processor
+        private const ushort EM_TMM_GPP       = 96; // Thompson Multimedia General Purpose Processor
+        private const ushort EM_NS32K         = 97; // National Semiconductor 32000 series
+        private const ushort EM_TPC           = 98; // Tenor Network TPC processor
+        private const ushort EM_SNP1K         = 99; // Trebia SNP 1000 processor
+        private const ushort EM_ST200         = 100; // STMicroelectronics (www.st.com) ST200
+        private const ushort EM_IP2K          = 101; // Ubicom IP2xxx microcontroller family
+        private const ushort EM_MAX           = 102; // MAX Processor
+        private const ushort EM_CR            = 103; // National Semiconductor CompactRISC microprocessor
+        private const ushort EM_F2MC16        = 104; // Fujitsu F2MC16
+        private const ushort EM_MSP430        = 105; // Texas Instruments embedded microcontroller msp430
+        private const ushort EM_BLACKFIN      = 106; // Analog Devices Blackfin (DSP) processor
+        private const ushort EM_SE_C33        = 107; // S1C33 Family of Seiko Epson processors
+        private const ushort EM_SEP           = 108; // Sharp embedded microprocessor
+        private const ushort EM_ARCA          = 109; // Arca RISC Microprocessor
+        private const ushort EM_UNICORE       = 110; // Microprocessor series from PKU-Unity Ltd. and MPRC
+                                                     // of Peking University
+        private const ushort EM_EXCESS        = 111; // eXcess: 16/32/64-bit configurable embedded CPU
+        private const ushort EM_DXP           = 112; // Icera Semiconductor Inc. Deep Execution Processor
+        private const ushort EM_ALTERA_NIOS2  = 113; // Altera Nios II soft-core processor
+        private const ushort EM_CRX           = 114; // National Semiconductor CompactRISC CRX
+        private const ushort EM_XGATE         = 115; // Motorola XGATE embedded processor
+        private const ushort EM_C166          = 116; // Infineon C16x/XC16x processor
+        private const ushort EM_M16C          = 117; // Renesas M16C series microprocessors
+        private const ushort EM_DSPIC30F      = 118; // Microchip Technology dsPIC30F Digital Signal
+                                                     // Controller
+        private const ushort EM_CE            = 119; // Freescale Communication Engine RISC core
+        private const ushort EM_M32C          = 120; // Renesas M32C series microprocessors
+        private const ushort EM_TSK3000       = 131; // Altium TSK3000 core
+        private const ushort EM_RS08          = 132; // Freescale RS08 embedded processor
+        private const ushort EM_SHARC         = 133; // Analog Devices SHARC family of 32-bit DSP
+                                                     // processors
+        private const ushort EM_ECOG2         = 134; // Cyan Technology eCOG2 microprocessor
+        private const ushort EM_SCORE7        = 135; // Sunplus S+core7 RISC processor
+        private const ushort EM_DSP24         = 136; // New Japan Radio (NJR) 24-bit DSP Processor
+        private const ushort EM_VIDEOCORE3    = 137; // Broadcom VideoCore III processor
+        private const ushort EM_LATTICEMICO32 = 138; // RISC processor for Lattice FPGA architecture
+        private const ushort EM_SE_C17        = 139; // Seiko Epson C17 family
+        private const ushort EM_TI_C6000      = 140; // The Texas Instruments TMS320C6000 DSP family
+        private const ushort EM_TI_C2000      = 141; // The Texas Instruments TMS320C2000 DSP family
+        private const ushort EM_TI_C5500      = 142; // The Texas Instruments TMS320C55x DSP family
+        private const ushort EM_MMDSP_PLUS    = 160; // STMicroelectronics 64bit VLIW Data Signal Processor
+        private const ushort EM_CYPRESS_M8C   = 161; // Cypress M8C microprocessor
+        private const ushort EM_R32C          = 162; // Renesas R32C series microprocessors
+        private const ushort EM_TRIMEDIA      = 163; // NXP Semiconductors TriMedia architecture family
+        private const ushort EM_HEXAGON       = 164; // Qualcomm Hexagon processor
+        private const ushort EM_8051          = 165; // Intel 8051 and variants
+        private const ushort EM_STXP7X        = 166; // STMicroelectronics STxP7x family of configurable
+                                                     // and extensible RISC processors
+        private const ushort EM_NDS32         = 167; // Andes Technology compact code size embedded RISC
+                                                     // processor family
+        private const ushort EM_ECOG1         = 168; // Cyan Technology eCOG1X family
+        private const ushort EM_ECOG1X        = 168; // Cyan Technology eCOG1X family
+        private const ushort EM_MAXQ30        = 169; // Dallas Semiconductor MAXQ30 Core Micro-controllers
+        private const ushort EM_XIMO16        = 170; // New Japan Radio (NJR) 16-bit DSP Processor
+        private const ushort EM_MANIK         = 171; // M2000 Reconfigurable RISC Microprocessor
+        private const ushort EM_CRAYNV2       = 172; // Cray Inc. NV2 vector architecture
+        private const ushort EM_RX            = 173; // Renesas RX family
+        private const ushort EM_METAG         = 174; // Imagination Technologies META processor
+                                                     // architecture
+        private const ushort EM_MCST_ELBRUS   = 175; // MCST Elbrus general purpose hardware architecture
+        private const ushort EM_ECOG16        = 176; // Cyan Technology eCOG16 family
+        private const ushort EM_CR16          = 177; // National Semiconductor CompactRISC CR16 16-bit
+                                                     // microprocessor
+        private const ushort EM_ETPU          = 178; // Freescale Extended Time Processing Unit
+        private const ushort EM_SLE9X         = 179; // Infineon Technologies SLE9X core
+        private const ushort EM_L10M          = 180; // Intel L10M
+        private const ushort EM_K10M          = 181; // Intel K10M
+        private const ushort EM_AARCH64       = 183; // ARM AArch64
+        private const ushort EM_AVR32         = 185; // Atmel Corporation 32-bit microprocessor family
+        private const ushort EM_STM8          = 186; // STMicroeletronics STM8 8-bit microcontroller
+        private const ushort EM_TILE64        = 187; // Tilera TILE64 multicore architecture family
+        private const ushort EM_TILEPRO       = 188; // Tilera TILEPro multicore architecture family
+        private const ushort EM_CUDA          = 190; // NVIDIA CUDA architecture
+        private const ushort EM_TILEGX        = 191; // Tilera TILE-Gx multicore architecture family
+        private const ushort EM_CLOUDSHIELD   = 192; // CloudShield architecture family
+        private const ushort EM_COREA_1ST     = 193; // KIPO-KAIST Core-A 1st generation processor family
+        private const ushort EM_COREA_2ND     = 194; // KIPO-KAIST Core-A 2nd generation processor family
+        private const ushort EM_ARC_COMPACT2  = 195; // Synopsys ARCompact V2
+        private const ushort EM_OPEN8         = 196; // Open8 8-bit RISC soft processor core
+        private const ushort EM_RL78          = 197; // Renesas RL78 family
+        private const ushort EM_VIDEOCORE5    = 198; // Broadcom VideoCore V processor
+        private const ushort EM_78KOR         = 199; // Renesas 78KOR family
+        private const ushort EM_56800EX       = 200; // Freescale 56800EX Digital Signal Controller (DSC)
+        private const ushort EM_BA1           = 201; // Beyond BA1 CPU architecture
+        private const ushort EM_BA2           = 202; // Beyond BA2 CPU architecture
+        private const ushort EM_XCORE         = 203; // XMOS xCORE processor family
+        private const ushort EM_MCHP_PIC      = 204; // Microchip 8-bit PIC(r) family
+        private const ushort EM_INTEL205      = 205; // Reserved by Intel
+        private const ushort EM_INTEL206      = 206; // Reserved by Intel
+        private const ushort EM_INTEL207      = 207; // Reserved by Intel
+        private const ushort EM_INTEL208      = 208; // Reserved by Intel
+        private const ushort EM_INTEL209      = 209; // Reserved by Intel
+        private const ushort EM_KM32          = 210; // KM211 KM32 32-bit processor
+        private const ushort EM_KMX32         = 211; // KM211 KMX32 32-bit processor
+        private const ushort EM_KMX16         = 212; // KM211 KMX16 16-bit processor
+        private const ushort EM_KMX8          = 213; // KM211 KMX8 8-bit processor
+        private const ushort EM_KVARC         = 214; // KM211 KVARC processor
+        private const ushort EM_CDP           = 215; // Paneve CDP architecture family
+        private const ushort EM_COGE          = 216; // Cognitive Smart Memory Processor
+        private const ushort EM_COOL          = 217; // iCelero CoolEngine
+        private const ushort EM_NORC          = 218; // Nanoradio Optimized RISC
+        private const ushort EM_CSR_KALIMBA   = 219; // CSR Kalimba architecture family
+        private const ushort EM_AMDGPU        = 224;  // AMD GPU architecture
+  
         private const uint SHF_WRITE = 0x1;
         private const uint SHF_ALLOC = 0x2;
         private const uint SHF_EXECINSTR = 0x4;
@@ -332,10 +449,12 @@ namespace Reko.ImageLoaders.Elf
                 return new DynamicSectionRenderer64(this, shdr);
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer64(this, shdr);
+            case SectionHeaderType.SHT_SYMTAB:
+            case SectionHeaderType.SHT_DYNSYM:
+                return new SymtabSegmentRenderer64(this, shdr);
             default: return null;
             }
         }
-
 
         private ImageMapSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
         {
@@ -853,7 +972,6 @@ namespace Reko.ImageLoaders.Elf
             var rela_plt = GetSectionInfoByName64(".rela.plt");
             var plt = GetSectionInfoByName64(".plt");
             var relaRdr = CreateReader(rela_plt.sh_offset);
-            var pltRdr = CreateReader(plt.sh_offset);
             for (ulong i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
             {
                 // Read the .rela.plt entry
@@ -867,18 +985,10 @@ namespace Reko.ImageLoaders.Elf
                 if (!relaRdr.TryReadInt64(out addend))
                     return;
 
-                // Read the .plt entry. We don't care about its contents,
-                // only its address. Anyone accessing that address is
-                // trying to access the symbol.
-
-                ulong thunkAddress;
-                if (!pltRdr.TryReadUInt64(out thunkAddress))
-                    break;
-
                 ulong sym = info >> 32;
                 string symStr = GetSymbol64((int)rela_plt.sh_link, (int)sym);
 
-                var addr = Address.Ptr64(plt.sh_addr + (uint)i *  plt.sh_entsize);
+                var addr = Address.Ptr64(plt.sh_addr + (uint)(i + 1) * plt.sh_entsize);
                 importReferences.Add(
                     addr,
                     new NamedImportReference(addr, null, symStr));
@@ -1228,6 +1338,17 @@ namespace Reko.ImageLoaders.Elf
             }
             // Get a pointer to the start of the string table and add the offset
             return ReadAsciiString( RawImage, sect.sh_offset + offset);
+        }
+
+        public string GetStrPtr64(Elf64_SHdr sect, uint offset)
+        {
+            if (sect == null)
+            {
+                // Most commonly, this will be an null, because a call to GetSectionByName() failed
+                throw new ArgumentException("GetStrPtr passed null section.");
+            }
+            // Get a pointer to the start of the string table and add the offset
+            return ReadAsciiString(RawImage, sect.sh_offset + offset);
         }
 
         public string GetStrPtr(int idx, uint offset)
