@@ -22,7 +22,9 @@ using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Lib;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,6 +50,11 @@ namespace Reko.Environments.MacOS
             var bitset = Architecture.CreateRegisterBitset();
             Registers.a7.SetAliases(bitset, true);
             return bitset;
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -91,7 +98,7 @@ namespace Reko.Environments.MacOS
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             this.TypeLibs = ((IEnumerable)envCfg.TypeLibraries)
                 .OfType<ITypeLibraryElement>()
-                .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
+                .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetPath(tl.Name)))
                 .Where(tl => tl != null).ToArray();
         }
     }

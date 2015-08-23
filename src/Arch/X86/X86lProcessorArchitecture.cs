@@ -134,11 +134,6 @@ namespace Reko.Arch.X86
             return mode.CreateInstructionScanner(map, rdr, knownLinAddresses, flags);
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            return new X86ProcedureSerializer(this, typeLoader, defaultCc);
-        }
-
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return mode.CreateStackAccess(frame, offset, dataType);

@@ -515,7 +515,7 @@ namespace Reko.Tools.C2Xml
             case CTokenType.__Fastcall:
             case CTokenType.__Stdcall:
                 if (callingConvention != CTokenType.None)
-                    throw new FormatException(string.Format("Unexpected extra calling convetion specifier '{0}'.", callingConvention));
+                    throw new FormatException(string.Format("Unexpected extra calling convention specifier '{0}'.", callingConvention));
                 callingConvention = storageClassSpec.Type;
                 break;
             }

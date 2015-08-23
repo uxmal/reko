@@ -120,11 +120,6 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             return (0 <= i && i < regs.Length)

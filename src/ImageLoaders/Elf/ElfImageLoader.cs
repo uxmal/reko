@@ -437,7 +437,7 @@ namespace Reko.ImageLoaders.Elf
             return ((IEnumerable)env.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Where(tl => tl.Architecture == "ppc32")
-                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
+                    .Select(tl => tlSvc.LoadLibrary(platform, tl.Name))
                     .Where(tl => tl != null);
         }
 

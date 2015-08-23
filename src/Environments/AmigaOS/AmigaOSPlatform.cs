@@ -61,6 +61,11 @@ namespace Reko.Environments.AmigaOS
                     RtlClass.Transfer));
         }
 
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
+        }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             var bitset = Architecture.CreateRegisterBitset();
@@ -111,8 +116,9 @@ namespace Reko.Environments.AmigaOS
         private Dictionary<int, SystemService> LoadLibraryDef( string lib_name, int version ) 
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = Architecture.CreateProcedureSerializer(
-                new TypeLibraryLoader(Architecture,true),
+            var sser = new M68kProcedureSerializer(
+                (M68kArchitecture) Architecture,
+                new TypeLibraryLoader(this, true),
                 DefaultCallingConvention);
 
             using (var rdr = new StreamReader(fsSvc.CreateFileStream(lib_name+".funcs", FileMode.Open, FileAccess.Read)))

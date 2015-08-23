@@ -62,9 +62,9 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
             tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
-                .Do(new Func<IProcessorArchitecture, string, TypeLibrary>((a, n) =>
+                .Do(new Func<Platform, string, TypeLibrary>((p, n) =>
                 {
-                    var lib = TypeLibrary.Load(a, Path.ChangeExtension(n, ".xml"));
+                    var lib = TypeLibrary.Load(p, Path.ChangeExtension(n, ".xml"));
                     return lib;
                 }));
             services.Replay();

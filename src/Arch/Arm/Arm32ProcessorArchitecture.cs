@@ -101,11 +101,6 @@ namespace Reko.Arch.Arm
             }
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            return new ArmProcedureSerializer(this, typeLoader, defaultCc);
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             return A32Registers.GpRegs[i];

@@ -84,11 +84,6 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

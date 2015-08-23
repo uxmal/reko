@@ -26,6 +26,7 @@ using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Linq;
@@ -101,6 +102,11 @@ namespace Reko.Environments.Win32
             Registers.fs.SetAliases(bitset, true);
             Registers.gs.SetAliases(bitset, true);
             return bitset;
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
@@ -184,8 +190,8 @@ namespace Reko.Environments.Win32
         {
             return SignatureGuesser.SignatureFromName(
                 fnName, 
-                new TypeLibraryLoader(Architecture, true),
-                Architecture);
+                new TypeLibraryLoader(this, true),
+                this);
         }
 	}
 }

@@ -88,11 +88,6 @@ namespace Reko.Arch.M68k
             return new BeImageReader(image, offset);
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            return new M68kProcedureSerializer(this, typeLoader, defaultCc);
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             return Registers.GetRegister(i);

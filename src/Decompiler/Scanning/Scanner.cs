@@ -489,8 +489,8 @@ namespace Reko.Scanning
             var proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
-                var sser = program.Architecture.CreateProcedureSerializer(
-                    new TypeLibraryLoader(program.Architecture, true),
+                var sser = program.Platform.CreateProcedureSerializer(
+                    new TypeLibraryLoader(program.Platform, true),
                     program.Platform.DefaultCallingConvention);
                 proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
             }

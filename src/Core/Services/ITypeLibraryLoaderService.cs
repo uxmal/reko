@@ -27,7 +27,7 @@ namespace Reko.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
-        TypeLibrary LoadLibrary(IProcessorArchitecture arch, string name);
+        TypeLibrary LoadLibrary(Platform platform, string name);
         
         /// <summary>
         /// Loads the characteristics library for the dynamic library
@@ -40,7 +40,7 @@ namespace Reko.Core.Services
 
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
     {
-        public TypeLibrary LoadLibrary(IProcessorArchitecture arch, string name)
+        public TypeLibrary LoadLibrary(Platform platform, string name)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Reko.Core.Services
                 if (!File.Exists(libFileName))
                     return null;
 
-                var lib = TypeLibrary.Load(arch, libFileName);
+                var lib = TypeLibrary.Load(platform, libFileName);
                 lib.Filename = libFileName;
                 return lib;
             }

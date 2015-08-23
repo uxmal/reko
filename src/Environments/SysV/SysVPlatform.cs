@@ -23,7 +23,9 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +50,11 @@ namespace Reko.Environments.SysV
             get { return ""; }
         }
 
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
+        }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();
@@ -62,7 +69,7 @@ namespace Reko.Environments.SysV
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(Architecture, tl.Name))
+                    .Select(tl => tlSvc.LoadLibrary(this, tl.Name))
                     .Where(tl => tl != null).ToArray();
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()

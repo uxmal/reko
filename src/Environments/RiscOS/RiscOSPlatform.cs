@@ -51,6 +51,11 @@ namespace Reko.Environments.RiscOS
             return Architecture.CreateRegisterBitset();
         }
 
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             switch (vector)

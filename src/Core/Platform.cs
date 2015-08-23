@@ -22,6 +22,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -86,6 +87,15 @@ namespace Reko.Core
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }
 
+
+        /// <summary>
+        /// Creates a procedure serializer that understands the calling conventions used on this
+        /// processor and environment
+        /// </summary>
+        /// <param name="typeLoader">Used to resolve data types</param>
+        /// <param name="defaultConvention">Default calling convention, if none specified.</param>
+        public abstract ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+
         /// <summary>
         /// Utility function for subclasses that loads all type libraries and characteristics libraries 
         /// </summary>
@@ -103,7 +113,7 @@ namespace Reko.Core
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
+                    .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetPath(tl.Name)))
                     .Where(tl => tl != null).ToArray();
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()
@@ -194,6 +204,11 @@ namespace Reko.Core
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotSupportedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

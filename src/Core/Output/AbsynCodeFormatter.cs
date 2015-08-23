@@ -79,12 +79,13 @@ namespace Reko.Core.Output
             ulong p = u.ToUInt64();
             var decRep = p.ToString(CultureInfo.InvariantCulture);
             var hexRep = p.ToString("X", CultureInfo.InvariantCulture);
+            var padHexRep = hexRep;
             if (hexRep.Length < decRep.Length)
             {
-                hexRep = new string('0', decRep.Length - hexRep.Length) + hexRep;
+                padHexRep = new string('0', decRep.Length - hexRep.Length) + hexRep;
             }
             var decEntropy = Entropy(decRep, DecimalSymbols);
-            var hexEntropy = Entropy(hexRep, HexSymbols);
+            var hexEntropy = Entropy(padHexRep, HexSymbols);
             if (decEntropy < hexEntropy)
             {
                 return decRep;
@@ -93,10 +94,11 @@ namespace Reko.Core.Output
             {
                 var sb = new StringBuilder();
                 if ((p & msb) != 0 && 
-                    Bits.BitCount(p) > Bits.BitCount(~p))
+                    Bits.BitCount(m & p) > Bits.BitCount(m & ~p))
                 {
                     sb.Append('~');
-                    p = ~p;
+                    p = m & ~p;
+                    hexRep = p.ToString("X", CultureInfo.InvariantCulture);
                 }
                 sb.Append("0x");
                 int length = hexRep.Length;

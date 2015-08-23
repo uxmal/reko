@@ -427,9 +427,8 @@ namespace Reko
                 .Where(sc => sc != null && sc.Signature != null)
                 .Select(sc =>
                 {
-                    //$BUG: should be program.platform  that creates proc. serializer
-                    var sser = program.Architecture.CreateProcedureSerializer(
-                        new TypeLibraryLoader(program.Architecture, true), null);
+                    var sser = program.Platform.CreateProcedureSerializer(
+                        new TypeLibraryLoader(program.Platform, true), null);
                     Address addr;
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
                     {

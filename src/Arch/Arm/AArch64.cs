@@ -69,12 +69,6 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public override ProcessorState CreateProcessorState()
         {
             throw new NotImplementedException();

@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Linq;
@@ -46,6 +47,12 @@ namespace Reko.Environments.Msdos
             Registers.sp.SetAliases(bitset, true);
             Registers.esp.SetAliases(bitset, true);
             return bitset;
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            //$BUGBUG: unlikely to be correct in long run.
+            return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
         }
 
 		public override SystemService FindService(int vector, ProcessorState state)
@@ -91,7 +98,7 @@ namespace Reko.Environments.Msdos
 
             realModeServices = lib.Procedures
                 .Cast<SerializedService>()
-                .Select(s => s.Build(arch))
+                .Select(s => s.Build(this))
                 .ToArray();
         }
 

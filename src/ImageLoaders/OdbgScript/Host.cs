@@ -110,8 +110,6 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-      
-
         public virtual bool DialogASK(string title, out string returned)
         {
             throw new NotImplementedException();

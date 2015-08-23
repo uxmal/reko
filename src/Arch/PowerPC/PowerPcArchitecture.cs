@@ -207,11 +207,6 @@ namespace Reko.Arch.PowerPC
             return host.GetInterceptedCall(addr);
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            return new PowerPcProcedureSerializer(this, typeLoader, defaultCc);
-        }
-
         public override ProcessorState CreateProcessorState()
         {
             return new PowerPcState(this);

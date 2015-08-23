@@ -28,18 +28,26 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Reko.Environments.Msdos;
 
 namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedSequenceTests
 	{
-		private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+        private Platform platform;
         private X86ProcedureSerializer ser;
 
+        [SetUp]
+        public void Setup()
+        {
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(null, arch);
+        }    
+        
         private void Given_X86ProcedureSerializer()
         {
-            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(arch, true), "stdapi");
+            this.ser = new X86ProcedureSerializer((IntelArchitecture) platform.Architecture, new TypeLibraryLoader(platform, true), "stdapi");
         }
 
 		[Test]
@@ -65,7 +73,7 @@ namespace Reko.UnitTests.Core.Serialization
 		[Test]
 		public void SseqBuildSequence()
 		{
-            Frame f = arch.CreateFrame();
+            Frame f = platform.Architecture.CreateFrame();
 			Identifier head = f.EnsureRegister(Registers.dx);
 			Identifier tail = f.EnsureRegister(Registers.ax);
 			Identifier seq = f.EnsureSequence(head, tail, PrimitiveType.Word32);
@@ -85,7 +93,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			SerializedSignature sig = new SerializedSignature();
             Given_X86ProcedureSerializer();
-            ProcedureSignature ps = ser.Deserialize(sig, arch.CreateFrame());
+            ProcedureSignature ps = ser.Deserialize(sig, platform.Architecture.CreateFrame());
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
 			Assert.IsTrue(ps.ParametersValid);
 		}

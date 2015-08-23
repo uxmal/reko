@@ -30,6 +30,7 @@ using System.Text;
 using Rhino.Mocks;
 using System.ComponentModel.Design;
 using Reko.Core.Configuration;
+using Reko.Arch.M68k;
 
 namespace Reko.UnitTests.ImageLoaders.Hunk
 {
@@ -48,6 +49,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
             var cfgSvc = mr.Stub<IConfigurationService>();
             var opEnv = mr.Stub<OperatingEnvironment>();
             cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(opEnv);
+            cfgSvc.Stub(c => c.GetArchitecture("m68k")).Return(new M68kArchitecture());
             opEnv.Stub(o => o.Load(null, null))
                 .IgnoreArguments()
                 .Do(new Func<IServiceProvider, IProcessorArchitecture, Platform>((sp, arch) =>

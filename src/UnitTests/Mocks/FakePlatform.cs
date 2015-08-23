@@ -20,6 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,6 +38,11 @@ namespace Reko.UnitTests.Mocks
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

@@ -74,11 +74,6 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotImplementedException();
-        }
-
         public override BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();

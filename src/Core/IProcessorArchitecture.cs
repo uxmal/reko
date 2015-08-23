@@ -114,6 +114,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="typeLoader">Used to resolve data types</param>
         /// <param name="defaultConvention">Default calling convention, if none specified.</param>
+        [Obsolete("", true)]
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
 
 		RegisterStorage GetRegister(int i);			        // Returns register corresponding to number i.
@@ -174,7 +175,8 @@ namespace Reko.Core
         public abstract ImageReader CreateImageReader(LoadedImage img, Address addr);
         public abstract ImageReader CreateImageReader(LoadedImage img, ulong off);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
-        public abstract ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        [Obsolete("", true)]
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) { throw new NotImplementedException(); }
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract BitSet CreateRegisterBitset();

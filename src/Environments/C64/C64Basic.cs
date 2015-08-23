@@ -95,11 +95,6 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotSupportedException();  //$Makes no sense in C64 Basic!
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

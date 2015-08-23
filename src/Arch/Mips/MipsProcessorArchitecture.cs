@@ -80,11 +80,6 @@ namespace Reko.Arch.Mips
             return new BeImageReader(image, offset);
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             return Registers.generalRegs[i];
