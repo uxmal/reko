@@ -287,25 +287,25 @@ namespace Reko.ImageLoaders.Elf
 
         public Platform CreatePlatform(byte osAbi)
         {
-            DefaultPlatform defaultPlatform;
-            var dcSvc = Services.RequireService<IConfigurationService>();
+            string envName;
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
-                defaultPlatform = new DefaultPlatform(Services, arch);
-                defaultPlatform.TypeLibraries.AddRange(LoadTypeLibraries());
-                return defaultPlatform;
+                envName = "elf-neutral";
+                //defaultPlatform.TypeLibraries.AddRange(LoadTypeLibraries());
+                break;
             case ELFOSABI_CELL_LV2: // PS/3
                 //$TODO: I know nothing about that platform, so use
                 // defaults. If you think you know better, and you think
                 // the platform differs by a significant amount, 
                 // implement a PS/3 platform and use it here.
-                var env = dcSvc.GetEnvironment("elf-cell-lv2");
-                var platform = env.Load(Services, arch);
-                return platform;
+                envName = "elf-cell-lv2";
+                break;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
             }
+            return cfgSvc.GetEnvironment(envName).Load(Services, arch);
         }
 
         public IEnumerable<TypeLibrary> LoadTypeLibraries()
@@ -622,7 +622,7 @@ namespace Reko.ImageLoaders.Elf
                 }
                 else if (Header64.e_machine == EM_X86_64)
                 {
-                    //$TODO
+                    RelocateX86_64();
                 }
                 else
                     throw new NotImplementedException(string.Format("Relocations for architecture {0} not implemented.", Header64.e_machine));
@@ -839,6 +839,52 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
+        /// <remarks>
+        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
+        /// should contain the same number of entries, even if the individual entry 
+        /// sizes are distinct. The entries in .real.plt refer to symbols while the
+        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
+        /// of pointers in the .plt table is a "trampoline", and should be replaced
+        /// in the decompiled code with just a call to the symbol obtained from the
+        /// .real.plt section.
+        /// </remarks>
+        public void RelocateX86_64()
+        {
+            var rela_plt = GetSectionInfoByName64(".rela.plt");
+            var plt = GetSectionInfoByName64(".plt");
+            var relaRdr = CreateReader(rela_plt.sh_offset);
+            var pltRdr = CreateReader(plt.sh_offset);
+            for (ulong i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
+            {
+                // Read the .rela.plt entry
+                ulong offset;
+                if (!relaRdr.TryReadUInt64(out offset))
+                    return;
+                ulong info;
+                if (!relaRdr.TryReadUInt64(out info))
+                    return;
+                long addend;
+                if (!relaRdr.TryReadInt64(out addend))
+                    return;
+
+                // Read the .plt entry. We don't care about its contents,
+                // only its address. Anyone accessing that address is
+                // trying to access the symbol.
+
+                ulong thunkAddress;
+                if (!pltRdr.TryReadUInt64(out thunkAddress))
+                    break;
+
+                ulong sym = info >> 32;
+                string symStr = GetSymbol64((int)rela_plt.sh_link, (int)sym);
+
+                var addr = Address.Ptr64(plt.sh_addr + (uint)i *  plt.sh_entsize);
+                importReferences.Add(
+                    addr,
+                    new NamedImportReference(addr, null, symStr));
+            }
+        }
+
         public Elf64_SHdr GetSectionInfoByName64(string sectionName)
         {
             return
@@ -903,6 +949,16 @@ namespace Reko.ImageLoaders.Elf
             var rdr = CreateReader(offset);
             rdr.TryReadUInt32(out offset);
             return GetStrPtr((int)symSection.sh_link, offset);
+        }
+
+        public string GetSymbol64(int iSymbolSection, int symbolNo)
+        {
+            var symSection = SectionHeaders64[iSymbolSection];
+            var strSection = SectionHeaders64[(int)symSection.sh_link];
+            ulong offset = symSection.sh_offset + (ulong)symbolNo * symSection.sh_entsize;
+            var rdr = CreateReader(offset);
+            rdr.TryReadUInt64(out offset);
+            return GetStrPtr64((int)symSection.sh_link, (uint)offset);
         }
 
         const int DT_NULL = 0;
@@ -1173,7 +1229,7 @@ namespace Reko.ImageLoaders.Elf
             // Get a pointer to the start of the string table and add the offset
             return ReadAsciiString( RawImage, sect.sh_offset + offset);
         }
-        
+
         public string GetStrPtr(int idx, uint offset)
         {
             if (idx < 0)
@@ -1183,6 +1239,17 @@ namespace Reko.ImageLoaders.Elf
             }
             // Get a pointer to the start of the string table and add the offset
             return ReadAsciiString(RawImage, SectionHeaders[idx].sh_offset + offset);
+        }
+
+        public string GetStrPtr64(int idx, uint offset)
+        {
+            if (idx < 0)
+            {
+                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
+                throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
+            }
+            // Get a pointer to the start of the string table and add the offset
+            return ReadAsciiString(RawImage, SectionHeaders64[idx].sh_offset + offset);
         }
 #if ZLON
     public class ElfObsolete

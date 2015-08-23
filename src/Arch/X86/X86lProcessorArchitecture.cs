@@ -111,7 +111,7 @@ namespace Reko.Arch.X86
 
 		public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
 		{
-            return CreateDisassembler(imageReader);
+            return CreateDisassemblerImpl(imageReader);
 		}
 
         public override BitSet CreateRegisterBitset()

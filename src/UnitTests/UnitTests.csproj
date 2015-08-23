@@ -641,6 +641,9 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\*.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Lib\Bits.Tests.cs" />
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
