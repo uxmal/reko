@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="A64Registers.cs" />
-    <Compile Include="AA64Opcode.cs" />
     <Compile Include="AArch64.cs" />
     <Compile Include="AArch64Disassembler.cs" />
     <Compile Include="AArch64Instruction.cs" />

@@ -42,7 +42,6 @@ namespace Reko.Environments.SysV
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
-
         }
 
         public override string DefaultCallingConvention
@@ -52,7 +51,7 @@ namespace Reko.Environments.SysV
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            throw new NotImplementedException();
+            return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
         public override BitSet CreateImplicitArgumentRegisters()
