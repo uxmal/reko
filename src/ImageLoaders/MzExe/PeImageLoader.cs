@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Reko.Core.Configuration;
+using Reko.Core.Types;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -533,6 +534,21 @@ namespace Reko.ImageLoaders.MzExe
             public override bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
+                outer.imageMap.AddItemWithSize(
+                    addrThunk, 
+                    new ImageMapItem { 
+                        Address = addrThunk,
+                        DataType = new Pointer(new CodeType(), 4),
+                        Size = 4,
+                    });
+                outer.imageMap.AddItemWithSize(
+                    rdrIlt.Address,
+                    new ImageMapItem
+                    {
+                        Address = rdrIlt.Address,
+                        DataType = new Pointer(new CodeType(), 4),
+                        Size = 4,
+                    });
                 uint iatEntry = rdrIat.ReadLeUInt32();
                 uint iltEntry = rdrIlt.ReadLeUInt32();
                 if (iltEntry == 0)
