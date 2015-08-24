@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="LONG">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="ULONG">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="LONGBITS">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="WORD">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="UWORD">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="WORDBITS">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="BYTE">
+      <prim domain="Character" size="1" />
+    </typedef>
+    <typedef name="UBYTE">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <typedef name="BYTEBITS">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <typedef name="STRPTR">
+      <ptr>
+        <prim domain="UnsignedInt" size="1" />
+      </ptr>
+    </typedef>
+    <typedef name="APTR">
+      <ptr>
+        <type>STRPTR</type>
+      </ptr>
+    </typedef>
+    <typedef name="CPTR">
+      <type>ULONG</type>
+    </typedef>
+    <typedef name="SHORT">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="USHORT">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="FLOAT">
+      <prim domain="Real" size="4" />
+    </typedef>
+    <typedef name="DOUBLE">
+      <prim domain="Real" size="8" />
+    </typedef>
+    <typedef name="COUNT">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="UCOUNT">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="BOOL">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="TEXT">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <struct name="Node">
+      <field offset="0" name="ln_Succ">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="4" name="ln_Pred">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="8" name="ln_Type">
+        <type>UBYTE</type>
+      </field>
+      <field offset="9" name="ln_Pri">
+        <type>BYTE</type>
+      </field>
+      <field offset="12" name="ln_Name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="MinNode">
+      <field offset="0" name="mln_Succ">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+      <field offset="4" name="mln_Pred">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="Library">
+      <field offset="0" name="lib_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="lib_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="15" name="lib_pad">
+        <type>UBYTE</type>
+      </field>
+      <field offset="16" name="lib_NegSize">
+        <type>UWORD</type>
+      </field>
+      <field offset="18" name="lib_PosSize">
+        <type>UWORD</type>
+      </field>
+      <field offset="20" name="lib_Version">
+        <type>UWORD</type>
+      </field>
+      <field offset="22" name="lib_Revision">
+        <type>UWORD</type>
+      </field>
+      <field offset="24" name="lib_IdString">
+        <type>APTR</type>
+      </field>
+      <field offset="28" name="lib_Sum">
+        <type>ULONG</type>
+      </field>
+      <field offset="32" name="lib_OpenCnt">
+        <type>UWORD</type>
+      </field>
+    </struct>
+    <struct name="List">
+      <field offset="0" name="lh_Head">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="4" name="lh_Tail">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="8" name="lh_TailPred">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="12" name="lh_Type">
+        <type>UBYTE</type>
+      </field>
+      <field offset="13" name="l_pad">
+        <type>UBYTE</type>
+      </field>
+    </struct>
+    <struct name="MinList">
+      <field offset="0" name="mlh_Head">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+      <field offset="4" name="mlh_Tail">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+      <field offset="8" name="mlh_TailPred">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="Task">
+      <field offset="0" name="tc_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="tc_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="15" name="tc_State">
+        <type>UBYTE</type>
+      </field>
+      <field offset="16" name="tc_IDNestCnt">
+        <type>BYTE</type>
+      </field>
+      <field offset="17" name="tc_TDNestCnt">
+        <type>BYTE</type>
+      </field>
+      <field offset="20" name="tc_SigAlloc">
+        <type>ULONG</type>
+      </field>
+      <field offset="24" name="tc_SigWait">
+        <type>ULONG</type>
+      </field>
+      <field offset="28" name="tc_SigRecvd">
+        <type>ULONG</type>
+      </field>
+      <field offset="32" name="tc_SigExcept">
+        <type>ULONG</type>
+      </field>
+      <field offset="36" name="tc_TrapAlloc">
+        <type>UWORD</type>
+      </field>
+      <field offset="38" name="tc_TrapAble">
+        <type>UWORD</type>
+      </field>
+      <field offset="40" name="tc_ExceptData">
+        <type>APTR</type>
+      </field>
+      <field offset="44" name="tc_ExceptCode">
+        <type>APTR</type>
+      </field>
+      <field offset="48" name="tc_TrapData">
+        <type>APTR</type>
+      </field>
+      <field offset="52" name="tc_TrapCode">
+        <type>APTR</type>
+      </field>
+      <field offset="56" name="tc_SPReg">
+        <type>APTR</type>
+      </field>
+      <field offset="60" name="tc_SPLower">
+        <type>APTR</type>
+      </field>
+      <field offset="64" name="tc_SPUpper">
+        <type>APTR</type>
+      </field>
+      <field offset="68" name="tc_Switch">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </field>
+      <field offset="72" name="tc_Launch">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </field>
+      <field offset="80" name="tc_MemEntry">
+        <struct name="List" />
+      </field>
+      <field offset="96" name="tc_UserData">
+        <type>APTR</type>
+      </field>
+    </struct>
+    <struct name="MsgPort">
+      <field offset="0" name="mp_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="mp_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="15" name="mp_SigBit">
+        <type>UBYTE</type>
+      </field>
+      <field offset="16" name="mp_SigTask">
+        <ptr>
+          <struct name="Task" />
+        </ptr>
+      </field>
+      <field offset="24" name="mp_MsgList">
+        <struct name="List" />
+      </field>
+    </struct>
+    <struct name="Message">
+      <field offset="0" name="mn_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="16" name="mn_ReplyPort">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="20" name="mn_Length">
+        <type>UWORD</type>
+      </field>
+    </struct>
+    <struct name="Device">
+      <field offset="0" name="dd_Library">
+        <struct name="Library" />
+      </field>
+    </struct>
+    <struct name="Unit">
+      <field offset="0" name="unit_MsgPort">
+        <struct name="MsgPort" />
+      </field>
+      <field offset="34" name="unit_flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="35" name="unit_pad">
+        <type>UBYTE</type>
+      </field>
+      <field offset="36" name="unit_OpenCnt">
+        <type>UWORD</type>
+      </field>
+    </struct>
+    <struct name="Interrupt">
+      <field offset="0" name="is_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="16" name="is_Data">
+        <type>APTR</type>
+      </field>
+      <field offset="20" name="is_Code">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </field>
+    </struct>
+    <struct name="IntVector">
+      <field offset="0" name="iv_Data">
+        <type>APTR</type>
+      </field>
+      <field offset="4" name="iv_Code">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </field>
+      <field offset="8" name="iv_Node">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="SoftIntList">
+      <field offset="0" name="sh_List">
+        <struct name="List" />
+      </field>
+      <field offset="14" name="sh_Pad">
+        <type>UWORD</type>
+      </field>
+    </struct>
+    <struct name="ExecBase">
+      <field offset="0" name="LibNode">
+        <struct name="Library" />
+      </field>
+      <field offset="34" name="SoftVer">
+        <type>UWORD</type>
+      </field>
+      <field offset="36" name="LowMemChkSum">
+        <type>WORD</type>
+      </field>
+      <field offset="40" name="ChkBase">
+        <type>ULONG</type>
+      </field>
+      <field offset="44" name="ColdCapture">
+        <type>APTR</type>
+      </field>
+      <field offset="48" name="CoolCapture">
+        <type>APTR</type>
+      </field>
+      <field offset="52" name="WarmCapture">
+        <type>APTR</type>
+      </field>
+      <field offset="56" name="SysStkUpper">
+        <type>APTR</type>
+      </field>
+      <field offset="60" name="SysStkLower">
+        <type>APTR</type>
+      </field>
+      <field offset="64" name="MaxLocMem">
+        <type>ULONG</type>
+      </field>
+      <field offset="68" name="DebugEntry">
+        <type>APTR</type>
+      </field>
+      <field offset="72" name="DebugData">
+        <type>APTR</type>
+      </field>
+      <field offset="76" name="AlertData">
+        <type>APTR</type>
+      </field>
+      <field offset="80" name="MaxExtMem">
+        <type>APTR</type>
+      </field>
+      <field offset="84" name="ChkSum">
+        <type>UWORD</type>
+      </field>
+      <field offset="88" name="IntVects">
+        <arr length="16">
+          <struct name="IntVector" />
+        </arr>
+      </field>
+      <field offset="280" name="ThisTask">
+        <ptr>
+          <struct name="Task" />
+        </ptr>
+      </field>
+      <field offset="284" name="IdleCount">
+        <type>ULONG</type>
+      </field>
+      <field offset="288" name="DispCount">
+        <type>ULONG</type>
+      </field>
+      <field offset="292" name="Quantum">
+        <type>UWORD</type>
+      </field>
+      <field offset="294" name="Elapsed">
+        <type>UWORD</type>
+      </field>
+      <field offset="296" name="SysFlags">
+        <type>UWORD</type>
+      </field>
+      <field offset="298" name="IDNestCnt">
+        <type>BYTE</type>
+      </field>
+      <field offset="299" name="TDNestCnt">
+        <type>BYTE</type>
+      </field>
+      <field offset="300" name="AttnFlags">
+        <type>UWORD</type>
+      </field>
+      <field offset="302" name="AttnResched">
+        <type>UWORD</type>
+      </field>
+      <field offset="304" name="ResModules">
+        <type>APTR</type>
+      </field>
+      <field offset="308" name="TaskTrapCode">
+        <type>APTR</type>
+      </field>
+      <field offset="312" name="TaskExceptCode">
+        <type>APTR</type>
+      </field>
+      <field offset="316" name="TaskExitCode">
+        <type>APTR</type>
+      </field>
+      <field offset="320" name="TaskSigAlloc">
+        <type>ULONG</type>
+      </field>
+      <field offset="324" name="TaskTrapAlloc">
+        <type>UWORD</type>
+      </field>
+      <field offset="328" name="MemList">
+        <struct name="List" />
+      </field>
+      <field offset="344" name="ResourceList">
+        <struct name="List" />
+      </field>
+      <field offset="360" name="DeviceList">
+        <struct name="List" />
+      </field>
+      <field offset="376" name="IntrList">
+        <struct name="List" />
+      </field>
+      <field offset="392" name="LibList">
+        <struct name="List" />
+      </field>
+      <field offset="408" name="PortList">
+        <struct name="List" />
+      </field>
+      <field offset="424" name="TaskReady">
+        <struct name="List" />
+      </field>
+      <field offset="440" name="TaskWait">
+        <struct name="List" />
+      </field>
+      <field offset="456" name="SoftInts">
+        <arr length="5">
+          <struct name="SoftIntList" />
+        </arr>
+      </field>
+      <field offset="536" name="LastAlert">
+        <arr length="4">
+          <type>LONG</type>
+        </arr>
+      </field>
+      <field offset="552" name="VBlankFrequency">
+        <type>UBYTE</type>
+      </field>
+      <field offset="553" name="PowerSupplyFrequency">
+        <type>UBYTE</type>
+      </field>
+      <field offset="560" name="SemaphoreList">
+        <struct name="List" />
+      </field>
+      <field offset="576" name="KickMemPtr">
+        <type>APTR</type>
+      </field>
+      <field offset="580" name="KickTagPtr">
+        <type>APTR</type>
+      </field>
+      <field offset="584" name="KickCheckSum">
+        <type>APTR</type>
+      </field>
+      <field offset="592" name="ExecBaseReserved">
+        <arr length="10">
+          <type>UBYTE</type>
+        </arr>
+      </field>
+      <field offset="608" name="ExecBaseNewReserved">
+        <arr length="20">
+          <type>UBYTE</type>
+        </arr>
+      </field>
+    </struct>
+    <struct name="IORequest">
+      <field offset="0" name="io_Message">
+        <struct name="Message" />
+      </field>
+      <field offset="20" name="io_Device">
+        <ptr>
+          <struct name="Device" />
+        </ptr>
+      </field>
+      <field offset="24" name="io_Unit">
+        <ptr>
+          <struct name="Unit" />
+        </ptr>
+      </field>
+      <field offset="28" name="io_Command">
+        <type>UWORD</type>
+      </field>
+      <field offset="30" name="io_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="31" name="io_Error">
+        <type>BYTE</type>
+      </field>
+    </struct>
+    <struct name="IOStdReq">
+      <field offset="0" name="io_Message">
+        <struct name="Message" />
+      </field>
+      <field offset="20" name="io_Device">
+        <ptr>
+          <struct name="Device" />
+        </ptr>
+      </field>
+      <field offset="24" name="io_Unit">
+        <ptr>
+          <struct name="Unit" />
+        </ptr>
+      </field>
+      <field offset="28" name="io_Command">
+        <type>UWORD</type>
+      </field>
+      <field offset="30" name="io_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="31" name="io_Error">
+        <type>BYTE</type>
+      </field>
+      <field offset="32" name="io_Actual">
+        <type>ULONG</type>
+      </field>
+      <field offset="36" name="io_Length">
+        <type>ULONG</type>
+      </field>
+      <field offset="40" name="io_Data">
+        <type>APTR</type>
+      </field>
+      <field offset="44" name="io_Offset">
+        <type>ULONG</type>
+      </field>
+    </struct>
+    <struct name="MemChunk">
+      <field offset="0" name="mc_Next">
+        <ptr>
+          <struct name="MemChunk" />
+        </ptr>
+      </field>
+      <field offset="4" name="mc_Bytes">
+        <type>ULONG</type>
+      </field>
+    </struct>
+    <struct name="MemHeader">
+      <field offset="0" name="mh_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="mh_Attributes">
+        <type>UWORD</type>
+      </field>
+      <field offset="16" name="mh_First">
+        <ptr>
+          <struct name="MemChunk" />
+        </ptr>
+      </field>
+      <field offset="20" name="mh_Lower">
+        <type>APTR</type>
+      </field>
+      <field offset="24" name="mh_Upper">
+        <type>APTR</type>
+      </field>
+      <field offset="28" name="mh_Free">
+        <type>ULONG</type>
+      </field>
+    </struct>
+    <struct name="MemEntry">
+      <field offset="0" name="me_Un">
+        <union>
+          <alt name="meu_Reqs">
+            <type>ULONG</type>
+          </alt>
+          <alt name="meu_Addr">
+            <type>APTR</type>
+          </alt>
+        </union>
+      </field>
+      <field offset="4" name="me_Length">
+        <type>ULONG</type>
+      </field>
+    </struct>
+    <struct name="MemList">
+      <field offset="0" name="ml_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="ml_NumEntries">
+        <type>UWORD</type>
+      </field>
+      <field offset="16" name="ml_ME">
+        <arr length="1">
+          <struct name="MemEntry" />
+        </arr>
+      </field>
+    </struct>
+    <struct name="Resident">
+      <field offset="0" name="rt_MatchWord">
+        <type>UWORD</type>
+      </field>
+      <field offset="4" name="rt_MatchTag">
+        <ptr>
+          <struct name="Resident" />
+        </ptr>
+      </field>
+      <field offset="8" name="rt_EndSkip">
+        <type>APTR</type>
+      </field>
+      <field offset="12" name="rt_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="13" name="rt_Version">
+        <type>UBYTE</type>
+      </field>
+      <field offset="14" name="rt_Type">
+        <type>UBYTE</type>
+      </field>
+      <field offset="15" name="rt_Pri">
+        <type>BYTE</type>
+      </field>
+      <field offset="16" name="rt_Name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="20" name="rt_IdString">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="24" name="rt_Init">
+        <type>APTR</type>
+      </field>
+    </struct>
+    <struct name="Semaphore">
+      <field offset="0" name="sm_MsgPort">
+        <struct name="MsgPort" />
+      </field>
+      <field offset="34" name="sm_Bids">
+        <type>WORD</type>
+      </field>
+    </struct>
+    <struct name="SemaphoreRequest">
+      <field offset="0" name="sr_Link">
+        <struct name="MinNode" />
+      </field>
+      <field offset="8" name="sr_Waiter">
+        <ptr>
+          <struct name="Task" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="SignalSemaphore">
+      <field offset="0" name="ss_Link">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="ss_NestCount">
+        <type>SHORT</type>
+      </field>
+      <field offset="16" name="ss_WaitQueue">
+        <struct name="MinList" />
+      </field>
+      <field offset="32" name="ss_MultipleLink">
+        <struct name="SemaphoreRequest" />
+      </field>
+      <field offset="44" name="ss_Owner">
+        <ptr>
+          <struct name="Task" />
+        </ptr>
+      </field>
+      <field offset="48" name="ss_QueueCount">
+        <type>SHORT</type>
+      </field>
+    </struct>
+  </Types>
+</library>
