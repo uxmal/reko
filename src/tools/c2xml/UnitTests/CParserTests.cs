@@ -1105,6 +1105,19 @@ MemoryBarrier (
             var sExp = "(attr reko::reg (StringLiteral D0))";
             Assert.AreEqual(sExp, attr.ToString());
         }
+
+        [Test]
+        public void CParser_AttributedDeclaration()
+        {
+            Lex("[[reko::reg(\"D0\")]] BYTE foo([[reko::reg(\"A1\")]] void * arg);");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl " +
+                            "(attr reko::reg (StringLiteral D0)) " +
+                            "BYTE ((init-decl (func foo ((" +
+                                "(attr reko::reg (StringLiteral A1)) " +
+                                "Void (ptr arg)))))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
     }
 }
 #endif

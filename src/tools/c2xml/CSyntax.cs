@@ -31,6 +31,7 @@ namespace Reko.Tools.C2Xml
 
     public class Decl : CSyntax
     {
+        public List<CAttribute> attribute_list;
         public List<DeclSpec> decl_specs;
         public List<InitDeclarator> init_declarator_list;
 
@@ -43,6 +44,11 @@ namespace Reko.Tools.C2Xml
         {
             var sb = new StringBuilder();
             sb.Append("(decl");
+            if (attribute_list != null)
+            {
+                sb.Append(" ");
+                sb.Append(string.Join(" ", attribute_list));
+            }
             foreach (var ds in decl_specs)
             {
                 sb.Append(" ");
@@ -316,6 +322,7 @@ namespace Reko.Tools.C2Xml
 
     public class ParamDecl : CSyntax
     {
+        public List<CAttribute> Attributes;
         public List<DeclSpec> DeclSpecs;
         public Declarator Declarator;
         public bool IsEllipsis;
@@ -329,6 +336,11 @@ namespace Reko.Tools.C2Xml
         {
             var sb = new StringBuilder();
             sb.Append("(");
+            if (Attributes != null)
+            {
+                sb.Append(string.Join(" ", Attributes));
+                sb.Append(" ");
+            }
             foreach (var declspec in DeclSpecs)
             {
                 sb.Append(declspec);

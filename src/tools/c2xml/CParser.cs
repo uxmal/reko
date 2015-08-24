@@ -349,6 +349,7 @@ IGNORE tab + cr + lf
         }
 
         //ExternalDecl = 
+        //  [ AttributeSequence]
         //  DeclSpecifierList 
         //  ( Declarator 
         //    ( {Decl} '{' {IF(IsDecl()) Decl | Stat} '}'   // FunctionDef
@@ -359,12 +360,13 @@ IGNORE tab + cr + lf
 
         public Decl Parse_ExternalDecl()
         {
+            var attrs = Parse_AttributeSpecifierSeq();
             var decl_spec_list = Parse_DeclSpecifierList();
             if (decl_spec_list == null)
                 return null;
             var inits = new List<InitDeclarator>();
             if (PeekThenDiscard(CTokenType.Semicolon))
-                return grammar.Decl(decl_spec_list, inits);
+                return grammar.Decl(attrs, decl_spec_list, inits);
             var declarator = Parse_Declarator();
             var token = PeekTokenType();
             if (token == CTokenType.Assign ||
@@ -383,7 +385,7 @@ IGNORE tab + cr + lf
                     inits.Add(Parse_InitDeclarator());
                 }
                 ExpectToken(CTokenType.Semicolon);
-                var decl = grammar.Decl(decl_spec_list, inits);
+                var decl = grammar.Decl(attrs, decl_spec_list, inits);
                 UpdateNamespaceWithTypedefs(decl_spec_list, inits);
                 return decl;
             }
@@ -408,7 +410,7 @@ IGNORE tab + cr + lf
                         statements.Add(Parse_Stat());
                     }
                 }
-                return grammar.FunctionDefinition(decl_spec_list, declarator, statements);
+                return grammar.FunctionDefinition(attrs, decl_spec_list, declarator, statements);
             }
             else
                 throw new FormatException("Expected ';'");
@@ -433,9 +435,10 @@ IGNORE tab + cr + lf
 
         //---------- Declarations ----------
 
-        //Decl = DeclSpecifierList [InitDeclarator {',' InitDeclarator}] ';'.
+        //Decl = [attributes-seq] DeclSpecifierList [InitDeclarator {',' InitDeclarator}] ';'.
         public Decl Parse_Decl()
         {
+            var attrs = Parse_AttributeSpecifierSeq();
             var declSpecifiers = Parse_DeclSpecifierList();
             if (declSpecifiers == null)
                 return null;
@@ -450,7 +453,7 @@ IGNORE tab + cr + lf
                 ExpectToken(CTokenType.Semicolon);
             }
             //UpdateNamespaceWithTypedefs(decl_spec_list, inits);
-            return grammar.Decl(declSpecifiers, listDecls);
+            return grammar.Decl(attrs, declSpecifiers, listDecls);
         }
 
         
@@ -846,7 +849,7 @@ IGNORE tab + cr + lf
                         var parameters = new List<ParamDecl>();
                         decl = grammar.FunctionDeclarator(decl, parameters);
                     } 
-                    else if (!IsType0())
+                    else if (!IsType0() && lexer.Peek(0).Type != CTokenType.LBracket)
                     {
                         Parse_IdentList();
                     }
@@ -923,6 +926,7 @@ IGNORE tab + cr + lf
 
         ParamDecl Parse_ParamDecl()
         {
+            List<CAttribute> attrs = Parse_AttributeSpecifierSeq();
             Declarator decl = null;
             var dsl = Parse_DeclSpecifierList();
             if (dsl == null)
@@ -935,7 +939,7 @@ IGNORE tab + cr + lf
             {
                 decl = Parse_Declarator();
             }
-            return grammar.ParamDecl(dsl, decl);
+            return grammar.ParamDecl(attrs, dsl, decl);
         }
 
         //IdentList = ident {',' ident}.

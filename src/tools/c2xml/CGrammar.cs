@@ -228,10 +228,11 @@ namespace Reko.Tools.C2Xml
             return new ReturnStat { Expression = expr };
         }
 
-        public ParamDecl ParamDecl(List<DeclSpec> dsl, Declarator decl)
+        public ParamDecl ParamDecl(List<CAttribute> attrs, List<DeclSpec> dsl, Declarator decl)
         {
             return new ParamDecl
             {
+                Attributes = attrs,
                 DeclSpecs = dsl,
                 Declarator = decl,
             };
@@ -352,19 +353,21 @@ namespace Reko.Tools.C2Xml
             };
         }
 
-        internal Decl Decl(List<DeclSpec> list, List<InitDeclarator> listDecls)
+        internal Decl Decl(List<CAttribute> attrs, List<DeclSpec> list, List<InitDeclarator> listDecls)
         {
             return new Decl
             {
+                attribute_list = attrs,
                 decl_specs = list,
                 init_declarator_list = listDecls
             };
         }
 
-        internal Decl Decl(List<DeclSpec> list, Declarator decl)
+        internal Decl Decl(List<CAttribute> attrs, List<DeclSpec> list, Declarator decl)
         {
             return new Decl
             {
+                attribute_list = attrs,
                 decl_specs = list,
                 init_declarator_list = new List<InitDeclarator> 
                 {
@@ -381,12 +384,12 @@ namespace Reko.Tools.C2Xml
             return new DeclStat { Declaration = decl };
         }
 
-        internal Decl FunctionDefinition(List<DeclSpec> decl_spec_list, Declarator declarator, List<Stat> statements)
+        internal Decl FunctionDefinition(List<CAttribute> attrs, List<DeclSpec> decl_spec_list, Declarator declarator, List<Stat> statements)
         {
             return new FunctionDecl
             {
                 decl_specs = decl_spec_list,        //$REVIEW: dupe?
-                Signature = Decl(decl_spec_list, declarator),
+                Signature = Decl(attrs, decl_spec_list, declarator),
                 Body = statements
             };
                 
