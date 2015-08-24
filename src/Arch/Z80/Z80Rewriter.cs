@@ -61,6 +61,7 @@ namespace Reko.Arch.Z80
                     "Rewriting of Z80 instruction {0} not implemented yet.",
                     dasm.Current.Code);
                 case Opcode.adc: RewriteAdc(); break;
+                case Opcode.and: RewriteAnd(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.call: RewriteCall(dasm.Current); break;
                 case Opcode.cp: RewriteCp(); break;
@@ -105,6 +106,15 @@ namespace Reko.Arch.Z80
             var src = RewriteOp(dasm.Current.Op2);
             emitter.Assign(dst, emitter.IAdd(dst, src));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
+        }
+
+        private void RewriteAnd()
+        {
+            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Op2);
+            emitter.Assign(dst, emitter.And(dst, src));
+            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            emitter.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
         private void RewriteBlockInstruction()
@@ -281,7 +291,7 @@ namespace Reko.Arch.Z80
             else
             {
                 var target = (ImmediateOperand) instr.Op1;
-                emitter.Goto(target.Value);
+                emitter.Goto(Address.Ptr16(target.Value.ToUInt16()));
             }
         }
 
@@ -302,10 +312,16 @@ namespace Reko.Arch.Z80
             var memOp = op as MemoryOperand;
             if (memOp != null)
             {
-                var bReg = frame.EnsureRegister(memOp.Base);
+                Identifier bReg = null;
+                if (memOp.Base != null)
+                    bReg = frame.EnsureRegister(memOp.Base);
                 if (memOp.Offset == null)
                 {
                     return emitter.Load(memOp.Width, bReg);
+                }
+                else if (bReg == null)
+                {
+                    return emitter.Load(memOp.Width, memOp.Offset);
                 }
                 else
                 {

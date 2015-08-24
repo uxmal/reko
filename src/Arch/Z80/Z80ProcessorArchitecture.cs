@@ -184,24 +184,24 @@ namespace Reko.Arch.Z80
 
     public static class Registers
     {
-        public static readonly RegisterStorage b = new RegisterStorage("b", 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage c = new RegisterStorage("c", 1, PrimitiveType.Byte);
-        public static readonly RegisterStorage d = new RegisterStorage("d", 2, PrimitiveType.Byte);
-        public static readonly RegisterStorage e = new RegisterStorage("e", 3, PrimitiveType.Byte);
-        public static readonly RegisterStorage h = new RegisterStorage("h", 4, PrimitiveType.Byte);
-        public static readonly RegisterStorage l = new RegisterStorage("l", 5, PrimitiveType.Byte);
-        public static readonly RegisterStorage a = new RegisterStorage("a", 7, PrimitiveType.Byte);
+        public static readonly Z80Register b = new HighByteRegister("b", 0, 1);
+        public static readonly Z80Register c = new LowByteRegister("c", 1, 1);
+        public static readonly Z80Register d = new HighByteRegister("d", 2, 2);
+        public static readonly Z80Register e = new LowByteRegister("e", 3, 2);
+        public static readonly Z80Register h = new HighByteRegister("h", 4, 3);
+        public static readonly Z80Register l = new LowByteRegister("l", 5, 3);
+        public static readonly Z80Register a = new LowByteRegister("a", 7, 0);
 
-        public static readonly RegisterStorage bc = new RegisterStorage("bc", 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage de = new RegisterStorage("de", 9, PrimitiveType.Word16);
-        public static readonly RegisterStorage hl = new RegisterStorage("hl", 10, PrimitiveType.Word16);
-        public static readonly RegisterStorage sp = new RegisterStorage("sp", 11, PrimitiveType.Word16);
-        public static readonly RegisterStorage ix = new RegisterStorage("ix", 12, PrimitiveType.Word16);
-        public static readonly RegisterStorage iy = new RegisterStorage("iy", 13, PrimitiveType.Word16);
-        public static readonly RegisterStorage af = new RegisterStorage("af", 14, PrimitiveType.Word16);
+        public static readonly Z80Register bc = new WordRegister("bc", 8,  1);
+        public static readonly Z80Register de = new WordRegister("de", 9,  2);
+        public static readonly Z80Register hl = new WordRegister("hl", 10, 3);
+        public static readonly Z80Register sp = new WordRegister("sp", 11, 4);
+        public static readonly Z80Register ix = new WordRegister("ix", 12, 5);
+        public static readonly Z80Register iy = new WordRegister("iy", 13, 6);
+        public static readonly Z80Register af = new WordRegister("af", 14, 0);
 
-        public static readonly RegisterStorage i = new RegisterStorage("i", 16, PrimitiveType.Byte);
-        public static readonly RegisterStorage r = new RegisterStorage("r", 17, PrimitiveType.Byte);
+        public static readonly RegisterStorage i = new LowByteRegister("i", 16, 7);
+        public static readonly RegisterStorage r = new LowByteRegister("r", 17, 8);
 
         public static readonly RegisterStorage S = new RegisterStorage("S", 20, PrimitiveType.Bool);
         public static readonly RegisterStorage Z = new RegisterStorage("Z", 21, PrimitiveType.Bool);
