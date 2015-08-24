@@ -331,10 +331,10 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.ret),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.les,	"Gv,Mp"),
-                    null),      //$TODO: VEX + 2 byte
+                    new SingleByteOpRec(Opcode.illegal)),      //$TODO: VEX + 2 byte
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.lds,	"Gv,Mp"),
-                    null),      //$TODO: VEX + 1 byte
+                    new SingleByteOpRec(Opcode.illegal)),      //$TODO: VEX + 1 byte
 				new SingleByteOpRec(Opcode.mov,	"Eb,Ib"),
 				new SingleByteOpRec(Opcode.mov,	"Ev,Iz"),
 

@@ -76,7 +76,6 @@ namespace Reko.Arch.X86
             if (!rdr.IsValid)
                 return null;
             var addr = rdr.Address;
-
             dataWidth = defaultDataWidth;
             addressWidth = defaultAddressWidth;
             isModrmValid = false;
