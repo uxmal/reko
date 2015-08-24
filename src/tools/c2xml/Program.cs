@@ -84,14 +84,14 @@ namespace Reko.Tools.C2Xml
 
         static void Usage()
         {
-            Console.Error.WriteLine("usage: c2xml [input-filename [output-filename]]");
-            Console.Error.WriteLine("   input-filename - preprocessed c file  - standard input if ommited");
-            Console.Error.WriteLine("   output-filename - destination xml file - standard output if ommited");
+            Console.Error.WriteLine("usage: c2xml [<input-filename> [<output-filename>]]");
+            Console.Error.WriteLine("   <input-filename>  preprocessed c file  - standard input if omitted");
+            Console.Error.WriteLine("   <output-filename> destination xml file - standard output if omitted");
             Console.Error.WriteLine("   ----------------------------------------------------");
-            Console.Error.WriteLine("   note: input files have to be preprocessed beforehand");
-            Console.Error.WriteLine("     to preprocess a file under linux:");
+            Console.Error.WriteLine("   Note: input files have to be preprocessed beforehand");
+            Console.Error.WriteLine("     to preprocess a file with GCC:");
             Console.Error.WriteLine("       gcc -E FILE.h | sed '/^\\#/d' >RESULT.h");
-            Console.Error.WriteLine("     to preprocess a file under windows:");
+            Console.Error.WriteLine("     to preprocess a file with the Microsoft C/C++ compiler:");
             Console.Error.WriteLine("       CL.EXE /EP FILE.h >RESULT.h");
         }
     }
