@@ -123,8 +123,8 @@ namespace Reko.Environments.Win32
         {
             return SignatureGuesser.SignatureFromName(
                 fnName,
-                new TypeLibraryLoader(Architecture, true),
-                Architecture);
+                new TypeLibraryLoader(this, true),
+                this);
         }
     }
 }

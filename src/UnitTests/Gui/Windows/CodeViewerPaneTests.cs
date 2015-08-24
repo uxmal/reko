@@ -58,6 +58,9 @@ namespace Reko.UnitTests.Gui.Windows
             uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
             uiSvc = mr.Stub<IDecompilerShellUiService>();
             font = new Font("Arial", 10);
+            var styles = new Dictionary<string, UiStyle>();
+            uiPreferencesSvc.Stub(u => u.Styles).Return(styles);
+
             var sc = new ServiceContainer();
             decompilerSvc.Decompiler = decompiler;
             sc.AddService<IDecompilerService>(decompilerSvc);

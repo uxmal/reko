@@ -18,18 +18,17 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
-using Reko.Loading;
+using Reko.Environments.Msdos;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Text;
 
 namespace Reko.UnitTests
@@ -76,10 +75,13 @@ namespace Reko.UnitTests
         public void Dec_LoadCallSignatures()
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            Program program = new Program { Architecture = arch };
+            Program program = new Program { 
+                Architecture = arch,
+                Platform = new MsdosPlatform(null, arch)
+            };
             decompiler.Project = new Project
             {
-                Programs = { program }
+                Programs = { program },
             };
             List<SerializedCall_v1> al = new List<SerializedCall_v1>();
             SerializedSignature sig = new SerializedSignature();

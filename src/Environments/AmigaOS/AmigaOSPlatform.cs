@@ -29,6 +29,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,7 @@ namespace Reko.Environments.AmigaOS
     /// <summary>
     /// Represents the AmigaOS platform.
     /// </summary>
+    [Designer("Reko.Environments.AmigaOS.Design.AmigaOSPlatformDesigner,Reko.Environments.AmigaOS.Design")]
     public class AmigaOSPlatform : Platform
     {
         private RtlInstructionMatcher a6Pattern;
@@ -59,6 +61,11 @@ namespace Reko.Environments.AmigaOS
                     RtlClass.Transfer));
         }
 
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
+        }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             var bitset = Architecture.CreateRegisterBitset();
@@ -68,7 +75,7 @@ namespace Reko.Environments.AmigaOS
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
@@ -80,7 +87,7 @@ namespace Reko.Environments.AmigaOS
             if (reg != Registers.a6)
                 return null;
             if (funcs == null)
-                funcs = LoadFuncs();
+                funcs = LoadLibraryDef("exec",33);
             SystemService svc;
             return funcs.TryGetValue(offset, out svc) ? svc : null;
         }
@@ -106,18 +113,19 @@ namespace Reko.Environments.AmigaOS
             return Address.Ptr32(c.ToUInt32());
         }
 
-        private Dictionary<int, SystemService> LoadFuncs()
+        private Dictionary<int, SystemService> LoadLibraryDef( string lib_name, int version ) 
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = Architecture.CreateProcedureSerializer(
-                new TypeLibraryLoader(Architecture,true),
+            var sser = new M68kProcedureSerializer(
+                (M68kArchitecture) Architecture,
+                new TypeLibraryLoader(this, true),
                 DefaultCallingConvention);
 
-            using (var rdr = new StreamReader(fsSvc.CreateFileStream("exec.funcs", FileMode.Open, FileAccess.Read)))
+            using (var rdr = new StreamReader(fsSvc.CreateFileStream(lib_name+".funcs", FileMode.Open, FileAccess.Read)))
             {
                 var fpp = new FuncsFileParser((M68kArchitecture) this.Architecture, rdr);
                 fpp.Parse();
-                return fpp.FunctionsByA6Offset.Values
+                return fpp.FunctionsByLibBaseOffset.Values
                     .Select(amiSvc => new SystemService
                     {
                         Name = amiSvc.Name,

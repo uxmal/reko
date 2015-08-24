@@ -96,13 +96,18 @@ namespace Reko.Gui
         {
             Load(project);
         }
-
+        
         public void AddComponents(IEnumerable components)
         {
             var nodes = components
                 .Cast<object>()
                 .Select(o => CreateTreeNode(o, CreateDesigner(o), null));
             tree.Nodes.AddRange(nodes);
+        }
+
+        public void AddComponent(object parent, object component)
+        {
+            AddComponents(parent, new[] { component });
         }
 
         public void AddComponents(object parent, IEnumerable components)

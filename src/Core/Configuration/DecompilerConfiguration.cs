@@ -112,7 +112,9 @@ namespace Reko.Core.Configuration
             Type t = Type.GetType(elem.TypeName, false);
             if (t == null)
                 return null;
-            return (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
+            var arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
+            arch.Description = elem.Description;
+            return arch;
         }
 
         public virtual Assembler GetAssembler(string asmLabel)

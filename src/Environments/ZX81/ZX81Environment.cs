@@ -21,6 +21,8 @@
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +48,11 @@ namespace Reko.Environments.ZX81
             var bitset = Architecture.CreateRegisterBitset();
             Registers.sp.SetAliases(bitset, true);
             return bitset;
+        }
+
+        public override Core.Serialization.ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

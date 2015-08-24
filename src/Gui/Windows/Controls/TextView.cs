@@ -347,7 +347,8 @@ namespace Reko.Gui.Windows.Controls
             foreach (var span in line.Spans)
             {
                 var text = span.Text;
-
+                if (span.Style == "link")   //$DEBUG
+                    span.Style.ToString();
                 var font = GetFont(span.Style);
                 var fg = GetForeground(span.Style);
                 var bg = GetBackground(span.Style);
@@ -382,6 +383,12 @@ namespace Reko.Gui.Windows.Controls
             Invalidate();
         }
 
+        /// <summary>
+        /// Given a point in client coordinates, locate the tag associated
+        /// with the clicked span -- if there is one.
+        /// </summary>
+        /// <param name="ptClient"></param>
+        /// <returns></returns>
         public object GetTagFromPoint(Point ptClient)
         {
             var span = GetSpan(ptClient);

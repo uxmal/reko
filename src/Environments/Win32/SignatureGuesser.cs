@@ -37,7 +37,7 @@ namespace Reko.Environments.Win32
         /// <param name="loader"></param>
         /// <param name="arch"></param>
         /// <returns></returns>
-        public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryLoader loader, IProcessorArchitecture arch)
+        public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryLoader loader, Platform platform)
         {
             int argBytes;
             if (fnName[0] == '_')
@@ -47,24 +47,24 @@ namespace Reko.Environments.Win32
                 // the result is indistinguishable from the corresponding cdecl call, which is OK.
                 int lastAt = fnName.LastIndexOf('@');
                 if (lastAt < 0)
-                    return CdeclSignature(fnName.Substring(1), arch);
+                    return CdeclSignature(fnName.Substring(1), platform.Architecture);
                 string name = fnName.Substring(1, lastAt - 1);
                 if (!Int32.TryParse(fnName.Substring(lastAt + 1), out argBytes))
-                    return CdeclSignature(name, arch);
+                    return CdeclSignature(name, platform.Architecture);
                 else
-                    return StdcallSignature(name, argBytes, arch);
+                    return StdcallSignature(name, argBytes, platform.Architecture);
             }
             else if (fnName[0] == '@')
             {
                 // Win32 prefixes fastcall functions with '@'.
                 int lastAt = fnName.LastIndexOf('@');
                 if (lastAt <= 0)
-                    return CdeclSignature(fnName.Substring(1), arch);
+                    return CdeclSignature(fnName.Substring(1), platform.Architecture);
                 string name = fnName.Substring(1, lastAt - 1);
                 if (!Int32.TryParse(fnName.Substring(lastAt + 1), out argBytes))
-                    return CdeclSignature(name, arch);
+                    return CdeclSignature(name, platform.Architecture);
                 else
-                    return FastcallSignature(name, argBytes, arch);
+                    return FastcallSignature(name, argBytes, platform.Architecture);
             }
             else if (fnName[0] == '?')
             {
@@ -84,8 +84,8 @@ namespace Reko.Environments.Win32
                 var sproc = field.Type as SerializedSignature;
                 if (sproc != null)
                 {
-                    var sser = arch.CreateProcedureSerializer(loader, "__cdecl");
-                    return sser.Deserialize(sproc, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+                    var sser = platform.CreateProcedureSerializer(loader, "__cdecl");
+                    return sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?   
                 }
             }
             return null;

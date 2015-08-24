@@ -62,6 +62,8 @@ namespace Reko.UnitTests.Mocks
 			}
 		}
 
+        public string Description { get; set; }
+
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
         public void Test_AddTrace(RtlTrace trace)

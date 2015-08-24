@@ -36,28 +36,20 @@ namespace Reko.Environments.Win32
     {
         private Lexer lexer;
         private Token bufferedTok;
-        private IProcessorArchitecture arch;
+        private Platform platform;
         private string filename;
 
-        public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[] bytes) : base(services, filename, bytes)
-        {
-            this.filename = filename;
-            this.lexer = new Lexer( new StreamReader(new MemoryStream(bytes)));
-            this.bufferedTok = null;
-            this.arch = new Reko.Arch.X86.X86ArchitectureFlat32();
-        }
-
-        public ModuleDefinitionLoader(TextReader rdr, string filename, IProcessorArchitecture arch) : base(null, filename, null)
+        public ModuleDefinitionLoader(TextReader rdr, string filename, Platform platform) : base(null, filename, null)
         {
             this.filename = filename;
             this.lexer = new Lexer(rdr);
             this.bufferedTok = null;
-            this.arch = arch;
+            this.platform = platform;
         }
 
         public override TypeLibrary Load()
         {
-            var loader = new TypeLibraryLoader(arch, true);
+            var loader = new TypeLibraryLoader(platform, true);
             loader.SetModuleName(DefaultModuleName(filename));
             for (; ; )
             {
@@ -129,7 +121,7 @@ namespace Reko.Environments.Win32
 
         private ProcedureSignature ParseSignature(string entryName, TypeLibraryLoader loader)
         {
-            return SignatureGuesser.SignatureFromName(entryName, loader, arch);
+            return SignatureGuesser.SignatureFromName(entryName, loader, platform);
         }
 
         private bool PeekAndDiscard(TokenType type)

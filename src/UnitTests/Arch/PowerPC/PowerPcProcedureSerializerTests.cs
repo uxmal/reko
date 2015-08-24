@@ -18,13 +18,14 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Environments.SysV;
 using Reko.Core.Types;
 using Reko.UnitTests.Core.Serialization;
-using NUnit.Framework;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
@@ -34,17 +35,20 @@ namespace Reko.UnitTests.Arch.PowerPC
     [TestFixture]
     public class PowerPcProcedureSerializerTests
     {
-        private PowerPcArchitecture arch = new PowerPcArchitecture32();
+        private PowerPcArchitecture arch;
         private PowerPcProcedureSerializer ser;
+        private SysVPlatform platform;
 
         [SetUp]
         public void Setup()
         {
+            arch = new PowerPcArchitecture32();
+            platform = new SysVPlatform(null, arch);
         }
 
         private void Given_ProcedureSerializer()
         {
-            this.ser = new PowerPcProcedureSerializer(arch, new TypeLibraryLoader(arch, true), "");
+            this.ser = new PowerPcProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "");
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)

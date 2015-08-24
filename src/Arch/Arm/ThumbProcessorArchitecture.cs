@@ -32,139 +32,108 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ThumbProcessorArchitecture : IProcessorArchitecture
+    public class ThumbProcessorArchitecture : ProcessorArchitecture
     {
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public ThumbProcessorArchitecture()
+        {
+            this.StackRegister = A32Registers.sp;
+            this.FramePointerType = PrimitiveType.Pointer32;
+            this.PointerType = PrimitiveType.Pointer32;
+            this.WordWidth = PrimitiveType.Word32;
+            this.InstructionBitSize = 16;
+        }
+
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new ThumbDisassembler(imageReader);
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(PrimitiveType.Pointer32);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage img, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage img, Address addr)
         {
             return new LeImageReader(img, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage img, ulong off)
+        public override ImageReader CreateImageReader(LoadedImage img, ulong off)
         {
             throw new NotImplementedException();
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new ArmProcessorState(this);
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             return new BitSet(0x30);
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new ThumbRewriter(this, rdr, (ArmProcessorState) state, frame, host);
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             return A32Registers.GpRegs[i];
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return A32Registers.GpRegs.ToArray();
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Pointer32; }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { return PrimitiveType.Word32; }
-        }
-
-        public int InstructionBitSize
-        {
-            get { return 16; }
-        }
-
-        public RegisterStorage StackRegister
-        {
-            get { return A32Registers.sp; }
-        }
-
-        public uint CarryFlagMask
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             throw new NotImplementedException();
         }

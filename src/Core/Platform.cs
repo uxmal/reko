@@ -22,10 +22,12 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -35,6 +37,7 @@ namespace Reko.Core
 	/// A Platform is an abstraction of the operating environment,
     /// say MS-DOS, Win32, or Posix.
 	/// </summary>
+    [Designer("Reko.Gui.Design.PlatformDesigner,Reko.Gui")]
 	public abstract class Platform
 	{
         /// <summary>
@@ -52,6 +55,7 @@ namespace Reko.Core
         public IServiceProvider Services { get; private set; }
         public TypeLibrary[] TypeLibs { get; private set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
+        public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
 
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
@@ -83,6 +87,15 @@ namespace Reko.Core
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }
 
+
+        /// <summary>
+        /// Creates a procedure serializer that understands the calling conventions used on this
+        /// processor and environment
+        /// </summary>
+        /// <param name="typeLoader">Used to resolve data types</param>
+        /// <param name="defaultConvention">Default calling convention, if none specified.</param>
+        public abstract ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+
         /// <summary>
         /// Utility function for subclasses that loads all type libraries and characteristics libraries 
         /// </summary>
@@ -100,7 +113,7 @@ namespace Reko.Core
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
+                    .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetPath(tl.Name)))
                     .Where(tl => tl != null).ToArray();
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()
@@ -171,13 +184,14 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// The default platform is used when a specific platform cannot be determind.
+    /// The default platform is used when a specific platform cannot be determined.
     /// </summary>
     public class DefaultPlatform : Platform
     {
         public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
         {
             this.TypeLibraries = new List<TypeLibrary>();
+            this.Description = "(Unknown operating environment)";
         }
 
         public List<TypeLibrary> TypeLibraries { get; private set; }
@@ -190,6 +204,11 @@ namespace Reko.Core
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotSupportedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

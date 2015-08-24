@@ -44,6 +44,11 @@ namespace Reko.Environments.Cpm
             return Architecture.CreateRegisterBitset();
         }
 
+        public override Core.Serialization.ProcedureSerializer CreateProcedureSerializer(Core.Serialization.ISerializedTypeVisitor<Core.Types.DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();

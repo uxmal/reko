@@ -38,7 +38,8 @@ namespace Reko.UnitTests.Environments.Win32
 
         private void CreateDefFileLoader(string filename, string contents)
         {
-            dfl = new ModuleDefinitionLoader(new StringReader(contents), filename, new X86ArchitectureFlat32());
+            var platform = new Win32Platform(null, new X86ArchitectureFlat32());
+            dfl = new ModuleDefinitionLoader(new StringReader(contents), filename, platform);
         }
 
         [Test]

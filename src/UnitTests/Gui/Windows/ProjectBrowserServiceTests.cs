@@ -331,7 +331,8 @@ namespace Reko.UnitTests.Gui.Windows
             var image = new LoadedImage(Address.Ptr32(0x12340000), new byte[0x1000]);
             var imageMap = image.CreateImageMap();
             imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute);
-            var arch = mr.StrictMock<IProcessorArchitecture>();
+            var arch = mr.StrictMock<ProcessorArchitecture>();
+            arch.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch);
             this.program = new Program(image, imageMap, arch, platform);
             this.program.Name = "foo.exe";
@@ -357,6 +358,8 @@ namespace Reko.UnitTests.Gui.Windows
                     "text=\"foo.exe\" " +
                     "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
                     "tag=\"ProgramDesigner\">" +
+                    "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node " + 
                         "text=\"Image base\" " +
                         "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
@@ -383,6 +386,8 @@ namespace Reko.UnitTests.Gui.Windows
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
                 "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"ProgramDesigner\">" +
+                    "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegmentNodeDesigner\" />" +
                  "</node>" +
                  "</root>");
@@ -425,6 +430,8 @@ namespace Reko.UnitTests.Gui.Windows
                     "text=\"foo.exe\" " +
                     "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
                     "tag=\"ProgramDesigner\">" +
+                    "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node " +
                         "text=\"Image base\" " +
                         "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +

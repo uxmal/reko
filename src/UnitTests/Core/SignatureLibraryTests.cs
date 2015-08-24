@@ -18,11 +18,12 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using NUnit.Framework;
+using Reko.Environments.SysV;
 using System;
 using System.Collections.Generic;
 
@@ -49,7 +50,9 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-            var lib = TypeLibrary.Load(new IntelArchitecture(ProcessorMode.Protected32), slib);
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var platform = new SysVPlatform(null, arch);
+            var lib = TypeLibrary.Load(platform, slib);
             Assert.AreEqual(PrimitiveType.Int32, lib.LookupType("int"));
         }
 	}

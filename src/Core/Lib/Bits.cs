@@ -50,5 +50,16 @@ namespace Reko.Core.Lib
             r = (w ^ m) - m;
             return r;
         }
+
+        public static int BitCount(ulong u)
+        {
+            u = u - ((u >> 1) & 0x5555555555555555UL);
+            u = (u & 0x3333333333333333UL) + ((u >> 2) & 0x3333333333333333UL);
+            u = (u & 0x0F0F0F0F0F0F0F0FUL) + ((u >> 4) & 0x0F0F0F0F0F0F0F0FUL);
+            u = (u & 0x00FF00FF00FF00FFUL) + ((u >> 8) & 0x00FF00FF00FF00FFUL);
+            u = (u & 0x0000FFFF0000FFFFUL) + ((u >> 16) & 0x0000FFFF0000FFFFUL);
+            u = (u & 0x00000000FFFFFFFFUL) + ((u >> 32) & 0x0000000FFFFFFFFUL);
+            return (int)u;
+        }
     }
 }

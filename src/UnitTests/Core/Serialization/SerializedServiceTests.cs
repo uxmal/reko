@@ -18,12 +18,13 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using NUnit.Framework;
+using Reko.Environments.Msdos;
 using System;
 using System.IO;
 using System.Xml;
@@ -34,12 +35,16 @@ namespace Reko.UnitTests.Core.Serialization
 	[TestFixture]
 	public class SerializedServiceTests
 	{
-		private IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+		private IProcessorArchitecture arch;
 		private SerializedService svc;
+        private MsdosPlatform platform;
 
 		[SetUp]
 		public void Setup()
 		{
+            this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(null, arch);
+
 			svc = new SerializedService();
 			svc.Name = "msdos_ioctl_get_device_info";
 			svc.SyscallInfo = new SerializedSyscallInfo();
@@ -69,7 +74,7 @@ namespace Reko.UnitTests.Core.Serialization
 		[Test]
 		public void SserBuild()
 		{
-			SystemService ssvc = svc.Build(arch);
+			SystemService ssvc = svc.Build(platform);
 			
 			Assert.AreEqual(svc.Name, ssvc.Name);
 			Assert.AreEqual(0x21, ssvc.SyscallInfo.Vector);

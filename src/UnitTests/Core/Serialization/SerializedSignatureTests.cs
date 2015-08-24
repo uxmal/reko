@@ -18,13 +18,13 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using Reko.Arch.X86;
-using NUnit.Framework;
-using System;
+using Reko.Environments.Msdos;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -36,15 +36,17 @@ namespace Reko.UnitTests.Core.Serialization
 	{
 		private IntelArchitecture arch;
         private X86ProcedureSerializer sser;
+        private MsdosPlatform platform;
 
 		public SerializedSignatureTests()
 		{
 			this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(null, arch);
 		}
 
         private void Given_X86ProcedureSerializer()
         {
-            sser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(arch, true), "stdapi");
+            sser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "stdapi");
         }
 
 		[Test]

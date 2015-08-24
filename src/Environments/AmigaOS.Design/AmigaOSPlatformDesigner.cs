@@ -18,28 +18,36 @@
  */
 #endregion
 
-using Gee.External.Capstone;
-using Gee.External.Capstone.Arm;
 using Reko.Core;
-using Reko.Core.Machine;
+using Reko.Gui;
+using Reko.Gui.Design;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Arm
+namespace Reko.Environments.AmigaOS.Design
 {
-    [Obsolete("Use Arm32Instruction")]
-    public class ThumbInstruction : MachineInstruction
+    class AmigaOSPlatformDesigner : PlatformDesigner
     {
-        public ThumbInstruction(Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> instruction)
+        public override void Initialize(object obj)
         {
-            this.Internal = instruction;
-            this.Address = Address.Ptr32((uint)instruction.Address);
+            base.Initialize(obj);
         }
 
-        public override int OpcodeAsInteger { get { return (int) Internal.Id; } }
-
-        public Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> Internal { get; private set; }
+        public override void DoDefaultAction()
+        {
+            var shellUiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var windowFrame = shellUiSvc.FindWindow(GetType().FullName);
+            if (windowFrame == null)
+            {
+                var platform = (AmigaOSPlatform)Component;
+                windowFrame = shellUiSvc.CreateWindow(
+                    GetType().FullName,
+                    platform.Description,
+                    new AmigaOSPropertiesInteractor(platform));
+            }
+            windowFrame.Show();
+        }
     }
 }

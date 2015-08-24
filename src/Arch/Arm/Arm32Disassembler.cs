@@ -31,9 +31,10 @@ using System.IO;
 using System.Text;
 using ArmInstruction = Reko.Arch.Arm.Arm32Instruction;
 
-namespace Reko.Arch.Arm {
-
-    public class Arm32Disassembler : DisassemblerBase<Arm32Instruction> {
+namespace Reko.Arch.Arm 
+{
+    public class Arm32Disassembler : DisassemblerBase<Arm32Instruction> 
+    {
         private CapstoneDisassembler<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
 

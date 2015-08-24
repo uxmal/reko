@@ -30,6 +30,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Environments.Win32;
 
 namespace Reko.UnitTests.ImageLoaders.MzExe
 {
@@ -71,7 +72,11 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer = new LeImageWriter(fileImage);
             var cfgSvc = mr.StrictMock<IConfigurationService>();
             Given_i386_Architecture();
+            var win32 = new Win32Platform(sc, arch_386);
+            var win32Env = mr.Stub<OperatingEnvironment>();
             cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch_386);
+            cfgSvc.Stub(c => c.GetEnvironment("win32")).Return(win32Env);
+            win32Env.Stub(w => w.Load(null, null)).IgnoreArguments().Return(win32);
             sc.AddService<IConfigurationService>(cfgSvc);
         }
 
@@ -82,6 +87,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             arch_386.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
             var state = mr.Stub<ProcessorState>();
             arch_386.Stub(a => a.CreateProcessorState()).Return(state);
+            arch_386.Replay();
         }
 
         // PE section headers are always 40 bytes.

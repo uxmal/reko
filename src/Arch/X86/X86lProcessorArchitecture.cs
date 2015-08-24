@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+//using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -58,18 +58,24 @@ namespace Reko.Arch.X86
 
     /// <summary>
     /// Processor architecture definition for the Intel x86 family. Currently supported processors are 8086/7,
-    /// 80186/7, 80286/7, 80386/7, 80486, and Pentium. Also, beginning support for x86-64
+    /// 80186/7, 80286/7, 80386/7, 80486, and Pentium,  x86-64
     /// </summary>
-	public class IntelArchitecture : IProcessorArchitecture
+	public class IntelArchitecture : ProcessorArchitecture
 	{
 		private ProcessorMode mode;
         private List<FlagGroupStorage> flagGroups;
 
-		public IntelArchitecture(ProcessorMode mode)
-		{
-			this.mode = mode;
+        public IntelArchitecture(ProcessorMode mode)
+        {
+            this.mode = mode;
             this.flagGroups = new List<FlagGroupStorage>();
-		}
+            this.InstructionBitSize = 8;
+            this.CarryFlagMask = (uint)FlagM.CF;
+            this.PointerType = mode.PointerType;
+            this.WordWidth = mode.WordWidth;
+            this.FramePointerType = mode.FramePointerType;
+            this.StackRegister = mode.StackRegister;
+        }
 
 		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
 		{
@@ -83,77 +89,67 @@ namespace Reko.Arch.X86
 			}
 		}
 
-        public X86Disassembler CreateDisassembler(ImageReader imageReader)
+        public X86Disassembler CreateDisassemblerImpl(ImageReader imageReader)
         {
             return mode.CreateDisassembler(imageReader);
         }
 
-        public virtual Frame CreateFrame()
-        {
-            return new Frame(FramePointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new X86InstructionComparer(norm);
         }
 
-		IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
+		public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
 		{
-            return CreateDisassembler(imageReader);
+            return CreateDisassemblerImpl(imageReader);
 		}
 
-        public virtual BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
 		{
 			return new BitSet((int) Registers.Max);
 		}
 
-		public virtual ProcessorState CreateProcessorState()
+		public override ProcessorState CreateProcessorState()
 		{
 			return new X86State(this);
 		}
 
-        public virtual IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public virtual IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
         {
             return mode.CreateInstructionScanner(map, rdr, knownLinAddresses, flags);
         }
 
-        public virtual ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            return new X86ProcedureSerializer(this, typeLoader, defaultCc);
-        }
-
-        public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return mode.CreateStackAccess(frame, offset, dataType);
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return mode.MakeAddressFromConstant(c);
         }
 
-        public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return mode.ReadCodeAddress(byteSize, rdr, state);
         }
 
-		public FlagGroupStorage GetFlagGroup(uint grf)
+		public override FlagGroupStorage GetFlagGroup(uint grf)
 		{
 			foreach (FlagGroupStorage f in flagGroups)
 			{
@@ -167,7 +163,7 @@ namespace Reko.Arch.X86
 			return fl;
 		}
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
 		{
 			FlagM grf = 0;
 			for (int i = 0; i < name.Length; ++i)
@@ -185,12 +181,12 @@ namespace Reko.Arch.X86
 			return GetFlagGroup((uint) grf);
 		}
 
-		public RegisterStorage GetRegister(int i)
+		public override RegisterStorage GetRegister(int i)
 		{
 			return Registers.GetRegister(i);
 		}
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
 		{
 			var r = Registers.GetRegister(name);
 			if (r == RegisterStorage.None)
@@ -198,20 +194,19 @@ namespace Reko.Arch.X86
 			return r;
 		}
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return Registers.All.Where(a => a != null).ToArray();
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             reg = Registers.GetRegister(name);
             return (reg != RegisterStorage.None);
         }
 
-        public int InstructionBitSize { get { return 8; } }
 
-		public string GrfToString(uint grf)
+		public override string GrfToString(uint grf)
 		{
 			StringBuilder s = new StringBuilder();
 			for (int r = Registers.S.Number; grf != 0; ++r, grf >>= 1)
@@ -227,14 +222,7 @@ namespace Reko.Arch.X86
 			get { return mode; }
 		}
 
-        public PrimitiveType PointerType { get { return mode.PointerType; } }
-        public PrimitiveType WordWidth { get { return mode.WordWidth; } }
-        public PrimitiveType FramePointerType { get { return mode.FramePointerType; } }
-        public RegisterStorage StackRegister { get { return mode.StackRegister; } }
-        
-        public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return mode.TryParseAddress(txtAddress, out addr);
         }

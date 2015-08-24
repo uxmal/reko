@@ -26,6 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using NUnit.Framework;
 using System;
+using Reko.Environments.Msdos;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -35,12 +36,14 @@ namespace Reko.UnitTests.Core.Serialization
 		private IntelArchitecture arch;
 		private ProcedureSerializer sigser;
 		private ArgumentSerializer argser;
+        private MsdosPlatform platform;
 
 		[SetUp]
 		public void Setup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
-			sigser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(arch, true), "stdapi");
+            platform = new MsdosPlatform(null, arch);
+			sigser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "stdapi");
             argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame(), null);
 		}
 

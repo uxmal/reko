@@ -46,7 +46,7 @@ namespace Reko.Gui.Windows
         private TypeMarker typeMarker;
         private Program program;
         private bool ignoreAddressChange;
-        private NavigationInteractor navInteractor;
+        private NavigationInteractor<Address> navInteractor;
 
         public LowLevelView Control { get { return control; } }
 
@@ -100,7 +100,7 @@ namespace Reko.Gui.Windows
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
 
-            this.navInteractor = new NavigationInteractor();
+            this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.Control);
 
             typeMarker = new TypeMarker(control.MemoryView);
@@ -143,7 +143,8 @@ namespace Reko.Gui.Windows
         {
             if (!program.Image.IsValidAddress(addrTo))
                 return;
-            navInteractor.UserNavigateTo(addrTo);
+            navInteractor.RememberAddress(addrFrom);
+            control.CurrentAddress = addrTo;        // ...and move to the new position.
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

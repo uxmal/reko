@@ -35,6 +35,7 @@ namespace Reko.UnitTests.Core
     {
         private MockRepository mr;
         private IProcessorArchitecture arch;
+        private Platform platform;
 
         [SetUp]
         public void Setup()
@@ -51,8 +52,10 @@ namespace Reko.UnitTests.Core
         private void Given_ArchitectureStub()
         {
             arch = mr.DynamicMock<IProcessorArchitecture>();
+            platform = mr.DynamicMock<Platform>(null, arch);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             var procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
-            arch.Stub(a => a.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
+            platform.Stub(p => p.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
             procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(new ProcedureSignature());
         }
 
@@ -67,7 +70,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch, true);
+            var tlLdr = new TypeLibraryLoader(platform, true);
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
         }
 
@@ -77,7 +80,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch, true);
+            var tlLdr = new TypeLibraryLoader(platform, true);
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -97,7 +100,7 @@ namespace Reko.UnitTests.Core
             Given_Arch_PointerDataType(PrimitiveType.Pointer32);
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch, true);
+            var tlLdr = new TypeLibraryLoader(platform, true);
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -122,7 +125,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch, true);
+            var tlLdr = new TypeLibraryLoader(platform, true);
             var slib = new SerializedLibrary
             {
                 Procedures = {
@@ -151,7 +154,7 @@ namespace Reko.UnitTests.Core
         {  
             Given_ArchitectureStub();
             mr.ReplayAll();
-            var tlLDr = new TypeLibraryLoader(arch, true);
+            var tlLDr = new TypeLibraryLoader(platform, true);
             var slib = new SerializedLibrary {
                 Procedures = {
                     new Procedure_v1 {
