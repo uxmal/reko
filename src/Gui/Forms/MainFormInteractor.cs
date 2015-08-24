@@ -302,15 +302,17 @@ namespace Reko.Gui.Forms
 
                 mru.Use(dlg.FileName.Text);
 
-                var typeName = (string) ((ListOption) dlg.Architectures.SelectedValue).Value;
-                Type t = Type.GetType(typeName, true);
+                var archOption = (ListOption) dlg.Architectures.SelectedValue;
+                Type t = Type.GetType((string)archOption.Value, true);
                 arch = (IProcessorArchitecture)Activator.CreateInstance(t);
+                arch.Description = archOption.Text;
 
-                typeName = (string) ((ListOption) dlg.Platforms.SelectedValue).Value;
-                t = Type.GetType(typeName);
+                var envOption = (ListOption) dlg.Platforms.SelectedValue;
+                t = Type.GetType((string)envOption.Value);
                 if (t == null)
-                    throw new TypeLoadException(string.Format("Unable to load type {0}.", typeName));
+                    throw new TypeLoadException(string.Format("Unable to load type {0}.", envOption.Value));
                 platform = (Platform) Activator.CreateInstance(t, sc, arch);
+                platform.Description = envOption.Text;
 
                 Address addrBase;
                 var sAddr = dlg.AddressTextBox.Text.Trim();

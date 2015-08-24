@@ -47,6 +47,7 @@ namespace Reko.Arch.Z80
         {
             this.arch = state.arch;
             this.registerFile = (ushort[])state.registerFile.Clone();
+            this.isValid = (bool[])state.isValid.Clone();
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -58,22 +59,34 @@ namespace Reko.Arch.Z80
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            Z80Register reg = r as Z80Register;
+            if (reg != null && isValid[reg.FileSlot])
+                return Constant.Create(reg.DataType, registerFile[reg.FileSlot]);
+            else
+                return Constant.Invalid;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
+            Z80Register reg = r as Z80Register;
+            if (reg != null && v != null && v.IsValid)
+            {
+                isValid[reg.FileSlot] = true;
+                registerFile[reg.FileSlot] = v.ToByte();
+            }
+            else
+            {
+                isValid[reg.FileSlot] = false;
+            }
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)
@@ -83,12 +96,11 @@ namespace Reko.Arch.Z80
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(returnAddressSize, 0);
         }
 
         public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
         {
-            throw new NotImplementedException();
         }
     }
 }

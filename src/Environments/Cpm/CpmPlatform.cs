@@ -42,7 +42,7 @@ namespace Reko.Environments.Cpm
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();
-        }
+        } 
 
         public override Core.Serialization.ProcedureSerializer CreateProcedureSerializer(Core.Serialization.ISerializedTypeVisitor<Core.Types.DataType> typeLoader, string defaultConvention)
         {
@@ -56,7 +56,7 @@ namespace Reko.Environments.Cpm
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

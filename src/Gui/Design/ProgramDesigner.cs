@@ -37,8 +37,10 @@ namespace Reko.Gui.Design
         {
             base.Initialize(obj);
             program = (Program) obj;
-            Host.AddComponent(program, program.Architecture);
-            Host.AddComponent(program, program.Platform);
+            if (program.Architecture != null)
+                Host.AddComponent(program, program.Architecture);
+            if (program.Platform != null)
+                Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)
                 Host.AddComponents(program, program.ImageMap.Segments.Values);
 
