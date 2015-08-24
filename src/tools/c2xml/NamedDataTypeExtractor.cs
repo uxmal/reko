@@ -196,12 +196,32 @@ namespace Reko.Tools.C2Xml
             {
                 var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, converter);
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
+                var kind = GetArgumentKindFromAttributes(decl.Attributes);
                 return new Argument_v1
                 {
+                    Kind = kind,
                     Name = nt.Name,
                     Type = nt.DataType,
                 };
             }
+        }
+
+        public SerializedKind GetArgumentKindFromAttributes(List<CAttribute> attrs)
+        {
+            if (attrs == null)
+                return null;
+            SerializedKind kind = null;
+            foreach (var attr in attrs)
+            {
+                if (attr.Name.Components == null || attr.Name.Components.Length != 2 ||
+                    attr.Name.Components[0] != "reko" || attr.Name.Components[1] != "reg")
+                    continue;
+                // We have a reko::reg; get the register.
+                if (attr.Tokens.Count != 1 || attr.Tokens[0].Type != CTokenType.StringLiteral)
+                    throw new FormatException("[[reko::reg]] attribute expects a register name.");
+                kind = new Register_v1 { Name = (string)attr.Tokens[0].Value };
+            }
+            return kind;
         }
 
         /// <summary>

@@ -31,6 +31,10 @@ using System.Xml.Serialization;
 
 namespace Reko.Tools.C2Xml
 {
+    /// <summary>
+    /// Parses a C compilation unit and transforms all declarations to the 
+    /// XML syntax used by Reko.
+    /// </summary>
     public class XmlConverter : 
         CSyntaxVisitor<int>
     {

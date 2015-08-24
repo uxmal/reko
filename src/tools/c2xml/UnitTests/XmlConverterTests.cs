@@ -807,6 +807,30 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest(cCode, sExp);
         }
+
+        [Test]
+        public void C2X_Parameter_Attribute()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name=""parm"">
+        <prim domain=""SignedInt"" size=""4"" />
+        <reg>D0</reg>
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(
+                "void foo([[reko::reg(\"D0\")]]int parm);",
+                sExp);
+
+        }
     }
 }
 #endif

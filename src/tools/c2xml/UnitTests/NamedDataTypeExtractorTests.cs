@@ -115,6 +115,45 @@ namespace Reko.Tools.C2Xml.UnitTests
                 new IdDeclarator { Name = "foo" });
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
+
+        [Test(Description="If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
+        public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
+        {
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], parserState);
+            var kind = ndte.GetArgumentKindFromAttributes(null);
+            Assert.IsNull(kind);
+        }
+
+        [Test(Description = "If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
+        public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
+        {
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], parserState);
+            var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
+            {
+                new CAttribute {
+                     Name = new QualifiedName { Components = new[] { "foo", "bar"} }
+                }
+            });
+            Assert.IsNull(kind);
+        }
+
+        [Test(Description = "If there is a reko::reg attribute present, us it to determine kind.")]
+        public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
+        {
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], parserState);
+            var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
+            {
+                new CAttribute {
+                     Name = new QualifiedName("reko", "reg"),
+                     Tokens = new List<CToken> {
+                         new CToken(CTokenType.StringLiteral, "D0")
+                     }
+                }
+            });
+            Assert.IsNotNull(kind);
+            var sReg = (Register_v1)kind;
+            Assert.AreEqual("D0", sReg.Name);
+        }
     }
 }
 #endif

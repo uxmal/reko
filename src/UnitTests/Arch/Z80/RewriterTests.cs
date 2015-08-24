@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.Z80
         {
             BuildTest(0xC3, 0xAA, 0xBB);
             AssertCode("0|0100(3): 1 instructions",
-                "1|T--|goto 0xBBAA");
+                "1|T--|goto BBAA");
         }
 
         [Test]

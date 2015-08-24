@@ -841,7 +841,12 @@ namespace Reko.Tools.C2Xml
 
     public struct QualifiedName
     {
-        public List<string> Components;
+        public string[] Components;
+
+        public QualifiedName(params string[] components)
+        {
+            this.Components = components;
+        }
 
         public override string ToString()
         {
