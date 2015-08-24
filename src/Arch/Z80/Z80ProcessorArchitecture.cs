@@ -177,7 +177,7 @@ namespace Reko.Arch.Z80
     public class WordRegister : Z80Register
     {
         public WordRegister(string name, int id, int fileSlot) : 
-            base(name, id, fileSlot, PrimitiveType.Word32)
+            base(name, id, fileSlot, PrimitiveType.Word16)
         {
         }
     }
