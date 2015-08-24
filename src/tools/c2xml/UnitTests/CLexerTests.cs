@@ -407,6 +407,13 @@ namespace Reko.Tools.C2Xml.UnitTests
             Lex("__success");
             AssertToken(CTokenType.__Success);
         }
+
+        [Test]
+        public void CLexer_ColonColon()
+        {
+            Lex("::");
+            AssertToken(CTokenType.ColonColon);
+        }
     }
 }
 #endif

@@ -510,6 +510,29 @@ namespace Reko.Tools.C2Xml
         public override string ToString() { return Expression.ToString(); }
     }
 
+    public class CAttribute : CSyntax
+    {
+        public QualifiedName Name;
+        public List<CToken> Tokens;
+
+        public override T Accept<T>(CSyntaxVisitor<T> visitor)
+        {
+            return visitor.VisitAttribute(this);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("(attr {0} (", Name);
+            foreach (var token in Tokens)
+            {
+                sb.AppendFormat("{0} {1}", token.Type, token.Value);
+            }
+            sb.AppendFormat("))");
+            return sb.ToString();
+        }
+    }
+
     #region Expressions
 
     public abstract class CExpression : CSyntax
@@ -803,4 +826,14 @@ namespace Reko.Tools.C2Xml
         }
     }
     #endregion
+
+    public struct QualifiedName
+    {
+        public List<string> Components;
+
+        public override string ToString()
+        {
+            return string.Join("::", Components);
+        }
+    }
 }

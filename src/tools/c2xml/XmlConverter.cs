@@ -141,6 +141,12 @@ namespace Reko.Tools.C2Xml
             return 0;
         }
 
+        public int VisitAttribute(CAttribute attr)
+        {
+            return 0;
+        }
+
+
         public int VisitDeclSpec(DeclSpec declSpec)
         {
             throw new NotImplementedException();

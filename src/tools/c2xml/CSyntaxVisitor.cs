@@ -31,15 +31,11 @@ namespace Reko.Tools.C2Xml
         T VisitDeclaration(Decl decl);
         T VisitDeclSpec(DeclSpec declSpec);
         T VisitInitDeclarator(InitDeclarator initDeclarator);
-
         T VisitEnumerator(Enumerator enumerator);
-
         T VisitStatement(Stat stm);
-
         T VisitExpression(CExpression stm);
-
-
         T VisitParamDeclaration(ParamDecl paramDecl);
+        T VisitAttribute(CAttribute cAttribute);
 
     }
 }

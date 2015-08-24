@@ -1096,6 +1096,15 @@ MemoryBarrier (
             var sExp = "(decl Int ((init-decl (func main ((Int ) (Char (ptr (ptr ))) (Char (ptr (ptr ))))))))";
             Assert.AreEqual(sExp, decl.ToString());
         }
+
+        [Test]
+        public void CParser_Attribute()
+        {
+            Lex("[[reko::reg(\"D0\")]]");
+            var attr = parser.Parse_AttributeSpecifier();
+            var sExp = "(attr reko::reg (StringLiteral D0))";
+            Assert.AreEqual(sExp, attr.ToString());
+        }
     }
 }
 #endif

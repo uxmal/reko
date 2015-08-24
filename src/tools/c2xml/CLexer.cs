@@ -121,6 +121,7 @@ namespace Reko.Tools.C2Xml
             RealExponentSign,
             Dot,
             DotDot,
+            Colon,
         }
 
         public int LineNumber { get; private set; }
@@ -166,7 +167,7 @@ namespace Reko.Tools.C2Xml
                     case ')': return Tok(CTokenType.RParen);
                     case '.': state = State.Dot; break;
                     case ',': return Tok(CTokenType.Comma);
-                    case ':': return Tok(CTokenType.Colon);
+                    case ':': state = State.Colon; break;
                     case ';': return Tok(CTokenType.Semicolon);
                     case '/': state = State.Slash; break;
                     case '<': state = State.Lt; break;
@@ -437,7 +438,13 @@ namespace Reko.Tools.C2Xml
                         return Tok(CTokenType.Ellipsis);
                     }
                     throw new FormatException("Token '..' is not valid C.");
-
+                case State.Colon:
+                    if (c >= 0 && ch == ':')
+                    {
+                        rdr.Read();
+                        return Tok(CTokenType.ColonColon);
+                    }
+                    return Tok(CTokenType.Colon);
                 case State.Eq:
                     if (c >= 0 && ch == '=')
                     {
@@ -791,6 +798,7 @@ namespace Reko.Tools.C2Xml
         Shl,
         Shr,
         Colon,
+        ColonColon,
         Semicolon,
         Comma,
         Star,

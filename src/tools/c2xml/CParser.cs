@@ -1085,6 +1085,115 @@ IGNORE tab + cr + lf
             }
         }
 
+        // May be null.
+        public List<CAttribute> Parse_AttributeSpecifierSeq()
+        {
+            if (lexer.Peek(0).Type == CTokenType.LBracket &&
+                lexer.Peek(1).Type == CTokenType.LBracket)
+            {
+                var attrs = new List<CAttribute>();
+                do
+                {
+                    attrs.Add(Parse_AttributeSpecifier());
+                } while (lexer.Peek(0).Type == CTokenType.LBracket &&
+                         lexer.Peek(1).Type == CTokenType.LBracket);
+                return attrs;
+            }
+            return null;
+        }
+
+        public CAttribute Parse_AttributeSpecifier()
+        {
+            ExpectToken(CTokenType.LBracket);
+            ExpectToken(CTokenType.LBracket);
+            QualifiedName qname = Parse_AttributeToken();
+            List<CToken> tokens = null;
+            if (PeekThenDiscard(CTokenType.LParen))
+            {
+                tokens = Parse_BalancedTokenSeq();
+                ExpectToken(CTokenType.RParen);
+            }
+            ExpectToken(CTokenType.RBracket);
+            ExpectToken(CTokenType.RBracket);
+            return new CAttribute
+            {
+                Name = qname,
+                Tokens = tokens
+            };
+        }
+
+        private QualifiedName Parse_AttributeToken()
+        {
+            var comps = new List<string>();
+            comps.Add((string)ExpectToken(CTokenType.Id));
+            while (PeekThenDiscard(CTokenType.ColonColon))
+            {
+                comps.Add((string)ExpectToken(CTokenType.Id));
+            }
+            return new QualifiedName { Components = comps };
+        }
+
+        public List<CToken> Parse_BalancedTokenSeq()
+        {
+            var tokens = new List<CToken>();
+            for (; ; )
+            {
+                var tok = lexer.Peek(0);
+                switch (tok.Type)
+                {
+                case CTokenType.RParen:
+                case CTokenType.RBrace:
+                case CTokenType.RBracket:
+                case CTokenType.EOF:
+                    return tokens;
+                default:
+                    var sublist = Parse_BalancedToken();
+                    tokens.AddRange(sublist);
+                    break;
+                }
+            }
+        }
+
+        private List<CToken> Parse_BalancedToken()
+        {
+            var tokens = new List<CToken>();
+            var token = lexer.Read();
+            switch (token.Type)
+            {
+            case CTokenType.EOF:
+                Unexpected(CTokenType.LParen, token.Type);
+                break;
+            case CTokenType.LParen:
+                tokens.Add(token);
+                tokens.AddRange(Parse_BalancedTokenSeq());
+                token = lexer.Read();
+                if (token.Type != CTokenType.RParen)
+                    throw Unexpected(CTokenType.RParen, token.Type);
+                tokens.Add(token);
+                break;
+            case CTokenType.LBrace:
+                tokens.Add(token);
+                tokens.AddRange(Parse_BalancedTokenSeq());
+                token = lexer.Read();
+                if (token.Type != CTokenType.RBrace)
+                    throw Unexpected(CTokenType.RBrace, token.Type);
+                tokens.Add(token);
+                break;
+            case CTokenType.LBracket:
+                tokens.Add(token);
+                tokens.AddRange(Parse_BalancedTokenSeq());
+                token = lexer.Read();
+                if (token.Type != CTokenType.RBracket)
+                    throw Unexpected(CTokenType.RBracket, token.Type);
+                tokens.Add(token);
+                break;
+            default:
+                tokens.Add(token);
+                break;
+            }
+            return tokens;
+        }
+
         //---------- Expressions ----------
 
         //Expr       = AssignExpr {','  AssignExpr}.
