@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Reko.Core.Configuration;
+using Reko.Core.Types;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -46,7 +47,6 @@ namespace Reko.ImageLoaders.MzExe
 		private int sections;
 		private uint rvaSectionTable;
 		private LoadedImage imgLoaded;
-        private ImageMap imageMap;
 		private Address preferredBaseOfImage;
 		private SortedDictionary<string, Section> sectionMap;
         private Dictionary<uint, PseudoProcedure> importThunks;
@@ -77,6 +77,8 @@ namespace Reko.ImageLoaders.MzExe
 			short expectedMagic = ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr, expectedMagic);
 		}
+
+        public ImageMap ImageMap { get; private set; }
 
 		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
 		{
@@ -175,10 +177,10 @@ namespace Reko.ImageLoaders.MzExe
             {
                 sectionMap = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionMap);
-                imageMap = imgLoaded.CreateImageMap();
+                ImageMap = imgLoaded.CreateImageMap();
             }
             imgLoaded.BaseAddress = addrLoad;
-            this.program = new Program(imgLoaded, imageMap, arch, platform);
+            this.program = new Program(imgLoaded, ImageMap, arch, platform);
             this.importReferences = program.ImportReferences;
             return program;
         }
@@ -358,7 +360,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-            AddSectionsToImageMap(addrLoad, imageMap);
+            AddSectionsToImageMap(addrLoad, ImageMap);
             var relocations = imgLoaded.Relocations;
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
@@ -367,7 +369,7 @@ namespace Reko.ImageLoaders.MzExe
 			}
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
             var entryPoints = new List<EntryPoint> { new EntryPoint(addrEp, arch.CreateProcessorState()) };
-			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
+			AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
             return new RelocationResults(entryPoints, relocations);
@@ -479,10 +481,33 @@ namespace Reko.ImageLoaders.MzExe
             if (rvaILT == 0 && dllName == null)
                 return false;
 
+            var ptrSize = platform.PointerType.Size;
             ImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT!=0 ? rvaILT:rvaIAT);
             ImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
-            while (innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat))
-                ;
+            while (true)
+            {
+                var addrIat = rdrIat.Address;
+                var addrIlt = rdrIlt.Address;
+                if (!innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat))
+                    break;
+
+                ImageMap.AddItemWithSize(
+                    addrIat,
+                    new ImageMapItem
+                    {
+                        Address = addrIat,
+                        DataType = new Pointer(new CodeType(), ptrSize),
+                        Size = (uint)ptrSize,
+                    });
+                ImageMap.AddItemWithSize(
+                    addrIlt,
+                    new ImageMapItem
+                    {
+                        Address = addrIlt,
+                        DataType = new Pointer(new CodeType(), ptrSize),
+                        Size = (uint)ptrSize,
+                    });
+            } 
             return true;
         }
 

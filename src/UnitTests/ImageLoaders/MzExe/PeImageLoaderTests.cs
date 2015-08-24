@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Types;
 using Reko.Environments.Win32;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.ImageLoaders.MzExe
 {
@@ -85,6 +86,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             this.arch_386 = mr.StrictMock<IProcessorArchitecture>();
             arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Pointer32));
             arch_386.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
+            arch_386.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             var state = mr.Stub<ProcessorState>();
             arch_386.Stub(a => a.CreateProcessorState()).Return(state);
             arch_386.Replay();
@@ -418,6 +420,24 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00102032)].ToString());
         }
 
+        private void AssertImageMap(string sExp)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in this.peldr.ImageMap.Items.Values)
+            {
+                sb.AppendFormat("{0:X} {1:X4} {2} {3}",
+                    item.Address,
+                    item.Size,
+                    item.GetType().Name,
+                    item.DataType);
+                sb.AppendLine();
+            }
+            var sActual = sb.ToString();
+            if (sActual != sExp)
+                Debug.Print(sActual);
+            Assert.AreEqual(sExp, sActual);
+        }
+
         [Test]
         public void Pil32_BlankIat()
         {
@@ -442,6 +462,18 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("msvcrt.dll!malloc", program.ImportReferences[Address.Ptr32(0x0010202A)].ToString());
             Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010202E)].ToString());
             Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00102032)].ToString());
+            var sExp =
+@"00100000 2000 ImageMapItem <unknown>
+00102000 0004 ImageMapItem (ptr code)
+00102004 0004 ImageMapItem (ptr code)
+00102008 0004 ImageMapItem (ptr code)
+0010200C 001E ImageMapItem <unknown>
+0010202A 0004 ImageMapItem (ptr code)
+0010202E 0004 ImageMapItem (ptr code)
+00102032 0004 ImageMapItem (ptr code)
+00102036 0FCA ImageMapItem <unknown>
+";
+            AssertImageMap(sExp);
         }
     }
 }
