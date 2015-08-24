@@ -36,7 +36,7 @@ namespace Reko.Core.Serialization
 		[XmlElement("syscallinfo")]
 		public SerializedSyscallInfo SyscallInfo;
 
-		public SystemService Build(IProcessorArchitecture arch)
+		public SystemService Build(Platform platform)
 		{
 			SystemService svc = new SystemService();
 			svc.Name = Name;
@@ -49,7 +49,7 @@ namespace Reko.Core.Serialization
 				{
                     svc.SyscallInfo.RegisterValues[i] = new RegValue
                     {
-                        Register = arch.GetRegister(SyscallInfo.RegisterValues[i].Register),
+                        Register = platform.Architecture.GetRegister(SyscallInfo.RegisterValues[i].Register),
                         Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16),
                     };
 				}
@@ -58,9 +58,9 @@ namespace Reko.Core.Serialization
 			{
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
-            TypeLibraryLoader loader = new TypeLibraryLoader(arch, true);
-			ProcedureSerializer sser = arch.CreateProcedureSerializer(loader, "stdapi");
-            svc.Signature = sser.Deserialize(Signature, arch.CreateFrame());
+            TypeLibraryLoader loader = new TypeLibraryLoader(platform, true);
+			var sser = platform.CreateProcedureSerializer(loader, "stdapi");
+            svc.Signature = sser.Deserialize(Signature, platform.Architecture.CreateFrame());
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;
 			return svc;
 		}

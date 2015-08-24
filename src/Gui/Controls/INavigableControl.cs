@@ -26,11 +26,11 @@ using System.Text;
 
 namespace Reko.Gui.Controls
 {
-    public interface INavigableControl
+    public interface INavigableControl<T>
     {
         IButton BackButton { get; }
         IButton ForwardButton { get; }
-        Address CurrentAddress { get; set; }
+        T CurrentAddress { get; set; }
         event EventHandler CurrentAddressChanged;   // This event is fired when Back/Forward is pressed.
     }
 }

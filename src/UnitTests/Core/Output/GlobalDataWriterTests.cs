@@ -56,9 +56,7 @@ namespace Reko.UnitTests.Core.Output
             var globalStruct = new StructureType();
             globalStruct.Fields.AddRange(fields);
             prog.Globals.TypeVariable = new TypeVariable("globals_t", 1) { DataType = globalStruct };
-            var eq = new EquivalenceClass(prog.Globals.TypeVariable);
-            eq.DataType = globalStruct;
-            var ptr = new Pointer(eq, 4);
+            var ptr = new Pointer(globalStruct, 4);
             prog.Globals.TypeVariable.DataType = ptr;
         }
 

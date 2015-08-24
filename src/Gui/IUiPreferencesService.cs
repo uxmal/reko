@@ -150,7 +150,8 @@ namespace Reko.Gui
                         Foreground = GetBrush(dStyle.ForeColor),
                         Background = GetBrush(dStyle.BackColor),
                         Font = GetFont(dStyle.FontName),
-                        Width = width
+                        Width = width,
+                        Cursor = GetCursor(dStyle.Cursor),
                     });
             }
             var q = configSvc.GetDefaultPreferences();
@@ -252,6 +253,15 @@ namespace Reko.Gui
             var colorCvt = TypeDescriptor.GetConverter(typeof(Color));
             var brush = new SolidBrush(ConvertFrom<Color>(colorCvt, sColor));
             return brush;
+        }
+
+        private Cursor GetCursor(string sCursor)
+        {
+            if (string.IsNullOrEmpty(sCursor))
+                return null;
+            var cursorCvt = TypeDescriptor.GetConverter(typeof(Cursor));
+            var cursor = ConvertFrom<Cursor>(cursorCvt, sCursor);
+            return cursor;
         }
 
         private string SaveFont(Font font)

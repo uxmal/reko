@@ -35,6 +35,5 @@ namespace Reko.Core.Configuration
             get { return (string) this["Name"]; }
             set { this["Name"] = value; }
         }
-
     }
 }

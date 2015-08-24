@@ -32,144 +32,116 @@ using Reko.Core.Serialization;
 
 namespace Reko.Arch.Mos6502
 {
-    public class Mos6502ProcessorArchitecture : IProcessorArchitecture
+    public class Mos6502ProcessorArchitecture : ProcessorArchitecture
     {
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public Mos6502ProcessorArchitecture()
+        {
+            CarryFlagMask = (uint)FlagM.CF;
+            InstructionBitSize = 8;
+            FramePointerType = PrimitiveType.Byte;       // Yup, stack pointer is a byte register (!)
+            PointerType = PrimitiveType.Ptr16;
+            StackRegister = Registers.s;
+            WordWidth = PrimitiveType.Byte;       // 8-bit, baby!
+        }
+
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Disassembler(imageReader.Clone());
         }
 
-        public Frame CreateFrame()
-        {
-            //$HM. The stack pointer is 8 bits on this processor.
-            return new Frame(PrimitiveType.Ptr16);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new Mos6502ProcessorState(this);
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Rewriter(this, rdr.Clone(), state, frame, host);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return Registers.All;
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 8; } }
 
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { return PrimitiveType.Byte; }      // Yup, stack pointer is a byte register (!)
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Ptr16; }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { return PrimitiveType.Byte; }      // 8-bit, baby!
-        }
-
-        public RegisterStorage StackRegister
-        {
-            get { return Registers.s; }
-        }
-
-        public uint CarryFlagMask
-        {
-            get { return (uint) FlagM.CF; }
-        }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }
-
     }
 
-    public static class Registers
+    public  static class Registers
     {
         public static readonly RegisterStorage a = new RegisterStorage("a", 0, PrimitiveType.Byte);
         public static readonly RegisterStorage x = new RegisterStorage("x", 1, PrimitiveType.Byte);

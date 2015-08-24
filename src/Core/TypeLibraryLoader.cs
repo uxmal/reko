@@ -34,7 +34,7 @@ namespace Reko.Core
     /// </summary>
     public class TypeLibraryLoader : ISerializedTypeVisitor<DataType>
     {
-        private IProcessorArchitecture arch;
+        private Platform platform;
         private Dictionary<string, DataType> types;
         private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
@@ -44,14 +44,14 @@ namespace Reko.Core
         private Dictionary<int, SystemService> servicesByOrdinal;
         private string moduleName;
 
-        public TypeLibraryLoader(IProcessorArchitecture arch, bool caseInsensitive)
+        public TypeLibraryLoader(Platform platform, bool caseInsensitive)
         {
-            this.arch = arch;
+            this.platform = platform;
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
             this.types = new Dictionary<string, DataType>(cmp)
             {
-                { "va_list", arch.FramePointerType } ,  
-                { "size_t", arch.WordWidth },
+                { "va_list", platform.Architecture.FramePointerType } ,  
+                { "size_t", platform.Architecture.WordWidth },
             };
             this.signaturesByName = new Dictionary<string, ProcedureSignature>(cmp);
             this.unions = new Dictionary<string, UnionType>(cmp);
@@ -108,8 +108,8 @@ namespace Reko.Core
         {
             try
             {
-                var sser = arch.CreateProcedureSerializer(this, this.defaultConvention);
-                var signature = sser.Deserialize(sp.Signature, arch.CreateFrame());
+                var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+                var signature = sser.Deserialize(sp.Signature, platform.Architecture.CreateFrame());
                 signaturesByName[sp.Name] =  signature;   //$BUGBUG: catch dupes?   
                 if (sp.Ordinal != Procedure_v1.NoOrdinal)
                 {
@@ -130,7 +130,7 @@ namespace Reko.Core
 
         public void LoadService(SerializedService ssvc)
         {
-            var svc = ssvc.Build(arch);
+            var svc = ssvc.Build(platform);
             servicesByOrdinal[svc.SyscallInfo.Vector] = svc;
         }
 
@@ -172,7 +172,7 @@ namespace Reko.Core
                 dt = new UnknownType();
             else 
                 dt = pointer.DataType.Accept(this);
-            return new Pointer(dt, arch.PointerType.Size);
+            return new Pointer(dt, platform.PointerType.Size);
         }
 
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)
@@ -183,7 +183,7 @@ namespace Reko.Core
                 dt = new UnknownType();
             else
                 dt = memptr.MemberType.Accept(this);
-            return new MemberPointer(baseType, dt, arch.PointerType.Size);
+            return new MemberPointer(baseType, dt, platform.PointerType.Size);
         }
 
         public DataType VisitArray(ArrayType_v1 array)
@@ -208,7 +208,7 @@ namespace Reko.Core
         public DataType VisitSignature(SerializedSignature signature)
         {
             //$BUGBUG: what we want is to unify FunctionType and ProcedureSignature....
-            return new Pointer(new CodeType(), arch.PointerType.Size);
+            return new Pointer(new CodeType(), platform.PointerType.Size);
         }
 
         public DataType VisitStructure(SerializedStructType structure)

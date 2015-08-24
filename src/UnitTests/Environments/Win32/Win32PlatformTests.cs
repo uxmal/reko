@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Environments.Win32
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected)
         {
             tlSvc.Expect(t => t.LoadLibrary(
-                Arg<IProcessorArchitecture>.Is.NotNull,
+                Arg<Platform>.Is.NotNull,
                 Arg<string>.Is.Equal(expected))).
                 Return(new TypeLibrary());
         }
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Environments.Win32
         private void Expect_CreateFileStream_PathEndsWith(string filename)
         {
             tlSvc.Expect(f => f.LoadLibrary(
-                Arg<IProcessorArchitecture>.Is.Anything,
+                Arg<Platform>.Is.Anything,
                 Arg<string>.Matches(s => filename.EndsWith(s))))
                 .Return(CreateFakeLib());
         }

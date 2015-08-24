@@ -22,6 +22,7 @@ using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,14 @@ namespace Reko.Environments.Ps3
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            return new PowerPcProcedureSerializer(
+                (PowerPcArchitecture)Architecture,
+                typeLoader,
+                defaultConvention);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

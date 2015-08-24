@@ -78,12 +78,13 @@ namespace Reko.Gui.Windows.Forms
         }
 
         private void EditSignature()
-        { 
+        {
+            throw new NotImplementedException();
             //$TODO: need "current program"
-            IProcessorArchitecture arch = null; // Decompiler.Program.Architecture;
-            var ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");
+            Platform platform = null;
+            var ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
             var proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
-            var i = new ProcedureDialogInteractor(arch, proc);
+            var i = new ProcedureDialogInteractor(platform.Architecture, proc);
             using (ProcedureDialog dlg = i.CreateDialog())
             {
                 if (DialogResult.OK == UIService.ShowModalDialog(dlg))
@@ -92,7 +93,7 @@ namespace Reko.Gui.Windows.Forms
                     var program =  Decompiler.Project.Programs[0]; 
                     program.UserProcedures[SelectedProcedureEntry.Key] =
                         i.SerializedProcedure;
-                    ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");
+                    ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
                     SelectedProcedureEntry.Value.Signature =
                         ser.Deserialize(i.SerializedProcedure.Signature, SelectedProcedureEntry.Value.Frame);
 

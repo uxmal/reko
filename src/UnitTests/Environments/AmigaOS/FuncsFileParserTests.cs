@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var file = "";
             var ffp = CreateParser(file);
             ffp.Parse();
-            Assert.AreEqual(0, ffp.FunctionsByA6Offset.Count);
+            Assert.AreEqual(0, ffp.FunctionsByLibBaseOffset.Count);
         }
 
         [Test]
@@ -59,8 +59,8 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var file = "#0107    666  0x029a                   CreateMsgPort ()\n";
             var ffp = CreateParser(file);
             ffp.Parse();
-            Assert.AreEqual(1, ffp.FunctionsByA6Offset.Count);
-            var func = ffp.FunctionsByA6Offset[-666];
+            Assert.AreEqual(1, ffp.FunctionsByLibBaseOffset.Count);
+            var func = ffp.FunctionsByLibBaseOffset[-666];
             Assert.AreEqual(-666, func.Offset);
             Assert.AreEqual("CreateMsgPort", func.Name);
             Assert.AreEqual(0, func.Signature.Arguments.Length);
@@ -72,8 +72,8 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var file = "#0088    552  0x0228                     OpenLibrary ( libName/a1, version/d0 )";
             var ffp = CreateParser(file);
             ffp.Parse();
-            Assert.AreEqual(1, ffp.FunctionsByA6Offset.Count);
-            var func = ffp.FunctionsByA6Offset[-552];
+            Assert.AreEqual(1, ffp.FunctionsByLibBaseOffset.Count);
+            var func = ffp.FunctionsByLibBaseOffset[-552];
             Assert.AreEqual(-552, func.Offset);
             Assert.AreEqual("OpenLibrary", func.Name);
             Assert.AreEqual(2, func.Signature.Arguments.Length);
@@ -91,8 +91,8 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var file = "#0004 4   4  Frobnitz ( argIn / a1; ret/d0 )";
             var ffp = CreateParser(file);
             ffp.Parse();
-            Assert.AreEqual(1, ffp.FunctionsByA6Offset.Count);
-            var func = ffp.FunctionsByA6Offset[-4];
+            Assert.AreEqual(1, ffp.FunctionsByLibBaseOffset.Count);
+            var func = ffp.FunctionsByLibBaseOffset[-4];
             Assert.IsNotNull(func.Signature.ReturnValue);
             Assert.AreEqual("d0", ((Register_v1) func.Signature.ReturnValue.Kind).Name);
         }

@@ -17,29 +17,47 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-    
+
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Arch.Arm
+namespace Reko.Environments.AmigaOS.Design
 {
-    public enum AA64Opcode
+    public class AmigaOSPropertiesInteractor : IWindowPane
     {
-        illegal,
+        private AmigaOSPlatform platform;
 
-        add,
-        adds,
-        adr,
-        adrp,
-        and,
-        ands,
-        b,
-        bl,
-        br,
-        movk,
-        sub,
-        subs,
+        public AmigaOSPropertiesInteractor(AmigaOSPlatform platform)
+        {
+            this.platform = platform;
+        }
+
+        public Control Control { get; private set; }
+        public IServiceProvider Services { get; private set; }
+
+        public Control CreateControl()
+        {
+            Control = new AmigaOSProperties();
+            return Control;
+        }
+
+        public void SetSite(IServiceProvider sp)
+        {
+            this.Services = sp;
+        }
+
+        public void Close()
+        {
+            if (Control != null)
+            {
+                Control.Dispose();
+                Control = null;
+            }
+        }
+
     }
 }

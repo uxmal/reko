@@ -84,6 +84,7 @@
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
+    <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
@@ -618,6 +619,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Machine\" />
+    <Folder Include="Environments\Msdos\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -640,6 +642,9 @@
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\*.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />

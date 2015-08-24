@@ -57,7 +57,7 @@ namespace Reko.Arch.Pdp11
         CF = 8,
     }
 
-    public class Pdp11Architecture : IProcessorArchitecture
+    public class Pdp11Architecture : ProcessorArchitecture
     {
         private RegisterStorage[] regs;
         private RegisterStorage[] flagRegs;
@@ -73,66 +73,61 @@ namespace Reko.Arch.Pdp11
                 Registers.N, Registers.Z, Registers.V, Registers.C
             };
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
+            InstructionBitSize = 16;
+            StackRegister = Registers.sp;
+            //CarryFlagMask  = { get { throw new NotImplementedException(); } }
+            FramePointerType = PrimitiveType.Ptr16;
+            PointerType = PrimitiveType.Ptr16;
+            WordWidth = PrimitiveType.Word16;
         }
 
         #region IProcessorArchitecture Members
 
-        public RegisterStorage StackRegister { get { return Registers.sp; } }
-        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
 
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return new Pdp11Disassembler(rdr, this);
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(PrimitiveType.Word16);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new Pdp11ProcessorState(this);
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             return new BitSet(16);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotImplementedException();
-        }
-
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             return (0 <= i && i < regs.Length)
                 ? regs[i]
                 : null;
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             foreach (RegisterStorage reg in regs)
             {
@@ -142,12 +137,12 @@ namespace Reko.Arch.Pdp11
             return null;
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return regs;
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage result)
+        public override bool TryGetRegister(string name, out RegisterStorage result)
         {
             result = null;
             foreach (RegisterStorage reg in regs)
@@ -161,7 +156,7 @@ namespace Reko.Arch.Pdp11
             return false;
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
 		{
             FlagGroupStorage f;
             if (flagGroups.TryGetValue(grf, out f))
@@ -173,14 +168,13 @@ namespace Reko.Arch.Pdp11
 			return fl;
 		}
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 16; } }
 
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
 			var s = new StringBuilder();
 			foreach (var r in flagRegs)
@@ -194,42 +188,27 @@ namespace Reko.Arch.Pdp11
 			return s.ToString();
 		}
 
-        public PrimitiveType FramePointerType
-        {
-            get { return PrimitiveType.Word16; }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Word16; }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame);
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

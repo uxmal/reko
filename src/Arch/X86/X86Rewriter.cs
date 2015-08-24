@@ -61,7 +61,7 @@ namespace Reko.Arch.X86
             this.host = host;
             this.frame = frame;
             this.state = state;
-            this.dasm = new LookaheadEnumerator<IntelInstruction>(arch.CreateDisassembler(rdr));
+            this.dasm = new LookaheadEnumerator<IntelInstruction>(arch.CreateDisassemblerImpl(rdr));
         }
 
         /// <summary>

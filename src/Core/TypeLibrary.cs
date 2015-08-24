@@ -70,7 +70,7 @@ namespace Reko.Core
 			}
 		}
 
-		public static TypeLibrary Load(IProcessorArchitecture arch, string fileName)
+		public static TypeLibrary Load(Platform platform, string fileName)
 		{
             var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var libPath = Path.Combine(prefix, fileName);
@@ -84,12 +84,12 @@ namespace Reko.Core
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-            return Load(arch, slib);
+            return Load(platform, slib);
 		}
 
-        public static TypeLibrary Load(IProcessorArchitecture arch, SerializedLibrary slib)
+        public static TypeLibrary Load(Platform platform, SerializedLibrary slib)
         {
-            var tlldr = new TypeLibraryLoader(arch, true);
+            var tlldr = new TypeLibraryLoader(platform, true);
             var tlib = tlldr.Load(slib);
             return tlib;
         }

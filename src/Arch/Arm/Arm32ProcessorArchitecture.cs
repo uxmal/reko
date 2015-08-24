@@ -34,55 +34,55 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class Arm32ProcessorArchitecture : IProcessorArchitecture
+    public class Arm32ProcessorArchitecture : ProcessorArchitecture
     {
         public Arm32ProcessorArchitecture()
         {
+            InstructionBitSize = 32;
+            FramePointerType = PrimitiveType.Pointer32;
+            PointerType = PrimitiveType.Pointer32;
+            WordWidth = PrimitiveType.Word32;
+            StackRegister = A32Registers.sp;
         }
 
         #region IProcessorArchitecture Members
 
-        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Arm32Disassembler(this, imageReader);
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(FramePointerType);
-        }
-
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
         }
 
-        public ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState()
         {
             return new ArmProcessorState(this);
         }
 
-        public BitSet CreateRegisterBitset()
+        public override BitSet CreateRegisterBitset()
         {
             return new BitSet(16);
         }
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             if (flags != PointerScannerFlags.Calls)
@@ -101,17 +101,12 @@ namespace Reko.Arch.Arm
             }
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            return new ArmProcedureSerializer(this, typeLoader, defaultCc);
-        }
-
-        public RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(int i)
         {
             return A32Registers.GpRegs[i];
         }
 
-        public RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             if (name == null) throw new ArgumentNullException("name");
             RegisterStorage reg;
@@ -120,32 +115,32 @@ namespace Reko.Arch.Arm
             return reg;
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return A32Registers.GpRegs.ToArray();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             return new MemoryAccess(new BinaryExpression(
                          Operator.IAdd, FramePointerType,
@@ -153,14 +148,12 @@ namespace Reko.Arch.Arm
                          dataType);
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public int InstructionBitSize { get { return 32; } }
-
-        public string GrfToString(uint grf)
+        public override string GrfToString(uint grf)
         {
             StringBuilder s = new StringBuilder();
             if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
@@ -170,32 +163,7 @@ namespace Reko.Arch.Arm
             return s.ToString();
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { return StackRegister.DataType; }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Pointer32; }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { return PrimitiveType.Word32; }
-        }
-
-        public RegisterStorage StackRegister
-        {
-            get { return A32Registers.sp; }
-        }
-
-        public uint CarryFlagMask
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

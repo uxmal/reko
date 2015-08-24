@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="A64Registers.cs" />
-    <Compile Include="AA64Opcode.cs" />
     <Compile Include="AArch64.cs" />
     <Compile Include="AArch64Disassembler.cs" />
     <Compile Include="AArch64Instruction.cs" />
@@ -78,9 +77,7 @@
     <Compile Include="A32Registers.cs" />
     <Compile Include="RegisterRangeOperand.cs" />
     <Compile Include="ThumbProcessorArchitecture.cs" />
-    <Compile Include="ThumbProcessorState.cs" />
     <Compile Include="ThumbDisassembler.cs" />
-    <Compile Include="ThumbInstruction.cs" />
     <Compile Include="ThumbRewriter.Alu.cs" />
     <Compile Include="ThumbRewriter.Control.cs" />
     <Compile Include="ThumbRewriter.cs" />

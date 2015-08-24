@@ -139,7 +139,7 @@ namespace Reko.Arch.PowerPC
                 if (prim.Domain == Domain.Real)
                     return arch.GetRegister("f1");
             }
-            return arch.GetRegister(3);
+            return arch.GetRegister("r3");
         }
     }
 }

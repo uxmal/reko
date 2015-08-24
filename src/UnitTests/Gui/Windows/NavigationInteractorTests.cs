@@ -40,11 +40,11 @@ namespace Reko.UnitTests.Gui.Windows
         private IButton btnBack;
         private IButton btnForward;
         private ITimer timer;
-        private NavigationInteractor ni;
+        private NavigationInteractor<Address> ni;
         private Address addr42;
         private Address addr43;
         private Address addr44;
-        private INavigableControl navControl;
+        private INavigableControl<Address> navControl;
 
         [SetUp]
         public void Setup()
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Gui.Windows
             btnBack = mr.Stub<IButton>();
             btnForward = mr.Stub<IButton>();
             timer = mr.Stub<ITimer>();
-            navControl = mr.Stub<INavigableControl>();
+            navControl = mr.Stub<INavigableControl<Address>>();
 
             navControl.Stub(n => n.BackButton).Return(btnBack);
             navControl.Stub(n => n.ForwardButton).Return(btnForward);
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Ni_Attach()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
             When_Attached();
@@ -82,16 +82,16 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Ni_UserNavigateTo()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
 
             When_Attached();
             navControl.CurrentAddress = addr42;
             Assert.IsFalse(btnBack.Enabled);
-            ni.UserNavigateTo(addr43);
+            ni.RememberAddress(addr43);
             Assert.IsTrue(btnBack.Enabled);
-            Assert.AreEqual(addr43, navControl.CurrentAddress);
+            Assert.IsFalse(btnForward.Enabled);
 
             mr.VerifyAll();
         }
@@ -99,38 +99,36 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Ni_Back()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
             When_Attached();
             navControl.CurrentAddress = addr42;
-            ni.UserNavigateTo(addr43);
+            ni.RememberAddress(addr43);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
 
             Assert.IsFalse(btnBack.Enabled);
             Assert.IsTrue(btnForward.Enabled);
-            Assert.AreSame(addr42, navControl.CurrentAddress);
         }
 
         [Test]
         public void Ni_Back2_Then_Navigate()
         {
-            ni = new NavigationInteractor();
+            ni = new NavigationInteractor<Address>();
             mr.ReplayAll();
 
             When_Attached();
             navControl.CurrentAddress = addr42;
-            ni.UserNavigateTo(addr43);
-            ni.UserNavigateTo(addr44);
+            ni.RememberAddress(addr43);
+            ni.RememberAddress(addr44);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
 
             Assert.IsFalse(btnBack.Enabled);
             Assert.IsTrue(btnForward.Enabled);
 
-            ni.UserNavigateTo(addr44);
+            ni.RememberAddress(addr44);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreSame(addr42, navControl.CurrentAddress);
         }
     }
 }

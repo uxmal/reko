@@ -397,7 +397,7 @@ namespace Reko.UnitTests.Structure.Schwartz
         r1 = r1 + 0x04;
         r2 = r2 + 0x04;
     }
-    r2 = 0xFFFFFFFF;
+    r2 = ~0x00;
 end_fn:
     return r2;
 ";

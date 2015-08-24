@@ -28,23 +28,27 @@ using NUnit.Framework;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
+using Reko.Environments.Win32;
 
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class X86ProcedureSerializerTests
     {
-        private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Protected32);
+        private IntelArchitecture arch;
         private X86ProcedureSerializer ser;
+        private Win32Platform platform;
 
         [SetUp]
         public void Setup()
         {
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            platform = new Win32Platform(null, arch);
         }
 
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(arch, true), cConvention);
+            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), cConvention);
         }
 
         [Test]

@@ -56,6 +56,7 @@ namespace Reko.Tools.C2Xml
                 catch (Exception ex)
                 {
                     Console.Error.WriteLine("c2xml: Unable to open file {0} for reading. {1}", args[0], ex.Message);
+                    Usage();
                     return 1;
                 }
             }
@@ -83,8 +84,15 @@ namespace Reko.Tools.C2Xml
 
         static void Usage()
         {
-            Console.Error.WriteLine("usage: c2xml [input-filename [output-filename]]");
-            Console.Error.WriteLine("   Reads the filename or standard input and converts the stream of tokens to XML");
+            Console.Error.WriteLine("usage: c2xml [<input-filename> [<output-filename>]]");
+            Console.Error.WriteLine("   <input-filename>  preprocessed c file  - standard input if omitted");
+            Console.Error.WriteLine("   <output-filename> destination xml file - standard output if omitted");
+            Console.Error.WriteLine("   ----------------------------------------------------");
+            Console.Error.WriteLine("   Note: input files have to be preprocessed beforehand");
+            Console.Error.WriteLine("     to preprocess a file with GCC:");
+            Console.Error.WriteLine("       gcc -E FILE.h | sed '/^\\#/d' >RESULT.h");
+            Console.Error.WriteLine("     to preprocess a file with the Microsoft C/C++ compiler:");
+            Console.Error.WriteLine("       CL.EXE /EP FILE.h >RESULT.h");
         }
     }
 }

@@ -18,24 +18,34 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
-    public partial class CodeView : UserControl
+    public partial class CodeView : UserControl, INavigableControl<Procedure>
     {
         public CodeView()
         {
             InitializeComponent();
+            this.Back = new ToolStripButtonWrapper(btnBack);
+            this.Forward = new ToolStripButtonWrapper(btnForward);
         }
 
         public TextView TextView { get { return textView1; } }
+        public IButton Back { get; set; }
+        public IButton Forward { get; set; }
+
+        IButton INavigableControl<Procedure>.BackButton { get { return Back;  } }
+        IButton INavigableControl<Procedure>.ForwardButton { get { return Forward; } }
+        
+        public Procedure CurrentAddress { 
+            get { return procCurrent; } 
+            set { procCurrent = value; CurrentAddressChanged.Fire(this); }
+        }
+        public event EventHandler CurrentAddressChanged;
+        private Procedure procCurrent;
     }
 }

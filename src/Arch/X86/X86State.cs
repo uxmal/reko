@@ -107,7 +107,7 @@ namespace Reko.Arch.X86
 			}
 			else
 			{
-				reg.SetRegisterFileValues(regs, c.ToUInt32(), valid);	//$REVIEW: AsUint64 for x86-64?
+				reg.SetRegisterFileValues(regs, c.ToUInt64(), valid);
 			}
 		}
 
