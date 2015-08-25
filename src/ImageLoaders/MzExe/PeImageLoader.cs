@@ -504,7 +504,7 @@ namespace Reko.ImageLoaders.MzExe
                     new ImageMapItem
                     {
                         Address = addrIlt,
-                        DataType = new Pointer(new CodeType(), ptrSize),
+                        DataType = PrimitiveType.CreateWord(ptrSize),
                         Size = (uint)ptrSize,
                     });
             } 

@@ -87,7 +87,7 @@ namespace Reko.Environments.AmigaOS
             if (reg != Registers.a6)
                 return null;
             if (funcs == null)
-                funcs = LoadLibraryDef("exec",33);
+                funcs = LoadLibraryDef("exec", 33);
             SystemService svc;
             return funcs.TryGetValue(offset, out svc) ? svc : null;
         }
@@ -113,17 +113,17 @@ namespace Reko.Environments.AmigaOS
             return Address.Ptr32(c.ToUInt32());
         }
 
-        private Dictionary<int, SystemService> LoadLibraryDef( string lib_name, int version ) 
+        private Dictionary<int, SystemService> LoadLibraryDef(string lib_name, int version)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
             var sser = new M68kProcedureSerializer(
-                (M68kArchitecture) Architecture,
+                (M68kArchitecture)Architecture,
                 new TypeLibraryLoader(this, true),
                 DefaultCallingConvention);
 
-            using (var rdr = new StreamReader(fsSvc.CreateFileStream(lib_name+".funcs", FileMode.Open, FileAccess.Read)))
+            using (var rdr = new StreamReader(fsSvc.CreateFileStream(lib_name + ".funcs", FileMode.Open, FileAccess.Read)))
             {
-                var fpp = new FuncsFileParser((M68kArchitecture) this.Architecture, rdr);
+                var fpp = new FuncsFileParser((M68kArchitecture)this.Architecture, rdr);
                 fpp.Parse();
                 return fpp.FunctionsByLibBaseOffset.Values
                     .Select(amiSvc => new SystemService
