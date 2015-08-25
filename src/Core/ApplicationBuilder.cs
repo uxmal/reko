@@ -114,6 +114,15 @@ namespace Reko.Core
             return id.Storage.Accept(this);
 		}
 
+        /// <summary>
+        /// Creates an instruction:
+        ///     a = foo(b)
+        /// or 
+        ///     foo(b)
+        ///  depending on whether the signature returns a value or is of
+        /// type 'void'
+        /// </summary>
+        /// <returns></returns>
         public Instruction CreateInstruction()
         {
             var idOut = BindReturnValue();
@@ -121,7 +130,7 @@ namespace Reko.Core
                 ? sigCallee.ReturnValue.DataType
                 : VoidType.Instance;
             var actuals = BindArguments(frame, sigCallee);
-            var appl = new Application(
+            Expression appl = new Application(
                 callee,
                 dtOut,
                 actuals.ToArray());
@@ -132,6 +141,10 @@ namespace Reko.Core
 			}
 			else
 			{
+                if (idOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
+                {
+                    appl = new DepositBits(idOut, appl, 0, sigCallee.ReturnValue.DataType.BitSize);
+                }
                 return new Assignment(idOut, appl);
 			}
         }

@@ -52,10 +52,7 @@ namespace Reko.UnitTests.Core
 			arg0C = new Identifier("arg0C",   PrimitiveType.Byte, new StackArgumentStorage(0x0C, PrimitiveType.Byte));
 			regOut = new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
             sig = new ProcedureSignature(ret,
-                new Identifier[] { arg04, arg08, arg0C, regOut })
-                {
-                };
-		
+                new Identifier[] { arg04, arg08, arg0C, regOut });
         }
 
 		[Test]
@@ -104,6 +101,22 @@ namespace Reko.UnitTests.Core
             ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), callee.Signature, true); 
             var instr = ab.CreateInstruction();
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
+        }
+
+        [Test(Description="The byte is smaller than the target register, so we expect a 'DPB' instruction")]
+        public void AppBld_BindByteToRegister()
+        {
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
+            var ab = new ApplicationBuilder(
+                arch, 
+                callee.Frame,
+                new CallSite(4, 0), 
+                new Identifier("foo", PrimitiveType.Pointer32, null),
+                new ProcedureSignature(new Identifier("bRet", PrimitiveType.Byte, Registers.eax)),
+                true);
+            var instr = ab.CreateInstruction();
+            Assert.AreEqual("eax = DPB(eax, foo(), 0, 8)", instr.ToString());
         }
 	}
 }
