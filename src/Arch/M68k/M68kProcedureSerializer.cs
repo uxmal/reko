@@ -66,7 +66,6 @@ namespace Reko.Arch.M68k
 
         public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
-            throw new NotImplementedException();
         }
     }
 }
