@@ -831,6 +831,27 @@ namespace Reko.Tools.C2Xml.UnitTests
                 sExp);
 
         }
+
+        [Test]
+        public void C2X_Return_Attribute()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <prim domain=""Character"" size=""1"" />
+        <reg>D0</reg>
+      </return>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(
+                "[[reko::reg(\"D0\")]] char foo();",
+                sExp);
+
+        }
     }
 }
 #endif

@@ -121,6 +121,10 @@ namespace Reko.Tools.C2Xml
                 var sSig = nt.DataType as SerializedSignature;
                 if (sSig != null)
                 {
+                    if (sSig.ReturnValue != null)
+                    {
+                        sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(decl.attribute_list);
+                    }
                     procs.Add(new Procedure_v1
                     {
                         Name = nt.Name,
