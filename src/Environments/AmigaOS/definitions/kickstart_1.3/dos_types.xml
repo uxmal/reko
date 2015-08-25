@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="LONG">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="ULONG">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="LONGBITS">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="WORD">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="UWORD">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="WORDBITS">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="BYTE">
+      <prim domain="Character" size="1" />
+    </typedef>
+    <typedef name="UBYTE">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <typedef name="BYTEBITS">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <typedef name="STRPTR">
+      <ptr>
+        <prim domain="UnsignedInt" size="1" />
+      </ptr>
+    </typedef>
+    <typedef name="APTR">
+      <ptr>
+        <type>STRPTR</type>
+      </ptr>
+    </typedef>
+    <typedef name="CPTR">
+      <type>ULONG</type>
+    </typedef>
+    <typedef name="SHORT">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="USHORT">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="FLOAT">
+      <prim domain="Real" size="4" />
+    </typedef>
+    <typedef name="DOUBLE">
+      <prim domain="Real" size="8" />
+    </typedef>
+    <typedef name="COUNT">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="UCOUNT">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="BOOL">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="TEXT">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <struct name="DateStamp">
+      <field offset="0" name="ds_Days">
+        <type>LONG</type>
+      </field>
+      <field offset="4" name="ds_Minute">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="ds_Tick">
+        <type>LONG</type>
+      </field>
+    </struct>
+    <struct name="FileInfoBlock">
+      <field offset="0" name="fib_DiskKey">
+        <type>LONG</type>
+      </field>
+      <field offset="4" name="fib_DirEntryType">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="fib_FileName">
+        <arr length="108">
+          <prim domain="Character" size="1" />
+        </arr>
+      </field>
+      <field offset="116" name="fib_Protection">
+        <type>LONG</type>
+      </field>
+      <field offset="120" name="fib_EntryType">
+        <type>LONG</type>
+      </field>
+      <field offset="124" name="fib_Size">
+        <type>LONG</type>
+      </field>
+      <field offset="128" name="fib_NumBlocks">
+        <type>LONG</type>
+      </field>
+      <field offset="136" name="fib_Date">
+        <struct name="DateStamp" />
+      </field>
+      <field offset="152" name="fib_Comment">
+        <arr length="80">
+          <prim domain="Character" size="1" />
+        </arr>
+      </field>
+      <field offset="232" name="fib_Reserved">
+        <arr length="36">
+          <prim domain="Character" size="1" />
+        </arr>
+      </field>
+    </struct>
+    <typedef name="BPTR">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="BSTR">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <struct name="InfoData">
+      <field offset="0" name="id_NumSoftErrors">
+        <type>LONG</type>
+      </field>
+      <field offset="4" name="id_UnitNumber">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="id_DiskState">
+        <type>LONG</type>
+      </field>
+      <field offset="12" name="id_NumBlocks">
+        <type>LONG</type>
+      </field>
+      <field offset="16" name="id_NumBlocksUsed">
+        <type>LONG</type>
+      </field>
+      <field offset="20" name="id_BytesPerBlock">
+        <type>LONG</type>
+      </field>
+      <field offset="24" name="id_DiskType">
+        <type>LONG</type>
+      </field>
+      <field offset="28" name="id_VolumeNode">
+        <type>BPTR</type>
+      </field>
+      <field offset="32" name="id_InUse">
+        <type>LONG</type>
+      </field>
+    </struct>
+    <struct name="Node">
+      <field offset="0" name="ln_Succ">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="4" name="ln_Pred">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="8" name="ln_Type">
+        <type>UBYTE</type>
+      </field>
+      <field offset="9" name="ln_Pri">
+        <type>BYTE</type>
+      </field>
+      <field offset="12" name="ln_Name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="MinNode">
+      <field offset="0" name="mln_Succ">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+      <field offset="4" name="mln_Pred">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="List">
+      <field offset="0" name="lh_Head">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="4" name="lh_Tail">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="8" name="lh_TailPred">
+        <ptr>
+          <struct name="Node" />
+        </ptr>
+      </field>
+      <field offset="12" name="lh_Type">
+        <type>UBYTE</type>
+      </field>
+      <field offset="13" name="l_pad">
+        <type>UBYTE</type>
+      </field>
+    </struct>
+    <struct name="MinList">
+      <field offset="0" name="mlh_Head">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+      <field offset="4" name="mlh_Tail">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+      <field offset="8" name="mlh_TailPred">
+        <ptr>
+          <struct name="MinNode" />
+        </ptr>
+      </field>
+    </struct>
+    <struct name="Task">
+      <field offset="0" name="tc_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="tc_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="15" name="tc_State">
+        <type>UBYTE</type>
+      </field>
+      <field offset="16" name="tc_IDNestCnt">
+        <type>BYTE</type>
+      </field>
+      <field offset="17" name="tc_TDNestCnt">
+        <type>BYTE</type>
+      </field>
+      <field offset="20" name="tc_SigAlloc">
+        <type>ULONG</type>
+      </field>
+      <field offset="24" name="tc_SigWait">
+        <type>ULONG</type>
+      </field>
+      <field offset="28" name="tc_SigRecvd">
+        <type>ULONG</type>
+      </field>
+      <field offset="32" name="tc_SigExcept">
+        <type>ULONG</type>
+      </field>
+      <field offset="36" name="tc_TrapAlloc">
+        <type>UWORD</type>
+      </field>
+      <field offset="38" name="tc_TrapAble">
+        <type>UWORD</type>
+      </field>
+      <field offset="40" name="tc_ExceptData">
+        <type>APTR</type>
+      </field>
+      <field offset="44" name="tc_ExceptCode">
+        <type>APTR</type>
+      </field>
+      <field offset="48" name="tc_TrapData">
+        <type>APTR</type>
+      </field>
+      <field offset="52" name="tc_TrapCode">
+        <type>APTR</type>
+      </field>
+      <field offset="56" name="tc_SPReg">
+        <type>APTR</type>
+      </field>
+      <field offset="60" name="tc_SPLower">
+        <type>APTR</type>
+      </field>
+      <field offset="64" name="tc_SPUpper">
+        <type>APTR</type>
+      </field>
+      <field offset="68" name="tc_Switch">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </field>
+      <field offset="72" name="tc_Launch">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </field>
+      <field offset="80" name="tc_MemEntry">
+        <struct name="List" />
+      </field>
+      <field offset="96" name="tc_UserData">
+        <type>APTR</type>
+      </field>
+    </struct>
+    <struct name="MsgPort">
+      <field offset="0" name="mp_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="mp_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="15" name="mp_SigBit">
+        <type>UBYTE</type>
+      </field>
+      <field offset="16" name="mp_SigTask">
+        <ptr>
+          <struct name="Task" />
+        </ptr>
+      </field>
+      <field offset="24" name="mp_MsgList">
+        <struct name="List" />
+      </field>
+    </struct>
+    <struct name="Message">
+      <field offset="0" name="mn_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="16" name="mn_ReplyPort">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="20" name="mn_Length">
+        <type>UWORD</type>
+      </field>
+    </struct>
+    <struct name="Library">
+      <field offset="0" name="lib_Node">
+        <struct name="Node" />
+      </field>
+      <field offset="14" name="lib_Flags">
+        <type>UBYTE</type>
+      </field>
+      <field offset="15" name="lib_pad">
+        <type>UBYTE</type>
+      </field>
+      <field offset="16" name="lib_NegSize">
+        <type>UWORD</type>
+      </field>
+      <field offset="18" name="lib_PosSize">
+        <type>UWORD</type>
+      </field>
+      <field offset="20" name="lib_Version">
+        <type>UWORD</type>
+      </field>
+      <field offset="22" name="lib_Revision">
+        <type>UWORD</type>
+      </field>
+      <field offset="24" name="lib_IdString">
+        <type>APTR</type>
+      </field>
+      <field offset="28" name="lib_Sum">
+        <type>ULONG</type>
+      </field>
+      <field offset="32" name="lib_OpenCnt">
+        <type>UWORD</type>
+      </field>
+    </struct>
+    <struct name="Process">
+      <field offset="0" name="pr_Task">
+        <struct name="Task" />
+      </field>
+      <field offset="96" name="pr_MsgPort">
+        <struct name="MsgPort" />
+      </field>
+      <field offset="130" name="pr_Pad">
+        <type>WORD</type>
+      </field>
+      <field offset="132" name="pr_SegList">
+        <type>BPTR</type>
+      </field>
+      <field offset="136" name="pr_StackSize">
+        <type>LONG</type>
+      </field>
+      <field offset="140" name="pr_GlobVec">
+        <type>APTR</type>
+      </field>
+      <field offset="144" name="pr_TaskNum">
+        <type>LONG</type>
+      </field>
+      <field offset="148" name="pr_StackBase">
+        <type>BPTR</type>
+      </field>
+      <field offset="152" name="pr_Result2">
+        <type>LONG</type>
+      </field>
+      <field offset="156" name="pr_CurrentDir">
+        <type>BPTR</type>
+      </field>
+      <field offset="160" name="pr_CIS">
+        <type>BPTR</type>
+      </field>
+      <field offset="164" name="pr_COS">
+        <type>BPTR</type>
+      </field>
+      <field offset="168" name="pr_ConsoleTask">
+        <type>APTR</type>
+      </field>
+      <field offset="172" name="pr_FileSystemTask">
+        <type>APTR</type>
+      </field>
+      <field offset="176" name="pr_CLI">
+        <type>BPTR</type>
+      </field>
+      <field offset="180" name="pr_ReturnAddr">
+        <type>APTR</type>
+      </field>
+      <field offset="184" name="pr_PktWait">
+        <type>APTR</type>
+      </field>
+      <field offset="188" name="pr_WindowPtr">
+        <type>APTR</type>
+      </field>
+    </struct>
+    <struct name="FileHandle">
+      <field offset="0" name="fh_Link">
+        <ptr>
+          <struct name="Message" />
+        </ptr>
+      </field>
+      <field offset="4" name="fh_Port">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="8" name="fh_Type">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="12" name="fh_Buf">
+        <type>LONG</type>
+      </field>
+      <field offset="16" name="fh_Pos">
+        <type>LONG</type>
+      </field>
+      <field offset="20" name="fh_End">
+        <type>LONG</type>
+      </field>
+      <field offset="24" name="fh_Funcs">
+        <type>LONG</type>
+      </field>
+      <field offset="28" name="fh_Func2">
+        <type>LONG</type>
+      </field>
+      <field offset="32" name="fh_Func3">
+        <type>LONG</type>
+      </field>
+      <field offset="36" name="fh_Args">
+        <type>LONG</type>
+      </field>
+      <field offset="40" name="fh_Arg2">
+        <type>LONG</type>
+      </field>
+    </struct>
+    <struct name="DosPacket">
+      <field offset="0" name="dp_Link">
+        <ptr>
+          <struct name="Message" />
+        </ptr>
+      </field>
+      <field offset="4" name="dp_Port">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="8" name="dp_Type">
+        <type>LONG</type>
+      </field>
+      <field offset="12" name="dp_Res1">
+        <type>LONG</type>
+      </field>
+      <field offset="16" name="dp_Res2">
+        <type>LONG</type>
+      </field>
+      <field offset="20" name="dp_Arg1">
+        <type>LONG</type>
+      </field>
+      <field offset="24" name="dp_Arg2">
+        <type>LONG</type>
+      </field>
+      <field offset="28" name="dp_Arg3">
+        <type>LONG</type>
+      </field>
+      <field offset="32" name="dp_Arg4">
+        <type>LONG</type>
+      </field>
+      <field offset="36" name="dp_Arg5">
+        <type>LONG</type>
+      </field>
+      <field offset="40" name="dp_Arg6">
+        <type>LONG</type>
+      </field>
+      <field offset="44" name="dp_Arg7">
+        <type>LONG</type>
+      </field>
+    </struct>
+    <struct name="StandardPacket">
+      <field offset="0" name="sp_Msg">
+        <struct name="Message" />
+      </field>
+      <field offset="24" name="sp_Pkt">
+        <struct name="DosPacket" />
+      </field>
+    </struct>
+    <enum name="eDosAction">
+      <member name="ACTION_NIL" value="0" />
+      <member name="ACTION_GET_BLOCK" value="2" />
+      <member name="ACTION_SET_MAP" value="4" />
+      <member name="ACTION_DIE" value="5" />
+      <member name="ACTION_EVENT" value="6" />
+      <member name="ACTION_CURRENT_VOLUME" value="7" />
+      <member name="ACTION_LOCATE_OBJECT" value="8" />
+      <member name="ACTION_RENAME_DISK" value="9" />
+      <member name="ACTION_WRITE" value="87" />
+      <member name="ACTION_READ" value="82" />
+      <member name="ACTION_FREE_LOCK" value="15" />
+      <member name="ACTION_DELETE_OBJECT" value="16" />
+      <member name="ACTION_RENAME_OBJECT" value="17" />
+      <member name="ACTION_MORE_CACHE" value="18" />
+      <member name="ACTION_COPY_DIR" value="19" />
+      <member name="ACTION_WAIT_CHAR" value="20" />
+      <member name="ACTION_SET_PROTECT" value="21" />
+      <member name="ACTION_CREATE_DIR" value="22" />
+      <member name="ACTION_EXAMINE_OBJECT" value="23" />
+      <member name="ACTION_EXAMINE_NEXT" value="24" />
+      <member name="ACTION_DISK_INFO" value="25" />
+      <member name="ACTION_INFO" value="26" />
+      <member name="ACTION_FLUSH" value="27" />
+      <member name="ACTION_SET_COMMENT" value="28" />
+      <member name="ACTION_PARENT" value="29" />
+      <member name="ACTION_TIMER" value="30" />
+      <member name="ACTION_INHIBIT" value="31" />
+      <member name="ACTION_DISK_TYPE" value="32" />
+      <member name="ACTION_DISK_CHANGE" value="33" />
+      <member name="ACTION_SET_DATE" value="34" />
+      <member name="ACTION_SCREEN_MODE" value="994" />
+      <member name="ACTION_READ_RETURN" value="1001" />
+      <member name="ACTION_WRITE_RETURN" value="1002" />
+      <member name="ACTION_SEEK" value="1008" />
+      <member name="ACTION_FINDUPDATE" value="1004" />
+      <member name="ACTION_FINDINPUT" value="1005" />
+      <member name="ACTION_FINDOUTPUT" value="1006" />
+      <member name="ACTION_END" value="1007" />
+      <member name="ACTION_TRUNCATE" value="1022" />
+      <member name="ACTION_WRITE_PROTECT" value="1023" />
+    </enum>
+    <struct name="DosLibrary">
+      <field offset="0" name="dl_lib">
+        <struct name="Library" />
+      </field>
+      <field offset="36" name="dl_Root">
+        <type>APTR</type>
+      </field>
+      <field offset="40" name="dl_GV">
+        <type>APTR</type>
+      </field>
+      <field offset="44" name="dl_A2">
+        <type>LONG</type>
+      </field>
+      <field offset="48" name="dl_A5">
+        <type>LONG</type>
+      </field>
+      <field offset="52" name="dl_A6">
+        <type>LONG</type>
+      </field>
+    </struct>
+    <struct name="RootNode">
+      <field offset="0" name="rn_TaskArray">
+        <type>BPTR</type>
+      </field>
+      <field offset="4" name="rn_ConsoleSegment">
+        <type>BPTR</type>
+      </field>
+      <field offset="8" name="rn_Time">
+        <struct name="DateStamp" />
+      </field>
+      <field offset="20" name="rn_RestartSeg">
+        <type>LONG</type>
+      </field>
+      <field offset="24" name="rn_Info">
+        <type>BPTR</type>
+      </field>
+      <field offset="28" name="rn_FileHandlerSegment">
+        <type>BPTR</type>
+      </field>
+    </struct>
+    <struct name="DosInfo">
+      <field offset="0" name="di_McName">
+        <type>BPTR</type>
+      </field>
+      <field offset="4" name="di_DevInfo">
+        <type>BPTR</type>
+      </field>
+      <field offset="8" name="di_Devices">
+        <type>BPTR</type>
+      </field>
+      <field offset="12" name="di_Handlers">
+        <type>BPTR</type>
+      </field>
+      <field offset="16" name="di_NetHand">
+        <type>APTR</type>
+      </field>
+    </struct>
+    <struct name="CommandLineInterface">
+      <field offset="0" name="cli_Result2">
+        <type>LONG</type>
+      </field>
+      <field offset="4" name="cli_SetName">
+        <type>BSTR</type>
+      </field>
+      <field offset="8" name="cli_CommandDir">
+        <type>BPTR</type>
+      </field>
+      <field offset="12" name="cli_ReturnCode">
+        <type>LONG</type>
+      </field>
+      <field offset="16" name="cli_CommandName">
+        <type>BSTR</type>
+      </field>
+      <field offset="20" name="cli_FailLevel">
+        <type>LONG</type>
+      </field>
+      <field offset="24" name="cli_Prompt">
+        <type>BSTR</type>
+      </field>
+      <field offset="28" name="cli_StandardInput">
+        <type>BPTR</type>
+      </field>
+      <field offset="32" name="cli_CurrentInput">
+        <type>BPTR</type>
+      </field>
+      <field offset="36" name="cli_CommandFile">
+        <type>BSTR</type>
+      </field>
+      <field offset="40" name="cli_Interactive">
+        <type>LONG</type>
+      </field>
+      <field offset="44" name="cli_Background">
+        <type>LONG</type>
+      </field>
+      <field offset="48" name="cli_CurrentOutput">
+        <type>BPTR</type>
+      </field>
+      <field offset="52" name="cli_DefaultStack">
+        <type>LONG</type>
+      </field>
+      <field offset="56" name="cli_StandardOutput">
+        <type>BPTR</type>
+      </field>
+      <field offset="60" name="cli_Module">
+        <type>BPTR</type>
+      </field>
+    </struct>
+    <struct name="DeviceList">
+      <field offset="0" name="dl_Next">
+        <type>BPTR</type>
+      </field>
+      <field offset="4" name="dl_Type">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="dl_Task">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="12" name="dl_Lock">
+        <type>BPTR</type>
+      </field>
+      <field offset="16" name="dl_VolumeDate">
+        <struct name="DateStamp" />
+      </field>
+      <field offset="28" name="dl_LockList">
+        <type>BPTR</type>
+      </field>
+      <field offset="32" name="dl_DiskType">
+        <type>LONG</type>
+      </field>
+      <field offset="36" name="dl_unused">
+        <type>LONG</type>
+      </field>
+      <field offset="40" name="dl_Name">
+        <ptr>
+          <type>BSTR</type>
+        </ptr>
+      </field>
+    </struct>
+    <struct name="DevInfo">
+      <field offset="0" name="dvi_Next">
+        <type>BPTR</type>
+      </field>
+      <field offset="4" name="dvi_Type">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="dvi_Task">
+        <type>APTR</type>
+      </field>
+      <field offset="12" name="dvi_Lock">
+        <type>BPTR</type>
+      </field>
+      <field offset="16" name="dvi_Handler">
+        <type>BSTR</type>
+      </field>
+      <field offset="20" name="dvi_StackSize">
+        <type>LONG</type>
+      </field>
+      <field offset="24" name="dvi_Priority">
+        <type>LONG</type>
+      </field>
+      <field offset="28" name="dvi_Startup">
+        <type>LONG</type>
+      </field>
+      <field offset="32" name="dvi_SegList">
+        <type>BPTR</type>
+      </field>
+      <field offset="36" name="dvi_GlobVec">
+        <type>BPTR</type>
+      </field>
+      <field offset="40" name="dvi_Name">
+        <type>BSTR</type>
+      </field>
+    </struct>
+    <struct name="struct_0">
+      <field offset="0" name="dol_Handler">
+        <type>BSTR</type>
+      </field>
+      <field offset="4" name="dol_StackSize">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="dol_Priority">
+        <type>LONG</type>
+      </field>
+      <field offset="12" name="dol_Startup">
+        <type>ULONG</type>
+      </field>
+      <field offset="16" name="dol_SegList">
+        <type>BPTR</type>
+      </field>
+      <field offset="20" name="dol_GlobVec">
+        <type>BPTR</type>
+      </field>
+    </struct>
+    <struct name="struct_1">
+      <field offset="0" name="dol_VolumeDate">
+        <struct name="DateStamp" />
+      </field>
+      <field offset="12" name="dol_LockList">
+        <type>BPTR</type>
+      </field>
+      <field offset="16" name="dol_DiskType">
+        <type>LONG</type>
+      </field>
+    </struct>
+    <struct name="DosList">
+      <field offset="0" name="dol_Next">
+        <type>BPTR</type>
+      </field>
+      <field offset="4" name="dol_Type">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="dol_Task">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="12" name="dol_Lock">
+        <type>BPTR</type>
+      </field>
+      <field offset="16" name="dol_misc">
+        <union>
+          <alt name="dol_handler">
+            <struct name="struct_0" />
+          </alt>
+          <alt name="dol_volume">
+            <struct name="struct_1" />
+          </alt>
+        </union>
+      </field>
+      <field offset="40" name="dol_Name">
+        <type>BSTR</type>
+      </field>
+    </struct>
+    <struct name="FileLock">
+      <field offset="0" name="fl_Link">
+        <type>BPTR</type>
+      </field>
+      <field offset="4" name="fl_Key">
+        <type>LONG</type>
+      </field>
+      <field offset="8" name="fl_Access">
+        <type>LONG</type>
+      </field>
+      <field offset="12" name="fl_Task">
+        <ptr>
+          <struct name="MsgPort" />
+        </ptr>
+      </field>
+      <field offset="16" name="fl_Volume">
+        <type>BPTR</type>
+      </field>
+    </struct>
+  </Types>
+</library>
