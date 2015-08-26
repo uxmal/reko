@@ -326,9 +326,6 @@
     <Compile Include="Structure\Region.cs" />
     <Compile Include="Structure\RegionFactory.cs" />
     <Compile Include="Structure\ReverseGraph.cs" />
-    <Compile Include="Structure\StructureAnalysis.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
     <Compile Include="Typing\ConstantPointerTraversal.cs" />
     <Compile Include="Typing\ExpressionTypeAscender.cs" />
@@ -446,7 +443,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Structure\Schwartz\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

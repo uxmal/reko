@@ -54,19 +54,9 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void LoopFinder_WhileGoto2_TagNodes()
-        {
-            var sa = new StructureAnalysis(new MockWhileGoto2().Procedure);
-            sa.BuildProcedureStructure();
-            sa.FindStructures();
-            sa.ProcedureStructure.Write(Console.Out);
-        }
-
-        [Test]
         public void LoopFinder_CaseJumpsBack_LatchNode()
         {
             RunTest(new MockCaseJumpsBack());
-
         }
 
         [Test]
@@ -85,7 +75,6 @@ namespace Reko.UnitTests.Structure
             Loop loop = lf.DetermineLoopType(loopNodes);
             Assert.IsTrue(loop is TestlessLoop);
         }
-        
 
         private void RunTest(ProcedureBuilder m)
         {
