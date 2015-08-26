@@ -70,6 +70,11 @@ namespace Reko.Core.Absyn
 			v.VisitIf(this);
 		}
 
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitIf(this); 
+        }
+
         public void InvertCondition()
         {
             List<AbsynStatement> t = then;

@@ -39,12 +39,17 @@ namespace Reko.Core.Absyn
             this.Constant = c;
         }
 
+        public Constant Constant { get; private set; }
+
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitCase(this);
         }
 
-        public Constant Constant { get; private set; }
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitCase(this);
+        }
     }
 
     public class AbsynDefault: AbsynStatement
@@ -56,6 +61,11 @@ namespace Reko.Core.Absyn
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitDefault(this);
+        }
+
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitDefault(this);
         }
     }
 }

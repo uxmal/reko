@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Structure.Schwartz;
+using Reko.Structure;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System.Diagnostics;
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Structure
 @"    while (true)
     {
         Mem0[0x1000:word32] = r2;
-        if (r1 != r2)
+        if (r1 == r2)
             break;
         Mem0[r1:word32] = Mem0[r2:word32];
         r1 = r1 + 0x04;

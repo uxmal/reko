@@ -35,11 +35,6 @@ namespace Reko.Core.Absyn
             this.statements = statements;
         }
 
-        public override void Accept(IAbsynVisitor visitor)
-        {
-            visitor.VisitSwitch(this);
-        }
-
         public Expression Expression
         {
             get { return expr; }
@@ -49,5 +44,17 @@ namespace Reko.Core.Absyn
         {
             get { return statements; }
         }
+
+
+        public override void Accept(IAbsynVisitor visitor)
+        {
+            visitor.VisitSwitch(this);
+        }
+
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitSwitch(this);
+        }
+
     }
 }

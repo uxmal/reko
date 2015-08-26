@@ -21,7 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Output;
-using Reko.Structure.Schwartz;
+using Reko.Structure;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Structure
         private void CompileTest(ProcedureBuilder mock)
         {
             proc = mock.Procedure;
-            var sa = new StructureAnalysis(mock.Procedure);
+            var sa = new StructureAnalysis(proc);
             sa.Structure();
         }
 
@@ -185,13 +185,13 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "BigLoopHeadFragment()" + nl + 
                 "{" + nl + 
-                "	DoSomething();" + nl + 
-                "	DoSomethingelse();" + nl + 
-                "	while (!IsDone())" + nl + 
+                "	while (true)" + nl + 
                 "	{" + nl +
-                "		LoopWork();" + nl + 
-                "		DoSomething();" + nl + 
-                "		DoSomethingelse();" + nl + 
+                "		DoSomething();" + nl +
+                "		DoSomethingelse();" + nl +
+                "		if (IsDone())" + nl +
+                "			break;" + nl +
+                "		LoopWork();" + nl +
                 "	}" + nl +
                 "	return;" + nl + 
                 "}" + nl);
@@ -261,15 +261,13 @@ namespace Reko.UnitTests.Structure
                 "UnstructuredIfsMock()" + nl +
                 "{" + nl +
                 "	if (!foo)" + nl +
-                "	{" + nl +
                 "		quux();" + nl +
-                "inside:" + nl +
-                "		niz();" + nl +
-                "	}" + nl +
                 "	else if (!bar)" + nl +
-                "\t\tbaz();" + nl +
-                "\telse" + nl +
-                "\t\tgoto inside;" + nl +
+                "	{" + nl +
+                "		baz();" + nl +
+                "		return;" + nl +
+                "	}" + nl +
+                "	niz();" + nl +
                 "	return;" + nl +
                 "}" + nl);
         }
@@ -288,7 +286,7 @@ namespace Reko.UnitTests.Structure
                 "		r2 = r2 + r3;" + nl +
                 "		r3 = Mem0[r1 + 0x00000004:word32];" + nl +
                 "		if (r3 == 0x00000000)" + nl +
-                "			break;" + nl +
+                "			return r2;" + nl +
                 "		r1 = Mem0[r1 + 0x0000000C:word32];" + nl +
                 "	}" + nl +
                 "	return r2;" + nl +
@@ -313,7 +311,6 @@ namespace Reko.UnitTests.Structure
                 "	case 0x00000001:" + nl +
                 "		n = n + 0x00000001;" + nl +
                 "		goto JumpBack;" + nl +
-                "		break;" + nl +
                 "	case 0x00000002:" + nl +
                 "		print(n);" + nl +
                 "		break;" + nl +
@@ -331,13 +328,13 @@ namespace Reko.UnitTests.Structure
                 "{" + nl +
                 "	switch (w)" + nl +
                 "	{" + nl +
-                "	case 0x00000000:" + nl +
+                "	case 0x0000:" + nl +
                 "		fn0();" + nl +
                 "		break;" + nl +
-                "	case 0x00000001:" + nl +
+                "	case 0x0001:" + nl +
                 "		fn1();" + nl +
                 "		break;" + nl +
-                "	case 0x00000002:" + nl +
+                "	case 0x0002:" + nl +
                 "		fn2();" + nl +
                 "		break;" + nl +
                 "	}" + nl +
@@ -407,13 +404,13 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "MockWhileWithDeclarations()" + nl +
                 "{" + nl +
-                "	byte v = Mem0[i:byte];" + nl +
-                "	i = i + 0x00000001;" + nl +
-                "	while (v != 0x20)" + nl +
+                "	while (true)" + nl +
                 "	{" + nl +
-                "		Mem0[0x00300000:byte] = v;" + nl +
-                "		v = Mem0[i:byte];" + nl +
+                "		byte v = Mem0[i:byte];" + nl +
                 "		i = i + 0x00000001;" + nl +
+                "		if (v == 0x20)" + nl +
+                "			break;" + nl +
+                "		Mem0[0x00300000:byte] = v;" + nl +
                 "	}" + nl +
                 "	return;" + nl +
                 "}" + nl);
@@ -455,14 +452,8 @@ namespace Reko.UnitTests.Structure
 "			fn02A9(&ax_96);" + nl +
 "			return ax_96;" + nl +
 "		}" + nl +
-"		else" + nl +
-"		{" + nl +
-"branch_c:" + nl + 
-"			return a1;" + nl +
-"		}" + nl +
 "	}" + nl +
-"	else" + nl +
-"		goto branch_c;" + nl +
+"	return a1;" + nl +
 "}" + nl);
 
 
@@ -501,9 +492,8 @@ namespace Reko.UnitTests.Structure
                 "\t{" + nl + 
                 "\t\tif (Mem0[0x1234:word16] != 0x0000)" + nl +
                 "\t\t\tfoo();" + nl + 
-                "\t\tif (Mem0[0x5123:word16] == 0x0001)" + nl +
-                "\t\t\tcontinue;" +nl +
-                "\t\tbar();" + nl +
+                "\t\tif (Mem0[0x5123:word16] != 0x0001)" + nl +
+                "\t\t\tbar();" +nl +
                 "\t}" + nl +
                 "}" + nl);
         }

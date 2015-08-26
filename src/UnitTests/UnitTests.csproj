@@ -611,7 +611,6 @@
   <ItemGroup>
     <Folder Include="Core\Machine\" />
     <Folder Include="Environments\Msdos\" />
-    <Folder Include="Structure\Schwartz\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

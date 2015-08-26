@@ -31,16 +31,21 @@ namespace Reko.Core.Absyn
 			this.label = label;
 		}
 
-		public override void Accept(IAbsynVisitor visitor)
-		{
-			visitor.VisitGoto(this);
-		}
-
 		public string Label
 		{
 			get { return label; }
 		}
 
-        public override bool IsControlFlow { get { return true; }}
+        public override bool IsControlFlow { get { return true; } }
+
+        public override void Accept(IAbsynVisitor visitor)
+        {
+            visitor.VisitGoto(this);
+        }
+
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitGoto(this);
+        }
 	}
 }

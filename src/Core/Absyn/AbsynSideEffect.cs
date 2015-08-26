@@ -35,14 +35,19 @@ namespace Reko.Core.Absyn
 			side = expr;
 		}
 
-		public override void Accept(IAbsynVisitor visitor)
-		{
-			visitor.VisitSideEffect(this);
-		}
-
 		public Expression Expression
 		{
 			get { return side; }
 		}
+
+        public override void Accept(IAbsynVisitor visitor)
+        {
+            visitor.VisitSideEffect(this);
+        }
+
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitSideEffect(this);
+        }
 	}
 }

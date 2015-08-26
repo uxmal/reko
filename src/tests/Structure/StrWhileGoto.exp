@@ -45,7 +45,7 @@ void fn0C00_0000(word16 si, word16 di, selector ds)
 		word16 si_12;
 		word16 ax_11 = Mem0[ds:si_12:word16];
 		si_12 = si_12 + 0x0002;
-		if (ax_11 != 0x0020)
+		if (ax_11 == 0x0020)
 			break;
 		Mem24[ds:di:word16] = ax_11;
 		if (ax_11 == 0x0000)

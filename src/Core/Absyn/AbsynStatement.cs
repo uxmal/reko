@@ -46,6 +46,8 @@ namespace Reko.Core.Absyn
             return default(T);
         }
 
+        public abstract T Accept<T>(IAbsynVisitor<T> visitor);
+
 		public override bool IsControlFlow
 		{
 			get { return false; }

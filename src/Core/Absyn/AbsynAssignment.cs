@@ -36,12 +36,18 @@ namespace Reko.Core.Absyn
 			this.Src = src;
 		}
 
-		public override void Accept(IAbsynVisitor visitor)
-		{
-			visitor.VisitAssignment(this);
-		}
-
-		public Expression Dst  {get; private set; }
+		public Expression Dst { get; private set; }
 		public Expression Src { get; private set; }
+
+
+        public override void Accept(IAbsynVisitor visitor)
+        {
+            visitor.VisitAssignment(this);
+        }
+
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitAssignment(this);
+        }
 	}
 }

@@ -36,6 +36,11 @@ namespace Reko.Core.Absyn
 			visitor.VisitLabel(this);
 		}
 
+        public override T Accept<T>(IAbsynVisitor<T> visitor)
+        {
+            return visitor.VisitLabel(this);
+        }
+
 		public string Name
 		{
 			get { return label; }

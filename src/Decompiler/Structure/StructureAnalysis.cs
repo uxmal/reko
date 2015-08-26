@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Structure.Schwartz
+namespace Reko.Structure
 {
     /// <summary>
     /// This class starts with the basic block control graph of a decompiled 
@@ -61,10 +61,15 @@ namespace Reko.Structure.Schwartz
             var ccc = new CompoundConditionCoalescer(proc);
             ccc.Transform();
             var reg = Execute();
+            //$REVIEW: yeecch. Should return the statements, and 
+            // caller decides what to do with'em. Probably 
+            // return an abstract Procedure, rather than overloading
+            // the IR procedure.
             proc.Body.AddRange(reg.Statements);
         }
 
         /// <summary>
+        /// Executes the core of the analysis
         /// </summary>
         /// <remarks>
         /// The algorithm visits nodes in post-order in each iteration. This
@@ -179,14 +184,12 @@ namespace Reko.Structure.Schwartz
                     continue;
                 Region from;
                 btor.TryGetValue(b, out from);
-                int index = 0;
                 foreach (var s in b.Succ)
                 {
                     if (s == proc.ExitBlock)
                         continue;
                     var to = btor[s];
-                    CreateEdge(regs, from, to, index);
-                    ++index;
+                    regs.AddEdge(from, to);
                 }
                 if (from != null)
                 {
@@ -205,22 +208,11 @@ namespace Reko.Structure.Schwartz
             return new Tuple<DirectedGraph<Region>, Region>(regs, btor[proc.EntryBlock]);
         }
 
-        private void CreateEdge(DirectedGraph<Region> regs, Region from, Region to, int index)
-        {
-            //AbsynReturn ret;
-            //if (to.Statements.Count == 1 && to.Statements[0].As<AbsynReturn>(out ret))
-            //{
-            //    if (from.Type == RegionType.Linear)
-            //    {
-            //        var e = ret.Value != null ? ret.Value.CloneExpression() : null;
-            //        from.Statements.Add(new AbsynReturn(e));
-            //        from.Type = RegionType.Tail;
-            //        return;
-            //    } 
-            //}
-            regs.AddEdge(from, to);
-        }
-
+        /// <summary>
+        /// Determines if n is the header of a cyclic set of regions.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         private bool IsCyclic(Region n)
         {
             return regionGraph.Predecessors(n).Any(pred => pred == n || IsBackEdge(pred, n));
@@ -233,16 +225,6 @@ namespace Reko.Structure.Schwartz
 
 #if NILZ
 3.2
-    Acyclic Regions
-The acyclic region types supported by Phoenix correspond
-to the acyclic control flow operators in C: sequences, ifs,
-and switches.  The schemas for these regions are shown in
-Table 3. For example, the Seq[n1; ... nk] contains _k_ regions 
-that  always  execute  in  the  listed  sequence.
-IfThenElse[c, n, nt, nf] denotes that _nt_ is executed after
-_n_ when condition c holds, and otherwise
-_nf_ is executed.
-
 Our  schemas  match  both  shape  and  the  boolean
 predicates that guard execution of each node, to ensure
 semantics preservation.  These conditions are implicitly
@@ -279,8 +261,6 @@ conditions to be inverses.
                 break;
             default:
                 throw new NotImplementedException();
-                didReduce = false;
-                break;
             }
             return didReduce;
         }
@@ -307,7 +287,14 @@ conditions to be inverses.
             return false;
         }
 
-
+        /// <summary>
+        /// Identifies if-then or if-then-else schemas in the region graph
+        /// and reduces them out of the graph.
+        /// </summary>
+        /// <param name="n">The header of the possible if-region</param>
+        /// <param name="reduceTailregions">If true, will consider tail
+        /// regions as well as properly formed regions.</param>
+        /// <returns></returns>
         private bool ReduceIfRegion(Region n, bool reduceTailregions)
         {
             var ss = regionGraph.Successors(n).ToArray();
@@ -319,7 +306,7 @@ conditions to be inverses.
             {
                 if (RefinePredecessor(n, el))
                     return false;
-                // Collapse (If then) into n.
+                // Collapse (If else) into n.
                 n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements));
                 regionGraph.RemoveEdge(n, el);
                 if (elS != null)
@@ -333,6 +320,7 @@ conditions to be inverses.
             {
                 if (RefinePredecessor(n, th))
                     return false;
+                // Collapse (if-then) into n
                 n.Statements.Add(new AbsynIf(n.Expression, th.Statements));
                 regionGraph.RemoveEdge(n, th);
                 if (thS != null)
@@ -874,7 +862,7 @@ are added during loop refinement, which we discuss next.
                     {
                         var loop = new AbsynWhile(Constant.True(), n.Statements);
                         loop.Body.Add(new AbsynIf(
-                            exp,
+                            exp.Invert(),
                             new List<AbsynStatement> {
                                 new AbsynBreak()
                             }));
