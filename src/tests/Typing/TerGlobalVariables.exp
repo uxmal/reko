@@ -18,8 +18,8 @@ GlobalVariablesMock_entry:
 	// succ:  l1
 l1:
 	real32 * ptr = &globals->r10000004
-	*ptr = 0.75F;
-	globals->r10000000 = 0.5F;
+	*ptr = 0.75F
+	globals->r10000000 = 0.5F
 GlobalVariablesMock_exit:
 
 // Equivalence classes ////////////

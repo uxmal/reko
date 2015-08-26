@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Structure
 {
-    public class RegionFactory : InstructionVisitor<AbsynStatement>, IAbsynVisitor<AbsynAssignment>
+    public class RegionFactory : InstructionVisitor<AbsynStatement>
     {
         private List<AbsynStatement> stms;
         private RegionType regType;
@@ -47,10 +47,9 @@ namespace Reko.Structure
                 if (s != null)
                     stms.Add(s);
             }
-            var region = new Region(b)
+            var region = new Region(b, stms)
             {
                 Type = regType,
-                Statements = stms,
                 Expression = exp,
             };
             return region;
@@ -118,81 +117,6 @@ namespace Reko.Structure
         }
 
         public AbsynStatement VisitUseInstruction(UseInstruction use)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitAssignment(AbsynAssignment ass)
-        {
-            return ass;
-        }
-
-        public AbsynAssignment VisitBreak(AbsynBreak brk)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitCase(AbsynCase absynCase)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitContinue(AbsynContinue cont)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitDeclaration(AbsynDeclaration decl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitDefault(AbsynDefault decl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitDoWhile(AbsynDoWhile loop)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitGoto(AbsynGoto gotoStm)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitIf(AbsynIf ifStm)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitLabel(AbsynLabel lbl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitLineComment(AbsynLineComment comment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitReturn(AbsynReturn ret)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitSideEffect(AbsynSideEffect side)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitSwitch(AbsynSwitch absynSwitch)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AbsynAssignment VisitWhile(AbsynWhile loop)
         {
             throw new NotImplementedException();
         }

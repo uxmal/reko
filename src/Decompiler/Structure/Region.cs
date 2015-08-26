@@ -31,15 +31,35 @@ using System.Text;
 
 namespace Reko.Structure
 {
+    /// <summary>
+    /// This class is used by the StructureAnalysis class to keep track
+    /// of information known about a region of statements. Initially
+    /// there will be a region for each non-trivial or non-reachable
+    /// basic block. These regions are subsequently coalesced into fewer
+    /// regions containing more instructions, until there finally is 
+    /// only one region with all the statements in a (mostly) structured
+    /// format.
+    /// </summary>
     public class Region
     {
-        public Block Block;
-        public RegionType Type;
-        public List<AbsynStatement> Statements = new List<AbsynStatement>();
+        public Block Block { get; private set; }
+        public RegionType Type { get; set; }
+        public List<AbsynStatement> Statements { get; set; }
+        public Expression Expression { get; set; }
 
-        public Region(Block block)
+        public Region(Block block) : this(block, new List<AbsynStatement>())
+        {
+        }
+
+        public Region(Block block, IEnumerable<AbsynStatement> stmts)
         {
             this.Block = block;
+            this.Statements = new List<AbsynStatement>(stmts);
+        }
+
+        public override string ToString()
+        {
+            return Block.Name;
         }
 
         public virtual void Write(StringWriter sb)
@@ -47,13 +67,6 @@ namespace Reko.Structure
             var f = new AbsynCodeFormatter(new TextFormatter(sb));
             foreach (var stm in Statements)
                 stm.Accept(f);
-        }
-
-        public Expression Expression { get; set; }
-
-        public override string ToString()
-        {
-            return Block.Name;
         }
     }
 

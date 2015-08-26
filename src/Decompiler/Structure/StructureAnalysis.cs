@@ -36,7 +36,7 @@ namespace Reko.Structure
     /// procedure and converts it into high-level structured code.
     /// </summary>
     /// <remarks>
-    /// Inspired by the algorithm described:
+    /// Inspired by the algorithm described in:
     ///  Native x86 Decompilation using Semantics-Preserving Structural Analysis
     ///  and Iterative Control-Flow Structuring.
     /// </remarks>
@@ -49,7 +49,6 @@ namespace Reko.Structure
         private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
-        private Queue<Region> tailRegions;
 
         public StructureAnalysis(Procedure proc)
         {
@@ -101,17 +100,13 @@ namespace Reko.Structure
             this.entry = result.Item2;
             int oldCount;
             int newCount;
-            DumpGraph();
             do
             {
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
-                this.tailRegions = new Queue<Region>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
-                Debug.Print("== Graph contains {0} nodes ===================================", regionGraph.Nodes.Count);
-                DumpGraph();
 
                 bool didReduce = false;
                 foreach (var n in postOrder)
@@ -125,21 +120,11 @@ namespace Reko.Structure
                         }
                     } while (didReduce);
                 }
-
                 newCount = regionGraph.Nodes.Count;
                 if (newCount == oldCount && newCount > 1)
                 {
-#if NYI
-                    didReduce = false;
-                    // Didn't make any progress, try removing tail blocks.
-                    foreach (var n in postOrder.Where(n => regionGraph.Nodes.Contains(n)))
-                    {
-                        didreduce = !IsCyclic(n) && ReduceAcyclic(n, true);
-                        if (didreduce)
-                            break;
-                    } 
-#endif
-                    // Didn't make any progress, try refining unstructured regions
+                    // Didn't make any progress this round,
+                    // try refining unstructured regions
                     ProcessUnresolvedRegions();
                 }
             } while (regionGraph.Nodes.Count > 1);
@@ -223,20 +208,6 @@ namespace Reko.Structure
             return doms.DominatesStrictly(b, a);
         }
 
-#if NILZ
-3.2
-Our  schemas  match  both  shape  and  the  boolean
-predicates that guard execution of each node, to ensure
-semantics preservation.  These conditions are implicitly
-described using meta-variables in Table 3, such as c and 
-!c.  The intuition is that shape alone is not enough to
-distinguish  which  control  structure  should  be  used  in
-decompilation. For instance, a switch for cases x = 2
-and x = 3 can have the diamond shape of an if-then-else, but
-we would not want to mistake a switch for an if-then-else
-because the semantics of if-then-else requires the outgoing
-conditions to be inverses.
-#endif
         /// <summary>
         /// Attempts to match and reduce acyclic region.
         /// </summary>
@@ -392,29 +363,7 @@ conditions to be inverses.
             return true;
         }
 
-#if NILZ
-A switch candidate is refined by first virtualizing incoming
-edges to any node other than the switch head.
-The next step is to ensure there is a single successor of
-all nodes in the switch. The immediate post-dominator
-of the switch head is selected as the successor if it is the
-successor of any of the case nodes. Otherwise, the node
-that (1) is a successor of a case node, (2) is not a case
-node itself, and (3) has the highest number of incoming
-edges from case nodes is chosen as the successor. After
-the successor has been identified, any outgoing edge from
-the switch that does not go to the successor is virtualized.
-After refinement, a switch candidate is usually collapsed
-to a IncSwitch[·] region. For instance, a common
-implementation strategy for switches is to redirect inputs
-handled by the default case (e.g., x > 20) to a default
-node, and use a jump table for the remaining cases (e.g.,
-x in [0,20]). This relationship is depicted in Figure 4,
-along with the corresponding region types. Because the
-jump table only handles a few cases, it is recognized as an
-IncSwitch[·]. However, because the default node handles
-all other cases, together they constitute a Switch[·].
-#endif
+
 
 
 #if NILZ
@@ -456,13 +405,37 @@ IncSwitch[]. However, because the default node handles
 all other cases, together they constitute a Switch[].
 
 #endif
+
+        /// <summary>Refines an incomplete switch statement</summary>
+        /// <remarks>
+        /// A switch candidate is refined by first virtualizing incoming
+        /// edges to any node other than the switch head.
+        /// The next step is to ensure there is a single successor of
+        /// all nodes in the switch. The immediate post-dominator
+        /// of the switch head is selected as the successor if it is the
+        /// successor of any of the case nodes. Otherwise, the node
+        /// that (1) is a successor of a case node, (2) is not a case
+        /// node itself, and (3) has the highest number of incoming
+        /// edges from case nodes is chosen as the successor. After
+        /// the successor has been identified, any outgoing edge from
+        /// the switch that does not go to the successor is virtualized.
+        /// After refinement, a switch candidate is usually collapsed
+        /// to a IncSwitch[·] region. For instance, a common
+        /// implementation strategy for switches is to redirect inputs
+        /// handled by the default case (e.g., x > 20) to a default
+        /// node, and use a jump table for the remaining cases (e.g.,
+        /// x in [0,20]). This relationship is depicted in Figure 4,
+        /// along with the corresponding region types. Because the
+        /// jump table only handles a few cases, it is recognized as an
+        /// IncSwitch[·]. However, because the default node handles
+        /// all other cases, together they constitute a Switch[·].
+        /// </remarks>
         private void RefineIncSwitch(Region n)
         {
             VirtualizeIrregularSwitchEntries(n);
             Region follow = FindIrregularSwitchFollowRegion(n);
             VirtualizeIrregularSwitchExits(n, follow);
         }
-
 
         private void VirtualizeIrregularSwitchEntries(Region n)
         {
@@ -517,8 +490,8 @@ all other cases, together they constitute a Switch[].
         }
 
         /// <summary>
-        /// After we have identified the successor, we remove all 
-        /// outgoing edges from the case nodes to other nodes by 
+        /// After we have identified the successor of a switch, we remove 
+        /// all outgoing edges from the case nodes to other nodes by 
         /// virtualizing them.
         /// </summary>
         private void VirtualizeIrregularSwitchExits(Region n, Region follow)
@@ -583,6 +556,14 @@ all other cases, together they constitute a Switch[].
             return true;
         }
 
+        /// <summary>
+        /// Finds all predecessors of <paramref name="s"/> that aren't 
+        /// the structured predecessor <paramref name="n"/>. 
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="s"></param>
+        /// <returns>True if unstructured predecessors were found.
+        /// </returns>
         private bool RefinePredecessor(Region n, Region s)
         {
             ISet<Region> unstructuredPreds = regionGraph.Predecessors(s).Where(p => p != n).ToHashSet();
@@ -841,7 +822,6 @@ are added during loop refinement, which we discuss next.
                     n.Expression = null;
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
-                    DumpGraph();
                     return true;
                 }
             }
@@ -874,7 +854,6 @@ are added during loop refinement, which we discuss next.
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
                     RemoveRegion(s);
-                    DumpGraph();
                     return true;
                 }
             }

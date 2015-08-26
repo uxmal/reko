@@ -34,9 +34,9 @@ l2:
 	return
 	// succ:  proc1_exit
 lupe:
-	ds->*di_0 = 0x0000;
-	di_0 = di_0 + 1;
-	cx = cx - 0x0001;
+	ds->*di_0 = 0x0000
+	di_0 = di_0 + 1
+	cx = cx - 0x0001
 	branch cx != 0x0000 lupe
 	goto l2
 	// succ:  l2 lupe

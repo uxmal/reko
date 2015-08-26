@@ -2,6 +2,6 @@
 <Include>
   <!-- Every time you change the RekoVersion, you must also update
        the RekoProductCode -->
-  <?define RekoVersion="0.5.1.0"?>
-  <?define RekoProductCode="FAB605E0-4B14-478E-972D-176B8E624973"?>
+  <?define RekoVersion="0.5.2.0"?>
+  <?define RekoProductCode="DD75D1C9-C812-4C0E-B89E-1FFB8992FB96"?>
 </Include>

@@ -18,8 +18,8 @@ void PointerChainFragment()
 PointerChainFragment_entry:
 	// succ:  l1
 l1:
-	r2 = (word32) r1->ptr0004->ptr0008->b0010;
-	r4 = (word32) ****r3;
+	r2 = (word32) r1->ptr0004->ptr0008->b0010
+	r4 = (word32) ****r3
 	return
 	// succ:  PointerChainFragment_exit
 PointerChainFragment_exit:

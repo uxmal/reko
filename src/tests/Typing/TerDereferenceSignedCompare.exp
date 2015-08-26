@@ -19,9 +19,9 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	ds2 = ds;
-	ds->f5400 = (ds->*ds->ptr5404).w0004 < 0x0014;
-	(ds2->*ds2->ptr5404).w0004 = 0x0000;
+	ds2 = ds
+	ds->f5400 = (ds->*ds->ptr5404).w0004 < 0x0014
+	(ds2->*ds2->ptr5404).w0004 = 0x0000
 	return
 	// succ:  proc1_exit
 proc1_exit:

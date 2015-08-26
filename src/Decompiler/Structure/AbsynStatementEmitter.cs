@@ -55,12 +55,6 @@ namespace Reko.Structure
             return ass;
         }
 
-        [Obsolete("", true)]
-        public void EmitCaseLabel(StructureNode node, int i)
-        {
-            stms.Add(new AbsynCase(i));
-        }
-
         public void EmitBreak()
         {
             stms.Add(new AbsynBreak());
@@ -69,12 +63,6 @@ namespace Reko.Structure
         public void EmitContinue()
         {
             stms.Add(new AbsynContinue());
-        }
-
-        [Obsolete("", true)]
-        public void EmitGoto(StructureNode dest)
-        {
-            stms.Add(new AbsynGoto(dest.Block.Name));
         }
 
         public void EmitReturn(Expression expr)

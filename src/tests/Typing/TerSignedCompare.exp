@@ -17,9 +17,9 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	ds2 = ds;
-	ds->f5400 = ds->w5404 < 0x0014;
-	ds2->w5404 = 0x0000;
+	ds2 = ds
+	ds->f5400 = ds->w5404 < 0x0014
+	ds2->w5404 = 0x0000
 proc1_exit:
 
 // Equivalence classes ////////////

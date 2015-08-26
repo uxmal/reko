@@ -28,15 +28,15 @@ void fn0C00_0000(Eq_3 * ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	ds->w9A2E = 0x0000;
-	ds->w9A26 = 0x0100;
+	ds->w9A2E = 0x0000
+	ds->w9A26 = 0x0100
 	Eq_9 Eq_12::*si_10 = Eq_12::a0000
 	// succ:  l0C00_0015
 l0C00_0015:
-	(0x5CE1->*si_10).w0000 = 0xFFFF;
+	(0x5CE1->*si_10).w0000 = 0xFFFF
 	word16 v9_15 = ds->w9A26 - 0x0001
-	ds->w9A26 = v9_15;
-	si_10 = si_10 + 1;
+	ds->w9A26 = v9_15
+	si_10 = si_10 + 1
 	branch v9_15 != 0x0000 l0C00_0015
 	// succ:  l0C00_0023 l0C00_0015
 l0C00_0023:

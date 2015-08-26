@@ -20,12 +20,12 @@ void SegmentedMemoryPointerMock()
 SegmentedMemoryPointerMock_entry:
 	// succ:  l1
 l1:
-	si = &Eq_4::t0001;
-	ax = (cs->*si).w0000;
-	si2 = &Eq_4::w0005;
-	ax = cs->*si2;
-	cs->w1234 = ax;
-	(cs->*si).w0002 = ax;
+	si = &Eq_4::t0001
+	ax = (cs->*si).w0000
+	si2 = &Eq_4::w0005
+	ax = cs->*si2
+	cs->w1234 = ax
+	(cs->*si).w0002 = ax
 SegmentedMemoryPointerMock_exit:
 
 // Equivalence classes ////////////

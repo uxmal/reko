@@ -41,12 +41,6 @@ namespace Reko.UnitTests.Structure
 	{
 		protected Program program;
 
-        [Obsolete]
-        protected StructureNode GetNode(ProcedureStructure proc, string nodeName)
-        {
-            return proc.Nodes.Find(node => node.Name == nodeName);
-        }
-
 		protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
             var sc = new ServiceContainer();

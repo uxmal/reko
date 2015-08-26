@@ -28,12 +28,6 @@ namespace Reko.Core.Absyn
 {
     public class AbsynCase : AbsynStatement
     {
-        [Obsolete("Use constructor with Constant parameter")]
-        public AbsynCase(int i)
-        {
-            this.Constant = Constant.Word32(i);
-        }
-
         public AbsynCase(Constant c)
         {
             this.Constant = c;

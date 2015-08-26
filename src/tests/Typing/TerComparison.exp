@@ -15,7 +15,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	f = p->ptr0004 < &globals->t100028;
+	f = p->ptr0004 < &globals->t100028
 proc1_exit:
 
 // Equivalence classes ////////////

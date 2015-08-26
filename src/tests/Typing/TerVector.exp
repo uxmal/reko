@@ -15,7 +15,7 @@ void VectorFragment()
 VectorFragment_entry:
 	// succ:  l1
 l1:
-	mod = v->r0000 + (v->r0004 + v->r0008);
+	mod = v->r0000 + (v->r0004 + v->r0008)
 VectorFragment_exit:
 
 // Equivalence classes ////////////

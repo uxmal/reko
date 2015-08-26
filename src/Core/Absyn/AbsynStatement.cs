@@ -19,38 +19,36 @@
 #endregion
 
 using Reko.Core.Code;
+using Reko.Core.Output;
 using System;
+using System.IO;
 
 namespace Reko.Core.Absyn
 {
-	/// <summary>
-	/// Base class for all abstract syntax statements.
-	/// </summary>
-	public abstract class AbsynStatement : Instruction
-	{
-		public abstract void Accept(IAbsynVisitor visitor);
-
-		public override sealed Instruction Accept(InstructionTransformer xform)
-		{
-			return this;
-		}
-
-		public override sealed void Accept(InstructionVisitor v)
-		{
-			Accept((IAbsynVisitor) v);
-		}
-
-        public sealed override T Accept<T>(InstructionVisitor<T> visitor)
-        {
-            Accept((IAbsynVisitor)visitor);
-            return default(T);
-        }
+    /// <summary>
+    /// Base class for all abstract syntax statements.
+    /// </summary>
+    public abstract class AbsynStatement
+    {
+        public abstract void Accept(IAbsynVisitor visitor);
 
         public abstract T Accept<T>(IAbsynVisitor<T> visitor);
 
-		public override bool IsControlFlow
+        public bool As<T>(out T t) where T : AbsynStatement
+        {
+            t = this as T;
+            return t != null;
+        }
+
+		public override sealed string ToString()
 		{
-			get { return false; }
-		}
+			StringWriter sw = new StringWriter();
+            TextFormatter f = new TextFormatter(sw);
+			f.Terminator = "";
+			f.Indentation = 0;
+			CodeFormatter fmt = new CodeFormatter(f);
+			Accept(fmt);
+			return sw.ToString();
+        }
     }
 }

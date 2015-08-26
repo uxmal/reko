@@ -36,8 +36,6 @@ namespace Reko.Core.Absyn
 			get { return label; }
 		}
 
-        public override bool IsControlFlow { get { return true; } }
-
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitGoto(this);

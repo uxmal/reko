@@ -210,7 +210,11 @@ namespace Reko.Typing
 				else
 					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
 			}
-			return new Core.Absyn.AbsynAssignment(dst, src);
+            Identifier idDst = dst as Identifier;
+            if (idDst != null)
+                return new Assignment(idDst, src);
+            else
+                return new Store(dst, src);
 		}
 
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)

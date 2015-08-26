@@ -26,6 +26,10 @@ using System.Text;
 
 namespace Reko.Structure
 {
+    /// <summary>
+    /// This class is used for the computation of post-dominators
+    /// in the StructureAnalyis class.
+    /// </summary>
     public class ReverseGraph : DirectedGraph<Region>
     {
         private DirectedGraph<Region> graph;
@@ -53,7 +57,6 @@ namespace Reko.Structure
                 }
             }
         }
-
 
         public ICollection<Region> Predecessors(Region node)
         {
