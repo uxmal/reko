@@ -94,63 +94,6 @@ namespace Reko.Structure
 
         public void Write(TextWriter writer)
         {
-            WriteNode(this.EntryNode, new HashSet<StructureNode>(), writer);
-        }
-
-        [Conditional("VERBOSE_DEBUG")]
-        private void WriteNode(StructureNode node, HashSet<StructureNode> visited, TextWriter writer)
-        {
-            if (visited.Contains(node))
-                return;
-            visited.Add(node);
-            writer.WriteLine("Node {0}: Block: {1}",
-                node.Number,
-                node.Block != null ? node.Block.Name : "<none>");
-
-            writer.WriteLine("    Order: {0}", node.Order);
-            writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Number : "<none>");
-            writer.WriteLine("    iPDom: {0}", node.ImmPDom != null ? node.ImmPDom.Name : "<none>");
-            writer.Write("    Structure type:");
-            if (node.Loop != null)
-                writer.Write(" {0}", node.Loop.GetType().Name);
-            if (node.Conditional != null)
-                writer.Write(" {0}", node.Conditional.GetType().Name);
-            writer.WriteLine();
-
-            if (node.Loop != null && node.Loop.Header == node)
-            {
-                writer.WriteLine("    Loop Latch: {0}", node.Loop.Latch.Name);
-                writer.WriteLine("    Loop Follow: {0}", node.Loop.Follow);
-            }
-            if (node.Conditional != null)
-            {
-                if (node.Conditional.Follow != null)
-                    writer.WriteLine("    Cond follow: {0}", node.Conditional.Follow.Block.Name);
-            }
-            if (node.CaseHead != null)
-            {
-                writer.WriteLine("    Case header: {0}", node.CaseHead.Name);
-            }
-            writer.WriteLine("    Unstructured type: {0}", node.UnstructType);
-            foreach (Statement stm in node.Block.Statements)
-            {
-                writer.Write("\t");
-                writer.WriteLine(stm);
-            }
-            writer.Write("    Succ: ");
-            string sep = "";
-            foreach (StructureNode s in node.OutEdges)
-            {
-                writer.Write(sep);
-                writer.Write(s.Block.Name);
-                sep = ",";
-            }
-            writer.WriteLine();
-
-            foreach (StructureNode s in node.OutEdges)
-            {
-                WriteNode(s, visited, writer);
-            }
         }
 
         [Conditional("DEBUG")]

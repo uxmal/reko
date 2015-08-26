@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Structure
 
         private void RunTest(string sExp, Procedure proc)
         {
-            var ps = new ProcedureStructurer(proc);
+            var ps = new StructureAnalysis(proc);
             var reg = ps.Execute();
             var sb = new StringWriter();
             reg.Write(sb);

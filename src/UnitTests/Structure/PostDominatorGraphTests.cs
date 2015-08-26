@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Structure
 
         private void FindPostDominators(ProcedureBuilder m)
         {
-            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
+            var graphs = new ProcedureStructureBuilder(m.Procedure);
             h = graphs.Build();
             sw = new StringWriter();
             graphs.AnalyzeGraph().Write(sw);

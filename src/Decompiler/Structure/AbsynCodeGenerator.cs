@@ -58,83 +58,6 @@ namespace Reko.Structure
             nodesToRender.Enqueue(new NodeEmitter(predecessor, node, emitter));
         }
 
-        public void EmitGotoAndForceLabel(StructureNode node, StructureNode succ, AbsynStatementEmitter emitter)
-        {
-            if (node == null)
-                throw new InvalidOperationException("A goto must have a starting point.");
-
-            if (node.Loop != null)
-            {
-                if (node.Loop.Follow == succ)
-                {
-                    emitter.EmitBreak();
-                    return;
-                }
-                if (node.Loop.Header == succ)
-                {
-                    emitter.EmitContinue();
-                    return;
-                }
-            }
-            succ.ForceLabel = true;
-            emitter.EmitGoto(succ);
-        }
-
-        public void GenerateCode(ProcedureStructure proc, List<AbsynStatement> stms)
-        {
-            nodesToRender.Enqueue(new NodeEmitter(proc.EntryNode, new AbsynStatementEmitter(stms)));
-            while (nodesToRender.Count > 0)
-            {
-                NodeEmitter ne = nodesToRender.Dequeue();
-                if (IsVisited(ne.Node))
-                    EmitGotoAndForceLabel(ne.Predecessor, ne.Node, ne.Emitter);
-                GenerateCode(ne.Node, null, ne.Emitter);
-            }
-        }
-
-        public void GenerateCode(
-            StructureNode node,
-            StructureNode latchNode,
-            AbsynStatementEmitter emitter)
-        {
-            if (followStack.Contains(node) && followStack.Peek() == node)
-                return;
-            if (IsVisited(node))
-                return;
-            visited.Add(node);
-
-            if (NeedsLabel(node))
-                GenerateLabel(node,emitter);
-
-            if (node.IsLoopHeader())
-            {
-                node.Loop.GenerateCode(this, node, latchNode, emitter);
-            }
-            else if (node.Conditional != null)
-            {
-                node.Conditional.GenerateCode(this, node, latchNode, emitter);
-            }
-            else 
-            {
-                EmitLinearBlockStatements(node, emitter);
-                if (EndsWithReturnInstruction(node))
-                {
-                    emitter.EmitStatement(node.Instructions.Last);
-                    return;
-                }
-                if (node.IsLatchNode())
-                    return;
-
-                if (node.OutEdges.Count == 1)
-                {
-                    StructureNode succ = node.OutEdges[0];
-                    if (ShouldJumpFromSequentialNode(node, succ))
-                        EmitGotoAndForceLabel(node, succ, emitter);
-                    else
-                        GenerateCode(succ, latchNode, emitter);
-                }
-            }
-        }
 
         private bool ShouldJumpFromSequentialNode(StructureNode node, StructureNode succ)
         {
@@ -162,11 +85,6 @@ namespace Reko.Structure
                 return true;
             }
             return false;
-        }
-
-        private void GenerateLabel(StructureNode node, AbsynStatementEmitter emitter)
-        {
-            emitter.EmitLabel(node);
         }
 
         public void PushFollow(StructureNode followNode)

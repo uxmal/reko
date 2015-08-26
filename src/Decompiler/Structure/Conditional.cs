@@ -43,7 +43,6 @@ namespace Reko.Structure
             get { return follow; }
         }
 
-        public abstract void GenerateCode(AbsynCodeGenerator codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter);
     }
 
     [Obsolete("", true)]
@@ -51,59 +50,6 @@ namespace Reko.Structure
     {
         public IfConditional(StructureNode follow) : base(follow) { } 
 
-        public override void GenerateCode(AbsynCodeGenerator codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
-        {
-            codeGen.EmitLinearBlockStatements(node, emitter);
-            if (node == latchNode)
-                return;
-
-            var exp = codeGen.BranchCondition(node);
-            var ifStm = EmitIfCondition(exp, this, emitter);
-
-            var succ = FirstBranch(node);
-            var emitThen = new AbsynStatementEmitter(ifStm.Then);
-            if (node.UnstructType == UnstructuredType.JumpInOutLoop)
-            {
-                codeGen.DeferRendering(node, succ, emitThen);
-                codeGen.GenerateCode(SecondBranch(node), latchNode, emitter);
-            }
-            else
-            {
-                if (Follow == null)
-                    throw new NotSupportedException("Null condfollow");
-                codeGen.PushFollow(Follow);
-
-                if (node.Conditional is IfThenElse)
-                {
-                    codeGen.IncompleteNodes.Add(node);
-                }
-
-                if (codeGen.IsVisited(succ) || (node.Loop != null && succ == node.Loop.Follow))
-                    codeGen.EmitGotoAndForceLabel(node, succ, emitThen);
-                else
-                    codeGen.GenerateCode(succ, latchNode, emitThen);
-
-                if (node.Conditional is IfThenElse)
-                {
-                    codeGen.IncompleteNodes.Remove(node);
-
-                    succ = node.Then;
-                    AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
-                    if (codeGen.IsVisited(succ))
-                        codeGen.EmitGotoAndForceLabel(node, succ, emitElse);
-                    else
-                        codeGen.GenerateCode(succ, latchNode, emitElse);
-
-                    if (HasSingleIfThenElseStatement(ifStm.Then))
-                    {
-                        ifStm.InvertCondition();
-                    }
-                }
-
-                codeGen.PopFollow();
-                codeGen.GenerateCode(Follow, latchNode, emitter);
-            }
-        }
 
         [Obsolete("", true)]
         private AbsynIf EmitIfCondition(Expression exp, Conditional cond, AbsynStatementEmitter emitter)
@@ -190,34 +136,5 @@ namespace Reko.Structure
     {
         public Case(StructureNode follow) : base(follow) { }
 
-        public override void GenerateCode(AbsynCodeGenerator codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
-        {
-            codeGen.EmitLinearBlockStatements(node, emitter);
-
-            Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;
-            AbsynSwitch switchStm = emitter.EmitSwitch(node, exp, new List<AbsynStatement>());
-            AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);
-
-            if (Follow == null)
-                throw new NotSupportedException(string.Format("Null follow node for case statement at {0} is not supported.", node.Name));
-            codeGen.PushFollow(Follow);
-            for (int i = 0; i < node.OutEdges.Count; i++)
-            {
-                emitSwitchBranches.EmitCaseLabel(node, i);
-
-                StructureNode succ = node.OutEdges[i];
-                if (codeGen.IsVisited(succ))
-                {
-                    codeGen.EmitGotoAndForceLabel(node, succ, emitSwitchBranches);
-                }
-                else
-                {
-                    codeGen.GenerateCode(succ, latchNode, emitSwitchBranches);
-                    emitSwitchBranches.EmitBreak();
-                }
-            }
-            codeGen.PopFollow();
-            codeGen.GenerateCode(Follow, latchNode, emitter);
-        }
     }
 }

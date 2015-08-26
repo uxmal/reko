@@ -73,7 +73,6 @@ namespace Reko.Structure
 			dirty = true;
 		}
 
-
 		private void ReplaceJumpWithBranch(Block b1, Block b2)
 		{
 			Branch br = b2.Statements.Last.Instruction as Branch;

@@ -299,7 +299,6 @@
     <Compile Include="Structure\DerivedSequenceBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\CaseFinder.cs" />
     <Compile Include="Structure\IStructureAnalysis.cs" />
     <Compile Include="Structure\ProcedureStructure.cs" />
     <Compile Include="Structure\CompoundConditionCoalescer.cs">
@@ -314,19 +313,12 @@
     <Compile Include="Structure\IntervalBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\Loop.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Structure\LoopFinderOld.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\ProcedureStructureBuilder.cs" />
     <Compile Include="Structure\LoopFinder.cs" />
-    <Compile Include="Structure\ProcedureStructurer.cs" />
+    <Compile Include="Structure\StructureAnalysis.cs" />
     <Compile Include="Structure\Region.cs" />
     <Compile Include="Structure\RegionFactory.cs" />
     <Compile Include="Structure\ReverseGraph.cs" />
-    <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
     <Compile Include="Typing\ConstantPointerTraversal.cs" />
     <Compile Include="Typing\ExpressionTypeAscender.cs" />
     <Compile Include="Typing\ExpressionTypeDescender.cs" />

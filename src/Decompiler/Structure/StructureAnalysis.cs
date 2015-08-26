@@ -40,7 +40,7 @@ namespace Reko.Structure.Schwartz
     ///  Native x86 Decompilation using Semantics-Preserving Structural Analysis
     ///  and Iterative Control-Flow Structuring.
     /// </remarks>
-    public class ProcedureStructurer : IStructureAnalysis
+    public class StructureAnalysis : IStructureAnalysis
     {
         private Procedure proc;
         private DirectedGraph<Region> regionGraph;
@@ -51,7 +51,7 @@ namespace Reko.Structure.Schwartz
         private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
         private Queue<Region> tailRegions;
 
-        public ProcedureStructurer(Procedure proc)
+        public StructureAnalysis(Procedure proc)
         {
             this.proc = proc;
         }

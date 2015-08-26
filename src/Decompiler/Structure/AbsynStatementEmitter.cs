@@ -82,39 +82,10 @@ namespace Reko.Structure
             stms.Add(new AbsynReturn(expr));
         }
 
-        [Obsolete("", true)]
-        public void EmitLabel(StructureNode node)
-        {
-            stms.Add(new AbsynLabel(node.Block.Name));
-        }
-
-        [Obsolete("", true)]
-        public void EmitForever(StructureNode node, List<AbsynStatement> body)
-        {
-            AbsynWhile whileStm = new AbsynWhile(Constant.True(), body);
-            stms.Add(whileStm);
-        }
-
         public void EmitDoWhile(List<AbsynStatement> body, Expression expr)
         {
             AbsynDoWhile doWhile = new AbsynDoWhile(body, expr);
             stms.Add(doWhile);
-        }
-
-        [Obsolete("", true)]
-        public void EmitWhile(StructureNode node, Expression expr, List<AbsynStatement> body)
-        {
-            if (node.Then == node.Loop.Follow)
-                expr = expr.Invert();
-            stms.Add(new AbsynWhile(expr, body));
-        }
-
-        [Obsolete("", true)]
-        public AbsynSwitch EmitSwitch(StructureNode node, Expression exp, List<AbsynStatement> stmts)
-        {
-            AbsynSwitch switchStm = new AbsynSwitch(exp, stmts);
-            stms.Add(switchStm);
-            return switchStm;
         }
 
         public bool StripDeclarations { get; set; }

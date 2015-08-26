@@ -189,19 +189,13 @@ namespace Reko.Structure
 
         public bool IsLatchNode()
         {
-            return (Loop != null && Loop.Latch == this);
+            throw new NotImplementedException();
         }
 
         public bool IsLoopHeader()
         {
-            return Loop != null && Loop.Header == this;
+            throw new NotImplementedException();
         }
-
-
-        ///<summary>
-        ///The innermost loop this node belongs to.
-        ///</summary>
-        public Loop Loop { get; set; } 
 
         public virtual string Name
         {
