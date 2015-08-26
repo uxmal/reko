@@ -44,6 +44,7 @@ namespace Reko.Structure.Schwartz
     {
         private Procedure proc;
         private DirectedGraph<Region> regionGraph;
+        private Region entry;
         private DominatorGraph<Region> doms;
         private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
@@ -92,7 +93,7 @@ namespace Reko.Structure.Schwartz
         {
             var result = BuildRegionGraph(proc);
             this.regionGraph = result.Item1;
-            var entry = result.Item2;
+            this.entry = result.Item2;
             int oldCount;
             int newCount;
             DumpGraph();
@@ -263,12 +264,13 @@ conditions to be inverses.
                 RefineLoop(cycle.Item1, cycle.Item2);
                 return true;
             }
-            foreach (var n in regionGraph.Nodes.ToList())
+            var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
+            foreach (var n in postOrder)
             {
                 if (CoalesceTailRegion(n, regionGraph.Nodes))
                     return true;
             }
-            foreach (var n in regionGraph.Nodes.ToList())
+            foreach (var n in postOrder)
             {
                 if (LastResort(n))
                     return true;
