@@ -100,7 +100,6 @@ namespace Reko.Structure.Schwartz
             {
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
-                this.postDoms = BuildPostDoms();
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
                 this.tailRegions = new Queue<Region>();
@@ -177,14 +176,17 @@ namespace Reko.Structure.Schwartz
             {
                 if (b.Pred.Count == 0 && b != proc.EntryBlock)
                     continue;
+                Region from;
+                btor.TryGetValue(b, out from);
                 foreach (var s in b.Succ)
                 {
                     if (s == proc.ExitBlock)
                         continue;
-                    var from = btor[b];
                     var to = btor[s];
                     regs.AddEdge(from, to);
                 }
+                if (from != null && regs.Successors(from).Count == 0)
+                    from.Type = RegionType.Tail;
             }
             return new Tuple<DirectedGraph<Region>, Region>(regs, btor[proc.EntryBlock]);
         }
@@ -471,6 +473,7 @@ all other cases, together they constitute a Switch[].
         /// </summary>
         private Region FindIrregularSwitchFollowRegion(Region n)
         {
+            this.postDoms = BuildPostDoms();
             var immPDom = this.postDoms.ImmediateDominator(n);
             var caseNodes = regionGraph.Successors(n).ToHashSet();
             if (caseNodes.Any(s => regionGraph.Successors(s).Contains(immPDom)))
@@ -1184,25 +1187,48 @@ refinement on the loop body, which we describe below.
         /// </summary>
         private bool LastResort(Region n)
         {
-            var vEdges = new List<VirtualEdge>();
+            VirtualEdge vEdge = null;
 
             foreach (var s in regionGraph.Successors(n))
             {
-                if (!doms.DominatesStrictly(n, s))
-                    vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
+                if (!doms.DominatesStrictly(n, s) && 
+                    !doms.DominatesStrictly(s, n))
+                {
+                    vEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
+                    break;
+                }
             }
-            foreach (var p in regionGraph.Predecessors(n))
+            if (vEdge == null)
             {
-                if (!doms.DominatesStrictly(p, n))
-                    vEdges.Add(new VirtualEdge(p, n, VirtualEdgeType.Goto));
+                foreach (var s in regionGraph.Successors(n))
+                {
+                    if (!doms.DominatesStrictly(n, s))
+                    {
+                        vEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
+                        break;
+                    }
+                }
             }
-            foreach (var vEdge in vEdges)
+            if (vEdge == null)
+            {
+                foreach (var p in regionGraph.Predecessors(n))
+                {
+                    if (!doms.DominatesStrictly(p, n))
+                    {
+                        vEdge = new VirtualEdge(p, n, VirtualEdgeType.Goto);
+                        break;
+                    }
+                }
+            }
+            if (vEdge != null)
             {
                 VirtualizeEdge(vEdge);
-            }
-            if (vEdges.Count > 0)
                 return true;
+            }
+            else 
+            {
             return false;
+            }
         }
 
         public class VirtualEdge

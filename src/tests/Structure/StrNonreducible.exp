@@ -1,0 +1,39 @@
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word16 ax, selector ds)
+fn0C00_0000_entry:
+	branch ax != 0x0000 l0C00_000A
+	goto l0C00_0005
+	// succ:  l0C00_0005 l0C00_000A
+l0C00_0000:
+l0C00_0005:
+	ax = ax - 0x0003 >> 0x0001
+	// succ:  l0C00_000A
+l0C00_000A:
+	word16 ax_10 = (word16) (ax *s ax)
+	ax = ax_10
+	branch ax_10 != 0x0000 l0C00_0005
+	// succ:  l0C00_0011 l0C00_0005
+l0C00_0011:
+	Mem17[ds:0x0200:word16] = ax_10
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+void fn0C00_0000(word16 ax, selector ds)
+{
+	if (ax == 0x0000)
+	{
+l0C00_0005:
+		ax = ax - 0x0003 >> 0x0001;
+	}
+	word16 ax_10 = (word16) (ax *s ax);
+	ax = ax_10;
+	if (ax_10 == 0x0000)
+	{
+		Mem17[ds:0x0200:word16] = ax_10;
+		return;
+	}
+	goto l0C00_0005;
+}
+===========================

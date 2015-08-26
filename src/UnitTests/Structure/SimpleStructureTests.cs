@@ -210,14 +210,12 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("spins forever")]
         public void StrReg00006()
         {
             RunTest32("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
         }
 
         [Test]
-        [Ignore("spins forever")]
         public void StrNonreducible()
         {
             RunTest("Fragments/nonreducible.asm", "Structure/StrNonreducible.txt");
@@ -242,7 +240,6 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("Fails for unknown reason in DominatorGraph.Build.")]
         public void StrReg00013()
         {
             RunTest("Fragments/regressions/r00013.asm", "Structure/StrReg00013.txt");
