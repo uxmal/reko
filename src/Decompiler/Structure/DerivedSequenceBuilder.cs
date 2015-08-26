@@ -30,6 +30,7 @@ namespace Reko.Structure
     /// Builds the derived graph sequence. At each step, the intervals of the graph are found. A new graph is then
     /// built, where the vertices are the intervals and the edges consist of transitions between different intervals.
     /// </summary>
+    [Obsolete("", true)]
     public class DerivedSequenceBuilder
     {
         private List<DerivedGraph> graphs;
@@ -92,6 +93,7 @@ namespace Reko.Structure
     /// <summary>
     /// Wraps the graph of StructureNodes in an interface so generic algorithms can use it.
     /// </summary>
+    [Obsolete("", true)]
     public class StructureGraphAdapter : DirectedGraph<StructureNode>
     {
         private ICollection<StructureNode> nodes;

@@ -32,6 +32,7 @@ using System.Text;
 namespace Reko.UnitTests.Structure
 {
     [TestFixture]
+    [Obsolete("", true)]
     public class LoopFinderTests : StructureTestBase
     {
         private ProcedureStructure proc;
@@ -47,7 +48,7 @@ namespace Reko.UnitTests.Structure
             Interval i = proc.DerivedGraphs[0].Intervals[1];
             Assert.AreEqual("LoopHead", i.Header.Name);
 
-            LoopFinder lf = new LoopFinder(proc.Ordering[6], proc.Ordering[2], proc.Ordering);
+            LoopFinderOld lf = new LoopFinderOld(proc.Ordering[6], proc.Ordering[2], proc.Ordering);
             var loopNodes = lf.FindNodesInLoop(i.FindIntervalNodes(0));
             Assert.AreEqual(3, loopNodes.Count);
         }
@@ -77,7 +78,7 @@ namespace Reko.UnitTests.Structure
             psb.AnalyzeGraph();
 
             proc.Dump();
-            var lf = new LoopFinder(proc.Ordering[23], proc.Ordering[0], proc.Ordering);
+            var lf = new LoopFinderOld(proc.Ordering[23], proc.Ordering[0], proc.Ordering);
             var intervalNodes = proc.Nodes[23].Interval.FindIntervalNodes(0);
             var loopNodes = lf.FindNodesInLoop(intervalNodes);
             proc.Dump();

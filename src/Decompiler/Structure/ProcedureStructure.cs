@@ -31,6 +31,7 @@ using System.Text;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     public abstract class GraphNode<T>
     {
         private List<T> inEdges;				// pointers to the nodes on an in edge to this node
@@ -49,6 +50,7 @@ namespace Reko.Structure
     /// <summary>
     /// Collects structure-related data associated with a Procedure.
     /// </summary>
+    [Obsolete("", true)]
     public class ProcedureStructure
     {
         private List<StructureNode> ordering;

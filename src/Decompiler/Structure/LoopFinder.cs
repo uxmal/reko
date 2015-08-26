@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,262 +18,121 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Absyn;
-using Reko.Core.Code;
 using Reko.Core.Lib;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 namespace Reko.Structure
 {
-    /// <summary>
-    /// Given an interval and its constituent nodes, finds a strongly connected component 
-    /// entirely within the interval. That SCC is a loop.
-    /// </summary>
-    public class SccLoopFinder
+    public enum NodeColor
     {
-        private Interval interval;
-        private HashSet<StructureNode> intervalNodes;
-        private HashSet<StructureNode> loopNodeSet;
-
-        public SccLoopFinder(Interval i, HashSet<StructureNode> nodesInInterval)
-        {
-            this.interval = i;
-            this.intervalNodes = nodesInInterval;
-        }
-
-        public HashSet<StructureNode> FindLoop()
-        {
-            loopNodeSet = new HashSet<StructureNode>();
-            var f = new SccFinder<StructureNode>(new GraphAdapter(this), x => {}, ProcessScc);
-            f.Find(interval.Header);
-            return loopNodeSet;
-        }
-
-        private class GraphAdapter : DirectedGraph<StructureNode>
-        {
-            private SccLoopFinder slf;
-
-            public GraphAdapter(SccLoopFinder slf)
-            {
-                this.slf = slf;
-            }
-
-            #region DirectedGraph<StructureNode> Members
-
-            public ICollection<StructureNode> Predecessors(StructureNode node)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ICollection<StructureNode> Successors(StructureNode node)
-            {
-                var succ = new List<StructureNode>();
-                foreach (StructureNode s in node.OutEdges)
-                {
-                    if (slf.IsNodeInInterval(s))
-                        succ.Add(s);
-                }
-                return succ;
-            }
-
-            public ICollection<StructureNode> Nodes
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public void AddEdge(StructureNode nodeFrom, StructureNode nodeTo)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void RemoveEdge(StructureNode nodeFrom, StructureNode nodeTo)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ContainsEdge(StructureNode nodeFrom, StructureNode nodeTo)
-            {
-                throw new NotImplementedException();
-            }
-
-            #endregion
-        }
-
-        private bool IsNodeInInterval(StructureNode s)
-        {
-            return intervalNodes.Contains(s);
-        }
-
-        private void ProcessScc(IList<StructureNode> scc)
-        {
-            if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
-            {
-                // Dump(scc);
-                loopNodeSet.UnionWith(scc);
-            }
-        }
-
-        [Conditional("DEBUG")]
-        private void Dump(ICollection<StructureNode> scc)
-        {
-            Dump(scc, Console.Out);
-        }
-
-        [Conditional("DEBUG")]
-        private void Dump(ICollection<StructureNode> scc, TextWriter writer)
-        {
-            writer.WriteLine("===");
-            writer.Write("scc nodes:");
-            foreach (StructureNode s in scc)
-            {
-                writer.Write(" {0} ", s.Name);
-            }
-            writer.WriteLine();
-            writer.Write("accumulated loop nodes:");
-            foreach (StructureNode s in loopNodeSet)
-            {
-                writer.Write(" {0} ", s.Name);
-            }
-            writer.WriteLine();
-        }
-
-        private bool IsSelfLoop(StructureNode node)
-        {
-            return node.OutEdges.Contains(node);
-        }
+        Gray,
+        Black
     }
 
     /// <summary>
-    /// Resolves the loop structure of an interval into its respective loop type (while, do/while)
+    /// This class finds all nodes on the paths from a given node to itself
+    /// ending with a back edge to the given node. All the discovered nodes
+    /// are expected to belong to the loop with the given node being its entry.
     /// </summary>
-    public class LoopFinder
+    public partial class LoopFinder<T> where T : class
     {
-        private StructureNode header;
-        private StructureNode latch;
-        private List<StructureNode> order;
+        private DirectedGraph<T> graph;
+        private T entry;
+        private Dictionary<T, NodeColor> nodeColor;
+        private ISet<T> loopNodes;
 
-        public LoopFinder(StructureNode header, StructureNode latch, List<StructureNode> order)
+        public LoopFinder(DirectedGraph<T> graph, T entry, DominatorGraph<T> doms)
         {
-            if (latch == null)
-                throw new InvalidOperationException("A loop must have a latch node.");
+            this.graph = graph;
+            this.entry = entry;
+            this.loopNodes = new HashSet<T>();
+            this.nodeColor = new Dictionary<T, NodeColor>();
+            
+            Debug.Assert(entry != null);
 
-            this.header = header;
-            this.latch = latch;
-            this.order = order;
-        }
-
-        public Loop DetermineLoopType(HashSet<StructureNode> loopNodes)
-        {
-            // if the latch node is a two way node then this must be a post tested loop
-            if (latch.BlockType == BlockTerminationType.Branch)
+            // Find all nodes that can be reached from the back-edge
+            // predecessors by reversed edges and paint them gray.
+            foreach (var p in graph.Predecessors(entry))
             {
-                header.Loop = CreatePostTestedLoop(loopNodes);
-            }
-            // otherwise it is either a pretested or endless loop
-            else if (header.BlockType == BlockTerminationType.Branch)
-            {
-                if (loopNodes.Contains(header.OutEdges[0]) && !loopNodes.Contains(header.OutEdges[1]))
-                    header.Loop = CreatePreTestedLoop(loopNodes);
-                else if (loopNodes.Contains(header.OutEdges[1]) && !loopNodes.Contains(header.OutEdges[0]))
-                    header.Loop = CreatePreTestedLoop(loopNodes);
-                else
-                    header.Loop = CreateTestlessLoop(loopNodes);
-            }
-            // both the header and latch node are one way nodes so this must be an endless loop
-            else
-            {
-                header.Loop = CreateTestlessLoop(loopNodes);
-            }
-            header.Loop.TagNodes(loopNodes);
-            return header.Loop;
-        }
-
-        private TestlessLoop CreateTestlessLoop(HashSet<StructureNode> loopNodes)
-        {
-            var follow = FindEndLessFollowNode(header, latch, loopNodes);
-            return new TestlessLoop(header, latch, loopNodes, follow);
-        }
-
-        private PreTestedLoop CreatePreTestedLoop(HashSet<StructureNode> loopNodes)
-        {
-            var follow = FindPreTestedFollowNode(header, loopNodes);
-            return new PreTestedLoop(header, latch, loopNodes, follow);
-        }
-
-        private PostTestedLoop CreatePostTestedLoop(HashSet<StructureNode> loopNodes)
-        {
-            var follow = FindPostTestedFollowNode(header, latch);
-            return new PostTestedLoop(header, latch, loopNodes, follow);
-        }
-
-        private StructureNode FindEndLessFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
-        {
-            StructureNode follow = null;
-            // traverse the ordering array between the header and latch nodes.
-            for (int i = header.Order - 1; i > latch.Order; i--)
-            {
-                // using intervals, the follow is determined to be the child outside the loop of a
-                // 2 way conditional header that is inside the loop such that it (the child) has
-                // the highest order of all potential follows
-                StructureNode desc = order[i];
-
-                if (desc.Conditional != null && desc.Conditional is Case && loopNodes.Contains(desc))
+                if (doms.DominatesStrictly(entry, p))
                 {
-                    for (int j = 0; j < desc.OutEdges.Count; j++)
+                    // Back edge!
+                    if (!nodeColor.ContainsKey(p))
                     {
-                        StructureNode succ = desc.OutEdges[j];
-
-                        // consider the current child 
-                        if (succ != header && !loopNodes.Contains(succ) && (follow == null || succ.Order > follow.Order))
-                            follow = succ;
+                        // Unvisited back edge!
+                        BackwardVisit(p);
                     }
+                } 
+                else if (p == entry)
+                {
+                    // Self-loop.
+                    loopNodes.Add(p);
                 }
             }
-            return follow;
+
+            // Find all gray nodes that can be visited from the suspected
+            // loop entry and color them black. Black nodes belong
+            // to the loop.
+            NodeColor color;
+            if (nodeColor.TryGetValue(entry, out color) &&
+                color == NodeColor.Gray)
+            {
+                ForwardVisit(entry);
+            }
         }
 
+        public ISet<T> LoopNodes { get { return loopNodes; } }
 
         /// <summary>
-        /// Finds the follow node of a post tested ('repeat') loop. This is the node on the end of the
-        /// non-back edge from the latch node
+        /// Visits given node and, if the node is not entry, recursively
+        /// visits all its unvisited predecessors. All the visited nodes are
+        /// painted Gray.
         /// </summary>
-        /// <param name="header"></param>
-        /// <param name="latch"></param>
-        /// <returns>The follow node</returns>
-        private StructureNode FindPostTestedFollowNode(StructureNode header, StructureNode latch)
+        /// <param name="node">Reference to an unvisited node.</param>
+        void BackwardVisit(T node)
         {
-            if (latch.OutEdges[0] == header)
-                return latch.OutEdges[1];
-            else
-                return latch.OutEdges[0];
+            Debug.Assert(node != null);
+            Debug.Assert(!nodeColor.ContainsKey(node));
+
+            nodeColor[node] = NodeColor.Gray;
+
+            if (node.Equals(entry))
+            {
+                return;
+            }
+
+            foreach (var  p in graph.Predecessors(node))
+            {
+                if (!nodeColor.ContainsKey(p))
+                {
+                    BackwardVisit(p);
+                }
+            }
         }
 
         /// <summary>
-        /// The follow node of a pre-test ('while') loop is the child that is the loop header's 
-        /// conditional follow.
+        /// Visits given node and recursively visits all its GRAY successors.
+        /// All the visited nodes are painted Black.
         /// </summary>
-        /// <param name="header"></param>
-        /// <returns></returns>
-        private StructureNode FindPreTestedFollowNode(StructureNode header, HashSet<StructureNode> loopBlocks)
+        /// <param name="node">Reference to a Gray node.</param> 
+        void ForwardVisit(T node)
         {
-            if (header.OutEdges[0] == header.Conditional.Follow)
-                return header.OutEdges[0];
-            else if (header.OutEdges[1] == header.Conditional.Follow)
-                return header.OutEdges[1];
-            else if (loopBlocks.Contains(header.OutEdges[0]))
-                return header.OutEdges[1];
-            else
-                return header.OutEdges[0];
-        }
+            Debug.Assert(node != null);
+            Debug.Assert(nodeColor[node] == NodeColor.Gray);
 
-        public HashSet<StructureNode> FindNodesInLoop(HashSet<StructureNode> intNodes)
-        {
-            var finder = new SccLoopFinder(header.Interval, intNodes);
-            return finder.FindLoop();
+            nodeColor[node] = NodeColor.Black;
+            loopNodes.Add(node);
+
+            foreach (var s in graph.Successors(node))
+            {
+                NodeColor color;
+                if (nodeColor.TryGetValue(s, out color) &&
+                    color == NodeColor.Gray)
+                {
+                    ForwardVisit(s);
+                }
+            }
         }
     }
 }

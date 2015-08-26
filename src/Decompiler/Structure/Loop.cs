@@ -31,6 +31,7 @@ namespace Reko.Structure
     /// <summary>
     /// A loop is described by its header, its latch node, its members, and a follow node.
     /// </summary>
+    [Obsolete("", true)]
     public abstract class Loop
     {
         public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
@@ -95,6 +96,7 @@ namespace Reko.Structure
     /// <summary>
     /// Pre-tested loops correspond to 'while' loops.
     /// </summary>
+    [Obsolete("", true)]
     public class PreTestedLoop : Loop
     {
         public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
@@ -121,6 +123,7 @@ namespace Reko.Structure
     /// <summary>
     /// Post-tested loops correspond to do/while or repeat/until loops.
     /// </summary>
+    [Obsolete("", true)]
     public class PostTestedLoop : Loop
     {
         public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
@@ -158,6 +161,7 @@ namespace Reko.Structure
     /// Testless loops don't have an exit in their header nor their latch node.
     /// Either exits need to be modelled with a break/goto/return (in C) or the loop is infinite.
     /// </summary>
+    [Obsolete("", true)]
     public class TestlessLoop : Loop
     {
         public TestlessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)

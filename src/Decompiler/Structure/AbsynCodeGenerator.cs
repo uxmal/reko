@@ -32,6 +32,7 @@ namespace Reko.Structure
     /// <summary>
     /// Generates Abstract syntax trees of high-level statements from the given StructureNodes. 
     /// </summary>
+    [Obsolete("", true)]
     public class AbsynCodeGenerator
     {
         private Stack<StructureNode> followStack;

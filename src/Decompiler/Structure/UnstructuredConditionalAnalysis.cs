@@ -25,6 +25,7 @@ using System.Text;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     public class UnstructuredConditionalAnalysis
     {
         private ProcedureStructure curProc;

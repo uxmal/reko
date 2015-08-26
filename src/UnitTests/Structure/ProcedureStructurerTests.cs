@@ -25,7 +25,7 @@ using NUnit.Framework;
 using System.Diagnostics;
 using System.IO;
 
-namespace Reko.UnitTests.Structure.Schwartz
+namespace Reko.UnitTests.Structure
 {
     [TestFixture]
     public class ProcedureStructurerTests
@@ -298,6 +298,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Goto("head");
 
             m.Label("done");
+            m.Assign(r2, r1);
             m.Return(r2);
 
             var sExp =
@@ -309,6 +310,7 @@ namespace Reko.UnitTests.Structure.Schwartz
         r1 = r1 + 0x04;
         r2 = r2 + 0x04;
     }
+    r2 = r1;
     return r2;
 ";
             RunTest(sExp, m.Procedure);
@@ -337,6 +339,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Goto("head");
 
             m.Label("done");
+            m.Assign(r2, r1);
             m.Return(r2);
 
             var sExp =
@@ -351,6 +354,7 @@ namespace Reko.UnitTests.Structure.Schwartz
         r1 = r1 + 0x04;
         r2 = r2 + 0x04;
     }
+    r2 = r1;
     return r2;
 ";
             RunTest(sExp, m.Procedure);
@@ -383,6 +387,7 @@ namespace Reko.UnitTests.Structure.Schwartz
             m.Assign(r2, -1);
 
             m.Label("end_fn");
+            m.Assign(r2, r1);
             m.Return(r2);
 
             var sExp =
@@ -399,6 +404,7 @@ namespace Reko.UnitTests.Structure.Schwartz
     }
     r2 = ~0x00;
 end_fn:
+    r2 = r1;
     return r2;
 ";
             RunTest(sExp, m.Procedure);

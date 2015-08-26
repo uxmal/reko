@@ -31,6 +31,7 @@ using System.IO;
 namespace Reko.UnitTests.Structure
 {
     [TestFixture]
+    [Obsolete("", true)]
     public class PostDominatorGraphTests
     {
         private ProcedureStructure h;

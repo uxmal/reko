@@ -317,15 +317,15 @@
     <Compile Include="Structure\Loop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\LoopFinder.cs">
+    <Compile Include="Structure\LoopFinderOld.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\ProcedureStructureBuilder.cs" />
-    <Compile Include="Structure\Schwartz\LoopFinder.cs" />
-    <Compile Include="Structure\Schwartz\ProcedureStructurer.cs" />
-    <Compile Include="Structure\Schwartz\Region.cs" />
-    <Compile Include="Structure\Schwartz\RegionFactory.cs" />
-    <Compile Include="Structure\Schwartz\ReverseGraph.cs" />
+    <Compile Include="Structure\LoopFinder.cs" />
+    <Compile Include="Structure\ProcedureStructurer.cs" />
+    <Compile Include="Structure\Region.cs" />
+    <Compile Include="Structure\RegionFactory.cs" />
+    <Compile Include="Structure\ReverseGraph.cs" />
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -446,5 +446,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Structure\Schwartz\" />
+  </ItemGroup>
 </Project>

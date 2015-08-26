@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Structure.Schwartz
+namespace Reko.Structure
 {
     public class Region
     {

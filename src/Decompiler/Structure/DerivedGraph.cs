@@ -26,6 +26,7 @@ using System.Text;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     public class DerivedGraph
     {
         public DerivedGraph(DirectedGraph<StructureNode> graph, StructureNode entry, List<Interval> intervals)

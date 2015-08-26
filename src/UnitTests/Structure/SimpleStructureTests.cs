@@ -301,12 +301,11 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 		{
 			word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32];
 			if (dwArg08 >=u ecx_56 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
-				goto l0010004D;
+				return eax_24;
 			edx_21 = edx_21 + 0x00000001;
 			eax_24 = eax_24 + 0x00000028;
 		} while (edx_21 <u esi_20);
 	eax_24 = 0x00000000;
-l0010004D:
 	return eax_24;
 }
 ===

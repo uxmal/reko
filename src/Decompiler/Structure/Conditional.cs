@@ -28,6 +28,7 @@ using System.Text;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     public abstract class Conditional
     {
         private StructureNode follow;
@@ -45,6 +46,7 @@ namespace Reko.Structure
         public abstract void GenerateCode(AbsynCodeGenerator codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter);
     }
 
+    [Obsolete("", true)]
     public abstract class IfConditional : Conditional
     {
         public IfConditional(StructureNode follow) : base(follow) { } 
@@ -103,6 +105,7 @@ namespace Reko.Structure
             }
         }
 
+        [Obsolete("", true)]
         private AbsynIf EmitIfCondition(Expression exp, Conditional cond, AbsynStatementEmitter emitter)
         {
             if (cond is IfElse || cond is IfThenElse)
@@ -116,6 +119,7 @@ namespace Reko.Structure
             return ifStm;
         }
 
+    [Obsolete("", true)]
 
         private bool HasSingleIfThenElseStatement(List<AbsynStatement> stms)
         {
@@ -132,6 +136,7 @@ namespace Reko.Structure
 
     }
 
+    [Obsolete("", true)]
     public class IfThen : IfConditional
     {
         public IfThen(StructureNode follow) : base(follow) { } 
@@ -147,6 +152,7 @@ namespace Reko.Structure
         }
     }
 
+    [Obsolete("", true)]
     public class IfElse : IfConditional
     {
         public IfElse(StructureNode follow) : base(follow) { } 
@@ -163,6 +169,7 @@ namespace Reko.Structure
 
     }
 
+    [Obsolete("", true)]
     public class IfThenElse : IfConditional
     {
         public IfThenElse(StructureNode follow) : base(follow) { } 
@@ -178,6 +185,7 @@ namespace Reko.Structure
         }
     }
 
+    [Obsolete("", true)]
     public class Case : Conditional
     {
         public Case(StructureNode follow) : base(follow) { }

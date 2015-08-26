@@ -27,6 +27,7 @@ using System.IO;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     public class IntervalBuilder
     {
         private int intervalID = 0;

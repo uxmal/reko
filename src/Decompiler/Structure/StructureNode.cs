@@ -28,6 +28,7 @@ using System.Collections.Generic;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     internal enum travType
     {
         UNTRAVERSED,
@@ -36,6 +37,7 @@ namespace Reko.Structure
         DFS_RNUM,
     }
 
+    [Obsolete("", true)]
     public class StructureNode : GraphNode<StructureNode>
     {
         internal travType traversed;          //$REFACTOR: use visited hashtables instead.

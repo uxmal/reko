@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Structure.Schwartz
+namespace Reko.Structure
 {
     public class RegionFactory : InstructionVisitor<AbsynStatement>
     {

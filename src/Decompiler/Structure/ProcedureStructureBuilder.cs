@@ -27,6 +27,7 @@ using System.Text;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     public class ProcedureStructureBuilder
     {
         private Procedure proc;
@@ -235,13 +236,13 @@ namespace Reko.Structure
         public ICollection<StructureNode> FindInfiniteLoops(DirectedGraph<StructureNode> graph, StructureNode entry)
         {
             List<StructureNode> infiniteLoopHeaders = new List<StructureNode>();
-            SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, delegate(IList<StructureNode> scc)
+            SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, (scc)=>
             {
                 if (!IsInfiniteLoop(graph, scc))
                     return;
 
                 var header = FindNodeWithHighestPostOrderNumber(scc);
-                foreach (StructureNode tail in graph.Predecessors(header))
+                foreach (var tail in graph.Predecessors(header))
                 {
                     if (scc.Contains(tail))
                     {

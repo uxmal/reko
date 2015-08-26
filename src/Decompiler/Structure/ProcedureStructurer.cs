@@ -179,17 +179,46 @@ namespace Reko.Structure.Schwartz
                     continue;
                 Region from;
                 btor.TryGetValue(b, out from);
+                int index = 0;
                 foreach (var s in b.Succ)
                 {
                     if (s == proc.ExitBlock)
                         continue;
                     var to = btor[s];
-                    regs.AddEdge(from, to);
+                    CreateEdge(regs, from, to, index);
+                    ++index;
                 }
-                if (from != null && regs.Successors(from).Count == 0)
-                    from.Type = RegionType.Tail;
+                if (from != null)
+                {
+                    if (regs.Successors(from).Count == 0)
+                        from.Type = RegionType.Tail;
+                }
+            }
+
+            foreach (var reg in regs.Nodes.ToList())
+            {
+                if (regs.Predecessors(reg).Count == 0 && reg != btor[proc.EntryBlock])
+                {
+                    regs.Nodes.Remove(reg);
+                }
             }
             return new Tuple<DirectedGraph<Region>, Region>(regs, btor[proc.EntryBlock]);
+        }
+
+        private void CreateEdge(DirectedGraph<Region> regs, Region from, Region to, int index)
+        {
+            //AbsynReturn ret;
+            //if (to.Statements.Count == 1 && to.Statements[0].As<AbsynReturn>(out ret))
+            //{
+            //    if (from.Type == RegionType.Linear)
+            //    {
+            //        var e = ret.Value != null ? ret.Value.CloneExpression() : null;
+            //        from.Statements.Add(new AbsynReturn(e));
+            //        from.Type = RegionType.Tail;
+            //        return;
+            //    } 
+            //}
+            regs.AddEdge(from, to);
         }
 
         private bool IsCyclic(Region n)
@@ -672,23 +701,37 @@ doing future pattern matches.
         /// <param name="to"></param>
         public void VirtualizeEdge(VirtualEdge vEdge)
         {
+            AbsynReturn ret;
             AbsynStatement stm;
-            switch (vEdge.Type)
+            if (vEdge.To.Statements.Count > 0 && vEdge.To.Statements[0].As<AbsynReturn>(out ret))
             {
-            case VirtualEdgeType.Continue: stm = new AbsynContinue(); break;
-            case VirtualEdgeType.Break: stm = new AbsynBreak(); break;
-            case VirtualEdgeType.Goto:
-                stm = new AbsynGoto(vEdge.To.Block.Name);
-                if (vEdge.To.Statements.Count > 0 && !(vEdge.To.Statements[0] is AbsynLabel))
+                // Goto to a return statement => just a return statement.
+                Expression v = ret.Value != null ? ret.Value.CloneExpression() : null;
+                stm = new AbsynReturn(v);
+            }
+            else
+            {
+                switch (vEdge.Type)
                 {
-                    vEdge.To.Statements.Insert(0, new AbsynLabel(vEdge.To.Block.Name));
+                case VirtualEdgeType.Continue: stm = new AbsynContinue(); break;
+                case VirtualEdgeType.Break: stm = new AbsynBreak(); break;
+                case VirtualEdgeType.Goto:
+                    stm = new AbsynGoto(vEdge.To.Block.Name);
+                    if (vEdge.To.Statements.Count > 0 && !(vEdge.To.Statements[0] is AbsynLabel))
+                    {
+                        vEdge.To.Statements.Insert(0, new AbsynLabel(vEdge.To.Block.Name));
+                    }
+                    break;
+                default:
+                    throw new InvalidOperationException();
                 }
-                break;
-            default:
-                throw new InvalidOperationException();
             }
             CollapseToTailRegion(vEdge.From, vEdge.To, stm);
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
+            if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
+            {
+                RemoveRegion(vEdge.To);
+            }
         }
 
         /// <summary>
@@ -1229,7 +1272,8 @@ refinement on the loop body, which we describe below.
             }
             else 
             {
-            return false;
+                // Whoa, we're in trouble now....
+                return false;
             }
         }
 

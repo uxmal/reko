@@ -31,6 +31,7 @@ namespace Reko.Structure
     /// as belonging to the case. If a node visited in this traversal is already with
     /// a case then it is left untouched. May become obsolete soon.
     ///</summary>
+    [Obsolete("", true)]
     public class CaseFinder
     {
         private StructureNode head;

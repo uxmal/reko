@@ -55,6 +55,7 @@ namespace Reko.Structure
             return ass;
         }
 
+        [Obsolete("", true)]
         public void EmitCaseLabel(StructureNode node, int i)
         {
             stms.Add(new AbsynCase(i));
@@ -70,6 +71,7 @@ namespace Reko.Structure
             stms.Add(new AbsynContinue());
         }
 
+        [Obsolete("", true)]
         public void EmitGoto(StructureNode dest)
         {
             stms.Add(new AbsynGoto(dest.Block.Name));
@@ -80,11 +82,13 @@ namespace Reko.Structure
             stms.Add(new AbsynReturn(expr));
         }
 
+        [Obsolete("", true)]
         public void EmitLabel(StructureNode node)
         {
             stms.Add(new AbsynLabel(node.Block.Name));
         }
 
+        [Obsolete("", true)]
         public void EmitForever(StructureNode node, List<AbsynStatement> body)
         {
             AbsynWhile whileStm = new AbsynWhile(Constant.True(), body);
@@ -97,6 +101,7 @@ namespace Reko.Structure
             stms.Add(doWhile);
         }
 
+        [Obsolete("", true)]
         public void EmitWhile(StructureNode node, Expression expr, List<AbsynStatement> body)
         {
             if (node.Then == node.Loop.Follow)
@@ -104,6 +109,7 @@ namespace Reko.Structure
             stms.Add(new AbsynWhile(expr, body));
         }
 
+        [Obsolete("", true)]
         public AbsynSwitch EmitSwitch(StructureNode node, Expression exp, List<AbsynStatement> stmts)
         {
             AbsynSwitch switchStm = new AbsynSwitch(exp, stmts);

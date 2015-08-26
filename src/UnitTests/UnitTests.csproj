@@ -423,21 +423,15 @@
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
-    <Compile Include="Structure\DerivedSequenceBuilderTests.cs" />
-    <Compile Include="Structure\IntervalBuilderTests.cs" />
-    <Compile Include="Structure\IntervalTests.cs" />
     <Compile Include="Structure\LoopFinderTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
     <Compile Include="Structure\MockCaseStatement.cs" />
     <Compile Include="Structure\MockInfiniteLoop.cs" />
     <Compile Include="Structure\MockWhileGoto.cs" />
     <Compile Include="Structure\MockWhileWithDeclarations.cs" />
-    <Compile Include="Structure\ProcHeaderTests.cs" />
-    <Compile Include="Structure\SccLoopFinderTests.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
-    <Compile Include="Structure\Schwartz\ProcedureStructurerTests.cs" />
-    <Compile Include="Structure\StructureNodeTests.cs" />
+    <Compile Include="Structure\ProcedureStructurerTests.cs" />
     <Compile Include="Structure\TestBase.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
@@ -620,6 +614,7 @@
   <ItemGroup>
     <Folder Include="Core\Machine\" />
     <Folder Include="Environments\Msdos\" />
+    <Folder Include="Structure\Schwartz\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

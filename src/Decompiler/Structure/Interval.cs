@@ -30,6 +30,7 @@ namespace Reko.Structure
     /// <summary>
     /// Represents an interval.
     /// </summary>
+    [Obsolete("", true)]
     public class Interval : StructureNode
     {
         private List<StructureNode> nodes = new List<StructureNode>();		// nodes of the interval
@@ -88,10 +89,10 @@ namespace Reko.Structure
             writer.Write("Interval {0}: [", Number);
             string sep = "";
             StructureNode[] ns = nodes.ToArray();
-            Array.Sort(ns, delegate(StructureNode a, StructureNode b)
-            {
-                return string.Compare(a.Name, b.Name);
-            });
+            //Array.Sort(ns, delegate(StructureNode a, StructureNode b)
+            //{
+            //    return string.Compare(a.Name, b.Name);
+            //});
             foreach (StructureNode node in ns)
             {
                 writer.Write(sep);

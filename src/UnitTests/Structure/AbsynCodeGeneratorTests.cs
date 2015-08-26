@@ -21,7 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Output;
-using Reko.Structure;
+using Reko.Structure.Schwartz;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Structure
     {
         private string nl = Environment.NewLine;
         private Procedure proc;
-        private ProcedureStructure curProc;
         private StringWriter sb;
 
         [SetUp]
@@ -46,24 +45,20 @@ namespace Reko.UnitTests.Structure
         private void CompileTest(ProcedureBuilder mock)
         {
             proc = mock.Procedure;
-            StructureAnalysis sa = new StructureAnalysis(mock.Procedure);
-            sa.BuildProcedureStructure();
-            sa.FindStructures();
-            curProc = sa.ProcedureStructure;
+            var sa = new ProcedureStructurer(mock.Procedure);
+            sa.Structure();
         }
 
         private void RunTest(string sExp)
         {
             try
             {
-                var acg = new AbsynCodeGenerator();
-                acg.GenerateCode(curProc, proc.Body);
                 GenCode(proc, sb);
                 Assert.AreEqual(sExp, sb.ToString());
             }
             catch
             {
-                curProc.Dump();
+                proc.Dump(true);
                 Console.WriteLine(sb.ToString());
                 throw;
             }

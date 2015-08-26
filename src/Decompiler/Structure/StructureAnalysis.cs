@@ -30,6 +30,7 @@ using System.IO;
 
 namespace Reko.Structure
 {
+    [Obsolete("", true)]
     public class StructureAnalysis : IStructureAnalysis
     {
         private Procedure proc;
@@ -195,7 +196,7 @@ namespace Reko.Structure
 //                latch.SetStructType(structType.Seq);
 
 
-            var lf = new LoopFinder(headNode, latch, curProc.Ordering);
+            var lf = new LoopFinderOld(headNode, latch, curProc.Ordering);
             var loopNodes = lf.FindNodesInLoop(intervalNodes);
             var loop = lf.DetermineLoopType(loopNodes);
         }

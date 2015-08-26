@@ -196,10 +196,7 @@ void fn100048B0(word32 ebx, word16 wArg04, word32 dwArg08, word32 dwArg0C, word3
 	word16 bp_139 = 0x0000;
 	word32 esp_140 = fp - 0x00000010;
 	if (Mem135[eax_136:word16] != 0x0000)
-	{
-l10004ADE:
 		return;
-	}
 	if (wArg04 <= 0x0000 || wArg04 > 0x0005)
 	{
 		Mem230[eax_136:word16] = 0x8A6C;
@@ -279,7 +276,7 @@ l10004AC1:
 				Mem223[esp_219 - 0x00000004:word32] = Mem220[ecx_218 + 0x000000D0:word32];
 				fn10004B1E(dwArg00, dwArg04);
 			}
-			goto l10004ADE;
+			return;
 		}
 	}
 	Mem254[eax_117 + 0x000000B6:word16] = Mem135[eax_136 + 0x00000004:word16];
