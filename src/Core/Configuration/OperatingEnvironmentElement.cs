@@ -88,6 +88,7 @@ namespace Reko.Core.Configuration
                 throw new TypeLoadException(
                     string.Format("Unable to load {0} environment.", Description));
             var platform = (Platform) Activator.CreateInstance(type, services, arch);
+            platform.Name = this.Name;
             platform.Description = this.Description;
             return platform;
         }

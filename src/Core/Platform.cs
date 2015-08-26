@@ -57,7 +57,7 @@ namespace Reko.Core
         public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
-
+        public string Name { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 
@@ -180,7 +180,6 @@ namespace Reko.Core
         {
             return null;
         }
-
     }
 
     /// <summary>

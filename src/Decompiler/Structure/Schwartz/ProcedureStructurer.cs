@@ -122,7 +122,7 @@ namespace Reko.Structure.Schwartz
                 }
 
                 newCount = regionGraph.Nodes.Count;
-                if (newCount == oldCount)
+                if (newCount == oldCount && newCount > 1)
                 {
 #if NYI
                     didReduce = false;
@@ -134,9 +134,8 @@ namespace Reko.Structure.Schwartz
                             break;
                     } 
 #endif
-                    // Didn't make any progress, try to trim away stray gotos.
-           //         if (!didReduce)
-                        ProcessUnresolvedRegions();
+                    // Didn't make any progress, try refining unstructured regions
+                    ProcessUnresolvedRegions();
                 }
             } while (regionGraph.Nodes.Count > 1);
             return entry;
@@ -262,11 +261,15 @@ conditions to be inverses.
                 RefineLoop(cycle.Item1, cycle.Item2);
                 return true;
             }
-            if (unresolvedNoncycles.Count != 0)
+            foreach (var n in regionGraph.Nodes.ToList())
             {
-                var acycle = unresolvedNoncycles.Dequeue();
-                LastResort(acycle.Item2);
-                return true;
+                if (CoalesceTailRegion(n, regionGraph.Nodes))
+                    return true;
+            }
+            foreach (var n in regionGraph.Nodes.ToList())
+            {
+                if (LastResort(n))
+                    return true;
             }
             return false;
         }
@@ -308,7 +311,7 @@ conditions to be inverses.
             }
             else if (elS != null && elS == thS)
             {
-                if (RefinePredecessor(n, th) | 
+                if (RefinePredecessor(n, th) |
                     RefinePredecessor(n, el))
                     return false;
 
@@ -326,7 +329,11 @@ conditions to be inverses.
                 return true;
             }
             else
+            {
+                if (RefinePredecessor(n, th))
+                    return false;
                 return false;
+            }
         }
 
         private bool ReduceSequence(Region n)
@@ -714,7 +721,6 @@ doing future pattern matches.
                 throw new NotImplementedException();
         }
 
-
 #if NILZ
 
 3.5
@@ -924,8 +930,12 @@ refinement on the loop body, which we describe below.
                 CoalesceTailRegions(lexicalNodes);
                 return true;
             }
-            LastResort(lexicalNodes);
-            return true;
+            foreach (var n in lexicalNodes)
+            {
+                if (LastResort(n))
+                    return true;
+            }
+            return false;
         }
 
         private void CoalesceTailRegions(ISet<Region> regions)
@@ -934,29 +944,53 @@ refinement on the loop body, which we describe below.
             {
                 if (!regionGraph.Nodes.Contains(n))
                     continue;
-                var succs = regionGraph.Successors(n).ToArray();
-                if (succs.Length == 2 && n.Type == RegionType.Condition)
+                CoalesceTailRegion(n, regions);
+            }
+        }
+
+        private bool CoalesceTailRegion(Region n, ICollection<Region> regions)
+        {
+            var succs = regionGraph.Successors(n).ToArray();
+            if (succs.Length == 2 && n.Type == RegionType.Condition)
+            {
+                var el = succs[0];
+                var th = succs[1];
+
+                if (succs[0].Type == RegionType.Tail && th.Type == RegionType.Tail &&
+                    SinglePredecessor(el) == n && SinglePredecessor(th) == n)
                 {
-                    Debug.Assert(succs[0].Type != RegionType.Tail || succs[1].Type  != RegionType.Tail,
-                        "Can both be tails?");
-                    if (succs[0].Type == RegionType.Tail && SinglePredecessor(succs[1]) == n)
-                    {
-                        var e = n.Expression.Invert();
-                        n.Statements.Add(new AbsynIf(e, succs[0].Statements));
-                        regionGraph.RemoveEdge(n, succs[0]);
-                        RemoveRegion(succs[0]);
-                        n.Type = RegionType.Linear;
-                    }
-                    if (succs[1].Type == RegionType.Tail && SinglePredecessor(succs[0]) == n)
-                    {
-                        var e = n.Expression;
-                        n.Statements.Add(new AbsynIf(e, succs[1].Statements));
-                        regionGraph.RemoveEdge(n, succs[1]);
-                        RemoveRegion(succs[1]);
-                        n.Type = RegionType.Linear;
-                    }
+                    // Both successors are tails.
+                    n.Statements.Add(new AbsynIf(n.Expression, th.Statements, el.Statements));
+                    regionGraph.RemoveEdge(n, el);
+                    regionGraph.RemoveEdge(n, th);
+                    RemoveRegion(el);
+                    RemoveRegion(th);
+                    n.Expression = null;
+                    n.Type = RegionType.Tail;
+                    return true;
+                }
+                if (regions.Contains(el) && el.Type == RegionType.Tail && SinglePredecessor(el) == n)
+                {
+                    var e = n.Expression.Invert();
+                    n.Statements.Add(new AbsynIf(e, el.Statements));
+                    regionGraph.RemoveEdge(n, el);
+                    RemoveRegion(el);
+                    n.Expression = null;
+                    n.Type = RegionType.Linear;
+                    return true;
+                }
+                if (regions.Contains(th) && th.Type == RegionType.Tail && SinglePredecessor(th) == n)
+                {
+                    var e = n.Expression;
+                    n.Statements.Add(new AbsynIf(e, th.Statements));
+                    regionGraph.RemoveEdge(n, th);
+                    RemoveRegion(th);
+                    n.Expression = null;
+                    n.Type = RegionType.Linear;
+                    return true;
                 }
             }
+            return false;
         }
 
         /// <summary>
@@ -1000,9 +1034,13 @@ refinement on the loop body, which we describe below.
                 // node of the 
                 Region follow = null;
                 if (!loopNodes.Contains(headSucc[0]))
+                {
                     follow = headSucc[0];
+                }
                 else if (!loopNodes.Contains(headSucc[1]))
+                {
                     follow = headSucc[1];
+                }
                 if (follow != null)
                 {
                     foreach (var latch in regionGraph.Predecessors(head))
@@ -1060,7 +1098,7 @@ refinement on the loop body, which we describe below.
                     wl.AddRange(regionGraph.Successors(item).Where(s => !lexNodes.Contains(s)));
                 }
             }
-            lexNodes.Remove(head);
+            //lexNodes.Remove(head);
             return lexNodes;
         }
 
@@ -1107,16 +1145,16 @@ refinement on the loop body, which we describe below.
                 var vEdges = new List<VirtualEdge>();
                 foreach (var s in regionGraph.Successors(n))
                 {
-                    if (!lexicalNodes.Contains(s))
+                    if (s == header)
                     {
-                        if (s == header)
+                        if (n != latch)
+                            vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Continue));
+                    }
+                    else if (!lexicalNodes.Contains(s))
+                    {
+                        if (s == follow)
                         {
-                            if (n != latch)
-                                vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Continue));
-                        }
-                        else if (s == follow)
-                        {
-                            if (n != latch)
+                            if (n != latch && n != header)
                                 vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Break));
                         }
                         else
@@ -1131,35 +1169,40 @@ refinement on the loop body, which we describe below.
             }
             return didVirtualize;
         }
-#if NILZ
-3.7 Last Resort Refinement
-If the algorithm does not collapse any nodes or perform any
-refinement during an iteration, Phoenix removes an edge in
-the graph to allow it to make progress. We call this process
-the last resort refinement, because it has the lowest priority,
-and always allows progress to be made. Last resort refine-
-ment prefers to remove edges whose source does not domi-
-nate its target, nor whose target dominates its source. These
-edges can be thought of as cutting across the dominator
-tree. By removing them, we leave edges that reflect more
-structure because they reflect a dominator relationship
-#endif
-        private void LastResort(IEnumerable<Region> nodes)
-        {
-            foreach (var n in nodes)
-            {
-                var vEdges = new List<VirtualEdge>();
 
-                foreach (var s in regionGraph.Successors(n))
-                {
-                    if (!doms.DominatesStrictly(n, s))
-                        vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
-                }
-                foreach (var vEdge in vEdges)
-                {
-                    VirtualizeEdge(vEdge);
-                }
+        /// <summary>
+        /// If the algorithm does not collapse any nodes or perform any
+        /// refinement during an iteration, we must an edge in
+        /// the graph to allow it to make progress. We call this process
+        /// the last resort refinement, because it has the lowest priority,
+        /// and always allows progress to be made. Last resort refine-
+        /// ment prefers to remove edges whose source does not domi-
+        /// nate its target, nor whose target dominates its source. These
+        /// edges can be thought of as cutting across the dominator
+        /// tree. By removing them, we leave edges that reflect more
+        /// structure because they reflect a dominator relationship
+        /// </summary>
+        private bool LastResort(Region n)
+        {
+            var vEdges = new List<VirtualEdge>();
+
+            foreach (var s in regionGraph.Successors(n))
+            {
+                if (!doms.DominatesStrictly(n, s))
+                    vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
             }
+            foreach (var p in regionGraph.Predecessors(n))
+            {
+                if (!doms.DominatesStrictly(p, n))
+                    vEdges.Add(new VirtualEdge(p, n, VirtualEdgeType.Goto));
+            }
+            foreach (var vEdge in vEdges)
+            {
+                VirtualizeEdge(vEdge);
+            }
+            if (vEdges.Count > 0)
+                return true;
+            return false;
         }
 
         public class VirtualEdge
@@ -1175,8 +1218,5 @@ structure because they reflect a dominator relationship
                 this.Type = type;
             }
         }
-
     }
-
-
 }

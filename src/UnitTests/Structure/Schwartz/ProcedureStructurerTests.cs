@@ -405,7 +405,7 @@ end_fn:
         }
 
         [Test]
-        public void ProcStr_UnstructuredExit()
+        public void ProcStr_UnstructuredExit_NILZ()
         {
             m.Label("loopheader");
             m.BranchIf(m.Fn("foo"), "done");

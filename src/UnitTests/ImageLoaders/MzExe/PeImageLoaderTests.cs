@@ -464,9 +464,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00102032)].ToString());
             var sExp =
 @"00100000 2000 ImageMapItem <unknown>
-00102000 0004 ImageMapItem (ptr code)
-00102004 0004 ImageMapItem (ptr code)
-00102008 0004 ImageMapItem (ptr code)
+00102000 0004 ImageMapItem word32
+00102004 0004 ImageMapItem word32
+00102008 0004 ImageMapItem word32
 0010200C 001E ImageMapItem <unknown>
 0010202A 0004 ImageMapItem (ptr code)
 0010202E 0004 ImageMapItem (ptr code)

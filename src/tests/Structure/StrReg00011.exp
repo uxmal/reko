@@ -1,4 +1,5 @@
 // Reg00011Mock
+// Return size: 0
 void Reg00011Mock()
 Reg00011Mock_entry:
 	Mem0[0x8416:word16] = Mem0[0x8416:word16] + 0x0001
@@ -20,14 +21,16 @@ block6:
 	Mem0[0x8410:word16] = 0x0000
 	branch Mem0[0x8410:word16] == 0x0000 block2
 	// succ:  block7 block2
-block7:	
+block7:
 	ax_80 = Mem0[0x840E:word16]
 	Mem0[0x8414:word16] = Mem0[0x8414:word16] | ax_80
 	branch ax_80 != 0x0000 block2
-	// succ:  7 1
+	goto l5
+	// succ:  l5 block2
+l1:
 l2:
 	branch __bt(Mem0[0x8418:word16], ax_36) block2
-	// succ:  3 1
+	// succ:  l3 block2
 l3:
 	fs_41 = Mem0[0x7E50:word16]
 	branch Mem0[0x7E50:word16] != Mem0[0x53C2:word16] block6
@@ -36,7 +39,6 @@ l4:
 	fn1B96_0540(Mem0[0x7E52:word16], ds, &dx_49, &bx_50)
 	goto block6
 	// succ:  block6
-
 l5:
 	ax_88 = fn1B96_0540(loc02_26, ds)
 	v19_89 = Mem0[0x8416:word16] - 0x0001
@@ -88,13 +90,7 @@ void Reg00011Mock()
 			fn1B96_02A9(ds, &ax_96);
 			return ax_96;
 		}
-		else
-		{
-block11:
-			return ax_88;
-		}
 	}
-	else
-		goto block11;
+	return ax_88;
 }
 ===========================

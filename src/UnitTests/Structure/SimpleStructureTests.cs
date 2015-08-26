@@ -210,14 +210,14 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("FIXME Spins forever")] //$TODO
+        [Ignore("spins forever")]
         public void StrReg00006()
         {
             RunTest32("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
         }
 
         [Test]
-        [Ignore("Not quite ready yet")]
+        [Ignore("spins forever")]
         public void StrNonreducible()
         {
             RunTest("Fragments/nonreducible.asm", "Structure/StrNonreducible.txt");
@@ -236,14 +236,13 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("FIXME Spins forever")] //$TODO
         public void StrReg00011()
         {
             RunTest(new Reg00011Mock(), "Structure/StrReg00011.txt");
         }
 
         [Test]
-        [Ignore("FIXME Spins forever")] //$TODO
+        [Ignore("Fails for unknown reason in DominatorGraph.Build.")]
         public void StrReg00013()
         {
             RunTest("Fragments/regressions/r00013.asm", "Structure/StrReg00013.txt");
@@ -283,7 +282,6 @@ ret
         }
 
         [Test]
-        [Ignore("FIXME Spins forever")] //$TODO
         public void StrReg00001()
         {
             var program = RewriteX86_32Fragment(Fragments.Regressions.Reg00001.Text,
@@ -302,21 +300,16 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 	word32 edx_21 = 0x00000000;
 	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C;
 	if (true)
-		while (true)
+		do
 		{
 			word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32];
-			if (dwArg08 <u ecx_56 || dwArg08 >=u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
-				break;
+			if (dwArg08 >=u ecx_56 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
+				goto l0010004D;
 			edx_21 = edx_21 + 0x00000001;
 			eax_24 = eax_24 + 0x00000028;
-			if (edx_21 >=u esi_20)
-				goto l0010004B;
-		}
-	else
-	{
-l0010004B:
-		eax_24 = 0x00000000;
-	}
+		} while (edx_21 <u esi_20);
+	eax_24 = 0x00000000;
+l0010004D:
 	return eax_24;
 }
 ===
