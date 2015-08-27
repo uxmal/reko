@@ -18,6 +18,19 @@ other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompiler the binary
 (for instance if the binary is your own.) 
 
+## Version 0.5.2.0
+* New structural analysis inspired by "Native x86 Decompilation Using 
+  Semantics-Preserving Structural Analysis and Iterative Control-Flow 
+  Structuring" (Schwartz, Lee, Woo, Brumley) yields much improved
+  structured C-like code; the implementation itself is much simpler 
+  than the previous one.
+* C2Xml tool understands C++11 attributes, in particular the new 
+  [[reko::reg(<regname>)]] which permits specifying the register in
+  which an argument is passed to or returned from a procedure.
+* Implemented navigation history for CodeView window.
+* Added support for ELF x86-64 and PE Thumb binaries.
+* Many bugs fixed and code refactored.
+
 ## Version 0.5.1.0
 * Integrated the Capstone.NET disassembler, now used for the ARM and 
   ARM Thumb architectures.
