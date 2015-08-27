@@ -18,6 +18,14 @@ other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompiler the binary
 (for instance if the binary is your own.) 
 
+## Hacking
+If you're interesting in contributing code, see the 
+[road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
+The [Wiki](https://github.com/uxmal/reko/wiki) has more information 
+about the Reko project's internal workings.
+
+## Recent versions
+
 ## Version 0.5.2.0
 * New structural analysis inspired by "Native x86 Decompilation Using 
   Semantics-Preserving Structural Analysis and Iterative Control-Flow 
@@ -37,7 +45,7 @@ decompiler only if you have legal rights to decompiler the binary
 * Support for Arm Thumb PE executables.
 * Bug fixes for #14 and #17.
 
-## Version 0.5.0.0
+### Version 0.5.0.0
 * Moved project from SourceForge
 * Renamed project to 'Reko'
 * Started implementation of heuristic static analysis.
@@ -48,16 +56,16 @@ decompiler only if you have legal rights to decompiler the binary
 * CP/M environment added
 * 64-bit Windows enviroment added
 
-## Version 0.4.4.0
+### Version 0.4.4.0
 * Mostly bugfixes
 
-## Version 0.4.3.0
+### Version 0.4.3.0
 * Beginnings of new tabbed GUI
 * Command line interpreter now understands a few switches; try typing
     decompile --help
 * More x86 and m68k instructions supported
 
-## Version 0.4.2.0 
+### Version 0.4.2.0 
 * Added support for PS3 and System V ELF files.
 * For fun: a C64 BASIC "decompiler"!
 * Fixed the following submitted bugs
@@ -69,14 +77,14 @@ decompiler only if you have legal rights to decompiler the binary
 * ImageSegmentRenders allow viewing of the structured data
   in image segments.
 
-## Version 0.4.1.0 
+### Version 0.4.1.0 
 * (Crude) support for loading 32- and 64-bit PowerPC ELF binaries
 * Many PowerPC opcodes supported.
 * User interface bugfixes (broken keyboard accelerators etc)
 * The Copy command (Ctrl+C) is supported in windows where it 
   makes sense. 
 
-## Version 0.4.0.0
+### Version 0.4.0.0
 * Support added for loading packed binaries using unpacker scripts
   written in OdbgScript.
 * Modest beginning of an X86 emulator added to the solution
