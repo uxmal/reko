@@ -57,7 +57,6 @@ namespace Reko.UnitTests.Analysis
 			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, doms);
 			
 			this.ssaIds = sst.SsaState.Identifiers;
-            sst.SsaState.DebugDump(true);//$DEBUG
 		}
 	}
 }

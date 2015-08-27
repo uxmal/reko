@@ -130,8 +130,6 @@ namespace Reko.Gui.Windows.Controls
         private SizeF GetSize(TextSpan span, string text, Font font, Graphics g)
         {
             var size = span.GetSize(text, font, g);
-            if (span.Style == "dasm-bytes") //$DEBUG
-                span.Style.ToString();
             UiStyle style = GetStyle(span.Style);
             if (style != null && style.Width.HasValue)
             {
@@ -347,8 +345,6 @@ namespace Reko.Gui.Windows.Controls
             foreach (var span in line.Spans)
             {
                 var text = span.Text;
-                if (span.Style == "link")   //$DEBUG
-                    span.Style.ToString();
                 var font = GetFont(span.Style);
                 var fg = GetForeground(span.Style);
                 var bg = GetBackground(span.Style);

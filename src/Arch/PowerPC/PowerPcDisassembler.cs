@@ -58,8 +58,6 @@ namespace Reko.Arch.PowerPC
             {
                 instrCur = new PowerPcInstruction(Opcode.illegal);
             }
-            if (instrCur.Opcode.ToString() == "illegal")    //$DEBUG
-                instrCur.Opcode.ToString();
             instrCur.Address = addr;
             instrCur.Length = 4;
             return instrCur;

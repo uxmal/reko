@@ -177,8 +177,6 @@ namespace Reko.Analysis
         public void RewriteBlock(Block block)
         {
             StartProcessingBlock(block);
-            if (block.Procedure.Name.EndsWith("2BE4")) //$DEBUG
-                block.ToString();
             var propagator = new ExpressionPropagator(prog.Architecture, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)
             {

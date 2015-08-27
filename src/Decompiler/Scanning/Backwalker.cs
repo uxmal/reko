@@ -45,8 +45,6 @@ namespace Reko.Scanning
 
 		public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
 		{
-            if (xfer is RtlGoto) //$DEBUG
-                xfer.ToString();
             this.host = host;
             this.eval = eval;
             var target = xfer.Target;

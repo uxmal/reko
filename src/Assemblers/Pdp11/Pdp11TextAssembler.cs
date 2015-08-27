@@ -72,8 +72,6 @@ namespace Reko.Assemblers.Pdp11
 
         private void ProcessLine()
         {
-            if (lexer.Peek().Linenumber == 171) //$DEBUG
-                lexer.ToString();
             if (lexer.PeekAndDiscard(TokenType.EOL))
                 return;
             if (lexer.PeekAndDiscard(TokenType._Page))
