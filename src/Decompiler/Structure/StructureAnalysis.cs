@@ -102,6 +102,7 @@ namespace Reko.Structure
             int newCount;
             do
             {
+                //if (proc.Name.EndsWith())
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();

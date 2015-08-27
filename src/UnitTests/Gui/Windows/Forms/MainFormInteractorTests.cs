@@ -184,7 +184,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
-                    Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes)
+                    Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes),
+                    Platform = new DefaultPlatform(null, null)
                 });
         }
 
@@ -339,7 +340,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Programs = { new Program 
                 { 
                     Filename="foo.exe" ,
-                    Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]) 
+                    Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]),
+                    Platform = new DefaultPlatform(null, null)
                 }
                 }
             };
@@ -449,7 +451,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_MainFormInteractor();
             Given_DecompilerInstance();
-            decompiler.Expect(d => d.LoadMetadata("foo.def")).Return(new TypeLibrary());
+            loader.Expect(d => d.LoadMetadata(
+                Arg<string>.Is.Equal("foo.def"),
+                Arg<Platform>.Is.NotNull))
+                    .Return(new TypeLibrary());
             services.AddService(typeof(IDecompilerService), dcSvc);
             uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.def");
             Given_CommandNotHandledBySubwindow();

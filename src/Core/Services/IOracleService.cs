@@ -1,6 +1,5 @@
-﻿#region License
-/* 
- * Copyright (C) 1999-2015 John Källén.
+﻿/* 
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,35 +15,24 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#endregion
 
-using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Services
 {
-    public abstract class MetadataLoader
+    /// <summary>
+    /// Sometimes, Reko just has to ask the user for some input. The oracle service does this.
+    /// </summary>
+    public interface IOracleService
     {
-        public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)
-        {
-        }
-
-        public abstract TypeLibrary Load(Platform platform);
-    }
-
-    public class NullMetadataLoader : MetadataLoader
-    {
-        public NullMetadataLoader()
-            : base(null, "", new byte[0])
-        {
-        }
-
-        public override TypeLibrary Load(Platform platform)
-        {
-            return new TypeLibrary();
-        }
+        /// <summary>
+        /// Ask the user what platform to use.
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
+        Platform QueryPlatform(string question);
     }
 }

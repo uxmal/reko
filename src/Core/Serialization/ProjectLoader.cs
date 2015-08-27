@@ -26,19 +26,34 @@ using System.Linq;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Reko.Core.Services;
+using System.Diagnostics;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Loads a Reko decompiler project file. May optionally ask the user
+    /// for help.
+    /// </summary>
     public class ProjectLoader 
     {
         public event EventHandler<ProgramEventArgs> ProgramLoaded;
         public event EventHandler<TypeLibraryEventArgs> TypeLibraryLoaded;
 
+        private IServiceProvider services;
         private ILoader loader;
+        private Project project;
 
-        public ProjectLoader(ILoader loader)
+        public ProjectLoader(IServiceProvider services, ILoader loader)
+            : this(services, loader, new Project())
         {
+        }
+
+        public ProjectLoader(IServiceProvider services, ILoader loader, Project project)
+        {
+            this.services = services;
             this.loader = loader;
+            this.project = project;
         }
 
         /// <summary>
@@ -91,6 +106,11 @@ namespace Reko.Core.Serialization
             }
         }
 
+        /// <summary>
+        /// Loads a .dcproject from a file stream.
+        /// </summary>
+        /// <param name="stm"></param>
+        /// <returns></returns>
         public Project LoadProject(Stream stm)
         {
             var rdr = new XmlTextReader(stm);
@@ -103,15 +123,20 @@ namespace Reko.Core.Serialization
             return null;
         }
 
+        /// <summary>
+        /// Loads a Project object from its serialized representation. First loads the program
+        /// and then any extra metadata.
+        /// </summary>
+        /// <param name="sp"></param>
+        /// <returns></returns>
         public Project LoadProject(Project_v2 sp)
         {
             var typelibs = sp.Inputs.OfType<MetadataFile_v2>().Select(m => VisitMetadataFile(m));
             var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(s));
             var asm = sp.Inputs.OfType<AssemblerFile_v2>().Select(s => VisitAssemblerFile(s));
-            var project = new Project();
             project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
-            return project;
+            return this.project;
         }
 
         public Program VisitInputFile(DecompilerInput_v2 sInput)
@@ -178,14 +203,42 @@ namespace Reko.Core.Serialization
 
         public MetadataFile VisitMetadataFile(MetadataFile_v2 sMetadata)
         {
-            var typeLib = loader.LoadMetadata(sMetadata.Filename);
+            string filename = sMetadata.Filename;
+            return LoadMetadataFile(filename);
+        }
+
+        public MetadataFile LoadMetadataFile(string filename)
+        {
+            var platform = DeterminePlatform(filename);
+            var typeLib = loader.LoadMetadata(filename, platform);
             TypeLibraryLoaded.Fire(this, new TypeLibraryEventArgs(typeLib));
             return new MetadataFile
             {
-                Filename = sMetadata.Filename,
+                Filename = filename,
                 ModuleName = typeLib.ModuleName,
                 TypeLibrary = typeLib
             };
+        }
+
+        private Platform DeterminePlatform(string filename)
+        {
+            var platformsInUse = project.Programs.Select(p => p.Platform).Distinct().ToArray();
+            if (platformsInUse.Length == 1 && platformsInUse[0] != null)
+                return platformsInUse[0];
+            Platform platform = null;
+            if (platformsInUse.Length == 0)
+            {
+                var oSvc = services.GetService<IOracleService>();
+                if (oSvc != null)
+                {
+                    platform = oSvc.QueryPlatform(string.Format(
+                        "Please specify with operating environment should be used with metadata file {0}.",
+                        filename));
+                }
+                Debug.Print("Got platform <{0}>", platform);
+                return platform;
+            }
+            throw new NotImplementedException("Multiple platforms possible; not implemented yet.");
         }
 
         public Program VisitAssemblerFile(AssemblerFile_v2 sAsmFile)

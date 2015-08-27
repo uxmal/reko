@@ -38,13 +38,15 @@ namespace Reko.UnitTests.Core.Serialization
 	public class SerializedProjectTests
 	{
         private MockRepository mr;
+        private ServiceContainer sc;
         private ILoader loader;
         private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
+            this.mr = new MockRepository();
+            this.sc = new ServiceContainer();
         }
 
 		[Test]
@@ -204,7 +206,7 @@ namespace Reko.UnitTests.Core.Serialization
             };
             mr.ReplayAll();
 
-            var ps = new ProjectLoader(loader);
+            var ps = new ProjectLoader(sc, loader);
             var project = ps.LoadProject(sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
@@ -311,10 +313,10 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var loader = mr.Stub<ILoader>();
             var typelib = new TypeLibrary();
-            loader.Stub(l => l.LoadMetadata("")).IgnoreArguments().Return(typelib);
+            loader.Stub(l => l.LoadMetadata("", null)).IgnoreArguments().Return(typelib);
             mr.ReplayAll();
 
-            var ploader = new ProjectLoader(loader);
+            var ploader = new ProjectLoader(sc, loader);
             var project = ploader.LoadProject(sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
@@ -345,7 +347,7 @@ namespace Reko.UnitTests.Core.Serialization
                 .Return(new Program());
             mr.ReplayAll();
 
-            var ploader = new ProjectLoader(loader);
+            var ploader = new ProjectLoader(sc, loader);
             var project = ploader.LoadProject(sProject);
             Assert.IsTrue(project.Programs[0].Options.HeuristicScanning);
         }

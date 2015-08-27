@@ -16,9 +16,9 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
-using Decompiler.Core.Lib;
+using Reko.Core.Code;
+using Reko.Core.Types;
+using Reko.Core.Lib;
 using System;
 using System.Collections;
 using System.Xml;

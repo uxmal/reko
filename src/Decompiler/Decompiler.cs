@@ -42,7 +42,6 @@ namespace Reko
         Project Project { get; }
 
         bool Load(string fileName);
-        TypeLibrary LoadMetadata(string fileName);
         void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase);
         void ScanPrograms();
         ProcedureBase ScanProcedure(Program program, Address procAddress);
@@ -191,7 +190,7 @@ namespace Reko
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            var projectLoader = new ProjectLoader(loader);
+            var projectLoader = new ProjectLoader(this.services, loader);
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.OnLoadedScript); };
             Project = projectLoader.LoadProject(fileName, image);
             bool isProject;
@@ -234,12 +233,6 @@ namespace Reko
             {
                 eventListener.Error(new NullCodeLocation(""), ex, string.Format("An error occurred while running the script."));
             }
-        }
-
-        public TypeLibrary LoadMetadata(string fileName)
-        {
-            eventListener.ShowStatus("Loading metadata");
-            return loader.LoadMetadata(fileName);
         }
 
         public void Assemble(string fileName, Assembler asm)

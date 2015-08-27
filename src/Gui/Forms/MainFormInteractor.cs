@@ -257,12 +257,9 @@ namespace Reko.Gui.Forms
             if (fileName == null)
                 return;
             mru.Use(fileName);
-            var typelib = decompilerSvc.Decompiler.LoadMetadata(fileName);
-            decompilerSvc.Decompiler.Project.MetadataFiles.Add(new MetadataFile {
-                Filename = fileName,
-                ModuleName = Path.GetFileName(fileName),
-                TypeLibrary = typelib
-            });
+            var projectLoader = new ProjectLoader(Services, loader, this.decompilerSvc.Decompiler.Project);
+            var metadata = projectLoader.LoadMetadataFile(fileName);
+            decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
         }
 
         public bool AssembleFile()
@@ -569,7 +566,7 @@ namespace Reko.Gui.Forms
             {
                 //$REFACTOR: rule of Demeter, push this into a Save() method.
                 var sp =  new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
-                new ProjectLoader(loader).Save(sp, sw);
+                new ProjectLoader(sc, loader).Save(sp, sw);
             }
             return true;
         }

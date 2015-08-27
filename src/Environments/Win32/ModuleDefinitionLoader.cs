@@ -36,19 +36,20 @@ namespace Reko.Environments.Win32
     {
         private Lexer lexer;
         private Token bufferedTok;
-        private Platform platform;
         private string filename;
+        private Platform platform;
 
-        public ModuleDefinitionLoader(TextReader rdr, string filename, Platform platform) : base(null, filename, null)
+        public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
         {
             this.filename = filename;
+            var rdr = new StreamReader(new MemoryStream(bytes));
             this.lexer = new Lexer(rdr);
             this.bufferedTok = null;
-            this.platform = platform;
         }
 
-        public override TypeLibrary Load()
+        public override TypeLibrary Load(Platform platform)
         {
+            this.platform = platform;
             var loader = new TypeLibraryLoader(platform, true);
             loader.SetModuleName(DefaultModuleName(filename));
             for (; ; )

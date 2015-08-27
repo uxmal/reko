@@ -37,13 +37,15 @@ namespace Reko.UnitTests.Core.Serialization
     public class ProjectSerializerTests
     {
         private MockRepository mr;
+        private ServiceContainer sc;
         private ILoader loader;
         private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
+            this.mr = new MockRepository();
+            this.sc = new ServiceContainer();
             loader = mr.Stub<ILoader>();
             arch = mr.StrictMock<IProcessorArchitecture>();
             Address dummy;
@@ -114,7 +116,7 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(loader);
+            var ps = new ProjectLoader(sc, loader);
             var p = ps.LoadProject(sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 
@@ -132,7 +134,7 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var sw = new StringWriter();
-            new ProjectLoader(loader).Save(sp, sw);
+            new ProjectLoader(sc, loader).Save(sp, sw);
             Console.WriteLine(sw);
         }
     }

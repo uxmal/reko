@@ -34,12 +34,13 @@ namespace Reko.UnitTests.Environments.Win32
     public class ModuleDefinitionLoaderTests
     {
         private ModuleDefinitionLoader dfl;
+        private Win32Platform platform;
         private readonly string nl = "\r\n";    // DEF files are from the Windows world, and have CR-LFs in them.
 
         private void CreateDefFileLoader(string filename, string contents)
         {
-            var platform = new Win32Platform(null, new X86ArchitectureFlat32());
-            dfl = new ModuleDefinitionLoader(new StringReader(contents), filename, platform);
+            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
+            dfl = new ModuleDefinitionLoader(null, filename, Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Environments.Win32
         public void DFL_CommentLine()
         {
             CreateDefFileLoader("c:\\bar\\foo.def", "; hello\r\n");
-            TypeLibrary lib = dfl.Load();
+            TypeLibrary lib = dfl.Load(platform);
             Assert.AreEqual(2, lib.Types.Count);
             Assert.AreEqual(0, lib.Signatures.Count);
         }
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Environments.Win32
                 "c:\\bar\\foo.def",
                 "EXPORTS" + nl +
                 " _Foo@4 @4" + nl);
-            var lib = dfl.Load();
+            var lib = dfl.Load(platform);
             var svc = lib.ServicesByName["_Foo@4"];
             Assert.AreEqual("_Foo@4", svc.Name);
             Assert.AreEqual("FOO.DLL", lib.ModuleName);
@@ -79,7 +80,7 @@ namespace Reko.UnitTests.Environments.Win32
                 "c:\\bar\\foo.def",
                 "EXPORTS" + nl +
                 " _Foo@4 @ 4" + nl);
-            var lib = dfl.Load();
+            var lib = dfl.Load(platform);
             var svc = lib.ServicesByName["_Foo@4"];
             Assert.AreEqual("_Foo@4", svc.Name);
             Assert.AreEqual(4, svc.SyscallInfo.Vector);
@@ -91,7 +92,7 @@ namespace Reko.UnitTests.Environments.Win32
             CreateDefFileLoader(
                 "c:\\bar\\foo.def",
                 " LIBRARY foo" + nl);
-            var lib = dfl.Load();
+            var lib = dfl.Load(platform);
             Assert.AreEqual("foo", lib.ModuleName);
         }
     }

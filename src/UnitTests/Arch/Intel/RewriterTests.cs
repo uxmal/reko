@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Intel
                 var absFile = FileUnitTester.MapTestPath(configFile);
                 using (Stream stm = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    project = new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(stm);
+                    project = new ProjectLoader(null, new Loader(new ServiceContainer())).LoadProject(stm);
                 }
             }
             else

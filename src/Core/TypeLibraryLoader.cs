@@ -50,7 +50,7 @@ namespace Reko.Core
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
             this.types = new Dictionary<string, DataType>(cmp)
             {
-                { "va_list", platform.Architecture.FramePointerType } ,  
+                { "va_list", platform.FramePointerType } ,  
                 { "size_t", platform.Architecture.WordWidth },
             };
             this.signaturesByName = new Dictionary<string, ProcedureSignature>(cmp);

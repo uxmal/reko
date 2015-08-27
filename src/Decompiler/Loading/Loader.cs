@@ -150,11 +150,11 @@ namespace Reko.Loading
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public TypeLibrary LoadMetadata(string fileName)
+        public TypeLibrary LoadMetadata(string fileName, Platform platform)
         {
             var rawBytes = LoadImageBytes(fileName, 0);
             var mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
-            var result = mdLoader.Load();
+            var result = mdLoader.Load(platform);
             return result;
         }
 
