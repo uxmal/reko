@@ -47,6 +47,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             set { canAdvance = value; }
         }
 
+        public virtual string NextPhaseCaption { get { return "Hehe"; } }
+
         public virtual void PerformWork(IWorkerDialogService svc)
         {
         }

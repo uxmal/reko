@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -71,6 +72,21 @@ namespace Reko.Gui.Windows.Forms
         {
             DisconnectFromBrowserService();
             return true;
+        }
+
+        public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.ActionNextPhase:
+                case CmdIds.ActionFinishDecompilation:
+                    status.Status = MenuStatus.Visible;
+                    return true;
+                }
+            }
+            return base.QueryStatus(cmdId, status, text);
         }
     }
 }

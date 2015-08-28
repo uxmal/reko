@@ -64,8 +64,16 @@ namespace Reko.Gui.Windows.Forms
                 case CmdIds.ViewShowUnscanned:
                 case CmdIds.ActionEditSignature:
                 case CmdIds.ActionMarkProcedure:
+                case CmdIds.ActionRestartDecompilation:
                     status.Status = 0;
                     return true;
+                case CmdIds.ActionNextPhase:
+                    status.Status = CanAdvance 
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible;
+                    text.Text = Resources.ScanBinaries;
+                    return true;
+
                 }
             }
             return base.QueryStatus(cmdId, status, text);

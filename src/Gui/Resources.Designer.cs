@@ -61,6 +61,15 @@ namespace Reko.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A&amp;nalyze dataflow.
+        /// </summary>
+        internal static string AnalyzeDataflow {
+            get {
+                return ResourceManager.GetString("AnalyzeDataflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Back {
@@ -77,6 +86,24 @@ namespace Reko.Gui {
             get {
                 object obj = ResourceManager.GetObject("Forward", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reco&amp;nstruct data types.
+        /// </summary>
+        internal static string ReconstructDataTypes {
+            get {
+                return ResourceManager.GetString("ReconstructDataTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sca&amp;n binaries.
+        /// </summary>
+        internal static string ScanBinaries {
+            get {
+                return ResourceManager.GetString("ScanBinaries", resourceCulture);
             }
         }
     }

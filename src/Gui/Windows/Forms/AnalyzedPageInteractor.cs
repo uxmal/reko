@@ -117,6 +117,10 @@ namespace Reko.Gui.Windows.Forms
             {
                 switch (cmdId.ID)
                 {
+                case CmdIds.ActionNextPhase:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    text.Text = Resources.ReconstructDataTypes;
+                    return true;
                 case CmdIds.ActionEditSignature:
                     status.Status = MenuStatus.Visible;
                     if (SelectedProcedureEntry.Key != null)

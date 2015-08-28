@@ -611,6 +611,7 @@ namespace Reko.Gui.Forms
                 interactor.PerformWork(workerDlgSvc);
             });
             interactor.EnterPage();
+            UpdateToolbarState();
         }
 
         public void UpdateWindowTitle()
@@ -719,44 +720,55 @@ namespace Reko.Gui.Forms
         {
             var ct = GetSubCommandTarget();
             if (ct != null && ct.Execute(cmdId))
+            {
+                UpdateToolbarState();
                 return true;
-          
+            }
             if (currentPhase != null && currentPhase.Execute(cmdId))
+            {
+                UpdateToolbarState();
                 return true;
+            }
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 if (ExecuteMruFile(cmdId.ID))
+                {
+                    UpdateToolbarState();
                     return false;
+                }
 
+                bool retval = false;
                 switch (cmdId.ID)
                 {
-                case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
-                case CmdIds.FileOpenAs: return OpenBinaryAs();
-                case CmdIds.FileAssemble: return AssembleFile();
-                case CmdIds.FileSave: Save(); return true;
-                case CmdIds.FileAddMetadata: AddMetadataFile(); return true;
-                case CmdIds.FileCloseProject: CloseProject(); return true;
-                case CmdIds.FileExit: form.Close(); return true;
+                case CmdIds.FileOpen: OpenBinaryWithPrompt(); retval = true; break;
+                case CmdIds.FileOpenAs: retval = OpenBinaryAs(); break;
+                case CmdIds.FileAssemble: retval = AssembleFile(); break;
+                case CmdIds.FileSave: Save(); retval = true; break;
+                case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
+                case CmdIds.FileCloseProject: CloseProject(); retval = true; break;
+                case CmdIds.FileExit: form.Close(); retval = true; break;
 
-                case CmdIds.ActionRestartDecompilation: RestartRecompilation(); return true;
-                case CmdIds.ActionNextPhase: NextPhase(); return true;
-                case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
+                case CmdIds.ActionRestartDecompilation: RestartRecompilation(); retval = true; break;
+                case CmdIds.ActionNextPhase: NextPhase(); retval = true; break;
+                case CmdIds.ActionFinishDecompilation: FinishDecompilation(); retval = true; break;
 
-                case CmdIds.EditFind: EditFind(); return true;
+                case CmdIds.EditFind: EditFind(); retval = true; break;
 
-                case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); return true;
-                case CmdIds.ViewMemory: ViewMemoryWindow(); return true;
-                case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); return true;
+                case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); retval = true; break;
+                case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
+                case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
 
-                case CmdIds.ToolsOptions: ToolsOptions(); return true;
+                case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
 
-                case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); return true;
-                case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); return true;
-                case CmdIds.WindowsTileHorizontal: LayoutMdi(DocumentWindowLayout.TiledHorizontal); return true;
-                case CmdIds.WindowsCloseAll: CloseAllDocumentWindows(); return true;
+                case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); retval = true; break;
+                case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); retval = true; break;
+                case CmdIds.WindowsTileHorizontal: LayoutMdi(DocumentWindowLayout.TiledHorizontal); retval = true; break;
+                case CmdIds.WindowsCloseAll: CloseAllDocumentWindows(); retval = true; break;
 
-                case CmdIds.HelpAbout: ShowAboutBox(); return true;
+                case CmdIds.HelpAbout: ShowAboutBox(); retval = true; break;
                 }
+                UpdateToolbarState();
+                return retval;
             }
             return false;
         }
@@ -871,6 +883,7 @@ namespace Reko.Gui.Forms
             }
             catch { };
             SwitchInteractor(pageInitial);
+            UpdateToolbarState();
         }
 
         private void MainForm_Closed(object sender, System.EventArgs e)
@@ -908,6 +921,24 @@ namespace Reko.Gui.Forms
             MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
             if (cmd == null) throw new NotImplementedException("Button not hooked up.");
             Execute(cmd.CommandID);
+        }
+
+        private void UpdateToolbarState()
+        {
+            var status = new CommandStatus();
+            var text = new CommandText();
+            foreach (ToolStripItem item in form.ToolBar.Items)
+            {
+                var cmd = item.Tag as MenuCommand;
+                if (cmd != null)
+                {
+                    text.Text = null;
+                    var st = QueryStatus(cmd.CommandID, status, text);
+                    item.Enabled = (status.Status & MenuStatus.Enabled) != 0;
+                    if (!string.IsNullOrEmpty(text.Text))
+                        item.Text = text.Text;
+                }
+            }
         }
 
         public void OnBrowserTreeItemSelected(object sender, TreeViewEventArgs e)

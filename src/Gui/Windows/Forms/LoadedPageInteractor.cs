@@ -110,11 +110,23 @@ namespace Reko.Gui.Windows.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                MenuCommand cmd;
-                if (!mpCmdidToCommand.TryGetValue(cmdId.ID, out cmd))
-                    return false;
-                status.Status = (MenuStatus) cmd.OleStatus;
-                return true;
+                switch (cmdId.ID)
+                {
+                case CmdIds.ActionFinishDecompilation:
+                case CmdIds.ActionRestartDecompilation:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ActionNextPhase:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    text.Text = Resources.AnalyzeDataflow;
+                    return true;
+                default:
+                    MenuCommand cmd;
+                    if (!mpCmdidToCommand.TryGetValue(cmdId.ID, out cmd))
+                        return false;
+                    status.Status = (MenuStatus)cmd.OleStatus;
+                    return true;
+                }
             }
             return false;
         }

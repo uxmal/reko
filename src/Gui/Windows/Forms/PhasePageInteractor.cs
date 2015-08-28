@@ -71,6 +71,7 @@ namespace Reko.Gui.Windows.Forms
             get { return decompilerSvc.Decompiler != null; }
         }
 
+
         public virtual IDecompiler Decompiler
         {
             get { return decompilerSvc.Decompiler; }
