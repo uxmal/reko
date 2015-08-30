@@ -273,7 +273,7 @@ namespace Reko.Analysis
             }
             else
             {
-
+                throw new NotImplementedException();
             }
         }
 	}
