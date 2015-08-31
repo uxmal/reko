@@ -33,7 +33,14 @@
             this.btnBack = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();
             this.textView1 = new Reko.Gui.Windows.Controls.TextView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtProcName = new System.Windows.Forms.TextBox();
             this.toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip
@@ -44,7 +51,7 @@
             this.btnForward});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(150, 25);
+            this.toolStrip.Size = new System.Drawing.Size(914, 25);
             this.toolStrip.TabIndex = 0;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -71,23 +78,65 @@
             // textView1
             // 
             this.textView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textView1.Location = new System.Drawing.Point(0, 25);
+            this.textView1.Location = new System.Drawing.Point(0, 0);
             this.textView1.Model = emptyEditorModel1;
             this.textView1.Name = "textView1";
             this.textView1.Services = null;
-            this.textView1.Size = new System.Drawing.Size(150, 125);
+            this.textView1.Size = new System.Drawing.Size(640, 374);
             this.textView1.TabIndex = 1;
             this.textView1.Text = "textView1";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.textView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.txtProcName);
+            this.splitContainer1.Panel2.Controls.Add(this.label1);
+            this.splitContainer1.Size = new System.Drawing.Size(914, 374);
+            this.splitContainer1.SplitterDistance = 640;
+            this.splitContainer1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Procedure name:";
+            // 
+            // txtProcName
+            // 
+            this.txtProcName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProcName.Location = new System.Drawing.Point(4, 21);
+            this.txtProcName.Name = "txtProcName";
+            this.txtProcName.Size = new System.Drawing.Size(263, 20);
+            this.txtProcName.TabIndex = 1;
             // 
             // CodeView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textView1);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip);
             this.Name = "CodeView";
+            this.Size = new System.Drawing.Size(914, 399);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,5 +148,8 @@
         private System.Windows.Forms.ToolStripButton btnBack;
         private System.Windows.Forms.ToolStripButton btnForward;
         private TextView textView1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TextBox txtProcName;
+        private System.Windows.Forms.Label label1;
     }
 }
