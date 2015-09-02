@@ -1315,7 +1315,15 @@ namespace Reko.UnitTests.Arch.Intel
                  "5|L--|rdi = rdi + 0x0000000000000008",
                  "6|L--|rcx = rcx - 0x0000000000000001",
                  "7|T--|goto 0000000140000000");
+        }
 
+        [Test]
+        public void X86rw_PIC_idiom()
+        {
+            Run32bitTest(0xE8, 0, 0, 0, 0, 0x59);        // call $+5, pop ecx
+            AssertCode(
+                "0|10000000(5): 1 instructions",
+                "1|L--|ecx = 10000005)");
         }
     }
 }

@@ -90,6 +90,20 @@ namespace Reko.Arch.X86
             Address addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
+                if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
+                {
+                    var next = dasm.Peek(1);
+                    RegisterOperand reg = next.op1 as RegisterOperand;
+                    if (next.code == Opcode.pop && reg != null)
+                    {
+                        // call $+5,pop<reg> idiom
+                        dasm.MoveNext();
+                        emitter.Assign(
+                            orw.AluRegister(reg),
+                            addr);
+                        return;
+                    }
+                }
                 emitter.Call(addr, (byte) opsize.Size);
             }
             else

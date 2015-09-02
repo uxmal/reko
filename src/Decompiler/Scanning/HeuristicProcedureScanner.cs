@@ -275,7 +275,6 @@ namespace Reko.Scanning
             int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
             for (Address addr = gap.Item1; addr < gap.Item2; addr = addr +instrByteGranularity)
             {
-                var block = new HeuristicBlock(addr, string.Format("l{0:X}" + addr));
                 var dasm = CreateRewriter(addr);
                 bool isValid = false;
                 foreach (var instr in dasm)
