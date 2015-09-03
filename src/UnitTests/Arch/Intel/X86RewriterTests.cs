@@ -1305,7 +1305,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Ignore("Something fishy with REP")]
         public void X86rw_64_repne()
         {
-            Run64bitTest(0xF3, 0x48, 0xA5);   // "rep\rmovsd"
+            Run64bitTest(0xF3, 0x48, 0xA5);   // "rep\tmovsd"
             AssertCode(
                  "0|0000000140000000(3): 7 instructions",
                  "1|T--|if (rcx == 0x0000000000000000) branch 0000000140000001",
@@ -1322,8 +1322,16 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0xE8, 0, 0, 0, 0, 0x59);        // call $+5, pop ecx
             AssertCode(
-                "0|10000000(5): 1 instructions",
-                "1|L--|ecx = 10000005)");
+                "0|10000000(6): 1 instructions",
+                "1|L--|ecx = 10000005");
+        }
+
+        [Test]
+        [ExpectedException(typeof(AddressCorrelatedException))]
+        public void X86rw_invalid_les()
+        {
+            Run32bitTest(0xC4, 0xC0);
+            AssertCode("", "");
         }
     }
 }

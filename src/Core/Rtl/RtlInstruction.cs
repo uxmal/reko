@@ -81,12 +81,14 @@ namespace Reko.Core.Rtl
     [Flags]
     public enum RtlClass
     {
-        Linear = 0,         // non-transfer instruction, e.g. ALU operation.
-        Transfer = 1,       // transfer instruction.
-        Conditional = 2,    // Instruction is gated on a condition.
-        Delay = 4,          // Next instruction is in the delay slot and may be executed.
-        Annul = 8,          // Next instruction is annulled (see SPARC architecture)
-        ConditionalTransfer  = Conditional|Transfer,
+        None,
+        Linear = 1,         // non-transfer instruction, e.g. ALU operation.
+        Transfer = 2,       // transfer instruction.
+        Conditional = 4,    // Instruction is gated on a condition.
+        Delay = 8,          // Next instruction is in the delay slot and may be executed.
+        Annul = 16,         // Next instruction is annulled (see SPARC architecture)
+        Invalid = 32,       // Invalid instruction
+        ConditionalTransfer = Conditional | Transfer,
     }
 
     /// <summary>
@@ -108,10 +110,13 @@ namespace Reko.Core.Rtl
             this.Length = (byte)instrLength;
             this.Instructions = new List<RtlInstruction>(instrs);
         }
+
         /// <summary>
         /// The address of the original machine instruction.
         /// </summary>
         public Address Address { get; private set; }
+
+        public RtlClass Class { get; set; }
 
         public List<RtlInstruction> Instructions { get; private set; }
 

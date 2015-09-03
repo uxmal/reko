@@ -527,6 +527,11 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private RtlClass Classify(CapstoneArmInstruction instr)
+        {
+            throw new NotImplementedException();
+        }
+
         private AddressCorrelatedException NYI()
         {
             return new AddressCorrelatedException(

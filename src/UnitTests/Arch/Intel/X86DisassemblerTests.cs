@@ -642,5 +642,11 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("ret\t", 0xF3, 0xC3);
         }
+
+        [Test]
+        public void Dis_x86_invalid_les()
+        {
+            AssertCode64("illegal\t", 0xC4, 0xC0);
+        }
     }
 }

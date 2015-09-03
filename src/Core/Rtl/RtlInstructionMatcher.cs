@@ -62,22 +62,28 @@ namespace Reko.Core.Rtl
             return matcher.Match(ass.Dst);
         }
 
-public bool VisitGoto(RtlGoto go)
-{
- 	throw new NotImplementedException();
-}
+        public bool VisitGoto(RtlGoto go)
+        {
+ 	        throw new NotImplementedException();
+        }
 
-public bool VisitIf(RtlIf rtlIf)
-{
-    var pIf = pattern as RtlIf;
-    if (pIf == null)
-        return false;
-    var p = pattern;
-    pattern = pIf.Instruction;
-    var ret = rtlIf.Instruction.Accept(this);
-    pattern = p;
-    return ret;
-}
+        public bool VisitIf(RtlIf rtlIf)
+        {
+            var pIf = pattern as RtlIf;
+            if (pIf == null)
+                return false;
+            var p = pattern;
+            pattern = pIf.Instruction;
+            var ret = rtlIf.Instruction.Accept(this);
+            pattern = p;
+            return ret;
+        }
+
+        public bool VisitInvalid(RtlInvalid invalid)
+        {
+            var pInvalid = pattern as RtlInvalid;
+            return pInvalid != null;
+        }
 
         public bool VisitBranch(RtlBranch branch)
         {

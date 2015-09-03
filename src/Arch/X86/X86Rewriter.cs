@@ -74,6 +74,7 @@ namespace Reko.Arch.X86
             {
                 instrCur = dasm.Current;
                 ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
+                ric.Class = RtlClass.Linear;
                 emitter = new RtlEmitter(ric.Instructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, frame, host);
                 switch (instrCur.code)

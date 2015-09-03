@@ -258,6 +258,7 @@
     <Compile Include="Rtl\RtlInstruction.cs" />
     <Compile Include="Rtl\RtlInstructionMatcher.cs" />
     <Compile Include="Rtl\RtlInstructionVisitor.cs" />
+    <Compile Include="Rtl\RtlInvalid.cs" />
     <Compile Include="Rtl\RtlReturn.cs" />
     <Compile Include="Rtl\RtlSideEffect.cs" />
     <Compile Include="Rtl\RtlTransfer.cs" />

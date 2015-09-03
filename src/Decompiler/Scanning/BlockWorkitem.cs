@@ -274,6 +274,16 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Encountering invalid instructions is unexpected.
+        /// </summary>
+        /// <param name="invalid"></param>
+        /// <returns></returns>
+        public bool VisitInvalid(RtlInvalid invalid)
+        {
+            return false;
+        }
+
         private Block BlockFromAddress(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
         {
             return scanner.EnqueueJumpTarget(addrSrc, addrDst, proc, state);

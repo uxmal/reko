@@ -71,8 +71,9 @@ namespace Reko.Scanning
             foreach (var range in FindPossibleFunctions(ranges))
             {
                 var hproc = DisassembleProcedure(range.Item1, range.Item2);
-                var hps = new HeuristicProcedureScanner(program, hproc);
+                var hps = new HeuristicProcedureScanner(program, hproc, host);
                 hps.BlockConflictResolution();
+                DumpBlocks(hproc.Cfg.Nodes);
                 hps.GapResolution();
                 // TODO: add all guessed code to image map -- clearly labelled.
             }

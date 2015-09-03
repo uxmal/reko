@@ -94,7 +94,7 @@ namespace Reko.Arch.X86
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var c = orw.FlagGroup(FlagM.CF);       
+            var c = orw.FlagGroup(FlagM.CF);
             EmitCopy(
                 instrCur.op1, 
                 new BinaryExpression(
