@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Arch
             var rewriter = GetInstructionStream(frame, host).GetEnumerator();
             while (i < expected.Length && rewriter.MoveNext())
             {
-                Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, rewriter.Current));
+                Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(rewriter.Current.Class),  rewriter.Current));
                 ++i;
                 var ee = rewriter.Current.Instructions.GetEnumerator();
                 while (i < expected.Length && ee.MoveNext())

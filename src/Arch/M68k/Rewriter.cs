@@ -63,6 +63,7 @@ namespace Reko.Arch.M68k
             {
                 di = dasm.Current;
                 ric = new RtlInstructionCluster(di.Address, di.Length);
+                ric.Class = RtlClass.Linear;
                 emitter = new RtlEmitter(ric.Instructions);
                 orw = new OperandRewriter(arch, this.emitter, this.frame, di.dataWidth);
                 switch (di.code)
@@ -142,7 +143,7 @@ VS Overflow Set 1001 V
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
                 case Opcode.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
                 case Opcode.roxr: RewriteRotationX(PseudoProcedure.RorC);  break;
-                case Opcode.rts: emitter.Return(4, 0); break;
+                case Opcode.rts: RewriteRts(); break;
                 case Opcode.scc: RewriteScc(ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.scs: RewriteScc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.seq: RewriteScc(ConditionCode.EQ, FlagM.ZF); break;

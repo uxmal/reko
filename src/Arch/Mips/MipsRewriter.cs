@@ -40,6 +40,7 @@ namespace Reko.Arch.Mips
         private IEnumerator<MipsInstruction> dasm;
         private Frame frame;
         private RtlEmitter emitter;
+        private RtlInstructionCluster cluster;
         private MipsProcessorArchitecture arch;
         private IRewriterHost host;
 
@@ -56,7 +57,8 @@ namespace Reko.Arch.Mips
             if (!dasm.MoveNext())
                 yield break;
             var instr = dasm.Current;
-            var cluster = new RtlInstructionCluster(instr.Address, 4);
+            this.cluster = new RtlInstructionCluster(instr.Address, 4);
+            cluster.Class = RtlClass.Linear;
             this.emitter = new RtlEmitter(cluster.Instructions);
             switch (instr.opcode)
             {
@@ -209,6 +211,7 @@ namespace Reko.Arch.Mips
                 var reg = RewriteOperand(instr.op1);
                 var addr = (Address)RewriteOperand(instr.op2);
                 var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
+                cluster.Class = RtlClass.ConditionalTransfer;
                 emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
             }
             else
@@ -218,6 +221,7 @@ namespace Reko.Arch.Mips
         private void RewriteJump(MipsInstruction instr)
         {
             var dst = RewriteOperand(instr.op1);
+            cluster.Class = RtlClass.Transfer;
             emitter.GotoD(dst);
         }
 

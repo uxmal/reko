@@ -65,9 +65,9 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Jc("foo");
             });
             AssertCode(
-                "0|00010000(4): 1 instructions",
+                "0|L--|00010000(4): 1 instructions",
                 "1|L--|SCZO = FPUF",              //$TODO: P flag as well
-                "2|00010004(2): 1 instructions",
+                "2|T--|00010004(2): 1 instructions",
                 "3|T--|if (Test(ULT,C)) branch 00010000"
                 );
         }
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Jnz("foo");
             });
             AssertCode(
-                "0|00010000(8): 2 instructions",
+                "0|L--|00010000(8): 2 instructions",
                 "1|L--|SCZO = FPUF",
                 "2|T--|if (Test(EQ,FPUF)) branch 00010000"
                 );            

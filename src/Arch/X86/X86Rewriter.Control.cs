@@ -120,8 +120,8 @@ namespace Reko.Arch.X86
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
+            ric.Class = RtlClass.ConditionalTransfer;
             emitter.Branch(CreateTestCondition(cc, instrCur.code), OperandAsCodeAddress(op1), RtlClass.ConditionalTransfer);
-            ric.Class = RtlClass.Transfer;
         }
 
         private void RewriteInt()
@@ -140,7 +140,6 @@ namespace Reko.Arch.X86
 
         private void RewriteJmp()
         {
-            ric.Class = RtlClass.Transfer;
             if (IsRealModeReboot(instrCur))
 			{
                 PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", VoidType.Instance, 0);
@@ -149,7 +148,8 @@ namespace Reko.Arch.X86
                 emitter.SideEffect(PseudoProc(reboot, VoidType.Instance));
 				return;
 			}
-				
+
+            ric.Class = RtlClass.Transfer;
 			if (instrCur.op1 is ImmediateOperand)
 			{
 				Address addr = OperandAsCodeAddress(instrCur.op1);

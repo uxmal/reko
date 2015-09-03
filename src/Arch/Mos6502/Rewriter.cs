@@ -64,6 +64,7 @@ namespace Reko.Arch.Mos6502
             {
                 this.instrCur = dasm.Current;
                 this.ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
+                this.ric.Class = RtlClass.Linear;
                 this.emitter = new RtlEmitter(ric.Instructions);
                 switch (instrCur.Code)
                 {
@@ -154,6 +155,7 @@ namespace Reko.Arch.Mos6502
 
         private void Branch(ConditionCode cc, FlagM flags)
         {
+            ric.Class = RtlClass.ConditionalTransfer;
             var f = FlagGroupStorage(flags);
             emitter.Branch(
                 emitter.Test(cc, f),
@@ -258,12 +260,14 @@ namespace Reko.Arch.Mos6502
 
         private void Jmp()
         {
-            var mem = (MemoryAccess) RewriteOperand(instrCur.Operand);
+            ric.Class = RtlClass.Transfer;
+            var mem = (MemoryAccess)RewriteOperand(instrCur.Operand);
             emitter.Goto(mem.EffectiveAddress);
         }
 
         private void Jsr()
         {
+            ric.Class = RtlClass.Transfer;
             var mem  = (MemoryAccess) RewriteOperand(instrCur.Operand);
             emitter.Call(mem.EffectiveAddress, 2);
         }
@@ -360,6 +364,7 @@ namespace Reko.Arch.Mos6502
 
         private void Rts()
         {
+            ric.Class = RtlClass.Transfer;
             emitter.Return(2, 0);
         }
 

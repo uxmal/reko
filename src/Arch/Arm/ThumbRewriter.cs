@@ -76,8 +76,8 @@ namespace Reko.Arch.Arm
                         "Invalid opcode cannot be rewritten to IR.");
                 }
                 this.ops = instr.ArchitectureDetail.Operands;
-
                 this.ric = new RtlInstructionCluster(instrs.Current.Address, instr.Bytes.Length);
+                this.ric.Class = RtlClass.Linear;
                 this.emitter = new RtlEmitter(ric.Instructions);
                 switch (instr.Id)
                 {
@@ -260,6 +260,7 @@ namespace Reko.Arch.Arm
             Identifier id;
             if (dst.As<Identifier>(out id) && id.Storage == A32Registers.pc)
             {
+                ric.Class = RtlClass.Transfer;
                 instr = new RtlGoto(src, RtlClass.Transfer);
             }
             else

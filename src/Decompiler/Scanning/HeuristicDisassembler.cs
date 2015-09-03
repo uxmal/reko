@@ -67,7 +67,7 @@ namespace Reko.Scanning
             var rAddr = new RobustRewriter(rrAddr, program.Architecture.InstructionBitSize / 8);
             foreach (var rtl in rAddr.TakeWhile(r => r.Address < proc.EndAddress))
             {
-                if (rtl.Address.ToString().EndsWith("1109")) //$DEBUG
+                if (rtl.Address.ToString().EndsWith("000C")) //$DEBUG
                     rtl.Address.ToLinear();
                 HeuristicBlock block;
                 if (blockMap.TryGetValue(rtl.Address, out block))
@@ -223,6 +223,5 @@ namespace Reko.Scanning
                 return GetEnumerator();
             }
         }
-
     }
 }

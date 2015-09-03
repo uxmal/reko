@@ -250,6 +250,7 @@ namespace Reko.Arch.PowerPC
                 instr.Address,
                 string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
             }
+            cluster.Class = RtlClass.Linear;
             emitter.If(
                 new BinaryExpression(
                     op,

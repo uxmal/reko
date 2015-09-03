@@ -397,7 +397,7 @@ namespace Reko
                     scanner.EnqueueUserProcedure(up);
                 }
                 scanner.ScanImage();
-                if (true || //$DEBUG
+                if (false || //$DEBUG
                     program.Options.HeuristicScanning)
                 {
                     eventListener.ShowStatus("Finding machine code using heuristics.");

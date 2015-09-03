@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("100001 01001 00011 1111111111001000");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = (word32) Mem0[r9 - 0x00000038:int16]");
         }
 
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("100101 01011 01101 1111111111111000");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r13 = (word32) Mem0[r11 - 0x00000008:word16]");
         }
 
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("001111 00000 00011 1111111111001000");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = 0xFFC80000");
         }
 
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("001101 00000 00101 1111100000100111");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r5 = 0x0000F827");
         }
 
@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("001000 00000 00010 1111111111111000");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r2 = -8");
         }
 
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("000000 00001 00010 00011 00000 100000");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = r1 + r2");
         }
 
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("001100 00000 00101 0000000000000000");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r5 = 0x00000000");
         }
 
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("000111 00011 00000 1111111111111110");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|if (r3 > 0x00000000) branch 000FFFFC");
         }
 
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("000010 11111111111111111111111111");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|goto 0FFFFFFC");
         }
     }

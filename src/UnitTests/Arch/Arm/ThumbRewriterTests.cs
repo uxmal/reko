@@ -5771,7 +5771,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xE92D, 0x4800); // "push.w\t{fp,lr}"
             AssertCode(
-                "0|00100000(4): 3 instructions",
+                "0|L--|00100000(4): 3 instructions",
                 "1|L--|sp = sp - 8",
                 "2|L--|Mem0[sp + 0:word32] = fp",
                 "3|L--|Mem0[sp + 4:word32] = lr");
@@ -5782,7 +5782,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xE8BD, 0x8800); // pop.w\t{fp,pc}
             AssertCode(
-                "0|00100000(4): 3 instructions",
+                "0|T--|00100000(4): 3 instructions",
                 "1|L--|sp = sp + 8",
                 "2|L--|fp = Mem0[sp - 8:word32]",
                 "3|T--|goto Mem0[sp - 4:word32]");
@@ -5793,7 +5793,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x46EB); // mov\tfp,sp
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|fp = sp");
         }
 
@@ -5802,7 +5802,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xB082); // sub\tsp,#8
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|sp = sp - 8");
         }
 
@@ -5811,7 +5811,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF000, 0xFA06); // bl\t$00100410
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|T--|call 00100410 (0)");
         }
 
@@ -5820,7 +5820,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x9000); // str\tr0,[sp]
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|Mem0[sp:word32] = r0");
         }
 
@@ -5829,7 +5829,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x9B00); // ldr\tr3,[sp]
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|r3 = Mem0[sp:word32]");
         }
 
@@ -5838,7 +5838,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x9801); // ldr\tr0,[sp,#4]
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|r0 = Mem0[sp + 4:word32]");
         }
 
@@ -5847,7 +5847,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xB002); // add\tsp,#8
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|sp = sp + 8");
         }
 
@@ -5856,7 +5856,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF24C, 0x1C00); // movw        r12,#0xC100
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|ip = 0x0000C100");
         }
 
@@ -5865,7 +5865,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF2C0, 0x0C40);  // movt        r12,#0x40
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|ip = DPB(ip, 0x0040, 16, 16)");
         }
 
@@ -5874,7 +5874,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x4760);  // bx          r12
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|T--|00100000(2): 1 instructions",
                 "1|T--|goto ip");
         }
 
@@ -5883,7 +5883,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x4563);  // cmp         r3,r12
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|NZCV = cond(r3 - ip)");
         }
 
@@ -5892,7 +5892,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xD101);  // bne         00401056
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|T--|00100000(2): 1 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100006");
         }
 
@@ -5901,7 +5901,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF02C, 0x0C07);  // bic         r12,r12,#7
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|ip = ip & ~7");
         }
         
@@ -5910,7 +5910,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xA020);  // adr         r0,0040111C
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|r0 = 00100084");
         }
 
@@ -5919,7 +5919,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x0040);  // lsls        r0,r0,#1
             AssertCode(
-                "0|00100000(2): 2 instructions",
+                "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r0 << 1",
                 "2|L--|NZCV = cond(r0)");
         }
@@ -5929,7 +5929,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xDEFE);  // __debugbreak
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|__syscall(0x000000FE)");
         }
 
@@ -5938,7 +5938,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x4798);  // blx         r3
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|T--|00100000(2): 1 instructions",
                 "1|T--|call r3 (0)");
         }
 
@@ -5947,7 +5947,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xC108);  // stm         r1!,{r3}
             AssertCode(
-                "0|00100000(2): 2 instructions",
+                "0|L--|00100000(2): 2 instructions",
                 "1|L--|Mem0[r1 + 0:word32] = r3",
                 "2|L--|r1 = r1 + 4");
         }
@@ -5957,7 +5957,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x7858);  // ldrb        r0,[r3,#1]
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|r0 = (uint32) Mem0[r3 + 1:byte]");
         }
 
@@ -5966,7 +5966,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xB95B);  // cbnz        r3,0040219C)
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|T--|00100000(2): 1 instructions",
                 "1|T--|if (r3 != 0x00000000) branch 0010001A");
         }
 
@@ -5975,7 +5975,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x7013);  // strb        r3,[r2]
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|Mem0[r2:byte] = (byte) r3");
         }
 
@@ -5984,7 +5984,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF06F, 0x0000);  // mvn         r0,#0
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r0 = ~0x00000000");
         }
 
@@ -5994,7 +5994,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xEE1D, 0x3F50);  // mrc         p15,#0,r3,c13,c0,#2
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|mrc(p15, 0x00, r3, c13, c0, 0x02);");
         }
 
@@ -6004,7 +6004,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF3BF, 0x8F5B);  // dmb         ish
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|mrc(p15, 0x00, r3, c13, c0, 0x02);");
         }
 
@@ -6013,7 +6013,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x4000);  // ands        r0,r0,r0
             AssertCode(
-                "0|00100000(2): 2 instructions",
+                "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r0 & r0",
                 "2|L--|NZC = cond(r0)");
         }
@@ -6023,7 +6023,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF013, 0x4F00);  // tst         r3,#0x80000000
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|NZC = cond(r3 & 0x80000000)");
         }
         
@@ -6032,7 +6032,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x4053);  // eors        r3,r3,r2
             AssertCode(
-                "0|00100000(2): 2 instructions",
+                "0|L--|00100000(2): 2 instructions",
                 "1|L--|r3 = r3 ^ r2",
                 "2|L--|NZC = cond(r3)");
         }
@@ -6042,7 +6042,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xB103);  // cbz         r3,00402E50
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|T--|00100000(2): 1 instructions",
                 "1|T--|if (r3 == 0x00000000) branch 00100004");
         }
 
@@ -6051,7 +6051,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x1388);  // asrs        r0,r1,#0xE
             AssertCode(
-                "0|00100000(2): 2 instructions",
+                "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r1 >> 14",
                 "2|L--|NZCV = cond(r0)");
         }
@@ -6061,7 +6061,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF1C4, 0x01F4);   // rsb         r1,r4,#0xF4
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r1 = 244 - r4");
         }
 
@@ -6070,7 +6070,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF991, 0x3000);  // ldrsb       r3,[r1]
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = (int32) Mem0[r1:int8]");
         }
 
@@ -6082,9 +6082,9 @@ namespace Reko.UnitTests.Arch.Arm
                 0x4632,     // movcc       r2,r6
                 0x4632);   // mov       r2,r6
             AssertCode(
-                "0|00100002(2): 1 instructions",
+                "0|L--|00100002(2): 1 instructions",
                 "1|L--|if (Test(ULT,C)) r2 = r6",
-                "2|00100004(2): 1 instructions",
+                "2|L--|00100004(2): 1 instructions",
                 "3|L--|r2 = r6");
         }
 
@@ -6093,7 +6093,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF6AD, 0x6D48);  // sub         sp,sp,#0xE48
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|sp = sp - 3656");
         }
 
@@ -6102,7 +6102,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF60D, 0x2348);  // add         r3,sp,#0xA48
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = sp + 2632");
         }
 
@@ -6111,7 +6111,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x800B);  // strh        r3,[r1]
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|Mem0[r1:word16] = (word16) r3");
         }
 
@@ -6120,7 +6120,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xB2A9);  // uxth        r1,r5
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|r1 = (uint32) (uint16) r5");
         }
 
@@ -6129,7 +6129,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xDEFB);  // __fastfail
             AssertCode(
-                "0|00100000(2): 1 instructions",
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|__syscall(0x000000FB)");
         }
 
@@ -6137,7 +6137,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF812, 0x3F01);  // ldrb        r3,[r2,#1]!
             AssertCode(
-                "0|00100000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|r2 = r2 + 1",
                 "2|L--|r3 = (uint32) Mem0[r2:byte]");
         }
@@ -6147,7 +6147,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF85D, 0xFB0C);  // ldr         pc,[sp],#0xC
             AssertCode(
-                "0|00100000(4): 3 instructions",
+                "0|T--|00100000(4): 3 instructions",
                 "1|L--|v4 = Mem0[sp:word32]",
                 "2|L--|sp = sp + 12",
                 "3|T--|goto v4");
@@ -6157,7 +6157,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF801, 0x0F01);  // strb.w r0, [r1, #1]!
             AssertCode(
-                "0|00100000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1 = r1 + 1",
                 "2|L--|Mem0[r1:byte] = (byte) r0");
         }
@@ -6167,7 +6167,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF802, 0x3B01);  // strb        r3,[r2],#1
             AssertCode(
-                "0|00100000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|Mem0[r2:byte] = (byte) r3",
                 "2|L--|r2 = r2 + 1");
         }
@@ -6177,7 +6177,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xF8DC, 0xF000);  // ldr         pc,[r12]
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|T--|goto Mem0[ip:word32]");
         }
     }

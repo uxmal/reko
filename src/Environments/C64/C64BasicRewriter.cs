@@ -77,6 +77,7 @@ namespace Reko.Environments.C64
         private RtlInstructionCluster GetRtl(C64BasicInstruction line)
         {
             this.cluster = new RtlInstructionCluster(line.Address, 1);
+            this.cluster.Class = RtlClass.Linear;
             this.emitter = new RtlEmitter(cluster.Instructions);
             Debug.Print("{0}", line);
             this.line = line.Line; 
@@ -442,6 +443,7 @@ namespace Reko.Environments.C64
                     ExpectExpr(); //$TODO == what is this for?
                 }
             }
+            cluster.Class = RtlClass.Linear;
             emitter.SideEffect(
                 PseudoProc("__Close", VoidType.Instance,
                 handle));
@@ -471,6 +473,7 @@ namespace Reko.Environments.C64
             {
                 step = Constant.Int32(1);
             }
+            cluster.Class = RtlClass.Linear;
             emitter.SideEffect(PseudoProc("__For", VoidType.Instance,
                 emitter.Out(PrimitiveType.Ptr16, id),
                 start,
@@ -491,6 +494,7 @@ namespace Reko.Environments.C64
             Identifier id;
             if (!GetIdentifier(out id))
                 SyntaxError();
+            cluster.Class = RtlClass.Linear;
             emitter.SideEffect(
                 PseudoProc("__Get",
                 VoidType.Instance,
@@ -503,6 +507,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
+            cluster.Class = RtlClass.Transfer;
             emitter.Call(Address.Ptr16((ushort)lineNumber), 2);
         }
 
@@ -512,6 +517,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
+            cluster.Class = RtlClass.Transfer;
             emitter.Goto(Address.Ptr16((ushort)lineNumber));
         }
 
@@ -530,6 +536,7 @@ namespace Reko.Environments.C64
                 {
                     if (!GetInteger(out lineNumber))
                         SyntaxError();
+                    cluster.Class = RtlClass.ConditionalTransfer;
                     emitter.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
                     return;
                 }
@@ -548,6 +555,7 @@ namespace Reko.Environments.C64
                 int lineNumber;
                 if (!GetInteger(out lineNumber))
                     SyntaxError();
+                cluster.Class = RtlClass.ConditionalTransfer;
                 emitter.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
                 return;
             }
@@ -574,6 +582,7 @@ namespace Reko.Environments.C64
                 emitter.SideEffect(PseudoProc(fnName, VoidType.Instance, str));
             }
             Expression lValue = ExpectLValue();
+            cluster.Class = RtlClass.Linear;
             emitter.SideEffect(PseudoProc("__Input", VoidType.Instance,
                 emitter.Out(PrimitiveType.Ptr16, lValue)));
         }
@@ -584,6 +593,7 @@ namespace Reko.Environments.C64
             EatSpaces();
             Expect((byte)',');
             Expression lValue = ExpectLValue();
+            cluster.Class = RtlClass.Linear;
             emitter.SideEffect(PseudoProc("__InputStm", VoidType.Instance,
                 logFileNo,
                 emitter.Out(PrimitiveType.Ptr16, lValue)));
@@ -735,6 +745,7 @@ namespace Reko.Environments.C64
         
         private void RewriteReturn()
         {
+            cluster.Class = RtlClass.Transfer;
             emitter.Return(2, 0);
         }
 
