@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -196,7 +197,7 @@ namespace Reko.Arch.Z80
             return frame.EnsureFlagGroup((uint) flags, arch.GrfToString((uint) flags), PrimitiveType.Byte);
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

@@ -477,12 +477,39 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
             mr.ReplayAll();
+
             trace.Add(m => m.Goto(m.LoadDw(sp)));
             var wi = CreateWorkItem(Address.Ptr32(0x0100000), arch.CreateProcessorState());
             wi.ProcessInternal();
 
             Assert.AreEqual("goto Mem0[sp:word32]", block.Statements[0].ToString());
+        }
 
+        [Test]
+        public void Bwi_Goto_DelaySlot()
+        {
+            var l00100008 = new Block(proc, "l00100008");
+            var l00100100 = new Block(proc, "l00101000");
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Return(l00100008);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
+            scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
+                .IgnoreArguments()
+                .Return(l00100100);
+            mr.ReplayAll();
+
+            trace.Add(m => m.GotoD(Address.Ptr32(0x0100100)));
+            trace.Add(m => m.Assign(r0, r1));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            wi.ProcessInternal();
+
+            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
+
+            Assert.AreEqual("l00101000", block.Succ[0].Name);
+            mr.VerifyAll();
         }
     }
 }

@@ -112,25 +112,32 @@ namespace Reko.Scanning
 
             while (rtlStream.MoveNext())
             {
-                ric = rtlStream.Current;
-                if (blockCur != scanner.FindContainingBlock(ric.Address))
+                if (!ProcessRtlCluster())
                     break;
-                state.SetInstructionPointer(ric.Address);
-                foreach (var rtlInstr in ric.Instructions)
+            }
+        }
+
+        private bool ProcessRtlCluster()
+        {
+            ric = rtlStream.Current;
+            if (blockCur != scanner.FindContainingBlock(ric.Address))
+                return false; ;  // Fell off the end of this block.
+            state.SetInstructionPointer(ric.Address);
+            foreach (var rtlInstr in ric.Instructions)
+            {
+                ri = rtlInstr;
+                if (!ri.Accept(this))
                 {
-                    ri = rtlInstr;
-                    if (!ri.Accept(this))
-                    {
-                        return;
-                    }
-                }
-                var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
-                if (blNext != null)
-                {
-                    EnsureEdge(blockCur.Procedure, blockCur, blNext);
-                    return;
+                    return false;;
                 }
             }
+            var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
+            if (blNext != null)
+            {
+                EnsureEdge(blockCur.Procedure, blockCur, blNext);
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -303,6 +310,12 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitGoto(RtlGoto g)
         {
+            if ((g.Class & RtlClass.Delay) != 0)
+            {
+                // Get next instruction cluster.
+                rtlStream.MoveNext();
+                ProcessRtlCluster();
+            }
             scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
             var addrTarget = g.Target as Address;
             if (addrTarget != null)

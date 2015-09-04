@@ -477,8 +477,10 @@ namespace Reko.Scanning
             foreach (var block in proc.Cfg.Nodes.OrderBy(n => n.Address))
             {
                 var addrEnd = block.GetEndAddress();
-                Debug.Print("{0}: ", block.Name);
-                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Predecessors(block).OrderBy(n => n.Address)));
+                Debug.Write(string.Format("{0}: ", block.Name));
+                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Predecessors(block)
+                    .OrderBy(n => n.Address)
+                    .Select(n => n.Address)));
                 var sb = new StringBuilder("  ");
                 var rdr = program.CreateImageReader(block.Address);
                 while (rdr.Address < addrEnd)
@@ -486,7 +488,9 @@ namespace Reko.Scanning
                     sb.AppendFormat("{0:X2} ", (int)rdr.ReadByte());
                 }
                 Debug.WriteLine(sb.ToString());
-                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Successors(block).OrderBy(n => n.Address)));
+                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Successors(block)
+                    .OrderBy(n => n.Address)
+                    .Select(n => n.Address)));
             }
         }
     }
