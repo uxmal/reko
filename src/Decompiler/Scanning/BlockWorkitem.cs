@@ -376,6 +376,12 @@ namespace Reko.Scanning
 
         public bool VisitCall(RtlCall call)
         {
+            if ((call.Class & RtlClass.Delay) != 0)
+            {
+                // Get delay slot instruction cluster.
+                rtlStream.MoveNext();
+                ProcessRtlCluster(rtlStream.Current);
+            }
             var site = state.OnBeforeCall(stackReg, call.ReturnAddressSize);
             ProcedureSignature sig;
             Address addr = call.Target as Address;

@@ -557,5 +557,37 @@ testProc_exit:
             Assert.AreEqual(1, blTrue.Succ.Count);
             Assert.AreEqual("l00101000", blTrue.Succ[0].Name);
         }
+
+        [Test]
+        public void Bwi_Call_DelaySlot()
+        {
+            var l00100008 = new Block(proc, "l00100008");
+            var l00100100 = new Block(proc, "l00101000");
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Return(null);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
+            scanner.Stub(s => s.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+            scanner.Stub(s => s.ScanProcedure(null, null, null)).IgnoreArguments().Return(proc);
+            scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
+                .IgnoreArguments()
+                .Return(l00100100);
+            mr.ReplayAll();
+
+            trace.Add(m => m.CallD(Address.Ptr32(0x0100100), 0));
+            trace.Add(m => m.Assign(r0, r1));
+            trace.Add(m => m.Assign(r1, r2));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            wi.ProcessInternal();
+
+            Assert.AreEqual(3, block.Statements.Count);
+            Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
+            Assert.AreEqual("call testProc (retsize: 0;)", block.Statements[1].ToString());
+            Assert.AreEqual("r1 = r2", block.Statements[2].ToString());
+
+            mr.VerifyAll();
+        }
     }
 }
