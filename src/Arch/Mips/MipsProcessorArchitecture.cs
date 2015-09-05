@@ -57,7 +57,7 @@ namespace Reko.Arch.Mips
 
         public override BitSet CreateRegisterBitset()
         {
-            throw new NotImplementedException();
+            return new BitSet(100);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)

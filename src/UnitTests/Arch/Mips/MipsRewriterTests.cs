@@ -265,8 +265,16 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_tge()
         {
             AssertCode(0x00F000F0,  // tge a3,s0,0x3
-                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r9 - 0x000026A8:byte] = (byte) r8");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|if (a3 >= s0) __trap(0x03)");
+        }
+
+        [Test]
+        public void MipsRw_br()
+        {
+            AssertCode(0x1000ffc2,  // b loc_00026e0
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|goto 000FFF0C");
         }
     }
 }

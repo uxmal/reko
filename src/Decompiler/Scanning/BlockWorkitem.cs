@@ -510,6 +510,12 @@ namespace Reko.Scanning
 
         public bool VisitReturn(RtlReturn ret)
         {
+            if ((ret.Class & RtlClass.Delay) != 0)
+            {
+                // Get next instruction cluster from the delay slot.
+                rtlStream.MoveNext();
+                ProcessRtlCluster(rtlStream.Current);
+            }
             var proc = blockCur.Procedure;
             Emit(new ReturnInstruction());
             proc.ControlGraph.AddEdge(blockCur, proc.ExitBlock);

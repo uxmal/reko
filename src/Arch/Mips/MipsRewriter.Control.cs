@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -39,9 +40,19 @@ namespace Reko.Arch.Mips
                 var reg1 = RewriteOperand(instr.op1);
                 var reg2 = RewriteOperand(instr.op2);
                 var addr = (Address)RewriteOperand(instr.op3);
-                var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg1, reg2);
-                cluster.Class = RtlClass.ConditionalTransfer;
-                emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                if (condOp == Operator.Eq && 
+                    ((RegisterOperand)instr.op1).Register ==
+                    ((RegisterOperand)instr.op2).Register)
+                {
+                    cluster.Class = RtlClass.Transfer;
+                    emitter.GotoD(addr);
+                }
+                else
+                {
+                    var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg1, reg2);
+                    cluster.Class = RtlClass.ConditionalTransfer;
+                    emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                }
             }
             else
                 throw new NotImplementedException("Linked branches not implemented yet.");

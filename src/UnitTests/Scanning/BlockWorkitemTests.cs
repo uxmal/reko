@@ -589,5 +589,32 @@ testProc_exit:
 
             mr.VerifyAll();
         }
+
+
+        [Test]
+        public void Bwi_Return_DelaySlot()
+        {
+            var l00100008 = new Block(proc, "l00100008");
+            var l00100100 = new Block(proc, "l00101000");
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
+            scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
+                .IgnoreArguments()
+                .Return(l00100100);
+            scanner.Stub(s => s.SetProcedureReturnAddressBytes(proc, 0, Address.Ptr32(0x100000)));
+            mr.ReplayAll();
+
+            trace.Add(m => m.ReturnD(0, 0));
+            trace.Add(m => m.Assign(r0, r1));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            wi.ProcessInternal();
+
+            Assert.AreEqual(2, block.Statements.Count);
+            Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
+            Assert.AreEqual("return", block.Statements[1].ToString());
+            mr.VerifyAll();
+        }
     }
 }
