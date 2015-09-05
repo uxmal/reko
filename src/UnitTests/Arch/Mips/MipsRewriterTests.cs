@@ -203,5 +203,70 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|T--|00100000(4): 1 instructions",
                 "1|TD-|if (r1 == r16) branch 00100018");
         }
+
+        [Test]
+        public void MipsRw_Nor()
+        {
+            AssertCode(0x01004027, // nor t0,t0,zero	
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = ~r8");
+        }
+
+        [Test]
+        public void MipsRw_jr()
+        {
+            AssertCode(0x01000008,// jr t0	      
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|goto r8");
+        }
+
+        [Test]
+        public void MipsRw_xor()
+        {
+            AssertCode(0x01285026, // xor t2,t1,t0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r10 = r9 ^ r8");
+        }
+
+        [Test]
+        public void MipsRw_jalr()
+        {
+            AssertCode(0x0120f809,  // jalr t1
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|call r9 (0)");
+        }
+
+        [Test]
+        public void MipsRw_sltu()
+        {
+            AssertCode(0x0211402B,  // sltu t0,s0,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = (word32) (r16 <u r17)");
+        }
+
+        [Test]
+        public void MipsRw_jr_returns()
+        {
+            AssertCode(0x03E00008, // jr ra
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|return (0,0)");
+        }
+
+        [Test]
+        public void MipsRw_sb()
+        {
+            AssertCode(0xA128D958, // sb t0,-9896(t1)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r9 - 0x000026A8:byte] = (byte) r8");
+        }
+
+        [Test]
+        [Ignore]
+        public void MipsRw_tge()
+        {
+            AssertCode(0x00F000F0,  // tge a3,s0,0x3
+                 "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r9 - 0x000026A8:byte] = (byte) r8");
+        }
     }
 }

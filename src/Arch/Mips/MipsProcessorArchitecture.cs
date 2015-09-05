@@ -129,7 +129,7 @@ namespace Reko.Arch.Mips
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return Address.TryParse16(txtAddress, out addr);
+            return Address.TryParse32(txtAddress, out addr);
         }
     }
 

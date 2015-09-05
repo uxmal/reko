@@ -111,8 +111,8 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.lwr, "R2,Ew"),
             new AOpRec(Opcode.lwu, "R2,Ew"),
             
-            new AOpRec(Opcode.sb, "R2,EB"),
-            new AOpRec(Opcode.sh, "R2,EH"),
+            new AOpRec(Opcode.sb, "R2,Eb"),
+            new AOpRec(Opcode.sh, "R2,Eh"),
             new AOpRec(Opcode.swl, "R2,Ew"),
             new AOpRec(Opcode.sw, "R2,Ew"),
 
@@ -186,6 +186,9 @@ namespace Reko.Arch.Mips
                     break;
                 case 'E':   // effective address.
                     op = Ea(wInstr, opFmt[++i]);
+                    break;
+                case 'T':   // trap code
+                    op = ImmediateOperand.Word16((ushort)((wInstr >> 6) & 0x03FF));
                     break;
                 }
                 ops.Add(op);

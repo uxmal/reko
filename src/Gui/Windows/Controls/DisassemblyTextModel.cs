@@ -55,7 +55,7 @@ namespace Reko.Gui.Windows.Controls
             var lines = new List<TextSpan[]>();
             if (program.Architecture != null)
             {
-                var dasm = program.CreateDisassembler(position).GetEnumerator();
+                var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
                 while (count != 0 && dasm.MoveNext())
                 {
                     var line = new List<TextSpan>();
@@ -70,6 +70,14 @@ namespace Reko.Gui.Windows.Controls
                 }
             }
             return lines.ToArray();
+        }
+
+        private Address Align(Address addr)
+        {
+            uint byteAlign = (uint)program.Architecture.InstructionBitSize / 8u;
+            ulong linear = addr.ToLinear();
+            var rem = linear % byteAlign;
+            return addr - (int) rem;
         }
 
         private string BuildBytes(MachineInstruction instr)

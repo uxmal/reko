@@ -44,6 +44,7 @@
     <Compile Include="MipsInstruction.cs" />
     <Compile Include="MipsProcessorArchitecture.cs" />
     <Compile Include="MipsProcessorState.cs" />
+    <Compile Include="MipsRewriter.Alu.cs" />
     <Compile Include="MipsRewriter.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="OpRec.cs" />
@@ -55,6 +56,9 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MipsRewriter.Control.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
