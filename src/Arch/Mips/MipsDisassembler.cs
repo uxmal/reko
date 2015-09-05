@@ -47,13 +47,16 @@ namespace Reko.Arch.Mips
         {
             if (!rdr.IsValid)
                 return null; 
-            this.addr = rdr.Address; 
+            this.addr = rdr.Address;
+            if (addr.ToString().EndsWith("CC8"))    //$DEBUG
+                addr.ToLinear();
             var wInstr = rdr.ReadUInt32();
             var opRec = opRecs[wInstr >> 26];
             Debug.Print("Decoding {0:X8} => oprec {1} {2}", wInstr, wInstr >> 26, opRec == null ? "(null!)" : "");
             if (opRec == null)
-                throw new NotImplementedException((wInstr >> 26).ToString());    //$REVIEW: remove this when all oprecs are in place.
-            instrCur = opRec.Decode(wInstr, this);
+                instrCur = new MipsInstruction { opcode = Opcode.illegal };
+            else 
+                instrCur = opRec.Decode(wInstr, this);
             instrCur.Address = this.addr;
             instrCur.Length = 4;
             return instrCur;
@@ -101,7 +104,7 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.lb, "R2,EB"),
             new AOpRec(Opcode.lh, "R2,EH"),
             new AOpRec(Opcode.lwl, "R2,Ew"),
-            new AOpRec(Opcode.lw, "R2,EW"),
+            new AOpRec(Opcode.lw, "R2,Ew"),
                               
             new AOpRec(Opcode.lbu, "R2,Eb"),
             new AOpRec(Opcode.lhu, "R2,Eh"),
@@ -111,7 +114,7 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.sb, "R2,EB"),
             new AOpRec(Opcode.sh, "R2,EH"),
             new AOpRec(Opcode.swl, "R2,Ew"),
-            new AOpRec(Opcode.sw, "R2,EW"),
+            new AOpRec(Opcode.sw, "R2,Ew"),
 
             new AOpRec(Opcode.sdl, "R2,Ew"),
             new AOpRec(Opcode.sdr, "R2,Ew"),

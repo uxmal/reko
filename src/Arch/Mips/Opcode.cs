@@ -27,7 +27,7 @@ namespace Reko.Arch.Mips
 {
     public enum Opcode
     {
-        None,
+        illegal,
 
         add,
         addi,
@@ -121,5 +121,14 @@ namespace Reko.Arch.Mips
         swu,
         xor,
         xori,
+        sub,
+        subu,
+        sync,
+        syscall,
+        srl,
+        sra,
+        sllv,
+        srlv,
+        srav,
     }
 }

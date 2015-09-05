@@ -140,6 +140,7 @@ namespace Reko.Arch.PowerPC
             emitter.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
+
         private void RewriteAndis()
         {
             var opD = RewriteOperand(instr.op1);

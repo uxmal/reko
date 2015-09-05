@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -45,6 +46,26 @@ namespace Reko.UnitTests.Arch.Mips
                 .SelectMany(u => new byte[] { (byte) (u >> 24), (byte) (u >> 16), (byte) (u >> 8), (byte) u })
                 .ToArray();
             dasm = new MipsDisassembler(arch, new BeImageReader(new LoadedImage(Address.Ptr32(0x00100000), bytes), 0));
+        }
+
+        private void AssertCode(uint instr, params string[] sExp)
+        {
+            Rewrite(instr);
+            AssertCode(sExp);
+        }
+
+        protected override LoadedImage RewriteCode(uint[] words)
+        {
+            byte[] bytes = words.SelectMany(w => new byte[]
+            {
+                (byte) (w >> 24),
+                (byte) (w >> 16),
+                (byte) (w >> 8),
+                (byte) w
+            }).ToArray();
+            var image = new LoadedImage(LoadAddress, bytes);
+            dasm = new MipsDisassembler(arch, image.CreateBeReader(LoadAddress));
+            return image;
         }
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
@@ -131,6 +152,56 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|TD-|goto 0FFFFFFC");
+        }
+
+        [Test]
+        public void MipsRw_sw()
+        {
+            AssertCode(0xAFBF0020,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp + 0x00000020:word32] = ra");
+        }
+
+        [Test]
+        public void MipsRw_jal()
+        {
+            AssertCode(0x0C009B2C,
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|call 00026CB0 (0)");
+        }
+
+        [Test]
+        public void MipsRw_srl()
+        {
+            AssertCode(0x00024c02,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r9 = r2 >>u 0x10");
+        }
+
+        [Test]
+        public void MipsRw_nop()
+        {
+            AssertCode(0x00000000,
+                "0|L--|00100000(4): 0 instructions");
+        }
+
+        [Test]
+        public void MipsRw_lw()
+        {
+            AssertCode(0x8fb30010,   // lw s3,16(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r19 = Mem0[sp + 0x00000010:word32]");
+            AssertCode(0x8fb3FFF0,   // lw s3,16(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r19 = Mem0[sp - 0x00000010:word32]");
+        }
+
+        [Test]
+        public void MipsRw_beq()
+        {
+            AssertCode(0x10300005,
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|if (r1 == r16) branch 00100018");
         }
     }
 }

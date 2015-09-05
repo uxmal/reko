@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_jr()
         {
             var instr = DisassembleBits("000000 01001 00000 11111 00000 001001");
-            Assert.AreEqual("jalr\tr31,r9", instr.ToString());
+            Assert.AreEqual("jalr\tra,r9", instr.ToString());
             instr = DisassembleBits("000000 01001 000000000000000 001000");
             Assert.AreEqual("jr\tr9", instr.ToString());
         }
@@ -406,6 +406,13 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x0144402B);
             Assert.AreEqual("sltu\tr8,r10,r4", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_sllv()
+        {
+            var instr = DisassembleWord(0x01011004);
+            Assert.AreEqual("sllv\tr2,r1,r8", instr.ToString());
         }
     }
 }
