@@ -327,8 +327,7 @@ namespace Reko.Scanning
                         isValid = true;
                         break;
                     }
-                    var lastInstr = instr.Instructions.Last();
-                    if (NonLocalTransferInstruction())
+                    if (NonLocalTransferInstruction(instr))
                     {
                         isValid = true;
                         break;
@@ -359,16 +358,32 @@ namespace Reko.Scanning
 
         private IEnumerable<RtlInstructionCluster> CreateRewriter(Address addr)
         {
-            return program.Architecture.CreateRewriter(
+            var rw = program.Architecture.CreateRewriter(
                 program.CreateImageReader(addr),
                 program.Architecture.CreateProcessorState(),
                 program.Architecture.CreateFrame(),
                 host);
+            return new RobustRewriter(rw, program.Architecture.InstructionBitSize / 8);
         }
 
-        private bool NonLocalTransferInstruction()
+        private bool NonLocalTransferInstruction(RtlInstructionCluster cluster)
         {
-            throw new NotImplementedException();
+            if (cluster.Class == RtlClass.Linear)
+                return false;
+            var last = cluster.Instructions.Last();
+            if (last is RtlCall)
+                return true;
+            var rtlGoto = last as RtlGoto;
+            if (rtlGoto != null)
+            {
+                Address target;
+                if (rtlGoto.Target.As<Address>(out target))
+                {
+                    return !(proc.BeginAddress <= target && target < proc.EndAddress);
+                }
+                return true;
+            }
+            return true;
         }
 
         // Block conflict resolution

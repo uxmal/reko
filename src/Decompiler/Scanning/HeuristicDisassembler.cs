@@ -67,8 +67,6 @@ namespace Reko.Scanning
             var rAddr = new RobustRewriter(rrAddr, program.Architecture.InstructionBitSize / 8);
             foreach (var rtl in rAddr.TakeWhile(r => r.Address < proc.EndAddress))
             {
-                if (rtl.Address.ToString().EndsWith("000C")) //$DEBUG
-                    rtl.Address.ToLinear();
                 HeuristicBlock block;
                 if (blockMap.TryGetValue(rtl.Address, out block))
                 {
@@ -155,8 +153,6 @@ namespace Reko.Scanning
 
         private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr)
         {
-            if (addr.ToString().EndsWith("101E")) //$DEBUG
-                addr.ToString();
             var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
             proc.Cfg.Nodes.Add(newBlock);
             newBlock.Statements.AddRange(
@@ -174,54 +170,6 @@ namespace Reko.Scanning
             }
             proc.Cfg.AddEdge(block, newBlock);
             return newBlock;
-        }
-
-        /// <summary>
-        /// Rewriter that yields invalid instructions when encountered, rather
-        /// than throwing.
-        /// </summary>
-        public class RobustRewriter : IEnumerable<RtlInstructionCluster>
-        {
-            private IEnumerable<RtlInstructionCluster> inner;
-            private int granularity;
-
-            public RobustRewriter(IEnumerable<RtlInstructionCluster> inner, int granularity)
-            {
-                this.inner = inner;
-                this.granularity = granularity;
-            }
-
-            public IEnumerator<RtlInstructionCluster> GetEnumerator()
-            {
-                var e = inner.GetEnumerator();
-                for (; ; )
-                {
-                    bool cont = false;
-                    RtlInstructionCluster rtl = null;
-                    try
-                    {
-                        cont = e.MoveNext();
-                        if (e != null)
-                            rtl = e.Current;
-                    }
-                    catch (AddressCorrelatedException aex)
-                    {
-                        cont = false;
-                        rtl = new RtlInstructionCluster(aex.Address, granularity,
-                            new RtlInvalid());
-                        rtl.Class = RtlClass.Invalid;
-                    }
-                    if (rtl != null)
-                        yield return rtl;
-                    if (!cont)
-                        yield break;
-                }
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
     }
 }

@@ -48,12 +48,14 @@ namespace Reko.Arch.Mips
             if (!rdr.IsValid)
                 return null; 
             this.addr = rdr.Address; 
-            var wInstr = rdr.ReadBeUInt32();
+            var wInstr = rdr.ReadUInt32();
             var opRec = opRecs[wInstr >> 26];
             Debug.Print("Decoding {0:X8} => oprec {1} {2}", wInstr, wInstr >> 26, opRec == null ? "(null!)" : "");
             if (opRec == null)
                 throw new NotImplementedException((wInstr >> 26).ToString());    //$REVIEW: remove this when all oprecs are in place.
             instrCur = opRec.Decode(wInstr, this);
+            instrCur.Address = this.addr;
+            instrCur.Length = 4;
             return instrCur;
         }
 

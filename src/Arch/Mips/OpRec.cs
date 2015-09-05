@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,12 +50,32 @@ namespace Reko.Arch.Mips
         }
     }
 
+    class SllOprec : AOpRec
+    {
+        public SllOprec(Opcode opcode, string format) : base(opcode, format) { }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            var instr = base.Decode(wInstr, dasm);
+            var imm = instr.op3 as ImmediateOperand;
+            if (imm != null && imm.Value.IsIntegerZero)
+                return new MipsInstruction {
+                    Address = instr.Address,
+                    Length = instr.Length,
+                    opcode = Opcode.nop };
+            else
+                return instr;
+        }
+    }
     class SpecialOpRec : OpRec
     {
         private static OpRec[] specialOpRecs = new OpRec[] 
         {
+            new SllOprec(Opcode.sll, "R3,R1,s"),
+            null, null, null,
+ 
             null, null, null, null, 
-            null, null, null, null, 
+
             new AOpRec(Opcode.jr, "R1"),
             new AOpRec(Opcode.jalr, "R3,R1"),
             new AOpRec(Opcode.movz, "R3,R1,R2"),
@@ -91,7 +112,8 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.xor, "R3,R1,R2"),
             new AOpRec(Opcode.nor, "R3,R1,R2"),
  
-            null, null, null, null, 
+            null, null, null,
+            new AOpRec(Opcode.sltu, "R3,R1,R2"),
             new AOpRec(Opcode.dadd, "R3,R1,R2"),
             new AOpRec(Opcode.daddu, "R3,R1,R2"),
             new AOpRec(Opcode.dsub, "R3,R1,R2"),

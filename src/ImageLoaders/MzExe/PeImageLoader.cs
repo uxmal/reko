@@ -58,8 +58,9 @@ namespace Reko.ImageLoaders.MzExe
         private Dictionary<Address, ImportReference> importReferences;
 		private const ushort MACHINE_i386 = (ushort) 0x014C;
         private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
-        private const ushort MACHINE_ARMNT = (ushort)0x1C4;
-		private const short ImageFileRelocationsStripped = 0x0001;
+        private const ushort MACHINE_ARMNT = (ushort)0x01C4;
+        private const ushort MACHINE_R4000 = (ushort)0x0166;
+        private const short ImageFileRelocationsStripped = 0x0001;
 		private const short ImageFileExecutable = 0x0002;
 
 		public PeImageLoader(IServiceProvider services, string filename, byte [] img, uint peOffset) : base(services, filename, img)
@@ -127,6 +128,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_ARMNT: arch = "arm-thumb"; break;
             case MACHINE_i386: arch = "x86-protected-32"; break;
             case MACHINE_x86_64: arch = "x86-protected-64"; break;
+            case MACHINE_R4000: arch = "mips-le-32"; break;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
             return cfgSvc.GetArchitecture(arch);
@@ -140,6 +142,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_ARMNT: env= "winArm"; break;
             case MACHINE_i386: env = "win32"; break;
             case MACHINE_x86_64: env = "win64"; break;
+            case MACHINE_R4000: env = "win32"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
             return (Win32Platform) Services.RequireService<IConfigurationService>()
@@ -153,6 +156,7 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ARMNT:
             case MACHINE_i386: 
+            case MACHINE_R4000:
                 return new Pe32Loader(this);
             case MACHINE_x86_64: return new Pe64Loader(this);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
@@ -164,7 +168,8 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ARMNT:
-            case MACHINE_i386: 
+            case MACHINE_i386:
+            case MACHINE_R4000: 
                 return 0x010B;
             case MACHINE_x86_64: return 0x020B;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));

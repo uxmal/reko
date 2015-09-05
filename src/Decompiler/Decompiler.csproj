@@ -260,6 +260,7 @@
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
+    <Compile Include="Scanning\RobustRewriter.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Scanning\ProcedureWorkItem.cs" />

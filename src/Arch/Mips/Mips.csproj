@@ -43,6 +43,7 @@
     <Compile Include="MipsDisassembler.cs" />
     <Compile Include="MipsInstruction.cs" />
     <Compile Include="MipsProcessorArchitecture.cs" />
+    <Compile Include="MipsProcessorState.cs" />
     <Compile Include="MipsRewriter.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="OpRec.cs" />

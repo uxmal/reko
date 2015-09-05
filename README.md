@@ -1,8 +1,8 @@
 # reko - a general purpose decompiler.
 
 **Reko** (Swedish: "decent, obliging") is a C# project containing 
-a decompiler for machine code binaries.  This project is freely a
-vailable under the GNU General Public License.
+a decompiler for machine code binaries.  This project is freely 
+available under the GNU General Public License.
 
 The project consists of front ends, core decompiler engine, and back
 ends to help it achieve its goals.  A command-line, a Windows GUI,

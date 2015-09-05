@@ -30,7 +30,7 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.Mips
 {
-    public class MipsProcessorArchitecture : ProcessorArchitecture
+    public abstract class MipsProcessorArchitecture : ProcessorArchitecture
     {
         public MipsProcessorArchitecture()
         {
@@ -52,7 +52,7 @@ namespace Reko.Arch.Mips
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new MipsProcessorState(this);
         }
 
         public override BitSet CreateRegisterBitset()
@@ -62,7 +62,11 @@ namespace Reko.Arch.Mips
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new MipsRewriter(
+                this,
+                new MipsDisassembler(this, rdr),
+                frame,
+                host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -70,15 +74,6 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
 
         public override RegisterStorage GetRegister(int i)
         {
@@ -135,6 +130,32 @@ namespace Reko.Arch.Mips
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
+        }
+    }
+
+    public class MipsBe32Architecture : MipsProcessorArchitecture
+    {
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new BeImageReader(image, addr);
+        }
+
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new BeImageReader(image, offset);
+        }
+    }
+
+    public class MipsLe32Architecture : MipsProcessorArchitecture
+    {
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new LeImageReader(image, offset);
         }
     }
 }

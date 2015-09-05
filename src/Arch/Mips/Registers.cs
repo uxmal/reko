@@ -59,9 +59,9 @@ namespace Reko.Arch.Mips
         public readonly static RegisterStorage r26 = new RegisterStorage("r26", 26, PrimitiveType.Word32);
         public readonly static RegisterStorage r27 = new RegisterStorage("r27", 27, PrimitiveType.Word32);
         public readonly static RegisterStorage r28 = new RegisterStorage("r28", 28, PrimitiveType.Word32);
-        public readonly static RegisterStorage r29 = new RegisterStorage("r29", 29, PrimitiveType.Word32);
+        public readonly static RegisterStorage sp = new RegisterStorage("sp", 29, PrimitiveType.Word32);
         public readonly static RegisterStorage r30 = new RegisterStorage("r30", 30, PrimitiveType.Word32);
-        public readonly static RegisterStorage r31 = new RegisterStorage("r31", 31, PrimitiveType.Word32);
+        public readonly static RegisterStorage ra = new RegisterStorage("ra", 31, PrimitiveType.Word32);
 
         public readonly static RegisterStorage hi = new RegisterStorage("hi", 32, PrimitiveType.Word32);
         public readonly static RegisterStorage lo = new RegisterStorage("lo", 33, PrimitiveType.Word32);
@@ -130,9 +130,9 @@ namespace Reko.Arch.Mips
             r26,
             r27,
             r28,
-            r29,
+            sp,
             r30,
-            r31,
+            ra,
 
             hi,
             lo,

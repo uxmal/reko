@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MipsRewriterTests : RewriterTestBase
     {
-        static MipsProcessorArchitecture arch = new MipsProcessorArchitecture();
+        static MipsProcessorArchitecture arch = new MipsBe32Architecture();
         private MipsDisassembler dasm;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
