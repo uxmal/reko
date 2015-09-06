@@ -242,9 +242,13 @@ namespace Reko.Core
         public short PeekLeInt16(uint offset) { return (short)LoadedImage.ReadLeUInt16(bytes, offset + (uint) off); }
         public short PeekBeInt16(uint offset) { return (short)LoadedImage.ReadBeUInt16(bytes, offset + (uint) off); }
 
-        public bool TryPeekByte(uint offset, out byte value) { return LoadedImage.TryReadByte(bytes, offset + (uint)off, out value); }
-        public bool TryPeekBeUInt16(uint offset, out ushort value) { return LoadedImage.TryReadBeUInt16(bytes, offset + (uint)off, out value); }
-        public bool TryPeekBeUInt32(uint offset, out uint value) { return LoadedImage.TryReadBeUInt32(bytes, offset + (uint)off, out value); }
+        public bool TryPeekByte(int offset, out byte value) { return LoadedImage.TryReadByte(bytes, (ulong)((long)offset + (long)off), out value); }
+        public bool TryPeekBeUInt16(int offset, out ushort value) { return LoadedImage.TryReadBeUInt16(bytes, (ulong)((long)offset + (long)off), out value); }
+        public bool TryPeekBeUInt32(int offset, out uint value) { return LoadedImage.TryReadBeUInt32(bytes, (ulong)((long)offset + (long)off), out value); }
+
+        public bool TryPeekLeUInt32(int offset, out uint value) { return LoadedImage.TryReadLeUInt32(bytes, (ulong)((long)offset + (long)off), out value); }
+
+        public abstract bool TryPeekUInt32(int offset, out uint value);
         
         public uint ReadLeUInt32()
         {
@@ -435,6 +439,8 @@ namespace Reko.Core
         {
             throw new NotImplementedException();
         }
+
+  
     }
 
     /// <summary>
@@ -462,6 +468,8 @@ namespace Reko.Core
         public override ushort ReadUInt16() { return ReadLeUInt16(); }
         public override uint ReadUInt32() { return ReadLeUInt32(); }
         public override ulong ReadUInt64() { return ReadLeUInt64(); }
+        public override bool TryPeekUInt32(int offset, out uint value) { return TryPeekLeUInt32(offset, out value); }
+
         public override bool TryReadInt32(out int i32) { return TryReadLeInt32(out i32); }
         public override bool TryReadInt64(out long value) { return TryReadLeInt64(out value); }
         public override bool TryReadUInt16(out ushort value) { return TryReadLeUInt16(out value); }
@@ -503,6 +511,7 @@ namespace Reko.Core
         public override ushort ReadUInt16() { return ReadBeUInt16(); }
         public override uint ReadUInt32() { return ReadBeUInt32(); }
         public override ulong ReadUInt64() { return ReadBeUInt64(); }
+        public override bool TryPeekUInt32(int offset, out uint value) { return TryPeekBeUInt32(offset, out value); }
         public override bool TryReadInt32(out int i32) { return TryReadBeInt32(out i32); }
         public override bool TryReadInt64(out long value) { return TryReadBeInt64(out value); }
         public override bool TryReadUInt16(out ushort ui16) { return TryReadBeUInt16(out ui16); }

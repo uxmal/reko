@@ -379,9 +379,9 @@ namespace Reko.Core
             }
         }
 
-        public static bool TryReadBeUInt32(byte[] abImage, uint off, out uint value)
+        public static bool TryReadBeUInt32(byte[] abImage, ulong off, out uint value)
         {
-            if (off <= abImage.Length - 4)
+            if ((long)off <= abImage.Length - 4)
             {
                 value =
                     ((uint)abImage[off] << 24) |

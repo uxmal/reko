@@ -84,6 +84,7 @@
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
+    <Compile Include="Arch\Mips\MipsPointerScannerTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
