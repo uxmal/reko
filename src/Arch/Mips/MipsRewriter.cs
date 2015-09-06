@@ -115,8 +115,8 @@ namespace Reko.Arch.Mips
                 case Opcode.daddu:
                 case Opcode.ddiv:
                 case Opcode.ddivu:
-                case Opcode.div:
-                case Opcode.divu:
+                case Opcode.div: RewriteDiv(instr, emitter.SDiv); break;
+                case Opcode.divu: RewriteDiv(instr, emitter.UDiv); break;
                 case Opcode.dmult:
                 case Opcode.dmultu:
                 case Opcode.dsll:
@@ -141,6 +141,7 @@ namespace Reko.Arch.Mips
                     RewriteJr(instr); break;
                 case Opcode.lb:
                 case Opcode.lbu:
+                    RewriteLoad(instr); break;
                 case Opcode.ld:
                 case Opcode.ldl:
                 case Opcode.ldr:
@@ -173,23 +174,25 @@ namespace Reko.Arch.Mips
                 case Opcode.ori:
                     RewriteOr(instr); break;
                 case Opcode.pref:
-                case Opcode.sb: 
-                    RewriteStore(instr); break;
+                    goto default;
+                case Opcode.sb: RewriteStore(instr); break;
                 case Opcode.sc:
                 case Opcode.scd:
                 case Opcode.sd:
                 case Opcode.sdl:
                 case Opcode.sdr:
-                case Opcode.sh:
                     goto default;
-                case Opcode.sll:
-                    RewriteSll(instr); break;
-                case Opcode.slti:
-                case Opcode.sltiu:
-                    goto default;
+                case Opcode.sh: RewriteStore(instr); break;
+                case Opcode.sll: RewriteSll(instr); break;
+                case Opcode.slt: RewriteSxx(instr, Operator.Lt); break;
+                case Opcode.slti: RewriteSxx(instr, Operator.Lt); break;
+                case Opcode.sltiu: RewriteSxx(instr, Operator.Ult); break;
                 case Opcode.sltu: RewriteSxx(instr, Operator.Ult); break;
-                case Opcode.srl:
-                    RewriteSrl(instr); break;
+                case Opcode.sra: RewriteSra(instr); break;
+                case Opcode.srl: RewriteSrl(instr); break;
+                case Opcode.sub:
+                case Opcode.subu:
+                    RewriteSub(instr); break;
                 case Opcode.sw:
                     RewriteStore(instr); break;
                 case Opcode.swl:
@@ -208,7 +211,6 @@ namespace Reko.Arch.Mips
             return GetEnumerator();
         }
 
-
         //$REVIEW: push PseudoProc into the RewriterHost interface"
         public Expression PseudoProc(string name, DataType retType, params Expression[] args)
         {
@@ -226,55 +228,6 @@ namespace Reko.Arch.Mips
                     args.Length));
 
             return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
-        }
-
-
-        private void RewriteLoad(MipsInstruction instr)
-        {
-            var opSrc = RewriteOperand(instr.op2);
-            var opDst = RewriteOperand(instr.op1);
-            if (opDst.DataType.Size != opSrc.DataType.Size)
-                opSrc = emitter.Cast(arch.WordWidth, opSrc);
-            emitter.Assign(opDst, opSrc);
-        }
-
-        private void RewriteLui(MipsInstruction instr)
-        {
-            var immOp = (ImmediateOperand)instr.op2;
-            long v = immOp.Value.ToInt16();
-            var opSrc = Constant.Create(arch.WordWidth, v << 16);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, opSrc);
-        }
-
-        private void RewriteAdd(MipsInstruction instr, PrimitiveType size)
-        {
-            var opLeft = RewriteOperand(instr.op2);
-            var opRight = RewriteOperand(instr.op3);
-            Expression opSrc;
-            if (opLeft.IsZero)
-                opSrc = opRight;
-            else if (opRight.IsZero)
-                opSrc = opLeft;
-            else
-                opSrc = emitter.IAdd(opLeft, opRight);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, opSrc);
-        }
-
-        private void RewriteAnd(MipsInstruction instr)
-        {
-            var opLeft = RewriteOperand(instr.op2);
-            var opRight = RewriteOperand(instr.op3);
-            Expression opSrc;
-            if (opLeft.IsZero)
-                opSrc = opLeft;
-            else if (opRight.IsZero)
-                opSrc = opRight;
-            else
-                opSrc = emitter.IAdd(opLeft, opRight);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, opSrc);
         }
 
         private Expression RewriteOperand(MachineOperand op)

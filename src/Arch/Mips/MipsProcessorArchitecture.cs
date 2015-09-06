@@ -38,6 +38,7 @@ namespace Reko.Arch.Mips
             this.PointerType = PrimitiveType.Word32;
             this.FramePointerType = PrimitiveType.Word32;
             this.InstructionBitSize = 32;
+            this.StackRegister = Registers.sp;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
@@ -120,12 +121,10 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-
         public override string GrfToString(uint grf)
         {
             throw new NotImplementedException();
         }
-
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {

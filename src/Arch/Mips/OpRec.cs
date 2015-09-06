@@ -148,7 +148,7 @@ namespace Reko.Arch.Mips
         {
             Debug.Assert(specialOpRecs.Length == 64, specialOpRecs.Length.ToString());
             var opRec = specialOpRecs[wInstr & 0x3F];
-            Debug.Print("  SpecialOpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
+            // Debug.Print("  SpecialOpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
             return opRec.Decode(wInstr, dasm);
         }
     }

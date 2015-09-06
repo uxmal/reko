@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.Mips
         private void RunTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
-                .SelectMany(u => new byte[] { (byte) (u >> 24), (byte) (u >> 16), (byte) (u >> 8), (byte) u })
+                .SelectMany(u => new byte[] { (byte)(u >> 24), (byte)(u >> 16), (byte)(u >> 8), (byte)u })
                 .ToArray();
             dasm = new MipsDisassembler(arch, new BeImageReader(new LoadedImage(Address.Ptr32(0x00100000), bytes), 0));
         }
@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jr()
         {
             AssertCode(0x01000008,// jr t0	      
-                "0|T--|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|goto r8");
         }
 
@@ -224,7 +224,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_xor()
         {
             AssertCode(0x01285026, // xor t2,t1,t0
-                "0|L--|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r10 = r9 ^ r8");
         }
 
@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jalr()
         {
             AssertCode(0x0120f809,  // jalr t1
-                "0|T--|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|call r9 (0)");
         }
 
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_sltu()
         {
             AssertCode(0x0211402B,  // sltu t0,s0,s1
-                "0|L--|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r8 = (word32) (r16 <u r17)");
         }
 
@@ -248,7 +248,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jr_returns()
         {
             AssertCode(0x03E00008, // jr ra
-                "0|T--|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|return (0,0)");
         }
 
@@ -275,6 +275,14 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x1000ffc2,  // b loc_00026e0
                 "0|T--|00100000(4): 1 instructions",
                 "1|TD-|goto 000FFF0C");
+        }
+
+        [Test]
+        public void MipsRw_slti()
+        {
+            AssertCode(0x29690070,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r9 = (word32) (r11 < 112)");
         }
     }
 }

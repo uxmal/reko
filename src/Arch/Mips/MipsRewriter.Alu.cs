@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
@@ -30,6 +31,65 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
+        private void RewriteAdd(MipsInstruction instr, PrimitiveType size)
+        {
+            var opLeft = RewriteOperand(instr.op2);
+            var opRight = RewriteOperand(instr.op3);
+            Expression opSrc;
+            if (opLeft.IsZero)
+                opSrc = opRight;
+            else if (opRight.IsZero)
+                opSrc = opLeft;
+            else
+                opSrc = emitter.IAdd(opLeft, opRight);
+            var opDst = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, opSrc);
+        }
+
+        private void RewriteAnd(MipsInstruction instr)
+        {
+            var opLeft = RewriteOperand(instr.op2);
+            var opRight = RewriteOperand(instr.op3);
+            Expression opSrc;
+            if (opLeft.IsZero)
+                opSrc = opLeft;
+            else if (opRight.IsZero)
+                opSrc = opRight;
+            else
+                opSrc = emitter.IAdd(opLeft, opRight);
+            var opDst = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, opSrc);
+        }
+
+        private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        {
+            var hi = frame.EnsureRegister(Registers.hi);
+            var lo = frame.EnsureRegister(Registers.lo);
+            var opLeft = RewriteOperand(instr.op1);
+            var opRight = RewriteOperand(instr.op2);
+            emitter.Assign(lo, ctor(opLeft, opRight));
+            emitter.Assign(hi, emitter.Mod(opLeft, opRight));
+        }
+
+
+        private void RewriteLoad(MipsInstruction instr)
+        {
+            var opSrc = RewriteOperand(instr.op2);
+            var opDst = RewriteOperand(instr.op1);
+            if (opDst.DataType.Size != opSrc.DataType.Size)
+                opSrc = emitter.Cast(arch.WordWidth, opSrc);
+            emitter.Assign(opDst, opSrc);
+        }
+
+        private void RewriteLui(MipsInstruction instr)
+        {
+            var immOp = (ImmediateOperand)instr.op2;
+            long v = immOp.Value.ToInt16();
+            var opSrc = Constant.Create(arch.WordWidth, v << 16);
+            var opDst = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, opSrc);
+        }
+
         private void RewriteNor(MipsInstruction instr)
         {
             var opLeft = RewriteOperand(instr.op2);
@@ -68,6 +128,14 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, emitter.Shl(opSrc, opShift));
         }
 
+        private void RewriteSra(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand(instr.op1);
+            var opSrc = RewriteOperand(instr.op2);
+            var opShift = RewriteOperand(instr.op3);
+            emitter.Assign(opDst, emitter.Shr(opSrc, opShift));
+        }
+
         private void RewriteSrl(MipsInstruction instr)
         {
             var opDst = RewriteOperand(instr.op1);
@@ -83,6 +151,14 @@ namespace Reko.Arch.Mips
             if (opDst.DataType.Size < opSrc.DataType.Size)
                 opSrc = emitter.Cast(opDst.DataType, opSrc);
             emitter.Assign(opDst, opSrc);
+        }
+
+        private void RewriteSub(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand(instr.op1);
+            var opSrc = RewriteOperand(instr.op2);
+            var opShift = RewriteOperand(instr.op3);
+            emitter.Assign(opDst, emitter.ISub(opSrc, opShift));
         }
 
         private void RewriteSxx(MipsInstruction instr, Operator op)

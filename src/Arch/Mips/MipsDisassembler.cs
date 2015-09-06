@@ -48,11 +48,16 @@ namespace Reko.Arch.Mips
             if (!rdr.IsValid)
                 return null; 
             this.addr = rdr.Address;
-            if (addr.ToString().EndsWith("CC8"))    //$DEBUG
-                addr.ToLinear();
-            var wInstr = rdr.ReadUInt32();
-            var opRec = opRecs[wInstr >> 26];
-            Debug.Print("Decoding {0:X8} => oprec {1} {2}", wInstr, wInstr >> 26, opRec == null ? "(null!)" : "");
+            OpRec opRec;
+            uint wInstr;
+            if (rdr.TryReadUInt32(out wInstr))
+            {
+                opRec = opRecs[wInstr >> 26];
+            }
+            else
+            {
+                opRec = null;
+            }
             if (opRec == null)
                 instrCur = new MipsInstruction { opcode = Opcode.illegal };
             else 
