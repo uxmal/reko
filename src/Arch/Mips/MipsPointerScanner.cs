@@ -48,7 +48,7 @@ namespace Reko.Arch.Mips
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
         {
-            if ((opcode & 0xFC00000) == 0x0C000000 // JAL
+            if ((opcode & 0xFC000000) == 0x0C000000 // JAL
                 &&
                 rdr.IsValidOffset(rdr.Offset + 4u))
             {
@@ -62,31 +62,23 @@ namespace Reko.Arch.Mips
 
         public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
         {
-            if (opcode == 0xE9 // JMP NEAR
+            if ((opcode & 0xFC000000) == 0x08000000  // J - far jump
                 &&
-                rdr.IsValidOffset(rdr.Offset + 5u))
+                rdr.IsValidOffset(rdr.Offset + 4u))
             {
-                int callOffset = rdr.PeekLeInt32(1);
-                target = (uint)(callOffset + (int)rdr.Address.ToLinear() + 5);
+                var off = (opcode & 0x03FFFFFF) << 2;
+                target = (((uint)rdr.Address.ToLinear() + 4) & 0xF0000000u) | off;
                 return true;
             }
-            if (0x70 <= opcode && opcode <= 0x7F &&       // short branch.
-                rdr.IsValidOffset(rdr.Offset + 1u))
+
+            if ((opcode & 0xF0000000) == 0x10000000  // b** - far jump
+                &&
+                rdr.IsValidOffset(rdr.Offset + 4u))
             {
-                sbyte callOffset = rdr.PeekSByte(1);
-                target = (uint)((int)rdr.Address.ToLinear() + callOffset + 2);
+                int off = (short) opcode;
+                off <<= 2;
+                target = (uint)(((int)rdr.Address.ToLinear() + 4) + off);
                 return true;
-            }
-            if (opcode == 0x0F && rdr.IsValidOffset(rdr.Offset + 5u))
-            {
-                opcode = rdr.PeekByte(1);
-                int callOffset = rdr.PeekLeInt32(2);
-                uint linAddr = (uint)rdr.Address.ToLinear();
-                if (0x80 <= opcode && opcode <= 0x8F)   // long branch
-                {
-                    target = (uint)(callOffset + linAddr + 6);
-                    return true;
-                }
             }
             target = 0;
             return false;

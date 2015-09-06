@@ -66,5 +66,46 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100004u, items[0]);
         }
+
+        [Test(Description = "The instruction at address 00100004 should be jumping to 00100010")]
+        public void MipsPs_FindLongInboundJumps()
+        {
+            var rdr = CreateImageReader(
+                Address.Ptr32(0x00100000),
+
+                0x00, 0x00, 0x00, 0x00,
+                0x08, 0x04, 0x00, 0x04,     // j 00100010
+                0x00, 0x00, 0x00, 0x00,     // nop
+                0x00, 0x00, 0x00, 0x00,     // nop
+
+                0x4E, 0x80, 0x00, 0x20
+                );
+            var items = new MipsPointerScanner32(rdr, new HashSet<uint> { 0x00100010u }, PointerScannerFlags.Jumps)
+                .ToArray();
+
+            Assert.AreEqual(1, items.Length);
+            Assert.AreEqual(0x00100004u, items[0]);
+        }
+
+
+        [Test(Description = "The instruction at address 00100004 should be jumping to 00100010")]
+        public void MipsPs_FindShortInboundJumps()
+        {
+            var rdr = CreateImageReader(
+                Address.Ptr32(0x00100000),
+
+                0x00, 0x00, 0x00, 0x00,
+                0x10, 0x04, 0x00, 0x02,     // beq 00100010
+                0x00, 0x00, 0x00, 0x00,     // nop
+                0x00, 0x00, 0x00, 0x00,     // nop
+
+                0x4E, 0x80, 0x00, 0x20
+                );
+            var items = new MipsPointerScanner32(rdr, new HashSet<uint> { 0x00100010u }, PointerScannerFlags.Jumps)
+                .ToArray();
+
+            Assert.AreEqual(1, items.Length);
+            Assert.AreEqual(0x00100004u, items[0]);
+        }
     }
 }
