@@ -181,6 +181,9 @@ namespace Reko.Arch.Mips
                 case Opcode.sdl:
                 case Opcode.sdr:
                 case Opcode.sh:
+                    goto default;
+                case Opcode.sll:
+                    RewriteSll(instr); break;
                 case Opcode.slti:
                 case Opcode.sltiu:
                     goto default;

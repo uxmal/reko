@@ -21,6 +21,7 @@
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -43,16 +44,27 @@ namespace Reko.Core
 
 		public void Dump(Program program, ImageMap map, TextWriter stm)
 		{
+            ImageMapSegment segment = null;
 			if (map == null)
 			{
 				DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + (uint)program.Image.Length, stm);
 			}
 			else
 			{
+                
 				foreach (ImageMapItem i in map.Items.Values)
 				{
                     if (!program.Image.IsValidAddress(i.Address))
                         continue;
+                    ImageMapSegment seg;
+                    if (!map.TryFindSegment(i.Address, out seg))
+                        continue;
+                    if (seg != segment)
+                    {
+                        segment = seg;
+                        stm.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
+                    }
+
 					//				Address addrLast = i.Address + i.Size;
 					ImageMapBlock block = i as ImageMapBlock;
 					if (block != null)
@@ -84,7 +96,10 @@ namespace Reko.Core
 					}
 					else
 					{
-						DumpData(program.Image, i.Address, i.Size, stm);
+                        var segLast = segment.Address + segment.ContentSize;
+                        var size = segLast - i.Address;
+                        size = Math.Min(i.Size, size);
+						DumpData(program.Image, i.Address, size, stm);
 					}							   
 				}
 			}

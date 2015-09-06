@@ -60,6 +60,14 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, opSrc);
         }
 
+        private void RewriteSll(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand(instr.op1);
+            var opSrc = RewriteOperand(instr.op2);
+            var opShift = RewriteOperand(instr.op3);
+            emitter.Assign(opDst, emitter.Shl(opSrc, opShift));
+        }
+
         private void RewriteSrl(MipsInstruction instr)
         {
             var opDst = RewriteOperand(instr.op1);

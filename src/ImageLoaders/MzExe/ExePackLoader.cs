@@ -161,7 +161,7 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
+                        imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
                     } while (--cx != 0);
                 }
                 if (dx == 0xF000)
@@ -170,7 +170,7 @@ namespace Reko.ImageLoaders.MzExe
             }
 
             this.cs += segCode;
-            imageMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute);
+            imageMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute, 0);
             this.ss += segCode;
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector));

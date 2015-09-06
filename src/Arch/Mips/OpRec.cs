@@ -72,12 +72,12 @@ namespace Reko.Arch.Mips
         private static OpRec[] specialOpRecs = new OpRec[] 
         {
             new SllOprec(Opcode.sll, "R3,R2,s"),
-            null,
+            new AOpRec(Opcode.illegal, ""),         //$TODO: requires special OpRec
             new AOpRec(Opcode.srl, "R3,R2,s"),
             new AOpRec(Opcode.sra, "R3,R2,s"),
  
             new AOpRec(Opcode.sllv, "R3,R2,R1"),
-            null,
+            new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.srlv, "R3,R2,R1"),
             new AOpRec(Opcode.srav, "R3,R2,R1"),
 
@@ -95,7 +95,7 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.mflo, "R2"),
             new AOpRec(Opcode.mtlo, "R2"),
             new AOpRec(Opcode.dsllv, "R3,R2,R1"),
-            null,
+            new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.dsrlv, "R3,R2,R1"),
             new AOpRec(Opcode.dsrav, "R3,R2,R1"),
 

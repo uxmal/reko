@@ -41,9 +41,9 @@ namespace Reko.UnitTests.Core
 		{
 			ImageMap im = new ImageMap(addrBase, img.Length);
 
-			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite);
-			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite);
-			im.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite, 0);
+			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite, 0);
+			im.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite, 0);
 
 			// Verify
 
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Core
 		public void ImageMapOverlaps()
 		{
 			ImageMap im = new ImageMap(Address.SegPtr(0x8000, 0), 40);
-			im.AddSegment(Address.SegPtr(0x8000, 10), "", AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 10), "", AccessMode.ReadWrite, 0);
 		}
 
 		private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Core
 		public void AddNamedSegment()
 		{
 			ImageMap map = new ImageMap(Address.SegPtr(0x0B00, 0), 40000);
-			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite);
+			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 0);
 			IEnumerator<KeyValuePair<Address,ImageMapSegment>> e = map.Segments.GetEnumerator();
 			GetNextMapSegment(e);
 			ImageMapSegment s = GetNextMapSegment(e);

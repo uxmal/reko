@@ -293,7 +293,7 @@ namespace Reko.Environments.MacOS
                 foreach (ResourceReference rsrc in type.References)
                 {
                     Address addrSegment = addrLoad + rsrc.DataOffset + rsrcDataOff;
-                    imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read);
+                    imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read, 0);
                     if (type.Name == "CODE")
                     {
                         if (rsrc.ResourceID == 0)

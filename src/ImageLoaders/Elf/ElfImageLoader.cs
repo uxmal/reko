@@ -368,7 +368,8 @@ namespace Reko.ImageLoaders.Elf
                     var seg = imageMap.AddSegment(
                         platform.MakeAddressFromLinear(segment.sh_addr), 
                         GetSectionName(segment.sh_name),
-                        mode);
+                        mode,
+                        (uint)segment.sh_size);
                     seg.Designer = CreateRenderer64(segment);
                 }
             }
@@ -388,7 +389,11 @@ namespace Reko.ImageLoaders.Elf
                         mode |= AccessMode.Write;
                     if ((segment.sh_flags & SHF_EXECINSTR) != 0)
                         mode |= AccessMode.Execute;
-                    var seg = imageMap.AddSegment(Address.Ptr32(segment.sh_addr), GetSectionName(segment.sh_name), mode);
+                    var seg = imageMap.AddSegment(
+                        Address.Ptr32(segment.sh_addr),
+                        GetSectionName(segment.sh_name),
+                        mode, 
+                        segment.sh_size);
                     seg.Designer = CreateRenderer(segment);
                 }
                 imageMap.DumpSections();
@@ -577,6 +582,7 @@ namespace Reko.ImageLoaders.Elf
             case EM_386: arch = "x86-protected-32"; break;
             case EM_X86_64: arch = "x86-protected-64"; break;
             case EM_68K: arch = "m68k"; break;
+            case EM_MIPS: arch = "mips-be-32"; break;
             case EM_PPC: arch = "ppc32"; break;
             case EM_PPC64: arch = "ppc64"; break;
             default:
@@ -748,16 +754,17 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
-                if (Header32.e_machine == EM_386)
+                switch (Header32.e_machine)
                 {
+                case EM_386:
                     RelocateI386();
-                }
-                else if (Header32.e_machine == EM_PPC)
-                {
+                    break;
+                case EM_PPC:
                     RelocatePpc32();
-                }
-                else
-                {
+                    break;
+                case EM_MIPS:
+                    break;
+                default:
                     throw new NotImplementedException();
                 }
             }

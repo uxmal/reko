@@ -538,7 +538,7 @@ namespace Reko.Scanning
                 proc.Signature.StackDelta = stackDelta;
             }
             state.OnProcedureLeft(proc.Signature);
-            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+            scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
             return false;
         }
 
