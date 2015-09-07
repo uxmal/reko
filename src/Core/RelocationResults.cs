@@ -32,10 +32,17 @@ namespace Reko.Core
         // Each relocation is a potential constant pointer. Some platforms only relocate _segments_, though.
         public readonly  RelocationDictionary Relocations;
 
-        public RelocationResults(List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        // Some platforms oblige and give us the locations of all the functions.
+        public readonly List<Address> Functions;
+
+        public RelocationResults(
+            List<EntryPoint> entryPoints, 
+            RelocationDictionary relocations,
+            List<Address> functions)
         {
             this.EntryPoints = entryPoints;
             this.Relocations = relocations;
+            this.Functions = functions;
         }
     }
 }

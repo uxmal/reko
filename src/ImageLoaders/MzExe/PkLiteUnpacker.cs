@@ -278,7 +278,8 @@ l01C8:
 
             return new RelocationResults(
                 new List<EntryPoint> {new EntryPoint(Address.SegPtr(pklCs, pklIp), state) },
-                relocations);
+                relocations,
+                new List<Address>());
 		}
 
 

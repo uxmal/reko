@@ -91,7 +91,8 @@ namespace Reko.ImageLoaders.MzExe
 			imageMap.AddSegment(Address.SegPtr(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWriteExecute, 0);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
-                relocations);
+                relocations,
+                new List<Address>());
 		}
 	}
 }

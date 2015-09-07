@@ -768,7 +768,7 @@ namespace Reko.ImageLoaders.Elf
                     throw new NotImplementedException();
                 }
             }
-            return new RelocationResults(entryPoints, relocations);
+            return new RelocationResults(entryPoints, relocations, new List<Address>());
         }
 
         private Address GetEntryPointAddress()

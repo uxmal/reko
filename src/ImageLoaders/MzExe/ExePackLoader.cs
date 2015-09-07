@@ -182,7 +182,7 @@ namespace Reko.ImageLoaders.MzExe
             {
                 new EntryPoint(Address.SegPtr(cs, ip), state)
             };
-            return new RelocationResults(entryPoints, new RelocationDictionary());
+            return new RelocationResults(entryPoints, new RelocationDictionary(), new List<Address>());
         }
 
         private static byte[] signature = 

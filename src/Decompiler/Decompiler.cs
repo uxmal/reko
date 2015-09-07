@@ -396,7 +396,12 @@ namespace Reko
                 {
                     scanner.EnqueueUserProcedure(up);
                 }
+                foreach (var addr in program.FunctionHints)
+                {
+                    scanner.EnqueueProcedure(addr);
+                }
                 scanner.ScanImage();
+
                 if (false || //$DEBUG
                     program.Options.HeuristicScanning)
                 {

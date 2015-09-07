@@ -207,7 +207,8 @@ namespace Reko.Environments.C64
         {
             return new RelocationResults(
                 new List<EntryPoint>(),
-                new RelocationDictionary());
+                new RelocationDictionary(),
+                new List<Address>());
         }
 
         public List<ArchiveDirectoryEntry> LoadDiskDirectory()

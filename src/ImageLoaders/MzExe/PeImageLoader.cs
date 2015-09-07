@@ -43,6 +43,7 @@ namespace Reko.ImageLoaders.MzExe
         private SizeSpecificLoader innerLoader;
         private Program program;
 
+        private ushort machine;
 		private short optionalHeaderSize;
 		private int sections;
 		private uint rvaSectionTable;
@@ -55,6 +56,8 @@ namespace Reko.ImageLoaders.MzExe
 		private uint sizeExportTable;
 		private uint rvaImportTable;
         private uint rvaDelayImportDescriptor;
+        private uint rvaExceptionTable;
+        private uint sizeExceptionTable;
         private Dictionary<Address, ImportReference> importReferences;
 		private const ushort MACHINE_i386 = (ushort) 0x014C;
         private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
@@ -248,7 +251,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		public short ReadCoffHeader(ImageReader rdr)
 		{
-			ushort machine = rdr.ReadLeUInt16();
+			this.machine = rdr.ReadLeUInt16();
             short expectedMagic = GetExpectedMagic(machine);
             arch = CreateArchitecture(machine);
 			platform = CreatePlatform(machine, Services, arch);
@@ -314,8 +317,8 @@ namespace Reko.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();			// resource size
 
             if (--dictionaryCount == 0) return;
-			rdr.ReadLeUInt32();			// exception address
-			rdr.ReadLeUInt32();			// exception size
+			rvaExceptionTable = rdr.ReadLeUInt32();			// exception address
+			sizeExceptionTable = rdr.ReadLeUInt32();			// exception size
 
             if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// certificate address
@@ -374,10 +377,11 @@ namespace Reko.ImageLoaders.MzExe
 			}
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
             var entryPoints = new List<EntryPoint> { new EntryPoint(addrEp, arch.CreateProcessorState()) };
-			AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
+            var functions = ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable);
+            AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
-            return new RelocationResults(entryPoints, relocations);
+            return new RelocationResults(entryPoints, relocations, functions);
 		}
 
         private void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
@@ -721,5 +725,31 @@ namespace Reko.ImageLoaders.MzExe
             }
             return 0;
         }
+
+        public List<Address> ReadExceptionRecords(Address addrLoad, uint rvaExceptionTable, uint sizeExceptionTable)
+        {
+            var rvaTableEnd = rvaExceptionTable + sizeExceptionTable; 
+            var functionStarts = new List<Address>();
+            if (rvaExceptionTable == 0 || sizeExceptionTable == 0)
+                return functionStarts;
+            switch (machine)
+            {
+            default: 
+                Services.RequireService<IDiagnosticsService>()
+                    .Warn(new NullCodeLocation(Filename), "Exception table reading not supported for machine #{0}.", machine);
+                break;
+            case MACHINE_R4000:
+                var rdr = new LeImageReader(this.imgLoaded.Bytes, rvaExceptionTable);
+                while (rdr.Offset < rvaTableEnd)
+                {
+                    var addr = Address.Ptr32(rdr.ReadLeUInt32());
+                    rdr.Seek(16);
+                    functionStarts.Add(addr);
+                }
+                break;
+            }
+            return functionStarts;
+        }
+
     }
 }
