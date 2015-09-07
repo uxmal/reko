@@ -199,9 +199,9 @@ namespace Reko.Arch.X86
             dasm.MoveNext();
             instrCur = dasm.Current;
             ric.Length += (byte) instrCur.Length;
-            var strFollow = dasm.Peek(1);
-            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address, RtlClass.ConditionalTransfer);
-            RewriteStringInstruction();
+            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), instrCur.Address + instrCur.Length, RtlClass.ConditionalTransfer);
+            if (!RewriteStringInstruction())
+                return;
             emitter.Assign(regCX, emitter.ISub(regCX, 1));
 
             switch (instrCur.code)

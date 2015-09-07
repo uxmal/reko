@@ -264,9 +264,9 @@ namespace Reko.Scanning
 
         private IEnumerable<Tuple<Address, Address>> GetGaps()
         {
-            var blockMap = proc.Cfg.Nodes.ToSortedList(n => n.Address);
-            var addrLastEnd = blockMap.Values[0].Address;
-            foreach (var b in blockMap.Values)
+            var blockMap = proc.Cfg.Nodes.OrderBy(n => n.Address).ToList();
+            var addrLastEnd = blockMap[0].Address;
+            foreach (var b in blockMap)
             {
                 if (addrLastEnd < b.Address)
                     yield return Tuple.Create(addrLastEnd, b.Address);

@@ -1302,13 +1302,12 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Ignore("Something fishy with REP")]
         public void X86rw_64_repne()
         {
             Run64bitTest(0xF3, 0x48, 0xA5);   // "rep\tmovsd"
             AssertCode(
                  "0|L--|0000000140000000(3): 7 instructions",
-                 "1|T--|if (rcx == 0x0000000000000000) branch 0000000140000001",
+                 "1|T--|if (rcx == 0x0000000000000000) branch 0000000140000003",
                  "2|L--|v3 = Mem0[rsi:word64]",
                  "3|L--|Mem0[rdi:word64] = v3",
                  "4|L--|rsi = rsi + 0x0000000000000008",

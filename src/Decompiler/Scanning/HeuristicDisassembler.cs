@@ -96,20 +96,20 @@ namespace Reko.Scanning
                     AddNode(current);
                     current.Statements.Add(rtl);
                     blockMap.Add(rtl.Address, current);
-                    var rtlLast = rtl.Instructions.Last();
                     switch (rtl.Class)
                     {
                     case RtlClass.Invalid:
                         current.IsValid = false;
                         return current;
                     case RtlClass.Transfer:
+                        var rtlLast = rtl.Instructions.Last();
                         if (rtlLast is RtlCall || rtlLast is RtlReturn)
                         {
                             // Since calls cannot be depended on to return, 
                             // we stop disassembling.
                             return current;
                         }
-                        var rtlJump = rtlLast as RtlGoto;
+                        var rtlJump = rtl.Instructions.Last() as RtlGoto;
                         if (rtlJump != null)
                         {
                             // Stop disassembling if you get outside
@@ -127,7 +127,7 @@ namespace Reko.Scanning
                         }
                         break;
                     case RtlClass.ConditionalTransfer:
-                        var rtlBranch = rtlLast as RtlBranch;
+                        var rtlBranch = rtl.Instructions.Last() as RtlBranch;
                         if (rtlBranch != null)
                         {
                             block = Disassemble(rtlBranch.Target);
