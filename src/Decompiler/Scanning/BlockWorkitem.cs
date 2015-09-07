@@ -255,6 +255,8 @@ namespace Reko.Scanning
             {
                 var blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
                 var blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
+                blockDsF.IsSynthesized = true;
+                blockDsT.IsSynthesized = true;
                 blockCur = blockDsF;
                 ProcessRtlCluster(ricDelayed);
                 blockCur = blockDsT;
@@ -341,7 +343,7 @@ namespace Reko.Scanning
                 rtlStream.MoveNext();
                 ProcessRtlCluster(rtlStream.Current);
             }
-            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+            scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
