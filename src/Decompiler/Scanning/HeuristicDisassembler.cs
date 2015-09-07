@@ -56,8 +56,6 @@ namespace Reko.Scanning
         /// <returns></returns>
         public HeuristicBlock Disassemble(Address addr)
         {
-            if (addr.ToString().EndsWith("1041"))   //$DEBUG
-                addr.ToString();
             var current = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
             var rrAddr = program.Architecture.CreateRewriter(
                      program.CreateImageReader(addr),
@@ -86,19 +84,16 @@ namespace Reko.Scanning
                         // 'current'. Create a fall-though edge
                         if (!proc.Cfg.Nodes.Contains(current))
                         {
-                            proc.Cfg.Nodes.Add(current);
+                            AddNode(current);
                         }
-                        proc.Cfg.AddEdge(current, block);
+                        AddEdge(current, block);
                         return current;
                     }
                 }
                 else
                 {
                     // Fresh instruction
-                    if (!proc.Cfg.Nodes.Contains(current))
-                    {
-                        proc.Cfg.Nodes.Add(current);
-                    }
+                    AddNode(current);
                     current.Statements.Add(rtl);
                     blockMap.Add(rtl.Address, current);
                     var rtlLast = rtl.Instructions.Last();
@@ -127,7 +122,7 @@ namespace Reko.Scanning
                                 return current;
                             }
                             block = Disassemble(target);
-                            proc.Cfg.AddEdge(current, block);
+                            AddEdge(current, block);
                             return current;
                         }
                         break;
@@ -137,17 +132,16 @@ namespace Reko.Scanning
                         {
                             block = Disassemble(rtlBranch.Target);
                             Debug.Assert(proc.Cfg.Nodes.Contains(block));
-                            proc.Cfg.AddEdge(current, block);
+                            AddEdge(current, block);
                             block = Disassemble(rtl.Address + rtl.Length);
-                            proc.Cfg.AddEdge(current, block);
+                            AddEdge(current, block);
                             return current;
                         }
                         break;
                     }
                 }
             }
-            if (!proc.Cfg.Nodes.Contains(current))
-                proc.Cfg.Nodes.Add(current);
+            AddNode(current);
             return current;
         }
 
@@ -165,11 +159,27 @@ namespace Reko.Scanning
             var succs = proc.Cfg.Successors(block).ToArray();
             foreach (var s in succs)
             {
-                proc.Cfg.AddEdge(newBlock, s);
-                proc.Cfg.RemoveEdge(block, s);
+                AddEdge(newBlock, s);
+                RemoveEdge(block, s);
             }
-            proc.Cfg.AddEdge(block, newBlock);
+            AddEdge(block, newBlock);
             return newBlock;
+        }
+
+        private void AddEdge(HeuristicBlock from, HeuristicBlock to)
+        {
+            proc.Cfg.AddEdge(from, to);
+        }
+
+        private void AddNode(HeuristicBlock block)
+        {
+            if (!proc.Cfg.Nodes.Contains(block))
+                proc.Cfg.Nodes.Add(block);
+        }
+
+        private void RemoveEdge(HeuristicBlock from, HeuristicBlock to)
+        {
+            proc.Cfg.RemoveEdge(from, to);
         }
     }
 }

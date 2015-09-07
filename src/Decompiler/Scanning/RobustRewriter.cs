@@ -46,28 +46,26 @@ namespace Reko.Scanning
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             var e = inner.GetEnumerator();
-            for (; ; )
+            bool cont;
+            do 
             {
-                bool cont = false;
+                cont = false;
                 RtlInstructionCluster rtl = null;
                 try
                 {
                     cont = e.MoveNext();
-                    if (e != null)
+                    if (cont)
                         rtl = e.Current;
                 }
                 catch (AddressCorrelatedException aex)
                 {
-                    cont = false;
                     rtl = new RtlInstructionCluster(aex.Address, granularity,
                         new RtlInvalid());
                     rtl.Class = RtlClass.Invalid;
                 }
                 if (rtl != null)
                     yield return rtl;
-                if (!cont)
-                    yield break;
-            }
+            } while (cont);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

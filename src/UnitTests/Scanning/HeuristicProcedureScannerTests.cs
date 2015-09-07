@@ -164,7 +164,7 @@ l00010009:  // pred: l00010008
 
             var sExp =
             #region Expected
-@"l00010000:  // pred:
+ @"l00010000:  // pred:
     push ebp
 l00010001:  // pred: l00010000
     mov ebp,esp
@@ -186,6 +186,7 @@ l0001001B:  // pred: l00010019
     pop ebp
 l0001001C:  // pred: l0001001B
     ret 
+l0001001D:  // pred:
 ";
 #endregion
             AssertBlocks(sExp, proc.Cfg);

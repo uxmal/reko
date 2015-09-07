@@ -257,6 +257,7 @@ l0001001B:  // pred: l00010019 l0001001A
     pop ebp
 l0001001C:  // pred: l0001001B
     ret 
+l0001001D:  // pred:
 ";
             #endregion
             AssertBlocks(sExp, proc.Cfg);
