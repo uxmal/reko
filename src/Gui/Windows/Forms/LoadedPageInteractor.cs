@@ -98,7 +98,7 @@ namespace Reko.Gui.Windows.Forms
             var hits = Decompiler.Project.Programs
                 .SelectMany(p => p.ImageMap.Items
                         .Where(i => i.Value.DataType is UnknownType)
-                        .Select(i => new AddressSearchHit { Program = p, Address = i.Key}));
+                        .Select(i => new ProgramAddress(p, i.Key)));
             srSvc.ShowSearchResults(
                 new AddressSearchResult(
                     Services,

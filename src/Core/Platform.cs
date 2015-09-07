@@ -82,7 +82,7 @@ namespace Reko.Core
         /// </remarks>
         public abstract BitSet CreateImplicitArgumentRegisters();
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, Address[] address, PointerScannerFlags pointerScannerFlags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags)
         {
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }

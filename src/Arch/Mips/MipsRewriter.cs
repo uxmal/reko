@@ -198,6 +198,7 @@ namespace Reko.Arch.Mips
                 case Opcode.swl:
                 case Opcode.swr:
                 case Opcode.swu:
+                    goto default;
                 case Opcode.xor:
                 case Opcode.xori:
                     RewriteXor(instr); break;

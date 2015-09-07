@@ -85,10 +85,10 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.jalr, "R3,R1"),
             new AOpRec(Opcode.movz, "R3,R1,R2"),
             new AOpRec(Opcode.movn, "R3,R1,R2"),
-            new AOpRec(Opcode.syscall, null),
+            new AOpRec(Opcode.syscall, "B"),
             new AOpRec(Opcode.@break, "B"),
             new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.sync, null), 
+            new AOpRec(Opcode.sync, ""), 
             // 10
             new AOpRec(Opcode.mfhi, "R2"),
             new AOpRec(Opcode.mthi, "R2"),

@@ -126,27 +126,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        [Ignore("Move this to low-level? Or Decompiler?")]
-        public void LpiMarkingProceduresShouldAddToUserProceduresList()
-        {
-            var disSvc = AddService<IDisassemblyViewService>();
-            Assert.AreEqual(0, decSvc.Decompiler.Project.Programs[0].UserProcedures.Count);
-            var addr = Address.SegPtr(0x0C20, 0);
-            memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
-            memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
-            mr.ReplayAll();
-
-            //interactor.MarkAndScanProcedure(prog);
-
-            mr.VerifyAll();
-            //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            var program = decSvc.Decompiler.Project.Programs[0];
-            Assert.AreEqual(1, program.UserProcedures.Count);
-            Procedure_v1 uproc = (Procedure_v1)program.UserProcedures.Values[0];
-            Assert.AreEqual("0C20:0000", uproc.Address);
-        }
-
-        [Test]
         public void Lpi_QueryStatus()
         {
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));

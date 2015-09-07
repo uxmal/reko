@@ -244,32 +244,8 @@ namespace Reko.Gui.Windows
             AddressRange addrRange;
             if (!TryGetSelectedAddressRange(out addrRange))
                 return;
-            try
-            {
-                var address = addrRange.Begin;
-                MarkAndScanProcedure(address);
-                services.RequireService<IProjectBrowserService>().Reload();
-            }
-            catch (Exception ex)
-            {
-                services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error happened while scanning the procedure.");
-            }
-        }
-
-        private void MarkAndScanProcedure(Address address)
-        {
-            var decompiler = services.GetService<IDecompilerService>().Decompiler;
-            var proc = decompiler.ScanProcedure(program, address);
-            var userp = new Reko.Core.Serialization.Procedure_v1
-            {
-                Address = address.ToString(),
-                Name = proc.Name,
-            };
-            var ups = program.UserProcedures;
-            if (!ups.ContainsKey(address))
-            {
-                ups.Add(address, userp);
-            }
+            var address = addrRange.Begin;
+            services.RequireService<ICommandFactory>().MarkAndScanProcedure(program, address).Do();
         }
 
         private bool TryGetSelectedAddressRange(out AddressRange addrRange)
@@ -379,27 +355,7 @@ namespace Reko.Gui.Windows
                 return true;
             if (program == null)
                 return true;
-            var resultSvc = services.GetService<ISearchResultService>();
-            if (resultSvc == null)
-                return true;
-
-            try
-            {
-                var arch = program.Architecture;
-                var image = program.Image;
-                var rdr = program.Architecture.CreateImageReader(program.Image, 0);
-                var addrControl = program.Platform.CreatePointerScanner(
-                    program.ImageMap,
-                    rdr,
-                    new[] { 
-                    addrRange.Begin
-                },
-                    PointerScannerFlags.All);
-                resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
-            } catch (Exception ex)
-            {
-                services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error occurred when searching for pointers.");
-            }
+            services.RequireService<ICommandFactory>().ViewWhatPointsHere(program, addrRange.Begin).Do();
             return true;
         }
 
@@ -419,11 +375,9 @@ namespace Reko.Gui.Windows
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits = 
                         re.GetMatches(program.Image.Bytes, 0)
-                        .Select(offset => new AddressSearchHit
-                        {
-                            Program = program,
-                            Address = program.Image.BaseAddress + offset
-                        });
+                        .Select(offset => new ProgramAddress(
+                            program,
+                            program.Image.BaseAddress + offset));
                     srSvc.ShowSearchResults(new AddressSearchResult(this.services, hits));
                 }
             }

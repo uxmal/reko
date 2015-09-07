@@ -133,6 +133,9 @@ namespace Reko.Gui.Forms
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
 
+            var cmdFactory = new Commands.CommandFactory(sc);
+            sc.AddService<ICommandFactory>(cmdFactory);
+
             sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
 
             diagnosticsSvc = svcFactory.CreateDiagnosticsService(form.DiagnosticsList);
@@ -465,11 +468,9 @@ namespace Reko.Gui.Forms
                         .SelectMany(program => 
                               re.GetMatches(program.Image.Bytes, 0)
                               .Where(o => filter(o, program))
-                                .Select(offset => new AddressSearchHit 
-                                {
-                                    Program = program,
-                                    Address = program.Image.BaseAddress + offset
-                                }));
+                                .Select(offset => new ProgramAddress(
+                                    program,
+                                    program.Image.BaseAddress + offset)));
                     srSvc.ShowSearchResults(new AddressSearchResult(
                         this.sc,
                         hits));
