@@ -29,9 +29,8 @@ namespace Reko.Gui
 {
     public interface ICommandFactory
     {
-        ICommand MarkAndScanProcedure(Program program, Address address);
-     
-        ICommand MarkProcedures(IEnumerable<ProgramAddress> enumerable);
+        ICommand MarkProcedure(ProgramAddress address);
+        ICommand MarkProcedures(IEnumerable<ProgramAddress> addresses);
 
         ICommand ViewFindPattern();
 

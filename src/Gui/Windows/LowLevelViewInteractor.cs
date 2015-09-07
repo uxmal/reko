@@ -223,7 +223,7 @@ namespace Reko.Gui.Windows
 
         public void GotoAddress()
         {
-            var addrRange = GetSelectedAddressRange();
+            AddressRange addrRange = GetSelectedAddressRange();
             if (addrRange == null)
                 return;
             var rdr = program.CreateImageReader(addrRange.Begin);
@@ -244,8 +244,8 @@ namespace Reko.Gui.Windows
             AddressRange addrRange;
             if (!TryGetSelectedAddressRange(out addrRange))
                 return;
-            var address = addrRange.Begin;
-            services.RequireService<ICommandFactory>().MarkAndScanProcedure(program, address).Do();
+            var address = new ProgramAddress(program, addrRange.Begin);
+            services.RequireService<ICommandFactory>().MarkProcedure(address).Do();
         }
 
         private bool TryGetSelectedAddressRange(out AddressRange addrRange)

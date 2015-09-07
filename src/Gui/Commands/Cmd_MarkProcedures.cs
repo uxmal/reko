@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Gui.Commands
 {
-    class Cmd_MarkProcedures : Command
+    public class Cmd_MarkProcedures : Command
     {
         private IEnumerable<ProgramAddress> addresses;
 

@@ -35,9 +35,9 @@ namespace Reko.Gui.Commands
             this.services = services;
         }
 
-        public ICommand MarkAndScanProcedure(Program program, Address address)
+        public ICommand MarkProcedure(ProgramAddress address)
         {
-            return new Cmd_MarkAndScanProcedure(services, program, address);
+            return new Cmd_MarkProcedures(services, new ProgramAddress[] { address });
         }
 
         public ICommand MarkProcedures(IEnumerable<ProgramAddress> addresses)

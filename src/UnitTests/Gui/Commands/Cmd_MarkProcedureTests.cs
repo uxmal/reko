@@ -34,7 +34,7 @@ using System.Text;
 namespace Reko.UnitTests.Gui.Commands
 {
     [TestFixture]
-    public class Cmd_MarkAndScanProcedureTests
+    public class Cmd_MarkProcedureTests
     {
         private ServiceContainer sc;
         private MockRepository mr;
@@ -69,7 +69,8 @@ namespace Reko.UnitTests.Gui.Commands
             brSvc.Expect(b => b.Reload());
             mr.ReplayAll();
 
-            var cmd = new Cmd_MarkAndScanProcedure(sc, program, addr);
+            var locations = new[] { new ProgramAddress(program, addr) };
+            var cmd = new Cmd_MarkProcedures(sc, locations);
             cmd.DoIt();
 
             mr.VerifyAll();
