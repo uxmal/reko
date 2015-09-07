@@ -90,6 +90,20 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, opSrc);
         }
 
+        private void RewriteLwl(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand(instr.op1);
+            var opSrc = RewriteOperand(instr.op2);
+            emitter.Assign(opDst, PseudoProc("__lwl", PrimitiveType.Word32, opSrc));
+        }
+
+        private void RewriteLwr(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand(instr.op1);
+            var opSrc = RewriteOperand(instr.op2);
+            emitter.Assign(opDst, PseudoProc("__lwr", PrimitiveType.Word32, opSrc));
+        }
+
         private void RewriteNor(MipsInstruction instr)
         {
             var opLeft = RewriteOperand(instr.op2);
@@ -159,6 +173,20 @@ namespace Reko.Arch.Mips
             var opSrc = RewriteOperand(instr.op2);
             var opShift = RewriteOperand(instr.op3);
             emitter.Assign(opDst, emitter.ISub(opSrc, opShift));
+        }
+
+        private void RewriteSwl(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand(instr.op2);
+            var opSrc = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, PseudoProc("__swl", PrimitiveType.Word32, opSrc));
+        }
+
+        private void RewriteSwr(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand(instr.op2);
+            var opSrc = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, PseudoProc("__swr", PrimitiveType.Word32, opSrc));
         }
 
         private void RewriteSxx(MipsInstruction instr, Operator op)

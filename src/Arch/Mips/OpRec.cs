@@ -155,7 +155,7 @@ namespace Reko.Arch.Mips
 
     class CondOpRec : OpRec
     {
-        Opcode[] opcodes = 
+        static Opcode[] opcodes = 
         {
             Opcode.bltz,
             Opcode.bgez,
@@ -202,6 +202,22 @@ namespace Reko.Arch.Mips
         {
             var opcode = opcodes[(wInstr >> 16) & 0x1F];
             return dasm.DecodeOperands(opcode, wInstr, "R1,j");
+        }
+
+    }
+
+    internal class CoprocessorOpRec : OpRec
+    {
+        private OpRec[] oprecs;
+
+        public CoprocessorOpRec(params OpRec[] oprecs)
+        {
+            this.oprecs = oprecs;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            return oprecs[(wInstr>>21) & 0x1F].Decode(wInstr, dasm);
         }
     }
 }

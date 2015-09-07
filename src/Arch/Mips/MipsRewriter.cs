@@ -153,11 +153,12 @@ namespace Reko.Arch.Mips
                 case Opcode.lld:
                     goto default;
                 case Opcode.lui: RewriteLui(instr); break;
-                case Opcode.lw:
-                    RewriteLoad(instr); break;
-                case Opcode.lwl:
-                case Opcode.lwr:
+                case Opcode.lw: RewriteLoad(instr); break;
+                case Opcode.lwl: RewriteLwl(instr); break;
+                case Opcode.lwr: RewriteLwr(instr); break;
                 case Opcode.lwu:
+                    goto default;
+                case Opcode.mfc0: RewriteMfc0(instr); break;
                 case Opcode.mfhi:
                 case Opcode.mflo:
                 case Opcode.mthi:
@@ -197,8 +198,8 @@ namespace Reko.Arch.Mips
                     RewriteSub(instr); break;
                 case Opcode.sw:
                     RewriteStore(instr); break;
-                case Opcode.swl:
-                case Opcode.swr:
+                case Opcode.swl: RewriteSwl(instr); break;
+                case Opcode.swr: RewriteSwr(instr); break;
                 case Opcode.swu:
                     goto default;
                 case Opcode.xor:
