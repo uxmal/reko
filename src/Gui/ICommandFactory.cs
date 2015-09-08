@@ -36,5 +36,7 @@ namespace Reko.Gui
 
         ICommand ViewWhatPointsHere(Program program, Address address);
         ICommand ViewWhatPointsHere(Program program, IEnumerable<Address> addresses);
+
+        ICommand EditSignature(Program program, Procedure procedure, Address address);
     }
 }

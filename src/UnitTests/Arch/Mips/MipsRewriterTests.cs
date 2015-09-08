@@ -290,11 +290,11 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x88c80003,  // lwl t0,3(a2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __lwl( Mem0[r6 + 0x00000003] )");
+                "1|L--|r8 = __lwl(Mem0[r6 + 0x00000003:word32])");
 
             AssertCode(0x98c80000,   // lwr t0,0(a2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __lwr(Mem0[r6 + 0x00000003])");
+                "1|L--|r8 = __lwr(Mem0[r6:word32])");
         }
     }
 }

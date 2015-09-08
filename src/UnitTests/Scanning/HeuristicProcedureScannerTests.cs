@@ -32,7 +32,6 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class HeuristicProcedureScannerTests : HeuristicTestBase
     {
-        private HeuristicProcedureScanner subject;
         private HeuristicProcedure proc;
 
         [SetUp]

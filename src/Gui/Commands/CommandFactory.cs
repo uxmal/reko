@@ -59,5 +59,10 @@ namespace Reko.Gui.Commands
         {
             return new Cmd_ViewWhatPointsHere(services, program, range);
         }
+
+        public ICommand EditSignature(Program program, Procedure procedure, Address addr)
+        {
+            return new Cmd_EditSignature(services, program, procedure, addr);
+        }
     }
 }

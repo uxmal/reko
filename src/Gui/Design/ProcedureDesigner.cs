@@ -103,6 +103,7 @@ namespace Reko.Gui.Design
                     Services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);
                     return true;
                 case CmdIds.ActionEditSignature:
+                    EditSignature();
                     return true;
                 case CmdIds.ActionAssumeRegisterValues:
                     AssumeRegisterValues();
@@ -116,6 +117,11 @@ namespace Reko.Gui.Design
                 }
             }
             return false;
+        }
+
+        private void EditSignature()
+        {
+            Services.RequireService<ICommandFactory>().EditSignature(program, procedure, Address).Do();
         }
 
         private void ViewWhatPointsHere()

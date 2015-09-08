@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="AddressNavigator.cs" />
     <Compile Include="AddressSearchResult.cs" />
+    <Compile Include="Commands\Cmd_EditSignature.cs" />
     <Compile Include="Commands\Cmd_MarkProcedures.cs" />
     <Compile Include="Commands\Cmd_ViewWhatPointsHere.cs" />
     <Compile Include="Commands\Command.cs" />

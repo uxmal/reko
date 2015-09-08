@@ -38,8 +38,6 @@ namespace Reko.Gui.Commands
             this.addresses = addresses;
         }
 
-        public bool IsUndoable { get { return false; } }
-
         public override void DoIt()
         {
             var resultSvc = Services.RequireService<ISearchResultService>();

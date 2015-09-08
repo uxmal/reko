@@ -71,35 +71,9 @@ namespace Reko.Gui.Windows.Forms
             projectSvc.Reload();
         }
 
-
 		public override bool LeavePage()
 		{
 			return true;
-        }
-
-        private void EditSignature()
-        {
-            throw new NotImplementedException();
-            //$TODO: need "current program"
-            Platform platform = null;
-            var ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
-            var proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
-            var i = new ProcedureDialogInteractor(platform.Architecture, proc);
-            using (ProcedureDialog dlg = i.CreateDialog())
-            {
-                if (DialogResult.OK == UIService.ShowModalDialog(dlg))
-                {
-                    //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-                    var program =  Decompiler.Project.Programs[0]; 
-                    program.UserProcedures[SelectedProcedureEntry.Key] =
-                        i.SerializedProcedure;
-                    ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
-                    SelectedProcedureEntry.Value.Signature =
-                        ser.Deserialize(i.SerializedProcedure.Signature, SelectedProcedureEntry.Value.Frame);
-
-                    canAdvance = false;
-                }
-            }
         }
 
         public KeyValuePair<Address, Procedure> SelectedProcedureEntry
@@ -121,11 +95,6 @@ namespace Reko.Gui.Windows.Forms
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     text.Text = Resources.ReconstructDataTypes;
                     return true;
-                case CmdIds.ActionEditSignature:
-                    status.Status = MenuStatus.Visible;
-                    if (SelectedProcedureEntry.Key != null)
-                        status.Status |= MenuStatus.Enabled;
-                    return true;
                 }
             }
             return base.QueryStatus(cmdId, status, text);
@@ -135,12 +104,6 @@ namespace Reko.Gui.Windows.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
-                {
-                case CmdIds.ActionEditSignature:
-                    EditSignature();
-                    return true;
-                }
             }
             return base.Execute(cmdId);
         }
