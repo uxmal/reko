@@ -32,7 +32,7 @@ namespace Reko.Gui.Windows.Forms
     {
         public UnscannedBlocksResult(
             IServiceProvider services, 
-            IEnumerable<AddressSearchHit> addresses) : 
+            IEnumerable<ProgramAddress> addresses) : 
             base(services, addresses)
         {
 

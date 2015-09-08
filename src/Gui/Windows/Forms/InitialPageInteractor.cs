@@ -62,7 +62,6 @@ namespace Reko.Gui.Windows.Forms
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ViewShowAllFragments:
                 case CmdIds.ViewShowUnscanned:
-                case CmdIds.ActionEditSignature:
                 case CmdIds.ActionMarkProcedure:
                 case CmdIds.ActionRestartDecompilation:
                     status.Status = 0;

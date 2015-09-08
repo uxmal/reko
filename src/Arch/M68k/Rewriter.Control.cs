@@ -33,29 +33,34 @@ namespace Reko.Arch.M68k
     {
         private void RewriteBcc(ConditionCode cc, FlagM flags)
         {
+            ric.Class = RtlClass.ConditionalTransfer;
             emitter.Branch(
                 emitter.Test(cc, orw.FlagGroup(flags)),
-                ((M68kAddressOperand) di.op1).Address,
+                ((M68kAddressOperand)di.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
 
         private void RewriteBra()
         {
+            ric.Class = RtlClass.Transfer;
             emitter.Goto(orw.RewriteSrc(di.op1, di.Address, true));
         }
 
         private void RewriteBsr()
         {
+            ric.Class = RtlClass.Transfer;
             emitter.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
         }
 
         private void RewriteJmp()
         {
+            ric.Class = RtlClass.Transfer;
             emitter.Goto(orw.RewriteSrc(di.op1, di.Address, true));
         }
 
         private void RewriteJsr()
         {
+            ric.Class = RtlClass.Transfer;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var mem = src as MemoryAccess;
             if (mem != null)
@@ -65,6 +70,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteDbcc(ConditionCode cc, FlagM flags)
         {
+            ric.Class = RtlClass.ConditionalTransfer;
             if (cc != ConditionCode.None)
             {
                 emitter.Branch(
@@ -77,7 +83,7 @@ namespace Reko.Arch.M68k
             emitter.Assign(src, emitter.ISub(src, 1));
             emitter.Branch(
                 emitter.Ne(src, emitter.Int32(-1)),
-                (Address) orw.RewriteSrc(di.op2, di.Address, true),
+                (Address)orw.RewriteSrc(di.op2, di.Address, true),
                 RtlClass.ConditionalTransfer);
         }
 
@@ -85,8 +91,14 @@ namespace Reko.Arch.M68k
         {
             if (dasm.Current.op1 == null)
                 return false;
-            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance,  RewriteSrcOperand(dasm.Current.op1)));
+            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
             return true;
+        }
+
+        private void RewriteRts()
+        {
+            ric.Class = RtlClass.Transfer;
+            emitter.Return(4, 0);
         }
     }
 }

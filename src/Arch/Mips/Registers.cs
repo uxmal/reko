@@ -59,9 +59,45 @@ namespace Reko.Arch.Mips
         public readonly static RegisterStorage r26 = new RegisterStorage("r26", 26, PrimitiveType.Word32);
         public readonly static RegisterStorage r27 = new RegisterStorage("r27", 27, PrimitiveType.Word32);
         public readonly static RegisterStorage r28 = new RegisterStorage("r28", 28, PrimitiveType.Word32);
-        public readonly static RegisterStorage r29 = new RegisterStorage("r29", 29, PrimitiveType.Word32);
+        public readonly static RegisterStorage sp = new RegisterStorage("sp", 29, PrimitiveType.Word32);
         public readonly static RegisterStorage r30 = new RegisterStorage("r30", 30, PrimitiveType.Word32);
-        public readonly static RegisterStorage r31 = new RegisterStorage("r31", 31, PrimitiveType.Word32);
+        public readonly static RegisterStorage ra = new RegisterStorage("ra", 31, PrimitiveType.Word32);
+
+        public readonly static RegisterStorage hi = new RegisterStorage("hi", 32, PrimitiveType.Word32);
+        public readonly static RegisterStorage lo = new RegisterStorage("lo", 33, PrimitiveType.Word32);
+
+        public readonly static RegisterStorage f0 = new RegisterStorage("f0", 64, PrimitiveType.Word32);
+        public readonly static RegisterStorage f1 = new RegisterStorage("f1", 65, PrimitiveType.Word32);
+        public readonly static RegisterStorage f2 = new RegisterStorage("f2", 66, PrimitiveType.Word32);
+        public readonly static RegisterStorage f3 = new RegisterStorage("f3", 67, PrimitiveType.Word32);
+        public readonly static RegisterStorage f4 = new RegisterStorage("f4", 68, PrimitiveType.Word32);
+        public readonly static RegisterStorage f5 = new RegisterStorage("f5", 69, PrimitiveType.Word32);
+        public readonly static RegisterStorage f6 = new RegisterStorage("f6", 70, PrimitiveType.Word32);
+        public readonly static RegisterStorage f7 = new RegisterStorage("f7", 71, PrimitiveType.Word32);
+        public readonly static RegisterStorage f8 = new RegisterStorage("f8", 72, PrimitiveType.Word32);
+        public readonly static RegisterStorage f9 = new RegisterStorage("f9", 73, PrimitiveType.Word32);
+        public readonly static RegisterStorage f10 = new RegisterStorage("f10", 74, PrimitiveType.Word32);
+        public readonly static RegisterStorage f11 = new RegisterStorage("f11", 75, PrimitiveType.Word32);
+        public readonly static RegisterStorage f12 = new RegisterStorage("f12", 76, PrimitiveType.Word32);
+        public readonly static RegisterStorage f13 = new RegisterStorage("f13", 77, PrimitiveType.Word32);
+        public readonly static RegisterStorage f14 = new RegisterStorage("f14", 78, PrimitiveType.Word32);
+        public readonly static RegisterStorage f15 = new RegisterStorage("f15", 79, PrimitiveType.Word32);
+        public readonly static RegisterStorage f16 = new RegisterStorage("f16", 80, PrimitiveType.Word32);
+        public readonly static RegisterStorage f17 = new RegisterStorage("f17", 81, PrimitiveType.Word32);
+        public readonly static RegisterStorage f18 = new RegisterStorage("f18", 82, PrimitiveType.Word32);
+        public readonly static RegisterStorage f19 = new RegisterStorage("f19", 83, PrimitiveType.Word32);
+        public readonly static RegisterStorage f20 = new RegisterStorage("f20", 84, PrimitiveType.Word32);
+        public readonly static RegisterStorage f21 = new RegisterStorage("f21", 85, PrimitiveType.Word32);
+        public readonly static RegisterStorage f22 = new RegisterStorage("f22", 86, PrimitiveType.Word32);
+        public readonly static RegisterStorage f23 = new RegisterStorage("f23", 87, PrimitiveType.Word32);
+        public readonly static RegisterStorage f24 = new RegisterStorage("f24", 88, PrimitiveType.Word32);
+        public readonly static RegisterStorage f25 = new RegisterStorage("f25", 89, PrimitiveType.Word32);
+        public readonly static RegisterStorage f26 = new RegisterStorage("f26", 90, PrimitiveType.Word32);
+        public readonly static RegisterStorage f27 = new RegisterStorage("f27", 91, PrimitiveType.Word32);
+        public readonly static RegisterStorage f28 = new RegisterStorage("f28", 92, PrimitiveType.Word32);
+        public readonly static RegisterStorage f29 = new RegisterStorage("f29", 93, PrimitiveType.Word32);
+        public readonly static RegisterStorage f30 = new RegisterStorage("f30", 94, PrimitiveType.Word32);
+        public readonly static RegisterStorage f31 = new RegisterStorage("f31", 95, PrimitiveType.Word32);
 
         internal readonly static RegisterStorage[] generalRegs = new RegisterStorage[]
         {
@@ -94,9 +130,12 @@ namespace Reko.Arch.Mips
             r26,
             r27,
             r28,
-            r29,
+            sp,
             r30,
-            r31,
+            ra,
+
+            hi,
+            lo,
         };
     }
 }

@@ -254,7 +254,7 @@ l01C8:
 
 					imgU.WriteLeUInt16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
-					imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
+					imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute,0);
 				} while (--relocs != 0);
 			}
 
@@ -278,7 +278,8 @@ l01C8:
 
             return new RelocationResults(
                 new List<EntryPoint> {new EntryPoint(Address.SegPtr(pklCs, pklIp), state) },
-                relocations);
+                relocations,
+                new List<Address>());
 		}
 
 

@@ -27,10 +27,11 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.Mips
 {
-    public class MipsProcessorArchitecture : ProcessorArchitecture
+    public abstract class MipsProcessorArchitecture : ProcessorArchitecture
     {
         public MipsProcessorArchitecture()
         {
@@ -38,6 +39,7 @@ namespace Reko.Arch.Mips
             this.PointerType = PrimitiveType.Word32;
             this.FramePointerType = PrimitiveType.Word32;
             this.InstructionBitSize = 32;
+            this.StackRegister = Registers.sp;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
@@ -52,32 +54,27 @@ namespace Reko.Arch.Mips
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new MipsProcessorState(this);
         }
 
         public override BitSet CreateRegisterBitset()
         {
-            throw new NotImplementedException();
+            return new BitSet(100);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new MipsRewriter(
+                this,
+                new MipsDisassembler(this, rdr),
+                frame,
+                host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
-        }
-
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
+            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            return new MipsPointerScanner32(rdr, knownLinAddresses, flags).Select(l => Address.Ptr32(l));
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -125,16 +122,40 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-
         public override string GrfToString(uint grf)
         {
             throw new NotImplementedException();
         }
 
-
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return Address.TryParse16(txtAddress, out addr);
+            return Address.TryParse32(txtAddress, out addr);
+        }
+    }
+
+    public class MipsBe32Architecture : MipsProcessorArchitecture
+    {
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new BeImageReader(image, addr);
+        }
+
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new BeImageReader(image, offset);
+        }
+    }
+
+    public class MipsLe32Architecture : MipsProcessorArchitecture
+    {
+        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        {
+            return new LeImageReader(image, offset);
         }
     }
 }

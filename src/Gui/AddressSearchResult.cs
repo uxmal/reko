@@ -35,11 +35,11 @@ namespace Reko.Gui
     public class AddressSearchResult : ISearchResult
     {
         protected readonly IServiceProvider services;
-        private List<AddressSearchHit> addresses;
+        private List<ProgramAddress> addresses;
 
         public AddressSearchResult(
             IServiceProvider services,
-            IEnumerable<AddressSearchHit> addresses)
+            IEnumerable<ProgramAddress> addresses)
         {
             this.services = services;
             this.addresses = addresses.ToList();
@@ -170,9 +170,12 @@ namespace Reko.Gui
 
         public virtual bool Execute(CommandID cmdID)
         {
+            if (!View.IsFocused)
+                return false;
             switch (cmdID.ID)
             {
-            case CmdIds.ActionMarkProcedure: if (!View.IsFocused) return false; MarkProcedures(); return true;
+            case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
+            case CmdIds.ViewFindWhatPointsHere: ViewFindWhatPointsHere(); return true;
             }
             return false;
         }
@@ -181,55 +184,27 @@ namespace Reko.Gui
         /// Returns the addresses the user has selected.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<AddressSearchHit> SelectedHits()
+        public IEnumerable<ProgramAddress> SelectedHits()
         {
             return View.SelectedIndices.Select(i => addresses[i]);
         }
 
         public void MarkProcedures()
         {
-            var decSvc = services.RequireService<IDecompilerService>();
-            var userProcs =
+            services.RequireService<ICommandFactory>().MarkProcedures(SelectedHits()).Do();
+        }
+
+        public void ViewFindWhatPointsHere()
+        {
+            var cmdFactory = services.RequireService<ICommandFactory>();
+            var grs =
                 from hit in SelectedHits()
-                let proc = decSvc.Decompiler.ScanProcedure(hit.Program, hit.Address)
-                select new
-                {
-                    Program = hit.Program,
-                    Address = hit.Address,
-                    UserProc = new Core.Serialization.Procedure_v1
-                    {
-                        Address = hit.Address.ToString(),
-                        Name = proc.Name
-                    }
-                };
-            foreach (var up in userProcs)
+                group hit by hit.Program into g
+                select new { Program = g.Key, Addresses = g.Select(gg => gg.Address) };
+            foreach (var gr in grs)
             {
-                if (!up.Program.UserProcedures.ContainsKey(up.Address))
-                {
-                    up.Program.UserProcedures.Add(up.Address, up.UserProc);
-                }
+                cmdFactory.ViewWhatPointsHere(gr.Program, gr.Addresses).Do();
             }
-        }
-    }
-
-    public class AddressSearchHit
-    {
-        public Program Program;
-        public Address Address;
-
-        public AddressSearchHit()
-        {
-        }
-
-        public AddressSearchHit(Program program, Address addr)
-        {
-            this.Program = program;
-            this.Address = addr;
-        }
-
-        public Address GetAddress()
-        {
-            return Address;
         }
     }
 }

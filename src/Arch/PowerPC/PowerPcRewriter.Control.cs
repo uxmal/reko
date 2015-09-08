@@ -60,17 +60,20 @@ namespace Reko.Arch.PowerPC
             }
             else
             {
+                cluster.Class = RtlClass.Transfer;
                 emitter.Call(dst, 0);
             }
         }
 
         private void RewriteBlr()
         {
+            cluster.Class = RtlClass.Transfer;
             emitter.Return(0, 0);
         }
 
         private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
+            cluster.Class = RtlClass.ConditionalTransfer;
             var ccrOp = instr.op1 as RegisterOperand;
             Expression cr;
             if (ccrOp != null)
@@ -126,6 +129,7 @@ namespace Reko.Arch.PowerPC
         
         private void RewriteCtrBranch(bool updateLinkRegister, bool toLinkRegister, Operator decOp, bool ifSet)
         {
+            cluster.Class = RtlClass.ConditionalTransfer;
             var ctr = frame.EnsureRegister(arch.ctr);
             var ccOp = instr.op1 as ConditionOperand;
             Expression dest;
@@ -169,6 +173,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteBranch(bool linkRegister, Expression destination)
         {
+            cluster.Class = RtlClass.ConditionalTransfer;
             var ctr = frame.EnsureRegister(arch.ctr);
             var bo = ((Constant)RewriteOperand(instr.op1)).ToByte();
             switch (bo)

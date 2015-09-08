@@ -48,6 +48,7 @@ namespace Reko.Core
 		public Program()
 		{
             this.EntryPoints = new List<EntryPoint>();
+            this.FunctionHints = new List<Address>();
 			this.Procedures = new SortedList<Address,Procedure>();
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
 			this.CallGraph = new CallGraph();
@@ -152,6 +153,11 @@ namespace Reko.Core
         /// </summary>
         public List<EntryPoint> EntryPoints { get; private set; }
 
+        /// <summary>
+        /// List of function hints.
+        /// </summary>
+        public List<Address> FunctionHints { get; private set;
+        }
         public string Filename { get; set; }
 
         /// <summary>

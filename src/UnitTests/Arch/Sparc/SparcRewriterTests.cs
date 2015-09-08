@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x7FFFFFFF);  // "call\t000FFFFC"
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|call 000FFFFC (0)");
         }
 
@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x8A804004); // "addcc\t%g0,%g4,%g5"
             AssertCode(
-                "0|00100000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|g5 = g1 + g4",
                 "2|L--|NZVC = cond(g5)");
         }
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0xBE10E004);//"or\t%g3,0x00000004,%i7");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|i7 = g3 | 0x00000004");
         }
 
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x86087FFE); // "and\t%g1,0xFFFFFFFE,%g3")
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|g3 = g1 & 0xFFFFFFFE");
         }
 
@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0xAB2EA01F);// sll\t%i2,0x0000001F,%l5"
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|l5 = i2 << 0x0000001F");
         }
 
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x0B2AAAAA);  // sethi\t0x002AAAAA,%g5");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|g5 = 0xAAAAA800");
         }
 
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Arch.Sparc
 
             BuildTest(0x8B204009);  // mulscc  %g1,%o1,%g5
             AssertCode(
-                "0|00100000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|g5 = __mulscc(g1, o1)",
                 "2|L--|NZVC = cond(g5)");
         }
@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x8A504009); // umul %g1,%o1,%g5
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|g5 = g1 *u o1");
         }
 
@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x8A584009);  // smul %g1,%o1,%g5
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|g5 = g1 *s o1");
         }
 
@@ -222,7 +222,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x8AF04009);  // udivcc\t%g1,%o1,%g5
             AssertCode(
-               "0|00100000(4): 2 instructions",
+               "0|L--|00100000(4): 2 instructions",
                "1|L--|g5 = g1 /u o1",
                "2|L--|NZVC = cond(g5)");
         }
@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x8A784009); // sdiv\t%g1,%o1,%g5
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|g5 = g1 / o1");
         }
 
@@ -251,9 +251,9 @@ namespace Reko.UnitTests.Arch.Sparc
                 0x02800004,     // be      00100010
                 0x8A04C004);    // add   %l3,%g4,%g5"
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|if (Test(EQ,Z)) branch 00100010",
-                "2|00100004(4): 1 instructions",
+                "2|L--|00100004(4): 1 instructions",
                 "3|L--|g5 = l3 + g4");
         }
 
@@ -264,9 +264,9 @@ namespace Reko.UnitTests.Arch.Sparc
                 0x22800004,     // be,a    00100004
                 0x8A04C004);    // add     %l3,%g4,%g5"
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TDA|if (Test(EQ,Z)) branch 00100010",
-                "2|00100004(4): 1 instructions",
+                "2|L--|00100004(4): 1 instructions",
                 "3|L--|g5 = l3 + g4");
         }
 
@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x03800001);  // fbne    00100004
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|TD-|if (Test(NE,LG)) branch 00100004");
         }
 
@@ -284,7 +284,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x8FC07FF0);  // jmpl    %g1,-16,%g7
             AssertCode(
-                "0|00100000(4): 2 instructions",
+                "0|T--|00100000(4): 2 instructions",
                 "1|L--|g7 = 00100000",
                 "2|TD-|goto g1 + -16");
         }
@@ -294,7 +294,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x9FC07FF0);  // jmpl    %g1,-16,%o7
             AssertCode(
-                "0|00100000(4): 2 instructions",
+                "0|T--|00100000(4): 2 instructions",
                 "1|L--|o7 = 00100000",
                 "2|TD-|call g1 + -16 (0)");
         }
@@ -305,8 +305,8 @@ namespace Reko.UnitTests.Arch.Sparc
             host.Stub(h => h.EnsurePseudoProcedure("__syscall", VoidType.Instance, 1)).Return(new PseudoProcedure("__syscall", VoidType.Instance, 1));
             BuildTest(0x91D02999);  // ta\t%g1,0x00000019"
             AssertCode(
-                "0|00100000(4): 1 instructions",
-                "1|L--|if (true) __syscall(0x00000019)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|---|if (true) __syscall(0x00000019)");
         }
 
         [Test]
@@ -314,7 +314,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x8BA0188A);  // fitos   %f10,%f5
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|f5 = (real32) f10");
         }
 
@@ -323,7 +323,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0xC248A044); //ldsb\t[%g2+68],%g1");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = (int32) Mem0[g2 + 68:int8]"); 
         }
 
@@ -332,7 +332,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0xC230BFF0);// sth\t%g1,[%g2+68]
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[g2 + -16:word16] = (word16) g1"); 
         }
 
@@ -341,7 +341,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0xC230800C);//sth\t%g1,[%g2+%i4]");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[g2 + o4:word16] = (word16) g1");
         }
 
@@ -350,7 +350,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0xC2308000);//sth\t%g1,[%g2+%g0]");
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[g2:word16] = (word16) g1");
         }
 
@@ -360,7 +360,7 @@ namespace Reko.UnitTests.Arch.Sparc
             BuildTest(
                 Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.g1));
             AssertCode(
-                "0|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.
         }
     }

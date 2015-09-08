@@ -31,6 +31,7 @@ namespace Reko.Core.Rtl
         T VisitCall(RtlCall call);
         T VisitGoto(RtlGoto go);
         T VisitIf(RtlIf rtlIf);
+        T VisitInvalid(RtlInvalid invalid);
         T VisitReturn(RtlReturn ret);
         T VisitSideEffect(RtlSideEffect side);
     }

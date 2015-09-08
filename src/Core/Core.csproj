@@ -244,6 +244,7 @@
     <Compile Include="Operators\FSubOperator.cs" />
     <Compile Include="Output\ProcedureFormatter.cs" />
     <Compile Include="PrintfApplicationBuilder.cs" />
+    <Compile Include="ProgramAddress.cs" />
     <Compile Include="ProgramOptions.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="MetadataFile.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="Rtl\RtlInstruction.cs" />
     <Compile Include="Rtl\RtlInstructionMatcher.cs" />
     <Compile Include="Rtl\RtlInstructionVisitor.cs" />
+    <Compile Include="Rtl\RtlInvalid.cs" />
     <Compile Include="Rtl\RtlReturn.cs" />
     <Compile Include="Rtl\RtlSideEffect.cs" />
     <Compile Include="Rtl\RtlTransfer.cs" />
@@ -651,6 +653,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CLanguage\" />
     <Folder Include="Schemata\" />
   </ItemGroup>
   <ItemGroup>

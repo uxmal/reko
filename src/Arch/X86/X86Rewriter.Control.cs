@@ -90,7 +90,23 @@ namespace Reko.Arch.X86
             Address addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
+                if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
+                {
+                    var next = dasm.Peek(1);
+                    RegisterOperand reg = next.op1 as RegisterOperand;
+                    if (next.code == Opcode.pop && reg != null)
+                    {
+                        // call $+5,pop<reg> idiom
+                        dasm.MoveNext();
+                        emitter.Assign(
+                            orw.AluRegister(reg),
+                            addr);
+                        ric.Length += 1;
+                        return;
+                    }
+                }
                 emitter.Call(addr, (byte) opsize.Size);
+                ric.Class = RtlClass.Transfer;
             }
             else
             {
@@ -98,11 +114,13 @@ namespace Reko.Arch.X86
                 if (target.DataType.Size == 2)
                     target = emitter.Seq(orw.AluRegister(Registers.cs), target);
                 emitter.Call(target, (byte) opsize.Size);
+                ric.Class = RtlClass.Transfer;
             }
         }
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
+            ric.Class = RtlClass.ConditionalTransfer;
             emitter.Branch(CreateTestCondition(cc, instrCur.code), OperandAsCodeAddress(op1), RtlClass.ConditionalTransfer);
         }
 
@@ -117,6 +135,7 @@ namespace Reko.Arch.X86
                 emitter.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth)),
                 OperandAsCodeAddress(instrCur.op1),
                 RtlClass.ConditionalTransfer);
+            ric.Class = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteJmp()
@@ -129,7 +148,8 @@ namespace Reko.Arch.X86
                 emitter.SideEffect(PseudoProc(reboot, VoidType.Instance));
 				return;
 			}
-				
+
+            ric.Class = RtlClass.Transfer;
 			if (instrCur.op1 is ImmediateOperand)
 			{
 				Address addr = OperandAsCodeAddress(instrCur.op1);
@@ -151,10 +171,12 @@ namespace Reko.Arch.X86
                         emitter.Ne0(cx)),
                     OperandAsCodeAddress(instrCur.op1),
                     RtlClass.ConditionalTransfer);
+                ric.Class = RtlClass.ConditionalTransfer;
             }
             else
             {
                 emitter.Branch(emitter.Ne0(cx), OperandAsCodeAddress(instrCur.op1), RtlClass.ConditionalTransfer);
+                ric.Class = RtlClass.ConditionalTransfer;
             }
         }
 
@@ -177,9 +199,9 @@ namespace Reko.Arch.X86
             dasm.MoveNext();
             instrCur = dasm.Current;
             ric.Length += (byte) instrCur.Length;
-            var strFollow = dasm.Peek(1);
-            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address, RtlClass.ConditionalTransfer);
-            RewriteStringInstruction();
+            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), instrCur.Address + instrCur.Length, RtlClass.ConditionalTransfer);
+            if (!RewriteStringInstruction())
+                return;
             emitter.Assign(regCX, emitter.ISub(regCX, 1));
 
             switch (instrCur.code)
@@ -206,6 +228,7 @@ namespace Reko.Arch.X86
             emitter.Return(
                 this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
                 instrCur.Operands == 1 ? ((ImmediateOperand)instrCur.op1).Value.ToInt32() : 0);
+            ric.Class = RtlClass.Transfer;
         }
 
         public void RewriteIret()
@@ -216,6 +239,7 @@ namespace Reko.Arch.X86
                 Registers.cs.DataType.Size +
                 arch.WordWidth.Size, 
                 0);
+            ric.Class = RtlClass.Transfer;
         }
 
         /// <summary>

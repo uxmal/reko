@@ -176,7 +176,7 @@ namespace Reko.Core
             item.Size = (uint)delta;
         }
 
-		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access)
+		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
 		{
 			ImageMapSegment seg;
             if (!TryFindSegment(addr, out seg))
@@ -184,6 +184,7 @@ namespace Reko.Core
 				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
 				segNew.Size = ~0U;
+                segNew.ContentSize = contentSize;
 				segments.Add(segNew.Address, segNew);
                 MapChanged.Fire(this);
                 return segNew;
@@ -198,7 +199,8 @@ namespace Reko.Core
 				segNew.Address = addr;
 				segNew.Size = (uint)(seg.Size - delta);
 				seg.Size = (uint) delta;
-				segments.Add(segNew.Address, segNew);
+                segNew.ContentSize = contentSize;
+                segments.Add(segNew.Address, segNew);
 
 				// And split any items in the segment.
 

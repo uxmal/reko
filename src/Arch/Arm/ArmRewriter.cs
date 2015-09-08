@@ -78,6 +78,7 @@ namespace Reko.Arch.Arm
                 this.ops = instr.ArchitectureDetail.Operands;
 
                 this.ric = new RtlInstructionCluster(instrs.Current.Address, instr.Bytes.Length);
+                this.ric.Class = RtlClass.Linear;
                 this.emitter = new RtlEmitter(ric.Instructions);
                 switch (instr.Id)
                 {
@@ -527,6 +528,11 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private RtlClass Classify(CapstoneArmInstruction instr)
+        {
+            throw new NotImplementedException();
+        }
+
         private AddressCorrelatedException NYI()
         {
             return new AddressCorrelatedException(
@@ -540,6 +546,7 @@ namespace Reko.Arch.Arm
             Address addr = Address.Ptr32((uint)Dst.ImmediateValue.Value);
             if (link)
             {
+                ric.Class = RtlClass.Transfer;
                 if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
                     emitter.Call(addr, 0);
@@ -553,10 +560,12 @@ namespace Reko.Arch.Arm
             {
                 if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
+                    ric.Class = RtlClass.Transfer;
                     emitter.Goto(addr);
                 }
                 else
                 {
+                    ric.Class = RtlClass.ConditionalTransfer;
                     emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
                 }
             }

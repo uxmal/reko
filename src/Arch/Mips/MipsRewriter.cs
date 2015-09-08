@@ -35,11 +35,12 @@ namespace Reko.Arch.Mips
     /// <summary>
     /// Rewrites MIPS instructions into clusters of RTL instructions.
     /// </summary>
-    public class MipsRewriter : IEnumerable<RtlInstructionCluster>
+    public partial class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<MipsInstruction> dasm;
         private Frame frame;
         private RtlEmitter emitter;
+        private RtlInstructionCluster cluster;
         private MipsProcessorArchitecture arch;
         private IRewriterHost host;
 
@@ -53,135 +54,166 @@ namespace Reko.Arch.Mips
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            if (!dasm.MoveNext())
-                yield break;
-            var instr = dasm.Current;
-            var cluster = new RtlInstructionCluster(instr.Address, 4);
-            this.emitter = new RtlEmitter(cluster.Instructions);
-            switch (instr.opcode)
+            while (dasm.MoveNext())
             {
-            default: throw new AddressCorrelatedException(
-                instr.Address,
-                "Rewriting of MIPS instruction {0} not implemented yet.",
-                instr.opcode);
-            case Opcode.add:
-            case Opcode.addi:
-            case Opcode.addiu:
-            case Opcode.addu:
-                RewriteAdd(instr, PrimitiveType.Word32); break;
-            case Opcode.and:
-            case Opcode.andi:
-                RewriteAnd(instr); break;
-            case Opcode.beq:
-            case Opcode.beql:
-                RewriteBranch0(instr, Operator.Eq, false); break;
-            case Opcode.bgez:
-            case Opcode.bgezl:
-                RewriteBranch0(instr, Operator.Ge, false); break;
-            case Opcode.bgezal:
-            case Opcode.bgezall:
-                RewriteBranch0(instr, Operator.Ge, true); break;
-            case Opcode.bgtz:
-            case Opcode.bgtzl:
-                RewriteBranch0(instr, Operator.Gt, false); break;
-            case Opcode.blez:
-            case Opcode.blezl:
-                RewriteBranch0(instr, Operator.Le, false); break;
-            case Opcode.bltz:
-            case Opcode.bltzl:
-                RewriteBranch0(instr, Operator.Lt, false); break;
-            case Opcode.bltzal:
-            case Opcode.bltzall:
-                RewriteBranch0(instr, Operator.Lt, true); break;
-            case Opcode.bne:
-            case Opcode.bnel:
-                RewriteBranch0(instr, Operator.Ne, true); break;
-            case Opcode.@break:
-                this.host.EnsurePseudoProcedure("__break", VoidType.Instance, 0); break;
-            case Opcode.dadd:
-            case Opcode.daddi:
-                RewriteAdd(instr, PrimitiveType.Word64); break;
-            case Opcode.daddiu:
-            case Opcode.daddu:
-            case Opcode.ddiv:
-            case Opcode.ddivu:
-            case Opcode.div:
-            case Opcode.divu:
-            case Opcode.dmult:
-            case Opcode.dmultu:
-            case Opcode.dsll:
-            case Opcode.dsll32:
-            case Opcode.dsllv:
-            case Opcode.dsra:
-            case Opcode.dsra32:
-            case Opcode.dsrav:
-            case Opcode.dsrl:
-            case Opcode.dsrl32:
-            case Opcode.dsrlv:
-            case Opcode.dsub:
-            case Opcode.dsubu:
-                goto default;
-            case Opcode.j:
-                RewriteJump(instr); break;
-            case Opcode.jal:
-            case Opcode.jalr:
-            case Opcode.jr:
-            case Opcode.lb:
-            case Opcode.lbu:
-            case Opcode.ld:
-            case Opcode.ldl:
-            case Opcode.ldr:
-                goto default;
-            case Opcode.lh:
-            case Opcode.lhu:
-                RewriteLoad(instr); break;
-            case Opcode.ll:
-            case Opcode.lld:
-                goto default;
-            case Opcode.lui: RewriteLui(instr); break;
-            case Opcode.lw:
-            case Opcode.lwl:
-            case Opcode.lwr:
-            case Opcode.lwu:
-            case Opcode.mfhi:
-            case Opcode.mflo:
-            case Opcode.mthi:
-            case Opcode.mtlo:
-            case Opcode.movn:
-            case Opcode.movz:
-            case Opcode.mult:
-            case Opcode.multu:
-            case Opcode.nor:
-                goto default;
-            case Opcode.or:
-            case Opcode.ori:
-                RewriteOr(instr); break;
-            case Opcode.pref:
-            case Opcode.sb:
-            case Opcode.sc:
-            case Opcode.scd:
-            case Opcode.sd:
-            case Opcode.sdl:
-            case Opcode.sdr:
-            case Opcode.sh:
-            case Opcode.slti:
-            case Opcode.sltiu:
-            case Opcode.sw:
-            case Opcode.swl:
-            case Opcode.swr:
-            case Opcode.swu:
-            case Opcode.xor:
-            case Opcode.xori:
-                goto default;
+                var instr = dasm.Current;
+                this.cluster = new RtlInstructionCluster(instr.Address, 4);
+                cluster.Class = RtlClass.Linear;
+                this.emitter = new RtlEmitter(cluster.Instructions);
+                switch (instr.opcode)
+                {
+                default: throw new AddressCorrelatedException(
+                    instr.Address,
+                    "Rewriting of MIPS instruction {0} not implemented yet.",
+                    instr.opcode);
+                case Opcode.add:
+                case Opcode.addi:
+                case Opcode.addiu:
+                case Opcode.addu:
+                    RewriteAdd(instr, PrimitiveType.Word32); break;
+                case Opcode.and:
+                case Opcode.andi:
+                    RewriteAnd(instr); break;
+                case Opcode.beq:
+                    RewriteBranch(instr, Operator.Eq, false); break;
+                case Opcode.beql:
+                    RewriteBranch(instr, Operator.Eq, true); break;
+                case Opcode.bgez:
+                    RewriteBranch0(instr, Operator.Ge, false); break;
+                case Opcode.bgezl:
+                    RewriteBranch0(instr, Operator.Ge, true); break;
+                case Opcode.bgezal:
+                    RewriteBranch0(instr, Operator.Ge, false); break;
+                case Opcode.bgezall:
+                    RewriteBranch0(instr, Operator.Ge, true); break;
+                case Opcode.bgtz:
+                    RewriteBranch0(instr, Operator.Gt, false); break;
+                case Opcode.bgtzl:
+                    RewriteBranch0(instr, Operator.Gt, true); break;
+                case Opcode.blez:
+                    RewriteBranch0(instr, Operator.Le, false); break;
+                case Opcode.blezl:
+                    RewriteBranch0(instr, Operator.Le, true); break;
+                case Opcode.bltz:
+                    RewriteBranch0(instr, Operator.Lt, false); break;
+                case Opcode.bltzl:
+                    RewriteBranch0(instr, Operator.Lt, true); break;
+                case Opcode.bltzal:
+                    RewriteBranch0(instr, Operator.Lt, false); break;
+                case Opcode.bltzall:
+                    RewriteBranch0(instr, Operator.Lt, true); break;
+                case Opcode.bne:
+                    RewriteBranch(instr, Operator.Ne, false); break;
+                case Opcode.bnel:
+                    RewriteBranch(instr, Operator.Ne, true); break;
+                case Opcode.@break:
+                    this.host.EnsurePseudoProcedure("__break", VoidType.Instance, 0); break;
+                case Opcode.dadd:
+                case Opcode.daddi:
+                    RewriteAdd(instr, PrimitiveType.Word64); break;
+                case Opcode.daddiu:
+                case Opcode.daddu:
+                case Opcode.ddiv:
+                case Opcode.ddivu:
+                case Opcode.div: RewriteDiv(instr, emitter.SDiv); break;
+                case Opcode.divu: RewriteDiv(instr, emitter.UDiv); break;
+                case Opcode.dmult:
+                case Opcode.dmultu:
+                case Opcode.dsll:
+                case Opcode.dsll32:
+                case Opcode.dsllv:
+                case Opcode.dsra:
+                case Opcode.dsra32:
+                case Opcode.dsrav:
+                case Opcode.dsrl:
+                case Opcode.dsrl32:
+                case Opcode.dsrlv:
+                case Opcode.dsub:
+                case Opcode.dsubu:
+                    goto default;
+                case Opcode.j:
+                    RewriteJump(instr); break;
+                case Opcode.jal:
+                    RewriteJal(instr); break;
+                case Opcode.jalr:
+                    RewriteJalr(instr); break;
+                case Opcode.jr:
+                    RewriteJr(instr); break;
+                case Opcode.lb:
+                case Opcode.lbu:
+                    RewriteLoad(instr); break;
+                case Opcode.ld:
+                case Opcode.ldl:
+                case Opcode.ldr:
+                    goto default;
+                case Opcode.lh:
+                case Opcode.lhu:
+                    RewriteLoad(instr); break;
+                case Opcode.ll:
+                case Opcode.lld:
+                    goto default;
+                case Opcode.lui: RewriteLui(instr); break;
+                case Opcode.lw: RewriteLoad(instr); break;
+                case Opcode.lwl: RewriteLwl(instr); break;
+                case Opcode.lwr: RewriteLwr(instr); break;
+                case Opcode.lwu:
+                    goto default;
+                case Opcode.mfc0: RewriteMfc0(instr); break;
+                case Opcode.mfhi:
+                case Opcode.mflo:
+                case Opcode.mthi:
+                case Opcode.mtlo:
+                case Opcode.movn:
+                case Opcode.movz:
+                case Opcode.mult:
+                case Opcode.multu:
+                case Opcode.nop:
+                    break;
+                case Opcode.nor:
+                    RewriteNor(instr); break;
+                case Opcode.or:
+                case Opcode.ori:
+                    RewriteOr(instr); break;
+                case Opcode.pref:
+                    goto default;
+                case Opcode.sb: RewriteStore(instr); break;
+                case Opcode.sc:
+                case Opcode.scd:
+                case Opcode.sd:
+                case Opcode.sdl:
+                case Opcode.sdr:
+                    goto default;
+                case Opcode.sh: RewriteStore(instr); break;
+                case Opcode.sll:
+                case Opcode.sllv:
+                    RewriteSll(instr); break;
+                case Opcode.slt: RewriteSxx(instr, Operator.Lt); break;
+                case Opcode.slti: RewriteSxx(instr, Operator.Lt); break;
+                case Opcode.sltiu: RewriteSxx(instr, Operator.Ult); break;
+                case Opcode.sltu: RewriteSxx(instr, Operator.Ult); break;
+                case Opcode.sra: RewriteSra(instr); break;
+                case Opcode.srl: RewriteSrl(instr); break;
+                case Opcode.sub:
+                case Opcode.subu:
+                    RewriteSub(instr); break;
+                case Opcode.sw:
+                    RewriteStore(instr); break;
+                case Opcode.swl: RewriteSwl(instr); break;
+                case Opcode.swr: RewriteSwr(instr); break;
+                case Opcode.swu:
+                    goto default;
+                case Opcode.xor:
+                case Opcode.xori:
+                    RewriteXor(instr); break;
+                }
+                yield return cluster;
             }
-            yield return cluster;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
 
         //$REVIEW: push PseudoProc into the RewriterHost interface"
         public Expression PseudoProc(string name, DataType retType, params Expression[] args)
@@ -200,86 +232,6 @@ namespace Reko.Arch.Mips
                     args.Length));
 
             return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
-        }
-
-        private void RewriteBranch0(MipsInstruction instr, BinaryOperator condOp, bool link)
-        {
-            if (!link)
-            {
-                var reg = RewriteOperand(instr.op1);
-                var addr = (Address)RewriteOperand(instr.op2);
-                var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
-                emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
-            }
-            else
-                throw new NotImplementedException("Linked branches not implemented yet.");
-        }
-
-        private void RewriteJump(MipsInstruction instr)
-        {
-            var dst = RewriteOperand(instr.op1);
-            emitter.GotoD(dst);
-        }
-
-        private void RewriteLoad(MipsInstruction instr)
-        {
-            var opSrc = RewriteOperand(instr.op2);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, emitter.Cast(arch.WordWidth, opSrc));
-        }
-
-        private void RewriteLui(MipsInstruction instr)
-        {
-            var immOp = (ImmediateOperand)instr.op2;
-            long v = immOp.Value.ToInt16();
-            var opSrc = Constant.Create(arch.WordWidth, v << 16);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, opSrc);
-        }
-
-        private void RewriteAdd(MipsInstruction instr, PrimitiveType size)
-        {
-            var opLeft = RewriteOperand(instr.op2);
-            var opRight = RewriteOperand(instr.op3);
-            Expression opSrc;
-            if (opLeft.IsZero)
-                opSrc = opRight;
-            else if (opRight.IsZero)
-                opSrc = opLeft;
-            else
-                opSrc = emitter.IAdd(opLeft, opRight);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, opSrc);
-        }
-
-        private void RewriteAnd(MipsInstruction instr)
-        {
-            var opLeft = RewriteOperand(instr.op2);
-            var opRight = RewriteOperand(instr.op3);
-            Expression opSrc;
-            if (opLeft.IsZero)
-                opSrc = opLeft;
-            else if (opRight.IsZero)
-                opSrc = opRight;
-            else
-                opSrc = emitter.IAdd(opLeft, opRight);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, opSrc);
-        }
-
-        private void RewriteOr(MipsInstruction instr)
-        {
-            var opLeft = RewriteOperand(instr.op2);
-            var opRight = RewriteOperand(instr.op3);
-            Expression opSrc;
-            if (opLeft.IsZero)
-                opSrc = opRight;
-            else if (opRight.IsZero)
-                opSrc = opLeft;
-            else
-                opSrc = emitter.Or(opLeft, opRight);
-            var opDst = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, opSrc);
         }
 
         private Expression RewriteOperand(MachineOperand op)

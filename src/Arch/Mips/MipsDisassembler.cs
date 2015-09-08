@@ -47,13 +47,23 @@ namespace Reko.Arch.Mips
         {
             if (!rdr.IsValid)
                 return null; 
-            this.addr = rdr.Address; 
-            var wInstr = rdr.ReadBeUInt32();
-            var opRec = opRecs[wInstr >> 26];
-            Debug.Print("Decoding {0:X8} => oprec {1} {2}", wInstr, wInstr >> 26, opRec == null ? "(null!)" : "");
+            this.addr = rdr.Address;
+            OpRec opRec;
+            uint wInstr;
+            if (rdr.TryReadUInt32(out wInstr))
+            {
+                opRec = opRecs[wInstr >> 26];
+            }
+            else
+            {
+                opRec = null;
+            }
             if (opRec == null)
-                throw new NotImplementedException((wInstr >> 26).ToString());    //$REVIEW: remove this when all oprecs are in place.
-            instrCur = opRec.Decode(wInstr, this);
+                instrCur = new MipsInstruction { opcode = Opcode.illegal };
+            else 
+                instrCur = opRec.Decode(wInstr, this);
+            instrCur.Address = this.addr;
+            instrCur.Length = 4;
             return instrCur;
         }
 
@@ -78,9 +88,80 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.xori, "R2,R1,U"),
             new AOpRec(Opcode.lui, "R2,i"),
             // 10
-            null,
-            null,
-            null, 
+            new CoprocessorOpRec(
+                new AOpRec(Opcode.mfc0, "R2,R3"),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.mtc0, "R2,R3"),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, "")),
+
+            new CoprocessorOpRec(
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, "")),
+
+           new CoprocessorOpRec(
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, "")),
             null, 
             new AOpRec(Opcode.beql, "R1,R2,j"), 
             new AOpRec(Opcode.bnel, "R1,R2,j"), 
@@ -99,17 +180,17 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.lb, "R2,EB"),
             new AOpRec(Opcode.lh, "R2,EH"),
             new AOpRec(Opcode.lwl, "R2,Ew"),
-            new AOpRec(Opcode.lw, "R2,EW"),
+            new AOpRec(Opcode.lw, "R2,Ew"),
                               
             new AOpRec(Opcode.lbu, "R2,Eb"),
             new AOpRec(Opcode.lhu, "R2,Eh"),
             new AOpRec(Opcode.lwr, "R2,Ew"),
             new AOpRec(Opcode.lwu, "R2,Ew"),
             
-            new AOpRec(Opcode.sb, "R2,EB"),
-            new AOpRec(Opcode.sh, "R2,EH"),
+            new AOpRec(Opcode.sb, "R2,Eb"),
+            new AOpRec(Opcode.sh, "R2,Eh"),
             new AOpRec(Opcode.swl, "R2,Ew"),
-            new AOpRec(Opcode.sw, "R2,EW"),
+            new AOpRec(Opcode.sw, "R2,Ew"),
 
             new AOpRec(Opcode.sdl, "R2,Ew"),
             new AOpRec(Opcode.sdr, "R2,Ew"),
@@ -181,6 +262,9 @@ namespace Reko.Arch.Mips
                     break;
                 case 'E':   // effective address.
                     op = Ea(wInstr, opFmt[++i]);
+                    break;
+                case 'T':   // trap code
+                    op = ImmediateOperand.Word16((ushort)((wInstr >> 6) & 0x03FF));
                     break;
                 }
                 ops.Add(op);

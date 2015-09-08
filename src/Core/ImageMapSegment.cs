@@ -30,6 +30,8 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ImageMapSegmentNodeDesigner,Reko.Gui")]
 	public class ImageMapSegment : ImageMapItem
 	{
+        private uint ctSize;
+
 		public ImageMapSegment(string name, AccessMode access) : base() 
 		{
 			if (name == null)
@@ -48,6 +50,8 @@ namespace Reko.Core
 
 		public AccessMode Access { get; private set; }
 
+        public uint ContentSize { get { return (ctSize != 0) ? ctSize : Size; } set { ctSize = value; } }
+
         public bool IsDiscardable { get; set; }
 
         public ImageMapSegmentRenderer Designer { get; set; }
@@ -56,7 +60,7 @@ namespace Reko.Core
 
 		public override string ToString()
 		{
-			return string.Format("Segment {0} at {1}, {2} bytes", Name, Address.ToString(), Size);
+			return string.Format("Segment {0} at {1}, {2} / {3} bytes", Name, Address.ToString(), ContentSize, Size);
 		}
 
     }

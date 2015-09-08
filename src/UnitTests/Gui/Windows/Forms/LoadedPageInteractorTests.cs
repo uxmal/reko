@@ -62,8 +62,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[10000]);
             prog.ImageMap = prog.Image.CreateImageMap();
 
-            prog.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite);
-            prog.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite);
+            prog.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
+            prog.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
             mapSegment1 = prog.ImageMap.Segments.Values[0];
             mapSegment2 = prog.ImageMap.Segments.Values[1];
 
@@ -123,27 +123,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             prog.Procedures.Add(addr,
                 new Procedure(procName, prog.Architecture.CreateFrame()));
-        }
-
-        [Test]
-        [Ignore("Move this to low-level? Or Decompiler?")]
-        public void LpiMarkingProceduresShouldAddToUserProceduresList()
-        {
-            var disSvc = AddService<IDisassemblyViewService>();
-            Assert.AreEqual(0, decSvc.Decompiler.Project.Programs[0].UserProcedures.Count);
-            var addr = Address.SegPtr(0x0C20, 0);
-            memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
-            memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
-            mr.ReplayAll();
-
-            //interactor.MarkAndScanProcedure(prog);
-
-            mr.VerifyAll();
-            //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            var program = decSvc.Decompiler.Project.Programs[0];
-            Assert.AreEqual(1, program.UserProcedures.Count);
-            Procedure_v1 uproc = (Procedure_v1)program.UserProcedures.Values[0];
-            Assert.AreEqual("0C20:0000", uproc.Address);
         }
 
         [Test]

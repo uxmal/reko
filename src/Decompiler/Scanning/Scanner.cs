@@ -48,6 +48,7 @@ namespace Reko.Scanning
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
         void EnqueueEntryPoint(EntryPoint ep);
+        void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
@@ -262,6 +263,11 @@ namespace Reko.Scanning
         public void EnqueueEntryPoint(EntryPoint ep)
         {
             queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, program, ep));
+        }
+
+        public void EnqueueProcedure(Address addr)
+        {
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)

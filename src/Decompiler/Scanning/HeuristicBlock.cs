@@ -36,11 +36,13 @@ namespace Reko.Scanning
             this.Address = address;
             this.Name = name; // +"-" + (++cntr);
             this.Statements = new List<RtlInstructionCluster>();
+            this.IsValid = true;
         }
 
         public Address Address { get; private set; }
         public string Name { get; private set; }
         public List<RtlInstructionCluster> Statements { get; private set; }
+        public bool IsValid { get; set; }
 
         public Address GetEndAddress()
         {
@@ -49,6 +51,11 @@ namespace Reko.Scanning
                 return Address;
             var instr = Statements[iLast];
             return instr.Address + instr.Length;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("block({0})", Address);
         }
     }
 }

@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,7 @@ namespace Reko.Arch.Z80
         private Frame frame;
         private IRewriterHost host;
         private IEnumerator<Z80Instruction> dasm;
+        private RtlInstructionCluster rtlc;
         private RtlEmitter emitter;
 
         public Z80Rewriter(Z80ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -52,7 +54,8 @@ namespace Reko.Arch.Z80
         {
             while (dasm.MoveNext())
             {
-                var rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
+                rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
+                rtlc.Class = RtlClass.Linear;
                 emitter = new RtlEmitter(rtlc.Instructions);
                 switch (dasm.Current.Code)
                 {
@@ -154,6 +157,7 @@ namespace Reko.Arch.Z80
             emitter.Assign(dst, emitter.ISub(emitter.ISub(dst, src), FlagGroup(FlagM.CF)));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
+
         private void RewriteRotation(string pseudoOp, bool useCarry)
         {
             var a = frame.EnsureRegister(Registers.a);
@@ -193,17 +197,18 @@ namespace Reko.Arch.Z80
             return frame.EnsureFlagGroup((uint) flags, arch.GrfToString((uint) flags), PrimitiveType.Byte);
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
         private void EmitBranch(ConditionOperand cOp, ImmediateOperand dst)
         {
+            rtlc.Class = RtlClass.ConditionalTransfer;
             emitter.Branch(
                 GenerateTestExpression(cOp, false),
                 Address.Ptr16(dst.Value.ToUInt16()),
-                RtlClass.Transfer);
+                RtlClass.ConditionalTransfer);
         }
 
         private TestCondition GenerateTestExpression(ConditionOperand cOp, bool invert)
@@ -228,6 +233,7 @@ namespace Reko.Arch.Z80
 
         private void RewriteDjnz(MachineOperand dst)
         {
+            rtlc.Class = RtlClass.Linear;
             var b = frame.EnsureRegister(Registers.b);
             emitter.Assign(b, emitter.ISub(b, 1));
             emitter.Branch(emitter.Ne0(b), ((AddressOperand) dst).Address, RtlClass.Transfer);
@@ -235,6 +241,7 @@ namespace Reko.Arch.Z80
 
         private void RewriteCall(Z80Instruction instr)
         {
+            rtlc.Class = RtlClass.Transfer;
             var cOp = instr.Op1 as ConditionOperand;
             if (cOp != null)
             {
@@ -291,12 +298,14 @@ namespace Reko.Arch.Z80
             else
             {
                 var target = (ImmediateOperand) instr.Op1;
+                rtlc.Class = RtlClass.Transfer;
                 emitter.Goto(Address.Ptr16(target.Value.ToUInt16()));
             }
         }
 
         private void RewriteJr()
         {
+            rtlc.Class = RtlClass.Transfer;
             var target = (AddressOperand) dasm.Current.Op1;
             emitter.Goto(target.Address);
         }
@@ -361,6 +370,7 @@ namespace Reko.Arch.Z80
 
         private void RewriteRet()
         {
+            rtlc.Class = RtlClass.Transfer;
             emitter.Return(2, 0);
         }
     }

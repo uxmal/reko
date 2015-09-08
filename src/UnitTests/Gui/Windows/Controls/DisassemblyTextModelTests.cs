@@ -43,9 +43,12 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         public void Setup()
         {
             mr = new MockRepository();
+            var arch = mr.Stub<IProcessorArchitecture>();
+            arch.Stub(a => a.InstructionBitSize).Return(8);
+            
             program = new Program
             {
-                Architecture = mr.Stub<IProcessorArchitecture>()
+                Architecture = arch
             };
         }
 

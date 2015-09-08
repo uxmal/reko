@@ -348,7 +348,7 @@ namespace Reko.Analysis
 
         public bool VisitMemoryStorage(MemoryStorage global, bool defining)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VisitStackLocalStorage(StackLocalStorage local, bool defining)

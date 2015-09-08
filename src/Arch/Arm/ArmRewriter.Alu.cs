@@ -123,6 +123,7 @@ namespace Reko.Arch.Arm
             if (rDst == A32Registers.pc)
             {
                 // Assignment to PC is the same as a jump
+                ric.Class = RtlClass.Transfer;
                 emitter.Goto(opSrc);
                 return;
             }
@@ -142,6 +143,7 @@ namespace Reko.Arch.Arm
         {
             if (Dst.Type == ArmInstructionOperandType.Register && Dst.RegisterValue.Value == ArmRegister.PC)
             {
+                ric.Class = RtlClass.Transfer;
                 if (Src1.Type == ArmInstructionOperandType.Register && Src1.RegisterValue.Value == ArmRegister.LR)
                 {
                     AddConditional(new RtlReturn(0, 0, RtlClass.Transfer));

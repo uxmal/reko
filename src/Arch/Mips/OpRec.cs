@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,27 +50,52 @@ namespace Reko.Arch.Mips
         }
     }
 
+    class SllOprec : AOpRec
+    {
+        public SllOprec(Opcode opcode, string format) : base(opcode, format) { }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            var instr = base.Decode(wInstr, dasm);
+            var imm = instr.op3 as ImmediateOperand;
+            if (imm != null && imm.Value.IsIntegerZero)
+                return new MipsInstruction {
+                    Address = instr.Address,
+                    Length = instr.Length,
+                    opcode = Opcode.nop };
+            else
+                return instr;
+        }
+    }
     class SpecialOpRec : OpRec
     {
         private static OpRec[] specialOpRecs = new OpRec[] 
         {
-            null, null, null, null, 
-            null, null, null, null, 
+            new SllOprec(Opcode.sll, "R3,R2,s"),
+            new AOpRec(Opcode.illegal, ""),         //$TODO: requires special OpRec
+            new AOpRec(Opcode.srl, "R3,R2,s"),
+            new AOpRec(Opcode.sra, "R3,R2,s"),
+ 
+            new AOpRec(Opcode.sllv, "R3,R2,R1"),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.srlv, "R3,R2,R1"),
+            new AOpRec(Opcode.srav, "R3,R2,R1"),
+
             new AOpRec(Opcode.jr, "R1"),
             new AOpRec(Opcode.jalr, "R3,R1"),
             new AOpRec(Opcode.movz, "R3,R1,R2"),
             new AOpRec(Opcode.movn, "R3,R1,R2"),
-            null,
+            new AOpRec(Opcode.syscall, "B"),
             new AOpRec(Opcode.@break, "B"),
-            null,
-            null, 
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.sync, ""), 
             // 10
             new AOpRec(Opcode.mfhi, "R2"),
             new AOpRec(Opcode.mthi, "R2"),
             new AOpRec(Opcode.mflo, "R2"),
             new AOpRec(Opcode.mtlo, "R2"),
             new AOpRec(Opcode.dsllv, "R3,R2,R1"),
-            null,
+            new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.dsrlv, "R3,R2,R1"),
             new AOpRec(Opcode.dsrav, "R3,R2,R1"),
 
@@ -84,27 +110,37 @@ namespace Reko.Arch.Mips
             // 20
             new AOpRec(Opcode.add, "R3,R1,R2"),
             new AOpRec(Opcode.addu, "R3,R1,R2"),
-            null, 
-            null,
+            new AOpRec(Opcode.sub, "R3,R1,R2"),
+            new AOpRec(Opcode.subu, "R3,R1,R2"),
             new AOpRec(Opcode.and, "R3,R1,R2"),
             new AOpRec(Opcode.or, "R3,R1,R2"),
             new AOpRec(Opcode.xor, "R3,R1,R2"),
             new AOpRec(Opcode.nor, "R3,R1,R2"),
  
-            null, null, null, null, 
+            new AOpRec(Opcode.illegal, ""), 
+            new AOpRec(Opcode.illegal, ""), 
+            new AOpRec(Opcode.slt, "R3,R1,R2"),
+            new AOpRec(Opcode.sltu, "R3,R1,R2"),
             new AOpRec(Opcode.dadd, "R3,R1,R2"),
             new AOpRec(Opcode.daddu, "R3,R1,R2"),
             new AOpRec(Opcode.dsub, "R3,R1,R2"),
             new AOpRec(Opcode.dsubu, "R3,R1,R2"),
             // 30
-            null, null, null, null,
-            null, null, null, null, 
+            new AOpRec(Opcode.tge, "R1,R2,T"),
+            new AOpRec(Opcode.tgeu, "R1,R2,T"),
+            new AOpRec(Opcode.tlt, "R1,R2,T"),
+            new AOpRec(Opcode.tltu, "R1,R2,T"),
+            new AOpRec(Opcode.teq, "R1,R2,T"),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.tne, "R1,R2,T"),
+            new AOpRec(Opcode.illegal, ""),
+
             new AOpRec(Opcode.dsll, "R3,R2,s"),
-            null,
+            new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.dsrl, "R3,R2,s"),
             new AOpRec(Opcode.dsra, "R3,R2,s"),
             new AOpRec(Opcode.dsll32, "R3,R2,s"),
-            null, 
+            new AOpRec(Opcode.illegal, ""), 
             new AOpRec(Opcode.dsrl32, "R3,R2,s"),
             new AOpRec(Opcode.dsra32, "R3,R2,s"),
         };
@@ -112,60 +148,76 @@ namespace Reko.Arch.Mips
         {
             Debug.Assert(specialOpRecs.Length == 64, specialOpRecs.Length.ToString());
             var opRec = specialOpRecs[wInstr & 0x3F];
-            Debug.Print("  SpecialOpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
+            // Debug.Print("  SpecialOpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
             return opRec.Decode(wInstr, dasm);
         }
     }
 
     class CondOpRec : OpRec
     {
-        Opcode[] opcodes = 
+        static Opcode[] opcodes = 
         {
             Opcode.bltz,
             Opcode.bgez,
             Opcode.bltzl,
             Opcode.bgezl,
 
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
 
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
 
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
 
             Opcode.bltzal,
             Opcode.bgezal,
             Opcode.bltzall,
             Opcode.bgezall,
 
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
 
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
 
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
-            Opcode.None,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
+            Opcode.illegal,
         };
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             var opcode = opcodes[(wInstr >> 16) & 0x1F];
             return dasm.DecodeOperands(opcode, wInstr, "R1,j");
+        }
+
+    }
+
+    internal class CoprocessorOpRec : OpRec
+    {
+        private OpRec[] oprecs;
+
+        public CoprocessorOpRec(params OpRec[] oprecs)
+        {
+            this.oprecs = oprecs;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            return oprecs[(wInstr>>21) & 0x1F].Decode(wInstr, dasm);
         }
     }
 }

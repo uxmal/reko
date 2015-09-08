@@ -150,6 +150,11 @@ namespace Reko.Core.Machine
         {
             return new ImmediateOperand(Constant.Int16(value));
         }
+
+        public static MachineOperand Word16(ushort value)
+        {
+            return new ImmediateOperand(Constant.Word16(value));
+        }
     }
 
     /// <summary>

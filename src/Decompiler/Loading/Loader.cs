@@ -98,6 +98,7 @@ namespace Reko.Loading
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
+            program.FunctionHints.AddRange(relocations.Functions);
             return program;
         }
 

@@ -112,18 +112,11 @@ namespace Reko.Scanning
 
             while (rtlStream.MoveNext())
             {
-                ric = rtlStream.Current;
+                this.ric = rtlStream.Current;
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
+                    break;  // Fell off the end of this block.
+                if (!ProcessRtlCluster(ric))
                     break;
-                state.SetInstructionPointer(ric.Address);
-                foreach (var rtlInstr in ric.Instructions)
-                {
-                    ri = rtlInstr;
-                    if (!ri.Accept(this))
-                    {
-                        return;
-                    }
-                }
                 var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
                 if (blNext != null)
                 {
@@ -131,6 +124,20 @@ namespace Reko.Scanning
                     return;
                 }
             }
+        }
+
+        private bool ProcessRtlCluster(RtlInstructionCluster ric)
+        {
+            state.SetInstructionPointer(ric.Address);
+            foreach (var rtlInstr in ric.Instructions)
+            {
+                ri = rtlInstr;
+                if (!ri.Accept(this))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -230,15 +237,42 @@ namespace Reko.Scanning
 
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
+            RtlInstructionCluster ricDelayed = null;
+            if ((b.Class & RtlClass.Delay) != 0)
+            {
+                rtlStream.MoveNext();
+                ricDelayed = rtlStream.Current;
+                ric = ricDelayed;
+            }
             var fallthruAddress = ric.Address + ric.Length;
 
             var blockThen = BlockFromAddress(ric.Address, b.Target, proc, state.Clone());
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
-            branch.Target = blockThen;      // The back-patch referred to above.
-            EnsureEdge(proc, branchingBlock, blockElse);
-            EnsureEdge(proc, branchingBlock, blockThen);
+
+            if ((b.Class & RtlClass.Delay) != 0)
+            {
+                var blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
+                var blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
+                blockDsF.IsSynthesized = true;
+                blockDsT.IsSynthesized = true;
+                blockCur = blockDsF;
+                ProcessRtlCluster(ricDelayed);
+                blockCur = blockDsT;
+                ProcessRtlCluster(ricDelayed);
+                EnsureEdge(proc, blockDsF, blockElse);
+                EnsureEdge(proc, blockDsT, blockThen);
+                branch.Target = blockDsT;
+                EnsureEdge(proc, branchingBlock, blockDsF);
+                EnsureEdge(proc, branchingBlock, blockDsT);
+            }
+            else
+            {
+                branch.Target = blockThen;      // The back-patch referred to above.
+                EnsureEdge(proc, branchingBlock, blockElse);
+                EnsureEdge(proc, branchingBlock, blockThen);
+            }
 
             // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
@@ -274,6 +308,16 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Encountering invalid instructions is unexpected.
+        /// </summary>
+        /// <param name="invalid"></param>
+        /// <returns></returns>
+        public bool VisitInvalid(RtlInvalid invalid)
+        {
+            return false;
+        }
+
         private Block BlockFromAddress(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
         {
             return scanner.EnqueueJumpTarget(addrSrc, addrDst, proc, state);
@@ -293,7 +337,13 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitGoto(RtlGoto g)
         {
-            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+            if ((g.Class & RtlClass.Delay) != 0)
+            {
+                // Get next instruction cluster.
+                rtlStream.MoveNext();
+                ProcessRtlCluster(rtlStream.Current);
+            }
+            scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
@@ -328,6 +378,12 @@ namespace Reko.Scanning
 
         public bool VisitCall(RtlCall call)
         {
+            if ((call.Class & RtlClass.Delay) != 0)
+            {
+                // Get delay slot instruction cluster.
+                rtlStream.MoveNext();
+                ProcessRtlCluster(rtlStream.Current);
+            }
             var site = state.OnBeforeCall(stackReg, call.ReturnAddressSize);
             ProcedureSignature sig;
             Address addr = call.Target as Address;
@@ -456,6 +512,12 @@ namespace Reko.Scanning
 
         public bool VisitReturn(RtlReturn ret)
         {
+            if ((ret.Class & RtlClass.Delay) != 0)
+            {
+                // Get next instruction cluster from the delay slot.
+                rtlStream.MoveNext();
+                ProcessRtlCluster(rtlStream.Current);
+            }
             var proc = blockCur.Procedure;
             Emit(new ReturnInstruction());
             proc.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
@@ -478,7 +540,7 @@ namespace Reko.Scanning
                 proc.Signature.StackDelta = stackDelta;
             }
             state.OnProcedureLeft(proc.Signature);
-            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+            scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
             return false;
         }
 

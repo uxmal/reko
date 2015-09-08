@@ -81,17 +81,18 @@ namespace Reko.ImageLoaders.MzExe
 				imgLoaded.WriteLeUInt16(offset, seg);
 				relocations.AddSegmentReference(offset, seg);
 
-				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
+				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
 				--i;
 			}
 		
 			// Found the start address.
 
 			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
-			imageMap.AddSegment(Address.SegPtr(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWriteExecute);
+			imageMap.AddSegment(Address.SegPtr(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWriteExecute, 0);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
-                relocations);
+                relocations,
+                new List<Address>());
 		}
 	}
 }

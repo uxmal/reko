@@ -94,7 +94,7 @@ namespace Reko.Arch.X86
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var c = orw.FlagGroup(FlagM.CF);       
+            var c = orw.FlagGroup(FlagM.CF);
             EmitCopy(
                 instrCur.op1, 
                 new BinaryExpression(
@@ -839,7 +839,14 @@ namespace Reko.Arch.X86
 			get { return orw.AluRegister(Registers.rsi, instrCur.addrWidth); }
 		}
 	
-        private void RewriteStringInstruction()
+        /// <summary>
+        /// Rewrites the current instruction as a string instruction.
+        /// </summary>
+        /// <returns>False if the current instruction is not a string 
+        /// instruction. This can happen when disassembling data where
+        /// a "rep" prefix is followed by some other junk byte.
+        /// </returns>
+        private bool RewriteStringInstruction()
         {
             bool incSi = false;
             bool incDi = false;
@@ -850,7 +857,7 @@ namespace Reko.Arch.X86
             switch (instrCur.code)
             {
             default:
-                throw new NotSupportedException(string.Format("'{0}' is not an x86 string instruction.", instrCur.code));
+                return false;
             case Opcode.cmps:
             case Opcode.cmpsb:
                 emitter.Assign(
@@ -907,8 +914,7 @@ namespace Reko.Arch.X86
                 // "AMD recommends to avoid the penalty by adding rep prefix instead of nop
                 // because it saves decode bandwidth."
                 RewriteRet();
-                return;
-
+                return true;
             }
 
             if (incSi)
@@ -928,6 +934,7 @@ namespace Reko.Arch.X86
                     RegDi,
                     Constant.Create(instrCur.addrWidth, instrCur.dataWidth.Size)));
             }
+            return true;
         }
 
         private BinaryOperator GetIncrementOperator()

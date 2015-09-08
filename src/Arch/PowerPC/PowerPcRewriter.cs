@@ -36,6 +36,7 @@ namespace Reko.Arch.PowerPC
     {
         private Frame frame;
         private RtlEmitter emitter;
+        private RtlInstructionCluster cluster;
         private PowerPcArchitecture arch;
         private IEnumerator<PowerPcInstruction> dasm;
         private IRewriterHost host;
@@ -63,7 +64,8 @@ namespace Reko.Arch.PowerPC
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var cluster = new RtlInstructionCluster(instr.Address, 4);
+                this.cluster = new RtlInstructionCluster(instr.Address, 4);
+                this.cluster.Class = RtlClass.Linear;
                 this.emitter = new RtlEmitter(cluster.Instructions);
                 switch (dasm.Current.Opcode)
                 {

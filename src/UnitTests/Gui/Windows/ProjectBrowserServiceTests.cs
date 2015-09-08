@@ -330,7 +330,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var image = new LoadedImage(Address.Ptr32(0x12340000), new byte[0x1000]);
             var imageMap = image.CreateImageMap();
-            imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute);
+            imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute, 0);
             var arch = mr.StrictMock<ProcessorArchitecture>();
             arch.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch);

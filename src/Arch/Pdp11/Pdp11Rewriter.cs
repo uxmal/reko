@@ -35,6 +35,7 @@ namespace Reko.Arch.Pdp11
         private Pdp11Architecture arch;
         private IEnumerator<Pdp11Instruction> instrs;
         private Frame frame;
+        private RtlInstructionCluster rtlCluster;
         private RtlEmitter emitter;
 
         private Pdp11Rewriter(Pdp11Architecture arch)
@@ -54,7 +55,8 @@ namespace Reko.Arch.Pdp11
             while (instrs.MoveNext())
             {
                 var instr = instrs.Current;
-                var rtlCluster = new RtlInstructionCluster(instr.Address, instr.Length);
+                this.rtlCluster = new RtlInstructionCluster(instr.Address, instr.Length);
+                this.rtlCluster.Class = RtlClass.Linear;
                 emitter = new RtlEmitter(rtlCluster.Instructions);
                 Expression src;
                 Expression dst;

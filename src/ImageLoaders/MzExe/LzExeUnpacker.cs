@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				Relocate90(RawImage, addrLoad.Selector, imgLoaded, relocations);
 			}
-            return new RelocationResults(entryPoints, relocations);
+            return new RelocationResults(entryPoints, relocations, new List<Address>());
 		}
 
 		// for LZEXE ver 0.90 
@@ -185,7 +185,7 @@ namespace Reko.ImageLoaders.MzExe
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
 				relocations.AddSegmentReference((uint)rel_off, seg);
-				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
+				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
 			}
 			return imageMap;
 		}

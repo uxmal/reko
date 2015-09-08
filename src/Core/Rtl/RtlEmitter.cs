@@ -147,7 +147,9 @@ namespace Reko.Core.Rtl
 
         public RtlEmitter SideEffect(Expression sideEffect)
         {
-            instrs.Add(new RtlSideEffect(sideEffect));
+            var se = new RtlSideEffect(sideEffect);
+            se.Class = RtlClass.Linear;
+            instrs.Add(se);
             return this;
         }
 
@@ -161,5 +163,7 @@ namespace Reko.Core.Rtl
             instrs.Add(new RtlIf(test, rtl));
             return this;
         }
+
+    
     }
 }

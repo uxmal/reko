@@ -86,7 +86,10 @@ namespace Reko.Arch.X86
                 return null;
             instrCur = s_aOpRec[op].Decode(this, op, "");
             if (instrCur == null)
-                return null;
+            {
+                return new IntelInstruction(Opcode.illegal, dataWidth, addressWidth) 
+                { Address = addr };
+            }
             instrCur.Address = addr;
             instrCur.Length = (int)(rdr.Address - addr);
             return instrCur;
@@ -705,6 +708,8 @@ namespace Reko.Arch.X86
                 case 'M':		// modRM may only refer to memory.
                     width = OperandWidth(strFormat[i++]);
                     pOperand = DecodeModRM(dataWidth, segmentOverride, GpRegFromBits);
+                    if (pOperand is RegisterOperand)
+                        return null;
                     break;
                 case 'O':		// Offset of the operand is encoded directly after the opcode.
                     width = OperandWidth(strFormat[i++]);

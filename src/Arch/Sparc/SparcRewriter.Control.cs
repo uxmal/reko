@@ -42,6 +42,7 @@ namespace Reko.Arch.Sparc
         private void RewriteBranch(Expression cond)
         {
             // SPARC architecture always has delay slot.
+            ric.Class = RtlClass.ConditionalTransfer;
             var rtlClass = RtlClass.ConditionalTransfer | RtlClass.Delay;
             if (instrCur.Annul)
                 rtlClass |= RtlClass.Annul;
@@ -50,11 +51,13 @@ namespace Reko.Arch.Sparc
 
         private void RewriteCall()
         {
-            emitter.CallD(((AddressOperand) instrCur.Op1).Address, 0);
+            ric.Class = RtlClass.Transfer;
+            emitter.CallD(((AddressOperand)instrCur.Op1).Address, 0);
         }
 
         private void RewriteJmpl()
         {
+            ric.Class = RtlClass.Transfer;
             var rDst = instrCur.Op3 as RegisterOperand;
             var dst = RewriteOp(instrCur.Op3, true);
             var src1 = RewriteOp(instrCur.Op1, true);

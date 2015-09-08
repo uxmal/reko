@@ -37,16 +37,19 @@ namespace Reko.Arch.Arm
             var addr = Address.Ptr32((uint)ops[0].ImmediateValue.Value);
             if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
             {
+                ric.Class = RtlClass.Transfer;
                 emitter.Goto(addr);
             }
             else
             {
+                ric.Class = RtlClass.ConditionalTransfer;
                 emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
             }
         }
 
         private void RewriteBl()
         {
+            ric.Class = RtlClass.Transfer;
             emitter.Call(
                 Address.Ptr32((uint)ops[0].ImmediateValue.Value),
                 0);
@@ -54,16 +57,19 @@ namespace Reko.Arch.Arm
 
         private void RewriteBlx()
         {
+            ric.Class = RtlClass.Transfer;
             emitter.Call(RewriteOp(ops[0]), 0);
         }
 
         private void RewriteBx()
         {
+            ric.Class = RtlClass.Transfer;
             emitter.Goto(RewriteOp(ops[0]));
         }
 
         private void RewriteCbnz(Func<Expression, Expression> ctor)
         {
+            ric.Class = RtlClass.ConditionalTransfer;
             emitter.Branch(ctor(RewriteOp(ops[0])),
                 Address.Ptr32((uint)ops[1].ImmediateValue.Value),
                 RtlClass.Transfer);

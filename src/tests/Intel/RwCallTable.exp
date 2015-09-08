@@ -1,3 +1,4 @@
+;;; Segment Image base (0C00:0000)
 
 fn0C00_0000()
 	call	002C

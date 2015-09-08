@@ -74,6 +74,7 @@ namespace Reko.Arch.Sparc
             {
                 instrCur = dasm.Current;
                 ric = new RtlInstructionCluster(instrCur.Address, 4);
+                ric.Class = RtlClass.Linear;
                 emitter = new RtlEmitter(ric.Instructions);
                 switch (instrCur.Opcode)
                 {

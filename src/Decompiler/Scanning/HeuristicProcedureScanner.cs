@@ -38,13 +38,18 @@ namespace Reko.Scanning
     {
         private Program program;
         private HeuristicProcedure proc;
+        private IRewriterHost host;
         private DirectedGraph<HeuristicBlock> blocks;
         private HashSet<Tuple<HeuristicBlock, HeuristicBlock>> conflicts;
 
-        public HeuristicProcedureScanner(Program program, HeuristicProcedure proc)
+        public HeuristicProcedureScanner(
+            Program program, 
+            HeuristicProcedure proc,
+            IRewriterHost host)
         {
             this.program = program;
             this.proc = proc;
+            this.host = host;
             this.blocks = proc.Cfg;
             this.conflicts = BuildConflictGraph(proc.Cfg.Nodes);
         }
@@ -57,10 +62,17 @@ namespace Reko.Scanning
         {
             var valid = TraceReachableBlocks();
             ComputeStatistics(valid);
+            DumpGraph();
+            RemoveBlocksEndingWithInvalidInstruction();
+            DumpGraph();
             RemoveBlocksConflictingWithValidBlocks(valid);
+            DumpGraph();
             RemoveParentsOfConflictingBlocks();
+            DumpGraph();
             RemoveBlocksWithFewPredecessors();
+            DumpGraph();
             RemoveBlocksWithFewSuccessors();
+            DumpGraph();
             RemoveConflictsRandomly();
         }
 
@@ -117,6 +129,14 @@ namespace Reko.Scanning
             return conflicts;
         }
 
+        private void RemoveBlocksEndingWithInvalidInstruction()
+        {
+            foreach (var n in blocks.Nodes.Where(n => !n.IsValid).ToList())
+            {
+                RemoveBlockFromGraph(n);
+            }
+        }
+
         /// <summary>
         /// Any node that is in conflict with a valid node must be removed.
         /// </summary>
@@ -138,6 +158,8 @@ namespace Reko.Scanning
 
         private void RemoveBlockFromGraph(HeuristicBlock n)
         {
+            if (n.Address.ToString().EndsWith("101E"))  //$DEBUG
+                n.Address.ToString();
             Debug.Print("Removing block: {0}", n.Address);
             blocks.Nodes.Remove(n);
         }
@@ -178,6 +200,7 @@ namespace Reko.Scanning
 
         private void RemoveBlocksWithFewPredecessors()
         {
+            conflicts = BuildConflictGraph(blocks.Nodes);
             //    if (u.pred.Count < v.pred.Count)
             //      remove u
             //    else if (u.pred.Count > v.pred.count)
@@ -241,9 +264,9 @@ namespace Reko.Scanning
 
         private IEnumerable<Tuple<Address, Address>> GetGaps()
         {
-            var blockMap = proc.Cfg.Nodes.ToSortedList(n => n.Address);
-            var addrLastEnd = blockMap.Values[0].Address;
-            foreach (var b in blockMap.Values)
+            var blockMap = proc.Cfg.Nodes.OrderBy(n => n.Address).ToList();
+            var addrLastEnd = blockMap[0].Address;
+            foreach (var b in blockMap)
             {
                 if (addrLastEnd < b.Address)
                     yield return Tuple.Create(addrLastEnd, b.Address);
@@ -255,62 +278,112 @@ namespace Reko.Scanning
         /// The task of the gap completion phase is to improve the
         /// results of our analysis by filling the gaps between basic
         /// blocks in the control flow graph with instructions that
-        /// are likely to be valid
+        /// are likely to be valid.
+        /// When all possible instruction sequences are determined,
+        /// the one with the highest sequence score is selected as the
+        /// valid instruction sequence between b1 and b2.
         /// </summary>
         public void GapResolution()
         {
             foreach (var gap in GetGaps())
             {
-                var scores = new List<Tuple<int, Address>>();
+                int bestScore = 0;
+                Tuple<Address, Address> bestSequence = null;
                 foreach (var sequence in GetValidSequences(gap))
                 {
                     int score = ScoreSequence(sequence);
-                    scores.Add(Tuple.Create(score, sequence));
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        bestSequence = sequence;
+                    }
                 }
             }
         }
 
-        private IEnumerable<Address> GetValidSequences(Tuple<Address, Address> gap)
+        /// <summary>
+        /// Find all possibly valid sequences in an address range. A necessary
+        /// condition for a valid instruction sequence is that its last 
+        /// instruction either (i) ends with the last byte of the gap or 
+        /// (ii) its last instruction is a non intra-procedural control 
+        /// transfer instruction.
+        /// </summary>
+        private IEnumerable<Tuple<Address,Address>> GetValidSequences(Tuple<Address, Address> gap)
         {
             int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
-            for (Address addr = gap.Item1; addr < gap.Item2; addr = addr +instrByteGranularity)
+            for (Address addr = gap.Item1; addr < gap.Item2; addr = addr + instrByteGranularity)
             {
-                var block = new HeuristicBlock(addr, string.Format("l{0:X}" + addr));
+                var addrStart = addr;
                 var dasm = CreateRewriter(addr);
                 bool isValid = false;
                 foreach (var instr in dasm)
                 {
-                    if (instr.Address + instr.Length > gap.Item2)
+                    var addrNext = instr.Address + instr.Length;
+                    if (addrNext > gap.Item2)
                         break;
-                    var lastInstr = instr.Instructions.Last();
-                    if (NonLocalTransferInstruction())
+                    if (addrNext.ToLinear() == gap.Item2.ToLinear())
+                    {
+                        // Falls out of the gap
+                        isValid = true;
+                        break;
+                    }
+                    if (NonLocalTransferInstruction(instr))
                     {
                         isValid = true;
                         break;
                     }
                 }
                 if (isValid)
-                    yield return addr;
+                    yield return Tuple.Create(addrStart, addr);
             }
         }
 
-        private int ScoreSequence(Address sequence)
+        /// <summary>
+        /// The sequence
+        /// score is a measure of the likelihood that this instruction
+        /// sequence appears in an executable. It is calculated
+        /// as the sum of the instruction scores of all instructions
+        /// in the sequence. The instruction score is similar to
+        /// the sequence score and reflects the likelihood of an individual
+        /// instruction. Instruction scores are always greater
+        /// or equal than zero. Therefore, the score of a sequence
+        /// cannot decrease when more instructions are added. We
+        /// calculate instruction scores using statistical techniques
+        /// and heuristics to identify improbable instructions.
+        /// </summary>    
+        private int ScoreSequence(Tuple<Address,Address> sequence)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         private IEnumerable<RtlInstructionCluster> CreateRewriter(Address addr)
         {
-            return program.Architecture.CreateRewriter(
+            var rw = program.Architecture.CreateRewriter(
                 program.CreateImageReader(addr),
                 program.Architecture.CreateProcessorState(),
                 program.Architecture.CreateFrame(),
-                null);
+                host);
+            return new RobustRewriter(rw, program.Architecture.InstructionBitSize / 8);
         }
 
-        private bool NonLocalTransferInstruction()
+        private bool NonLocalTransferInstruction(RtlInstructionCluster cluster)
         {
-            throw new NotImplementedException();
+            if (cluster.Class == RtlClass.Linear)
+                return false;
+            var last = cluster.Instructions.Last();
+            if (last is RtlCall)
+                return true;
+            var rtlGoto = last as RtlGoto;
+            if (rtlGoto != null)
+            {
+                Address target;
+                if (rtlGoto.Target.As<Address>(out target))
+                {
+                    return !(proc.BeginAddress <= target && target < proc.EndAddress);
+                }
+                return true;
+            }
+            return true;
         }
 
         // Block conflict resolution
@@ -411,5 +484,29 @@ namespace Reko.Scanning
         //        When all possible instruction sequences are determined,
         //the one with the highest sequence score is selected as the
         //valid instruction sequence between b1 and b2.
+
+        [Conditional("DEBUG")]
+        public void DumpGraph()
+        {
+            Debug.Print("{0} nodes", proc.Cfg.Nodes.Count);
+            foreach (var block in proc.Cfg.Nodes.OrderBy(n => n.Address))
+            {
+                var addrEnd = block.GetEndAddress();
+                Debug.Write(string.Format("{0}: ", block.Name));
+                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Predecessors(block)
+                    .OrderBy(n => n.Address)
+                    .Select(n => n.Address)));
+                var sb = new StringBuilder("  ");
+                var rdr = program.CreateImageReader(block.Address);
+                while (rdr.Address < addrEnd)
+                {
+                    sb.AppendFormat("{0:X2} ", (int)rdr.ReadByte());
+                }
+                Debug.WriteLine(sb.ToString());
+                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Successors(block)
+                    .OrderBy(n => n.Address)
+                    .Select(n => n.Address)));
+            }
+        }
     }
 }

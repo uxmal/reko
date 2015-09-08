@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x7811);
             AssertCode(
-                "0|0200(2): 6 instructions",
+                "0|L--|0200(2): 6 instructions",
                 "1|L--|v3 = Mem0[r1:word16]",
                 "2|L--|r1 = r1 + 0x0002",
                 "3|L--|r0 = r0 ^ v3",
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x12C2);
             AssertCode(
-                "0|0200(2): 3 instructions",
+                "0|L--|0200(2): 3 instructions",
                 "1|L--|r2 = Mem0[r3:word16]",
                 "2|L--|NZ = cond(r2)",
                 "3|L--|V = false");
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x92C2);
             AssertCode(
-                "0|0200(2): 3 instructions",
+                "0|L--|0200(2): 3 instructions",
                 "1|L--|r2 = (int16) Mem0[r3:byte]",
                 "2|L--|NZ = cond(r2)",
                 "3|L--|V = false");
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x8A10);
             AssertCode(
-                "0|0200(2): 7 instructions",
+                "0|L--|0200(2): 7 instructions",
                 "1|L--|v3 = 0x00", 
                 "2|L--|Mem0[r0:byte] = v3",
                 "3|L--|r0 = r0 + 0x0001",

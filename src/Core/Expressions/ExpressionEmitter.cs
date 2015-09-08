@@ -253,6 +253,11 @@ namespace Reko.Core.Expressions
             return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Pointer32, ptr), membPtr);
         }
 
+        public Expression Mod(Expression opLeft, Expression opRight)
+        {
+            return new BinaryExpression(Operator.IMod, opLeft.DataType, opLeft, opRight);
+        }
+
         public BinaryExpression Ne0(Expression expr)
         {
             return new BinaryExpression(
