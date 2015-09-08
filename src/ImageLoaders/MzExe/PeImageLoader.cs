@@ -145,7 +145,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_ARMNT: env= "winArm"; break;
             case MACHINE_i386: env = "win32"; break;
             case MACHINE_x86_64: env = "win64"; break;
-            case MACHINE_R4000: env = "win32"; break;
+            case MACHINE_R4000: env = "winMips"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
             return (Win32Platform) Services.RequireService<IConfigurationService>()

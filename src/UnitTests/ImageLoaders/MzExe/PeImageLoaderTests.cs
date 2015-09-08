@@ -32,6 +32,7 @@ using System.Text;
 using Reko.Core.Types;
 using Reko.Environments.Win32;
 using System.Diagnostics;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.ImageLoaders.MzExe
 {
@@ -383,6 +384,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                         "GetFocus"
                     }
                 });
+            sc.AddService<IDiagnosticsService>(mr.Stub<IDiagnosticsService>());
             mr.ReplayAll();
 
             Given_PeLoader();

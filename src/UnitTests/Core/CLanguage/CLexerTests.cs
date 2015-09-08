@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using System.IO;

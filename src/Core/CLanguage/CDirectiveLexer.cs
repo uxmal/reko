@@ -24,7 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
     /// <summary>
     /// Lexer that deals with #pragma, #line and other directives that can happen at any time.

@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
     // http://www.ssw.uni-linz.ac.at/Coco/C/C.atg
 

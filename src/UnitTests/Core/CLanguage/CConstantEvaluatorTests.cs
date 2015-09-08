@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml.UnitTests
+namespace Reko.Core.CLanguage.UnitTests
 {
     [TestFixture]
     public class CConstantEvaluatorTests

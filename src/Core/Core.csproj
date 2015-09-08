@@ -150,6 +150,21 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="CharacteristicsLibrary.cs" />
+    <Compile Include="CLanguage\CConstantEvaluator.cs" />
+    <Compile Include="CLanguage\CDirectiveLexer.cs" />
+    <Compile Include="CLanguage\CExpressionVisitor.cs" />
+    <Compile Include="CLanguage\CGrammar.cs" />
+    <Compile Include="CLanguage\CLexer.cs" />
+    <Compile Include="CLanguage\CParser.cs" />
+    <Compile Include="CLanguage\CSyntax.cs" />
+    <Compile Include="CLanguage\CSyntaxVisitor.cs" />
+    <Compile Include="CLanguage\EnumEvaluator.cs" />
+    <Compile Include="CLanguage\LookaheadLexer.cs" />
+    <Compile Include="CLanguage\NamedDataType.cs" />
+    <Compile Include="CLanguage\NameExtractor.cs" />
+    <Compile Include="CLanguage\ParserState.cs" />
+    <Compile Include="CLanguage\SerializedTypeComparer.cs" />
+    <Compile Include="CLanguage\TypeSizer.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />
@@ -653,7 +668,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CLanguage\" />
     <Folder Include="Schemata\" />
   </ItemGroup>
   <ItemGroup>

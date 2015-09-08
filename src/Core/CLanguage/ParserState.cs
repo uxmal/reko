@@ -18,37 +18,39 @@
  */
 #endregion
 
-using NUnit.Framework;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Text;
 
-#if DEBUG
-namespace Reko.Tools.C2Xml.UnitTests
+namespace Reko.Core.CLanguage
 {
-    [TestFixture]
-    public class TypedefTests
+    public class ParserState
     {
-        private CLexer lexer;
-        private ParserState parserState;
-
-        private void CreateLexer(string text)
+        private Stack<int> alignments;
+        
+        public ParserState()
         {
-            parserState = new ParserState();
-
-            lexer = new CLexer(new StringReader(text));
+            Typedefs = new HashSet<string>();
+            alignments = new Stack<int>();
+            alignments.Push(8);
+            Typedefs.Add("size_t");
+            Typedefs.Add("va_list");
         }
 
-        [Test]
-        public void ParseTypedef()
+        public HashSet<string> Typedefs { get; private set; }
+
+        public int Alignment { get { return alignments.Peek(); } }
+
+        public void PushAlignment(int align)
         {
-            CreateLexer("typedef int GOO;");
-            CParser parser = new CParser(parserState, lexer);
-            var decl = parser.Parse();
-            //Assert.AreEqual("int", td.TypeSpecifier.ToString());
-            //Assert.AreEqual("GOO", td.Declarators[0]);
+            alignments.Push(align);
+        }
+
+        public void PopAlignment()
+        {
+            alignments.Pop();
         }
     }
 }
-#endif

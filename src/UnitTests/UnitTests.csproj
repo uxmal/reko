@@ -85,6 +85,13 @@
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
     <Compile Include="Arch\Mips\MipsPointerScannerTests.cs" />
+    <Compile Include="Core\CLanguage\CConstantEvaluatorTests.cs" />
+    <Compile Include="Core\CLanguage\CDirectiveLexerTests.cs" />
+    <Compile Include="Core\CLanguage\CLexerTests.cs" />
+    <Compile Include="Core\CLanguage\CParserTests.cs" />
+    <Compile Include="Core\CLanguage\EnumEvaluatorTests.cs" />
+    <Compile Include="Core\CLanguage\LookAheadLexerTests.cs" />
+    <Compile Include="Core\CLanguage\TypedefTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
