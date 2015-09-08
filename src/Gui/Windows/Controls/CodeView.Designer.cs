@@ -32,15 +32,24 @@
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnBack = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();
-            this.textView1 = new Reko.Gui.Windows.Controls.TextView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
             this.txtProcName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabDeclaration = new System.Windows.Forms.TabPage();
+            this.tabCharacteristics = new System.Windows.Forms.TabPage();
+            this.txtDeclaration = new System.Windows.Forms.TextBox();
+            this.txtDataflow = new System.Windows.Forms.TextBox();
+            this.textView1 = new Reko.Gui.Windows.Controls.TextView();
+            this.chkTerminates = new System.Windows.Forms.CheckBox();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabDeclaration.SuspendLayout();
+            this.tabCharacteristics.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip
@@ -51,7 +60,7 @@
             this.btnForward});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(914, 25);
+            this.toolStrip.Size = new System.Drawing.Size(924, 25);
             this.toolStrip.TabIndex = 0;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -75,17 +84,6 @@
             this.btnForward.Text = "toolStripButton2";
             this.btnForward.ToolTipText = "Forward";
             // 
-            // textView1
-            // 
-            this.textView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textView1.Location = new System.Drawing.Point(0, 0);
-            this.textView1.Model = emptyEditorModel1;
-            this.textView1.Name = "textView1";
-            this.textView1.Services = null;
-            this.textView1.Size = new System.Drawing.Size(640, 374);
-            this.textView1.TabIndex = 1;
-            this.textView1.Text = "textView1";
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -98,11 +96,21 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2.Controls.Add(this.txtProcName);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Size = new System.Drawing.Size(914, 374);
-            this.splitContainer1.SplitterDistance = 640;
+            this.splitContainer1.Size = new System.Drawing.Size(924, 382);
+            this.splitContainer1.SplitterDistance = 583;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // txtProcName
+            // 
+            this.txtProcName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProcName.Location = new System.Drawing.Point(4, 21);
+            this.txtProcName.Name = "txtProcName";
+            this.txtProcName.Size = new System.Drawing.Size(307, 20);
+            this.txtProcName.TabIndex = 1;
             // 
             // label1
             // 
@@ -113,14 +121,84 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Procedure name:";
             // 
-            // txtProcName
+            // tabControl1
             // 
-            this.txtProcName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProcName.Location = new System.Drawing.Point(4, 21);
-            this.txtProcName.Name = "txtProcName";
-            this.txtProcName.Size = new System.Drawing.Size(263, 20);
-            this.txtProcName.TabIndex = 1;
+            this.tabControl1.Controls.Add(this.tabDeclaration);
+            this.tabControl1.Controls.Add(this.tabCharacteristics);
+            this.tabControl1.Location = new System.Drawing.Point(4, 48);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(311, 331);
+            this.tabControl1.TabIndex = 2;
+            // 
+            // tabDeclaration
+            // 
+            this.tabDeclaration.Controls.Add(this.txtDataflow);
+            this.tabDeclaration.Controls.Add(this.txtDeclaration);
+            this.tabDeclaration.Location = new System.Drawing.Point(4, 22);
+            this.tabDeclaration.Name = "tabDeclaration";
+            this.tabDeclaration.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDeclaration.Size = new System.Drawing.Size(303, 305);
+            this.tabDeclaration.TabIndex = 0;
+            this.tabDeclaration.Text = "Declaration";
+            this.tabDeclaration.UseVisualStyleBackColor = true;
+            // 
+            // tabCharacteristics
+            // 
+            this.tabCharacteristics.Controls.Add(this.chkTerminates);
+            this.tabCharacteristics.Location = new System.Drawing.Point(4, 22);
+            this.tabCharacteristics.Name = "tabCharacteristics";
+            this.tabCharacteristics.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCharacteristics.Size = new System.Drawing.Size(303, 305);
+            this.tabCharacteristics.TabIndex = 1;
+            this.tabCharacteristics.Text = "Characteristics";
+            this.tabCharacteristics.UseVisualStyleBackColor = true;
+            // 
+            // txtDeclaration
+            // 
+            this.txtDeclaration.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDeclaration.Location = new System.Drawing.Point(4, 4);
+            this.txtDeclaration.Multiline = true;
+            this.txtDeclaration.Name = "txtDeclaration";
+            this.txtDeclaration.Size = new System.Drawing.Size(293, 138);
+            this.txtDeclaration.TabIndex = 0;
+            // 
+            // txtDataflow
+            // 
+            this.txtDataflow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDataflow.Location = new System.Drawing.Point(3, 149);
+            this.txtDataflow.Multiline = true;
+            this.txtDataflow.Name = "txtDataflow";
+            this.txtDataflow.ReadOnly = true;
+            this.txtDataflow.Size = new System.Drawing.Size(294, 150);
+            this.txtDataflow.TabIndex = 1;
+            // 
+            // textView1
+            // 
+            this.textView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textView1.Location = new System.Drawing.Point(0, 0);
+            this.textView1.Model = emptyEditorModel1;
+            this.textView1.Name = "textView1";
+            this.textView1.Services = null;
+            this.textView1.Size = new System.Drawing.Size(583, 382);
+            this.textView1.TabIndex = 1;
+            this.textView1.Text = "textView1";
+            // 
+            // chkTerminates
+            // 
+            this.chkTerminates.AutoSize = true;
+            this.chkTerminates.Location = new System.Drawing.Point(4, 7);
+            this.chkTerminates.Name = "chkTerminates";
+            this.chkTerminates.Size = new System.Drawing.Size(140, 17);
+            this.chkTerminates.TabIndex = 0;
+            this.chkTerminates.Text = "Procedure never returns";
+            this.chkTerminates.UseVisualStyleBackColor = true;
             // 
             // CodeView
             // 
@@ -129,7 +207,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip);
             this.Name = "CodeView";
-            this.Size = new System.Drawing.Size(914, 399);
+            this.Size = new System.Drawing.Size(924, 407);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -137,6 +215,11 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabDeclaration.ResumeLayout(false);
+            this.tabDeclaration.PerformLayout();
+            this.tabCharacteristics.ResumeLayout(false);
+            this.tabCharacteristics.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,5 +234,11 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox txtProcName;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabDeclaration;
+        private System.Windows.Forms.TextBox txtDataflow;
+        private System.Windows.Forms.TextBox txtDeclaration;
+        private System.Windows.Forms.TabPage tabCharacteristics;
+        private System.Windows.Forms.CheckBox chkTerminates;
     }
 }

@@ -98,13 +98,16 @@ namespace Reko.Gui.Windows
             if (codeView == null || proc == null)
                 return;
 
+            this.ignoreEvents = true;
             this.proc = proc;
             var tsf = new TextSpanFormatter();
             var fmt = new AbsynCodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
             this.TextView.Model = tsf.GetModel();
-            this.ignoreEvents = true;
+            this.codeView.ProcedureName.Text = proc.Name;
+
+            // Navigate 
             this.codeView.CurrentAddress = proc;
             ignoreEvents = false;
         }
