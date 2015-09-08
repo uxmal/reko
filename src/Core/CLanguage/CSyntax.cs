@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
     public abstract class CSyntax
     {

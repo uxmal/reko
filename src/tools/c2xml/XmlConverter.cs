@@ -18,13 +18,14 @@
  */
 #endregion
 
+using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;  
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -50,12 +51,12 @@ namespace Reko.Tools.C2Xml
             this.parserState = new ParserState();
             this.Types = new List<SerializedType>();
             this.procs = new List<SerializedProcedureBase_v1>();
-            this.Sizer = new TypeSizer(this);
             this.NamedTypes = new Dictionary<string, SerializedType>
             {
                 { "size_t", new PrimitiveType_v1 { Domain=Domain.UnsignedInt, ByteSize=4 } },    //$BUGBUG: arch-dependent!
                 { "va_list", new PrimitiveType_v1 { Domain=Domain.Pointer, ByteSize=4 } }, //$BUGBUG: arch-dependent!
             };
+            this.Sizer = new TypeSizer(this.NamedTypes);
             StructsSeen = new Dictionary<string, SerializedStructType>();
             UnionsSeen = new Dictionary<string, UnionType_v1>();
             EnumsSeen = new Dictionary<string, SerializedEnumType>();

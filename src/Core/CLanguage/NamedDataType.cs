@@ -18,35 +18,18 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
-    public interface CExpressionVisitor<T>
+    public class NamedDataType
     {
-        T VisitConstant(ConstExp constant);
-
-        T VisitIdentifier(CIdentifier id);
-
-        T VisitApplication(Application application);
-
-        T VisitMember(MemberExpression member);
-
-        T VisitUnary(CUnaryExpression unary);
-
-        T VisitBinary(CBinaryExpression binary);
-
-        T VisitAssign(AssignExpression assign);
-
-        T VisitCast(CastExpression cast);
-
-        T VisitConditional(ConditionalExpression conditional);
-
-        T VisitIncremeent(IncrementExpression increment);
-
-        T VisitSizeof(SizeofExpression sizeOf);
+        public string Name { get; set; }
+        public int Size { get; set; } // in bytes.
+        public SerializedType DataType { get; set; }
     }
 }

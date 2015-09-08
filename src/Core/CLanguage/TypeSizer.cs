@@ -24,19 +24,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
     /// <summary>
     /// Returns the size of a type in bytes.
     /// </summary>
     public class TypeSizer : ISerializedTypeVisitor<int>
     {
-        private XmlConverter converter;
+        private Dictionary<string, SerializedType> typedefs;
         private Dictionary<SerializedTaggedType, int> tagSizes;
 
-        public TypeSizer(XmlConverter converter)
+        public TypeSizer(Dictionary<string, SerializedType> typedefs)
         {
-            this.converter = converter;
+            this.typedefs = typedefs;
             this.tagSizes = new Dictionary<SerializedTaggedType, int>(new SerializedTypeComparer());
         }
 
@@ -109,7 +109,7 @@ namespace Reko.Tools.C2Xml
 
         public int VisitTypeReference(SerializedTypeReference typeReference)
         {
-            return converter.NamedTypes[typeReference.TypeName].Accept(this);
+            return typedefs[typeReference.TypeName].Accept(this);
         }
 
         public int VisitUnion(UnionType_v1 union)

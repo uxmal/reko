@@ -18,18 +18,31 @@
  */
 #endregion
 
-using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
-    public class NamedDataType
+    public class EnumEvaluator
     {
-        public string Name { get; set; }
-        public int Size { get; set; } // in bytes.
-        public SerializedType DataType { get; set; }
+        private int value;
+        private CConstantEvaluator ceval;
+
+        public EnumEvaluator(CConstantEvaluator ceval)
+        {
+            this.value = 0;
+            this.ceval = ceval;
+        }
+
+        public int GetValue(CExpression cExpression)
+        {
+            if (cExpression != null)
+            {
+                value = Convert.ToInt32(cExpression.Accept(ceval));
+            }
+            return value++;
+        }
     }
 }

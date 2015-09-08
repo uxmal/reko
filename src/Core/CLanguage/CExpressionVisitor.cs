@@ -20,22 +20,33 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
-    public interface CSyntaxVisitor<T>
+    public interface CExpressionVisitor<T>
     {
-        T VisitType(CType cType);
+        T VisitConstant(ConstExp constant);
 
-        T VisitDeclaration(Decl decl);
-        T VisitDeclSpec(DeclSpec declSpec);
-        T VisitInitDeclarator(InitDeclarator initDeclarator);
-        T VisitEnumerator(Enumerator enumerator);
-        T VisitStatement(Stat stm);
-        T VisitExpression(CExpression stm);
-        T VisitParamDeclaration(ParamDecl paramDecl);
-        T VisitAttribute(CAttribute cAttribute);
+        T VisitIdentifier(CIdentifier id);
 
+        T VisitApplication(Application application);
+
+        T VisitMember(MemberExpression member);
+
+        T VisitUnary(CUnaryExpression unary);
+
+        T VisitBinary(CBinaryExpression binary);
+
+        T VisitAssign(AssignExpression assign);
+
+        T VisitCast(CastExpression cast);
+
+        T VisitConditional(ConditionalExpression conditional);
+
+        T VisitIncremeent(IncrementExpression increment);
+
+        T VisitSizeof(SizeofExpression sizeOf);
     }
 }

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Serialization;
+using Reko.Core.CLanguage;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -162,7 +163,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             var sExp =
                 "(fndecl (decl __Inline PVOID " +
                     "((init-decl (func GetFiberData ((Void )))))) " +
-                    "(Reko.Tools.C2Xml.ReturnStat))";
+                    "(Reko.Core.CLanguage.ReturnStat))";
             Assert.AreEqual(sExp, decl.ToString());
         }
 
@@ -171,7 +172,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         {
             Lex("typedef enum _S { Item = 1, Folder } S;");
             var decl = parser.Parse_ExternalDecl();
-            var sExp = "(decl Typedef Reko.Tools.C2Xml.EnumeratorTypeSpec " +
+            var sExp = "(decl Typedef Reko.Core.CLanguage.EnumeratorTypeSpec " +
                 "((init-decl S)))";
             Assert.AreEqual(sExp, decl.ToString());
         }

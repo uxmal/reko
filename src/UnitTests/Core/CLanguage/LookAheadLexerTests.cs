@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Reko.Tools.C2Xml;
 using NUnit.Framework;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using System.Linq;

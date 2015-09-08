@@ -20,29 +20,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
-    public class EnumEvaluator
+    public interface CSyntaxVisitor<T>
     {
-        private int value;
-        private CConstantEvaluator ceval;
+        T VisitType(CType cType);
 
-        public EnumEvaluator(CConstantEvaluator ceval)
-        {
-            this.value = 0;
-            this.ceval = ceval;
-        }
+        T VisitDeclaration(Decl decl);
+        T VisitDeclSpec(DeclSpec declSpec);
+        T VisitInitDeclarator(InitDeclarator initDeclarator);
+        T VisitEnumerator(Enumerator enumerator);
+        T VisitStatement(Stat stm);
+        T VisitExpression(CExpression stm);
+        T VisitParamDeclaration(ParamDecl paramDecl);
+        T VisitAttribute(CAttribute cAttribute);
 
-        public int GetValue(CExpression cExpression)
-        {
-            if (cExpression != null)
-            {
-                value = Convert.ToInt32(cExpression.Accept(ceval));
-            }
-            return value++;
-        }
     }
 }
