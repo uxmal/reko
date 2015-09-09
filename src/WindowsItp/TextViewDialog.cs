@@ -19,23 +19,27 @@ namespace Reko.WindowsItp
         private int xHigh;
         private TextFormatFlags tf;
         private int cxTotal;
+        private int xCursor;
 
         public TextViewDialog()
         {
             InitializeComponent();
             this.sf = new StringFormat(StringFormat.GenericTypographic);
             sf.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
-            tf = TextFormatFlags.NoPadding;
+            tf = TextFormatFlags.NoPadding | TextFormatFlags.GlyphOverhangPadding;
         }
 
         private void TextViewDialog_Paint(object sender, PaintEventArgs e)
         {
             var sz = MeasureText(e.Graphics, text, this.Font);
-            e.Graphics.FillRectangle(Brushes.Red, 0, 0, xLow, sz.Height);
-            e.Graphics.FillRectangle(Brushes.Blue, xLow, 0, xHigh - xLow, sz.Height);
-            e.Graphics.FillRectangle(Brushes.Red, xHigh, 0, sz.Width - xHigh, sz.Height);
-            //e.Graphics.FillRectangle(0);
+            e.Graphics.FillRectangle(Brushes.Red, 0, 0, xCursor, sz.Height);
+            e.Graphics.FillRectangle(Brushes.Black, xCursor, 0, 1, sz.Height);
+            e.Graphics.FillRectangle(Brushes.Red, xCursor+1, 0, sz.Width - xCursor - 1, sz.Height);
             DrawText(e.Graphics, text, this.Font, new Point(0, 0), Color.Gray);
+
+            //Debug.Print("== cursor {0} ==", xCursor);
+            //e.Graphics.FillRectangle(Brushes.White, xCursor - 1, 0, 2, sz.Height);
+
             e.Graphics.FillRectangle(Brushes.Yellow, 0, sz.Height, sz.Width, sz.Height);
             DrawText(e.Graphics, textStub, this.Font, new Point(0, sz.Height), SystemColors.ControlText);
             e.Graphics.FillRectangle(Brushes.Black, 0, sz.Height * 2, cxTotal, 10);
@@ -76,9 +80,9 @@ namespace Reko.WindowsItp
             this.xHigh = sz.Width;
             this.cxTotal = sz.Width;
             this.textStub = text;
-            Debug.Print("---");
+            //Debug.Print("---");
             var pt = new Point(0, 0);
-            Debug.Print("Initial {0,4} {1,4} [{2,2}-{3,2}] {4}", xLow, xHigh, low, high, text);
+            //Debug.Print("Initial {0,4} {1,4} [{2,2}-{3,2}] {4}", xLow, xHigh, low, high, text);
             while (low < high - 1)
             {
                 int mid = low + (high - low) / 2;
@@ -94,9 +98,22 @@ namespace Reko.WindowsItp
                     low = mid;
                     xLow = sz.Width;
                 }
-                Debug.Print("{0,4} {1,4} [{2,2}-{3,2}-{4,2}] {5}", e.X, sz.Width, low, mid, high, textStub);
+                //Debug.Print("{0,4} {1,4} [{2,2}-{3,2}-{4,2}] {5}", e.X, sz.Width, low, mid, high, textStub);
             }
-            Debug.Print("Final {0,4} {1,4} [{2,2}-{3,2}] {4}", xLow, xHigh, low, high, textStub);
+            //Debug.Print("Final {0,4} {1,4} [{2,2}-{3,2}] {4}", xLow, xHigh, low, high, textStub);
+            int cx = (xHigh - xLow) / 2;
+            int idx;
+            if (e.X - xLow > cx)
+            {
+                xCursor = xHigh;
+                idx = high;
+            }
+            else
+            {
+                xCursor = xLow;
+                idx = low;
+            }
+            textStub = idx >= text.Length ? text : text.Remove(idx);
 
             g.Dispose();
             Invalidate();
