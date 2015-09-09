@@ -103,8 +103,8 @@ namespace Reko.ImageLoaders.OdbgScript
         private rulong pmemforexec;
         private rulong membpaddr, membpsize;
 
-        private bool require_addonaction;
-        private bool back_to_debugloop;
+        //private bool require_addonaction;
+        //private bool back_to_debugloop;
 
         private string errorstr;
 
@@ -230,8 +230,8 @@ namespace Reko.ImageLoaders.OdbgScript
         bool cf;
 
         // Cursor for REF / (NEXT)REF function
-        int adrREF;
-        int curREF;
+        //int adrREF;
+        //int curREF;
 
         void SetCMPFlags(int diff)
         {
@@ -611,7 +611,6 @@ namespace Reko.ImageLoaders.OdbgScript
             commands["wrt"] = DoWRT;
             commands["wrta"] = DoWRTA;
             #endregion
-
 #if LATER
             commands["error"] = DoError;
             commands["dnf"] = DoDumpAndFix;
@@ -800,7 +799,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             callbacks.Clear();
             debuggee_running = false;
-            require_addonaction = false;
+            //require_addonaction = false;
 
             run_till_return = false;
             return_to_usercode = false;
@@ -1794,12 +1793,11 @@ namespace Reko.ImageLoaders.OdbgScript
             return sb.ToString();
         }
 
-        //Add zero char before dw values, ex: 0DEADBEEF (to be assembled) usefull if first char is letter
+        //Add zero char before dw values, ex: 0DEADBEEF (to be assembled) useful if first char is letter
         public string FormatAsmDwords(string asmLine)
         {
             // Create command and arguments
             string args;
-            string cSep = "";
             int pos = asmLine.IndexOfAny(Helper.whitespaces.ToCharArray());
 
             if (pos < 0)

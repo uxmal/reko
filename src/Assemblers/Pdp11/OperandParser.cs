@@ -110,7 +110,6 @@ namespace Reko.Assemblers.Pdp11
                         Register = arch.GetRegister(regStr)
                     };
                 }
-                break;
             default:
                 return new ParsedOperand
                 {

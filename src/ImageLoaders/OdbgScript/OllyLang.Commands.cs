@@ -1895,8 +1895,6 @@ rulong addr;
         private bool DoGMEXP(string[] args)
         {
             rulong addr, num = 0;
-            string str;
-
             if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out addr))
             {
                 if (args.Length == 3 && !GetRulong(args[2], out num))
@@ -2264,8 +2262,8 @@ string str;
                     errorstr = "Second operand bad";
                     return false;
                 }
-                */
                 return true;
+                */
             }
             return false;
         }
@@ -2943,8 +2941,8 @@ string filename;
                     // Free memory block after next ollyloop
                     regBlockToFree(block);
                  */
-                    require_addonaction = true;
-                    back_to_debugloop = true;
+                    //require_addonaction = true;
+                    //back_to_debugloop = true;
                     return true;
                 }
 
@@ -3125,7 +3123,7 @@ string filename;
                             oldval = Debugger.GetContextData(reg.id);
                             throw new NotImplementedException("oldval &= ~(((1 << (reg.size * 8)) - 1) << (reg.offset * 8));");
                             //newval = resize(dw, reg.size) << (reg.offset * 8);
-                            dw = oldval | newval;
+                            //dw = oldval | newval;
                         }
                         return Debugger.SetContextData(reg.id, dw);
                     }
@@ -3541,7 +3539,6 @@ string param;
         private bool DoRBP(string[] args)
         {
             bool strict = false;
-
             if (args.Length >= 0 && args.Length <= 1)
             {
                 if (args.Length == 1)
@@ -3600,8 +3597,6 @@ string param;
             }
             variables["$RESULT_1"] = ( DWORD ) i;
             */
-
-            return true;
         }
 
 
@@ -4190,7 +4185,7 @@ rulong dw1, dw2;
                 Settracecondition(buffer, 0, 0, 0, 0, 0);
                 Sendshortcut(PM_MAIN, 0, WM_KEYDOWN, 1, 0, VK_F12); 
                 */
-                back_to_debugloop = true;
+                //back_to_debugloop = true;
                 return true;
             }
             return false;

@@ -84,13 +84,10 @@ namespace Reko.Arch.PowerPC
             cregs = new ReadOnlyCollection<RegisterStorage>(
                 regs.Skip(0x60).Take(0x8).ToList());
 
+            //$REVIEW: using R1 as the stack register is a _convention_. It 
+            // should be platform-specific at the very least.
+            StackRegister = regs[1];
         }
-
-        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
-
-        //$REVIEW: using R1 as the stack register is a _convention_. It 
-        // should be platform-specific at the very least.
-        public RegisterStorage StackRegister { get { return regs[1]; } }
 
         public ReadOnlyCollection<RegisterStorage> Registers
         {
