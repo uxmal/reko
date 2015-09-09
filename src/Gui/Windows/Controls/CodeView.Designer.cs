@@ -33,15 +33,16 @@
             this.btnBack = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.txtProcName = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDeclaration = new System.Windows.Forms.TabPage();
-            this.tabCharacteristics = new System.Windows.Forms.TabPage();
-            this.txtDeclaration = new System.Windows.Forms.TextBox();
             this.txtDataflow = new System.Windows.Forms.TextBox();
-            this.textView1 = new Reko.Gui.Windows.Controls.TextView();
+            this.txtDeclaration = new System.Windows.Forms.TextBox();
+            this.tabCharacteristics = new System.Windows.Forms.TabPage();
             this.chkTerminates = new System.Windows.Forms.CheckBox();
+            this.txtProcName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textView1 = new Reko.Gui.Windows.Controls.TextView();
+            this.vldProcName = new Reko.Gui.Windows.Controls.RegexValidator();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -103,24 +104,6 @@
             this.splitContainer1.SplitterDistance = 583;
             this.splitContainer1.TabIndex = 2;
             // 
-            // txtProcName
-            // 
-            this.txtProcName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProcName.Location = new System.Drawing.Point(4, 21);
-            this.txtProcName.Name = "txtProcName";
-            this.txtProcName.Size = new System.Drawing.Size(307, 20);
-            this.txtProcName.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Procedure name:";
-            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -146,16 +129,16 @@
             this.tabDeclaration.Text = "Declaration";
             this.tabDeclaration.UseVisualStyleBackColor = true;
             // 
-            // tabCharacteristics
+            // txtDataflow
             // 
-            this.tabCharacteristics.Controls.Add(this.chkTerminates);
-            this.tabCharacteristics.Location = new System.Drawing.Point(4, 22);
-            this.tabCharacteristics.Name = "tabCharacteristics";
-            this.tabCharacteristics.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCharacteristics.Size = new System.Drawing.Size(303, 305);
-            this.tabCharacteristics.TabIndex = 1;
-            this.tabCharacteristics.Text = "Characteristics";
-            this.tabCharacteristics.UseVisualStyleBackColor = true;
+            this.txtDataflow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDataflow.Location = new System.Drawing.Point(3, 149);
+            this.txtDataflow.Multiline = true;
+            this.txtDataflow.Name = "txtDataflow";
+            this.txtDataflow.ReadOnly = true;
+            this.txtDataflow.Size = new System.Drawing.Size(294, 150);
+            this.txtDataflow.TabIndex = 1;
             // 
             // txtDeclaration
             // 
@@ -168,16 +151,44 @@
             this.txtDeclaration.Size = new System.Drawing.Size(293, 138);
             this.txtDeclaration.TabIndex = 0;
             // 
-            // txtDataflow
+            // tabCharacteristics
             // 
-            this.txtDataflow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabCharacteristics.Controls.Add(this.chkTerminates);
+            this.tabCharacteristics.Location = new System.Drawing.Point(4, 22);
+            this.tabCharacteristics.Name = "tabCharacteristics";
+            this.tabCharacteristics.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCharacteristics.Size = new System.Drawing.Size(303, 305);
+            this.tabCharacteristics.TabIndex = 1;
+            this.tabCharacteristics.Text = "Characteristics";
+            this.tabCharacteristics.UseVisualStyleBackColor = true;
+            // 
+            // chkTerminates
+            // 
+            this.chkTerminates.AutoSize = true;
+            this.chkTerminates.Location = new System.Drawing.Point(4, 7);
+            this.chkTerminates.Name = "chkTerminates";
+            this.chkTerminates.Size = new System.Drawing.Size(140, 17);
+            this.chkTerminates.TabIndex = 0;
+            this.chkTerminates.Text = "Procedure never returns";
+            this.chkTerminates.UseVisualStyleBackColor = true;
+            // 
+            // txtProcName
+            // 
+            this.txtProcName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDataflow.Location = new System.Drawing.Point(3, 149);
-            this.txtDataflow.Multiline = true;
-            this.txtDataflow.Name = "txtDataflow";
-            this.txtDataflow.ReadOnly = true;
-            this.txtDataflow.Size = new System.Drawing.Size(294, 150);
-            this.txtDataflow.TabIndex = 1;
+            this.txtProcName.Location = new System.Drawing.Point(4, 21);
+            this.txtProcName.Name = "txtProcName";
+            this.txtProcName.Size = new System.Drawing.Size(307, 20);
+            this.txtProcName.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Procedure name:";
             // 
             // textView1
             // 
@@ -190,15 +201,12 @@
             this.textView1.TabIndex = 1;
             this.textView1.Text = "textView1";
             // 
-            // chkTerminates
+            // vldProcName
             // 
-            this.chkTerminates.AutoSize = true;
-            this.chkTerminates.Location = new System.Drawing.Point(4, 7);
-            this.chkTerminates.Name = "chkTerminates";
-            this.chkTerminates.Size = new System.Drawing.Size(140, 17);
-            this.chkTerminates.TabIndex = 0;
-            this.chkTerminates.Text = "Procedure never returns";
-            this.chkTerminates.UseVisualStyleBackColor = true;
+            this.vldProcName.ControlToValidate = this.txtProcName;
+            this.vldProcName.ErrorMessage = "Procedure name must be valid C identifier.";
+            this.vldProcName.IsValid = true;
+            this.vldProcName.ValidationExpression = "^[a-zA-Z_][a-zA-Z0-9_]*$";
             // 
             // CodeView
             // 
@@ -240,5 +248,6 @@
         private System.Windows.Forms.TextBox txtDeclaration;
         private System.Windows.Forms.TabPage tabCharacteristics;
         private System.Windows.Forms.CheckBox chkTerminates;
+        private RegexValidator vldProcName;
     }
 }

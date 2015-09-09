@@ -156,6 +156,7 @@
     <Compile Include="CLanguage\CGrammar.cs" />
     <Compile Include="CLanguage\CLexer.cs" />
     <Compile Include="CLanguage\CParser.cs" />
+    <Compile Include="CLanguage\CParserException.cs" />
     <Compile Include="CLanguage\CSyntax.cs" />
     <Compile Include="CLanguage\CSyntaxVisitor.cs" />
     <Compile Include="CLanguage\EnumEvaluator.cs" />

@@ -55,6 +55,9 @@ namespace Reko.Gui.Windows
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
             this.codeView.CurrentAddressChanged += codeView_CurrentAddressChanged;
+            this.codeView.ProcedureName.LostFocus += ProcedureName_LostFocus;
+            this.codeView.ProcedureDeclaration.TextChanged += ProcedureDeclaration_TextChanged;
+
             this.TextView.Font = new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
             this.TextView.Services = services;
@@ -170,6 +173,35 @@ namespace Reko.Gui.Windows
             fmt.Write(proc);
             sw.Flush();
             Clipboard.SetText(sw.ToString());
+        }
+
+        private bool IsValidCIdentifier(string id)
+        {
+            return true;
+        }
+
+        private void ProcedureName_LostFocus(object sender, EventArgs e)
+        {
+            var newName = codeView.ProcedureName.Text;
+            if (proc.Name == newName || !IsValidCIdentifier(newName))
+                return;
+            proc.Name = newName;
+        }
+
+        private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
+        {
+            var lexer = new Core.CLanguage.CLexer(new StringReader(codeView.ProcedureDeclaration.Text));
+            var cstate = new Core.CLanguage.ParserState();
+            var cParser = new Core.CLanguage.CParser(cstate, lexer);
+            try
+            {
+                var decl = cParser.Parse_Decl();
+                codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
+            }
+            catch
+            {
+                codeView.ProcedureDeclaration.ForeColor = Color.Red;
+            }
         }
     }
 }

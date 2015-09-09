@@ -40,10 +40,11 @@
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assumeRegistesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ollyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.assumeRegistesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +67,8 @@
             this.rTFToolStripMenuItem,
             this.webControlToolStripMenuItem,
             this.treeViewToolStripMenuItem,
-            this.disassemblyControlToolStripMenuItem});
+            this.disassemblyControlToolStripMenuItem,
+            this.textViewToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.controlsToolStripMenuItem.Text = "&Controls";
@@ -146,6 +148,13 @@
             this.preferencesToolStripMenuItem.Text = "&Preferences...";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
+            // assumeRegistesToolStripMenuItem
+            // 
+            this.assumeRegistesToolStripMenuItem.Name = "assumeRegistesToolStripMenuItem";
+            this.assumeRegistesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.assumeRegistesToolStripMenuItem.Text = "&Assume registers";
+            this.assumeRegistesToolStripMenuItem.Click += new System.EventHandler(this.assumeRegistesToolStripMenuItem_Click);
+            // 
             // loadingToolStripMenuItem
             // 
             this.loadingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -169,12 +178,12 @@
             this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
             this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
             // 
-            // assumeRegistesToolStripMenuItem
+            // textViewToolStripMenuItem
             // 
-            this.assumeRegistesToolStripMenuItem.Name = "assumeRegistesToolStripMenuItem";
-            this.assumeRegistesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.assumeRegistesToolStripMenuItem.Text = "&Assume registers";
-            this.assumeRegistesToolStripMenuItem.Click += new System.EventHandler(this.assumeRegistesToolStripMenuItem_Click);
+            this.textViewToolStripMenuItem.Name = "textViewToolStripMenuItem";
+            this.textViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.textViewToolStripMenuItem.Text = "Te&xt View";
+            this.textViewToolStripMenuItem.Click += new System.EventHandler(this.textViewToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -210,6 +219,7 @@
         private System.Windows.Forms.ToolStripMenuItem emulatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ollyScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem assumeRegistesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem textViewToolStripMenuItem;
     }
 }
 

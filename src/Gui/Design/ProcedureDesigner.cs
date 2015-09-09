@@ -49,6 +49,7 @@ namespace Reko.Gui.Design
                 this.name = userProc.Name;
             else
                 this.name = procedure.Name;
+            procedure.NameChanged += procedure_NameChanged;
         }
 
         public Address Address { get; set; }
@@ -87,7 +88,6 @@ namespace Reko.Gui.Design
                 case CmdIds.ActionAssumeRegisterValues:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
-
                 }
             }
             return false;
@@ -206,6 +206,14 @@ namespace Reko.Gui.Design
         public bool Equals(ProcedureDesigner other)
         {
             return Address.ToLinear() == other.Address.ToLinear();
+        }
+
+        void procedure_NameChanged(object sender, EventArgs e)
+        {
+            userProc = program.EnsureUserProcedure(Address, procedure.Name);
+            userProc.Name = procedure.Name;
+            this.name = procedure.Name;
+            SetTreeNodeText();
         }
     }
 }

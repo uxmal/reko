@@ -55,10 +55,7 @@ namespace Reko.Gui.Commands
                 };
             foreach (var up in userProcs)
             {
-                if (!up.Program.UserProcedures.ContainsKey(up.Address))
-                {
-                    up.Program.UserProcedures.Add(up.Address, up.UserProc);
-                }
+                up.Program.EnsureUserProcedure(up.Address, null);
             }
             //$REVIEW: browser service should listen to changes in UserProcedures, no?
             brSvc.Reload();
