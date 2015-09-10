@@ -50,8 +50,8 @@ namespace Reko.Gui.Windows.Forms
         {
             dlg = new ProcedureDialog();
             PopulateFields();
-            dlg.ArgumentList.SelectedIndexChanged += new EventHandler(ArgumentList_SelectedIndexChanged);
-            dlg.Signature.TextChanged += new EventHandler(Signature_TextChanged);
+            dlg.ArgumentList.SelectedIndexChanged += ArgumentList_SelectedIndexChanged;
+            dlg.Signature.TextChanged += Signature_TextChanged;
             return dlg;
         }
 

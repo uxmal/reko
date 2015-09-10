@@ -74,7 +74,7 @@ namespace Reko.Gui.Windows.Controls
 
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
-            Model.MoveTo(topAddress, 0);
+            Model.MoveToLine(topAddress, 0);
             RecomputeLayout();
             base.UpdateScrollbar();
             Invalidate();
@@ -102,14 +102,14 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            Debug.Print("Disassembly control: Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue);
+            //Debug.Print("Disassembly control: Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue);
             switch (e.KeyCode)
             {
             case Keys.Down:
-                Model.MoveTo(Model.CurrentPosition, 1);
+                Model.MoveToLine(Model.CurrentPosition, 1);
                 break;
             case Keys.Up:
-                Model.MoveTo(Model.CurrentPosition, -1);
+                Model.MoveToLine(Model.CurrentPosition, -1);
                 break;
             default:
                 base.OnKeyDown(e);

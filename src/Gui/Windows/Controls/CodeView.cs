@@ -40,7 +40,12 @@ namespace Reko.Gui.Windows.Controls
 
         IButton INavigableControl<Procedure>.BackButton { get { return Back;  } }
         IButton INavigableControl<Procedure>.ForwardButton { get { return Forward; } }
-        
+
+        public TextBox ProcedureName { get { return txtProcName; } }
+        public TextBox ProcedureDeclaration { get { return txtDeclaration; } }
+        public TextBox DataFlow { get { return txtDataflow; } }
+        public CheckBox ProcedureTerminates { get { return chkTerminates; } }
+
         public Procedure CurrentAddress { 
             get { return procCurrent; } 
             set { procCurrent = value; CurrentAddressChanged.Fire(this); }

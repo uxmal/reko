@@ -54,7 +54,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         public void CParser_decl()
         {
             Lex("  int x;");
-            var decl = parser.Parse_Decl();
+            parser.Parse_Decl();
         }
 
         [Test]
