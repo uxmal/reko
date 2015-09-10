@@ -174,7 +174,7 @@ namespace Reko.Gui.Windows
                 if (this.position < 0)
                     this.position = 0;
                 if (this.position >= lines.Length)
-                    this.position = lines.Length - 1;
+                    this.position = lines.Length;
             }
 
             public LineSpan[] GetLineSpans(int count)

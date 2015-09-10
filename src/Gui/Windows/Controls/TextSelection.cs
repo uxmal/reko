@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -39,5 +40,17 @@ namespace Reko.Gui.Windows.Controls
         public TextPointer End { get { return textView.GetEndSelection(); } }
 
         public bool IsEmpty { get { return textView.IsSelectionEmpty(); } }
+
+        public void Save(Stream stream, string cfFormat)
+        {
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            if (cfFormat == null)
+                throw new ArgumentNullException("cfFormat");
+            if (cfFormat != System.Windows.Forms.DataFormats.UnicodeText)
+                throw new NotSupportedException();
+
+            textView.SaveSelectionToStream(stream, cfFormat);
+        }
     }
 }

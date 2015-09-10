@@ -144,7 +144,7 @@
   <placement item="ActionScanHeuristically" container="GrpActionsScanned"/>
   
   <placement item="EditCopy" container="GrpMemoryControl"/>
-  <placement item="EditCopyAll" container="GrpCodeView "/>
+  <placement item="EditCopy" container="GrpCodeView "/>
   <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionMarkType" container="GrpMemoryControl"/>

@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Reko.Gui.Windows.Controls
 {
@@ -171,8 +172,14 @@ namespace Reko.Gui.Windows.Controls
         {
             Capture = true;
             var pos = ClientToLogicalPosition(e.Location);
-            if (ComparePositions(pos, cursorPos) != 0)
+            if (!IsSelectionEmpty() &&
+                IsInsideSelection(pos))
             {
+                dragging = true;
+            }
+            else if (ComparePositions(pos, cursorPos) != 0)
+            {
+                dragging = false;
                 this.cursorPos = pos;
                 if ((Control.ModifierKeys & Keys.Shift) == 0)
                     this.anchorPos = pos;
@@ -185,7 +192,7 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (Capture)
+            if (Capture && !dragging)
             {
                 var pos = ClientToLogicalPosition(e.Location);
                 if (ComparePositions(cursorPos, pos) != 0)
@@ -214,13 +221,15 @@ namespace Reko.Gui.Windows.Controls
             if (Capture)
             {
                 var pos = ClientToLogicalPosition(e.Location);
-                if (ComparePositions(anchorPos, cursorPos) == 0)
+                if (dragging)
                 {
+                    cursorPos = anchorPos = pos;
                     var span = GetSpan(e.Location);
                     if (span != null && span.Tag != null)
                     {
                         Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
                     }
+                    Invalidate();
                 }
                 else
                 {
@@ -293,6 +302,12 @@ namespace Reko.Gui.Windows.Controls
             return ComparePositions(cursorPos, anchorPos) == 0;
         }
     
+        internal bool IsInsideSelection(TextPointer pos)
+        {
+            return
+                ComparePositions(GetStartSelection(), pos) <= 0 &&
+                ComparePositions(pos, GetEndSelection()) < 0;
+        }
 
         /// <summary>
         /// Computes the layout of all visible text spans and stores them the 
@@ -464,6 +479,7 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         public TextViewModel Model { get { return model; } set { this.model = value; OnModelChanged(EventArgs.Empty); }  }
         private TextViewModel model;
+        private bool dragging;
         protected virtual void OnModelChanged(EventArgs e)
         {
             this.cursorPos = new TextPointer
@@ -565,6 +581,57 @@ namespace Reko.Gui.Windows.Controls
             var g = CreateGraphics();
             ComputeLayout(g);
             g.Dispose();
+        }
+
+        internal void SaveSelectionToStream(Stream stream, string cfFormat)
+        {
+            var modelPos = model.CurrentPosition;
+            try
+            {
+                var writer = new StreamWriter(stream, Encoding.Unicode);
+                var start = GetStartSelection();
+                var end = GetEndSelection();
+                if (ComparePositions(start, end) == 0)
+                    return;
+                model.MoveToLine(start.Line, 0);
+                var spans = model.GetLineSpans(1);
+                var line = start.Line;
+                int iSpan = start.Span;
+                int iChar = start.Character;
+                for (;;)
+                {
+                    var span = spans[0].TextSpans[iSpan];
+                    if (model.ComparePositions(spans[0].Position, end.Line) == 0 &&
+                        iSpan == end.Span)
+                    {
+                        writer.Write(span.GetText().Substring(iChar, end.Character-iChar));
+                        writer.Flush();
+                        return;
+                    }
+                    else {
+                        writer.Write(span.GetText().Substring(iChar));
+                    }
+                    ++iSpan;
+                    iChar = 0;
+                    if (iSpan >= spans[0].TextSpans.Length)
+                    {
+                        writer.WriteLine();
+                        model.MoveToLine(line, 1);
+                        spans = model.GetLineSpans(1);
+                        if (spans.Length == 0)
+                        {
+                            writer.Flush();
+                            return;
+                        }
+                        line = spans[0].Position;
+                        iSpan = 0;
+                    }
+                }
+            }
+            finally
+            {
+                model.MoveToLine(modelPos, 0);
+            }
         }
 
         internal void UpdateScrollbar()

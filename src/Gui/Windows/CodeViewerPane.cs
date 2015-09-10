@@ -25,6 +25,7 @@ using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -139,9 +140,9 @@ namespace Reko.Gui.Windows
                 switch (cmdId.ID)
                 {
                 case CmdIds.EditCopy:   //$TODO: once the TextViewer supports selections, these two 
-                                        // verbs will need to differ.
-                case CmdIds.EditCopyAll:
-                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    status.Status = codeView.TextView.Selection.IsEmpty 
+                        ? MenuStatus.Visible 
+                        : MenuStatus.Visible| MenuStatus.Enabled;
                     return true;
                 }
             }
@@ -155,24 +156,21 @@ namespace Reko.Gui.Windows
                 switch (cmdId.ID)
                 {
                 case CmdIds.EditCopy:
-                case CmdIds.EditCopyAll:
-                    CopyAll();
+                    Copy();
                     return true;
                 }
             }
             return false;
         }
 
-        public void CopyAll()
+        public void Copy()
         {
             if (this.proc == null)
                 return;
-            var sw = new StringWriter();
-            var writer = new TextFormatter(sw);
-            var fmt = new CodeFormatter(writer);
-            fmt.Write(proc);
-            sw.Flush();
-            Clipboard.SetText(sw.ToString());
+            var ms = new MemoryStream();
+            this.codeView.TextView.Selection.Save(ms, System.Windows.Forms.DataFormats.UnicodeText);
+            Debug.Print(Encoding.Unicode.GetString(ms.ToArray()));
+            Clipboard.SetData(System.Windows.Forms.DataFormats.UnicodeText, ms);
         }
 
         private bool IsValidCIdentifier(string id)
