@@ -12,7 +12,7 @@ namespace Reko.WindowsItp
 {
     public partial class TextViewDialog : Form
     {
-        private string text = "Lorem ipsum";
+        private string text = "M";
         private string textStub;
         private StringFormat sf;
         private int xLow;

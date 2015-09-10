@@ -74,7 +74,7 @@ namespace Reko.Gui.Windows.Controls
 
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
-            Model.MoveTo(topAddress, 0);
+            Model.MoveToLine(topAddress, 0);
             RecomputeLayout();
             base.UpdateScrollbar();
             Invalidate();
@@ -106,10 +106,10 @@ namespace Reko.Gui.Windows.Controls
             switch (e.KeyCode)
             {
             case Keys.Down:
-                Model.MoveTo(Model.CurrentPosition, 1);
+                Model.MoveToLine(Model.CurrentPosition, 1);
                 break;
             case Keys.Up:
-                Model.MoveTo(Model.CurrentPosition, -1);
+                Model.MoveToLine(Model.CurrentPosition, -1);
                 break;
             default:
                 base.OnKeyDown(e);

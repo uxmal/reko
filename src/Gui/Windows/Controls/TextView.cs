@@ -44,6 +44,8 @@ namespace Reko.Gui.Windows.Controls
         private StringFormat stringFormat;
         private SortedList<float, LayoutLine> visibleLines;
         private bool ignoreScroll;
+        private Position cursor;
+        private Position anchor;
 
         public TextView()
         {
@@ -212,7 +214,7 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
+            model.MoveToLine(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
             RecomputeLayout();
             UpdateScrollbar();
             OnScroll();
@@ -450,6 +452,12 @@ namespace Reko.Gui.Windows.Controls
             this.ignoreScroll = true;
             vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
             this.ignoreScroll = false;
+        }
+
+        public class Position
+        {
+            public object Line;
+            public int Character;
         }
     }
 

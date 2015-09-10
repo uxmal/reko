@@ -39,12 +39,17 @@ namespace Reko.UiPrototype.WinForms
 
             public int LineCount { get { return lines.Length; } }
 
+            public int ComparePositions(object a, object b)
+            {
+                return ((int)a).CompareTo((int)b);
+            }
+
             public IEnumerable<TextSpan> GetLineSpans(int index)
             { 
                 return lines[index];
             }
 
-            public void MoveTo(object position, int offset)
+            public void MoveToLine(object position, int offset)
             {
                 this.position = (int)position + offset;
                 if (this.position < 0)

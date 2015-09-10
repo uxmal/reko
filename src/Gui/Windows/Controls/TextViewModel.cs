@@ -48,6 +48,17 @@ namespace Reko.Gui.Windows.Controls
         int LineCount { get; } 
 
         /// <summary>
+        /// Compares two positions.
+        /// </summary>
+        /// <param name="a">A logical position</param>
+        /// <param name="b">Another logical position</param>
+        /// <returns>Negative number if <paramref name="a"/> occurs earlier
+        /// in the document than <paramref name="b"/>; a positive number if 
+        /// <paramref name="a"/> occurs later in the document than <paramref name="b"/>,
+        /// and 0 if the positions are requal.</returns>
+        int ComparePositions(object a, object b);
+
+        /// <summary>
         /// Move the current position relative to the parameter <paramref name="position"/>, offset
         /// by <paramref name="offset"/> lines
         /// </summary>
@@ -57,7 +68,7 @@ namespace Reko.Gui.Windows.Controls
         /// </remarks>
         /// <param name="position"></param>
         /// <param name="offset"></param>
-        void MoveTo(object position, int offset);
+        void MoveToLine(object position, int offset);
 
         /// <summary>
         /// Read <paramref name="count"/> lines, starting at the current position.
@@ -90,8 +101,13 @@ namespace Reko.Gui.Windows.Controls
         public object EndPosition{ get { return this; } }
         public int LineCount { get { return 0; } }
 
-        public void MoveTo(object position, int offset)
+        public void MoveToLine(object position, int offset)
         {
+        }
+
+        public int ComparePositions(object a, object b)
+        {
+            return 0;
         }
 
         public TextSpan[][] GetLineSpans(int count)
