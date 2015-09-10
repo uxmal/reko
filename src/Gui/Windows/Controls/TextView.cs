@@ -193,7 +193,6 @@ namespace Reko.Gui.Windows.Controls
         {
         }
 
-
         protected override void OnLostFocus(EventArgs e)
         {
             ClearCaret();
@@ -295,7 +294,7 @@ namespace Reko.Gui.Windows.Controls
         }
 
         /// <summary>
-        /// Computes the layout of all visibile text spans and stores them the 
+        /// Computes the layout of all visible text spans and stores them the 
         /// member variable 'visibleLines'.
         /// </summary>
         /// <param name="g"></param>

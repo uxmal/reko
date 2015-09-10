@@ -46,6 +46,7 @@ namespace Reko.Gui.Windows.Controls
             private Brush bg;
             private Font font;
             private RectangleF rcText;
+            private LayoutSpan span;
 
             public Painter(TextView outer, Graphics g)
             {
@@ -73,13 +74,11 @@ namespace Reko.Gui.Windows.Controls
                 }
             }
 
-
             private void PaintLine(LayoutLine line)
             {
                 for (int iSpan = 0; iSpan < line.Spans.Length; ++iSpan)
                 {
-                    var span = line.Spans[iSpan];
-                    var text = span.Text;
+                    this.span = line.Spans[iSpan];
                     var pos = new Position { Line = line.Position, Span = iSpan, Character = 0 };
 
                     var insideSelection =
@@ -99,41 +98,29 @@ namespace Reko.Gui.Windows.Controls
                             // any unselected text first.
                             if (selStart.Character > 0)
                             {
-                                var textStub = text.Substring(0, selStart.Character);
-                                var sz = outer.MeasureText(graphics, textStub, font);
-                                rcText.Width = sz.Width;
-                                DrawText(rcText, textStub, false);
+                                DrawTextSegment(0, selStart.Character, false);
                             }
                             if (selEnd.Line == line.Position && selEnd.Span == iSpan)
                             {
                                 // Selection ends inside the current span. Write
                                 // selected text.
-
-                                var textStub = text.Substring(selStart.Character, selEnd.Character - selStart.Character);
-                                var sz = outer.MeasureText(graphics, textStub, font);
-                                rcText.Width = sz.Width;
-                                DrawText(rcText, textStub, true);
-
-                                if (selEnd.Character < text.Length)
+                                DrawTextSegment(selStart.Character, selEnd.Character - selStart.Character, true);
+                                if (selEnd.Character < span.Text.Length)
                                 {
                                     // If there is trailing unselected text, display that.
-                                    textStub = text.Substring(selEnd.Character);
-                                    rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left);
-                                    DrawText(rcText, textStub, false);
+                                    DrawTrailingTextSegment(selEnd.Character, false);
                                 }
                             }
                             else
                             {
                                 // Select all the way to the end of the span.
-                                var textStub = text.Substring(selStart.Character);
-                                rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left); 
-                                DrawText(rcText, textStub, true);
+                                DrawTrailingTextSegment(selStart.Character, true);
                             }
                         }
                         else
                         {
                             // Not in selection at all.
-                            DrawText(span.Extent, text, false);
+                            DrawText(span.Text, false);
                         }
                     }
                     else
@@ -143,23 +130,17 @@ namespace Reko.Gui.Windows.Controls
                         {
                             // Selection ends inside the current span. Write
                             // selected text.
-                            var textStub = text.Substring(0, selEnd.Character);
-                            var sz = outer.MeasureText(graphics, textStub, font);
-                            rcText.Width = sz.Width;
-                            DrawText(rcText, textStub, true);
-
-                            // Now draw trailing unselected piece
-                            textStub = text.Substring(selEnd.Character);
-                            rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left);
-                            DrawText(rcText, textStub, false);
+                            DrawTextSegment(0, selEnd.Character, true);
+                            DrawTrailingTextSegment(selEnd.Character, false);
                         }
                         else
                         {
-                            DrawText(span.Extent, text, true);
+                            DrawText(span.Text, true);
                         }
                     }
 
 #if DEBUG
+                    var text = span.Text;
                     if (line.Position == selStart.Line &&
                         iSpan == selStart.Span)
                     {
@@ -184,12 +165,27 @@ namespace Reko.Gui.Windows.Controls
                 }
             }
 
-            private void DrawText(RectangleF rc, string text, bool selected)
+            private void DrawTextSegment(int iStart, int iEnd, bool selected)
+            {
+                var textStub = span.Text.Substring(iStart, iEnd);
+                var sz = outer.MeasureText(graphics, textStub, font);
+                rcText.Width = sz.Width;
+                DrawText(textStub, selected);
+            }
+
+            private void DrawTrailingTextSegment(int iStart, bool selected)
+            {
+                var textStub = span.Text.Substring(iStart);
+                rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left);
+                DrawText(textStub, selected);
+            }
+
+            private void DrawText(string text, bool selected)
             {
                 graphics.FillRectangle(
                     selected ? SystemBrushes.Highlight : bg,
-                    rc);
-                var pt = new Point((int)rc.X, (int)rc.Y);
+                    rcText);
+                var pt = new Point((int)rcText.X, (int)rcText.Y);
                 TextRenderer.DrawText(
                     this.graphics,
                     text,
