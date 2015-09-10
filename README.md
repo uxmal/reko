@@ -26,7 +26,7 @@ about the Reko project's internal workings.
 
 ## Recent versions
 
-## Version 0.5.2.0
+### Version 0.5.2.0
 * New structural analysis inspired by "Native x86 Decompilation Using 
   Semantics-Preserving Structural Analysis and Iterative Control-Flow 
   Structuring" (Schwartz, Lee, Woo, Brumley) yields much improved
@@ -39,7 +39,7 @@ about the Reko project's internal workings.
 * Added support for ELF x86-64 and PE Thumb binaries.
 * Many bugs fixed and code refactored.
 
-## Version 0.5.1.0
+### Version 0.5.1.0
 * Integrated the Capstone.NET disassembler, now used for the ARM and 
   ARM Thumb architectures.
 * Support for Arm Thumb PE executables.
@@ -50,7 +50,7 @@ about the Reko project's internal workings.
 * Renamed project to 'Reko'
 * Started implementation of heuristic static analysis.
 
-## Version 0.4.5.0 
+### Version 0.4.5.0 
 * Command line interpreter supports --default-to option
 * More ARM instructions implemented
 * CP/M environment added
