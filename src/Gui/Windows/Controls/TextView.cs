@@ -567,6 +567,11 @@ namespace Reko.Gui.Windows.Controls
             public object Line;
             public int Span;
             public int Character;
+
+            public override string ToString()
+            {
+                return string.Format("{0}:{1}:{2}", Line, Span, Character);
+            }
         }
     }
 

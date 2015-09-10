@@ -102,7 +102,7 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            Debug.Print("Disassembly control: Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue);
+            //Debug.Print("Disassembly control: Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue);
             switch (e.KeyCode)
             {
             case Keys.Down:

@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -31,18 +32,20 @@ namespace Reko.Gui.Windows.Controls
     {
         protected override void OnPaint(PaintEventArgs e)
         {
-            Position selStart;
-            Position selEnd;
             var painter = new Painter(this, e.Graphics);
             painter.Paint();
         }
 
         private class Painter
         {
-            TextView outer;
-            Graphics graphics;
-            Position selStart;
-            Position selEnd;
+            private TextView outer;
+            private Graphics graphics;
+            private Position selStart;
+            private Position selEnd;
+            private Color fg;
+            private Brush bg;
+            private Font font;
+
             public Painter(TextView outer, Graphics g)
             {
                 this.outer = outer;
@@ -62,6 +65,7 @@ namespace Reko.Gui.Windows.Controls
 
             public void Paint()
             {
+                Debug.Print("Selection: {0} - {1}", selStart, selEnd);
                 foreach (var line in outer.visibleLines.Values)
                 {
                     PaintLine(line);
@@ -75,13 +79,96 @@ namespace Reko.Gui.Windows.Controls
                 {
                     var span = line.Spans[iSpan];
                     var text = span.Text;
-                    var font = outer.GetFont(span.Style);
-                    var fg = outer.GetForegroundColor(span.Style);
-                    var bg = outer.GetBackground(span.Style);
-                    graphics.FillRectangle(bg, span.Extent);
-                    var ptF = span.Extent.Location;
-                    var pt = new Point((int)ptF.X, (int)ptF.Y);
-                    TextRenderer.DrawText(graphics, text, font, pt, fg, TextFormatFlags.NoPadding);
+                    var pos = new Position { Line = line.Position, Span = iSpan, Character = 0 };
+
+                    var insideSelection =
+                        outer.ComparePositions(selStart, pos) <= 0 &&
+                        outer.ComparePositions(pos, selEnd) < 0;
+
+                    Debug.Print("  Inside selection {0} {1} {2}: {3}", selStart, pos, selEnd, insideSelection ? "YES" : "no");
+
+                    this.fg = outer.GetForegroundColor(span.Style);
+                    this.bg = outer.GetBackground(span.Style);
+                    this.font = outer.GetFont(span.Style);
+
+                    var rc = span.Extent;
+                    if (!insideSelection)
+                    {
+                        if (selStart.Line == line.Position && selStart.Span == iSpan)
+                        {
+                            // Selection starts inside the current span. Write
+                            // any unselected text first.
+                            if (selStart.Character > 0)
+                            {
+                                var textStub = text.Substring(0, selStart.Character);
+                                var sz = outer.MeasureText(graphics, textStub, font);
+                                rc.Width = sz.Width;
+                                DrawText(rc, textStub, false);
+                                rc.X += rc.Width;
+                            }
+                            if (selEnd.Line == line.Position && selEnd.Span == iSpan)
+                            {
+                                // Selection ends inside the current span. Write
+                                // selected text.
+
+                                var textStub = text.Substring(selStart.Character, selEnd.Character - selStart.Character);
+                                var sz = outer.MeasureText(graphics, textStub, font);
+                                rc.Width = sz.Width;
+                                DrawText(rc, textStub, true);
+                                rc.X += rc.Width;
+
+                                if (selEnd.Character < text.Length)
+                                {
+                                    // If there is trailing unselected text, display that.
+                                    textStub = text.Substring(selEnd.Character);
+                                    rc.Width = span.Extent.Width - (rc.X - span.Extent.Left);
+                                    DrawText(rc, textStub, false);
+                                    rc.X += rc.Width;
+                                }
+                            }
+                            else
+                            {
+                                // Select all the way to the end of the span.
+                                var textStub = text.Substring(selStart.Character);
+                                rc.Width = span.Extent.Width - (rc.X - span.Extent.Left); 
+                                DrawText(rc, textStub, true);
+                                rc.X += rc.Width;
+                            }
+                        }
+                        else
+                        {
+                            // Not in selection at all.
+                            DrawText(span.Extent, text, false);
+                            rc.X += rc.Width;
+                        }
+                    }
+                    else
+                    {
+                        // Inside selection. Does it end?
+                        if (selEnd.Line == line.Position && selEnd.Span == iSpan)
+                        {
+                            // Selection ends inside the current span. Write
+                            // selected text.
+                            var textStub = text.Substring(0, selEnd.Character);
+                            var sz = outer.MeasureText(graphics, textStub, font);
+                            rc.Width = sz.Width;
+                            DrawText(rc, textStub, true);
+                            rc.X += rc.Width;
+
+                            // Now draw trailing unselected piece
+                            textStub = text.Substring(selEnd.Character);
+                            rc.Width = span.Extent.Width - (rc.X - span.Extent.Left);
+                            DrawText(rc, textStub, false);
+                            rc.X += rc.Width;
+                        }
+                        else
+                        {
+                            DrawText(span.Extent, text, true);
+                            rc.X += rc.Width;
+                        }
+                    }
+
+#if DEBUG
                     if (line.Position == selStart.Line &&
                         iSpan == selStart.Span)
                     {
@@ -102,7 +189,23 @@ namespace Reko.Gui.Windows.Controls
                             span.Extent.Left + sz.Width, line.Extent.Top,
                             1, line.Extent.Height);
                     }
+#endif
                 }
+            }
+
+            private void DrawText(RectangleF rc, string text, bool selected)
+            {
+                graphics.FillRectangle(
+                    selected ? SystemBrushes.Highlight : bg,
+                    rc);
+                var pt = new Point((int)rc.X, (int)rc.Y);
+                TextRenderer.DrawText(
+                    this.graphics,
+                    text,
+                    this.font,
+                    pt,
+                    selected ? SystemColors.HighlightText : fg,
+                    TextFormatFlags.NoPadding);
             }
         }
     }
