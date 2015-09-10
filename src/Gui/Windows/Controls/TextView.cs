@@ -46,6 +46,7 @@ namespace Reko.Gui.Windows.Controls
         private bool ignoreScroll;
         private Position cursorPos;
         private Position anchorPos;
+        private bool dragging;
 
         public TextView()
         {
@@ -201,15 +202,19 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            this.cursorPos = ClientToLogicalPosition(e.Location);
-            if ((Control.ModifierKeys & Keys.Shift) == 0)
-                this.anchorPos = cursorPos;
             Capture = true;
-            Focus();
-            SetCaret();
+            var pos = ClientToLogicalPosition(e.Location);
+            if (ComparePositions(pos, cursorPos) != 0)
+            {
+                this.cursorPos = pos;
+                if ((Control.ModifierKeys & Keys.Shift) == 0)
+                    this.anchorPos = pos;
+                Focus();
+                SetCaret();
+                Invalidate();
+            }
             base.OnMouseDown(e);
         }
-
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -241,10 +246,14 @@ namespace Reko.Gui.Windows.Controls
         {
             if (Capture)
             {
-                var span = GetSpan(e.Location);
-                if (span != null && span.Tag != null)
+                var pos = ClientToLogicalPosition(e.Location);
+                if (ComparePositions(anchorPos, cursorPos) == 0)
                 {
-                    Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
+                    var span = GetSpan(e.Location);
+                    if (span != null && span.Tag != null)
+                    {
+                        Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
+                    }
                 }
             }
             base.OnMouseUp(e);
@@ -295,7 +304,7 @@ namespace Reko.Gui.Windows.Controls
 
         /// <summary>
         /// Computes the layout of all visible text spans and stores them the 
-        /// member variable 'visibleLines'.
+        /// member variable 'visibleLines'. This includes a final partial item on the end.
         /// </summary>
         /// <param name="g"></param>
         protected void ComputeLayout(Graphics g)
@@ -364,12 +373,12 @@ namespace Reko.Gui.Windows.Controls
         {
             foreach (var line in this.visibleLines.Values)
             {
-                if (line.Extent.Contains(pt))
+                if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
                 {
                     return FindSpanPosition(pt, line);
                 }
             }
-            return null;
+            return new Position { Line = Model.EndPosition, Span = 0, Character = 0 };
         }
 
         /// <summary>
@@ -414,7 +423,7 @@ namespace Reko.Gui.Windows.Controls
                 }
                 ++iSpan;
             }
-            return null;
+            return new Position { Line = line.Position, Span = iSpan, Character = 0 };
         }
 
         private int GetCharPosition(Point ptClient, LayoutSpan span)
@@ -476,7 +485,6 @@ namespace Reko.Gui.Windows.Controls
             ChangeLayout();
             ModelChanged.Fire(this);
         }
-
 
         /// <summary>
         /// Recomputes the spans and scrollbars of the TextView.
