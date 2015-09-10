@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var items = model.GetLineSpans(1);
 
             var line = items[0];
-            Assert.AreEqual("01000000 ", line[0].GetText());
+            Assert.AreEqual("01000000 ", line.TextSpans[0].GetText());
             mr.VerifyAll();
         }
 
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var items = model.GetLineSpans(3);
 
             var line = items[2];
-            Assert.AreEqual("02 03 04 ", line[1].GetText());
+            Assert.AreEqual("02 03 04 ", line.TextSpans[1].GetText());
             mr.VerifyAll();
         }
 
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var items = model.GetLineSpans(3);
 
             var line = items[3];
-            Assert.AreEqual("02 03 04 ", line[1].GetText());
+            Assert.AreEqual("02 03 04 ", line.TextSpans[1].GetText());
             mr.VerifyAll();
         }
 

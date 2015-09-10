@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Gui.Windows
             var lines = model.GetLineSpans(model.LineCount);
             foreach (var line in lines)
             {
-                foreach (var span in line)
+                foreach (var span in line.TextSpans)
                 {
                     EmitSpanWrapper(span, sb);
                     sb.Append(span.GetText());
