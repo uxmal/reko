@@ -45,6 +45,7 @@ namespace Reko.Gui.Windows.Controls
             private Color fg;
             private Brush bg;
             private Font font;
+            private RectangleF rcText;
 
             public Painter(TextView outer, Graphics g)
             {
@@ -85,13 +86,11 @@ namespace Reko.Gui.Windows.Controls
                         outer.ComparePositions(selStart, pos) <= 0 &&
                         outer.ComparePositions(pos, selEnd) < 0;
 
-                    Debug.Print("  Inside selection {0} {1} {2}: {3}", selStart, pos, selEnd, insideSelection ? "YES" : "no");
-
                     this.fg = outer.GetForegroundColor(span.Style);
                     this.bg = outer.GetBackground(span.Style);
                     this.font = outer.GetFont(span.Style);
 
-                    var rc = span.Extent;
+                    this.rcText = span.Extent;
                     if (!insideSelection)
                     {
                         if (selStart.Line == line.Position && selStart.Span == iSpan)
@@ -102,9 +101,8 @@ namespace Reko.Gui.Windows.Controls
                             {
                                 var textStub = text.Substring(0, selStart.Character);
                                 var sz = outer.MeasureText(graphics, textStub, font);
-                                rc.Width = sz.Width;
-                                DrawText(rc, textStub, false);
-                                rc.X += rc.Width;
+                                rcText.Width = sz.Width;
+                                DrawText(rcText, textStub, false);
                             }
                             if (selEnd.Line == line.Position && selEnd.Span == iSpan)
                             {
@@ -113,33 +111,29 @@ namespace Reko.Gui.Windows.Controls
 
                                 var textStub = text.Substring(selStart.Character, selEnd.Character - selStart.Character);
                                 var sz = outer.MeasureText(graphics, textStub, font);
-                                rc.Width = sz.Width;
-                                DrawText(rc, textStub, true);
-                                rc.X += rc.Width;
+                                rcText.Width = sz.Width;
+                                DrawText(rcText, textStub, true);
 
                                 if (selEnd.Character < text.Length)
                                 {
                                     // If there is trailing unselected text, display that.
                                     textStub = text.Substring(selEnd.Character);
-                                    rc.Width = span.Extent.Width - (rc.X - span.Extent.Left);
-                                    DrawText(rc, textStub, false);
-                                    rc.X += rc.Width;
+                                    rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left);
+                                    DrawText(rcText, textStub, false);
                                 }
                             }
                             else
                             {
                                 // Select all the way to the end of the span.
                                 var textStub = text.Substring(selStart.Character);
-                                rc.Width = span.Extent.Width - (rc.X - span.Extent.Left); 
-                                DrawText(rc, textStub, true);
-                                rc.X += rc.Width;
+                                rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left); 
+                                DrawText(rcText, textStub, true);
                             }
                         }
                         else
                         {
                             // Not in selection at all.
                             DrawText(span.Extent, text, false);
-                            rc.X += rc.Width;
                         }
                     }
                     else
@@ -151,20 +145,17 @@ namespace Reko.Gui.Windows.Controls
                             // selected text.
                             var textStub = text.Substring(0, selEnd.Character);
                             var sz = outer.MeasureText(graphics, textStub, font);
-                            rc.Width = sz.Width;
-                            DrawText(rc, textStub, true);
-                            rc.X += rc.Width;
+                            rcText.Width = sz.Width;
+                            DrawText(rcText, textStub, true);
 
                             // Now draw trailing unselected piece
                             textStub = text.Substring(selEnd.Character);
-                            rc.Width = span.Extent.Width - (rc.X - span.Extent.Left);
-                            DrawText(rc, textStub, false);
-                            rc.X += rc.Width;
+                            rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left);
+                            DrawText(rcText, textStub, false);
                         }
                         else
                         {
                             DrawText(span.Extent, text, true);
-                            rc.X += rc.Width;
                         }
                     }
 
@@ -206,6 +197,7 @@ namespace Reko.Gui.Windows.Controls
                     pt,
                     selected ? SystemColors.HighlightText : fg,
                     TextFormatFlags.NoPadding);
+                rcText.X += rcText.Width;
             }
         }
     }

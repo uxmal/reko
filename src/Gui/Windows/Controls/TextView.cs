@@ -193,18 +193,11 @@ namespace Reko.Gui.Windows.Controls
         {
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+
+        protected override void OnLostFocus(EventArgs e)
         {
-            var span = GetSpan(e.Location);
-            if (span != null)
-            {
-                this.Cursor = GetCursor(span.Style);
-            }
-            else
-            {
-                this.Cursor = Cursors.Default;
-            }
-            base.OnMouseMove(e);
+            ClearCaret();
+            base.OnLostFocus(e);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -218,10 +211,31 @@ namespace Reko.Gui.Windows.Controls
             base.OnMouseDown(e);
         }
 
-        protected override void OnLostFocus(EventArgs e)
+
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            ClearCaret();
-            base.OnLostFocus(e);
+            if (Capture)
+            {
+                var pos = ClientToLogicalPosition(e.Location);
+                if (ComparePositions(cursorPos, pos) != 0)
+                {
+                    this.cursorPos = pos;
+                    Invalidate();
+                }
+            }
+            else
+            {
+                var span = GetSpan(e.Location);
+                if (span != null)
+                {
+                    this.Cursor = GetCursor(span.Style);
+                }
+                else
+                {
+                    this.Cursor = Cursors.Default;
+                }
+            }
+            base.OnMouseMove(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
