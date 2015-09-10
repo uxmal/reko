@@ -225,6 +225,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Controls\TextBuffer.cs" />
+    <Compile Include="Windows\Controls\TextPointer.cs" />
+    <Compile Include="Windows\Controls\TextSelection.cs" />
     <Compile Include="Windows\Controls\TextView.cs">
       <SubType>Component</SubType>
     </Compile>

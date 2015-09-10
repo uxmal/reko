@@ -36,12 +36,48 @@ namespace Reko.Gui.Windows.Controls
             painter.Paint();
         }
 
+        private Brush GetForeground(string styleSelector)
+        {
+            UiStyle style = GetStyle(styleSelector);
+            if (style != null && style.Foreground != null)
+                return style.Foreground;
+            return CacheBrush(ref fgBrush, new SolidBrush(ForeColor));
+        }
+
+        private Color GetForegroundColor(string styleSelector)
+        {
+            UiStyle style = GetStyle(styleSelector);
+            if (style != null && style.Foreground != null)
+                return style.Foreground.Color;
+            return ForeColor;
+        }
+
+        private Brush GetBackground(string styleSelector)
+        {
+            UiStyle style = GetStyle(styleSelector);
+            if (style != null && style.Background != null)
+                return style.Background;
+            return CacheBrush(ref bgBrush, new SolidBrush(BackColor));
+        }
+
+        private Font GetFont(string styleSelector)
+        {
+            UiStyle style;
+            if (!string.IsNullOrEmpty(styleSelector))
+            {
+                style = GetStyle(styleSelector);
+                if (style != null && style.Font != null)
+                    return style.Font;
+            }
+            return this.Font;
+        }
+
         private class Painter
         {
             private TextView outer;
             private Graphics graphics;
-            private Position selStart;
-            private Position selEnd;
+            private TextPointer selStart;
+            private TextPointer selEnd;
             private Color fg;
             private Brush bg;
             private Font font;
@@ -53,16 +89,8 @@ namespace Reko.Gui.Windows.Controls
                 this.outer = outer;
                 this.graphics = g;
 
-                if (outer.ComparePositions(outer.cursorPos, outer.anchorPos) < 0)
-                {
-                    selStart = outer.cursorPos;
-                    selEnd = outer.anchorPos;
-                }
-                else
-                {
-                    selStart = outer.anchorPos;
-                    selEnd = outer.cursorPos;
-                }
+                selStart = outer.GetStartSelection();
+                selEnd = outer.GetEndSelection();
             }
 
             public void Paint()
@@ -79,7 +107,7 @@ namespace Reko.Gui.Windows.Controls
                 for (int iSpan = 0; iSpan < line.Spans.Length; ++iSpan)
                 {
                     this.span = line.Spans[iSpan];
-                    var pos = new Position { Line = line.Position, Span = iSpan, Character = 0 };
+                    var pos = new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
 
                     var insideSelection =
                         outer.ComparePositions(selStart, pos) <= 0 &&
