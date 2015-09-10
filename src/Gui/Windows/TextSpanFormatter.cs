@@ -177,14 +177,17 @@ namespace Reko.Gui.Windows
                     this.position = lines.Length - 1;
             }
 
-            public TextSpan[][] GetLineSpans(int count)
+            public LineSpan[] GetLineSpans(int count)
             {
                 int p = (int)position;
                 int c = Math.Min(count, lines.Length - p);
                 if (c <= 0)
-                    return new TextSpan[0][];
-                var spans = new TextSpan[c][];
-                Array.Copy(lines, p, spans, 0, c);
+                    return new LineSpan[0];
+                var spans = new LineSpan[c];
+                for (int i = 0; i < c; ++i)
+                {
+                    spans[i] = new LineSpan(p+i, lines[p+i]);
+                }
                 return spans;
             }
 

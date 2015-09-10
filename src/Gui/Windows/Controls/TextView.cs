@@ -44,8 +44,8 @@ namespace Reko.Gui.Windows.Controls
         private StringFormat stringFormat;
         private SortedList<float, LayoutLine> visibleLines;
         private bool ignoreScroll;
-        private Position cursor;
-        private Position anchor;
+        private Position cursorPos;
+        private Position anchorPos;
 
         public TextView()
         {
@@ -178,6 +178,14 @@ namespace Reko.Gui.Windows.Controls
             base.Dispose(disposing);
         }
 
+        private void SetCaret()
+        {
+        }
+
+        private void ClearCaret()
+        {
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             var span = GetSpan(e.Location);
@@ -194,9 +202,17 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            this.cursorPos = ClientToLogicalPosition(e.Location);
             Capture = true;
             Focus();
+            SetCaret();
             base.OnMouseDown(e);
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            ClearCaret();
+            base.OnLostFocus(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
@@ -234,6 +250,8 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         private class LayoutLine
         {
+            public LayoutLine(object Position) { this.Position = Position; }
+            public object Position;
             public RectangleF Extent;
             public LayoutSpan[] Spans;
         }
@@ -264,15 +282,15 @@ namespace Reko.Gui.Windows.Controls
             
             // Get the lines.
             int cVisibleLines = (int) Math.Ceiling(szClient.Height / cyLine);
-            var lines = model != null ? model.GetLineSpans(cVisibleLines) : new TextSpan[0][];
+            var lines = model != null ? model.GetLineSpans(cVisibleLines) : new LineSpan[0];
             int iLine = 0;
             while (rcLine.Top < szClient.Height && 
                    iLine < lines.Length)
             {
                 var line = lines[iLine];
-                var ll = new LayoutLine { 
+                var ll = new LayoutLine(line.Position) { 
                     Extent = rcLine,
-                    Spans = ComputeSpanLayouts(line, rcLine, g)
+                    Spans = ComputeSpanLayouts(line.TextSpans, rcLine, g)
                 };
                 this.visibleLines.Add(rcLine.Top, ll);
                 ++iLine;
@@ -317,6 +335,18 @@ namespace Reko.Gui.Windows.Controls
             base.OnResize(e);
         }
 
+        private Position ClientToLogicalPosition(Point pt)
+        {
+            foreach (var line in this.visibleLines.Values)
+            {
+                if (line.Extent.Contains(pt))
+                {
+                    return FindSpanPosition(pt, line);
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Returns the span located at the point <paramref name="pt"/>.
         /// </summary>
@@ -342,16 +372,91 @@ namespace Reko.Gui.Windows.Controls
             return null;
         }
 
-        private void PaintLine(LayoutLine line, Graphics g)
+        private Position FindSpanPosition(Point ptClient, LayoutLine line)
         {
+            int iSpan = 0;
             foreach (var span in line.Spans)
             {
+                if (span.Extent.Contains(ptClient))
+                {
+                    int iChar = GetCharPosition(ptClient, span);
+                    return new Position
+                    {
+                        Line = line.Position,
+                        Span = iSpan,
+                        Character = iChar
+                    };
+                }
+                ++iSpan;
+            }
+            return null;
+        }
+
+        private int GetCharPosition(Point ptClient, LayoutSpan span)
+        {
+            var x = ptClient.X - span.Extent.Left;
+            var g = CreateGraphics();
+            var textStub = span.Text;
+            int iLow = 0;
+            int iHigh = textStub.Length;
+            var font = GetFont(span.Style);
+            var sz = MeasureText(g, textStub, font);
+            float xLow = 0;
+            float xHigh = sz.Width;
+            while (iLow < iHigh-1)
+            {
+                int iMid = iLow + (iHigh - iLow) / 2;
+                textStub = span.Text.Substring(0, iMid);
+                sz = MeasureText(g, textStub, font);
+                if (x < sz.Width)
+                {
+                    iHigh = iMid;
+                    xHigh = sz.Width;
+                }
+                else
+                {
+                    iLow = iMid;
+                    xLow = sz.Width;
+                }
+            }
+            var cx = xHigh - xLow;
+            if (x - xLow > cx)
+                return iHigh;
+            else
+                return iLow;
+        }
+
+        private Size MeasureText(Graphics g, string text, Font font)
+        {
+            var sz = TextRenderer.MeasureText(
+                g, text, font, new Size(0, 0), TextFormatFlags.NoPadding);
+            return sz;
+        }
+
+        private void PaintLine(LayoutLine line, Graphics g)
+        {
+            for (int iSpan = 0; iSpan < line.Spans.Length; ++iSpan)
+            {
+                var span = line.Spans[iSpan];
                 var text = span.Text;
                 var font = GetFont(span.Style);
-                var fg = GetForeground(span.Style);
+                var fg = ((SolidBrush)GetForeground(span.Style)).Color;
                 var bg = GetBackground(span.Style);
                 g.FillRectangle(bg, span.Extent);
-                g.DrawString(text, font, fg, span.Extent, stringFormat);
+                var ptF = span.Extent.Location;
+                var pt = new Point((int)ptF.X, (int)ptF.Y);
+                TextRenderer.DrawText(g, text, font, pt, fg, TextFormatFlags.NoPadding);
+                //g.DrawString(text, font, fg, span.Extent, stringFormat);
+                if (line.Position == cursorPos.Line &&
+                    iSpan == cursorPos.Span)
+                {
+                    var textFrag = text.Substring(0, cursorPos.Character);
+                    var sz = MeasureText(g, textFrag, font);
+                    g.FillRectangle(
+                        Brushes.Red,
+                        span.Extent.Left+ sz.Width, line.Extent.Top,
+                        1, line.Extent.Height);
+                }
             }
         }
 
@@ -362,6 +467,12 @@ namespace Reko.Gui.Windows.Controls
         private TextViewModel model;
         protected virtual void OnModelChanged()
         {
+            this.cursorPos = new Position
+            {
+                Line = model.StartPosition,
+                Span = 0,
+                Character = 0
+            };
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
             if (model != null)
@@ -454,9 +565,10 @@ namespace Reko.Gui.Windows.Controls
             this.ignoreScroll = false;
         }
 
-        public class Position
+        public class Position 
         {
             public object Line;
+            public int Span;
             public int Character;
         }
     }

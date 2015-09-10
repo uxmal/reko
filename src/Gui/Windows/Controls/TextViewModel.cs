@@ -74,8 +74,8 @@ namespace Reko.Gui.Windows.Controls
         /// Read <paramref name="count"/> lines, starting at the current position.
         /// </summary>
         /// <param name="count"></param>
-        /// <returns>Array of arrays of text spans.</returns>
-        TextSpan[][] GetLineSpans(int count);
+        /// <returns>Array of LineSpans.</returns>
+        LineSpan [] GetLineSpans(int count);
 
         /// <summary>
         /// Returns the current position as a fraction.
@@ -110,9 +110,9 @@ namespace Reko.Gui.Windows.Controls
             return 0;
         }
 
-        public TextSpan[][] GetLineSpans(int count)
+        public LineSpan[] GetLineSpans(int count)
         {
-            return new TextSpan[0][];
+            return new LineSpan[0];
         }
 
         public Tuple<int, int> GetPositionAsFraction()
@@ -147,6 +147,18 @@ namespace Reko.Gui.Windows.Controls
         public virtual SizeF GetSize(string text, Font font, Graphics g)
         {
             return g.MeasureString(text, font, 0, stringFormat);
+        }
+    }
+
+    public struct LineSpan
+    {
+        public readonly object Position;
+        public readonly TextSpan[] TextSpans;
+
+        public LineSpan(object position, params TextSpan[] textSpans)
+        {
+            this.Position = position;
+            this.TextSpans = textSpans;
         }
     }
 }

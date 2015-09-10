@@ -55,9 +55,9 @@ namespace Reko.Gui.Windows.Controls
             return ((Address)a).CompareTo((Address)b);
         }
 
-        public TextSpan[][] GetLineSpans(int count)
+        public LineSpan[] GetLineSpans(int count)
         {
-            var lines = new List<TextSpan[]>();
+            var lines = new List<LineSpan>();
             if (program.Architecture != null)
             {
                 var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
@@ -70,7 +70,7 @@ namespace Reko.Gui.Windows.Controls
                     var dfmt = new DisassemblyFormatter(program, line);
                     dasm.Current.Render(dfmt);
                     dfmt.NewLine();
-                    lines.Add(line.ToArray());
+                    lines.Add(new LineSpan(addr, line.ToArray()));
                     --count;
                 }
             }
