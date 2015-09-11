@@ -400,5 +400,11 @@ namespace Reko.WindowsItp
             dlg.Architecture = new X86ArchitectureFlat64();
             dlg.ShowDialog(this);
         }
+
+        private void textViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dlg = new TextViewDialog();
+            dlg.ShowDialog(this);
+        }
     }
 }

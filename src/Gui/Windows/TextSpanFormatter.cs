@@ -157,33 +157,37 @@ namespace Reko.Gui.Windows
 
             public int LineCount { get { return lines.Length; } }
 
-            public void CacheHint(int index, int count)
+            public int ComparePositions(object a, object b)
             {
+                return ((int)a).CompareTo((int)b);
             }
 
-            public object CurrentPosition { get { return position; } }
+            public object CurrentPosition { get { return 0; } }
 
             public object StartPosition { get { return position; } }
 
-            public object EndPosition { get { return position; } }
+            public object EndPosition { get { return lines.Length; } }
 
-            public void MoveTo(object position, int offset)
+            public void MoveToLine(object position, int offset)
             {
                 this.position = (int)position + offset;
                 if (this.position < 0)
                     this.position = 0;
                 if (this.position >= lines.Length)
-                    this.position = lines.Length - 1;
+                    this.position = lines.Length;
             }
 
-            public TextSpan[][] GetLineSpans(int count)
+            public LineSpan[] GetLineSpans(int count)
             {
                 int p = (int)position;
                 int c = Math.Min(count, lines.Length - p);
                 if (c <= 0)
-                    return new TextSpan[0][];
-                var spans = new TextSpan[c][];
-                Array.Copy(lines, p, spans, 0, c);
+                    return new LineSpan[0];
+                var spans = new LineSpan[c];
+                for (int i = 0; i < c; ++i)
+                {
+                    spans[i] = new LineSpan(p+i, lines[p+i]);
+                }
                 return spans;
             }
 

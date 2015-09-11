@@ -50,12 +50,6 @@
   <ItemGroup>
     <Compile Include="Ui\MainFormInteractor.cs" />
     <Compile Include="WinForms\DataType.cs" />
-    <Compile Include="WinForms\ProcedureView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\ProcedureView.Designer.cs">
-      <DependentUpon>ProcedureView.cs</DependentUpon>
-    </Compile>
     <Compile Include="WinForms\Project.cs" />
     <Compile Include="WinForms\StringSearcher.cs" />
     <Compile Include="WinForms\SearchHit.cs" />
@@ -121,9 +115,6 @@
     </Compile>
     <EmbeddedResource Include="WinForms\MemoryTyperControl.resx">
       <DependentUpon>MemoryTyperControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\ProcedureView.resx">
-      <DependentUpon>ProcedureView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\TypeDialog.resx">
       <DependentUpon>TypeDialog.cs</DependentUpon>

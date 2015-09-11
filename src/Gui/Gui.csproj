@@ -225,11 +225,16 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Controls\TextBuffer.cs" />
+    <Compile Include="Windows\Controls\TextPointer.cs" />
+    <Compile Include="Windows\Controls\TextSelection.cs" />
     <Compile Include="Windows\Controls\TextView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Controls\TextView.Designer.cs">
       <DependentUpon>TextView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\TextView.Painter.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Controls\TextViewModel.cs" />
     <Compile Include="Windows\DecompilerShellUiService.cs" />
@@ -412,6 +417,7 @@
     <Content Include="Images\Data.ico" />
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\DiscardableSection.ico" />
+    <None Include="Images\Error.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />
     <Content Include="Images\Forward.ico" />

@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Reko.Gui.Windows.Controls
 {
@@ -38,24 +39,29 @@ namespace Reko.Gui.Windows.Controls
         // ModelChanged is fired whenever the Model property is set.
         public event EventHandler ModelChanged;
         public event EventHandler<EditorNavigationArgs> Navigate;
+        public event EventHandler SelectionChanged; // Fired whenever the selection changes.
 
         private Brush fgBrush;
         private Brush bgBrush;
         private StringFormat stringFormat;
         private SortedList<float, LayoutLine> visibleLines;
         private bool ignoreScroll;
+        internal TextPointer cursorPos;
+        internal TextPointer anchorPos;
 
         public TextView()
         {
             InitializeComponent();
 
+            this.Selection = new TextSelection(this);
             this.model = new EmptyEditorModel();
             this.stringFormat = StringFormat.GenericTypographic;
-            this.ModelChanged += model_ModelChanged;
             this.vScroll.ValueChanged += vScroll_ValueChanged;
         }
 
         public IServiceProvider Services { get; set; }
+
+        public TextSelection Selection { get; private set; }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -85,34 +91,6 @@ namespace Reko.Gui.Windows.Controls
         public new Rectangle ClientRectangle
         {
             get { return new Rectangle(new Point(0, 0), ClientSize); }
-        }
-
-        private Font GetFont(string styleSelector)
-        {
-            UiStyle style;
-            if (!string.IsNullOrEmpty(styleSelector))
-            {
-                style = GetStyle(styleSelector);
-                if (style != null && style.Font != null)
-                    return style.Font;
-            }
-            return this.Font;
-        }
-
-        private Brush GetForeground(string styleSelector)
-        {
-            UiStyle style = GetStyle(styleSelector);
-            if (style != null && style.Foreground != null)
-                return style.Foreground;
-            return CacheBrush(ref fgBrush, new SolidBrush(ForeColor));
-        }
-
-        private Brush GetBackground(string styleSelector)
-        {
-            UiStyle style = GetStyle(styleSelector);
-            if (style != null && style.Background != null)
-                return style.Background;
-            return CacheBrush(ref bgBrush, new SolidBrush(BackColor));
         }
 
         /// <summary>
@@ -176,35 +154,86 @@ namespace Reko.Gui.Windows.Controls
             base.Dispose(disposing);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+        private void SetCaret()
         {
-            var span = GetSpan(e.Location);
-            if (span != null)
-            {
-                this.Cursor = GetCursor(span.Style);
-            }
-            else
-            {
-                this.Cursor = Cursors.Default;
-            }
-            base.OnMouseMove(e);
+        }
+
+        private void ClearCaret()
+        {
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            ClearCaret();
+            base.OnLostFocus(e);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             Capture = true;
-            Focus();
+            var pos = ClientToLogicalPosition(e.Location);
+            if (!IsSelectionEmpty() &&
+                IsInsideSelection(pos))
+            {
+                dragging = true;
+            }
+            else if (ComparePositions(pos, cursorPos) != 0)
+            {
+                dragging = false;
+                this.cursorPos = pos;
+                if ((Control.ModifierKeys & Keys.Shift) == 0)
+                    this.anchorPos = pos;
+                Focus();
+                SetCaret();
+                Invalidate();
+            }
             base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (Capture && !dragging)
+            {
+                var pos = ClientToLogicalPosition(e.Location);
+                if (ComparePositions(cursorPos, pos) != 0)
+                {
+                    this.cursorPos = pos;
+                    Invalidate();
+                }
+            }
+            else
+            {
+                var span = GetSpan(e.Location);
+                if (span != null)
+                {
+                    this.Cursor = GetCursor(span.Style);
+                }
+                else
+                {
+                    this.Cursor = Cursors.Default;
+                }
+            }
+            base.OnMouseMove(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             if (Capture)
             {
-                var span = GetSpan(e.Location);
-                if (span != null && span.Tag != null)
+                var pos = ClientToLogicalPosition(e.Location);
+                if (dragging)
                 {
-                    Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
+                    cursorPos = anchorPos = pos;
+                    var span = GetSpan(e.Location);
+                    if (span != null && span.Tag != null)
+                    {
+                        Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
+                    }
+                    Invalidate();
+                }
+                else
+                {
+                    SelectionChanged.Fire(this);
                 }
             }
             base.OnMouseUp(e);
@@ -212,19 +241,11 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
+            model.MoveToLine(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
             RecomputeLayout();
             UpdateScrollbar();
             OnScroll();
             Invalidate();
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            foreach (var line in visibleLines.Values)
-            {
-                PaintLine(line, e.Graphics);
-            }
         }
 
         /// <summary>
@@ -232,6 +253,8 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         private class LayoutLine
         {
+            public LayoutLine(object Position) { this.Position = Position; }
+            public object Position;
             public RectangleF Extent;
             public LayoutSpan[] Spans;
         }
@@ -248,9 +271,47 @@ namespace Reko.Gui.Windows.Controls
             public int ContextMenuID;
         }
 
+        private int ComparePositions(TextPointer a, TextPointer b)
+        {
+            var d = model.ComparePositions(a.Line, b.Line);
+            if (d != 0)
+                return d;
+            d = a.Span.CompareTo(b.Span);
+            if (d != 0)
+                return d;
+            return a.Character.CompareTo(b.Character);
+        }
+
+        internal TextPointer GetStartSelection()
+        {
+            if (ComparePositions(cursorPos, anchorPos) <= 0)
+                return cursorPos;
+            else
+                return anchorPos;
+        }
+
+        internal TextPointer GetEndSelection()
+        {
+            if (ComparePositions(cursorPos, anchorPos) > 0)
+                return cursorPos;
+            else
+                return anchorPos;
+        }
+
+        internal bool IsSelectionEmpty() {
+            return ComparePositions(cursorPos, anchorPos) == 0;
+        }
+    
+        internal bool IsInsideSelection(TextPointer pos)
+        {
+            return
+                ComparePositions(GetStartSelection(), pos) <= 0 &&
+                ComparePositions(pos, GetEndSelection()) < 0;
+        }
+
         /// <summary>
-        /// Computes the layout of all visibile text spans and stores them the 
-        /// member variable 'visibleLines'.
+        /// Computes the layout of all visible text spans and stores them the 
+        /// member variable 'visibleLines'. This includes a final partial item on the end.
         /// </summary>
         /// <param name="g"></param>
         protected void ComputeLayout(Graphics g)
@@ -262,15 +323,15 @@ namespace Reko.Gui.Windows.Controls
             
             // Get the lines.
             int cVisibleLines = (int) Math.Ceiling(szClient.Height / cyLine);
-            var lines = model != null ? model.GetLineSpans(cVisibleLines) : new TextSpan[0][];
+            var lines = model != null ? model.GetLineSpans(cVisibleLines) : new LineSpan[0];
             int iLine = 0;
             while (rcLine.Top < szClient.Height && 
                    iLine < lines.Length)
             {
                 var line = lines[iLine];
-                var ll = new LayoutLine { 
+                var ll = new LayoutLine(line.Position) { 
                     Extent = rcLine,
-                    Spans = ComputeSpanLayouts(line, rcLine, g)
+                    Spans = ComputeSpanLayouts(line.TextSpans, rcLine, g)
                 };
                 this.visibleLines.Add(rcLine.Top, ll);
                 ++iLine;
@@ -311,8 +372,20 @@ namespace Reko.Gui.Windows.Controls
         protected override void OnResize(EventArgs e)
         {
             int visibleWholeLines = (int) Math.Floor(Height / GetLineHeight());
-            OnModelChanged();
+            ChangeLayout();
             base.OnResize(e);
+        }
+
+        private TextPointer ClientToLogicalPosition(Point pt)
+        {
+            foreach (var line in this.visibleLines.Values)
+            {
+                if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
+                {
+                    return FindSpanPosition(pt, line);
+                }
+            }
+            return new TextPointer { Line = Model.EndPosition, Span = 0, Character = 0 };
         }
 
         /// <summary>
@@ -330,35 +403,101 @@ namespace Reko.Gui.Windows.Controls
             return null;
         }
 
-        private LayoutSpan FindSpan(Point ptMouse, LayoutLine line)
+        private LayoutSpan FindSpan(Point ptClient, LayoutLine line)
         {
             foreach (var span in line.Spans)
             {
-                if (span.Extent.Contains(ptMouse))
+                if (span.Extent.Contains(ptClient))
                     return span;
             }
             return null;
         }
 
-        private void PaintLine(LayoutLine line, Graphics g)
+        private TextPointer FindSpanPosition(Point ptClient, LayoutLine line)
         {
+            int iSpan = 0;
             foreach (var span in line.Spans)
             {
-                var text = span.Text;
-                var font = GetFont(span.Style);
-                var fg = GetForeground(span.Style);
-                var bg = GetBackground(span.Style);
-                g.FillRectangle(bg, span.Extent);
-                g.DrawString(text, font, fg, span.Extent, stringFormat);
+                if (span.Extent.Contains(ptClient))
+                {
+                    int iChar = GetCharPosition(ptClient, span);
+                    return new TextPointer
+                    {
+                        Line = line.Position,
+                        Span = iSpan,
+                        Character = iChar
+                    };
+                }
+                ++iSpan;
             }
+            return new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
+        }
+
+        private int GetCharPosition(Point ptClient, LayoutSpan span)
+        {
+            var x = ptClient.X - span.Extent.Left;
+            var g = CreateGraphics();
+            var textStub = span.Text;
+            int iLow = 0;
+            int iHigh = textStub.Length;
+            var font = GetFont(span.Style);
+            var sz = MeasureText(g, textStub, font);
+            float xLow = 0;
+            float xHigh = sz.Width;
+            while (iLow < iHigh-1)
+            {
+                int iMid = iLow + (iHigh - iLow) / 2;
+                textStub = span.Text.Substring(0, iMid);
+                sz = MeasureText(g, textStub, font);
+                if (x < sz.Width)
+                {
+                    iHigh = iMid;
+                    xHigh = sz.Width;
+                }
+                else
+                {
+                    iLow = iMid;
+                    xLow = sz.Width;
+                }
+            }
+            var cx = xHigh - xLow;
+            if (x - xLow > cx)
+                return iHigh;
+            else
+                return iLow;
+        }
+
+        private Size MeasureText(Graphics g, string text, Font font)
+        {
+            var sz = TextRenderer.MeasureText(
+                g, text, font, new Size(0, 0), TextFormatFlags.NoPadding);
+            return sz;
         }
 
         /// <summary>
         /// The Model provides text spans that the TextView uses to render itself.
         /// </summary>
-        public TextViewModel Model { get { return model; } set { this.model = value; vScroll.Value = 0; OnModelChanged(); ModelChanged.Fire(this); } }
+        public TextViewModel Model { get { return model; } set { this.model = value; OnModelChanged(EventArgs.Empty); }  }
         private TextViewModel model;
-        protected virtual void OnModelChanged()
+        private bool dragging;
+        protected virtual void OnModelChanged(EventArgs e)
+        {
+            this.cursorPos = new TextPointer
+            {
+                Line = model.StartPosition,
+                Span = 0,
+                Character = 0
+            };
+            this.anchorPos = cursorPos;
+            vScroll.Value = 0;
+            ChangeLayout();
+            ModelChanged.Fire(this);
+        }
+
+        /// <summary>
+        /// Recomputes the spans and scrollbars of the TextView.
+        /// </summary>
+        protected void ChangeLayout()
         {
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
@@ -417,7 +556,7 @@ namespace Reko.Gui.Windows.Controls
         
         void model_ModelChanged(object sender, EventArgs e)
         {
-            OnModelChanged();
+            ChangeLayout();
         }
 
         void vScroll_ValueChanged(object sender, EventArgs e)
@@ -442,6 +581,57 @@ namespace Reko.Gui.Windows.Controls
             var g = CreateGraphics();
             ComputeLayout(g);
             g.Dispose();
+        }
+
+        internal void SaveSelectionToStream(Stream stream, string cfFormat)
+        {
+            var modelPos = model.CurrentPosition;
+            try
+            {
+                var writer = new StreamWriter(stream, Encoding.Unicode);
+                var start = GetStartSelection();
+                var end = GetEndSelection();
+                if (ComparePositions(start, end) == 0)
+                    return;
+                model.MoveToLine(start.Line, 0);
+                var spans = model.GetLineSpans(1);
+                var line = start.Line;
+                int iSpan = start.Span;
+                int iChar = start.Character;
+                for (;;)
+                {
+                    var span = spans[0].TextSpans[iSpan];
+                    if (model.ComparePositions(spans[0].Position, end.Line) == 0 &&
+                        iSpan == end.Span)
+                    {
+                        writer.Write(span.GetText().Substring(iChar, end.Character-iChar));
+                        writer.Flush();
+                        return;
+                    }
+                    else {
+                        writer.Write(span.GetText().Substring(iChar));
+                    }
+                    ++iSpan;
+                    iChar = 0;
+                    if (iSpan >= spans[0].TextSpans.Length)
+                    {
+                        writer.WriteLine();
+                        model.MoveToLine(line, 1);
+                        spans = model.GetLineSpans(1);
+                        if (spans.Length == 0)
+                        {
+                            writer.Flush();
+                            return;
+                        }
+                        line = spans[0].Position;
+                        iSpan = 0;
+                    }
+                }
+            }
+            finally
+            {
+                model.MoveToLine(modelPos, 0);
+            }
         }
 
         internal void UpdateScrollbar()

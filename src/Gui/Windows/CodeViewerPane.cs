@@ -25,6 +25,7 @@ using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -55,6 +56,9 @@ namespace Reko.Gui.Windows
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
             this.codeView.CurrentAddressChanged += codeView_CurrentAddressChanged;
+            this.codeView.ProcedureName.LostFocus += ProcedureName_LostFocus;
+            this.codeView.ProcedureDeclaration.TextChanged += ProcedureDeclaration_TextChanged;
+
             this.TextView.Font = new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
             this.TextView.Services = services;
@@ -98,13 +102,16 @@ namespace Reko.Gui.Windows
             if (codeView == null || proc == null)
                 return;
 
+            this.ignoreEvents = true;
             this.proc = proc;
             var tsf = new TextSpanFormatter();
             var fmt = new AbsynCodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
             this.TextView.Model = tsf.GetModel();
-            this.ignoreEvents = true;
+            this.codeView.ProcedureName.Text = proc.Name;
+
+            // Navigate 
             this.codeView.CurrentAddress = proc;
             ignoreEvents = false;
         }
@@ -133,9 +140,9 @@ namespace Reko.Gui.Windows
                 switch (cmdId.ID)
                 {
                 case CmdIds.EditCopy:   //$TODO: once the TextViewer supports selections, these two 
-                                        // verbs will need to differ.
-                case CmdIds.EditCopyAll:
-                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    status.Status = codeView.TextView.Selection.IsEmpty 
+                        ? MenuStatus.Visible 
+                        : MenuStatus.Visible| MenuStatus.Enabled;
                     return true;
                 }
             }
@@ -149,24 +156,50 @@ namespace Reko.Gui.Windows
                 switch (cmdId.ID)
                 {
                 case CmdIds.EditCopy:
-                case CmdIds.EditCopyAll:
-                    CopyAll();
+                    Copy();
                     return true;
                 }
             }
             return false;
         }
 
-        public void CopyAll()
+        public void Copy()
         {
             if (this.proc == null)
                 return;
-            var sw = new StringWriter();
-            var writer = new TextFormatter(sw);
-            var fmt = new CodeFormatter(writer);
-            fmt.Write(proc);
-            sw.Flush();
-            Clipboard.SetText(sw.ToString());
+            var ms = new MemoryStream();
+            this.codeView.TextView.Selection.Save(ms, System.Windows.Forms.DataFormats.UnicodeText);
+            Debug.Print(Encoding.Unicode.GetString(ms.ToArray()));
+            Clipboard.SetData(System.Windows.Forms.DataFormats.UnicodeText, ms);
+        }
+
+        private bool IsValidCIdentifier(string id)
+        {
+            return true;
+        }
+
+        private void ProcedureName_LostFocus(object sender, EventArgs e)
+        {
+            var newName = codeView.ProcedureName.Text;
+            if (proc.Name == newName || !IsValidCIdentifier(newName))
+                return;
+            proc.Name = newName;
+        }
+
+        private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
+        {
+            var lexer = new Core.CLanguage.CLexer(new StringReader(codeView.ProcedureDeclaration.Text));
+            var cstate = new Core.CLanguage.ParserState();
+            var cParser = new Core.CLanguage.CParser(cstate, lexer);
+            try
+            {
+                var decl = cParser.Parse_Decl();
+                codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
+            }
+            catch
+            {
+                codeView.ProcedureDeclaration.ForeColor = Color.Red;
+            }
         }
     }
 }

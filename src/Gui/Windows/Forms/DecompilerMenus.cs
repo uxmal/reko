@@ -276,7 +276,7 @@ namespace Reko.Gui.Windows.Forms
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpActionsScanned.Add(0, slActionScanHeuristically);
 			slGrpMemoryControl.Add(0, slEditCopy);
-			slGrpCodeView .Add(0, slEditCopyAll);
+			slGrpCodeView .Add(0, slEditCopy);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slActionMarkType);

@@ -31,7 +31,7 @@ namespace Reko.Gui.Windows.Controls
 		private bool isValid;
 		private string errorMessage;
 		private static ErrorProvider errorProvider = new ErrorProvider();
-		private static Icon icon = new Icon(typeof(ErrorProvider), "Error.ico");
+		private static Icon icon = Resources.Error;
 
 		public bool IsValid
 		{
@@ -45,10 +45,10 @@ namespace Reko.Gui.Windows.Controls
 			set
 			{
 				if (ctrl != null)
-					ctrl.Validating -= new CancelEventHandler(ctrl_Validating);
+					ctrl.Validating -= ctrl_Validating;
 				ctrl = value;
 				if (value != null)
-					ctrl.Validating += new CancelEventHandler(ctrl_Validating);
+					ctrl.Validating += ctrl_Validating;
 			}
 		}
 
@@ -66,6 +66,8 @@ namespace Reko.Gui.Windows.Controls
 			{
 				errMsg = errorMessage;
 			}
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            errorProvider.Icon = icon;
 			errorProvider.SetError(ctrl, errMsg);
 		}
 

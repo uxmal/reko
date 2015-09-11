@@ -48,6 +48,17 @@ namespace Reko.Gui.Windows.Controls
         int LineCount { get; } 
 
         /// <summary>
+        /// Compares two positions.
+        /// </summary>
+        /// <param name="a">A logical position</param>
+        /// <param name="b">Another logical position</param>
+        /// <returns>Negative number if <paramref name="a"/> occurs earlier
+        /// in the document than <paramref name="b"/>; a positive number if 
+        /// <paramref name="a"/> occurs later in the document than <paramref name="b"/>,
+        /// and 0 if the positions are requal.</returns>
+        int ComparePositions(object a, object b);
+
+        /// <summary>
         /// Move the current position relative to the parameter <paramref name="position"/>, offset
         /// by <paramref name="offset"/> lines
         /// </summary>
@@ -57,14 +68,14 @@ namespace Reko.Gui.Windows.Controls
         /// </remarks>
         /// <param name="position"></param>
         /// <param name="offset"></param>
-        void MoveTo(object position, int offset);
+        void MoveToLine(object position, int offset);
 
         /// <summary>
         /// Read <paramref name="count"/> lines, starting at the current position.
         /// </summary>
         /// <param name="count"></param>
-        /// <returns>Array of arrays of text spans.</returns>
-        TextSpan[][] GetLineSpans(int count);
+        /// <returns>Array of LineSpans.</returns>
+        LineSpan [] GetLineSpans(int count);
 
         /// <summary>
         /// Returns the current position as a fraction.
@@ -90,13 +101,18 @@ namespace Reko.Gui.Windows.Controls
         public object EndPosition{ get { return this; } }
         public int LineCount { get { return 0; } }
 
-        public void MoveTo(object position, int offset)
+        public void MoveToLine(object position, int offset)
         {
         }
 
-        public TextSpan[][] GetLineSpans(int count)
+        public int ComparePositions(object a, object b)
         {
-            return new TextSpan[0][];
+            return 0;
+        }
+
+        public LineSpan[] GetLineSpans(int count)
+        {
+            return new LineSpan[0];
         }
 
         public Tuple<int, int> GetPositionAsFraction()
@@ -131,6 +147,18 @@ namespace Reko.Gui.Windows.Controls
         public virtual SizeF GetSize(string text, Font font, Graphics g)
         {
             return g.MeasureString(text, font, 0, stringFormat);
+        }
+    }
+
+    public struct LineSpan
+    {
+        public readonly object Position;
+        public readonly TextSpan[] TextSpans;
+
+        public LineSpan(object position, params TextSpan[] textSpans)
+        {
+            this.Position = position;
+            this.TextSpans = textSpans;
         }
     }
 }

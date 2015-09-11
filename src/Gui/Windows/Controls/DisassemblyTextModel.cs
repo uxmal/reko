@@ -50,9 +50,14 @@ namespace Reko.Gui.Windows.Controls
         public object EndPosition { get { return program.ImageMap.MapLinearAddressToAddress((ulong)((long)program.Image.BaseAddress.ToLinear() + program.Image.Bytes.LongLength)); } }
         public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
 
-        public TextSpan[][] GetLineSpans(int count)
+        public int ComparePositions(object a, object b)
         {
-            var lines = new List<TextSpan[]>();
+            return ((Address)a).CompareTo((Address)b);
+        }
+
+        public LineSpan[] GetLineSpans(int count)
+        {
+            var lines = new List<LineSpan>();
             if (program.Architecture != null)
             {
                 var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
@@ -65,7 +70,7 @@ namespace Reko.Gui.Windows.Controls
                     var dfmt = new DisassemblyFormatter(program, line);
                     dasm.Current.Render(dfmt);
                     dfmt.NewLine();
-                    lines.Add(line.ToArray());
+                    lines.Add(new LineSpan(addr, line.ToArray()));
                     --count;
                 }
             }
@@ -91,7 +96,7 @@ namespace Reko.Gui.Windows.Controls
             return sb.ToString();
         }
 
-        public void MoveTo(object basePosition, int offset)
+        public void MoveToLine(object basePosition, int offset)
         {
             var addr = (Address)basePosition;
             var image = program.Image;
