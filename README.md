@@ -19,6 +19,13 @@ decompiler only if you have legal rights to decompiler the binary
 (for instance if the binary is your own.) 
 
 ## Hacking
+You should be able to build reko by simply cloning https://github.com/uxmal/reko
+and opening the `reko-decompiler.sln` solution file with Visual 
+Studio 2012 or later, or MonoDevelop. All external dependencies 
+are included in the `external` directory. **Note:** please let us 
+know if you are not able to compile, so we can fix the issue for 
+you.
+
 If you're interesting in contributing code, see the 
 [road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
 The [Wiki](https://github.com/uxmal/reko/wiki) has more information 
