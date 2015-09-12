@@ -58,6 +58,7 @@ namespace Reko.Gui.Windows
             this.codeView.CurrentAddressChanged += codeView_CurrentAddressChanged;
             this.codeView.ProcedureName.LostFocus += ProcedureName_LostFocus;
             this.codeView.ProcedureDeclaration.TextChanged += ProcedureDeclaration_TextChanged;
+            this.codeView.ProcedureDeclaration.LostFocus += ProcedureDeclaration_LostFocus;
 
             this.TextView.Font = new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
@@ -102,18 +103,25 @@ namespace Reko.Gui.Windows
             if (codeView == null || proc == null)
                 return;
 
+            if (this.proc != null)
+                this.proc.NameChanged -= Procedure_NameChanged;
             this.ignoreEvents = true;
             this.proc = proc;
+            SetTextView(proc);
+            this.codeView.ProcedureName.Text = proc.Name;
+            this.proc.NameChanged += Procedure_NameChanged;
+            // Navigate 
+            this.codeView.CurrentAddress = proc;
+            ignoreEvents = false;
+        }
+
+        private void SetTextView(Procedure proc)
+        {
             var tsf = new TextSpanFormatter();
             var fmt = new AbsynCodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
             this.TextView.Model = tsf.GetModel();
-            this.codeView.ProcedureName.Text = proc.Name;
-
-            // Navigate 
-            this.codeView.CurrentAddress = proc;
-            ignoreEvents = false;
         }
 
         void textView_Navigate(object sender, EditorNavigationArgs e)
@@ -188,7 +196,9 @@ namespace Reko.Gui.Windows
 
         private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
         {
-            var lexer = new Core.CLanguage.CLexer(new StringReader(codeView.ProcedureDeclaration.Text));
+            // save the user a keystroke.
+            var procdeclaration = codeView.ProcedureDeclaration.Text + ";";
+            var lexer = new Core.CLanguage.CLexer(new StringReader(procdeclaration));
             var cstate = new Core.CLanguage.ParserState();
             var cParser = new Core.CLanguage.CParser(cstate, lexer);
             try
@@ -198,8 +208,19 @@ namespace Reko.Gui.Windows
             }
             catch
             {
+                // If parser failed, show error;
                 codeView.ProcedureDeclaration.ForeColor = Color.Red;
             }
+        }
+
+        private void ProcedureDeclaration_LostFocus(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Procedure_NameChanged(object sender, EventArgs e)
+        {
+            SetTextView(proc);
         }
     }
 }

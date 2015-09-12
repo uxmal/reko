@@ -47,9 +47,10 @@ namespace Reko.Gui.Design
             this.Address = address;
             if (userProc != null && !string.IsNullOrEmpty(userProc.Name))
                 this.name = userProc.Name;
-            else
+            else if (procedure != null)
                 this.name = procedure.Name;
-            procedure.NameChanged += procedure_NameChanged;
+            if (procedure != null)
+                procedure.NameChanged += procedure_NameChanged;
         }
 
         public Address Address { get; set; }
