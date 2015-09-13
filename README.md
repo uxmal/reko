@@ -33,6 +33,11 @@ about the Reko project's internal workings.
 
 ## Recent versions
 
+### Version 0.5.3.0
+* Support for the MIPS architecture, and MIPS support in the 
+  PE and ELF image format
+* TextViewer now supports free selection of text.
+
 ### Version 0.5.2.0
 * New structural analysis inspired by "Native x86 Decompilation Using 
   Semantics-Preserving Structural Analysis and Iterative Control-Flow 
