@@ -164,8 +164,8 @@ namespace Reko.Arch.Mips
                 case Opcode.mtlo: RewriteMt(instr, Registers.lo); break;
                 case Opcode.movn:
                 case Opcode.movz:
-                case Opcode.mult:
-                case Opcode.multu:
+                case Opcode.mult: RewriteMul(instr, emitter.SMul, PrimitiveType.Int64); break;
+                case Opcode.multu: RewriteMul(instr, emitter.UMul, PrimitiveType.UInt64); break;
                     goto default;
                 case Opcode.nop:
                     break;

@@ -304,5 +304,13 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r8 = hi");
         }
+
+        [Test]
+        public void MipsRw_mul()
+        {
+            AssertCode(0x02F00018, // mult s7,s0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|hi_lo = r23 *s r16");
+        }
     }
 }
