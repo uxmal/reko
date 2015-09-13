@@ -95,7 +95,7 @@ namespace Reko.Gui.Windows
         #endregion
 
         /// <summary>
-        /// Displace the procedure <paramref name="proc"/> in the code window.
+        /// Display the procedure <paramref name="proc"/> in the code window.
         /// </summary>
         /// <param name="proc"></param>
         public void DisplayProcedure(Procedure proc)
@@ -215,7 +215,6 @@ namespace Reko.Gui.Windows
 
         private void ProcedureDeclaration_LostFocus(object sender, EventArgs e)
         {
-
         }
 
         private void Procedure_NameChanged(object sender, EventArgs e)
