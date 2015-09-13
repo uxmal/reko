@@ -106,8 +106,7 @@ namespace Reko.Arch.Mips
                     RewriteBranch(instr, Operator.Ne, false); break;
                 case Opcode.bnel:
                     RewriteBranch(instr, Operator.Ne, true); break;
-                case Opcode.@break:
-                    this.host.EnsurePseudoProcedure("__break", VoidType.Instance, 0); break;
+                case Opcode.@break: RewriteBreak(instr); break;
                 case Opcode.dadd:
                 case Opcode.daddi:
                     RewriteAdd(instr, PrimitiveType.Word64); break;

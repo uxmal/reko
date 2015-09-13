@@ -153,6 +153,10 @@ namespace Reko.Analysis
         public void ProcessBlock(Block block)
         {
             visited.Add(block);
+            if (block.Name.EndsWith("21760") ||   //$DEBUG
+                //block.Name.EndsWith("215F8") ||
+                false)
+                block.Name.ToString();
             StartProcessingBlock(block);
             try
             {

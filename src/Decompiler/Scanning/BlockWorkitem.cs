@@ -251,8 +251,11 @@ namespace Reko.Scanning
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
 
-            if ((b.Class & RtlClass.Delay) != 0)
+            if ((b.Class & RtlClass.Delay) != 0 &&
+                ricDelayed.Instructions.Count > 0)
             {
+                // Introduce stubs for the delay slot, but only
+                // if the delay slot isn't empty.
                 var blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
                 var blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
                 blockDsF.IsSynthesized = true;

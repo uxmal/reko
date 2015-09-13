@@ -34,6 +34,15 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
+        private void RewriteBreak(MipsInstruction instr)
+        {
+            emitter.SideEffect(
+                PseudoProc(
+                    "__break",
+                    VoidType.Instance,
+                    this.RewriteOperand(instr.op1)));
+        }
+
         private void RewriteMfc0(MipsInstruction instr)
         {
             var cpregFrom = ((RegisterOperand)instr.op2).Register;
