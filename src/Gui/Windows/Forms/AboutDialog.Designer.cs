@@ -72,10 +72,10 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(61, 139);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(130, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(153, 13);
             this.linkLabel1.TabIndex = 3;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "https://github/uxmal/reko";
+            this.linkLabel1.Text = "https://github.com/uxmal/reko";
             // 
             // btnOK
             // 
