@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
@@ -102,6 +103,18 @@ namespace Reko.Arch.Mips
             var opDst = RewriteOperand(instr.op1);
             var opSrc = RewriteOperand(instr.op2);
             emitter.Assign(opDst, PseudoProc("__lwr", PrimitiveType.Word32, opSrc));
+        }
+
+        private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
+        {
+            var opDst = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, frame.EnsureRegister(reg));
+        }
+
+        private void RewriteMt(MipsInstruction instr, RegisterStorage reg)
+        {
+            var opSrc = RewriteOperand(instr.op1);
+            emitter.Assign(frame.EnsureRegister(reg), opSrc);
         }
 
         private void RewriteNor(MipsInstruction instr)
