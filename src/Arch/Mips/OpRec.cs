@@ -67,6 +67,7 @@ namespace Reko.Arch.Mips
                 return instr;
         }
     }
+
     class SpecialOpRec : OpRec
     {
         private static OpRec[] specialOpRecs = new OpRec[] 
@@ -91,9 +92,9 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.sync, ""), 
             // 10
             new AOpRec(Opcode.mfhi, "R3"),
-            new AOpRec(Opcode.mthi, "R3"),
+            new AOpRec(Opcode.mthi, "R1"),
             new AOpRec(Opcode.mflo, "R3"),
-            new AOpRec(Opcode.mtlo, "R3"),
+            new AOpRec(Opcode.mtlo, "R1"),
             new AOpRec(Opcode.dsllv, "R3,R2,R1"),
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.dsrlv, "R3,R2,R1"),
@@ -203,7 +204,6 @@ namespace Reko.Arch.Mips
             var opcode = opcodes[(wInstr >> 16) & 0x1F];
             return dasm.DecodeOperands(opcode, wInstr, "R1,j");
         }
-
     }
 
     internal class CoprocessorOpRec : OpRec

@@ -106,7 +106,9 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem9[0x00010008:word32] = Mem0[fp + 0x00000004:word32] + Mem0[fp + 0x00000008:word32]
+	word32 r1_5 = dwArg04 + dwArg08
+	Mem6[0x00010008:word32] = r1_5
+	r63_1 = fp
 	return
 	// succ:  test_exit
 test_exit:

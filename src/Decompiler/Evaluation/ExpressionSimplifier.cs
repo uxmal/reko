@@ -95,7 +95,6 @@ namespace Reko.Evaluation
                    op == Operator.Ule || op == Operator.Ult;
         }
 
-
         public static Constant SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r)
         {
             var lType = (PrimitiveType)l.DataType;

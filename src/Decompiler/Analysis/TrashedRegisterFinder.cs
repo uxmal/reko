@@ -120,13 +120,30 @@ namespace Reko.Analysis
             foreach (var proc in procedures)
             {
                 SetInitialValueOfStackPointer(proc);
-                foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
+                var blocks = new DfsIterator<Block>(proc.ControlGraph).PreOrder().ToList();
+                foreach (var block in blocks)
                 {
                     RewriteBlock(block);
                 }
             }
         }
 
+        /// <summary>
+        /// Sets the initial value of the processor's stack pointer register to 
+        /// the virtual register 'fp':
+        ///     sp = fp
+        /// The intent of this is to propagate fp into all expressions using sp,
+        /// so that, for instance, the x86 sequence
+        ///     push ebp
+        ///     mov ebp,esp
+        ///     mov eax,[ebp+8]
+        /// can be translated to
+        ///     esp = fp
+        ///     Mem[fp - 4] = esp ; original sp
+        ///     ebp = fp - 4
+        ///     eax = Mem[fp + 4]
+        /// </summary>
+        /// <param name="proc"></param>
         private void SetInitialValueOfStackPointer(Procedure proc)
         {
             Debug.Print("SetInitialValueSP: {0}", proc.Name);

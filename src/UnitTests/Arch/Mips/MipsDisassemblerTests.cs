@@ -321,13 +321,13 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mtofromhilo()
         {
-            var instr = DisassembleBits("000000 00000 01010 00000 00000 010000");
+            var instr = DisassembleBits("000000 00000 00000 01010 00000 010000");
             Assert.AreEqual("mfhi\tr10", instr.ToString());
-            instr = DisassembleBits("000000 00000 01010 00000 00000 010010");
+            instr = DisassembleBits("000000 00000 00000 01010 00000 010010");
             Assert.AreEqual("mflo\tr10", instr.ToString());
-            instr = DisassembleBits("000000 00000 01010 00000 00000 010001");
+            instr = DisassembleBits("000000 01010 00000 00000 00000 010001");
             Assert.AreEqual("mthi\tr10", instr.ToString());
-            instr = DisassembleBits("000000 00000 01010 00000 00000 010011");
+            instr = DisassembleBits("000000 01010 00000 00000 00000 010011");
             Assert.AreEqual("mtlo\tr10", instr.ToString());
         }
 
