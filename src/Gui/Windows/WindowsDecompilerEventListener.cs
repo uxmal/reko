@@ -206,14 +206,14 @@ namespace Reko.Gui.Windows
             return new AddressNavigator(program, addr, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateBlockNavigator(Block block)
+        ICodeLocation DecompilerEventListener.CreateBlockNavigator(Program program, Block block)
         {
-            return new BlockNavigator(block, sp);
+            return new BlockNavigator(program, block, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateProcedureNavigator(Procedure proc)
+        ICodeLocation DecompilerEventListener.CreateProcedureNavigator(Program program, Procedure proc)
         {
-            return new ProcedureNavigator(proc, sp);
+            return new ProcedureNavigator(program, proc, sp);
         }
 
         private void ShowStatus(string newStatus)

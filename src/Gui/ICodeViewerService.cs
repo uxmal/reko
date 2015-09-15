@@ -28,6 +28,6 @@ namespace Reko.Gui
     // Service for presenting intermediate code.
     public interface ICodeViewerService
     {
-        void DisplayProcedure(Procedure proc);
+        void DisplayProcedure(Program program, Procedure proc);
     }
 }

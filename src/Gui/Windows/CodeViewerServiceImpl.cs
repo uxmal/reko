@@ -37,12 +37,12 @@ namespace Reko.Gui.Windows
             pane = new CodeViewerPane();
         }
 
-        public void DisplayProcedure(Procedure proc)
+        public void DisplayProcedure(Program program, Procedure proc)
         {
             if (proc == null)
                 return;
             ShowWindow("codeViewerWindow", "Code Viewer", pane);
-            pane.DisplayProcedure(proc);
+            pane.DisplayProcedure(program, proc);
         }
     }
 }

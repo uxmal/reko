@@ -34,12 +34,12 @@ namespace Reko.CmdLine
             return new NullCodeLocation(address.ToString());
         }
 
-        public ICodeLocation CreateProcedureNavigator(Procedure proc)
+        public ICodeLocation CreateProcedureNavigator(Program program, Procedure proc)
         {
             return new NullCodeLocation(proc.Name);
         }
 
-        public ICodeLocation CreateBlockNavigator(Block block)
+        public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
             return new NullCodeLocation(block.Name);
         }

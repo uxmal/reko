@@ -71,7 +71,7 @@ namespace Reko.Gui.Design
 
         public override void DoDefaultAction()
         {
-            Services.RequireService<ICodeViewerService>().DisplayProcedure(procedure);
+            Services.RequireService<ICodeViewerService>().DisplayProcedure(program, procedure);
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

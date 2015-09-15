@@ -32,18 +32,19 @@ namespace Reko.UnitTests.Gui
     [TestFixture]
     public class CodeLocationTests
     {
-        MockRepository mr;
+        private MockRepository mr;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            this.program = new Program();
         }
 
         [Test]
         public void NavigateToAddress()
         {
-            var program = new Program();
             var project = new Project { Programs = { program } };
             var memSvc = mr.DynamicMock<ILowLevelViewService>();
             var decSvc = mr.DynamicMock<IDecompilerService>();
@@ -71,12 +72,13 @@ namespace Reko.UnitTests.Gui
 
             var codeSvc = mr.DynamicMock<ICodeViewerService>();
             codeSvc.Expect(x => x.DisplayProcedure(
+                Arg<Program>.Is.Same(program),
                 Arg<Procedure>.Is.Same(proc)));
             mr.ReplayAll();
 
             var sc = new ServiceContainer();
             sc.AddService<ICodeViewerService>(codeSvc);
-            var nav = new ProcedureNavigator(proc, sc);
+            var nav = new ProcedureNavigator(program, proc, sc);
             nav.NavigateTo();
             mr.VerifyAll();
         }
@@ -89,12 +91,13 @@ namespace Reko.UnitTests.Gui
 
             var codeSvc = mr.DynamicMock<ICodeViewerService>();
             codeSvc.Expect(x => x.DisplayProcedure(
+                Arg<Program>.Is.Same(program),
                 Arg<Procedure>.Is.Same(proc)));
             mr.ReplayAll();
 
             var sc = new ServiceContainer();
             sc.AddService<ICodeViewerService>(codeSvc);
-            var nav = new BlockNavigator(block, sc);
+            var nav = new BlockNavigator(program, block, sc);
             nav.NavigateTo();
             mr.VerifyAll();
         }

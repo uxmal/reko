@@ -37,12 +37,14 @@ namespace Reko.UnitTests.Gui.Design
     {
         private MockRepository mr;
         private IServiceProvider services;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
             this.services = mr.StrictMock<IServiceProvider>();
+            this.program = new Program();
         }
 
         private void Given_Service<T>(T svc)
@@ -54,11 +56,11 @@ namespace Reko.UnitTests.Gui.Design
         public void ProcDesigner_DefaultAction_ShowProcedure()
         {
             var proc = new Procedure("foo", new Frame(PrimitiveType.Pointer32));
-            var des = new ProcedureDesigner(new Program(), proc, null, Address.Ptr32(0x001100000));
+            var des = new ProcedureDesigner(program, proc, null, Address.Ptr32(0x001100000));
             des.Services = services;
             var codeSvc = mr.StrictMock<ICodeViewerService>();
             Given_Service<ICodeViewerService>(codeSvc);
-            codeSvc.Expect(c => c.DisplayProcedure(proc));
+            codeSvc.Expect(c => c.DisplayProcedure(program, proc));
             mr.ReplayAll();
 
             des.DoDefaultAction();

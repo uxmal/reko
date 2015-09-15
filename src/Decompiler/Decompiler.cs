@@ -460,7 +460,6 @@ namespace Reko
             foreach (var program in project.Programs)
             {
                 int i = 0;
-
                 foreach (Procedure proc in program.Procedures.Values)
                 {
                     try
@@ -474,7 +473,7 @@ namespace Reko
                     catch (Exception e)
                     {
                         eventListener.Error(
-                            eventListener.CreateProcedureNavigator(proc),
+                            eventListener.CreateProcedureNavigator(program, proc),
                             e,
                             "An error occurred while rewriting procedure to high-level language.");
                     }

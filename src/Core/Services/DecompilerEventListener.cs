@@ -29,8 +29,8 @@ namespace Reko.Core.Services
     public interface DecompilerEventListener
     {
         ICodeLocation CreateAddressNavigator(Program program, Address address);
-        ICodeLocation CreateProcedureNavigator(Procedure proc);
-        ICodeLocation CreateBlockNavigator(Block block);
+        ICodeLocation CreateProcedureNavigator(Program program, Procedure proc);
+        ICodeLocation CreateBlockNavigator(Program program, Block block);
         void Warn(ICodeLocation location, string message);
         void Error(ICodeLocation location, string message);
         void Error(ICodeLocation location, Exception ex, string message);
@@ -82,12 +82,12 @@ namespace Reko.Core.Services
             return new NullCodeLocation(address.ToString());
         }
 
-        public ICodeLocation CreateProcedureNavigator(Procedure proc)
+        public ICodeLocation CreateProcedureNavigator(Program program, Procedure proc)
         {
             return new NullCodeLocation(proc.Name);
         }
 
-        public ICodeLocation CreateBlockNavigator(Block block)
+        public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
             return new NullCodeLocation(block.Name);
         }

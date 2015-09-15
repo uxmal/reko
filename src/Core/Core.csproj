@@ -163,6 +163,7 @@
     <Compile Include="CLanguage\LookaheadLexer.cs" />
     <Compile Include="CLanguage\NamedDataType.cs" />
     <Compile Include="CLanguage\NameExtractor.cs" />
+    <Compile Include="CLanguage\ParseResult.cs" />
     <Compile Include="CLanguage\ParserState.cs" />
     <Compile Include="CLanguage\SerializedTypeComparer.cs" />
     <Compile Include="CLanguage\TypeSizer.cs" />

@@ -163,6 +163,7 @@ namespace Reko.Core.Serialization
         /// </summary>
         [XmlElement("assume")]
         public RegisterValue_v2[] Assume;
+        public string CSignature;
     }
 
     public class RegisterValue_v2

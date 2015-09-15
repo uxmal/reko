@@ -69,10 +69,6 @@ namespace Reko.Core.CLanguage
         }
     }
 
-    public class ExternalDecl : Decl
-    {
-    }
-
     public class FunctionDecl : Decl
     {
         public Decl Signature;

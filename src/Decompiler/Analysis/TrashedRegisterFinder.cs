@@ -45,7 +45,7 @@ namespace Reko.Analysis
     //$TODO: bugger. Can use a queue here, but must use depth-first search.
     public class TrashedRegisterFinder : InstructionVisitor<Instruction>
     {
-        private Program prog;
+        private Program program;
         private IEnumerable<Procedure> procedures;
         private ProgramDataFlow flow;
         private BlockFlow bf;
@@ -62,7 +62,7 @@ namespace Reko.Analysis
             ProgramDataFlow flow,
             DecompilerEventListener eventListener)
         {
-            this.prog = prog;
+            this.program = prog;
             this.procedures = procedures;
             this.flow = flow;
             this.eventListener = eventListener ?? NullDecompilerEventListener.Instance;
@@ -82,7 +82,7 @@ namespace Reko.Analysis
                 var pf = flow[proc];
                 foreach (int r in pf.TrashedRegisters)
                 {
-                    prog.Architecture.GetRegister(r).SetAliases(pf.TrashedRegisters, true);
+                    program.Architecture.GetRegister(r).SetAliases(pf.TrashedRegisters, true);
                 }
             }
         }
@@ -148,7 +148,7 @@ namespace Reko.Analysis
         {
             Debug.Print("SetInitialValueSP: {0}", proc.Name);
             flow[proc.EntryBlock].SymbolicIn.SetValue(
-                proc.Frame.EnsureRegister(prog.Architecture.StackRegister),
+                proc.Frame.EnsureRegister(program.Architecture.StackRegister),
                 proc.Frame.FramePointer);
         }
 
@@ -181,7 +181,7 @@ namespace Reko.Analysis
             } catch (Exception ex)
             {
                 eventListener.Error(
-                    eventListener.CreateBlockNavigator(block),
+                    eventListener.CreateBlockNavigator(program, block),
                     ex,
                     "Error while analyzing trashed registers.");
             }
@@ -198,7 +198,7 @@ namespace Reko.Analysis
         public void RewriteBlock(Block block)
         {
             StartProcessingBlock(block);
-            var propagator = new ExpressionPropagator(prog.Architecture, se.Simplifier, ctx, flow);
+            var propagator = new ExpressionPropagator(program.Architecture, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)
             {
                 try
@@ -218,7 +218,7 @@ namespace Reko.Analysis
                 }
                 catch (Exception ex)
                 {
-                    var location = eventListener.CreateBlockNavigator(block);
+                    var location = eventListener.CreateBlockNavigator(program, block);
                     eventListener.Error(
                         location,
                         ex,
@@ -233,7 +233,7 @@ namespace Reko.Analysis
             EnsureEvaluationContext(bf);
             if (block.Procedure.EntryBlock == block)
             {
-                var sp = block.Procedure.Frame.EnsureRegister(prog.Architecture.StackRegister);
+                var sp = block.Procedure.Frame.EnsureRegister(program.Architecture.StackRegister);
                 bf.SymbolicIn.RegisterState[sp.Storage] = block.Procedure.Frame.FramePointer;
             }
             ctx.TrashedFlags = bf.grfTrashedIn;
@@ -248,11 +248,11 @@ namespace Reko.Analysis
 
         public void PropagateToProcedureSummary(Procedure proc)
         {
-            var prop = new TrashedRegisterSummarizer(prog.Architecture, proc, flow[proc], ctx);
+            var prop = new TrashedRegisterSummarizer(program.Architecture, proc, flow[proc], ctx);
             bool changed = prop.PropagateToProcedureSummary();
             if (changed)
             {
-                foreach (Statement stm in prog.CallGraph.CallerStatements(proc))
+                foreach (Statement stm in program.CallGraph.CallerStatements(proc))
                 {
                     if (visited.Contains(stm.Block))
                         worklist.Add(stm.Block);

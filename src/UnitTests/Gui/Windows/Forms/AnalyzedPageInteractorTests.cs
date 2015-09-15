@@ -113,7 +113,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             form.Show();
-            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
+            program.Procedures.Add(
+                Address.Ptr32(0x12345), 
+                Procedure.Create("foo", Address.Ptr32(0x12345), program.Architecture.CreateFrame()));
             interactor.EnterPage();
 
             mr.VerifyAll();
@@ -128,6 +130,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Anpi_SelectProcedure()
         {
             codeViewSvc.Stub(s => s.DisplayProcedure(
+                Arg<Program>.Is.Anything,
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
             mr.ReplayAll();
 

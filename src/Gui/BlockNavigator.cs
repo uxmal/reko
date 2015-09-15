@@ -32,9 +32,11 @@ namespace Reko.Gui
     public class BlockNavigator : ICodeLocation
     {
         private IServiceProvider sp;
+        private Program program;
 
-        public BlockNavigator(Block block, IServiceProvider sp)
+        public BlockNavigator(Program program, Block block, IServiceProvider sp)
         {
+            this.program = program;
             this.Block = block;
             this.sp = sp;
         }
@@ -52,7 +54,7 @@ namespace Reko.Gui
         {
             var codeSvc = sp.GetService<ICodeViewerService>();
             if (codeSvc != null)
-                codeSvc.DisplayProcedure(Block.Procedure);
+                codeSvc.DisplayProcedure(program, Block.Procedure);
         }
 
         #endregion

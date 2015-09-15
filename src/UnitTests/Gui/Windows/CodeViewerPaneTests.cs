@@ -47,11 +47,13 @@ namespace Reko.UnitTests.Gui.Windows
         private IUiPreferencesService uiPreferencesSvc;
         private IDecompilerShellUiService uiSvc;
         private Font font;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            program = new Program();
             codeViewer = new CodeViewerPane();
             decompilerSvc = mr.Stub<IDecompilerService>();
             decompiler = mr.Stub<IDecompiler>();
@@ -124,11 +126,11 @@ namespace Reko.UnitTests.Gui.Windows
 
             using (mr.Record())
             {
-                var project = new Project { Programs = { new Program() } };
+                var project = new Project { Programs = { program } };
                 decompiler.Stub(d => d.Project).Return(project);
             }
 
-            codeViewer.DisplayProcedure(m.Procedure);
+            codeViewer.DisplayProcedure(this.program, m.Procedure);
 
             string sExp =
                 "void ProcedureBuilder()" + nl +

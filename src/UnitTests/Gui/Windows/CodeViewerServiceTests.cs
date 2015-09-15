@@ -35,11 +35,13 @@ namespace Reko.UnitTests.Gui.Windows
     public class CodeViewerServiceTests
     {
         private ServiceContainer sc;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             sc = new ServiceContainer();
+            this.program = new Program();
         }
 
         [Test]
@@ -60,7 +62,7 @@ namespace Reko.UnitTests.Gui.Windows
             var m = new ProcedureBuilder();
             m.Return();
             var codeViewerSvc = new CodeViewerServiceImpl(sc);
-            codeViewerSvc.DisplayProcedure(m.Procedure);
+            codeViewerSvc.DisplayProcedure(program, m.Procedure);
 
             uiSvc.VerifyAllExpectations();
         }

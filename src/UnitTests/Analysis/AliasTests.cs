@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            proc = new Procedure("foo", arch.CreateFrame());
+            proc = Procedure.Create("foo", Address.Ptr32(0x100), arch.CreateFrame());
             alias = new Aliases(proc, arch);
         }
 

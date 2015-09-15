@@ -47,7 +47,9 @@ namespace Reko.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			throw new NotImplementedException();
+            return c1.ToInt32() > c2.ToInt32()
+                ? Constant.True()
+                : Constant.False();
 		}
 
 		public override string ToString()
