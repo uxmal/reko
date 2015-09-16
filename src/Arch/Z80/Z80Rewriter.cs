@@ -78,10 +78,10 @@ namespace Reko.Arch.Z80
                     RewriteOp(dasm.Current.Op1),
                     RewriteOp(dasm.Current.Op2));
                     break;
-                    case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
-                    case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
-                    case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
-                    case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
+                case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
+                case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
+                case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
                 case Opcode.ldir: RewriteBlockInstruction(); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.or: RewriteOr(); break;

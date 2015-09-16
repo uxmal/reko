@@ -63,6 +63,7 @@
     <Compile Include="ExePackLoader.cs" />
     <Compile Include="LzExeUnpacker.cs" />
     <Compile Include="MsdosImageLoader.cs" />
+    <Compile Include="NeImageLoader.cs" />
     <Compile Include="PeImageLoader.cs" />
     <Compile Include="PkLiteUnpacker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

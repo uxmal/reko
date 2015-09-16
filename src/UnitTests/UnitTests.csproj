@@ -212,6 +212,7 @@
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />
     <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
+    <Compile Include="ImageLoaders\MzExe\NeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
     <Compile Include="Environments\Win32\MsMangledNameParserTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />

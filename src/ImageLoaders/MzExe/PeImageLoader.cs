@@ -750,6 +750,5 @@ namespace Reko.ImageLoaders.MzExe
             }
             return functionStarts;
         }
-
     }
 }

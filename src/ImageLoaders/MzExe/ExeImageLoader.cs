@@ -123,7 +123,8 @@ namespace Reko.ImageLoaders.MzExe
             else if (IsNewExecutable)
             {
                 // http://support.microsoft.com/kb/65122
-                throw new NotImplementedException("NE executable loading not implemented.");
+                var neLdr = new NeImageLoader(services, Filename, base.RawImage, e_lfanew);
+                return neLdr;
             }
             else
             {

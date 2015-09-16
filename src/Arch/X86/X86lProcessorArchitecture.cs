@@ -236,6 +236,14 @@ namespace Reko.Arch.X86
         }
     }
 
+    public class X86ArchitectureProtected16 : IntelArchitecture
+    {
+        public X86ArchitectureProtected16()
+            : base(ProcessorMode.ProtectedSegmented)
+        {
+        }
+    }
+
     public class X86ArchitectureFlat32 : IntelArchitecture
     {
         public X86ArchitectureFlat32()

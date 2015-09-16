@@ -62,7 +62,12 @@ namespace Reko.Core
         {
             return new SegAddress32(seg, (ushort)off);
         }
-        
+
+        public static Address ProtectedSegPtr(ushort seg, uint off)
+        {
+            return new ProtectedSegmentedAddress(seg, (ushort)off);
+        }
+
         public static Address FromConstant(Constant value)
         {
             switch (value.DataType.BitSize)
@@ -385,7 +390,65 @@ namespace Reko.Core
         {
             return string.Format("{0:X4}:{1:X4}", uSegment, uOffset);
         }
+    }
 
+    public class ProtectedSegmentedAddress : Address
+    {
+        private ushort uSegment;
+        private ushort uOffset;
+
+        public ProtectedSegmentedAddress(ushort segment, ushort offset)
+            : base(PrimitiveType.SegPtr32)
+        {
+            this.uSegment = segment;
+            this.uOffset = offset;
+        }
+
+        public override bool IsNull { get { return uSegment == 0 && uOffset == 0; } }
+        public override ulong Offset { get { return uOffset; } }
+        public override ushort Selector { get { return uSegment; } }
+
+        public override Address Add(long offset)
+        {
+            ushort sel = this.Selector;
+            uint newOff = (uint)(uOffset + offset);
+            if (newOff > 0xFFFF)
+            {
+                sel += 0x1000;
+                newOff &= 0xFFFF;
+            }
+            return new ProtectedSegmentedAddress(sel, (ushort)newOff);
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ProtectedSegmentedAddress(uSegment, uOffset);
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSegment, uOffset, suffix);
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new InvalidOperationException("Returning UInt16 would lose precision.");
+        }
+
+        public override uint ToUInt32()
+        {
+            return (((uint)(uSegment & ~7)) << 12) + uOffset;
+        }
+
+        public override ulong ToLinear()
+        {
+            return (((ulong)(uSegment & ~7)) << 12) + uOffset;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0:X4}:{1:X4}", uSegment, uOffset);
+        }
     }
 
     public class Address64 : Address
