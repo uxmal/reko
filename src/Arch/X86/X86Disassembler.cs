@@ -34,6 +34,7 @@ namespace Reko.Arch.X86
 	/// </summary>
 	public partial class X86Disassembler : DisassemblerBase<IntelInstruction>
 	{
+        private ProcessorMode mode;
         private IntelInstruction instrCur;
 		private PrimitiveType dataWidth;
 		private PrimitiveType addressWidth;
@@ -55,11 +56,13 @@ namespace Reko.Arch.X86
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
 		public X86Disassembler(
+            ProcessorMode mode,
             ImageReader rdr,
             PrimitiveType defaultWordSize,
             PrimitiveType defaultAddressSize,
             bool useRexPrefix)
 		{
+            this.mode = mode;
 			this.rdr = rdr;
 			this.defaultDataWidth = defaultWordSize;
 			this.defaultAddressWidth = defaultAddressSize;
@@ -660,7 +663,7 @@ namespace Reko.Arch.X86
                     ++i;
                     ushort off = rdr.ReadLeUInt16();
                     ushort seg = rdr.ReadLeUInt16();
-                    pOperand = addrOp = new X86AddressOperand(Address.SegPtr(seg, off));
+                    pOperand = addrOp = new X86AddressOperand(mode.CreateSegmentedAddress(seg, off));
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);

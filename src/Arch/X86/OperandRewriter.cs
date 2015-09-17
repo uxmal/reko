@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public abstract class OperandRewriter
     {
-        private readonly IntelArchitecture arch;
+        protected readonly IntelArchitecture arch;
         private readonly Frame frame;
         private readonly IRewriterHost host;
 
@@ -246,7 +246,7 @@ namespace Reko.Arch.X86
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {
-            return Address.SegPtr(address.Selector, imm.Value.ToUInt32());
+            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector, imm.Value.ToUInt32());
         }
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)

@@ -122,13 +122,10 @@ namespace Reko.UnitTests.Arch.Intel
         private FstswChainMatcher GetMatcher()
         {
             Program lr = asm.GetImage();
-            X86Disassembler dasm = new X86Disassembler(
-                lr.Image.CreateLeReader(0),
-                PrimitiveType.Word32,
-                PrimitiveType.Word32,
-                false);
+            var dasm = arch.CreateDisassembler(
+                lr.Image.CreateLeReader(0));
             instrs = new List<IntelInstruction>();
-            return new FstswChainMatcher(dasm.ToArray(), orw);
+            return new FstswChainMatcher(dasm.Cast<IntelInstruction>().ToArray(), orw);
         }
     }
 }

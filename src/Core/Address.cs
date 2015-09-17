@@ -437,12 +437,12 @@ namespace Reko.Core
 
         public override uint ToUInt32()
         {
-            return (((uint)(uSegment & ~7)) << 12) + uOffset;
+            return (((uint)(uSegment & ~7)) << 9) + uOffset;
         }
 
         public override ulong ToLinear()
         {
-            return (((ulong)(uSegment & ~7)) << 12) + uOffset;
+            return (((ulong)(uSegment & ~7)) << 9) + uOffset;
         }
 
         public override string ToString()

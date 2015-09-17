@@ -69,7 +69,7 @@ namespace Reko.Arch.X86
 			Constant c = GetRegister(seg);
 			if (c.IsValid)
 			{
-				return Address.SegPtr((ushort) c.ToUInt32(), offset & 0xFFFF);
+				return arch.ProcessorMode.CreateSegmentedAddress((ushort) c.ToUInt32(), offset & 0xFFFF);
 			}
 			else
 				return null;

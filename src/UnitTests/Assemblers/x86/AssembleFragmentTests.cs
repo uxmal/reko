@@ -72,6 +72,7 @@ namespace Reko.UnitTests.Assemblers.x86
             Program lr = asm.GetImage();
 
             X86Disassembler dasm = new X86Disassembler(
+                ProcessorMode.Real,
                 lr.Image.CreateLeReader(lr.Image.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,

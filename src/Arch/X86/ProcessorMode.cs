@@ -66,6 +66,8 @@ namespace Reko.Arch.X86
 
         public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host);
 
+        public abstract Address CreateSegmentedAddress(ushort seg, uint offset);
+
         public virtual Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             var sp = frame.EnsureRegister(Registers.sp);
@@ -81,13 +83,13 @@ namespace Reko.Arch.X86
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
-                return Address.SegPtr(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
+                return CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
             }
             else
             {
                 ushort off = rdr.ReadLeUInt16();
                 ushort seg = rdr.ReadLeUInt16();
-                return Address.SegPtr(seg, off);
+                return CreateSegmentedAddress(seg, off);
             }
         }
 
@@ -109,12 +111,17 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            return new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
 
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
         {
             return new OperandRewriter16(arch, frame, host);
+        }
+
+        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        {
+            return Address.SegPtr(seg, offset);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -136,7 +143,7 @@ namespace Reko.Arch.X86
                 {
                     try
                     {
-                        addr = Address.SegPtr(
+                        addr = CreateSegmentedAddress(
                             Convert.ToUInt16(txtAddress.Substring(0, c), 16),
                             Convert.ToUInt32(txtAddress.Substring(c + 1), 16));
                         return true;
@@ -158,7 +165,7 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            return new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
 
         public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -169,6 +176,11 @@ namespace Reko.Arch.X86
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
         {
             return new OperandRewriter16(arch, frame, host);
+        }
+
+        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        {
+            return Address.ProtectedSegPtr(seg, offset);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -221,12 +233,17 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
 
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
         {
             return new OperandRewriter32(arch, frame, host);
+        }
+
+        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        {
+            throw new NotSupportedException();
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -276,12 +293,17 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+            return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }
 
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
         {
             return new OperandRewriter64(arch, frame, host);
+        }
+
+        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        {
+            throw new NotSupportedException();
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
