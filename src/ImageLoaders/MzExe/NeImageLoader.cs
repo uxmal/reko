@@ -300,7 +300,6 @@ namespace Reko.ImageLoaders.MzExe
             return ApplyRelocations(rdr, count, seg);
         }
 
-
         public class NeRelocationEntry
         {
             public byte address_type;    // Relocation address type
@@ -314,7 +313,6 @@ namespace Reko.ImageLoaders.MzExe
         bool ApplyRelocations(ImageReader rdr, int cRelocations, NeSegment seg)
         {
             string module = "";
-            int ordinal;
             Address address = null;
             NeRelocationEntry rep = null;
             for (int i = 0; i < cRelocations; i++)

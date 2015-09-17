@@ -94,6 +94,7 @@
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Environments\Win32\WineSpecFileLoaderTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
