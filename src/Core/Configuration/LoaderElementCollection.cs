@@ -41,10 +41,12 @@ namespace Reko.Core.Configuration
         {
             var magic = ((LoaderElement)element).MagicNumber;
             var label = ((LoaderElement)element).Label;
-            if (string.IsNullOrEmpty(magic))
-                return label;
-            else
+            var ext = ((LoaderElement)element).Extension;
+            if (!string.IsNullOrEmpty(magic))
                 return magic;
+            if (!string.IsNullOrEmpty(label))
+                return label;
+            return ext;
         }
     }
 }
