@@ -31,6 +31,8 @@ namespace Reko.Core.Configuration
         string Name { get; }
 
         string Architecture { get; set; }
+
+        string Module { get; set; }
     }
 
     public class TypeLibraryElement : ConfigurationElement, ITypeLibraryElement
@@ -47,6 +49,13 @@ namespace Reko.Core.Configuration
         {
             get { return (string) this["arch"]; }
             set { this["arch"] = value; }
+        }
+
+        [ConfigurationProperty("module", IsRequired = false)]
+        public string Module
+        {
+            get { return (string)this["module"]; }
+            set { this["module"] = value; }
         }
     }
 }

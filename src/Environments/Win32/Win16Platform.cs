@@ -72,17 +72,31 @@ namespace Reko.Environments.Win32
             return null;
         }
 
+        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            EnsureTypeLibraries();
+            foreach (var tl in typelibs.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
+            {
+                SystemService svc;
+                if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
+                {
+                    return new ExternalProcedure(svc.Name, svc.Signature);
+                }
+            }
+            return null;
+        }
+
         public void EnsureTypeLibraries()
         {
             if (typelibs == null)
             {
                 var cfgSvc = Services.RequireService<IConfigurationService>();
-                var envCfg = cfgSvc.GetEnvironment("elf-neutral");
+                var envCfg = cfgSvc.GetEnvironment("win16");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
-                                    .Load(this))
+                                    .Load(this, tl.Module))
                     .Where(tl => tl != null).ToArray();
             }
         }

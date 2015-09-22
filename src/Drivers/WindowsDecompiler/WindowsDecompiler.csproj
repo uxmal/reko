@@ -159,6 +159,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +197,7 @@
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
+    <Message Importance="high" Text="@(DecompilerMetadata)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying ImageLoaders to $(TargetDir)" />
     <Copy SourceFiles="@(ImageLoaders)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

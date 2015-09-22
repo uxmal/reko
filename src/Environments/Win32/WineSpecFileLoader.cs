@@ -34,7 +34,6 @@ namespace Reko.Environments.Win32
     public class WineSpecFileLoader : MetadataLoader
     {
         private string filename;
-        private int idx;
         private Lexer lexer;
         private Token bufferedToken;
         private TypeLibraryLoader tlLoader;
@@ -47,12 +46,18 @@ namespace Reko.Environments.Win32
             var rdr = new StreamReader(new MemoryStream(bytes));
             this.lexer = new Lexer(rdr);
         }
-      
+
         public override TypeLibrary Load(Platform platform)
+        {
+            return Load(platform, DefaultModuleName(filename));
+        }
+
+
+        public TypeLibrary Load(Platform platform, string module)
         {
             this.platform = platform;
             this.tlLoader = new TypeLibraryLoader(platform, true);
-            tlLoader.SetModuleName(DefaultModuleName(filename));
+            tlLoader.SetModuleName(module);
             for (;;)
             {
                 var tok = Peek();
@@ -66,6 +71,7 @@ namespace Reko.Environments.Win32
             return tlLoader.BuildLibrary();
         }
 
+ 
         public void ParseLine()
         {
             var tok = Peek();
@@ -90,39 +96,8 @@ namespace Reko.Environments.Win32
                 var args = new List<Argument_v1>();
                 if (PeekAndDiscard(TokenType.LPAREN))
                 {
-                    while (Peek().Type == TokenType.ID)
-                    {
-                        tok = Get();
-                        switch (tok.Value)
-                        {
-                        case "word":
-                            ssig.StackDelta += 2;
-                            args.Add(new Argument_v1
-                            {
-                                Kind = new StackVariable_v1(),
-                                Type = new PrimitiveType_v1(PrimitiveType.Word16.Domain, 2)
-                            });
-                            break;
-                        case "long":
-                            ssig.StackDelta += 4;
-                            args.Add(new Argument_v1
-                            {
-                                Kind = new StackVariable_v1(),
-                                Type = new PrimitiveType_v1(PrimitiveType.Word32.Domain, 4)
-                            });
-                            break;
-                        case "ptr":
-                        case "str":
-                            ssig.StackDelta += 4;
-                            args.Add(new Argument_v1
-                            {
-                                Kind = new StackVariable_v1(),
-                                Type = new PrimitiveType_v1(Domain.SegPointer, 4)
-                            });
-                            break;
-                        default: throw new Exception("Unknown: " + tok.Value);
-                        }
-                    }
+                    while (LoadParameter(ssig, args))
+                        ;
                     Expect(TokenType.RPAREN);
                 }
                 ssig.Arguments = args.ToArray();
@@ -142,6 +117,49 @@ namespace Reko.Environments.Win32
                 if (type == TokenType.EOF || type == TokenType.NL)
                     return;
             }
+        } 
+
+        private bool LoadParameter(SerializedSignature ssig, List<Argument_v1> args)
+        {
+            if (PeekAndDiscard(TokenType.NUMBER))
+                return true;
+            Token tok = Peek();
+            if (tok.Type != TokenType.ID)
+                return false;
+            Get();
+            switch (tok.Value)
+            {
+            case "word":
+            case "s_word":
+                ssig.StackDelta += 2;
+                args.Add(new Argument_v1
+                {
+                    Kind = new StackVariable_v1(),
+                    Type = new PrimitiveType_v1(PrimitiveType.Word16.Domain, 2)
+                });
+                break;
+            case "long":
+                ssig.StackDelta += 4;
+                args.Add(new Argument_v1
+                {
+                    Kind = new StackVariable_v1(),
+                    Type = new PrimitiveType_v1(PrimitiveType.Word32.Domain, 4)
+                });
+                break;
+            case "segptr":
+            case "segstr":
+            case "ptr":
+            case "str":
+                ssig.StackDelta += 4;
+                args.Add(new Argument_v1
+                {
+                    Kind = new StackVariable_v1(),
+                    Type = new PrimitiveType_v1(Domain.SegPointer, 4)
+                });
+                break;
+            default: throw new Exception("Unknown: " + tok.Value);
+            }
+            return true;
         }
 
         private string DefaultModuleName(string filename)
@@ -214,7 +232,7 @@ namespace Reko.Environments.Win32
                         case ' ': rdr.Read(); break;
                         case '\t': rdr.Read(); break;
                         case '\r': rdr.Read(); break;
-                        case '\n': rdr.Read(); return Tok(TokenType.NL);
+                        case '\n': rdr.Read(); ++lineNumber; return Tok(TokenType.NL);
                         case '#': rdr.Read(); st = State.Comment; break;
                         case '@': rdr.Read(); return Tok(TokenType.AT);
                         case '-': rdr.Read(); return Tok(TokenType.MINUS);
