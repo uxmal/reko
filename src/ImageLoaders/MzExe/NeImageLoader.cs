@@ -55,8 +55,11 @@ namespace Reko.ImageLoaders.MzExe
         private IDiagnosticsService diags;
         private uint lfaNew;
         private ushort offImportedNamesTable;
+        private ushort offEntryTable;
         private Address addrImportStubs;
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
+        private IProcessorArchitecture arch;
+        private ushort offResidentNameTable;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
@@ -86,7 +89,6 @@ namespace Reko.ImageLoaders.MzExe
             ushort linker;
             if (!rdr.TryReadLeUInt16(out linker))
                 return false;
-            ushort offEntryTable;
             if (!rdr.TryReadLeUInt16(out offEntryTable))
                 return false;
             ushort cbEntryTable;
@@ -130,7 +132,6 @@ namespace Reko.ImageLoaders.MzExe
             ushort offRsrcTable;
             if (!rdr.TryReadUInt16(out offRsrcTable))
                 return false;
-            ushort offResidentNameTable;
             if (!rdr.TryReadUInt16(out offResidentNameTable))
                 return false;
             ushort offModuleReferenceTable;
@@ -177,7 +178,7 @@ namespace Reko.ImageLoaders.MzExe
         public override Program Load(Address addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("x86-protected-16");
+            this.arch = cfgSvc.GetArchitecture("x86-protected-16");
             var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
 
             var program = new Program(
@@ -194,10 +195,62 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
+            var entryNames = LoadEntryNames();
+            var entryPoints = LoadEntryPoints(entryNames);
             return new RelocationResults(
-                new List<EntryPoint>(),
+                entryPoints,
                 new RelocationDictionary(),
                 new List<Address>());
+        }
+
+        public Dictionary<int, string> LoadEntryNames()
+        {
+            var rdr = new LeImageReader(RawImage, this.lfaNew + this.offResidentNameTable);
+            var dict = new Dictionary<int, string>();
+            for (;;)
+            {
+                var cChar = rdr.ReadByte();
+                if (cChar == 0)
+                    break;
+                var abName = rdr.ReadBytes(cChar);
+                var name = Encoding.ASCII.GetString(abName);
+                int ordinal = rdr.ReadLeInt16();
+                dict[ordinal] = name;
+            }
+            return dict;
+        }
+
+        public List<EntryPoint> LoadEntryPoints(Dictionary<int, string> names)
+        {
+            var rdr = new LeImageReader(RawImage, this.lfaNew + this.offEntryTable);
+            var entries = new List<EntryPoint>();
+            for (;;)
+            {
+                var cEntries = rdr.ReadByte();
+                if (cEntries == 0)
+                    break;
+                var segNum = rdr.ReadByte();
+                var seg = this.segments[segNum - 1];
+                for (int i = 0; i < cEntries; ++i)
+                {
+                    var flags = rdr.ReadByte();
+                    var offset = rdr.ReadUInt16();
+                    string name;
+                    var addr = seg.Address + offset;
+                    var state = arch.CreateProcessorState();
+                    EntryPoint ep;
+                    if (names.TryGetValue(entries.Count, out name))
+                    {
+                        ep = new EntryPoint(addr, name, state);
+                    }
+                    else
+                    {
+                        ep = new EntryPoint(addr, state);
+                    }
+                    entries.Add(ep);
+                }
+            }
+            return entries; 
         }
 
         public class NeSegment

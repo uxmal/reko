@@ -61,8 +61,38 @@ namespace Reko.UnitTests.Environments.Win32
             var svc = lib.ServicesByVector[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
-                "void ()(Stack word32 arg0, Stack word32 arg4)\r\n// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word32 arg0, Stack word32 arg4)\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 svc.Signature.ToString());
+        }
+
+        [Test]
+        public void Wsfl_ThreeLines()
+        {
+            CreateWineSpecFileLoader("foo.spec",
+                " 2   pascal -ret16 ExitKernel() ExitKernel16\n" +
+                "3    pascal GetVersion() GetVersion16\n" +
+                "4   pascal -ret16 LocalInit(word word word) LocalInit16\n");
+            var lib = wsfl.Load(platform);
+            Assert.AreEqual(3, lib.ServicesByVector.Count);
+            Assert.AreEqual(
+                "void ()()\r\n// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                lib.ServicesByVector[2].Signature.ToString());
+            Assert.AreEqual(
+                "void ()()\r\n// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                lib.ServicesByVector[3].Signature.ToString());
+            Assert.AreEqual(
+                "void ()(Stack word16 arg0, Stack word16 arg2, Stack word16 arg4)\r\n// stackDelta: 6; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                lib.ServicesByVector[4].Signature.ToString());
+
+        }
+
+        [Test(Description ="Ignore lines starting with '@'")]
+        public void Wsfl_Ignore_atsign()
+        {
+            CreateWineSpecFileLoader("foo.spec",
+                " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()\r\n");
+            var lib = wsfl.Load(platform);
+            Assert.AreEqual(0, lib.ServicesByVector.Count);
         }
     }
 }

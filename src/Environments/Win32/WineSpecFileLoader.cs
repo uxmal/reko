@@ -47,7 +47,7 @@ namespace Reko.Environments.Win32
             var rdr = new StreamReader(new MemoryStream(bytes));
             this.lexer = new Lexer(rdr);
         }
-
+      
         public override TypeLibrary Load(Platform platform)
         {
             this.platform = platform;
@@ -137,6 +137,7 @@ namespace Reko.Environments.Win32
             }
             for (;;)
             {
+                // Discared entire line.
                 var type = Get().Type;
                 if (type == TokenType.EOF || type == TokenType.NL)
                     return;

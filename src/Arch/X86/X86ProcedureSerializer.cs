@@ -43,9 +43,8 @@ namespace Reko.Arch.X86
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
                 d = DefaultConvention;
-            if (d == "stdapi" || d == "__stdcall")  //$BUGBUG: platform-dependent!
+            if (d == "stdapi" || d == "__stdcall" || d == "pascal")
                 sig.StackDelta = StackOffset;
-
             sig.FpuStackDelta = FpuStackOffset;
         }
 
