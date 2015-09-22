@@ -18,7 +18,11 @@
  */
 #endregion
 
+using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +38,7 @@ namespace Reko.Environments.Win32
         private Lexer lexer;
         private Token bufferedToken;
         private TypeLibraryLoader tlLoader;
+        private Platform platform;
 
         public WineSpecFileLoader(IServiceProvider services, string filename, byte[] bytes)
             : base(services, filename, bytes)
@@ -45,6 +50,7 @@ namespace Reko.Environments.Win32
 
         public override TypeLibrary Load(Platform platform)
         {
+            this.platform = platform;
             this.tlLoader = new TypeLibraryLoader(platform, true);
             tlLoader.SetModuleName(DefaultModuleName(filename));
             for (;;)
@@ -77,7 +83,11 @@ namespace Reko.Environments.Win32
 
                 tok = Get();
                 string fnName = tok.Value;
-                var sig = new ProcedureSignature();
+                var ssig = new SerializedSignature
+                {
+                    Convention = "pascal"
+                };
+                var args = new List<Argument_v1>();
                 if (PeekAndDiscard(TokenType.LPAREN))
                 {
                     while (Peek().Type == TokenType.ID)
@@ -86,19 +96,38 @@ namespace Reko.Environments.Win32
                         switch (tok.Value)
                         {
                         case "word":
-                            sig.StackDelta += 2;
+                            ssig.StackDelta += 2;
+                            args.Add(new Argument_v1
+                            {
+                                Kind = new StackVariable_v1(),
+                                Type = new PrimitiveType_v1(PrimitiveType.Word16.Domain, 2)
+                            });
                             break;
                         case "long":
+                            ssig.StackDelta += 4;
+                            args.Add(new Argument_v1
+                            {
+                                Kind = new StackVariable_v1(),
+                                Type = new PrimitiveType_v1(PrimitiveType.Word32.Domain, 4)
+                            });
+                            break;
                         case "ptr":
                         case "str":
-                            sig.StackDelta += 4;
+                            ssig.StackDelta += 4;
+                            args.Add(new Argument_v1
+                            {
+                                Kind = new StackVariable_v1(),
+                                Type = new PrimitiveType_v1(Domain.SegPointer, 4)
+                            });
                             break;
                         default: throw new Exception("Unknown: " + tok.Value);
                         }
                     }
                     Expect(TokenType.RPAREN);
                 }
-             
+                ssig.Arguments = args.ToArray();
+                var deser = new X86ProcedureSerializer((IntelArchitecture) platform.Architecture, tlLoader, "pascal");
+                var sig = deser.Deserialize(ssig, new Frame(PrimitiveType.Word16));
                 var svc = new SystemService
                 {
                     Name = fnName,
