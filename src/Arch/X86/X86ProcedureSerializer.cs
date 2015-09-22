@@ -67,16 +67,28 @@ namespace Reko.Arch.X86
             var args = new List<Identifier>();
             if (ss.Arguments != null)
             {
-                for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                if (ss.Convention == "pascal")
                 {
-                    var sArg = ss.Arguments[iArg];
-                    var arg = DeserializeArgument(sArg, iArg, ss.Convention);
-                    args.Add(arg);
+                    for (int iArg = ss.Arguments.Length -1; iArg >= 0; --iArg)
+                    {
+                        var sArg = ss.Arguments[iArg];
+                        var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                        args.Add(arg);
+                    }
+                    args.Reverse();
+                }
+                else
+                {
+                    for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                    {
+                        var sArg = ss.Arguments[iArg];
+                        var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                        args.Add(arg);
+                    }
                 }
                 fpuDelta -= FpuStackOffset;
             }
             FpuStackOffset = fpuDelta;
-
             var sig = new ProcedureSignature(ret, args.ToArray());
             ApplyConvention(ss, sig);
             return sig;
@@ -96,6 +108,7 @@ namespace Reko.Arch.X86
             case "stdapi":
             case "__cdecl":
             case "__stdcall":
+            case "pascal":
                 return argser.Deserialize(arg, new StackVariable_v1 { });
             case "__thiscall":
                 if (idx == 0)

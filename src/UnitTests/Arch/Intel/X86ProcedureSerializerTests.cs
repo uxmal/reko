@@ -234,6 +234,32 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(4, sig.StackDelta);
         }
 
+        [Test]
+        public void ProcSer_Load_pascal()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "pascal",
+                Arguments = new Argument_v1[]
+                {
+                    new Argument_v1
+                    {
+                        Name = "arg1",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize= 2 },
+                    },
+                    new Argument_v1
+                    {
+                        Name = "arg2",
+                        Type = new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize=4  }
+                    }
+                }
+            };
+            Given_ProcedureSerializer(ssig.Convention);
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
+            Assert.AreEqual(0, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
+        }
+
         private void Verify(SerializedSignature ssig, string outputFilename)
         {
             using (FileUnitTester fut = new FileUnitTester(outputFilename))
