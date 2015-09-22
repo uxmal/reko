@@ -418,6 +418,7 @@
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\DiscardableSection.ico" />
     <None Include="Images\Error.ico" />
+    <Content Include="Images\UserEntryProcedure.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />
     <Content Include="Images\Forward.ico" />
@@ -426,6 +427,7 @@
     <Content Include="Images\NextPhase.ico" />
     <Content Include="Images\Open.ico" />
     <Content Include="Images\Platform.ico" />
+    <Content Include="Images\EntryProcedure.ico" />
     <Content Include="Images\Procedure.ico" />
     <Content Include="Images\RestartDecompilation.ico" />
     <Content Include="Images\RwSection.ico" />

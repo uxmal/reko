@@ -37,14 +37,21 @@ namespace Reko.Gui.Design
         private Procedure procedure;
         private string name;
         private Procedure_v1 userProc;
+        private bool isEntryPoint;
 
-        public ProcedureDesigner(Program program, Procedure procedure, Procedure_v1 userProc, Address address)
+        public ProcedureDesigner(
+            Program program, 
+            Procedure procedure, 
+            Procedure_v1 userProc, 
+            Address address, 
+            bool isEntryPoint)
         {
             base.Component = procedure;
             this.program = program;
             this.procedure = procedure;
             this.userProc = userProc;
             this.Address = address;
+            this.isEntryPoint = isEntryPoint;
             if (userProc != null && !string.IsNullOrEmpty(userProc.Name))
                 this.name = userProc.Name;
             else if (procedure != null)
@@ -66,7 +73,9 @@ namespace Reko.Gui.Design
         {
             TreeNode.Text = name;
             TreeNode.ToolTipText = Address.ToString();
-            TreeNode.ImageName = userProc != null ? "Userproc.ico" : "Procedure.ico";
+            TreeNode.ImageName = userProc != null
+                ? (isEntryPoint ? "UserEntryProcedure.ico" : "Userproc.ico") 
+                : (isEntryPoint ? "EntryProcedure.ico" : "Procedure.ico");
         }
 
         public override void DoDefaultAction()

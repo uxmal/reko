@@ -60,6 +60,7 @@ namespace Reko.ImageLoaders.MzExe
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
         private IProcessorArchitecture arch;
         private ushort offResidentNameTable;
+        private Address addrEntry;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
@@ -171,7 +172,7 @@ namespace Reko.ImageLoaders.MzExe
 
             LoadModuleTable(this.lfaNew + offModuleReferenceTable, cModules);
             LoadSegments(this.lfaNew + offSegTable);
-
+            this.addrEntry = segments[cs - 1].Address + ip;
             return true;
         }
 
@@ -197,6 +198,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var entryNames = LoadEntryNames();
             var entryPoints = LoadEntryPoints(entryNames);
+            entryPoints.Add(new EntryPoint(addrEntry, arch.CreateProcessorState()));
             return new RelocationResults(
                 entryPoints,
                 new RelocationDictionary(),
