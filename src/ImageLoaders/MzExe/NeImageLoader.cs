@@ -56,10 +56,10 @@ namespace Reko.ImageLoaders.MzExe
         private uint lfaNew;
         private ushort offImportedNamesTable;
         private ushort offEntryTable;
+        private ushort offResidentNameTable;
         private Address addrImportStubs;
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
         private IProcessorArchitecture arch;
-        private ushort offResidentNameTable;
         private Address addrEntry;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
@@ -314,6 +314,9 @@ namespace Reko.ImageLoaders.MzExe
                     Alloc = rdr.ReadLeUInt16()
                 };
                 uint cbSegmentPage = Math.Max(seg.Alloc, seg.DataLength);
+                // We allocate segments on 4 kb boundaries for convenience,
+                // but protected mode code must never assume addresses are
+                // linear.
                 // Align to 4kb boundary.
                 cbSegmentPage = (cbSegmentPage + 0xFFFu) & ~0xFFFu;
                 seg.LinearAddress = linAddress;
@@ -354,6 +357,79 @@ namespace Reko.ImageLoaders.MzExe
             int count = rdr.ReadLeInt16();
             return ApplyRelocations(rdr, count, seg);
         }
+
+#if NE_
+        static void NE_FixupSegmentPrologs(NE_MODULE* pModule, WORD segnum)
+        {
+            SEGTABLEENTRY* pSegTable = NE_SEG_TABLE(pModule);
+            ET_BUNDLE* bundle;
+            ET_ENTRY* entry;
+            WORD dgroup, num_entries, sel = SEL(pSegTable[segnum - 1].hSeg);
+            BYT* pSeg, *pFunc;
+
+
+            if (pSegTable[segnum - 1].flags & NE_SEGFLAGS_DATA)
+            {
+                pSegTable[segnum - 1].flags |= NE_SEGFLAGS_LOADED;
+                return;
+            }
+
+            if (!pModule->ne_autodata) return;
+
+
+            if (!pSegTable[pModule.ne_autodata - 1].hSeg) return;
+            dgroup = SEL(pSegTable[pModule.ne_autodata - 1].hSeg);
+
+
+            pSeg = MapSL(MAKESEGPTR(sel, 0));
+
+
+            bundle = (ET_BUNDLE*)((BYTE*)pModule + pModule.ne_enttab);
+
+
+            do {
+                Debug.Print("num_entries: {0}, bundle: {1}, next: {2:X4}, pSeg: {3}", bundle.last - bundle.first, bundle, bundle.next, pSeg);
+                if (!(num_entries = bundle.last - bundle.first))
+                    return;
+                entry = (ET_ENTRY*)((BYTE*)bundle + 6);
+                while (num_entries--)
+                {
+                    /*TRACE("entry: %p, entry.segnum: %d, entry.offs: %04x\n", entry, entry.segnum, entry.offs);*/
+                    if (entry.segnum == segnum)
+                    {
+                        pFunc = pSeg + entry.offs;
+                        TRACE("pFunc: %p, *(DWORD *)pFunc: %08x, num_entries: %d\n", pFunc, *(DWORD*)pFunc, num_entries);
+                        if (*(pFunc + 2) == 0x90)
+                        {
+                            if (*(WORD*)pFunc == 0x581e) /* push ds, pop ax */
+                            {
+                                TRACE("patch %04x:%04x -> mov ax, ds\n", sel, entry.offs);
+                                *(WORD*)pFunc = 0xd88c; /* mov ax, ds */
+                            }
+
+
+                            if (*(WORD*)pFunc == 0xd88c)
+                            {
+                                if ((entry.flags & 2)) /* public data ? */
+                                {
+                                    TRACE("patch %04x:%04x . mov ax, dgroup [%04x]\n", sel, entry.offs, dgroup);
+                                    *pFunc = 0xb8; /* mov ax, */
+                                    *(WORD*)(pFunc + 1) = dgroup;
+                                }
+                                else if ((pModule.ne_flags & NE_FFLAGS_MULTIPLEDATA)
+                                         && (entry.flags & 1)) /* exported ? */
+                                {
+                                    TRACE("patch %04x:%04x -> nop, nop\n", sel, entry.offs);
+                                    *(WORD*)pFunc = 0x9090; /* nop, nop */
+                                }
+                            }
+                        }
+                    }
+                    entry++;
+                }
+            } while ((bundle.next) && (bundle = ((ET_BUNDLE*)((BYTE*)pModule + bundle.next))));
+        }
+#endif
 
         public class NeRelocationEntry
         {
