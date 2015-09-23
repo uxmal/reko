@@ -852,6 +852,22 @@ namespace Reko.Tools.C2Xml.UnitTests
                 sExp);
 
         }
+
+        [Test]
+        public void C2X_NearPtr()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""PVOID"">
+      <ptr size=""2"">
+        <void />
+      </ptr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest("typedef void _near * PVOID;", sExp);
+        }
     }
 }
 #endif

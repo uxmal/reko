@@ -133,13 +133,24 @@ namespace Reko.Tools.C2Xml
             }
             return (nt) =>
             {
+                var size = PointerSize();
                 nt.DataType = new PointerType_v1
                 {
                     DataType = nt.DataType,
+                    PointerSize = size,
                 };
-                nt.Size = 4;            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
+                nt.Size = PointerSize();
                 return fn(nt);
             };
+        }
+
+        private int PointerSize()
+        {
+            if (specs.OfType<TypeQualifier>()
+                    .Any(t => t.Qualifier == CTokenType._Near))
+                return 2;
+            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
+            return 4;
         }
 
         public Func<NamedDataType, NamedDataType> VisitFunction(FunctionDeclarator function)

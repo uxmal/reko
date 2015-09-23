@@ -1119,6 +1119,15 @@ MemoryBarrier (
                                 "Void (ptr arg)))))))";
             Assert.AreEqual(sExp, decl.ToString());
         }
+
+        [Test]
+        public void CParser_Far_Pointer()
+        {
+            Lex("typedef void _far*LPVOID;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Typedef Void _Far ((init-decl (ptr LPVOID))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
     }
 }
 #endif

@@ -112,7 +112,6 @@ namespace Reko.Tools.C2Xml
                 isTypedef = true;
             }
 
-         
             var ntde = new NamedDataTypeExtractor(declspecs, this);
             foreach (var declarator in decl.init_declarator_list)
             {

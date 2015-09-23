@@ -72,7 +72,7 @@ namespace Reko.Core.CLanguage
             CTokenType.Char, CTokenType.Wchar_t, CTokenType.Short, CTokenType.Int, 
             CTokenType.__Int64, CTokenType.Long,CTokenType.Double, CTokenType.Float,
             CTokenType.Signed, CTokenType.Unsigned,CTokenType.Struct, CTokenType.Union,
-            CTokenType.Enum);
+            CTokenType.Enum, CTokenType._Far, CTokenType._Near);
         static BitArray startOfDeclarator = NewBitArray(
             CTokenType.Star, CTokenType.LParen, CTokenType.LBracket, CTokenType.Semicolon);
 
@@ -552,6 +552,8 @@ IGNORE tab + cr + lf
             case CTokenType.Const:
             case CTokenType.Volatile:
             case CTokenType.__Ptr64:
+            case CTokenType._Far:
+            case CTokenType._Near:
                 return grammar.TypeQualifier(lexer.Read().Type);
             case CTokenType.__Declspec:
                 lexer.Read();
