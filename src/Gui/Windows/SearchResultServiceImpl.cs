@@ -178,6 +178,11 @@ namespace Reko.Gui.Windows
                     colHeader.Width = listView.Font.Height * widthInCharacters;
                     listView.Columns.Add(colHeader);
             }
+
+            public void Invalidate()
+            {
+                listView.Invalidate();
+            }
         }
 
         /// <summary>

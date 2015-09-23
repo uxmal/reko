@@ -33,17 +33,20 @@ namespace Reko.Gui
     /// Navigable items take you to the current memory view (if one is topmost) 
     /// opens a new memory view.
     /// </summary>
-    public abstract class AddressSearchResult : ISearchResult
+    public class AddressSearchResult : ISearchResult
     {
         protected readonly IServiceProvider services;
         private List<ProgramAddress> addresses;
+        private AddressSearchDetails details;
 
         public AddressSearchResult(
             IServiceProvider services,
-            IEnumerable<ProgramAddress> addresses)
+            IEnumerable<ProgramAddress> addresses,
+            AddressSearchDetails details)
         {
             this.services = services;
             this.addresses = addresses.ToList();
+            this.details = details;
         }
 
         public ISearchResultView View { get; set; }
@@ -75,7 +78,7 @@ namespace Reko.Gui
             View.AddColumn("Program", 30);
             View.AddColumn("Address", 10);
             View.AddColumn("Type", 10);
-            View.AddColumn("Data", 70);
+            View.AddColumn("Details", 70);
         }
 
         public int GetItemImageIndex(int i)
@@ -105,7 +108,13 @@ namespace Reko.Gui
             }
             int bgColor = SelectBgColor(item);
 
-            var sData = RenderData(hit);
+            string sData = "";
+            switch (details)
+            {
+            case AddressSearchDetails.Code: sData = RenderCode(hit); break;
+            case AddressSearchDetails.Strings: sData = RenderString(hit); break;
+            case AddressSearchDetails.Data: sData = RenderData(hit); break;
+            }
 
             return new SearchResultItem
             {
@@ -120,7 +129,51 @@ namespace Reko.Gui
             };
         }
 
-        public abstract string RenderData(ProgramAddress hit);
+        public string RenderCode(ProgramAddress hit)
+        {
+            try
+            {
+                var dasm = hit.Program.CreateDisassembler(hit.Address);
+                return string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
+            }
+            catch
+            {
+                return "<invalid>";
+            }
+        }
+
+        public string RenderString(ProgramAddress hit)
+        {
+            var rdr = hit.Program.CreateImageReader(hit.Address);
+            var sb = new StringBuilder();
+            while (rdr.IsValid)
+            {
+                var ch = rdr.ReadByte();
+                if (ch == 0 || sb.Length > 80)
+                    break;
+                sb.Append(0x20 <= ch && ch < 0x7F
+                    ? (char)ch
+                    : '.');
+            }
+            return sb.ToString();
+        }
+
+
+        public string RenderData(ProgramAddress hit)
+        {
+            var rdr = hit.Program.CreateImageReader(hit.Address);
+            var sb = new StringBuilder();
+            int cb = 0;
+            while (rdr.IsValid)
+            {
+                var ch = rdr.ReadByte();
+                if (ch == 0 || cb >= 16)
+                    break;
+                sb.AppendFormat("{0:X2} ", (uint)ch);
+                ++cb;
+            }
+            return sb.ToString();
+        }
 
         private int SelectBgColor(ImageMapItem item)
         {
@@ -148,9 +201,33 @@ namespace Reko.Gui
             {
                 switch (cmdID.ID)
                 {
-                case CmdIds.ActionMarkProcedure:
                 case CmdIds.ViewFindWhatPointsHere:
-                    status.Status = MenuStatus.Enabled|MenuStatus.Visible;
+                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
+                case CmdIds.ViewAsCode:
+                    status.Status = details == AddressSearchDetails.Code
+                        ? MenuStatus.Enabled | MenuStatus.Visible | MenuStatus.Checked
+                        : MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
+                case CmdIds.ViewAsStrings:
+                    status.Status = details == AddressSearchDetails.Strings
+                        ? MenuStatus.Enabled | MenuStatus.Visible | MenuStatus.Checked
+                        : MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
+                case CmdIds.ViewAsData:
+                    status.Status = details == AddressSearchDetails.Data
+                        ? MenuStatus.Enabled | MenuStatus.Visible | MenuStatus.Checked
+                        : MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
+                case CmdIds.ActionMarkProcedure:
+                    status.Status = details == AddressSearchDetails.Code
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : MenuStatus.Visible;
+                    return true;
+                case CmdIds.ActionMarkType:
+                    status.Status = details != AddressSearchDetails.Code
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : MenuStatus.Visible;
                     return true;
                 }
             }
@@ -163,10 +240,25 @@ namespace Reko.Gui
                 return false;
             switch (cmdID.ID)
             {
-            case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
             case CmdIds.ViewFindWhatPointsHere: ViewFindWhatPointsHere(); return true;
+            case CmdIds.ViewAsCode: details = AddressSearchDetails.Code; View.Invalidate(); return true;
+            case CmdIds.ViewAsStrings: details = AddressSearchDetails.Strings; View.Invalidate(); return true;
+            case CmdIds.ViewAsData: details = AddressSearchDetails.Data; View.Invalidate(); return true;
+            case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
+            case CmdIds.ActionMarkType: MarkType(); return true;
             }
             return false;
+        }
+
+        public void MarkProcedures()
+        {
+            services.RequireService<ICommandFactory>().MarkProcedures(SelectedHits()).Do();
+        }
+
+
+        public void MarkType()
+        {
+
         }
 
         /// <summary>
@@ -176,11 +268,6 @@ namespace Reko.Gui
         public IEnumerable<ProgramAddress> SelectedHits()
         {
             return View.SelectedIndices.Select(i => addresses[i]);
-        }
-
-        public void MarkProcedures()
-        {
-            services.RequireService<ICommandFactory>().MarkProcedures(SelectedHits()).Do();
         }
 
         public void ViewFindWhatPointsHere()
@@ -197,49 +284,11 @@ namespace Reko.Gui
         }
     }
 
-    public class CodeAddressSearchResult : AddressSearchResult
+    public enum AddressSearchDetails
     {
-        public CodeAddressSearchResult(IServiceProvider services, IEnumerable<ProgramAddress> addresses)
-            :base(services, addresses)
-        {
-        }
-
-        public override string RenderData(ProgramAddress hit)
-        {
-            try
-            {
-                var dasm = hit.Program.CreateDisassembler(hit.Address);
-                return string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
-            }
-            catch
-            {
-                return "<invalid>";
-            }
-        }
-    }
-
-    public class StringAddressSearchResult : AddressSearchResult
-    {
-        public StringAddressSearchResult(IServiceProvider services, IEnumerable<ProgramAddress> addresses)
-            :base(services, addresses)
-        {
-        }
-
-        public override string RenderData(ProgramAddress hit)
-        {
-            var rdr = hit.Program.CreateImageReader(hit.Address);
-            var sb = new StringBuilder();
-            while (rdr.IsValid)
-            {
-                var ch = rdr.ReadByte();
-                if (ch == 0 || sb.Length > 80)
-                    break;
-                sb.Append(0x20 <= ch && ch < 0x7F
-                    ? (char)ch
-                    : '.');
-            }
-            return sb.ToString();
-        }
+        Code,
+        Strings,
+        Data,
     }
 }
 

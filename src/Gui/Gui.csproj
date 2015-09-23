@@ -345,7 +345,6 @@
       <DependentUpon>SearchDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\SearchDialogInteractor.cs" />
-    <Compile Include="Windows\Forms\UnscannedBlocksResult.cs" />
     <Compile Include="Windows\Forms\UserPreferencesDialog.cs">
       <SubType>Form</SubType>
     </Compile>

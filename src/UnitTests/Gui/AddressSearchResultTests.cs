@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void Asr_Create()
         {
-            var results = new CodeAddressSearchResult(sc, new List<ProgramAddress>());
+            var results = new AddressSearchResult(sc, new List<ProgramAddress>(), AddressSearchDetails.Code);
         }
     }
 }

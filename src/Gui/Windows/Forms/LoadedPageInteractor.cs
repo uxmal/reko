@@ -99,9 +99,10 @@ namespace Reko.Gui.Windows.Forms
                         .Where(i => i.Value.DataType is UnknownType)
                         .Select(i => new ProgramAddress(p, i.Key)));
             srSvc.ShowSearchResults(
-                new CodeAddressSearchResult(
+                new AddressSearchResult(
                     Services,
-                    hits));
+                    hits,
+                    AddressSearchDetails.Code));
             return true;
         }
 

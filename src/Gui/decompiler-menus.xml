@@ -54,7 +54,6 @@
   <group id="GrpCodeView" cmdSet="Reko" container="CtxCodeView" />
   <group id="GrpBrowser" cmdSet="Reko" container="CtxBrowser"/>
   <group id="GrpBrowserProc" cmdSet="Reko" container="CtxBrowser"/>
-  <group id="GrpBrowserSegm" cmdSet="Reko" container="CtxBrowser"/>
 
   <group id="GrpToolbarFileOps" cmdSet="Reko" container="MainToolbar" />
 
@@ -62,6 +61,7 @@
 
   <group id="GrpProcedure" cmdSet="Reko" container="CtxProcedure "/>
 
+  <group id="GrpAddressSearchView" cmdSet="Reko" container="CtxAddressSearch" />
   <group id="GrpAddressSearch" cmdSet="Reko" container="CtxAddressSearch" />
 
   <!-- Commands ========================================================== -->
@@ -96,6 +96,9 @@
   <cmd id="ViewFindPattern" cmdSet="Reko" container="GrpViewScanned">Find selected _pattern...</cmd>
   <cmd id="ViewFindStrings" cmdSet="Reko" container="GrpViewScanned">Find _strings...</cmd>
   <cmd id="ViewFindWhatPointsHere" cmdSet="Reko" container="GrpViewScanned">Find _what points here</cmd>
+  <cmd id="ViewAsCode" cmdSet="Reko" container="GrpAddressSearchView">View as _code</cmd>
+  <cmd id="ViewAsStrings" cmdSet="Reko" container="GrpAddressSearchView">View as _strings</cmd>
+  <cmd id="ViewAsData" cmdSet="Reko" container="GrpAddressSearchView">View as _data</cmd>
   
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />

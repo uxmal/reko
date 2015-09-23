@@ -378,7 +378,7 @@ namespace Reko.Gui.Windows
                         .Select(offset => new ProgramAddress(
                             program,
                             program.Image.BaseAddress + offset));
-                    srSvc.ShowSearchResults(new CodeAddressSearchResult(this.services, hits));
+                    srSvc.ShowSearchResults(new AddressSearchResult(this.services, hits, AddressSearchDetails.Code));
                 }
             }
             return true;

@@ -62,5 +62,6 @@ namespace Reko.Gui
         IEnumerable<int> SelectedIndices { get; }
 
         void AddColumn(string columnTitle, int width);
+        void Invalidate();
     }
 }
