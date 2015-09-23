@@ -38,6 +38,7 @@ namespace Reko.UnitTests.Evaluation
         private Identifier x;
         private SsaIdentifierCollection ssaIds;
         private SsaEvaluationContext ctx;
+
         /// <summary>
         /// (+ (* id c) id) => (* id (+ c 1))
         /// </summary>
@@ -68,7 +69,7 @@ namespace Reko.UnitTests.Evaluation
             BinaryExpression b = m.IAdd(id, m.UMul(id, 5));
             Assignment ass = new Assignment(x, b);
             Statement stm = new Statement(0, ass, null);
-            Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(ssaIds));
+            var rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(ssaIds));
             Assert.IsTrue(rule.Match(b));
             ass.Src = rule.Transform();
             Assert.AreEqual("x = id *u 0x00000006", ass.ToString());

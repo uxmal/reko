@@ -95,6 +95,8 @@
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Environments\Win32\WineSpecFileLoaderTests.cs" />
+    <Compile Include="Evaluation\ConstDivisionImplementedByMultiplication.cs" />
+    <Compile Include="Evaluation\ConstDivisionImplementedByMultiplicationTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
@@ -433,6 +435,7 @@
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
+    <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />

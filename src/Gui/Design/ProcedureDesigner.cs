@@ -149,7 +149,7 @@ namespace Reko.Gui.Design
                     this.Address,
                 },
                 PointerScannerFlags.All);
-            resultSvc.ShowSearchResults(new AddressSearchResult(Services, addrControl.Select(a => new ProgramAddress(program, a))));
+            resultSvc.ShowSearchResults(new CodeAddressSearchResult(Services, addrControl.Select(a => new ProgramAddress(program, a))));
         }
 
         private void Rename()

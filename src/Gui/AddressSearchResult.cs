@@ -29,10 +29,11 @@ using System.Text;
 namespace Reko.Gui
 {
     /// <summary>
-    /// An address search result is the ... well, result of a search of raw memory. Navigable items take you
-    /// to the current memory view (if one is topmost) or opens a new memory view.
+    /// An address search result is the ... well, result of a search of raw memory. 
+    /// Navigable items take you to the current memory view (if one is topmost) 
+    /// opens a new memory view.
     /// </summary>
-    public class AddressSearchResult : ISearchResult
+    public abstract class AddressSearchResult : ISearchResult
     {
         protected readonly IServiceProvider services;
         private List<ProgramAddress> addresses;
@@ -93,7 +94,7 @@ namespace Reko.Gui
             {
                 return new SearchResultItem
                 {
-                    Items = new string[] { 
+                    Items = new string[] {
                         "",
                         addr.ToString(),
                         ""
@@ -103,35 +104,23 @@ namespace Reko.Gui
                 };
             }
             int bgColor = SelectBgColor(item);
-            var dasm = program.CreateDisassembler(addr);
-            try
+
+            var sData = RenderData(hit);
+
+            return new SearchResultItem
             {
-                var instr = string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
-                return new SearchResultItem
-                {
-                    Items = new string[] {
+                Items = new string[] {
                         program.Name ?? "<Program>",
                         addr.ToString(),
                         item.DataType.ToString(),
-                        instr,
+                        sData,
                     },
-                    ImageIndex = 0,
-                    BackgroundColor = bgColor,
-                };
-            }
-            catch
-            {
-                return new SearchResultItem
-                {
-                    Items = new string[] {
-                        addr.ToString(),
-                        "<invalid>"
-                    },
-                    ImageIndex = 0,
-                    BackgroundColor = -1,
-                };
-            }
+                ImageIndex = 0,
+                BackgroundColor = bgColor,
+            };
         }
+
+        public abstract string RenderData(ProgramAddress hit);
 
         private int SelectBgColor(ImageMapItem item)
         {
@@ -207,4 +196,50 @@ namespace Reko.Gui
             }
         }
     }
+
+    public class CodeAddressSearchResult : AddressSearchResult
+    {
+        public CodeAddressSearchResult(IServiceProvider services, IEnumerable<ProgramAddress> addresses)
+            :base(services, addresses)
+        {
+        }
+
+        public override string RenderData(ProgramAddress hit)
+        {
+            try
+            {
+                var dasm = hit.Program.CreateDisassembler(hit.Address);
+                return string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
+            }
+            catch
+            {
+                return "<invalid>";
+            }
+        }
+    }
+
+    public class StringAddressSearchResult : AddressSearchResult
+    {
+        public StringAddressSearchResult(IServiceProvider services, IEnumerable<ProgramAddress> addresses)
+            :base(services, addresses)
+        {
+        }
+
+        public override string RenderData(ProgramAddress hit)
+        {
+            var rdr = hit.Program.CreateImageReader(hit.Address);
+            var sb = new StringBuilder();
+            while (rdr.IsValid)
+            {
+                var ch = rdr.ReadByte();
+                if (ch == 0 || sb.Length > 80)
+                    break;
+                sb.Append(0x20 <= ch && ch < 0x7F
+                    ? (char)ch
+                    : '.');
+            }
+            return sb.ToString();
+        }
+    }
 }
+

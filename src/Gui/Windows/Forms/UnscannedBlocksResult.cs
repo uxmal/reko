@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Gui.Windows.Forms
 {
-    public class UnscannedBlocksResult : AddressSearchResult
+    public class UnscannedBlocksResult : CodeAddressSearchResult
     {
         public UnscannedBlocksResult(
             IServiceProvider services, 

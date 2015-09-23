@@ -52,30 +52,7 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void Asr_Create()
         {
-            var results = new AddressSearchResult(sc, new List<ProgramAddress>());
+            var results = new CodeAddressSearchResult(sc, new List<ProgramAddress>());
         }
     }
-
-    /// SearchService - provides generic search services.
-    ///  StartSearch(newsearcher, searchResult)
-    ///  {
-    ///      if searchWorker.Active()
-    ///          stoplistening(searcher)
-    ///          searchWorker.Deactivate()
-    ///      clear.searchResults()
-    ///      startlistenning(newsearcher);
-    ///      searcher = searcher.Observe()
-    ///      searchWorker.Start(searcher)
-    ///  }
-    ///  
-    ///  public searcher
-    ///  {
-    ///     Notify() {
-    ///         foreach listener() {
-    ///             listener.OnNext();
-    ///         }
-    ///     }
-    ///  }
-    ///    
-
 }

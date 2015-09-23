@@ -215,6 +215,7 @@
     <Compile Include="Evaluation\Add_e_c_cRule.cs" />
     <Compile Include="Evaluation\Add_mul_id_c_id_Rule.cs" />
     <Compile Include="Evaluation\ConstConstBin_Rule.cs" />
+    <Compile Include="Evaluation\ConstDivisionImplementedByMultiplication.cs" />
     <Compile Include="Evaluation\DpbConstantRule.cs" />
     <Compile Include="Evaluation\DpbDpbRule.cs" />
     <Compile Include="Evaluation\ExpressionSimplifier.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Scanning\EntryPointWorkitem.cs" />
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
     <Compile Include="Scanning\RobustRewriter.cs" />
+    <Compile Include="Scanning\StringFinder.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Scanning\ProcedureWorkItem.cs" />

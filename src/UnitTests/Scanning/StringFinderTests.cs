@@ -1,0 +1,96 @@
+﻿#region License
+/* 
+ * Copyright (C) 1999-2015 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Scanning;
+using Rhino.Mocks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Reko.UnitTests.Scanning
+{
+    [TestFixture]
+    public class StringFinderTests
+    {
+        private Program program;
+        private MockRepository mr;
+        private IProcessorArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+            arch = mr.Stub<IProcessorArchitecture>();
+        }
+
+        private void Given_Image(params byte[] bytes)
+        {
+            var image = new LoadedImage(Address.Ptr32(0x00400000), bytes);
+            arch.Stub(a => a.CreateImageReader(image, null))
+                .IgnoreArguments()
+                .Return(new LeImageReader(image, image.BaseAddress));
+            this.program = new Program
+            {
+                Image = image,
+                ImageMap = image.CreateImageMap(),
+                Architecture = arch
+            };
+        }
+
+        [Test]
+        public void StrFind_TooShort()
+        {
+            Given_Image(0x23, 0);
+            mr.ReplayAll();
+
+            var sf = new StringFinder(program);
+            Assert.AreEqual(0, sf.FindStrings(StringType.NullTerminated(PrimitiveType.Char), 5).Count());
+        }
+
+        [Test]
+        public void StrFind_SingleMatch()
+        {
+            Given_Image(0x41, 0);
+            mr.ReplayAll();
+
+            var sf = new StringFinder(program);
+            var hits = sf.FindStrings(StringType.NullTerminated(PrimitiveType.Char), 1).ToArray();
+            Assert.AreEqual(1, hits.Length);
+            Assert.AreEqual(Address.Ptr32(0x00400000), hits[0].Address);
+        }
+
+        [Test]
+        public void StrFind_TwoMatch()
+        {
+            Given_Image(0x42, 0, 0x12, 0x43, 0x00);
+            mr.ReplayAll();
+
+            var sf = new StringFinder(program);
+            var hits = sf.FindStrings(StringType.NullTerminated(PrimitiveType.Char), 1).ToArray();
+            Assert.AreEqual(2, hits.Length);
+            Assert.AreEqual(Address.Ptr32(0x00400000), hits[0].Address);
+            Assert.AreEqual(Address.Ptr32(0x00400003), hits[1].Address);
+        }
+    }
+}

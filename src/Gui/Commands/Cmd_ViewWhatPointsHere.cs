@@ -50,7 +50,7 @@ namespace Reko.Gui.Commands
                 addresses,
                 PointerScannerFlags.All);
             resultSvc.ShowSearchResults(
-                new AddressSearchResult(
+                new CodeAddressSearchResult(
                     Services, 
                     addrControl.Select(lin => new ProgramAddress(program, lin))));
         }

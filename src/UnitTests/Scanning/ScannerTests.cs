@@ -40,13 +40,13 @@ namespace Reko.UnitTests.Scanning
     public class ScannerTests
     {
         private MockRepository mr;
-        IProcessorArchitecture arch;
-        FakeArchitecture fakeArch;
-        Program program;
-        TestScanner scan;
-        Identifier reg1;
+        private IProcessorArchitecture arch;
+        private FakeArchitecture fakeArch;
+        private Program program;
+        private TestScanner scan;
+        private Identifier reg1;
         private IImportResolver importResolver;
-        IDictionary<Address, ProcedureSignature> callSigs;
+        private IDictionary<Address, ProcedureSignature> callSigs;
 
         public class TestScanner : Scanner
         {

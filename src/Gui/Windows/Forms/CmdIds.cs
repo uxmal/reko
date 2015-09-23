@@ -107,7 +107,7 @@ namespace Reko.Gui
 		public const int ViewShowAllFragments = 21 + 2000;
 		public const int ViewShowUnscanned = 22 + 2000;
 		public const int ViewFindPattern = 23 + 2000;
-		public const int ViewFindFragments = 24 + 2000;
+		public const int ViewFindStrings = 24 + 2000;
 		public const int ViewFindWhatPointsHere = 25 + 2000;
 		public const int ActionNextSearchHit = 26 + 2000;
 		public const int ActionPrevSearchHit = 27 + 2000;

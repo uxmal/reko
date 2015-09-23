@@ -126,13 +126,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void Lpi_QueryStatus()
-        {
-            Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));
-        }
-
-
-        [Test]
         public void Lpi_SetBrowserCaptionWhenEnteringPage()
         {
             AddService<IDecompilerShellUiService>();

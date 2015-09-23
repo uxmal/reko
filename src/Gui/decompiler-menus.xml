@@ -94,8 +94,9 @@
 	<cmd id="ViewShowAllFragments" cmdSet="Reko" container="GrpViewScanned">Show _all fragments</cmd>
 	<cmd id="ViewShowUnscanned" cmdSet="Reko" container="GrpViewScanned">Show _unscanned fragments</cmd>
   <cmd id="ViewFindPattern" cmdSet="Reko" container="GrpViewScanned">Find selected _pattern...</cmd>
-  <cmd id="ViewFindFragments" cmdSet="Reko" container="GrpViewScanned">_Find fragments...</cmd>
+  <cmd id="ViewFindStrings" cmdSet="Reko" container="GrpViewScanned">Find _strings...</cmd>
   <cmd id="ViewFindWhatPointsHere" cmdSet="Reko" container="GrpViewScanned">Find _what points here</cmd>
+  
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />
 

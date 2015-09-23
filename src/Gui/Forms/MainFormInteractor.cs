@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Windows;
 using Reko.Gui.Windows.Forms;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -471,7 +472,7 @@ namespace Reko.Gui.Forms
                                 .Select(offset => new ProgramAddress(
                                     program,
                                     program.Image.BaseAddress + offset)));
-                    srSvc.ShowSearchResults(new AddressSearchResult(
+                    srSvc.ShowSearchResults(new CodeAddressSearchResult(
                         this.sc,
                         hits));
                 }
@@ -519,6 +520,23 @@ namespace Reko.Gui.Forms
                     new ProcedureSearchHit(program, proc.Key, proc.Value)))
                 .ToList();
             svc.ShowSearchResults(new ProcedureSearchResult(this.sc, hits));
+        }
+
+        public void FindStrings(ISearchResultService srSvc)
+        {
+            using (var dlgStrings = dlgFactory.CreateFindStringDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
+                {
+                    var hits = this.decompilerSvc.Decompiler.Project.Programs
+                        .SelectMany(p => new StringFinder(p).FindStrings(
+                            dlgStrings.GetStringType(),
+                            dlgStrings.MinLength));
+                    srSvc.ShowSearchResults(new StringAddressSearchResult(
+                       this.sc,
+                       hits));
+                }
+            }
         }
 
         public void ViewDisassemblyWindow()
@@ -686,10 +704,11 @@ namespace Reko.Gui.Forms
                     return true;
                 case CmdIds.FileAddBinary:
                 case CmdIds.FileAddMetadata:
-                case CmdIds.FileCloseProject:
-                case CmdIds.ViewFindAllProcedures:
                 case CmdIds.FileSave:
+                case CmdIds.FileCloseProject:
                 case CmdIds.EditFind:
+                case CmdIds.ViewFindAllProcedures:
+                case CmdIds.ViewFindStrings:
                     cmdStatus.Status = IsDecompilerLoaded
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
@@ -758,6 +777,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); retval = true; break;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
+                case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 
                 case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
 

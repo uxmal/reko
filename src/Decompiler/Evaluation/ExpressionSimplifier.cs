@@ -54,6 +54,7 @@ namespace Reko.Evaluation
         private NegSub_Rule negSub;
         private Mps_Constant_Rule mpsRule;
         private BinOpWithSelf_Rule binopWithSelf;
+        private ConstDivisionImplementedByMultiplication constDiv;
 
         public ExpressionSimplifier(EvaluationContext ctx)
         {
@@ -76,6 +77,7 @@ namespace Reko.Evaluation
             this.mpsRule = new Mps_Constant_Rule(ctx);
             this.sliceShift = new SliceShift(ctx);
             this.binopWithSelf = new BinOpWithSelf_Rule();
+            this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }

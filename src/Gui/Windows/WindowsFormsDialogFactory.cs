@@ -56,6 +56,11 @@ namespace Reko.Gui.Windows
             };
         }
 
+        public IFindStringsDialog CreateFindStringDialog()
+        {
+            return new FindStringsDialog();
+        }
+
         public IMainForm CreateMainForm()
         {
             return new MainForm();

@@ -188,9 +188,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slViewFindPattern = new CommandMenuItem("Find selected _pattern...", new Guid(CmdSets.Reko), CmdIds.ViewFindPattern);
             slViewFindPattern.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindPattern);
-            CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Reko), CmdIds.ViewFindFragments);
-            slViewFindFragments.IsDynamic = false;
-            slGrpViewScanned.Add(0, slViewFindFragments);
+            CommandMenuItem slViewFindStrings = new CommandMenuItem("Find _strings...", new Guid(CmdSets.Reko), CmdIds.ViewFindStrings);
+            slViewFindStrings.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewFindStrings);
             CommandMenuItem slViewFindWhatPointsHere = new CommandMenuItem("Find _what points here", new Guid(CmdSets.Reko), CmdIds.ViewFindWhatPointsHere);
             slViewFindWhatPointsHere.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindWhatPointsHere);
