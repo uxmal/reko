@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Environments.Win32
             var svc = lib.ServicesByVector[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
-                "void ()(Stack word32 arg0, Stack word32 arg4)\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word32 arg4, Stack word32 arg0)\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 svc.Signature.ToString());
         }
 
@@ -81,9 +81,8 @@ namespace Reko.UnitTests.Environments.Win32
                 "void ()()\r\n// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 lib.ServicesByVector[3].Signature.ToString());
             Assert.AreEqual(
-                "void ()(Stack word16 arg0, Stack word16 arg2, Stack word16 arg4)\r\n// stackDelta: 6; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word16 arg4, Stack word16 arg2, Stack word16 arg0)\r\n// stackDelta: 6; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 lib.ServicesByVector[4].Signature.ToString());
-
         }
 
         [Test(Description ="Ignore lines starting with '@'")]

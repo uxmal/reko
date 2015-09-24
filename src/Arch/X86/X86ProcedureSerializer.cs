@@ -35,7 +35,6 @@ namespace Reko.Arch.X86
         public X86ProcedureSerializer(IntelArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
         {
-
         }
 
         public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
