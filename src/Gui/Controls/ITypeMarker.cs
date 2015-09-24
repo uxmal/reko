@@ -18,23 +18,23 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Gui.Controls;
-using Reko.Gui.Windows;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Controls
 {
-    /// <summary>
-    /// The Search Result Service is used to show the results of some kind of search.
-    /// </summary>
-    public interface ISearchResultService 
+    public interface ITypeMarker : IDisposable
     {
-        void ShowAddressSearchResults(IEnumerable<ProgramAddress> hits, AddressSearchDetails code);
-        void ShowSearchResults(ISearchResult result);
+        void Show(Point location, Action<string> accepted);
+    }
+
+    public class TypeMarkerEventArgs : EventArgs
+    {
+        public TypeMarkerEventArgs(string userText) { UserText = userText; }
+        public string UserText { get; private set; }
+        public string FormattedType { get; set; }
     }
 }

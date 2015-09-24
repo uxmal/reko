@@ -20,9 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Gui.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -158,7 +160,6 @@ namespace Reko.Gui
             return sb.ToString();
         }
 
-
         public string RenderData(ProgramAddress hit)
         {
             var rdr = hit.Program.CreateImageReader(hit.Address);
@@ -179,9 +180,10 @@ namespace Reko.Gui
         {
             if (item.DataType is UnknownType)
                 return -1;
-            if (item.DataType is CodeType)  //$TODO: colors should come from settings.
+            //$TODO: colors should come from settings.
+            if (item.DataType is CodeType) 
                 return System.Drawing.Color.Pink.ToArgb();
-            throw new NotImplementedException();
+            return 0x00C0C0FF;
         }
 
         public void SortByColumn(int iColumn, SortDirection dir)
@@ -255,10 +257,20 @@ namespace Reko.Gui
             services.RequireService<ICommandFactory>().MarkProcedures(SelectedHits()).Do();
         }
 
-
         public void MarkType()
         {
-
+            View.ShowTypeMarker(userText =>
+            {
+                var parser = new HungarianParser();
+                var dataType = parser.Parse(userText);
+                if (dataType == null)
+                    return;
+                foreach (var pa in SelectedHits())
+                {
+                    pa.Program.AddUserGlobalItem(pa.Address, dataType);
+                }
+                View.Invalidate();
+            });
         }
 
         /// <summary>

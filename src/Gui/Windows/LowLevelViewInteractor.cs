@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Gui.Controls;
 using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
@@ -104,19 +105,8 @@ namespace Reko.Gui.Windows
             this.navInteractor.Attach(this.Control);
 
             typeMarker = new TypeMarker(control.MemoryView);
-            typeMarker.TextChanged += typeMarker_FormatType;
-            typeMarker.TextAccepted += typeMarker_TextAccepted;
 
             return control;
-        }
-
-        private void typeMarker_TextAccepted(object sender, TypeMarkerEventArgs e)
-        {
-            var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText);
-            if (item == null)
-                return;
-            // Advance selection to beyond item.
-            this.SelectedAddress = item.Address + item.Size;
         }
 
         public void SetSite(IServiceProvider sp)
@@ -293,9 +283,20 @@ namespace Reko.Gui.Windows
             var addrRange = control.MemoryView.GetAddressRange();
             if (addrRange.IsValid)
             {
-                typeMarker.Show(control.MemoryView.AddressToPoint(addrRange.Begin));
+                typeMarker.Show(
+                    control.MemoryView.AddressToPoint(addrRange.Begin),
+                    typeMarker_TextAccepted);
             }
             return true;
+        }
+
+        private void typeMarker_TextAccepted(string text)
+        {
+            var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, text);
+            if (item == null)
+                return;
+            // Advance selection to beyond item.
+            this.SelectedAddress = item.Address + item.Size;
         }
 
         private bool ValidSelection()
@@ -307,23 +308,6 @@ namespace Reko.Gui.Windows
                     return true;
             }
             return false;
-        }
-
-        public void typeMarker_FormatType(object sender, TypeMarkerEventArgs e)
-        {
-            try
-            {
-                var parser = new HungarianParser();
-                var dataType = parser.Parse(e.UserText);
-                if (dataType == null)
-                    e.FormattedType = " - Null - ";
-                else
-                    e.FormattedType = dataType.ToString();
-            }
-            catch
-            {
-                e.FormattedType = " - Error - ";
-            }
         }
 
         public ImageMapItem SetTypeAtAddressRange(Address address, string userText)
@@ -378,7 +362,7 @@ namespace Reko.Gui.Windows
                         .Select(offset => new ProgramAddress(
                             program,
                             program.Image.BaseAddress + offset));
-                    srSvc.ShowSearchResults(new AddressSearchResult(this.services, hits, AddressSearchDetails.Code));
+                    srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
             }
             return true;

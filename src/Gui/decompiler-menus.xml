@@ -171,6 +171,7 @@
   
   <placement item="ViewFindWhatPointsHere" container="GrpAddressSearch" />
   <placement item="ActionMarkProcedure" container="GrpAddressSearch"/>
+  <placement item="ActionMarkType" container="GrpAddressSearch"/>
   <placement item="ActionScanHeuristically" container="GrpAddressSearch"/>
 
   <!-- Accelerators ================================================== -->

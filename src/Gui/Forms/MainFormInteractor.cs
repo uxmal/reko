@@ -472,10 +472,7 @@ namespace Reko.Gui.Forms
                                 .Select(offset => new ProgramAddress(
                                     program,
                                     program.Image.BaseAddress + offset)));
-                    srSvc.ShowSearchResults(new AddressSearchResult(
-                        this.sc,
-                        hits,
-                        AddressSearchDetails.Code));
+                    srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
             }
         }
@@ -533,10 +530,9 @@ namespace Reko.Gui.Forms
                         .SelectMany(p => new StringFinder(p).FindStrings(
                             dlgStrings.GetStringType(),
                             dlgStrings.MinLength));
-                    srSvc.ShowSearchResults(new AddressSearchResult(
-                       this.sc,
+                    srSvc.ShowAddressSearchResults(
                        hits,
-                       AddressSearchDetails.Strings));
+                       AddressSearchDetails.Strings);
                 }
             }
         }

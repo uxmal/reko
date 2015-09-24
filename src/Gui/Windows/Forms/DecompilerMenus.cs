@@ -304,6 +304,7 @@ namespace Reko.Gui.Windows.Forms
 			slGrpBrowserProc.Add(0, slActionAssumeRegisterValues);
 			slGrpAddressSearch.Add(0, slViewFindWhatPointsHere);
 			slGrpAddressSearch.Add(0, slActionMarkProcedure);
+			slGrpAddressSearch.Add(0, slActionMarkType);
 			slGrpAddressSearch.Add(0, slActionScanHeuristically);
     
       // Build accelerators.

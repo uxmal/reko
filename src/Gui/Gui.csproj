@@ -98,6 +98,7 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
@@ -375,7 +376,7 @@
     <Compile Include="Windows\ToolStripItemAdapter.cs" />
     <Compile Include="Windows\ToolStripTextBoxWrapper.cs" />
     <Compile Include="Windows\TreeViewWrapper.cs" />
-    <Compile Include="Windows\TypeMarker.cs" />
+    <Compile Include="Windows\Controls\TypeMarker.cs" />
     <Compile Include="Windows\ViewService.cs" />
     <Compile Include="Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Windows\WindowsFormsDialogFactory.cs" />
