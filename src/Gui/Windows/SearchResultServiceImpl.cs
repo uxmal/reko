@@ -196,7 +196,10 @@ namespace Reko.Gui.Windows
 
             public void ShowTypeMarker(Action<string> action)
             {
-                typeMarker.Show(new Point(0,0), action);
+                var i = listView.TopItem;
+                var rc = listView.DisplayRectangle;
+
+                typeMarker.Show(i.Position, action);
             }
         }
 
