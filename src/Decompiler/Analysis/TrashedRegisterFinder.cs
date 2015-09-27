@@ -101,6 +101,9 @@ namespace Reko.Analysis
             var e = eventListener;
             while (worklist.GetWorkItem(out block))
             {
+                if (block.Name == "l004F_1F05_thunk_fn004F_117D")   //$DEBUG
+                    block.Name.ToString();
+
                 eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
                 ProcessBlock(block);
             }
@@ -170,9 +173,7 @@ namespace Reko.Analysis
         public void ProcessBlock(Block block)
         {
             visited.Add(block);
-            if (block.Name.EndsWith("21760") ||   //$DEBUG
-                //block.Name.EndsWith("215F8") ||
-                false)
+            if (block.Name == "l004F_1F05_thunk_fn004F_117D")   //$DEBUG
                 block.Name.ToString();
             StartProcessingBlock(block);
             try
@@ -197,6 +198,15 @@ namespace Reko.Analysis
 
         public void RewriteBlock(Block block)
         {
+            if (block.Name == "l004F_1F05_thunk_fn004F_117D")   //$DEBUG
+            {
+                var q = from bf in flow.BlockFlows
+                        group bf by bf.Block.Name into g
+                        where g.Count() > 1
+                        select new { Block = bf.Block, Count = g.Count() };
+                var qq = q.ToArray();
+                block.Name.ToString();
+            }
             StartProcessingBlock(block);
             var propagator = new ExpressionPropagator(prog.Architecture, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)

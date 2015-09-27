@@ -1,6 +1,6 @@
 ﻿using Reko.Gui;
 using Reko.Gui.Controls;
-using Reko.Gui.Windows;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -375,7 +375,7 @@
     <Compile Include="Windows\ToolStripButtonWrapper.cs" />
     <Compile Include="Windows\ToolStripItemAdapter.cs" />
     <Compile Include="Windows\ToolStripTextBoxWrapper.cs" />
-    <Compile Include="Windows\TreeViewWrapper.cs" />
+    <Compile Include="Windows\Controls\TreeViewWrapper.cs" />
     <Compile Include="Windows\Controls\TypeMarker.cs" />
     <Compile Include="Windows\ViewService.cs" />
     <Compile Include="Windows\WindowsDecompilerEventListener.cs" />

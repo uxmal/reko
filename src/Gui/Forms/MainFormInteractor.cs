@@ -816,7 +816,6 @@ namespace Reko.Gui.Forms
         }
         #endregion
 
-
         #region IStatusBarService Members ////////////////////////////////////
 
         public void SetText(string text)
@@ -825,7 +824,6 @@ namespace Reko.Gui.Forms
         }
 
         #endregion
-
 
         #region DecompilerHost Members //////////////////////////////////
 
@@ -881,7 +879,6 @@ namespace Reko.Gui.Forms
 
         #endregion ////////////////////////////////////////////////////
 
-
         // Event handlers //////////////////////////////
 
         private void miFileExit_Click(object sender, System.EventArgs e)
@@ -924,17 +921,6 @@ namespace Reko.Gui.Forms
             dm.ProcessKey(uiSvc, e);
         }
 
-
-        private void statusBar_PanelClick(object sender, System.Windows.Forms.StatusBarPanelClickEventArgs e)
-        {
-
-        }
-
-        private void txtLog_TextChanged(object sender, System.EventArgs e)
-        {
-
-        }
-
         private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
         {
             MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
@@ -957,15 +943,6 @@ namespace Reko.Gui.Forms
                     if (!string.IsNullOrEmpty(text.Text))
                         item.Text = text.Text;
                 }
-            }
-        }
-
-        public void OnBrowserTreeItemSelected(object sender, TreeViewEventArgs e)
-        {
-            if (e.Action == TreeViewAction.ByKeyboard ||
-                e.Action == TreeViewAction.ByMouse)
-            {
-                throw new NotImplementedException();
             }
         }
 
