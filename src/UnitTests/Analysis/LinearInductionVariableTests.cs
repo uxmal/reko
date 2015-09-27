@@ -346,7 +346,6 @@ namespace Reko.UnitTests.Analysis
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);
-            proc.Dump(true); //$DEBUG
 		}
 
         private void Prepare(Action<ProcedureBuilder> m)

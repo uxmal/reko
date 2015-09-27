@@ -42,6 +42,7 @@ namespace Reko.Gui.Commands
             var brSvc = Services.RequireService<IProjectBrowserService>();
             var userProcs =
                 from hit in addresses
+                //$TODO: do this in a worker procedure.
                 let proc = decSvc.Decompiler.ScanProcedure(hit.Program, hit.Address)
                 select new
                 {
