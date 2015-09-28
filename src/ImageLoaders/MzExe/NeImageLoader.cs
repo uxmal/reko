@@ -46,6 +46,22 @@ namespace Reko.ImageLoaders.MzExe
         const byte NE_RELTYPE_OSFIXUP = 3;
         const byte NE_RELFLAG_ADDITIVE = 4;
 
+
+        // Resource types
+        const ushort NE_RSCTYPE_CURSOR            =0x8001;
+        const ushort NE_RSCTYPE_BITMAP            =0x8002;
+        const ushort NE_RSCTYPE_ICON              =0x8003;
+        const ushort NE_RSCTYPE_MENU              =0x8004;
+        const ushort NE_RSCTYPE_DIALOG            =0x8005;
+        const ushort NE_RSCTYPE_STRING            =0x8006;
+        const ushort NE_RSCTYPE_FONTDIR           =0x8007;
+        const ushort NE_RSCTYPE_FONT              =0x8008;
+        const ushort NE_RSCTYPE_ACCELERATOR       =0x8009;
+        const ushort NE_RSCTYPE_RCDATA            =0x800a;
+        const ushort NE_RSCTYPE_GROUP_CURSOR      =0x800c;
+        const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
+        const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
+
         private LoadedImage image;
         private ImageMap imageMap;
         private List<string> moduleNames;
@@ -57,6 +73,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort offImportedNamesTable;
         private ushort offEntryTable;
         private ushort offResidentNameTable;
+        private ushort offRsrcTable;
         private Address addrImportStubs;
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
         private IProcessorArchitecture arch;
@@ -130,7 +147,6 @@ namespace Reko.ImageLoaders.MzExe
             ushort offSegTable;
             if (!rdr.TryReadUInt16(out offSegTable))
                 return false;
-            ushort offRsrcTable;
             if (!rdr.TryReadUInt16(out offRsrcTable))
                 return false;
             if (!rdr.TryReadUInt16(out offResidentNameTable))
@@ -176,11 +192,114 @@ namespace Reko.ImageLoaders.MzExe
             return true;
         }
 
+
+        struct NE_NAMEINFO {
+    ushort  offset;
+    ushort  length;
+    ushort  flags;
+    ushort  id;
+    ushort  handle;
+    ushort  usage;
+}
+
+         struct NE_TYPEINFO
+        {
+    ushort type_id;
+        ushort count;
+        uint resloader;
+    };
+
+        private void DumpResources()
+        {
+            var res_ptr = new LeImageReader(RawImage, this.lfaNew  + offRsrcTable);
+            var rdr = res_ptr.Clone();
+            //const void* res_ptr = (const char*)ne + ne->ne_rsrctab;
+            ushort size_shift = rdr.ReadLeUInt16();
+                //NE_TYPEINFO* info = (const NE_TYPEINFO*)((const WORD*)res_ptr + 1);
+
+                int count;
+
+                //printf("\nResources:\n");
+            ushort type_id = rdr.ReadLeUInt16();
+                while (type_id != 0) //&& (const char*)info < (const char*)ne + ne->ne_restab)
+    {
+                ushort typeCount = rdr.ReadLeUInt16();
+                uint resLoader = rdr.ReadLeUInt32();
+                Debug.Print("{0}s (loader: {1:X8})", GetResourceType(type_id), resLoader);
+                for (count = typeCount; count > 0; --count)
+                {
+                    ushort nameOffset = rdr.ReadLeUInt16();
+                    ushort nameLength = rdr.ReadLeUInt16();
+                    ushort nameFlags = rdr.ReadLeUInt16();
+                    ushort nameId = rdr.ReadLeUInt16();
+                    ushort nameHandle = rdr.ReadLeUInt16();
+                    ushort nameUsage = rdr.ReadLeUInt16();
+
+                    if ((nameId & 0x8000) != 0)
+                        Debug.Write(string.Format("  {0}", (nameId & ~0x8000)));
+                    else
+                    {
+                        //Debug.Write(string.Format("  %.*s", *((const unsigned char*)res_ptr + name->id),
+                        // (const char*)res_ptr + name->id + 1 );
+                        var name = ReadByteLengthString(res_ptr, nameId);
+                        Debug.Write(string.Format("  {0}", name));
+                    }
+                    if ((type_id & 0x8000) != 0)
+                        Debug.Write(string.Format(" {0}", GetResourceType(type_id)));
+                    else
+                        Debug.Write(string.Format(" {0}", ReadByteLengthString(res_ptr, type_id)));
+                    Debug.Print(" flags {0:X4} length {1:X4}", nameFlags, (int)nameLength << size_shift);
+                    if (type_id == NE_RSCTYPE_BITMAP)
+                    {
+                        var offset = (uint)nameOffset << size_shift;
+                        var rdrRsrc = new LeImageReader(base.RawImage, offset);
+                        var rsrc =  rdrRsrc.ReadBytes((uint)nameLength << size_shift);
+                        var sig = LoadedImage.ReadBeUInt16(rsrc, 0);
+                    }
+                    //dump_data(PRD((uint)nameOffset << size_shift, (uint)nameLength << size_shift),
+                    //           nameLength << size_shift, "    ");
+                }
+                type_id = rdr.ReadLeUInt16();
+            }
+
+        }
+
+
+        string ReadByteLengthString(ImageReader rdr, int offset)
+        {
+            var clone = rdr.Clone();
+            clone.Offset = (ulong)((long)clone.Offset + offset);
+            var len = clone.ReadByte();
+            var abStr = clone.ReadBytes(len);
+            return Encoding.ASCII.GetString(abStr);
+        }
+
+        string GetResourceType(ushort id)
+        {
+            switch (id)
+            {
+            case NE_RSCTYPE_CURSOR: return "CURSOR";
+            case NE_RSCTYPE_BITMAP: return "BITMAP";
+            case NE_RSCTYPE_ICON: return "ICON";
+            case NE_RSCTYPE_MENU: return "MENU";
+            case NE_RSCTYPE_DIALOG: return "DIALOG";
+            case NE_RSCTYPE_STRING: return "STRING";
+            case NE_RSCTYPE_FONTDIR: return "FONTDIR";
+            case NE_RSCTYPE_FONT: return "FONT";
+            case NE_RSCTYPE_ACCELERATOR: return "ACCELERATOR";
+            case NE_RSCTYPE_RCDATA: return "RCDATA";
+            case NE_RSCTYPE_GROUP_CURSOR: return "CURSOR_GROUP";
+            case NE_RSCTYPE_GROUP_ICON: return "ICON_GROUP";
+            default: return id.ToString("X4");
+            }
+        }
+
         public override Program Load(Address addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-16");
             var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
+            DumpResources();
 
             var program = new Program(
                 this.image,

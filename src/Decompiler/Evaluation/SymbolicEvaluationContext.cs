@@ -232,6 +232,11 @@ namespace Reko.Evaluation
             return false;
         }
         
+        /// <summary>
+        /// Update the symbolic context with all the registers
+        /// modified by calling the function.
+        /// </summary>
+        /// <param name="pf"></param>
         public void UpdateRegistersTrashedByProcedure(ProcedureFlow pf)
         {
             foreach (int r in pf.TrashedRegisters)
