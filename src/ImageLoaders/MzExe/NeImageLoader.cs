@@ -192,40 +192,27 @@ namespace Reko.ImageLoaders.MzExe
             return true;
         }
 
-
-        struct NE_NAMEINFO {
-    ushort  offset;
-    ushort  length;
-    ushort  flags;
-    ushort  id;
-    ushort  handle;
-    ushort  usage;
-}
-
-         struct NE_TYPEINFO
+        /// <summary>
+        /// Reads in the NE image resources.
+        /// </summary>
+        private void LoadResources(List<ProgramResource> resources)
         {
-    ushort type_id;
-        ushort count;
-        uint resloader;
-    };
-
-        private void DumpResources()
-        {
-            var res_ptr = new LeImageReader(RawImage, this.lfaNew  + offRsrcTable);
+            var res_ptr = new LeImageReader(RawImage, this.lfaNew + offRsrcTable);
             var rdr = res_ptr.Clone();
             //const void* res_ptr = (const char*)ne + ne->ne_rsrctab;
             ushort size_shift = rdr.ReadLeUInt16();
-                //NE_TYPEINFO* info = (const NE_TYPEINFO*)((const WORD*)res_ptr + 1);
+            //NE_TYPEINFO* info = (const NE_TYPEINFO*)((const WORD*)res_ptr + 1);
 
-                int count;
+            int count;
 
-                //printf("\nResources:\n");
+            //printf("\nResources:\n");
             ushort type_id = rdr.ReadLeUInt16();
-                while (type_id != 0) //&& (const char*)info < (const char*)ne + ne->ne_restab)
-    {
+            while (type_id != 0) //&& (const char*)info < (const char*)ne + ne->ne_restab)
+            {
+                var resGrp = new ProgramResourceGroup { Name = GetResourceType(type_id) };
+
                 ushort typeCount = rdr.ReadLeUInt16();
                 uint resLoader = rdr.ReadLeUInt32();
-                Debug.Print("{0}s (loader: {1:X8})", GetResourceType(type_id), resLoader);
                 for (count = typeCount; count > 0; --count)
                 {
                     ushort nameOffset = rdr.ReadLeUInt16();
@@ -235,35 +222,32 @@ namespace Reko.ImageLoaders.MzExe
                     ushort nameHandle = rdr.ReadLeUInt16();
                     ushort nameUsage = rdr.ReadLeUInt16();
 
+                    string resname;
                     if ((nameId & 0x8000) != 0)
-                        Debug.Write(string.Format("  {0}", (nameId & ~0x8000)));
+                    {
+                        resname = string.Format("  {0}", (nameId & ~0x8000));
+                    }
                     else
                     {
-                        //Debug.Write(string.Format("  %.*s", *((const unsigned char*)res_ptr + name->id),
-                        // (const char*)res_ptr + name->id + 1 );
-                        var name = ReadByteLengthString(res_ptr, nameId);
-                        Debug.Write(string.Format("  {0}", name));
+                        resname = ReadByteLengthString(res_ptr, nameId);
                     }
-                    if ((type_id & 0x8000) != 0)
-                        Debug.Write(string.Format(" {0}", GetResourceType(type_id)));
-                    else
-                        Debug.Write(string.Format(" {0}", ReadByteLengthString(res_ptr, type_id)));
-                    Debug.Print(" flags {0:X4} length {1:X4}", nameFlags, (int)nameLength << size_shift);
-                    if (type_id == NE_RSCTYPE_BITMAP)
+
+                    var offset = (uint)nameOffset << size_shift;
+                    var rdrRsrc = new LeImageReader(base.RawImage, offset);
+                    var rsrc = rdrRsrc.ReadBytes((uint)nameLength << size_shift);
+
+                    resGrp.Resources.Add(new ProgramResourceInstance
                     {
-                        var offset = (uint)nameOffset << size_shift;
-                        var rdrRsrc = new LeImageReader(base.RawImage, offset);
-                        var rsrc =  rdrRsrc.ReadBytes((uint)nameLength << size_shift);
-                        var sig = LoadedImage.ReadBeUInt16(rsrc, 0);
-                    }
-                    //dump_data(PRD((uint)nameOffset << size_shift, (uint)nameLength << size_shift),
-                    //           nameLength << size_shift, "    ");
+                        Name = resname,
+                        Type = "WindowsBitmap",
+                        Bytes = rsrc,
+                    });
                 }
+                resources.Add(resGrp);
+
                 type_id = rdr.ReadLeUInt16();
             }
-
         }
-
 
         string ReadByteLengthString(ImageReader rdr, int offset)
         {
@@ -299,13 +283,14 @@ namespace Reko.ImageLoaders.MzExe
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-16");
             var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
-            DumpResources();
 
             var program = new Program(
                 this.image,
                 this.imageMap,
                 arch,
                 platform);
+            program.Resources.Name = "Win16 resources";
+            LoadResources(program.Resources.Resources);
             foreach (var impRef in this.importStubs.Values)
             {
                 program.ImportReferences.Add(impRef.Item1, impRef.Item2);

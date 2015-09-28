@@ -101,6 +101,8 @@
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\PlatformDesigner.cs" />
+    <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
+    <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />

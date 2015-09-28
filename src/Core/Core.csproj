@@ -262,6 +262,7 @@
     <Compile Include="PrintfApplicationBuilder.cs" />
     <Compile Include="ProgramAddress.cs" />
     <Compile Include="ProgramOptions.cs" />
+    <Compile Include="ProgramResource.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="MetadataFile.cs" />
     <Compile Include="Provenance.cs" />
