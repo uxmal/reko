@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc.Expect(s => s.CreateDocumentWindow(
                     Arg<string>.Is.Equal("codeViewerWindow"),
                 Arg<string>.Is.Equal(m.Procedure),
-                Arg<string>.Is.Equal("Code Viewer"),
+                Arg<string>.Is.Equal(m.Procedure.Name),
                 Arg<IWindowPane>.Is.Anything))
                 .Return(windowFrame);
             windowFrame.Expect(s => s.Show());

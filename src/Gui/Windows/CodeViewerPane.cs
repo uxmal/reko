@@ -46,6 +46,7 @@ namespace Reko.Gui.Windows
         private bool ignoreEvents;
 
         public TextView TextView { get { return codeView.TextView; } }
+        public IWindowFrame FrameWindow { get; internal set; }
 
         #region IWindowPane Members
 
@@ -220,6 +221,7 @@ namespace Reko.Gui.Windows
         private void Procedure_NameChanged(object sender, EventArgs e)
         {
             SetTextView(proc);
+            FrameWindow.Title = proc.Name;
         }
     }
 }

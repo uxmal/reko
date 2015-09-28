@@ -41,7 +41,7 @@ namespace Reko.Gui.Windows
             get { return shellUiSvc; }
         }
 
-        protected void ShowWindow(string windowType, string windowTitle, object docItem, IWindowPane innerPane)
+        protected IWindowFrame ShowWindow(string windowType, string windowTitle, object docItem, IWindowPane innerPane)
         {
             var windowFrame = shellUiSvc.FindDocumentWindow(windowType, docItem);
             if (windowFrame == null)
@@ -49,6 +49,7 @@ namespace Reko.Gui.Windows
                 windowFrame = shellUiSvc.CreateDocumentWindow(windowType, docItem, windowTitle, innerPane);
             }
             windowFrame.Show();
+            return windowFrame;
         }
     }
 }
