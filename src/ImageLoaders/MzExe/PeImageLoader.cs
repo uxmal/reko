@@ -191,7 +191,11 @@ namespace Reko.ImageLoaders.MzExe
             imgLoaded.BaseAddress = addrLoad;
             this.program = new Program(imgLoaded, ImageMap, arch, platform);
             this.importReferences = program.ImportReferences;
-            LoadResources();
+
+            var rsrcLoader = new PeResourceLoader(this.imgLoaded, rvaResources);
+            List<ProgramResource> items = rsrcLoader.Load();
+            program.Resources.Resources.AddRange(items);
+
             return program;
         }
 
@@ -751,67 +755,6 @@ namespace Reko.ImageLoaders.MzExe
                 break;
             }
             return functionStarts;
-        }
-
-        public void LoadResources()
-        {
-            var rsrcSection = new LeImageReader(this.imgLoaded, rvaResources);
-            var rdr = rsrcSection.Clone();
-
-            ReadResourceDirectory(rdr);
-        }
-
-        public void ReadResourceDirectory(ImageReader rdr)
-        {
-            const uint DIR_MASK = 0x80000000;
-            var flags = rdr.ReadUInt32();
-            var date = rdr.ReadUInt32();
-            var version = rdr.ReadUInt32();
-            var cNameEntries = rdr.ReadUInt16();
-            var cIdEntries = rdr.ReadUInt16();
-            for (int i = 0; i < cNameEntries; ++i)
-            {
-                var rvaName = rdr.ReadUInt32();
-                var rvaEntry = rdr.ReadUInt32();
-                if ((rvaEntry & DIR_MASK) != 0)
-                    ReadResourceDirectory(new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK)));
-                else
-                    ReadResourceEntry(new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK)));
-            }
-            for (int i = 0; i < cIdEntries; ++i)
-            {
-                var id = rdr.ReadUInt32();
-                var rvaEntry = rdr.ReadUInt32();
-                if ((rvaEntry & DIR_MASK) != 0)
-                    ReadResourceDirectory(new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK)));
-                else
-                    ReadResourceEntry(new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK)));
-            }
-        }
-
-        public void ReadResourceEntry(ImageReader rdr)
-        {
-            const uint RT_BITMAP = 2;
-            const uint RT_ICON = 3;
-            const uint RT_MENU = 4;
-            const uint RT_DIALOG = 5;
-            const uint RT_STRING = 6;
-            const uint RT_ACCELERATOR = 9;
-            const uint RT_GROUP_ICON = 14;
-            const uint RT_VERSION = 16;
-
-            var rvaData = rdr.ReadUInt32();
-            var size = rdr.ReadUInt32();
-            var codepage = rdr.ReadUInt32();
-            var padding = rdr.ReadUInt32();
-        }
-
-        public string ReadResourceString(uint rva)
-        {
-            var rdr = new LeImageReader(imgLoaded, rva);
-            var len = rdr.ReadLeInt16();
-            var abStr = rdr.ReadBytes(len);
-            return Encoding.ASCII.GetString(abStr);
         }
     }
 }

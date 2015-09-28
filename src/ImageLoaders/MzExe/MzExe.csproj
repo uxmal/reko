@@ -65,6 +65,7 @@
     <Compile Include="MsdosImageLoader.cs" />
     <Compile Include="NeImageLoader.cs" />
     <Compile Include="PeImageLoader.cs" />
+    <Compile Include="PeResourceLoader.cs" />
     <Compile Include="PkLiteUnpacker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
