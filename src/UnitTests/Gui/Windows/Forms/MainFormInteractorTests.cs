@@ -66,6 +66,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IDecompilerService dcSvc;
         private ISearchResultService srSvc;
         private IDecompiler decompiler;
+        private IResourceEditorService resEditSvc;
 
 		[SetUp]
 		public void Setup()
@@ -522,6 +523,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc = mr.StrictMock<IDecompilerService>();
             srSvc = MockRepository.GenerateMock<ISearchResultService, IWindowPane>();
             diagnosticSvc = MockRepository.GenerateMock<IDiagnosticsService, IWindowPane>();
+            resEditSvc = mr.StrictMock<IResourceEditorService>();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
@@ -540,6 +542,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
             svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);
+            svcFactory.Stub(s => s.CreateResourceEditorService()).Return(resEditSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 

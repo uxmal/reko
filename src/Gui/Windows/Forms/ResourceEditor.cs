@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
 * Copyright (C) 1999-2015 John Källén.
 *
@@ -18,23 +18,25 @@
 */
 #endregion
 
-using Reko.Core;
-using Reko.Gui.Forms;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using Reko.Gui.Forms;
 
-namespace Reko.Gui
+namespace Reko.Gui.Windows.Forms
 {
-    public interface IDialogFactory
+    public partial class ResourceEditor : UserControl, IResourceEditor
     {
-        IAssembleFileDialog CreateAssembleFileDialog();
-        IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
-        IAddressPromptDialog CreateAddressPromptDialog();
-        IFindStringsDialog CreateFindStringDialog();
-        IMainForm CreateMainForm();
-        IOpenAsDialog CreateOpenAsDialog();
-        IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
-        IResourceEditor CreateResourceEditor();
-        ISearchDialog CreateSearchDialog();
-        IUserPreferencesDialog CreateUserPreferencesDialog();
+        public ResourceEditor()
+        {
+            InitializeComponent();
+        }
+
+        public Image Image { get { return imageCtrl.Image; } set { imageCtrl.Image = value; } }
     }
 }

@@ -104,8 +104,11 @@
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
+    <Compile Include="Forms\IResourceEditor.cs" />
+    <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
+    <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
     <Compile Include="CommandGroup.cs" />
@@ -341,6 +344,12 @@
       <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\ProgramPropertiesInteractor.cs" />
+    <Compile Include="Windows\Forms\ResourceEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ResourceEditor.Designer.cs">
+      <DependentUpon>ResourceEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\SearchDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -522,6 +531,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\ProgramPropertiesDialog.resx">
       <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\ResourceEditor.resx">
+      <DependentUpon>ResourceEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>

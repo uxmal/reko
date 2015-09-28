@@ -83,6 +83,11 @@ namespace Reko.Gui.Windows
             };
         }
 
+        public IResourceEditor CreateResourceEditor()
+        {
+            return new ResourceEditor();
+        }
+
         public ISearchDialog CreateSearchDialog()
         {
             return new SearchDialog()

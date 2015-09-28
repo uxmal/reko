@@ -18,26 +18,16 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui.Design
+namespace Reko.Gui.Forms
 {
-    public class ProgramResourceInstanceDesigner : TreeNodeDesigner
+    public interface IResourceEditor : IDisposable
     {
-        public override void Initialize(object obj)
-        {
-            base.Initialize(obj);
-            TreeNode.Text = ((ProgramResourceInstance)obj).Name;
-        }
-
-        public override void DoDefaultAction()
-        {
-            var resEditor = Services.RequireService<IResourceEditorService>();
-            resEditor.Show((ProgramResourceInstance)base.Component);
-        }
+        Image Image { get; set; }
     }
 }

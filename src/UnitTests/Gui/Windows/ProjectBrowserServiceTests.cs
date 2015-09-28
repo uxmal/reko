@@ -364,6 +364,7 @@ namespace Reko.UnitTests.Gui.Windows
                         "text=\"Image base\" " +
                         "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
                         "tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node tag=\"ProgramResourceGroupDesigner\" />" +
                 "</node>" +
                 "</root>");
         }
@@ -389,6 +390,7 @@ namespace Reko.UnitTests.Gui.Windows
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node tag=\"ProgramResourceGroupDesigner\" />" +
                  "</node>" +
                  "</root>");
             mr.VerifyAll();
@@ -400,7 +402,6 @@ namespace Reko.UnitTests.Gui.Windows
             {
             };
         }
-
 
         private void Given_UserProcedure(uint addr, string name)
         {
@@ -441,6 +442,7 @@ namespace Reko.UnitTests.Gui.Windows
                             "tip=\"12340500\" " +
                             "tag=\"ProcedureDesigner\" />" +
                     "</node>" +
+                    "<node tag=\"ProgramResourceGroupDesigner\" />" +
                 "</node>" +
                 "</root>");
         }

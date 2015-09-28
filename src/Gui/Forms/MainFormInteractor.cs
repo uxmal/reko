@@ -188,6 +188,9 @@ namespace Reko.Gui.Forms
             sc.AddService<ISearchResultService>(srSvc);
             searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
             searchResultsTabControl.Attach((IWindowPane) diagnosticsSvc, form.DiagnosticsPage);
+
+            var resEditService = svcFactory.CreateResourceEditorService();
+            sc.AddService<IResourceEditorService>(resEditService);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
