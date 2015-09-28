@@ -58,6 +58,7 @@ namespace Reko.Gui.Windows
             this.codeView.Dock = DockStyle.Fill;
             this.codeView.CurrentAddressChanged += codeView_CurrentAddressChanged;
             this.codeView.ProcedureName.LostFocus += ProcedureName_LostFocus;
+            this.codeView.ProcedureName.KeyPress += ProcedureName_KeyPress;
             this.codeView.ProcedureDeclaration.TextChanged += ProcedureDeclaration_TextChanged;
             this.codeView.ProcedureDeclaration.LostFocus += ProcedureDeclaration_LostFocus;
 
@@ -73,6 +74,7 @@ namespace Reko.Gui.Windows
             return this.codeView;
         }
 
+       
         void codeView_CurrentAddressChanged(object sender, EventArgs e)
         {
             if (ignoreEvents)
@@ -185,6 +187,18 @@ namespace Reko.Gui.Windows
         private bool IsValidCIdentifier(string id)
         {
             return true;
+        }
+
+        private void ProcedureName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                var newName = codeView.ProcedureName.Text;
+                if (proc.Name == newName || !IsValidCIdentifier(newName))
+                    return;
+                proc.Name = newName;
+                e.Handled = true;
+            }
         }
 
         private void ProcedureName_LostFocus(object sender, EventArgs e)
