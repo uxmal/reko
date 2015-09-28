@@ -67,9 +67,10 @@ namespace Reko.UnitTests.Gui.Windows
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
 
             var svc = (ILowLevelViewService)service;
-            Expect.Call(shellUi.FindWindow("memoryViewWindow")).Return(null);
-            Expect.Call(shellUi.CreateWindow(
+            shellUi.Expect(s => s.FindDocumentWindow("memoryViewWindow", program)).Return(null);
+            shellUi.Expect(s => s.CreateDocumentWindow(
                 Arg<string>.Is.Anything,
+                Arg<Program>.Is.Same(program),
                 Arg<string>.Is.Equal("Memory View"),
                 Arg<IWindowPane>.Is.Anything))
                 .Return(windowFrame);
@@ -121,8 +122,8 @@ namespace Reko.UnitTests.Gui.Windows
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
             AddStubService<IUiPreferencesService>(sc);
             Given_Program();
-            uiSvc.Stub(x => x.FindWindow(Arg<string>.Is.Anything)).Return(null);
-            uiSvc.Stub(x => x.CreateWindow("", "", null))
+            uiSvc.Stub(x => x.FindDocumentWindow(null, null)).IgnoreArguments().Return(null);
+            uiSvc.Stub(x => x.CreateDocumentWindow("", null, "", null))
                 .IgnoreArguments()
                 .Return(mr.Stub<IWindowFrame>());
             uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());

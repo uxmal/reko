@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using System.IO;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -52,23 +53,6 @@ namespace Reko.ImageLoaders.MzExe
             var rdr = rsrcSection.Clone();
 
             return ReadResourceDirectory(rdr);
-        }
-
-        private string GenerateResourceName(uint id)
-        {
-
-            switch (id)
-            {
-            case RT_BITMAP: return "BITMAP";
-            case RT_ICON: return "ICON";
-            case RT_MENU: return "MENU";
-            case RT_DIALOG: return "DIALOG";
-            case RT_STRING: return "STRING";
-            case RT_ACCELERATOR: return "ACCELERATOR";
-            case RT_GROUP_ICON: return "GROUP_ICON";
-            case RT_VERSION: return "VERSION";
-            default: return id.ToString();
-            }
         }
 
         public List<ProgramResource> ReadResourceDirectory(ImageReader rdr)
@@ -105,7 +89,7 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     Name = GenerateResourceName(id),
                 };
-                e.Resources.AddRange(ReadNameDirectory(subRdr, 0));
+                e.Resources.AddRange(ReadNameDirectory(subRdr, id));
                 entries.Add(e);
             }
             return entries;
@@ -131,7 +115,7 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     Name = ReadResourceString(rvaName),
                 };
-                e.Resources.AddRange(ReadLanguageDirectory(subRdr, resourceType));
+                e.Resources.AddRange(ReadLanguageDirectory(subRdr, resourceType, e.Name));
                 entries.Add(e);
             }
             for (int i = 0; i < cIdEntries; ++i)
@@ -145,13 +129,13 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     Name = id.ToString(),
                 };
-                e.Resources.AddRange(ReadLanguageDirectory(subRdr, resourceType));
+                e.Resources.AddRange(ReadLanguageDirectory(subRdr, resourceType, e.Name));
                 entries.Add(e);
             }
             return entries;
         }
 
-        public List<ProgramResource> ReadLanguageDirectory(ImageReader rdr, uint resourceType)
+        public List<ProgramResource> ReadLanguageDirectory(ImageReader rdr, uint resourceType, string resourceId)
         {
             const uint DIR_MASK = 0x80000000;
             var flags = rdr.ReadUInt32();
@@ -167,7 +151,7 @@ namespace Reko.ImageLoaders.MzExe
                 var subRdr = new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK));
                 if ((rvaEntry & DIR_MASK) != 0)
                     throw new BadImageFormatException();
-                entries.Add(ReadResourceEntry(subRdr, ReadResourceString(rvaName), resourceType));
+                entries.Add(ReadResourceEntry(subRdr, resourceId, ReadResourceString(rvaName), resourceType));
             }
             for (int i = 0; i < cIdEntries; ++i)
             {
@@ -176,12 +160,12 @@ namespace Reko.ImageLoaders.MzExe
                 var subRdr = new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK));
                 if ((rvaEntry & DIR_MASK) != 0)
                     throw new BadImageFormatException();
-                entries.Add(ReadResourceEntry(subRdr, id.ToString(), resourceType));
+                entries.Add(ReadResourceEntry(subRdr, resourceId, id.ToString(), resourceType));
             }
             return entries;
         }
 
-        public ProgramResourceInstance ReadResourceEntry(ImageReader rdr, string name, uint resourceType)
+        public ProgramResourceInstance ReadResourceEntry(ImageReader rdr, string resourceId, string langId, uint resourceType)
         {
             var rvaData = rdr.ReadUInt32();
             var size = rdr.ReadUInt32();
@@ -189,12 +173,48 @@ namespace Reko.ImageLoaders.MzExe
             var padding = rdr.ReadUInt32();
             var abResource = new byte[size];
             Array.Copy(imgLoaded.Bytes, (int)rvaData, abResource, 0, abResource.Length);
+
+            if (resourceType == RT_BITMAP)
+            {
+                abResource = PostProcessBitmap(abResource);
+            }
             return new ProgramResourceInstance
             {
-                Name = name,
+                Name = string.Format("{0}:{1}", resourceId, langId),
                 Type = GetResourceType(resourceType),
                 Bytes = abResource,
             };
+        }
+
+        private byte[] PostProcessBitmap(byte[] abResource)
+        {
+            var stm = new MemoryStream();
+            var bw = new BinaryWriter(stm);
+
+            bw.Write('B');
+            bw.Write('M');
+            bw.Write(14 + abResource.Length);
+            bw.Write(0);
+            bw.Write(14);
+            bw.Write(abResource, 0, abResource.Length);
+            bw.Flush();
+            return stm.ToArray();
+        }
+
+        private string GenerateResourceName(uint id)
+        {
+            switch (id)
+            {
+            case RT_BITMAP: return "BITMAP";
+            case RT_ICON: return "ICON";
+            case RT_MENU: return "MENU";
+            case RT_DIALOG: return "DIALOG";
+            case RT_STRING: return "STRING";
+            case RT_ACCELERATOR: return "ACCELERATOR";
+            case RT_GROUP_ICON: return "GROUP_ICON";
+            case RT_VERSION: return "VERSION";
+            default: return id.ToString();
+            }
         }
 
         public string GetResourceType(uint resourceType)

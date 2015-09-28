@@ -45,12 +45,13 @@ namespace Reko.Gui
         {
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var rsrcToString = ResourceToString(resource);
-            var wnd = uiSvc.FindWindow(rsrcToString);
+            var wnd = uiSvc.FindDocumentWindow("resEdit", resource);
             if (wnd == null)
             {
-                wnd = uiSvc.CreateWindow(
-                    rsrcToString,
-                    "Resource editor", 
+                wnd = uiSvc.CreateDocumentWindow(
+                    "resEdit",
+                    resource,
+                    resource.Name,
                     new ResourceEditorInteractor(program, resource));
             }
             wnd.Show();
@@ -58,6 +59,7 @@ namespace Reko.Gui
 
         private string ResourceToString(ProgramResourceInstance resource)
         {
+            var items = new List<string>();
             return string.Format("{0}:{1}", resource.Type, resource.Name);
         }
     }

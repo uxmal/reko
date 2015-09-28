@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Environments.AmigaOS.Design
 {
-    class AmigaOSPlatformDesigner : PlatformDesigner
+    public class AmigaOSPlatformDesigner : PlatformDesigner
     {
         public override void Initialize(object obj)
         {
@@ -38,12 +38,13 @@ namespace Reko.Environments.AmigaOS.Design
         public override void DoDefaultAction()
         {
             var shellUiSvc = Services.RequireService<IDecompilerShellUiService>();
-            var windowFrame = shellUiSvc.FindWindow(GetType().FullName);
+            var windowFrame = shellUiSvc.FindDocumentWindow(GetType().FullName, Component);
             if (windowFrame == null)
             {
                 var platform = (AmigaOSPlatform)Component;
-                windowFrame = shellUiSvc.CreateWindow(
+                windowFrame = shellUiSvc.CreateDocumentWindow(
                     GetType().FullName,
+                    Component,
                     platform.Description,
                     new AmigaOSPropertiesInteractor(platform));
             }

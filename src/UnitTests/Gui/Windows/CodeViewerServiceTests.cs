@@ -45,20 +45,22 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Cvp_CreateViewerIfNotVisible()
         {
+            var m = new ProcedureBuilder();
+            m.Return();
+
             var uiSvc = AddMockService<IDecompilerShellUiService>();
-            uiSvc.Expect(s => s.FindWindow(
-                    "codeViewerWindow"))
+            uiSvc.Expect(s => s.FindDocumentWindow(
+                    "codeViewerWindow" , m.Procedure))
                 .Return(null);
             var windowFrame = MockRepository.GenerateStub<IWindowFrame>();
-            uiSvc.Expect(s => s.CreateWindow(
+            uiSvc.Expect(s => s.CreateDocumentWindow(
                     Arg<string>.Is.Equal("codeViewerWindow"),
-                    Arg<string>.Is.Equal("Code Viewer"),
-                    Arg<IWindowPane>.Is.Anything))
+                Arg<string>.Is.Equal(m.Procedure),
+                Arg<string>.Is.Equal("Code Viewer"),
+                Arg<IWindowPane>.Is.Anything))
                 .Return(windowFrame);
             windowFrame.Expect(s => s.Show());
 
-            var m = new ProcedureBuilder();
-            m.Return();
             var codeViewerSvc = new CodeViewerServiceImpl(sc);
             codeViewerSvc.DisplayProcedure(m.Procedure);
 

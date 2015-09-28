@@ -108,12 +108,27 @@ namespace Reko.Gui.Windows
 
         public IWindowFrame FindDocumentWindow(string documentType, object docItem)
         {
-            throw new NotImplementedException();
+            foreach (var frame in framesByTab.Values)
+            {
+                if (frame.WindowType == documentType && frame.DocumentItem == docItem)
+                    return frame;
+            }
+            return null;
         }
 
-        public IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane)
+        public IWindowFrame CreateDocumentWindow(string documentType, object docItem, string documentTitle, IWindowPane pane)
         {
-            throw new NotImplementedException();
+            var tabPage = new TabPage
+            {
+                Text = documentTitle,
+                ImageIndex = 7,
+            };
+            WindowFrame frame = new WindowFrame(this, documentType, docItem, tabPage, pane);
+            framesByTab.Add(tabPage, frame);
+            this.form.DocumentTabs.TabPages.Add(tabPage);
+            this.form.DocumentTabs.SelectedTab = tabPage;
+            pane.SetSite(services);
+            return frame;   
         }
 
         private void RemoveFrame(WindowFrame windowFrame)
@@ -199,8 +214,18 @@ namespace Reko.Gui.Windows
                 this.pane = pane;
             }
 
+            public WindowFrame(DecompilerShellUiService svc, string key, object docItem, TabPage tabPage, IWindowPane pane)
+            {
+                this.svc = svc;
+                this.key = key;
+                this.DocumentItem = docItem;
+                this.tabPage = tabPage;
+                this.pane = pane;
+            }
+
             public string WindowType { get { return key; } }
             public string Title { get { return tabPage.Text; } set { tabPage.Text = value; } }
+            public object DocumentItem { get; private set; }
 
             public void Close()
             {

@@ -29,6 +29,6 @@ namespace Reko.Gui
     {
         void Clear();
         void DisassembleStartingAtAddress(Program program, Address addr);
-        void ShowWindow();
+        void ShowWindow(Program program);
     }
 }

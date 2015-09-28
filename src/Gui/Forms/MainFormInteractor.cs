@@ -542,16 +542,17 @@ namespace Reko.Gui.Forms
 
         public void ViewDisassemblyWindow()
         {
-            var dasmService = sc.GetService<IDisassemblyViewService>();
-            dasmService.ShowWindow();
+            //$TODO: these need " current program"  to work.
+            //var dasmService = sc.GetService<IDisassemblyViewService>();
+            //dasmService.ShowWindow();
         }
 
         public void ViewMemoryWindow()
         {
-            var memService = sc.GetService<ILowLevelViewService>();
-            //$TODO: determine "current program".
-            memService.ViewImage(this.decompilerSvc.Decompiler.Project.Programs.First());
-            memService.ShowWindow();
+            //var memService = sc.GetService<ILowLevelViewService>();
+            ////$TODO: determine "current program".
+            //memService.ViewImage(this.decompilerSvc.Decompiler.Project.Programs.First());
+            //memService.ShowWindow();
         }
 
         public void ToolsOptions()

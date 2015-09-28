@@ -45,7 +45,7 @@ namespace Reko.Gui.Windows
 
         public void ViewImage(Program program)
         {
-            ShowWindow();
+            ShowWindow(program);
             mvi.Program = program;
             if (program != null)
             {
@@ -64,14 +64,14 @@ namespace Reko.Gui.Windows
             return mvi.GetSelectedAddressRange();
         }
 
-        public void ShowWindow()
+        public void ShowWindow(Program program)
         {
             if (mvi == null)
             {
                 mvi = CreateMemoryViewInteractor();
                 mvi.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(mvi_SelectionChanged);
             }
-            ShowWindow(ViewWindowType, "Memory View", mvi);
+            ShowWindow(ViewWindowType, "Memory View", program, mvi);
         }
 
         #endregion

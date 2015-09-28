@@ -33,8 +33,8 @@ namespace Reko.Gui.Forms
                 dlg = services.RequireService<IDialogFactory>().CreateResourceEditor();
                 switch (resource.Type)
                 {
-                case "Win16_BITMAP": GenerateWin16Bitmap(); break;
-                case "Win16_ICON": GenerateWin16Icon(); break;
+                case "Windows.BMP": GenerateWindowsBitmap(); break;
+                case "Windows.ICO": GenerateWindowsIcon(); break;
                 default: return DumpBytes();
                 }
             }
@@ -45,19 +45,18 @@ namespace Reko.Gui.Forms
             return (Control)dlg;
         }
 
-        private void GenerateWin16Bitmap()
+        private void GenerateWindowsBitmap()
         {
             var stm = new MemoryStream(resource.Bytes);
             dlg.Image = Image.FromStream(stm);
         }
 
-        private void GenerateWin16Icon()
+        private void GenerateWindowsIcon()
         {
             var stm = new MemoryStream();
             var bw = new BinaryWriter(stm);
             var icon = new Icon(new MemoryStream(resource.Bytes));
             dlg.Image = Bitmap.FromHicon(icon.Handle);
-            Cursor c;
             icon.Dispose();
         }
 

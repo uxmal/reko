@@ -354,7 +354,7 @@ namespace Reko.ImageLoaders.MzExe
             return Encoding.ASCII.GetString(abStr);
         }
 
-        string GetResourceType(ushort id)
+        string GetResourceName(ushort id)
         {
             switch (id)
             {
@@ -374,6 +374,16 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
+        string GetResourceType(ushort id)
+        {
+            switch (id)
+            {
+            case NE_RSCTYPE_BITMAP: return "Windows.BMP";
+            case NE_RSCTYPE_ICON: return "Windows.ICO";
+            default: return id.ToString("X4");
+            }
+        }
+
         public override Program Load(Address addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -385,7 +395,7 @@ namespace Reko.ImageLoaders.MzExe
                 this.imageMap,
                 arch,
                 platform);
-            program.Resources.Name = "Win16 resources";
+            program.Resources.Name = "NE resources";
             LoadResources(program.Resources.Resources);
             foreach (var impRef in this.importStubs.Values)
             {
