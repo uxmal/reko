@@ -24,6 +24,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -195,25 +196,30 @@ namespace Reko.ImageLoaders.MzExe
         /// <summary>
         /// Reads in the NE image resources.
         /// </summary>
+        //$REFACTOR: resource loading seems to want to belong in a separate file.
         private void LoadResources(List<ProgramResource> resources)
         {
-            var res_ptr = new LeImageReader(RawImage, this.lfaNew + offRsrcTable);
-            var rdr = res_ptr.Clone();
-            //const void* res_ptr = (const char*)ne + ne->ne_rsrctab;
+            var rsrcTable = new LeImageReader(RawImage, this.lfaNew + offRsrcTable);
+            var rdr = rsrcTable.Clone();
             ushort size_shift = rdr.ReadLeUInt16();
-            //NE_TYPEINFO* info = (const NE_TYPEINFO*)((const WORD*)res_ptr + 1);
-
-            int count;
-
-            //printf("\nResources:\n");
-            ushort type_id = rdr.ReadLeUInt16();
-            while (type_id != 0) //&& (const char*)info < (const char*)ne + ne->ne_restab)
+            ProgramResourceGroup bitmaps = null;
+            ProgramResourceGroup iconGroups = null;
+            ProgramResourceGroup icons = null;
+            var iconIds = new Dictionary<ushort, ProgramResourceInstance>();
+            ushort rsrcType = rdr.ReadLeUInt16();
+            while (rsrcType != 0) 
             {
-                var resGrp = new ProgramResourceGroup { Name = GetResourceType(type_id) };
+                var resGrp = new ProgramResourceGroup { Name = GetResourceType(rsrcType) };
+                if (rsrcType == NE_RSCTYPE_GROUP_ICON)
+                    iconGroups = resGrp;
+                else if (rsrcType == NE_RSCTYPE_ICON)
+                    icons = resGrp;
+                else if (rsrcType == NE_RSCTYPE_BITMAP)
+                    bitmaps = resGrp;
 
                 ushort typeCount = rdr.ReadLeUInt16();
                 uint resLoader = rdr.ReadLeUInt32();
-                for (count = typeCount; count > 0; --count)
+                for (int count = typeCount; count > 0; --count)
                 {
                     ushort nameOffset = rdr.ReadLeUInt16();
                     ushort nameLength = rdr.ReadLeUInt16();
@@ -225,27 +231,117 @@ namespace Reko.ImageLoaders.MzExe
                     string resname;
                     if ((nameId & 0x8000) != 0)
                     {
-                        resname = string.Format("  {0}", (nameId & ~0x8000));
+                        resname = (nameId & ~0x8000).ToString();
                     }
                     else
                     {
-                        resname = ReadByteLengthString(res_ptr, nameId);
+                        resname = ReadByteLengthString(rsrcTable, nameId);
                     }
 
                     var offset = (uint)nameOffset << size_shift;
                     var rdrRsrc = new LeImageReader(base.RawImage, offset);
                     var rsrc = rdrRsrc.ReadBytes((uint)nameLength << size_shift);
 
-                    resGrp.Resources.Add(new ProgramResourceInstance
+                    var rsrcInstance = new ProgramResourceInstance
                     {
                         Name = resname,
-                        Type = "WindowsBitmap",
+                        Type = "Win16_" + resGrp.Name,
                         Bytes = rsrc,
-                    });
+                    };
+                    resGrp.Resources.Add(rsrcInstance);
+
+                    if (rsrcType == NE_RSCTYPE_ICON)
+                        iconIds[(ushort)(nameId & ~0x8000)] = rsrcInstance;
                 }
                 resources.Add(resGrp);
 
-                type_id = rdr.ReadLeUInt16();
+                rsrcType = rdr.ReadLeUInt16();
+            }
+
+            PostProcessIcons(iconGroups, icons, iconIds, resources);
+            PostProcessBitmaps(bitmaps);
+        }
+
+        /// <summary>
+        /// Build icons out of the icon groups + icons.
+        /// </summary>
+        /// <param name="iconGroups"></param>
+        /// <param name="icons"></param>
+        private void PostProcessIcons(
+            ProgramResourceGroup iconGroups, 
+            ProgramResourceGroup icons, 
+            Dictionary<ushort, ProgramResourceInstance> iconIds,
+            List<ProgramResource> resources)
+        {
+            if (icons == null)
+            {
+                if (iconGroups != null)
+                    resources.Remove(iconGroups);
+                return;
+            }
+            if (iconGroups == null)
+            {
+                if (icons == null)
+                    resources.Remove(icons);
+                return;
+            }
+
+            foreach (ProgramResourceInstance iconGroup in iconGroups.Resources)
+            {
+                var r = new BinaryReader(new MemoryStream(iconGroup.Bytes));
+                var stm = new MemoryStream();
+                var w = new BinaryWriter(stm);
+
+                // Copy the group header
+                w.Write(r.ReadInt16());
+                w.Write(r.ReadInt16());
+                short dirEntries = r.ReadInt16();
+                w.Write(dirEntries);
+
+                var icIds = new List<Tuple<ushort, int>>();
+                for (int i = 0; i < dirEntries; ++i)
+                {
+                    w.Write(r.ReadInt32());
+                    w.Write(r.ReadInt32());
+                    w.Write(r.ReadInt32());
+                    var iconId = r.ReadUInt16();
+                    w.Flush();
+                    icIds.Add(Tuple.Create(iconId, (int)stm.Position));
+                    w.Write(0);
+                }
+                foreach (var id in icIds)
+                {
+                    var icon = iconIds[id.Item1];
+                    var icOffset = (int) w.Seek(0, SeekOrigin.Current);
+                    w.Seek(id.Item2, SeekOrigin.Begin);
+                    w.Write(icOffset);
+                    w.Seek(icOffset, SeekOrigin.Begin);
+                    w.Write(icon.Bytes);
+                }
+                iconGroup.Bytes = stm.ToArray();
+                iconGroup.Type = "Win16_ICON";
+            }
+            iconGroups.Name = "ICON";
+            resources.Remove(icons);
+        }
+
+        void PostProcessBitmaps(ProgramResourceGroup bitmaps)
+        {
+            if (bitmaps == null)
+                return;
+            foreach (ProgramResourceInstance bitmap in bitmaps.Resources)
+            {
+                var stm = new MemoryStream();
+                var bw = new BinaryWriter(stm);
+
+                bw.Write('B');
+                bw.Write('M');
+                bw.Write(14 + bitmap.Bytes.Length);
+                bw.Write(0);
+                bw.Write(14);
+                bw.Write(bitmap.Bytes, 0, bitmap.Bytes.Length);
+                bw.Flush();
+                bitmap.Bytes = stm.ToArray();
             }
         }
 

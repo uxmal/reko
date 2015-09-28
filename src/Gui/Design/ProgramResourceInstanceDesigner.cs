@@ -37,7 +37,10 @@ namespace Reko.Gui.Design
         public override void DoDefaultAction()
         {
             var resEditor = Services.RequireService<IResourceEditorService>();
-            resEditor.Show((ProgramResourceInstance)base.Component);
+            
+            resEditor.Show(
+                Host.GetAncestorOfType<Program>(Component),
+                (ProgramResourceInstance)base.Component);
         }
     }
 }

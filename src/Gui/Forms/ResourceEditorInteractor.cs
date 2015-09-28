@@ -2,17 +2,21 @@
 using System.Windows.Forms;
 using Reko.Core;
 using System.IO;
+using Reko.Gui.Windows.Controls;
+using System.Drawing;
 
 namespace Reko.Gui.Forms
 {
     public class ResourceEditorInteractor : IWindowPane
     {
+        private Program program;
         private IResourceEditor dlg;
         private ProgramResourceInstance resource;
         private IServiceProvider services;
 
-        public ResourceEditorInteractor(ProgramResourceInstance resource)
+        public ResourceEditorInteractor(Program program, ProgramResourceInstance resource)
         {
+            this.program = program;
             this.resource = resource;
         }
 
@@ -24,22 +28,48 @@ namespace Reko.Gui.Forms
 
         public Control CreateControl()
         {
-            dlg = services.RequireService<IDialogFactory>().CreateResourceEditor();
-            var stm = new MemoryStream();
-            var bw = new BinaryWriter(stm);
-            bw.Write('B');
-            bw.Write('M');
-            bw.Write(14 + resource.Bytes.Length);
-            bw.Write(0);
-            bw.Write(14);
-            bw.Write(resource.Bytes, 0, resource.Bytes.Length);
-            bw.Flush();
-            try {
-                dlg.Image = System.Drawing.Bitmap.FromStream(stm);
-            } catch
+            try
             {
+                dlg = services.RequireService<IDialogFactory>().CreateResourceEditor();
+                switch (resource.Type)
+                {
+                case "Win16_BITMAP": GenerateWin16Bitmap(); break;
+                case "Win16_ICON": GenerateWin16Icon(); break;
+                default: return DumpBytes();
+                }
+            }
+            catch
+            {
+                return DumpBytes();
             }
             return (Control)dlg;
+        }
+
+        private void GenerateWin16Bitmap()
+        {
+            var stm = new MemoryStream(resource.Bytes);
+            dlg.Image = Image.FromStream(stm);
+        }
+
+        private void GenerateWin16Icon()
+        {
+            var stm = new MemoryStream();
+            var bw = new BinaryWriter(stm);
+            var icon = new Icon(new MemoryStream(resource.Bytes));
+            dlg.Image = Bitmap.FromHicon(icon.Handle);
+            Cursor c;
+            icon.Dispose();
+        }
+
+        Control DumpBytes()
+        {
+            var mem = new MemoryControl();
+            mem.Services = services;
+            mem.ProgramImage = new Reko.Core.LoadedImage(Address.Ptr32(0), resource.Bytes);
+            mem.ImageMap = mem.ProgramImage.CreateImageMap();
+            mem.Architecture = program.Architecture;
+            mem.Font = new Font("Lucida Console", 10F); //$TODO: use user preference
+            return mem;
         }
 
         public void SetSite(IServiceProvider sp)

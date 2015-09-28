@@ -29,7 +29,7 @@ namespace Reko.Gui
 {
     public interface IResourceEditorService
     {
-        void Show(ProgramResourceInstance resource);
+        void Show(Program program, ProgramResourceInstance resource);
     }
 
     public class ResourceEditorService : IResourceEditorService
@@ -41,7 +41,7 @@ namespace Reko.Gui
             this.services = services;
         }
 
-        public void Show(ProgramResourceInstance resource)
+        public void Show(Program program, ProgramResourceInstance resource)
         {
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var rsrcToString = ResourceToString(resource);
@@ -51,7 +51,7 @@ namespace Reko.Gui
                 wnd = uiSvc.CreateWindow(
                     rsrcToString,
                     "Resource editor", 
-                    new ResourceEditorInteractor(resource));
+                    new ResourceEditorInteractor(program, resource));
             }
             wnd.Show();
         }
