@@ -137,7 +137,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml" />
     <DecompilerMetadata Include="$(SolutionDir)external\wine\*.spec" />
   </ItemGroup>
