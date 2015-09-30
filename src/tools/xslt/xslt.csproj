@@ -129,7 +129,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Tools"
+    <PostBuildEvent>copy "$(ProjectPath)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
