@@ -129,11 +129,11 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>: # Execute the correct command depending on the operating system.
-: # Copy the output of the build to the tools directory so that later builds can
-: # use xslt.exe to massage their files.
-:;cp"$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools";exit $?
+    <PostBuildEvent Condition=" '$(OS)' == 'Unix' ">
+cp "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
+    </PostBuildEvent>
+    <PostBuildEvent Condition=" '$(OS)' != 'Unix' ">
 copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
-</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
