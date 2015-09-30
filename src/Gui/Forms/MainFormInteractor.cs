@@ -470,11 +470,19 @@ namespace Reko.Gui.Forms
                         return;
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
                         .SelectMany(program => 
-                              re.GetMatches(program.Image.Bytes, 0)
-                              .Where(o => filter(o, program))
-                                .Select(offset => new ProgramAddress(
-                                    program,
-                                    program.Image.BaseAddress + offset)));
+                            program.ImageMap.Segments.Values.SelectMany(seg =>
+                            {
+                                var segOffset = (int) (seg.Address - program.Image.BaseAddress);
+                                return re.GetMatches(
+                                        program.Image.Bytes,
+                                        segOffset,
+                                        segOffset + (int)seg.Size)
+                                    .Where(o => filter(o, program))
+                                    .Select(offset => new ProgramAddress(
+                                        program,
+                                        program.ImageMap.MapLinearAddressToAddress(
+                                            program.Image.BaseAddress.ToLinear() + (ulong)offset)));
+                            }));
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
             }

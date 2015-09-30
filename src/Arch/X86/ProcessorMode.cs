@@ -94,6 +94,27 @@ namespace Reko.Arch.X86
         }
 
         public abstract bool TryParseAddress(string txtAddress, out Address addr);
+
+        public bool TryParseSegmentedAddress(string txtAddress, out Address addr)
+        {
+            if (txtAddress != null)
+            {
+                int c = txtAddress.IndexOf(':');
+                if (c > 0)
+                {
+                    try
+                    {
+                        addr = CreateSegmentedAddress(
+                            Convert.ToUInt16(txtAddress.Substring(0, c), 16),
+                            Convert.ToUInt32(txtAddress.Substring(c + 1), 16));
+                        return true;
+                    }
+                    catch { }
+                }
+            }
+            addr = null;
+            return false;
+        }
     }
 
     internal class RealMode : ProcessorMode
@@ -136,24 +157,8 @@ namespace Reko.Arch.X86
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            if (txtAddress != null)
-            {
-                int c = txtAddress.IndexOf(':');
-                if (c > 0)
-                {
-                    try
-                    {
-                        addr = CreateSegmentedAddress(
-                            Convert.ToUInt16(txtAddress.Substring(0, c), 16),
-                            Convert.ToUInt32(txtAddress.Substring(c + 1), 16));
-                        return true;
-                    }
-                    catch { }
-                }
-            }
-            addr = null;
-            return false;
-		}        
+            return TryParseSegmentedAddress(txtAddress, out addr);
+        }
     }
 
     internal class SegmentedMode : ProcessorMode
@@ -170,7 +175,8 @@ namespace Reko.Arch.X86
 
         public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
+            return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
@@ -195,7 +201,7 @@ namespace Reko.Arch.X86
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            throw new NotImplementedException();
+            return TryParseSegmentedAddress(txtAddress, out addr);
         }
     }
 

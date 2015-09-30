@@ -80,7 +80,12 @@ namespace Reko.Scanning
             if (limit == 0)
                 return PostError("Unable to determine limit", addrFrom, bw.VectorAddress);
 
-            return BuildTable(bw.VectorAddress, limit, permutation, bw.Stride, state);
+            return BuildTable(
+                bw.VectorAddress, 
+                limit, 
+                permutation,
+                bw.Stride == 1 && bw.JumpSize > 1 ? bw.JumpSize : bw.Stride,
+                state);
         }
 
         private int[] BuildMapping(BackwalkDereference deref, int limit)
@@ -108,6 +113,7 @@ namespace Reko.Scanning
         private List<Address> BuildTable(Address addrTable, int limit, int[] permutation, int stride, ProcessorState state)
         {
             List<Address> vector = new List<Address>();
+
             if (permutation != null)
             {
                 int cbEntry = stride;
@@ -179,6 +185,11 @@ namespace Reko.Scanning
         public Address MakeAddressFromConstant(Constant c)
         {
             return program.Platform.MakeAddressFromConstant(c);
+        }
+
+        public Address MakeSegmentedAddress(Constant seg, Constant off)
+        {
+            return program.Architecture.MakeSegmentedAddress(seg, off);
         }
 
         public RegisterStorage IndexRegister

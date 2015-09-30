@@ -231,6 +231,11 @@ namespace Reko.UnitTests.Mocks
             return Address.TryParse32(txtAddress, out addr);
         }
 
+        public Address MakeSegmentedAddress(Constant seg, Constant offset)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 

@@ -57,19 +57,24 @@ namespace Reko.Scanning.Dfa
             this.transitions = transitions;
         }
 
+        public IEnumerable<int> GetMatches(byte[] bytes, int iStart)
+        {
+            return GetMatches(bytes, iStart, bytes.Length);
+        }
+
         /// <summary>
         /// Returns a sequence of positions at which the automaton pattern matches.
         /// </summary>
         /// <param name="bytes"></param>
-        /// <param name="position"></param>
+        /// <param name="iStart"></param>
         /// <returns></returns>
-        public IEnumerable<int> GetMatches(byte[] bytes, int position)
+        public IEnumerable<int> GetMatches(byte[] bytes, int iStart, int iEnd)
         {
             bool isMatching = false; // true if we have found the beginning of a pattern and are matching.
             int lastMatchPos = -1;   // Last position we found the start of a pattern.
             int lastAcceptPos = -1;  // Last position we entered an accepting state.
             int iState = 0;
-            for (int i = position; i < bytes.Length; ++i)
+            for (int i = iStart; i < iEnd; ++i)
             {
                 var dst = transitions[iState,bytes[i]];
                 if (dst == 0)

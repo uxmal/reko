@@ -63,7 +63,8 @@ namespace Reko.Scanning
                 Index = DetermineIndexRegister(mem);
             }
             Operations = new List<BackwalkOperation>();
-		}
+            JumpSize = target.DataType.Size;
+        }
 
         /// <summary>
         /// The register used to perform a table-dispatch switch.
@@ -74,6 +75,7 @@ namespace Reko.Scanning
         public int Stride { get; private set; }
         public Address VectorAddress { get; private set; }
         public List<BackwalkOperation> Operations { get; private set; }
+        public int JumpSize { get; set; }
 
         /// <summary>
         /// Walks backward along the <paramref name="block"/>, recording the operations done to the idx register.
@@ -179,6 +181,7 @@ namespace Reko.Scanning
                             var immSrc = binCmp.Right as Constant;
                             if (immSrc != null)
                             {
+                                // Found the bound of the table.
                                 Operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.ToInt32()));
                                 return false;
                             }
@@ -428,7 +431,7 @@ namespace Reko.Scanning
                 var selector = segmem.BasePointer.Accept(eval) as Constant;
                 if (selector != null)
                 {
-                    VectorAddress = Address.SegPtr(selector.ToUInt16(), vector.ToUInt16());
+                    VectorAddress = host.MakeSegmentedAddress(selector, vector);
                 }
             }
             else

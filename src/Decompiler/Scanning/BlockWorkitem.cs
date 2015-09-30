@@ -105,6 +105,9 @@ namespace Reko.Scanning
             blockCur = scanner.FindContainingBlock(addrStart);
             if (BlockHasBeenScanned(blockCur))
                 return;
+            if (blockCur.Name.EndsWith("_01C3"))   //$DEBUG
+                blockCur.Name.ToString();
+
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
             rtlStream = scanner.GetTrace(addrStart, state, frame)
@@ -905,11 +908,13 @@ namespace Reko.Scanning
             private IScanner scanner;
             private LoadedImage image;
             private Platform platform;
+            private IProcessorArchitecture arch;
 
             public BackwalkerHost(BlockWorkitem item)
             {
                 this.scanner = item.scanner;
                 this.image = item.program.Image;
+                this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
             }
 
@@ -936,6 +941,11 @@ namespace Reko.Scanning
             public Address MakeAddressFromConstant(Constant c)
             {
                 return platform.MakeAddressFromConstant(c);
+            }
+
+            public Address MakeSegmentedAddress(Constant seg, Constant off)
+            {
+                return arch.MakeSegmentedAddress(seg, off);
             }
         }
     }

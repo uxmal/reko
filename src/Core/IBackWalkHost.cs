@@ -31,6 +31,7 @@ namespace Reko.Core
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
         Address MakeAddressFromConstant(Constant c);
+        Address MakeSegmentedAddress(Constant selector, Constant offset);
 
         Block GetSinglePredecessor(Block block);
 

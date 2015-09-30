@@ -622,7 +622,7 @@ namespace Reko.ImageLoaders.MzExe
                             {
                                 if ((entry.flags & 2)) /* public data ? */
                                 {
-                                    TRACE("patch %04x:%04x . mov ax, dgroup [%04x]\n", sel, entry.offs, dgroup);
+                                    TRACE("patch %04x:%04x -> mov ax, dgroup [%04x]\n", sel, entry.offs, dgroup);
                                     *pFunc = 0xb8; /* mov ax, */
                                     *(WORD*)(pFunc + 1) = dgroup;
                                 }
