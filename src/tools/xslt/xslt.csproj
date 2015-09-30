@@ -130,9 +130,11 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent Condition=" '$(OS)' == 'Unix' ">
+echo OS is '$(OS)'
 cp "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
     </PostBuildEvent>
     <PostBuildEvent Condition=" '$(OS)' != 'Unix' ">
+echo OS is '$(OS)'
 copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
     </PostBuildEvent>
   </PropertyGroup>
