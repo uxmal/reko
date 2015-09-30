@@ -85,15 +85,6 @@
     <Compile Include="WinForms\TypeDialog.Designer.cs">
       <DependentUpon>TypeDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Wpf\MainForm.xaml.cs">
-      <DependentUpon>MainForm.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Wpf\MainFormHost.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Wpf\MainFormHost.Designer.cs">
-      <DependentUpon>MainFormHost.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="WinForms\PatternSearchDialog.resx">
       <DependentUpon>PatternSearchDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,9 +110,6 @@
     <EmbeddedResource Include="WinForms\TypeDialog.resx">
       <DependentUpon>TypeDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Wpf\MainFormHost.resx">
-      <DependentUpon>MainFormHost.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -142,12 +130,6 @@
     <Content Include="Resources\Back.ico" />
     <Content Include="Resources\Header.ico" />
     <Content Include="Resources\Code.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Wpf\MainForm.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
