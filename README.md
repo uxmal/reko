@@ -33,6 +33,10 @@ about the Reko project's internal workings.
 
 ## Recent versions
 
+### Version 0.5.4.0
+* Support for the Windows - OS/2 New Executable format (NE EXE)
+* Implemented continuous integration using Travis CI
+
 ### Version 0.5.3.0
 * Support for the MIPS architecture, and MIPS support in the 
   PE and ELF image format
