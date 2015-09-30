@@ -360,7 +360,9 @@ namespace Reko.Structure
             {
                 return ReduceIncSwitch(n, follow);
             }
-            RefineIncSwitch(n);
+            follow = RefineIncSwitch(n);
+            Debug.Assert(follow != null);
+            ReduceIncSwitch(n, follow);
             return true;
         }
 
@@ -431,11 +433,12 @@ all other cases, together they constitute a Switch[].
         /// IncSwitch[·]. However, because the default node handles
         /// all other cases, together they constitute a Switch[·].
         /// </remarks>
-        private void RefineIncSwitch(Region n)
+        private Region RefineIncSwitch(Region n)
         {
             VirtualizeIrregularSwitchEntries(n);
             Region follow = FindIrregularSwitchFollowRegion(n);
             VirtualizeIrregularSwitchExits(n, follow);
+            return follow;
         }
 
         private void VirtualizeIrregularSwitchEntries(Region n)
@@ -736,7 +739,7 @@ doing future pattern matches.
                 from.Type = RegionType.Tail;
             }
             else
-                throw new NotImplementedException();
+                throw new NotImplementedException(string.Format("Can't collapse {0} ({1}) => {2}", from.Block.Name, from.Type, to.Block.Name));
         }
 
 #if NILZ

@@ -105,8 +105,6 @@ namespace Reko.Scanning
             blockCur = scanner.FindContainingBlock(addrStart);
             if (BlockHasBeenScanned(blockCur))
                 return;
-            if (blockCur.Name.EndsWith("_01C3"))   //$DEBUG
-                blockCur.Name.ToString();
 
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
