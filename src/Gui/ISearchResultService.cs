@@ -18,7 +18,9 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -32,6 +34,7 @@ namespace Reko.Gui
     /// </summary>
     public interface ISearchResultService 
     {
+        void ShowAddressSearchResults(IEnumerable<ProgramAddress> hits, AddressSearchDetails code);
         void ShowSearchResults(ISearchResult result);
     }
 }

@@ -75,10 +75,10 @@ namespace Reko.Gui
 		public const int GrpCodeView = 17 + 1000;
 		public const int GrpBrowser = 18 + 1000;
 		public const int GrpBrowserProc = 19 + 1000;
-		public const int GrpBrowserSegm = 20 + 1000;
-		public const int GrpToolbarFileOps = 21 + 1000;
-		public const int GrpToolbarActions = 22 + 1000;
-		public const int GrpProcedure = 23 + 1000;
+		public const int GrpToolbarFileOps = 20 + 1000;
+		public const int GrpToolbarActions = 21 + 1000;
+		public const int GrpProcedure = 22 + 1000;
+		public const int GrpAddressSearchView = 23 + 1000;
 		public const int GrpAddressSearch = 24 + 1000;
 	}
 	
@@ -107,25 +107,28 @@ namespace Reko.Gui
 		public const int ViewShowAllFragments = 21 + 2000;
 		public const int ViewShowUnscanned = 22 + 2000;
 		public const int ViewFindPattern = 23 + 2000;
-		public const int ViewFindFragments = 24 + 2000;
+		public const int ViewFindStrings = 24 + 2000;
 		public const int ViewFindWhatPointsHere = 25 + 2000;
-		public const int ActionNextSearchHit = 26 + 2000;
-		public const int ActionPrevSearchHit = 27 + 2000;
-		public const int ActionRestartDecompilation = 28 + 2000;
-		public const int ActionNextPhase = 29 + 2000;
-		public const int ActionFinishDecompilation = 30 + 2000;
-		public const int ActionMarkProcedure = 31 + 2000;
-		public const int ActionScanHeuristically = 32 + 2000;
-		public const int ActionEditSignature = 33 + 2000;
-		public const int ActionMarkType = 34 + 2000;
-		public const int ActionAssumeRegisterValues = 35 + 2000;
-		public const int ToolsOptions = 36 + 2000;
-		public const int WindowsCascade = 37 + 2000;
-		public const int WindowsTileVertical = 38 + 2000;
-		public const int WindowsTileHorizontal = 39 + 2000;
-		public const int WindowsCloseAll = 40 + 2000;
-		public const int HelpAbout = 41 + 2000;
-		public const int ShowProcedureCallHierarchy = 42 + 2000;
+		public const int ViewAsCode = 26 + 2000;
+		public const int ViewAsStrings = 27 + 2000;
+		public const int ViewAsData = 28 + 2000;
+		public const int ActionNextSearchHit = 29 + 2000;
+		public const int ActionPrevSearchHit = 30 + 2000;
+		public const int ActionRestartDecompilation = 31 + 2000;
+		public const int ActionNextPhase = 32 + 2000;
+		public const int ActionFinishDecompilation = 33 + 2000;
+		public const int ActionMarkProcedure = 34 + 2000;
+		public const int ActionScanHeuristically = 35 + 2000;
+		public const int ActionEditSignature = 36 + 2000;
+		public const int ActionMarkType = 37 + 2000;
+		public const int ActionAssumeRegisterValues = 38 + 2000;
+		public const int ToolsOptions = 39 + 2000;
+		public const int WindowsCascade = 40 + 2000;
+		public const int WindowsTileVertical = 41 + 2000;
+		public const int WindowsTileHorizontal = 42 + 2000;
+		public const int WindowsCloseAll = 43 + 2000;
+		public const int HelpAbout = 44 + 2000;
+		public const int ShowProcedureCallHierarchy = 45 + 2000;
 		public const int FileMru = 2200;
 	}
 }

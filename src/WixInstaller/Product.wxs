@@ -146,6 +146,11 @@
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.Proxy.dll" />
+        <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" />
+        <File Source="$(var.SolutionDir)..\external\wine\gdi.exe16.spec" />
+        <File Source="$(var.SolutionDir)..\external\wine\krnl386.exe16.spec" />
+        <File Source="$(var.SolutionDir)..\external\wine\user.exe16.spec" />
+
       </Component>
     </ComponentGroup>
 

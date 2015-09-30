@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Gui.Design
         public void ProcDesigner_DefaultAction_ShowProcedure()
         {
             var proc = new Procedure("foo", new Frame(PrimitiveType.Pointer32));
-            var des = new ProcedureDesigner(program, proc, null, Address.Ptr32(0x001100000));
+            var des = new ProcedureDesigner(program, proc, null, Address.Ptr32(0x001100000), false);
             des.Services = services;
             var codeSvc = mr.StrictMock<ICodeViewerService>();
             Given_Service<ICodeViewerService>(codeSvc);

@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Intel
 		private X86State state;
 		private Procedure proc;
         private Program prog;
-        private IntelInstruction instr;
+        private X86Instruction instr;
 
 		[Test]
 		public void X86Orw32_Creation()
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.Intel
             prog = new Program();
             prog.Image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
             var procAddress = Address.Ptr32(0x10000000);
-            instr = new IntelInstruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
+            instr = new X86Instruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
             {
                 Address = procAddress,
             };

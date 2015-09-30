@@ -69,7 +69,7 @@ namespace Reko.Arch.X86
 			Constant c = GetRegister(seg);
 			if (c.IsValid)
 			{
-				return Address.SegPtr((ushort) c.ToUInt32(), offset & 0xFFFF);
+				return arch.ProcessorMode.CreateSegmentedAddress((ushort) c.ToUInt32(), offset & 0xFFFF);
 			}
 			else
 				return null;
@@ -113,9 +113,8 @@ namespace Reko.Arch.X86
 
         public override void SetInstructionPointer(Address addr)
         {
-            var segAddr = addr as SegAddress32;
-            if (segAddr != null)
-                SetRegister(Registers.cs, Constant.Word16(segAddr.Selector));
+            if (addr.Selector.HasValue)
+                SetRegister(Registers.cs, Constant.Word16(addr.Selector.Value));
         }
 
         public override void OnProcedureEntered()

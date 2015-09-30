@@ -19,9 +19,12 @@
 #endregion
 
 using Reko.Core;
+using Reko.Gui.Controls;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -61,6 +64,11 @@ namespace Reko.Gui.Windows
         public void SetSite(IServiceProvider sp)
         {
             this.services = sp;
+        }
+
+        public void ShowAddressSearchResults(IEnumerable<ProgramAddress> hits, AddressSearchDetails details)
+        {
+            ShowSearchResults(new AddressSearchResult(services, hits, details));
         }
 
         public void ShowSearchResults(ISearchResult result)
@@ -157,26 +165,41 @@ namespace Reko.Gui.Windows
         private class SearchResultView : ISearchResultView
         {
             private ListView listView;
+            private TypeMarker typeMarker;
 
             public SearchResultView(ListView lv)
             {
                 this.listView = lv;
                 this.listView.Columns.Clear();
+                this.typeMarker = new TypeMarker(listView);
             }
-            
+
+            public bool IsFocused { get { return listView.Focused; } }
+
             public IEnumerable<int> SelectedIndices
             {
                 get { return listView.SelectedIndices.Cast<int>(); }
             }
 
-            public bool IsFocused { get { return listView.Focused; } }
-
             public void AddColumn(string columnText, int widthInCharacters)
             {
-                    var colHeader = new ColumnHeader();
-                    colHeader.Text = columnText;
-                    colHeader.Width = listView.Font.Height * widthInCharacters;
-                    listView.Columns.Add(colHeader);
+                var colHeader = new ColumnHeader();
+                colHeader.Text = columnText;
+                colHeader.Width = listView.Font.Height * widthInCharacters;
+                listView.Columns.Add(colHeader);
+            }
+
+            public void Invalidate()
+            {
+                listView.Invalidate();
+            }
+
+            public void ShowTypeMarker(Action<string> action)
+            {
+                var i = listView.TopItem;
+                var rc = listView.DisplayRectangle;
+
+                typeMarker.Show(i.Position, action);
             }
         }
 
@@ -191,6 +214,10 @@ namespace Reko.Gui.Windows
             }
 
             public int ContextMenuID { get { return 0; } }
+
+            public int SortedColumn { get { return -1; } }
+
+            public ISearchResultView View { get; set; }
 
             public void CreateColumns()
             {
@@ -207,13 +234,6 @@ namespace Reko.Gui.Windows
                 };
             }
 
-            public void NavigateTo(int i)
-            {
-            }
-
-            public ISearchResultView View {get;set;}
-
-      
             public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
             {
                 return false;
@@ -224,11 +244,6 @@ namespace Reko.Gui.Windows
                 return false;
             }
 
-            public int SortedColumn
-            {
-                get { return -1; }
-            }
-
             public bool IsColumnSortable(int iColumn)
             {
                 return false;
@@ -237,6 +252,10 @@ namespace Reko.Gui.Windows
             public SortDirection GetSortDirection(int iColumn)
             {
                 return SortDirection.None;
+            }
+
+            public void NavigateTo(int i)
+            {
             }
 
             public void SortByColumn(int iColumn, SortDirection dir)

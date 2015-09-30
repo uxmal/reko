@@ -43,14 +43,14 @@ namespace Reko.Evaluation
         public bool Match(DepositBits dpb)
         {
             this.dpbUse = dpb;
-            if (!dpb.Source.As<Identifier>(out idDef))
+            if (!dpb.Source.As(out idDef))
                 return false;
             var expDef = ctx.GetDefiningExpression(idDef);
             if (expDef == null)
                 return false;
-            if (!expDef.As<DepositBits>(out dpbDef))
+            if (!expDef.As(out dpbDef))
                 return false;
-            if (    !dpbDef.Source.As<Identifier>(out idSrc))
+            if (!dpbDef.Source.As(out idSrc))
                 return false;
             return
                 dpbDef.BitCount == dpbUse.BitCount &&

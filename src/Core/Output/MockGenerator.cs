@@ -257,9 +257,8 @@ namespace Reko.Core.Output
             var addr16 = addr as Address16;
             if (addr16!= null)
                 writer.Write("Address.Ptr16(0x{0:X}", addr16.ToUInt32());       //$REVIEW: need a ToUInt16
-            var segAddr = addr as SegAddress32;
-            if (segAddr != null)
-                writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X}", segAddr.Selector, segAddr.Offset);
+            if (addr.Selector.HasValue)
+                writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X}", addr.Selector, addr.Offset);
             var addr32 = addr as Address32;
             if (addr32 != null)
                 writer.Write("Address.Ptr32(0x{0:X}", addr32.ToUInt32());

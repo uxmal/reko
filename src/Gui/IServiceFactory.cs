@@ -36,9 +36,10 @@ namespace Reko.Gui
     /// </summary>
     public interface IServiceFactory
     {
+        DecompilerEventListener CreateDecompilerEventListener();
         IArchiveBrowserService CreateArchiveBrowserService();
         IConfigurationService CreateDecompilerConfiguration();
-        DecompilerEventListener CreateDecompilerEventListener();
+        IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
         IDecompilerService CreateDecompilerService();
         IDiagnosticsService CreateDiagnosticsService(ListView list);
         IDisassemblyViewService CreateDisassemblyViewService();
@@ -48,7 +49,7 @@ namespace Reko.Gui
         ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
         ISearchResultService CreateSearchResultService(ListView listView);
-        IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
+        IResourceEditorService CreateResourceEditorService();
         ITabControlHostService CreateTabControlHost(TabControl tabControl);
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IUiPreferencesService CreateUiPreferencesService();
@@ -134,6 +135,11 @@ namespace Reko.Gui
         public ISearchResultService CreateSearchResultService(ListView listView)
         {
             return new SearchResultServiceImpl(services, listView);
+        }
+
+        public IResourceEditorService CreateResourceEditorService()
+        {
+            return new ResourceEditorService(services);
         }
 
         public ITabControlHostService CreateTabControlHost(TabControl tabControl)

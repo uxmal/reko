@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public abstract class OperandRewriter
     {
-        private readonly IntelArchitecture arch;
+        protected readonly IntelArchitecture arch;
         private readonly Frame frame;
         private readonly IRewriterHost host;
 
@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
             this.host = host;
         }
 
-        public Expression Transform(IntelInstruction instr, MachineOperand op, PrimitiveType opWidth, X86State state)
+        public Expression Transform(X86Instruction instr, MachineOperand op, PrimitiveType opWidth, X86State state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
@@ -87,7 +87,7 @@ namespace Reko.Arch.X86
                 return Constant.Create(imm.Width, imm.Value.ToUInt32());
         }
 
-        public Expression CreateMemoryAccess(IntelInstruction instr, MemoryOperand mem, DataType dt, X86State state)
+        public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt, X86State state)
         {
             var exp = ImportedProcedure(instr.Address, mem.Width, mem);
             if (exp != null)
@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
 
         public virtual bool IsSegmentedAccessRequired { get { return false; } }
 
-        public Expression CreateMemoryAccess(IntelInstruction instr, MemoryOperand memoryOperand, X86State state)
+        public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand memoryOperand, X86State state)
         {
             return CreateMemoryAccess(instr, memoryOperand, memoryOperand.Width, state);
         }
@@ -126,7 +126,7 @@ namespace Reko.Arch.X86
         /// <param name="mem"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public Expression EffectiveAddressExpression(IntelInstruction instr, MemoryOperand mem, X86State state)
+        public Expression EffectiveAddressExpression(X86Instruction instr, MemoryOperand mem, X86State state)
         {
             Expression eIndex = null;
             Expression eBase = null;
@@ -246,7 +246,7 @@ namespace Reko.Arch.X86
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {
-            return Address.SegPtr(address.Selector, imm.Value.ToUInt32());
+            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector.Value, imm.Value.ToUInt32());
         }
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)

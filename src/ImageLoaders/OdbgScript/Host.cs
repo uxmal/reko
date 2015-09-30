@@ -244,7 +244,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual MachineInstruction DisassembleEx(Address addr)
         {
             var rdr = loader.Architecture.CreateImageReader(loader.Image,  addr);
-            var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            var dasm = (X86Disassembler)loader.Architecture.CreateDisassembler(rdr);
             return dasm.DisassembleInstruction();
         }
 

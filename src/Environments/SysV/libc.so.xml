@@ -8,7 +8,7 @@
       <struct name="_io_iob" />
     </typedef>
     <typedef name="sighandler_t">
-      <ptr>
+      <ptr size="4">
         <fn>
           <return>
             <void />
@@ -37,7 +37,7 @@
       <prim domain="SignedInt" size="4" />
     </typedef>
     <typedef name="va_list">
-      <ptr>
+      <ptr size="4">
         <void />
       </ptr>
     </typedef>
@@ -52,12 +52,12 @@
     </typedef>
     <struct name="passwd">
       <field offset="0" name="pw_name">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </field>
       <field offset="4" name="pw_passwd">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </field>
@@ -68,17 +68,17 @@
         <type>gid_t</type>
       </field>
       <field offset="16" name="pw_gecos">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </field>
       <field offset="20" name="pw_dir">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </field>
       <field offset="24" name="pw_shell">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </field>
@@ -91,7 +91,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="main">
-        <ptr>
+        <ptr size="4">
           <fn>
             <return>
               <prim domain="SignedInt" size="4" />
@@ -100,15 +100,15 @@
               <prim domain="SignedInt" size="4" />
             </arg>
             <arg>
-              <ptr>
-                <ptr>
+              <ptr size="4">
+                <ptr size="4">
                   <prim domain="Character" size="1" />
                 </ptr>
               </ptr>
             </arg>
             <arg>
-              <ptr>
-                <ptr>
+              <ptr size="4">
+                <ptr size="4">
                   <prim domain="Character" size="1" />
                 </ptr>
               </ptr>
@@ -120,14 +120,14 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="ubp_av">
-        <ptr>
-          <ptr>
+        <ptr size="4">
+          <ptr size="4">
             <prim domain="Character" size="1" />
           </ptr>
         </ptr>
       </arg>
       <arg name="init">
-        <ptr>
+        <ptr size="4">
           <fn>
             <return>
               <void />
@@ -136,7 +136,7 @@
         </ptr>
       </arg>
       <arg name="fini">
-        <ptr>
+        <ptr size="4">
           <fn>
             <return>
               <void />
@@ -145,7 +145,7 @@
         </ptr>
       </arg>
       <arg name="rtld_fini">
-        <ptr>
+        <ptr size="4">
           <fn>
             <return>
               <void />
@@ -154,7 +154,7 @@
         </ptr>
       </arg>
       <arg name="stack_end">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -166,7 +166,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -181,7 +181,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -196,12 +196,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="buffer">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -216,7 +216,7 @@
         <void />
       </return>
       <arg name="p">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -225,7 +225,7 @@
   <procedure name="malloc">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
@@ -240,7 +240,7 @@
         <type>size_t</type>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -249,12 +249,12 @@
   <procedure name="strchr">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -266,12 +266,12 @@
   <procedure name="strrchr">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -283,17 +283,17 @@
   <procedure name="memcpy">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -308,12 +308,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -322,17 +322,17 @@
   <procedure name="dcgettext">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -354,12 +354,12 @@
   <procedure name="getenv">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -371,12 +371,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -391,7 +391,7 @@
         <prim domain="SignedInt" size="1" />
       </arg>
       <arg name="stream">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -403,7 +403,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -415,7 +415,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -424,12 +424,12 @@
   <procedure name="fgets">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -437,7 +437,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -449,12 +449,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -469,12 +469,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -486,12 +486,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -503,17 +503,17 @@
   <procedure name="strcat">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -535,7 +535,7 @@
   <procedure name="calloc">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
@@ -560,7 +560,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="filename">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -575,7 +575,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="filename">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -587,17 +587,17 @@
   <procedure name="fopen64">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </return>
       <arg name="filename">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="mode">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -606,7 +606,7 @@
   <procedure name="fdopen">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </return>
@@ -614,7 +614,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="mode">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -646,12 +646,12 @@
   <procedure name="realloc">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -669,7 +669,7 @@
         <type>clockid_t</type>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <struct name="timespec" />
         </ptr>
       </arg>
@@ -688,12 +688,12 @@
   <procedure name="memset">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -711,7 +711,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="fp">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -720,17 +720,17 @@
   <procedure name="strtok">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg name="str">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="delimiters">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -739,17 +739,17 @@
   <procedure name="strcpy">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg name="dst">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="src">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -761,12 +761,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="dst">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="src">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -781,7 +781,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="fp">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -796,7 +796,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="buf">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -811,7 +811,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="s">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -839,7 +839,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="fp">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -851,12 +851,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="fp">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -871,7 +871,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="fp">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -883,7 +883,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -895,7 +895,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -904,7 +904,7 @@
   <procedure name="strerror">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
@@ -919,7 +919,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="path">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -934,7 +934,7 @@
         <type>size_t</type>
       </return>
       <arg name="ptr">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -945,7 +945,7 @@
         <type>size_t</type>
       </arg>
       <arg name="stream">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -957,7 +957,7 @@
         <type>size_t</type>
       </return>
       <arg name="ptr">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -968,7 +968,7 @@
         <type>size_t</type>
       </arg>
       <arg name="stream">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -983,7 +983,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -995,7 +995,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -1003,7 +1003,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1015,7 +1015,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="str">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1026,7 +1026,7 @@
         <type>size_t</type>
       </arg>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1038,7 +1038,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="str">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1052,7 +1052,7 @@
         <type>size_t</type>
       </arg>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1061,7 +1061,7 @@
   <procedure name="__errno_location">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="SignedInt" size="4" />
         </ptr>
       </return>
@@ -1073,12 +1073,12 @@
         <void />
       </return>
       <arg name="assertion">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="file">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1086,7 +1086,7 @@
         <prim domain="UnsignedInt" size="4" />
       </arg>
       <arg name="function">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1095,17 +1095,17 @@
   <procedure name="strpbrk">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1114,12 +1114,12 @@
   <procedure name="__rawmemchr">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
       <arg name="s">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -1144,7 +1144,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="__fp">
-        <ptr>
+        <ptr size="4">
           <type>_IO_FILE</type>
         </ptr>
       </arg>
@@ -1153,12 +1153,12 @@
   <procedure name="mmap64">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
       <arg name="addr">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -1185,12 +1185,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -1202,17 +1202,17 @@
   <procedure name="strstr">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg>
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1221,7 +1221,7 @@
   <procedure name="localtime">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <struct name="tm" />
         </ptr>
       </return>
@@ -1236,12 +1236,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="pwc">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="2" />
         </ptr>
       </arg>
       <arg name="pmb">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1253,17 +1253,17 @@
   <procedure name="memmovve">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </return>
       <arg>
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
       <arg name="src">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -1284,7 +1284,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="termios_p">
-        <ptr>
+        <ptr size="4">
           <struct name="termios" />
         </ptr>
       </arg>
@@ -1296,7 +1296,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="addr">
-        <ptr>
+        <ptr size="4">
           <void />
         </ptr>
       </arg>
@@ -1311,12 +1311,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="filename">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="times">
-        <ptr>
+        <ptr size="4">
           <struct name="utimbuf" />
         </ptr>
       </arg>
@@ -1328,7 +1328,7 @@
         <type>time_t</type>
       </return>
       <arg name="result">
-        <ptr>
+        <ptr size="4">
           <type>time_t</type>
         </ptr>
       </arg>
@@ -1340,7 +1340,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="fp">
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </arg>
@@ -1348,7 +1348,7 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1363,7 +1363,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="path">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1375,7 +1375,7 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="pathname">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1390,12 +1390,12 @@
         <prim domain="SignedInt" size="4" />
       </return>
       <arg name="pattern">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="string">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1407,17 +1407,17 @@
   <procedure name="fopen">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <type>FILE</type>
         </ptr>
       </return>
       <arg name="file">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="mode">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1429,7 +1429,7 @@
         <void />
       </return>
       <arg name="msg">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -1441,7 +1441,7 @@
         <void />
       </return>
       <arg name="func">
-        <ptr>
+        <ptr size="4">
           <fn>
             <return>
               <void />
@@ -1460,12 +1460,12 @@
         <prim domain="SignedInt" size="4" />
       </arg>
       <arg name="path">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
       <arg name="statbuf">
-        <ptr>
+        <ptr size="4">
           <struct name="stat" />
         </ptr>
       </arg>
@@ -1488,7 +1488,7 @@
   <procedure name="getpwuid">
     <signature>
       <return>
-        <ptr>
+        <ptr size="4">
           <struct name="passwd" />
         </ptr>
       </return>

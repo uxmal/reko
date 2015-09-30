@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,17 +26,15 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Reko.Gui.Windows
+namespace Reko.Gui.Windows.Controls
 {
-    public class TypeMarker : IDisposable
+    public class TypeMarker : ITypeMarker
     {
         private TextBox text;
         private Label label;
 
-        public event EventHandler<TypeMarkerEventArgs> TextChanged;
-        public event EventHandler<TypeMarkerEventArgs> TextAccepted;
-
         private const string TypeMarkerEnterType = "<Enter type>";
+        private Action<string> accept;
 
         public TypeMarker(Control bgControl)
         {
@@ -72,8 +71,7 @@ namespace Reko.Gui.Windows
                 e.Handled = true;
                 break;
             case Keys.Enter:
-                if (TextAccepted != null)
-                    TextAccepted(this, new TypeMarkerEventArgs(text.Text));
+                accept(text.Text);
                 HideControls();
                 e.SuppressKeyPress = true;
                 e.Handled = true;
@@ -81,8 +79,9 @@ namespace Reko.Gui.Windows
             }
         }
 
-        public void Show(Point location)
+        public void Show(Point location, Action<string> accept)
         {
+            this.accept = accept;
             text.Location = location;
             label.Location = new Point(location.X, location.Y + text.Height + 3);
             label.BringToFront();
@@ -105,21 +104,33 @@ namespace Reko.Gui.Windows
 
         void text_TextChanged(object sender, EventArgs e)
         {
-            if (TextChanged != null)
+            var formattedText = FormatType(text.Text);
+            if (formattedText.Length > 0)
             {
-                var ee = new TypeMarkerEventArgs(text.Text);
-                TextChanged(this, ee);
-                var formattedText = ee.FormattedType;
-                if (formattedText.Length > 0)
-                {
-                    label.ForeColor = SystemColors.ControlText;
-                    label.Text = ee.FormattedType;
-                }
+                label.ForeColor = SystemColors.ControlText;
+                label.Text = formattedText;
+            }
+            else
+            {
+                label.ForeColor = SystemColors.GrayText;
+                label.Text = TypeMarkerEnterType;
+            }
+        }
+
+        public string FormatType(string text)
+        {
+            try
+            {
+                var parser = new HungarianParser();
+                var dataType = parser.Parse(text);
+                if (dataType == null)
+                    return " - Null - ";
                 else
-                {
-                    label.ForeColor = SystemColors.GrayText;
-                    label.Text = TypeMarkerEnterType; 
-                }
+                    return dataType.ToString();
+            }
+            catch
+            {
+                return " - Error - ";
             }
         }
 
@@ -136,12 +147,5 @@ namespace Reko.Gui.Windows
             text = null;
             label = null;
         }
-    }
-
-    public class TypeMarkerEventArgs : EventArgs
-    {
-        public TypeMarkerEventArgs(string userText) { UserText = userText; }
-        public string UserText { get; private set; }
-        public string FormattedType { get; set; }
     }
 }

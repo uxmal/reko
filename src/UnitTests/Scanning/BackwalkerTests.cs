@@ -73,6 +73,11 @@ namespace Reko.UnitTests.Scanning
                 return Address.Ptr32(c.ToUInt32());
             }
 
+            public Address MakeSegmentedAddress(Constant selector, Constant offset)
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion
 
         }
@@ -83,8 +88,7 @@ namespace Reko.UnitTests.Scanning
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
-            expSimp = new ExpressionSimplifier(
-                    new IntelArchitecture(ProcessorMode.Protected32).CreateProcessorState());
+            expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
             SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
         }
@@ -361,6 +365,7 @@ namespace Reko.UnitTests.Scanning
             var ret = bw.BackwalkInstructions(Registers.eax, block1);
             Assert.AreEqual("None", bw.Index.ToString());
             Assert.AreEqual("Mem0[ebp - 0x000000C4:word32]", bw.IndexExpression.ToString());
+            Assert.AreEqual(4, bw.JumpSize);
             Assert.IsTrue(ret);
 
             ret = bw.BackwalkInstructions(null, block0);

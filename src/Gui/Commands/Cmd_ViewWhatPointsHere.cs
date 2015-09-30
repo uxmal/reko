@@ -52,7 +52,8 @@ namespace Reko.Gui.Commands
             resultSvc.ShowSearchResults(
                 new AddressSearchResult(
                     Services, 
-                    addrControl.Select(lin => new ProgramAddress(program, lin))));
+                    addrControl.Select(lin => new ProgramAddress(program, lin)),
+                    AddressSearchDetails.Code));
         }
     }
 }

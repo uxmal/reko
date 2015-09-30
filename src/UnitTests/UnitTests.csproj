@@ -52,6 +52,15 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
+    <OutputPath>bin\TravisRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\external\Rhino.Mocks-3.6\Rhino.Mocks.dll</HintPath>
@@ -94,6 +103,9 @@
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Environments\Win32\WineSpecFileLoaderTests.cs" />
+    <Compile Include="Evaluation\ConstDivisionImplementedByMultiplication.cs" />
+    <Compile Include="Evaluation\ConstDivisionImplementedByMultiplicationTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
@@ -212,6 +224,7 @@
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />
     <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
+    <Compile Include="ImageLoaders\MzExe\NeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
     <Compile Include="Environments\Win32\MsMangledNameParserTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
@@ -431,6 +444,7 @@
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
+    <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
@@ -646,9 +660,14 @@
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ExternalAssemblies)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -656,10 +675,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>copy /y "$(SolutionDir)Environments\Win32\*.xml" "$(TargetDir)"
-copy /y "$(SolutionDir)..\external\Capstone.NET\*.dll" "$(TargetDir)"
-copy /y "$(SolutionDir)..\external\Capstone.NET\*.pdb" "$(TargetDir)"
-
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

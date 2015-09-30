@@ -39,7 +39,7 @@ namespace Reko.Gui.Windows
         {
             if (segment == null)
                 return;
-            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, pane);
+            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, program, pane);
             pane.DisplaySegment(segment, program);
         }
     }

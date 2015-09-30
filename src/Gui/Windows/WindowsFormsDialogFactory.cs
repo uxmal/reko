@@ -56,6 +56,11 @@ namespace Reko.Gui.Windows
             };
         }
 
+        public IFindStringsDialog CreateFindStringDialog()
+        {
+            return new FindStringsDialog();
+        }
+
         public IMainForm CreateMainForm()
         {
             return new MainForm();
@@ -76,6 +81,11 @@ namespace Reko.Gui.Windows
                 Services = services,
                 Program = program,
             };
+        }
+
+        public IResourceEditor CreateResourceEditor()
+        {
+            return new ResourceEditor();
         }
 
         public ISearchDialog CreateSearchDialog()

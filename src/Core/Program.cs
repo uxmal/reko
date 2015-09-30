@@ -30,39 +30,40 @@ using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Contains information about one input file, gathered during loading, scanning and data analysis,
-	/// as well as storing any user-specified information.
-	/// </summary>
+    /// <summary>
+    /// Contains information about one input file, gathered during loading, scanning and data analysis,
+    /// as well as storing any user-specified information.
+    /// </summary>
     /// <remarks>
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
     public class Program
-	{
+    {
         private SortedList<Address, ImageMapVectorTable> vectors;
-		private Identifier globals;
+        private Identifier globals;
         private StructureType globalFields;
-		private Dictionary<string, PseudoProcedure> pseudoProcs;
+        private Dictionary<string, PseudoProcedure> pseudoProcs;
 
-		public Program()
-		{
+        public Program()
+        {
             this.EntryPoints = new List<EntryPoint>();
             this.FunctionHints = new List<Address>();
-			this.Procedures = new SortedList<Address,Procedure>();
+            this.Procedures = new SortedList<Address, Procedure>();
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
-			this.CallGraph = new CallGraph();
+            this.CallGraph = new CallGraph();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
-			this.TypeFactory = new TypeFactory();
-			this.TypeStore = new TypeStore();
+            this.TypeFactory = new TypeFactory();
+            this.TypeStore = new TypeStore();
             this.UserProcedures = new SortedList<Address, Serialization.Procedure_v1>();
             this.UserCalls = new SortedList<Address, Serialization.SerializedCall_v1>();
             this.UserGlobalData = new SortedList<Address, Serialization.GlobalDataItem_v2>();
             this.Options = new ProgramOptions();
-		}
+            this.Resources = new ProgramResourceGroup();
+        }
 
         public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
         {
@@ -86,15 +87,15 @@ namespace Reko.Core
         public CallGraph CallGraph { get; private set; }
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
-		{
+        {
             PseudoProcedure p;
             if (!pseudoProcs.TryGetValue(name, out p))
             {
                 p = new PseudoProcedure(name, returnType, arity);
-				pseudoProcs[name] = p;
-			}
-			return p;
-		}
+                pseudoProcs[name] = p;
+            }
+            return p;
+        }
 
         public Serialization.Procedure_v1 EnsureUserProcedure(Address address, string name)
         {
@@ -138,15 +139,15 @@ namespace Reko.Core
             var ptrGlobals = TypeFactory.CreatePointer(globalFields, Platform.PointerType.Size);
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }
-		
+
         /// <summary>
         /// The unpacked, relocated, in-memory image of the program to be decompiled.
         /// </summary>
-		public LoadedImage Image { get; set; }
+        public LoadedImage Image { get; set; }
 
         public ImageMap ImageMap { get; set; }
 
-		public Platform Platform { get; set; }
+        public Platform Platform { get; set; }
 
         /// <summary>
         /// The list of known entry points to the program.
@@ -156,7 +157,9 @@ namespace Reko.Core
         /// <summary>
         /// List of function hints.
         /// </summary>
-        public List<Address> FunctionHints { get; private set;
+        public List<Address> FunctionHints
+        {
+            get; private set;
         }
         public string Filename { get; set; }
 
@@ -187,20 +190,26 @@ namespace Reko.Core
         /// User-specified options that control the decompilation of a program.
         /// </summary>
         public ProgramOptions Options { get; private set; }
-		
+
         /// <summary>
-		/// The program's decompiled procedures, indexed by address.
-		/// </summary>
-		public SortedList<Address, Procedure> Procedures { get; private set; }
+        /// The program's decompiled procedures, indexed by address.
+        /// </summary>
+        public SortedList<Address, Procedure> Procedures { get; private set; }
 
-		/// <summary>
-		/// The program's pseudo procedures, indexed by name.
-		/// </summary>
-		public Dictionary<string,PseudoProcedure> PseudoProcedures
-		{
-			get { return pseudoProcs; }
-		}
+        /// <summary>
+        /// The program's pseudo procedures, indexed by name.
+        /// </summary>
+        public Dictionary<string, PseudoProcedure> PseudoProcedures
+        {
+            get { return pseudoProcs; }
+        }
 
+        /// <summary>
+        /// List of resources stored in the binary. Some executable file formats support the
+        /// inclusion of resources in the binary itself (MacOS classic resource forks also count)
+        /// </summary>
+        public ProgramResourceGroup Resources { get; private set; }
+    
 		public TypeFactory TypeFactory { get; private set; }
 		
 		public TypeStore TypeStore { get; private set; }

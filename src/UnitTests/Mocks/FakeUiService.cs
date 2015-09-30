@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane)
+        public IWindowFrame CreateDocumentWindow(string documentType, object docItem, string documentTitle, IWindowPane pane)
         {
             throw new NotImplementedException();
         }

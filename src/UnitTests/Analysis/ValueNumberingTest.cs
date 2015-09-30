@@ -231,7 +231,6 @@ looptest:
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				vn.Write(writer);
 				writer.WriteLine();
-
 			}
 		}
 	}

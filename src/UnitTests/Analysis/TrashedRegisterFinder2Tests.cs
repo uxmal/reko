@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Analysis
             progBuilder.ResolveUnresolved();
 
             var ssa = new SsaTransform(pf, proc, proc.CreateBlockDominatorGraph());
-            var vp = new ValuePropagator(ssa.SsaState.Identifiers, proc);
+            var vp = new ValuePropagator(arch, ssa.SsaState.Identifiers, proc);
             vp.Transform();
 
             ssa.RenameFrameAccesses = true;

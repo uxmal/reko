@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Evaluation
 		{
 			SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
 			table = new Dictionary<Expression,Expression>();
-            simplifier = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
+            simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds));
 		}
 
 		private SsaIdentifierCollection BuildSsaIdentifiers()

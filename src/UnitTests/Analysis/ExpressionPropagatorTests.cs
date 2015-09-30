@@ -49,7 +49,8 @@ namespace Reko.UnitTests.Analysis
             });
 
             var proc = p.BuildProgram().Procedures.Values.First();
-            var ctx = new SymbolicEvaluationContext(new IntelArchitecture(ProcessorMode.Protected32), proc.Frame);
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 
@@ -74,9 +75,10 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
-            var ctx = new SymbolicEvaluationContext(new IntelArchitecture(ProcessorMode.Protected32), proc.Frame);
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
-            var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
+            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
 
             var newInstr = proc.EntryBlock.Succ[0].Statements[2].Instruction.Accept(ep);
             Assert.AreEqual("SZO = cond(v4)", newInstr.ToString());
@@ -95,7 +97,8 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
-            var ctx = new SymbolicEvaluationContext(new FakeArchitecture(), proc.Frame);
+            var arch = new FakeArchitecture();
+            var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 

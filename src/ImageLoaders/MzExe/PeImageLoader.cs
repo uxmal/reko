@@ -58,6 +58,7 @@ namespace Reko.ImageLoaders.MzExe
         private uint rvaDelayImportDescriptor;
         private uint rvaExceptionTable;
         private uint sizeExceptionTable;
+        private uint rvaResources;
         private Dictionary<Address, ImportReference> importReferences;
 		private const ushort MACHINE_i386 = (ushort) 0x014C;
         private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
@@ -190,6 +191,12 @@ namespace Reko.ImageLoaders.MzExe
             imgLoaded.BaseAddress = addrLoad;
             this.program = new Program(imgLoaded, ImageMap, arch, platform);
             this.importReferences = program.ImportReferences;
+
+            var rsrcLoader = new PeResourceLoader(this.imgLoaded, rvaResources);
+            List<ProgramResource> items = rsrcLoader.Load();
+            program.Resources.Resources.AddRange(items);
+            program.Resources.Name = "PE resources";
+
             return program;
         }
 
@@ -313,7 +320,7 @@ namespace Reko.ImageLoaders.MzExe
 			uint importTableSize = rdr.ReadLeUInt32();
 
             if (--dictionaryCount == 0) return;
-			rdr.ReadLeUInt32();			// resource address
+			rvaResources = rdr.ReadLeUInt32();			// resource address
 			rdr.ReadLeUInt32();			// resource size
 
             if (--dictionaryCount == 0) return;
@@ -750,6 +757,5 @@ namespace Reko.ImageLoaders.MzExe
             }
             return functionStarts;
         }
-
     }
 }

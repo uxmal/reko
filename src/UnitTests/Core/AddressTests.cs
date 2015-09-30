@@ -43,5 +43,11 @@ namespace Reko.UnitTests.Core
             Assert.IsTrue(Address.Ptr32(4000) >= Address.Ptr32(4000));
             Assert.IsFalse(Address.Ptr32(3999) >= Address.Ptr32(4000));
         }
+
+        [Test]
+        public void Addr_Protected()
+        {
+            Assert.AreEqual(4096, Address.ProtectedSegPtr(0xF, 0).ToLinear());
+        }
     }
 }

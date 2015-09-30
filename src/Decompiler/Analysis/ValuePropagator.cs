@@ -46,11 +46,11 @@ namespace Reko.Analysis
 
         private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 
-        public ValuePropagator(SsaIdentifierCollection ssaIds, Procedure proc)
+        public ValuePropagator(IProcessorArchitecture arch, SsaIdentifierCollection ssaIds, Procedure proc)
         {
             this.ssaIds = ssaIds;
             this.proc = proc;
-            this.evalCtx = new SsaEvaluationContext(ssaIds);
+            this.evalCtx = new SsaEvaluationContext(arch, ssaIds);
             this.eval = new ExpressionSimplifier(evalCtx);
         }
 

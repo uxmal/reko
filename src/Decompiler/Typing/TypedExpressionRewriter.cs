@@ -115,12 +115,6 @@ namespace Reko.Typing
 
         public void RewriteProgram(Program prog)
 		{
-			{//$DEBUG
-				StringWriter sb = new System.IO.StringWriter();
-				prog.TypeStore.Write(sb);
-				Debug.WriteLine(sb.ToString());
-			}
-
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
                 RewriteFormals(proc.Signature);

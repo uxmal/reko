@@ -33,7 +33,7 @@ namespace Reko.Gui
         IEnumerable<IWindowFrame> ToolWindows { get; }
 
         IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
-        IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane);
+        IWindowFrame CreateDocumentWindow(string documentType, object docItem, string documentTitle, IWindowPane pane);
         IWindowFrame FindWindow(string windowType);
         IWindowFrame FindDocumentWindow(string documentType, object docItem);
         ContextMenu GetContextMenu(int menuID);

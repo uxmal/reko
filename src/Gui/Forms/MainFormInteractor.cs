@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Windows;
 using Reko.Gui.Windows.Forms;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -187,6 +188,9 @@ namespace Reko.Gui.Forms
             sc.AddService<ISearchResultService>(srSvc);
             searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
             searchResultsTabControl.Attach((IWindowPane) diagnosticsSvc, form.DiagnosticsPage);
+
+            var resEditService = svcFactory.CreateResourceEditorService();
+            sc.AddService<IResourceEditorService>(resEditService);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -466,14 +470,20 @@ namespace Reko.Gui.Forms
                         return;
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
                         .SelectMany(program => 
-                              re.GetMatches(program.Image.Bytes, 0)
-                              .Where(o => filter(o, program))
-                                .Select(offset => new ProgramAddress(
-                                    program,
-                                    program.Image.BaseAddress + offset)));
-                    srSvc.ShowSearchResults(new AddressSearchResult(
-                        this.sc,
-                        hits));
+                            program.ImageMap.Segments.Values.SelectMany(seg =>
+                            {
+                                var segOffset = (int) (seg.Address - program.Image.BaseAddress);
+                                return re.GetMatches(
+                                        program.Image.Bytes,
+                                        segOffset,
+                                        segOffset + (int)seg.Size)
+                                    .Where(o => filter(o, program))
+                                    .Select(offset => new ProgramAddress(
+                                        program,
+                                        program.ImageMap.MapLinearAddressToAddress(
+                                            program.Image.BaseAddress.ToLinear() + (ulong)offset)));
+                            }));
+                    srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
             }
         }
@@ -521,18 +531,36 @@ namespace Reko.Gui.Forms
             svc.ShowSearchResults(new ProcedureSearchResult(this.sc, hits));
         }
 
+        public void FindStrings(ISearchResultService srSvc)
+        {
+            using (var dlgStrings = dlgFactory.CreateFindStringDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
+                {
+                    var hits = this.decompilerSvc.Decompiler.Project.Programs
+                        .SelectMany(p => new StringFinder(p).FindStrings(
+                            dlgStrings.GetStringType(),
+                            dlgStrings.MinLength));
+                    srSvc.ShowAddressSearchResults(
+                       hits,
+                       AddressSearchDetails.Strings);
+                }
+            }
+        }
+
         public void ViewDisassemblyWindow()
         {
-            var dasmService = sc.GetService<IDisassemblyViewService>();
-            dasmService.ShowWindow();
+            //$TODO: these need " current program"  to work.
+            //var dasmService = sc.GetService<IDisassemblyViewService>();
+            //dasmService.ShowWindow();
         }
 
         public void ViewMemoryWindow()
         {
-            var memService = sc.GetService<ILowLevelViewService>();
-            //$TODO: determine "current program".
-            memService.ViewImage(this.decompilerSvc.Decompiler.Project.Programs.First());
-            memService.ShowWindow();
+            //var memService = sc.GetService<ILowLevelViewService>();
+            ////$TODO: determine "current program".
+            //memService.ViewImage(this.decompilerSvc.Decompiler.Project.Programs.First());
+            //memService.ShowWindow();
         }
 
         public void ToolsOptions()
@@ -686,10 +714,11 @@ namespace Reko.Gui.Forms
                     return true;
                 case CmdIds.FileAddBinary:
                 case CmdIds.FileAddMetadata:
-                case CmdIds.FileCloseProject:
-                case CmdIds.ViewFindAllProcedures:
                 case CmdIds.FileSave:
+                case CmdIds.FileCloseProject:
                 case CmdIds.EditFind:
+                case CmdIds.ViewFindAllProcedures:
+                case CmdIds.ViewFindStrings:
                     cmdStatus.Status = IsDecompilerLoaded
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
@@ -758,6 +787,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); retval = true; break;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
+                case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 
                 case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
 
@@ -798,7 +828,6 @@ namespace Reko.Gui.Forms
         }
         #endregion
 
-
         #region IStatusBarService Members ////////////////////////////////////
 
         public void SetText(string text)
@@ -807,7 +836,6 @@ namespace Reko.Gui.Forms
         }
 
         #endregion
-
 
         #region DecompilerHost Members //////////////////////////////////
 
@@ -863,7 +891,6 @@ namespace Reko.Gui.Forms
 
         #endregion ////////////////////////////////////////////////////
 
-
         // Event handlers //////////////////////////////
 
         private void miFileExit_Click(object sender, System.EventArgs e)
@@ -906,17 +933,6 @@ namespace Reko.Gui.Forms
             dm.ProcessKey(uiSvc, e);
         }
 
-
-        private void statusBar_PanelClick(object sender, System.Windows.Forms.StatusBarPanelClickEventArgs e)
-        {
-
-        }
-
-        private void txtLog_TextChanged(object sender, System.EventArgs e)
-        {
-
-        }
-
         private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
         {
             MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
@@ -939,15 +955,6 @@ namespace Reko.Gui.Forms
                     if (!string.IsNullOrEmpty(text.Text))
                         item.Text = text.Text;
                 }
-            }
-        }
-
-        public void OnBrowserTreeItemSelected(object sender, TreeViewEventArgs e)
-        {
-            if (e.Action == TreeViewAction.ByKeyboard ||
-                e.Action == TreeViewAction.ByMouse)
-            {
-                throw new NotImplementedException();
             }
         }
 

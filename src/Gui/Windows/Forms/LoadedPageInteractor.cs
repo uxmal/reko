@@ -48,7 +48,6 @@ namespace Reko.Gui.Windows.Forms
             mpCmdidToCommand = new Dictionary<int, MenuCommand>();
             AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowAllFragments));
             AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowUnscanned));
-            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewFindFragments));
         }
 
         protected MenuCommand AddCommand(CommandID cmdId)
@@ -102,7 +101,8 @@ namespace Reko.Gui.Windows.Forms
             srSvc.ShowSearchResults(
                 new AddressSearchResult(
                     Services,
-                    hits));
+                    hits,
+                    AddressSearchDetails.Code));
             return true;
         }
 

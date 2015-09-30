@@ -1,0 +1,10 @@
+language: csharp
+solution: src/Reko-decompiler.sln
+install:
+  - nuget restore src/Reko-decompiler.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+
+script:
+  - xbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
+
+

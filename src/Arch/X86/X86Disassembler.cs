@@ -32,9 +32,10 @@ namespace Reko.Arch.X86
 	/// <summary>
 	/// Intel x86 opcode disassembler 
 	/// </summary>
-	public partial class X86Disassembler : DisassemblerBase<IntelInstruction>
+	public partial class X86Disassembler : DisassemblerBase<X86Instruction>
 	{
-        private IntelInstruction instrCur;
+        private ProcessorMode mode;
+        private X86Instruction instrCur;
 		private PrimitiveType dataWidth;
 		private PrimitiveType addressWidth;
 		private PrimitiveType defaultDataWidth;
@@ -55,11 +56,13 @@ namespace Reko.Arch.X86
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
 		public X86Disassembler(
+            ProcessorMode mode,
             ImageReader rdr,
             PrimitiveType defaultWordSize,
             PrimitiveType defaultAddressSize,
             bool useRexPrefix)
 		{
+            this.mode = mode;
 			this.rdr = rdr;
 			this.defaultDataWidth = defaultWordSize;
 			this.defaultAddressWidth = defaultAddressSize;
@@ -71,7 +74,7 @@ namespace Reko.Arch.X86
         /// to point at the first address after the instruction and returned to the caller.
         /// </summary>
         /// <returns>A single disassembled instruction.</returns>
-        public override IntelInstruction DisassembleInstruction()
+        public override X86Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
                 return null;
@@ -87,7 +90,7 @@ namespace Reko.Arch.X86
             instrCur = s_aOpRec[op].Decode(this, op, "");
             if (instrCur == null)
             {
-                return new IntelInstruction(Opcode.illegal, dataWidth, addressWidth) 
+                return new X86Instruction(Opcode.illegal, dataWidth, addressWidth) 
                 { Address = addr };
             }
             instrCur.Address = addr;
@@ -280,7 +283,7 @@ namespace Reko.Arch.X86
         /// </summary>
 		public abstract class OpRec
 		{
-            public abstract IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat);
+            public abstract X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat);
 		}
 
 		/// <summary>
@@ -307,7 +310,7 @@ namespace Reko.Arch.X86
 				Flags = flags;
 			}
 
-			public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+			public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
 			{
                 return disasm.DecodeOperands(opcode, op, opFormat + format);
 			}
@@ -328,7 +331,7 @@ namespace Reko.Arch.X86
                 this.oprec64 = oprec64;
             }
 
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.defaultAddressWidth.BitSize == 64)
                     return oprec64.Decode(disasm, op, opFormat);
@@ -344,7 +347,7 @@ namespace Reko.Arch.X86
             {
             }
 
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.useRexPrefix)
                 {
@@ -370,7 +373,7 @@ namespace Reko.Arch.X86
                 this.seg = seg;
 			}
 
-			public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+			public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
 			{
                 disasm.segmentOverride = SegFromBits(seg);
                 op = disasm.rdr.ReadByte();
@@ -389,7 +392,7 @@ namespace Reko.Arch.X86
                 this.format = format;
             }
 
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 int grp = Group - 1;
                 byte modRm;
@@ -414,7 +417,7 @@ namespace Reko.Arch.X86
                 this.regInstrs = regInstrs;
             }
 
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 byte modRm;
                 if (!disasm.TryEnsureModRM(out modRm))
@@ -428,7 +431,7 @@ namespace Reko.Arch.X86
         
         public class FpuOpRec : OpRec
         {
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 byte modRM;
                 if (!disasm.TryEnsureModRM(out modRM))
@@ -449,7 +452,7 @@ namespace Reko.Arch.X86
 
         public class TwoByteOpRec : OpRec
         {
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 op = disasm.rdr.ReadByte();
                 return s_aOpRec0F[op].Decode(disasm, op, "");
@@ -458,7 +461,7 @@ namespace Reko.Arch.X86
 
         public class ThreeByteOpRec : OpRec
         {
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 switch (op)
                 {
@@ -472,7 +475,7 @@ namespace Reko.Arch.X86
         }
         public class F2ByteOpRec : OpRec
         {
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.rdr.PeekByte(0) == 0x0F)
                 {
@@ -487,7 +490,7 @@ namespace Reko.Arch.X86
 
         public class F3ByteOpRec : OpRec
         {
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 byte b = disasm.rdr.PeekByte(0);
                 if (b == 0x0F)
@@ -508,7 +511,7 @@ namespace Reko.Arch.X86
 
         public class ChangeDataWidth : OpRec
         {
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 disasm.dataSizeOverride = true;
                 disasm.dataWidth = (disasm.dataWidth == PrimitiveType.Word16)
@@ -521,7 +524,7 @@ namespace Reko.Arch.X86
 
         public class ChangeAddressWidth : OpRec
         {
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 disasm.addressWidth = (disasm.addressWidth == PrimitiveType.Word16)
                         ? PrimitiveType.Word32
@@ -586,7 +589,7 @@ namespace Reko.Arch.X86
                 this.opF2Fmt = null;
             }
 
-            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.f2PrefixSeen)
                     return disasm.DecodeOperands(this.opF2, op, opF2Fmt);
@@ -628,7 +631,7 @@ namespace Reko.Arch.X86
             return true;
 		}
 
-        private IntelInstruction DecodeOperands(Opcode opcode, byte op, string strFormat)
+        private X86Instruction DecodeOperands(Opcode opcode, byte op, string strFormat)
         {
             MachineOperand pOperand;
             PrimitiveType width = null;
@@ -660,7 +663,7 @@ namespace Reko.Arch.X86
                     ++i;
                     ushort off = rdr.ReadLeUInt16();
                     ushort seg = rdr.ReadLeUInt16();
-                    pOperand = addrOp = new X86AddressOperand(Address.SegPtr(seg, off));
+                    pOperand = addrOp = new X86AddressOperand(mode.CreateSegmentedAddress(seg, off));
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);
@@ -769,7 +772,7 @@ namespace Reko.Arch.X86
                     ops.Add(pOperand);
                 }
             }
-            return new IntelInstruction(opcode, iWidth, addressWidth, ops.ToArray());
+            return new X86Instruction(opcode, iWidth, addressWidth, ops.ToArray());
         }
 
 		/// <summary>

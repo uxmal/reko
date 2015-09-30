@@ -77,6 +77,16 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
+    <OutputPath>bin\TravisRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
       <Name>System</Name>
@@ -98,10 +108,17 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\PlatformDesigner.cs" />
+    <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
+    <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
+    <Compile Include="Forms\IResourceEditor.cs" />
+    <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICommandFactory.cs" />
+    <Compile Include="IFindStringsDialog.cs" />
+    <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
     <Compile Include="CommandGroup.cs" />
@@ -301,6 +318,13 @@
       <DependentUpon>FindDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\FindDialogInteractor.cs" />
+    <Compile Include="Windows\Forms\FindStringsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\FindStringsDialog.Designer.cs">
+      <DependentUpon>FindStringsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Forms\FindStringsDialogInteractor.cs" />
     <Compile Include="Windows\Forms\InitialPageInteractor.cs" />
     <Compile Include="Windows\Forms\LoadedPageInteractor.cs" />
     <Compile Include="Windows\Forms\MainForm.cs">
@@ -330,6 +354,12 @@
       <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\ProgramPropertiesInteractor.cs" />
+    <Compile Include="Windows\Forms\ResourceEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ResourceEditor.Designer.cs">
+      <DependentUpon>ResourceEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\SearchDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -337,7 +367,6 @@
       <DependentUpon>SearchDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\SearchDialogInteractor.cs" />
-    <Compile Include="Windows\Forms\UnscannedBlocksResult.cs" />
     <Compile Include="Windows\Forms\UserPreferencesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -367,8 +396,8 @@
     <Compile Include="Windows\ToolStripButtonWrapper.cs" />
     <Compile Include="Windows\ToolStripItemAdapter.cs" />
     <Compile Include="Windows\ToolStripTextBoxWrapper.cs" />
-    <Compile Include="Windows\TreeViewWrapper.cs" />
-    <Compile Include="Windows\TypeMarker.cs" />
+    <Compile Include="Windows\Controls\TreeViewWrapper.cs" />
+    <Compile Include="Windows\Controls\TypeMarker.cs" />
     <Compile Include="Windows\ViewService.cs" />
     <Compile Include="Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Windows\WindowsFormsDialogFactory.cs" />
@@ -418,6 +447,7 @@
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\DiscardableSection.ico" />
     <None Include="Images\Error.ico" />
+    <Content Include="Images\UserEntryProcedure.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />
     <Content Include="Images\Forward.ico" />
@@ -426,6 +456,7 @@
     <Content Include="Images\NextPhase.ico" />
     <Content Include="Images\Open.ico" />
     <Content Include="Images\Platform.ico" />
+    <Content Include="Images\EntryProcedure.ico" />
     <Content Include="Images\Procedure.ico" />
     <Content Include="Images\RestartDecompilation.ico" />
     <Content Include="Images\RwSection.ico" />
@@ -496,6 +527,9 @@
     <EmbeddedResource Include="Windows\Forms\FindDialog.resx">
       <DependentUpon>FindDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\FindStringsDialog.resx">
+      <DependentUpon>FindStringsDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -507,6 +541,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\ProgramPropertiesDialog.resx">
       <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\ResourceEditor.resx">
+      <DependentUpon>ResourceEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>
@@ -520,11 +557,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/xslt.exe $(ProjectDir)Windows/Forms/cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/CmdIds.cs" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/xslt.exe $(ProjectDir)Windows/Forms/decompiler-menus.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/DecompilerMenus.cs" />
+    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\CmdIds.cs&quot;" />
+    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\DecompilerMenus.cs&quot;" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)tools\xslt" "$(ProjectDir)Windows\Forms\cmdids.xslt" "$(ProjectDir)decompiler-menus.xml" "$(ProjectDir)Windows\Forms\CmdIds.cs"
-"$(SolutionDir)tools\xslt" "$(ProjectDir)Windows\Forms\decompiler-menus.xslt" "$(ProjectDir)decompiler-menus.xml" "$(ProjectDir)Windows\Forms\DecompilerMenus.cs"
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

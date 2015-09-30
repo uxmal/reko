@@ -169,6 +169,11 @@ namespace Reko.Core
             return null;
         }
 
+        public Expression MakeSegmentedAddress(Constant seg, Constant off)
+        {
+            return Architecture.MakeSegmentedAddress(seg, off);
+        }
+
         public void RemoveIdentifierUse(Identifier id)
         {
         }

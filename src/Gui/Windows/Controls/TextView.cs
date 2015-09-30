@@ -470,7 +470,8 @@ namespace Reko.Gui.Windows.Controls
         private Size MeasureText(Graphics g, string text, Font font)
         {
             var sz = TextRenderer.MeasureText(
-                g, text, font, new Size(0, 0), TextFormatFlags.NoPadding);
+                g, text, font, new Size(0, 0), 
+                TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
             return sz;
         }
 

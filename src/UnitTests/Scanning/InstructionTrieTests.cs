@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Scanning
 		{
             X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
             var trie = new Trie<MachineInstruction>(cmp);
-			IntelInstruction inst = CreatePush(Registers.bp);
+			X86Instruction inst = CreatePush(Registers.bp);
 			
 			trie.Add(new [] { inst });
 			Assert.AreEqual(trie.Count, 1);
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Scanning
 		public void Trie_ScoreInstructions()
 		{
 			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
-			var trie = new Trie<IntelInstruction>(cmp);
+			var trie = new Trie<X86Instruction>(cmp);
 			trie.Add(new [] {
 				CreatePush(Registers.bp),
 				CreateMov(Registers.bp, Registers.sp) });
@@ -108,9 +108,9 @@ namespace Reko.UnitTests.Scanning
 			Assert.AreEqual(0, score);
 		}
 
-		private IntelInstruction CreateMov(IntelRegister regDst, IntelRegister regSrc)
+		private X86Instruction CreateMov(IntelRegister regDst, IntelRegister regSrc)
 		{
-            IntelInstruction inst = new IntelInstruction(
+            X86Instruction inst = new X86Instruction(
                 Opcode.mov,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
@@ -119,9 +119,9 @@ namespace Reko.UnitTests.Scanning
 			return inst;
 		}
 
-		private IntelInstruction CreatePush(IntelRegister reg)
+		private X86Instruction CreatePush(IntelRegister reg)
 		{
-            IntelInstruction inst = new IntelInstruction(
+            X86Instruction inst = new X86Instruction(
                 Opcode.push,
                 reg.DataType,
                 reg.DataType,

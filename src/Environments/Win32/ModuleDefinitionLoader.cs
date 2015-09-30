@@ -52,7 +52,7 @@ namespace Reko.Environments.Win32
             this.platform = platform;
             var loader = new TypeLibraryLoader(platform, true);
             loader.SetModuleName(DefaultModuleName(filename));
-            for (; ; )
+            for (;;)
             {
                 var tok = Get();
                 switch (tok.Type)
@@ -224,6 +224,7 @@ namespace Reko.Environments.Win32
 
             private TextReader rdr;
             private int lineNumber;
+
             public Lexer(TextReader reader)
             {
                 this.rdr = reader;

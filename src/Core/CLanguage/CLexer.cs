@@ -64,6 +64,8 @@ namespace Reko.Core.CLanguage
             { "while", CTokenType.While },
 
             { "_cdecl", CTokenType.__Cdecl },
+            { "_far", CTokenType._Far },
+            { "_near", CTokenType._Near },
             { "__asm", CTokenType.__Asm },
             { "__cdecl", CTokenType.__Cdecl },
             { "__declspec", CTokenType.__Declspec },
@@ -844,6 +846,8 @@ namespace Reko.Core.CLanguage
         Volatile,
         Wchar_t,
         Xor,
+        _Far,
+        _Near,
         __Asm,
         __Cdecl,
         __Declspec,

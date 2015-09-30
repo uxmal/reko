@@ -144,6 +144,11 @@ namespace Reko.Arch.X86
             return mode.MakeAddressFromConstant(c);
         }
 
+        public override Address MakeSegmentedAddress(Constant seg, Constant offset)
+        {
+            return mode.CreateSegmentedAddress(seg.ToUInt16(), offset.ToUInt32());
+        }
+
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return mode.ReadCodeAddress(byteSize, rdr, state);
@@ -232,6 +237,14 @@ namespace Reko.Arch.X86
     {
         public X86ArchitectureReal()
             : base(ProcessorMode.Real)
+        {
+        }
+    }
+
+    public class X86ArchitectureProtected16 : IntelArchitecture
+    {
+        public X86ArchitectureProtected16()
+            : base(ProcessorMode.ProtectedSegmented)
         {
         }
     }

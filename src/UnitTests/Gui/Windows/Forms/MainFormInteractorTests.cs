@@ -66,6 +66,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IDecompilerService dcSvc;
         private ISearchResultService srSvc;
         private IDecompiler decompiler;
+        private IResourceEditorService resEditSvc;
 
 		[SetUp]
 		public void Setup()
@@ -355,43 +356,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Stub(d => d.Decompiler).Return(null);
         }
 
-        [Test]
-        public void MainForm_ViewMemoryWindow()
-        {
-            Given_MainFormInteractor();
-            var disasmSvc = mr.StrictMock<IDisassemblyViewService>();
-            Given_UiSvc_IgnoresCommands();
-            svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);       //$REVIEW: this shouldn't be necessary -- only if user explicitly asks for it.
-            memSvc.Expect(x => x.ShowWindow());
-            memSvc.Expect(m => m.ViewImage(Arg<Program>.Is.NotNull));
-            Given_DecompilerInstance();
-            mr.ReplayAll();
-
-            When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewMemory));
-
-            mr.VerifyAll();
-        }
-
         private void ReplaceService<T>(T svcInstance)
         {
             var sc = interactor.Services.RequireService<IServiceContainer>();
             sc.RemoveService(typeof(T));
             sc.AddService(typeof(T), svcInstance);
-        }
-
-        [Test]
-        public void MainForm_ViewDisassemblyWindow()
-        {
-            Given_MainFormInteractor();
-            disasmSvc.Expect(x => x.ShowWindow());
-            Given_UiSvc_IgnoresCommands();
-            mr.ReplayAll();
-
-            When_MainFormInteractorWithLoader();
-            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewDisassembly));
-
-            mr.VerifyAll();
         }
 
         private void Given_UiSvc_IgnoresCommands()
@@ -522,6 +491,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc = mr.StrictMock<IDecompilerService>();
             srSvc = MockRepository.GenerateMock<ISearchResultService, IWindowPane>();
             diagnosticSvc = MockRepository.GenerateMock<IDiagnosticsService, IWindowPane>();
+            resEditSvc = mr.StrictMock<IResourceEditorService>();
+            loader = mr.StrictMock<ILoader>();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
@@ -540,6 +511,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
             svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);
+            svcFactory.Stub(s => s.CreateResourceEditorService()).Return(resEditSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 

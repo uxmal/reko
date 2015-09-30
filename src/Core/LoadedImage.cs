@@ -538,6 +538,7 @@ namespace Reko.Core
         public uint ReadLeUInt32(Address addr) { return ReadLeUInt32(this.abImage, ToOffset(addr)); }
         public short ReadLeInt16(Address addr) { return ReadLeInt16(this.abImage, ToOffset(addr)); }
         public ushort ReadLeUInt16(Address addr) { return ReadLeUInt16(this.abImage, ToOffset(addr)); }
+        public byte ReadByte(Address addr) { return this.abImage[ToOffset(addr)]; }
         public bool TryReadByte(Address addr, out byte b) { return TryReadByte(this.abImage, ToOffset(addr), out b); }
         public bool TryReadBytes(Address addr, int length, byte[] membuf) { return TryReadBytes(ToOffset(addr), length, membuf); }
 
@@ -588,6 +589,7 @@ namespace Reko.Core
         }
 
         public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
+        public void WriteLeUInt16(Address addr, ushort w) { WriteLeUInt16(ToOffset(addr), w); }
         public void WriteLeUInt32(Address addr, uint dw) { WriteLeUInt32(ToOffset(addr), dw); }
 
         public static void WriteBytes(byte[] srcBytes, ulong offset, int count, byte[] dstBytes)

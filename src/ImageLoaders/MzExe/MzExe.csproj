@@ -52,6 +52,15 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
+    <OutputPath>bin\TravisRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,7 +72,9 @@
     <Compile Include="ExePackLoader.cs" />
     <Compile Include="LzExeUnpacker.cs" />
     <Compile Include="MsdosImageLoader.cs" />
+    <Compile Include="NeImageLoader.cs" />
     <Compile Include="PeImageLoader.cs" />
+    <Compile Include="PeResourceLoader.cs" />
     <Compile Include="PkLiteUnpacker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

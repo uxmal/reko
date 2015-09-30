@@ -238,7 +238,7 @@ l01C8:
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
             var relocations = new RelocationDictionary();
-			ushort segCode = (ushort) (addrLoad.Selector + (PspSize >> 4));
+			ushort segCode = (ushort) (addrLoad.Selector.Value + (PspSize >> 4));
 			for (;;)
 			{
 				int relocs = (ushort) bitStm.GetByte();
@@ -264,8 +264,8 @@ l01C8:
 			pklIp = bitStm.GetWord();
 
 			var state = arch.CreateProcessorState();
-			state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector));
-			state.SetRegister(Registers.es, Constant.Word16(addrLoad.Selector));
+			state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector.Value));
+			state.SetRegister(Registers.es, Constant.Word16(addrLoad.Selector.Value));
 			state.SetRegister(Registers.cs, Constant.Word16(pklCs));
 			state.SetRegister(Registers.ax, Constant.Word16(0));
 			state.SetRegister(Registers.bx, Constant.Word16(0));

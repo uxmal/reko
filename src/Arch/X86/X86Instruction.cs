@@ -29,7 +29,7 @@ namespace Reko.Arch.X86
 	/// <summary>
 	/// Models an X86 instruction.
 	/// </summary>
-	public class IntelInstruction : MachineInstruction
+	public class X86Instruction : MachineInstruction
 	{
 		public Opcode code;		// Opcode of the instruction.
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
@@ -38,7 +38,7 @@ namespace Reko.Arch.X86
 		public MachineOperand op2;
 		public MachineOperand op3;
 
-		public IntelInstruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+		public X86Instruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.code = code;
 			this.dataWidth = dataWidth;

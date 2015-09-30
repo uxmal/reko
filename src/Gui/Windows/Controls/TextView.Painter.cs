@@ -220,7 +220,7 @@ namespace Reko.Gui.Windows.Controls
                     this.font,
                     pt,
                     selected ? SystemColors.HighlightText : fg,
-                    TextFormatFlags.NoPadding);
+                    TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
                 rcText.X += rcText.Width;
             }
         }

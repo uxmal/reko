@@ -136,7 +136,8 @@ namespace Reko.Gui.Windows.Controls
         static TextSpan()
         {
             stringFormat = new StringFormat(StringFormat.GenericTypographic);
-            stringFormat.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
+            stringFormat.FormatFlags |=
+                StringFormatFlags.MeasureTrailingSpaces;
         }
 
         public abstract string GetText();

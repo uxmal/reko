@@ -39,7 +39,7 @@ namespace Reko.Gui
 
     public interface ILowLevelViewService
     {
-        void ShowWindow();
+        void ShowWindow(Program program);
         void ViewImage(Program program);
         void ShowMemoryAtAddress(Program program, Address addr);
         AddressRange GetSelectedAddressRange();

@@ -108,7 +108,7 @@ namespace Reko.Tools.C2Xml.UnitTests
   <Types>
     <struct name=""link"">
       <field offset=""0"" name=""next"">
-        <ptr>
+        <ptr size=""4"">
           <struct name=""link"" />
         </ptr>
       </field>
@@ -131,7 +131,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <type>size_t</type>
       </return>
       <arg>
-        <ptr>
+        <ptr size=""4"">
           <prim domain=""Character"" size=""1"" />
         </ptr>
       </arg>
@@ -208,7 +208,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <prim domain=""SignedInt"" size=""4"" />
       </return>
       <arg name=""pfoo"">
-        <ptr>
+        <ptr size=""4"">
           <type>FOO</type>
         </ptr>
       </arg>
@@ -233,7 +233,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <prim domain=""SignedInt"" size=""4"" />
       </alt>
       <alt name=""s"">
-        <ptr>
+        <ptr size=""4"">
           <prim domain=""Character"" size=""1"" />
         </ptr>
       </alt>
@@ -424,7 +424,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <prim domain=""SignedInt"" size=""4"" />
       </arg>
       <arg name=""foo"">
-        <ptr>
+        <ptr size=""4"">
           <prim domain=""Character"" size=""1"" />
         </ptr>
       </arg>
@@ -448,7 +448,7 @@ namespace Reko.Tools.C2Xml.UnitTests
       <enum name=""_foo"" />
     </typedef>
     <typedef name=""PFoo"">
-      <ptr>
+      <ptr size=""4"">
         <enum name=""_foo"" />
       </ptr>
     </typedef>
@@ -470,7 +470,7 @@ namespace Reko.Tools.C2Xml.UnitTests
       <enum name=""enum_0"" />
     </typedef>
     <typedef name=""PFoo"">
-      <ptr>
+      <ptr size=""4"">
         <enum name=""enum_0"" />
       </ptr>
     </typedef>
@@ -494,7 +494,7 @@ namespace Reko.Tools.C2Xml.UnitTests
       <struct name=""struct_0"" />
     </typedef>
     <typedef name=""PFoo"">
-      <ptr>
+      <ptr size=""4"">
         <struct name=""struct_0"" />
       </ptr>
     </typedef>
@@ -510,7 +510,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
     <typedef name=""HANDLE"">
-      <ptr>
+      <ptr size=""4"">
         <void />
       </ptr>
     </typedef>
@@ -551,7 +551,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <type>SHORT</type>
       </arg>
       <arg name=""outp"">
-        <ptr>
+        <ptr size=""4"">
           <type>SHORT</type>
         </ptr>
       </arg>
@@ -596,7 +596,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
     <typedef name=""PRTL_RUN_ONCE_INIT_FN"">
-      <ptr>
+      <ptr size=""4"">
         <fn>
           <return>
             <prim domain=""SignedInt"" size=""4"" />
@@ -711,7 +711,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <prim domain=""SignedInt"" size=""4"" />
       </return>
       <arg name=""pfoo"">
-        <ptr>
+        <ptr size=""4"">
           <struct name=""foo"" />
         </ptr>
       </arg>
@@ -735,7 +735,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <prim domain=""SignedInt"" size=""4"" />
       </return>
       <arg name=""main"">
-        <ptr>
+        <ptr size=""4"">
           <fn>
             <return>
               <prim domain=""SignedInt"" size=""4"" />
@@ -744,15 +744,15 @@ namespace Reko.Tools.C2Xml.UnitTests
               <prim domain=""SignedInt"" size=""4"" />
             </arg>
             <arg>
-              <ptr>
-                <ptr>
+              <ptr size=""4"">
+                <ptr size=""4"">
                   <prim domain=""Character"" size=""1"" />
                 </ptr>
               </ptr>
             </arg>
             <arg>
-              <ptr>
-                <ptr>
+              <ptr size=""4"">
+                <ptr size=""4"">
                   <prim domain=""Character"" size=""1"" />
                 </ptr>
               </ptr>
@@ -764,14 +764,14 @@ namespace Reko.Tools.C2Xml.UnitTests
         <prim domain=""SignedInt"" size=""4"" />
       </arg>
       <arg name=""ubp_av"">
-        <ptr>
-          <ptr>
+        <ptr size=""4"">
+          <ptr size=""4"">
             <prim domain=""Character"" size=""1"" />
           </ptr>
         </ptr>
       </arg>
       <arg name=""init"">
-        <ptr>
+        <ptr size=""4"">
           <fn>
             <return>
               <void />
@@ -780,7 +780,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         </ptr>
       </arg>
       <arg name=""fini"">
-        <ptr>
+        <ptr size=""4"">
           <fn>
             <return>
               <void />
@@ -789,7 +789,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         </ptr>
       </arg>
       <arg name=""rtld_fini"">
-        <ptr>
+        <ptr size=""4"">
           <fn>
             <return>
               <void />
@@ -798,7 +798,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         </ptr>
       </arg>
       <arg name=""stack_end"">
-        <ptr>
+        <ptr size=""4"">
           <void />
         </ptr>
       </arg>
@@ -851,6 +851,22 @@ namespace Reko.Tools.C2Xml.UnitTests
                 "[[reko::reg(\"D0\")]] char foo();",
                 sExp);
 
+        }
+
+        [Test]
+        public void C2X_NearPtr()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""PVOID"">
+      <ptr size=""2"">
+        <void />
+      </ptr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest("typedef void _near * PVOID;", sExp);
         }
     }
 }

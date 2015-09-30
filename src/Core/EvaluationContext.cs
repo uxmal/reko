@@ -61,5 +61,6 @@ namespace Reko.Core
         void SetValueEa(Expression basePointer, Expression ea, Expression value);
 
         bool IsUsedInPhi(Identifier id);
+        Expression MakeSegmentedAddress(Constant c1, Constant c2);
     }
 }

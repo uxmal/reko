@@ -103,14 +103,14 @@ namespace Reko.Gui.Windows.Forms
 			slCtxBrowser.Add(0, slGrpBrowser);
 			SortedList slGrpBrowserProc = CreatePriorityList();
 			slCtxBrowser.Add(0, slGrpBrowserProc);
-			SortedList slGrpBrowserSegm = CreatePriorityList();
-			slCtxBrowser.Add(0, slGrpBrowserSegm);
 			SortedList slGrpToolbarFileOps = CreatePriorityList();
 			slMainToolbar.Add(0, slGrpToolbarFileOps);
 			SortedList slGrpToolbarActions = CreatePriorityList();
 			slMainToolbar.Add(0, slGrpToolbarActions);
 			SortedList slGrpProcedure = CreatePriorityList();
 			slCtxProcedure .Add(0, slGrpProcedure);
+			SortedList slGrpAddressSearchView = CreatePriorityList();
+			slCtxAddressSearch.Add(0, slGrpAddressSearchView);
 			SortedList slGrpAddressSearch = CreatePriorityList();
 			slCtxAddressSearch.Add(0, slGrpAddressSearch);
     
@@ -188,12 +188,21 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slViewFindPattern = new CommandMenuItem("Find selected _pattern...", new Guid(CmdSets.Reko), CmdIds.ViewFindPattern);
             slViewFindPattern.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindPattern);
-            CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Reko), CmdIds.ViewFindFragments);
-            slViewFindFragments.IsDynamic = false;
-            slGrpViewScanned.Add(0, slViewFindFragments);
+            CommandMenuItem slViewFindStrings = new CommandMenuItem("Find _strings...", new Guid(CmdSets.Reko), CmdIds.ViewFindStrings);
+            slViewFindStrings.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewFindStrings);
             CommandMenuItem slViewFindWhatPointsHere = new CommandMenuItem("Find _what points here", new Guid(CmdSets.Reko), CmdIds.ViewFindWhatPointsHere);
             slViewFindWhatPointsHere.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindWhatPointsHere);
+            CommandMenuItem slViewAsCode = new CommandMenuItem("View as _code", new Guid(CmdSets.Reko), CmdIds.ViewAsCode);
+            slViewAsCode.IsDynamic = false;
+            slGrpAddressSearchView.Add(0, slViewAsCode);
+            CommandMenuItem slViewAsStrings = new CommandMenuItem("View as _strings", new Guid(CmdSets.Reko), CmdIds.ViewAsStrings);
+            slViewAsStrings.IsDynamic = false;
+            slGrpAddressSearchView.Add(0, slViewAsStrings);
+            CommandMenuItem slViewAsData = new CommandMenuItem("View as _data", new Guid(CmdSets.Reko), CmdIds.ViewAsData);
+            slViewAsData.IsDynamic = false;
+            slGrpAddressSearchView.Add(0, slViewAsData);
             CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Reko), CmdIds.ActionRestartDecompilation);
             slActionRestartDecompilation.IsDynamic = false;
             slActionRestartDecompilation.ImageIndex = 2;slGrpActions.Add(0, slActionRestartDecompilation);
@@ -295,6 +304,7 @@ namespace Reko.Gui.Windows.Forms
 			slGrpBrowserProc.Add(0, slActionAssumeRegisterValues);
 			slGrpAddressSearch.Add(0, slViewFindWhatPointsHere);
 			slGrpAddressSearch.Add(0, slActionMarkProcedure);
+			slGrpAddressSearch.Add(0, slActionMarkType);
 			slGrpAddressSearch.Add(0, slActionScanHeuristically);
     
       // Build accelerators.

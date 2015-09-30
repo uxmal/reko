@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Reko.Gui.Windows
+namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
     /// Wraps a Windows forms TreeView in the platform independent ITreeView interface.

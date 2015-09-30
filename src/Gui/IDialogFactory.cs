@@ -29,9 +29,11 @@ namespace Reko.Gui
         IAssembleFileDialog CreateAssembleFileDialog();
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();
+        IFindStringsDialog CreateFindStringDialog();
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
+        IResourceEditor CreateResourceEditor();
         ISearchDialog CreateSearchDialog();
         IUserPreferencesDialog CreateUserPreferencesDialog();
     }

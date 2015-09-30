@@ -40,33 +40,39 @@ namespace Reko.UnitTests.Arch.Intel
         {
         }
 
-        private IntelInstruction Disassemble16(params byte[] bytes)
+        private X86Instruction Disassemble16(params byte[] bytes)
         {
             LoadedImage img = new LoadedImage(Address.SegPtr(0xC00, 0), bytes);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
-            var dasm = new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            var dasm = new X86Disassembler(ProcessorMode.Real, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
             return dasm.First();
         }
 
-        private IntelInstruction Disassemble32(params byte[] bytes)
+        private X86Instruction Disassemble32(params byte[] bytes)
         {
             var img = new LoadedImage(Address.Ptr32(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
-            var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            var dasm = new X86Disassembler(ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.First();
         }
 
-        private IntelInstruction Disassemble64(params byte[] bytes)
+        private X86Instruction Disassemble64(params byte[] bytes)
         {
             var img = new LoadedImage(Address.Ptr64(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
-            var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+            var dasm = new X86Disassembler(
+                ProcessorMode.Protected64,
+                rdr,
+                PrimitiveType.Word32, 
+                PrimitiveType.Word64,
+                true);
             return dasm.First();
         }
 
         private void CreateDisassembler16(LoadedImage image)
         {
             dasm = new X86Disassembler(
+                ProcessorMode.Real,
                 image.CreateLeReader(image.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
@@ -76,6 +82,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void CreateDisassembler32(LoadedImage image)
         {
             dasm = new X86Disassembler(
+                ProcessorMode.Protected32,
                 image.CreateLeReader(image.BaseAddress),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
@@ -85,6 +92,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void CreateDisassembler16(ImageReader rdr)
         {
             dasm = new X86Disassembler(
+                ProcessorMode.Real,
                 rdr,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
@@ -147,7 +155,7 @@ foo:
                 "		mov cx,cs:[si+4]\r\n");
 
             CreateDisassembler16(program.Image);
-            IntelInstruction[] instrs = dasm.Take(3).ToArray();
+            X86Instruction[] instrs = dasm.Take(3).ToArray();
             Assert.AreEqual(Registers.ss, ((MemoryOperand)instrs[0].op2).DefaultSegment);
             Assert.AreEqual(Registers.ds, ((MemoryOperand)instrs[1].op2).DefaultSegment);
             Assert.AreEqual(Registers.cs, ((MemoryOperand)instrs[2].op2).DefaultSegment);
@@ -236,7 +244,7 @@ movzx	ax,byte ptr [bp+04]
                     lr = asm.Assemble(Address.SegPtr(0xC32, 0), rdr);
                 }
                 CreateDisassembler16(lr.Image);
-                foreach (IntelInstruction instr in dasm)
+                foreach (X86Instruction instr in dasm)
                 {
                     fut.TextWriter.WriteLine("{0}", instr.ToString());
                 }
@@ -289,8 +297,13 @@ movzx	ax,byte ptr [bp+04]
             LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001ul - img.BaseAddress.ToLinear(), 0x12345678);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
-            X86Disassembler dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
-            IntelInstruction instr = dasm.First();
+            X86Disassembler dasm = new X86Disassembler(
+                ProcessorMode.Protected32,
+                rdr, 
+                PrimitiveType.Word32,
+                PrimitiveType.Word32,
+                false);
+            X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\teax,12345678", instr.ToString());
             Assert.AreEqual("ptr32", instr.op2.Width.ToString());
         }
@@ -303,7 +316,7 @@ movzx	ax,byte ptr [bp+04]
             img.Relocations.AddSegmentReference(5, 0x0800);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             CreateDisassembler16(rdr);
-            IntelInstruction instr = dasm.First();
+            X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());
             Assert.AreEqual("selector", instr.op2.Width.ToString());
         }

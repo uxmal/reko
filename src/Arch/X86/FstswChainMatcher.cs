@@ -9,7 +9,7 @@ namespace Reko.Arch.X86
 {
     public class FstswChainMatcher
     {
-        IntelInstruction [] instrs;
+        X86Instruction [] instrs;
         Dictionary<int, Opcode> zappedInstructions;
         List<Instruction> rewritten;
         OperandRewriter orw;
@@ -24,7 +24,7 @@ namespace Reko.Arch.X86
         //  =             40
         //  inordered     45
 
-        public FstswChainMatcher(IntelInstruction[] instrs, OperandRewriter orw)
+        public FstswChainMatcher(X86Instruction[] instrs, OperandRewriter orw)
         {
             this.instrs = instrs;
             this.orw = orw;

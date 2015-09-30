@@ -41,7 +41,8 @@ namespace Reko.Gui.Windows
         {
             if (proc == null)
                 return;
-            ShowWindow("codeViewerWindow", "Code Viewer", pane);
+            var frame = ShowWindow("codeViewerWindow", proc.Name, proc, pane);
+            pane.FrameWindow = frame;
             pane.DisplayProcedure(program, proc);
         }
     }

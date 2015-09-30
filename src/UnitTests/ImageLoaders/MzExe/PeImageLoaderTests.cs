@@ -225,7 +225,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeUInt32(2);        // number of data directory entries
 
             rvaDirectories = writer.Position;
-            writer.Position = rvaDirectories + 2 * 8;
+            writer.Position = rvaDirectories + 2 * 12;
             var optHdrSize = writer.Position - rvaOptHdr;
             var rvaSections = writer.Position;
             writer.Position = rvaOptionalHeaderSize;

@@ -116,6 +116,7 @@ namespace Reko.Core
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
+        Address MakeSegmentedAddress(Constant seg, Constant offset);
 
         string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
 
@@ -180,6 +181,7 @@ namespace Reko.Core
         public abstract FlagGroupStorage GetFlagGroup(string name);
         public abstract string GrfToString(uint grf);
         public abstract Address MakeAddressFromConstant(Constant c);
+        public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public abstract Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
     }

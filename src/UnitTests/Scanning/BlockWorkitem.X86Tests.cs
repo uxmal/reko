@@ -376,7 +376,7 @@ namespace Reko.UnitTests.Scanning
 
         private bool Niz(Address q, ushort selector, ushort offset)
         {
-            return q.Selector == selector && q.Offset == offset;
+            return q.Selector.Value == selector && q.Offset == offset;
         }
 
         [Test]

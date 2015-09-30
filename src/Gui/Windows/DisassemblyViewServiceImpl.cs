@@ -40,7 +40,7 @@ namespace Reko.Gui.Windows
 
         public void DisassembleStartingAtAddress(Program program, Address addr)
         {
-            ShowWindow();
+            ShowWindow(program);
             dvi.StartAddress = addr;
             dvi.Program = program;
             dvi.DumpAssembler();
@@ -51,13 +51,13 @@ namespace Reko.Gui.Windows
             dvi.ClearText();
         }
 
-        public void ShowWindow()
+        public void ShowWindow(Program program)
         {
             if (dvi == null)
             {
                 dvi = new DisassemblyViewInteractor();
             }
-            base.ShowWindow(ViewWindowType, "Disassembly", dvi);
+            base.ShowWindow(ViewWindowType, "Disassembly", program, dvi);
         }
 
         #endregion

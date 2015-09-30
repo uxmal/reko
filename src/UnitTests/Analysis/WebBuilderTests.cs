@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Analysis
 
 				DeadCode.Eliminate(proc, ssa);
 
-				var vp = new ValuePropagator(ssa.Identifiers, proc);
+				var vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
 				vp.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

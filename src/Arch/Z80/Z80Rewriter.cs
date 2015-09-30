@@ -64,8 +64,8 @@ namespace Reko.Arch.Z80
                     "Rewriting of Z80 instruction {0} not implemented yet.",
                     dasm.Current.Code);
                 case Opcode.adc: RewriteAdc(); break;
-                case Opcode.and: RewriteAnd(); break;
                 case Opcode.add: RewriteAdd(); break;
+                case Opcode.and: RewriteAnd(); break;
                 case Opcode.call: RewriteCall(dasm.Current); break;
                 case Opcode.cp: RewriteCp(); break;
                 case Opcode.cpl: RewriteCpl(); break;
@@ -78,10 +78,10 @@ namespace Reko.Arch.Z80
                     RewriteOp(dasm.Current.Op1),
                     RewriteOp(dasm.Current.Op2));
                     break;
-                    case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
-                    case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
-                    case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
-                    case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
+                case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
+                case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
+                case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
                 case Opcode.ldir: RewriteBlockInstruction(); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.or: RewriteOr(); break;
@@ -90,6 +90,54 @@ namespace Reko.Arch.Z80
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.sbc: RewriteSbc(); break;
                 case Opcode.sub: RewriteSub(); break;
+                case Opcode.xor: RewriteXor(); break;
+
+                //$TODO: Not implemented yet; feel free to implement these!
+        case Opcode.daa: goto default;
+        case Opcode.di: goto default;
+        case Opcode.ei: goto default;
+        case Opcode.hlt: goto default;
+        case Opcode.nop: goto default;
+        case Opcode.bit: goto default;
+        case Opcode.ccf: goto default;
+        case Opcode.cpd: goto default;
+        case Opcode.cpdr: goto default;
+        case Opcode.cpi: goto default;
+        case Opcode.cpir: goto default;
+        case Opcode.ex: goto default;
+        case Opcode.ex_af: goto default;
+        case Opcode.exx: goto default;
+        case Opcode.ldd: goto default;
+        case Opcode.lddr: goto default;
+        case Opcode.ldi: goto default;
+        case Opcode.im: goto default;
+        case Opcode.@in: goto default;
+        case Opcode.ind: goto default;
+        case Opcode.indr: goto default;
+        case Opcode.ini: goto default;
+        case Opcode.inir: goto default;
+        case Opcode.otdr: goto default;
+        case Opcode.otir: goto default;
+        case Opcode.@out: goto default;
+        case Opcode.outd: goto default;
+        case Opcode.outi: goto default;
+        case Opcode.outr: goto default;
+        case Opcode.res: goto default;
+        case Opcode.reti: goto default;
+        case Opcode.retn: goto default;
+        case Opcode.rl: goto default;
+        case Opcode.rlca: goto default;
+        case Opcode.rld: goto default;
+        case Opcode.rr: goto default;
+        case Opcode.rrd: goto default;
+        case Opcode.rrca: goto default;
+        case Opcode.rst: goto default;
+        case Opcode.scf: goto default;
+        case Opcode.sla: goto default;
+        case Opcode.srl: goto default;
+        case Opcode.sra: goto default;
+        case Opcode.set: goto default;
+        case Opcode.swap: goto default;
                 }
                 yield return rtlc;
             }
@@ -185,6 +233,15 @@ namespace Reko.Arch.Z80
             var src = RewriteOp(dasm.Current.Op2);
             emitter.Assign(dst, emitter.ISub(dst, src));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+        }
+
+        private void RewriteXor()
+        {
+            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Op2);
+            emitter.Assign(dst, emitter.Xor(dst, src));
+            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            emitter.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
         private void AssignCond(FlagM flags, Expression dst)
