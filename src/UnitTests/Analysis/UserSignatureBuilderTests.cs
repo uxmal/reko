@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Rhino.Mocks;
 using System;
@@ -38,16 +39,22 @@ namespace Reko.UnitTests.Analysis
         private MockRepository mr;
         private Program program;
         private Procedure proc;
+        private Platform platform;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
             this.arch = mr.Stub<IProcessorArchitecture>();
+            this.platform = mr.Stub<Platform>(null, arch);
+
+            platform.Stub(p => p.FramePointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.DefaultCallingConvention).Return("cdecl");
 
             this.program = new Program
             {
                 Architecture = arch,
+                Platform = platform,
             };
         }
 
@@ -75,23 +82,19 @@ namespace Reko.UnitTests.Analysis
             Assert.AreSame(oldSig, proc.Signature);
         }
 
-        [Test(Description = "If a user supplies a signature, it should overwrite the old signature")]
-        public void Usb_NonemptyUserSignature_OverwriteSignature()
-        {
-            Given_Procedure(0x1000);
-            Given_UserSignature(0x1000, "void foo(void)");
-            var usb = new UserSignatureBuilder(program);
-            usb.BuildSignatures();
-            Assert.AreEqual("@@@", proc.Signature.ToString());
-        }
-
         [Test]
         public void Usb_BuildSignature()
         {
+            var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
+            platform.Expect(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
+            ser.Expect(s => s.Deserialize(
+                Arg<SerializedSignature>.Is.NotNull,
+                Arg<Frame>.Is.NotNull)).Return(new ProcedureSignature());
+            mr.ReplayAll();
+
             var usb = new UserSignatureBuilder(program);
             var sig = usb.BuildSignature("int foo(char *)");
-            Assert.AreEqual("@@@", sig.ToString());
-
+            mr.ReplayAll();
         }
     }
 }

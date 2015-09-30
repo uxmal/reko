@@ -91,6 +91,12 @@ namespace Reko.Core
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }
 
+        public ProcedureSerializer CreateProcedureSerializer()
+        {
+            var typeLoader = new TypeLibraryLoader(this, true);
+            return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
+        }
+
         /// <summary>
         /// Creates a procedure serializer that understands the calling conventions used on this
         /// processor and environment

@@ -49,5 +49,61 @@ namespace Reko.Core.CLanguage
         public List<SerializedProcedureBase_v1> Procedures { get; private set; }
 
         public TypeSizer Sizer { get; private set; }
+
+        public List<SerializedType> AddDeclaration(Decl decl)
+        {
+            var types = new List<SerializedType>();
+            var fndec = decl as FunctionDecl;
+            if (fndec != null)
+            {
+                return types; 
+            }
+
+            IEnumerable<DeclSpec> declspecs = decl.decl_specs;
+            var isTypedef = false;
+            var scspec = decl.decl_specs[0] as StorageClassSpec;
+            if (scspec != null && scspec.Type == CTokenType.Typedef)
+            {
+                declspecs = decl.decl_specs.Skip(1);
+                isTypedef = true;
+            }
+
+            var ntde = new NamedDataTypeExtractor(declspecs, this);
+            foreach (var declarator in decl.init_declarator_list)
+            {
+                var nt = ntde.GetNameAndType(declarator.Declarator);
+                var serType = nt.DataType;
+
+                var sSig = nt.DataType as SerializedSignature;
+                if (sSig != null)
+                {
+                    if (sSig.ReturnValue != null)
+                    {
+                        sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(decl.attribute_list);
+                    }
+                    Procedures.Add(new Procedure_v1
+                    {
+                        Name = nt.Name,
+                        Signature = sSig,
+                    });
+                    types.Add(sSig);
+                }
+                if (isTypedef)
+                {
+                    //$REVIEW: should make sure that if the typedef already exists, 
+                    // then the types match but a real compiler would have validated that.
+                    var typedef = new SerializedTypedef
+                    {
+                        Name = nt.Name,
+                        DataType = serType
+                    };
+                    Types.Add(typedef);
+                    //$REVIEW: do we really need to check for consistence?
+                    NamedTypes[typedef.Name] = serType;
+                    types.Add(serType);
+                }
+            }
+            return types;
+        }
     }
 }

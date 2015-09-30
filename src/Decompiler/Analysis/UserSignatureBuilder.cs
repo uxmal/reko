@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,10 +33,12 @@ namespace Reko.Analysis
     public class UserSignatureBuilder
     {
         private Program program;
+        private SymbolTable symbolTable;
 
         public UserSignatureBuilder(Program program)
         {
             this.program = program;
+            this.symbolTable = new SymbolTable();
         }
 
         public void BuildSignatures()
@@ -61,12 +64,19 @@ namespace Reko.Analysis
                 var cstate = new ParserState();
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
-                throw new NotImplementedException(" return ConvertToSignature(decl);");
-            } catch 
+                var sSig = symbolTable.AddDeclaration(decl)
+                    .OfType<SerializedSignature>()
+                    .FirstOrDefault();
+                if (sSig == null)
+                    return null;
+                var ser = program.Platform.CreateProcedureSerializer();
+                return ser.Deserialize(sSig, new Frame(program.Platform.FramePointerType));
+            }
+            catch (Exception ex)
             {
+                Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
                 return null;
             }
-
         }
     }
 }

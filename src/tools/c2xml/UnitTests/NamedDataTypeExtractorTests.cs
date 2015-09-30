@@ -35,17 +35,17 @@ namespace Reko.Tools.C2Xml.UnitTests
     public class NamedDataTypeExtractorTests
     {
         private NamedDataType nt;
-        private XmlConverter parserState;
+        private SymbolTable symbolTable;
 
         [SetUp]
         public void Setup()
         {
-            parserState = new XmlConverter(null, null);
+            symbolTable = new SymbolTable();
         }
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)
         {
-            var ndte = new NamedDataTypeExtractor(declSpecs, parserState);
+            var ndte = new NamedDataTypeExtractor(declSpecs, symbolTable);
             this.nt = ndte.GetNameAndType(decl);
         }
 
@@ -120,7 +120,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         [Test(Description="If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
-            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], parserState);
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable);
             var kind = ndte.GetArgumentKindFromAttributes(null);
             Assert.IsNull(kind);
         }
@@ -128,7 +128,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         [Test(Description = "If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
         {
-            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], parserState);
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable);
             var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
             {
                 new CAttribute {
@@ -141,7 +141,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         [Test(Description = "If there is a reko::reg attribute present, us it to determine kind.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
         {
-            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], parserState);
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable);
             var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
             {
                 new CAttribute {

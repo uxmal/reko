@@ -36,7 +36,7 @@ namespace Reko.Tools.C2Xml
     /// Parses a C compilation unit and transforms all declarations to the 
     /// XML syntax used by Reko.
     /// </summary>
-    public class XmlConverter : SymbolTable
+    public class XmlConverter 
     {
         private TextReader rdr;
         private XmlWriter writer;
@@ -47,176 +47,33 @@ namespace Reko.Tools.C2Xml
             this.rdr = rdr;
             this.writer = writer;
             this.parserState = new ParserState();
-            NamedTypes.Add("size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 });    //$BUGBUG: arch-dependent!
-            NamedTypes.Add("va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = 4 } ); //$BUGBUG: arch-dependent!
-        }
+       }
 
         public void Convert()
         {
             var lexer = new CLexer(rdr);
             var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
+            var symbolTable = new SymbolTable
+            {
+                NamedTypes = {
+                    { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 } },    //$BUGBUG: arch-dependent!
+                    { "va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = 4 } } //$BUGBUG: arch-dependent!
+                }
+            };
+
             foreach (var decl in declarations)
             {
-                VisitDeclaration(decl);
+                symbolTable.AddDeclaration(decl);
             }
 
             var lib = new SerializedLibrary
             {
-                Types = Types.ToArray(),
-                Procedures = Procedures.ToList(),
+                Types = symbolTable.Types.ToArray(),
+                Procedures = symbolTable.Procedures.ToList(),
             };
             var ser = SerializedLibrary.CreateSerializer();
             ser.Serialize(writer, lib);
-        }
-
-        public int VisitType(CType cType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitDeclaration(Decl decl)
-        {
-            var fndec = decl as FunctionDecl;
-            if (fndec != null)
-            {
-                return 0;
-            }
-
-            IEnumerable<DeclSpec> declspecs = decl.decl_specs;
-            var isTypedef = false;
-            var scspec = decl.decl_specs[0] as StorageClassSpec;
-            if (scspec != null && scspec.Type == CTokenType.Typedef)
-            {
-                declspecs = decl.decl_specs.Skip(1);
-                isTypedef = true;
-            }
-
-            var ntde = new NamedDataTypeExtractor(declspecs, this);
-            foreach (var declarator in decl.init_declarator_list)
-            {
-                var nt = ntde.GetNameAndType(declarator.Declarator);
-                var serType = nt.DataType;
-
-                var sSig = nt.DataType as SerializedSignature;
-                if (sSig != null)
-                {
-                    if (sSig.ReturnValue != null)
-                    {
-                        sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(decl.attribute_list);
-                    }
-                    Procedures.Add(new Procedure_v1
-                    {
-                        Name = nt.Name,
-                        Signature = sSig,
-                    });
-                }
-                if (isTypedef)
-                {
-                    //$REVIEW: should make sure that if the typedef already exists, 
-                    // then the types match but a real compiler would have validated that.
-                    parserState.Typedefs.Add(nt.Name);
-                    var typedef = new SerializedTypedef
-                    {
-                        Name = nt.Name,
-                        DataType = serType
-                    };
-                    Types.Add(typedef);
-                    //$REVIEW: do we really need to check for consistence?
-                    NamedTypes[typedef.Name] = serType;
-                }
-            }
-            return 0;
-        }
-
-        public int VisitAttribute(CAttribute attr)
-        {
-            return 0;
-        }
-
-
-        public int VisitDeclSpec(DeclSpec declSpec)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitInitDeclarator(InitDeclarator initDeclarator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitEnumerator(Enumerator enumerator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitStatement(Stat stm)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitExpression(CExpression stm)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitParamDeclaration(ParamDecl paramDecl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitArray(ArrayType at)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitEquivalenceClass(EquivalenceClass eq)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitFunctionType(FunctionType ft)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitPrimitive(PrimitiveType pt)
-        {
-            return new PrimitiveType_v1
-            {
-                Domain = pt.Domain,
-                ByteSize = pt.Size,
-            };
-        }
-
-        public SerializedType VisitMemberPointer(MemberPointer memptr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitPointer(Pointer ptr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitStructure(StructureType str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitTypeVar(TypeVariable tv)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitUnion(UnionType ut)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializedType VisitUnknownType(UnknownType ut)
-        {
-            throw new NotImplementedException();
         }
     }
 }
