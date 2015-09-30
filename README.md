@@ -1,5 +1,7 @@
 # reko - a general purpose decompiler.
 
+ [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko)
+ 
 **Reko** (Swedish: "decent, obliging") is a C# project containing 
 a decompiler for machine code binaries.  This project is freely 
 available under the GNU General Public License.
