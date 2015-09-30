@@ -126,16 +126,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent Condition=" '$(OS)' == 'Unix' ">
-echo OS is '$(OS)'
-cp "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
-    </PostBuildEvent>
-    <PostBuildEvent Condition=" '$(OS)' != 'Unix' ">
-echo OS is '$(OS)'
-copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
-    </PostBuildEvent>
-  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)Tools" />
+  </Target>
 </Project>
