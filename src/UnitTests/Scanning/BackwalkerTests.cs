@@ -88,8 +88,7 @@ namespace Reko.UnitTests.Scanning
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
-            expSimp = new ExpressionSimplifier(
-                    new IntelArchitecture(ProcessorMode.Protected32).CreateProcessorState());
+            expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
             SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
         }

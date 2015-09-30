@@ -557,7 +557,7 @@ namespace Reko.ImageLoaders.MzExe
                     : AccessMode.ReadExecute;
             imageMap.AddSegment(
                 seg.Address,
-                seg.Address.Selector.ToString("X4"),
+                seg.Address.Selector.Value.ToString("X4"),
                 access,
                 seg.DataLength);
 
@@ -724,7 +724,9 @@ namespace Reko.ImageLoaders.MzExe
                         address = segments[rep.target1 - 1].Address + rep.target2;
                     }
                     Debug.Print("{0}: {1:X4}:{2:X4} {3}",
-                          i + 1, address.Selector, address.Selector,
+                          i + 1,
+                          address.Selector.Value, 
+                          address.Selector.Value,
                           "");
                     break;
                 case NE_RELTYPE_OSFIXUP:
@@ -776,7 +778,7 @@ namespace Reko.ImageLoaders.MzExe
                     case NE_RADDR_POINTER32:
                         w = image.ReadLeUInt16(sp);
                         image.WriteLeUInt16(sp, (ushort)(w + address.Offset));
-                        image.WriteLeUInt16(sp + 2, address.Selector);
+                        image.WriteLeUInt16(sp + 2, address.Selector.Value);
                         break;
                     case NE_RADDR_SELECTOR:
                         // Borland creates additive records with offset zero. Strange, but OK.
@@ -784,7 +786,7 @@ namespace Reko.ImageLoaders.MzExe
                         if (w != 0)
                             diags.Error(string.Format("Additive selector to {0:X4}. Please report.", w));
                         else
-                            image.WriteLeUInt16(sp, address.Selector);
+                            image.WriteLeUInt16(sp, address.Selector.Value);
                         break;
                     default:
                         goto unknown;
@@ -808,10 +810,10 @@ namespace Reko.ImageLoaders.MzExe
                             break;
                         case NE_RADDR_POINTER32:
                             image.WriteLeUInt16(sp, (ushort)address.Offset);
-                            image.WriteLeUInt16(sp + 2, address.Selector);
+                            image.WriteLeUInt16(sp + 2, address.Selector.Value);
                             break;
                         case NE_RADDR_SELECTOR:
-                            image.WriteLeUInt16(sp, address.Selector);
+                            image.WriteLeUInt16(sp, address.Selector.Value);
                             break;
                         default:
                             goto unknown;

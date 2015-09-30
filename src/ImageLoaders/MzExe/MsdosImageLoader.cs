@@ -77,7 +77,7 @@ namespace Reko.ImageLoaders.MzExe
 				ushort segOffset = rdr.ReadLeUInt16();
 				offset += segOffset * 0x0010u;
 
-				ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector);
+				ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector.Value);
 				imgLoaded.WriteLeUInt16(offset, seg);
 				relocations.AddSegmentReference(offset, seg);
 
@@ -87,8 +87,11 @@ namespace Reko.ImageLoaders.MzExe
 		
 			// Found the start address.
 
-			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
-			imageMap.AddSegment(Address.SegPtr(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector.Value), exe.e_ip);
+			imageMap.AddSegment(
+                Address.SegPtr(addrStart.Selector.Value, 0),
+                addrStart.Selector.Value.ToString("X4"),
+                AccessMode.ReadWriteExecute, 0);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
                 relocations,

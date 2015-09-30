@@ -39,7 +39,7 @@ namespace Reko.Analysis
 	/// </summary>
 	public class ValueNumbering
 	{
-		private SsaIdentifierCollection ssaIds;
+        private SsaIdentifierCollection ssaIds;
         private Dictionary<Expression, Expression> optimistic;	// maps <valnum> -> <node>
         private Dictionary<Expression, Expression> valid;
 		private Stack<Node> stack;
@@ -49,7 +49,7 @@ namespace Reko.Analysis
 		private static Constant zero;
 		private static TraceSwitch trace = new TraceSwitch("ValueNumbering", "Follows the flow of value numbering");
 
-		public class AnyValueNumber : Identifier
+        public class AnyValueNumber : Identifier
 		{
 			public static AnyValueNumber Instance = new AnyValueNumber();
 
@@ -174,6 +174,11 @@ namespace Reko.Analysis
             public bool IsUsedInPhi(Identifier id)
             {
                 return false;
+            }
+
+            public Expression MakeSegmentedAddress(Constant c1, Constant c2)
+            {
+                throw new NotImplementedException();
             }
         }
 

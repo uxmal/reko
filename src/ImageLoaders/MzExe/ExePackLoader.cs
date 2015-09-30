@@ -149,7 +149,7 @@ namespace Reko.ImageLoaders.MzExe
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             ImageReader rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
-            ushort segCode = (ushort)(addrLoad.Selector + (ExeImageLoader.CbPsp >> 4));
+            ushort segCode = (ushort)(addrLoad.Selector.Value + (ExeImageLoader.CbPsp >> 4));
             ushort dx = 0;
             for (; ; )
             {
@@ -173,8 +173,8 @@ namespace Reko.ImageLoaders.MzExe
             imageMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute, 0);
             this.ss += segCode;
             var state = arch.CreateProcessorState();
-            state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector));
-            state.SetRegister(Registers.es, Constant.Word16(addrLoad.Selector));
+            state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector.Value));
+            state.SetRegister(Registers.es, Constant.Word16(addrLoad.Selector.Value));
             state.SetRegister(Registers.cs, Constant.Word16(cs));
             state.SetRegister(Registers.ss, Constant.Word16(ss));
             state.SetRegister(Registers.bx, Constant.Word16(0));

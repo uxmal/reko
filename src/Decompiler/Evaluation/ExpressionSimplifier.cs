@@ -392,7 +392,7 @@ namespace Reko.Evaluation
                 if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
                 {
                     t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
-                    return Address.SegPtr(c1.ToUInt16(), c2.ToUInt16());
+                    return ctx.MakeSegmentedAddress(c1, c2);
                 }
                 else
                 {

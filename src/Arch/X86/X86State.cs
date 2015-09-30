@@ -113,12 +113,8 @@ namespace Reko.Arch.X86
 
         public override void SetInstructionPointer(Address addr)
         {
-            var segAddr = addr as SegAddress32;
-            if (segAddr != null)
-                SetRegister(Registers.cs, Constant.Word16(segAddr.Selector));
-            var procAddr = addr as ProtectedSegmentedAddress;
-            if (procAddr != null)
-                SetRegister(Registers.cs, Constant.Word16(procAddr.Selector));
+            if (addr.Selector.HasValue)
+                SetRegister(Registers.cs, Constant.Word16(addr.Selector.Value));
         }
 
         public override void OnProcedureEntered()

@@ -337,12 +337,13 @@ namespace Reko.UnitTests.Analysis
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;
 
-			var cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null,new FakeArchitecture()));
+            var arch = new FakeArchitecture();
+            var cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null, arch));
 			cce.Transform();
 
 			DeadCode.Eliminate(proc, ssa);
 
-			var vp = new ValuePropagator(ssa.Identifiers, proc);
+			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

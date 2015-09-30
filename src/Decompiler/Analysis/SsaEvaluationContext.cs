@@ -31,10 +31,12 @@ namespace Reko.Analysis
 {
     public class SsaEvaluationContext : EvaluationContext
     {
+        private IProcessorArchitecture arch;
         private SsaIdentifierCollection ssaIds;
 
-        public SsaEvaluationContext(SsaIdentifierCollection ssaIds)
+        public SsaEvaluationContext(IProcessorArchitecture arch, SsaIdentifierCollection ssaIds)
         {
+            this.arch = arch;
             this.ssaIds = ssaIds;
         }
 
@@ -73,6 +75,11 @@ namespace Reko.Analysis
         public Expression GetDefiningExpression(Identifier id)
         {
             return ssaIds[id].DefExpression;
+        }
+
+        public Expression MakeSegmentedAddress(Constant seg, Constant off)
+        {
+            return arch.MakeSegmentedAddress(seg, off);
         }
 
         public void RemoveIdentifierUse(Identifier id)

@@ -115,11 +115,11 @@ namespace Reko.ImageLoaders.MzExe
             var relocations = new RelocationDictionary();
 			if (isLz91)
 			{
-				Relocate91(RawImage, addrLoad.Selector, imgLoaded, relocations);
+				Relocate91(RawImage, addrLoad.Selector.Value, imgLoaded, relocations);
 			}
 			else
 			{
-				Relocate90(RawImage, addrLoad.Selector, imgLoaded, relocations);
+				Relocate90(RawImage, addrLoad.Selector.Value, imgLoaded, relocations);
 			}
             return new RelocationResults(entryPoints, relocations, new List<Address>());
 		}

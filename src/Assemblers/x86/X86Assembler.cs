@@ -105,10 +105,9 @@ namespace Reko.Assemblers.x86
                     stm.WriteByte(0x90);        // 1-byte NOP instruction.
                 }
                 
-                var segAddr = this.addrBase as SegAddress32;
                 ushort sel;
-                if (segAddr != null)
-                    sel = (ushort)(this.addrBase.Selector + (stm.Position >> 4));
+                if (addrBase.Selector.HasValue)
+                    sel = (ushort)(this.addrBase.Selector.Value + (stm.Position >> 4));
                 else
                     sel = 0;
                 seg.Selector = sel;
@@ -123,7 +122,7 @@ namespace Reko.Assemblers.x86
             {
                 foreach (var reloc in seg.Relocations)
                 {
-                    image.WriteLeUInt16((uint)((reloc.Segment.Selector - addrBase.Selector) * 16u + reloc.Offset), seg.Selector);
+                    image.WriteLeUInt16((uint)((reloc.Segment.Selector - addrBase.Selector.Value) * 16u + reloc.Offset), seg.Selector);
                 }
             }
         }
@@ -1485,7 +1484,7 @@ namespace Reko.Assemblers.x86
         {
             emitter.EmitByte(0xEA);
             emitter.EmitLeUInt16((ushort)address.Offset);
-            emitter.EmitLeUInt16(address.Selector);
+            emitter.EmitLeUInt16(address.Selector.Value);
         }
 
         public X86Assembler Label(string label)

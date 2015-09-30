@@ -200,6 +200,11 @@ namespace Reko.Evaluation
             return null;
         }
 
+        public Expression MakeSegmentedAddress(Constant seg, Constant off)
+        {
+            return arch.MakeSegmentedAddress(seg, off);
+        }
+
         public void RemoveIdentifierUse(Identifier id)
         {
         }

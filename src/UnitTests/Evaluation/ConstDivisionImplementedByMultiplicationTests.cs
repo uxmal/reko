@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Evaluation
 
             var proc = m.Procedure;
             var ssa = new SsaTransform(null, proc, proc.CreateBlockDominatorGraph()).Transform();
-            var ctx = new SsaEvaluationContext(ssa.Identifiers);
+            var ctx = new SsaEvaluationContext(null, ssa.Identifiers);
             var rule = new ConstDivisionImplementedByMultiplication(ctx);
 
             //ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];

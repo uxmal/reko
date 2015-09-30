@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            var vp = new ValuePropagator(ssa.SsaState.Identifiers, proc);
+            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState.Identifiers, proc);
             vp.Transform();
 
             ssa.RenameFrameAccesses = true;

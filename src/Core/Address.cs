@@ -25,6 +25,11 @@ using System.Collections.Generic;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Abstraction of the notion of "address". Some processors have nice 
+    /// linear addresses (z80, PowerPC) and some others have eldritch 
+    /// segmented addresses (x86).
+    /// </summary>
 	public abstract class Address : Expression, IComparable<Address>, IComparable
 	{
         protected Address(DataType size)
@@ -60,7 +65,7 @@ namespace Reko.Core
 
         public static Address SegPtr(ushort seg, uint off)
         {
-            return new SegAddress32(seg, (ushort)off);
+            return new RealSegmentedAddress(seg, (ushort)off);
         }
 
         public static Address ProtectedSegPtr(ushort seg, uint off)
@@ -81,7 +86,7 @@ namespace Reko.Core
 
         public abstract bool IsNull { get; }
         public abstract ulong Offset { get; }
-        public abstract ushort Selector { get; }			// Segment selector.
+        public abstract ushort? Selector { get; }			// Segment selector; return null if the address is linear.
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
@@ -244,7 +249,7 @@ namespace Reko.Core
 
         public override bool IsNull { get { return uValue == 0; } }
         public override ulong Offset { get { return uValue; } }
-        public override ushort Selector { get { throw new NotSupportedException(); } }
+        public override ushort? Selector { get { return null; } }
         
         public override Address Add(long offset)
         {
@@ -294,7 +299,7 @@ namespace Reko.Core
 
         public override bool IsNull { get { return uValue == 0; } }
         public override ulong Offset { get { return uValue; } }
-        public override ushort Selector { get { throw new NotSupportedException(); } }
+        public override ushort? Selector { get { return null; } }
 
         public override Address Add(long offset)
         {
@@ -333,12 +338,12 @@ namespace Reko.Core
         }
     }
 
-    public class SegAddress32 : Address
+    public class RealSegmentedAddress : Address
     {
         private ushort uSegment;
         private ushort uOffset;
 
-        public SegAddress32(ushort segment, ushort offset)
+        public RealSegmentedAddress(ushort segment, ushort offset)
             : base(PrimitiveType.SegPtr32)
         {
             this.uSegment = segment;
@@ -347,23 +352,23 @@ namespace Reko.Core
 
         public override bool IsNull { get { return uSegment == 0 && uOffset == 0; } }
         public override ulong Offset { get { return uOffset; } }
-        public override ushort Selector { get { return uSegment; } }
+        public override ushort? Selector { get { return uSegment; } }
 
         public override Address Add(long offset)
         {
-            ushort sel = this.Selector;
+            ushort sel = this.uSegment;
 			uint newOff = (uint) (uOffset + offset);
 			if (newOff > 0xFFFF)
 			{
 				sel += 0x1000;
 				newOff &= 0xFFFF;
 			}
-			return new SegAddress32(sel, (ushort) newOff);
+			return new RealSegmentedAddress(sel, (ushort) newOff);
 		}
 
         public override Expression CloneExpression()
         {
-            return new SegAddress32(uSegment, uOffset);
+            return new RealSegmentedAddress(uSegment, uOffset);
         }
 
         public override string GenerateName(string prefix, string suffix)
@@ -406,11 +411,11 @@ namespace Reko.Core
 
         public override bool IsNull { get { return uSegment == 0 && uOffset == 0; } }
         public override ulong Offset { get { return uOffset; } }
-        public override ushort Selector { get { return uSegment; } }
+        public override ushort? Selector { get { return uSegment; } }
 
         public override Address Add(long offset)
         {
-            ushort sel = this.Selector;
+            ushort sel = this.uSegment;
             uint newOff = (uint)(uOffset + offset);
             if (newOff > 0xFFFF)
             {
@@ -463,7 +468,7 @@ namespace Reko.Core
 
         public override bool IsNull { get { return uValue == 0; } }
         public override ulong Offset { get { return uValue; } }
-        public override ushort Selector { get { throw new NotSupportedException(); } }
+        public override ushort? Selector { get { return null; } }
 
         public override Address Add(long offset)
         {
