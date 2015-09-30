@@ -129,7 +129,11 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
+    <PostBuildEvent>: # Execute the correct command depending on the operating system.
+: # Copy the output of the build to the tools directory so that later builds can
+: # use xslt.exe to massage their files.
+:;cp"$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools";exit $?
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)Tools"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
