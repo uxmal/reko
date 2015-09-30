@@ -45,7 +45,7 @@ namespace Reko.Arch.X86
         private IntelArchitecture arch;
         private LoadedImage img;
         private IPlatformEmulator envEmulator;
-        private IEnumerator<IntelInstruction> dasm;
+        private IEnumerator<X86Instruction> dasm;
         private bool running;
         private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
 
@@ -174,7 +174,7 @@ namespace Reko.Arch.X86
 
         }
 
-        public void Execute(IntelInstruction instr)
+        public void Execute(X86Instruction instr)
         {
             switch (instr.code)
             {

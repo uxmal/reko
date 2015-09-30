@@ -37,7 +37,7 @@ namespace Reko.Arch.X86
     {
         private Expression CreateTestCondition(ConditionCode cc, Opcode opcode)
         {
-            var grf = orw.FlagGroup(IntelInstruction.UseCc(opcode));
+            var grf = orw.FlagGroup(X86Instruction.UseCc(opcode));
             var tc = new TestCondition(cc, grf);
             return tc;
         }
@@ -247,7 +247,7 @@ namespace Reko.Arch.X86
         /// </summary>
         /// <param name="instrCur"></param>
         /// <returns></returns>
-        private bool IsRealModeReboot(IntelInstruction instrCur)
+        private bool IsRealModeReboot(X86Instruction instrCur)
         {
             var addrOp = instrCur.op1 as X86AddressOperand;
             bool isRealModeReboot = addrOp != null && addrOp.Address.ToLinear() == 0xFFFF0;

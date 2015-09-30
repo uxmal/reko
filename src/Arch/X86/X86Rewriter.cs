@@ -41,10 +41,10 @@ namespace Reko.Arch.X86
         private IRewriterHost host;
         private IntelArchitecture arch;
         private Frame frame;
-        private LookaheadEnumerator<IntelInstruction> dasm;
+        private LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter emitter;
         private OperandRewriter orw;
-        private IntelInstruction instrCur;
+        private X86Instruction instrCur;
         private RtlInstructionCluster ric;
         private X86State state;
 
@@ -61,7 +61,7 @@ namespace Reko.Arch.X86
             this.host = host;
             this.frame = frame;
             this.state = state;
-            this.dasm = new LookaheadEnumerator<IntelInstruction>(arch.CreateDisassemblerImpl(rdr));
+            this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Reko.Arch.X86
                 case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retf: RewriteRet(); break;
-                case Opcode.sahf: emitter.Assign(orw.FlagGroup(IntelInstruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
+                case Opcode.sahf: emitter.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
                 case Opcode.sar: RewriteBinOp(Operator.Sar); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.ISub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
@@ -356,7 +356,7 @@ namespace Reko.Arch.X86
             }
             if ((flags & CopyFlags.EmitCc) != 0)
             {
-                EmitCcInstr(dst, IntelInstruction.DefCc(instrCur.code));
+                EmitCcInstr(dst, X86Instruction.DefCc(instrCur.code));
             }
             if ((flags & CopyFlags.SetCfIf0) != 0)
             {

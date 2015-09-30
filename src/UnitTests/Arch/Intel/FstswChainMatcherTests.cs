@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Intel
         ProcedureBuilder emitter;
         X86Assembler asm;
         OperandRewriter orw;
-        List<IntelInstruction> instrs;
+        List<X86Instruction> instrs;
 
         [SetUp]
         public void Fstsw_Setup()
@@ -124,8 +124,8 @@ namespace Reko.UnitTests.Arch.Intel
             Program lr = asm.GetImage();
             var dasm = arch.CreateDisassembler(
                 lr.Image.CreateLeReader(0));
-            instrs = new List<IntelInstruction>();
-            return new FstswChainMatcher(dasm.Cast<IntelInstruction>().ToArray(), orw);
+            instrs = new List<X86Instruction>();
+            return new FstswChainMatcher(dasm.Cast<X86Instruction>().ToArray(), orw);
         }
     }
 }

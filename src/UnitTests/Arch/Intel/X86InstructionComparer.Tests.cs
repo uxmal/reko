@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Core.Machine
                 throw new NotImplementedException();
         }
 
-        private IntelInstruction Create(Opcode op, object a = null, object b = null)
+        private X86Instruction Create(Opcode op, object a = null, object b = null)
         {
             var ops = new List<MachineOperand>();
             if (a != null)
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Core.Machine
                     ops.Add(Op(b));
             }
 
-            return new IntelInstruction(op, PrimitiveType.Word32, PrimitiveType.Word32, ops.ToArray());
+            return new X86Instruction(op, PrimitiveType.Word32, PrimitiveType.Word32, ops.ToArray());
         }
 
         private MachineOperand Mem32(RegisterStorage baseReg)

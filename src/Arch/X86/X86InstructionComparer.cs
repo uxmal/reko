@@ -86,8 +86,8 @@ namespace Reko.Arch.X86
 		/// <returns></returns>
 		public override bool CompareOperands(MachineInstruction a, MachineInstruction b)
 		{
-            var instrA = (IntelInstruction)a;
-            var instrB = (IntelInstruction)b;
+            var instrA = (X86Instruction)a;
+            var instrB = (X86Instruction)b;
 
 			if (instrA.code != instrB.code)
 				return false;
@@ -112,7 +112,7 @@ namespace Reko.Arch.X86
 
         public override int GetOperandsHash(MachineInstruction inst)
         {
-            var instr = (IntelInstruction)inst;
+            var instr = (X86Instruction)inst;
 			int hash = instr.Operands.GetHashCode();
 			if (instr.Operands > 0)
 			{

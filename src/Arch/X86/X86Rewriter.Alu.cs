@@ -254,7 +254,7 @@ namespace Reko.Arch.X86
             Expression op1 = SrcOp(instrCur.op1);
             Expression op2 = SrcOp(instrCur.op2, instrCur.op1.Width);
             emitter.Assign(
-                orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+                orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
                 new ConditionOf(emitter.ISub(op1, op2)));
         }
 
@@ -343,7 +343,7 @@ namespace Reko.Arch.X86
             emitter.Assign(
                 regQuotient, new BinaryExpression(op, p, regDividend,
                 SrcOp(instrCur.op1)));
-            EmitCcInstr(regQuotient, IntelInstruction.DefCc(instrCur.code));
+            EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.code));
         }
 
         private void RewriteEnter()
@@ -412,7 +412,7 @@ namespace Reko.Arch.X86
                 SrcOp(instrCur.op1),
                 SrcOp(instrCur.op2),
                 CopyFlags.ForceBreak);
-            EmitCcInstr(SrcOp(instrCur.op1), (IntelInstruction.DefCc(instrCur.code) & ~FlagM.CF));
+            EmitCcInstr(SrcOp(instrCur.op1), (X86Instruction.DefCc(instrCur.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -455,7 +455,7 @@ namespace Reko.Arch.X86
                         PrimitiveType.Create(resultDomain, product.DataType.Size),
                         SrcOp(instrCur.op1),
                         multiplicator));
-                EmitCcInstr(product, IntelInstruction.DefCc(instrCur.code));
+                EmitCcInstr(product, X86Instruction.DefCc(instrCur.code));
                 return;
             case 2:
                 EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), SrcOp(instrCur.op1), SrcOp(instrCur.op2), 
@@ -861,7 +861,7 @@ namespace Reko.Arch.X86
             case Opcode.cmps:
             case Opcode.cmpsb:
                 emitter.Assign(
-                    orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+                    orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
                     new ConditionOf(
                     new BinaryExpression(Operator.ISub, instrCur.dataWidth, MemSi(), MemDi())));
                 incSi = true;
@@ -897,7 +897,7 @@ namespace Reko.Arch.X86
             case Opcode.scas:
             case Opcode.scasb:
                 emitter.Assign(
-                    orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+                    orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
                     new ConditionOf(
                     new BinaryExpression(Operator.ISub,
                     instrCur.dataWidth,
@@ -955,7 +955,7 @@ namespace Reko.Arch.X86
                 SrcOp(instrCur.op1),
                                 SrcOp(instrCur.op2));
 
-            EmitCcInstr(src, (IntelInstruction.DefCc(instrCur.code) & ~FlagM.CF));
+            EmitCcInstr(src, (X86Instruction.DefCc(instrCur.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -971,7 +971,7 @@ namespace Reko.Arch.X86
             emitter.Assign(
                 dst,
                 PseudoProc("__xadd", instrCur.op1.Width, dst, src));
-            EmitCcInstr(dst, IntelInstruction.DefCc(instrCur.code));
+            EmitCcInstr(dst, X86Instruction.DefCc(instrCur.code));
         }
 
         private void RewriteXlat()

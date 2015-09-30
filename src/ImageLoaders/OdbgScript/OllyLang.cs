@@ -1999,7 +1999,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else if (run_till_return)
                 {
-                    var instr = (IntelInstruction) Host.DisassembleEx(Debugger.InstructionPointer);
+                    var instr = (X86Instruction) Host.DisassembleEx(Debugger.InstructionPointer);
                     if (instr.code == Arch.X86.Opcode.ret ||
                        instr.code == Arch.X86.Opcode.retf)
                     {
@@ -2016,7 +2016,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     that's not gonna do us any good for jumps
                     so we'll stepinto except for a few exceptions
                     */
-                    var instr = (IntelInstruction) Host.DisassembleEx(Debugger.InstructionPointer);
+                    var instr = (X86Instruction) Host.DisassembleEx(Debugger.InstructionPointer);
                     if (instr.code == Arch.X86.Opcode.call || instr.code == Arch.X86.Opcode.rep ||
                         instr.code == Arch.X86.Opcode.repne)
                         Debugger.StepOver(StepOverCallback);

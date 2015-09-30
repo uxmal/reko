@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Intel
 		private IntelArchitecture arch;
         private X86State state;
 		private Procedure proc;
-        private IntelInstruction instr;
+        private X86Instruction instr;
 
 		[TestFixtureSetUp]
 		public void Setup()
@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Intel
                 arch,
                 null);
 			var procAddress = Address.Ptr32(0x10000000);
-            instr = new IntelInstruction(Opcode.nop, PrimitiveType.Word16, PrimitiveType.Word16)
+            instr = new X86Instruction(Opcode.nop, PrimitiveType.Word16, PrimitiveType.Word16)
             {
                 Address = procAddress,
             };
