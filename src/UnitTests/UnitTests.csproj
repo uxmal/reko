@@ -651,9 +651,14 @@
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ExternalAssemblies)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -661,10 +666,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>copy /y "$(SolutionDir)Environments\Win32\*.xml" "$(TargetDir)"
-copy /y "$(SolutionDir)..\external\Capstone.NET\*.dll" "$(TargetDir)"
-copy /y "$(SolutionDir)..\external\Capstone.NET\*.pdb" "$(TargetDir)"
-
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
