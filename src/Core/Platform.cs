@@ -226,7 +226,7 @@ namespace Reko.Core
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            //$IDentical to Win32, move into base class?
+            //$Identical to Win32, move into base class?
             return TypeLibraries
                 .Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)

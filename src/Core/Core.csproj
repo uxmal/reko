@@ -172,10 +172,12 @@
     <Compile Include="CLanguage\EnumEvaluator.cs" />
     <Compile Include="CLanguage\LookaheadLexer.cs" />
     <Compile Include="CLanguage\NamedDataType.cs" />
+    <Compile Include="CLanguage\NamedDataTypeExtractor.cs" />
     <Compile Include="CLanguage\NameExtractor.cs" />
     <Compile Include="CLanguage\ParseResult.cs" />
     <Compile Include="CLanguage\ParserState.cs" />
     <Compile Include="CLanguage\SerializedTypeComparer.cs" />
+    <Compile Include="CLanguage\SymbolTable.cs" />
     <Compile Include="CLanguage\TypeSizer.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />

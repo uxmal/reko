@@ -36,40 +36,20 @@ namespace Reko.Tools.C2Xml
     /// Parses a C compilation unit and transforms all declarations to the 
     /// XML syntax used by Reko.
     /// </summary>
-    public class XmlConverter : 
-        CSyntaxVisitor<int>
+    public class XmlConverter : SymbolTable
     {
         private TextReader rdr;
         private XmlWriter writer;
         private ParserState parserState;
-        private List<SerializedProcedureBase_v1> procs;
 
         public XmlConverter(TextReader rdr, XmlWriter writer)
         {
             this.rdr = rdr;
             this.writer = writer;
             this.parserState = new ParserState();
-            this.Types = new List<SerializedType>();
-            this.procs = new List<SerializedProcedureBase_v1>();
-            this.NamedTypes = new Dictionary<string, SerializedType>
-            {
-                { "size_t", new PrimitiveType_v1 { Domain=Domain.UnsignedInt, ByteSize=4 } },    //$BUGBUG: arch-dependent!
-                { "va_list", new PrimitiveType_v1 { Domain=Domain.Pointer, ByteSize=4 } }, //$BUGBUG: arch-dependent!
-            };
-            this.Sizer = new TypeSizer(this.NamedTypes);
-            StructsSeen = new Dictionary<string, SerializedStructType>();
-            UnionsSeen = new Dictionary<string, UnionType_v1>();
-            EnumsSeen = new Dictionary<string, SerializedEnumType>();
-            Constants = new Dictionary<string, int>();
+            NamedTypes.Add("size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 });    //$BUGBUG: arch-dependent!
+            NamedTypes.Add("va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = 4 } ); //$BUGBUG: arch-dependent!
         }
-
-        public List<SerializedType> Types { get; private set; }
-        public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
-        public Dictionary<string, UnionType_v1> UnionsSeen { get; private set; }
-        public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
-        public Dictionary<string, int> Constants { get; private set; }
-        public Dictionary<string, SerializedType> NamedTypes { get; private set; }
-        public TypeSizer Sizer { get; private set; }
 
         public void Convert()
         {
@@ -78,13 +58,13 @@ namespace Reko.Tools.C2Xml
             var declarations = parser.Parse();
             foreach (var decl in declarations)
             {
-                decl.Accept(this);
+                VisitDeclaration(decl);
             }
 
             var lib = new SerializedLibrary
             {
                 Types = Types.ToArray(),
-                Procedures = procs.ToList(),
+                Procedures = Procedures.ToList(),
             };
             var ser = SerializedLibrary.CreateSerializer();
             ser.Serialize(writer, lib);
@@ -125,7 +105,7 @@ namespace Reko.Tools.C2Xml
                     {
                         sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(decl.attribute_list);
                     }
-                    procs.Add(new Procedure_v1
+                    Procedures.Add(new Procedure_v1
                     {
                         Name = nt.Name,
                         Signature = sSig,

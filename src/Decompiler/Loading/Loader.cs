@@ -32,7 +32,7 @@ using System.ComponentModel.Design;
 namespace Reko.Loading
 {
     /// <summary>
-    /// Class that abstracts the process of loading the "code", in whatever format it is in,
+    /// Class that provides services for loading the "code", in whatever format it is in,
     /// into a program.
     /// </summary>
     public class Loader : ILoader

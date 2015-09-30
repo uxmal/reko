@@ -92,6 +92,7 @@
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
+    <Compile Include="Analysis\UserSignatureBuilderTests.cs" />
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
     <Compile Include="Arch\Mips\MipsPointerScannerTests.cs" />
     <Compile Include="Core\CLanguage\CConstantEvaluatorTests.cs" />

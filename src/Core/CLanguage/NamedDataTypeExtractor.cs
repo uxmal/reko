@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core.CLanguage;
 using Reko.Core.Types;
 using Reko.Core.Serialization;
 using System;
@@ -28,14 +27,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml
+namespace Reko.Core.CLanguage
 {
     public class NamedDataTypeExtractor :
         DeclaratorVisitor<Func<NamedDataType,NamedDataType>>,
         DeclSpecVisitor<SerializedType>
     {
         private IEnumerable<DeclSpec> specs;
-        private XmlConverter converter;
+        private SymbolTable symbolTable;
         private SerializedType dt;
         private Domain domain;
         private int byteSize;
@@ -58,10 +57,10 @@ namespace Reko.Tools.C2Xml
             Int64,
         }
 
-        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, XmlConverter converter)
+        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, SymbolTable converter)
         {
             this.specs = specs;
-            this.converter = converter;
+            this.symbolTable = converter;
             this.callingConvention = CTokenType.None;
             this.eval = new CConstantEvaluator(converter.Constants);
             this.simpleSize = SimpleSize.None;
@@ -206,7 +205,7 @@ namespace Reko.Tools.C2Xml
             }
             else
             {
-                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, converter);
+                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, symbolTable);
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 var kind = GetArgumentKindFromAttributes(decl.Attributes);
                 return new Argument_v1
@@ -399,14 +398,14 @@ namespace Reko.Tools.C2Xml
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
             SerializedType type;
-            if (!converter.NamedTypes.TryGetValue(typeDefName.Name, out type))
+            if (!symbolTable.NamedTypes.TryGetValue(typeDefName.Name, out type))
             {
                 throw new ApplicationException(
                     string.Format(
                         "error: type name {0} not defined.",
                         typeDefName.Name ?? "(null)"));
             }
-            byteSize = type.Accept(converter.Sizer);
+            byteSize = type.Accept(symbolTable.Sizer);
             return new SerializedTypeReference(typeDefName.Name);
         }
 
@@ -415,14 +414,14 @@ namespace Reko.Tools.C2Xml
             if (complexType.Type == CTokenType.Struct)
             {
                 SerializedStructType str;
-                if (complexType.Name == null || converter.StructsSeen.TryGetValue(complexType.Name, out str))
+                if (complexType.Name == null || symbolTable.StructsSeen.TryGetValue(complexType.Name, out str))
                 {
                     str = new SerializedStructType {
                         Name = complexType.Name != null
                             ? complexType.Name
-                            : string.Format("struct_{0}", converter.StructsSeen.Count)
+                            : string.Format("struct_{0}", symbolTable.StructsSeen.Count)
                     };
-                    converter.StructsSeen.Add(str.Name, str);
+                    symbolTable.StructsSeen.Add(str.Name, str);
                 }
                 else
                 {
@@ -431,8 +430,8 @@ namespace Reko.Tools.C2Xml
                 if (!complexType.IsForwardDeclaration() && str.Fields == null)
                 {
                     str.Fields = ExpandStructFields(complexType.DeclList).ToArray();
-                    converter.Sizer.SetSize(str);
-                    converter.Types.Add(str);
+                    symbolTable.Sizer.SetSize(str);
+                    symbolTable.Types.Add(str);
                     str = new SerializedStructType { Name = str.Name };
                 }
                 return str;
@@ -440,21 +439,21 @@ namespace Reko.Tools.C2Xml
             else if (complexType.Type == CTokenType.Union)
             {
                 UnionType_v1 un;
-                if (complexType.Name == null || !converter.UnionsSeen.TryGetValue(complexType.Name, out un))
+                if (complexType.Name == null || !symbolTable.UnionsSeen.TryGetValue(complexType.Name, out un))
                 {
                     un = new UnionType_v1 { Name = complexType.Name };
                     if (un.Name != null)
                     {
-                        converter.UnionsSeen.Add(un.Name, un);
+                        symbolTable.UnionsSeen.Add(un.Name, un);
                     }
                 }
                 if (!complexType.IsForwardDeclaration() && un.Alternatives == null)
                 {
                     un.Alternatives = ExpandUnionFields(complexType.DeclList).ToArray();
-                    converter.Sizer.SetSize(un);
+                    symbolTable.Sizer.SetSize(un);
                     if (un.Name != null)
                     {
-                        converter.Types.Add(un);
+                        symbolTable.Types.Add(un);
                         un = new UnionType_v1 { Name = un.Name };
                     }
                 }
@@ -467,15 +466,15 @@ namespace Reko.Tools.C2Xml
         public SerializedType VisitEnum(EnumeratorTypeSpec e)
         {
             SerializedEnumType en;
-            if (e.Tag == null || !converter.EnumsSeen.TryGetValue(e.Tag, out en))
+            if (e.Tag == null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out en))
             {
                 en = new SerializedEnumType {
                     Name = e.Tag != null 
                         ? e.Tag 
-                        : string.Format("enum_{0}", converter.EnumsSeen.Count)
+                        : string.Format("enum_{0}", symbolTable.EnumsSeen.Count)
                 };
-                converter.EnumsSeen.Add(en.Name, en);
-                var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(converter.Constants));
+                symbolTable.EnumsSeen.Add(en.Name, en);
+                var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(symbolTable.Constants));
                 var listMembers = new List<SerializedEnumValue>();
                 foreach (var item in e.Enums)
                 {
@@ -484,11 +483,11 @@ namespace Reko.Tools.C2Xml
                         Name = item.Name,
                         Value = enumEvaluator.GetValue(item.Value),
                     };
-                    converter.Constants.Add(ee.Name, ee.Value);
+                    symbolTable.Constants.Add(ee.Name, ee.Value);
                     listMembers.Add(ee);
                 }
                 en.Values = listMembers.ToArray();
-                converter.Types.Add(en);
+                symbolTable.Types.Add(en);
                 en = new SerializedEnumType { Name = en.Name };
             }
             else
@@ -503,11 +502,11 @@ namespace Reko.Tools.C2Xml
             int offset = 0;
             foreach (var decl in decls)
             {
-                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, converter);
+                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
-                    var rawSize = nt.DataType.Accept(converter.Sizer);
+                    var rawSize = nt.DataType.Accept(symbolTable.Sizer);
                     offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))
                     yield return new StructField_v1
                     {
@@ -524,7 +523,7 @@ namespace Reko.Tools.C2Xml
         {
             foreach (var decl in decls)
             {
-                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, converter);
+                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ndte.GetNameAndType(declarator);

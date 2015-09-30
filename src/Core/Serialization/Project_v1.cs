@@ -163,6 +163,12 @@ namespace Reko.Core.Serialization
         /// </summary>
         [XmlElement("assume")]
         public RegisterValue_v2[] Assume;
+
+        /// <summary>
+        /// The signature of the function as specified by the user. It is written
+        /// in C syntax, with the [[reko::reg({regname})]] extension for specifying
+        /// values passed or returned in parameters.
+        /// </summary>
         public string CSignature;
     }
 

@@ -200,6 +200,7 @@
     <Compile Include="Analysis\TrashedRegisterFinder.cs" />
     <Compile Include="Analysis\TrashedRegisterSummarizer.cs" />
     <Compile Include="Analysis\TrashedStorageHelper.cs" />
+    <Compile Include="Analysis\UserSignatureBuilder.cs" />
     <Compile Include="Analysis\ValueNumbering.cs">
       <SubType>Code</SubType>
     </Compile>
