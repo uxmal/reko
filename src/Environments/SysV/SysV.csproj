@@ -66,7 +66,7 @@
        Other similar extension points exist, see Microsoft.Common.targets.
        -->
   <Target Name="BeforeBuild">
-    <Exec Command="&quot;$(SolutionDir)tools\c2xml\bin\$(Configuration)\c2xml.exe&quot; %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml">
+    <Exec Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml">
     </Exec>
   </Target>
   <!--
