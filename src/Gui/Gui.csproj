@@ -549,7 +549,8 @@
   <Target Name="BeforeBuild">
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)tools\xslt.exe" "$(ProjectDir)Windows\Forms\cmdids.xslt" "$(ProjectDir)decompiler-menus.xml" "$(ProjectDir)Windows\Forms\CmdIds.cs"
+    <PreBuildEvent>:;echo This is UNIX!
+"$(SolutionDir)tools\xslt.exe" "$(ProjectDir)Windows\Forms\cmdids.xslt" "$(ProjectDir)decompiler-menus.xml" "$(ProjectDir)Windows\Forms\CmdIds.cs"
 "$(SolutionDir)tools\xslt.exe" "$(ProjectDir)Windows\Forms\decompiler-menus.xslt" "$(ProjectDir)decompiler-menus.xml" "$(ProjectDir)Windows\Forms\DecompilerMenus.cs"
 </PreBuildEvent>
     <PostBuildEvent>
