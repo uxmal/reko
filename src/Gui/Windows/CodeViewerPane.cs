@@ -77,7 +77,20 @@ namespace Reko.Gui.Windows
             return this.codeView;
         }
 
-       
+        private void EnableControls()
+        {
+            Core.CLanguage.Decl decl;
+            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
+            {
+                codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
+            }
+            else
+            {
+                // If parser failed, show error;
+                codeView.ProcedureDeclaration.ForeColor = Color.Red;
+            }
+        }
+
         void codeView_CurrentAddressChanged(object sender, EventArgs e)
         {
             if (ignoreEvents)
@@ -115,11 +128,24 @@ namespace Reko.Gui.Windows
             this.program = program;
             this.proc = proc;
             SetTextView(proc);
+            SetDeclaration(proc);
             this.codeView.ProcedureName.Text = proc.Name;
             this.proc.NameChanged += Procedure_NameChanged;
             // Navigate 
             this.codeView.CurrentAddress = proc;
+            EnableControls();
             ignoreEvents = false;
+        }
+
+        private void SetDeclaration(Procedure proc)
+        {
+            int i = program.Procedures.IndexOfValue(proc);
+            if (i < 0)
+                return;
+            Reko.Core.Serialization.Procedure_v1 uProc;
+            if (!program.UserProcedures.TryGetValue(program.Procedures.Keys[i], out uProc))
+                return;
+            this.codeView.ProcedureDeclaration.Text = uProc.CSignature;
         }
 
         private void SetTextView(Procedure proc)
@@ -226,17 +252,9 @@ namespace Reko.Gui.Windows
 
         private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
         {
-            Core.CLanguage.Decl decl;
-            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
-            {
-                codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
-            }
-            else
-            {
-                // If parser failed, show error;
-                codeView.ProcedureDeclaration.ForeColor = Color.Red;
-            }
+            EnableControls();
         }
+
 
         private bool TryParseSignature(string txtSignature, out Core.CLanguage.Decl decl)
         {

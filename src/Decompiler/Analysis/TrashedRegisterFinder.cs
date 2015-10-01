@@ -218,7 +218,8 @@ namespace Reko.Analysis
                     eventListener.Error(
                         location,
                         ex,
-                        string.Format("An error occurred while rewriting at linear address {0:X}.", stm.LinearAddress));
+                        string.Format("An error occurred while processing instruction at address {0:X}.",
+                            program.ImageMap.MapLinearAddressToAddress(stm.LinearAddress)));
                 }
             }
         }
@@ -459,6 +460,5 @@ namespace Reko.Analysis
                 return e;
             }
         }
-
     }
 }
