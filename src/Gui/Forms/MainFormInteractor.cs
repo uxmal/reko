@@ -395,6 +395,10 @@ namespace Reko.Gui.Forms
                 decompilerSvc.Decompiler.Project == null)
                 return;
 
+            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
+            {
+                program.Procedures.Clear();
+            }
             SwitchInteractor(this.InitialPageInteractor);
             CloseAllDocumentWindows();
         }
