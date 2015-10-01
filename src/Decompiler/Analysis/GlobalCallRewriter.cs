@@ -115,31 +115,10 @@ namespace Reko.Analysis
 
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				crw.RewriteCalls(proc, prog.Architecture);
+                crw.RewriteCalls(proc);
 				crw.RewriteReturns(proc);
 			}
 		}
-
-
-		/// <summary>
-		/// Having identified the return variable -- if any, rewrite all 
-		/// return statements to return that variable.
-		/// </summary>
-		/// <param name="proc"></param>
-        private void RewriteReturns(Procedure proc)
-        {
-            Identifier idRet = proc.Signature.ReturnValue;
-            if (idRet == null)
-                return;
-            foreach (Statement stm in proc.Statements)
-            {
-                var ret = stm.Instruction as ReturnInstruction;
-                if (ret != null)
-                {
-                    ret.Expression = idRet;
-                }
-            }
-        }
 
 		/// <summary>
 		/// Creates a signature for this procedure, and ensures that all registers accessed by the procedure are in the procedure

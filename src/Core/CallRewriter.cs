@@ -30,7 +30,17 @@ namespace Reko.Core
 		public CallRewriter(Program program)
 		{
             this.Program = program;
-		}
+        }
+
+        public static void Rewrite(Program program)
+        {
+            var crw = new CallRewriter(program);
+            foreach (Procedure proc in program.Procedures.Values)
+            {
+                crw.RewriteCalls(proc);
+                crw.RewriteReturns(proc);
+            }
+        }
 
         public Program Program { get; private set; }
 
@@ -84,7 +94,7 @@ namespace Reko.Core
 		/// </summary>
 		/// <param name="proc"></param>
 		/// <returns>The number of calls that couldn't be converted</returns>
-        public int RewriteCalls(Procedure proc, IProcessorArchitecture arch)
+        public int RewriteCalls(Procedure proc)
         {
             int unConverted = 0;
             foreach (Statement stm in proc.Statements)
@@ -92,12 +102,31 @@ namespace Reko.Core
                 CallInstruction ci = stm.Instruction as CallInstruction;
                 if (ci != null)
                 {
-
                     if (!RewriteCall(proc, stm, ci))
                         ++unConverted;
                 }
             }
             return unConverted;
         }
-	}
+
+        /// <summary>
+        /// Having identified the return variable -- if any, rewrite all 
+        /// return statements to return that variable.
+        /// </summary>
+        /// <param name="proc"></param>
+        public void RewriteReturns(Procedure proc)
+        {
+            Identifier idRet = proc.Signature.ReturnValue;
+            if (idRet == null)
+                return;
+            foreach (Statement stm in proc.Statements)
+            {
+                var ret = stm.Instruction as ReturnInstruction;
+                if (ret != null)
+                {
+                    ret.Expression = idRet;
+                }
+            }
+        }
+    }
 }

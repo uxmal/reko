@@ -383,7 +383,7 @@ namespace Reko.Analysis
 
         public bool VisitStackArgumentStorage(StackArgumentStorage stack, bool defining)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool VisitTemporaryStorage(TemporaryStorage temp, bool defining)

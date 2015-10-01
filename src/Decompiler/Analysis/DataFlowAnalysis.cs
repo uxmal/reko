@@ -173,6 +173,9 @@ namespace Reko.Analysis
 		public void UntangleProcedures()
 		{
             eventListener.ShowStatus("Eliminating intra-block dead registers.");
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures();
+            CallRewriter.Rewrite(program);
             IntraBlockDeadRegisters.Apply(program);
             eventListener.ShowStatus("Finding terminating procedures.");
             var term = new TerminationAnalysis(flow);
