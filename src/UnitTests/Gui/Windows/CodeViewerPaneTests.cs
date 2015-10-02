@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Gui.Windows
         private IDecompilerShellUiService uiSvc;
         private Font font;
         private Program program;
+        private Procedure proc;
 
         [SetUp]
         public void Setup()
@@ -117,30 +118,52 @@ namespace Reko.UnitTests.Gui.Windows
             }
         }
 
-        [Test]
+        [Test(Description = "When a user browses to the procedure, we should see it")]
         public void Cvp_SetProcedure()
         {
             codeViewer.CreateControl();
-            var m = new ProcedureBuilder();
-            m.Return();
+            Given_StubProcedure();
+            Given_Program();
+            mr.ReplayAll();
 
-            using (mr.Record())
-            {
-                var project = new Project { Programs = { program } };
-                decompiler.Stub(d => d.Project).Return(project);
-            }
-
-            codeViewer.DisplayProcedure(this.program, m.Procedure);
+            codeViewer.DisplayProcedure(this.program, this.proc);
 
             string sExp =
-                "void ProcedureBuilder()" + nl +
+                "void fnTest()" + nl +
                 "{" + nl +
-                "ProcedureBuilder_entry:" + nl +
+                "fnTest_entry:" + nl +
                 "l1:" + nl +
                 "    'return'" + nl +
-                "ProcedureBuilder_exit:" + nl +
+                "fnTest_exit:" + nl +
                 "}" + nl;
             Assert.AreEqual(sExp, Flatten(codeViewer.TextView.Model));
+        }
+
+        private void Given_StubProcedure()
+        {
+            var m = new ProcedureBuilder("fnTest");
+            m.Return();
+            this.proc = m.Procedure;
+        }
+
+        private void Given_Program()
+        {
+            var project = new Project { Programs = { program } };
+            decompiler.Stub(d => d.Project).Return(project);
+        }
+
+        [Test(Description = "When a previously uncustomized procedure is displayed, show its name in the "+
+            "declaration box")]
+        public void Cvp_SetProcedure_ShowFnName()
+        {
+            codeViewer.CreateControl();
+            Given_Program();
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            codeViewer.DisplayProcedure(program, proc);
+
+            Assert.AreEqual(proc.Name, codeViewer.Declaration.Text);
         }
     }
 }

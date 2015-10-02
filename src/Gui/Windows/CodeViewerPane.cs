@@ -49,6 +49,7 @@ namespace Reko.Gui.Windows
         private bool ignoreEvents;
 
         public TextView TextView { get { return codeView.TextView; } }
+        public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
         public IWindowFrame FrameWindow { get; internal set; }
 
         #region IWindowPane Members
@@ -91,13 +92,80 @@ namespace Reko.Gui.Windows
             }
         }
 
-        void codeView_CurrentAddressChanged(object sender, EventArgs e)
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (ignoreEvents)
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:   //$TODO: once the TextViewer supports selections, these two 
+                    status.Status = codeView.TextView.Selection.IsEmpty
+                        ? MenuStatus.Visible
+                        : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Execute(CommandID cmdId)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:
+                    Copy();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void Copy()
+        {
+            if (this.proc == null)
                 return;
-            var value = codeView.CurrentAddress;
-            DisplayProcedure(program, value);
-        }        
+            if (codeView.TextView.Focused)
+            {
+                var ms = new MemoryStream();
+                this.codeView.TextView.Selection.Save(ms, System.Windows.Forms.DataFormats.UnicodeText);
+                Debug.Print(Encoding.Unicode.GetString(ms.ToArray()));
+                Clipboard.SetData(DataFormats.UnicodeText, ms);
+            }
+            else if (codeView.ProcedureName.Focused)
+            {
+                Clipboard.SetText(codeView.ProcedureName.SelectedText);
+            }
+            else if (codeView.ProcedureName.Focused)
+            {
+                Clipboard.SetText(codeView.ProcedureDeclaration.SelectedText);
+            }
+        }
+
+        private bool IsValidCIdentifier(string id)
+        {
+            return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
+        }
+
+        private bool TryParseSignature(string txtSignature, out Core.CLanguage.Decl decl)
+        {
+            // save the user a keystroke.
+            txtSignature = txtSignature + ";";
+            var lexer = new Core.CLanguage.CLexer(new StringReader(txtSignature));
+            var cstate = new Core.CLanguage.ParserState();
+            var cParser = new CParser(cstate, lexer);
+            try
+            {
+                decl = cParser.Parse_Decl();
+                return true;
+            }
+            catch
+            {
+                decl = null;
+                return false;
+            }
+        }
 
         public void SetSite(IServiceProvider sp)
         {
@@ -137,15 +205,24 @@ namespace Reko.Gui.Windows
             ignoreEvents = false;
         }
 
+        /// <summary>
+        /// If the user has provided us with a declaration, use that. Otherwise
+        /// just show a function name.
+        /// </summary>
+        /// <param name="proc"></param>
         private void SetDeclaration(Procedure proc)
         {
             int i = program.Procedures.IndexOfValue(proc);
-            if (i < 0)
-                return;
-            Reko.Core.Serialization.Procedure_v1 uProc;
-            if (!program.UserProcedures.TryGetValue(program.Procedures.Keys[i], out uProc))
-                return;
-            this.codeView.ProcedureDeclaration.Text = uProc.CSignature;
+            if (i >= 0)
+            {
+                Reko.Core.Serialization.Procedure_v1 uProc;
+                if (program.UserProcedures.TryGetValue(program.Procedures.Keys[i], out uProc))
+                {
+                    this.codeView.ProcedureDeclaration.Text = uProc.CSignature;
+                    return;
+                }
+            }
+            this.codeView.ProcedureDeclaration.Text = proc.Name;
         }
 
         private void SetTextView(Procedure proc)
@@ -155,6 +232,14 @@ namespace Reko.Gui.Windows
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
             this.TextView.Model = tsf.GetModel();
+        }
+
+        void codeView_CurrentAddressChanged(object sender, EventArgs e)
+        {
+            if (ignoreEvents)
+                return;
+            var value = codeView.CurrentAddress;
+            DisplayProcedure(program, value);
         }
 
         void textView_Navigate(object sender, EditorNavigationArgs e)
@@ -172,62 +257,6 @@ namespace Reko.Gui.Windows
             {
                 pbSvc.SelectedObject = procDst;
             }
-        }
-
-        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
-        {
-            if (cmdId.Guid == CmdSets.GuidReko)
-            {
-                switch (cmdId.ID)
-                {
-                case CmdIds.EditCopy:   //$TODO: once the TextViewer supports selections, these two 
-                    status.Status = codeView.TextView.Selection.IsEmpty 
-                        ? MenuStatus.Visible 
-                        : MenuStatus.Visible| MenuStatus.Enabled;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool Execute(CommandID cmdId)
-        {
-            if (cmdId.Guid == CmdSets.GuidReko)
-            {
-                switch (cmdId.ID)
-                {
-                case CmdIds.EditCopy:
-                    Copy();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public void Copy()
-        {
-            if (this.proc == null)
-                return;
-            if (codeView.TextView.Focused)
-            {
-                var ms = new MemoryStream();
-                this.codeView.TextView.Selection.Save(ms, System.Windows.Forms.DataFormats.UnicodeText);
-                Debug.Print(Encoding.Unicode.GetString(ms.ToArray()));
-                Clipboard.SetData(DataFormats.UnicodeText, ms);
-            } 
-            else if (codeView.ProcedureName.Focused)
-            {
-                Clipboard.SetText(codeView.ProcedureName.SelectedText);
-            }
-            else if (codeView.ProcedureName.Focused)
-            {
-                Clipboard.SetText(codeView.ProcedureDeclaration.SelectedText);
-            }
-        }
-
-        private bool IsValidCIdentifier(string id)
-        {
-            return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
         }
 
         private void ProcedureName_KeyPress(object sender, KeyPressEventArgs e)
@@ -253,25 +282,6 @@ namespace Reko.Gui.Windows
         private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
         {
             EnableControls();
-        }
-
-
-        private bool TryParseSignature(string txtSignature, out Core.CLanguage.Decl decl)
-        {
-            // save the user a keystroke.
-            txtSignature = txtSignature + ";";
-            var lexer = new Core.CLanguage.CLexer(new StringReader(txtSignature));
-            var cstate = new Core.CLanguage.ParserState();
-            var cParser = new CParser(cstate, lexer);
-            try
-            {
-                decl = cParser.Parse_Decl();
-                return true;
-            } catch
-            {
-                decl = null;
-                return false;
-            }
         }
 
         private void ProcedureDeclaration_LostFocus(object sender, EventArgs e)
