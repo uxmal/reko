@@ -121,7 +121,7 @@ namespace Reko
             foreach (var program in project.Programs)
             {
                 eventListener.ShowStatus("Performing interprocedural analysis.");
-                DataFlowAnalysis dfa = new DataFlowAnalysis(program, eventListener);
+                var dfa = new DataFlowAnalysis(program, eventListener);
                 dfa.UntangleProcedures();
 
                 dfa.BuildExpressionTrees();

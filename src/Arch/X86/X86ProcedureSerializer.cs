@@ -29,9 +29,19 @@ using System.Text;
 
 namespace Reko.Arch.X86
 {
+    /// <summary>
+    /// Serializes and deserializes procedure signatures.
+    /// </summary>
+    /// <remarks>
+    /// This code is aware of the different calling convetions on 
+    /// x86 processors. Should your ABI be different, you need to
+    /// make the Platform that loaded the binary return an object
+    /// that derives from this class.
+    /// </remarks>
     public class X86ProcedureSerializer : ProcedureSerializer
     {
         private ArgumentSerializer argser;
+
         public X86ProcedureSerializer(IntelArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
         {
@@ -93,6 +103,13 @@ namespace Reko.Arch.X86
             return sig;
         }
 
+        /// <summary>
+        /// Deserializes an argument.
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <param name="idx"></param>
+        /// <param name="convention"></param>
+        /// <returns></returns>
         public Identifier DeserializeArgument(Argument_v1 arg, int idx, string convention)
         {
             if (arg.Kind != null)
