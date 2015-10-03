@@ -18,18 +18,18 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Windows;
 using Reko.Gui.Windows.Controls;
-using Reko.Gui.Windows.Forms;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -49,6 +49,7 @@ namespace Reko.UnitTests.Gui.Windows
         private Font font;
         private Program program;
         private Procedure proc;
+        private IWindowFrame frame;
 
         [SetUp]
         public void Setup()
@@ -60,6 +61,7 @@ namespace Reko.UnitTests.Gui.Windows
             decompiler = mr.Stub<IDecompiler>();
             uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
             uiSvc = mr.Stub<IDecompilerShellUiService>();
+            frame = mr.Stub<IWindowFrame>();
             font = new Font("Arial", 10);
             var styles = new Dictionary<string, UiStyle>();
             uiPreferencesSvc.Stub(u => u.Styles).Return(styles);
@@ -108,6 +110,12 @@ namespace Reko.UnitTests.Gui.Windows
                 sb.Append("`");
         }
 
+        private void Given_Codeviewer()
+        {
+            codeViewer.CreateControl();
+            codeViewer.FrameWindow = frame;
+        }
+
         [Test]
         public void Cvp_Create()
         {
@@ -121,7 +129,7 @@ namespace Reko.UnitTests.Gui.Windows
         [Test(Description = "When a user browses to the procedure, we should see it")]
         public void Cvp_SetProcedure()
         {
-            codeViewer.CreateControl();
+            Given_Codeviewer();
             Given_StubProcedure();
             Given_Program();
             mr.ReplayAll();
@@ -144,6 +152,7 @@ namespace Reko.UnitTests.Gui.Windows
             var m = new ProcedureBuilder("fnTest");
             m.Return();
             this.proc = m.Procedure;
+            this.program.Procedures[Address.Ptr32(0x1234)] = proc;
         }
 
         private void Given_Program()
@@ -156,7 +165,7 @@ namespace Reko.UnitTests.Gui.Windows
             "declaration box")]
         public void Cvp_SetProcedure_ShowFnName()
         {
-            codeViewer.CreateControl();
+            Given_Codeviewer();
             Given_Program();
             Given_StubProcedure();
             mr.ReplayAll();
@@ -164,6 +173,67 @@ namespace Reko.UnitTests.Gui.Windows
             codeViewer.DisplayProcedure(program, proc);
 
             Assert.AreEqual(proc.Name, codeViewer.Declaration.Text);
+        }
+
+        [Test]
+        public void Cvp_SetProcedure_EditingMakesDirty()
+        {
+            Given_Codeviewer();
+            Given_Program();
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            codeViewer.DisplayProcedure(program, proc);
+            Assert.IsFalse(codeViewer.IsDirty, "Shouldn't be dirty right after loading");        
+            codeViewer.Declaration.Text = "foo";
+
+            Assert.IsTrue(codeViewer.IsDirty, "Should be dirty after editing");
+        }
+
+        [Test(Description = "Just entering a (valid) name should be OK.")]
+        public void Cvp_Accept_JustName()
+        {
+            Given_Codeviewer();
+            Given_Program();
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            codeViewer.DisplayProcedure(program, proc);
+            codeViewer.Declaration.Text = "foo";
+
+            Assert.AreEqual("foo", proc.Name);
+            Assert.IsNull(program.UserProcedures.Values.First().CSignature);
+        }
+
+        [Test(Description = "Entering an invalid name should change nothing.")]
+        public void Cvp_Reject_Invalid_Name()
+        {
+            Given_Codeviewer();
+            Given_Program();
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            var oldSig = proc.Signature;
+            codeViewer.DisplayProcedure(program, proc);
+            codeViewer.Declaration.Text = "f@oo";
+
+            Assert.AreEqual("fnTest", proc.Name);
+        }
+
+        [Test(Description = "Entering an valid function declaration should change both name and signature.")]
+        public void Cvp_Accept_Declaration()
+        {
+            Given_Codeviewer();
+            Given_Program();
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            var oldSig = proc.Signature;
+            codeViewer.DisplayProcedure(program, proc);
+            codeViewer.Declaration.Text = "int foo(char *, float)";
+
+            Assert.AreEqual("foo", proc.Name);
+            Assert.AreEqual("int foo(char *, float)", program.UserProcedures.Values.First().CSignature);
         }
     }
 }

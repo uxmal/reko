@@ -41,7 +41,7 @@ namespace Reko.Gui.Windows
     /// </summary>
     public class CodeViewerPane : IWindowPane, ICommandTarget
     {
-        private CodeView codeView; 
+        private CodeView codeView;
         private IServiceProvider services;
         private Program program;
         private Procedure proc;
@@ -50,7 +50,8 @@ namespace Reko.Gui.Windows
 
         public TextView TextView { get { return codeView.TextView; } }
         public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
-        public IWindowFrame FrameWindow { get; internal set; }
+        public IWindowFrame FrameWindow { get; set; }
+        public bool IsDirty { get; set; }
 
         #region IWindowPane Members
 
@@ -61,10 +62,7 @@ namespace Reko.Gui.Windows
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
             this.codeView.CurrentAddressChanged += codeView_CurrentAddressChanged;
-            this.codeView.ProcedureName.LostFocus += ProcedureName_LostFocus;
-            this.codeView.ProcedureName.KeyPress += ProcedureName_KeyPress;
             this.codeView.ProcedureDeclaration.TextChanged += ProcedureDeclaration_TextChanged;
-            this.codeView.ProcedureDeclaration.LostFocus += ProcedureDeclaration_LostFocus;
 
             this.TextView.Font = new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
@@ -81,15 +79,17 @@ namespace Reko.Gui.Windows
         private void EnableControls()
         {
             Core.CLanguage.Decl decl;
-            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
+            if (!TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
             {
-                codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
+                // If parser failed, perhaps it's simply a valid name? 
+                if (!IsValidCIdentifier(codeView.ProcedureDeclaration.Text))
+                {
+                    // Not valid name either, die.
+                    codeView.ProcedureDeclaration.ForeColor = Color.Red;
+                    return;
+                }
             }
-            else
-            {
-                // If parser failed, show error;
-                codeView.ProcedureDeclaration.ForeColor = Color.Red;
-            }
+            codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -133,11 +133,7 @@ namespace Reko.Gui.Windows
                 Debug.Print(Encoding.Unicode.GetString(ms.ToArray()));
                 Clipboard.SetData(DataFormats.UnicodeText, ms);
             }
-            else if (codeView.ProcedureName.Focused)
-            {
-                Clipboard.SetText(codeView.ProcedureName.SelectedText);
-            }
-            else if (codeView.ProcedureName.Focused)
+            else if (codeView.ProcedureDeclaration.Focused)
             {
                 Clipboard.SetText(codeView.ProcedureDeclaration.SelectedText);
             }
@@ -158,7 +154,12 @@ namespace Reko.Gui.Windows
             try
             {
                 decl = cParser.Parse_Decl();
-                return true;
+                if (decl == null)
+                    return false;
+                if (decl.init_declarator_list.Count != 1)
+                    return false;
+                var init = decl.init_declarator_list[0];
+                return init.Declarator is FunctionDeclarator;
             }
             catch
             {
@@ -197,10 +198,11 @@ namespace Reko.Gui.Windows
             this.proc = proc;
             SetTextView(proc);
             SetDeclaration(proc);
-            this.codeView.ProcedureName.Text = proc.Name;
             this.proc.NameChanged += Procedure_NameChanged;
+
             // Navigate 
             this.codeView.CurrentAddress = proc;
+            IsDirty = false;
             EnableControls();
             ignoreEvents = false;
         }
@@ -259,44 +261,42 @@ namespace Reko.Gui.Windows
             }
         }
 
-        private void ProcedureName_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Return)
-            {
-                var newName = codeView.ProcedureName.Text;
-                if (proc.Name == newName || !IsValidCIdentifier(newName))
-                    return;
-                proc.Name = newName;
-                e.Handled = true;
-            }
-        }
-
-        private void ProcedureName_LostFocus(object sender, EventArgs e)
-        {
-            var newName = codeView.ProcedureName.Text.Trim();
-            if (proc.Name == newName || !IsValidCIdentifier(newName))
-                return;
-            proc.Name = newName;
-        }
-
-        private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
-        {
-            EnableControls();
-        }
-
-        private void ProcedureDeclaration_LostFocus(object sender, EventArgs e)
+        private void ModifyProcedure()
         {
             //$REVIEW: slow, but we don't have to add an `Address` property to procedure.
             // It has big repercussions in teh code base.
             var iAddr = this.program.Procedures.IndexOfValue(proc);
             if (iAddr < 0)
                 return;
-            Decl decl;
-            if (!TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
-                return;
             var addr = this.program.Procedures.Keys[iAddr];
-            var up = program.EnsureUserProcedure(addr, proc.Name);
-            up.CSignature = codeView.ProcedureDeclaration.Text;
+            var declText = codeView.ProcedureDeclaration.Text.Trim();
+            Decl decl;
+            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
+            {
+                var fn = (FunctionDeclarator)decl.init_declarator_list[0].Declarator;
+                var id = (IdDeclarator)fn.Declarator;
+                var up = program.EnsureUserProcedure(addr, proc.Name);
+                up.CSignature = codeView.ProcedureDeclaration.Text;
+                proc.Name = id.Name;
+            }
+            else
+            {
+                if (IsValidCIdentifier(declText) &&
+                    proc.Name != declText)
+                {
+                    var up = program.EnsureUserProcedure(addr, proc.Name);
+                    proc.Name = declText;
+                }
+            }
+        }
+
+        private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
+        {
+            if (ignoreEvents)
+                return;
+            ModifyProcedure();
+            IsDirty = true;
+            EnableControls();
         }
 
         private void Procedure_NameChanged(object sender, EventArgs e)
