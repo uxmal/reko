@@ -71,6 +71,8 @@ namespace Reko.Gui.Design
 
         private void SetTreeNodeText()
         {
+            if (TreeNode == null)
+                return;
             TreeNode.Text = name;
             TreeNode.ToolTipText = Address.ToString();
             TreeNode.ImageName = userProc != null
