@@ -373,6 +373,41 @@ namespace Reko.ImageLoaders.MzExe
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
+
+        // MIPS relocation types.
+        // http://www.docjar.com/docs/api/sun/jvm/hotspot/debugger/win32/coff/TypeIndicators.html
+        private const ushort IMAGE_REL_MIPS_ABSOLUTE       = 0x0000;  // Reference is absolute, no relocation is necessary
+        private const ushort IMAGE_REL_MIPS_REFHALF        = 0x0001;
+        private const ushort IMAGE_REL_MIPS_REFWORD        = 0x0002;
+        private const ushort IMAGE_REL_MIPS_JMPADDR        = 0x0003;
+        private const ushort IMAGE_REL_MIPS_REFHI          = 0x0004;
+        private const ushort IMAGE_REL_MIPS_REFLO          = 0x0005;
+        private const ushort IMAGE_REL_MIPS_GPREL          = 0x0006;
+        private const ushort IMAGE_REL_MIPS_LITERAL        = 0x0007;
+        private const ushort IMAGE_REL_MIPS_SECTION        = 0x000A;
+        private const ushort IMAGE_REL_MIPS_SECREL         = 0x000B;
+        private const ushort IMAGE_REL_MIPS_SECRELLO       = 0x000C;  // Low 16-bit section relative referemce (used for >32k TLS)
+        private const ushort IMAGE_REL_MIPS_SECRELHI       = 0x000D;  // High 16-bit section relative reference (used for >32k TLS)
+        private const ushort IMAGE_REL_MIPS_TOKEN          = 0x000E;  // clr token
+        private const ushort IMAGE_REL_MIPS_JMPADDR16      = 0x0010;
+        private const ushort IMAGE_REL_MIPS_REFWORDNB      = 0x0022;
+        private const ushort IMAGE_REL_MIPS_PAIR = 0x0025;
+
+        // ARM relocation types
+        private const ushort IMAGE_REL_ARM_ABSOLUTE        = 0x0000; // No relocation required
+        private const ushort IMAGE_REL_ARM_ADDR32          = 0x0001; // 32 bit address
+        private const ushort IMAGE_REL_ARM_ADDR32NB        = 0x0002; // 32 bit address w/o image base
+        private const ushort IMAGE_REL_ARM_BRANCH24        = 0x0003; // 24 bit offset << 2 & sign ext.
+        private const ushort IMAGE_REL_ARM_BRANCH11        = 0x0004; // Thumb: 2 11 bit offsets
+        private const ushort IMAGE_REL_ARM_TOKEN           = 0x0005; // clr token
+        private const ushort IMAGE_REL_ARM_GPREL12         = 0x0006; // GP-relative addressing (ARM)
+        private const ushort IMAGE_REL_ARM_GPREL7          = 0x0007; // GP-relative addressing (Thumb)
+        private const ushort IMAGE_REL_ARM_BLX24           = 0x0008;
+        private const ushort IMAGE_REL_ARM_BLX11           = 0x0009;
+        private const ushort IMAGE_REL_ARM_SECTION         = 0x000E; // Section table index
+        private const ushort IMAGE_REL_ARM_SECREL = 0x000F; // Offset within section
+
+
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
             AddSectionsToImageMap(addrLoad, ImageMap);
@@ -436,9 +471,146 @@ namespace Reko.ImageLoaders.MzExe
                         fixup >> 12));
                 break;
 			}
-		}
 
-		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage, RelocationDictionary relocations)
+#if I386
+            //
+// I386 relocation types.
+//
+const static final ushort IMAGE_REL_I386_ABSOLUTE        = 0x0000;  // Reference is absolute, no relocation is necessary
+const static final ushort IMAGE_REL_I386_DIR16           = 0x0001;  // Direct 16-bit reference to the symbols virtual address
+const static final ushort IMAGE_REL_I386_REL16           = 0x0002;  // PC-relative 16-bit reference to the symbols virtual address
+const static final ushort IMAGE_REL_I386_DIR32           = 0x0006;  // Direct 32-bit reference to the symbols virtual address
+const static final ushort IMAGE_REL_I386_DIR32NB         = 0x0007;  // Direct 32-bit reference to the symbols virtual address, base not included
+const static final ushort IMAGE_REL_I386_SEG12           = 0x0009;  // Direct 16-bit reference to the segment-selector bits of a 32-bit virtual address
+const static final ushort IMAGE_REL_I386_SECTION         = 0x000A;
+const static final ushort IMAGE_REL_I386_SECREL          = 0x000B;
+const static final ushort IMAGE_REL_I386_TOKEN           = 0x000C;  // clr token
+const static final ushort IMAGE_REL_I386_SECREL7         = 0x000D;  // 7 bit offset from base of section containing target
+const static final ushort IMAGE_REL_I386_REL32           = 0x0014;  // PC-relative 32-bit reference to the symbols virtual address
+#endif
+
+#if MIPS
+public static final  short 	IMAGE_REL_MIPS_ABSOLUTE    	This relocation is ignored. 
+public static final  short 	IMAGE_REL_MIPS_REFHALF    	The high 16 bits of the target's 32-bit virtual address. 
+public static final  short 	IMAGE_REL_MIPS_REFWORD    	The target's 32-bit virtual address. 
+public static final  short 	IMAGE_REL_MIPS_JMPADDR    	The low 26 bits of the target's virtual address. This supports the MIPS J and JAL instructions. 
+public static final  short 	IMAGE_REL_MIPS_REFHI    	The high 16 bits of the target's 32-bit virtual address. Used for the first instruction in a two-instruction sequence that loads a full address. This relocation must be immediately followed by a PAIR relocations whose SymbolTableIndex contains a signed 16-bit displacement which is added to the upper 16 bits taken from the location being relocated. 
+public static final  short 	IMAGE_REL_MIPS_REFLO    	The low 16 bits of the target's virtual address. 
+public static final  short 	IMAGE_REL_MIPS_GPREL    	16-bit signed displacement of the target relative to the Global Pointer (GP) register. 
+public static final  short 	IMAGE_REL_MIPS_LITERAL    	Same as IMAGE_REL_MIPS_GPREL. 
+public static final  short 	IMAGE_REL_MIPS_SECTION    	The 16-bit section index of the section containing the target. This is used to support debugging information. 
+public static final  short 	IMAGE_REL_MIPS_SECREL    	The 32-bit offset of the target from the beginning of its section. This is used to support debugging information as well as static thread local storage. 
+public static final  short 	IMAGE_REL_MIPS_SECRELLO    	The low 16 bits of the 32-bit offset of the target from the beginning of its section. 
+public static final  short 	IMAGE_REL_MIPS_SECRELHI    	The high 16 bits of the 32-bit offset of the target from the beginning of its section. A PAIR relocation must immediately follow this on. The SymbolTableIndex of the PAIR relocation contains a signed 16-bit displacement, which is added to the upper 16 bits taken from the location being relocated. 
+public static final  short 	IMAGE_REL_MIPS_JMPADDR16    The low 26 bits of the target's virtual address. This supports the MIPS16 JAL instruction. 
+public static final  short 	IMAGE_REL_MIPS_REFWORDNB    The target's 32-bit relative virtual address. 
+public static final  short 	IMAGE_REL_MIPS_PAIR    	    This relocation is only valid when it immediately follows a REFHI or SECRELHI relocation. Its SymbolTableIndex contains a displacement and not an index into the symbol table. 
+#endif
+
+#if ARM
+public static final  short 	IMAGE_REL_ARM_ABSOLUTE    	This relocation is ignored. 
+public static final  short 	IMAGE_REL_ARM_ADDR32    	The target's 32-bit virtual address. 
+public static final  short 	IMAGE_REL_ARM_ADDR32NB    	The target's 32-bit relative virtual address. 
+public static final  short 	IMAGE_REL_ARM_BRANCH24    	The 24-bit relative displacement to the target. 
+public static final  short 	IMAGE_REL_ARM_BRANCH11    	Reference to a subroutine call, consisting of two 16-bit instructions with 11-bit offsets. 
+public static final  short 	IMAGE_REL_ARM_SECTION    	The 16-bit section index of the section containing the target. This is used to support debugging information. 
+public static final  short 	IMAGE_REL_ARM_SECREL    	The 32-bit offset of the target from the beginning of its section. This is used to support debugging information as well as static thread local storage. 
+#endif
+
+
+        }
+
+#if NYI
+        static void add16(uint8_t* P, int16_t V) { write16le(P, read16le(P) + V); }
+        static void add32(uint8_t* P, int32_t V) { write32le(P, read32le(P) + V); }
+        static void add64(uint8_t* P, int64_t V) { write64le(P, read64le(P) + V); }
+        static void or16(uint8_t* P, uint16_t V) { write16le(P, read16le(P) | V); }
+
+        void SectionChunk::applyRelX64(uint8_t* Off, uint16_t Type, Defined* Sym,
+                               uint64_t P)  {
+  uint64_t S = Sym->getRVA();
+  switch (Type) {
+  case IMAGE_REL_AMD64_ADDR32:   add32(Off, S + Config->ImageBase); break;
+  case IMAGE_REL_AMD64_ADDR64:   add64(Off, S + Config->ImageBase); break;
+  case IMAGE_REL_AMD64_ADDR32NB: add32(Off, S); break;
+  case IMAGE_REL_AMD64_REL32:    add32(Off, S - P - 4); break;
+  case IMAGE_REL_AMD64_REL32_1:  add32(Off, S - P - 5); break;
+  case IMAGE_REL_AMD64_REL32_2:  add32(Off, S - P - 6); break;
+  case IMAGE_REL_AMD64_REL32_3:  add32(Off, S - P - 7); break;
+  case IMAGE_REL_AMD64_REL32_4:  add32(Off, S - P - 8); break;
+  case IMAGE_REL_AMD64_REL32_5:  add32(Off, S - P - 9); break;
+  case IMAGE_REL_AMD64_SECTION:  add16(Off, Sym->getSectionIndex()); break;
+  case IMAGE_REL_AMD64_SECREL:   add32(Off, Sym->getSecrel()); break;
+  default:
+    error("Unsupported relocation type");
+    }
+}
+
+void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
+                               uint64_t P)  {
+  uint64_t S = Sym->getRVA();
+  switch (Type) {
+  case IMAGE_REL_I386_ABSOLUTE: break;
+  case IMAGE_REL_I386_DIR32:    add32(Off, S + Config->ImageBase); break;
+  case IMAGE_REL_I386_DIR32NB:  add32(Off, S); break;
+  case IMAGE_REL_I386_REL32:    add32(Off, S - P - 4); break;
+  case IMAGE_REL_I386_SECTION:  add16(Off, Sym->getSectionIndex()); break;
+  case IMAGE_REL_I386_SECREL:   add32(Off, Sym->getSecrel()); break;
+  default:
+    error("Unsupported relocation type");
+  }
+}
+
+
+        static void applyMOV(uint8_t* Off, uint16_t V)
+        {
+            or16(Off, ((V & 0x800) >> 1) | ((V >> 12) & 0xf));
+            or16(Off + 2, ((V & 0x700) << 4) | (V & 0xff));
+        }
+
+        static void applyMOV32T(uint8_t* Off, uint32_t V)
+        {
+            applyMOV(Off, V);           // set MOVW operand
+            applyMOV(Off + 4, V >> 16); // set MOVT operand
+        }
+
+        static void applyBranch20T(uint8_t* Off, int32_t V)
+        {
+            uint32_t S = V < 0 ? 1 : 0;
+            uint32_t J1 = (V >> 19) & 1;
+            uint32_t J2 = (V >> 18) & 1;
+            or16(Off, (S << 10) | ((V >> 12) & 0x3f));
+            or16(Off + 2, (J1 << 13) | (J2 << 11) | ((V >> 1) & 0x7ff));
+        }
+
+        static void applyBranch24T(uint8_t* Off, int32_t V)
+        {
+            uint32_t S = V < 0 ? 1 : 0;
+            uint32_t J1 = ((~V >> 23) & 1) ^ S;
+            uint32_t J2 = ((~V >> 22) & 1) ^ S;
+            or16(Off, (S << 10) | ((V >> 12) & 0x3ff));
+            or16(Off + 2, (J1 << 13) | (J2 << 11) | ((V >> 1) & 0x7ff));
+        }
+        void ApplyArmRelocation(uint8_t* Off, uint16_t Type, Defined* Sym,
+                               uint64_t P)  {
+  uint64_t S = Sym->getRVA();
+  // Pointer to thumb code must have the LSB set.
+  if (Sym->isExecutable())
+    S |= 1;
+  switch (Type) {
+  case IMAGE_REL_ARM_ADDR32:    add32(Off, S + Config->ImageBase); break;
+  case IMAGE_REL_ARM_ADDR32NB:  add32(Off, S); break;
+  case IMAGE_REL_ARM_MOV32T:    applyMOV32T(Off, S + Config->ImageBase); break;
+  case IMAGE_REL_ARM_BRANCH20T: applyBranch20T(Off, S - P - 4); break;
+  case IMAGE_REL_ARM_BRANCH24T: applyBranch24T(Off, S - P - 4); break;
+  case IMAGE_REL_ARM_BLX23T:    applyBranch24T(Off, S - P - 4); break;
+  default:
+    error("Unsupported relocation type");
+    }
+}
+
+#endif
+        public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage, RelocationDictionary relocations)
 		{
 			ImageReader rdr = new LeImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;

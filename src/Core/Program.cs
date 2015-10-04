@@ -113,11 +113,13 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Represents a pointer to a structure that contains all the global variables of the program. 
+        /// Represents a _pointer_ to a structure that contains all the 
+        /// global variables of the program. 
         /// </summary>
         /// <remarks>
-        /// This property is used heavily in the type inference phases of the decompiler to provide a place in which
-        /// to collect global variables.
+        /// This property is used heavily in the type inference phases of 
+        /// the decompiler to provide a place in which to collect global 
+        /// variables.
         /// </remarks>
         public Identifier Globals
         {
