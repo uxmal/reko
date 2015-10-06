@@ -54,7 +54,7 @@ namespace Reko.Typing
 
             foreach (Procedure proc in prog.Procedures.Values)
             {
-                ProcedureSignature signature = proc.Signature;
+                signature = proc.Signature;
                 if (signature != null && signature.ReturnValue != null)
                 {
                     signature.ReturnValue.Accept(this);
@@ -230,6 +230,16 @@ namespace Reko.Typing
         {
             outArg.Expression.Accept(this);
             EnsureTypeVariable(outArg);
+        }
+
+        public override void VisitReturnInstruction(ReturnInstruction ret)
+        {
+            if (ret.Expression == null)
+                return;
+            ret.Expression.Accept(this);
+            store.MergeClasses(
+                signature.ReturnValue.TypeVariable, 
+                ret.Expression.TypeVariable);
         }
 
 		public override void VisitSegmentedAccess(SegmentedAccess access)
