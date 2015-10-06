@@ -95,6 +95,8 @@ namespace Reko.Structure
         /// </remarks>
         public Region Execute()
         {
+            if (proc.Name.EndsWith("2150")) //$DEBUG
+                proc.Name.ToString();
             var result = BuildRegionGraph(proc);
             this.regionGraph = result.Item1;
             this.entry = result.Item2;
@@ -356,7 +358,7 @@ namespace Reko.Structure
         private bool ReduceSwitchRegion(Region n)
         {
             var follow = GetSwitchFollow(n);
-            if (follow != null)
+            if (follow != null || AllCasesAreTails(n))
             {
                 return ReduceIncSwitch(n, follow);
             }
@@ -536,6 +538,11 @@ all other cases, together they constitute a Switch[].
             return follow;
         }
 
+        private bool AllCasesAreTails(Region n)
+        {
+            return regionGraph.Successors(n).All(s => s.Type == RegionType.Tail);
+        }
+
         private bool ReduceIncSwitch(Region n, Region follow)
         {
             var succs = regionGraph.Successors(n).ToArray();
@@ -549,14 +556,24 @@ all other cases, together they constitute a Switch[].
                     stms.Add(new AbsynBreak());
                 }
                 regionGraph.RemoveEdge(n, succs[i]);
-                regionGraph.RemoveEdge(succs[i], follow);
+                if (follow != null)
+                {
+                    regionGraph.RemoveEdge(succs[i], follow);
+                }
                 RemoveRegion(succs[i]);
             }
             var sw = new AbsynSwitch(n.Expression, stms);
             n.Statements.Add(sw);
             n.Expression = null;
-            n.Type = RegionType.Linear;
-            regionGraph.AddEdge(n, follow);
+            if (follow != null)
+            {
+                n.Type = RegionType.Linear;
+                regionGraph.AddEdge(n, follow);
+            }
+            else
+            {
+                n.Type = RegionType.Tail;
+            }
             return true;
         }
 

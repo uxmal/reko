@@ -78,8 +78,8 @@ namespace Reko.Gui.Windows
 
         private void EnableControls()
         {
-            Core.CLanguage.Decl decl;
-            if (!TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
+            Core.Serialization.Procedure_v1 sProc;
+            if (!TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
             {
                 // If parser failed, perhaps it's simply a valid name? 
                 if (!IsValidCIdentifier(codeView.ProcedureDeclaration.Text))
@@ -144,7 +144,7 @@ namespace Reko.Gui.Windows
             return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
         }
 
-        private bool TryParseSignature(string txtSignature, out Core.CLanguage.Decl decl)
+        private bool TryParseSignature(string txtSignature, out Core.Serialization.Procedure_v1 sProc)
         {
             // save the user a keystroke.
             txtSignature = txtSignature + ";";
@@ -153,17 +153,20 @@ namespace Reko.Gui.Windows
             var cParser = new CParser(cstate, lexer);
             try
             {
-                decl = cParser.Parse_Decl();
+                var decl = cParser.Parse_Decl();
+                sProc = null;
                 if (decl == null)
                     return false;
-                if (decl.init_declarator_list.Count != 1)
+                var syms = new SymbolTable();
+                syms.AddDeclaration(decl);
+                if (syms.Procedures.Count != 1)
                     return false;
-                var init = decl.init_declarator_list[0];
-                return init.Declarator is FunctionDeclarator;
+                sProc = (Core.Serialization.Procedure_v1) syms.Procedures[0];
+                return true;
             }
             catch
             {
-                decl = null;
+                sProc = null;
                 return false;
             }
         }
@@ -270,14 +273,12 @@ namespace Reko.Gui.Windows
                 return;
             var addr = this.program.Procedures.Keys[iAddr];
             var declText = codeView.ProcedureDeclaration.Text.Trim();
-            Decl decl;
-            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out decl))
+            Core.Serialization.Procedure_v1 sProc;
+            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
             {
-                var fn = (FunctionDeclarator)decl.init_declarator_list[0].Declarator;
-                var id = (IdDeclarator)fn.Declarator;
-                var up = program.EnsureUserProcedure(addr, proc.Name);
+                var up = program.EnsureUserProcedure(addr, sProc.Name);
                 up.CSignature = codeView.ProcedureDeclaration.Text;
-                proc.Name = id.Name;
+                proc.Name = sProc.Name;
             }
             else
             {

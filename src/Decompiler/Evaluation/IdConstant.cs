@@ -61,6 +61,12 @@ namespace Reko.Evaluation
             DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
             if (dt is PrimitiveType)
                 return Constant.Create(dt, cSrc.ToInt64());
+            if (dt is Pointer)
+            {
+                var addr = Address.Create(dt, cSrc.ToUInt64());
+                addr.DataType = dt;
+                return addr;
+            }
             throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
         }
     }

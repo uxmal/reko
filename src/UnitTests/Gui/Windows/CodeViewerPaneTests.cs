@@ -235,5 +235,21 @@ namespace Reko.UnitTests.Gui.Windows
             Assert.AreEqual("foo", proc.Name);
             Assert.AreEqual("int foo(char *, float)", program.UserProcedures.Values.First().CSignature);
         }
+
+        [Test(Description = "Char * functions are valid, of course")]
+        public void Cvp_Accept_Declaration_Returning_CharPtr()
+        {
+            Given_Codeviewer();
+            Given_Program();
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            var oldSig = proc.Signature;
+            codeViewer.DisplayProcedure(program, proc);
+            codeViewer.Declaration.Text = "char * foo(int)";
+
+            Assert.AreEqual("foo", proc.Name);
+            Assert.AreEqual("int foo(char *, float)", program.UserProcedures.Values.First().CSignature);
+        }
     }
 }

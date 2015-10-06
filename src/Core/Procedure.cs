@@ -195,6 +195,8 @@ namespace Reko.Core
 
         public Block AddBlock(Address addr, string name)
         {
+            if (name != null && name.EndsWith("004F_2159")) //$DEBUG
+                name.ToString();
             Block block = new Block(this, name) { Address = addr };
             blocks.Add(block);
             return block;
@@ -202,13 +204,19 @@ namespace Reko.Core
 
         public Block AddBlock(string name)
         {
+            if (name != null && name.EndsWith("004F_2159")) //$DEBUG
+                name.ToString();
             Block block = new Block(this, name);
             blocks.Add(block);
             return block;
         }
 
+
         public void AddBlock(Block block)
         {
+            if (block.Name != null && block.Name.EndsWith("004F_2159")) //$DEBUG
+                block.Name.ToString();
+
             blocks.Add(block);
         }
 

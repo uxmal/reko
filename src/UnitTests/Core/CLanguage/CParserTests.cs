@@ -1128,6 +1128,15 @@ MemoryBarrier (
             var sExp = "(decl Typedef Void _Far ((init-decl (ptr LPVOID))))";
             Assert.AreEqual(sExp, decl.ToString());
         }
+
+        [Test]
+        public void CParser_Regression()
+        {
+            Lex("char * get(int n);");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Char ((init-decl (ptr (func get ((Int n)))))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
     }
 }
 #endif

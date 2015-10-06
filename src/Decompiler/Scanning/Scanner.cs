@@ -167,6 +167,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
+            if (blockName != null && blockName.EndsWith("004F_2159")) //$DEBUG
+                blockName.ToString();
             Block b = new Block(proc, blockName) { Address = addr };
             blocks.Add(addr, new BlockRange(b, addr.ToLinear(), image.BaseAddress.ToLinear() + (uint)image.Bytes.Length));
             blockStarts.Add(b, addr);
