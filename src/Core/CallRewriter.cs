@@ -124,7 +124,7 @@ namespace Reko.Core
                 var ret = stm.Instruction as ReturnInstruction;
                 if (ret != null)
                 {
-                    ret.Expression = idRet;
+                    ret.Expression = proc.Frame.EnsureIdentifier(idRet.Storage);
                 }
             }
         }

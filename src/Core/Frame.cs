@@ -120,6 +120,9 @@ namespace Reko.Core
                     seq.Tail, 
                     PrimitiveType.CreateWord(
                         seq.Head.DataType.Size + seq.Tail.DataType.Size));
+            var fp = stgForeign as FpuStackStorage;
+            if (fp != null)
+                return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
             throw new NotImplementedException();
         }
 

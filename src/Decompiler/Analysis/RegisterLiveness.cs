@@ -689,7 +689,6 @@ namespace Reko.Analysis
 			public abstract void UpdateSummary(ProcedureFlow item);
 		}
 
-
 		public class ByPassState : State
 		{
 			public ByPassState() : base(false)
