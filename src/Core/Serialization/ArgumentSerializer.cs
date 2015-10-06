@@ -120,7 +120,7 @@ namespace Reko.Core.Serialization
             else
             {
                 var reg = procSer.GetReturnRegister(arg, dt.BitSize);
-                id = new Identifier(reg.ToString() + "@<>", dt, reg);
+                id = frame.EnsureRegister((RegisterStorage)reg);
             }
             return id;
         }

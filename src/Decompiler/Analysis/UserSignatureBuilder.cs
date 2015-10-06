@@ -46,18 +46,17 @@ namespace Reko.Analysis
             foreach (var de in program.UserProcedures
                 .Where(d => !string.IsNullOrEmpty(d.Value.CSignature)))
             {
-                var sig = BuildSignature(de.Value.CSignature);
+                Procedure proc;
+                if (!program.Procedures.TryGetValue(de.Key, out proc))
+                    continue;
+                var sig = BuildSignature(de.Value.CSignature, proc.Frame);
                 if (sig == null)
                     continue;
-                Procedure proc;
-                if (program.Procedures.TryGetValue(de.Key, out proc))
-                {
-                    proc.Signature = sig;
-                }
+                proc.Signature = sig;
             }
         }
 
-        public ProcedureSignature BuildSignature(string str)
+        public ProcedureSignature BuildSignature(string str, Frame frame)
         {
             try {
                 var lexer = new CLexer(new StringReader(str + ";"));
@@ -70,7 +69,7 @@ namespace Reko.Analysis
                 if (sSig == null)
                     return null;
                 var ser = program.Platform.CreateProcedureSerializer();
-                return ser.Deserialize(sSig, new Frame(program.Platform.FramePointerType));
+                return ser.Deserialize(sSig, frame);
             }
             catch (Exception ex)
             {
