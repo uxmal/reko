@@ -85,6 +85,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Usb_BuildSignature()
         {
+            Given_Procedure(0x1000);
             var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
             platform.Expect(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
             ser.Expect(s => s.Deserialize(
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
-            var sig = usb.BuildSignature("int foo(char *)");
+            var sig = usb.BuildSignature("int foo(char *)", proc.Frame);
             mr.ReplayAll();
         }
     }

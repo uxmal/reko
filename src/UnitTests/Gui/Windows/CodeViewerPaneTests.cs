@@ -249,7 +249,7 @@ namespace Reko.UnitTests.Gui.Windows
             codeViewer.Declaration.Text = "char * foo(int)";
 
             Assert.AreEqual("foo", proc.Name);
-            Assert.AreEqual("int foo(char *, float)", program.UserProcedures.Values.First().CSignature);
+            Assert.AreEqual("char * foo(int)", program.UserProcedures.Values.First().CSignature);
         }
     }
 }
