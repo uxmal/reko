@@ -1,0 +1,88 @@
+char * get(int32 n)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO eax ax al ah
+// Preserved: esp
+// Stack args: Stack +0004(32)
+get_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: Stack +0004(32)
+
+l10071000:
+	branch dwArg04 >u 0xFFFFFFFE l10071029
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l10071029:
+	return 0x10072000
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 0(fp):n
+
+l1007100A:
+	switch (dwArg04 + 0x00000001) { l10071011 l10071017 l1007101D l10071023 }
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 0(fp):n
+
+l10071023:
+	return 0x10072008
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 0(fp):n
+
+l1007101D:
+	return 0x10072010
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 0(fp):n
+
+l10071017:
+	return 0x10072014
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 0(fp):n
+
+l10071011:
+	return 0x10072018
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 0(fp):n
+
+get_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 0(fp):n
+
+
+
+void fn10071080()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: eax ax al ah
+// Preserved: esp
+fn10071080_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l10071080:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn10071080_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:0x00000001
+
+
+
