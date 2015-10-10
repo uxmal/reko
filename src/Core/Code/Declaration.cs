@@ -28,13 +28,10 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class Declaration : Instruction
 	{
-		private Identifier id;
-		private Expression init;
-
 		public Declaration(Identifier id, Expression init)
 		{
-			this.id = id;
-			this.init = init;
+			this.Identifier = id;
+			this.Expression = init;
 		}
 
 		public override Instruction Accept(InstructionTransformer xform)
@@ -52,21 +49,13 @@ namespace Reko.Core.Code
 			v.VisitDeclaration(this);
 		}
 
-		public Expression Expression
-		{
-			get { return init; }
-			set { init = value; }
-		}
+		public Expression Expression { get; set; }
 
 		public override bool IsControlFlow
 		{
 			get { return false; }
 		}
 
-		public Identifier Identifier
-		{
-			get { return id; }
-			set { id = value; }
-		}
+		public Identifier Identifier { get; set; }
 	}
 }

@@ -20,6 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -52,7 +54,33 @@ namespace Reko.Analysis
                 var sig = BuildSignature(de.Value.CSignature, proc.Frame);
                 if (sig == null)
                     continue;
-                proc.Signature = sig;
+                ApplySignatureToProcedure(de.Key, sig, proc);
+            }
+        }
+
+        private void ApplySignatureToProcedure(Address addr, ProcedureSignature sig, Procedure proc)
+        {
+            proc.Signature = sig;
+
+            int i = 0;
+            var stmts = proc.EntryBlock.Succ[0].Statements;
+            var linAddr = addr.ToLinear();
+            foreach (var param in sig.Parameters)
+            {
+                Identifier dst;
+                var starg = param.Storage as StackArgumentStorage;
+                if (starg != null)
+                {
+                    dst = proc.Frame.EnsureStackArgument(
+                        starg.StackOffset + sig.ReturnAddressOnStack,
+                        param.DataType);
+                }
+                else
+                {
+                    dst = proc.Frame.EnsureIdentifier(param.Storage);
+                }
+                stmts.Insert(i, linAddr, new Assignment(dst, param));
+                ++i;
             }
         }
 

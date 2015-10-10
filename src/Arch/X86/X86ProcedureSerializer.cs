@@ -55,6 +55,7 @@ namespace Reko.Arch.X86
             if (d == "stdapi" || d == "__stdcall" || d == "pascal")
                 sig.StackDelta = StackOffset;
             sig.FpuStackDelta = FpuStackOffset;
+            // sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
         }
 
         public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)

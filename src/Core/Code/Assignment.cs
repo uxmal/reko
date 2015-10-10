@@ -69,12 +69,7 @@ namespace Reko.Core.Code
 			Src = src;
 		}
 
-        public Expression Dst
-        {
-            get { return dst; }
-            set { dst = value; }
-        }
-        private Expression dst;
+        public Expression Dst { get; set; }
 
         public Expression Src { get; set; }
 
@@ -94,6 +89,5 @@ namespace Reko.Core.Code
 		{
 			v.VisitStore(this);
 		}
-
 	}
 }

@@ -255,7 +255,22 @@ namespace Reko.Typing
             }
             else
             {
-                binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
+                var binOp = binExp.Operator;
+                if (binOp == Operator.Uge)
+                    binOp = Operator.Ge;
+                else if (binOp == Operator.Ugt)
+                    binOp = Operator.Gt;
+                else if (binOp == Operator.Ule)
+                    binOp = Operator.Le;
+                else if (binOp == Operator.Ult)
+                    binOp = Operator.Lt;
+                else if (binOp == Operator.UMul)
+                    binOp = Operator.IMul;
+                else if (binOp == Operator.USub)
+                    binOp = Operator.ISub;
+                else if (binOp == Operator.Shr)
+                    binOp = Operator.Sar;
+                binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
                 store.SetTypeVariableExpression(binExp.TypeVariable, binExp);
                 return binExp;
             }

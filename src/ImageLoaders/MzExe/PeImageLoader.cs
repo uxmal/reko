@@ -38,6 +38,14 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
 	public class PeImageLoader : ImageLoader
 	{
+        private const ushort MACHINE_i386 = (ushort)0x014C;
+        private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
+        private const ushort MACHINE_ARMNT = (ushort)0x01C4;
+        private const ushort MACHINE_R4000 = (ushort)0x0166;
+        private const short ImageFileRelocationsStripped = 0x0001;
+        private const short ImageFileExecutable = 0x0002;
+        private const short ImageFileDll = 0x2000;
+
         private IProcessorArchitecture arch;
         private Win32Platform platform;
         private SizeSpecificLoader innerLoader;
@@ -45,8 +53,9 @@ namespace Reko.ImageLoaders.MzExe
 
         private ushort machine;
 		private short optionalHeaderSize;
+        private ushort fileFlags;
 		private int sections;
-		private uint rvaSectionTable;
+        private uint rvaSectionTable;
 		private LoadedImage imgLoaded;
 		private Address preferredBaseOfImage;
 		private SortedDictionary<string, Section> sectionMap;
@@ -60,12 +69,6 @@ namespace Reko.ImageLoaders.MzExe
         private uint sizeExceptionTable;
         private uint rvaResources;
         private Dictionary<Address, ImportReference> importReferences;
-		private const ushort MACHINE_i386 = (ushort) 0x014C;
-        private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
-        private const ushort MACHINE_ARMNT = (ushort)0x01C4;
-        private const ushort MACHINE_R4000 = (ushort)0x0166;
-        private const short ImageFileRelocationsStripped = 0x0001;
-		private const short ImageFileExecutable = 0x0002;
 
 		public PeImageLoader(IServiceProvider services, string filename, byte [] img, uint peOffset) : base(services, filename, img)
 		{
@@ -162,7 +165,8 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_i386: 
             case MACHINE_R4000:
                 return new Pe32Loader(this);
-            case MACHINE_x86_64: return new Pe64Loader(this);
+            case MACHINE_x86_64:
+                return new Pe64Loader(this);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
         }
@@ -175,7 +179,8 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_i386:
             case MACHINE_R4000: 
                 return 0x010B;
-            case MACHINE_x86_64: return 0x020B;
+            case MACHINE_x86_64:
+                return 0x020B;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
         }
@@ -269,7 +274,7 @@ namespace Reko.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();		// COFF symbol table.
 			rdr.ReadLeUInt32();		// #of symbols.
 			optionalHeaderSize = rdr.ReadLeInt16();
-			short fileFlags = rdr.ReadLeInt16();
+			this.fileFlags = rdr.ReadLeUInt16();
 			rvaSectionTable = (uint) ((int)rdr.Offset + optionalHeaderSize);
             return expectedMagic;
 		}
@@ -876,7 +881,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 		private const uint SectionFlagsWriteable =   0x80000000;
 		private const uint SectionFlagsExecutable =  0x00000020;
 
-		public class Section
+        public class Section
 		{
 			public string Name;
 			public uint VirtualSize;

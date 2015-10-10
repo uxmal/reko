@@ -192,6 +192,10 @@ namespace Reko.Typing
                 }
                 
                 var dt = ptr.Pointee.ResolveAs<DataType>();
+                if (IsCharPtrToReadonlySection(c, dt))
+                {
+                    return ReadNullTerminatedString(c, dt);
+                }
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
                 var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.Size);
                 e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f.Name);
@@ -215,6 +219,20 @@ namespace Reko.Typing
             }
 			return e;
 		}
+
+        private bool IsCharPtrToReadonlySection(Constant c, DataType dt)
+        {
+            var pr = dt as PrimitiveType;
+            if (pr != null && pr.Domain == Domain.Character)
+                return true;
+            return false;
+        }
+
+        private Expression ReadNullTerminatedString(Constant c, DataType dt)
+        {
+            var rdr = program.CreateImageReader(platform.MakeAddressFromConstant(c));
+            return rdr.ReadCString(dt);
+        }
 
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)
         {

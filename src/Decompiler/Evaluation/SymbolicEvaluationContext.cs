@@ -377,7 +377,8 @@ namespace Reko.Evaluation
 
             public Storage VisitStackArgumentStorage(StackArgumentStorage stack)
             {
-                throw new NotImplementedException();
+                ctx.StackState[stack.StackOffset] = value;
+                return stack;
             }
 
             public Storage VisitTemporaryStorage(TemporaryStorage temp)

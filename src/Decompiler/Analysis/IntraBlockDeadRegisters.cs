@@ -247,7 +247,8 @@ namespace Reko.Analysis
                 //Debug.Print("deadFlags: {0}, F:{1}", deadFlags, flags.FlagGroupBits);
                 return (flags.FlagGroupBits & deadFlags) == flags.FlagGroupBits;
             }
-            if (id.Storage is FpuStackStorage || id.Storage is StackLocalStorage || id.Storage is SequenceStorage)
+            if (id.Storage is FpuStackStorage || id.Storage is StackLocalStorage ||
+                id.Storage is StackArgumentStorage || id.Storage is SequenceStorage)
                 return false;
             if (id.Storage is MemoryStorage)
                 return false;

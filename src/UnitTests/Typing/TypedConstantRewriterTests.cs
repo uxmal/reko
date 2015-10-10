@@ -26,6 +26,7 @@ using Reko.Typing;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Text;
 
 namespace Reko.UnitTests.Typing
 {
@@ -36,13 +37,14 @@ namespace Reko.UnitTests.Typing
 		private TypeFactory factory;
 		private TypedConstantRewriter tcr;
 		private Identifier globals;
+        private Program program;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
             var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[1024]);
             var arch = new FakeArchitecture();
-            var program = new Program
+            this.program = new Program
             {
                 Image = image,
                 Architecture = arch,
@@ -99,7 +101,6 @@ namespace Reko.UnitTests.Typing
 			Assert.AreEqual("&globals->dw100000", e.ToString());
 		}
 
-
         [Test]
         public void Tcr_RewriteNullPointer()
         {
@@ -121,5 +122,32 @@ namespace Reko.UnitTests.Typing
             Expression e = tcr.Rewrite(c, false);
             Assert.AreEqual("(word32 *) 0xFFFFFFFF", e.ToString());
         }
-	}
+
+        private void Given_String(string str, uint addr)
+        {
+            var w = new LeImageWriter(program.Image.Bytes, addr - (uint)program.Image.BaseAddress.ToLinear());
+            w.WriteString(str, Encoding.ASCII);
+        }
+
+        private void Given_Readonly_Segment(string segName, uint address, uint size)
+        {
+            program.ImageMap.AddSegment(
+                Address.Ptr32(address),
+                segName, AccessMode.Read, size);
+        }
+
+        [Test]
+        public void Tcr_Char_Pointer_YieldsStringConstant()
+        {
+            Given_String("Hello", 0x00100000);
+            Given_Readonly_Segment(".rdata", 0x00100000, 0x20);
+            var c = Constant.Word32(0x00100000);
+            store.EnsureExpressionTypeVariable(factory, c);
+            var charPtr = new Pointer(PrimitiveType.Char, 4);
+            c.TypeVariable.DataType = charPtr;
+            c.TypeVariable.OriginalDataType = charPtr;
+            var e = tcr.Rewrite(c, false);
+            Assert.AreEqual("Hello", e.ToString());
+        }
+    }
 }

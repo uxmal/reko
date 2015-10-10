@@ -237,9 +237,12 @@ namespace Reko.Typing
             if (ret.Expression == null)
                 return;
             ret.Expression.Accept(this);
-            store.MergeClasses(
-                signature.ReturnValue.TypeVariable, 
-                ret.Expression.TypeVariable);
+            if (signature.ReturnValue != null)
+            {
+                store.MergeClasses(
+                    signature.ReturnValue.TypeVariable,
+                    ret.Expression.TypeVariable);
+            }
         }
 
 		public override void VisitSegmentedAccess(SegmentedAccess access)

@@ -409,7 +409,9 @@ namespace Reko.Core
             {
                 sb.Append(ch);
             }
-            return new StringConstant(charType, encoding.GetString(bytes, iStart, (int)Offset - iStart - 1));
+            return new StringConstant(
+                StringType.NullTerminated(charType),
+                encoding.GetString(bytes, iStart, (int)Offset - iStart - 1));
         }
 
         public StringConstant ReadLengthPrefixedString(PrimitiveType lengthType, PrimitiveType charType)
