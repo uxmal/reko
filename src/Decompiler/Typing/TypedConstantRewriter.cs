@@ -223,9 +223,15 @@ namespace Reko.Typing
         private bool IsCharPtrToReadonlySection(Constant c, DataType dt)
         {
             var pr = dt as PrimitiveType;
-            if (pr != null && pr.Domain == Domain.Character)
-                return true;
-            return false;
+            if (pr == null || pr.Domain != Domain.Character)
+                return false;
+            var addr = platform.MakeAddressFromConstant(c);
+            if (addr == null)
+                return false;
+            ImageMapSegment seg;
+            if (!program.ImageMap.TryFindSegment(addr, out seg))
+                return false;
+            return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
         }
 
         private Expression ReadNullTerminatedString(Constant c, DataType dt)

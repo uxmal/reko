@@ -48,7 +48,7 @@ namespace Reko.Core
 			this.Access = access;
 		}
 
-		public AccessMode Access { get; private set; }
+		public AccessMode Access { get; set; }
 
         public uint ContentSize { get { return (ctSize != 0) ? ctSize : Size; } set { ctSize = value; } }
 
@@ -62,7 +62,6 @@ namespace Reko.Core
 		{
 			return string.Format("Segment {0} at {1}, {2} / {3} bytes", Name, Address.ToString(), ContentSize, Size);
 		}
-
     }
 
 	[Flags]

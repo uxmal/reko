@@ -131,14 +131,27 @@ namespace Reko.UnitTests.Typing
 
         private void Given_Readonly_Segment(string segName, uint address, uint size)
         {
-            program.ImageMap.AddSegment(
+            var seg = program.ImageMap.AddSegment(
                 Address.Ptr32(address),
                 segName, AccessMode.Read, size);
+            seg.Access = AccessMode.Read;
         }
 
-        [Test]
-        public void Tcr_Char_Pointer_YieldsStringConstant()
+        private void Given_Writeable_Segment(string segName, uint address, uint size)
         {
+            var seg = program.ImageMap.AddSegment(
+                Address.Ptr32(address),
+                segName, AccessMode.ReadWrite, size);
+            seg.Access = AccessMode.ReadWrite;
+        }
+
+        [Test(Description ="If we have a char * to read-only memory, treat it as a C string")]
+        public void Tcr_ReadOnly_Char_Pointer_YieldsStringConstant()
+        {
+            //$REVIEW: this is highly platform dependent. Some platforms have 
+            // strings terminated by the high bit of the last character set to
+            // 1, others have length prefixed strings (looking at you, Turbo Pascal and
+            // MacOS classic).
             Given_String("Hello", 0x00100000);
             Given_Readonly_Segment(".rdata", 0x00100000, 0x20);
             var c = Constant.Word32(0x00100000);
@@ -148,6 +161,20 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = charPtr;
             var e = tcr.Rewrite(c, false);
             Assert.AreEqual("Hello", e.ToString());
+        }
+
+        [Test]
+        public void Tcr_Writable_Char_Pointer_YieldsCharacterReference()
+        {
+            Given_String("Hello", 0x00100000);
+            Given_Writeable_Segment(".rdata", 0x00100000, 0x20);
+            var c = Constant.Word32(0x00100000);
+            store.EnsureExpressionTypeVariable(factory, c);
+            var charPtr = new Pointer(PrimitiveType.Char, 4);
+            c.TypeVariable.DataType = charPtr;
+            c.TypeVariable.OriginalDataType = charPtr;
+            var e = tcr.Rewrite(c, false);
+            Assert.AreEqual("&globals->dw100000", e.ToString());
         }
     }
 }
