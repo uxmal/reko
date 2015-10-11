@@ -392,9 +392,6 @@
     <Compile Include="Gui\Windows\SearchResultServiceTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\WindowsApplication.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ImageLoaders\BinHex\BinHexDecoderTests.cs" />
     <Compile Include="ImageLoaders\BinHex\BinHexImageLoaderTests.cs" />
     <Compile Include="Loading\LoaderTests.cs" />

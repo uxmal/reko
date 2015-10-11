@@ -1,10 +1,10 @@
 // switch.h
-// Generated on 2015-10-10 15:55:50 by decompiling D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.dll
+// Generated on 2015-10-11 22:32:53 by decompiling D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.dll
 // using Decompiler version 0.5.4.0.
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (10072000 char b10072000) (10072008 char b10072008) (10072010 char b10072010) (10072014 char b10072014) (10072018 char b10072018))
+Eq_1: (struct "Globals" (10072000 (str char) str10072000) (10072008 (str char) str10072008) (10072010 (str char) str10072010) (10072014 (str char) str10072014) (10072018 (str char) str10072018))
 	globals_t (in globals : (ptr (struct "Globals")))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
@@ -56,11 +56,11 @@ T_12: (in 0x10072008 : ptr32)
   DataType: (ptr char)
   OrigDataType: ptr32
 */
-typedef struct Globals {
-	char b10072000;	// 10072000
-	char b10072008;	// 10072008
-	char b10072010;	// 10072010
-	char b10072014;	// 10072014
-	char b10072018;	// 10072018
+typedef  Eq_1[][][][][]struct Globals {
+	char str10072000[];	// 10072000
+	char str10072008[];	// 10072008
+	char str10072010[];	// 10072010
+	char str10072014[];	// 10072014
+	char str10072018[];	// 10072018
 } Eq_1;
 

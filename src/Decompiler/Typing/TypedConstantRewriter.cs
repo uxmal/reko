@@ -194,6 +194,7 @@ namespace Reko.Typing
                 var dt = ptr.Pointee.ResolveAs<DataType>();
                 if (IsCharPtrToReadonlySection(c, dt))
                 {
+                    PromoteToCString(c, dt);
                     return ReadNullTerminatedString(c, dt);
                 }
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
@@ -238,6 +239,12 @@ namespace Reko.Typing
         {
             var rdr = program.CreateImageReader(platform.MakeAddressFromConstant(c));
             return rdr.ReadCString(dt);
+        }
+
+        void PromoteToCString(Constant c, DataType charType)
+        {
+            var field = GlobalVars.Fields.AtOffset(c.ToInt32());
+            field.DataType = StringType.NullTerminated(charType);
         }
 
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)

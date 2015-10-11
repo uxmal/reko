@@ -45,7 +45,6 @@ namespace Reko.UnitTests.Typing
             store = new TypeStore();
         }
 
-
         protected override void RunTest(Program program, string outputFileName)
         {
             ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);

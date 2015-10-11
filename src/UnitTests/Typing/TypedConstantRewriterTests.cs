@@ -161,6 +161,9 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = charPtr;
             var e = tcr.Rewrite(c, false);
             Assert.AreEqual("Hello", e.ToString());
+            Assert.AreEqual(
+                "(struct (100000 (str char) str100000))",
+                ((Pointer)program.Globals.DataType).Pointee.ResolveAs<StructureType>().ToString());
         }
 
         [Test]
