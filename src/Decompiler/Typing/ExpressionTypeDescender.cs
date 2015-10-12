@@ -47,11 +47,11 @@ namespace Reko.Typing
         private Identifier globals;
         private Dictionary<Identifier,LinearInductionVariable> ivs;
 
-        public ExpressionTypeDescender(Program prog, TypeStore store, TypeFactory factory)
+        public ExpressionTypeDescender(Program program, TypeStore store, TypeFactory factory)
         {
-            this.platform = prog.Platform;
-            this.globals = prog.Globals;
-            this.ivs = prog.InductionVariables;
+            this.platform = program.Platform;
+            this.globals = program.Globals;
+            this.ivs = program.InductionVariables;
             this.store = store;
             this.factory = factory;
             this.unifier = new DataTypeBuilderUnifier(factory, store);

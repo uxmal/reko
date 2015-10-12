@@ -29,7 +29,7 @@ namespace Reko.UnitTests.Core
 	[TestFixture]
 	public class ProgramTests
 	{
-		private Program prog;
+		private Program program;
         private MockRepository mr;
         private IProcessorArchitecture arch;
         private Address addrBase;
@@ -38,35 +38,35 @@ namespace Reko.UnitTests.Core
         public void Setup()
         {
             mr = new MockRepository();
-            prog = new Program();
+            program = new Program();
         }
 
         private void Given_Architecture()
         {
             arch = mr.Stub<IProcessorArchitecture>();
-            prog.Architecture = arch;
+            program.Architecture = arch;
         }
 
         private void Given_Image(params byte[] bytes)
         {
             addrBase = Address.Ptr32(0x00010000);
-            prog.Image = new LoadedImage(addrBase, bytes);
-            arch.Stub(a => a.CreateImageReader(prog.Image, addrBase)).Return(new LeImageReader(prog.Image, 0));
+            program.Image = new LoadedImage(addrBase, bytes);
+            arch.Stub(a => a.CreateImageReader(program.Image, addrBase)).Return(new LeImageReader(program.Image, 0));
         }
 
 		[Test]
 		public void ProgEnsurePseudoProc()
 		{
-			PseudoProcedure ppp = prog.EnsurePseudoProcedure("foo", VoidType.Instance, 3);
+			PseudoProcedure ppp = program.EnsurePseudoProcedure("foo", VoidType.Instance, 3);
 			Assert.IsNotNull(ppp);
 			Assert.AreEqual("foo", ppp.Name);
-			Assert.AreEqual(1, prog.PseudoProcedures.Count);
+			Assert.AreEqual(1, program.PseudoProcedures.Count);
 
-            PseudoProcedure ppp2 = prog.EnsurePseudoProcedure("foo", VoidType.Instance, 3);
+            PseudoProcedure ppp2 = program.EnsurePseudoProcedure("foo", VoidType.Instance, 3);
 			Assert.IsNotNull(ppp2);
 			Assert.AreSame(ppp, ppp2);
 			Assert.AreEqual("foo", ppp.Name);
-			Assert.AreEqual(1, prog.PseudoProcedures.Count);
+			Assert.AreEqual(1, program.PseudoProcedures.Count);
 		}
 
         [Test]
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core
             Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
             mr.ReplayAll();
 
-            Assert.AreEqual(4u, prog.GetDataSize(addrBase, PrimitiveType.Int32));
+            Assert.AreEqual(4u, program.GetDataSize(addrBase, PrimitiveType.Int32));
         }
 
 
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core
             mr.ReplayAll();
 
             var dt = StringType.NullTerminated(PrimitiveType.Char);
-            Assert.AreEqual(6u, prog.GetDataSize(addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");
+            Assert.AreEqual(6u, program.GetDataSize(addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");
         }
 	}
 }

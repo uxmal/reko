@@ -47,8 +47,8 @@ namespace Reko.Typing
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
         private HashSet<DataType> visitedTypes;
 
-        public TypeTransformer(TypeFactory factory, TypeStore store, Program prog)
-            : this(factory, store, prog, new NullDecompilerEventListener())
+        public TypeTransformer(TypeFactory factory, TypeStore store, Program program)
+            : this(factory, store, program, new NullDecompilerEventListener())
         {
         }
 

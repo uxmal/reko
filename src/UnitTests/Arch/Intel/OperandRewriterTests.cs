@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Intel
 		private IntelArchitecture arch;
 		private X86State state;
 		private Procedure proc;
-        private Program prog;
+        private Program program;
         private X86Instruction instr;
 
 		[Test]
@@ -53,8 +53,8 @@ namespace Reko.UnitTests.Arch.Intel
 		[SetUp]
 		public void Setup()
 		{
-            prog = new Program();
-            prog.Image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
+            program = new Program();
+            program.Image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
             var procAddress = Address.Ptr32(0x10000000);
             instr = new X86Instruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
             {
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
             proc = Procedure.Create(procAddress, arch.CreateFrame());
 			state = (X86State) arch.CreateProcessorState();
-			orw = new OperandRewriter32(arch, proc.Frame, new FakeRewriterHost(prog));
+			orw = new OperandRewriter32(arch, proc.Frame, new FakeRewriterHost(program));
 		}
 
 		[Test]
@@ -133,13 +133,13 @@ namespace Reko.UnitTests.Arch.Intel
 
 	public class FakeRewriterHost : IRewriterHost
 	{
-        private Program prog;
+        private Program program;
 		private Dictionary<Address,ProcedureSignature> callSignatures;
 		private Dictionary<Address,Procedure> procedures;
 
 		public FakeRewriterHost(Program prog)
 		{
-            this.prog = prog;
+            this.program = prog;
 			callSignatures = new Dictionary<Address,ProcedureSignature>();
 			procedures = new Dictionary<Address,Procedure>();
 		}
@@ -167,14 +167,14 @@ namespace Reko.UnitTests.Arch.Intel
 
 		public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int args)
 		{
-            if (prog == null)
+            if (program == null)
 			    throw new NotImplementedException();
-            return prog.EnsurePseudoProcedure(name, returnType, args);
+            return program.EnsurePseudoProcedure(name, returnType, args);
 		}
 
         public Expression PseudoProcedure(string name , DataType returnType, params Expression[] args)
         {
-            var ppp = prog.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
             return new Application(
                 new ProcedureConstant(PrimitiveType.Pointer32, ppp),
                 returnType,

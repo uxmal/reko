@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Analysis
         ProcedureBase exit;
         ProgramBuilder progMock;
         private ProgramDataFlow flow;
-        private Program prog;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -56,8 +56,8 @@ namespace Reko.UnitTests.Analysis
         {
             return new BlockFlow(
                 block,
-                prog.Architecture.CreateRegisterBitset(),
-                new SymbolicEvaluationContext(prog.Architecture, frame));
+                program.Architecture.CreateRegisterBitset(),
+                new SymbolicEvaluationContext(program.Architecture, frame));
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Analysis
             var b = m.Block;
             m.Return();
             var a = new TerminationAnalysis(flow);
-            prog = new Program
+            program = new Program
             {
                 Architecture = new FakeArchitecture()
             };

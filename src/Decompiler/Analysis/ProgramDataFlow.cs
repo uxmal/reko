@@ -41,18 +41,18 @@ namespace Reko.Analysis
             procFlow2 = new Dictionary<Procedure, ProcedureFlow2>();
 		}
 
-		public ProgramDataFlow(Program prog) : this()
+		public ProgramDataFlow(Program program) : this()
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				procFlow[proc] = new ProcedureFlow(proc, prog.Architecture);
+				procFlow[proc] = new ProcedureFlow(proc, program.Architecture);
 				foreach (Block block in proc.ControlGraph.Blocks)
 				{
 					blockFlow[block] = new BlockFlow(
                         block, 
-                        prog.Architecture.CreateRegisterBitset(),
+                        program.Architecture.CreateRegisterBitset(),
                         new SymbolicEvaluationContext(
-                            prog.Architecture,
+                            program.Architecture,
                             proc.Frame));
 				}
 			}

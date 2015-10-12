@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core.Output
     public class GlobalDataWriterTests
     {
         private LoadedImage image;
-        private Program prog;
+        private Program program;
         private ServiceContainer sc;
 
         private ImageWriter Memory(uint address)
@@ -48,22 +48,22 @@ namespace Reko.UnitTests.Core.Output
         private void Globals(params StructureField[] fields)
         {
             var arch = new Mocks.FakeArchitecture();
-            this.prog = new Program(
+            this.program = new Program(
                 image,
                 image.CreateImageMap(),
                 arch,
                 new DefaultPlatform(null, arch));
             var globalStruct = new StructureType();
             globalStruct.Fields.AddRange(fields);
-            prog.Globals.TypeVariable = new TypeVariable("globals_t", 1) { DataType = globalStruct };
+            program.Globals.TypeVariable = new TypeVariable("globals_t", 1) { DataType = globalStruct };
             var ptr = new Pointer(globalStruct, 4);
-            prog.Globals.TypeVariable.DataType = ptr;
+            program.Globals.TypeVariable.DataType = ptr;
         }
 
         private void RunTest(string sExp)
         {
             var sw = new StringWriter();
-            var gdw = new GlobalDataWriter(prog, sc);
+            var gdw = new GlobalDataWriter(program, sc);
             gdw.WriteGlobals(new TextFormatter(sw)
             {
                 Indentation = 0,

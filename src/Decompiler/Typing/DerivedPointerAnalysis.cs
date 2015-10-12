@@ -44,28 +44,28 @@ namespace Reko.Typing
 	{
 		private TypeFactory factory;
 		private TypeStore store;
-		private Program prog;
+		private Program program;
 		private Identifier globals;
 		private Unifier unifier;
 
-		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, Program prog)
+		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
-            this.prog = prog;
+            this.program = program;
 		}
 
 		public Pointer CreatePointerToField(int offset, DataType tvField)
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
-				prog.Platform.PointerType.Size);
+				program.Platform.PointerType.Size);
 		}
 
 		public void FollowDerivedPointers()
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
                 foreach (var stm in proc.Statements)
                 {
@@ -101,7 +101,7 @@ namespace Reko.Typing
 					return globals;
 				}
 				else
-					return prog.Globals;
+					return program.Globals;
 			}
 			set { globals = value; }
 		}

@@ -30,7 +30,7 @@ namespace Reko.Core.Serialization
         public Project_v2 Save(Project project)
         {
             var inputs = new List<ProjectFile_v2>();
-            inputs.AddRange(project.Programs.Select(prog => VisitProgram(prog)));
+            inputs.AddRange(project.Programs.Select(p => VisitProgram(p)));
             inputs.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(m)));
             var sp = new Project_v2()
             {

@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Scanning
         private MockRepository mr;
         private IScanner scanner;
         private IProcessorArchitecture arch;
-        private Program prog;
+        private Program program;
         private Procedure proc;
         private Block block;
         private RtlTrace trace;
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             mr = new MockRepository();
-            prog = new Program();
+            program = new Program();
             proc = new Procedure("testProc", new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             trace = new RtlTrace(0x00100000);
@@ -67,9 +67,9 @@ namespace Reko.UnitTests.Scanning
             arch = mr.DynamicMock<IProcessorArchitecture>();
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
             arch.Stub(s => s.CreateRegisterBitset()).Return(new BitSet(32));
-            prog.Architecture = arch;
+            program.Architecture = arch;
             arch.Replay();
-            prog.Platform = new DefaultPlatform(null, arch);
+            program.Platform = new DefaultPlatform(null, arch);
             arch.BackToRecord();
         }
 
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Scanning
         {
             return new BlockWorkitem(
                 scanner, 
-                prog,
+                program,
                 state,
                 addr);
         }
@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Scanning
             }
             var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
-            var callees = new List<Procedure>(prog.CallGraph.Callees(block.Procedure));
+            var callees = new List<Procedure>(program.CallGraph.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
             Assert.AreEqual("fn1200", callees[0].Name);
         }
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwi_CallingAllocaWithConstant()
         {
             scanner = mr.StrictMock<IScanner>();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            program.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
         
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig);
@@ -265,7 +265,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
             trace.Add(m => m.Call(Address.Ptr32(0x2000), 4));
-            var state = new FakeProcessorState(prog.Architecture);
+            var state = new FakeProcessorState(program.Architecture);
             state.SetRegister(Registers.eax, Constant.Word32(0x0400));
             var wi = CreateWorkItem(Address.Ptr32(0x1000), state);
             wi.ProcessInternal();
@@ -452,7 +452,7 @@ testProc_exit:
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-            prog.Platform = platform;
+            program.Platform = platform;
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
             scanner.Stub(f => f.GetCallSignatureAtAddress(Address.Ptr32(0x100000))).Return(null);

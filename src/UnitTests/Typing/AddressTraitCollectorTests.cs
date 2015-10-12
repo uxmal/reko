@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Typing
 	[TestFixture]
 	public class AddressTraitCollectorTests
 	{
-        private Program prog;
+        private Program program;
 		private TypeFactory factory;
 		private TypeStore store;
 		private ProcedureBuilder m;
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Typing
 			Identifier bx = m.Local16("bx");
 			MemoryAccess mem = m.SegMem(PrimitiveType.Word16, ds, bx);
 			mem.Accept(eqb);
-			atrco.Collect(prog.Globals, 2, mem, mem.EffectiveAddress);
+			atrco.Collect(program.Globals, 2, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoSegPtr.txt");
 		}
 
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Typing
 		{
 			Identifier id = m.Local32("esi");
 			LinearInductionVariable iv = Liv32(1);
-            prog.InductionVariables.Add(id, iv);
+            program.InductionVariables.Add(id, iv);
             Constant zero = m.Word32(0);
 			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.IAdd(id, zero));
 			mem.Accept(eqb);
@@ -154,16 +154,16 @@ namespace Reko.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-            prog = new Program();
-            prog.Architecture = new FakeArchitecture();
-            prog.Platform = new DefaultPlatform(null, prog.Architecture);
-			factory = prog.TypeFactory;
-			store = prog.TypeStore;
+            program = new Program();
+            program.Architecture = new FakeArchitecture();
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+			factory = program.TypeFactory;
+			store = program.TypeStore;
 			handler = new TestTraitHandler(store);
 			eqb = new EquivalenceClassBuilder(factory, store);
-			store.EnsureExpressionTypeVariable(factory, prog.Globals);
+			store.EnsureExpressionTypeVariable(factory, program.Globals);
 			
-			atrco = new AddressTraitCollector(factory, store, handler, prog);
+			atrco = new AddressTraitCollector(factory, store, handler, program);
 			m = new ProcedureBuilder();
 		}
 

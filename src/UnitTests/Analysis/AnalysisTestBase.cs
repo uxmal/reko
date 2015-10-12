@@ -48,21 +48,21 @@ namespace Reko.UnitTests.Analysis
 	{
         private Platform platform;
 
-		protected void DumpProcedureFlows(Program prog, DataFlowAnalysis dfa, RegisterLiveness live, TextWriter w)
+		protected void DumpProcedureFlows(Program program, DataFlowAnalysis dfa, RegisterLiveness live, TextWriter w)
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				w.WriteLine("// {0} /////////////////////", proc.Name);
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				DataFlow.EmitRegisters(prog.Architecture, "\tLiveOut:  ", flow.grfLiveOut, flow.LiveOut, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tLiveOut:  ", flow.grfLiveOut, flow.LiveOut, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(prog.Architecture, "\tMayUseIn: ", flow.grfMayUse, flow.MayUse, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tMayUseIn: ", flow.grfMayUse, flow.MayUse, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(prog.Architecture, "\tBypassIn: ", flow.grfMayUse, flow.ByPass, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tBypassIn: ", flow.grfMayUse, flow.ByPass, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(prog.Architecture, "\tTrashed:  ", flow.grfTrashed, flow.TrashedRegisters, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tTrashed:  ", flow.grfTrashed, flow.TrashedRegisters, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(prog.Architecture, "\tPreserved:", flow.grfPreserved, flow.PreservedRegisters, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tPreserved:", flow.grfPreserved, flow.PreservedRegisters, w);
 				w.WriteLine();
 
 				w.WriteLine("// {0}", proc.Name);
@@ -73,9 +73,9 @@ namespace Reko.UnitTests.Analysis
                     if (live != null)
                     {
                         var bFlow = dfa.ProgramDataFlow[block];
-                        bFlow.WriteBefore(prog.Architecture, w);
+                        bFlow.WriteBefore(program.Architecture, w);
                         block.Write(w);
-                        bFlow.WriteAfter(prog.Architecture, w);
+                        bFlow.WriteAfter(program.Architecture, w);
                         w.WriteLine();
                     }
                     else
@@ -103,9 +103,9 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new ProgramBuilder();
             m.Add(mock);
-            var prog = m.BuildProgram();
-            prog.CallGraph.AddProcedure(mock.Procedure);
-            return prog;
+            var program = m.BuildProgram();
+            program.CallGraph.AddProcedure(mock.Procedure);
+            return program;
         }
 
         protected Program RewriteFile(string relativePath)
@@ -172,7 +172,7 @@ namespace Reko.UnitTests.Analysis
             return program;
         }
 
-        private static void Rewrite(Program prog, Assembler asm, string configFile)
+        private static void Rewrite(Program program, Assembler asm, string configFile)
         {
             var fakeDiagnosticsService = new FakeDiagnosticsService();
             var fakeConfigService = new FakeDecompilerConfiguration();
@@ -184,12 +184,12 @@ namespace Reko.UnitTests.Analysis
                 ? new Project()
                 : new ProjectLoader(sc, loader).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
-                prog,
+                program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());
             
-            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
             foreach (var f in project.Programs)
             {
                 foreach (var sp in f.UserProcedures.Values)

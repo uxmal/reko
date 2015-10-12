@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Analysis
     public class TrashRegisterFinderUpdateCodeTests
     {
         private ProgramBuilder p;
-        private Program prog;
+        private Program program;
         private ProgramDataFlow flow;
         private IntelArchitecture arch;
         private TrashedRegisterFinder trf;
@@ -56,8 +56,8 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(string sExp)
         {
             var sw = new StringWriter();
-            prog = p.BuildProgram(arch);
-            RunTest(prog, sw);
+            program = p.BuildProgram(arch);
+            RunTest(program, sw);
             Console.WriteLine(sw);
             Assert.AreEqual(sExp, sw.ToString());
         }

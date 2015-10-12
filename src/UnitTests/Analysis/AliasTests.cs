@@ -46,19 +46,19 @@ namespace Reko.UnitTests.Analysis
             alias = new Aliases(proc, arch);
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
         {
-            var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
             var eventListener = new FakeDecompilerEventListener();
-            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
+            var trf = new TrashedRegisterFinder(program, program.Procedures.Values, dfa.ProgramDataFlow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
-            RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
-            foreach (Procedure proc in prog.Procedures.Values)
+            RegisterLiveness rl = RegisterLiveness.Compute(program, dfa.ProgramDataFlow, eventListener);
+            foreach (Procedure proc in program.Procedures.Values)
             {
-                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                LongAddRewriter larw = new LongAddRewriter(proc, program.Architecture);
                 larw.Transform();
-                Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
+                Aliases alias = new Aliases(proc, program.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
                 alias.Write(writer);
                 proc.Write(false, writer);

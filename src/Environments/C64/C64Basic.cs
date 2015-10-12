@@ -38,12 +38,12 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64Basic : ProcessorArchitecture
     {
-        private SortedList<ushort, C64BasicInstruction> prog;
+        private SortedList<ushort, C64BasicInstruction> program;
         private RegisterStorage stackRegister = new RegisterStorage("sp", 1, PrimitiveType.Ptr16);
 
-        public C64Basic(SortedList<ushort, C64BasicInstruction> prog)
+        public C64Basic(SortedList<ushort, C64BasicInstruction> program)
         {
-            this.prog = prog;
+            this.program = program;
             this.PointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 8;
             this.StackRegister = stackRegister;
@@ -51,12 +51,12 @@ namespace Reko.Environments.C64
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            int i = prog.IndexOfKey(imageReader.Address.ToUInt16());
+            int i = program.IndexOfKey(imageReader.Address.ToUInt16());
             if (i < 0)
                 yield break;
-            for (; i < prog.Count; ++i)
+            for (; i < program.Count; ++i)
             {
-                yield return prog.Values[i];
+                yield return program.Values[i];
             }
         }
 
@@ -87,7 +87,7 @@ namespace Reko.Environments.C64
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new C64BasicRewriter(this, rdr.Address, prog, host);
+            return new C64BasicRewriter(this, rdr.Address, program, host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

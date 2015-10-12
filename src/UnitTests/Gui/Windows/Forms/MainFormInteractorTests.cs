@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private MockRepository mr;
         private IMainForm form;
 		private TestMainFormInteractor interactor;
-        private Program prog;
+        private Program program;
         private IArchiveBrowserService archSvc;
         private IDialogFactory dlgFactory;
         private IServiceFactory svcFactory;
@@ -476,7 +476,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_MainFormInteractor()
         {
-            prog = CreateFakeProgram();
+            program = CreateFakeProgram();
             svcFactory = mr.StrictMock<IServiceFactory>();
             archSvc = mr.StrictMock<IArchiveBrowserService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
@@ -559,7 +559,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var services = new ServiceContainer();
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
-            interactor = new TestMainFormInteractor(prog, services);
+            interactor = new TestMainFormInteractor(program, services);
             interactor.LoadForm();
             form.Raise(f => f.Load += null, form, EventArgs.Empty);
         }

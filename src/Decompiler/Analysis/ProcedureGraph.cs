@@ -32,10 +32,10 @@ namespace Reko.Analysis
         private CallGraph cg;
         private ICollection<Procedure> procs;
 
-        public ProcedureGraph(Program prog)
+        public ProcedureGraph(Program program)
         {
-            this.cg = prog.CallGraph;
-            this.procs = prog.Procedures.Values;
+            this.cg = program.CallGraph;
+            this.procs = program.Procedures.Values;
         }
 
         public ICollection<Procedure> Predecessors(Procedure node)

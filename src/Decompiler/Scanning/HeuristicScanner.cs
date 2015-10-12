@@ -48,9 +48,9 @@ namespace Reko.Scanning
         private Program program;
         private IRewriterHost host;
 
-        public HeuristicScanner(Program prog, IRewriterHost host)
+        public HeuristicScanner(Program program, IRewriterHost host)
         {
-            this.program = prog;
+            this.program = program;
             this.host = host;
         }
 

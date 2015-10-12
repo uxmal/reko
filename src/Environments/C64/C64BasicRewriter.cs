@@ -40,7 +40,7 @@ namespace Reko.Environments.C64
     {
         private C64Basic arch;
         private Address address;
-        private SortedList<ushort, C64BasicInstruction> prog;
+        private SortedList<ushort, C64BasicInstruction> program;
         private IRewriterHost host;
         private RtlEmitter emitter;
         private StringType strType;
@@ -48,23 +48,23 @@ namespace Reko.Environments.C64
         private byte[] line;
         private int i;
 
-        public C64BasicRewriter(C64Basic arch, Address address, SortedList<ushort, C64BasicInstruction> prog, IRewriterHost host)
+        public C64BasicRewriter(C64Basic arch, Address address, SortedList<ushort, C64BasicInstruction> program, IRewriterHost host)
         {
             this.arch = arch;
             this.address = address;
-            this.prog = prog;
+            this.program = program;
             this.host = host;
             this.strType = StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            int i = prog.IndexOfKey((ushort)address.ToLinear());
+            int i = program.IndexOfKey((ushort)address.ToLinear());
             if (i < 0)
                 yield break;
-            for (; i < prog.Count; ++i)
+            for (; i < program.Count; ++i)
             {
-                var line = prog.Values[i];
+                var line = program.Values[i];
                 yield return GetRtl(line);
             }
         }

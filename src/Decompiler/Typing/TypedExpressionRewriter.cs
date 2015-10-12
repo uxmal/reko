@@ -34,7 +34,7 @@ namespace Reko.Typing
 	/// </summary>
 	public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
 	{
-        private Program prog;
+        private Program program;
         private Platform platform;
 		private TypeStore store;
         private Identifier globals;
@@ -43,14 +43,14 @@ namespace Reko.Typing
         private ExpressionEmitter m;
         private Unifier unifier;
 
-		public TypedExpressionRewriter(Program prog)
+		public TypedExpressionRewriter(Program program)
 		{
-            this.prog = prog;
-            this.platform = prog.Platform;
-			this.store = prog.TypeStore;
-            this.globals = prog.Globals;
+            this.program = program;
+            this.platform = program.Platform;
+			this.store = program.TypeStore;
+            this.globals = program.Globals;
 			this.compTypes = new DataTypeComparer();
-			this.tcr = new TypedConstantRewriter(prog);
+			this.tcr = new TypedConstantRewriter(program);
             this.m = new ExpressionEmitter();
             this.unifier = new Unifier();
 		}
@@ -113,9 +113,9 @@ namespace Reko.Typing
             }
         }
 
-        public void RewriteProgram(Program prog)
+        public void RewriteProgram(Program program)
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
                 RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
@@ -137,7 +137,7 @@ namespace Reko.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var tmr = new TypedMemoryExpressionRewriter(prog);
+            var tmr = new TypedMemoryExpressionRewriter(program);
             return tmr.RewriteArrayAccess(acc.TypeVariable, acc.Array, acc.Index);
         }
 
@@ -315,13 +315,13 @@ namespace Reko.Typing
 
 		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(prog);
+			var tmer = new TypedMemoryExpressionRewriter(program);
 			return tmer.Rewrite(access);
 		}
 
 		public override Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(prog);
+			var tmer = new TypedMemoryExpressionRewriter(program);
 			return tmer.Rewrite(access);
 		}
 

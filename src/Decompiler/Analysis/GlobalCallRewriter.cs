@@ -49,7 +49,7 @@ namespace Reko.Analysis
 	{
 		private ProgramDataFlow mpprocflow;
 
-		public GlobalCallRewriter(Program prog, ProgramDataFlow mpprocflow) : base(prog)
+		public GlobalCallRewriter(Program program, ProgramDataFlow mpprocflow) : base(program)
 		{
 			this.mpprocflow = mpprocflow;
 		}
@@ -101,19 +101,19 @@ namespace Reko.Analysis
 			flow.LiveOut &= flow.TrashedRegisters;
 		}
 
-		public static void Rewrite(Program prog, ProgramDataFlow summaries)
+		public static void Rewrite(Program program, ProgramDataFlow summaries)
 		{
-			GlobalCallRewriter crw = new GlobalCallRewriter(prog, summaries);
-			foreach (Procedure proc in prog.Procedures.Values)
+			GlobalCallRewriter crw = new GlobalCallRewriter(program, summaries);
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				ProcedureFlow flow = (ProcedureFlow) crw.mpprocflow[proc];
-                flow.Dump(prog.Architecture);
+                flow.Dump(program.Architecture);
 				crw.AdjustLiveOut(flow);
 				crw.EnsureSignature(proc, flow);
 				crw.AddUseInstructionsForOutArguments(proc);
 			}
 
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
                 crw.RewriteCalls(proc);
 				crw.RewriteReturns(proc);

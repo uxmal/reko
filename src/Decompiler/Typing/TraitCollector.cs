@@ -41,7 +41,7 @@ namespace Reko.Typing
 	/// </remarks>
 	public class TraitCollector : InstructionVisitor<DataType>, ExpressionVisitor<DataType>
 	{
-		private Program prog;
+		private Program program;
         private Procedure proc;
 		private TypeFactory factory;
 		private ITypeStore store;
@@ -52,14 +52,14 @@ namespace Reko.Typing
 
 		private static TraceSwitch trace = new TraceSwitch("TraitCollector", "Traces the work of the Trait Collector");
 
-		public TraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program prog)
+		public TraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
 			this.handler = handler;
-            this.prog = prog;
-			this.aem = new ArrayExpressionMatcher(prog.Platform.PointerType);
-			this.atrco = new AddressTraitCollector(factory, store, handler, prog);
+            this.program = program;
+			this.aem = new ArrayExpressionMatcher(program.Platform.PointerType);
+			this.atrco = new AddressTraitCollector(factory, store, handler, program);
 		}
 
 		/// <summary>
@@ -106,11 +106,11 @@ namespace Reko.Typing
 			atrco.Collect(basePtr, basePtrSize, field, effectiveAddress);
 		}
 
-		public void CollectProgramTraits(Program prog)
+		public void CollectProgramTraits(Program program)
 		{
-			this.prog = prog;
-            handler.DataTypeTrait(prog.Globals, prog.Globals.DataType);
-            foreach (Procedure p in prog.Procedures.Values)
+			this.program = program;
+            handler.DataTypeTrait(program.Globals, program.Globals.DataType);
+            foreach (Procedure p in program.Procedures.Values)
             {
                 proc = p;
                 AddProcedureTraits(p);
@@ -201,7 +201,7 @@ namespace Reko.Typing
                 call.Callee, 
                 new Pointer(
                     new CodeType(), 
-                    prog.Platform.PointerType.Size));
+                    program.Platform.PointerType.Size));
             return call.Callee.Accept(this);
         }
 
@@ -301,7 +301,7 @@ namespace Reko.Typing
                 return id.DataType ;
 
 			var dt = handler.DataTypeTrait(id, id.DataType);
-            if (!prog.InductionVariables.TryGetValue(id, out ivCur))
+            if (!program.InductionVariables.TryGetValue(id, out ivCur))
                 ivCur = null;
             return dt;
 		}
@@ -467,8 +467,8 @@ namespace Reko.Typing
             {
                 handler.MemAccessTrait(
                     null, 
-                    prog.Globals,
-                    prog.Platform.PointerType.Size,
+                    program.Globals,
+                    program.Platform.PointerType.Size,
                     c,
                     c.ToInt32() * 0x10);   //$REVIEW Platform-dependent
             }
@@ -516,7 +516,7 @@ namespace Reko.Typing
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);
-			return handler.DataTypeTrait(mps, prog.Platform.PointerType);
+			return handler.DataTypeTrait(mps, program.Platform.PointerType);
 		}
 
 		public DataType VisitMemoryAccess(MemoryAccess access)

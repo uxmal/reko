@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Analysis
 		//[Test]
 		public void VnMemoryTest()
 		{
-			Program prog = RewriteCodeFragment(
+			Program program = RewriteCodeFragment(
 				@".i86
 	mov word ptr [bx+2],0
 	mov si,[bx+4]
@@ -81,9 +81,9 @@ namespace Reko.UnitTests.Analysis
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnMemoryTest.txt"))
 			{
-				Procedure proc = prog.Procedures.Values[0];
+				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Analysis
 		//[Test]
 		public void VnLoopTest()
 		{
-			Program prog = this.RewriteCodeFragment(
+			Program program = this.RewriteCodeFragment(
 				@".i86
 	mov	ax,1
 	mov	bx,1
@@ -115,9 +115,9 @@ done:
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnLoopTest.txt"))
 			{
-				Procedure proc = prog.Procedures.Values[0];
+				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
@@ -137,7 +137,7 @@ done:
 		//[Test]
 		public void VnRedundantStore()
 		{
-			Program prog = RewriteCodeFragment(
+			Program program = RewriteCodeFragment(
 				@".i86
 	mov	ax,2
 isdone:
@@ -152,9 +152,9 @@ done:
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnRedundantStore.txt"))
 			{
-				Procedure proc = prog.Procedures.Values[0];
+				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
@@ -169,7 +169,7 @@ done:
 		//[Test]
 		public void VnLoop()
 		{
-			Program prog = RewriteCodeFragment(@".i86
+			Program program = RewriteCodeFragment(@".i86
 	push ax
 	jmp looptest
 again:
@@ -185,9 +185,9 @@ looptest:
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnLoop.txt"))
 			{
-				Procedure proc = prog.Procedures.Values[0];
+				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
@@ -217,13 +217,13 @@ looptest:
 			RunFileTest("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");
 		}
 
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
             var progFlow = new ProgramDataFlow();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(progFlow, proc, gr);
 				SsaState ssa = sst.SsaState;

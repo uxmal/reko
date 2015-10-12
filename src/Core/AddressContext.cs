@@ -32,9 +32,9 @@ namespace Reko.Core
         private Address addr;
         private DecompilerEventListener decompilerEventListener;
 
-        public AddressContext(Program prog, Address addr, DecompilerEventListener decompilerEventListener)
+        public AddressContext(Program program, Address addr, DecompilerEventListener decompilerEventListener)
         {
-            this.program = prog;
+            this.program = program;
             this.addr = addr;
             this.decompilerEventListener = decompilerEventListener;
         }

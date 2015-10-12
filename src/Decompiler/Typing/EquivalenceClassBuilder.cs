@@ -46,13 +46,13 @@ namespace Reko.Typing
             this.segTypevars = new Dictionary<ushort, TypeVariable>();
 		}
 
-		public void Build(Program prog)
+		public void Build(Program program)
 		{
             // Special case for the global variables. In essence,
             // a memory map of all the globals.
-			store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
+			store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
 
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
                 signature = proc.Signature;
                 if (signature != null && signature.ReturnValue != null)

@@ -34,11 +34,11 @@ namespace Reko.Analysis
 	/// </summary>
 	public class MemReplacer : InstructionTransformer
 	{
-		private Program prog;
+		private Program program;
 
-		public MemReplacer(Program prog) 
+		public MemReplacer(Program program) 
 		{
-			this.prog = prog; 
+			this.program = program; 
 		}
 
 		public void Transform(Procedure proc)
@@ -51,7 +51,7 @@ namespace Reko.Analysis
 
 		public void RewriteProgram()
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				Transform(proc);
 			}

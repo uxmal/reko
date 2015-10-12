@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Intel
             DoRewriteFile(sourceFile);
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                foreach (Procedure proc in prog.Procedures.Values)
+                foreach (Procedure proc in program.Procedures.Values)
                     proc.Write(true, fut.TextWriter);
 
                 fut.AssertFilesEqual();
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
 			DoRewriteFile("Fragments/switch.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwSwitch.txt"))
 			{
-				prog.Procedures.Values[0].Write(false, fut.TextWriter);
+				program.Procedures.Values[0].Write(false, fut.TextWriter);
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Arch.Intel
 			DoRewriteFile("Fragments/memoperations.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwMemOperations.txt"))
 			{
-				prog.Procedures.Values[0].Write(false, fut.TextWriter);
+				program.Procedures.Values[0].Write(false, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -89,10 +89,10 @@ namespace Reko.UnitTests.Arch.Intel
 			DoRewriteFile("Fragments/multiple/calltables.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
 			{
-				Dumper dump = new Dumper(prog.Architecture);
-				dump.Dump(prog, prog.ImageMap, fut.TextWriter);
+				Dumper dump = new Dumper(program.Architecture);
+				dump.Dump(program, program.ImageMap, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-				prog.CallGraph.Write(fut.TextWriter);
+				program.CallGraph.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}

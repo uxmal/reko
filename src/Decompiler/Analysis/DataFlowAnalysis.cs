@@ -44,11 +44,11 @@ namespace Reko.Analysis
 		private DecompilerEventListener eventListener;
 		private ProgramDataFlow flow;
 
-        public DataFlowAnalysis(Program prog, DecompilerEventListener eventListener)
+        public DataFlowAnalysis(Program program, DecompilerEventListener eventListener)
 		{
-			this.program = prog;
+			this.program = program;
             this.eventListener = eventListener;
-			this.flow = new ProgramDataFlow(prog);
+			this.flow = new ProgramDataFlow(program);
 		}
 
 		public void AnalyzeProgram()

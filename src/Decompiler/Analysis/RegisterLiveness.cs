@@ -47,7 +47,7 @@ namespace Reko.Analysis
 	/// </remarks>
 	public class RegisterLiveness : InstructionVisitorBase		//$REFACTOR: should be called InterproceduralLiveness
 	{
-		private Program prog;
+		private Program program;
 		private DecompilerEventListener eventListener;
 		private WorkList<BlockFlow> worklist;
 		private ProgramDataFlow mpprocData;
@@ -96,15 +96,15 @@ namespace Reko.Analysis
         }
 
         public RegisterLiveness(
-            Program prog, 
+            Program program, 
             ProgramDataFlow progFlow, 
             DecompilerEventListener eventListener)
 		{
-			this.prog = prog;
+			this.program = program;
 			this.mpprocData = progFlow;
             this.eventListener = eventListener;
             this.worklist = new WorkList<BlockFlow>();
-			this.varLive = new IdentifierLiveness(prog.Architecture);
+			this.varLive = new IdentifierLiveness(program.Architecture);
 			this.isLiveHelper = new IsLiveHelper();
 			AddAllBasicBlocksToWorklist();
 			if (trace.TraceInfo) Dump();
@@ -112,7 +112,7 @@ namespace Reko.Analysis
 
 		private void AddAllBasicBlocksToWorklist()
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				foreach (Block block in proc.ControlGraph.Blocks)
 				{
@@ -127,7 +127,7 @@ namespace Reko.Analysis
 		/// </summary>
 		private void CompleteWork()
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				ProcedureFlow pi = mpprocData[proc];
 
@@ -156,7 +156,7 @@ namespace Reko.Analysis
 		private string DumpRegisters(BitSet arr)
 		{
 			var sb = new StringBuilder();
-			var arch = prog.Architecture;
+			var arch = program.Architecture;
 			for (int i = 0; i < arr.Count; ++i)
 			{
 				if (arr[i])
@@ -236,13 +236,13 @@ namespace Reko.Analysis
 
 		private void Dump()
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				StringWriter sw = new StringWriter();
 				ProcedureFlow flow = mpprocData[proc];
 				sw.WriteLine(proc.Name);
-				DataFlow.EmitRegisters(prog.Architecture, "\tByPass: ", flow.ByPass, sw); sw.WriteLine();
-				DataFlow.EmitRegisters(prog.Architecture, "\tMayUse: ", flow.MayUse, sw); sw.WriteLine();
+				DataFlow.EmitRegisters(program.Architecture, "\tByPass: ", flow.ByPass, sw); sw.WriteLine();
+				DataFlow.EmitRegisters(program.Architecture, "\tMayUse: ", flow.MayUse, sw); sw.WriteLine();
 				Debug.WriteLine(sw.ToString());
 			}
 		}
@@ -253,7 +253,7 @@ namespace Reko.Analysis
 			{
 				StringWriter sw = new StringWriter();
 				sw.Write("{0}: ", s);
-				ProcedureFlow.EmitRegisters(prog.Architecture, "", a, sw);
+				ProcedureFlow.EmitRegisters(program.Architecture, "", a, sw);
 				Debug.WriteLine(sw.ToString());
 			}
 		}
@@ -340,7 +340,7 @@ namespace Reko.Analysis
 			BitSet liveOrig = new BitSet(varLive.BitSet);
 			uint grfOrig = varLive.Grf;
             var stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
-			foreach (Procedure p in prog.CallGraph.Callees(stm))
+			foreach (Procedure p in program.CallGraph.Callees(stm))
 			{
 				var flow = mpprocData[p];
 				varLive.BitSet = liveOrig - flow.PreservedRegisters;
@@ -378,9 +378,9 @@ namespace Reko.Analysis
 			var change = MergeIntoProcedureFlow(varLive, flow);
 			if (change)
 			{
-				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(prog.Architecture, p.Name + " summary:", flow.Summary));
+				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(program.Architecture, p.Name + " summary:", flow.Summary));
 				state.UpdateSummary(flow);
-                foreach (Statement stmCaller in prog.CallGraph.CallerStatements(p))
+                foreach (Statement stmCaller in program.CallGraph.CallerStatements(p))
 				{
 					Debug.WriteLineIf(trace.TraceVerbose, string.Format("Propagating to {0} (block {1} in {2}", stmCaller.Instruction.ToString(), stmCaller.Block.Name, stmCaller.Block.Procedure.Name));
 					worklist.Add(mpprocData[stmCaller.Block]);
@@ -504,10 +504,10 @@ namespace Reko.Analysis
 			{
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
                 var ab = new ApplicationBuilder(
-                    prog.Architecture, 
+                    program.Architecture, 
                     Procedure.Frame, 
                     ci.CallSite,
-                    new ProcedureConstant(prog.Platform.PointerType, procCallee), 
+                    new ProcedureConstant(program.Platform.PointerType, procCallee), 
                     sig, 
                     false);
 				if (sig.ReturnValue != null)

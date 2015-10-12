@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Typing
         private EquivalenceClassBuilder eqb;
         private DataTypeBuilder dtb;
         private FakeArchitecture arch;
-        private Program prog;
+        private Program program;
 
         [SetUp]
         public void SetUp()
@@ -52,10 +52,10 @@ namespace Reko.UnitTests.Typing
             aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
             eqb = new EquivalenceClassBuilder(factory, store);
             arch = new FakeArchitecture();
-            prog = new Program();
-            prog.Architecture = arch;
-            prog.Platform = new DefaultPlatform(null, arch);
-            dtb = new DataTypeBuilder(factory, store, prog.Platform);
+            program = new Program();
+            program.Architecture = arch;
+            program.Platform = new DefaultPlatform(null, arch);
+            dtb = new DataTypeBuilder(factory, store, program.Platform);
         }
 
         protected override void RunTest(Program prog, string outputFile)
@@ -176,7 +176,7 @@ namespace Reko.UnitTests.Typing
             Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.IMul(bx, 8));
             e.Accept(eqb);
 
-            TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector coll = new TraitCollector(factory, store, dtb, program);
             e.Accept(coll);
             Verify("Typing/DtbArrayAccess2.txt");
         }
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Typing
             ass1.Accept(eqb);
             ass2.Accept(eqb);
             ass3.Accept(eqb);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, program);
             trco.VisitAssignment(ass1);
             trco.VisitAssignment(ass2);
             trco.VisitAssignment(ass3);
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Typing
             Assignment ass2 = new Assignment(x, MemLoad(pfoo, 4, PrimitiveType.Word32));
             ass1.Accept(eqb);
             ass2.Accept(eqb);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, program);
             trco.VisitAssignment(ass1);
             trco.VisitAssignment(ass2);
             dtb.BuildEquivalenceClassDataTypes();
@@ -256,7 +256,7 @@ namespace Reko.UnitTests.Typing
             Assignment ass2 = new Assignment(baz, MemLoad(foo, 4, PrimitiveType.Word16));
             ass1.Accept(eqb);
             ass2.Accept(eqb);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, program);
             trco.VisitAssignment(ass1);
             trco.VisitAssignment(ass2);
             dtb.BuildEquivalenceClassDataTypes();
@@ -286,15 +286,15 @@ namespace Reko.UnitTests.Typing
                 Constant.Word32(0x0010040),
                 false);
 
-            prog.InductionVariables.Add(i, iv);
-            prog.InductionVariables.Add(i2, iv2);
-            prog.Platform = new DefaultPlatform(null, arch);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+            program.InductionVariables.Add(i, iv);
+            program.InductionVariables.Add(i2, iv2);
+            program.Platform = new DefaultPlatform(null, arch);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, program);
 
-            prog.Globals.Accept(eqb);
+            program.Globals.Accept(eqb);
             load.Accept(eqb);
             ld2.Accept(eqb);
-            prog.Globals.Accept(trco);
+            program.Globals.Accept(trco);
             load.Accept(trco);
             ld2.Accept(trco);
             dtb.BuildEquivalenceClassDataTypes();

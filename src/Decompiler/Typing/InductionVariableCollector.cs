@@ -34,17 +34,17 @@ namespace Reko.Typing
     /// </summary>
     public class InductionVariableCollector : ExpressionVisitorBase<LinearInductionVariable>
     {
-        private Program prog;
+        private Program program;
 
-        public InductionVariableCollector(Program prog)
+        public InductionVariableCollector(Program program)
         {
-            this.prog = prog;
+            this.program = program;
         }
 
         public override LinearInductionVariable VisitIdentifier(Identifier id)
         {
             LinearInductionVariable iv;
-            if (!prog.InductionVariables.TryGetValue(id, out iv))
+            if (!program.InductionVariables.TryGetValue(id, out iv))
                 return null;
             else 
                 return iv;

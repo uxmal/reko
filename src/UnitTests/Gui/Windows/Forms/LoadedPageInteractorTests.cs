@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     public class LoadedPageInteractorTests
     {
         private IMainForm form;
-        private Program prog;
+        private Program program;
         private LoadedPageInteractor interactor;
         private IDecompilerService decSvc;
         private ServiceContainer sc;
@@ -57,15 +57,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             form = new MainForm();
 
-            prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[10000]);
-            prog.ImageMap = prog.Image.CreateImageMap();
+            program = new Program();
+            program.Architecture = new IntelArchitecture(ProcessorMode.Real);
+            program.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[10000]);
+            program.ImageMap = program.Image.CreateImageMap();
 
-            prog.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
-            prog.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
-            mapSegment1 = prog.ImageMap.Segments.Values[0];
-            mapSegment2 = prog.ImageMap.Segments.Values[1];
+            program.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
+            program.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
+            mapSegment1 = program.ImageMap.Segments.Values[0];
+            mapSegment2 = program.ImageMap.Segments.Values[1];
 
             sc = new ServiceContainer();
             decSvc = new DecompilerService();
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             ldr.Stub(l => l.LoadExecutable(
                 Arg<string>.Is.NotNull,
                 Arg<byte[]>.Is.NotNull,
-                Arg<Address>.Is.Null)).Return(prog);
+                Arg<Address>.Is.Null)).Return(program);
             ldr.Replay();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.Load("test.exe");
@@ -121,8 +121,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void AddProcedure(Address addr, string procName)
         {
-            prog.Procedures.Add(addr,
-                new Procedure(procName, prog.Architecture.CreateFrame()));
+            program.Procedures.Add(addr,
+                new Procedure(procName, program.Architecture.CreateFrame()));
         }
 
         [Test]

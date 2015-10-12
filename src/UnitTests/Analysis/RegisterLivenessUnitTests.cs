@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class RegisterLivenessUnitTests
 	{
-		private Program prog;
+		private Program program;
 		private Procedure proc;
 		private Frame f;
 		private ProgramDataFlow mpprocflow;
@@ -49,25 +49,25 @@ namespace Reko.UnitTests.Analysis
 		[SetUp]
 		public void Setup()
 		{
-			prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
-            prog.Platform = new DefaultPlatform(null, prog.Architecture);
+			program = new Program();
+			program.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
 			m = new ProcedureBuilder();
 			proc = m.Procedure;
 			f = proc.Frame;
 			mpprocflow = new ProgramDataFlow();
             terminates = new HashSet<Procedure>();
-			rl = new RegisterLiveness(prog, mpprocflow, null);
+			rl = new RegisterLiveness(program, mpprocflow, null);
 			rl.Procedure = proc;
-			rl.IdentifierLiveness.BitSet = prog.Architecture.CreateRegisterBitset();
+			rl.IdentifierLiveness.BitSet = program.Architecture.CreateRegisterBitset();
 		}
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)
         {
             return new BlockFlow(
                 block,
-                prog.Architecture.CreateRegisterBitset(),
-                new SymbolicEvaluationContext(prog.Architecture, frame));
+                program.Architecture.CreateRegisterBitset(),
+                new SymbolicEvaluationContext(program.Architecture, frame));
         }
 
 		/// <summary>
@@ -241,7 +241,7 @@ namespace Reko.UnitTests.Analysis
 		public void Rl_CallToProcedureWithStackArgs()
 		{
 			Procedure callee = new Procedure("callee", null);
-			BitSet trash = prog.Architecture.CreateRegisterBitset();
+			BitSet trash = program.Architecture.CreateRegisterBitset();
 			callee.Signature = new ProcedureSignature(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
@@ -266,13 +266,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_MarkLiveStackParameters()
 		{
-            var callee = new Procedure("callee", prog.Architecture.CreateFrame());
+            var callee = new Procedure("callee", program.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
             callee.Frame.ReturnAddressKnown = true;
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
 			callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			Assert.AreEqual(8, callee.Frame.GetStackArgumentSpace());
-			ProcedureFlow pf = new ProcedureFlow(callee, prog.Architecture);
+			ProcedureFlow pf = new ProcedureFlow(callee, program.Architecture);
 			mpprocflow[callee] = pf;
 
 			Identifier loc08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
@@ -315,8 +315,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_ProcedureWithTrashedAndPreservedRegisters()
 		{
-            Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
-			ProcedureFlow pf = new ProcedureFlow(proc, prog.Architecture);
+            Procedure proc = new Procedure("test", program.Architecture.CreateFrame());
+			ProcedureFlow pf = new ProcedureFlow(proc, program.Architecture);
 			mpprocflow[proc] = pf;
 			pf.TrashedRegisters[Registers.eax.Number] = true;
 			pf.TrashedRegisters[Registers.ebx.Number] = true;

@@ -369,7 +369,7 @@ namespace Reko
 		/// <summary>
 		/// Generates the control flow graph and finds executable code in each program.
 		/// </summary>
-		/// <param name="prog">the program whose flow graph we seek</param>
+		/// <param name="program">the program whose flow graph we seek</param>
 		/// <param name="cfg">configuration information</param>
 		public void ScanPrograms()
 		{
@@ -466,7 +466,6 @@ namespace Reko
                     {
                         eventListener.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
                         ++i;
-                        Console.WriteLine("rewriting: {0}", proc);
                         IStructureAnalysis sa = new StructureAnalysis(proc);
                         sa.Structure();
                     }

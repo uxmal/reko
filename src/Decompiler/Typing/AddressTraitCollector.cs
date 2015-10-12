@@ -36,7 +36,7 @@ namespace Reko.Typing
 		private TypeFactory factory;
 		private ITypeStore store;
 		private ITraitHandler handler;
-		private Program prog;
+		private Program program;
 
         private Expression basePointer;
         private Expression eField;
@@ -45,12 +45,12 @@ namespace Reko.Typing
 		private int arrayElementSize;
 		private int arrayLength;
 
-		public AddressTraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program prog)
+		public AddressTraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
 			this.handler = handler;
-			this.prog = prog;
+			this.program = program;
 			this.arrayContext = false;
 		}
 
@@ -87,7 +87,7 @@ namespace Reko.Typing
 			var id = e as Identifier;
 			if (id == null) return null;
             LinearInductionVariable iv;
-            if (!prog.InductionVariables.TryGetValue(id, out iv)) return null;
+            if (!program.InductionVariables.TryGetValue(id, out iv)) return null;
             return iv;
 		}
 
@@ -177,7 +177,7 @@ namespace Reko.Typing
             if (basePointer != null)
                 handler.MemAccessTrait(null, basePointer, basePointerSize, eField, v);
             else
-                handler.MemAccessTrait(null, prog.Globals, prog.Platform.PointerType.Size, eField, v);
+                handler.MemAccessTrait(null, program.Globals, program.Platform.PointerType.Size, eField, v);
             // C is a pointer to tvField: [[c]] = ptr(tvField)
             handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField, 0);
         }
@@ -225,7 +225,7 @@ namespace Reko.Typing
 		{
             int delta = iv.Delta.ToInt32();
             int offset = StructureField.ToOffset(cOffset);
-            var tvBase = (basePointer != null) ? basePointer : prog.Globals;
+            var tvBase = (basePointer != null) ? basePointer : program.Globals;
             var stride = Math.Abs(delta);
             int init;
             if (delta < 0)
@@ -311,7 +311,7 @@ namespace Reko.Typing
 
 		public void VisitProcedureConstant(ProcedureConstant pc)
 		{
-			handler.DataTypeTrait(pc, prog.Platform.PointerType);
+			handler.DataTypeTrait(pc, program.Platform.PointerType);
 		}
 
 		public void VisitSlice(Slice slice)

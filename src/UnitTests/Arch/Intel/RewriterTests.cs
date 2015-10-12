@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Intel
 	{
 		private string configFile;
 		protected Assembler asm; 
-		protected Program prog;
+		protected Program program;
 		protected Scanner scanner;
 		protected Address baseAddress;
 
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.Intel
 		public void SetUp()
 		{
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            prog = new Program() { Architecture = arch };
+            program = new Program() { Architecture = arch };
             asm = new X86TextAssembler(arch);
 			configFile = null;
 		}
@@ -64,19 +64,19 @@ namespace Reko.UnitTests.Arch.Intel
 
 		protected Procedure DoRewrite(string code)
 		{
-            prog = asm.AssembleFragment(baseAddress, code);
+            program = asm.AssembleFragment(baseAddress, code);
 			DoRewriteCore();
-			return prog.Procedures.Values[0];
+			return program.Procedures.Values[0];
 		}
 
         private void DoRewriteCore()
         {
             Project project = LoadProject();
-            project.Programs.Add(prog);
-            scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(),
+            project.Programs.Add(this.program);
+            scanner = new Scanner(this.program, new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());
-            EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
+            EntryPoint ep = new EntryPoint(baseAddress, this.program.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
             var program =  project.Programs[0];
             foreach (Procedure_v1 sp in program.UserProcedures.Values)
@@ -109,9 +109,9 @@ namespace Reko.UnitTests.Arch.Intel
             using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(baseAddress, stm);
-                prog.Image = lr.Image;
-                prog.ImageMap = lr.ImageMap;
-                prog.Platform = lr.Platform ?? new DefaultPlatform(null, lr.Architecture);
+                program.Image = lr.Image;
+                program.ImageMap = lr.ImageMap;
+                program.Platform = lr.Platform ?? new DefaultPlatform(null, lr.Architecture);
             }
 			DoRewriteCore();
 		}
@@ -135,8 +135,8 @@ namespace Reko.UnitTests.Arch.Intel
 	ret
 ");
 
-			Assert.AreEqual(1, prog.Procedures.Count );
-			Procedure proc = prog.Procedures.Values[0];
+			Assert.AreEqual(1, program.Procedures.Count );
+			Procedure proc = program.Procedures.Values[0];
 			Assert.AreEqual(3, proc.ControlGraph.Blocks.Count);		// Entry, code, Exit
 
             Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];
@@ -171,7 +171,7 @@ join:
 		public void RwDeadConditionals()
 		{
 			DoRewriteFile("Fragments/small_loop.asm");
-			Procedure proc = prog.Procedures.Values[0];
+			Procedure proc = program.Procedures.Values[0];
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwDeadConditionals.txt"))
 			{
 				proc.Write(true, fut.TextWriter);
@@ -184,7 +184,7 @@ join:
 		public void RwPseudoProcs()
 		{
 			DoRewriteFile("Fragments/pseudoprocs.asm");
-			Procedure proc = prog.Procedures.Values[0];
+			Procedure proc = program.Procedures.Values[0];
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwPseudoProcs.txt"))
 			{
 				proc.Write(true, fut.TextWriter);
@@ -263,7 +263,7 @@ join:
 			DoRewriteFile(sourceFile);
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				foreach (Procedure proc in prog.Procedures.Values)
+				foreach (Procedure proc in program.Procedures.Values)
 				{
 					proc.Write(true, fut.TextWriter);
 					fut.TextWriter.WriteLine();

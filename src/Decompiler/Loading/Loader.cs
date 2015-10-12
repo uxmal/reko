@@ -265,22 +265,22 @@ namespace Reko.Loading
             return (T) Activator.CreateInstance(t, services, filename, bytes);
         }
 
-        protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program prog)
+        protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)
         {
             if (importReference == null)
                 return;
 
             foreach (var item in importReference)
             {
-                prog.ImportReferences.Add(item.Key, item.Value);
+                program.ImportReferences.Add(item.Key, item.Value);
             }
         }
 
-        protected void CopyInterceptedCalls(Dictionary<Address, ExternalProcedure> interceptedCalls, Program prog)
+        protected void CopyInterceptedCalls(Dictionary<Address, ExternalProcedure> interceptedCalls, Program program)
         {
             foreach (var item in interceptedCalls)
             {
-                prog.InterceptedCalls.Add(item.Key, item.Value);
+                program.InterceptedCalls.Add(item.Key, item.Value);
             }
         }
     }

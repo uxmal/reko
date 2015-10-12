@@ -57,12 +57,12 @@ namespace Reko.Analysis
         private ExpressionValueComparer ecomp;
 
         public TrashedRegisterFinder(
-            Program prog,
+            Program program,
             IEnumerable<Procedure> procedures,
             ProgramDataFlow flow,
             DecompilerEventListener eventListener)
         {
-            this.program = prog;
+            this.program = program;
             this.procedures = procedures;
             this.flow = flow;
             this.eventListener = eventListener ?? NullDecompilerEventListener.Instance;
