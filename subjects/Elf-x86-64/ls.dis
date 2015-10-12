@@ -1,0 +1,28 @@
+void fn0000000000404890(word32 eax, word64 qwArg00, word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  eax
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000000000404890_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0000000000404890_entry:
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+// LocalsOut: fp(64)
+
+l0000000000404890:
+	__align(fp + 0x0000000000000008)
+	__hlt()
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+
+

@@ -1,0 +1,12 @@
+void fn00400230(word32 ra, word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ra
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0000(32)
+// Terminates process
+l00400284:
+// DataOut:
+// DataOut (flags):
