@@ -1,15 +1,15 @@
 // switch.c
-// Generated on 2015-10-12 10:55:29 by decompiling D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.dll
+// Generated on 2015-10-12 14:19:05 by decompiling D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.dll
 // using Decompiler version 0.5.4.0.
 
 #include "switch.h"
 
-char * get(int32 n)
+char * get(Eq_3 n)
 {
-	if (dwArg04 > ~0x01)
+	if (n > ~0x01)
 		return "other";
 	else
-		switch (dwArg04 + 0x01)
+		switch (n + 0x01)
 		{
 		case 0x00:
 			return "zero";

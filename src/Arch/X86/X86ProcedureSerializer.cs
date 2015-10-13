@@ -56,6 +56,7 @@ namespace Reko.Arch.X86
                 sig.StackDelta = StackOffset;
             sig.FpuStackDelta = FpuStackOffset;
             // sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
+            // sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
 
         public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
