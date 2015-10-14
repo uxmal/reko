@@ -1,52 +1,88 @@
-// get
-// Return size: 4
-void get()
+char * get(uint32 n)
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO eax ax al ah
+// Preserved: esp
+// Stack args: Stack +0000(32)
 get_entry:
-	// succ:  l10071000
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: Stack +0000(32)
+
 l10071000:
-	esp = fp
-	eax = Mem0[esp + 0x00000004:word32]
-	eax = eax + 0x00000001
-	SZO = cond(eax)
-	SCZO = cond(eax - 0x00000003)
-	branch Test(UGT,CZ) l10071029
-	// succ:  l1007100A l10071029
-l1007100A:
-	switch (eax) { l10071011 l10071017 l1007101D l10071023 }
-	// succ:  l10071011 l10071017 l1007101D l10071023
-l10071011:
-	eax = 0x10072018
-	return
-	// succ:  get_exit
-l10071017:
-	eax = 0x10072014
-	return
-	// succ:  get_exit
-l1007101D:
-	eax = 0x10072010
-	return
-	// succ:  get_exit
-l10071023:
-	eax = 0x10072008
-	return
-	// succ:  get_exit
+	branch n >u 0xFFFFFFFE l10071029
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l10071029:
-	eax = 0x10072000
-	return
-	// succ:  get_exit
+	return 0x10072000
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l1007100A:
+	switch (n + 0x00000001) { l10071011 l10071017 l1007101D l10071023 }
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l10071023:
+	return 0x10072008
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l1007101D:
+	return 0x10072010
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l10071017:
+	return 0x10072014
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l10071011:
+	return 0x10072018
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
 get_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 4(fp):n
 
 
-// fn10071080
-// Return size: 4
+
 void fn10071080()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: eax ax al ah
+// Preserved: esp
 fn10071080_entry:
-	// succ:  l10071080
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l10071080:
-	esp = fp
-	eax = 0x00000001
 	return
-	// succ:  fn10071080_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 fn10071080_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:0x00000001
+
 
 

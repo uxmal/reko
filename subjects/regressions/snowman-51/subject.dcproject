@@ -5,7 +5,7 @@
     <address>10070000</address>
     <procedure name="get">
       <address>10071000</address>
-      <CSignature>char * get(int n)</CSignature>
+      <CSignature>char * get(unsigned int n)</CSignature>
     </procedure>
     <options>
       <HeuristicScanning>false</HeuristicScanning>

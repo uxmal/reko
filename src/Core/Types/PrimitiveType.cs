@@ -221,13 +221,17 @@ namespace Reko.Core.Types
 
         /// <summary>
         /// Creates a new primitive type, whose domain is the original domain ANDed 
-        /// with the supplied domain mask.
+        /// with the supplied domain mask. If the resulting domain is empty, use the 
+        /// supplied domain.
         /// </summary>
         /// <param name="dom"></param>
         /// <returns></returns>
 		public PrimitiveType MaskDomain(Domain domainMask)
 		{
-			return Create(this.Domain & domainMask, Size);
+            var dom = this.Domain & domainMask;
+            if (dom == 0)
+                dom = domainMask;
+            return Create(dom, Size);
 		}
 
 		public override string Prefix
