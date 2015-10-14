@@ -7,14 +7,14 @@
   </default>
 
   <procedure name="CloseServiceHandle">
-    <signature>
+    <signature convention="stdapi">
       <return type="BOOL"><reg>eax</reg></return>
       <arg type="SC_HANDLE" name="hSCObject"><stack size="4"/></arg>
     </signature>
   </procedure>
 
   <procedure name="IsTextUnicode">
-    <signature>
+    <signature convention="stdapi">
       <return type="BOOL"><reg>eax</reg></return>
       <arg type="VOID *" name="lpv"><stack size="4"/></arg>
       <arg type="int32" name="iSize"><stack size="4"/></arg>
@@ -23,7 +23,7 @@
   </procedure>
 
   <procedure name="OpenSCManagerW">
-    <signature>
+    <signature convention="stdapi">
       <return type="SC_HANDLE"><reg>eax</reg></return>
     <arg type="LPCWSTR" name="lpMachineName"><stack size="4"/></arg>
     <arg type="LPCWSTR" name="lpDatabaseName"><stack size="4"/></arg>
@@ -31,10 +31,8 @@
     </signature>
   </procedure>
 
-
-
   <procedure name="OpenServiceW">
-    <signature>
+    <signature convention="stdapi">
       <return type="SC_HANDLE">
         <reg>eax</reg>
       </return>
@@ -46,7 +44,7 @@
 
 
   <procedure name="QueryServiceConfigW">
-    <signature>
+    <signature convention="stdapi">
       <return type="BOOL"><reg>eax</reg></return>
       <arg name="hService" type="SC_HANDLE"><stack size="4"/></arg>
       <arg name="lpServiceConfig" type="LPQUERY_SERVICE_CONFIGW"><stack size="4"/></arg>
@@ -55,7 +53,7 @@
   </procedure>
 
   <procedure name="RegSetValueExA">
-    <signature>  
+    <signature convention="stdapi">  
 	  <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     <arg type="LPCSTR" name="lpValueName"><stack size="4"/></arg>
@@ -66,7 +64,7 @@
     </signature>
   </procedure>
   <procedure name="RegSetValueExW">
-    <signature>  
+    <signature convention="stdapi">  
 	  <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     <arg type="LPCWSTR" name="lpValueName"><stack size="4"/></arg>
@@ -79,7 +77,7 @@
 
   
   <procedure name="RegQueryValueExA">
-    <signature>  
+    <signature convention="stdapi">  
       <return type="LONG"><reg>eax</reg></return>
       <arg type="HKEY" name="hKey"><stack size="4"/></arg>
       <arg type="LPCSTR" name="lpValueName"><stack size="4"/></arg>
@@ -90,7 +88,7 @@
     </signature>
   </procedure>
   <procedure name="RegQueryValueExW">
-    <signature>  
+    <signature convention="stdapi">  
       <return type="LONG"><reg>eax</reg></return>
       <arg type="HKEY" name="hKey"><stack size="4"/></arg>
       <arg type="LPCWSTR" name="lpValueName"><stack size="4"/></arg>
@@ -102,14 +100,14 @@
   </procedure>
   
   <procedure name="RegCloseKey">
-    <signature>  
+    <signature convention="stdapi">  
       <return type="LONG"><reg>eax</reg></return>
       <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     </signature>
   </procedure>
   
   <procedure name="RegFlushKey">
-    <signature>  
+    <signature convention="stdapi">  
 
 <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
@@ -117,7 +115,7 @@
   </procedure>
   
   <procedure name="RegCreateKeyA">
-    <signature>  
+    <signature convention="stdapi">  
     <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     <arg type="LPCSTR" name="lpSubKey"><stack size="4"/></arg>
@@ -125,7 +123,7 @@
     </signature>
   </procedure>
   <procedure name="RegCreateKeyW">
-    <signature>  
+    <signature convention="stdapi">  
     <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     <arg type="LPCWSTR" name="lpSubKey"><stack size="4"/></arg>
@@ -134,7 +132,7 @@
   </procedure>
   
   <procedure name="RegOpenKeyA">
-    <signature>  
+    <signature convention="stdapi">  
     <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     <arg type="LPCSTR" name="lpSubKey"><stack size="4"/></arg>
@@ -143,7 +141,7 @@
   </procedure>
   
   <procedure name="RegOpenKeyExW">
-    <signature>  
+    <signature convention="stdapi">  
       <return type="LONG"><reg>eax</reg></return>
       <arg type="HKEY" name="hKey"><stack size="4"/></arg>
       <arg type="LPCWSTR" name="lpSubKey"><stack size="4"/></arg>
@@ -152,5 +150,4 @@
       <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
     </signature>
   </procedure>
-
 </library>

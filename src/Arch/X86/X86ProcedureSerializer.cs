@@ -52,11 +52,11 @@ namespace Reko.Arch.X86
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
                 d = DefaultConvention;
+            sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
             if (d == "stdapi" || d == "__stdcall" || d == "pascal")
-                sig.StackDelta = StackOffset;
+                sig.StackDelta += StackOffset;
             sig.FpuStackDelta = FpuStackOffset;
-            // sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
-            // sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
+            sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
 
         public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)

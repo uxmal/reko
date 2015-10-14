@@ -212,7 +212,7 @@
     <signature convention="stdapi"></signature>
   </default>
   <procedure name="CreateFileA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>HANDLE</type>
         <reg>eax</reg>
@@ -250,7 +250,7 @@
     </signature>
   </procedure>
   <procedure name="CloseHandle">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -262,7 +262,7 @@
     </signature>
   </procedure>
   <procedure name="GetCommandLineA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>LPSTR</type>
         <reg>eax</reg>
@@ -270,7 +270,7 @@
     </signature>
   </procedure>
   <procedure name="GetEnvironmentVariableA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>DWORD</type>
         <reg>eax</reg>
@@ -290,7 +290,7 @@
     </signature>
   </procedure>
   <procedure name="GetModuleFileNameA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <reg>eax</reg>
       </return>
@@ -322,7 +322,7 @@
     </signature>
   </procedure>
   <procedure name="GetVersion">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>DWORD</type>
         <reg>eax</reg>
@@ -330,7 +330,7 @@
     </signature>
   </procedure>
   <procedure name="WriteFile">
-    <signature>
+    <signature convention="stdapi">
       <return >
         <type>BOOL</type>
         <reg>eax</reg>
@@ -358,7 +358,7 @@
     </signature>
   </procedure>
   <procedure name="GlobalHandle">
-    <signature>
+    <signature convention="stdapi">
       <return >
         <type>HGLOBAL</type>
         <reg>eax</reg>
@@ -370,7 +370,7 @@
     </signature>
   </procedure>
   <procedure name="GetTempPathA">
-    <signature>
+    <signature convention="stdapi">
       <return >
         <type>DWORD</type>
         <reg>eax</reg>
@@ -386,7 +386,7 @@
     </signature>
   </procedure>
   <procedure name="ReadFile">
-    <signature>
+    <signature convention="stdapi">
       <return >
         <type>BOOL</type>
         <reg>eax</reg>
@@ -414,7 +414,7 @@
     </signature>
   </procedure>
   <procedure name="GlobalAlloc">
-    <signature>
+    <signature convention="stdapi">
       <return >
         <type>HGLOBAL</type>
         <reg>eax</reg>
@@ -430,7 +430,7 @@
     </signature>
   </procedure>
   <procedure name="HeapAlloc">
-    <signature>
+    <signature convention="stdapi">
       <return >
         <type>LPVOID</type>
         <reg>eax</reg>
@@ -450,7 +450,7 @@
     </signature>
   </procedure>
   <procedure name="HeapFree">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -470,7 +470,7 @@
     </signature>
   </procedure>
   <procedure name="HeapReAlloc">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>LPVOID</type>
         <reg>eax</reg>
@@ -494,7 +494,7 @@
     </signature>
   </procedure>
   <procedure name="LockResource">
-    <signature>
+    <signature convertion="stdapi">
       <return >
         <type>LPVOID</type>
         <reg>eax</reg>
@@ -506,7 +506,7 @@
     </signature>
   </procedure>
   <procedure name="LoadResource">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>HGLOBAL</type>
         <reg>eax</reg>
@@ -522,7 +522,7 @@
     </signature>
   </procedure>
   <procedure name="CreateFileA">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>HANDLE</type>
         <reg>eax</reg>
@@ -558,7 +558,7 @@
     </signature>
   </procedure>
   <procedure name="GetTickCount">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>DWORD</type>
         <reg>eax</reg>
@@ -566,7 +566,7 @@
     </signature>
   </procedure>
   <procedure name="GlobalFree">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>HGLOBAL</type>
         <reg>eax</reg>
@@ -578,7 +578,7 @@
     </signature>
   </procedure>
   <procedure name="GetLastError">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>DWORD</type>
         <reg>eax</reg>
@@ -586,7 +586,7 @@
     </signature>
   </procedure>
   <procedure name="FindResourceA">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>HRSRC</type>
         <reg>eax</reg>
@@ -606,7 +606,7 @@
     </signature>
   </procedure>
   <procedure name="GetSystemTime">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>VOID</type>
         <reg>eax</reg>
@@ -618,7 +618,7 @@
     </signature>
   </procedure>
   <procedure name="FreeResource">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -630,7 +630,7 @@
     </signature>
   </procedure>
   <procedure name="MulDiv">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>int</type>
         <reg>eax</reg>
@@ -650,7 +650,7 @@
     </signature>
   </procedure>
   <procedure name="GlobalUnlock">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -662,7 +662,7 @@
     </signature>
   </procedure>
   <procedure name="GlobalLock">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>LPVOID</type>
         <reg>eax</reg>
@@ -675,7 +675,7 @@
   </procedure>
   <!-- This should be in ntdll.xml -->
   <procedure name="RtlUnwind">
-    <signature>
+    <signature convertion="stdapi">
       <arg name="TargetFrame">
         <type>PVOID</type>
         <stack size="4" />
@@ -695,7 +695,7 @@
     </signature>
   </procedure>
   <procedure name="GetFileType">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>DWORD</type>
         <reg>eax</reg>
@@ -707,7 +707,7 @@
     </signature>
   </procedure>
   <procedure name="GetVersionExA">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -719,7 +719,7 @@
     </signature>
   </procedure>
   <procedure name="HeapDestroy">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -731,7 +731,7 @@
     </signature>
   </procedure>
   <procedure name="HeapCreate">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>HANDLE</type>
         <reg>eax</reg>
@@ -751,7 +751,7 @@
     </signature>
   </procedure>
   <procedure name="VirtualAlloc">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>LPVOID</type>
         <reg>eax</reg>
@@ -775,7 +775,7 @@
     </signature>
   </procedure>
   <procedure name="VirtualFree">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -795,7 +795,7 @@
     </signature>
   </procedure>
   <procedure name="IsBadWritePtr">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -811,7 +811,7 @@
     </signature>
   </procedure>
   <procedure name="GetProcAddress">
-    <signature>
+    <signature convertion="stdapi">
       <return>
         <type>FARPROC</type>
         <reg>eax</reg>
@@ -828,7 +828,7 @@
   </procedure>
   <procedure name="ExitProcess">
     DECLSPEC_NORETURN
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>VOID</type>
         <reg>eax</reg>
@@ -840,7 +840,7 @@
     </signature>
   </procedure>
   <procedure name="TerminateProcess">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -856,7 +856,7 @@
     </signature>
   </procedure>
   <procedure name="GetCurrentProcess">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>HANDLE</type>
         <reg>eax</reg>
@@ -864,7 +864,7 @@
     </signature>
   </procedure>
   <procedure name="SetHandleCount">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>UINT</type>
         <reg>eax</reg>
@@ -876,7 +876,7 @@
     </signature>
   </procedure>
   <procedure name="GetStdHandle">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>HANDLE</type>
         <reg>eax</reg>
@@ -888,7 +888,7 @@
     </signature>
   </procedure>
   <procedure name="GetStartupInfoA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>VOID</type>
         <reg>eax</reg>
@@ -900,7 +900,7 @@
     </signature>
   </procedure>
   <procedure name="FreeEnvironmentStringsA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -912,7 +912,7 @@
     </signature>
   </procedure>
   <procedure name="FreeEnvironmentStringsW">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -924,7 +924,7 @@
     </signature>
   </procedure>
   <procedure name="IsBadCodePtr">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -936,7 +936,7 @@
     </signature>
   </procedure>
   <procedure name="IsBadReadPtr">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -952,7 +952,7 @@
     </signature>
   </procedure>
   <procedure name="MultiByteToWideChar">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>int</type>
         <reg>eax</reg>
@@ -984,7 +984,7 @@
     </signature>
   </procedure>
   <procedure name="WideCharToMultiByte">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>int</type>
         <reg>eax</reg>
@@ -1024,7 +1024,7 @@
     </signature>
   </procedure>
   <procedure name="GetEnvironmentStrings">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>LPSTR</type>
         <reg>eax</reg>
@@ -1032,7 +1032,7 @@
     </signature>
   </procedure>
   <procedure name="GetEnvironmentStringsW">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>LPWSTR</type>
         <reg>eax</reg>
@@ -1040,7 +1040,7 @@
     </signature>
   </procedure>
   <procedure name="DisableThreadLibraryCalls">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -1052,7 +1052,7 @@
     </signature>
   </procedure>
   <procedure name="SetUnhandledExceptionFilter">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>LPTOP_LEVEL_EXCEPTION_FILTER</type>
         <reg>eax</reg>
@@ -1064,7 +1064,7 @@
     </signature>
   </procedure>
   <procedure name="SetFilePointer">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>DWORD</type>
         <reg>eax</reg>
@@ -1088,7 +1088,7 @@
     </signature>
   </procedure>
   <procedure name="GetACP">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>UINT</type>
         <reg>eax</reg>
@@ -1096,7 +1096,7 @@
     </signature>
   </procedure>
   <procedure name="GetOEMCP">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>UINT</type>
         <reg>eax</reg>
@@ -1104,7 +1104,7 @@
     </signature>
   </procedure>
   <procedure name="GetCPInfo">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -1120,7 +1120,7 @@
     </signature>
   </procedure>
   <procedure name="LoadLibraryA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>HMODULE</type>
         <reg>eax</reg>
@@ -1132,7 +1132,7 @@
     </signature>
   </procedure>
   <procedure name="GetStringTypeA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -1160,7 +1160,7 @@
     </signature>
   </procedure>
   <procedure name="GetStringTypeW">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -1184,7 +1184,7 @@
     </signature>
   </procedure>
   <procedure name="LCMapStringA">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>int</type>
         <reg>eax</reg>
@@ -1216,7 +1216,7 @@
     </signature>
   </procedure>
   <procedure name="LCMapStringW">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>int</type>
         <reg>eax</reg>
@@ -1248,7 +1248,7 @@
     </signature>
   </procedure>
   <procedure name="SetStdHandle">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
@@ -1264,7 +1264,7 @@
     </signature>
   </procedure>
   <procedure name="RaiseException">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>VOID</type>
         <reg>eax</reg>
@@ -1288,7 +1288,7 @@
     </signature>
   </procedure>
   <procedure name="FlushFileBuffers">
-    <signature>
+    <signature convention="stdapi">
       <return>
         <type>BOOL</type>
         <reg>eax</reg>
