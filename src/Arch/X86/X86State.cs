@@ -137,26 +137,11 @@ namespace Reko.Arch.X86
             return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
-        public override void OnAfterCall(Identifier sp, ProcedureSignature sig, ExpressionVisitor<Expression> eval)
+        public override void OnAfterCall(ProcedureSignature sig)
         {
             if (sig == null)
                 return;
-            var spReg = (RegisterStorage)sp.Storage;
-            var spVal = GetValue(spReg);
-            var stackOffset = SetValue(
-                spReg,
-                new BinaryExpression(
-                    Operator.IAdd,
-                    spVal.DataType,
-                    sp,
-                    Constant.Create(
-                        PrimitiveType.CreateWord(spReg.DataType.Size),
-                        sig.StackDelta)).Accept(eval));
-            if (stackOffset.IsValid)
-            {
-                if (stackOffset.ToInt32() > 0)
-                    ErrorListener("Possible stack underflow detected.");
-            }
+
             ShrinkFpuStack(-sig.FpuStackDelta);
         }
 

@@ -316,7 +316,7 @@ namespace Reko.UnitTests.Mocks
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(Identifier sp, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
         }
 	}

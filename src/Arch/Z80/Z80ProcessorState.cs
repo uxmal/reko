@@ -99,7 +99,7 @@ namespace Reko.Arch.Z80
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
         }
     }

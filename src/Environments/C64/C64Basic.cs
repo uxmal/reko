@@ -195,7 +195,7 @@ namespace Reko.Environments.C64
                 return new CallSite(2, 0);
             }
 
-            public override void OnAfterCall(Core.Expressions.Identifier stackReg, ProcedureSignature sigCallee, Core.Expressions.ExpressionVisitor<Core.Expressions.Expression> eval)
+            public override void OnAfterCall(ProcedureSignature sigCallee)
             {
             }
         }

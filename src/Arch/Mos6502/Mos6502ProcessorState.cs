@@ -93,12 +93,11 @@ namespace Reko.Arch.Mos6502
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Core.Expressions.Expression> eval)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
-            throw new NotImplementedException();
         }
     }
 }

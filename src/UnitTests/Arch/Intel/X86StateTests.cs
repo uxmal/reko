@@ -56,27 +56,6 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void StackUnderflow_ReportError()
-        {
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
-            string reportedError = null;
-            var state = new X86State(arch)
-            {
-                ErrorListener = (err) => { reportedError = err; }
-            };
-            state.OnProcedureEntered();
-            state.SetRegister(Registers.esp, Constant.Word32(-4)); // Push only 4 bytes
-            var esp = CreateId(Registers.esp);
-            var site = state.OnBeforeCall(esp, 4);
-            state.OnAfterCall(esp, new ProcedureSignature
-            {
-                StackDelta = 16,                        // ...but pop 16 bytes
-            },
-            new Reko.Evaluation.ExpressionSimplifier(state)); //$TODO: hm. Move simplification out of state.
-            Assert.IsNotNull(reportedError);
-        }
-
-        [Test]
         public void Simple()
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);

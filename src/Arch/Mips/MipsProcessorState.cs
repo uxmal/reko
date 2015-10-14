@@ -70,7 +70,7 @@ namespace Reko.Arch.Mips
             return new CallSite(0, 0);
         }
 
-        public override void OnAfterCall(Core.Expressions.Identifier stackReg, ProcedureSignature sigCallee, Core.Expressions.ExpressionVisitor<Core.Expressions.Expression> eval)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
         }
     }

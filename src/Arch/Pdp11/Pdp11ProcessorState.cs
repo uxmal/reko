@@ -71,12 +71,11 @@ namespace Reko.Arch.Pdp11
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(returnSize, 0);
         }
 
-        public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
-            throw new NotImplementedException();
         }
     }
 }

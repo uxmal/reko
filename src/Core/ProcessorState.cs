@@ -77,7 +77,7 @@ namespace Reko.Core
         /// specified signature.
         /// </summary>
         /// <param name="sigCallee">The signature of the called procedure.</param>
-        public abstract void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval);
+        public abstract void OnAfterCall(ProcedureSignature sigCallee);
 
         private bool IsStackRegister(Expression ea)
         {

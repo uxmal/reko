@@ -274,9 +274,8 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
+            public override void OnAfterCall(ProcedureSignature sigCallee)
             {
-                throw new NotImplementedException();
             }
 
             #endregion

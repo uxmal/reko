@@ -388,7 +388,7 @@ namespace Reko.Scanning
                 rtlStream.MoveNext();
                 ProcessRtlCluster(rtlStream.Current);
             }
-            var site = AdjustStackBeforeCall(stackReg, call.ReturnAddressSize);
+            var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
             ProcedureSignature sig;
             ProcedureCharacteristics chr = null;
             Address addr = call.Target as Address;
@@ -476,7 +476,7 @@ namespace Reko.Scanning
             }
         }
         
-        private CallSite AdjustStackBeforeCall(Identifier stackReg, int sizeOfRetAddrOnStack)
+        private CallSite OnBeforeCall(Identifier stackReg, int sizeOfRetAddrOnStack)
         {
             if (sizeOfRetAddrOnStack > 0)
             {
@@ -499,7 +499,19 @@ namespace Reko.Scanning
         {
             if (sigCallee == null)
                 return true;
-            state.OnAfterCall(stackReg, sigCallee, eval);
+            if (sigCallee.StackDelta != 0)
+            {
+                Expression newVal = new BinaryExpression(
+                        Operator.IAdd,
+                        stackReg.DataType,
+                        stackReg,
+                        Constant.Create(
+                            PrimitiveType.CreateWord(stackReg.DataType.Size),
+                            sigCallee.StackDelta));
+                newVal = newVal.Accept(eval);
+                SetValue(stackReg, newVal);
+            }
+            state.OnAfterCall(sigCallee);
             if (characteristics != null && characteristics.Terminates)
             {
                 scanner.TerminateBlock(blockCur, ric.Address + ric.Length);

@@ -98,40 +98,11 @@ namespace Reko.Arch.M68k
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            if (returnAddressSize > 0)
-            {
-                var spVal = GetValue(Registers.a7);
-                SetValue(
-                    arch.StackRegister,
-                    new BinaryExpression(
-                        Operator.ISub,
-                        spVal.DataType,
-                        stackReg,
-                        Constant.Create(
-                            PrimitiveType.CreateWord(returnAddressSize),
-                            returnAddressSize)));
-            }
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(Identifier sp, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
-            var spReg = (RegisterStorage) sp.Storage;
-            var spVal = GetValue(spReg);
-            var stackOffset = SetValue(
-                spReg,
-                new BinaryExpression(
-                    Operator.IAdd,
-                    spVal.DataType,
-                    sp,
-                    Constant.Create(
-                        PrimitiveType.CreateWord(spReg.DataType.Size),
-                        sigCallee.StackDelta)).Accept(eval));
-            if (stackOffset.IsValid)
-            {
-                if (stackOffset.ToInt32() > 0)
-                    ErrorListener("Possible stack underflow detected.");
-            }
         }
 
         #endregion
