@@ -390,6 +390,7 @@ namespace Reko.Scanning
             }
             var site = state.OnBeforeCall(stackReg, call.ReturnAddressSize);
             ProcedureSignature sig;
+            ProcedureCharacteristics chr = null;
             Address addr = call.Target as Address;
             if (addr != null)
             {
@@ -399,7 +400,8 @@ namespace Reko.Scanning
 
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
-                sig = callee.Signature; 
+                sig = callee.Signature;
+                chr = callee.Characteristics;
                 if (sig != null && sig.ParametersValid)
                 {
                     Emit(BuildApplication(pcCallee, sig, site));
@@ -413,46 +415,29 @@ namespace Reko.Scanning
                 {
                     program.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
-                return OnAfterCall(sig, callee.Characteristics);
+                return OnAfterCall(sig, chr);
             }
 
             var procCallee = call.Target as ProcedureConstant;
             if (procCallee != null)
             {
-                var ppp = procCallee.Procedure as PseudoProcedure;
-                if (ppp != null)
+                sig = procCallee.Procedure.Signature;
+                chr = procCallee.Procedure.Characteristics;
+                if (sig != null && sig.ParametersValid)
                 {
-                    sig = ppp.Signature;
-                    if (sig != null && sig.ParametersValid)
-                    {
-                        Emit(BuildApplication(procCallee, sig, site));
-                    }
-                    else
-                    {
-                        Emit(new CallInstruction(procCallee, site));
-                    }
-                    return OnAfterCall(ppp.Signature, ppp.Characteristics);
-                } 
-                var ep = procCallee.Procedure as ExternalProcedure;
-                if (ep != null)
-                {
-                    sig = ep.Signature;
-                    if (sig != null && sig.ParametersValid)
-                    {
-                        Emit(BuildApplication(procCallee, sig, site));
-                    }
-                    else
-                    {
-                        Emit(new CallInstruction(procCallee, site));
-                    }
-                    return OnAfterCall(ep.Signature, ep.Characteristics);
+                    Emit(BuildApplication(procCallee, sig, site));
                 }
+                else
+                {
+                    Emit(new CallInstruction(procCallee, site));
+                }
+                return OnAfterCall(sig, chr);
             }
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
                 Emit(BuildApplication(call.Target, sig, site));
-                return OnAfterCall(sig, null);  //$TODO: make characteristics available
+                return OnAfterCall(sig, chr);  //$TODO: make characteristics available
             }
 
             Identifier id; 
@@ -462,21 +447,25 @@ namespace Reko.Scanning
                 if (ppp != null)
                 {
                     var e = CreateProcedureConstant(ppp);
-                    if (ppp.Signature != null && ppp.Signature.ParametersValid)
+                    sig = ppp.Signature;
+                    chr = ppp.Characteristics;
+                    if (sig != null && ppp.Signature.ParametersValid)
                     {
                         Emit(BuildApplication(e, ppp.Signature, site));
                     }
                     else
                         Emit(new CallInstruction(e, site));
-                    return OnAfterCall(ppp.Signature, ppp.Characteristics);
+                    return OnAfterCall(sig, chr);
                 }
             }
 
             var imp = ImportedProcedureName(call.Target);
             if (imp != null)
             {
+                sig = imp.Signature;
+                chr = imp.Characteristics;
                 Emit(BuildApplication(CreateProcedureConstant(imp), imp.Signature, site));
-                return OnAfterCall(imp.Signature, imp.Characteristics);
+                return OnAfterCall(sig, chr);
             }
 
             var syscall = program.Platform.FindService(call, state);
@@ -490,7 +479,7 @@ namespace Reko.Scanning
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
-            return OnAfterCall(sig, null);
+            return OnAfterCall(sig, chr);
         }
 
         private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
