@@ -184,7 +184,7 @@ namespace Reko.Scanning
             return op.Accept<Expression>(eval);
         }
 
-        public void SetValue(Expression dst, Expression  value)
+        public void SetValue(Expression dst, Expression value)
         {
             var id = dst as Identifier;
             if (id != null)
@@ -402,14 +402,7 @@ namespace Reko.Scanning
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
-                if (sig != null && sig.ParametersValid)
-                {
-                    Emit(BuildApplication(pcCallee, sig, site));
-                }
-                else 
-                {
-                    Emit(new CallInstruction(pcCallee, site));
-                }
+                EmitCall(pcCallee, sig, site);
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
@@ -423,20 +416,13 @@ namespace Reko.Scanning
             {
                 sig = procCallee.Procedure.Signature;
                 chr = procCallee.Procedure.Characteristics;
-                if (sig != null && sig.ParametersValid)
-                {
-                    Emit(BuildApplication(procCallee, sig, site));
-                }
-                else
-                {
-                    Emit(new CallInstruction(procCallee, site));
-                }
+                EmitCall(procCallee, sig, site);
                 return OnAfterCall(sig, chr);
             }
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
-                Emit(BuildApplication(call.Target, sig, site));
+                EmitCall(call.Target, sig, site);
                 return OnAfterCall(sig, chr);  //$TODO: make characteristics available
             }
 
@@ -449,12 +435,7 @@ namespace Reko.Scanning
                     var e = CreateProcedureConstant(ppp);
                     sig = ppp.Signature;
                     chr = ppp.Characteristics;
-                    if (sig != null && ppp.Signature.ParametersValid)
-                    {
-                        Emit(BuildApplication(e, ppp.Signature, site));
-                    }
-                    else
-                        Emit(new CallInstruction(e, site));
+                    EmitCall(e, sig, site);
                     return OnAfterCall(sig, chr);
                 }
             }
@@ -464,7 +445,8 @@ namespace Reko.Scanning
             {
                 sig = imp.Signature;
                 chr = imp.Characteristics;
-                Emit(BuildApplication(CreateProcedureConstant(imp), imp.Signature, site));
+                EmitCall(CreateProcedureConstant(imp), sig, site);
+                //Emit(BuildApplication(CreateProcedureConstant(imp), sig, site));
                 return OnAfterCall(sig, chr);
             }
 
@@ -480,6 +462,18 @@ namespace Reko.Scanning
             Emit(ic);
             sig = GuessProcedureSignature(ic);
             return OnAfterCall(sig, chr);
+        }
+
+        private void EmitCall(Expression callee, ProcedureSignature sig, CallSite site)
+        {
+            if (sig != null && sig.ParametersValid)
+            {
+                Emit(BuildApplication(callee, sig, site));
+            }
+            else
+            {
+                Emit(new CallInstruction(callee, site));
+            }
         }
 
         private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)

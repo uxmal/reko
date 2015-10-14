@@ -5,7 +5,7 @@
 	  <reg>ax</reg>
 	</return>
 	<arg type="int">
-	  <stack size="3">
+	  <stack size="3" />
 	</arg>
   </signature>
 </foo>
