@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.Intel
             Given_ProcedureSerializer("stdapi");
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
-            Assert.AreEqual(0, sig.StackDelta);
+            Assert.AreEqual(4, sig.StackDelta);
             Assert.AreEqual("Register int test(FpuStack real64 fpArg0)", sig.ToString("test"));
         }
 
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
             Given_ProcedureSerializer(ssig.Convention);
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual(0, sig.StackDelta);
+            Assert.AreEqual(4, sig.StackDelta);
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
             Given_ProcedureSerializer(ssig.Convention);
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual(4, sig.StackDelta);
+            Assert.AreEqual(8, sig.StackDelta);
         }
 
         [Test]

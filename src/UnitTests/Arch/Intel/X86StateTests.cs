@@ -91,14 +91,5 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.IsTrue(st.GetRegister(Registers.ah).IsValid);
             Assert.AreEqual(0x12, st.GetRegister(Registers.ah).ToUInt32());
         }
-
-        [Test]
-        public void AreEqual()
-        {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
-            X86State st1 = new X86State(arch);
-            X86State st2 = new X86State(arch);
-            Assert.IsTrue(st1.HasSameValues(st2));
-        }
     }
 }

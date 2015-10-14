@@ -134,19 +134,6 @@ namespace Reko.Arch.X86
 
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
-            if (returnAddressSize > 0)
-            {
-                var spVal = GetValue(sp);
-                SetValue(
-                    arch.StackRegister,
-                    new BinaryExpression(
-                        Operator.ISub,
-                        spVal.DataType,
-                        sp,
-                        Constant.Create(
-                            PrimitiveType.CreateWord(returnAddressSize),
-                            returnAddressSize)));
-            }
             return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
@@ -172,26 +159,6 @@ namespace Reko.Arch.X86
             }
             ShrinkFpuStack(-sig.FpuStackDelta);
         }
-
-
-        public bool HasSameValues(X86State st2)
-        {
-            for (int i = 0; i < valid.Length; ++i)
-            {
-                if (valid[i] != st2.valid[i])
-                    return false;
-                if (valid[i])
-                {
-                    RegisterStorage reg = Registers.GetRegister(i);
-                    ulong u1 = (ulong)(regs[reg.Number] & ((1UL << reg.DataType.BitSize) - 1UL));
-                    ulong u2 = (ulong)(st2.regs[reg.Number] & ((1UL << reg.DataType.BitSize) - 1UL));
-                    if (u1 != u2)
-                        return false;
-                }
-            }
-            return true;
-        }
-
 
 		public void GrowFpuStack(Address addrInstr)
 		{

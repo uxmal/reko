@@ -388,7 +388,7 @@ namespace Reko.Scanning
                 rtlStream.MoveNext();
                 ProcessRtlCluster(rtlStream.Current);
             }
-            var site = state.OnBeforeCall(stackReg, call.ReturnAddressSize);
+            var site = AdjustStackBeforeCall(stackReg, call.ReturnAddressSize);
             ProcedureSignature sig;
             ProcedureCharacteristics chr = null;
             Address addr = call.Target as Address;
@@ -474,6 +474,25 @@ namespace Reko.Scanning
             {
                 Emit(new CallInstruction(callee, site));
             }
+        }
+        
+        private CallSite AdjustStackBeforeCall(Identifier stackReg, int sizeOfRetAddrOnStack)
+        {
+            if (sizeOfRetAddrOnStack > 0)
+            {
+                //$BUG: stack grows negative here; some stacks might grow
+                // positive?
+                Expression newVal = new BinaryExpression(
+                        Operator.ISub,
+                        stackReg.DataType,
+                        stackReg,
+                        Constant.Create(
+                            PrimitiveType.CreateWord(sizeOfRetAddrOnStack),
+                            sizeOfRetAddrOnStack));
+                newVal = newVal.Accept(eval);
+                SetValue(stackReg, newVal);
+            }
+            return state.OnBeforeCall(stackReg, sizeOfRetAddrOnStack);
         }
 
         private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
