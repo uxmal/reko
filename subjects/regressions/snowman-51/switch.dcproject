@@ -5,13 +5,8 @@
     <address>10070000</address>
     <procedure name="get">
       <address>10071000</address>
-      <CSignature>char * get(int n)</CSignature>
+      <CSignature>char * get(unsigned int n)</CSignature>
     </procedure>
-    <disassembly>D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.asm</disassembly>
-    <intermediate-code>D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.dis</intermediate-code>
-    <output>D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.c</output>
-    <types-file>D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.h</types-file>
-    <global-vars>D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.globals.c</global-vars>
     <options>
       <HeuristicScanning>false</HeuristicScanning>
     </options>
