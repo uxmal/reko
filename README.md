@@ -28,7 +28,7 @@ are included in the `external` directory. **Note:** please let us
 know if you are not able to compile, so we can fix the issue for 
 you.
 
-If you're interesting in contributing code, see the 
+If you're interested in contributing code, see the 
 [road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
 The [Wiki](https://github.com/uxmal/reko/wiki) has more information 
 about the Reko project's internal workings.
@@ -36,6 +36,9 @@ about the Reko project's internal workings.
 ## Recent versions
 
 ### Version 0.5.4.0
+* Support for renaming decompiled procedures and changing their signatures.
+  Changing signatures will affect following decompilation stages, as
+  expected.
 * Support for the Windows - OS/2 New Executable format (NE EXE)
 * Implemented continuous integration using Travis CI
 
