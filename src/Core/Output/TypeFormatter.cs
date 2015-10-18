@@ -115,15 +115,18 @@ namespace Reko.Core.Output
 			string oldName = name;
 			name = null;
 			at.ElementType.Accept(this);
-			name = oldName;
-			WriteName(true);
-			name = null;
-			writer.Write("[");
-			if (at.Length != 0)
-			{
-				writer.Write(at.Length.ToString());
-			}
-			writer.Write("]");
+            if (mode == Mode.Writing)
+            {
+                name = oldName;
+                WriteName(true);
+                name = null;
+                writer.Write("[");
+                if (at.Length != 0)
+                {
+                    writer.Write(at.Length.ToString());
+                }
+                writer.Write("]");
+            }
             return writer;
 		}
 

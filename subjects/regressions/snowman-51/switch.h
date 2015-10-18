@@ -56,7 +56,7 @@ T_12: (in 0x10072008 : ptr32)
   DataType: (ptr char)
   OrigDataType: ptr32
 */
-typedef  Eq_1[][][][][]struct Globals {
+typedef struct Globals {
 	char str10072000[];	// 10072000
 	char str10072008[];	// 10072008
 	char str10072010[];	// 10072010

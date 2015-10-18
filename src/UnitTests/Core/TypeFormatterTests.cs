@@ -260,5 +260,22 @@ struct a {
             string sExp = "int32** ppi";
             Assert.AreEqual(sExp, sw.ToString());
         }
+
+        [Test]
+        public void TyfoStructOfArray()
+        {
+            var str = new StructureType("str1", 0)
+            {
+                Fields = {
+                    { 0, new ArrayType(PrimitiveType.Char, 10) }
+                }
+            };
+            tyfo.Write(str, "meeble");
+            var sExp =
+                "struct str1 {" + nl +
+                "\tchar a0000[10];\t// 0" + nl +
+                "} meeble";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
 	}
 }

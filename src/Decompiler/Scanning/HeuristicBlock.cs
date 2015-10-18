@@ -29,8 +29,6 @@ namespace Reko.Scanning
 {
     public class HeuristicBlock
     {
-        //private static int cntr = 0; 
-
         public HeuristicBlock(Address address, string name)
         {
             this.Address = address;
