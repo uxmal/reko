@@ -6,20 +6,22 @@
 
 char * get(uint32 n)
 {
-	if (n > ~0x01)
-		return "other";
-	else
-		switch (n + 0x01)
-		{
-		case 0x00:
-			return "zero";
-		case 0x01:
-			return "one";
-		case 0x02:
-			return "two";
-		case 0x03:
-			return "three";
-		}
+get_entry:
+l10071000:
+	branch n > ~0x01 l10071029
+l1007100A:
+	switch (n + 0x01) { l10071029 l10071011 l10071017 l1007101D l10071023 }
+l10071011:
+	return "zero"
+l10071017:
+	return "one"
+l1007101D:
+	return "two"
+l10071023:
+	return "three"
+l10071029:
+	return "other"
+get_exit:
 }
 
 void fn10071080()

@@ -7,6 +7,34 @@ void fn00400230(word32 ra, word32 dwArg00)
 // Preserved:
 // Stack args: Stack +0000(32)
 // Terminates process
+fn00400230_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00400230_entry:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
+l00400230:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
+l00400238:
+	word32 r25_18 = Mem0[ra + 264242832:word32]
+	call r25_18 (retsize: 0; depth: 24)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 l00400284:
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
+// SymbolicIn: sp:fp r28:ra + 264275496 ra:0x00000000 r4:<invalid> r5:fp + 4 r6:<invalid> r7:<invalid> r2:<invalid> r25:<invalid> -8(fp):<invalid>
+
+
+

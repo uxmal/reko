@@ -104,7 +104,9 @@ namespace Reko.Structure
                     if (EndsInJump(block))
                     {
                         Block next = block.Succ[0];
-                        if (block != proc.EntryBlock && block.Statements.Count == 0)
+                        if (block != proc.EntryBlock && 
+                            block.Statements.Count == 0 &&
+                            next.Pred.Count == 1)
                         {
                             if (Block.ReplaceJumpsTo(block, next))
                                 dirty = true;

@@ -167,8 +167,6 @@ namespace Reko.Scanning
         /// <returns></returns>
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
-            if (blockName != null && blockName.EndsWith("004F_2159")) //$DEBUG
-                blockName.ToString();
             Block b = new Block(proc, blockName) { Address = addr };
             blocks.Add(addr, new BlockRange(b, addr.ToLinear(), image.BaseAddress.ToLinear() + (uint)image.Bytes.Length));
             blockStarts.Add(b, addr);
@@ -625,9 +623,10 @@ namespace Reko.Scanning
 
             var linAddr = addr.ToLinear();
             var stmsToMove = blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr).ToArray();
+
+            graph.AddEdge(blockToSplit, blockNew);
             if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements.Last.LinearAddress >= linAddr)
             {
-                graph.AddEdge(blockToSplit, blockNew);
                 blockToSplit.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
             }
             blockNew.Statements.AddRange(stmsToMove);
