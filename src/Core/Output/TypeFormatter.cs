@@ -162,16 +162,10 @@ namespace Reko.Core.Output
 			string oldName = name;
 			name = null;
 			ft.ReturnType.Accept(this);
-            if (mode == Mode.Writing)
-            {
-                writer.Write(" (");
-            }
+			writer.Write(" (");
 			name = oldName;
 			WriteName(false);
-            if (mode == Mode.Writing)
-            {
-                writer.Write(")(");
-            }
+			writer.Write(")(");
 			if (ft.ArgumentTypes.Length > 0)
 			{
 				name = ft.ArgumentNames != null ? ft.ArgumentNames[0] : null;
@@ -179,20 +173,14 @@ namespace Reko.Core.Output
 				
 				for (int i = 1; i < ft.ArgumentTypes.Length; ++i)
 				{
-                    if (mode == Mode.Writing)
-                    {
-                        writer.Write(", ");
-                    }
+					writer.Write(", ");
 					name = ft.ArgumentNames != null ? ft.ArgumentNames[i] : null;
 					ft.ArgumentTypes[i].Accept(this);
 				}
 				name = oldName;
 			}
 
-            if (mode == Mode.Writing)
-            {
-                writer.Write(")");
-            }
+			writer.Write(")");
             return writer;
 		}
 

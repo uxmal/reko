@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Structure
         private void CompileTest(ProcedureBuilder mock)
         {
             proc = mock.Procedure;
-            var sa = new StructureAnalysis(new FakeDecompilerEventListener(), new Program(), proc);
+            var sa = new StructureAnalysis(proc);
             sa.Structure();
         }
 

@@ -466,7 +466,7 @@ namespace Reko
                     {
                         eventListener.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
                         ++i;
-                        IStructureAnalysis sa = new StructureAnalysis(eventListener, program, proc);
+                        IStructureAnalysis sa = new StructureAnalysis(proc);
                         sa.Structure();
                     }
                     catch (Exception e)

@@ -79,8 +79,6 @@ namespace Reko.Arch.Mips
 
         public override RegisterStorage GetRegister(int i)
         {
-            if (i >= Registers.generalRegs.Length)
-                return null;
             return Registers.generalRegs[i];
         }
 
@@ -126,9 +124,7 @@ namespace Reko.Arch.Mips
 
         public override string GrfToString(uint grf)
         {
-            if (grf != 0)   // MIPS has no traditional status register.
-                throw new NotImplementedException();
-            return "";
+            throw new NotImplementedException();
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

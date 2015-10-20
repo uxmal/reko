@@ -234,6 +234,7 @@ namespace Reko.Scanning
             // We don't know the 'then' block yet, as the following statements may chop up the block
             // we're presently in. Back-patch in when the block target is obtained.
             var branch = new Branch(b.Condition, new Block(blockCur.Procedure, "TMP!"));
+            Emit(branch);
 
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
@@ -250,14 +251,6 @@ namespace Reko.Scanning
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
-
-            // If the else and then differ, we have a "real" branch. If they're the same
-            // it should just be a goto.
-
-            if (true && blockElse != blockThen)
-            {
-                Emit(branch, branchingBlock);
-            }
 
             if ((b.Class & RtlClass.Delay) != 0 &&
                 ricDelayed.Instructions.Count > 0)
@@ -378,7 +371,7 @@ namespace Reko.Scanning
             }
             if (ProcessIndirectControlTransfer(ric.Address, g))
                 return false;
-            Emit(new GotoInstruction(g.Target), blockCur);
+            Emit(new GotoInstruction(g.Target));
             return false;
         }
 
@@ -750,11 +743,6 @@ namespace Reko.Scanning
         private void Emit(Instruction instruction)
         {
             blockCur.Statements.Add(ric.Address.ToLinear(), instruction);
-        }
-
-        private void Emit(Instruction instruction, Block block)
-        {
-            block.Statements.Add(ric.Address.ToLinear(), instruction);
         }
 
         private Block FallthroughBlock(Address addrSrc, Procedure proc, Address fallthruAddress)
