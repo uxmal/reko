@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,6 +43,7 @@ namespace Reko.Structure
     /// </remarks>
     public class StructureAnalysis : IStructureAnalysis
     {
+        private Program program;
         private Procedure proc;
         private DirectedGraph<Region> regionGraph;
         private Region entry;
@@ -49,9 +51,12 @@ namespace Reko.Structure
         private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
+        private DecompilerEventListener eventListener;
 
-        public StructureAnalysis(Procedure proc)
+        public StructureAnalysis(DecompilerEventListener listener, Program program, Procedure proc)
         {
+            this.eventListener = listener;
+            this.program = program;
             this.proc = proc;
         }
 
@@ -95,15 +100,23 @@ namespace Reko.Structure
         /// </remarks>
         public Region Execute()
         {
-            if (proc.Name.EndsWith("2150")) //$DEBUG
-                proc.Name.ToString();
             var result = BuildRegionGraph(proc);
             this.regionGraph = result.Item1;
             this.entry = result.Item2;
+            int iterations = 0;
             int oldCount;
             int newCount;
             do
             {
+                ++iterations;
+                if (iterations > 1000)
+                {
+                    eventListener.Warn(
+                        eventListener.CreateProcedureNavigator(program, proc),
+                        "Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko");
+                    break;
+                }
+
                 //if (proc.Name.EndsWith())
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
@@ -160,7 +173,8 @@ namespace Reko.Structure
             foreach (var b in proc.ControlGraph.Blocks)
             {
                 if (b.Pred.Count == 0 && b != proc.EntryBlock ||
-                    b == proc.ExitBlock)
+            
+                            b == proc.ExitBlock)
                     continue;
                 var reg = regionFactory.Create(b);
                 btor.Add(b, reg);

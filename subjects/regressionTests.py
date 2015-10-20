@@ -8,7 +8,7 @@ import os
 import os.path
 import subprocess
 
-reko_cmdline =  os.path.abspath("../src/Drivers/CmdLine/bin/Release/decompile.exe")
+reko_cmdline =  os.path.abspath("../src/Drivers/CmdLine/bin/Debug/decompile.exe")
 
 def run_test(dir_name, files):
     for pname in files:
