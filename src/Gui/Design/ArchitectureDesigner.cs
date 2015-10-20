@@ -26,9 +26,6 @@ using System.Text;
 
 namespace Reko.Gui.Design
 {
-    //$TODO: all IProcessorArchitectures should derive from an abstract
-    // ProcessorArchitecture class, so the following DesignerAttribute
-    // could be set only once.
     public class ArchitectureDesigner : TreeNodeDesigner
     {
         public override void Initialize(object obj)
