@@ -10,11 +10,10 @@ l0C00_0000:
 l0C00_0005:
 	cl_13 = 0x00
 	branch ax <= 0x000C l0C00_000F
-	// succ:  l0C00_000C l0C00_001C
+	// succ:  l0C00_000C l0C00_000F
 l0C00_000C:
 	ax = 0x000C
-	goto l0C00_001C
-	// succ:  l0C00_001C
+	// succ:  l0C00_000F
 l0C00_000F:
 	goto l0C00_001C
 	// succ:  l0C00_001C

@@ -624,9 +624,9 @@ namespace Reko.Scanning
             var linAddr = addr.ToLinear();
             var stmsToMove = blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr).ToArray();
 
-            graph.AddEdge(blockToSplit, blockNew);
             if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements.Last.LinearAddress >= linAddr)
             {
+                graph.AddEdge(blockToSplit, blockNew);
                 blockToSplit.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
             }
             blockNew.Statements.AddRange(stmsToMove);
@@ -792,12 +792,5 @@ namespace Reko.Scanning
      *                  foreach (target) 
      *                      if (fn = functions.completed(target))
      *                          if fn.returns
-     *                              
-     *                          
-     *                  if 
-     *         
-     *                  
-     *              
-     *          
      */
 }
