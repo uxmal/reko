@@ -44,6 +44,14 @@ namespace Reko.Environments.C64
             get { throw new NotImplementedException(); }
         }
 
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                return InstructionClass.Linear;
+            }
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.Write("{0} ", Address.ToLinear());

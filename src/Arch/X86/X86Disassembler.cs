@@ -51,7 +51,7 @@ namespace Reko.Arch.X86
         private bool f3PrefixSeen;
 
 		/// <summary>
-		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
+		/// Creates a disassembler that uses the specified reader to fetch bytes from the program image.
         /// </summary>
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
@@ -87,7 +87,14 @@ namespace Reko.Arch.X86
             byte op;
             if (!rdr.TryReadByte(out op))
                 return null;
-            instrCur = s_aOpRec[op].Decode(this, op, "");
+            try
+            {
+                instrCur = s_aOpRec[op].Decode(this, op, "");
+            }
+            catch (Exception ex)
+            {
+                throw new AddressCorrelatedException(addr, ex, "An exception occurred when disassembling x86 code.");
+            }
             if (instrCur == null)
             {
                 return new X86Instruction(Opcode.illegal, dataWidth, addressWidth) 

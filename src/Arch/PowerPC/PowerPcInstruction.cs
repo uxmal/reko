@@ -29,6 +29,8 @@ namespace Reko.Arch.PowerPC
 {
     public class PowerPcInstruction : MachineInstruction
     {
+        private static Dictionary<Opcode, InstructionClass> classOf;
+
         private Opcode opcode;
         public MachineOperand op1;
         public MachineOperand op2;
@@ -52,6 +54,16 @@ namespace Reko.Arch.PowerPC
         }
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
+
+        public override InstructionClass InstructionClass
+        {
+            get {
+                InstructionClass cl;
+                if (!classOf.TryGetValue(opcode, out cl))
+                    cl = InstructionClass.Linear;
+                return cl; 
+            }
+        }
 
         public int Operands
         {
@@ -114,6 +126,58 @@ namespace Reko.Arch.PowerPC
             if (setsCR0)
                 return 0xF;
             return 0;
+        }
+
+        static PowerPcInstruction()
+        {
+            classOf = new Dictionary<Opcode, InstructionClass>
+            {
+                { Opcode.illegal,   InstructionClass.Invalid },
+
+                { Opcode.b,         InstructionClass.Transfer },
+                { Opcode.bc,        InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bcl,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bclr,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bclrl,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bcctr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bctrl,     InstructionClass.Transfer|InstructionClass.Conditional },
+
+                { Opcode.beq,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.beql,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.beqlr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.beqlrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bge,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bgel,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bgelr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bgelrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bgt,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bgtl,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bgtlr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bgtlrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bl,        InstructionClass.Transfer },
+                { Opcode.ble,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.blel,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.blelr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.blelrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.blr,       InstructionClass.Transfer },
+                { Opcode.blrl,      InstructionClass.Transfer },
+                { Opcode.blt,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bltl,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bltlr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bltlrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bne,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bnel,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bnelr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bnelrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bns,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bnsl,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bnslr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bnslrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bso,       InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bsol,      InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bsolr,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.bsolrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+            };
         }
     }
 

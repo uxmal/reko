@@ -34,8 +34,10 @@ namespace Reko.Arch.Arm
 
     public class AArch64Instruction : MachineInstruction
     {
+        private static Dictionary<Arm64Instruction, InstructionClass> classOf;
+
         private Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> instruction;
-        
+
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
@@ -47,6 +49,19 @@ namespace Reko.Arch.Arm
         }
 
         internal CapstoneArmInstruction Internal { get { return instruction; } }
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                InstructionClass ct;
+                if (!classOf.TryGetValue(instruction.Id, out ct))
+                {
+                    ct = InstructionClass.Linear;
+                }
+                return ct;
+            }
+        }
 
         public override int OpcodeAsInteger { get { return (int)instruction.Id; } }
 
@@ -84,7 +99,7 @@ namespace Reko.Arch.Arm
                 {
                     writer.Write("${0:X16}", op.ImmediateValue.Value);
                 }
-                else 
+                else
                 {
                     WriteImmediateValue(op.ImmediateValue.Value, writer);
                     if (op.Shifter != null)
@@ -156,5 +171,58 @@ namespace Reko.Arch.Arm
             writer.WriteOpcode(op);
             WriteImmediateValue(value, writer);
         }
+
+        static AArch64Instruction()
+        {
+            //$BUGBUG: I don't know this architecture nearly well enough.
+            // IT is certain that the InstructionClass values below are all wrong.
+            // Please have the courage to hunt down the information and fix it.
+
+            classOf = new Dictionary<Arm64Instruction, InstructionClass>()
+            {
+                { Arm64Instruction.Invalid,    InstructionClass.Invalid },
+
+                { Arm64Instruction.B,          InstructionClass.Transfer  },
+                { Arm64Instruction.BL,         InstructionClass.Transfer  },
+                { Arm64Instruction.BLR,        InstructionClass.Transfer  },
+                { Arm64Instruction.BR,         InstructionClass.Transfer  },
+                { Arm64Instruction.BRK,        InstructionClass.Transfer  },
+                { Arm64Instruction.BSL,        InstructionClass.Transfer  },
+                { Arm64Instruction.CRC32CX,    InstructionClass.Transfer  },
+                { Arm64Instruction.CRC32H,     InstructionClass.Transfer  },
+                { Arm64Instruction.CRC32W,     InstructionClass.Transfer  },
+                { Arm64Instruction.CRC32X,     InstructionClass.Transfer  },
+                { Arm64Instruction.CSEL,       InstructionClass.Transfer  },
+                { Arm64Instruction.CSINC,      InstructionClass.Transfer  },
+                { Arm64Instruction.CSINV,      InstructionClass.Transfer  },
+                { Arm64Instruction.CSNEG,      InstructionClass.Transfer  },
+                { Arm64Instruction.DCPS1,      InstructionClass.Transfer  },
+                { Arm64Instruction.DCPS2,      InstructionClass.Transfer  },
+                { Arm64Instruction.DCPS3,      InstructionClass.Transfer  },
+                { Arm64Instruction.DMB,        InstructionClass.Transfer  },
+                { Arm64Instruction.DRPS,       InstructionClass.Transfer  },
+                { Arm64Instruction.DSB,        InstructionClass.Transfer  },
+                { Arm64Instruction.DUP,        InstructionClass.Transfer  },
+                { Arm64Instruction.EON,        InstructionClass.Transfer  },
+                { Arm64Instruction.EOR,        InstructionClass.Transfer  },
+                { Arm64Instruction.ERET,       InstructionClass.Transfer  },
+                { Arm64Instruction.HLT,        InstructionClass.Transfer  },
+                { Arm64Instruction.RET,        InstructionClass.Transfer  },
+                { Arm64Instruction.SYSL,       InstructionClass.Transfer  },
+                { Arm64Instruction.SYS,        InstructionClass.Transfer  },
+                { Arm64Instruction.TBL,        InstructionClass.Transfer  },
+                { Arm64Instruction.TBNZ,       InstructionClass.Transfer  },
+                { Arm64Instruction.TBX,        InstructionClass.Transfer  },
+                { Arm64Instruction.TBZ,        InstructionClass.Transfer  },
+                { Arm64Instruction.TRN1,       InstructionClass.Transfer  },
+                { Arm64Instruction.TRN2,       InstructionClass.Transfer  },
+                { Arm64Instruction.XTN2,       InstructionClass.Transfer  },
+                { Arm64Instruction.XTN,        InstructionClass.Transfer  },
+                { Arm64Instruction.ZIP1,       InstructionClass.Transfer  },
+                { Arm64Instruction.ZIP2,       InstructionClass.Transfer  },
+                { Arm64Instruction.YIELD,      InstructionClass.Transfer },
+            };
+        }
     }
 }
+

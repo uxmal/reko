@@ -652,7 +652,7 @@ namespace Reko.Scanning
         /// </summary>
         public void ScanImageHeuristically()
         {
-            var heuristicScanner = new HeuristicScanner(program, this);
+            var heuristicScanner = new HeuristicScanner(program, this, eventListener);
             heuristicScanner.ScanImageHeuristically();
         }
 

@@ -131,6 +131,10 @@ namespace Reko.Core.Types
                 w = Domain.Integer|Domain.Pointer|Domain.Real;
 				name = "word64";
 				break;
+            case 10:
+                w = Domain.Integer | Domain.Real | Domain.Bcd;
+                name = "word80";
+                break;
             case 16:
                 w = Domain.Integer|Domain.Real;
                 name = "word128";
@@ -140,7 +144,7 @@ namespace Reko.Core.Types
                 name = "word256";
                 break;
             default:
-				throw new ArgumentException("Only word sizes 1, 2, 4, 8, and 16 bytes are supported.");
+				throw new ArgumentException("Only word sizes 1, 2, 4, 8, 10, 16, and 32 bytes are supported.");
 			}
 			return Create(w, (short) byteSize, name);
 		}
@@ -309,6 +313,7 @@ namespace Reko.Core.Types
 			Pointer64 = Create(Domain.Pointer, 8);
 			Real64 = Create(Domain.Real, 8);
 
+            Word80 = CreateWord(10);
 			Real80 = Create(Domain.Real, 10);
             Bcd80 = Create(Domain.Bcd, 10);
 
@@ -346,7 +351,9 @@ namespace Reko.Core.Types
 		public static PrimitiveType Pointer64 {get; private set; }
         public static PrimitiveType Real64 { get; private set; }
 
+        public static PrimitiveType Word80 { get; private set; }
 		public static PrimitiveType Real80 {get; private set; }
+        public static PrimitiveType Bcd80 { get; private set; }
 
         public static PrimitiveType Word128 { get; private set; }
         public static PrimitiveType Real128 { get; private set; }
@@ -355,6 +362,5 @@ namespace Reko.Core.Types
 
         public static PrimitiveType WChar { get; private set; }
 
-        public static PrimitiveType Bcd80 { get;private set; }
     }
 }

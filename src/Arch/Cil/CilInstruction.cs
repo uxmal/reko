@@ -37,6 +37,14 @@ namespace Reko.Arch.Cil
         public OpCode Opcode { get; set; }
         public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
 
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             try

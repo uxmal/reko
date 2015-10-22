@@ -29,6 +29,13 @@ namespace Reko.Arch.M68k
 {
     public class M68kInstruction : MachineInstruction
     {
+        private const InstructionClass Linear = InstructionClass.Linear;
+        private const InstructionClass Transfer = InstructionClass.Transfer;
+        private const InstructionClass Cond = InstructionClass.Conditional;
+        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
+
+        private static Dictionary<Opcode, InstructionClass> classOf;
+
         public Opcode code;
         public PrimitiveType dataWidth;
         public MachineOperand op1;
@@ -82,6 +89,68 @@ namespace Reko.Arch.M68k
             case 32: return ".l";
             default: throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));
             }
+        }
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                InstructionClass cl;
+                if (!classOf.TryGetValue(code, out cl))
+                    cl = InstructionClass.Linear;
+                return cl;
+            }
+        }
+
+        static M68kInstruction()
+        {
+            classOf = new Dictionary<Opcode, InstructionClass>
+            {
+                { Opcode.illegal, InstructionClass.Invalid },
+
+                { Opcode.bcc,      CondTransfer },
+                { Opcode.bcs,      CondTransfer },
+                { Opcode.beq,      CondTransfer },
+                { Opcode.bge,      CondTransfer },
+                { Opcode.bgt,      CondTransfer },
+                { Opcode.bhi,      CondTransfer },
+                { Opcode.ble,      CondTransfer },
+                { Opcode.blt,      CondTransfer },
+                { Opcode.bmi,      CondTransfer },
+                { Opcode.bne,      CondTransfer },
+                { Opcode.bpl,      CondTransfer },
+                { Opcode.bra,      Transfer },
+                { Opcode.bsr,      Transfer },
+                { Opcode.bvc,      CondTransfer },
+                { Opcode.bvs,      CondTransfer },
+
+                { Opcode.callm,    Transfer },
+                { Opcode.jmp,      Transfer },
+                { Opcode.jsr,      Transfer },
+                { Opcode.reset,    Transfer },
+
+                { Opcode.rtd,      Transfer },
+                { Opcode.rte,      Transfer },
+                { Opcode.rtm,      Transfer },
+                { Opcode.rtr,      Transfer },
+                { Opcode.rts,      Transfer },
+
+                { Opcode.traphi,   CondTransfer },
+                { Opcode.trapls,   CondTransfer },
+                { Opcode.trapcc,   CondTransfer },
+                { Opcode.trapcs,   CondTransfer },
+                { Opcode.trapne,   CondTransfer },
+                { Opcode.trapeq,   CondTransfer },
+                { Opcode.trapvc,   CondTransfer },
+                { Opcode.trapvs,   CondTransfer },
+                { Opcode.trappl,   CondTransfer },
+                { Opcode.trapmi,   CondTransfer },
+                { Opcode.trapge,   CondTransfer },
+                { Opcode.traplt,   CondTransfer },
+                { Opcode.trapgt,   CondTransfer },
+                { Opcode.traple,   CondTransfer },
+                { Opcode.trapv,    CondTransfer },
+            };
         }
     }
 }

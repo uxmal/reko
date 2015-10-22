@@ -35,7 +35,6 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class HeuristicScannerTests : HeuristicTestBase
     {
-
         [SetUp]
         public override void Setup()
         {
@@ -53,7 +52,7 @@ namespace Reko.UnitTests.Scanning
             Given_RewriterHost();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
             var addr = hsc.FindCallOpcodes(new Address[] {
                 Address.Ptr32(0x1008)
             }).ToList();
@@ -90,7 +89,7 @@ namespace Reko.UnitTests.Scanning
 
             Assert.AreEqual(18, prog.Image.Length);
 
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
             var linAddrs = hsc.FindCallOpcodes(new Address[]{
                 Address.Ptr32(0x1010),
                 Address.Ptr32(0x1011)}).ToList();
@@ -110,7 +109,7 @@ namespace Reko.UnitTests.Scanning
             Given_RewriterHost();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
                 Address.SegPtr(0x0C00, 0)}).ToList();
 
@@ -127,7 +126,7 @@ namespace Reko.UnitTests.Scanning
             Given_RewriterHost();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
 
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
                 Address.SegPtr(0x0C00, 0)}).ToList();
@@ -151,7 +150,7 @@ namespace Reko.UnitTests.Scanning
             var host = mr.Stub<IRewriterHost>();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
                 Address.Ptr32(0x1000),
             }).ToList();
@@ -170,7 +169,7 @@ namespace Reko.UnitTests.Scanning
             var host = mr.Stub<IRewriterHost>();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
             var r = hsc.FindUnscannedRanges();
             var ranges = hsc.FindPossibleFunctions(r).ToArray();
             Assert.AreEqual(0x10003, ranges[0].Item1.ToLinear());
@@ -193,7 +192,7 @@ namespace Reko.UnitTests.Scanning
                 .Return(null);
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
             var proc = hsc.DisassembleProcedure(
                 prog.Image.BaseAddress,
                 prog.Image.BaseAddress + prog.Image.Length);

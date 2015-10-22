@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -47,11 +48,13 @@ namespace Reko.Scanning
     {
         private Program program;
         private IRewriterHost host;
+        private DecompilerEventListener eventListener;
 
-        public HeuristicScanner(Program program, IRewriterHost host)
+        public HeuristicScanner(Program program, IRewriterHost host, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.host = host;
+            this.eventListener = eventListener;
         }
 
         /// Plan of attack:
@@ -67,15 +70,49 @@ namespace Reko.Scanning
         /// At the end we have a list of scored candidates.
         public void ScanImageHeuristically()
         {
+            var sw = new Stopwatch();
+            sw.Start();
+            var list = new List<HeuristicBlock>();
             var ranges = FindUnscannedRanges();
-            foreach (var range in FindPossibleFunctions(ranges))
+            var fnRanges = FindPossibleFunctions(ranges).ToList();
+            int n = 0;
+            foreach (var range in fnRanges)
             {
                 var hproc = DisassembleProcedure(range.Item1, range.Item2);
                 var hps = new HeuristicProcedureScanner(program, hproc, host);
                 hps.BlockConflictResolution();
-                DumpBlocks(hproc.Cfg.Nodes);
+                //DumpBlocks(hproc.Cfg.Nodes);
                 hps.GapResolution();
                 // TODO: add all guessed code to image map -- clearly labelled.
+                AddBlocks(hproc);
+                list.AddRange(hproc.Cfg.Nodes);
+                eventListener.ShowProgress("Estimating procedures", n, fnRanges.Count);
+                ++n;
+            }
+            eventListener.Warn(
+                new Reko.Core.Services.NullCodeLocation("Heuristics"),
+                string.Format("Scanned image in {0} seconds, finding {1} blocks.",
+                    sw.Elapsed.TotalSeconds, list.Count));
+            list.ToString();
+        }
+
+        private void AddBlocks(HeuristicProcedure hproc)
+        {
+            var proc = Procedure.Create(hproc.BeginAddress, hproc.Frame);
+            foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Statements.Count > 0))
+            {
+                var last = block.Statements.Last();
+                var b = new Block(proc, "l" + block.Address);
+                if (program.ImageMap.Items.ContainsKey(block.Address))
+                    continue;
+                program.ImageMap.AddItemWithSize(
+                    block.Address,
+                    new ImageMapBlock
+                    {
+                        Block = b,
+                        Address = block.Address,
+                        Size = (uint)(last.Address - block.Address) + last.Length
+                    });
             }
         }
 
@@ -86,9 +123,16 @@ namespace Reko.Scanning
         /// <returns></returns>
         public IEnumerable<Tuple<Address, Address>> FindUnscannedRanges()
         {
+#if NOT_USE_WHOLE_IMAGE
+
             return program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
                 .Select(de => Tuple.Create(de.Key, de.Key + de.Value.Size));
+#else
+            return program.ImageMap.Segments.Values
+                .Where(s => (s.Access & AccessMode.Execute) != 0)
+                .Select(s => Tuple.Create(s.Address, s.Address + s.ContentSize));
+#endif
         }
 
         /// <summary>
@@ -211,6 +255,8 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void DumpBlocks(IEnumerable<HeuristicBlock> blocks)
         {
+            if (blocks != null)
+                return;
             foreach (var block in blocks.OrderBy(b => b.Address.ToLinear()))
             {
                 var addrEnd = block.GetEndAddress();

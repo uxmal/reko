@@ -126,7 +126,7 @@ namespace Reko.Core
                 item.DataType = ChopAfter(item.DataType, (int)delta);      // Shrink the existing mofo.
 
                 items.Add(addr, itemNew);
-                items.Add(itemAfter.Address, itemAfter);
+                items[itemAfter.Address]= itemAfter;
             }
             else
             {
@@ -146,7 +146,7 @@ namespace Reko.Core
         {
             if (type == null)
                 throw new ArgumentNullException("type");
-            if (type is UnknownType)
+            if (type is UnknownType || type is CodeType)
                 return type;
             throw new NotImplementedException();
         }
@@ -155,7 +155,7 @@ namespace Reko.Core
         {
             if (type == null)
                 throw new ArgumentNullException("type");
-            if (type is UnknownType)
+            if (type is UnknownType || type is CodeType)
                 return type;
             throw new NotImplementedException();
         }

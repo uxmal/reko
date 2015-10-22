@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using Reko.Core.Machine;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Reko.Arch.X86
 {
@@ -31,6 +32,12 @@ namespace Reko.Arch.X86
 	/// </summary>
 	public class X86Instruction : MachineInstruction
 	{
+        private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
+        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
+        private const InstructionClass Transfer = InstructionClass.Transfer;
+
+        private static Dictionary<Opcode, InstructionClass> classOf;
+
 		public Opcode code;		// Opcode of the instruction.
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
@@ -147,9 +154,20 @@ namespace Reko.Arch.X86
 			}
 		}
 
-		// Returns the condition codes that an instruction modifies.
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                InstructionClass cl;
+                if (!classOf.TryGetValue(code, out cl))
+                    cl = InstructionClass.Linear;
+                return cl;
+            }
+        }
 
-		public static FlagM DefCc(Opcode opcode)
+        // Returns the condition codes that an instruction modifies.
+
+        public static FlagM DefCc(Opcode opcode)
 		{
 			switch (opcode)
 			{
@@ -324,5 +342,59 @@ namespace Reko.Arch.X86
 		{
 			return op is RegisterOperand || op is X86AddressOperand || op is FpuOperand;
 		}
+
+        static X86Instruction()
+        {
+            classOf = new Dictionary<Opcode, InstructionClass>
+            {
+                { Opcode.illegal,    InstructionClass.Invalid },
+
+                { Opcode.call,       Transfer },
+                { Opcode.cmova,      CondLinear },
+                { Opcode.cmovbe,     CondLinear },
+                { Opcode.cmovc,      CondLinear },
+                { Opcode.cmovg,      CondLinear },
+                { Opcode.cmovge,     CondLinear },
+                { Opcode.cmovl,      CondLinear },
+                { Opcode.cmovle,     CondLinear },
+                { Opcode.cmovnc,     CondLinear },
+                { Opcode.cmovno,     CondLinear },
+                { Opcode.cmovns,     CondLinear },
+                { Opcode.cmovnz,     CondLinear },
+                { Opcode.cmovo,      CondLinear },
+                { Opcode.cmovpe,     CondLinear },
+                { Opcode.cmovpo,     CondLinear },
+                { Opcode.cmovs,      CondLinear },
+                { Opcode.cmovz,      CondLinear },
+                { Opcode.hlt,        Transfer },
+                { Opcode.@int,       Transfer },
+                { Opcode.iret,       Transfer },
+                { Opcode.ja,         CondTransfer },
+                { Opcode.jbe,        CondTransfer },
+                { Opcode.jc,         CondTransfer },
+                { Opcode.jcxz,       CondTransfer },
+                { Opcode.jg,         CondTransfer },
+                { Opcode.jge,        CondTransfer },
+                { Opcode.jl,         CondTransfer },
+                { Opcode.jle,        CondTransfer },
+                { Opcode.jmp,        Transfer },
+                { Opcode.jnc,        CondTransfer },
+                { Opcode.jno,        CondTransfer },
+                { Opcode.jns,        CondTransfer },
+                { Opcode.jnz,        CondTransfer },
+                { Opcode.jo,         CondTransfer },
+                { Opcode.jpe,        CondTransfer },
+                { Opcode.jpo,        CondTransfer },
+                { Opcode.js,         CondTransfer },
+                { Opcode.jz,         CondTransfer },
+                { Opcode.loop,       CondLinear },
+                { Opcode.loope,      CondLinear },
+                { Opcode.loopne,     CondLinear },
+                { Opcode.ret,        Transfer },
+                { Opcode.retf,       Transfer },
+                { Opcode.syscall,    Transfer },
+                { Opcode.sysret,     Transfer },
+            };
+        }
 	}
 }

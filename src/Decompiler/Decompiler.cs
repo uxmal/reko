@@ -400,9 +400,9 @@ namespace Reko
                 {
                     scanner.EnqueueProcedure(addr);
                 }
-                scanner.ScanImage();
+                //scanner.ScanImage();
 
-                if (false || //$DEBUG
+                if (true || //$DEBUG
                     program.Options.HeuristicScanning)
                 {
                     eventListener.ShowStatus("Finding machine code using heuristics.");

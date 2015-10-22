@@ -940,7 +940,6 @@ namespace Reko.Arch.X86
         private BinaryOperator GetIncrementOperator()
         {
             Constant direction = state.GetFlagGroup((uint)FlagM.DF);
-            Debug.Print("dir: " + direction);
             if (direction == null || !direction.IsValid)
                 return Operator.IAdd;        // Better safe than sorry.
             return direction.ToBoolean()

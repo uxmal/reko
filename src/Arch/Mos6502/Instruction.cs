@@ -28,10 +28,25 @@ namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {
+        private static Dictionary<Opcode, InstructionClass> classOf;
+
         public Opcode Code;
         public Operand Operand;
 
         public override int OpcodeAsInteger { get { return (int)Code; } }
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                InstructionClass ct;
+                if (!classOf.TryGetValue(Code, out ct))
+                {
+                    ct = InstructionClass.Linear;
+                }
+                return ct;
+            }
+        }
 
         public override void Render(MachineInstructionWriter writer)
         {
@@ -124,6 +139,27 @@ namespace Reko.Arch.Mos6502
                 return FlagM.CF;
             }
             return 0;
+        }
+
+        static Instruction()
+        {
+            classOf = new Dictionary<Opcode, InstructionClass>
+            {
+                { Opcode.illegal, InstructionClass.Linear },
+
+                { Opcode.bcc, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bcs, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.beq, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bit, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bmi, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bne, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bpl, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.brk, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bvc, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bvs, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jmp, InstructionClass.Transfer },
+                { Opcode.jsr, InstructionClass.Transfer },
+            };
         }
     }
 }

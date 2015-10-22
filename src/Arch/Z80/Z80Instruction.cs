@@ -28,11 +28,30 @@ namespace Reko.Arch.Z80
 {
     public class Z80Instruction : MachineInstruction
     {
+        private static Dictionary<Opcode, InstructionClass> classOf;
+
         public Opcode Code;
         public MachineOperand Op1;
         public MachineOperand Op2;
 
         public override int OpcodeAsInteger { get { return (int)Code; } }
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                InstructionClass ct;
+                if (!classOf.TryGetValue(Code, out ct))
+                {
+                    ct = InstructionClass.Linear;
+                }
+                else if (( Op1 as ConditionOperand) != null)
+                {
+                    ct |= InstructionClass.Conditional;
+                }
+                return ct;
+            }
+        }
 
         public override void Render(MachineInstructionWriter writer)
         {
@@ -54,6 +73,33 @@ namespace Reko.Arch.Z80
                     Op2.Write(true, writer);
                 }
             }
+        }
+
+        static Z80Instruction()
+        {
+            classOf = new Dictionary<Opcode, InstructionClass>
+            {
+                { Opcode.illegal, InstructionClass.Transfer },
+
+                { Opcode.jc,      InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jm,      InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jmp,     InstructionClass.Transfer },
+                { Opcode.jnc,     InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jnz,     InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jpe,     InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jpo,     InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jz,      InstructionClass.Transfer | InstructionClass.Conditional },
+
+                { Opcode.call,    InstructionClass.Transfer },
+                { Opcode.djnz,    InstructionClass.Transfer | InstructionClass.Conditional},
+                { Opcode.jr,      InstructionClass.Transfer },
+                { Opcode.ret,     InstructionClass.Transfer },
+                { Opcode.reti,    InstructionClass.Transfer },
+                { Opcode.retn,    InstructionClass.Transfer },
+
+                { Opcode.hlt,     InstructionClass.Transfer },
+                { Opcode.jp,      InstructionClass.Transfer }
+            };
         }
     }
 }

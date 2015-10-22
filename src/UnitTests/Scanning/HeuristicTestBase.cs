@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -38,10 +39,12 @@ namespace Reko.UnitTests.Scanning
         protected Program prog;
         protected MockRepository mr;
         protected IRewriterHost host;
+        protected DecompilerEventListener eventListener;
 
         public virtual void Setup()
         {
             mr = new MockRepository();
+            eventListener = mr.Stub<DecompilerEventListener>();
         }
 
         protected LoadedImage CreateImage(Address addr, params uint[] opcodes)

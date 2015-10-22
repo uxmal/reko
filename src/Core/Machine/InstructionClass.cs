@@ -18,36 +18,25 @@
  */
 #endregion
 
-using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Mocks
+namespace Reko.Core.Machine
 {
-    public class FakeInstruction : MachineInstruction
+    /// <summary>
+    /// Classifies a machine instruction according to its behavior.
+    /// </summary>
+    [Flags]
+    public enum InstructionClass
     {
-        private Operation operation;
-        private MachineOperand[] ops;
-
-        public FakeInstruction(Operation operation, params MachineOperand[] ops)
-        {
-            this.operation = operation;
-            this.ops = ops;
-        }
-
-        public override int OpcodeAsInteger { get { return (int)operation; } }
-        public Operation Operation { get { return operation; } }
-        public MachineOperand[] Operands { get { return ops; } }
-        public override InstructionClass InstructionClass { get { return InstructionClass.Invalid; } }
-    }
-
-    public enum Operation
-    {
-        Nop,
-        Add,
-        Mul,
-        Jump,
-        Branch,
+        None,
+        Linear  = 1,            // ALU instruction, computational (like ADD, SHR, or MOVE)
+        Transfer = 2,           // Control flow transfer like JMP, CALL
+        Conditional = 4,        // Conditionally executed  (like branches or CMOV instructions)
+        Delay = 8,              // The following instruction is in a delay slot.
+        Annul = 16,             // The following instruction is anulled.
+        Invalid = 32,           // The instruction is invalid
     }
 }

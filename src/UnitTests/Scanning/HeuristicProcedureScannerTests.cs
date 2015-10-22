@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Scanning
 
         private void When_DisassembleProcedure()
         {
-            var hsc = new HeuristicScanner(prog, host);
+            var hsc = new HeuristicScanner(prog, host, eventListener);
             this.proc = hsc.DisassembleProcedure(
                 prog.Image.BaseAddress,
                 prog.Image.BaseAddress + prog.Image.Length);

@@ -49,6 +49,11 @@ namespace Reko.Core.Machine
         /// </summary>
         public abstract int OpcodeAsInteger { get; }
 
+        /// <summary>
+        /// The kind of instruction
+        /// </summary>
+        public abstract InstructionClass InstructionClass { get; }
+
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();
@@ -61,7 +66,6 @@ namespace Reko.Core.Machine
             var renderer = new StringRenderer(platform);
             this.Render(renderer);
             return renderer.ToString();
-
         }
     }
 }

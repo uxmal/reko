@@ -130,9 +130,12 @@ namespace Reko.Scanning
                         var rtlBranch = rtl.Instructions.Last() as RtlBranch;
                         if (rtlBranch != null)
                         {
-                            block = Disassemble(rtlBranch.Target);
-                            Debug.Assert(proc.Cfg.Nodes.Contains(block));
-                            AddEdge(current, block);
+                            if (program.Image.IsValidAddress(rtlBranch.Target))
+                            {
+                                block = Disassemble(rtlBranch.Target);
+                                Debug.Assert(proc.Cfg.Nodes.Contains(block));
+                                AddEdge(current, block);
+                            }
                             block = Disassemble(rtl.Address + rtl.Length);
                             AddEdge(current, block);
                             return current;

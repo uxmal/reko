@@ -29,6 +29,8 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
+        private static Dictionary<Opcode, InstructionClass> classOf;
+
         public Opcode Opcode;
         public bool Annul;
 
@@ -37,6 +39,23 @@ namespace Reko.Arch.Sparc
         public MachineOperand Op3;
 
         public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                InstructionClass cl;
+                if (!classOf.TryGetValue(Opcode, out cl))
+                {
+                    cl = InstructionClass.Linear;
+                }
+                else if (Annul)
+                {
+                    cl |= InstructionClass.Annul;
+                }
+                return cl;
+            }
+        }
 
         public override void Render(MachineInstructionWriter writer)
         {

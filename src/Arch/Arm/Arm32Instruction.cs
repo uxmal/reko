@@ -18,24 +18,21 @@
  */
 #endregion
 
+using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
+using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
+using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
 namespace Reko.Arch.Arm
 {
-    using Gee.External.Capstone.Arm;
-    using System.Diagnostics;
-    using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
-    using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
-
     public class Arm32Instruction : MachineInstruction 
     {
+        private static Dictionary<ArmInstruction, InstructionClass> classOf;
+
         // If this instruction is NULL, then the instruction is invalid.
         // Callers need to be aware of this.
         private CapstoneArmInstruction instruction;
@@ -66,6 +63,28 @@ namespace Reko.Arch.Arm
         {
             instr = instruction;
             return instr != null;
+        }
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                if (instruction == null)
+                {
+                    return InstructionClass.Invalid;
+                }
+                InstructionClass ct;
+                if (!classOf.TryGetValue(instruction.Id, out ct))
+                {
+                    ct = InstructionClass.Linear;
+                }
+                if (instruction.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
+                {
+                    //$TODO: test conditional moves etc. to make sure Capstone works
+                    ct |= InstructionClass.Conditional;
+                }
+                return ct;
+            }
         }
 
         public override int OpcodeAsInteger {
@@ -341,6 +360,26 @@ namespace Reko.Arch.Arm
         internal static Arm32Instruction CreateInvalid(Address addr)
         {
             return new Arm32Instruction(addr);
+        }
+
+        static Arm32Instruction()
+        {
+            classOf = new Dictionary<ArmInstruction, InstructionClass>
+            {
+                { ArmInstruction.Invalid, InstructionClass.Invalid },
+
+                { ArmInstruction.BKPT,  InstructionClass.Transfer },
+                { ArmInstruction.BL,    InstructionClass.Transfer },
+                { ArmInstruction.BLX,   InstructionClass.Transfer },
+                { ArmInstruction.BX,    InstructionClass.Transfer },
+                { ArmInstruction.BXJ,   InstructionClass.Transfer },
+                { ArmInstruction.B,     InstructionClass.Transfer },
+                { ArmInstruction.HLT,   InstructionClass.Transfer },
+                { ArmInstruction.SVC,   InstructionClass.Transfer },
+                { ArmInstruction.TEQ,   InstructionClass.Transfer },
+                { ArmInstruction.TRAP,  InstructionClass.Transfer },
+                { ArmInstruction.YIELD, InstructionClass.Transfer },
+            };
         }
     }
 }
