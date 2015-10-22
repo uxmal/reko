@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Reko.Core;
@@ -178,18 +179,40 @@ namespace Reko.ImageLoaders.MzExe
             {
                 abResource = PostProcessBitmap(abResource);
             }
+
+            string localeName = GetLocaleName(langId);
             return new ProgramResourceInstance
             {
-                Name = string.Format("{0}:{1}", resourceId, langId),
+                Name = string.Format("{0}:{1}", resourceId, localeName),
                 Type = GetResourceType(resourceType),
                 Bytes = abResource,
             };
         }
 
+        private string GetLocaleName(string langId)
+        {
+            int localeId;
+            if (Int32.TryParse(langId, out localeId))
+            {
+                var ci = CultureInfo.GetCultureInfo(localeId);
+                return ci.EnglishName;
+            }
+            else
+            {
+                return langId;
+            }
+        }
+
+        /// <summary>
+        /// Rebuild the BITMAPFILEHEADER structure, which isn't present in
+        /// resource files.
+        /// </summary>
+        /// <param name="abResource">DIB image (BITMAPINFOHEADER + bitmap data)</param>
+        /// <returns>A BITMAPFILEHEADER</returns>
         private byte[] PostProcessBitmap(byte[] abResource)
         {
             var stm = new MemoryStream();
-            var bw = new BinaryWriter(stm);
+            var bw = new BinaryWriter(stm); // Always writes little-endian.
 
             bw.Write('B');
             bw.Write('M');

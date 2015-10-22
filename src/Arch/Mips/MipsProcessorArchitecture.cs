@@ -86,7 +86,7 @@ namespace Reko.Arch.Mips
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.mpNameToReg[name];
         }
 
         public override RegisterStorage[] GetRegisters()

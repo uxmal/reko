@@ -175,10 +175,14 @@ namespace Reko.Gui.Windows.Controls
             if (!IsSelectionEmpty() &&
                 IsInsideSelection(pos))
             {
+                // if down-click is done on a selection, the user may want 
+                // to drag it.
                 dragging = true;
             }
             else if (ComparePositions(pos, cursorPos) != 0)
             {
+                // User clicked somewhere other than the current cursor
+                // position, so we need to move it.
                 dragging = false;
                 this.cursorPos = pos;
                 if ((Control.ModifierKeys & Keys.Shift) == 0)
@@ -233,6 +237,14 @@ namespace Reko.Gui.Windows.Controls
                 }
                 else
                 {
+                    if (IsSelectionEmpty())
+                    {
+                        var span = GetSpan(e.Location);
+                        if (span != null && span.Tag != null)
+                        {
+                            Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
+                        }
+                    }
                     SelectionChanged.Fire(this);
                 }
             }

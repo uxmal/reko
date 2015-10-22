@@ -29,6 +29,7 @@ using System.Text;
 
 namespace Reko.Environments.Win32
 {
+    // https://msdn.microsoft.com/en-us/library/ms881468.aspx
     public class Win32MipsPlatform : Win32Platform
     {
         public Win32MipsPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
@@ -38,7 +39,7 @@ namespace Reko.Environments.Win32
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public override Address AdjustProcedureAddress(Address addr)
@@ -48,7 +49,12 @@ namespace Reko.Environments.Win32
 
         public override BitSet CreateImplicitArgumentRegisters()
         {
-            throw new NotImplementedException();
+            var bitset = base.Architecture.CreateRegisterBitset();
+            var gp = Architecture.GetRegister("r28");
+            var sp = Architecture.GetRegister("sp");
+            bitset[gp.Number] = true;
+            bitset[sp.Number] = true;
+            return bitset;
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

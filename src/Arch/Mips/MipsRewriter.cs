@@ -192,7 +192,9 @@ namespace Reko.Arch.Mips
                 case Opcode.sltiu: RewriteSxx(instr, Operator.Ult); break;
                 case Opcode.sltu: RewriteSxx(instr, Operator.Ult); break;
                 case Opcode.sra: RewriteSra(instr); break;
-                case Opcode.srl: RewriteSrl(instr); break;
+                case Opcode.srl:
+                case Opcode.srlv:
+                    RewriteSrl(instr); break;
                 case Opcode.sub:
                 case Opcode.subu:
                     RewriteSub(instr); break;
