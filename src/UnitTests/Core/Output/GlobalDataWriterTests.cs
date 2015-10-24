@@ -152,7 +152,7 @@ char g_b1004 = 'H';
                 Field(0x1008, PrimitiveType.Int32));
 
             RunTest(
-@"int32* g_ptr1000 = &g_dw1008;
+@"int32 * g_ptr1000 = &g_dw1008;
 int32 g_dw1008 = 1234;
 ");
         }
@@ -218,7 +218,7 @@ Eq_2 g_t1008 =
     2,
     null,
 };
-Eq_2* g_ptr1010 = &g_t1000;
+Eq_2 * g_ptr1010 = &g_t1000;
 ");
         }
 

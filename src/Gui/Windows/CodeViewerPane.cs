@@ -268,6 +268,7 @@ namespace Reko.Gui.Windows
         {
             var tsf = new TextSpanFormatter() { UseTabs = false };
             var fmt = new TypeFormatter(tsf, false);
+            tsf.UseTabs = false;
             fmt.Write(dt, "");
             this.TextView.Model = tsf.GetModel();
         }

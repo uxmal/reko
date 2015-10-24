@@ -37,7 +37,7 @@ T_6: (in Mem0[ra + 264242832:word32] : word32)
 typedef struct Globals {
 } Eq_1;
 
-typedef code Eq_3struct Eq_3 {
-	code * ptrFC00690;	// FC00690
+typedef struct Eq_3 {
+	 <anonymous> * ptrFC00690;	// FC00690
 } Eq_3;
 

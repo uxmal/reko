@@ -3451,50 +3451,50 @@ T_807:
   DataType: Eq_806
   OrigDataType: (struct 0004 (0 T_786 t0000))
 */
-typedef  Eq_1 Eq_1 Eq_1 Eq_1 Eq_1struct Globals {
-	 tFFFFFFFF;	// FFFFFFFF
-	 t0000;	// 0
-	 * ptr0004;	// 4
+typedef struct Globals {
+	Eq_5 tFFFFFFFF;	// FFFFFFFF
+	Eq_113 t0000;	// 0
+	Eq_2 * ptr0004;	// 4
 	word32 dw0008;	// 8
 	ui32 dw0010;	// 10
-	 t0011;	// 11
+	Eq_79 t0011;	// 11
 	int32 dw14C4;	// 14C4
-	 * ptr14D8;	// 14D8
+	Eq_600 * ptr14D8;	// 14D8
 } Eq_1;
 
-typedef code Eq_2code Eq_2code Eq_2code Eq_2code Eq_2struct  {
-	code tFFFFFDD8;	// FFFFFDD8
-	code tFFFFFE62;	// FFFFFE62
-	code tFFFFFEDA;	// FFFFFEDA
-	code tFFFFFF3A;	// FFFFFF3A
-	code tFFFFFF94;	// FFFFFF94
+typedef struct  {
+	 <anonymous> tFFFFFDD8;	// FFFFFDD8
+	 <anonymous> tFFFFFE62;	// FFFFFE62
+	 <anonymous> tFFFFFEDA;	// FFFFFEDA
+	 <anonymous> tFFFFFF3A;	// FFFFFF3A
+	 <anonymous> tFFFFFF94;	// FFFFFF94
 	word16 w0014;	// 14
 } Eq_2;
 
 typedef  * Eq_3;
 
-typedef  Eq_5 Eq_5struct  {
+typedef struct  {
 	byte b0008;	// 8
 	word32 dw003A;	// 3A
 	ui32 dw009C;	// 9C
 	ui32 dw00A0;	// A0
 	word32 dw00A4;	// A4
-	 * ptr00AC;	// AC
-	 * ptr00B0;	// B0
+	Eq_60 * ptr00AC;	// AC
+	Eq_483 * ptr00B0;	// B0
 	ui32 dw00E0;	// E0
 } Eq_5;
 
-typedef  Eq_7struct  {	// size: 1 1
+typedef struct  {	// size: 1 1
 	byte b0000;	// 0
-	 t0001;	// 1
+	Eq_7 t0001;	// 1
 } Eq_7;
 
-typedef  Eq_9 Eq_9 Eq_9struct  {
+typedef struct  {
 	ptr32 ptrFFFF800A;	// FFFF800A
-	 * ptrFFFF800E;	// FFFF800E
+	Eq_2 * ptrFFFF800E;	// FFFF800E
 	int32 dwFFFF8012;	// FFFF8012
-	 * ptrFFFF8016;	// FFFF8016
-	 * ptrFFFF801A;	// FFFF801A
+	Eq_60 * ptrFFFF8016;	// FFFF8016
+	Eq_60 * ptrFFFF801A;	// FFFF801A
 	ui32 dwFFFF801E;	// FFFF801E
 	ui32 dwFFFF8022;	// FFFF8022
 	ui32 dwFFFF8026;	// FFFF8026
@@ -3502,21 +3502,21 @@ typedef  Eq_9 Eq_9 Eq_9struct  {
 	word32 dwFFFF8036;	// FFFF8036
 } Eq_9;
 
-typedef  Eq_34struct  {	// size: 4 4
+typedef struct  {	// size: 4 4
 	word32 dw0000;	// 0
-	 t0004;	// 4
+	Eq_34 t0004;	// 4
 } Eq_34;
 
 typedef  * Eq_49;
 
-typedef  Eq_60 Eq_60 Eq_60 Eq_60struct  {
+typedef struct  {
 	word32 dw0000;	// 0
 	ui32 dw0004;	// 4
-	 * ptr0008;	// 8
+	Eq_132 * ptr0008;	// 8
 	word32 dw000C;	// C
-	 t0010;	// 10
-	 * ptr0010;	// 10
-	 t0014;	// 14
+	Eq_60 t0010;	// 10
+	Eq_176 * ptr0010;	// 10
+	Eq_216 t0014;	// 14
 	ui32 dw0024;	// 24
 } Eq_60;
 
@@ -3526,18 +3526,18 @@ typedef struct  {
 	word32 dw001D;	// 1D
 } Eq_79;
 
-typedef  Eq_91struct  {
-	 * ptr0000;	// 0
+typedef struct  {
+	Eq_2 * ptr0000;	// 0
 } Eq_91;
 
 typedef union  {
 	byte u0;
-	struct <anonymous>* u1;
+	struct <anonymous> * u1;
 } Eq_113;
 
-typedef  Eq_132struct  {	// size: 1 1
+typedef struct  {	// size: 1 1
 	byte b0000;	// 0
-	 t0001;	// 1
+	Eq_132 t0001;	// 1
 } Eq_132;
 
 typedef void (Eq_144)( *);
@@ -3546,8 +3546,8 @@ typedef struct  {
 	ui32 dw0000;	// 0
 } Eq_167;
 
-typedef  Eq_172struct  {
-	 t0000;	// 0
+typedef struct  {
+	Eq_113 t0000;	// 0
 } Eq_172;
 
 typedef struct  {
@@ -3558,13 +3558,13 @@ typedef struct  {
 	ui32 dw0000;	// 0
 } Eq_190;
 
-typedef  Eq_195struct  {
-	 t0000;	// 0
+typedef struct  {
+	Eq_113 t0000;	// 0
 } Eq_195;
 
-typedef  Eq_216 Eq_216struct  {	// size: 4 4
-	 * ptr0000;	// 0
-	 t0004;	// 4
+typedef struct  {	// size: 4 4
+	Eq_132 * ptr0000;	// 0
+	Eq_216 t0004;	// 4
 } Eq_216;
 
 typedef struct  {	// size: 1 1
@@ -3585,15 +3585,15 @@ typedef struct  {
 
 typedef void (Eq_501)(int32,  *);
 
-typedef  Eq_519struct  {
-	 * ptrFFFF800A;	// FFFF800A
+typedef struct  {
+	Eq_521 * ptrFFFF800A;	// FFFF800A
 	word32 dwFFFF800E;	// FFFF800E
 	word32 dwFFFF8012;	// FFFF8012
 } Eq_519;
 
-typedef  Eq_521struct  {
+typedef struct  {
 	word32 dwFFFFFFF8;	// FFFFFFF8
-	 * ptrFFFFFFFC;	// FFFFFFFC
+	Eq_525 * ptrFFFFFFFC;	// FFFFFFFC
 } Eq_521;
 
 typedef struct  {
@@ -3601,14 +3601,14 @@ typedef struct  {
 } Eq_525;
 
 typedef struct  {
-	 a0000[];	// 0
+	Eq_589 a0000[];	// 0
 	word32 dw0004;	// 4
 } Eq_557;
 
 typedef void (Eq_562)(word32);
 
 typedef union  {
-	 <anonymous>* u0;
+	 <anonymous> * u0;
 	struct <anonymous> u1;
 } Eq_589;
 
@@ -3616,13 +3616,13 @@ typedef struct  {
 	int32 dw0000;	// 0
 } Eq_596;
 
-typedef  Eq_600code Eq_600struct  {
-	 * ptr0000;	// 0
-	code * ptr0004;	// 4
+typedef struct  {
+	Eq_600 * ptr0000;	// 0
+	 <anonymous> * ptr0004;	// 4
 } Eq_600;
 
-typedef  Eq_601struct  {
-	 * ptr0000;	// 0
+typedef struct  {
+	Eq_600 * ptr0000;	// 0
 } Eq_601;
 
 typedef struct  {
@@ -3631,9 +3631,9 @@ typedef struct  {
 
 typedef void (Eq_608)(word32);
 
-typedef code Eq_622 Eq_622struct  {	// size: 4 4
-	code * ptr0000;	// 0
-	 t0004;	// 4
+typedef struct  {	// size: 4 4
+	 <anonymous> * ptr0000;	// 0
+	Eq_622 t0004;	// 4
 } Eq_622;
 
 typedef void (Eq_627)();
@@ -3656,7 +3656,7 @@ typedef word32 (Eq_682)(word32);
 typedef uint32 (Eq_684)(int32);
 
 typedef struct  {
-	 a0000[];	// 0
+	Eq_805 a0000[];	// 0
 } Eq_700;
 
 typedef uint32 (Eq_712)(uint32);
@@ -3668,7 +3668,7 @@ typedef uint32 (Eq_721)(word32);
 typedef uint32 (Eq_733)(int32);
 
 typedef struct  {
-	 a0000[];	// 0
+	Eq_806 a0000[];	// 0
 } Eq_739;
 
 typedef union  {

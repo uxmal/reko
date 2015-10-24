@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Gui.Commands
             sc.AddService<IDecompilerService>(dcSvc);
             sc.AddService<IProjectBrowserService>(brSvc);
             sc.AddService<IDecompilerShellUiService>(new FakeShellUiService());
-            dc.Expect(d => d.ScanProcedure(progaddr)).Return(proc);
+            dc.Expect(d => d.ScanProcedure(progaddr)).IgnoreArguments().Return(proc);
             brSvc.Expect(b => b.Reload());
             mr.ReplayAll();
 
