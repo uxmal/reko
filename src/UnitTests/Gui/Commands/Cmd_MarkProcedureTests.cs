@@ -58,6 +58,7 @@ namespace Reko.UnitTests.Gui.Commands
         {
             var addr = Address.SegPtr(0x0C20, 0);
             var proc = new Procedure("foo", null);
+            var progaddr = new ProgramAddress(program, addr);
             var dc = mr.Stub<IDecompiler>();
             var dcSvc = mr.Stub<IDecompilerService>();
             var brSvc = mr.Stub<IProjectBrowserService>();
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Gui.Commands
             sc.AddService<IDecompilerService>(dcSvc);
             sc.AddService<IProjectBrowserService>(brSvc);
             sc.AddService<IDecompilerShellUiService>(new FakeShellUiService());
-            dc.Expect(d => d.ScanProcedure(program, addr)).Return(proc);
+            dc.Expect(d => d.ScanProcedure(progaddr)).Return(proc);
             brSvc.Expect(b => b.Reload());
             mr.ReplayAll();
 

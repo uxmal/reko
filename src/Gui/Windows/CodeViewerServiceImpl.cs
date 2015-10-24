@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,20 +31,28 @@ namespace Reko.Gui.Windows
     /// </summary>
     public class CodeViewerServiceImpl : ViewService, ICodeViewerService
     {
-        private CodeViewerPane pane;
-
         public CodeViewerServiceImpl(IServiceProvider sp) : base (sp)
         {
-            pane = new CodeViewerPane();
         }
 
         public void DisplayProcedure(Program program, Procedure proc)
         {
             if (proc == null)
                 return;
+            var pane = new CodeViewerPane();
             var frame = ShowWindow("codeViewerWindow", proc.Name, proc, pane);
             pane.FrameWindow = frame;
             pane.DisplayProcedure(program, proc);
+        }
+
+        public void DisplayDataType(Program program, DataType dt)
+        {
+            if (dt == null)
+                return;
+            var pane = new CodeViewerPane();
+            var frame = ShowWindow("codeViewerWindow", dt.Name, dt, pane);
+            pane.FrameWindow = frame;
+            pane.DisplayDataType(program, dt);
         }
     }
 }

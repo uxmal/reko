@@ -78,12 +78,22 @@
     <Compile Include="ActiveControlForm.Designer.cs">
       <DependentUpon>ActiveControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CodeViewerFrame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeViewerFrame.Designer.cs">
+      <DependentUpon>CodeViewerFrame.cs</DependentUpon>
+    </Compile>
     <Compile Include="DisassemblyControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DisassemblyControlForm.Designer.cs">
       <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FakeConfigurationService.cs" />
+    <Compile Include="FakeDecompilerShellUiService.cs" />
+    <Compile Include="FakeSettingsService.cs" />
+    <Compile Include="FakeUiPreferencesService.cs" />
     <Compile Include="ItpForm.cs">
       <SubType>Form</SubType>
     </Compile>

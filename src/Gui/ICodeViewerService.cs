@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,5 +30,6 @@ namespace Reko.Gui
     public interface ICodeViewerService
     {
         void DisplayProcedure(Program program, Procedure proc);
+        void DisplayDataType(Program program, DataType dt);
     }
 }

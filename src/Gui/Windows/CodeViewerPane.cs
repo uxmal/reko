@@ -32,12 +32,14 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Reko.Core.Types;
 
 namespace Reko.Gui.Windows
 {
     /// <summary>
     /// Pane that displays decompiled code, allows the user to navigate code,
-    /// and annotate it.
+    /// and annotate it. It displays both executable code (procedures)
+    /// and data types.
     /// </summary>
     public class CodeViewerPane : IWindowPane, ICommandTarget
     {
@@ -45,12 +47,19 @@ namespace Reko.Gui.Windows
         private IServiceProvider services;
         private Program program;
         private Procedure proc;
+        private DataType dataType;
         private NavigationInteractor<Procedure> navInteractor;
         private bool ignoreEvents;
 
         public TextView TextView { get { return codeView.TextView; } }
         public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
         public IWindowFrame FrameWindow { get; set; }
+
+        internal void DisplayType(Program program, DataType dt)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsDirty { get; set; }
 
         #region IWindowPane Members
@@ -210,6 +219,16 @@ namespace Reko.Gui.Windows
             ignoreEvents = false;
         }
 
+        public void DisplayDataType(Program program, DataType dt)
+        {
+            if (codeView == null || program == null || dt == null)
+                return;
+            this.program = program;
+            this.dataType = dt;
+            this.SetTextView(dt);
+            SetDeclaration(dt);
+        }
+
         /// <summary>
         /// If the user has provided us with a declaration, use that. Otherwise
         /// just show a function name.
@@ -230,12 +249,26 @@ namespace Reko.Gui.Windows
             this.codeView.ProcedureDeclaration.Text = proc.Name;
         }
 
+        private void SetDeclaration(DataType dt)
+        {
+            codeView.ProcedureDeclaration.Text = "";
+        }
+
+
         private void SetTextView(Procedure proc)
         {
             var tsf = new TextSpanFormatter();
             var fmt = new AbsynCodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
+            this.TextView.Model = tsf.GetModel();
+        }
+
+        private void SetTextView(DataType dt)
+        {
+            var tsf = new TextSpanFormatter() { UseTabs = false };
+            var fmt = new TypeFormatter(tsf, false);
+            fmt.Write(dt, "");
             this.TextView.Model = tsf.GetModel();
         }
 
