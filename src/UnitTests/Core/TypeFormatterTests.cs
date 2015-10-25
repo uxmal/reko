@@ -39,8 +39,10 @@ namespace Reko.UnitTests.Core
         public void SetUp()
         {
             sw = new StringWriter();
-            tyfo = new TypeFormatter(new TextFormatter(sw), false);
-            tyreffo = new TypeReferenceFormatter(new TextFormatter(sw), false);
+            var tf = new TextFormatter(sw) { Indentation = 0 };
+            tyfo = new TypeFormatter(tf, false);
+            tf = new TextFormatter(sw) { Indentation = 0 };
+            tyreffo = new TypeReferenceFormatter(tf, false);
         }
         
         [Test]

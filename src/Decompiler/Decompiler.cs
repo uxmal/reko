@@ -341,7 +341,11 @@ namespace Reko
         {
             WriteHeaderComment(Path.GetFileName(program.TypesFilename), program, w);
             w.WriteLine("/*"); program.TypeStore.Write(w); w.WriteLine("*/");
-            TypeFormatter fmt = new TypeFormatter(new TextFormatter(w), false);
+            var tf = new TextFormatter(w)
+            {
+                Indentation = 0,
+            };
+            TypeFormatter fmt = new TypeFormatter(tf, false);
             foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
             {
                 if (eq.DataType != null)

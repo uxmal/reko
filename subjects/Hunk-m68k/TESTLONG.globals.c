@@ -4,3 +4,26 @@
 
 #include "TESTLONG.h"
 
+Eq_5 g_tFFFFFFFF;
+Eq_117 g_t0000;
+Eq_2 * g_ptr0004;
+word32 g_dw0008;
+ui32 g_dw0010;
+Eq_81 g_t0011;
+int32 g_dw0018;
+word32 g_dw001C;
+int32 g_dw0020;
+int32 g_dw0024;
+word32 g_dw0028;
+word32 g_dw002C;
+Eq_1386 g_t0078;
+Eq_3244 * g_ptr3D74 = ;
+word32 g_dw3D78 = 0x00000000;
+int32 g_dw3DA0 = 101058054;
+word32 g_dw3DA4 = 0x06060606;
+word32 g_dw3DA8 = 0x06060606;
+Eq_649 * g_ptr3EC8;
+word32 g_dw3ECC;
+word32 g_dw3ED0;
+Eq_8369 * g_ptr3ED8;
+

@@ -57,7 +57,7 @@ namespace Reko.Typing
                 signature = proc.Signature;
                 if (signature != null && signature.ReturnValue != null)
                 {
-                    signature.ReturnValue.Accept(this);
+                   signature.ReturnValue.Accept(this);
                 }
                 
                 foreach (Statement stm in proc.Statements)
@@ -74,6 +74,7 @@ namespace Reko.Typing
 
 		public override void VisitApplication(Application appl)
 		{
+            var oldSig = signature;
 			signature = null;
 			appl.Procedure.Accept(this);
 			ProcedureSignature sig = signature;
@@ -94,6 +95,7 @@ namespace Reko.Typing
 				}
 			}
 			EnsureTypeVariable(appl);
+            signature = oldSig;
 		}
 
 		public override void VisitArrayAccess(ArrayAccess acc)

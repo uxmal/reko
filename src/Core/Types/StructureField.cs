@@ -109,6 +109,8 @@ namespace Reko.Core.Types
 		{
 			int i;
 			StructureField ff = null;
+            if (f.Offset == 0x0010 && f.DataType.ToString().Contains("_60"))    //$DEBUG
+                f.ToString();
 			for (i = 0; i < innerList.Count; ++i)
 			{
 				ff = innerList[i];

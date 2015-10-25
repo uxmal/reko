@@ -32,7 +32,6 @@ namespace Reko.Core.Output
 	{
         private Formatter writer;
 		private string name;
-		public int indentLevel;
 		private Dictionary<DataType,object> visited;
 		private Mode mode;
         private bool typeReference;
@@ -57,28 +56,24 @@ namespace Reko.Core.Output
 
 		public void BeginLine(string s)
 		{
-			for (int i = 0; i < indentLevel; ++i)
-			{
-				writer.Write("\t");
-			}
-			writer.Write(s);
+			writer.Indent();
 		}
 
 		public void EndLine()
 		{
-			EndLine("", null);
+            writer.Terminate();
 		}
 
 		public void EndLine(string terminator)
 		{
-			EndLine(terminator, null);
+			writer.Terminate(terminator);
 		}
 
 		public void EndLine(string terminator, string comment)
 		{
 			writer.Write(terminator);
 			LineEndComment(comment);
-			writer.WriteLine();
+			writer.Terminate();
 		}
 
 		public void LineEndComment(string comment)
@@ -98,12 +93,12 @@ namespace Reko.Core.Output
 		public void OpenBrace(string trailingComment)
 		{
 			EndLine(" {", trailingComment);
-			++indentLevel;
+            writer.Indentation += writer.TabSize;
 		}
 
 		public void CloseBrace()
 		{
-			--indentLevel;
+            writer.Indentation -= writer.TabSize;
 			BeginLine();
 			writer.Write("}");
 		}

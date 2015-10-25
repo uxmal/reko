@@ -266,7 +266,7 @@ namespace Reko.Gui.Windows
 
         private void SetTextView(DataType dt)
         {
-            var tsf = new TextSpanFormatter() { UseTabs = false };
+            var tsf = new TextSpanFormatter() { Indentation = 0 };
             var fmt = new TypeFormatter(tsf, false);
             tsf.UseTabs = false;
             fmt.Write(dt, "");

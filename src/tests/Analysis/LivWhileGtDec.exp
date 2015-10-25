@@ -22,4 +22,4 @@ loopHdr:
 	// succ:  l2 loop
 WhileGtDecMock_exit:
 
-(99 -1 -1 signed)
+(0x00000063 -1 0xFFFFFFFF signed)
