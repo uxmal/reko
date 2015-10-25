@@ -17,7 +17,7 @@ int32 g_dw0024;
 word32 g_dw0028;
 word32 g_dw002C;
 Eq_1432 g_t0078;
-Eq_3297 * g_ptr3E74 = ;
+Eq_3297 * g_ptr3E74 = &g_t4000;
 word32 g_dw3E78 = 0x00000000;
 int32 g_dw3EA0 = 101058054;
 word32 g_dw3EA4 = 0x06060606;
@@ -26,4 +26,5 @@ Eq_642 * g_ptr3FC8;
 word32 g_dw3FCC;
 Eq_868 * g_ptr3FD0;
 Eq_8398 * g_ptr3FD8;
+Eq_3297 g_t4000;
 

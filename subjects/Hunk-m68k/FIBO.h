@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFFFFF Eq_5 tFFFFFFFF) (0 Eq_114 t0000) (4 Eq_2 t0004) (8 word32 dw0008) (10 ui32 dw0010) (11 Eq_79 t0011) (18 int32 dw0018) (1C word32 dw001C) (20 int32 dw0020) (24 int32 dw0024) (28 word32 dw0028) (2C word32 dw002C) (78 Eq_1459 t0078) (3E98 (ptr Eq_3324) ptr3E98) (3E9C word32 dw3E9C) (3EC4 int32 dw3EC4) (3EC8 word32 dw3EC8) (3ECC word32 dw3ECC) (3FEC (ptr Eq_656) ptr3FEC) (3FF0 word32 dw3FF0) (3FF4 (ptr Eq_895) ptr3FF4) (3FFC (ptr Eq_8422) ptr3FFC))
+Eq_1: (struct "Globals" (FFFFFFFF Eq_5 tFFFFFFFF) (0 Eq_114 t0000) (4 Eq_2 t0004) (8 word32 dw0008) (10 ui32 dw0010) (11 Eq_79 t0011) (18 int32 dw0018) (1C word32 dw001C) (20 int32 dw0020) (24 int32 dw0024) (28 word32 dw0028) (2C word32 dw002C) (78 Eq_1459 t0078) (3E98 (ptr Eq_3324) ptr3E98) (3E9C word32 dw3E9C) (3EC4 int32 dw3EC4) (3EC8 word32 dw3EC8) (3ECC word32 dw3ECC) (3FEC (ptr Eq_656) ptr3FEC) (3FF0 word32 dw3FF0) (3FF4 (ptr Eq_895) ptr3FF4) (3FFC (ptr Eq_8422) ptr3FFC) (4000 Eq_3324 t4000))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (union "Eq_2" (byte u0) (word16 u1) ((ptr Eq_2) u2) ((ptr Eq_8601) u3))
 	T_2 (in a6_8 : Eq_2)
@@ -36641,6 +36641,7 @@ typedef struct Globals {
 	word32 dw3FF0;	// 3FF0
 	Eq_895 * ptr3FF4;	// 3FF4
 	Eq_8422 * ptr3FFC;	// 3FFC
+	Eq_3324 t4000;	// 4000
 } Eq_1;
 
 typedef union Eq_2 {

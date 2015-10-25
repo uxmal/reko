@@ -17,11 +17,12 @@ int32 g_dw0024;
 word32 g_dw0028;
 word32 g_dw002C;
 Eq_1298 g_t0078;
-Eq_3122 * g_ptr2B8C = ;
+Eq_3122 * g_ptr2B8C = &g_t4000;
 word32 g_dw2B90 = 0x00000000;
 int32 g_dw2BB8 = 101058054;
 word32 g_dw2BBC = 0x06060606;
 word32 g_dw2BC0 = 0x06060606;
 Eq_610 * g_ptr2CE0;
 word32 g_dw2CE8;
+Eq_3122 g_t4000;
 

@@ -28,6 +28,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using Reko.Core.Services;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Core.Output
 {
@@ -37,6 +39,13 @@ namespace Reko.UnitTests.Core.Output
         private LoadedImage image;
         private Program program;
         private ServiceContainer sc;
+
+        [SetUp]
+        public void SEtup()
+        {
+            this.sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+        }
 
         private ImageWriter Memory(uint address)
         {
@@ -75,12 +84,6 @@ namespace Reko.UnitTests.Core.Output
         private StructureField Field(int offset, DataType dt)
         {
             return new StructureField(offset, dt);
-        }
-
-        [SetUp]
-        public void SEtup()
-        {
-            this.sc = new ServiceContainer();
         }
 
         [Test]
@@ -260,6 +263,33 @@ Eq_2 * g_ptr1010 = &g_t1000;
     ""Medium"",
 };
 ");
+        }
+
+        [Test]
+        public void GdwDiscoverNewStruct()
+        {
+            Memory(0x1000)
+                .WriteLeUInt32(0x1004)      // points to the two fields below.
+                .WriteLeInt32(1)
+                .WriteLeInt32(2);
+            Globals(
+                Field(0x1000, new Pointer(new StructureType("test", 0)
+                {
+                    Fields =
+                    {
+                        { 0, PrimitiveType.Int32 },
+                        { 4, PrimitiveType.Int32 },
+                    }
+                }, 4)));
+            RunTest(
+@"struct test * g_ptr1000 = &g_t1004;
+struct test g_t1004 = 
+{
+    1,
+    2,
+};
+");
+
         }
     }
 }
