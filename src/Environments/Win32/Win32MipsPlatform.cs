@@ -19,7 +19,11 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -62,9 +66,54 @@ namespace Reko.Environments.Win32
             return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
+        private readonly RtlInstructionMatcher[] trampPattern = new RtlInstructionMatcher[] {
+            new RtlInstructionMatcher(
+                new RtlAssignment(ExpressionMatcher.AnyId("r0d"), ExpressionMatcher.AnyConstant("hi"))),
+            new RtlInstructionMatcher(
+                new RtlAssignment(ExpressionMatcher.AnyId("r1d"), new MemoryAccess(
+                    new BinaryExpression(
+                        Operator.IAdd,
+                        ExpressionMatcher.AnyDataType(null),
+                        ExpressionMatcher.AnyId("r1s"),
+                        ExpressionMatcher.AnyConstant("lo")),
+                    PrimitiveType.Word32))),
+            new RtlInstructionMatcher(
+                new RtlGoto(ExpressionMatcher.AnyId("r2s"), RtlClass.Delay|RtlClass.Transfer))
+        };
+
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            return null;
+            var rtls = Architecture.CreateRewriter(
+                imageReader,
+                Architecture.CreateProcessorState(),
+                Architecture.CreateFrame(),
+                host)
+                .Take(3)
+                .ToArray();
+            if (rtls.Length < 3)
+                return null;
+            var instrs = rtls
+                .SelectMany(rtl => rtl.Instructions)
+                .ToArray();
+
+            for (int i = 0; i < 3; ++i)
+            {
+                if (!trampPattern[i].Match(instrs[i]))
+                    return null;
+            }
+            if (trampPattern[0].CapturedExpressions("r0d") != trampPattern[1].CapturedExpressions("r1s"))
+                return null;
+            if (trampPattern[1].CapturedExpressions("r1d") != trampPattern[2].CapturedExpressions("r2s"))
+                return null;
+            var hi = (Constant)trampPattern[0].CapturedExpressions("hi");
+            var lo = (Constant)trampPattern[1].CapturedExpressions("lo");
+            var c = Operator.IAdd.ApplyConstants(hi, lo);
+            var addrTarget= MakeAddressFromConstant(c);
+            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtls[2].Address);
+            if (proc != null)
+                return proc;
+            return host.GetInterceptedCall(addrTarget);
+
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

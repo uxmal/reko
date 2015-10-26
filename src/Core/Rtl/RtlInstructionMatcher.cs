@@ -64,7 +64,11 @@ namespace Reko.Core.Rtl
 
         public bool VisitGoto(RtlGoto go)
         {
- 	        throw new NotImplementedException();
+            var gPat = pattern as RtlGoto;
+            if (gPat == null)
+                return false;
+            matcher.Pattern = gPat.Target;
+            return matcher.Match(go.Target);
         }
 
         public bool VisitIf(RtlIf rtlIf)
