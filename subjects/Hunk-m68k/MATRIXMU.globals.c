@@ -4,12 +4,10 @@
 
 #include "MATRIXMU.h"
 
-Eq_5 g_tFFFFFFFF;
-Eq_113 g_t0000;
+Eq_131 g_t0000;
 Eq_2 * g_ptr0004;
 word32 g_dw0008;
 ui32 g_dw0010;
-Eq_79 g_t0011;
 int32 g_dw14C4;
-Eq_600 * g_ptr14D8;
+Eq_622 * g_ptr14D8;
 

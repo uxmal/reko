@@ -4,29 +4,21 @@
 
 #include "BENCHMUL.h"
 
-Eq_5 g_tFFFFFFFF;
-Eq_114 g_t0000;
+Eq_132 g_t0000;
 Eq_2 g_t0004;
 word32 g_dw0008;
 ui32 g_dw0010;
-Eq_79 g_t0011;
-int32 g_dw0018;
-word32 g_dw001C;
-int32 g_dw0020;
-int32 g_dw0024;
-word32 g_dw0028;
-word32 g_dw002C;
-Eq_1533 g_t0078;
-Eq_3998 g_t4000 = 
+Eq_1556 g_t0078;
+Eq_4004 g_t4000 = 
 	{
-		;
-Eq_3998 * g_ptr40FC = &g_t4000;
-word32 g_dw4100 = 0x00000000;
+		0x6008,
+	};
+Eq_4004 * g_ptr40FC = &g_t4000;
 int32 g_dw4128 = 101058054;
 word32 g_dw412C = 0x06060606;
 word32 g_dw4130 = 0x06060606;
-Eq_642 * g_ptr4250;
+Eq_665 * g_ptr4250;
 word32 g_dw4254;
-Eq_1519 * g_ptr4258;
-Eq_9123 * g_ptr4260;
+Eq_1542 * g_ptr4258;
+Eq_9119 * g_ptr4260;
 

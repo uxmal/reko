@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
         private M68kArchitecture arch;
         private MockRepository mr;
         private IFileSystemService fsSvc;
+        private ITypeLibraryLoaderService tllSvc;
         private IServiceProvider services;
         private RtlEmitter m;
         private AmigaOSPlatform platform;
@@ -50,11 +51,13 @@ namespace Reko.UnitTests.Environments.AmigaOS
         {
             this.mr = new MockRepository();
             this.fsSvc = mr.StrictMock<IFileSystemService>();
+            this.tllSvc = mr.Stub<ITypeLibraryLoaderService>();
             this.services = mr.StrictMock<IServiceProvider>();
             this.arch = new M68kArchitecture();
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
             this.services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(fsSvc);
+            this.services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tllSvc);
             this.frame = new Frame(arch.FramePointerType);
         }
 
@@ -65,7 +68,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             mr.ReplayAll();
 
             When_Create_Platform();
-            m.Call(m.LoadDw(m.IAdd(frame.EnsureRegister(Registers.a6), -512)), 4);
+            m.Call(m.IAdd(frame.EnsureRegister(Registers.a6), -512), 4);
             var state = arch.CreateProcessorState();
             var svc = platform.FindService(rtls.Last(), state);
 
@@ -81,6 +84,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var stm = new MemoryStream(Encoding.ASCII.GetBytes(fileContents));
             fsSvc.Expect(f => f.CreateFileStream("exec.funcs", FileMode.Open, FileAccess.Read))
                 .Return(stm);
+            tllSvc.Stub(t => t.InstalledFileLocation(null)).IgnoreArguments().Return("exec.funcs");
         }
 
         private void When_Create_Platform()

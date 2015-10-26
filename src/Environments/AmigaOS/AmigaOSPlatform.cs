@@ -50,13 +50,11 @@ namespace Reko.Environments.AmigaOS
         {
             this.a6Pattern = new RtlInstructionMatcher(
                 new RtlCall(
-                    new MemoryAccess(
-                        new BinaryExpression(
-                            Operator.IAdd,
-                            PrimitiveType.Word32,
-                            ExpressionMatcher.AnyId("addrReg"),
-                            ExpressionMatcher.AnyConstant("offset")),
-                        PrimitiveType.Word32),
+                    new BinaryExpression(
+                        Operator.IAdd,
+                        PrimitiveType.Word32,
+                        ExpressionMatcher.AnyId("addrReg"),
+                        ExpressionMatcher.AnyConstant("offset")),
                     4,
                     RtlClass.Transfer));
         }
@@ -115,13 +113,14 @@ namespace Reko.Environments.AmigaOS
 
         private Dictionary<int, SystemService> LoadLibraryDef(string lib_name, int version)
         {
+            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             var fsSvc = Services.RequireService<IFileSystemService>();
             var sser = new M68kProcedureSerializer(
                 (M68kArchitecture)Architecture,
                 new TypeLibraryLoader(this, true),
                 DefaultCallingConvention);
 
-            using (var rdr = new StreamReader(fsSvc.CreateFileStream(lib_name + ".funcs", FileMode.Open, FileAccess.Read)))
+            using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation( lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))
             {
                 var fpp = new FuncsFileParser((M68kArchitecture)this.Architecture, rdr);
                 fpp.Parse();
