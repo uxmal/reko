@@ -77,19 +77,17 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\ntoskrnl.xml">
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows64.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
-      <SubType>Designer</SubType>
-    </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win32characteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win64characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
@@ -123,7 +121,7 @@
     <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
-    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Windows.*" />
+    <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->

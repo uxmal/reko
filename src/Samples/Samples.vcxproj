@@ -90,6 +90,7 @@
     <ClCompile Include="exe_dll\driver.cpp" />
     <ClCompile Include="exe_dll\main.cpp" />
     <ClCompile Include="fib\fib.c" />
+    <ClCompile Include="win32api\win32api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />

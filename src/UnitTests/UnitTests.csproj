@@ -104,8 +104,11 @@
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
-    <Compile Include="Environments\Win32\Win32MipsPlatformTests.cs" />
-    <Compile Include="Environments\Win32\WineSpecFileLoaderTests.cs" />
+    <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
+    <Compile Include="Environments\Windows\MsMangledNameParserTests.cs" />
+    <Compile Include="Environments\Windows\Win32MipsPlatformTests.cs" />
+    <Compile Include="Environments\Windows\Win32PlatformTests.cs" />
+    <Compile Include="Environments\Windows\WineSpecFileLoaderTests.cs" />
     <Compile Include="Evaluation\ConstDivisionImplementedByMultiplication.cs" />
     <Compile Include="Evaluation\ConstDivisionImplementedByMultiplicationTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
@@ -194,8 +197,6 @@
     <Compile Include="Environments\C64\D64LoaderTests.cs" />
     <Compile Include="Environments\Ps3\Ps3PlatformTests.cs" />
     <Compile Include="Environments\SysV\SysVPlatformTests.cs" />
-    <Compile Include="Environments\Win32\ModuleDefinitionLoaderTests.cs" />
-    <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Fragments\ArrayExpressionFragment.cs" />
@@ -228,7 +229,6 @@
     <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\NeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
-    <Compile Include="Environments\Win32\MsMangledNameParserTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackingServiceTests.cs" />
     <Compile Include="Mocks\FakeDiagnosticsService.cs" />
@@ -584,8 +584,8 @@
       <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>
       <Name>SysV</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Win32\Windows.csproj">
-      <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
+    <ProjectReference Include="..\Environments\Windows\Windows.csproj">
+      <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
       <Name>Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gui\Gui.csproj">
