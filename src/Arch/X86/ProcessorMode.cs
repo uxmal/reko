@@ -249,7 +249,7 @@ namespace Reko.Arch.X86
 
         public override Address CreateSegmentedAddress(ushort seg, uint offset)
         {
-            throw new NotSupportedException();
+            return null;
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -309,7 +309,7 @@ namespace Reko.Arch.X86
 
         public override Address CreateSegmentedAddress(ushort seg, uint offset)
         {
-            throw new NotSupportedException();
+            return null;
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)

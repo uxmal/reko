@@ -91,6 +91,11 @@ namespace Reko.Arch.Arm
             get { return (int) instruction.Id; }
         }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             if (instruction == null)
@@ -369,8 +374,8 @@ namespace Reko.Arch.Arm
                 { ArmInstruction.Invalid, InstructionClass.Invalid },
 
                 { ArmInstruction.BKPT,  InstructionClass.Transfer },
-                { ArmInstruction.BL,    InstructionClass.Transfer },
-                { ArmInstruction.BLX,   InstructionClass.Transfer },
+                { ArmInstruction.BL,    InstructionClass.Transfer | InstructionClass.Call },
+                { ArmInstruction.BLX,   InstructionClass.Transfer | InstructionClass.Call },
                 { ArmInstruction.BX,    InstructionClass.Transfer },
                 { ArmInstruction.BXJ,   InstructionClass.Transfer },
                 { ArmInstruction.B,     InstructionClass.Transfer },

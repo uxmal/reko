@@ -40,6 +40,11 @@ namespace Reko.UnitTests.Mocks
         public Operation Operation { get { return operation; } }
         public MachineOperand[] Operands { get { return ops; } }
         public override InstructionClass InstructionClass { get { return InstructionClass.Invalid; } }
+
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public enum Operation

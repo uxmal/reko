@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -33,21 +34,21 @@ namespace Reko.Scanning
         {
             this.Address = address;
             this.Name = name; // +"-" + (++cntr);
-            this.Statements = new List<RtlInstructionCluster>();
+            this.Instructions = new List<MachineInstruction>();
             this.IsValid = true;
         }
 
         public Address Address { get; private set; }
         public string Name { get; private set; }
-        public List<RtlInstructionCluster> Statements { get; private set; }
+        public List<MachineInstruction> Instructions { get; private set; }
         public bool IsValid { get; set; }
 
         public Address GetEndAddress()
         {
-            int iLast = Statements.Count - 1;
+            int iLast = Instructions.Count - 1;
             if (iLast < 0)
                 return Address;
-            var instr = Statements[iLast];
+            var instr = Instructions[iLast];
             return instr.Address + instr.Length;
         }
 

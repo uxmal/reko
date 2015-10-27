@@ -29,6 +29,11 @@ namespace Reko.Arch.PowerPC
 {
     public class PowerPcInstruction : MachineInstruction
     {
+        private const InstructionClass Transfer = InstructionClass.Transfer;
+        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
+        private const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
+        private const InstructionClass LinkCondTransfer = InstructionClass.Call | InstructionClass.Transfer | InstructionClass.Conditional;
+
         private static Dictionary<Opcode, InstructionClass> classOf;
 
         private Opcode opcode;
@@ -88,6 +93,19 @@ namespace Reko.Arch.PowerPC
             get { return opcode; }
         }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            switch (i)
+            {
+            case 0: return op1;
+            case 1: return op2;
+            case 2: return op3;
+            case 3: return op4;
+            case 4: return op5;
+            default: return null; ;
+            }
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             var op = string.Format("{0}{1}", 
@@ -134,49 +152,61 @@ namespace Reko.Arch.PowerPC
             {
                 { Opcode.illegal,   InstructionClass.Invalid },
 
-                { Opcode.b,         InstructionClass.Transfer },
-                { Opcode.bc,        InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bcl,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bclr,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bclrl,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bcctr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bctrl,     InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.b,         Transfer },
+                { Opcode.bc,        CondTransfer },
+                { Opcode.bcl,       LinkCondTransfer },
+                { Opcode.bclr,      Transfer },
+                { Opcode.bclrl,     LinkTransfer },
+                { Opcode.bcctr,     CondTransfer },
+                { Opcode.bctrl,     LinkTransfer },
+                { Opcode.bdnz,      CondTransfer },
+                { Opcode.bdnzf,     CondTransfer },
+                { Opcode.bdnzfl,    LinkCondTransfer },
+                { Opcode.bdnzl,     LinkCondTransfer },
+                { Opcode.bdnzt,     CondTransfer },
+                { Opcode.bdnztl,    LinkCondTransfer },
+                { Opcode.bdz,       CondTransfer },
+                { Opcode.bdzf,      CondTransfer },
+                { Opcode.bdzfl,     LinkCondTransfer },
+                { Opcode.bdzl,      CondTransfer },
+                { Opcode.bdzt,      CondTransfer },
+                { Opcode.bdztl,     LinkCondTransfer },
 
-                { Opcode.beq,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.beql,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.beqlr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.beqlrl,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bge,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgel,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgelr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgelrl,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgt,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgtl,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgtlr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgtlrl,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bl,        InstructionClass.Transfer },
-                { Opcode.ble,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blel,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blelr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blelrl,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blr,       InstructionClass.Transfer },
-                { Opcode.blrl,      InstructionClass.Transfer },
-                { Opcode.blt,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bltl,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bltlr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bltlrl,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bne,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bnel,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bnelr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bnelrl,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bns,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bnsl,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bnslr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bnslrl,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bso,       InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bsol,      InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bsolr,     InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bsolrl,    InstructionClass.Transfer|InstructionClass.Conditional },
+                { Opcode.beq,       CondTransfer },
+                { Opcode.beql,      LinkCondTransfer },
+                { Opcode.beqlr,     CondTransfer },
+                { Opcode.beqlrl,    LinkCondTransfer },
+                { Opcode.bge,       CondTransfer },
+                { Opcode.bgel,      LinkCondTransfer },
+                { Opcode.bgelr,     CondTransfer },
+                { Opcode.bgelrl,    LinkCondTransfer },
+                { Opcode.bgt,       CondTransfer },
+                { Opcode.bgtl,      LinkCondTransfer },
+                { Opcode.bgtlr,     CondTransfer },
+                { Opcode.bgtlrl,    LinkCondTransfer },
+                { Opcode.bl,        LinkTransfer },
+                { Opcode.ble,       CondTransfer },
+                { Opcode.blel,      LinkCondTransfer },
+                { Opcode.blelr,     CondTransfer },
+                { Opcode.blelrl,    LinkCondTransfer },
+                { Opcode.blr,       Transfer },
+                { Opcode.blrl,      LinkTransfer },
+                { Opcode.blt,       CondTransfer },
+                { Opcode.bltl,      LinkCondTransfer },
+                { Opcode.bltlr,     CondTransfer },
+                { Opcode.bltlrl,    LinkCondTransfer },
+                { Opcode.bne,       CondTransfer },
+                { Opcode.bnel,      LinkCondTransfer },
+                { Opcode.bnelr,     CondTransfer },
+                { Opcode.bnelrl,    LinkCondTransfer },
+                { Opcode.bns,       CondTransfer },
+                { Opcode.bnsl,      LinkCondTransfer },
+                { Opcode.bnslr,     CondTransfer },
+                { Opcode.bnslrl,    LinkCondTransfer },
+                { Opcode.bso,       CondTransfer },
+                { Opcode.bsol,      LinkCondTransfer },
+                { Opcode.bsolr,     CondTransfer },
+                { Opcode.bsolrl,    LinkCondTransfer },
             };
         }
     }

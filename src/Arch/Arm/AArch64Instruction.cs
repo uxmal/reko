@@ -65,6 +65,11 @@ namespace Reko.Arch.Arm
 
         public override int OpcodeAsInteger { get { return (int)instruction.Id; } }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(instruction.Mnemonic);
@@ -183,8 +188,8 @@ namespace Reko.Arch.Arm
                 { Arm64Instruction.Invalid,    InstructionClass.Invalid },
 
                 { Arm64Instruction.B,          InstructionClass.Transfer  },
-                { Arm64Instruction.BL,         InstructionClass.Transfer  },
-                { Arm64Instruction.BLR,        InstructionClass.Transfer  },
+                { Arm64Instruction.BL,         InstructionClass.Transfer | InstructionClass.Call },
+                { Arm64Instruction.BLR,        InstructionClass.Transfer | InstructionClass.Call },
                 { Arm64Instruction.BR,         InstructionClass.Transfer  },
                 { Arm64Instruction.BRK,        InstructionClass.Transfer  },
                 { Arm64Instruction.BSL,        InstructionClass.Transfer  },

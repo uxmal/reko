@@ -44,6 +44,8 @@ namespace Reko.Core.Machine
         {
         }
 
+        public abstract MachineOperand GetOperand(int i);
+        
         /// <summary>
         /// Each different supported opcode should have a different numerical value, exposed here.
         /// </summary>
@@ -67,5 +69,7 @@ namespace Reko.Core.Machine
             this.Render(renderer);
             return renderer.ToString();
         }
+
+       
     }
 }

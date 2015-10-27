@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Scanning
 
 
         [Test]
-        public void HSC_FindPossibleProcedureEntries() // "Starts"
+        public void HSC_FindPossible_x86_ProcedureEntries() // "Starts"
         {
             Given_Image32(0x10000, "CC CC CC 55 8B EC C3 00   00 00 55 8B EC");
             Given_x86_32();

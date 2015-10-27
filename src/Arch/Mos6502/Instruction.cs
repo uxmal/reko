@@ -48,6 +48,11 @@ namespace Reko.Arch.Mos6502
             }
         }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            return i == 0 ? Operand : null;
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(Code.ToString());
@@ -158,7 +163,7 @@ namespace Reko.Arch.Mos6502
                 { Opcode.bvc, InstructionClass.Transfer | InstructionClass.Conditional },
                 { Opcode.bvs, InstructionClass.Transfer | InstructionClass.Conditional },
                 { Opcode.jmp, InstructionClass.Transfer },
-                { Opcode.jsr, InstructionClass.Transfer },
+                { Opcode.jsr, InstructionClass.Transfer | InstructionClass.Call },
             };
         }
     }

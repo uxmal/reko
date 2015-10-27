@@ -81,7 +81,7 @@ namespace Reko.Scanning
                 var hproc = DisassembleProcedure(range.Item1, range.Item2);
                 var hps = new HeuristicProcedureScanner(program, hproc, host);
                 hps.BlockConflictResolution();
-                //DumpBlocks(hproc.Cfg.Nodes);
+                DumpBlocks(hproc.Cfg.Nodes);
                 hps.GapResolution();
                 // TODO: add all guessed code to image map -- clearly labelled.
                 AddBlocks(hproc);
@@ -99,9 +99,9 @@ namespace Reko.Scanning
         private void AddBlocks(HeuristicProcedure hproc)
         {
             var proc = Procedure.Create(hproc.BeginAddress, hproc.Frame);
-            foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Statements.Count > 0))
+            foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
             {
-                var last = block.Statements.Last();
+                var last = block.Instructions.Last();
                 var b = new Block(proc, "l" + block.Address);
                 if (program.ImageMap.Items.ContainsKey(block.Address))
                     continue;
@@ -111,7 +111,7 @@ namespace Reko.Scanning
                     {
                         Block = b,
                         Address = block.Address,
-                        Size = (uint)(last.Address - block.Address) + last.Length
+                        Size = (uint)(last.Address - block.Address) + (uint)last.Length
                     });
             }
         }

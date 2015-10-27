@@ -26,9 +26,11 @@ namespace Reko.Arch.Mips
 {
     public class MipsInstruction : MachineInstruction
     {
+        private const InstructionClass LinkCondTransfer = InstructionClass.Conditional | InstructionClass.Call | InstructionClass.Transfer | InstructionClass.Delay;
         private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer | InstructionClass.Delay;
         private const InstructionClass Linear = InstructionClass.Linear;
         private const InstructionClass Transfer = InstructionClass.Transfer | InstructionClass.Delay;
+        private const InstructionClass LinkTransfer = InstructionClass.Transfer | InstructionClass.Call | InstructionClass.Delay;
 
         private static Dictionary<Opcode, InstructionClass> classOf;
 
@@ -49,6 +51,17 @@ namespace Reko.Arch.Mips
                     ct = Linear;
                 }
                 return ct;
+            }
+        }
+
+        public override MachineOperand GetOperand(int i)
+        {
+            switch (i)
+            {
+            case 0: return op1;
+            case 1: return op2;
+            case 2: return op3;
+            default: return null;
             }
         }
 
@@ -79,33 +92,33 @@ namespace Reko.Arch.Mips
                 { Opcode.illegal, InstructionClass.Invalid },
 
                 { Opcode.beq,     CondTransfer },
-                { Opcode.beql,    CondTransfer },
+                { Opcode.beql,    LinkCondTransfer },
                 { Opcode.bgez,    CondTransfer },
-                { Opcode.bgezal,  CondTransfer },
-                { Opcode.bgezall, CondTransfer },
-                { Opcode.bgezl,   CondTransfer },
+                { Opcode.bgezal,  LinkCondTransfer },
+                { Opcode.bgezall, LinkCondTransfer },
+                { Opcode.bgezl,   LinkCondTransfer },
                 { Opcode.bgtz,    CondTransfer },
-                { Opcode.bgtzl,   CondTransfer },
+                { Opcode.bgtzl,   LinkCondTransfer },
                 { Opcode.blez,    CondTransfer },
-                { Opcode.blezl,   CondTransfer },
+                { Opcode.blezl,   LinkCondTransfer },
                 { Opcode.bltz,    CondTransfer },
-                { Opcode.bltzal,  CondTransfer },
-                { Opcode.bltzall, CondTransfer },
+                { Opcode.bltzal,  LinkCondTransfer },
+                { Opcode.bltzall, LinkCondTransfer },
                 { Opcode.bltzl,   CondTransfer },
                 { Opcode.bne,     CondTransfer },
-                { Opcode.bnel,    CondTransfer },
+                { Opcode.bnel,    LinkCondTransfer },
                 { Opcode.@break,  Transfer },
                 { Opcode.j,       Transfer },
-                { Opcode.jal,     Transfer },
-                { Opcode.jalr,    Transfer },
+                { Opcode.jal,     LinkTransfer },
+                { Opcode.jalr,    LinkTransfer },
                 { Opcode.jr,      Transfer },
-                { Opcode.syscall, Transfer },
-                { Opcode.teq,     CondTransfer },
-                { Opcode.tlt,     CondTransfer },
-                { Opcode.tltu,    CondTransfer },
-                { Opcode.tge,     CondTransfer },
-                { Opcode.tgeu,    CondTransfer },
-                { Opcode.tne,     CondTransfer },
+                { Opcode.syscall, LinkTransfer },
+                { Opcode.teq,     LinkCondTransfer },
+                { Opcode.tlt,     LinkCondTransfer },
+                { Opcode.tltu,    LinkCondTransfer },
+                { Opcode.tge,     LinkCondTransfer },
+                { Opcode.tgeu,    LinkCondTransfer },
+                { Opcode.tne,     LinkCondTransfer },
             };
         }
     }

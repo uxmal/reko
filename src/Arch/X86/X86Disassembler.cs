@@ -670,7 +670,10 @@ namespace Reko.Arch.X86
                     ++i;
                     ushort off = rdr.ReadLeUInt16();
                     ushort seg = rdr.ReadLeUInt16();
-                    pOperand = addrOp = new X86AddressOperand(mode.CreateSegmentedAddress(seg, off));
+                    var addr = mode.CreateSegmentedAddress(seg, off);
+                    if (addr == null)
+                        return null;
+                    pOperand = addrOp = new X86AddressOperand(addr);
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);

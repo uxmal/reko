@@ -44,6 +44,11 @@ namespace Reko.Environments.C64
             get { throw new NotImplementedException(); }
         }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            return null;
+        }
+
         public override InstructionClass InstructionClass
         {
             get

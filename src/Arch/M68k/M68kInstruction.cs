@@ -32,6 +32,7 @@ namespace Reko.Arch.M68k
         private const InstructionClass Linear = InstructionClass.Linear;
         private const InstructionClass Transfer = InstructionClass.Transfer;
         private const InstructionClass Cond = InstructionClass.Conditional;
+        private const InstructionClass CallTransfer = InstructionClass.Call | InstructionClass.Transfer;
         private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
 
         private static Dictionary<Opcode, InstructionClass> classOf;
@@ -43,6 +44,18 @@ namespace Reko.Arch.M68k
         public MachineOperand op3;
 
         public override int OpcodeAsInteger { get { return (int)code; } }
+
+
+        public override MachineOperand GetOperand(int i)
+        {
+            switch (i)
+            {
+            case 0: return op1;
+            case 1: return op2;
+            case 2: return op3;
+            default: return null;
+            }
+        }
 
         public override void Render(MachineInstructionWriter writer)
         {
@@ -120,13 +133,13 @@ namespace Reko.Arch.M68k
                 { Opcode.bne,      CondTransfer },
                 { Opcode.bpl,      CondTransfer },
                 { Opcode.bra,      Transfer },
-                { Opcode.bsr,      Transfer },
+                { Opcode.bsr,      CallTransfer },
                 { Opcode.bvc,      CondTransfer },
                 { Opcode.bvs,      CondTransfer },
 
-                { Opcode.callm,    Transfer },
+                { Opcode.callm,    CallTransfer },
                 { Opcode.jmp,      Transfer },
-                { Opcode.jsr,      Transfer },
+                { Opcode.jsr,      CallTransfer },
                 { Opcode.reset,    Transfer },
 
                 { Opcode.rtd,      Transfer },

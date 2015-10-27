@@ -38,5 +38,6 @@ namespace Reko.Core.Machine
         Delay = 8,              // The following instruction is in a delay slot.
         Annul = 16,             // The following instruction is anulled.
         Invalid = 32,           // The instruction is invalid
+        Call = 64,              // The instruction saves a return address somewhere
     }
 }

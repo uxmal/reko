@@ -45,6 +45,11 @@ namespace Reko.Arch.Cil
             }
         }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             try

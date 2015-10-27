@@ -34,6 +34,7 @@ namespace Reko.Arch.X86
 	{
         private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
         private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
+        private const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
         private const InstructionClass Transfer = InstructionClass.Transfer;
 
         private static Dictionary<Opcode, InstructionClass> classOf;
@@ -95,6 +96,17 @@ namespace Reko.Arch.X86
                 if (op3 == null)
                     return 2;
                 return 3;
+            }
+        }
+
+        public override MachineOperand GetOperand(int i)
+        {
+            switch (i)
+            {
+            case 0: return op1;
+            case 1: return op2;
+            case 2: return op3;
+            default: return null;
             }
         }
 
@@ -349,7 +361,7 @@ namespace Reko.Arch.X86
             {
                 { Opcode.illegal,    InstructionClass.Invalid },
 
-                { Opcode.call,       Transfer },
+                { Opcode.call,       LinkTransfer },
                 { Opcode.cmova,      CondLinear },
                 { Opcode.cmovbe,     CondLinear },
                 { Opcode.cmovc,      CondLinear },

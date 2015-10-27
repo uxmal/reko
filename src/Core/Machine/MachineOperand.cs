@@ -167,6 +167,8 @@ namespace Reko.Core.Machine
         protected AddressOperand(Address a, PrimitiveType type)
             : base(type)
         {
+            if (a == null)
+                throw new ArgumentNullException("a");
             Address = a;
         }
 

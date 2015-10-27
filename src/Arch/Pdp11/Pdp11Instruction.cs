@@ -37,6 +37,16 @@ namespace Reko.Arch.Pdp11
 
         public override int OpcodeAsInteger { get { return (int)Opcode; } }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            if (i == 0)
+                return op1;
+            else if (i == 1)
+                return op2;
+            else
+                return null;
+        }
+
         public override InstructionClass InstructionClass
         {
             get

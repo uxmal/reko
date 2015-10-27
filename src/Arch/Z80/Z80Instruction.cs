@@ -53,6 +53,16 @@ namespace Reko.Arch.Z80
             }
         }
 
+        public override MachineOperand GetOperand(int i)
+        {
+            if (i == 0)
+                return Op1;
+            else if (i == 1)
+                return Op2;
+            else
+                return null;
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             if (Code == Opcode.ex_af)
@@ -90,7 +100,7 @@ namespace Reko.Arch.Z80
                 { Opcode.jpo,     InstructionClass.Transfer | InstructionClass.Conditional },
                 { Opcode.jz,      InstructionClass.Transfer | InstructionClass.Conditional },
 
-                { Opcode.call,    InstructionClass.Transfer },
+                { Opcode.call,    InstructionClass.Transfer | InstructionClass.Call},
                 { Opcode.djnz,    InstructionClass.Transfer | InstructionClass.Conditional},
                 { Opcode.jr,      InstructionClass.Transfer },
                 { Opcode.ret,     InstructionClass.Transfer },
