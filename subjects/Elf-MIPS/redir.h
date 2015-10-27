@@ -21,15 +21,15 @@ T_3: (in ra : (ptr Eq_3))
   Class: Eq_3
   DataType: (ptr Eq_3)
   OrigDataType: (ptr (struct (FC00690 T_6 tFC00690)))
-T_4: (in 264242832 : int32)
+T_4: (in 0x0FC00690 : word32)
   Class: Eq_4
-  DataType: int32
-  OrigDataType: int32
-T_5: (in ra + 264242832 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_5: (in ra + 0x0FC00690 : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in Mem0[ra + 264242832:word32] : word32)
+T_6: (in Mem0[ra + 0x0FC00690:word32] : word32)
   Class: Eq_2
   DataType: (ptr code)
   OrigDataType: word32
@@ -37,7 +37,7 @@ T_6: (in Mem0[ra + 264242832:word32] : word32)
 typedef struct Globals {
 } Eq_1;
 
-typedef code Eq_3struct Eq_3 {
-	code * ptrFC00690;	// FC00690
+typedef struct Eq_3 {
+	 <anonymous> * ptrFC00690;	// FC00690
 } Eq_3;
 

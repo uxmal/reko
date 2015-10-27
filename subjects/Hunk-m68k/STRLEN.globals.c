@@ -4,3 +4,10 @@
 
 #include "STRLEN.h"
 
+Eq_131 g_t0000;
+Eq_2 * g_ptr0004;
+word32 g_dw0008;
+ui32 g_dw0010;
+int32 g_dw13F8;
+Eq_622 * g_ptr140C;
+

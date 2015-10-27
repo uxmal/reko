@@ -136,6 +136,7 @@ namespace Reko.Core.Output
             var ptPointee = t.Pointee as Pointer;
             if (ptPointee != null)
                 Pointer(ptPointee);
+            fmt.Write(' ');
             fmt.Write('*');
             TypeQualifierList(t);
         }

@@ -45,6 +45,8 @@ namespace Reko.Environments.MacOS
             LoadMacOsServices();
         }
 
+        public override string PlatformIdentifier { get { return "macOs"; } }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             var bitset = Architecture.CreateRegisterBitset();

@@ -28,7 +28,8 @@ namespace Reko.Core.Services
     public interface ITypeLibraryLoaderService
     {
         TypeLibrary LoadLibrary(Platform platform, string name);
-        
+        string InstalledFileLocation(string name);
+
         /// <summary>
         /// Loads the characteristics library for the dynamic library
         /// named 'name'.
@@ -67,7 +68,6 @@ namespace Reko.Core.Services
             return lib;
         }
 
-        [Obsolete("Let the configuration service do this.")]
         public string InstalledFileLocation(string name)
         {
             string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);

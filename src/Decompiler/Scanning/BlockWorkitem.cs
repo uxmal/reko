@@ -363,13 +363,14 @@ namespace Reko.Scanning
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
                 return false;
             }
+            CallSite site;
             var mem = g.Target as MemoryAccess;
             if (mem != null)
             {
                 if (mem.EffectiveAddress is Constant)
                 {
                     // jmp [address]
-                    var site = state.OnBeforeCall(this.stackReg, 4);            //$BUGBUG: hard coded.
+                    site = state.OnBeforeCall(this.stackReg, 4);            //$BUGBUG: hard coded.
                     Emit(new CallInstruction(g.Target, site));
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -378,7 +379,10 @@ namespace Reko.Scanning
             }
             if (ProcessIndirectControlTransfer(ric.Address, g))
                 return false;
-            Emit(new GotoInstruction(g.Target), blockCur);
+            site = state.OnBeforeCall(this.stackReg, 4);    //$BUGBUG: hard coded
+            Emit(new CallInstruction(g.Target, site));
+            Emit(new ReturnInstruction());
+            blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
             return false;
         }
 

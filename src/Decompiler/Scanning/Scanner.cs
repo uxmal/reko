@@ -448,6 +448,7 @@ namespace Reko.Scanning
             var trampoline = GetTrampoline(addr);
             if (trampoline != null)
                 return trampoline;
+
             var imp = GetImportedProcedure(addr, addr);
             if (imp != null)
                 return imp;

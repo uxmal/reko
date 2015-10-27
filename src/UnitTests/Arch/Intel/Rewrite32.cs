@@ -24,7 +24,7 @@ using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.Intel
             tlSvc.Replay();
             configSvc.Replay();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            win32 = new Reko.Environments.Win32.Win32Platform(services, arch);
+            win32 = new Reko.Environments.Windows.Win32Platform(services, arch);
         }
 
 		[Test]

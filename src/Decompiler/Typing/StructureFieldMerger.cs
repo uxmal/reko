@@ -153,11 +153,19 @@ namespace Reko.Typing
                 overlappingFields.Add(field);
                 return;
             }
-            UnionType u = (UnionType) eq.DataType;
-            foreach (UnionAlternative alt in u.Alternatives.Values)
+            UnionType u = eq.DataType as UnionType;
+            if (u != null)
             {
-                StructureField f = new StructureField(field.Offset, alt.DataType);
-                overlappingFields.Add(f);
+                foreach (UnionAlternative alt in u.Alternatives.Values)
+                {
+                    StructureField f = new StructureField(field.Offset, alt.DataType);
+                    overlappingFields.Add(f);
+                }
+            }
+            else
+            {
+                overlappingFields.Add(field);
+                return;
             }
         }
 

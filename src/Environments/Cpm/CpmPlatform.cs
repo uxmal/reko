@@ -39,6 +39,9 @@ namespace Reko.Environments.Cpm
             get { return ""; }
         }
 
+        public override string PlatformIdentifier { get { return "cpm"; } }
+
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();

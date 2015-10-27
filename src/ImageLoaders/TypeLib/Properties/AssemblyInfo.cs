@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TypeLib")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Reko decompiler support for loading Microsoft TLB type library files.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]

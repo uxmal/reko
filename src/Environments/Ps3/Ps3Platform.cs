@@ -45,6 +45,8 @@ namespace Reko.Environments.Ps3
 
         public override string DefaultCallingConvention { get { return ""; } }
 
+        public override string PlatformIdentifier { get { return "ps3"; } }
+
         public override PrimitiveType PointerType { get { return PrimitiveType.Pointer32; } }
 
         public override BitSet CreateImplicitArgumentRegisters()

@@ -46,6 +46,8 @@ namespace Reko.Environments.RiscOS
             get { return ""; }
         }
 
+        public override string PlatformIdentifier { get { return "riscOS"; } }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();

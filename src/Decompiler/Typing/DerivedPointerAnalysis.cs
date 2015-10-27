@@ -134,6 +134,10 @@ namespace Reko.Typing
                 {
                     if (ptAddend != null && c != null)
                     {
+                        if (ptSum.Pointee == ptAddend.Pointee)
+                        {
+                            return;
+                        }
                         var strAddend = ResolveAs<StructureType>(ptAddend.Pointee);
                         if (strAddend != null)
                         {

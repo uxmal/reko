@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Analysis
             var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
             liv.Find();
 			var iv = liv.InductionVariables[0];
-			Assert.AreEqual("(9 -1 -1 signed)", iv.ToString());
+			Assert.AreEqual("(0x00000009 -1 0xFFFFFFFF signed)", iv.ToString());
 		}
 
 		[Test]

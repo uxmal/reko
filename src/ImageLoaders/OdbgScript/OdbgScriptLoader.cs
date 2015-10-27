@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 namespace Reko.ImageLoaders.OdbgScript
 {
     using Reko.Arch.X86;
-    using Reko.Environments.Win32;
+    using Reko.Environments.Windows;
     using Reko.ImageLoaders.MzExe;
     using System.IO;
     using rulong = System.UInt64;

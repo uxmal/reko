@@ -30,7 +30,7 @@ namespace Reko.Scanning
 {
     /// <summary>
     /// Rewriter that yields invalid instructions when encountered, rather
-    /// than throwing.
+    /// than throwing an exception.
     /// </summary>
     public class RobustRewriter : IEnumerable<RtlInstructionCluster>
     {

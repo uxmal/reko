@@ -31,8 +31,8 @@ $(Configuration)\delayload.exe: delayload\delayload.cpp
 	 kernel32.lib \
 	 user32.lib
 
-$(Configuration)\win32api.exe: win32api\win32api.c
-	cl /nologo /c /FAc /Fa$(Configuration)\win32api.cod /GS- /Ox /Fo$(Configuration)\win32api.obj win32api\win32api.c
+$(Configuration)\win32api.exe: win32api\win32api.cpp
+	cl /nologo /c /FAc /Fa$(Configuration)\win32api.cod /GS- /Ox /Fo$(Configuration)\win32api.obj win32api\win32api.cpp
 	link /nologo /NOD /Entry:WinMain /OUT:$(Configuration)\win32api.exe \
 	 $(Configuration)\win32api.obj \
 	 kernel32.lib \

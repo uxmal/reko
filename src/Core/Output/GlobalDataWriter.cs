@@ -38,6 +38,10 @@ namespace Reko.Core.Output
         private CodeFormatter codeFormatter;
         private StructureType globals;
         private IServiceProvider services;
+        private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
+        private Formatter formatter;
+        private TypeReferenceFormatter tw;
+        private Queue<StructureField> queue;
 
         public GlobalDataWriter(Program program, IServiceProvider services)
         {
@@ -47,34 +51,42 @@ namespace Reko.Core.Output
 
         public void WriteGlobals(Formatter formatter)
         {
+            this.formatter = formatter;
             this.codeFormatter = new CodeFormatter(formatter);
-            var tw = new TypeReferenceFormatter(formatter, true);
+            this.tw = new TypeReferenceFormatter(formatter, true);
             var dtGlobalStruct = ((Pointer)program.Globals.TypeVariable.DataType).Pointee;
             this.globals = dtGlobalStruct.ResolveAs<StructureType>();
-            foreach (var field in globals.Fields)
+            this.queue = new Queue<StructureField>(globals.Fields);
+            while (queue.Count > 0)
             {
-                var name = string.Format("g_{0:X}", field.Name);
-                var addr = Address.Ptr32((uint) field.Offset);  //$BUG: this is completely wrong; offsets should be as wide as the platform permits.
-                try
-                {
-                    tw.WriteDeclaration(field.DataType, name);
-                    if (program.Image.IsValidAddress(addr))
-                    {
-                        formatter.Write(" = ");
-                        this.rdr = program.CreateImageReader(addr);
-                        field.DataType.Accept(this);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    var dc = services.RequireService<DecompilerEventListener>();
-                    dc.Error(
-                        dc.CreateAddressNavigator(program, addr),
-                        ex,
-                        string.Format("Failed to write global variable {0}.", name));
-                }
-                formatter.Terminate(";");
+                var field = queue.Dequeue();
+                WriteGlobalVariable(field);
             }
+        }
+
+        private void WriteGlobalVariable(StructureField field)
+        {
+            var name = string.Format("g_{0:X}", field.Name);
+            var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; offsets should be as wide as the platform permits.
+            try
+            {
+                tw.WriteDeclaration(field.DataType, name);
+                if (program.Image.IsValidAddress(addr))
+                {
+                    formatter.Write(" = ");
+                    this.rdr = program.CreateImageReader(addr);
+                    field.DataType.Accept(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                var dc = services.RequireService<DecompilerEventListener>();
+                dc.Error(
+                    dc.CreateAddressNavigator(program, addr),
+                    ex,
+                    string.Format("Failed to write global variable {0}.", name));
+            }
+            formatter.Terminate(";");
         }
 
         public CodeFormatter VisitArray(ArrayType at)
@@ -113,21 +125,22 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
-        private int guard;
+
         public CodeFormatter VisitEquivalenceClass(EquivalenceClass eq)
         {
-            if (guard > 100)
+            if (recursionGuard > 100)
             { codeFormatter.InnerFormatter.WriteComment("Recursion too deep"); return codeFormatter; }
             else
             {
                 if (eq.DataType != null)
                 {
                     //$TODO: this should go away once we figure out why type inference loops.
-                    ++guard;
+                    ++recursionGuard;
                     var cf = eq.DataType.Accept(this);
-                    --guard;
+                    --recursionGuard;
                     return cf;
-                } else
+                }
+                else
                 {
                     Debug.Print("WARNING: eq.DataType is null for {0}", eq.Name);
                     return codeFormatter;
@@ -163,7 +176,14 @@ namespace Reko.Core.Output
             {
                 var field = globals.Fields.AtOffset(offset);
                 if (field == null)
-                    throw new NotImplementedException("Drill into struct");
+                {
+                    // We've discovered a global variable! Create it!
+                    //$REVIEW: what about colissions and the usual merge crap?
+                    globals.Fields.Add(offset, ptr.Pointee);
+                    // add field to queue.
+                    field = globals.Fields.AtOffset(offset);
+                    queue.Enqueue(field);
+                }
                 codeFormatter.InnerFormatter.Write("&g_{0}", field.Name);
             }
             return codeFormatter;

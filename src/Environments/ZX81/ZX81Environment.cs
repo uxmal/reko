@@ -43,6 +43,8 @@ namespace Reko.Environments.ZX81
             encoding = new ZX81Encoding();
         }
 
+        public override string PlatformIdentifier { get { return "zx81"; } }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             var bitset = Architecture.CreateRegisterBitset();

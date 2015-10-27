@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("M68k Reko Plugin")]
-[assembly: AssemblyDescription("Reko support for the M68000 processor architecture family.")]
+[assembly: AssemblyDescription("Reko decompiler support for the M68000 processor architecture family.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]

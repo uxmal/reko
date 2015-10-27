@@ -49,6 +49,7 @@ namespace Reko.CmdLine
             services.AddService(typeof(IConfigurationService), config);
             services.AddService(typeof(ITypeLibraryLoaderService), new TypeLibraryLoaderServiceImpl());
             services.AddService(typeof(IDiagnosticsService), diagnosticSvc);
+            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var driver = new CmdLineDriver(services, config);
             driver.Execute(args);
         }

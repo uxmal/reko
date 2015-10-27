@@ -107,13 +107,13 @@
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />
-        <File Source="$(var.Win32.TargetPath)" />
-        <File Source="$(var.Win32.ProjectDir)windows32.xml" />
-        <File Source="$(var.Win32.ProjectDir)windows64.xml" />
-        <File Source="$(var.Win32.ProjectDir)commctrl.xml" />
-        <File Source="$(var.Win32.ProjectDir)ntoskrnl.xml" />
-        <File Source="$(var.Win32.ProjectDir)oleaut32.xml" />
-        <File Source="$(var.Win32.ProjectDir)win32characteristics.xml" />
+        <File Source="$(var.Windows.TargetPath)" />
+        <File Source="$(var.Windows.ProjectDir)windows32.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows64.xml" />
+        <File Source="$(var.Windows.ProjectDir)commctrl.xml" />
+        <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" />
+        <File Source="$(var.Windows.ProjectDir)oleaut32.xml" />
+        <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" />
         <File Source="$(var.ZX81.TargetPath)" />
 
         <!-- Architectures -->
@@ -146,6 +146,7 @@
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.Proxy.dll" />
+        <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" />
         <File Source="$(var.SolutionDir)..\external\wine\gdi.exe16.spec" />
         <File Source="$(var.SolutionDir)..\external\wine\krnl386.exe16.spec" />

@@ -34,6 +34,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Reko.Core.Assemblers;
+using System.Threading;
 
 namespace Reko
 {
@@ -44,7 +45,7 @@ namespace Reko
         bool Load(string fileName);
         void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase);
         void ScanPrograms();
-        ProcedureBase ScanProcedure(Program program, Address procAddress);
+        ProcedureBase ScanProcedure(ProgramAddress paddr);
         void AnalyzeDataFlow();
         void ReconstructTypes();
         void StructureProgram();
@@ -340,7 +341,11 @@ namespace Reko
         {
             WriteHeaderComment(Path.GetFileName(program.TypesFilename), program, w);
             w.WriteLine("/*"); program.TypeStore.Write(w); w.WriteLine("*/");
-            TypeFormatter fmt = new TypeFormatter(new TextFormatter(w), false);
+            var tf = new TextFormatter(w)
+            {
+                Indentation = 0,
+            };
+            TypeFormatter fmt = new TypeFormatter(tf, false);
             foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
             {
                 if (eq.DataType != null)
@@ -359,11 +364,11 @@ namespace Reko
         /// <param name="addr"></param>
         /// <returns>a ProcedureBase, because the target procedure may have been a thunk or 
         /// an linked procedure the user has decreed not decompileable.</returns>
-		public ProcedureBase ScanProcedure(Program program, Address addr)
+		public ProcedureBase ScanProcedure(ProgramAddress paddr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = CreateScanner(program, eventListener);
-			return scanner.ScanProcedure(addr, null, program.Architecture.CreateProcessorState());
+				scanner = CreateScanner(paddr.Program, eventListener);
+			return scanner.ScanProcedure(paddr.Address, null, paddr.Program.Architecture.CreateProcessorState());
 		}
 
 		/// <summary>

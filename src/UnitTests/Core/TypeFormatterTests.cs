@@ -39,8 +39,10 @@ namespace Reko.UnitTests.Core
         public void SetUp()
         {
             sw = new StringWriter();
-            tyfo = new TypeFormatter(new TextFormatter(sw), false);
-            tyreffo = new TypeReferenceFormatter(new TextFormatter(sw), false);
+            var tf = new TextFormatter(sw) { Indentation = 0 };
+            tyfo = new TypeFormatter(tf, false);
+            tf = new TextFormatter(sw) { Indentation = 0 };
+            tyreffo = new TypeReferenceFormatter(tf, false);
         }
         
         [Test]
@@ -64,7 +66,7 @@ namespace Reko.UnitTests.Core
 		{
 			DataType dt = new Pointer(PrimitiveType.Real32, 4);
 			tyreffo.WriteDeclaration(dt, "test");
-			Assert.AreEqual("real32* test", sw.ToString());
+			Assert.AreEqual("real32 * test", sw.ToString());
 		}
 
 		[Test]
@@ -72,7 +74,7 @@ namespace Reko.UnitTests.Core
 		{
 			DataType dt = new Pointer(PrimitiveType.Real32, 4);
             tyreffo.WriteTypeReference(dt);
-			Assert.AreEqual("real32*", sw.ToString());
+			Assert.AreEqual("real32 *", sw.ToString());
 		}
 
 		[Test]
@@ -153,7 +155,7 @@ struct a {
 				new DataType[] { PrimitiveType.Word32 }, null);
 			Pointer pfn = new Pointer(fn, 4);
 			tyreffo.WriteDeclaration(pfn, "pfn");
-			Assert.AreEqual("void (* pfn)(word32)", 
+			Assert.AreEqual("void ( * pfn)(word32)", 
 				sw.ToString());
 		}
 
@@ -197,7 +199,7 @@ struct a {
             tyfo.Write(s, "meeble");
             string sExp = 
 @"struct s {
-	word32 seg::*ptr002A;	// 2A
+	word32 seg::* ptr002A;	// 2A
 } meeble";
             Assert.AreEqual(sExp, sw.ToString());
         }
@@ -257,7 +259,7 @@ struct a {
             var ptr2 = new Pointer(ptr, 4);
             tyreffo.WriteDeclaration(ptr2, "ppi");
 
-            string sExp = "int32** ppi";
+            string sExp = "int32 * * ppi";
             Assert.AreEqual(sExp, sw.ToString());
         }
 

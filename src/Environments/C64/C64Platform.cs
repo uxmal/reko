@@ -50,6 +50,9 @@ namespace Reko.Environments.C64
             get { return ""; }
         }
 
+        public override string PlatformIdentifier { get { return "c64"; } }
+
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();

@@ -141,7 +141,6 @@ namespace Reko.Core.Output
 			return precedenceOld;
 		}
 
-
 		#region IExpressionVisitor members ///////////////////////
 
         public void VisitAddress(Address addr)
@@ -344,7 +343,7 @@ namespace Reko.Core.Output
 
 		public void VisitPhiFunction(PhiFunction phi)
 		{
-			writer.Write("PHI");
+			writer.WriteKeyword("PHI");
 			WriteActuals(phi.Arguments);
 		}
 

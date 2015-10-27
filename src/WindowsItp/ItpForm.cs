@@ -21,7 +21,7 @@
 using Reko.Arch.X86;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using Reko.Gui;
 using Reko.Gui.Windows.Forms;
 using Reko.ImageLoaders.MzExe;
@@ -157,208 +157,6 @@ namespace Reko.WindowsItp
             }
         }
 
-        private class FakeSettingsService : ISettingsService
-        {
-            public object Get(string settingName, object defaultValue)
-            {
-                return defaultValue;
-            }
-
-            public string[] GetList(string settingName)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void SetList(string name, IEnumerable<string> values)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Set(string name, object value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Load()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Save()
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private class FakeUiPreferencesService : IUiPreferencesService
-        {
-            public event EventHandler UiPreferencesChanged;
-
-            public FakeUiPreferencesService()
-            {
-                this.Styles = new Dictionary<string, Gui.UiStyle>();
-
-            }
-            public IDictionary<string,Gui.UiStyle> Styles { get; private set; }
-
-            public System.Drawing.Font DisassemblerFont
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public System.Drawing.Font SourceCodeFont
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public System.Drawing.Color SourceCodeForegroundColor
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public System.Drawing.Color SourceCodeBackgroundColor
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public System.Drawing.Size WindowSize
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public FormWindowState WindowState
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public void Load()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Save()
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private class FakeConfigurationService : IConfigurationService
-        {
-            public ICollection GetImageLoaders()
-            {
-                throw new NotImplementedException();
-            }
-
-            public System.Collections.ICollection GetArchitectures()
-            {
-                throw new NotImplementedException();
-            }
-
-            public System.Collections.ICollection GetEnvironments()
-            {
-                throw new NotImplementedException();
-            }
-
-            public ICollection GetRawFiles()
-            {
-                throw new NotImplementedException();
-            }
-
-            public OperatingEnvironment GetEnvironment(string envName)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Core.IProcessorArchitecture GetArchitecture(string archLabel)
-            {
-                return new X86ArchitectureFlat32();
-            }
-
-            public System.Collections.ICollection GetSignatureFiles()
-            {
-                throw new NotImplementedException();
-            }
-
-            public ICollection GetAssemblers()
-            {
-                throw new NotImplementedException();
-            }
-
-            public Assembler GetAssembler(string assemblerName)
-            {
-                throw new NotImplementedException();
-            }
-
-            public RawFileElement GetRawFile(string rawFileFormat)
-            {
-                throw new NotImplementedException();
-            }
-
-            public string GetPath(string path)
-            {
-                throw new NotImplementedException();
-            }
-
-            public IEnumerable<Core.Configuration.UiStyle> GetDefaultPreferences()
-            {
-                return new Core.Configuration.UiStyle[] {
-                    new UiStyleElement { Name = UiStyles.MemoryWindow, FontName="Lucida Console, 9pt"},
-                    new UiStyleElement { Name = UiStyles.MemoryCode, ForeColor = "#000000", BackColor="#FFC0C0", },
-                    new UiStyleElement { Name = UiStyles.MemoryHeuristic, ForeColor = "#000000", BackColor="#FFE0E0"},
-                    new UiStyleElement { Name = UiStyles.MemoryData, ForeColor="#000000", BackColor="#C0C0FF" },
-                               
-                    new UiStyleElement { Name = UiStyles.Disassembler,  FontName="Lucida Console, 9pt" },
-                    new UiStyleElement { Name = UiStyles.DisassemblerOpcode, ForeColor = "#801010" },
-                               
-                    new UiStyleElement { Name = UiStyles.CodeWindow, FontName = "Lucida Console, 9pt"},
-                    new UiStyleElement { Name = UiStyles.CodeKeyword, ForeColor="#00C0C0" },
-                    new UiStyleElement { Name = UiStyles.CodeComment, ForeColor="#00C000" },
-                };
-            }
-        }
-
         private void emulatorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sc = new ServiceContainer();
@@ -405,6 +203,17 @@ namespace Reko.WindowsItp
         {
             var dlg = new TextViewDialog();
             dlg.ShowDialog(this);
+        }
+
+        private void controlsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void codeViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dlg = new CodeViewerFrame();
+            dlg.ShowDialog();
         }
     }
 }

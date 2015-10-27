@@ -32,7 +32,6 @@ namespace Reko.Core.Output
 	{
         private Formatter writer;
 		private string name;
-		public int indentLevel;
 		private Dictionary<DataType,object> visited;
 		private Mode mode;
         private bool typeReference;
@@ -57,28 +56,24 @@ namespace Reko.Core.Output
 
 		public void BeginLine(string s)
 		{
-			for (int i = 0; i < indentLevel; ++i)
-			{
-				writer.Write("\t");
-			}
-			writer.Write(s);
+			writer.Indent();
 		}
 
 		public void EndLine()
 		{
-			EndLine("", null);
+            writer.Terminate();
 		}
 
 		public void EndLine(string terminator)
 		{
-			EndLine(terminator, null);
+			writer.Terminate(terminator);
 		}
 
 		public void EndLine(string terminator, string comment)
 		{
 			writer.Write(terminator);
 			LineEndComment(comment);
-			writer.WriteLine();
+			writer.Terminate();
 		}
 
 		public void LineEndComment(string comment)
@@ -98,12 +93,12 @@ namespace Reko.Core.Output
 		public void OpenBrace(string trailingComment)
 		{
 			EndLine(" {", trailingComment);
-			++indentLevel;
+            writer.Indentation += writer.TabSize;
 		}
 
 		public void CloseBrace()
 		{
-			--indentLevel;
+            writer.Indentation -= writer.TabSize;
 			BeginLine();
 			writer.Write("}");
 		}
@@ -132,8 +127,11 @@ namespace Reko.Core.Output
 
         public Formatter VisitCode(CodeType c)
         {
-            writer.Write("code", c.Size);
-            WriteName(true);
+            if (mode == Mode.Writing)
+            {
+                writer.Write("code", c.Size);
+                WriteName(true);
+            }
             return writer;
         }
 
@@ -144,16 +142,19 @@ namespace Reko.Core.Output
 
 		public Formatter VisitEquivalenceClass(EquivalenceClass eq)
 		{
-            if (eq.DataType == null)
+            if (mode == Mode.Writing)
             {
-                //$BUG: we should never have Eq.classes with null DataType properties.
-                writer.Write("ERROR: EQ_{0}.DataType is Null", eq.Number);
+                if (eq.DataType == null)
+                {
+                    //$BUG: we should never have Eq.classes with null DataType properties.
+                    writer.Write("ERROR: EQ_{0}.DataType is Null", eq.Number);
+                }
+                else
+                {
+                    writer.WriteType(eq.DataType.Name, eq.DataType);
+                }
+                WriteName(true);
             }
-            else
-            {
-                writer.WriteType(eq.DataType.Name, eq.DataType);
-            }
-            WriteName(true);
             return writer;
 		}
 
@@ -217,15 +218,17 @@ namespace Reko.Core.Output
 				{
 					visited[str] = Declared;
 					ScanFields(str);
-					writer.Write("struct {0}", str.Name);
+                    writer.WriteKeyword("struct");
+                    writer.Write(" ");
+                    writer.WriteHyperlink(str.Name, str);
 					OpenBrace(str.Size > 0 ? string.Format("size: {0} {0:X}", str.Size) : null);
 					if (str.Fields != null)
 					{
 						foreach (StructureField f in str.Fields)
 						{
 							BeginLine();
-							name = f.Name;
-							f.DataType.Accept(this);
+                            var trf = new TypeReferenceFormatter(writer, true);
+                            trf.WriteDeclaration(f.DataType, f.Name);
 							EndLine(";", string.Format("{0:X}", f.Offset));
 						}
 					}
@@ -242,7 +245,7 @@ namespace Reko.Core.Output
 				{
 					visited[str] = Declared;
 					writer.Write("struct ");
-                    writer.Write(str.Name);
+                    writer.WriteHyperlink(str.Name, str);
                     writer.Write(";");
 					writer.WriteLine();
 				}
@@ -317,11 +320,14 @@ namespace Reko.Core.Output
 
         public Formatter VisitTypeReference(TypeReference typeref)
         {
-            writer.Write(typeref.Name);
+            if (mode == Mode.Writing)
+            {
+                writer.Write(typeref.Name);
+            }
             return writer;
         }
 
-		public Formatter VisitTypeVariable(TypeVariable t)
+        public Formatter VisitTypeVariable(TypeVariable t)
 		{
 			throw new NotImplementedException("TypeFormatter.TypeVariable");
 		}

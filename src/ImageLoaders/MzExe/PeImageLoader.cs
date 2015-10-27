@@ -21,7 +21,7 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using System;
 using System.IO;
 using System.Linq;
