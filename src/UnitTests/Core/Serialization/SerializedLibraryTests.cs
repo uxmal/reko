@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
 			SerializedLibrary lib;
-			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/Win32/msvcrt.xml"), FileMode.Open))
+			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"), FileMode.Open))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}

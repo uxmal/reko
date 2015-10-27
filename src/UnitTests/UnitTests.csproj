@@ -104,6 +104,7 @@
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Windows\MsMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\Win32MipsPlatformTests.cs" />

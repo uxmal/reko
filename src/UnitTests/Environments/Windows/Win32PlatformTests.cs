@@ -34,7 +34,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Reko.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Windows
 {
     [TestFixture]
     public class Win32PlatformTests

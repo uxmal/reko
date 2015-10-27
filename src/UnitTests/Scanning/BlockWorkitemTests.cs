@@ -482,7 +482,8 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x0100000), arch.CreateProcessorState());
             wi.ProcessInternal();
 
-            Assert.AreEqual("goto Mem0[sp:word32]", block.Statements[0].ToString());
+            Assert.AreEqual("call Mem0[sp:word32] ()", block.Statements[0].ToString());
+            Assert.AreEqual("return", block.Statements[1].ToString());
         }
 
         [Test]

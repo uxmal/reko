@@ -96,7 +96,7 @@ namespace Reko.Environments.SysV
             var prim = dtArg as PrimitiveType;
             if (prim != null && prim.Domain == Domain.Real)
             {
-                if (this.fr >= iregs.Length)
+                if (this.fr >= fregs.Length)
                 {
                     arg = argser.Deserialize(sArg, new StackVariable_v1());
                 }
