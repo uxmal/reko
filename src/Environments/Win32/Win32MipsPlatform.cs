@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
     // https://msdn.microsoft.com/en-us/library/ms881468.aspx
     public class Win32MipsPlatform : Win32Platform

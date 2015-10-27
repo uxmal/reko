@@ -25,7 +25,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
     public class MipsProcedureSerializer : ProcedureSerializer
     {

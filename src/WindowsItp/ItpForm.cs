@@ -21,7 +21,7 @@
 using Reko.Arch.X86;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using Reko.Gui;
 using Reko.Gui.Windows.Forms;
 using Reko.ImageLoaders.MzExe;

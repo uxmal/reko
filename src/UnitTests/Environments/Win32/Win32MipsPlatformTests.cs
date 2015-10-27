@@ -3,7 +3,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;

@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Win32")]
-[assembly: AssemblyDescription("Win32 environment for decompiler.")]
+[assembly: AssemblyTitle("Reko Windows Environments")]
+[assembly: AssemblyDescription("Support for various Microsoft Windows environments for the Reko decompiler.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]

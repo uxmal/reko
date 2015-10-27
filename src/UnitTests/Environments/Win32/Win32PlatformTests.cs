@@ -23,7 +23,7 @@ using Reko.Core.Configuration;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;

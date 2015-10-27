@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cil", "Arch\Cil\Cil.csproj"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environments", "Environments", "{E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32", "Environments\Win32\Win32.csproj", "{4A298321-9855-43DE-AA9C-79E4EFA0AE56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows", "Environments\Win32\Windows.csproj", "{4A298321-9855-43DE-AA9C-79E4EFA0AE56}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacOS", "Environments\MacOS\MacOS.csproj", "{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}"
 EndProject

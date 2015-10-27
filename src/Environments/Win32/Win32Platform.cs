@@ -31,7 +31,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
 	public class Win32Platform : Platform
 	{

@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
     using Reko.Core.Serialization;        // May need this for Win64 support.
     using System.Diagnostics;

@@ -20,7 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

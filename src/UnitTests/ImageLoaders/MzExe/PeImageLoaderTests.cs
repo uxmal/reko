@@ -30,7 +30,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 using System.Diagnostics;
 using Reko.Core.Services;
 

@@ -26,7 +26,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
     /// <summary>
     /// Reads Microsoft module definition (.def) files.

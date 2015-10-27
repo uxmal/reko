@@ -584,9 +584,9 @@
       <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>
       <Name>SysV</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Win32\Win32.csproj">
+    <ProjectReference Include="..\Environments\Win32\Windows.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
-      <Name>Win32</Name>
+      <Name>Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gui\Gui.csproj">
       <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>

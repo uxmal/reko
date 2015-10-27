@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Elf")]
-[assembly: AssemblyDescription("Decompuler support for ELF binary file format.")]
+[assembly: AssemblyDescription("Reko decompiler support for ELF binary file format.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]
 [assembly: AssemblyProduct("Elf")]

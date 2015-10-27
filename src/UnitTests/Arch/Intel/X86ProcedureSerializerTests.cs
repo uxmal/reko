@@ -28,7 +28,7 @@ using NUnit.Framework;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
-using Reko.Environments.Win32;
+using Reko.Environments.Windows;
 
 namespace Reko.UnitTests.Arch.Intel
 {

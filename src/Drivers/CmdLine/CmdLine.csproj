@@ -123,7 +123,7 @@
     <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
-    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Win32.*" />
+    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Windows.*" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->

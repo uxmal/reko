@@ -2,7 +2,7 @@
 <characteristics xmlns="http://schemata.jklnet.org/Decompiler">
   <entry name="printf">
     <characteristics>
-      <varargs>Reko.Environments.Win32.MsPrintfFormatParser,Reko.Environments.Win32</varargs>
+      <varargs>Reko.Environments.Windows.MsPrintfFormatParser,Reko.Environments.Windows</varargs>
     </characteristics>
   </entry>
   <entry name="exit">

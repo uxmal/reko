@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
     public class Win32ThumbPlatform : Win32Platform
     {

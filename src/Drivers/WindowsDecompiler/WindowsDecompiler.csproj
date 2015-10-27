@@ -190,7 +190,7 @@
     <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
-    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Win32.*" />
+    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Reko.Environments.Windows.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
   </ItemGroup>
   <Target Name="BeforeBuild">

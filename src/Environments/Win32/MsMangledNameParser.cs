@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
     /// <summary>
     /// Unmangles methods and data objects whose names have been mangled using Microsoft's 

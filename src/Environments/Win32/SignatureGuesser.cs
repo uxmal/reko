@@ -26,7 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Environments.Win32
+namespace Reko.Environments.Windows
 {
     public class SignatureGuesser
     {

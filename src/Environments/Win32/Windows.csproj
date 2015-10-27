@@ -6,8 +6,8 @@
     <ProjectGuid>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Reko.Environments.Win32</RootNamespace>
-    <AssemblyName>Reko.Environments.Win32</AssemblyName>
+    <RootNamespace>Reko.Environments.Windows</RootNamespace>
+    <AssemblyName>Reko.Environments.Windows</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
