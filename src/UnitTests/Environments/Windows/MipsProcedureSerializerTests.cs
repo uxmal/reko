@@ -36,6 +36,7 @@ namespace Reko.UnitTests.Environments.Windows
     public class MipsProcedureSerializerTests
     {
         protected readonly PrimitiveType_v1 Int32 = new PrimitiveType_v1(Domain.Integer, 4);
+        protected readonly VoidType_v1 Void = new VoidType_v1();
 
         private MockRepository mr;
         private ProcedureSignature sig;
@@ -49,6 +50,8 @@ namespace Reko.UnitTests.Environments.Windows
             this.mr = new MockRepository();
             this.arch = new MipsLe32Architecture();
             this.typeLoader = mr.Stub<ISerializedTypeVisitor<DataType>>();
+            this.ssig = null;
+            this.sig = null;
         }
 
         private void Given_Sig(SerializedType ret, params Argument_v1 [] args)
@@ -61,7 +64,20 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Given_Sig(params Argument_v1 [] args)
         {
+            ssig = new SerializedSignature
+            {
+                Arguments = args
+            };
+        }
 
+        private Argument_v1 Arg(string argName, SerializedType sType)
+        {
+            return new Argument_v1(argName, sType, null, false);
+        }
+
+        private PointerType_v1 Ptr(SerializedType sType)
+        {
+            return new PointerType_v1 { DataType = sType, PointerSize = 4 };
         }
 
         private void When_DeserializeSignature()
@@ -74,8 +90,46 @@ namespace Reko.UnitTests.Environments.Windows
         public void MipsProcSer_ReturnRegister()
         {
             Given_Sig(Int32);
+            typeLoader.Stub(t => t.VisitPrimitive(null)).IgnoreArguments().Return(PrimitiveType.Int32);
+            mr.ReplayAll();
+
             When_DeserializeSignature();
+
             Assert.AreEqual("r2", sig.ReturnValue.Storage.ToString());
+        }
+
+        [Test]
+        public void MipsProcSet_CharArg()
+        {
+            Given_Sig(Arg("mem", Ptr(Void)));
+            typeLoader.Stub(t => t.VisitPointer(null)).IgnoreArguments().Return(new Pointer(VoidType.Instance, 4));
+            mr.ReplayAll();
+
+            When_DeserializeSignature();
+
+            Assert.AreEqual("r4", sig.Parameters[0].Storage.ToString());
+            Assert.AreEqual("(ptr void)", sig.Parameters[0].DataType.ToString());
+        }
+
+        [Test]
+        public void MipsProcSet_ManyArgs()
+        {
+            Given_Sig(
+                Arg("reg1", Ptr(Void)),
+                Arg("reg2", Ptr(Void)),
+                Arg("reg3", Ptr(Void)),
+                Arg("reg4", Ptr(Void)),
+                Arg("stk5", Ptr(Void)));
+            typeLoader.Stub(t => t.VisitPointer(null)).IgnoreArguments().Return(new Pointer(VoidType.Instance, 4));
+            mr.ReplayAll();
+
+            When_DeserializeSignature();
+
+            Assert.AreEqual("r4", sig.Parameters[0].Storage.ToString());
+            Assert.AreEqual("r5", sig.Parameters[1].Storage.ToString());
+            Assert.AreEqual("r6", sig.Parameters[2].Storage.ToString());
+            Assert.AreEqual("r7", sig.Parameters[3].Storage.ToString());
+            Assert.AreEqual("Stack +0000", sig.Parameters[4].Storage.ToString());
         }
     }
 }

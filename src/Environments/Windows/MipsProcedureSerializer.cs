@@ -108,7 +108,7 @@ namespace Reko.Environments.Windows
                 ++this.fr;
                 return arg;
             }
-            if (dtArg.Size <= 8)
+            if (dtArg.Size <= 4)
             {
                 if (this.ir >= iregs.Length)
                 {
@@ -119,6 +119,7 @@ namespace Reko.Environments.Windows
                     arg = argser.Deserialize(sArg, new Register_v1 { Name = iregs[ir] });
                 }
                 ++this.ir;
+                arg.DataType = dtArg;
                 return arg;
             }
             int regsNeeded = (dtArg.Size + 7) / 8;
