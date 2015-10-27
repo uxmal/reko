@@ -154,7 +154,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\Win32characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
