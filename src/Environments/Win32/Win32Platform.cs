@@ -41,6 +41,8 @@ namespace Reko.Environments.Win32
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
 
+            //$BUG: we need a Win32Base platform, possibly with a Windows base platform, and make this
+            // x86-specific.
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
             //$REVIEW: should probably be loaded from configuration.
@@ -80,6 +82,8 @@ namespace Reko.Environments.Win32
                 }
             };
         }
+
+        public override string PlatformIdentifier { get { return "win32"; } }
 
         /// <summary>
         /// Some Win32 platforms (I'm looking at you ARM Thumb) will use addresses
@@ -146,7 +150,7 @@ namespace Reko.Environments.Win32
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             //$REVIEW: common code with Win32_64 platform, consider pushing to base class?
-            EnsureTypeLibraries("win32");
+            EnsureTypeLibraries(PlatformIdentifier);
             return TypeLibs.Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)
                 .Select(s => new ExternalProcedure(procName, s))
@@ -155,7 +159,7 @@ namespace Reko.Environments.Win32
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries("win32");
+            EnsureTypeLibraries(PlatformIdentifier);
             return TypeLibs
                 .Where(t => string.Compare(t.ModuleName, moduleName, true) == 0)
                 .Select(t =>

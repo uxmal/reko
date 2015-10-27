@@ -49,6 +49,8 @@ namespace Reko.Environments.SysV
             get { return ""; }
         }
 
+        public override string PlatformIdentifier { get { return "elf-neutral"; } }
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);

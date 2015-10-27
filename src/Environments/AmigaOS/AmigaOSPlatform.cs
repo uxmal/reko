@@ -59,6 +59,8 @@ namespace Reko.Environments.AmigaOS
                     RtlClass.Transfer));
         }
 
+        public override string PlatformIdentifier { get { return "amigaOS"; } }
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             throw new NotImplementedException();

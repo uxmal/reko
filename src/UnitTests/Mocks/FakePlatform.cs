@@ -35,6 +35,8 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
+        public override string PlatformIdentifier { get { return "fake"; } }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return Architecture.CreateRegisterBitset();

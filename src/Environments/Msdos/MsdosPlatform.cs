@@ -39,6 +39,8 @@ namespace Reko.Environments.Msdos
 			LoadRealmodeServices(arch);
 		}
 
+        public override string PlatformIdentifier { get { return "ms-dos"; } }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             var bitset = Architecture.CreateRegisterBitset();

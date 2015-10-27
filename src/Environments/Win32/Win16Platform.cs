@@ -45,6 +45,8 @@ namespace Reko.Environments.Win32
             get { return "pascal";  }
         }
 
+        public override string PlatformIdentifier { get { return "win16"; } }
+
         public override BitSet CreateImplicitArgumentRegisters()
         {
             return new BitSet(0);
@@ -91,7 +93,7 @@ namespace Reko.Environments.Win32
             if (typelibs == null)
             {
                 var cfgSvc = Services.RequireService<IConfigurationService>();
-                var envCfg = cfgSvc.GetEnvironment("win16");
+                var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()

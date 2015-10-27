@@ -62,6 +62,12 @@ namespace Reko.Core
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 
         /// <summary>
+        /// String identifier used by Reko to locate platform-specfic information from the 
+        /// app.config file.
+        /// </summary>
+        public abstract string PlatformIdentifier { get;  }
+
+        /// <summary>
         /// The default encoding for byte-encoded text.
         /// </summary>
         /// <remarks>
@@ -208,6 +214,8 @@ namespace Reko.Core
         {
             get { return ""; }
         }
+
+        public override string PlatformIdentifier {  get { return "default"; } }
 
         public override BitSet CreateImplicitArgumentRegisters()
         {
