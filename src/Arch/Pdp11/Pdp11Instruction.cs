@@ -35,6 +35,8 @@ namespace Reko.Arch.Pdp11
         public MachineOperand op1;
         public MachineOperand op2;
 
+        public override bool IsValid { get { return Opcode != Opcodes.illegal; } }
+
         public override int OpcodeAsInteger { get { return (int)Opcode; } }
 
         public override MachineOperand GetOperand(int i)

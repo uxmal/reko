@@ -34,6 +34,7 @@ namespace Reko.Arch.Cil
             { OpCodes.Ldc_I4_0,  "ldc.i4.0"}
         };
 
+        public override bool IsValid { get { return false; } }
         public OpCode Opcode { get; set; }
         public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
 

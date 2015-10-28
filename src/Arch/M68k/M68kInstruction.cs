@@ -43,8 +43,9 @@ namespace Reko.Arch.M68k
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override int OpcodeAsInteger { get { return (int)code; } }
+        public override bool IsValid { get { return code != Opcode.illegal; } }
 
+        public override int OpcodeAsInteger { get { return (int)code; } }
 
         public override MachineOperand GetOperand(int i)
         {

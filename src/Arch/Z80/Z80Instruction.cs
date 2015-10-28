@@ -34,6 +34,8 @@ namespace Reko.Arch.Z80
         public MachineOperand Op1;
         public MachineOperand Op2;
 
+        public override bool IsValid { get { return Code != Opcode.illegal; } }
+
         public override int OpcodeAsInteger { get { return (int)Code; } }
 
         public override InstructionClass InstructionClass

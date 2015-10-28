@@ -36,6 +36,7 @@ namespace Reko.UnitTests.Mocks
             this.ops = ops;
         }
 
+        public override bool IsValid { get { return operation != Operation.Invalid; } }
         public override int OpcodeAsInteger { get { return (int)operation; } }
         public Operation Operation { get { return operation; } }
         public MachineOperand[] Operands { get { return ops; } }
@@ -49,6 +50,7 @@ namespace Reko.UnitTests.Mocks
 
     public enum Operation
     {
+        Invalid = -1,
         Nop,
         Add,
         Mul,

@@ -63,6 +63,8 @@ namespace Reko.Arch.Arm
             }
         }
 
+        public override bool IsValid { get { return instruction.Id != Arm64Instruction.Invalid; } }
+
         public override int OpcodeAsInteger { get { return (int)instruction.Id; } }
 
         public override MachineOperand GetOperand(int i)

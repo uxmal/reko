@@ -39,6 +39,8 @@ namespace Reko.Environments.C64
         private const int TokenMin = 0x80;
         private const int TokenMax = 0xCC;
 
+        public override bool IsValid { get { return true; } }
+
         public override int OpcodeAsInteger
         {
             get { throw new NotImplementedException(); }

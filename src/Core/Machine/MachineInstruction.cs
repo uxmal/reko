@@ -40,6 +40,16 @@ namespace Reko.Core.Machine
         /// </summary>
         public int Length;
 
+        /// <summary>
+        /// The kind of instruction
+        /// </summary>
+        public abstract InstructionClass InstructionClass { get; }
+
+        /// <summary>
+        /// Returns true if the instruction is valid.
+        /// </summary>
+        public abstract bool IsValid { get; }
+
         public virtual void Render(MachineInstructionWriter writer)
         {
         }
@@ -50,11 +60,6 @@ namespace Reko.Core.Machine
         /// Each different supported opcode should have a different numerical value, exposed here.
         /// </summary>
         public abstract int OpcodeAsInteger { get; }
-
-        /// <summary>
-        /// The kind of instruction
-        /// </summary>
-        public abstract InstructionClass InstructionClass { get; }
 
         public sealed override string ToString()
         {
@@ -69,7 +74,5 @@ namespace Reko.Core.Machine
             this.Render(renderer);
             return renderer.ToString();
         }
-
-       
     }
 }

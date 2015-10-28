@@ -87,6 +87,8 @@ namespace Reko.Arch.Arm
             }
         }
 
+        public override bool IsValid { get { return instruction.Id != Opcode.Invalid; } }
+
         public override int OpcodeAsInteger {
             get { return (int) instruction.Id; }
         }

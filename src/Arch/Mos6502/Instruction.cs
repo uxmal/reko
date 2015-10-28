@@ -33,7 +33,7 @@ namespace Reko.Arch.Mos6502
         public Opcode Code;
         public Operand Operand;
 
-        public override int OpcodeAsInteger { get { return (int)Code; } }
+        public override bool IsValid { get { return Code != Opcode.illegal; } }
 
         public override InstructionClass InstructionClass
         {
@@ -47,6 +47,8 @@ namespace Reko.Arch.Mos6502
                 return ct;
             }
         }
+
+        public override int OpcodeAsInteger { get { return (int)Code; } }
 
         public override MachineOperand GetOperand(int i)
         {

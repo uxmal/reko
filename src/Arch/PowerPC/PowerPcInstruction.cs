@@ -58,6 +58,8 @@ namespace Reko.Arch.PowerPC
             this.setsCR0 = setsCR0;
         }
 
+        public override bool IsValid { get { return opcode != Opcode.illegal; } }
+
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
         public override InstructionClass InstructionClass
