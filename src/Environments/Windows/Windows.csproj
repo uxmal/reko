@@ -109,6 +109,7 @@
     <Content Include="user32.xml" />
     <Content Include="win64characteristics.xml" />
     <Content Include="win32characteristics.xml" />
+    <Content Include="wince.inc" />
     <Content Include="windows64.xml">
       <SubType>Designer</SubType>
     </Content>

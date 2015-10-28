@@ -444,7 +444,19 @@ namespace Reko.Environments.Windows
                 switch (str[i++])
                 {
                 case '0': return "operator /=";
+                case '1': return "operator %="; 
+                case '2': return "operator >>=";
+                case '3': return "operator <<=";
+                case '4': return "operator &=";
+                case '5': return "operator |=";
+                case '6': return "operator ^=";
+                case '7': return "`vftable'"; 
+                case '8': return "`vbtable'";
+                case '9': return "`vcall'";
                 case 'A': return "typeof";
+                case 'L': return "`eh vector constructor iterator'";
+                case 'M': return "`eh vector destructor iterator'";
+                case 'N': return "`eh vector vbase constructor iterator'";
                 case 'U': return "operator new[]";
                 case 'V': return "operator delete[]";
                 default: Error("Unknown operator code '_{0}'.", str[i - 1]);

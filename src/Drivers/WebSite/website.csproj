@@ -182,6 +182,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
