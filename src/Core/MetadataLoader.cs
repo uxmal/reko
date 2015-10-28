@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Base class for files that know how to load metadata from some file format.
+    /// </summary>
     public abstract class MetadataLoader
     {
         public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)

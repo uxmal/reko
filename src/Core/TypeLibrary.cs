@@ -31,6 +31,9 @@ using System.Xml.Serialization;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// A type library contains metadata about DataTypes and functions.
+    /// </summary>
     public class TypeLibrary
 	{
 		public TypeLibrary() : this(
