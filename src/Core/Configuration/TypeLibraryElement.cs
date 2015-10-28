@@ -43,7 +43,7 @@ namespace Reko.Core.Configuration
         public string Name
         {
             get { return (string) this["Name"]; }
-            set { this["name"] = value; }
+            set { this["Name"] = value; }
         }
 
         [ConfigurationProperty("Arch", IsRequired=false)]
