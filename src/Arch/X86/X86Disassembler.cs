@@ -678,6 +678,8 @@ namespace Reko.Arch.X86
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);
                     pOperand = DecodeModRM(width, segmentOverride, GpRegFromBits);
+                    if (pOperand == null)
+                        return null;
                     break;
                 case 'Q':		// memory or register MMX operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);
@@ -993,11 +995,19 @@ namespace Reko.Arch.X86
 				}
 			}
 
-			// Now fetch the offset if there was any.
+            // Now fetch the offset if there was any.
 
-			Constant offset = (offsetWidth != null)
-			    ? rdr.ReadLe(offsetWidth)
-			    : Constant.Invalid;
+            Constant offset;
+            if (offsetWidth != null)
+            {
+                if (!rdr.IsValidOffset(rdr.Offset + (uint)offsetWidth.Size))
+                    return null;
+                offset = rdr.ReadLe(offsetWidth);
+            }
+            else
+            {
+                offset = Constant.Invalid;
+            }
 
             return new MemoryOperand(dataWidth, offset)
             {

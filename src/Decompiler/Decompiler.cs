@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 1999-2015 John Kï¿½llï¿½n.
+/* Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -391,6 +391,10 @@ namespace Reko
         {
             try
             {
+                eventListener.ShowStatus("Shingle scanning");
+                var sh = new ShingledScanner(program);
+                sh.Scan();
+
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program, eventListener);
                 foreach (EntryPoint ep in program.EntryPoints)

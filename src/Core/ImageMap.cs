@@ -242,7 +242,14 @@ namespace Reko.Core
 		/// <returns></returns>
 		public bool TryFindSegment(Address addr, out ImageMapSegment segment)
 		{
-            return segments.TryGetLowerBound(addr, out segment);
+            if (!segments.TryGetLowerBound(addr, out segment))
+                return false;
+            if (addr.ToLinear() >= segment.Address.ToLinear() + segment.ContentSize)
+            {
+                segment = null;
+                return false;
+            }
+            return true;
 		}
 
 		public bool IsReadOnlyAddress(Address addr)
