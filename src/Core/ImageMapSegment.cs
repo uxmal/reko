@@ -24,8 +24,8 @@ using System.ComponentModel;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Represent a segment of memory, corresponding to an 16-bit segment for intel real and protected modes, and 
-	/// executable sections for flat processor modes.
+	/// Represent a segment of memory, corresponding to an 16-bit segment for x86
+    ///  real and protected modes, and executable sections for flat processor modes.
 	/// </summary>
     [Designer("Reko.Gui.Design.ImageMapSegmentNodeDesigner,Reko.Gui")]
 	public class ImageMapSegment : ImageMapItem

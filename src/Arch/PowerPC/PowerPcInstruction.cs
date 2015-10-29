@@ -104,7 +104,7 @@ namespace Reko.Arch.PowerPC
             case 2: return op3;
             case 3: return op4;
             case 4: return op5;
-            default: return null; ;
+            default: return null;
             }
         }
 

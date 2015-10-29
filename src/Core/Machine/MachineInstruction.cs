@@ -54,6 +54,11 @@ namespace Reko.Core.Machine
         {
         }
 
+        /// <summary>
+        /// Retrieves the i'th operand, or null if there is none at that position.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public abstract MachineOperand GetOperand(int i);
         
         /// <summary>

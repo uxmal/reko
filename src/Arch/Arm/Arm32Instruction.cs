@@ -95,7 +95,7 @@ namespace Reko.Arch.Arm
 
         public override MachineOperand GetOperand(int i)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override void Render(MachineInstructionWriter writer)
