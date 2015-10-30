@@ -50,7 +50,7 @@ namespace Reko.Gui.Windows.Forms
 
         public TextBox LoadScript { get { return txtScript; } }
         public CheckBox EnableScript { get { return chkRunScript; } }
-        public CheckBox HeuristicScanning { get { return chkHeuristicScanning; } }
+        public ListBox Heuristics { get { return listHeuristics; } }
         public Button OkButton { get { return btnOk; } }
     }
 }

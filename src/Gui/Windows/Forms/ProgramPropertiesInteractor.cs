@@ -50,7 +50,15 @@ namespace Reko.Gui.Windows.Forms
                 dlg.EnableScript.Checked = loadedScript.Enabled;
                 dlg.LoadScript.Text = loadedScript.Script;
             }
-            dlg.HeuristicScanning.Checked = dlg.Program.User.Heuristics.Contains("HeuristicScanning");
+            dlg.Heuristics.Items.AddRange(new object[]
+                {
+                    "(None)",
+                    "Shingle heuristic"
+                });
+            if (dlg.Program.User.Heuristics.Count == 0)
+                dlg.Heuristics.SelectedIndex = 0;
+            else
+                dlg.Heuristics.SelectedItem = dlg.Program.User.Heuristics.First();
         }
 
         void OkButton_Click(object sender, EventArgs e)
@@ -60,10 +68,10 @@ namespace Reko.Gui.Windows.Forms
                 Enabled = dlg.EnableScript.Checked,
                 Script = dlg.LoadScript.Text,
             };
-            if (dlg.HeuristicScanning.Checked)
-                dlg.Program.User.Heuristics.Add("HeuristicScanning");
+            if (dlg.Heuristics.SelectedIndex != 0)
+                dlg.Program.User.Heuristics.Add((string)dlg.Heuristics.SelectedItem);
             else
-                dlg.Program.User.Heuristics.Remove("HeuristicScanning");
+                dlg.Program.User.Heuristics.Clear();
         }
     }
 }
