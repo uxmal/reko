@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
             foreach (var f in project.Programs)
             {
-                foreach (var sp in f.UserProcedures.Values)
+                foreach (var sp in f.User.Procedures.Values)
                 {
                     scan.EnqueueUserProcedure(sp);
                 }

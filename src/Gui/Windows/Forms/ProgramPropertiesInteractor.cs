@@ -44,23 +44,26 @@ namespace Reko.Gui.Windows.Forms
 
         private void dlg_Load(object sender, EventArgs e)
         {
-            var loadedScript = dlg.Program.OnLoadedScript;
+            var loadedScript = dlg.Program.User.OnLoadedScript;
             if (loadedScript != null)
             {
                 dlg.EnableScript.Checked = loadedScript.Enabled;
                 dlg.LoadScript.Text = loadedScript.Script;
             }
-            dlg.HeuristicScanning.Checked = dlg.Program.Options.HeuristicScanning;
+            dlg.HeuristicScanning.Checked = dlg.Program.User.Heuristics.Contains("HeuristicScanning");
         }
 
         void OkButton_Click(object sender, EventArgs e)
         {
-            dlg.Program.OnLoadedScript = new Core.Serialization.Script_v2
+            dlg.Program.User.OnLoadedScript = new Core.Serialization.Script_v2
             {
                 Enabled = dlg.EnableScript.Checked,
                 Script = dlg.LoadScript.Text,
             };
-            dlg.Program.Options.HeuristicScanning = dlg.HeuristicScanning.Checked;
+            if (dlg.HeuristicScanning.Checked)
+                dlg.Program.User.Heuristics.Add("HeuristicScanning");
+            else
+                dlg.Program.User.Heuristics.Remove("HeuristicScanning");
         }
     }
 }

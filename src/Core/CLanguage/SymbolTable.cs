@@ -35,7 +35,7 @@ namespace Reko.Core.CLanguage
             this.UnionsSeen = new Dictionary<string, UnionType_v1>();
             this.EnumsSeen = new Dictionary<string, SerializedEnumType>();
             this.Constants = new Dictionary<string, int>();
-            this.Procedures = new List<SerializedProcedureBase_v1>();
+            this.Procedures = new List<ProcedureBase_v1>();
             this.NamedTypes = new Dictionary<string, SerializedType>();
             this.Sizer = new TypeSizer(this.NamedTypes);
         }
@@ -46,7 +46,7 @@ namespace Reko.Core.CLanguage
         public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
         public Dictionary<string, int> Constants { get; private set; }
         public Dictionary<string, SerializedType> NamedTypes { get; private set; }
-        public List<SerializedProcedureBase_v1> Procedures { get; private set; }
+        public List<ProcedureBase_v1> Procedures { get; private set; }
 
         public TypeSizer Sizer { get; private set; }
 

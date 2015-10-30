@@ -59,7 +59,7 @@ namespace Reko.UnitTests
         {
             byte [] bytes = new byte[1000];
             loader.Stub(l => l.LoadImageBytes("test.dcproject", 0))
-                .Return(new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
+                .Return(new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Reko/v3\">" +
                     "<input><filename>foo.bar</filename></input></project>"));
             loader.Stub(l => l.LoadImageBytes("foo.bar", 0)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());

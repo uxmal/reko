@@ -207,23 +207,23 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Name = "MyProc", 
             };
             var program = dcSvc.Decompiler.Project.Programs[0];
-            program.UserProcedures.Add(Address.Ptr32(0x12345), p);
+            program.User.Procedures.Add(Address.Ptr32(0x12345), p);
+            program.User.Heuristics.Add("shingle");
 
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
+<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v3"">
   <input>
     <filename>foo.exe</filename>
     <address>00010000</address>
-    <procedure name=""MyProc"">
-      <address>00012345</address>
-    </procedure>
-    <options>
-      <HeuristicScanning>false</HeuristicScanning>
-    </options>
+    <user>
+      <procedure name=""MyProc"">
+        <address>00012345</address>
+      </procedure>
+      <heuristic name=""shingle"" />
+    </user>
   </input>
-  <output />
 </project>";
             Assert.AreEqual(s, interactor.Test_SavedProjectXml);
             mr.VerifyAll();

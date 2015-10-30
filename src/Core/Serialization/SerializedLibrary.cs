@@ -29,6 +29,7 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary
     {
+        public const string Namespace_v3 = "http://schemata.jklnet.org/Reko/v3";
         public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
 
@@ -46,13 +47,13 @@ namespace Reko.Core.Serialization
 
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
-        public List<SerializedProcedureBase_v1> Procedures;
+        public List<ProcedureBase_v1> Procedures;
 
         private static XmlSerializer serializer;
 
         public SerializedLibrary()
         {
-            this.Procedures = new List<SerializedProcedureBase_v1>();
+            this.Procedures = new List<ProcedureBase_v1>();
         }
 
         public static SerializedLibrary LoadFromStream(Stream stm)
@@ -69,6 +70,12 @@ namespace Reko.Core.Serialization
                 serializer = CreateSerializer_v1(typeof(SerializedLibrary));
             }
             return serializer;
+        }
+
+        public static XmlSerializer CreateSerializer_v3(Type rootType)
+        {
+            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v3);
+            return new XmlSerializer(rootType, attrOverrides);
         }
 
         public static XmlSerializer CreateSerializer_v2(Type rootType)

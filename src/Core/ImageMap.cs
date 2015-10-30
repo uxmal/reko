@@ -126,7 +126,7 @@ namespace Reko.Core
                 item.DataType = ChopAfter(item.DataType, (int)delta);      // Shrink the existing mofo.
 
                 items.Add(addr, itemNew);
-                items[itemAfter.Address]= itemAfter;
+                items.Add(itemAfter.Address, itemAfter);
             }
             else
             {

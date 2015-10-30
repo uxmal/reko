@@ -38,7 +38,6 @@ namespace Reko.Gui.Commands
         public Cmd_EditSignature(IServiceProvider services, Program program, Procedure procedure, Address addr)
             : base(services)
         {
-            // TODO: Complete member initialization
             this.program = program;
             this.procedure = procedure;
             this.address = addr;
@@ -57,7 +56,7 @@ namespace Reko.Gui.Commands
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
-                    program.UserProcedures[address] =
+                    program.User.Procedures[address] =
                         i.SerializedProcedure;
                     ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
                     procedure.Signature =

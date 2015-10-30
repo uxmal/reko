@@ -655,8 +655,6 @@ namespace Reko.Arch.X86
                 ImmediateOperand immOp;
                 MemoryOperand memOp;
                 X86AddressOperand addrOp;
-                int offset;
-
                 char chFmt = strFormat[i++];
                 switch (chFmt)
                 {
@@ -684,6 +682,8 @@ namespace Reko.Arch.X86
                 case 'Q':		// memory or register MMX operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);
                     pOperand = DecodeModRM(width, segmentOverride, MmxRegFromBits);
+                    if (pOperand == null)
+                        return null;
                     break;
                 case 'G':		// register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
@@ -1000,7 +1000,7 @@ namespace Reko.Arch.X86
             Constant offset;
             if (offsetWidth != null)
             {
-                if (!rdr.IsValidOffset(rdr.Offset + (uint)offsetWidth.Size))
+                if (!rdr.IsValidOffset(rdr.Offset + (uint)offsetWidth.Size -1))
                     return null;
                 offset = rdr.ReadLe(offsetWidth);
             }

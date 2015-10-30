@@ -27,92 +27,7 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-    /// <summary>
-    /// Seralization format for decompiler projects.
-    /// </summary>
-    /// <remarks>
-    /// Note that you may safely *add* attributes and elements to the serialization
-    /// format. However, should *rename* or delete XML nodes, you must copy the serialization
-    /// file format into a new file, bump the namespace identifier and the class name. You will
-    /// also have to modify the ProjectSerializer to handle the new format.</remarks>
-    [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler")]
-    public class Project_v1
-    {
-        public const string FileExtension = ".dcproject";
-
-        public Project_v1()
-        {
-            this.Input = new DecompilerInput_v1();
-            this.Output = new DecompilerOutput_v1();
-            this.UserProcedures = new List<Procedure_v1>();
-            this.UserCalls = new List<SerializedCall_v1>();
-        }
-
-        [XmlElement("input")]
-        public DecompilerInput_v1 Input;
-
-        [XmlElement("output")]
-        public DecompilerOutput_v1 Output;
-
-        [XmlElement("procedure", typeof(Procedure_v1))]
-        public List<Procedure_v1> UserProcedures;
-
-        [XmlElement("call", typeof(SerializedCall_v1))]
-        public List<SerializedCall_v1> UserCalls;
-    }
-
-    public class DecompilerInput_v1
-    {
-        [XmlElement("filename")]
-        public string Filename;
-
-        [XmlElement("address")]
-        public string Address;
-
-        [XmlElement("comment")]
-        public string Comment;
-
-        [XmlElement("processor")]
-        public string Processor;
-
-        [XmlElement("call")]
-        public List<SerializedCall_v1> UserCalls;
-
-        [XmlElement("disassembly")]
-        public string DisassemblyFilename;
-
-        [XmlElement("intermediate-code")]
-        public string IntermediateFilename;
-
-        [XmlElement("output")]
-        public string OutputFilename;
-
-        [XmlElement("types-file")]
-        public string TypesFilename;
-    }
-
-    public class DecompilerOutput_v1
-    {
-        [XmlElement("disassembly")]
-        public string DisassemblyFilename;
-
-        /// <summary>
-        /// If not null, specifies the file name for intermediate code.
-        /// </summary>
-        [XmlElement("intermediate-code")]
-        public string IntermediateFilename;
-
-        [XmlElement("output")]
-        public string OutputFilename;
-
-        [XmlElement("types-file")]
-        public string TypesFilename;
-
-        [XmlElement("global-vars")]
-        public string GlobalsFilename;
-    }
-
-    public abstract class SerializedProcedureBase_v1 
+    public abstract class ProcedureBase_v1 
     {
         public const int NoOrdinal = -1;
 
@@ -140,7 +55,7 @@ namespace Reko.Core.Serialization
         public ProcedureCharacteristics Characteristics;
     }
 
-    public class Procedure_v1 : SerializedProcedureBase_v1
+    public class Procedure_v1 : ProcedureBase_v1
     {
         /// <summary>
         /// Address of the procedure.

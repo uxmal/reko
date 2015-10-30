@@ -275,7 +275,6 @@
     <Compile Include="Output\ProcedureFormatter.cs" />
     <Compile Include="PrintfApplicationBuilder.cs" />
     <Compile Include="ProgramAddress.cs" />
-    <Compile Include="ProgramOptions.cs" />
     <Compile Include="ProgramResource.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="MetadataFile.cs" />
@@ -302,6 +301,8 @@
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
     <Compile Include="Serialization\ProjectSaver.cs" />
+    <Compile Include="Serialization\Procedure_v1.cs" />
+    <Compile Include="Serialization\Project_v3.cs" />
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
@@ -533,9 +534,6 @@
     <Compile Include="RelocationDictionary.cs" />
     <Compile Include="Serialization\ArgumentSerializer.cs" />
     <Compile Include="Serialization\ArraySizeCharacteristic.cs" />
-    <Compile Include="Serialization\Project_v1.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Serialization\ProcedureCharacteristics.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -85,11 +85,11 @@ namespace Reko.Gui.Design
             var eps = program.EntryPoints.Select(e => e.Address).ToHashSet();
             var desDictionary =
                 (from proc in program.Procedures.Where(p => segment.IsInRange(p.Key))
-                 join up in program.UserProcedures on proc.Key.ToLinear() equals up.Key.ToLinear() into ups
+                 join up in program.User.Procedures on proc.Key.ToLinear() equals up.Key.ToLinear() into ups
                  from up in ups.DefaultIfEmpty()
                  select new ProcedureDesigner(program, proc.Value, up.Value, proc.Key, eps.Contains(proc.Key))).
                 Union(
-                from up in program.UserProcedures.Where(p => segment.IsInRange(p.Key))
+                from up in program.User.Procedures.Where(p => segment.IsInRange(p.Key))
                 join proc in program.Procedures on up.Key.ToLinear() equals proc.Key.ToLinear() into ups
                 from proc in ups.DefaultIfEmpty()
                 select new ProcedureDesigner(program, proc.Value, up.Value, up.Key, eps.Contains(up.Key)));

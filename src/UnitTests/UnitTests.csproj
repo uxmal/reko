@@ -655,7 +655,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />

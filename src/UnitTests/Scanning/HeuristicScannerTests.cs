@@ -160,7 +160,6 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1008)));
         }
 
-
         [Test]
         public void HSC_FindPossible_x86_ProcedureEntries() // "Starts"
         {
@@ -177,7 +176,6 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(0x1000A, ranges[1].Item1.ToLinear());
             Assert.AreEqual(0x1000D, ranges[1].Item2.ToLinear());
         }
-
 
         [Test]
         public void HSC_HeuristicDisassembleProc()
@@ -257,6 +255,7 @@ l0001001B:  // pred: l00010019 l0001001A
 l0001001C:  // pred: l0001001B
     ret 
 l0001001D:  // pred:
+    nop 
 ";
             #endregion
             AssertBlocks(sExp, proc.Cfg);

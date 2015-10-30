@@ -58,11 +58,8 @@ namespace Reko.Core
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
-            this.UserProcedures = new SortedList<Address, Serialization.Procedure_v1>();
-            this.UserCalls = new SortedList<Address, Serialization.SerializedCall_v1>();
-            this.UserGlobalData = new SortedList<Address, Serialization.GlobalDataItem_v2>();
-            this.Options = new ProgramOptions();
             this.Resources = new ProgramResourceGroup();
+            this.User = new UserData();
         }
 
         public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
@@ -100,14 +97,14 @@ namespace Reko.Core
         public Serialization.Procedure_v1 EnsureUserProcedure(Address address, string name)
         {
             Serialization.Procedure_v1 up;
-            if (!UserProcedures.TryGetValue(address, out up))
+            if (!User.Procedures.TryGetValue(address, out up))
             {
                 up = new Serialization.Procedure_v1
                 {
                     Address = address.ToString(),
                     Name = name,
                 };
-                UserProcedures.Add(address, up);
+                User.Procedures.Add(address, up);
             }
             return up;
         }
@@ -189,11 +186,6 @@ namespace Reko.Core
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
         /// <summary>
-        /// User-specified options that control the decompilation of a program.
-        /// </summary>
-        public ProgramOptions Options { get; private set; }
-
-        /// <summary>
         /// The program's decompiled procedures, indexed by address.
         /// </summary>
         public SortedList<Address, Procedure> Procedures { get; private set; }
@@ -216,6 +208,11 @@ namespace Reko.Core
 		
 		public TypeStore TypeStore { get; private set; }
 
+        /// <summary>
+        /// User-specified data.
+        /// </summary>
+        public UserData User { get; set; }
+
 		/// <summary>
 		/// Provides access to the program's jump and call tables, sorted by address.
 		/// </summary>
@@ -224,11 +221,6 @@ namespace Reko.Core
 		{
 			get { return vectors; }
 		}
-
-        // 'Oracular' information provided by the user.
-        public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get; set; }
-        public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
-        public SortedList<Address, Serialization.GlobalDataItem_v2> UserGlobalData { get; set; }
 
         /// <summary>
         /// The name of the file in which disassemblies are dumped.
@@ -263,12 +255,7 @@ namespace Reko.Core
             this.TypesFilename = TypesFilename ?? Path.ChangeExtension(fileName, ".h");
             this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
         }
-
-        /// <summary>
-        /// A script to run after the image is loaded.
-        /// </summary>
-        public Serialization.Script_v2 OnLoadedScript { get; set; }
-
+       
         public ImageReader CreateImageReader(Address addr)
         {
             return Architecture.CreateImageReader(Image, addr);
@@ -302,7 +289,7 @@ namespace Reko.Core
             else
                 this.ImageMap.AddItem(address, item);
 
-            this.UserGlobalData.Add(address, new Serialization.GlobalDataItem_v2
+            this.User.Globals.Add(address, new Serialization.GlobalDataItem_v2
             {
                 Address = address.ToString(),
                 DataType = dataType.Accept(new  Serialization.DataTypeSerializer()),
@@ -342,4 +329,33 @@ namespace Reko.Core
 			IndexRegister = idxReg;
 		}
 	}
+
+    /// <summary>
+    /// Oracular information provided by user.
+    /// </summary>
+    public class UserData
+    {
+        public UserData()
+        {
+            this.Procedures = new SortedList<Address, Serialization.Procedure_v1>();
+            this.Calls = new SortedList<Address, Serialization.SerializedCall_v1>();
+            this.Globals = new SortedList<Address, Serialization.GlobalDataItem_v2>();
+            this.Heuristics = new SortedSet<string>();
+        }
+
+        // 'Oracular' information provided by the user.
+        public SortedList<Address, Serialization.Procedure_v1>      Procedures { get; set; }
+        public SortedList<Address, Serialization.SerializedCall_v1> Calls { get; set; }
+        public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
+
+        /// <summary>
+        /// A script to run after the image is loaded.
+        /// </summary>
+        public Serialization.Script_v2 OnLoadedScript { get; set; }
+
+        /// <summary>
+        /// Scanning heuristics to try.
+        /// </summary>
+        public SortedSet<string> Heuristics { get; set; }
+    }
 }

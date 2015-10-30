@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-	public class SerializedService : SerializedProcedureBase_v1
+	public class SerializedService : ProcedureBase_v1
 	{
 		public SerializedService()
 		{

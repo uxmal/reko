@@ -57,17 +57,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             uiSvc.SimulateUserCancel = true;
             var project = CreateTestProject();
             var epi = new EditProjectInteractor();
-            var ret = epi.EditProjectProperties(uiSvc, project, delegate(Project_v1 p)
+            var ret = epi.EditProjectProperties(uiSvc, project, delegate(Project_v3 p)
             {
                 Assert.Fail("Should not save if user cancels.");
             });
             Assert.IsFalse(ret);
-            Assert.AreEqual("test.exe", project.Input.Filename);
-            Assert.AreEqual("10000", project.Input.Address);
-            Assert.AreEqual("test.asm", project.Output.DisassemblyFilename);
-            Assert.AreEqual("test.dis", project.Output.IntermediateFilename);
-            Assert.AreEqual("test.h", project.Output.TypesFilename);
-            Assert.AreEqual("test.c", project.Output.OutputFilename);
+            var input = (DecompilerInput_v3)project.Inputs[0];
+            Assert.AreEqual("test.exe", input.Filename);
+            Assert.AreEqual("10000", input.Address);
+            Assert.AreEqual("test.asm", input.DisassemblyFilename);
+            Assert.AreEqual("test.dis", input.IntermediateFilename);
+            Assert.AreEqual("test.h", input.TypesFilename);
+            Assert.AreEqual("test.c", input.OutputFilename);
         }
 
         [Test]
@@ -77,14 +78,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var epi = new EditProjectInteractor();
             var p = CreateTestProject();
 
-            var ret = epi.EditProjectProperties(uiSvc, p, delegate(Project_v1 project)
+            var ret = epi.EditProjectProperties(uiSvc, p, delegate(Project_v3 project)
             {
-                Assert.AreEqual("test.exe", project.Input.Filename);
-                Assert.AreEqual("10000", project.Input.Address);
-                Assert.AreEqual("test.asm", project.Output.DisassemblyFilename);
-                Assert.AreEqual("test.dis", project.Output.IntermediateFilename);
-                Assert.AreEqual("test.h", project.Output.TypesFilename);
-                Assert.AreEqual("test.c", project.Output.OutputFilename);
+                var input = (DecompilerInput_v3)project.Inputs[0];
+                Assert.AreEqual("test.exe", input.Filename);
+                Assert.AreEqual("10000",    input.Address);
+                Assert.AreEqual("test.asm", input.DisassemblyFilename);
+                Assert.AreEqual("test.dis", input.IntermediateFilename);
+                Assert.AreEqual("test.h",   input.TypesFilename);
+                Assert.AreEqual("test.c",   input.OutputFilename);
             });
             Assert.IsTrue(ret);
         }
@@ -98,7 +100,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             interactor.FakeUiService.OpenFileResult = "booga.exe";
             interactor.UserClickBrowseBinaryFileButton();
             Assert.AreEqual("booga.exe", dlg.BinaryFilename.Text);
-
         }
 
         [Test]
@@ -112,15 +113,22 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual("fooga.exe", dlg.BinaryFilename.Text);
         }
 
-        private  Project_v1 CreateTestProject()
+        private Project_v3 CreateTestProject()
         {
-            var project = new Project_v1();
-            project.Input.Filename = "test.exe";
-            project.Input.Address = "10000";
-            project.Output.DisassemblyFilename = "test.asm";
-            project.Output.IntermediateFilename = "test.dis";
-            project.Output.TypesFilename = "test.h";
-            project.Output.OutputFilename = "test.c";
+            var project = new Project_v3
+            {
+                Inputs =
+                {
+                    new DecompilerInput_v3 {
+                        Filename = "test.exe",
+                        Address = "10000",
+                        DisassemblyFilename = "test.asm",
+                        IntermediateFilename = "test.dis",
+                        TypesFilename = "test.h",
+                        OutputFilename = "test.c",
+                    }
+                }
+            };
             return project;
         }
     }

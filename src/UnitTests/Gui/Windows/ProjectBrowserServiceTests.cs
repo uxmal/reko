@@ -405,7 +405,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_UserProcedure(uint addr, string name)
         {
-            program.UserProcedures.Add(
+            program.User.Procedures.Add(
                 Address.Ptr32(addr), new Reko.Core.Serialization.Procedure_v1
                 {
                     Address = addr.ToString(),

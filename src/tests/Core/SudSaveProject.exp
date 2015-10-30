@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://schemata.jklnet.org/Decompiler/v2">
+<project xmlns="http://schemata.jklnet.org/Reko/v3">
   <input>
     <address>1000:0000</address>
-    <procedure name="foo">
-      <signature>
-        <return>
-          <reg>eax</reg>
-        </return>
-        <arg>
-          <prim domain="SignedInt" size="4" />
-          <stack />
-        </arg>
-        <arg>
-          <prim domain="SignedInt" size="4" />
-          <stack />
-        </arg>
-      </signature>
-      <address>1000:0010</address>
-    </procedure>
-    <global>
-      <Address>2000:0000</Address>
-      <str term="z">
-        <prim domain="Character" size="1" />
-      </str>
-      <Name>g_20000</Name>
-    </global>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
-    <options>
-      <HeuristicScanning>false</HeuristicScanning>
-    </options>
+    <user>
+      <procedure name="foo">
+        <signature>
+          <return>
+            <reg>eax</reg>
+          </return>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+            <stack />
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+            <stack />
+          </arg>
+        </signature>
+        <address>1000:0010</address>
+      </procedure>
+      <global>
+        <Address>2000:0000</Address>
+        <str term="z">
+          <prim domain="Character" size="1" />
+        </str>
+        <Name>g_20000</Name>
+      </global>
+    </user>
   </input>
-  <output />
 </project>

@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_UserSignature(uint address, string str)
         {
-            program.UserProcedures.Add(Address.Ptr32(address), new Reko.Core.Serialization.Procedure_v1
+            program.User.Procedures.Add(Address.Ptr32(address), new Reko.Core.Serialization.Procedure_v1
             {
                  CSignature = str
             });

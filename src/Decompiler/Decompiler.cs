@@ -192,7 +192,7 @@ namespace Reko
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var projectLoader = new ProjectLoader(this.services, loader);
-            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.OnLoadedScript); };
+            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             Project = projectLoader.LoadProject(fileName, image);
             bool isProject;
             if (Project != null)
@@ -399,7 +399,7 @@ namespace Reko
                 {
                     scanner.EnqueueEntryPoint(ep);
                 }
-                foreach (Procedure_v1 up in program.UserProcedures.Values)
+                foreach (Procedure_v1 up in program.User.Procedures.Values)
                 {
                     scanner.EnqueueUserProcedure(up);
                 }
@@ -407,18 +407,20 @@ namespace Reko
                 {
                     scanner.EnqueueProcedure(addr);
                 }
-                var sh = new ShingledScanner(program);
-                var procs = sh.Scan();
-                foreach (var addr in procs)
+                if (program.User.Heuristics.Contains("shingle"))
                 {
-                    scanner.EnqueueProcedure(addr);
+                    var sh = new ShingledScanner(program);
+                    var procs = sh.Scan();
+                    foreach (var addr in procs)
+                    {
+                        scanner.EnqueueProcedure(addr);
+                    }
                 }
-
 
                 scanner.ScanImage();
 
                 if (false || //$DEBUG
-                    program.Options.HeuristicScanning)
+                    program.User.Heuristics.Contains("HeuristicScanning"))
                 {
                     eventListener.ShowStatus("Finding machine code using heuristics.");
                     scanner.ScanImageHeuristically();
@@ -460,7 +462,7 @@ namespace Reko
         {
             return new Scanner(
                 program, 
-                LoadCallSignatures(program, program.UserCalls.Values),
+                LoadCallSignatures(program, program.User.Calls.Values),
                 new ImportResolver(project),
                 eventListener);
         }

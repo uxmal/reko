@@ -711,7 +711,7 @@ namespace Reko.Scanning
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             Procedure_v1 userProc;
-            if (!program.UserProcedures.TryGetValue(addr, out userProc) ||
+            if (!program.User.Procedures.TryGetValue(addr, out userProc) ||
                 userProc.Assume == null)
                 return;
             foreach (var rv in userProc.Assume)

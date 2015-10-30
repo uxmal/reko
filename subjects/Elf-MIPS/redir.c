@@ -4,13 +4,7 @@
 
 #include "redir.h"
 
-void fn00400230(Eq_4 * ra)
-{
-	fn00400238(ra, dwArg00);
-	return;
-}
-
-void fn00400238(Eq_4 * ra, word32 dwArg00)
+void fn00400230(Eq_3 * ra, word32 dwArg00)
 {
 	code * r25_18 = ra->ptrFC00690;
 	r25_18();

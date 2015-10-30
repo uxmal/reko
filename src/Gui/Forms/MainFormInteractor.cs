@@ -588,7 +588,7 @@ namespace Reko.Gui.Forms
                 string newName = PromptForFilename(
                     Path.ChangeExtension(
                         decompilerSvc.Decompiler.Project.Programs[0].Filename,
-                        Project_v1.FileExtension));
+                        Project_v3.FileExtension));
                 if (newName == null)
                     return false;
                 ProjectFileName = newName;
@@ -598,7 +598,7 @@ namespace Reko.Gui.Forms
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
                 //$REFACTOR: rule of Demeter, push this into a Save() method.
-                var sp =  new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
+                var sp = new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
                 new ProjectLoader(sc, loader).Save(sp, sw);
             }
             return true;

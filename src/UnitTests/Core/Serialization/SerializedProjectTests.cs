@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Reko.UnitTests.Core.Serialization
@@ -49,69 +50,30 @@ namespace Reko.UnitTests.Core.Serialization
             this.sc = new ServiceContainer();
         }
 
-		[Test]
-		public void SudWrite()
-		{
-			Project_v1 ud = new Project_v1();
-			ud.Input.Address = "0x1000:0x0";
-			ud.Output.DisassemblyFilename = "foo.asm";
-			ud.Output.IntermediateFilename = "foo.cod";
-			Procedure_v1 proc = new Procedure_v1();
-			proc.Name = "foo";
-			proc.Signature = new SerializedSignature
-			{
-				ReturnValue = new Argument_v1
-				{
-					Kind = new Register_v1("eax")
-				},
-				Arguments = new Argument_v1[]
-				{
-					new Argument_v1
-					{
-						Kind = new StackVariable_v1(),
-						Type = new PrimitiveType_v1(Domain.SignedInt, 4)
-					},
-					new Argument_v1
-					{
-						Kind = new StackVariable_v1(),
-						Type = new PrimitiveType_v1(Domain.SignedInt, 4)
-					}
-				}
-			};
-			ud.UserProcedures.Add(proc);
-
-			using (FileUnitTester fut = new FileUnitTester("Core/SudWrite.txt"))
-			{
-			    var writer = new FilteringXmlWriter(fut.TextWriter);
-				writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v1));
-				ser.Serialize(writer, ud);
-				fut.AssertFilesEqual();
-			}
-		}
-
         [Test]
-        public void SudSaveProject()
+        public void SudWrite()
         {
-            Project project = new Project
+            Project_v3 ud = new Project_v3
             {
-                Programs = 
+                Inputs =
                 {
-                    new Program
+                    new DecompilerInput_v3
                     {
-                        Image = new LoadedImage(Address.SegPtr(0x1000, 0), new byte[100]),
+                        Address = "0x1000:0x0",
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
-                        UserProcedures = new SortedList<Address,Procedure_v1> 
-                        {
-                            { 
-                                Address.SegPtr(0x1000, 0x10), 
+                        User = new UserData_v3 {
+                            Procedures =
+                            {
                                 new Procedure_v1
                                 {
                                     Name = "foo",
                                     Signature = new SerializedSignature
                                     {
-                                        ReturnValue = new Argument_v1 { Kind = new Register_v1("eax") },
+                                        ReturnValue = new Argument_v1
+                                        {
+                                            Kind = new Register_v1("eax")
+                                        },
                                         Arguments = new Argument_v1[]
                                         {
                                             new Argument_v1
@@ -128,19 +90,75 @@ namespace Reko.UnitTests.Core.Serialization
                                     }
                                 }
                             }
-                        },
-                        UserGlobalData =
+                        }
+                    }
+                }
+            };
+
+			using (FileUnitTester fut = new FileUnitTester("Core/SudWrite.txt"))
+			{
+			    var writer = new FilteringXmlWriter(fut.TextWriter);
+				writer.Formatting = System.Xml.Formatting.Indented;
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+				ser.Serialize(writer, ud);
+				fut.AssertFilesEqual();
+			}
+		}
+
+        [Test]
+        public void SudSaveProject()
+        {
+            Project project = new Project
+            {
+                Programs =
+                {
+                    new Program
+                    {
+                        Image = new LoadedImage(Address.SegPtr(0x1000, 0), new byte[100]),
+                        DisassemblyFilename = "foo.asm",
+                        IntermediateFilename = "foo.cod",
+                        User = new UserData
                         {
-                            { 
-                              Address.SegPtr(0x2000, 0) ,
-                              new GlobalDataItem_v2 {
-                                   Address = Address.SegPtr(0x2000, 0).ToString(),
-                                   DataType = new StringType_v2 { 
-                                       Termination=StringType_v2.ZeroTermination, 
-                                       CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
-                                   }
-                              }
-                              }
+                            Procedures =
+                            {
+                                {
+                                    Address.SegPtr(0x1000, 0x10),
+                                    new Procedure_v1
+                                    {
+                                        Name = "foo",
+                                        Signature = new SerializedSignature
+                                        {
+                                            ReturnValue = new Argument_v1 { Kind = new Register_v1("eax") },
+                                            Arguments = new Argument_v1[]
+                                            {
+                                                new Argument_v1
+                                                {
+                                                    Kind = new StackVariable_v1(),
+                                                    Type = new PrimitiveType_v1(Domain.SignedInt, 4)
+                                                },
+                                                new Argument_v1
+                                                {
+                                                    Kind = new StackVariable_v1(),
+                                                    Type = new PrimitiveType_v1(Domain.SignedInt, 4)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            Globals =
+                            {
+                                {
+                                  Address.SegPtr(0x2000, 0),
+                                  new GlobalDataItem_v2 {
+                                       Address = Address.SegPtr(0x2000, 0).ToString(),
+                                       DataType = new StringType_v2 {
+                                           Termination=StringType_v2.ZeroTermination,
+                                           CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
+                                       }
+                                  }
+                                }
+                            }
                         }
                     }
                 }
@@ -149,27 +167,12 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
-                Project_v2 ud = new ProjectSaver().Save(project);
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+                Project_v3 ud = new ProjectSaver().Save(project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
         }
-		
-        [Test]
-		public void SudRead_v1()
-		{
-			Project_v1 proj = null;
-			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/SudRead.xml"), FileMode.Open))
-			{
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v1));
-				proj = (Project_v1) ser.Deserialize(stm);
-			}
-			Assert.AreEqual("10003330", proj.Input.Address);
-			Assert.AreEqual(2, proj.UserProcedures.Count);
-			Procedure_v1 proc = (Procedure_v1) proj.UserProcedures[0];
-			Assert.IsNull(proc.Signature.ReturnValue);
-		}
 
         [Test]
         public void Sud_LoadProject_Inputs_v2()
@@ -210,9 +213,9 @@ namespace Reko.UnitTests.Core.Serialization
             var project = ps.LoadProject(sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
-            Assert.AreEqual(1, input0.UserGlobalData.Count);
-            Assert.AreEqual("1000:0400", input0.UserGlobalData.Values[0].Address);
-            var str_t = (StringType_v2)input0.UserGlobalData.Values[0].DataType;
+            Assert.AreEqual(1, input0.User.Globals.Count);
+            Assert.AreEqual("1000:0400", input0.User.Globals.Values[0].Address);
+            var str_t = (StringType_v2)input0.User.Globals.Values[0].DataType;
             Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
             mr.VerifyAll();
         }
@@ -325,15 +328,15 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SudLoadProgramOptions()
         {
-            var sProject = new Project_v2
+            var sProject = new Project_v3
             {
                 Inputs = 
                 {
-                    new DecompilerInput_v2
+                    new DecompilerInput_v3
                     {
-                        Options = new ProgramOptions_v2
+                        User = new UserData_v3
                         {
-                            HeuristicScanning = true,
+                            Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } }
                         }
                     }
                 }
@@ -349,19 +352,19 @@ namespace Reko.UnitTests.Core.Serialization
 
             var ploader = new ProjectLoader(sc, loader);
             var project = ploader.LoadProject(sProject);
-            Assert.IsTrue(project.Programs[0].Options.HeuristicScanning);
+            Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
         }
 
         [Test]
         public void SudSaveProgramOptions()
         {
             var program = new Program();
-            program.Options.HeuristicScanning = true;
+            program.User.Heuristics.Add("shingle");
             
             var pSaver = new ProjectSaver();
             var file = pSaver.VisitProgram(program);
-            var ip = (DecompilerInput_v2)file;
-            Assert.IsTrue(ip.Options.HeuristicScanning);
+            var ip = (DecompilerInput_v3)file;
+            Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
 
         }
 	}

@@ -45,7 +45,7 @@ namespace Reko.Analysis
 
         public void BuildSignatures()
         {
-            foreach (var de in program.UserProcedures
+            foreach (var de in program.User.Procedures
                 .Where(d => !string.IsNullOrEmpty(d.Value.CSignature)))
             {
                 Procedure proc;

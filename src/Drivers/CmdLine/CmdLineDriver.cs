@@ -149,6 +149,11 @@ namespace Reko.CmdLine
             var state = CreateInitialState(arch, pArgs);
             dec.LoadRawImage((string)pArgs["filename"], arch, platform, addrBase);
             dec.Project.Programs[0].EntryPoints.Add(new EntryPoint(addrEntry, state));
+            object oHeur;
+            if (pArgs.TryGetValue("heuristics", out oHeur))
+            {
+                dec.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+            }
             dec.ScanPrograms();
             dec.AnalyzeDataFlow();
             dec.ReconstructTypes();
@@ -239,6 +244,13 @@ namespace Reko.CmdLine
                         regs.Add(args[++i]);
                     }
                 }
+                else if (args[i] == "--heuristic")
+                {
+                    if (!string.IsNullOrEmpty(args[i]))
+                    {
+                        parsedArgs["heuristics"] = args[i].Split(',');
+                    }
+                }
                 else if (arg.StartsWith("-"))
                 {
                     w.WriteLine("error: uncrecognized option {0}", arg);
@@ -267,19 +279,21 @@ namespace Reko.CmdLine
             w.WriteLine("    <filename> can be either an executable file or a project file.");
             w.WriteLine();
             w.WriteLine("Options:");
-            w.WriteLine(" --version               Show version number and exit");
-            w.WriteLine(" -h, --help              Show this message and exit");
-            w.WriteLine(" --arch <architecture>   Use an architecture from the following:");
-            DumpArchitectures(config, w, "    {0,-24} {1}");
-            w.WriteLine(" --env <environment>     Use an operating environment from the following:");
-            DumpEnvironments(config, w, "    {0,-24} {1}");
-            w.WriteLine(" --base <address>        Use <address> as the base address of the program");
-            w.WriteLine(" --default-to <format>   If no executable format can be recognized, default");
-            w.WriteLine("                         to one of the following formats:");
-            DumpRawFiles(config, w, "    {0,-24} {1}");
-            w.WriteLine(" --entry <address>       Use <address> as an entry point to the program");
-            w.WriteLine(" --reg <regInit>         Set register to value, where regInit is formatted as");
+            w.WriteLine(" --version                Show version number and exit");
+            w.WriteLine(" -h, --help               Show this message and exit");
+            w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
+            DumpArchitectures(config, w, "    {0,-25} {1}");
+            w.WriteLine(" --env <environment>      Use an operating environment from the following:");
+            DumpEnvironments(config, w, "    {0,-25} {1}");
+            w.WriteLine(" --base <address>         Use <address> as the base address of the program");
+            w.WriteLine(" --default-to <format>    If no executable format can be recognized, default");
+            w.WriteLine("                          to one of the following formats:");
+            DumpRawFiles(config, w, "    {0,-25} {1}");
+            w.WriteLine(" --entry <address>        Use <address> as an entry point to the program");
+            w.WriteLine(" --reg <regInit>          Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
+            w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine binary:");
+            w.WriteLine("    shingle               Use shingle assembler to discard data ");
         }
 
         private static void DumpArchitectures(DecompilerConfiguration config, TextWriter w, string fmtString)

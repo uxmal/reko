@@ -123,7 +123,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public IEnumerable<Tuple<Address, Address>> FindUnscannedRanges()
         {
-#if NOT_USE_WHOLE_IMAGE
+#if !NOT_USE_WHOLE_IMAGE
 
             return program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)

@@ -58,7 +58,8 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Disassemble every byte of the image, but discard
+        /// Disassemble every byte of the image, marking those addresses that likely
+        /// are code as MaybeCode, everything else as data.
         /// </summary>
         /// <param name="segment"></param>
         public byte[] ScanSegment(ImageMapSegment segment)

@@ -38,8 +38,8 @@ namespace Reko.Gui.Windows.Forms
         /// <param name="project"></param>
         public bool EditProjectProperties(
             IDecompilerShellUiService uiSvc,
-            Project_v1 project,
-            Action<Project_v1> updater)
+            Project_v3 project,
+            Action<Project_v3> updater)
         {
             using (var dlg = new EditProjectDialog())
             {
@@ -117,31 +117,41 @@ namespace Reko.Gui.Windows.Forms
             }
         }
 
-        private Project_v1 CreateProjectFromFields()
+        private Project_v3 CreateProjectFromFields()
         {
-            Project_v1 project = new Project_v1();
-
-            project.Input.Filename = dlg.BinaryFilename.Text;
-            project.Input.Address = dlg.BaseAddress.Text;
-            project.Output.DisassemblyFilename = dlg.Disassembly.Text;
-            project.Output.IntermediateFilename = dlg.IntermediateFilename.Text;
-            project.Output.TypesFilename = dlg.TypesFilename.Text;
-            project.Output.OutputFilename = dlg.OutputFilename.Text;
-            //project.Output.GloblalsFilename = dlg.OutputFilename.Text;
-
+            Project_v3 project = new Project_v3
+            {
+                Inputs =
+                {
+                    new DecompilerInput_v3
+                    {
+                        Filename = dlg.BinaryFilename.Text,
+                        Address = dlg.BaseAddress.Text,
+                        DisassemblyFilename = dlg.Disassembly.Text,
+                        IntermediateFilename = dlg.IntermediateFilename.Text,
+                        TypesFilename = dlg.TypesFilename.Text,
+                        OutputFilename = dlg.OutputFilename.Text,
+                        //project.Output.GloblalsFilename = dlg.OutputFilename.Text;
+                    }
+                }
+            };
             return project;
         }
 
-        private void LoadFieldsFromProject(Project_v1 project)
+        private void LoadFieldsFromProject(Project_v3 project)
         {
-            dlg.BinaryFilename.Text = project.Input.Filename;
-            dlg.BaseAddress.Text = project.Input.Address;
-            dlg.Disassembly.Text = project.Output.DisassemblyFilename;
-            dlg.IntermediateFilename.Text = project.Output.IntermediateFilename;
-            dlg.TypesFilename.Text = project.Output.TypesFilename;
-            dlg.OutputFilename.Text = project.Output.OutputFilename;
+            if (project == null || project.Inputs == null || project.Inputs.Count == 0)
+                return;
+            var input = project.Inputs[0] as DecompilerInput_v3;
+            if (input == null)
+                return;
+            dlg.BinaryFilename.Text =       input.Filename;
+            dlg.BaseAddress.Text =          input.Address;
+            dlg.Disassembly.Text =          input.DisassemblyFilename;
+            dlg.IntermediateFilename.Text = input.IntermediateFilename;
+            dlg.TypesFilename.Text =        input.TypesFilename;
+            dlg.OutputFilename.Text =       input.OutputFilename;
             // dlg.OutputFilename.Text = project.Output.GloblalsFilename 
         }
-
     }
 }

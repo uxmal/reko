@@ -167,4 +167,25 @@ namespace Reko.Core.Serialization
         [XmlText]
         public string Script;
     }
+
+    public class DecompilerOutput_v1
+    {
+        [XmlElement("disassembly")]
+        public string DisassemblyFilename;
+
+        /// <summary>
+        /// If not null, specifies the file name for intermediate code.
+        /// </summary>
+        [XmlElement("intermediate-code")]
+        public string IntermediateFilename;
+
+        [XmlElement("output")]
+        public string OutputFilename;
+
+        [XmlElement("types-file")]
+        public string TypesFilename;
+
+        [XmlElement("global-vars")]
+        public string GlobalsFilename;
+    }
 }

@@ -585,7 +585,7 @@ fn00001200_exit:
         public void Scanner_ScanProcedure_AssumeRegisterValues()
         {
             var scanner = CreateScanner(0x1000, 0x2000);
-            program.UserProcedures.Add(Address.Ptr32(0x1000), new Reko.Core.Serialization.Procedure_v1
+            program.User.Procedures.Add(Address.Ptr32(0x1000), new Reko.Core.Serialization.Procedure_v1
             {
                 Assume = new RegisterValue_v2[] {
                      new RegisterValue_v2 { Register="r1", Value="0DC0" }

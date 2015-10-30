@@ -240,7 +240,7 @@ namespace Reko.Gui.Windows
             if (i >= 0)
             {
                 Reko.Core.Serialization.Procedure_v1 uProc;
-                if (program.UserProcedures.TryGetValue(program.Procedures.Keys[i], out uProc))
+                if (program.User.Procedures.TryGetValue(program.Procedures.Keys[i], out uProc))
                 {
                     this.codeView.ProcedureDeclaration.Text = uProc.CSignature;
                     return;

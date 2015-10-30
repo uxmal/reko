@@ -36,6 +36,7 @@ def execute_reko_project(dir, pname):
         print("*** " + pname)
         print(out)
 
+# Find all commands to execute.
 def execute_command_file(dir, scr_name):
     f = open("subject.cmd")
     lines = f.readlines()

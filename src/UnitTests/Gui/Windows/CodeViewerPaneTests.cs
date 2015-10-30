@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Gui.Windows
             codeViewer.Declaration.Text = "foo";
 
             Assert.AreEqual("foo", proc.Name);
-            Assert.IsNull(program.UserProcedures.Values.First().CSignature);
+            Assert.IsNull(program.User.Procedures.Values.First().CSignature);
         }
 
         [Test(Description = "Entering an invalid name should change nothing.")]
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Gui.Windows
             codeViewer.Declaration.Text = "int foo(char *, float)";
 
             Assert.AreEqual("foo", proc.Name);
-            Assert.AreEqual("int foo(char *, float)", program.UserProcedures.Values.First().CSignature);
+            Assert.AreEqual("int foo(char *, float)", program.User.Procedures.Values.First().CSignature);
         }
 
         [Test(Description = "Char * functions are valid, of course")]
@@ -249,7 +249,7 @@ namespace Reko.UnitTests.Gui.Windows
             codeViewer.Declaration.Text = "char * foo(int)";
 
             Assert.AreEqual("foo", proc.Name);
-            Assert.AreEqual("char * foo(int)", program.UserProcedures.Values.First().CSignature);
+            Assert.AreEqual("char * foo(int)", program.User.Procedures.Values.First().CSignature);
         }
     }
 }

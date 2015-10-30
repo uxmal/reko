@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void Ps_Load_v1()
+        public void Ps_Load_v3()
         {
             var bytes = new byte[100];
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
@@ -79,37 +79,43 @@ namespace Reko.UnitTests.Core.Serialization
 
             mr.ReplayAll();
 
-            var sp = new Project_v1
+            var sp = new Project_v3
             {
-                Input = new DecompilerInput_v1
-                {
-                    Filename = "f.exe",
-                },
-                UserProcedures = {
-                    new Procedure_v1 {
-                        Name = "Fn",
-                        Decompile = true,
-                        Characteristics = new ProcedureCharacteristics
+                Inputs = {
+                    new DecompilerInput_v3
+                    {
+                        Filename = "f.exe",
+                        User = new UserData_v3
                         {
-                            Terminates = true,
-                        },
-                        Address = "113300",
-                        Signature = new SerializedSignature {
-                            ReturnValue = new Argument_v1 {
-                                Type = new PrimitiveType_v1(Domain.SignedInt, 4),
-                            },
-                            Arguments = new Argument_v1[] {
-                                new Argument_v1
-                                {
-                                    Name = "a",
-                                    Kind = new StackVariable_v1(),
-                                    Type = new PrimitiveType_v1(Domain.Character, 2)
-                                },
-                                new Argument_v1
-                                {
-                                    Name = "b",
-                                    Kind = new StackVariable_v1(),
-                                    Type = new PointerType_v1 { DataType = new PrimitiveType_v1(Domain.Character, 2) }
+                            Procedures =
+                            {
+                                new Procedure_v1 {
+                                    Name = "Fn",
+                                    Decompile = true,
+                                    Characteristics = new ProcedureCharacteristics
+                                    {
+                                        Terminates = true,
+                                    },
+                                    Address = "113300",
+                                    Signature = new SerializedSignature {
+                                        ReturnValue = new Argument_v1 {
+                                            Type = new PrimitiveType_v1(Domain.SignedInt, 4),
+                                        },
+                                        Arguments = new Argument_v1[] {
+                                            new Argument_v1
+                                            {
+                                                Name = "a",
+                                                Kind = new StackVariable_v1(),
+                                                Type = new PrimitiveType_v1(Domain.Character, 2)
+                                            },
+                                            new Argument_v1
+                                            {
+                                                Name = "b",
+                                                Kind = new StackVariable_v1(),
+                                                Type = new PointerType_v1 { DataType = new PrimitiveType_v1(Domain.Character, 2) }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -120,17 +126,25 @@ namespace Reko.UnitTests.Core.Serialization
             var p = ps.LoadProject(sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 
-            Assert.AreEqual(1, inputFile.UserProcedures.Count);
-            Assert.AreEqual("Fn", inputFile.UserProcedures.First().Value.Name);
+            Assert.AreEqual(1, inputFile.User.Procedures.Count);
+            Assert.AreEqual("Fn", inputFile.User.Procedures.First().Value.Name);
         }
 
         [Test]
-        public void foo()
+        public void Save_v3()
         {
-            var sp = new Project_v2
+            var sp = new Project_v3
             {
-                Inputs = new List<ProjectFile_v2> {
-                    new AssemblerFile_v2 { Filename="foo.asm", Assembler="x86-att" }
+                Inputs = {
+                    new DecompilerInput_v3 {
+                        Filename ="foo.exe",
+                        User = new UserData_v3 {
+                            Heuristics = {
+                                new Heuristic_v3 { Name = "shingle" }
+                            }
+                        }
+                    },
+                    new AssemblerFile_v3 { Filename="foo.asm", Assembler="x86-att" }
                 }
             };
             var sw = new StringWriter();

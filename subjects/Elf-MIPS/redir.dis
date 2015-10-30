@@ -1,42 +1,4 @@
-void fn00400230(word32 ra)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  ra
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-l00400284:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn00400230_entry:
-// DataOut: ra
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l00400230:
-// DataOut: ra
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l00400230_thunk_fn00400238:
-	fn00400238(ra, dwArg00)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// Terminates process
-
-fn00400230_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-
-
-void fn00400238(word32 ra, word32 dwArg00)
+void fn00400230(word32 ra, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ra
@@ -45,12 +7,23 @@ void fn00400238(word32 ra, word32 dwArg00)
 // Preserved:
 // Stack args: Stack +0000(32)
 // Terminates process
-fn00400238_exit:
+l00400284:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:
 
-fn00400238_entry:
+fn00400230_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00400230_entry:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
+l00400230:
 // DataOut: ra
 // DataOut (flags): 
 // SymbolicIn: sp:fp
