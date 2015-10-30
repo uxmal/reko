@@ -392,8 +392,6 @@ namespace Reko
             try
             {
                 eventListener.ShowStatus("Shingle scanning");
-                var sh = new ShingledScanner(program);
-                sh.Scan();
 
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program, eventListener);
@@ -409,6 +407,14 @@ namespace Reko
                 {
                     scanner.EnqueueProcedure(addr);
                 }
+                var sh = new ShingledScanner(program);
+                var procs = sh.Scan();
+                foreach (var addr in procs)
+                {
+                    scanner.EnqueueProcedure(addr);
+                }
+
+
                 scanner.ScanImage();
 
                 if (false || //$DEBUG

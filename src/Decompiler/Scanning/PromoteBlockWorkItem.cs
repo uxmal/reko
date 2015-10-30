@@ -121,9 +121,11 @@ namespace Reko.Scanning
 
         private Address GetAddressOfLastInstruction(Block inboundBlock)
         {
+            if (inboundBlock.Statements.Count == 0)
+                return Program.Platform.MakeAddressFromLinear(0);
             return inboundBlock.Address != null
                 ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Address.Ptr32(0); //$BUGBUG: use platform to create null pointer.
+                : Program.Platform.MakeAddressFromLinear(0);
         }
 
         public void FixOutboundEdges(Block block)

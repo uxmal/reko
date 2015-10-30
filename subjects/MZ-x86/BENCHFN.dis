@@ -3743,7 +3743,9 @@ l0800_1B21:
 	sp = sp + 0x0002
 	cx = cx + 0x0003
 	SCZO = cond(cx)
-	goto cx
+	call cx (retsize: 4;)
+	return
+	// succ:  fn0800_1B06_exit
 l0800_1B27:
 	branch Test(EQ,Z) l0800_1B21
 	// succ:  l0800_1B29 l0800_1B21

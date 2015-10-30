@@ -117,7 +117,7 @@ namespace Reko.Arch.Z80
                     break;
                 case 'J':       // Relative jump
                     var width = OperandSize(fmt[i++]);
-                    int ipOffset = rdr.ReadLeSigned(width);
+                    int ipOffset = (int) rdr.ReadLeSigned(width);
                     ops[iOp++] = AddressOperand.Ptr16((ushort)(rdr.Address.ToUInt16() + ipOffset));
                     break;
                 case 'x':       // 2-digit Inline hexadecimal byte

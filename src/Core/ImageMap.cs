@@ -242,14 +242,7 @@ namespace Reko.Core
 		/// <returns></returns>
 		public bool TryFindSegment(Address addr, out ImageMapSegment segment)
 		{
-            if (!segments.TryGetLowerBound(addr, out segment))
-                return false;
-            if (addr.ToLinear() >= segment.Address.ToLinear() + segment.ContentSize)
-            {
-                segment = null;
-                return false;
-            }
-            return true;
+            return segments.TryGetLowerBound(addr, out segment);
 		}
 
 		public bool IsReadOnlyAddress(Address addr)
@@ -260,7 +253,7 @@ namespace Reko.Core
 
 		public bool IsExecutableAddress(Address addr)
 		{
-			ImageMapSegment seg ;
+			ImageMapSegment seg;
             return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Execute) != 0);
 		}
 
@@ -351,7 +344,7 @@ namespace Reko.Core
 			return IsInRange(addr.ToLinear());
 		}
 
-		public bool IsInRange(ulong linearAddress)
+		public virtual bool IsInRange(ulong linearAddress)
 		{
             ulong linItem = this.Address.ToLinear();
 			return (linItem <= linearAddress && linearAddress < linItem + Size);

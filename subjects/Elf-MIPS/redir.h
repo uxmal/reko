@@ -6,38 +6,68 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_3: (struct "Eq_3" (FC00690 (ptr code) ptrFC00690))
-	T_3 (in ra : (ptr Eq_3))
+Eq_2: (fn void ((ptr Eq_4), word32))
+	T_2 (in fn00400238 : word32)
+	T_3 (in signature of fn00400238 : void)
+Eq_4: (struct "Eq_4" (FC00690 (ptr code) ptrFC00690))
+	T_4 (in ra : (ptr Eq_4))
+	T_6 (in ra : (ptr Eq_4))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in r25_18 : (ptr code))
+T_2: (in fn00400238 : word32)
   Class: Eq_2
-  DataType: (ptr code)
-  OrigDataType: (ptr code)
-T_3: (in ra : (ptr Eq_3))
-  Class: Eq_3
-  DataType: (ptr Eq_3)
-  OrigDataType: (ptr (struct (FC00690 T_6 tFC00690)))
-T_4: (in 0x0FC00690 : word32)
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (fn T_8 (T_6, T_7)))
+T_3: (in signature of fn00400238 : void)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: 
+T_4: (in ra : (ptr Eq_4))
   Class: Eq_4
-  DataType: word32
-  OrigDataType: word32
-T_5: (in ra + 0x0FC00690 : word32)
+  DataType: (ptr Eq_4)
+  OrigDataType: (ptr (struct (FC00690 T_12 tFC00690)))
+T_5: (in dwArg00 : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in Mem0[ra + 0x0FC00690:word32] : word32)
-  Class: Eq_2
+T_6: (in ra : (ptr Eq_4))
+  Class: Eq_4
+  DataType: (ptr Eq_4)
+  OrigDataType: word32
+T_7: (in dwArg00 : word32)
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_8: (in fn00400238(ra, dwArg00) : void)
+  Class: Eq_8
+  DataType: void
+  OrigDataType: void
+T_9: (in r25_18 : (ptr code))
+  Class: Eq_9
+  DataType: (ptr code)
+  OrigDataType: (ptr code)
+T_10: (in 0x0FC00690 : word32)
+  Class: Eq_10
+  DataType: word32
+  OrigDataType: word32
+T_11: (in ra + 0x0FC00690 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_12: (in Mem0[ra + 0x0FC00690:word32] : word32)
+  Class: Eq_9
   DataType: (ptr code)
   OrigDataType: word32
 */
 typedef struct Globals {
 } Eq_1;
 
-typedef struct Eq_3 {
+typedef void (Eq_2)(Eq_4 *, word32);
+
+typedef struct Eq_4 {
 	 <anonymous> * ptrFC00690;	// FC00690
-} Eq_3;
+} Eq_4;
 

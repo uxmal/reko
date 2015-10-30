@@ -174,7 +174,7 @@ namespace Reko.Core
             return c;
         }
 
-        public int ReadLeSigned(PrimitiveType w)
+        public long ReadLeSigned(PrimitiveType w)
         {
             if ((w.Domain & Domain.Integer) != 0)
             {
@@ -183,6 +183,7 @@ namespace Reko.Core
                 case 1: return (sbyte)ReadByte();
                 case 2: return ReadLeInt16();
                 case 4: return ReadLeInt32();
+                case 8: return ReadLeInt64();
                 default: throw new ArgumentOutOfRangeException();
                 }
             }

@@ -58,7 +58,7 @@ namespace Reko.Core
 
 		public string Name { get;set; }
 
-		public override string ToString()
+        public override string ToString()
 		{
 			return string.Format("Segment {0} at {1}, {2} / {3} bytes", Name, Address.ToString(), ContentSize, Size);
 		}

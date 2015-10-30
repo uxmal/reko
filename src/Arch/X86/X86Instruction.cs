@@ -143,7 +143,8 @@ namespace Reko.Arch.X86
 				case 1: s += 'b'; break;
 				case 2: s += 'w'; break;
 				case 4: s += 'd'; break;
-				default: throw new ArgumentOutOfRangeException();
+				case 8: s += 'q'; break;
+                default: throw new ArgumentOutOfRangeException();
 				}
 				break;
 			}

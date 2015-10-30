@@ -3,6 +3,7 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -20,8 +21,19 @@ namespace Reko.Scanning
     /// </remarks>
     public class ShingledScanner
     {
-        const byte MaybeCode = 1;
-        const byte Data = 0;
+        private const byte MaybeCode = 1;
+        private const byte Data = 0;
+
+        private const InstructionClass L = InstructionClass.Linear;
+        private const InstructionClass T = InstructionClass.Transfer;
+        private const InstructionClass TK = InstructionClass.Transfer | InstructionClass.Call;
+        
+        private const InstructionClass CL = InstructionClass.Linear | InstructionClass.Conditional;
+        private const InstructionClass CT = InstructionClass.Transfer | InstructionClass.Conditional;
+        
+        private const InstructionClass DT = InstructionClass.Transfer | InstructionClass.Delay;
+        private const InstructionClass DCT = InstructionClass.Transfer | InstructionClass.Conditional | InstructionClass.Delay;
+        private const InstructionClass DTK = InstructionClass.Transfer | InstructionClass.Call | InstructionClass.Delay;
 
         private Program program;
         private readonly Address bad;
@@ -32,13 +44,17 @@ namespace Reko.Scanning
             this.bad = program.Platform.MakeAddressFromLinear(~0u);
         }
 
-        public void Scan()
+        public IEnumerable<Address> Scan()
         {
+            var map = new Dictionary<ImageMapSegment, byte[]>();
             foreach (var segment in program.ImageMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0))
             {
-                ScanSegment(segment);
+                var y = ScanSegment(segment);
+                map.Add(segment, y);
             }
+
+            return SpeculateCallDests(map);
         }
 
         /// <summary>
@@ -47,22 +63,11 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         public byte[] ScanSegment(ImageMapSegment segment)
         {
-            const InstructionClass L = InstructionClass.Linear;
-            const InstructionClass T = InstructionClass.Transfer;
-            const InstructionClass TK = InstructionClass.Transfer | InstructionClass.Call;
-
-            const InstructionClass CL = InstructionClass.Linear | InstructionClass.Conditional;
-            const InstructionClass CT = InstructionClass.Transfer | InstructionClass.Conditional;
-
-            const InstructionClass DT = InstructionClass.Transfer | InstructionClass.Delay;
-            const InstructionClass DCT = InstructionClass.Transfer | InstructionClass.Conditional | InstructionClass.Delay;
-            const InstructionClass DTK = InstructionClass.Transfer  | InstructionClass.Call | InstructionClass.Delay;
-
             var addrBase = segment.Address;
 
             var G = new DiGraph<Address>();
             G.AddNode(bad);
-            var y = new byte[segment.Size];
+            var y = new byte[segment.ContentSize];
             var step = program.Architecture.InstructionBitSize / 8;
             bool inDelaySlot = false;
             for (var a = 0; a < y.Length; a += step)
@@ -154,6 +159,40 @@ namespace Reko.Scanning
         {
             var dasm = program.CreateDisassembler(segment.Address + a);
             return dasm.FirstOrDefault();
+        }
+
+        public IEnumerable<Address> SpeculateCallDests(Dictionary<ImageMapSegment, byte[]> map)
+        {
+            var q = from addr in GetCalledAddresses(map)
+                    group addr by addr into g
+                    orderby g.Count(), g.Key
+                    select g.Key;
+            return q;
+        }
+
+        public IEnumerable<Address> GetCalledAddresses(Dictionary<ImageMapSegment, byte[]> map)
+        { 
+            foreach (var item in map)
+            {
+                for (int a = 0; a < item.Value.Length; ++a)
+                {
+                    if (item.Value[a] != MaybeCode)
+                        continue;
+                    var i = Dasm(item.Key, a);
+                    if (i.ToString().Contains("jal"))   //$DEBUG
+                        i.ToString();
+                    if ((i.InstructionClass & TK) == TK)
+                    {
+                        var dest = Destination(i);
+                        if (dest != null && IsExecutable(dest))
+                        {
+                            if (dest.ToString().EndsWith("230"))    //$DEBUG
+                                dest.ToLinear();
+                            yield return dest;
+                        }
+                    }
+                }
+            }
         }
     }
 }

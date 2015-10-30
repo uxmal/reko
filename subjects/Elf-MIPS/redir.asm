@@ -48,7 +48,7 @@ fn00400230()
 	bltzal	r0,00400238
 	nop
 
-l00400238:
+fn00400238()
 	lui	r28,+0FC1
 	addiu	r28,r28,-000079D8
 	addu	r28,r28,ra
