@@ -24,6 +24,7 @@ using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -31,6 +32,7 @@ using Reko.UnitTests.Scanning.Fragments;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 
@@ -47,11 +49,13 @@ namespace Reko.UnitTests.Scanning
         private Identifier reg1;
         private IImportResolver importResolver;
         private IDictionary<Address, ProcedureSignature> callSigs;
+        private ServiceContainer services;
 
         public class TestScanner : Scanner
         {
-            public TestScanner(Program prog, IDictionary<Address, ProcedureSignature> callSigs, IImportResolver importResolver)
-                : base(prog, callSigs, importResolver, new FakeDecompilerEventListener())
+            public TestScanner(Program prog, IDictionary<Address, ProcedureSignature> callSigs, IImportResolver importResolver,
+                IServiceProvider services)
+                : base(prog, callSigs, importResolver, services)
             {
             }
 
@@ -76,6 +80,10 @@ namespace Reko.UnitTests.Scanning
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
+            this.services = new ServiceContainer();
+            services.AddService<DecompilerHost>(new FakeDecompilerHost());
+            services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+
         }
 
         private ProcedureSignature CreateSignature(string ret, params string[] args)
@@ -131,12 +139,12 @@ namespace Reko.UnitTests.Scanning
             });
             Given_Program(Address.Ptr32(0x12314));
             var project = new Project { Programs = { program } };
-            
+
             var sc = new Scanner(
                 program,
                 null,
                 new ImportResolver(project),
-                new FakeDecompilerEventListener());
+                services);
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     Address.Ptr32(0x12314),
@@ -185,7 +193,8 @@ namespace Reko.UnitTests.Scanning
             return new TestScanner(
                 program,
                 callSigs,
-                importResolver);
+                importResolver,
+                services);
         }
 
         private TestScanner CreateScanner(Program prog)
@@ -194,7 +203,8 @@ namespace Reko.UnitTests.Scanning
             return new TestScanner(
                 prog, 
                 callSigs, 
-                importResolver);
+                importResolver,
+                services);
         }
 
         private TestScanner CreateScanner(Program prog, uint startAddress, int imageSize)
@@ -204,7 +214,7 @@ namespace Reko.UnitTests.Scanning
             prog.Platform = new FakePlatform(null, arch);
             prog.Image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
             prog.ImageMap = prog.Image.CreateImageMap();
-            return new TestScanner(prog, callSigs, importResolver);
+            return new TestScanner(prog, callSigs, importResolver, services);
         }
 
         [Test]
@@ -295,7 +305,7 @@ namespace Reko.UnitTests.Scanning
             prog.Architecture = lr.Architecture;
             prog.Platform = new FakePlatform(null, arch);
             var proj = new Project { Programs = { prog } };
-            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), new FakeDecompilerEventListener());
+            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), services);
             EntryPoint ep = new EntryPoint(addr, prog.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();

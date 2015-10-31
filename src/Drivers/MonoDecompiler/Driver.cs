@@ -55,7 +55,7 @@ namespace Reko.Mono
                 services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
                 services.AddService(typeof(IConfigurationService), new DecompilerConfiguration());
                 var ldr = new Loader(services);
-				var dec = new DecompilerDriver(ldr, host, services);
+				var dec = new DecompilerDriver(ldr, services);
 				dec.Decompile(args[0]);
 			}
 		}

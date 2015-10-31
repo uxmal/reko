@@ -45,11 +45,12 @@ namespace Reko.CmdLine
             var listener = new CmdLineListener();
             var config = new DecompilerConfiguration();
             var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
-            services.AddService(typeof(DecompilerEventListener), listener);
-            services.AddService(typeof(IConfigurationService), config);
-            services.AddService(typeof(ITypeLibraryLoaderService), new TypeLibraryLoaderServiceImpl());
-            services.AddService(typeof(IDiagnosticsService), diagnosticSvc);
+            services.AddService<DecompilerEventListener>(listener);
+            services.AddService<IConfigurationService>(config);
+            services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl());
+            services.AddService<IDiagnosticsService>(diagnosticSvc);
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            services.AddService<DecompilerHost>(new CmdLineHost());
             var driver = new CmdLineDriver(services, config);
             driver.Execute(args);
         }
@@ -66,14 +67,13 @@ namespace Reko.CmdLine
             if (pArgs == null)
                 return;
 
-            var host = new CmdLineHost();
             var ldr = new Loader(services);
             object defaultTo;
             if (pArgs.TryGetValue("--default-to", out defaultTo))
             {
                 ldr.DefaultToFormat = (string)defaultTo;
             }
-            var dec = new DecompilerDriver(ldr, host, services);
+            var dec = new DecompilerDriver(ldr, services);
 
             if (OverridesRequested(pArgs))
             {

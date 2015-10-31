@@ -74,6 +74,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             sc.AddService(typeof(IStatusBarService), new FakeStatusBarService());
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Arg<byte[]>.Is.NotNull,
                 Arg<Address>.Is.Null)).Return(program);
             ldr.Replay();
-            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
+            decSvc.Decompiler = new DecompilerDriver(ldr, sc);
             decSvc.Decompiler.Load("test.exe");
 
             interactor = new LoadedPageInteractor(sc);

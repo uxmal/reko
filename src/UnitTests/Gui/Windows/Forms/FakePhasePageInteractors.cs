@@ -109,18 +109,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
         }
 
-        public bool OpenBinary(string file, DecompilerHost host)
+        public bool OpenBinary(string file)
         {
             OpenBinaryCalled = true;
             return false;
         }
-        public bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host)
+        public bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase)
         {
             throw new NotImplementedException();
         }
 
 
-        public bool Assemble(string file, Assembler asm, DecompilerHost host)
+        public bool Assemble(string file, Assembler asm)
         {
             throw new NotImplementedException();
         }

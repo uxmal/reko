@@ -104,6 +104,7 @@ namespace Reko.Scanning
         private Dictionary<Address, ImportReference> importReferences;
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
+        private DecompilerHost host;
 
         private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
         
@@ -116,14 +117,15 @@ namespace Reko.Scanning
             Program program, 
             IDictionary<Address, ProcedureSignature> callSigs,
             IImportResolver importResolver,
-            DecompilerEventListener eventListener)
+            IServiceProvider services)
         {
             this.program = program;
             this.image = program.Image;
             this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
             this.callSigs = callSigs;
-            this.eventListener = eventListener;
+            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.host = services.RequireService<DecompilerHost>();
             if (imageMap == null)
                 throw new InvalidOperationException("Program must have an image map.");
             this.queue = new PriorityQueue<WorkItem>();
@@ -673,6 +675,8 @@ namespace Reko.Scanning
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
+                if (host.CancellationToken.IsCancellationRequested)
+                    break;
             }
         }
 

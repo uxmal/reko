@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Loading;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -36,7 +37,8 @@ namespace Reko.UnitTests.Arch.Intel
 {
 	public class RewriterTestBase
 	{
-		private string configFile;
+        private ServiceContainer sc;
+        private string configFile;
 		protected Assembler asm; 
 		protected Program program;
 		protected Scanner scanner;
@@ -53,6 +55,7 @@ namespace Reko.UnitTests.Arch.Intel
             var arch = new IntelArchitecture(ProcessorMode.Real);
             program = new Program() { Architecture = arch };
             asm = new X86TextAssembler(arch);
+            sc = new ServiceContainer();
 			configFile = null;
 		}
 
@@ -71,11 +74,13 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void DoRewriteCore()
         {
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             Project project = LoadProject();
             project.Programs.Add(this.program);
             scanner = new Scanner(this.program, new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                new FakeDecompilerEventListener());
+                sc);
             EntryPoint ep = new EntryPoint(baseAddress, this.program.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
             var program =  project.Programs[0];
@@ -94,7 +99,7 @@ namespace Reko.UnitTests.Arch.Intel
                 var absFile = FileUnitTester.MapTestPath(configFile);
                 using (Stream stm = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    project = new ProjectLoader(null, new Loader(new ServiceContainer())).LoadProject(stm);
+                    project = new ProjectLoader(null, new Loader(sc)).LoadProject(stm);
                 }
             }
             else

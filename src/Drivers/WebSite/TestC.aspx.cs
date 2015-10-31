@@ -150,7 +150,7 @@ namespace Reko.WebSite
                     var cfg = new DecompilerConfiguration();
                     var asm = cfg.GetAssembler("x86-masm");
                     var program = asm.AssembleFragment(Address.Ptr32(0x10000000), txtAssembler.Text + Environment.NewLine);
-					DecompilerDriver decomp = new DecompilerDriver(ldr, host, sc);
+					DecompilerDriver decomp = new DecompilerDriver(ldr, sc);
 					var project = new Project
                     {
                         Programs = { program }

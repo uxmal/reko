@@ -40,12 +40,13 @@ namespace Reko.UnitTests.Arch.Intel
         private MockRepository mr;
         private Win32Platform win32;
         private IntelArchitecture arch;
+        private IServiceProvider services;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
-            var services = mr.Stub<IServiceProvider>();
+            this.services = mr.Stub<IServiceProvider>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
             var configSvc = mr.StrictMock<IConfigurationService>();
             var win32env = new OperatingEnvironmentElement
@@ -61,6 +62,8 @@ namespace Reko.UnitTests.Arch.Intel
                 .Do(new Func<string, string>(s => s));
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
+            services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
+            services.Stub(s => s.GetService(typeof(DecompilerHost))).Return(new FakeDecompilerHost());
             tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
                 .Do(new Func<Platform, string, TypeLibrary>((p, n) =>
                 {
@@ -152,7 +155,7 @@ namespace Reko.UnitTests.Arch.Intel
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                new FakeDecompilerEventListener());
+                services);
             foreach (var ep in asm.EntryPoints)
             {
                 scan.EnqueueEntryPoint(ep);

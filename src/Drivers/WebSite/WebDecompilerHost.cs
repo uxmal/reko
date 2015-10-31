@@ -21,6 +21,7 @@
 using Reko.Core;
 using System;
 using System.IO;
+using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -37,7 +38,10 @@ namespace Reko.WebSite
 			assembler = new StringWriter();
 			writer = new StringWriter();
 			discard = new StringWriter();
+            this.CancellationToken = new CancellationToken();
 		}
+
+        public CancellationToken CancellationToken { get; private set; }
 
 		public string FetchSample(HttpServerUtility server, string file)
 		{

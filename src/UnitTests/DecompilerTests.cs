@@ -49,8 +49,9 @@ namespace Reko.UnitTests
             var sp = new ServiceContainer();
             loader = mr.StrictMock<ILoader>();
             sp.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            sp.AddService<DecompilerHost>(host);
             loader.Replay();
-            decompiler = new TestDecompiler(loader, host, sp);
+            decompiler = new TestDecompiler(loader, sp);
             loader.BackToRecord();
         }
 
@@ -103,8 +104,8 @@ namespace Reko.UnitTests
 
     public class TestDecompiler : DecompilerDriver
     {
-        public TestDecompiler(ILoader loader, DecompilerHost host, IServiceProvider sp)
-            : base(loader, host, sp)
+        public TestDecompiler(ILoader loader, IServiceProvider sp)
+            : base(loader, sp)
         {
         }
     }

@@ -51,9 +51,10 @@ namespace Reko.UnitTests.Gui
         {
             var loader = mr.Stub<ILoader>();
             var host = mr.Stub<DecompilerHost>();
+            sc.AddService<DecompilerHost>(host);
             mr.ReplayAll();
 
-            DecompilerDriver d = new DecompilerDriver(loader, host, sc);
+            DecompilerDriver d = new DecompilerDriver(loader, sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
@@ -85,10 +86,11 @@ namespace Reko.UnitTests.Gui
             var image = new LoadedImage(Address.Ptr32(0x1000), bytes);
             var imageMap = image.CreateImageMap();
             var prog = new Program(image, imageMap, arch, platform);
+            sc.AddService<DecompilerHost>(host);
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(fileName, bytes, null)).Return(prog);
             loader.Replay();
-            var dec = new DecompilerDriver(loader, host, sc);
+            var dec = new DecompilerDriver(loader, sc);
             mr.ReplayAll();
 
             svc.Decompiler = dec;

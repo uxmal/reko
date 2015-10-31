@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Loading;
 using Reko.Scanning;
@@ -51,6 +52,8 @@ namespace Reko.UnitTests.Typing
             var services = new ServiceContainer();
             var config = new FakeDecompilerConfiguration();
             services.AddService<IConfigurationService>(config);
+            services.AddService<DecompilerHost>(new FakeDecompilerHost());
+            services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             ILoader ldr = new Loader(services);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
@@ -59,11 +62,11 @@ namespace Reko.UnitTests.Typing
             program.Platform = new DefaultPlatform(services, program.Architecture);
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
             var project = new Project { Programs = { program } };
-			var scan = new Scanner(
+            var scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                new FakeDecompilerEventListener());
+                services);
 			scan.EnqueueEntryPoint(ep);
 			scan.ScanImage();
 
@@ -77,13 +80,15 @@ namespace Reko.UnitTests.Typing
             var svc = new ServiceContainer();
             var cfg = new FakeDecompilerConfiguration();
             svc.AddService<IConfigurationService>(cfg);
+            svc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            svc.AddService<DecompilerHost>(new FakeDecompilerHost());
             ILoader ldr = new Loader(svc);
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var img = imgLoader.Load(null);
             var program = new Program(img.Image, img.Image.CreateImageMap(), img.Architecture, img.Platform);
             var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), new FakeDecompilerEventListener());
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), svc);
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 

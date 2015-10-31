@@ -84,6 +84,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             sc.AddService(typeof(IProjectBrowserService), browserSvc);
             sc.AddService(typeof(ILowLevelViewService), memSvc);
             sc.AddService<ILoader>(loader);
+            sc.AddService<DecompilerHost>(host);
 
             i = new TestInitialPageInteractor(sc, dec);
 
@@ -110,7 +111,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
-            i.OpenBinary("floxe.exe", host);
+            i.OpenBinary("floxe.exe");
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
             mr.VerifyAll();
         }
@@ -129,7 +130,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
-            i.OpenBinary("floxe.exe", host);
+            i.OpenBinary("floxe.exe");
 
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
             mr.VerifyAll();
@@ -144,7 +145,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             memSvc.Expect(s => s.ViewImage(program));
             mr.ReplayAll();
 
-            i.OpenBinary("floxe.exe", host);
+            i.OpenBinary("floxe.exe");
 
             mr.VerifyAll();
         }
@@ -158,7 +159,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
-            i.OpenBinary("foo.exe", new FakeDecompilerHost());
+            i.OpenBinary("foo.exe");
 
             mr.VerifyAll();
         }
@@ -172,7 +173,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
-            i.OpenBinary("foo.exe", host);
+            i.OpenBinary("foo.exe");
             Assert.IsTrue(i.LeavePage());
 
             mr.VerifyAll();
@@ -201,7 +202,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 this.decompiler = decompiler;
             }
 
-            protected override IDecompiler CreateDecompiler(ILoader ldr, DecompilerHost host)
+            protected override IDecompiler CreateDecompiler(ILoader ldr)
             {
                 return decompiler;
             }

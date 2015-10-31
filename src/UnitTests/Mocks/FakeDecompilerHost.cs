@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -35,6 +36,13 @@ namespace Reko.UnitTests.Mocks
         private StringWriter typesWriter = new StringWriter();
         private StringWriter globalsWriter = new StringWriter();
         private IConfigurationService config = new FakeDecompilerConfiguration();
+
+        public FakeDecompilerHost()
+        {
+            this.CancellationToken = new CancellationToken();
+        }
+
+        public CancellationToken CancellationToken { get; private set; }
 
         public TextWriter CreateDecompiledCodeWriter(string file)
         {
@@ -87,5 +95,6 @@ namespace Reko.UnitTests.Mocks
         {
             get { return globalsWriter; }
         }
+
     }
 }

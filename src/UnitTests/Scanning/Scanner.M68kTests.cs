@@ -31,6 +31,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -41,13 +43,17 @@ namespace Reko.UnitTests.Scanning
         private M68kArchitecture arch;
         private Program program;
         private Scanner scanner;
+        private ServiceContainer sc;
         private DecompilerEventListener listener;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            sc = new ServiceContainer();
             listener = mr.Stub<DecompilerEventListener>();
+            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
         }
 
         private void BuildTest32(Action<M68kAssembler> asmProg)
@@ -88,12 +94,12 @@ namespace Reko.UnitTests.Scanning
 
         private void RunTest(Address addrBase)
         {
-            var project =     new Project { Programs = { program } };
+            var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                listener);
+                sc);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
             scanner.ScanImage();
         }

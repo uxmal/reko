@@ -68,16 +68,14 @@ namespace Reko
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
 
-        public DecompilerDriver(ILoader ldr, DecompilerHost host, IServiceProvider services)
+        public DecompilerDriver(ILoader ldr, IServiceProvider services)
         {
             if (ldr == null)
                 throw new ArgumentNullException("ldr");
-            if (host == null)
-                throw new ArgumentNullException("host");
             if (services == null)
                 throw new ArgumentNullException("services");
             this.loader = ldr;
-            this.host = host;
+            this.host = services.RequireService<DecompilerHost>();
             this.services = services;
             this.eventListener = services.GetService<DecompilerEventListener>();
         }
@@ -367,7 +365,7 @@ namespace Reko
 		public ProcedureBase ScanProcedure(ProgramAddress paddr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = CreateScanner(paddr.Program, eventListener);
+				scanner = CreateScanner(paddr.Program);
 			return scanner.ScanProcedure(paddr.Address, null, paddr.Program.Architecture.CreateProcessorState());
 		}
 
@@ -391,10 +389,8 @@ namespace Reko
         {
             try
             {
-                eventListener.ShowStatus("Shingle scanning");
-
                 eventListener.ShowStatus("Rewriting reachable machine code.");
-                scanner = CreateScanner(program, eventListener);
+                scanner = CreateScanner(program);
                 foreach (EntryPoint ep in program.EntryPoints)
                 {
                     scanner.EnqueueEntryPoint(ep);
@@ -409,6 +405,7 @@ namespace Reko
                 }
                 if (program.User.Heuristics.Contains("shingle"))
                 {
+                    eventListener.ShowStatus("Shingle scanning");
                     var sh = new ShingledScanner(program);
                     var procs = sh.Scan();
                     foreach (var addr in procs)
@@ -458,13 +455,13 @@ namespace Reko
                 .ToDictionary(item => item.Key, item => item.Value);
         }
 
-        private IScanner CreateScanner(Program program, DecompilerEventListener eventListener)
+        private IScanner CreateScanner(Program program)
         {
             return new Scanner(
                 program, 
                 LoadCallSignatures(program, program.User.Calls.Values),
                 new ImportResolver(project),
-                eventListener);
+                services);
         }
 
         /// <summary>

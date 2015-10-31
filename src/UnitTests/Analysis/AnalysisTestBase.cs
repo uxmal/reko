@@ -179,6 +179,8 @@ namespace Reko.UnitTests.Analysis
             var sc = new ServiceContainer();
             sc.AddService(typeof(IDiagnosticsService), fakeDiagnosticsService);
             sc.AddService(typeof(IConfigurationService), fakeConfigService);
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
@@ -187,7 +189,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                new FakeDecompilerEventListener());
+                sc);
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
             foreach (var f in project.Programs)

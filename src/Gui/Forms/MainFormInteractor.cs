@@ -34,6 +34,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Forms
@@ -83,8 +84,10 @@ namespace Reko.Gui.Forms
             this.mru.Load(MruListFile);
             this.sc = services.RequireService<IServiceContainer>();
             this.nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
+            this.CancellationToken = new CancellationToken();
         }
 
+        public CancellationToken CancellationToken { get; private set; }
         public IServiceProvider Services { get { return sc; } }
 
         private void CreatePhaseInteractors(IServiceFactory svcFactory)
@@ -101,7 +104,7 @@ namespace Reko.Gui.Forms
 
         public virtual IDecompiler CreateDecompiler(ILoader ldr)
         {
-            return new DecompilerDriver(ldr, this, sc);
+            return new DecompilerDriver(ldr, sc);
         }
 
         public IMainForm LoadForm()
@@ -131,6 +134,8 @@ namespace Reko.Gui.Forms
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
         {
+            sc.AddService<DecompilerHost>(this);
+
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
 
@@ -213,7 +218,7 @@ namespace Reko.Gui.Forms
 
         public void OpenBinary(string file)
         {
-            OpenBinary(file, (f) => pageInitial.OpenBinary(f, this));
+            OpenBinary(file, (f) => pageInitial.OpenBinary(f));
         }
 
         /// <summary>
@@ -248,7 +253,7 @@ namespace Reko.Gui.Forms
                 {
                     mru.Use(form.OpenFileDialog.FileName);
                     OpenBinary(form.OpenFileDialog.FileName, (filename) =>
-                        pageInitial.OpenBinary(filename, this));
+                        pageInitial.OpenBinary(filename));
                 }
             }
             finally
@@ -283,7 +288,7 @@ namespace Reko.Gui.Forms
                 var typeName = dlg.SelectedArchitectureTypeName;
                 var t = Type.GetType(typeName, true);
                 var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm, this));
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm));
             }
             catch (Exception e)
             {
@@ -327,8 +332,7 @@ namespace Reko.Gui.Forms
                         f,
                         arch,
                         platform,
-                        addrBase,
-                        this));
+                        addrBase));
             }
             catch (Exception ex)
             {
@@ -814,7 +818,7 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = mru.Items[iMru];
-                OpenBinary(file, (f) => pageInitial.OpenBinary(file, this));
+                OpenBinary(file, (f) => pageInitial.OpenBinary(file));
                 mru.Use(file);
                 return true;
             }

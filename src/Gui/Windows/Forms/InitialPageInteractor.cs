@@ -34,9 +34,9 @@ namespace Reko.Gui.Windows.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
     {
-        bool OpenBinary(string file, DecompilerHost host);
-        bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host);
-        bool Assemble(string file, Assembler asm, DecompilerHost host);
+        bool OpenBinary(string file);
+        bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase);
+        bool Assemble(string file, Assembler asm);
     }
 
     /// <summary>
@@ -48,9 +48,9 @@ namespace Reko.Gui.Windows.Forms
         {
         }
 
-        protected virtual IDecompiler CreateDecompiler(ILoader ldr, DecompilerHost host)
+        protected virtual IDecompiler CreateDecompiler(ILoader ldr)
         {
-            return new DecompilerDriver(ldr, host, Services);
+            return new DecompilerDriver(ldr, Services);
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -96,10 +96,10 @@ namespace Reko.Gui.Windows.Forms
             return (Decompiler != null);
         }
 
-        public bool OpenBinary(string file, DecompilerHost host)
+        public bool OpenBinary(string file)
         {
             var ldr = Services.RequireService<ILoader>();
-            this.Decompiler = CreateDecompiler(ldr, host);
+            this.Decompiler = CreateDecompiler(ldr);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             bool isOldProject = false;
             svc.StartBackgroundWork("Loading program", delegate()
@@ -122,11 +122,10 @@ namespace Reko.Gui.Windows.Forms
             string file, 
             IProcessorArchitecture arch,
             Platform platform, 
-            Address addrBase, 
-            DecompilerHost host)
+            Address addrBase)
         {
             var ldr = Services.RequireService<ILoader>();
-            this.Decompiler = CreateDecompiler(ldr, host);
+            this.Decompiler = CreateDecompiler(ldr);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
@@ -144,10 +143,10 @@ namespace Reko.Gui.Windows.Forms
             return false;   // We never open projects this way.
         }
 
-        public bool Assemble(string file, Assembler asm, DecompilerHost host)
+        public bool Assemble(string file, Assembler asm)
         {
             var ldr = Services.RequireService<ILoader>();
-            this.Decompiler = CreateDecompiler(ldr, host);
+            this.Decompiler = CreateDecompiler(ldr);
             var svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {

@@ -40,11 +40,14 @@ namespace Reko.UnitTests.Structure
 	public class StructureTestBase
 	{
 		protected Program program;
+        private ServiceContainer sc;
 
-		protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
+        protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
-            var sc = new ServiceContainer();
+            sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureReal();
 
@@ -94,7 +97,7 @@ namespace Reko.UnitTests.Structure
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                new FakeDecompilerEventListener());
+                sc);
             foreach (EntryPoint ep in program.EntryPoints)
             {
                 scan.EnqueueEntryPoint(ep);

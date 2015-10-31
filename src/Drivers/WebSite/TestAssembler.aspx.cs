@@ -87,7 +87,7 @@ namespace Reko.WebSite
             var prog = asm.AssembleFragment(loadAddress, txtAssembler.Text + Environment.NewLine);
             var sc = new ServiceContainer();
             var loader = new Loader(sc);
-            DecompilerDriver decomp = new DecompilerDriver(loader, host, sc);
+            DecompilerDriver decomp = new DecompilerDriver(loader, sc);
             var proj = new Project {
                 Programs = {
                     prog

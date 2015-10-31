@@ -29,6 +29,8 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -57,6 +59,9 @@ namespace Reko.UnitTests.Scanning
             var asm = new X86Assembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             var lr = asm.GetImage();
             program = new Program(
                 lr.Image,
@@ -68,7 +73,7 @@ namespace Reko.UnitTests.Scanning
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                new FakeDecompilerEventListener());
+                sc);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
             scanner.ScanImage();
         }

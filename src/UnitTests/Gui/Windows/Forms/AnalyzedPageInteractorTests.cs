@@ -83,8 +83,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
             ldr.Replay();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             this.decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
+            decSvc.Decompiler = new DecompilerDriver(ldr, sc);
             decSvc.Decompiler.Load("test.exe");
             program = decSvc.Decompiler.Project.Programs.First();
             decSvc.Decompiler.ScanPrograms();
