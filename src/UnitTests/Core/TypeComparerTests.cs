@@ -36,5 +36,19 @@ namespace Reko.UnitTests.Core
 			DataTypeComparer c = new DataTypeComparer();
 			Assert.AreEqual(0, c.Compare(p1, p2));
 		}
+        [Test]
+        public void CmpUnionToUnion()
+        {
+            //Warning : inner types were selected in such a way as to force UnionAlternativeCollection
+            // to place them in provided order.
+            DataType inner1 = PrimitiveType.UInt32;
+            DataType inner2 = PrimitiveType.UInt16;
+            DataType inner3 = PrimitiveType.UInt8;
+            UnionType u1 = new UnionType("Union1",inner1,inner3,inner1);
+            UnionType u2 = new UnionType("Union1",inner1,inner3,inner2);
+
+            DataTypeComparer c = new DataTypeComparer();
+            Assert.AreNotEqual(0, c.Compare(u1, u2));
+        }
 	}
 }
