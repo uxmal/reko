@@ -84,10 +84,10 @@ namespace Reko.Gui.Forms
             this.mru.Load(MruListFile);
             this.sc = services.RequireService<IServiceContainer>();
             this.nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
-            this.CancellationToken = new CancellationToken();
+            this.CancellationTokenSource = new CancellationTokenSource();
         }
 
-        public CancellationToken CancellationToken { get; private set; }
+        public CancellationTokenSource CancellationTokenSource { get; private set; }
         public IServiceProvider Services { get { return sc; } }
 
         private void CreatePhaseInteractors(IServiceFactory svcFactory)

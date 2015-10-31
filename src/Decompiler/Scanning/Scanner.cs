@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace Reko.Scanning
 {
@@ -104,7 +105,7 @@ namespace Reko.Scanning
         private Dictionary<Address, ImportReference> importReferences;
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
-        private DecompilerHost host;
+        private CancellationTokenSource cancelSvc;
 
         private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
         
@@ -125,7 +126,7 @@ namespace Reko.Scanning
             this.importResolver = importResolver;
             this.callSigs = callSigs;
             this.eventListener = services.RequireService<DecompilerEventListener>();
-            this.host = services.RequireService<DecompilerHost>();
+            this.cancelSvc = services.RequireService<CancellationTokenSource>();
             if (imageMap == null)
                 throw new InvalidOperationException("Program must have an image map.");
             this.queue = new PriorityQueue<WorkItem>();
@@ -675,7 +676,7 @@ namespace Reko.Scanning
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
-                if (host.CancellationToken.IsCancellationRequested)
+                if (cancelSvc.IsCancellationRequested)
                     break;
             }
         }

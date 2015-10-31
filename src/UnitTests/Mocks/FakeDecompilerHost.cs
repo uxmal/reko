@@ -39,10 +39,7 @@ namespace Reko.UnitTests.Mocks
 
         public FakeDecompilerHost()
         {
-            this.CancellationToken = new CancellationToken();
         }
-
-        public CancellationToken CancellationToken { get; private set; }
 
         public TextWriter CreateDecompiledCodeWriter(string file)
         {

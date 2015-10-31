@@ -35,6 +35,8 @@ namespace Reko.Gui.Windows.Forms
             InitializeComponent();
         }
 
+        public Button CancellationButton {  get { return btnCancel; } }
+
         public BackgroundWorker Worker
         {
             get { return backgroundWorker; }

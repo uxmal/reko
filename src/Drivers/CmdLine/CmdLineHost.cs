@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 
 namespace Reko.CmdLine
 {
@@ -33,10 +32,7 @@ namespace Reko.CmdLine
     {
         public CmdLineHost()
         {
-            this.CancellationToken = new CancellationToken();
         }
-
-        public CancellationToken CancellationToken { get; private set; }
 
         public virtual TextWriter CreateTextWriter(string filename)
         {

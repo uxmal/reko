@@ -38,10 +38,7 @@ namespace Reko.WebSite
 			assembler = new StringWriter();
 			writer = new StringWriter();
 			discard = new StringWriter();
-            this.CancellationToken = new CancellationToken();
 		}
-
-        public CancellationToken CancellationToken { get; private set; }
 
 		public string FetchSample(HttpServerUtility server, string file)
 		{

@@ -38,7 +38,6 @@ namespace Reko
         void WriteGlobals(Program program, Action<TextWriter> writer);
 
         IConfigurationService Configuration { get; }
-        CancellationToken CancellationToken { get; }
 	}
 
 	/// <summary>
@@ -50,16 +49,14 @@ namespace Reko
 
         public NullDecompilerHost()
         {
-            this.CancellationToken = new CancellationToken();
         }
+
 		#region DecompilerHost Members
 
         public IConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }
-
-        public CancellationToken CancellationToken { get; private set; }
 
         public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {

@@ -28,6 +28,8 @@ using System.ComponentModel;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading;
+using System.ComponentModel.Design;
 
 namespace Reko.Gui.Windows
 {
@@ -45,6 +47,7 @@ namespace Reko.Gui.Windows
 
         private string status;
         private const int STATUS_UPDATE_ONLY = -4711;
+        private CancellationTokenSource cancellationSvc;
 
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
@@ -58,9 +61,11 @@ namespace Reko.Gui.Windows
             if (dlg != null)
                 throw new InvalidOperationException("Dialog is already running.");
             this.dlg = new WorkerDialog();
-
+            this.cancellationSvc = new CancellationTokenSource();
+            this.sp.RequireService<IServiceContainer>().AddService<CancellationTokenSource>(cancellationSvc);
             dlg.Load += new EventHandler(dlg_Load);
             dlg.Closed += new EventHandler(dlg_Closed);
+            dlg.CancellationButton.Click += dlg_Cancelled;
             dlg.Worker.WorkerSupportsCancellation = true;
             dlg.Worker.WorkerReportsProgress = true;
             dlg.Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
@@ -135,6 +140,12 @@ namespace Reko.Gui.Windows
             dlg.Worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             dlg.Worker.ProgressChanged -= new ProgressChangedEventHandler(Worker_ProgressChanged);
             task = null;
+            sp.RequireService<IServiceContainer>().RemoveService(typeof(CancellationTokenSource));
+        }
+
+        private void dlg_Cancelled(object sender, EventArgs e)
+        {
+            cancellationSvc.Cancel();
         }
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
