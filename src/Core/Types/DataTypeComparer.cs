@@ -188,8 +188,8 @@ namespace Reko.Core.Types
 			++count;
             for (int i = 0; i < x.Alternatives.Count; ++i)
             {
-				UnionAlternative ax = x.Alternatives.Values[0];
-                UnionAlternative ay = y.Alternatives.Values[0];
+				UnionAlternative ax = x.Alternatives.Values[i];
+                UnionAlternative ay = y.Alternatives.Values[i];
 				d = Compare(ax.DataType, ay.DataType, count);
 				if (d != 0)
 					return d;
