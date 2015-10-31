@@ -31,6 +31,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace Reko.UnitTests.Arch.Intel
 {
@@ -63,7 +64,7 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
             services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
-            services.Stub(s => s.GetService(typeof(DecompilerHost))).Return(new FakeDecompilerHost());
+            services.Stub(s => s.GetService(typeof(CancellationTokenSource))).Return(null);
             tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
                 .Do(new Func<Platform, string, TypeLibrary>((p, n) =>
                 {

@@ -329,6 +329,11 @@ namespace Reko.Scanning
             return false;
         }
 
+        public bool VisitNop(RtlNop nop)
+        {
+            return true;
+        }
+       
         private Block BlockFromAddress(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
         {
             return scanner.EnqueueJumpTarget(addrSrc, addrDst, proc, state);

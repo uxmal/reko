@@ -89,6 +89,11 @@ namespace Reko.Core.Rtl
             return pInvalid != null;
         }
 
+        public bool VisitNop(RtlNop nop)
+        {
+            return pattern is RtlNop;
+        }
+
         public bool VisitBranch(RtlBranch branch)
         {
             var branchPat = pattern as RtlBranch;

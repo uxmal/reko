@@ -481,7 +481,6 @@ namespace Reko.Arch.Arm
         case Opcode.MOVS:
         case Opcode.POP:
         case Opcode.PUSH:
-        case Opcode.NOP:
         case Opcode.YIELD:
         case Opcode.WFE:
         case Opcode.WFI:
@@ -509,6 +508,7 @@ namespace Reko.Arch.Arm
                 case Opcode.LDRSH: RewriteLdr(PrimitiveType.Int16); break;
                 case Opcode.LDM: RewriteLdm(); break;
                 case Opcode.LDMDB: RewriteLdm(); break;
+                case Opcode.NOP: emitter.Nop(); break;
                 case Opcode.MOV: RewriteMov(); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.ORR: RewriteBinOp(Operator.Or, false); break;

@@ -1,6 +1,8 @@
 ﻿using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,23 +26,23 @@ namespace Reko.Scanning
         private const byte MaybeCode = 1;
         private const byte Data = 0;
 
-        private const InstructionClass L = InstructionClass.Linear;
-        private const InstructionClass T = InstructionClass.Transfer;
-        private const InstructionClass TK = InstructionClass.Transfer | InstructionClass.Call;
+        private const RtlClass L = RtlClass.Linear;
+        private const RtlClass T = RtlClass.Transfer;
         
-        private const InstructionClass CL = InstructionClass.Linear | InstructionClass.Conditional;
-        private const InstructionClass CT = InstructionClass.Transfer | InstructionClass.Conditional;
+        private const RtlClass CL = RtlClass.Linear | RtlClass.Conditional;
+        private const RtlClass CT = RtlClass.Transfer | RtlClass.Conditional;
         
-        private const InstructionClass DT = InstructionClass.Transfer | InstructionClass.Delay;
-        private const InstructionClass DCT = InstructionClass.Transfer | InstructionClass.Conditional | InstructionClass.Delay;
-        private const InstructionClass DTK = InstructionClass.Transfer | InstructionClass.Call | InstructionClass.Delay;
+        private const RtlClass DT = RtlClass.Transfer | RtlClass.Delay;
+        private const RtlClass DCT = RtlClass.Transfer | RtlClass.Conditional | RtlClass.Delay;
 
         private Program program;
         private readonly Address bad;
+        private IRewriterHost host;
 
-        public ShingledScanner(Program program)
+        public ShingledScanner(Program program, IRewriterHost host)
         {
             this.program = program;
+            this.host = host;
             this.bad = program.Platform.MakeAddressFromLinear(~0u);
         }
 
@@ -75,16 +77,11 @@ namespace Reko.Scanning
             {
                 y[a] = MaybeCode;
                 var i = Dasm(segment, a);
-                if (i == null || !i.IsValid)
+                var r = i.Instructions.Last();
+                if (i == null || r is RtlInvalid)
                     AddEdge(G, bad, i.Address);
-                switch (i.InstructionClass)
-                {
-                case L:
-                case CL:
-                case CT:
-                case DT:
-                case DTK:
-                case DCT:
+                if (MayFallThrough(i, r))
+                { 
                     if (!inDelaySlot)
                     {
                         if (a + i.Length < y.Length)
@@ -92,17 +89,11 @@ namespace Reko.Scanning
                         else
                             AddEdge(G, bad, i.Address);
                     }
-                    break;
                 }
-                switch (i.InstructionClass)
+                var tr = r as RtlTransfer;
+                if (tr != null)
                 {
-                case T:
-                case TK:
-                case CT:
-                case DT:
-                case DTK:
-                case DCT:
-                    var dest = Destination(i);
+                    var dest = Destination(tr);
                     if (dest != null)
                     {
                         if (IsExecutable(dest))
@@ -110,10 +101,9 @@ namespace Reko.Scanning
                         else
                             AddEdge(G, bad, i.Address);
                     }
-                    break;
                 }
                 // If this is a delayed unconditional branch...
-                inDelaySlot = i.InstructionClass == DT;
+                inDelaySlot = i.Class == DT;
             }
             foreach (var a in new DfsIterator<Address>(G).PreOrder(bad))
             {
@@ -123,6 +113,18 @@ namespace Reko.Scanning
                 }
             }
             return y;
+        }
+
+        private bool MayFallThrough(RtlInstructionCluster i, RtlInstruction r)
+        {
+            return r is RtlAssignment
+                || r is RtlBranch
+                || r is RtlCall;        //$REVIEW: what if you call a terminating function.
+        }
+
+        private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)
+        {
+            return r is RtlGoto || r is RtlCall;
         }
 
         private void AddEdge(DiGraph<Address> g, Address from, Address to)
@@ -140,26 +142,19 @@ namespace Reko.Scanning
             return (seg.Access & AccessMode.Execute) != 0;
         }
 
-        private Address Destination(MachineInstruction i)
+        private Address Destination(RtlTransfer r)
         {
-            var op = i.GetOperand(0) as AddressOperand;
-            if (op == null)
-            {
-                // Z80 has JP Z,<dest> instructions...
-                op = i.GetOperand(1) as AddressOperand;
-            }
-            if (op != null)
-            {
-                return op.Address;
-            }
-
-            return null;
+            return r.Target as Address;
         }
 
-        private MachineInstruction Dasm(ImageMapSegment segment, int a)
+        private RtlInstructionCluster Dasm(ImageMapSegment segment, int a)
         {
-            var dasm = program.CreateDisassembler(segment.Address + a);
-            return dasm.FirstOrDefault();
+            var rw = program.Architecture.CreateRewriter(
+                program.CreateImageReader(segment.Address + a),
+                program.Architecture.CreateProcessorState(),
+                program.Architecture.CreateFrame(),
+                host);
+            return rw.FirstOrDefault();
         }
 
         public IEnumerable<Address> SpeculateCallDests(Dictionary<ImageMapSegment, byte[]> map)
@@ -180,15 +175,13 @@ namespace Reko.Scanning
                     if (item.Value[a] != MaybeCode)
                         continue;
                     var i = Dasm(item.Key, a);
-                    if (i.ToString().Contains("jal"))   //$DEBUG
-                        i.ToString();
-                    if ((i.InstructionClass & TK) == TK)
+                    var r = i.Instructions.Last();
+                    var c = r as RtlCall;
+                    if (c != null)
                     {
-                        var dest = Destination(i);
+                        var dest = Destination(c);
                         if (dest != null && IsExecutable(dest))
                         {
-                            if (dest.ToString().EndsWith("230"))    //$DEBUG
-                                dest.ToLinear();
                             yield return dest;
                         }
                     }

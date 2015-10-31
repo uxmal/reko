@@ -22,7 +22,10 @@ using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using Reko.Scanning;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +36,16 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class ShingledScannerTests
     {
+        private MockRepository mr;
         private Program program;
+        private ShingledScanner sh;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+
+        }
 
         private void Given_Mips_Image(params uint [] words)
         {
@@ -79,11 +91,20 @@ namespace Reko.UnitTests.Scanning
             return items.Where((item, i) => (i % n) == 0).ToArray();
         }
 
+        private void Given_Scanner()
+        {
+            var host = mr.Stub<IRewriterHost>();
+            host.Stub(h => h.EnsurePseudoProcedure(null, null, 0))
+                .IgnoreArguments()
+                .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
+            host.Replay();
+            this.sh = new ShingledScanner(program, host);
+        }
+
         [Test]
         public void Shsc_Invalid()
         {
             Given_Mips_Image(0x00001403);
-            var sh = new ShingledScanner(program);
             var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 0 }, TakeEach(by, 4));
         }
@@ -92,7 +113,7 @@ namespace Reko.UnitTests.Scanning
         public void Shsc_Return()
         {
             Given_Mips_Image(0x03E00008, 0);
-            var sh = new ShingledScanner(program);
+            Given_Scanner();
             var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 1, 1 }, TakeEach(by, 4));
         }
@@ -101,7 +122,7 @@ namespace Reko.UnitTests.Scanning
         public void Shsc_CondJump()
         {
             Given_Mips_Image(0x1C60FFFF, 0, 0x03e00008, 0);
-            var sh = new ShingledScanner(program);
+            Given_Scanner();
             var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(by, 4));
         }
@@ -110,7 +131,7 @@ namespace Reko.UnitTests.Scanning
         public void Shsc_Overlapping()
         {
             Given_x86_Image(0x33, 0xC0, 0xC0, 0x90, 0xc3);
-            var sh = new ShingledScanner(program);
+            Given_Scanner();
             var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, by);
         }

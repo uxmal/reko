@@ -65,7 +65,7 @@ namespace Reko.Arch.Mos6502
                 return Constant.Invalid;
         }
 
-        public override void SetRegister(RegisterStorage r, Core.Expressions.Constant v)
+        public override void SetRegister(RegisterStorage r, Constant v)
         {
             if (v != null && v.IsValid)
             {

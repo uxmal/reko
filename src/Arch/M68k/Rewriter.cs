@@ -134,7 +134,7 @@ VS Overflow Set 1001 V
                 case Opcode.mulu: RewriteMul((s, d) => emitter.UMul(d, s)); break;
                 case Opcode.neg: RewriteUnary(s => emitter.Neg(s), AllConditions); break;
                 case Opcode.negx: RewriteUnary(RewriteNegx, AllConditions); break;
-                case Opcode.nop: continue;
+                case Opcode.nop: emitter.Nop(); break;
                 case Opcode.not: RewriteUnary(s => emitter.Comp(s), LogicalConditions); break;
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 case Opcode.ori: RewriteLogical((s, d) => emitter.Or(d, s)); break;

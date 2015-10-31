@@ -102,7 +102,7 @@ namespace Reko.Arch.Mos6502
                 case Opcode.ldx: Ld(Registers.x); break;
                 case Opcode.ldy: Ld(Registers.y); break;
                 case Opcode.lsr: Lsr(); break;
-                case Opcode.nop: continue; 
+                case Opcode.nop: emitter.Nop(); break;
                 case Opcode.ora: Ora(); break;
                 case Opcode.pha: Push(Registers.a); break;
                 case Opcode.php: Push(AllRegs()); break;

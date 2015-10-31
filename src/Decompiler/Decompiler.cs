@@ -406,7 +406,7 @@ namespace Reko
                 if (program.User.Heuristics.Contains("shingle"))
                 {
                     eventListener.ShowStatus("Shingle scanning");
-                    var sh = new ShingledScanner(program);
+                    var sh = new ShingledScanner(program, (IRewriterHost) scanner);
                     var procs = sh.Scan();
                     foreach (var addr in procs)
                     {

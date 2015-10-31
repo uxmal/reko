@@ -20,20 +20,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public interface RtlInstructionVisitor<T>
+    public class RtlNop : RtlInstruction
     {
-        T VisitAssignment(RtlAssignment ass);
-        T VisitBranch(RtlBranch branch);
-        T VisitCall(RtlCall call);
-        T VisitGoto(RtlGoto go);
-        T VisitIf(RtlIf rtlIf);
-        T VisitInvalid(RtlInvalid invalid);
-        T VisitNop(RtlNop rtlNop);
-        T VisitReturn(RtlReturn ret);
-        T VisitSideEffect(RtlSideEffect side);
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
+        {
+            return visitor.VisitNop(this);
+        }
+
+        protected override void WriteInner(TextWriter writer)
+        {
+            writer.Write("nop");
+        }
     }
 }

@@ -84,6 +84,7 @@ namespace Reko.Arch.Z80
                 case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
                 case Opcode.ldir: RewriteBlockInstruction(); break;
                 case Opcode.neg: RewriteNeg(); break;
+                case Opcode.nop: emitter.Nop(); break;
                 case Opcode.or: RewriteOr(); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.push: RewritePush(dasm.Current); break;
@@ -97,7 +98,6 @@ namespace Reko.Arch.Z80
         case Opcode.di: goto default;
         case Opcode.ei: goto default;
         case Opcode.hlt: goto default;
-        case Opcode.nop: goto default;
         case Opcode.bit: goto default;
         case Opcode.ccf: goto default;
         case Opcode.cpd: goto default;

@@ -121,6 +121,18 @@ namespace Reko.Core.Rtl
             return this;
         }
 
+        public RtlEmitter Invalid()
+        {
+            instrs.Add(new RtlInvalid());
+            return this;
+        }
+
+        public RtlEmitter Nop()
+        {
+            instrs.Add(new RtlNop());
+            return this;
+        }
+
         /// <summary>
         /// Return to caller.
         /// </summary>
@@ -163,7 +175,5 @@ namespace Reko.Core.Rtl
             instrs.Add(new RtlIf(test, rtl));
             return this;
         }
-
-    
     }
 }

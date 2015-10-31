@@ -126,7 +126,7 @@ namespace Reko.Scanning
             this.importResolver = importResolver;
             this.callSigs = callSigs;
             this.eventListener = services.RequireService<DecompilerEventListener>();
-            this.cancelSvc = services.RequireService<CancellationTokenSource>();
+            this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (imageMap == null)
                 throw new InvalidOperationException("Program must have an image map.");
             this.queue = new PriorityQueue<WorkItem>();
@@ -676,7 +676,7 @@ namespace Reko.Scanning
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
-                if (cancelSvc.IsCancellationRequested)
+                if (cancelSvc != null && cancelSvc.IsCancellationRequested)
                     break;
             }
         }

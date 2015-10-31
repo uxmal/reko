@@ -365,7 +365,6 @@ namespace Reko.UnitTests.Core.Serialization
             var file = pSaver.VisitProgram(program);
             var ip = (DecompilerInput_v3)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
-
         }
 	}
 }

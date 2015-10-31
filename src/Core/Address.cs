@@ -87,6 +87,7 @@ namespace Reko.Core
         public abstract bool IsNull { get; }
         public abstract ulong Offset { get; }
         public abstract ushort? Selector { get; }			// Segment selector; return null if the address is linear.
+        public abstract Address NewOffset(ulong offset);    // Creates an address with same selector, different offset; no-op for linear addresses.
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
@@ -266,6 +267,11 @@ namespace Reko.Core
             return string.Format("{0}{1:X4}{2}", prefix, uValue, suffix);
         }
 
+        public override Address NewOffset(ulong offset)
+        {
+            return new Address16((ushort)offset);
+        }
+
         public override ushort ToUInt16()
         {
             return uValue;
@@ -315,6 +321,11 @@ namespace Reko.Core
         public override string GenerateName(string prefix, string suffix)
         {
             return string.Format("{0}{1:X8}{2}", prefix, uValue, suffix);
+        }
+
+        public override Address NewOffset(ulong offset)
+        {
+            return new Address32((uint) offset);
         }
 
         public override ushort ToUInt16()
@@ -376,6 +387,11 @@ namespace Reko.Core
             return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSegment, uOffset, suffix);
         }
 
+        public override Address NewOffset(ulong offset)
+        {
+            return new RealSegmentedAddress(uSegment, (ushort)offset);
+        }
+
         public override ushort ToUInt16()
         {
             throw new InvalidOperationException("Returning UInt16 would lose precision.");
@@ -435,6 +451,11 @@ namespace Reko.Core
             return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSegment, uOffset, suffix);
         }
 
+        public override Address NewOffset(ulong offset)
+        {
+            return new ProtectedSegmentedAddress(uSegment, (ushort)offset);
+        }
+
         public override ushort ToUInt16()
         {
             throw new InvalidOperationException("Returning UInt16 would lose precision.");
@@ -483,6 +504,11 @@ namespace Reko.Core
         public override string GenerateName(string prefix, string suffix)
         {
             return string.Format("{0}{1:X16}{2}", prefix, uValue, suffix);
+        }
+
+        public override Address NewOffset(ulong offset)
+        {
+            return new Address64(offset);
         }
 
         public override ushort ToUInt16()

@@ -84,6 +84,7 @@ namespace Reko.Arch.X86
                         instrCur.Address,
                         "Rewriting x86 opcode '{0}' is not supported yet.",
                         instrCur.code);
+                case Opcode.illegal: emitter.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aam: RewriteAam(); break;
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.IAdd); break;
@@ -225,7 +226,7 @@ namespace Reko.Arch.X86
                 case Opcode.movzx: RewriteMovzx(); break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Opcode.neg: RewriteNeg(); break;
-                case Opcode.nop: continue;
+                case Opcode.nop: emitter.Nop(); break;
                 case Opcode.not: RewriteNot(); break;
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
                 case Opcode.@out: RewriteOut(); break;
