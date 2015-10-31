@@ -264,6 +264,12 @@ namespace Reko.Core.Expressions
             return Constant.Real64(Math.PI);
 		}
 
+        public static Constant Lg10()
+        {
+            // log(2) of 10.
+            return Constant.Real64(3.3219280948873623478703194294894);
+        }
+
         public static Constant Ln2()
         {
             return Constant.Real64(0.69314718055994530941723212145818);

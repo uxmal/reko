@@ -403,7 +403,8 @@ namespace Reko
                 {
                     scanner.EnqueueProcedure(addr);
                 }
-                if (program.User.Heuristics.Contains("shingle"))
+                if (true || //$DEBUG
+                    program.User.Heuristics.Contains("shingle"))
                 {
                     eventListener.ShowStatus("Shingle scanning");
                     var sh = new ShingledScanner(program, (IRewriterHost) scanner);

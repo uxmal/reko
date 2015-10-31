@@ -48,6 +48,34 @@ namespace Reko.Arch.X86
                             orw.AddrOf(orw.AluRegister(Registers.ah))));
         }
 
+        private void RewriteAad()
+        {
+            //$TODO: support for multiple register return values.
+            emitter.Assign(
+                orw.AluRegister(Registers.ax),
+                PseudoProc("__aad", PrimitiveType.Word16,
+                    orw.AluRegister(Registers.ax)));
+        }
+
+        private void RewriteAam()
+        {
+            emitter.Assign(
+                orw.AluRegister(Registers.ax),
+                PseudoProc("__aam", PrimitiveType.Word16,
+                    orw.AluRegister(Registers.al)));
+        }
+
+        private void RewriteAas()
+        {
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF),
+                PseudoProc("__aas", PrimitiveType.Bool,
+                    orw.AluRegister(Registers.al),
+                    orw.AluRegister(Registers.ah),
+                            orw.AddrOf(orw.AluRegister(Registers.al)),
+                            orw.AddrOf(orw.AluRegister(Registers.ah))));
+        }
+
         private void RewriteCli()
         {
             var ppp = host.EnsurePseudoProcedure("__cli", VoidType.Instance, 0);
@@ -64,14 +92,6 @@ namespace Reko.Arch.X86
             emitter.SideEffect(PseudoProc(ppp, VoidType.Instance));
         }
 
-        private void RewriteAam()
-        {
-            emitter.Assign(
-                orw.AluRegister(Registers.ax),
-                PseudoProc("__aam", PrimitiveType.Word16,
-                    orw.AluRegister(Registers.al)));
-        }
-        
         /// <summary>
         /// Doesn't handle the x86 idiom add ... adc => long add (and 
         /// sub ..sbc => long sub)
@@ -117,6 +137,14 @@ namespace Reko.Arch.X86
                     SrcOp(instrCur.op1),
                     SrcOp(instrCur.op2),
                     orw.AddrOf(SrcOp(instrCur.op1))));
+        }
+
+        private void RewriteBound()
+        {
+            emitter.SideEffect(
+                PseudoProc("__bound", VoidType.Instance,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2)));
         }
 
         private void RewriteCpuid()
@@ -945,6 +973,12 @@ namespace Reko.Arch.X86
             return direction.ToBoolean()
                 ? Operator.ISub
                 : Operator.IAdd;
+        }
+
+        private void RewriteSti()
+        {
+            var ppp = host.EnsurePseudoProcedure("__sti", VoidType.Instance, 0);
+            emitter.SideEffect(PseudoProc(ppp, VoidType.Instance));
         }
 
         private void RewriteTest()
