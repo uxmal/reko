@@ -174,6 +174,7 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|T--|0100(3): 1 instructions",
                 "1|T--|call 0xCAFE (2)");
+            BuildTest(0xCD, 0xFE, 0xCA);
         }
 
         [Test]

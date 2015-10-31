@@ -91,7 +91,6 @@ namespace Reko.Arch.Z80
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)

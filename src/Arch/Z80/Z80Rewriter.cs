@@ -259,12 +259,12 @@ namespace Reko.Arch.Z80
             return GetEnumerator();
         }
 
-        private void EmitBranch(ConditionOperand cOp, ImmediateOperand dst)
+        private void EmitBranch(ConditionOperand cOp, Address dst)
         {
             rtlc.Class = RtlClass.ConditionalTransfer;
             emitter.Branch(
                 GenerateTestExpression(cOp, false),
-                Address.Ptr16(dst.Value.ToUInt16()),
+                dst,
                 RtlClass.ConditionalTransfer);
         }
 
@@ -306,11 +306,11 @@ namespace Reko.Arch.Z80
                     GenerateTestExpression(cOp, true),
                     instr.Address + instr.Length,
                     RtlClass.ConditionalTransfer);
-                emitter.Call(((ImmediateOperand) instr.Op2).Value, 2);
+                emitter.Call(((AddressOperand) instr.Op2).Address, 2);
             }
             else
             {
-                emitter.Call(((ImmediateOperand) instr.Op1).Value, 2);
+                emitter.Call(((AddressOperand) instr.Op1).Address, 2);
             }
         }
 
@@ -350,13 +350,13 @@ namespace Reko.Arch.Z80
             var cOp = instr.Op1 as ConditionOperand;
             if (cOp != null)
             {
-                EmitBranch(cOp, (ImmediateOperand) instr.Op2);
+                EmitBranch(cOp, ((AddressOperand) instr.Op2).Address);
             }
             else
             {
-                var target = (ImmediateOperand) instr.Op1;
+                var target = (AddressOperand) instr.Op1;
                 rtlc.Class = RtlClass.Transfer;
-                emitter.Goto(Address.Ptr16(target.Value.ToUInt16()));
+                emitter.Goto(target.Address);
             }
         }
 

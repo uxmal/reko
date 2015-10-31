@@ -76,6 +76,9 @@ namespace Reko.Arch.Z80
                 case 'a':       // the 'A' register
                     ops[iOp++] = new RegisterOperand(Registers.a);
                     break;
+                case 'A':       // Absolute memory address.
+                    ops[iOp++] = AddressOperand.Ptr16(rdr.ReadLeUInt16());
+                    break;
                 case 'R':       // register encoded in bits 0..2 of op.
                     ops[iOp++] = new RegisterOperand(ByteRegister(op));
                     break;
@@ -605,37 +608,37 @@ namespace Reko.Arch.Z80
             // C0
             new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wb"),
-            new SingleByteOpRec(Opcode.jnz, Opcode.jp, "C,Iw"),
-            new SingleByteOpRec(Opcode.jmp, Opcode.jp, "Iw"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,Iw"),
+            new SingleByteOpRec(Opcode.jnz, Opcode.jp, "C,A"),
+            new SingleByteOpRec(Opcode.jmp, Opcode.jp, "A"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wb"),
             new SingleByteOpRec(Opcode.adi, Opcode.add, "a,Ib"),
             new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x00"),
 
             new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
             new SingleByteOpRec(Opcode.illegal, Opcode.ret, ""),
-            new SingleByteOpRec(Opcode.jz, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jz, Opcode.jp, "C,A"),
             new CbPrefixOpRec(),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,Iw"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "Iw"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "A"),
             new SingleByteOpRec(Opcode.aci, Opcode.adc, "a,Ib"),
             new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x08"),
 
             // D0
             new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wd"),
-            new SingleByteOpRec(Opcode.jnc, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jnc, Opcode.jp, "C,A"),
             new SingleByteOpRec(Opcode.illegal, Opcode.@out, "ob,a"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,Iw"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wd"),
             new SingleByteOpRec(Opcode.sui, Opcode.sub, "a,Ib"),
             new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x10"),
 
             new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
             new SingleByteOpRec(Opcode.illegal, Opcode.exx, ""),
-            new SingleByteOpRec(Opcode.jc, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jc, Opcode.jp, "C,A"),
             new SingleByteOpRec(Opcode.illegal, Opcode.@in, "a,ob"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,Iw"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
             new IndexPrefixOpRec(Registers.ix),
             new SingleByteOpRec(Opcode.sbi, Opcode.sbc, "a,Ib"),
             new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x18"),
@@ -643,7 +646,7 @@ namespace Reko.Arch.Z80
             // E0
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wh"),
-            new SingleByteOpRec(Opcode.jpo, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jpo, Opcode.jp, "C,A"),
             new SingleByteOpRec(Opcode.illegal, Opcode.ex, "Sw,Wh"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wh"),
@@ -652,7 +655,7 @@ namespace Reko.Arch.Z80
 
             new SingleByteOpRec(Opcode.illegal, Opcode.add, "Ws,D"),
             new SingleByteOpRec(Opcode.pchl, Opcode.jp, "Mw"),
-            new SingleByteOpRec(Opcode.jpe, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jpe, Opcode.jp, "C,A"),
             new SingleByteOpRec(Opcode.illegal, Opcode.ex, "Wd,Wh"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new EdPrefixOpRec(),
@@ -662,7 +665,7 @@ namespace Reko.Arch.Z80
             // F0
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wa"),
-            new SingleByteOpRec(Opcode.jp, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jp, Opcode.jp, "C,A"),
             new SingleByteOpRec(Opcode.di, Opcode.di, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wa"),
@@ -671,7 +674,7 @@ namespace Reko.Arch.Z80
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.sphl, Opcode.ld, "Ws,Wh"),
-            new SingleByteOpRec(Opcode.jm, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jm, Opcode.jp, "C,A"),
             new SingleByteOpRec(Opcode.ei, Opcode.ei, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new IndexPrefixOpRec(Registers.iy),
