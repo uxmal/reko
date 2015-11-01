@@ -182,7 +182,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_nop()
         {
             AssertCode(0x00000000,
-                "0|L--|00100000(4): 0 instructions");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|nop");
         }
 
         [Test]

@@ -74,10 +74,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             var loadAddress =  Address.Ptr32(0x100000);
             var bytes = new byte[4711];
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
             Program prog = new Program();
             prog.Image = new LoadedImage(loadAddress, bytes);
             prog.ImageMap = prog.Image.CreateImageMap();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            prog.Architecture = arch;
+            prog.Platform = new DefaultPlatform(sc, arch);
             ILoader ldr = mr.StrictMock<ILoader>();
             ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(prog);
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);

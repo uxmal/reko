@@ -129,7 +129,7 @@ namespace Reko.Core.Rtl
 
         public RtlEmitter Nop()
         {
-            instrs.Add(new RtlNop());
+            instrs.Add(new RtlNop { Class = RtlClass.Linear });
             return this;
         }
 

@@ -1326,11 +1326,12 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [ExpectedException(typeof(AddressCorrelatedException))]
         public void X86rw_invalid_les()
         {
             Run32bitTest(0xC4, 0xC0);
-            AssertCode("", "");
+            AssertCode(
+                "0|---|10000000(0): 1 instructions",
+                "1|---|<invalid>");
         }
     }
 }
