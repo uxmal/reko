@@ -126,7 +126,11 @@ namespace Reko.UnitTests.Core.Serialization
 
 		public override void WriteEndAttribute()
 		{
-			ignore = false;
+            if (!ignore)
+            {
+                base.WriteEndAttribute();
+            }
+            ignore = false;
 		}
 	}
 }

@@ -182,6 +182,18 @@ namespace Reko.Core
         public abstract ExternalProcedure LookupProcedureByName(string moduleName, string procName);
 
         /// <summary>
+        /// If the platform can be customized by user, load those customizations here.
+        /// </summary>
+        /// <returns>The options serialized as strings, or lists of objects, or dictionaries of objects.</returns>
+        public virtual void LoadUserOptions(Dictionary<string, object> options) { }
+
+        /// <summary>
+        /// If the platform can be customized by user, save those customizations here.
+        /// </summary>
+        /// <returns>The options serialized as strings, or lists of objects, or dictionaries of objects.</returns>
+        public virtual Dictionary<string, object> SaveUserOptions() { return null; }
+        
+        /// <summary>
         /// Guess signature from the name of the procedure.
         /// </summary>
         /// <param name="fnName"></param>

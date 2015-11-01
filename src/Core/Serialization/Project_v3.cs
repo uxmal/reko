@@ -78,8 +78,8 @@ namespace Reko.Core.Serialization
         [XmlElement("onLoad")]
         public Script_v2 OnLoadedScript;
 
-        [XmlElement("options")]
-        public ProgramOptions_v2 Options;
+        [XmlElement("platform")]
+        public PlatformOptions_v3 PlatformOptions;
 
         [XmlElement("procedure")]
         public List<Procedure_v1> Procedures;
@@ -162,5 +162,11 @@ namespace Reko.Core.Serialization
         {
             return visitor.VisitAssemblerFile(this);
         }
+    }
+
+    public class PlatformOptions_v3
+    {
+        [XmlAnyElement]
+        public XmlElement[] Options;
     }
 }

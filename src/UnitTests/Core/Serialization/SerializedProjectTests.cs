@@ -32,6 +32,9 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Reko.Core.Lib;
+using System.Diagnostics;
+using System.Xml;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -366,5 +369,60 @@ namespace Reko.UnitTests.Core.Serialization
             var ip = (DecompilerInput_v3)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
         }
-	}
+
+        private void When_SaveToTextWriter(Program program, TextWriter sw)
+        {
+            var saver = new ProjectSaver();
+            var sProj = new Project_v3
+            {
+                Inputs = { saver.VisitProgram(program) }
+            };
+            var writer = new FilteringXmlWriter(sw);
+            writer.Formatting = System.Xml.Formatting.Indented;
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+            ser.Serialize(writer, sProj);
+        }
+
+        private class TestPlatform : DefaultPlatform
+        {
+            public Dictionary<string, object> Test_Options;
+            public TestPlatform() : base(null, null) { }
+            public override Dictionary<string, object> SaveUserOptions() { return Test_Options; }
+            public override void LoadUserOptions(Dictionary<string,object> options) { Test_Options = options; }
+
+        }
+        [Test]
+        public void SudSavePlatformOptions_Scalar()
+        {
+            var platform = new TestPlatform
+            {
+                Test_Options = new Dictionary<string, object>
+                {
+                    { "Name", "Bob" },
+                    { "Name2", "Sue" },
+                }
+            };
+            var program = new Program
+            {
+                Platform = platform
+            };
+            var sw = new StringWriter();
+            When_SaveToTextWriter(program, sw);
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+  <input>
+    <user>
+      <platform>
+        <item key=""Name"">Bob</item>
+        <item key=""Name2"">Sue</item>
+      </platform>
+    </user>
+  </input>
+</project>";
+            if (sw.ToString() != sExp)
+                Debug.Print("{0}", sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+    }
 }

@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace Reko.Core.Serialization
 {
@@ -53,6 +54,7 @@ namespace Reko.Core.Serialization
                     Procedures = program.User.Procedures
                         .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
                         .ToList(),
+                    PlatformOptions = SerializePlatformOptions(program.Platform),
                     Calls = program.User.Calls
                         .Select(uc => uc.Value)
                         .ToList(),
@@ -73,6 +75,30 @@ namespace Reko.Core.Serialization
                 TypesFilename = program.TypesFilename,
                 GlobalsFilename = program.GlobalsFilename,
             };
+        }
+
+        private PlatformOptions_v3 SerializePlatformOptions(Platform platform)
+        {
+            if (platform == null)
+                return null;
+            var dictionary = platform.SaveUserOptions();
+            if (dictionary == null)
+                return null;
+            var doc = new XmlDocument();
+            return new PlatformOptions_v3
+            {
+                Options = dictionary
+                    .Select(de => SerializeOptionValue(de.Key, de.Value, doc))
+                    .ToArray()
+            };
+        }
+
+        private XmlElement SerializeOptionValue(string key, object value, XmlDocument doc)
+        {
+            var el = doc.CreateElement("item", SerializedLibrary.Namespace_v3);
+            el.SetAttribute("key", "", key);
+            el.InnerXml = (string)value;
+            return el;
         }
 
         public ProjectFile_v3 VisitMetadataFile(MetadataFile metadata)
