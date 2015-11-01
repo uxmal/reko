@@ -554,7 +554,6 @@ namespace Reko.Scanning
         /// <returns>Null if there was no trampoline.</returns>
         public ProcedureBase GetTrampoline(Address addr)
         {
-            var arch = program.Architecture;
             var target = program.Platform.GetTrampolineDestination(
                 program.CreateImageReader(addr),
                 this);

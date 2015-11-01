@@ -20,6 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +49,7 @@ namespace Reko.Environments.Cpm
             return Architecture.CreateRegisterBitset();
         } 
 
-        public override Core.Serialization.ProcedureSerializer CreateProcedureSerializer(Core.Serialization.ISerializedTypeVisitor<Core.Types.DataType> typeLoader, string defaultConvention)
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             throw new NotImplementedException();
         }

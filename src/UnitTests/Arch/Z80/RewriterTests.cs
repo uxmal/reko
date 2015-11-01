@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Arch.Z80
             BuildTest(0xCD, 0xFE, 0xCA);
             AssertCode(
                 "0|T--|0100(3): 1 instructions",
-                "1|T--|call 0xCAFE (2)");
+                "1|T--|call CAFE (2)");
             BuildTest(0xCD, 0xFE, 0xCA);
         }
 
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|T--|0100(3): 2 instructions",
                 "1|T--|if (Test(EQ,Z)) branch 0103",
-                "2|T--|call 0xCAFE (2)");
+                "2|T--|call CAFE (2)");
         }
 
         [Test]
@@ -231,6 +231,26 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|T--|0100(1): 1 instructions",
                 "1|T--|return (2,0)");
+        }
+
+        [Test]
+        public void Z80rw_ex_de_hl()
+        {
+            BuildTest(0xEB);
+            AssertCode(
+                "0|L--|0100(1): 3 instructions",
+                "1|L--|v2 = de",
+                "2|L--|de = hl",
+                "3|L--|hl = v2");
+        }
+
+        [Test]
+        public void Z80rw_jp_hl()
+        {
+            BuildTest(0xE9);
+            AssertCode(
+                "0|T--|0100(1): 1 instructions",
+                "1|T--|goto hl");
         }
     }
 }
