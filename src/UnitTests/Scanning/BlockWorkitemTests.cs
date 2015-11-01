@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Scanning
         {
             scanner = mr.StrictMock<IScanner>();
             program.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
-        
+            program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig);
             alloca.Characteristics = new ProcedureCharacteristics
@@ -280,6 +280,7 @@ namespace Reko.UnitTests.Scanning
         {
             scanner = mr.StrictMock<IScanner>();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
+            program.Platform = new DefaultPlatform(null, arch);
 
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig, new ProcedureCharacteristics
@@ -575,6 +576,7 @@ testProc_exit:
             scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
                 .IgnoreArguments()
                 .Return(l00100100);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             mr.ReplayAll();
 
             trace.Add(m => m.CallD(Address.Ptr32(0x0100100), 0));

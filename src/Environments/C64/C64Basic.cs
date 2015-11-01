@@ -47,6 +47,7 @@ namespace Reko.Environments.C64
             this.PointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 8;
             this.StackRegister = stackRegister;
+            this.FramePointerType = PrimitiveType.Ptr16;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
@@ -145,13 +146,10 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-
-
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }
-
 
         public class C64BasicState : ProcessorState
         {

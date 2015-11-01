@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
@@ -28,6 +29,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -46,6 +48,8 @@ namespace Reko.Environments.Windows
             get { return ""; }
         }
 
+        public override string PlatformIdentifier {  get { return "winMips";  } }
+        
         public override Address AdjustProcedureAddress(Address addr)
         {
             return addr;
@@ -81,6 +85,16 @@ namespace Reko.Environments.Windows
                 new RtlGoto(ExpressionMatcher.AnyId("r2s"), RtlClass.Delay|RtlClass.Transfer))
         };
 
+        /// <summary>
+        /// The sequence 
+        ///     lui rX,hiword
+        ///     lw  rY,[rX + loword]
+        ///     jr  rY
+        /// is treated as a trampoline.
+        /// </summary>
+        /// <param name="imageReader"></param>
+        /// <param name="host"></param>
+        /// <returns></returns>
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
             var rtls = Architecture.CreateRewriter(
@@ -113,7 +127,45 @@ namespace Reko.Environments.Windows
             if (proc != null)
                 return proc;
             return host.GetInterceptedCall(addrTarget);
+        }
 
+        protected override void EnsureTypeLibraries(string envName)
+        {
+            if (TypeLibs != null)
+                return;
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var env = cfgSvc.GetEnvironment(envName);
+            TypeLibs =
+                (from tl in env.TypeLibraries.OfType<ITypeLibraryElement>()
+                 join ldr in cfgSvc.GetImageLoaders().OfType<LoaderElement>() on tl.Loader equals ldr.Label
+                 where !string.IsNullOrEmpty(tl.Loader)
+                 select LoadTypelibrary(cfgSvc, tl, ldr))
+                .ToArray();
+        }
+
+        private TypeLibrary LoadTypelibrary(IConfigurationService cfgSvc, ITypeLibraryElement tl, LoaderElement ldr)
+        {
+            var type = Type.GetType(ldr.TypeName, true);
+            var filename = cfgSvc.GetPath(tl.Name);
+            var bytes = File.ReadAllBytes(filename);
+            var loader = (MetadataLoader)Activator.CreateInstance(type, Services, filename, bytes);
+            return loader.Load(this);
+        }
+
+        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+            foreach (var tl in TypeLibs.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
+            {
+                SystemService svc;
+                if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
+                {
+                    if (svc.Signature != null)
+                        svc.Signature.ReturnAddressOnStack = 0; //$HACK: should be done when signatures are created.
+                    return new ExternalProcedure(svc.Name, svc.Signature);
+                }
+            }
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

@@ -154,6 +154,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
@@ -161,6 +162,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
     <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />

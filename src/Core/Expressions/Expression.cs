@@ -39,7 +39,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Data type of this expression.
         /// </summary>
-        public DataType DataType { get { return dt; } set { if (value == null) new ArgumentNullException(); dt = value; } } 
+        public DataType DataType { get { return dt; } set { if (value == null) throw new ArgumentNullException(); dt = value; } } 
         private DataType dt;
 
         /// <summary>

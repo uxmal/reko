@@ -27,13 +27,16 @@ using System.Collections.Generic;
 
 namespace Reko.Environments.Windows
 {
+    /// <summary>
+    /// Seralizes and deserializes MIPS signatures on Windows. 
+    /// </summary>
     public class MipsProcedureSerializer : ProcedureSerializer
     {
         private ArgumentSerializer argser;
         private int ir;
         private int fr;
-        private static string[] iregs = { "rdi", "rsi", "rdx", "rcx", "r8", "r9" };
-        private static string[] fregs = { "xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7" };
+        private static string[] iregs = { "r4", "r5", "r6", "r7" };
+        private static string[] fregs = { };
 
         public MipsProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
@@ -94,7 +97,7 @@ namespace Reko.Environments.Windows
             var prim = dtArg as PrimitiveType;
             if (prim != null && prim.Domain == Domain.Real)
             {
-                if (this.fr >= iregs.Length)
+                if (this.fr >= fregs.Length)
                 {
                     arg = argser.Deserialize(sArg, new StackVariable_v1());
                 }
@@ -105,7 +108,7 @@ namespace Reko.Environments.Windows
                 ++this.fr;
                 return arg;
             }
-            if (dtArg.Size <= 8)
+            if (dtArg.Size <= 4)
             {
                 if (this.ir >= iregs.Length)
                 {
@@ -116,6 +119,7 @@ namespace Reko.Environments.Windows
                     arg = argser.Deserialize(sArg, new Register_v1 { Name = iregs[ir] });
                 }
                 ++this.ir;
+                arg.DataType = dtArg;
                 return arg;
             }
             int regsNeeded = (dtArg.Size + 7) / 8;
@@ -143,15 +147,15 @@ namespace Reko.Environments.Windows
                 }
                 throw new NotImplementedException();
             }
-            var rax = Architecture.GetRegister("rax");
+            var v0 = Architecture.GetRegister("r2");
+            if (bitSize <= 32)
+                return v0;
             if (bitSize <= 64)
-                return rax;
-            if (bitSize <= 128)
             {
-                var rdx = Architecture.GetRegister("rdx");
+                var v1 = Architecture.GetRegister("r3");
                 return new SequenceStorage(
-                    new Identifier(rdx.Name, rdx.DataType, rdx),
-                    new Identifier(rax.Name, rax.DataType, rax));
+                    new Identifier(v1.Name, v1.DataType, v1),
+                    new Identifier(v0.Name, v0.DataType, v0));
             }
             throw new NotImplementedException();
         }

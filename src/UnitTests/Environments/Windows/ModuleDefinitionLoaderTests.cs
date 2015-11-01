@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Environments.Win32
+namespace Reko.UnitTests.Environments.Windows
 {
     [TestFixture]
     public class ModuleDefinitionLoaderTests

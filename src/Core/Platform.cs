@@ -53,7 +53,7 @@ namespace Reko.Core
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
-        public TypeLibrary[] TypeLibs { get; private set; }
+        public TypeLibrary[] TypeLibs { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
@@ -115,7 +115,7 @@ namespace Reko.Core
         /// Utility function for subclasses that loads all type libraries and characteristics libraries 
         /// </summary>
         /// <param name="envName"></param>
-        protected void EnsureTypeLibraries(string envName)
+        protected virtual void EnsureTypeLibraries(string envName)
         {
             if (TypeLibs == null)
             {

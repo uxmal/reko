@@ -506,7 +506,7 @@ fn00001100_exit:
         public void Scanner_EvenOdd()
         {
             var scan = CreateScanner(0x1000, 0x2000);
-            var platform = mr.Stub<Platform>(null, program.Architecture);
+            var platform = new DefaultPlatform(null, program.Architecture);
             program.Platform = platform;
             fakeArch.Test_AddTraces(RtlEvenOdd.Create(fakeArch));
 
