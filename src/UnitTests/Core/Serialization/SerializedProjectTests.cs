@@ -389,8 +389,8 @@ namespace Reko.UnitTests.Core.Serialization
             public TestPlatform() : base(null, null) { }
             public override Dictionary<string, object> SaveUserOptions() { return Test_Options; }
             public override void LoadUserOptions(Dictionary<string,object> options) { Test_Options = options; }
-
         }
+
         [Test]
         public void SudSavePlatformOptions_Scalar()
         {
@@ -424,5 +424,44 @@ namespace Reko.UnitTests.Core.Serialization
                 Debug.Print("{0}", sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
+
+        [Test]
+        public void SudSavePlatformOptions_List()
+        {
+            var platform = new TestPlatform
+            {
+                Test_Options = new Dictionary<string, object>
+                {
+                    { "Names", new List<string> { "Adam", "Bob", "Cecil" } },
+                    { "Name2", "Sue" },
+                }
+            };
+            var program = new Program
+            {
+                Platform = platform
+            };
+            var sw = new StringWriter();
+            When_SaveToTextWriter(program, sw);
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+  <input>
+    <user>
+      <platform>
+        <list key=""Names"">
+          <item>Adam</item>
+          <item>Bob</item>
+          <item>Cecil</item>
+        </list>
+        <item key=""Name2"">Sue</item>
+      </platform>
+    </user>
+  </input>
+</project>";
+            if (sw.ToString() != sExp)
+                Debug.Print("{0}", sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
     }
 }

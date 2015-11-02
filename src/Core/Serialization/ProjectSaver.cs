@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -95,10 +96,32 @@ namespace Reko.Core.Serialization
 
         private XmlElement SerializeOptionValue(string key, object value, XmlDocument doc)
         {
-            var el = doc.CreateElement("item", SerializedLibrary.Namespace_v3);
+            var el = SerializeValue(value, doc);
             el.SetAttribute("key", "", key);
-            el.InnerXml = (string)value;
             return el;
+        }
+
+        private XmlElement SerializeValue(object value, XmlDocument doc)
+        {
+            var sValue = value as string;
+            if (sValue != null)
+            {
+                var el = doc.CreateElement("item", SerializedLibrary.Namespace_v3);
+                el.InnerXml = (string)value;
+                return el;
+            }
+            var ienum = value as IEnumerable;
+            if (ienum != null)
+            {
+                var el = doc.CreateElement("list", SerializedLibrary.Namespace_v3);
+                foreach (var oValue in ienum)
+                {
+                    el.AppendChild(SerializeValue(oValue, doc));
+                }
+                return el;
+            }
+            throw new NotSupportedException();
+
         }
 
         public ProjectFile_v3 VisitMetadataFile(MetadataFile metadata)
