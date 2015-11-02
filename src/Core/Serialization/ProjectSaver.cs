@@ -88,8 +88,9 @@ namespace Reko.Core.Serialization
             var doc = new XmlDocument();
             return new PlatformOptions_v3
             {
-                Options = dictionary
-                    .Select(de => SerializeOptionValue(de.Key, de.Value, doc))
+                Options = SerializeValue(dictionary, doc)
+                    .ChildNodes
+                    .OfType<XmlElement>()
                     .ToArray()
             };
         }
