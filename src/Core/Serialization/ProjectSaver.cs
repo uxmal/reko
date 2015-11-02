@@ -110,6 +110,18 @@ namespace Reko.Core.Serialization
                 el.InnerXml = (string)value;
                 return el;
             }
+            var dict = value as IDictionary;
+            if (dict != null)
+            {
+                var el = doc.CreateElement("dict", SerializedLibrary.Namespace_v3);
+                foreach (DictionaryEntry de in dict)
+                {
+                    var sub = SerializeValue(de.Value, doc);
+                    sub.SetAttribute("key", de.Key.ToString());
+                    el.AppendChild(sub);
+                }
+                return el;
+            }
             var ienum = value as IEnumerable;
             if (ienum != null)
             {
@@ -120,8 +132,7 @@ namespace Reko.Core.Serialization
                 }
                 return el;
             }
-            throw new NotSupportedException();
-
+            throw new NotSupportedException(typeof(object).Name);
         }
 
         public ProjectFile_v3 VisitMetadataFile(MetadataFile metadata)

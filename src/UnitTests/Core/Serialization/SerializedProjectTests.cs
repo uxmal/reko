@@ -463,5 +463,50 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(sExp, sw.ToString());
         }
 
+        [Test]
+        public void SudSavePlatformOptions_Dictionary()
+        {
+            var platform = new TestPlatform
+            {
+                Test_Options = new Dictionary<string, object>
+                {
+                    {
+                        "Names", new Dictionary<string, object> {
+                            {  "Adam", "30" },
+                            {  "Bob", "10" },
+                            {  "Cecil", "120" }
+                        }
+                    },
+                    { "Name2", "Sue" },
+                }
+            };
+            var program = new Program
+            {
+                Platform = platform
+            };
+            var sw = new StringWriter();
+            When_SaveToTextWriter(program, sw);
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+  <input>
+    <user>
+      <platform>
+        <dict key=""Names"">
+          <item key=""Adam"">30</item>
+          <item key=""Bob"">10</item>
+          <item key=""Cecil"">120</item>
+        </dict>
+        <item key=""Name2"">Sue</item>
+      </platform>
+    </user>
+  </input>
+</project>";
+            if (sw.ToString() != sExp)
+                Debug.Print("{0}", sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+
     }
 }
