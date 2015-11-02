@@ -29,6 +29,18 @@ l00400230:
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32) Stack +0000(32)
 
+l00400230_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
+l00400230_ds_f:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
 l00400238:
 	word32 r25_18 = Mem0[ra + 0x0FC00690:word32]
 	call r25_18 (retsize: 0; depth: 24)

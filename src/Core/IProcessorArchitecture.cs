@@ -120,13 +120,14 @@ namespace Reko.Core
 
         string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
 
+        string Name { get; set; }                           // Short name used to refer to an architecture.
+        string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
         RegisterStorage StackRegister { get; }              // Stack pointer used by this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
-        string Description { get; set; }                    // Typically loaded from app.config
 
         /// <summary>
         /// Parses an address according to the preferred base of the architecture.
@@ -154,6 +155,7 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
+        public string Name { get; set; }
         public string Description {get; set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }

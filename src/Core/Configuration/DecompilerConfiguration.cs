@@ -113,6 +113,7 @@ namespace Reko.Core.Configuration
             if (t == null)
                 return null;
             var arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
+            arch.Name = elem.Name;
             arch.Description = elem.Description;
             return arch;
         }

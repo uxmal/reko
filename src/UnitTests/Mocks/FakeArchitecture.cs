@@ -62,6 +62,7 @@ namespace Reko.UnitTests.Mocks
 			}
 		}
 
+        public string Name { get; set; }
         public string Description { get; set; }
 
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
