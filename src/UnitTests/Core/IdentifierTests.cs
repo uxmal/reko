@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -35,7 +34,8 @@ namespace Reko.UnitTests.Core
 
 		public IdentifierTests()
 		{
-			reg = new Identifier("eax", PrimitiveType.Word32, Registers.eax);
+            var reg_internal = new RegisterStorage("eax", 0, PrimitiveType.Word32);
+            reg = new Identifier("eax", PrimitiveType.Word32, reg_internal);
 			outReg = new Identifier("eaxOut", PrimitiveType.Pointer32, new OutArgumentStorage(reg));
 		}
 
