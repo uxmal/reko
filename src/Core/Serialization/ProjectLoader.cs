@@ -179,14 +179,18 @@ namespace Reko.Core.Serialization
             if (sUser.Procedures != null)
             {
                 user.Procedures = sUser.Procedures
-                        .Select(sup =>
-                        {
-                            Address addr;
-                            program.Architecture.TryParseAddress(sup.Address, out addr);
-                            return new KeyValuePair<Address, Procedure_v1>(addr, sup);
-                        })
-                        .Where(kv => kv.Key != null)
-                        .ToSortedList(kv => kv.Key, kv => kv.Value);
+                    .Select(sup =>
+                    {
+                        Address addr;
+                        program.Architecture.TryParseAddress(sup.Address, out addr);
+                        return new KeyValuePair<Address, Procedure_v1>(addr, sup);
+                    })
+                    .Where(kv => kv.Key != null)
+                    .ToSortedList(kv => kv.Key, kv => kv.Value);
+            }
+            if (sUser.PlatformOptions != null)
+            {
+                program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -223,6 +227,40 @@ namespace Reko.Core.Serialization
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
             }
+        }
+
+        private object ReadItem(XmlElement element)
+        {
+            if (element.Name == "item")
+            {
+                return element.InnerText;
+            } else if (element.Name == "list")
+            {
+                return element.ChildNodes
+                    .OfType<XmlElement>()
+                    .Select(e => ReadItem(e))
+                    .ToList();
+            }
+            else if (element.Name == "dict")
+            {
+                return ReadDictionaryElements(
+                    element.ChildNodes.OfType<XmlElement>());
+            }
+            throw new NotSupportedException();
+        }
+
+        private Dictionary<string,object> ReadDictionaryElements(IEnumerable<XmlElement> elements)
+        {
+            return elements.ToDictionary(
+                e => e.Attributes["key"] != null ? e.Attributes["key"].Value : null,
+                e => ReadItem(e));
+        }
+
+        private Dictionary<string, object> LoadPlatformOptions(XmlElement[] options)
+        {
+            if (options == null)
+                return new Dictionary<string, object>();
+            return ReadDictionaryElements(options);
         }
 
         public Program VisitInputFile(DecompilerInput_v2 sInput)
