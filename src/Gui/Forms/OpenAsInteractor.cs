@@ -67,7 +67,7 @@ namespace Reko.Gui.Forms
                     .OfType<OperatingEnvironment>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.TypeName))
-                    .Select(p => new ListOption { Text = p.Description, Value = p.TypeName }));
+                    .Select(p => new ListOption { Text = p.Description, Value = p }));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }
 
@@ -76,7 +76,7 @@ namespace Reko.Gui.Forms
             var archs = dcCfg.GetArchitectures()
                 .OfType<Architecture>()
                 .OrderBy(a => a.Description)
-                .Select(a => new ListOption { Text = a.Description, Value = a.TypeName });
+                .Select(a => new ListOption { Text = a.Description, Value = a.Name });
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
         }
 

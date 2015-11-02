@@ -55,7 +55,8 @@ namespace Reko.Core.Serialization
                     Procedures = program.User.Procedures
                         .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
                         .ToList(),
-                    PlatformOptions = SerializePlatformOptions(program.Platform),
+                    Processor = SerializeProcessorOptions(program.User, program.Architecture),
+                    PlatformOptions = SerializePlatformOptions(program.User, program.Platform),
                     Calls = program.User.Calls
                         .Select(uc => uc.Value)
                         .ToList(),
@@ -78,16 +79,35 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private PlatformOptions_v3 SerializePlatformOptions(Platform platform)
+        private ProcessorOptions_v3 SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
+        {
+            if (architecture == null)
+                return null;
+            if (string.IsNullOrEmpty(user.Processor))
+                return null;
+            else
+                return new ProcessorOptions_v3 { Name = user.Processor };
+        }
+
+        private PlatformOptions_v3 SerializePlatformOptions(UserData user, Platform platform)
         {
             if (platform == null)
                 return null;
             var dictionary = platform.SaveUserOptions();
             if (dictionary == null)
-                return null;
+            {
+                if (string.IsNullOrEmpty(user.Environment))
+                    return null;
+                else
+                    return new PlatformOptions_v3
+                    {
+                        Name = user.Environment
+                    };
+            }
             var doc = new XmlDocument();
             return new PlatformOptions_v3
             {
+                Name = user.Environment,
                 Options = SerializeValue(dictionary, doc)
                     .ChildNodes
                     .OfType<XmlElement>()

@@ -312,16 +312,12 @@ namespace Reko.Gui.Forms
                 mru.Use(dlg.FileName.Text);
 
                 var archOption = (ListOption) dlg.Architectures.SelectedValue;
-                Type t = Type.GetType((string)archOption.Value, true);
-                arch = (IProcessorArchitecture)Activator.CreateInstance(t);
-                arch.Description = archOption.Text;
+                arch = config.GetArchitecture((string)archOption.Value);
+                if (arch == null)
+                    throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archOption.Value));
 
                 var envOption = (ListOption) dlg.Platforms.SelectedValue;
-                t = Type.GetType((string)envOption.Value);
-                if (t == null)
-                    throw new TypeLoadException(string.Format("Unable to load type {0}.", envOption.Value));
-                platform = (Platform) Activator.CreateInstance(t, sc, arch);
-                platform.Description = envOption.Text;
+                platform = ((OperatingEnvironment)envOption.Value).Load(this.Services, arch);
 
                 Address addrBase;
                 var sAddr = dlg.AddressTextBox.Text.Trim();

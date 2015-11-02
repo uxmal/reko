@@ -188,8 +188,24 @@ namespace Reko.Core.Serialization
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
+            if (sUser.Processor != null)
+            {
+                program.User.Processor = sUser.Processor.Name;
+                if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
+                {
+                    program.Architecture = services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
+                }
+                //program.Architecture.LoadUserOptions();       //$TODO
+            }
             if (sUser.PlatformOptions != null)
             {
+                program.User.Environment = sUser.PlatformOptions.Name;
+                if (program.Platform is DefaultPlatform && !string.IsNullOrEmpty(program.User.Environment))
+                {
+                    program.Platform = services.RequireService<IConfigurationService>()
+                        .GetEnvironment(program.User.Environment)
+                        .Load(services, program.Architecture);
+                }
                 program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)

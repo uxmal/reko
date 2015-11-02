@@ -129,7 +129,9 @@ namespace Reko.Gui.Windows.Forms
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Decompiler.LoadRawImage(file, arch, platform, addrBase);
+                var program = Decompiler.LoadRawImage(file, arch, platform, addrBase);
+                program.User.Processor = arch.Name;
+                program.User.Environment = platform.Name;
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanPrograms();
             });

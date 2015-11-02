@@ -78,6 +78,9 @@ namespace Reko.Core.Serialization
         [XmlElement("onLoad")]
         public Script_v2 OnLoadedScript;
 
+        [XmlElement("processor")]
+        public ProcessorOptions_v3 Processor;
+
         [XmlElement("platform")]
         public PlatformOptions_v3 PlatformOptions;
 
@@ -112,9 +115,6 @@ namespace Reko.Core.Serialization
 
         [XmlElement("comment")]
         public string Comment;
-
-        [XmlElement("processor")]
-        public string Processor;
 
         [XmlElement("disassembly")]
         public string DisassemblyFilename;
@@ -166,7 +166,16 @@ namespace Reko.Core.Serialization
 
     public class PlatformOptions_v3
     {
+        [XmlAttribute("name")]
+        public string Name;
+
         [XmlAnyElement]
         public XmlElement[] Options;
+    }
+
+    public class ProcessorOptions_v3
+    {
+        [XmlAttribute("name")]
+        public string Name;
     }
 }

@@ -344,6 +344,8 @@ namespace Reko.Core
         }
 
         // 'Oracular' information provided by the user.
+        public string Processor { get; set; }
+        public string Environment { get; set; }
         public SortedList<Address, Serialization.Procedure_v1>      Procedures { get; set; }
         public SortedList<Address, Serialization.SerializedCall_v1> Calls { get; set; }
         public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }

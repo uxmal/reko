@@ -76,6 +76,7 @@ namespace Reko.UnitTests.Core
         {
             #region IProcessorArchitecture Members
 
+            public string Name { get; set; }
             public string Description { get; set; }
 
             public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
