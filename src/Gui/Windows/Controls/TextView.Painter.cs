@@ -32,44 +32,9 @@ namespace Reko.Gui.Windows.Controls
     {
         protected override void OnPaint(PaintEventArgs e)
         {
-            var painter = new Painter(this, e.Graphics);
+            GetStyleStack().PushStyle("dasm");
+            var painter = new Painter(this, e.Graphics, styleStack);
             painter.Paint();
-        }
-
-        private Brush GetForeground(string styleSelector)
-        {
-            UiStyle style = GetStyle(styleSelector);
-            if (style != null && style.Foreground != null)
-                return style.Foreground;
-            return CacheBrush(ref fgBrush, new SolidBrush(ForeColor));
-        }
-
-        private Color GetForegroundColor(string styleSelector)
-        {
-            UiStyle style = GetStyle(styleSelector);
-            if (style != null && style.Foreground != null)
-                return style.Foreground.Color;
-            return ForeColor;
-        }
-
-        private Brush GetBackground(string styleSelector)
-        {
-            UiStyle style = GetStyle(styleSelector);
-            if (style != null && style.Background != null)
-                return style.Background;
-            return CacheBrush(ref bgBrush, new SolidBrush(BackColor));
-        }
-
-        private Font GetFont(string styleSelector)
-        {
-            UiStyle style;
-            if (!string.IsNullOrEmpty(styleSelector))
-            {
-                style = GetStyle(styleSelector);
-                if (style != null && style.Font != null)
-                    return style.Font;
-            }
-            return this.Font;
         }
 
         private class Painter
@@ -78,16 +43,18 @@ namespace Reko.Gui.Windows.Controls
             private Graphics graphics;
             private TextPointer selStart;
             private TextPointer selEnd;
-            private Color fg;
-            private Brush bg;
-            private Font font;
             private RectangleF rcText;
             private LayoutSpan span;
+            private StyleStack styleStack;
+            private Color fg;
+            private SolidBrush bg;
+            private Font font;
 
-            public Painter(TextView outer, Graphics g)
+            public Painter(TextView outer, Graphics g, StyleStack styleStack)
             {
                 this.outer = outer;
                 this.graphics = g;
+                this.styleStack = styleStack;
 
                 selStart = outer.GetStartSelection();
                 selEnd = outer.GetEndSelection();
@@ -107,15 +74,17 @@ namespace Reko.Gui.Windows.Controls
                 for (int iSpan = 0; iSpan < line.Spans.Length; ++iSpan)
                 {
                     this.span = line.Spans[iSpan];
+                    if (!string.IsNullOrEmpty(span.Style))
+                        this.styleStack.PushStyle(span.Style);
                     var pos = new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
 
                     var insideSelection =
                         outer.ComparePositions(selStart, pos) <= 0 &&
                         outer.ComparePositions(pos, selEnd) < 0;
 
-                    this.fg = outer.GetForegroundColor(span.Style);
-                    this.bg = outer.GetBackground(span.Style);
-                    this.font = outer.GetFont(span.Style);
+                    this.fg = styleStack.GetForegroundColor(outer);
+                    this.bg = styleStack.GetBackground(outer);
+                    this.font = styleStack.GetFont(outer);
 
                     this.rcText = span.Extent;
                     if (!insideSelection)
@@ -190,6 +159,8 @@ namespace Reko.Gui.Windows.Controls
                             1, line.Extent.Height);
                     }
 #endif
+                    if (!string.IsNullOrEmpty(span.Style))
+                        styleStack.PopStyle();
                 }
             }
 

@@ -241,6 +241,7 @@
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\StyleStack.cs" />
     <Compile Include="Windows\Controls\TextBuffer.cs" />
     <Compile Include="Windows\Controls\TextPointer.cs" />
     <Compile Include="Windows\Controls\TextSelection.cs" />

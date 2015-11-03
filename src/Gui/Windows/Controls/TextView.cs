@@ -41,13 +41,12 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler<EditorNavigationArgs> Navigate;
         public event EventHandler SelectionChanged; // Fired whenever the selection changes.
 
-        private Brush fgBrush;
-        private Brush bgBrush;
         private StringFormat stringFormat;
         private SortedList<float, LayoutLine> visibleLines;
         private bool ignoreScroll;
         internal TextPointer cursorPos;
         internal TextPointer anchorPos;
+        private StyleStack styleStack;
 
         public TextView()
         {
@@ -116,6 +115,13 @@ namespace Reko.Gui.Windows.Controls
             return size;
         }
 
+        private StyleStack GetStyleStack()
+        {
+            if (styleStack == null)
+                styleStack = new StyleStack(Services.RequireService<IUiPreferencesService>());
+            return styleStack;
+        }
+
         private UiStyle GetStyle(string styleSelector)
         {
             UiStyle style;
@@ -128,28 +134,11 @@ namespace Reko.Gui.Windows.Controls
             return null;
         }
 
-        private Cursor GetCursor(string styleSelector)
-        {
-            UiStyle style = GetStyle(styleSelector);
-            if (style != null && style.Cursor != null)
-                return style.Cursor;
-            return Cursors.Default;
-        }
-
-        private Brush CacheBrush(ref Brush brInstance, Brush brNew)
-        {
-            if (brInstance != null)
-                brInstance.Dispose();
-            brInstance = brNew;
-            return brNew;
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (fgBrush != null) fgBrush.Dispose();
-                if (bgBrush != null) bgBrush.Dispose();
+                if (styleStack != null) styleStack.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -211,7 +200,11 @@ namespace Reko.Gui.Windows.Controls
                 var span = GetSpan(e.Location);
                 if (span != null)
                 {
-                    this.Cursor = GetCursor(span.Style);
+                    GetStyleStack().PushStyle("dasm");
+                    styleStack.PushStyle(span.Style);
+                    this.Cursor = styleStack.GetCursor(this);
+                    styleStack.PopStyle();
+                    styleStack.PopStyle();
                 }
                 else
                 {
@@ -366,8 +359,9 @@ namespace Reko.Gui.Windows.Controls
             var pt = new PointF(rcLine.Left, rcLine.Top);
             foreach (var span in spans)
             {
+                GetStyleStack().PushStyle(span.Style);
                 var text = span.GetText();
-                var font = GetFont(span.Style);
+                var font = styleStack.GetFont(this);
                 var szText = GetSize(span, text, font, g);
                 var rc = new RectangleF(pt, szText);
                 spanLayouts.Add(new LayoutSpan
@@ -379,6 +373,7 @@ namespace Reko.Gui.Windows.Controls
                     Tag = span.Tag,
                 });
                 pt.X = pt.X + szText.Width;
+                GetStyleStack().PopStyle();
             }
             return spanLayouts.ToArray();
         }
@@ -392,13 +387,16 @@ namespace Reko.Gui.Windows.Controls
 
         private TextPointer ClientToLogicalPosition(Point pt)
         {
+            GetStyleStack().PushStyle("dasm");
             foreach (var line in this.visibleLines.Values)
             {
                 if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
                 {
+                    styleStack.PopStyle();
                     return FindSpanPosition(pt, line);
                 }
             }
+            styleStack.PopStyle();
             return new TextPointer { Line = Model.EndPosition, Span = 0, Character = 0 };
         }
 
@@ -454,7 +452,8 @@ namespace Reko.Gui.Windows.Controls
             var textStub = span.Text;
             int iLow = 0;
             int iHigh = textStub.Length;
-            var font = GetFont(span.Style);
+            styleStack.PushStyle(span.Style);
+            var font = styleStack.GetFont(this);
             var sz = MeasureText(g, textStub, font);
             float xLow = 0;
             float xHigh = sz.Width;
@@ -474,6 +473,7 @@ namespace Reko.Gui.Windows.Controls
                     xLow = sz.Width;
                 }
             }
+            styleStack.PopStyle();
             var cx = xHigh - xLow;
             if (x - xLow > cx)
                 return iHigh;
