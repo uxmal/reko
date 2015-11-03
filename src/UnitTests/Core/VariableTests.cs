@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -52,12 +51,10 @@ namespace Reko.UnitTests.Core
 		private Identifier argOff;
 		private Identifier argSeg;
 		private Identifier arg_alias;
-        private IntelArchitecture arch;
 
 		[SetUp]
 		public void Setup()
 		{
-            arch = new IntelArchitecture(ProcessorMode.Real);
 			f = new Frame(PrimitiveType.Word16);
 			argOff = f.EnsureStackArgument(4, PrimitiveType.Word16);
 			argSeg = f.EnsureStackArgument(6, PrimitiveType.SegmentSelector);

@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -43,8 +42,9 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void UseCreateWithArg()
 		{
+			var reg_edx = new RegisterStorage("edx",1,PrimitiveType.Word32);
 			var id2 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
-			var r = new Identifier(Registers.edx.Name, Registers.edx.DataType, Registers.edx);
+			var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
 			var arg = new Identifier("barOut", PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			var use2 = new UseInstruction(id2, arg);
 			Assert.AreSame(id2, use2.Expression);
@@ -54,11 +54,12 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void UseToString()
 		{
+			var reg_edx = new RegisterStorage("edx",1,PrimitiveType.Word32);
 			var id1 = new Identifier("foo", PrimitiveType.Word32, null);
 			var use = new UseInstruction(id1);
 			Assert.AreEqual("use foo", use.ToString());
 
-			var r = new Identifier(Registers.edx.Name, Registers.edx.DataType, Registers.edx);
+			var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
 			var arg = new Identifier("edxOut", PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			use = new UseInstruction(id1, arg);
 			Assert.AreEqual("use foo (=> edxOut)" , use.ToString());
