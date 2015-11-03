@@ -32,6 +32,13 @@ namespace Reko.Gui.Windows.Controls
     /// Implemented the TextViewModel interface to support
     /// presentation of disassembled instructions as lines of text.
     /// </summary>
+    /// <remarks>
+    /// The big challenge here is that we don't want to go rushing away
+    /// and disassemble the whole binary. It's costly, and unnecessesary since
+    /// users typically only navigate a page at a time. Instead we estimate the
+    /// number of lines the disassembly would have had (overestimating is safe)
+    /// and then render accordingly.
+    /// </remarks>
     public class DisassemblyTextModel : TextViewModel
     {
         private Program program;
@@ -64,11 +71,12 @@ namespace Reko.Gui.Windows.Controls
                 while (count != 0 && dasm.MoveNext())
                 {
                     var line = new List<TextSpan>();
-                    var addr = dasm.Current.Address;
+                    var instr = dasm.Current;
+                    var addr = instr.Address;
                     line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
-                    line.Add(new InertTextSpan(BuildBytes(dasm.Current), "dasm-bytes"));
-                    var dfmt = new DisassemblyFormatter(program, line);
-                    dasm.Current.Render(dfmt);
+                    line.Add(new InstructionTextSpan(instr, BuildBytes(instr), "dasm-bytes"));
+                    var dfmt = new DisassemblyFormatter(program, instr, line);
+                    instr.Render(dfmt);
                     dfmt.NewLine();
                     lines.Add(new LineSpan(addr, line.ToArray()));
                     --count;
@@ -145,6 +153,9 @@ namespace Reko.Gui.Windows.Controls
             return 8 * byteOffset / bitSize;
         }
 
+        /// <summary>
+        /// An inert text span is not clickable nor has a context menu.
+        /// </summary>
         public class InertTextSpan : TextSpan
         {
             private string text;
@@ -153,6 +164,23 @@ namespace Reko.Gui.Windows.Controls
             {
                 this.text = text;
                 base.Style = style ;
+            }
+
+            public override string GetText()
+            {
+                return text;
+            }
+        }
+
+        public class InstructionTextSpan : TextSpan
+        {
+            private string text;
+
+            public InstructionTextSpan(MachineInstruction instr, string text, string style)
+            {
+                this.Tag = instr;
+                this.text = text;
+                this.Style = style;
             }
 
             public override string GetText()

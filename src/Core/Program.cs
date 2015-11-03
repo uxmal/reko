@@ -329,36 +329,4 @@ namespace Reko.Core
 			IndexRegister = idxReg;
 		}
 	}
-
-    /// <summary>
-    /// Oracular information provided by user.
-    /// </summary>
-    public class UserData
-    {
-        public UserData()
-        {
-            this.Procedures = new SortedList<Address, Serialization.Procedure_v1>();
-            this.Calls = new SortedList<Address, Serialization.SerializedCall_v1>();
-            this.Globals = new SortedList<Address, Serialization.GlobalDataItem_v2>();
-            this.Heuristics = new SortedSet<string>();
-        }
-
-        // 'Oracular' information provided by the user.
-        public string Processor { get; set; }
-        public string Environment { get; set; }
-        public Address LoadAddress { get; set; }
-        public SortedList<Address, Serialization.Procedure_v1>      Procedures { get; set; }
-        public SortedList<Address, Serialization.SerializedCall_v1> Calls { get; set; }
-        public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
-
-        /// <summary>
-        /// A script to run after the image is loaded.
-        /// </summary>
-        public Serialization.Script_v2 OnLoadedScript { get; set; }
-
-        /// <summary>
-        /// Scanning heuristics to try.
-        /// </summary>
-        public SortedSet<string> Heuristics { get; set; }
-    }
 }

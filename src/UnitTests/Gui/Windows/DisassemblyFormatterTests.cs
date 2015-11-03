@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Gui
         public void Df_FormatString()
         {
             var list = new List<TextSpan>();
-            var df = new DisassemblyFormatter(program, list);
+            var df = new DisassemblyFormatter(program, null, list);
             df.Write("Hello");
             df.NewLine();
 
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Gui
         public void Df_FormatAddress()
         {
             var list = new List<TextSpan>();
-            var df = new DisassemblyFormatter(program, list);
+            var df = new DisassemblyFormatter(program, null, list);
             df.WriteAddress("foo", Address.Ptr32(0x1234));
             df.NewLine();
 
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Gui
         {
             var list = new List<TextSpan>();
             program.Procedures.Add(Address.Ptr32(0x1234), new Procedure("fn_renamed", new Frame(PrimitiveType.Word32)));
-            var df = new DisassemblyFormatter(program, list);
+            var df = new DisassemblyFormatter(program, null, list);
             df.WriteAddress("foo", Address.Ptr32(0x1234));
             df.NewLine();
 

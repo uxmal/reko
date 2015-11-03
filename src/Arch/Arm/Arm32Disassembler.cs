@@ -21,17 +21,9 @@
 using Gee.External.Capstone;
 using Gee.External.Capstone.Arm;
 using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using ArmInstruction = Reko.Arch.Arm.Arm32Instruction;
 
-namespace Reko.Arch.Arm 
+namespace Reko.Arch.Arm
 {
     public class Arm32Disassembler : DisassemblerBase<Arm32Instruction> 
     {

@@ -155,6 +155,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slEditRename = new CommandMenuItem("_Rename", new Guid(CmdSets.Reko), CmdIds.EditRename);
             slEditRename.IsDynamic = false;
             slGrpEdit.Add(0, slEditRename);
+            CommandMenuItem slEditAnnotation = new CommandMenuItem("Co_mment", new Guid(CmdSets.Reko), CmdIds.EditAnnotation);
+            slEditAnnotation.IsDynamic = false;
+            slGrpEdit.Add(0, slEditAnnotation);
             CommandMenuItem slEditSelectAll = new CommandMenuItem("Select _all", new Guid(CmdSets.Reko), CmdIds.EditSelectAll);
             slEditSelectAll.IsDynamic = false;
             slGrpEdit.Add(0, slEditSelectAll);
@@ -294,6 +297,7 @@ namespace Reko.Gui.Windows.Forms
 			slGrpDisassemblerNav.Add(0, slOpenLink);
 			slGrpDisassemblerNav.Add(0, slOpenLinkInNewWindow);
 			slGrpDisassemblerEdit.Add(0, slEditRename);
+			slGrpDisassemblerEdit.Add(0, slEditAnnotation);
 			slGrpProcedure.Add(0, slActionEditSignature);
 			slGrpProcedure.Add(0, slViewGoToAddress);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);

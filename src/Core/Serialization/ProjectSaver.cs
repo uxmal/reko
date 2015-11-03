@@ -21,6 +21,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -67,7 +68,9 @@ namespace Reko.Core.Serialization
                         })
                         .ToList(),
                     OnLoadedScript = program.User.OnLoadedScript,
-                    Heuristics = program.User.Heuristics.Select(h => new Heuristic_v3 { Name = h }).ToList(),
+                    Heuristics = program.User.Heuristics
+                        .Select(h => new Heuristic_v3 { Name = h }).ToList(),
+                    Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList()
                 },
                 DisassemblyFilename = program.DisassemblyFilename,
                 IntermediateFilename = program.IntermediateFilename,
@@ -75,6 +78,35 @@ namespace Reko.Core.Serialization
                 TypesFilename = program.TypesFilename,
                 GlobalsFilename = program.GlobalsFilename,
             };
+        }
+
+        private Annotation_v3 SerializeAnnotation(Annotation arg)
+        {
+            return new Annotation_v3
+            {
+                Address = arg.Address.ToString(),
+                Text = arg.Text,
+            };
+        }
+
+        public static string MakeRelativePath(string fromPath, string toPath)
+        {
+            if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            if (string.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
+            Uri fromUri = new Uri(fromPath);
+            Uri toUri = new Uri(toPath);
+
+            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+
+            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+            string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            if (toUri.Scheme.ToUpperInvariant() == "FILE")
+            {
+                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            }
+            return relativePath;
         }
 
         private ProcessorOptions_v3 SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)

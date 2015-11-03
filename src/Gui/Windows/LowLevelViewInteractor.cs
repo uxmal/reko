@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Gui.Controls;
 using Reko.Gui.Windows.Controls;
@@ -162,6 +163,7 @@ namespace Reko.Gui.Windows
             else if (Control.DisassemblyView.Focused)
             {
                 var selAddress = Control.DisassemblyView.SelectedObject as Address;
+                var instr = Control.DisassemblyView.SelectedObject as MachineInstruction;
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
                     switch (cmdId.ID)
@@ -169,6 +171,9 @@ namespace Reko.Gui.Windows
                     case CmdIds.OpenLink:
                     case CmdIds.OpenLinkInNewWindow:
                         status.Status = selAddress != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
+                        return true;
+                    case CmdIds.EditAnnotation:
+                        status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
                     }
                 }
@@ -197,6 +202,10 @@ namespace Reko.Gui.Windows
             {
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.EditAnnotation: return EditDasmAnnotation(); break;
+                    }
                 }
             }
             return false;
@@ -365,6 +374,11 @@ namespace Reko.Gui.Windows
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
             }
+            return true;
+        }
+
+        public bool EditDasmAnnotation()
+        {
             return true;
         }
 

@@ -23,7 +23,6 @@ using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;

@@ -33,12 +33,14 @@ namespace Reko.Gui.Windows
     public class DisassemblyFormatter : MachineInstructionWriter 
     {
         private Program program;
+        private MachineInstruction instr;
         private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
 
-        public DisassemblyFormatter(Program program, List<TextSpan> line)
+        public DisassemblyFormatter(Program program, MachineInstruction instr, List<TextSpan> line)
         {
             this.program = program;
+            this.instr = instr;
             this.line = line;
             this.Platform = program.Platform;
         }
@@ -47,7 +49,7 @@ namespace Reko.Gui.Windows
 
         public void WriteOpcode(string opcode)
         {
-            line.Add(new DisassemblyTextModel.InertTextSpan(opcode, UiStyles.DisassemblerOpcode));
+            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, opcode, UiStyles.DisassemblerOpcode));
         }
 
         public void WriteAddress(string formattedAddress, Address addr)

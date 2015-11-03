@@ -80,6 +80,8 @@
   <cmd id="EditCopy" cmdSet="Reko" container="EditCopy">_Copy</cmd>
   <cmd id="EditCopyAll" cmdSet="Reko" container="EditCopyAll">_Copy All</cmd>
   <cmd id="EditRename" cmdSet="Reko" container="GrpEdit">_Rename</cmd>
+  <cmd id="EditAnnotation" cmdSet="Reko" container="GrpEdit">Co_mment</cmd>
+
   <cmd id="EditSelectAll" cmdSet="Reko" container="GrpEdit">Select _all</cmd>
 
   <cmd id="EditProperties" cmdSet="Reko" container="EditProperties">P_roperties</cmd>
@@ -158,6 +160,7 @@
   <placement item="OpenLink" container="GrpDisassemblerNav" />
   <placement item="OpenLinkInNewWindow" container="GrpDisassemblerNav" />
   <placement item="EditRename" container="GrpDisassemblerEdit" />
+  <placement item="EditAnnotation" container="GrpDisassemblerEdit"/>
              
   <placement item="ActionEditSignature" container="GrpProcedure"/>
   <placement item="ViewGoToAddress" container="GrpProcedure"/>

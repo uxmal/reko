@@ -181,13 +181,14 @@ namespace Reko.Gui.Windows.Controls
             }
             else if (ComparePositions(pos, cursorPos) != 0)
             {
+                Focus();
+
                 // User clicked somewhere other than the current cursor
                 // position, so we need to move it.
                 dragging = false;
                 this.cursorPos = pos;
                 if ((Control.ModifierKeys & Keys.Shift) == 0)
                     this.anchorPos = pos;
-                Focus();
                 SetCaret();
                 Invalidate();
             }
@@ -247,6 +248,7 @@ namespace Reko.Gui.Windows.Controls
                     }
                     SelectionChanged.Fire(this);
                 }
+                Capture = false;
             }
             base.OnMouseUp(e);
         }

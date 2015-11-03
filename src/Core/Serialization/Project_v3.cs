@@ -73,6 +73,7 @@ namespace Reko.Core.Serialization
             Procedures = new List<Procedure_v1>();
             GlobalData = new List<GlobalDataItem_v2>();
             Heuristics = new List<Heuristic_v3>();
+            Annotations = new List<Annotation_v3>();
         }
 
         [XmlElement("address")]
@@ -98,6 +99,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("onLoad")]
         public Script_v2 OnLoadedScript;
+
+        [XmlElement("annotation")]
+        public List<Annotation_v3> Annotations;
     }
 
     public class Heuristic_v3
@@ -178,5 +182,14 @@ namespace Reko.Core.Serialization
     {
         [XmlAttribute("name")]
         public string Name;
+    }
+
+    public class Annotation_v3
+    {
+        [XmlAttribute("addr")]
+        public string Address;
+
+        [XmlText]
+        public string Text;
     }
 }
