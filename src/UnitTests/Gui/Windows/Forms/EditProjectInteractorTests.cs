@@ -64,7 +64,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.IsFalse(ret);
             var input = (DecompilerInput_v3)project.Inputs[0];
             Assert.AreEqual("test.exe", input.Filename);
-            Assert.AreEqual("10000", input.Address);
             Assert.AreEqual("test.asm", input.DisassemblyFilename);
             Assert.AreEqual("test.dis", input.IntermediateFilename);
             Assert.AreEqual("test.h", input.TypesFilename);
@@ -82,7 +81,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             {
                 var input = (DecompilerInput_v3)project.Inputs[0];
                 Assert.AreEqual("test.exe", input.Filename);
-                Assert.AreEqual("10000",    input.Address);
                 Assert.AreEqual("test.asm", input.DisassemblyFilename);
                 Assert.AreEqual("test.dis", input.IntermediateFilename);
                 Assert.AreEqual("test.h",   input.TypesFilename);
@@ -121,7 +119,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 {
                     new DecompilerInput_v3 {
                         Filename = "test.exe",
-                        Address = "10000",
                         DisassemblyFilename = "test.asm",
                         IntermediateFilename = "test.dis",
                         TypesFilename = "test.h",

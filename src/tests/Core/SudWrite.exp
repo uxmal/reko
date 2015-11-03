@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://schemata.jklnet.org/Reko/v3">
   <input>
-    <address>0x1000:0x0</address>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
     <user>
+      <address>0x1000:0x0</address>
       <procedure name="foo">
         <signature>
           <return>

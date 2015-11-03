@@ -62,7 +62,6 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v3
                     {
-                        Address = "0x1000:0x0",
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
                         User = new UserData_v3 {
@@ -92,7 +91,8 @@ namespace Reko.UnitTests.Core.Serialization
                                         }
                                     }
                                 }
-                            }
+                            },
+                            LoadAddress = "0x1000:0x0",
                         }
                     }
                 }

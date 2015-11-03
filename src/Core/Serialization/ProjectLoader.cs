@@ -158,7 +158,8 @@ namespace Reko.Core.Serialization
         public Program VisitInputFile(DecompilerInput_v3 sInput)
         {
             var bytes = loader.LoadImageBytes(sInput.Filename, 0);
-            var program = loader.LoadExecutable(sInput.Filename, bytes, null);
+            var address = LoadAddress(sInput.User);
+            var program = loader.LoadExecutable(sInput.Filename, bytes, address);
             program.Filename = sInput.Filename;
             LoadUserData(sInput.User, program, program.User);
             program.DisassemblyFilename = sInput.DisassemblyFilename;
@@ -169,6 +170,18 @@ namespace Reko.Core.Serialization
             program.EnsureFilenames(sInput.Filename);
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
+        }
+
+        private Address LoadAddress(UserData_v3 user)
+        {
+            if (user == null || user.LoadAddress == null || user.Processor == null)
+                return null;
+            Address addr;
+            if (!services.RequireService<IConfigurationService>()
+                .GetArchitecture(user.Processor.Name)
+                .TryParseAddress(user.LoadAddress, out addr))
+                return null;
+            return addr;
         }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)

@@ -132,6 +132,7 @@ namespace Reko.Gui.Windows.Forms
                 var program = Decompiler.LoadRawImage(file, arch, platform, addrBase);
                 program.User.Processor = arch.Name;
                 program.User.Environment = platform.Name;
+                program.User.LoadAddress = addrBase;
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanPrograms();
             });

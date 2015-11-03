@@ -126,7 +126,6 @@ namespace Reko.Gui.Windows.Forms
                     new DecompilerInput_v3
                     {
                         Filename = dlg.BinaryFilename.Text,
-                        Address = dlg.BaseAddress.Text,
                         DisassemblyFilename = dlg.Disassembly.Text,
                         IntermediateFilename = dlg.IntermediateFilename.Text,
                         TypesFilename = dlg.TypesFilename.Text,
@@ -146,7 +145,6 @@ namespace Reko.Gui.Windows.Forms
             if (input == null)
                 return;
             dlg.BinaryFilename.Text =       input.Filename;
-            dlg.BaseAddress.Text =          input.Address;
             dlg.Disassembly.Text =          input.DisassemblyFilename;
             dlg.IntermediateFilename.Text = input.IntermediateFilename;
             dlg.TypesFilename.Text =        input.TypesFilename;

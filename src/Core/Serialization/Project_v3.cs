@@ -75,8 +75,8 @@ namespace Reko.Core.Serialization
             Heuristics = new List<Heuristic_v3>();
         }
 
-        [XmlElement("onLoad")]
-        public Script_v2 OnLoadedScript;
+        [XmlElement("address")]
+        public string LoadAddress;
 
         [XmlElement("processor")]
         public ProcessorOptions_v3 Processor;
@@ -95,6 +95,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("heuristic")]
         public List<Heuristic_v3> Heuristics;
+
+        [XmlElement("onLoad")]
+        public Script_v2 OnLoadedScript;
     }
 
     public class Heuristic_v3
@@ -109,9 +112,6 @@ namespace Reko.Core.Serialization
         {
             User = new UserData_v3();
         }
-
-        [XmlElement("address")]
-        public string Address;
 
         [XmlElement("comment")]
         public string Comment;
@@ -133,6 +133,7 @@ namespace Reko.Core.Serialization
 
         [XmlElement("user")]
         public UserData_v3 User;
+
         public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
         {
             return visitor.VisitInputFile(this);

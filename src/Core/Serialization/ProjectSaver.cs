@@ -46,9 +46,6 @@ namespace Reko.Core.Serialization
             var dtSerializer = new DataTypeSerializer();
             return new DecompilerInput_v3
             {
-                Address = program.Image != null
-                    ? program.Image.BaseAddress.ToString()
-                    : null,
                 Filename = program.Filename,
                 User = new UserData_v3
                 {
@@ -57,6 +54,7 @@ namespace Reko.Core.Serialization
                         .ToList(),
                     Processor = SerializeProcessorOptions(program.User, program.Architecture),
                     PlatformOptions = SerializePlatformOptions(program.User, program.Platform),
+                    LoadAddress = program.User.LoadAddress != null ? program.User.LoadAddress.ToString() : null,
                     Calls = program.User.Calls
                         .Select(uc => uc.Value)
                         .ToList(),
