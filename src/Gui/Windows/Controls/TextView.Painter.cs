@@ -165,6 +165,17 @@ namespace Reko.Gui.Windows.Controls
                     if (!string.IsNullOrEmpty(span.Style))
                         styleStack.PopStyle();
                 }
+
+                // Paint the last piece of the line
+                var cx = outer.ClientRectangle.Right - this.rcText.Right;
+                if (cx > 0)
+                {
+                    rcText.X = rcText.Right;
+                    rcText.Width = cx;
+                    graphics.FillRectangle(
+                        styleStack.GetBackground(outer),
+                        rcText);
+                }
             }
 
             private void DrawTextSegment(int iStart, int iEnd, bool selected)

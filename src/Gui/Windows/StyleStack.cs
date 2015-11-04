@@ -130,5 +130,16 @@ namespace Reko.Gui.Windows.Controls
             }
             return ctrl.Font;
         }
+
+        public int? GetWidth(TextView textView)
+        {
+            for (int i = stack.Count - 1; i >= 0; --i)
+            {
+                var style = stack[i];
+                if (style != null && style.Width.HasValue)
+                    return style.Width;
+            }
+            return null;
+        }
     }
 }

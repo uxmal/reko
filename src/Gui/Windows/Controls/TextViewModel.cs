@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
@@ -148,7 +149,10 @@ namespace Reko.Gui.Windows.Controls
 
         public virtual SizeF GetSize(string text, Font font, Graphics g)
         {
-            return g.MeasureString(text, font, 0, stringFormat);
+            var sz = TextRenderer.MeasureText(
+               g, text, font, new Size(0, 0),
+               TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+            return sz;
         }
     }
 

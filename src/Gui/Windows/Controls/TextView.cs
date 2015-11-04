@@ -116,10 +116,10 @@ namespace Reko.Gui.Windows.Controls
         private SizeF GetSize(TextSpan span, string text, Font font, Graphics g)
         {
             var size = span.GetSize(text, font, g);
-            UiStyle style = GetStyle(span.Style);
-            if (style != null && style.Width.HasValue)
+            int? width = styleStack.GetWidth(this);
+            if (width.HasValue)
             {
-                size.Width = style.Width.Value;
+                size.Width = width.Value;
             }
             return size;
         }
@@ -129,18 +129,6 @@ namespace Reko.Gui.Windows.Controls
             if (styleStack == null)
                 styleStack = new StyleStack(Services.RequireService<IUiPreferencesService>());
             return styleStack;
-        }
-
-        private UiStyle GetStyle(string styleSelector)
-        {
-            UiStyle style;
-            if (!string.IsNullOrEmpty(styleSelector) && Services != null)
-            {
-                var uipSvc = Services.RequireService<IUiPreferencesService>();
-                uipSvc.Styles.TryGetValue(styleSelector, out style);
-                return style;
-            }
-            return null;
         }
 
         protected override void Dispose(bool disposing)

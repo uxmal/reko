@@ -173,6 +173,17 @@ namespace Reko.Gui.Windows.Forms
                 style.Background = new SolidBrush(color);
                 Control.Refresh();
             }
+
+            internal void SetFont(Font font)
+            {
+                var style = outer.localSettings.Styles[Style.Name];
+                if (style.Font != null)
+                {
+                    style.Font.Dispose();
+                }
+                style.Font = font;
+                Control.Refresh();
+            }
         }
 
         void dlg_Load(object sender, EventArgs e)
@@ -207,7 +218,7 @@ namespace Reko.Gui.Windows.Forms
         }
 
         /// <summary>
-        /// Create a simulatd program to use in the code /data display.
+        /// Create a simulated program to use in the code /data display.
         /// </summary>
         private void GenerateSimulatedProgram()
         {
@@ -294,7 +305,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.FontPicker.Font = dlg.MemoryControl.Font;
             if (dlg.FontPicker.ShowDialog(dlg) == DialogResult.OK)
             {
-                dlg.MemoryControl.Font = dlg.FontPicker.Font;
+                GetSelectedDesigner().SetFont(dlg.FontPicker.Font);
             }
         }
 
