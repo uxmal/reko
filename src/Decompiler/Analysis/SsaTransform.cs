@@ -88,6 +88,11 @@ namespace Reko.Analysis
             return ldv.Definitions;
 		}
 
+        /// <summary>
+        /// Temporary variables are never live-in, so we avoid getting phi
+        /// functions all over the place by marking them explicitly as dead-in.
+        /// </summary>
+        /// <param name="def"></param>
 		private void MarkTemporariesDeadIn(Dictionary<Expression, byte>[] def)
 		{
             foreach (var block in proc.ControlGraph.Blocks)

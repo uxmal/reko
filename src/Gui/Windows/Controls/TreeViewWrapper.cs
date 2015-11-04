@@ -23,6 +23,7 @@ using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -61,6 +62,8 @@ namespace Reko.Gui.Windows.Controls
         public bool ShowLines { get { return treeView.ShowLines; } set { treeView.ShowLines = value; } }
         public bool ShowNodeToolTips { get { return treeView.ShowNodeToolTips; } set { treeView.ShowNodeToolTips = value; } }
         public bool ShowRootLines { get { return treeView.ShowRootLines; } set { treeView.ShowRootLines = value; } }
+        public Color ForeColor { get { return this.treeView.ForeColor; } set { this.treeView.ForeColor = value; } }
+        public Color BackColor { get { return this.treeView.BackColor; } set { this.treeView.BackColor = value; } }
 
         public ITreeNode SelectedNode
         {

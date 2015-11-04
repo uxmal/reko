@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Reko.Gui.Controls;
 
 namespace Reko.WindowsItp
 {
@@ -94,6 +95,16 @@ namespace Reko.WindowsItp
         }
 
         public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateControlStyle(string list, Control ctrl)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateControlStyle(string styleName, IControl ctrl)
         {
             throw new NotImplementedException();
         }

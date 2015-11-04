@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserPreferencesDialog));
             Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel2 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             this.btnOK = new System.Windows.Forms.Button();
@@ -46,6 +48,12 @@
             this.lbxUiElements = new System.Windows.Forms.ListBox();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
             this.fontPicker = new System.Windows.Forms.FontDialog();
+            this.treeBrowser = new System.Windows.Forms.TreeView();
+            this.imlBrowser = new System.Windows.Forms.ImageList(this.components);
+            this.listView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
             this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
             this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
@@ -58,7 +66,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(396, 226);
+            this.btnOK.Location = new System.Drawing.Point(426, 273);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -69,7 +77,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(477, 226);
+            this.btnCancel.Location = new System.Drawing.Point(507, 273);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -86,11 +94,12 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(565, 220);
+            this.tabControl1.Size = new System.Drawing.Size(595, 267);
             this.tabControl1.TabIndex = 2;
             // 
             // tabWindows
             // 
+            this.tabWindows.Controls.Add(this.listView);
             this.tabWindows.Controls.Add(this.dasmCtl);
             this.tabWindows.Controls.Add(this.codeCtl);
             this.tabWindows.Controls.Add(this.memCtl);
@@ -98,10 +107,11 @@
             this.tabWindows.Controls.Add(this.btnWindowBgColor);
             this.tabWindows.Controls.Add(this.btnWindowFgColor);
             this.tabWindows.Controls.Add(this.btnWindowFont);
+            this.tabWindows.Controls.Add(this.treeBrowser);
             this.tabWindows.Location = new System.Drawing.Point(4, 22);
             this.tabWindows.Name = "tabWindows";
             this.tabWindows.Padding = new System.Windows.Forms.Padding(3);
-            this.tabWindows.Size = new System.Drawing.Size(557, 194);
+            this.tabWindows.Size = new System.Drawing.Size(587, 241);
             this.tabWindows.TabIndex = 0;
             this.tabWindows.Text = "Windows";
             this.tabWindows.UseVisualStyleBackColor = true;
@@ -114,7 +124,7 @@
             this.treeView1.Location = new System.Drawing.Point(7, 7);
             this.treeView1.Name = "treeView1";
             this.treeView1.ShowPlusMinus = false;
-            this.treeView1.Size = new System.Drawing.Size(164, 172);
+            this.treeView1.Size = new System.Drawing.Size(164, 219);
             this.treeView1.TabIndex = 5;
             // 
             // btnWindowBgColor
@@ -154,7 +164,7 @@
             this.tabColors.Location = new System.Drawing.Point(4, 22);
             this.tabColors.Name = "tabColors";
             this.tabColors.Padding = new System.Windows.Forms.Padding(3);
-            this.tabColors.Size = new System.Drawing.Size(557, 194);
+            this.tabColors.Size = new System.Drawing.Size(587, 241);
             this.tabColors.TabIndex = 1;
             this.tabColors.Text = "Image Bar";
             this.tabColors.UseVisualStyleBackColor = true;
@@ -184,7 +194,7 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Location = new System.Drawing.Point(177, 95);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(371, 84);
+            this.label2.Size = new System.Drawing.Size(401, 131);
             this.label2.TabIndex = 3;
             this.label2.Text = "lblImageBarPreview";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -213,6 +223,59 @@
             this.lbxUiElements.Size = new System.Drawing.Size(164, 172);
             this.lbxUiElements.TabIndex = 1;
             // 
+            // treeBrowser
+            // 
+            this.treeBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeBrowser.ImageIndex = 0;
+            this.treeBrowser.ImageList = this.imlBrowser;
+            this.treeBrowser.Location = new System.Drawing.Point(180, 37);
+            this.treeBrowser.Name = "treeBrowser";
+            this.treeBrowser.SelectedImageIndex = 0;
+            this.treeBrowser.Size = new System.Drawing.Size(404, 185);
+            this.treeBrowser.TabIndex = 9;
+            // 
+            // imlBrowser
+            // 
+            this.imlBrowser.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlBrowser.ImageStream")));
+            this.imlBrowser.TransparentColor = System.Drawing.Color.Transparent;
+            this.imlBrowser.Images.SetKeyName(0, "Binary.ico");
+            this.imlBrowser.Images.SetKeyName(1, "RxSection.ico");
+            this.imlBrowser.Images.SetKeyName(2, "Code.ico");
+            this.imlBrowser.Images.SetKeyName(3, "EntryProcedure.ico");
+            this.imlBrowser.Images.SetKeyName(4, "Usercode.ico");
+            // 
+            // listView
+            // 
+            this.listView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.listView.Location = new System.Drawing.Point(180, 37);
+            this.listView.Name = "listView";
+            this.listView.Size = new System.Drawing.Size(404, 185);
+            this.listView.TabIndex = 10;
+            this.listView.UseCompatibleStateImageBehavior = false;
+            this.listView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Program";
+            this.columnHeader1.Width = 86;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Address";
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Description";
+            this.columnHeader3.Width = 101;
+            // 
             // dasmCtl
             // 
             this.dasmCtl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -223,8 +286,9 @@
             this.dasmCtl.Name = "dasmCtl";
             this.dasmCtl.SelectedObject = null;
             this.dasmCtl.Services = null;
-            this.dasmCtl.Size = new System.Drawing.Size(374, 138);
+            this.dasmCtl.Size = new System.Drawing.Size(404, 185);
             this.dasmCtl.StartAddress = null;
+            this.dasmCtl.StyleClass = null;
             this.dasmCtl.TabIndex = 8;
             this.dasmCtl.TopAddress = null;
             // 
@@ -237,7 +301,8 @@
             this.codeCtl.Model = emptyEditorModel2;
             this.codeCtl.Name = "codeCtl";
             this.codeCtl.Services = null;
-            this.codeCtl.Size = new System.Drawing.Size(374, 138);
+            this.codeCtl.Size = new System.Drawing.Size(404, 185);
+            this.codeCtl.StyleClass = null;
             this.codeCtl.TabIndex = 7;
             this.codeCtl.Text = "textView1";
             // 
@@ -254,7 +319,7 @@
             this.memCtl.ProgramImage = null;
             this.memCtl.SelectedAddress = null;
             this.memCtl.Services = null;
-            this.memCtl.Size = new System.Drawing.Size(374, 138);
+            this.memCtl.Size = new System.Drawing.Size(404, 185);
             this.memCtl.TabIndex = 6;
             this.memCtl.Text = "memoryControl1";
             this.memCtl.TopAddress = null;
@@ -266,7 +331,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(564, 261);
+            this.ClientSize = new System.Drawing.Size(594, 308);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
@@ -305,5 +370,11 @@
         private Controls.TextView codeCtl;
         private Controls.MemoryControl memCtl;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TreeView treeBrowser;
+        private System.Windows.Forms.ImageList imlBrowser;
+        private System.Windows.Forms.ListView listView;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

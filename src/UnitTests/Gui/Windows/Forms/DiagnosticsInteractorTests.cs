@@ -120,6 +120,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private class TestDiagnosticsInteractor : DiagnosticsInteractor
         {
+
             public void UserDoubleClicked()
             {
                 base.listView_DoubleClick(null, EventArgs.Empty);

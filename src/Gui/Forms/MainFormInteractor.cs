@@ -120,6 +120,7 @@ namespace Reko.Gui.Forms
             var svcFactory = sc.RequireService<IServiceFactory>();
             CreateServices(svcFactory, sc, dm);
             CreatePhaseInteractors(svcFactory);
+            projectBrowserSvc.Clear();
 
             form.Load += this.MainForm_Loaded;
             form.Closed += this.MainForm_Closed;
@@ -172,10 +173,10 @@ namespace Reko.Gui.Forms
             sc.AddService(typeof(IArchiveBrowserService), abSvc);
 
             sc.AddService(typeof(ILowLevelViewService), svcFactory.CreateMemoryViewService());
-            sc.AddService(typeof(IDisassemblyViewService), svcFactory.CreateDisassemblyViewService());
+            sc.AddService<IDisassemblyViewService>(svcFactory.CreateDisassemblyViewService());
 
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();
-            sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
 
             this.projectBrowserSvc = svcFactory.CreateProjectBrowserService(form.ProjectBrowser);
             sc.AddService<IProjectBrowserService>(projectBrowserSvc);
@@ -571,7 +572,13 @@ namespace Reko.Gui.Forms
         {
             using (var dlg = dlgFactory.CreateUserPreferencesDialog())
             {
-                uiSvc.ShowModalDialog(dlg);
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
+                    uiPrefsSvc.WindowSize = form.Size;
+                    uiPrefsSvc.WindowState = form.WindowState;
+                    uiPrefsSvc.Save();
+                }
             }
         }
 

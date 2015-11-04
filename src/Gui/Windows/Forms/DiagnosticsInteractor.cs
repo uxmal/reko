@@ -35,9 +35,9 @@ namespace Reko.Gui.Windows.Forms
     /// </summary>
     public class DiagnosticsInteractor : IDiagnosticsService, IWindowPane, ICommandTarget
     {
+        private IServiceProvider services;
         private ListView listView;
         private List<KeyValuePair<ICodeLocation, Diagnostic>> pending;
-        private IServiceProvider services;
 
         public void Attach(ListView listView)
         {
@@ -56,6 +56,12 @@ namespace Reko.Gui.Windows.Forms
         public void SetSite(IServiceProvider sp)
         {
             this.services = sp;
+            if (services != null)
+            {
+                var uiUser = services.RequireService<IUiPreferencesService>();
+                uiUser.UiPreferencesChanged += delegate { uiUser.UpdateControlStyle(UiStyles.List, listView); };
+                uiUser.UpdateControlStyle(UiStyles.List, listView);
+            }
         }
 
         public void Close()

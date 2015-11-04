@@ -38,6 +38,7 @@ using DragDropEffects = System.Windows.Forms.DragDropEffects;
 using System.Xml;
 using System.Xml.Linq;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Reko.UnitTests.Gui.Windows
 {
@@ -127,6 +128,32 @@ namespace Reko.UnitTests.Gui.Windows
             public ContextMenu ContextMenu { get; set; }
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
+
+            public Color ForeColor
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public Color BackColor
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
 
             public ITreeNode CreateNode()
             {

@@ -71,6 +71,9 @@ namespace Reko.Gui
 
         public void Load(Project project)
         {
+            var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
+            uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree);
+            uiPrefsSvc.UiPreferencesChanged += delegate { uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree); };
             tree.ContextMenu = Services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxBrowser);
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();

@@ -74,11 +74,28 @@ namespace Reko.Gui.Windows.Controls
 
             private void PaintLine(LayoutLine line)
             {
+                // Paint the last piece of the line
+                RectangleF rcTrailer = line.Extent;
+                float xMax = 0;
+                if (line.Spans.Length > 0)
+                {
+                    xMax = line.Spans[line.Spans.Length - 1].Extent.Right;
+                }
+                var cx = outer.ClientRectangle.Right - xMax;
+                if (cx > 0)
+                {
+                    rcTrailer.X = xMax;
+                    rcTrailer.Width = cx;
+                    graphics.FillRectangle(
+                        styleStack.GetBackground(outer),
+                        rcTrailer);
+                }
+
+
                 for (int iSpan = 0; iSpan < line.Spans.Length; ++iSpan)
                 {
                     this.span = line.Spans[iSpan];
-                    if (!string.IsNullOrEmpty(span.Style))
-                        this.styleStack.PushStyle(span.Style);
+                    this.styleStack.PushStyle(span.Style);
                     var pos = new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
 
                     var insideSelection =
@@ -105,11 +122,7 @@ namespace Reko.Gui.Windows.Controls
                                 // Selection ends inside the current span. Write
                                 // selected text.
                                 DrawTextSegment(selStart.Character, selEnd.Character - selStart.Character, true);
-                                if (selEnd.Character < span.Text.Length)
-                                {
-                                    // If there is trailing unselected text, display that.
-                                    DrawTrailingTextSegment(selEnd.Character, false);
-                                }
+                                DrawTrailingTextSegment(selEnd.Character, false);
                             }
                             else
                             {
@@ -162,19 +175,7 @@ namespace Reko.Gui.Windows.Controls
                             1, line.Extent.Height);
                     }
 #endif
-                    if (!string.IsNullOrEmpty(span.Style))
-                        styleStack.PopStyle();
-                }
-
-                // Paint the last piece of the line
-                var cx = outer.ClientRectangle.Right - this.rcText.Right;
-                if (cx > 0)
-                {
-                    rcText.X = rcText.Right;
-                    rcText.Width = cx;
-                    graphics.FillRectangle(
-                        styleStack.GetBackground(outer),
-                        rcText);
+                    styleStack.PopStyle();
                 }
             }
 
@@ -182,17 +183,23 @@ namespace Reko.Gui.Windows.Controls
             {
                 var textStub = span.Text.Substring(iStart, iEnd);
                 var sz = outer.MeasureText(graphics, textStub, font);
+                var oldWidth = rcText.Width;
                 rcText.Width = sz.Width;
                 DrawText(textStub, selected);
+                rcText.Width = oldWidth - sz.Width;
             }
 
             private void DrawTrailingTextSegment(int iStart, bool selected)
             {
                 var textStub = span.Text.Substring(iStart);
-                rcText.Width = span.Extent.Width - (rcText.X - span.Extent.Left);
                 DrawText(textStub, selected);
             }
 
+            /// <summary>
+            /// Draws the entire string inside the current rectangle, then advances it.
+            /// </summary>
+            /// <param name="text"></param>
+            /// <param name="selected"></param>
             private void DrawText(string text, bool selected)
             {
                 graphics.FillRectangle(

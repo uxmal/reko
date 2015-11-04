@@ -108,6 +108,7 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\PlatformDesigner.cs" />

@@ -127,7 +127,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_DecompilerInstance();
             dcSvc.Expect(d => d.Decompiler = null);
-            brSvc.Expect(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
             Given_SavePrompt(true);
@@ -444,7 +443,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_CommandNotHandledBySubwindow();
             uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
             //form.Expect(f => f.CloseAllDocumentWindows());
-            brSvc.Expect(b => b.Clear());
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             Given_DecompilerInstance();
             Given_SavePrompt(true);
@@ -483,7 +481,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             memSvc = mr.StrictMock<ILowLevelViewService>();
             disasmSvc = mr.StrictMock<IDisassemblyViewService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
-            brSvc = mr.StrictMock<IProjectBrowserService>();
+            brSvc = mr.Stub<IProjectBrowserService>();
             uiPrefs = mr.StrictMock<IUiPreferencesService>();
             fsSvc = mr.StrictMock<IFileSystemService>();
             tcHostSvc = mr.StrictMock<ITabControlHostService>();
@@ -513,6 +511,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateResourceEditorService()).Return(resEditSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
+            brSvc.Stub(b => b.Clear());
 
             form = mr.StrictMock<IMainForm>();
             var listView = new ListView();

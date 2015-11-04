@@ -54,9 +54,10 @@ namespace Reko.Gui.Windows.Forms
         public TextView CodeControl { get { return codeCtl; } }
         public MemoryControl MemoryControl { get { return memCtl; } }
         public DisassemblyControl DisassemblyControl { get { return dasmCtl; } }
+        public TreeView Browser {  get { return treeBrowser; } }
+        public ListView List { get { return listView; } }
 
         public ColorDialog ColorPicker { get { return colorPicker; } }
         public FontDialog FontPicker { get { return fontPicker; } }
-
     }
 }

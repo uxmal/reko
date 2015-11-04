@@ -64,6 +64,12 @@ namespace Reko.Gui.Windows
         public void SetSite(IServiceProvider sp)
         {
             this.services = sp;
+            if (services != null)
+            {
+                var uiUser = services.RequireService<IUiPreferencesService>();
+                uiUser.UiPreferencesChanged += delegate { uiUser.UpdateControlStyle(UiStyles.List, listView); };
+                uiUser.UpdateControlStyle(UiStyles.List, listView);
+            }
         }
 
         public void ShowAddressSearchResults(IEnumerable<ProgramAddress> hits, AddressSearchDetails details)

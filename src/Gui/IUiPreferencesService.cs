@@ -28,6 +28,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Globalization;
+using Reko.Gui.Controls;
 
 namespace Reko.Gui
 {
@@ -58,8 +59,8 @@ namespace Reko.Gui
     {
         public const string MemoryWindow = "mem";
         public const string MemoryFont = "mem-font";
-        public const string MemoryForeColor= "mem-fore";
-        public const string MemoryBackColor= "mem-back";
+        public const string MemoryForeColor = "mem-fore";
+        public const string MemoryBackColor = "mem-back";
         public const string MemoryCode = "mem-code";
         public const string MemoryCodeForeColor = "mem-code-fore";
         public const string MemoryCodeBackColor = "mem-codeback";
@@ -81,12 +82,22 @@ namespace Reko.Gui
         public const string CodeFont = "code-font";
         public const string CodeForeColor = "code-fore";
         public const string CodeBackColor = "code-back";
-        public const string CodeKeyword= "code-kw";
+        public const string CodeKeyword = "code-kw";
         public const string CodeKeywordFont = "code-kw-font";
         public const string CodeKeywordColor = "code-kw-fore";
         public const string CodeComment = "code-cmt";
         public const string CodeCommentFont = "code-cmt-font";
         public const string CodeCommentColor = "code-cmt-fore";
+
+        public const string Browser = "browser";
+        public const string BrowserFont = "browser-font";
+        public const string BrowserForeColor = "browser-fore";
+        public const string BrowserBackColor = "browser-back";
+
+        public const string List = "list";
+        public const string ListFont = "list-font";
+        public const string ListForeColor = "list-fore";
+        public const string ListBackColor = "list-back";
     }
 
     public interface IUiPreferencesService
@@ -100,6 +111,8 @@ namespace Reko.Gui
 
         void Load();
         void Save();
+        void UpdateControlStyle(string styleName, Control ctrl);
+        void UpdateControlStyle(string styleName, IControl ctrl);
     }
 
     public class UiPreferencesService : IUiPreferencesService
@@ -145,14 +158,14 @@ namespace Reko.Gui
                 if (Int32.TryParse(dStyle.Width, out w))
                     width = w;
                 AddStyle(new UiStyle
-                    {
-                        Name = dStyle.Name,
-                        Foreground = GetBrush(dStyle.ForeColor),
-                        Background = GetBrush(dStyle.BackColor),
-                        Font = GetFont(dStyle.FontName),
-                        Width = width,
-                        Cursor = GetCursor(dStyle.Cursor),
-                    });
+                {
+                    Name = dStyle.Name,
+                    Foreground = GetBrush(dStyle.ForeColor),
+                    Background = GetBrush(dStyle.BackColor),
+                    Font = GetFont(dStyle.FontName),
+                    Width = width,
+                    Cursor = GetCursor(dStyle.Cursor),
+                });
             }
             var q = configSvc.GetDefaultPreferences();
 
@@ -233,8 +246,29 @@ namespace Reko.Gui
             };
             AddStyle(codeCommentStyle);
 
+            var defBrowserStyle = q.Where(s => s.Name == UiStyles.Browser).Single();
+            var browserStyle = new UiStyle {
+                Name = UiStyles.Browser,
+                Foreground = GetBrush((string)settingsSvc.Get(UiStyles.BrowserForeColor, defBrowserStyle.ForeColor)),
+                Background = GetBrush((string)settingsSvc.Get(UiStyles.BrowserBackColor, defBrowserStyle.BackColor)),
+                Font = GetFont((string)settingsSvc.Get(UiStyles.BrowserFont, defBrowserStyle.FontName)),
+            };
+            AddStyle(browserStyle);
+
+            var defListStyle = q.Where(s => s.Name == UiStyles.List).Single();
+            var listStyle = new UiStyle
+            {
+                Name = UiStyles.List,
+                Foreground = GetBrush((string)settingsSvc.Get(UiStyles.ListForeColor, defListStyle.ForeColor)),
+                Background = GetBrush((string)settingsSvc.Get(UiStyles.ListBackColor, defListStyle.BackColor)),
+                Font = GetFont((string)settingsSvc.Get(UiStyles.ListFont, defListStyle.FontName)),
+            };
+            AddStyle(listStyle);
+
             this.WindowSize = ConvertFrom<Size>(sizeCvt, settingsSvc.Get("WindowSize", null));
             this.WindowState = ConvertFrom<FormWindowState>(fwsCvt, settingsSvc.Get("WindowState", "Normal"));
+
+            UiPreferencesChanged.Fire(this);
         }
 
         private Font GetFont(string fontName)
@@ -324,6 +358,16 @@ namespace Reko.Gui
             settingsSvc.Set(UiStyles.CodeCommentColor, SaveBrush(codeCommentStyle.Foreground));
             settingsSvc.Set(UiStyles.CodeCommentFont,  SaveFont(codeStyle.Font));
 
+            var browserStyle = Styles[UiStyles.Browser];
+            settingsSvc.Set(UiStyles.BrowserForeColor, SaveBrush(browserStyle.Foreground));
+            settingsSvc.Set(UiStyles.BrowserBackColor, SaveBrush(browserStyle.Background));
+            settingsSvc.Set(UiStyles.BrowserFont, SaveFont(browserStyle.Font));
+
+            var listStyle = Styles[UiStyles.List];
+            settingsSvc.Set(UiStyles.ListForeColor, SaveBrush(listStyle.Foreground));
+            settingsSvc.Set(UiStyles.ListBackColor, SaveBrush(listStyle.Background));
+            settingsSvc.Set(UiStyles.ListFont, SaveFont(listStyle.Font));
+
             settingsSvc.Set("WindowSize", sizeCvt.ConvertToInvariantString(WindowSize));
             settingsSvc.Set("WindowState", WindowState.ToString());
             UiPreferencesChanged.Fire(this);
@@ -340,6 +384,40 @@ namespace Reko.Gui
             catch
             {
                 return default(T);
+            }
+        }
+
+        public void UpdateControlStyle(string list, Control ctrl)
+        {
+            if (ctrl == null) throw new ArgumentNullException("ctrl");
+            UiStyle style;
+            if (Styles.TryGetValue(UiStyles.List, out style))
+            {
+                if (style.Background != null)
+                {
+                    ctrl.BackColor = style.Background.Color;
+                }
+                if (style.Foreground != null)
+                {
+                    ctrl.ForeColor = style.Foreground.Color;
+                }
+            }
+        }
+
+        public void UpdateControlStyle(string list, IControl ctrl)
+        {
+            if (ctrl == null) throw new ArgumentNullException("ctrl");
+            UiStyle style;
+            if (Styles.TryGetValue(UiStyles.List, out style))
+            {
+                if (style.Background != null)
+                {
+                    ctrl.BackColor = style.Background.Color;
+                }
+                if (style.Foreground != null)
+                {
+                    ctrl.ForeColor = style.Foreground.Color;
+                }
             }
         }
     }
