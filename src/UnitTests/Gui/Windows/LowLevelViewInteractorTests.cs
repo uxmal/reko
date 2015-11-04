@@ -62,6 +62,7 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
             uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
             uiSvc.Replay();
+            uiPrefsSvc.Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
             uiPrefsSvc.Replay();
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
@@ -131,8 +132,9 @@ namespace Reko.UnitTests.Gui.Windows
             mr.ReplayAll();
 
             When_ShowControl();
+            interactor.Control.MemoryView.Focus();
             interactor.Program = program;
-            interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress));
+            interactor.GotoAddress();
 
             mr.VerifyAll();
             Assert.AreEqual("0x01020304", interactor.Control.ToolBarAddressTextbox.Text);

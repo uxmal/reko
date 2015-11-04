@@ -80,7 +80,9 @@ namespace Reko.Gui.Windows.Controls
                     dfmt.NewLine();
                     lines.Add(new LineSpan(addr, line.ToArray()));
                     --count;
+                    position = addr + instr.Length;
                 }
+
             }
             return lines.ToArray();
         }
@@ -108,7 +110,6 @@ namespace Reko.Gui.Windows.Controls
         {
             var addr = (Address)basePosition;
             var image = program.Image;
-            addr = addr + offset;
             if (addr < image.BaseAddress)
                 addr = image.BaseAddress;
             var addrEnd = program.ImageMap.MapLinearAddressToAddress(

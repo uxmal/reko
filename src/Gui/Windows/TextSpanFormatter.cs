@@ -188,6 +188,7 @@ namespace Reko.Gui.Windows
                 {
                     spans[i] = new LineSpan(p+i, lines[p+i]);
                 }
+                position = p + c;
                 return spans;
             }
 

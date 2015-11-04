@@ -58,9 +58,18 @@ namespace Reko.Gui.Windows.Controls
             this.vScroll.ValueChanged += vScroll_ValueChanged;
         }
 
-        public IServiceProvider Services { get; set; }
+        public IServiceProvider Services { get { return services; } set { services = value; OnServicesChanged(); } }
+        private IServiceProvider services;
+        protected virtual void OnServicesChanged()
+        {
+            ChangeLayout();
+        }
 
         public TextSelection Selection { get; private set; }
+
+        public string StyleClass { get { return styleClass; } set { styleClass = value; StyleClassChanged.Fire(this); } }
+        public event EventHandler StyleClassChanged;
+        private string styleClass;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -200,7 +209,7 @@ namespace Reko.Gui.Windows.Controls
                 var span = GetSpan(e.Location);
                 if (span != null)
                 {
-                    GetStyleStack().PushStyle("dasm");
+                    GetStyleStack().PushStyle(StyleClass);
                     styleStack.PushStyle(span.Style);
                     this.Cursor = styleStack.GetCursor(this);
                     styleStack.PopStyle();
@@ -323,27 +332,45 @@ namespace Reko.Gui.Windows.Controls
         /// <param name="g"></param>
         protected void ComputeLayout(Graphics g)
         {
-            float cyLine = GetLineHeight();
+            GetStyleStack().PushStyle(StyleClass);
             this.visibleLines = new SortedList<float, LayoutLine>();
             SizeF szClient = new SizeF(ClientSize);
-            var rcLine = new RectangleF(0, 0, szClient.Width, cyLine);
-            
+            var rcLine = new RectangleF(0, 0, szClient.Width, 0);
+
             // Get the lines.
-            int cVisibleLines = (int) Math.Ceiling(szClient.Height / cyLine);
-            var lines = model != null ? model.GetLineSpans(cVisibleLines) : new LineSpan[0];
-            int iLine = 0;
+            object oldPos = null;
+            var m = model ?? new EmptyEditorModel();
+            oldPos = model.CurrentPosition;
+            var lines = m.GetLineSpans(1);
             while (rcLine.Top < szClient.Height && 
-                   iLine < lines.Length)
+                   lines != null && lines.Length == 1)
             {
-                var line = lines[iLine];
+                var line = lines[0];
+                float cyLine = MeasureLineHeight(line);
+                rcLine.Height = cyLine;
                 var ll = new LayoutLine(line.Position) { 
                     Extent = rcLine,
                     Spans = ComputeSpanLayouts(line.TextSpans, rcLine, g)
                 };
                 this.visibleLines.Add(rcLine.Top, ll);
-                ++iLine;
+                lines = m.GetLineSpans(1);
                 rcLine.Offset(0, cyLine);
             }
+            GetStyleStack().PopStyle();
+            model.MoveToLine(oldPos, 0);
+        }
+
+        private float MeasureLineHeight(LineSpan line)
+        {
+            float height = 0.0F;
+            foreach (var span in line.TextSpans)
+            {
+                GetStyleStack().PushStyle(span.Style);
+                var font = styleStack.GetFont(this);
+                height = Math.Max(height, font.Height);
+                styleStack.PopStyle();
+            }
+            return height;
         }
 
         /// <summary>
@@ -380,19 +407,17 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnResize(EventArgs e)
         {
-            int visibleWholeLines = (int) Math.Floor(Height / GetLineHeight());
             ChangeLayout();
             base.OnResize(e);
         }
 
         private TextPointer ClientToLogicalPosition(Point pt)
         {
-            GetStyleStack().PushStyle("dasm");
+            GetStyleStack().PushStyle(StyleClass);
             foreach (var line in this.visibleLines.Values)
             {
                 if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
                 {
-                    styleStack.PopStyle();
                     return FindSpanPosition(pt, line);
                 }
             }
@@ -514,6 +539,8 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         protected void ChangeLayout()
         {
+            if (Services == null)
+                return;
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
             if (model != null)
@@ -547,28 +574,19 @@ namespace Reko.Gui.Windows.Controls
             return span.Tag;
         }
 
-        /// <summary>
-        /// Returns the number of visible lines, including any partially visible ones.
-        /// </summary>
-        /// <returns></returns>
-        private int GetVisibleLines()
-        {
-            float lines = ClientSize.Height / GetLineHeight();
-            return (int) Math.Ceiling(lines);
-        }
-
         private int GetFullyVisibleLines()
         {
-            float lines = ClientSize.Height / GetLineHeight();
-            return (int) Math.Floor(lines);
+            if (visibleLines == null)
+                return 0;
+            int cLines = visibleLines.Count;
+            if (cLines == 0)
+                return 0;
+            if (visibleLines.Values[cLines - 1].Extent.Bottom > ClientRectangle.Bottom)
+                return cLines - 1;
+            else
+                return cLines;
         }
 
-        private float GetLineHeight()
-        {
-            return this.Font.Height;
-        }
-
-        
         void model_ModelChanged(object sender, EventArgs e)
         {
             ChangeLayout();
@@ -593,6 +611,8 @@ namespace Reko.Gui.Windows.Controls
 
         protected void RecomputeLayout()
         {
+            if (services == null)
+                return;
             var g = CreateGraphics();
             ComputeLayout(g);
             g.Dispose();
@@ -631,7 +651,6 @@ namespace Reko.Gui.Windows.Controls
                     if (iSpan >= spans[0].TextSpans.Length)
                     {
                         writer.WriteLine();
-                        model.MoveToLine(line, 1);
                         spans = model.GetLineSpans(1);
                         if (spans.Length == 0)
                         {

@@ -110,30 +110,20 @@ namespace Reko.UnitTests.Gui.Windows
                 sb.Append("`");
         }
 
-        private void Given_Codeviewer()
+        private void When_CodeViewCreated()
         {
             codeViewer.CreateControl();
             codeViewer.FrameWindow = frame;
         }
 
-        [Test]
-        public void Cvp_Create()
-        {
-            using (Form f = new Form())
-            {
-                f.Controls.Add(codeViewer.CreateControl());
-                f.Show();
-            }
-        }
-
         [Test(Description = "When a user browses to the procedure, we should see it")]
         public void Cvp_SetProcedure()
         {
-            Given_Codeviewer();
             Given_StubProcedure();
             Given_Program();
             mr.ReplayAll();
 
+            When_CodeViewCreated();
             codeViewer.DisplayProcedure(this.program, this.proc);
 
             string sExp =
@@ -165,11 +155,11 @@ namespace Reko.UnitTests.Gui.Windows
             "declaration box")]
         public void Cvp_SetProcedure_ShowFnName()
         {
-            Given_Codeviewer();
             Given_Program();
             Given_StubProcedure();
             mr.ReplayAll();
 
+            When_CodeViewCreated();
             codeViewer.DisplayProcedure(program, proc);
 
             Assert.AreEqual(proc.Name, codeViewer.Declaration.Text);
@@ -178,11 +168,11 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Cvp_SetProcedure_EditingMakesDirty()
         {
-            Given_Codeviewer();
             Given_Program();
             Given_StubProcedure();
             mr.ReplayAll();
 
+            When_CodeViewCreated();
             codeViewer.DisplayProcedure(program, proc);
             Assert.IsFalse(codeViewer.IsDirty, "Shouldn't be dirty right after loading");        
             codeViewer.Declaration.Text = "foo";
@@ -193,11 +183,11 @@ namespace Reko.UnitTests.Gui.Windows
         [Test(Description = "Just entering a (valid) name should be OK.")]
         public void Cvp_Accept_JustName()
         {
-            Given_Codeviewer();
             Given_Program();
             Given_StubProcedure();
             mr.ReplayAll();
 
+            When_CodeViewCreated();
             codeViewer.DisplayProcedure(program, proc);
             codeViewer.Declaration.Text = "foo";
 
@@ -208,11 +198,11 @@ namespace Reko.UnitTests.Gui.Windows
         [Test(Description = "Entering an invalid name should change nothing.")]
         public void Cvp_Reject_Invalid_Name()
         {
-            Given_Codeviewer();
             Given_Program();
             Given_StubProcedure();
             mr.ReplayAll();
 
+            When_CodeViewCreated();
             var oldSig = proc.Signature;
             codeViewer.DisplayProcedure(program, proc);
             codeViewer.Declaration.Text = "f@oo";
@@ -223,11 +213,11 @@ namespace Reko.UnitTests.Gui.Windows
         [Test(Description = "Entering an valid function declaration should change both name and signature.")]
         public void Cvp_Accept_Declaration()
         {
-            Given_Codeviewer();
             Given_Program();
             Given_StubProcedure();
             mr.ReplayAll();
 
+            When_CodeViewCreated();
             var oldSig = proc.Signature;
             codeViewer.DisplayProcedure(program, proc);
             codeViewer.Declaration.Text = "int foo(char *, float)";
@@ -239,11 +229,11 @@ namespace Reko.UnitTests.Gui.Windows
         [Test(Description = "Char * functions are valid, of course")]
         public void Cvp_Accept_Declaration_Returning_CharPtr()
         {
-            Given_Codeviewer();
             Given_Program();
             Given_StubProcedure();
             mr.ReplayAll();
 
+            When_CodeViewCreated();
             var oldSig = proc.Signature;
             codeViewer.DisplayProcedure(program, proc);
             codeViewer.Declaration.Text = "char * foo(int)";

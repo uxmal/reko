@@ -94,6 +94,7 @@ namespace Reko.Gui.Windows
             this.Control.MemoryView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
             this.control.MemoryView.Services = this.services;
 
+            this.Control.DisassemblyView.StyleClass = UiStyles.Disassembler;
             this.Control.DisassemblyView.SelectedObjectChanged += DisassemblyView_SelectedObjectChanged;
             this.Control.DisassemblyView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxDisassembler);
             this.Control.DisassemblyView.Services = this.services;

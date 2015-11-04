@@ -55,8 +55,11 @@ namespace Reko.Gui.Windows.Controls
 
         public void PushStyle(string styleSelector)
         {
-            UiStyle style;
-            uiPrefSvc.Styles.TryGetValue(styleSelector, out style);
+            UiStyle style = null;
+            if (!string.IsNullOrEmpty(styleSelector))
+            {
+                uiPrefSvc.Styles.TryGetValue(styleSelector, out style);
+            }
             stack.Add(style);       // May be null if we can't find the style.
         }
 

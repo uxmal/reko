@@ -58,6 +58,7 @@ namespace Reko.Gui.Windows.Forms
             };
 
             dlg.Load += dlg_Load;
+            dlg.FormClosed += dlg_Closed;
             dlg.WindowTree.AfterSelect += WindowTree_AfterSelect;
             dlg.WindowFontButton.Click += WindowFontButton_Click;
             dlg.WindowFgButton.Click += WindowFgButton_Click;
@@ -191,6 +192,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.MemoryControl.ImageMap = program.ImageMap;
             dlg.MemoryControl.Architecture = program.Architecture;
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
+            dlg.DisassemblyControl.StyleClass = UiStyles.Disassembler;
             dlg.DisassemblyControl.Services = sc;
             dlg.DisassemblyControl.Model = new DisassemblyTextModel(program);
             dlg.CodeControl.Model = GenerateSimulatedHllCode();
@@ -309,6 +311,13 @@ namespace Reko.Gui.Windows.Forms
                 dlg.WindowFontButton.Enabled = designer.EnableFont;
                 designer.Control.BringToFront();
             }
+        }
+
+        private void dlg_Closed(object sender, FormClosedEventArgs e)
+        {
+            if (dlg.DialogResult != DialogResult.OK)
+                return;
+            CopyStyles(localSettings, uipSvc);
         }
     }
 }

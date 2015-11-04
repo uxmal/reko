@@ -71,7 +71,8 @@ namespace Reko.Gui.Windows.Controls
         void MoveToLine(object position, int offset);
 
         /// <summary>
-        /// Read <paramref name="count"/> lines, starting at the current position.
+        /// Read <paramref name="count"/> lines, starting at the current position. As a side
+        /// effect, updates the current position.
         /// </summary>
         /// <param name="count"></param>
         /// <returns>Array of LineSpans.</returns>

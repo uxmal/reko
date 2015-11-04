@@ -57,10 +57,9 @@ namespace Reko.UnitTests.Gui.Windows
             var shellUi = mr.DynamicMock<IDecompilerShellUiService>();
             var decSvc = mr.StrictMock<IDecompilerService>();
             var windowFrame = mr.DynamicMock<IWindowFrame>();
-            var uiPrefSvc = mr.Stub<IUiPreferencesService>();
             sc.AddService(typeof(IDecompilerShellUiService), shellUi);
             sc.AddService<IDecompilerService>(decSvc);
-            AddStubService<IUiPreferencesService>(sc);
+            AddStubService<IUiPreferencesService>(sc).Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
             Given_Program();
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             var interactor = new LowLevelViewInteractor();
@@ -120,7 +119,7 @@ namespace Reko.UnitTests.Gui.Windows
             var interactor = mr.DynamicMock<LowLevelViewInteractor>();
             interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(Address.Ptr32(0x4711));
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
-            AddStubService<IUiPreferencesService>(sc);
+            AddStubService<IUiPreferencesService>(sc).Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
             Given_Program();
             uiSvc.Stub(x => x.FindDocumentWindow(null, null)).IgnoreArguments().Return(null);
             uiSvc.Stub(x => x.CreateDocumentWindow("", null, "", null))

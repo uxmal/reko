@@ -32,9 +32,12 @@ namespace Reko.Gui.Windows.Controls
     {
         protected override void OnPaint(PaintEventArgs e)
         {
-            GetStyleStack().PushStyle("dasm");
+            if (Services == null)
+                return;
+            GetStyleStack().PushStyle(StyleClass);
             var painter = new Painter(this, e.Graphics, styleStack);
             painter.Paint();
+            GetStyleStack().PopStyle();
         }
 
         private class Painter
