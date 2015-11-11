@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Typing
         public void CEB_BuildUnionFetch()
 		{
 			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+			var ceb = new ComplexExpressionBuilder(
                 ptrWord,
 				ptrUnion,
 				new Pointer(PrimitiveType.Real32, 4),
