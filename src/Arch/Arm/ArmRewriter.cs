@@ -734,7 +734,7 @@ namespace Reko.Arch.Arm
 
         private Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
         {
-            return frame.EnsureFlagGroup((uint) bits, name, type);
+            return frame.EnsureFlagGroup(A32Registers.cpsr, (uint) bits, name, type);
         }
 
         private void RewriteSvc()

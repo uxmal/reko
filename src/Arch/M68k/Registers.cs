@@ -56,7 +56,7 @@ namespace Reko.Arch.M68k
         public static FpRegister fp6;
         public static FpRegister fp7;
 
-        public static readonly RegisterStorage ccr;
+        public static readonly FlagRegister ccr;
         public static readonly RegisterStorage sr;
         public static readonly RegisterStorage usp;
         public static readonly AddressRegister pc;
@@ -93,7 +93,7 @@ namespace Reko.Arch.M68k
             fp6 = new FpRegister("fp6", 22, PrimitiveType.Real64);
             fp7 = new FpRegister("fp7", 23, PrimitiveType.Real64);
 
-            ccr = new RegisterStorage("ccr", 24, PrimitiveType.Byte);
+            ccr = new FlagRegister("ccr", PrimitiveType.Byte);
             sr = new RegisterStorage("sr", 25, PrimitiveType.Word16);
             usp = new RegisterStorage("usp", 26, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
@@ -128,7 +128,7 @@ namespace Reko.Arch.M68k
                 fp6,
                 fp7,
 
-                ccr,
+                null,
                 sr,
                 usp,
                 pc,

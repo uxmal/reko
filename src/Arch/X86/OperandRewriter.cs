@@ -195,7 +195,7 @@ namespace Reko.Arch.X86
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return frame.EnsureFlagGroup((uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+            return frame.EnsureFlagGroup(Registers.eflags, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
 

@@ -46,10 +46,11 @@ namespace Reko.Core
 			args = new List<Identifier>();
 		}
 
-		public void AddFlagGroupReturnValue(uint grf, Frame frame)
+		public void AddFlagGroupReturnValue(uint bitMask, Frame frame)
 		{
-			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-			ret = frame.EnsureFlagGroup(grf, arch.GrfToString(grf), dt);
+			PrimitiveType dt = Bits.IsSingleBitSet(bitMask) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var grf = arch.GetFlagGroup(bitMask);
+			ret = frame.EnsureFlagGroup(grf.FlagRegister, bitMask, grf.Name, dt);
 		}
 
 		public void AddFpuStackArgument(int x, Identifier id)

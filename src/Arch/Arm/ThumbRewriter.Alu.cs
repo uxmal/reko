@@ -69,7 +69,7 @@ namespace Reko.Arch.Arm
         {
             var dst = RewriteOp(ops[0]);
             var src = RewriteOp(ops[1]);
-            var flags = frame.EnsureFlagGroup(0x1111, "NZCV", PrimitiveType.Byte);
+            var flags = frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte);
             emitter.Assign(flags, emitter.Cond(
                 emitter.ISub(dst, src)));
         }
@@ -144,7 +144,7 @@ namespace Reko.Arch.Arm
             emitter.Assign(dst, ctor(src1, src2));
             if (instr.ArchitectureDetail.UpdateFlags)
             {
-                emitter.Assign(frame.EnsureFlagGroup(0xF, "NZCV", PrimitiveType.Byte), emitter.Cond(dst));
+                emitter.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte), emitter.Cond(dst));
             }
         }
 

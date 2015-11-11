@@ -329,8 +329,8 @@ main_exit:
                 var edx = m.Frame.EnsureRegister(Registers.edx);
                 var ebx = m.Frame.EnsureRegister(Registers.ebx);
                 var ecx = m.Frame.EnsureRegister(Registers.ecx);
-                var SCZO = m.Frame.EnsureFlagGroup((uint) (FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-                var C = m.Frame.EnsureFlagGroup((uint) (FlagM.CF), "SCZO", PrimitiveType.Bool);
+                var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint) (FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+                var C = m.Frame.EnsureFlagGroup(Registers.eflags, (uint) (FlagM.CF), "SCZO", PrimitiveType.Bool);
 
                 m.Assign(eax, m.IAdd(eax, ecx));
                 m.Assign(SCZO, m.Cond(eax));

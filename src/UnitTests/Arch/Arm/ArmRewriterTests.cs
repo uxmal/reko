@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE3530000);  // cmp r3,#0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|SZCO = cond(r3 - 0x00000000)");
+                "1|L--|NZCV = cond(r3 - 0x00000000)");
         }
 
         [Test]
@@ -225,7 +225,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE3730001); /// cmn r3,#1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|SZCO = cond(r3 + 0x00000001)");
+                "1|L--|NZCV = cond(r3 + 0x00000001)");
         }
 
         [Test]

@@ -314,6 +314,11 @@ namespace Reko.Evaluation
                 return grf;
             }
 
+            public Storage VisitFlagRegister(FlagRegister freg)
+            {
+                throw new NotImplementedException();
+            }
+
             public Storage VisitFpuStackStorage(FpuStackStorage fpu)
             {
                 return fpu;

@@ -180,18 +180,9 @@ namespace Reko.UnitTests.Mocks
 
         public Identifier Flags(string s)
         {
-            uint grf = 0;
-            for (int i = 0; i < s.Length; ++i)
-            {
-                switch (s[i])
-                {
-                case 'S': grf |= 0x01; break;
-                case 'C': grf |= 0x02; break;
-                case 'Z': grf |= 0x04; break;
-                case 'O': grf |= 0x10; break;
-                }
-            }
-            return base.Flags(grf, s);
+            return Frame.EnsureFlagGroup(Architecture.GetFlagGroup(s));
+        
+            //return base.Flags(Architecture.GetFlagGroup(s).FlagRegister, grf, s);
         }
 
         public Application Fn(string name, params Expression[] exps)

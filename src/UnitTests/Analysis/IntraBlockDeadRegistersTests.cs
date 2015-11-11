@@ -96,10 +96,11 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                var CN = m.Frame.EnsureFlagGroup(0x3, "CN", PrimitiveType.Byte);
-                var C = m.Frame.EnsureFlagGroup(0x1, "C", PrimitiveType.Bool);
-                var N = m.Frame.EnsureFlagGroup(0x2, "N", PrimitiveType.Bool);
-                var Z = m.Frame.EnsureFlagGroup(0x4, "Z", PrimitiveType.Bool);
+                var flags = new FlagRegister("flags", PrimitiveType.Word32);
+                var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN", PrimitiveType.Byte);
+                var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C", PrimitiveType.Bool);
+                var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);
+                var Z = m.Frame.EnsureFlagGroup(flags, 0x4, "Z", PrimitiveType.Bool);
                 
                 var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
                 m.Assign(N, m.Cond(a));
@@ -119,10 +120,11 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                var CN = m.Frame.EnsureFlagGroup(0x3, "CN", PrimitiveType.Byte);
-                var C = m.Frame.EnsureFlagGroup(0x1, "C", PrimitiveType.Bool);
-                var N = m.Frame.EnsureFlagGroup(0x2, "N", PrimitiveType.Bool);
-                var Z = m.Frame.EnsureFlagGroup(0x4, "Z", PrimitiveType.Bool);
+                var flags = new FlagRegister("flags", PrimitiveType.Word32);
+                var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN", PrimitiveType.Byte);
+                var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C", PrimitiveType.Bool);
+                var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);
+                var Z = m.Frame.EnsureFlagGroup(flags, 0x4, "Z", PrimitiveType.Bool);
                 var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
                 m.Assign(a, m.IAdd(a, 3));
                 m.Assign(N, m.Cond(a));

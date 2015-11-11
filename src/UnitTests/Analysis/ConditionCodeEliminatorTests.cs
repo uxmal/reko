@@ -35,12 +35,14 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class ConditionCodeEliminatorTests : AnalysisTestBase
 	{
-		private SsaIdentifierCollection ssaIds; 
+		private SsaIdentifierCollection ssaIds;
+        private FlagRegister freg;
 
 		[SetUp]
 		public void Setup()
 		{
 			ssaIds = new SsaIdentifierCollection();
+            freg = new FlagRegister("flags", PrimitiveType.Word32);
 		}
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
@@ -69,7 +71,7 @@ namespace Reko.UnitTests.Analysis
             Identifier id = new Identifier(
                 name,
                 PrimitiveType.Word32,
-                new FlagGroupStorage(1U, "C", PrimitiveType.Byte));
+                new FlagGroupStorage(freg, 1U, "C", PrimitiveType.Byte));
             return ssaIds.Add(id, null, null, false).Identifier;
         }
 
@@ -391,8 +393,9 @@ done:
                 var r2 = MockReg(m, 2);
                 var r3 = MockReg(m, 3);
                 var r4 = MockReg(m, 4);
-                var SCZ = m.Frame.EnsureFlagGroup(0x7, "SZC", PrimitiveType.Byte);
-                var C = m.Frame.EnsureFlagGroup(0x4, "C", PrimitiveType.Byte);
+                var flags = new FlagRegister("flags", PrimitiveType.Word32);
+                var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
+                var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);
 
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Assign(SCZ, m.Cond(r1));

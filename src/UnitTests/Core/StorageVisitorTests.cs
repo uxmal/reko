@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void VisitFlagGroup()
 		{
-			var f = new Identifier("grf", PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO", PrimitiveType.Byte));
+			var f = new Identifier("grf", PrimitiveType.Word16, new FlagGroupStorage(Registers.eflags, 0x11, "ZO", PrimitiveType.Byte));
 			var type = f.Storage.Accept(this);
 			Assert.AreEqual("grf", type);
 		}
@@ -72,7 +72,12 @@ namespace Reko.UnitTests.Core
 			return "grf";
 		}
 
-		public string VisitFpuStackStorage(FpuStackStorage fpu)
+        public string VisitFlagRegister(Reko.Core.FlagRegister freg)
+        {
+            return "freg";
+        }
+
+        public string VisitFpuStackStorage(FpuStackStorage fpu)
 		{
 			return "fpu";
 		}

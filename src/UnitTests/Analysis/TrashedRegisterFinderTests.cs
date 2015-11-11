@@ -185,7 +185,8 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrashFlag()
         {
-            var scz = m.Frame.EnsureFlagGroup(0x7, arch.GrfToString(0x7), PrimitiveType.Byte);
+            var flags = arch.GetFlagGroup(0x7).FlagRegister;
+            var scz = m.Frame.EnsureFlagGroup(flags, 0x7, arch.GrfToString(0x7), PrimitiveType.Byte);
             var stm = m.Assign(scz, m.Int32(3));
 
             trf = CreateTrashedRegisterFinder();
@@ -380,7 +381,7 @@ namespace Reko.UnitTests.Analysis
             var proc = new Procedure("proc", program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             var flags = program.Architecture.GetFlagGroup("SZ");
-            var sz = m.Frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
+            var sz = m.Frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);
             var stm = m.Assign(sz, m.Int32(3));
             flow[proc] = new ProcedureFlow(proc, program.Architecture);
             trf = CreateTrashedRegisterFinder(program);

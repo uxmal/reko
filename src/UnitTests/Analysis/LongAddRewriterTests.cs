@@ -45,6 +45,7 @@ namespace Reko.UnitTests.Analysis
         private PrimitiveType w16 = PrimitiveType.Word16;
         private ProcedureBuilder m;
         private Block block;
+        private FlagRegister flags;
 
         public LongAddRewriterTests()
         {
@@ -89,8 +90,9 @@ namespace Reko.UnitTests.Analysis
             bx = frame.EnsureRegister(new RegisterStorage("bx", 3, PrimitiveType.Word16));
             cx = frame.EnsureRegister(new RegisterStorage("cx", 1, PrimitiveType.Word16));
             dx = frame.EnsureRegister(new RegisterStorage("dx", 2, PrimitiveType.Word16));
-            SCZ = frame.EnsureFlagGroup(7, "SCZ", PrimitiveType.Byte);
-            CF = frame.EnsureFlagGroup(arch.CarryFlagMask, "C", PrimitiveType.Bool);
+            flags = new FlagRegister("flags", PrimitiveType.Word16);
+            SCZ = frame.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
+            CF = frame.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
             rw = new LongAddRewriter(m.Procedure, arch);
             Procedure proc = new Procedure("test", frame);
             block = new Block(proc, "bloke");

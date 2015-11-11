@@ -659,6 +659,7 @@ namespace Reko.Arch.X86
             RewritePush(
                 dasm.Current.dataWidth,
                 frame.EnsureFlagGroup(
+                    Registers.eflags,
                     (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
                     "SCZDOP", 
                     PrimitiveType.Byte));
@@ -738,6 +739,7 @@ namespace Reko.Arch.X86
             var width = instrCur.dataWidth;
             var sp = StackPointer();
             emitter.Assign(frame.EnsureFlagGroup(
+                    Registers.eflags,
                     (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
                     "SCZDOP",
                     PrimitiveType.Byte),

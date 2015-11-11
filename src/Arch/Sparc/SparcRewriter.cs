@@ -162,7 +162,10 @@ namespace Reko.Arch.Sparc
         private void EmitCc(Expression dst)
         {
             emitter.Assign(
-                frame.EnsureFlagGroup(0xF, "NZVC", PrimitiveType.Byte),
+                frame.EnsureFlagGroup(
+                    Registers.psr,
+                    0xF, "NZVC",
+                    PrimitiveType.Byte),
                 emitter.Cond(dst));
         }
 

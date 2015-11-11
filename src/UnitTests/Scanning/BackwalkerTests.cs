@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Scanning
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
             expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
-            SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+            SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
         }
 
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Scanning
         public void BwJmp()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF|FlagM.ZF|FlagM.CF|FlagM.OF), "SCZO", PrimitiveType.Byte);
+            var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF|FlagM.ZF|FlagM.CF|FlagM.OF), "SCZO", PrimitiveType.Byte);
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             Assert.IsTrue(
                 bw.BackwalkInstruction(
@@ -156,9 +156,9 @@ namespace Reko.UnitTests.Scanning
         public void BwComparison()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+            var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
-            bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup((uint)FlagM.CF, "C", PrimitiveType.Byte);
+            bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup(Registers.eflags,(uint)FlagM.CF, "C", PrimitiveType.Byte);
             Assert.IsFalse(bw.BackwalkInstruction(
                 m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)))), "Encountering this comparison should terminate the backwalk");
             Assert.AreSame(Registers.eax, bw.Index);
@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Scanning
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var al = m.Frame.EnsureRegister(Registers.al);
-            var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+            var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             Assert.IsTrue(bw.BackwalkInstruction(
                 m.Assign(al, m.LoadB(m.IAdd(edx, 0x1004)))));
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Scanning
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var dl = m.Frame.EnsureRegister(Registers.dl);
-            var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+            var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
 
             //m.Proc("foo");
             //m.Mov(m.eax, m.MemDw(Registers.esp, 4));
@@ -344,7 +344,7 @@ namespace Reko.UnitTests.Scanning
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var dl = m.Frame.EnsureRegister(Registers.dl);
-            var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+            var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             
             // cmp [ebp-66],1D                           
 
@@ -394,7 +394,7 @@ namespace Reko.UnitTests.Scanning
         {
             var eax = m.Frame.CreateTemporary("eax", PrimitiveType.Word32);
             var esi = m.Frame.CreateTemporary("esi", PrimitiveType.Word32);
-            var Z = m.Frame.EnsureFlagGroup(1, "Z", PrimitiveType.Bool);
+            var Z = m.Frame.EnsureFlagGroup(Registers.eflags, 1, "Z", PrimitiveType.Bool);
 
             var xfer = new RtlCall(eax, 4, RtlClass.Transfer);
             m.Assign(eax, m.LoadDw(esi));

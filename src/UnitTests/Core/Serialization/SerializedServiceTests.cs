@@ -55,7 +55,8 @@ namespace Reko.UnitTests.Core.Serialization
 			svc.Signature = new SerializedSignature();
             ArgumentSerializer argSer = new ArgumentSerializer(null, arch, null, null);
             svc.Signature.ReturnValue = argSer.Serialize(new Identifier("C", PrimitiveType.Bool, 
-                new FlagGroupStorage((uint) FlagM.CF, "C", PrimitiveType.Byte)));
+                new FlagGroupStorage(
+                    Registers.eflags, (uint) FlagM.CF, "C", PrimitiveType.Byte)));
 		}
 
 		[Test]

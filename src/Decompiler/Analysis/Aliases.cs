@@ -274,7 +274,6 @@ namespace Reko.Analysis
 		}
 	}
 
-
     public class AliasDeadVariableMarker : StorageVisitor<Storage>
     {
         private Identifier idCur;
@@ -332,6 +331,10 @@ namespace Reko.Analysis
             return null;
         }
 
+        public Storage VisitFlagRegister(FlagRegister freg)
+        {
+            throw new NotImplementedException();
+        }
         public Storage VisitTemporaryStorage(TemporaryStorage temp)
         {
             return null;

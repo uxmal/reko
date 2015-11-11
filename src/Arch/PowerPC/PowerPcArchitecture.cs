@@ -41,10 +41,11 @@ namespace Reko.Arch.PowerPC
         private ReadOnlyCollection<RegisterStorage> cregs;
 
         public RegisterStorage lr { get; private set; }
-        public RegisterStorage cr { get; private set; }
         public RegisterStorage ctr { get; private set; }
         public RegisterStorage xer { get; private set; }
         public RegisterStorage fpscr { get; private set; }
+
+        public FlagRegister cr { get; private set; }
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
@@ -58,10 +59,11 @@ namespace Reko.Arch.PowerPC
             InstructionBitSize = 32;
 
             this.lr = new RegisterStorage("lr", 0x68,   wordWidth);
-            this.cr = new RegisterStorage("cr", 0x69,   wordWidth);
             this.ctr = new RegisterStorage("ctr", 0x6A, wordWidth);
             this.xer = new RegisterStorage("xer", 0x6B, wordWidth);
             this.fpscr = new RegisterStorage("fpscr", 0x6C, wordWidth);
+
+            this.cr = new FlagRegister("cr", wordWidth);
 
             regs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 0x20)
@@ -72,7 +74,7 @@ namespace Reko.Arch.PowerPC
                     .Select(n => new RegisterStorage("v" + n, n + 0x40, PrimitiveType.Word128)))
                 .Concat(Enumerable.Range(0, 8)
                     .Select(n => new RegisterStorage("cr" + n, n + 0x60, PrimitiveType.Byte)))
-                .Concat(new[] { lr, cr, ctr, xer })
+                .Concat(new[] { lr, ctr, xer })
                 .ToList());
 
             fpregs = new ReadOnlyCollection<RegisterStorage>(

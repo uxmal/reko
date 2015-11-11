@@ -67,7 +67,11 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SargSerializeFlag()
         {
-            var arg = new Identifier("SZ", PrimitiveType.Byte, new FlagGroupStorage(3, "SZ", PrimitiveType.Byte));
+            var arg = new Identifier(
+                "SZ", 
+                PrimitiveType.Byte, 
+                new FlagGroupStorage(
+                    Registers.eflags, 3, "SZ", PrimitiveType.Byte));
             Argument_v1 sarg = argser.Serialize(arg);
             Assert.AreEqual("SZ", sarg.Name);
             FlagGroup_v1 sflag = (FlagGroup_v1) sarg.Kind;

@@ -879,7 +879,12 @@ namespace Reko.Analysis
 				return (grf.FlagGroupBits & liveState.Grf) != 0;
 			}
 
-			public bool VisitSequenceStorage(SequenceStorage seq)
+            public bool VisitFlagRegister(FlagRegister freg)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool VisitSequenceStorage(SequenceStorage seq)
 			{
 				var f = seq.Head.Storage.Accept(this);
 				if (!f)

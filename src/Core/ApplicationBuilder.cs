@@ -153,7 +153,12 @@ namespace Reko.Core
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return frame.EnsureFlagGroup(grf.FlagGroupBits, grf.Name, grf.DataType);
+            return frame.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
+        }
+
+        public Expression VisitFlagRegister(FlagRegister freg)
+        {
+            throw new NotSupportedException();
         }
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)

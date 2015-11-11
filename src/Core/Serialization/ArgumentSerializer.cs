@@ -90,7 +90,7 @@ namespace Reko.Core.Serialization
         public Identifier Deserialize(FlagGroup_v1 flag)
 		{
 			var flags = arch.GetFlagGroup(flag.Name);
-			return frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
+			return frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);
 		}
 			
 		public Identifier Deserialize(SerializedSequence sq)

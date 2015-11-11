@@ -106,6 +106,8 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage f30;
         public static RegisterStorage f31;
 
+        public static FlagRegister psr;
+
         public static FlagGroupStorage N;
         public static FlagGroupStorage Z;
         public static FlagGroupStorage V;
@@ -199,15 +201,17 @@ namespace Reko.Arch.Sparc
             f30= new RegisterStorage("f30", 30, PrimitiveType.Word32);
             f31= new RegisterStorage("f31", 31, PrimitiveType.Word32);
 
-            N = new FlagGroupStorage((uint) FlagM.NF, "N", PrimitiveType.Bool);
-            Z = new FlagGroupStorage((uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            V = new FlagGroupStorage((uint) FlagM.VF, "V", PrimitiveType.Bool);
-            C = new FlagGroupStorage((uint) FlagM.CF, "C", PrimitiveType.Bool);
+            psr = new FlagRegister("psr", PrimitiveType.Word32);
 
-            E = new FlagGroupStorage((uint) FlagM.EF, "E", PrimitiveType.Bool);
-            L = new FlagGroupStorage((uint) FlagM.LF, "L", PrimitiveType.Bool);
-            G = new FlagGroupStorage((uint) FlagM.GF, "G", PrimitiveType.Bool);
-            U = new FlagGroupStorage((uint) FlagM.UF, "U", PrimitiveType.Bool);
+            N = new FlagGroupStorage(psr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+            Z = new FlagGroupStorage(psr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            V = new FlagGroupStorage(psr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+            C = new FlagGroupStorage(psr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+ 
+            E = new FlagGroupStorage(psr, (uint) FlagM.EF, "E", PrimitiveType.Bool);
+            L = new FlagGroupStorage(psr, (uint) FlagM.LF, "L", PrimitiveType.Bool);
+            G = new FlagGroupStorage(psr, (uint) FlagM.GF, "G", PrimitiveType.Bool);
+            U = new FlagGroupStorage(psr, (uint) FlagM.UF, "U", PrimitiveType.Bool);
 
             iRegs = new RegisterStorage[]
             {

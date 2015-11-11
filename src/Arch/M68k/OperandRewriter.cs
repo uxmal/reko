@@ -431,7 +431,7 @@ namespace Reko.Arch.M68k
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return frame.EnsureFlagGroup((uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+            return frame.EnsureFlagGroup(Registers.ccr, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
     }
 }

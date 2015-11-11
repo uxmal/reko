@@ -26,6 +26,10 @@ using System.Text;
 
 namespace Reko.Core.Types
 {
+    /// <summary>
+    /// Generates a more compact and easily parsed string version
+    /// of a datatype. For final output use TypeFormatte
+    /// </summary>
     public class TypeGraphWriter : IDataTypeVisitor<Formatter>
     {
         private HashSet<DataType> visited;

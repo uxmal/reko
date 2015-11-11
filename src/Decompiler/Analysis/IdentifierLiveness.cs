@@ -73,7 +73,6 @@ namespace Reko.Analysis
             throw new NotImplementedException(string.Format("Can't handle {0}.", e));
         }
 
-
         public bool Def(MemoryAccess mem)
         {
             var bin = mem.EffectiveAddress as BinaryExpression;
@@ -176,6 +175,11 @@ namespace Reko.Analysis
 			set { liveStackVars = value; }
 		}
 
+        public Storage VisitFlagRegister(FlagRegister freg)
+        {
+            throw new NotImplementedException();
+        }
+
 		public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
 		{
 			if (define)
@@ -188,7 +192,6 @@ namespace Reko.Analysis
 			}
             return null;
 		}
-	
 
 		public Storage VisitFpuStackStorage(FpuStackStorage fpu)
 		{

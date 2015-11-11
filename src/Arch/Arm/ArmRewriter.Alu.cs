@@ -40,7 +40,7 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
             if (setflags)
             {
-                ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
             }
         }
 
@@ -53,7 +53,7 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
             if (setflags)
             {
-                ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
             }
         }
 
@@ -64,7 +64,7 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, new UnaryExpression(op,  PrimitiveType.Word32, opSrc));
             if (instr.ArchitectureDetail.UpdateFlags)
             {
-                ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
             }
         }
 
@@ -81,7 +81,7 @@ namespace Reko.Arch.Arm
             var opDst = this.Operand(Dst);
             var opSrc = this.Operand(Src1);
             ConditionalAssign(
-                frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte),
+                frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
                 emitter.Cond(
                     emitter.IAdd(opDst, opSrc)));
         }
@@ -91,7 +91,7 @@ namespace Reko.Arch.Arm
             var opDst = this.Operand(Dst);
             var opSrc = this.Operand(Src1);
             ConditionalAssign(
-                frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte),
+                frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
                 emitter.Cond(
                     emitter.ISub(opDst, opSrc)));
         }
@@ -101,7 +101,7 @@ namespace Reko.Arch.Arm
             var opDst = this.Operand(Dst);
             var opSrc = this.Operand(Src1);
             emitter.Assign(
-                frame.EnsureFlagGroup(0x1111, "NZCV", PrimitiveType.Byte),
+                frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
                 emitter.Cond(emitter.Xor(opDst, opSrc)));
         }
 
@@ -110,7 +110,7 @@ namespace Reko.Arch.Arm
             var opDst = this.Operand(Dst);
             var opSrc = this.Operand(Src1);
             emitter.Assign(
-                frame.EnsureFlagGroup(0x1111, "NZCV", PrimitiveType.Byte),
+                frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
                 emitter.Cond(emitter.And(opDst, opSrc)));
         }
 

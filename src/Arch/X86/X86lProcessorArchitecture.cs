@@ -163,7 +163,7 @@ namespace Reko.Arch.X86
 			}
 
 			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.eflags, grf, GrfToString(grf), dt);
 			flagGroups.Add(fl);
 			return fl;
 		}

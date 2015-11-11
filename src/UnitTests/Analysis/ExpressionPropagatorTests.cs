@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Analysis
             var p = new ProgramBuilder();
             var proc = p.Add("main", (m) =>
             {
-                var szo = m.Frame.EnsureFlagGroup(0x7, "SZO", PrimitiveType.Byte);
+                var szo = m.Frame.EnsureFlagGroup(Registers.eflags, 0x7, "SZO", PrimitiveType.Byte);
                 var ebx = m.Frame.EnsureRegister(new RegisterStorage("ebx", 0, PrimitiveType.Word32));
                 var v4 = m.Frame.CreateTemporary(PrimitiveType.Word16);
 

@@ -342,6 +342,11 @@ namespace Reko.Analysis
             return true;
         }
 
+        public bool VisitFlagRegister(FlagRegister freg, bool defining)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitFpuStackStorage(FpuStackStorage fpu, bool defining)
         {
             return true;

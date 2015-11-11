@@ -34,6 +34,7 @@ namespace Reko.Arch.Sparc
         private Identifier Grf(FlagM grf)
         {
             return frame.EnsureFlagGroup(
+                Registers.psr,
                 (uint) grf, 
                 arch.GrfToString((uint) grf),
                 (grf & (grf - 1)) != 0 ? PrimitiveType.Byte : PrimitiveType.Bool);

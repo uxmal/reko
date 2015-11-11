@@ -181,7 +181,7 @@ test_exit:
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
                 var r3 = m.Register(3);
-                var cc = m.Flags(0xF, "cc");
+                var cc = m.Flags("cc");
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(r2, r1);
                 m.Assign(r1, 1);

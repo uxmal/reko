@@ -59,8 +59,8 @@ namespace Reko.UnitTests.Analysis
 		public void IsFlagGroupLive()
 		{
 			liveness.Grf = (uint)(FlagM.SF|FlagM.OF|FlagM.ZF);
-			var Z = f.EnsureFlagGroup((uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-			var C = f.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
+			var Z = f.EnsureFlagGroup(Registers.eflags, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+			var C = f.EnsureFlagGroup(Registers.eflags, (uint) FlagM.CF, "C", PrimitiveType.Bool);
 			Assert.IsTrue(isLiveHelper.IsLive(Z, liveness), "Z flag should be live");
 			Assert.IsFalse(isLiveHelper.IsLive(C, liveness), "C flag isn't live");
 		}

@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			Frame f = new Frame(PrimitiveType.Word16);
 			uint iSz = (uint) (FlagM.ZF|FlagM.SF);
-			Identifier grfSz = f.EnsureFlagGroup(iSz, arch.GrfToString(iSz), PrimitiveType.Byte);
+			Identifier grfSz = f.EnsureFlagGroup(Registers.eflags, iSz, arch.GrfToString(iSz), PrimitiveType.Byte);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrGrfTest.txt"))
 			{
 				f.Write(fut.TextWriter);

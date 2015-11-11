@@ -58,6 +58,7 @@ namespace Reko.UnitTests.Gui.Windows
         private Program program;
         private Project project;
         private IDecompilerShellUiService uiSvc;
+        private IUiPreferencesService uiPrefSvc;
 
         [SetUp]
         public void Setup()
@@ -68,10 +69,12 @@ namespace Reko.UnitTests.Gui.Windows
             mockNodes = mr.StrictMock<ITreeNodeCollection>();
             decompilerSvc = mr.StrictMock<IDecompilerService>();
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
+            uiPrefSvc = mr.Stub<IUiPreferencesService>();
             decompiler = mr.StrictMock<IDecompiler>();
             mockTree.Stub(t => t.Nodes).Return(mockNodes);
             uiSvc.Stub(u => u.GetContextMenu(0)).IgnoreArguments().Return(new ContextMenu());
             sc.AddService<IDecompilerShellUiService>(uiSvc);
+            sc.AddService<IUiPreferencesService>(uiPrefSvc);
             fakeTree = new FakeTreeView();
         }
 

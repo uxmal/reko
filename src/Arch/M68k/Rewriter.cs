@@ -162,7 +162,7 @@ VS Overflow Set 1001 V
                 case Opcode.suba: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subq: RewriteAddSubq((s, d) => emitter.ISub(d, s)); break;
-                case Opcode.subx: RewriteArithmetic((s, d) => emitter.ISub(emitter.ISub(d, s), frame.EnsureFlagGroup((uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
+                case Opcode.subx: RewriteArithmetic((s, d) => emitter.ISub(emitter.ISub(d, s), frame.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 case Opcode.swap: RewriteSwap(); break;
                 case Opcode.tst: RewriteTst(); break;
                 case Opcode.unlk: RewriteUnlk(); break;

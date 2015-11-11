@@ -199,6 +199,8 @@ namespace Reko.Arch.Z80
         public static readonly Z80Register iy = new WordRegister("iy", 13, 6);
         public static readonly Z80Register af = new WordRegister("af", 14, 0);
 
+        public static readonly FlagRegister f = new FlagRegister("f", PrimitiveType.Byte);
+
         public static readonly RegisterStorage i = new LowByteRegister("i", 16, 7);
         public static readonly RegisterStorage r = new LowByteRegister("r", 17, 8);
 

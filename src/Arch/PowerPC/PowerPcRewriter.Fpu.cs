@@ -33,7 +33,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr1 = frame.EnsureFlagGroup(0x2, "cr1", PrimitiveType.Byte);
+            var cr1 = frame.EnsureFlagGroup(arch.cr, 0x2, "cr1", PrimitiveType.Byte);
             emitter.Assign(cr1, emitter.Cond(e));
         }
 

@@ -42,10 +42,12 @@ namespace Reko.Arch.Pdp11
         public static RegisterStorage sp = new RegisterStorage("sp", 6, PrimitiveType.Word16);
         public static RegisterStorage pc = new RegisterStorage("pc", 7, PrimitiveType.Word16);
 
-        public static RegisterStorage N = new RegisterStorage("N", 8,  PrimitiveType.Bool);
-        public static RegisterStorage Z = new RegisterStorage("Z", 9,  PrimitiveType.Bool);
+        public static RegisterStorage N = new RegisterStorage("N", 8, PrimitiveType.Bool);
+        public static RegisterStorage Z = new RegisterStorage("Z", 9, PrimitiveType.Bool);
         public static RegisterStorage V = new RegisterStorage("V", 10, PrimitiveType.Bool);
         public static RegisterStorage C = new RegisterStorage("C", 11, PrimitiveType.Bool);
+
+        public static FlagRegister psw = new FlagRegister("psw", PrimitiveType.Word16);
     }
 
     [Flags]
@@ -163,7 +165,7 @@ namespace Reko.Arch.Pdp11
                 return f;
 
 			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.psw, grf, GrfToString(grf), dt);
 			flagGroups.Add(grf, fl);
 			return fl;
 		}

@@ -146,6 +146,7 @@ namespace Reko.Arch.Mos6502
             emitter.Assign(dst, src);
             emitter.Assign(
                 frame.EnsureFlagGroup(
+                    Registers.p,
                     (uint) (FlagM.NF | FlagM.ZF),
                     "NZ",
                     PrimitiveType.Byte),
@@ -172,7 +173,7 @@ namespace Reko.Arch.Mos6502
                 if ((f & 1) != 0)
                     sb.Append(Registers.GetRegister(iReg));
             }
-            return frame.EnsureFlagGroup((uint)flags, sb.ToString(), PrimitiveType.Byte);
+            return frame.EnsureFlagGroup(Registers.p, (uint)flags, sb.ToString(), PrimitiveType.Byte);
         }
 
         private void Asl()
@@ -372,14 +373,14 @@ namespace Reko.Arch.Mos6502
         {
             var mem = RewriteOperand(instrCur.Operand);
             var a = frame.EnsureRegister(Registers.a);
-            var c = frame.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
+            var c = frame.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             emitter.Assign(
                 a,
                 emitter.IAdd(
                     emitter.IAdd(a, mem),
                     c));
             emitter.Assign(
-                frame.EnsureFlagGroup((uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                frame.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
                 emitter.Cond(a));
         }
 
@@ -387,14 +388,14 @@ namespace Reko.Arch.Mos6502
         {
             var mem = RewriteOperand(instrCur.Operand);
             var a = frame.EnsureRegister(Registers.a);
-            var c = frame.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
+            var c = frame.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             emitter.Assign(
                 a,
                 emitter.ISub(
                     emitter.ISub(a, mem),
                     emitter.Not(c)));
             emitter.Assign(
-                frame.EnsureFlagGroup((uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                frame.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
                 emitter.Cond(a));
         }
 

@@ -64,11 +64,6 @@ namespace Reko.Core
             return b;
         }
 
-        public Identifier Flags(uint grf, string name)
-        {
-            return Frame.EnsureFlagGroup(grf, name, PrimitiveType.Byte);
-        }
-
         public GotoInstruction Goto(Expression dest)
         {
             var gi = new GotoInstruction(dest);

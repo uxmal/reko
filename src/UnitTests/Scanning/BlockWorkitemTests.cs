@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Scanning
             r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, PrimitiveType.Word32));
             r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 0, PrimitiveType.Word32));
             r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 0, PrimitiveType.Word32));
-            grf = proc.Frame.EnsureFlagGroup(3, "SCZ", PrimitiveType.Byte);
+            grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
 
             scanner = mr.StrictMock<IScanner>();
             arch = mr.DynamicMock<IProcessorArchitecture>();

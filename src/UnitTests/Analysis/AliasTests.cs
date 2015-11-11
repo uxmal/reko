@@ -151,15 +151,37 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void AliasFlags()
         {
-            var sExp = "@@@";
+            var sExp =
+@"Mem0:Global memory (aliases:)
+fp:fp (aliases:)
+SZ:Flags (aliases: CZ C)
+CZ:Flags (aliases: SZ C)
+C:Flags (aliases: SZ CZ)
+al:al (aliases:)
+esi:esi (aliases:)
+r63:r63 (aliases:)
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	SZ = cond(esi & esi)
+	C = false
+	CZ = C
+	al = Test(ULE,CZ)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
             RunStringTest(sExp, m =>
             {
-                var scz = m.Frame.EnsureFlagGroup(7, "SZ", PrimitiveType.Byte);
-                var cz = m.Frame.EnsureFlagGroup(3, "CZ", PrimitiveType.Byte);
-                var c = m.Frame.EnsureFlagGroup(1, "C", PrimitiveType.Bool);
+                var scz = m.Frame.EnsureFlagGroup(Registers.eflags, 7, "SZ", PrimitiveType.Byte);
+                var cz = m.Frame.EnsureFlagGroup(Registers.eflags, 3, "CZ", PrimitiveType.Byte);
+                var c = m.Frame.EnsureFlagGroup(Registers.eflags, 1, "C", PrimitiveType.Bool);
                 var al = m.Reg8("al");
                 var esi = m.Reg32("esi");
                 m.Assign(scz, m.Cond(m.And(esi, esi)));
