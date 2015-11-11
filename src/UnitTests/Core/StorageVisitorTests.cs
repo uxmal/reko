@@ -18,10 +18,8 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using NUnit.Framework;
 using System;
@@ -52,8 +50,10 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void VisitSequenceVariable()
 		{
-			var ax = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
-			var dx = new Identifier(Registers.dx.Name, Registers.dx.DataType, Registers.dx);
+			var r_ax = new RegisterStorage("ax", 0, PrimitiveType.Word16);
+			var r_dx = new RegisterStorage("dx", 0, PrimitiveType.Word16);
+			var ax = new Identifier(r_ax.Name, r_ax.DataType, r_ax);
+			var dx = new Identifier(r_dx.Name, r_dx.DataType, r_dx);
 			var seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(dx, ax));
 			var type = seq.Storage.Accept(this);
 			Assert.AreEqual("seq", type);

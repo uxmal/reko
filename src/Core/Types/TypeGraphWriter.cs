@@ -55,7 +55,7 @@ namespace Reko.Core.Types
 
         public Formatter VisitCode(CodeType c)
         {
-            writer.Write("code", c.Size);
+            writer.Write("code");
             return writer;
         }
 

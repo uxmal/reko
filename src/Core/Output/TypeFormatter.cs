@@ -129,7 +129,7 @@ namespace Reko.Core.Output
         {
             if (mode == Mode.Writing)
             {
-                writer.Write("code", c.Size);
+                writer.Write("code");
                 WriteName(true);
             }
             return writer;
