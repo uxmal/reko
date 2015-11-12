@@ -30,6 +30,7 @@ namespace Reko.Typing
         private DataType dtComplex;
         private DataType dtComplexOrig;
         private Expression other;
+        private int offset;
         private bool dereferenced;
         private bool seenPtr;
 
@@ -42,6 +43,12 @@ namespace Reko.Typing
         {
             this.complex = complex;
             this.other = other;
+            Constant cOther;
+            if (other.As(out cOther))
+            {
+                offset = cOther.ToInt32();
+                this.other = null;
+            }
             this.dtComplex = complex.TypeVariable.DataType;
             this.dtComplexOrig = complex.TypeVariable.OriginalDataType;
             this.dereferenced = dereferenced;
@@ -65,7 +72,8 @@ namespace Reko.Typing
 
         public Expression VisitEquivalenceClass(EquivalenceClass eq)
         {
-            throw new NotImplementedException();
+            this.dtComplex = eq.DataType;
+            return this.dtComplex.Accept(this);
         }
 
         public Expression VisitFunctionType(FunctionType ft)
@@ -105,15 +113,18 @@ namespace Reko.Typing
                 complex.DataType = dtComplex;
                 return complex;
             }
-            Constant offset;
-            if (!other.As(out offset))
+            if (other != null)
                 throw new NotImplementedException();    //$TODO arrays.
-            var nOffset = offset.ToInt32();
-            if (nOffset == 0)
+            if (offset == 0)
             {
                 if (dereferenced)
                 {
-                    return new Dereference(dtComplex, complex);
+                    return new Dereference(pt, complex);
+                }
+                else
+                {
+                    complex.DataType = pt;
+                    return complex;
                 }
             }
             throw new NotImplementedException();
@@ -126,7 +137,25 @@ namespace Reko.Typing
 
         public Expression VisitStructure(StructureType str)
         {
-            throw new NotImplementedException();
+            StructureField field = str.Fields.LowerBound(this.offset);
+            if (field == null)
+                throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
+
+            dtComplex = field.DataType;
+            dtComplexOrig = field.DataType;
+            this.complex = CreateFieldAccess(str, field.DataType, complex, field.Name);
+            offset -= field.Offset;
+            return dtComplex.Accept(this);
+        }
+
+        private Expression CreateFieldAccess(StructureType dtStructure, DataType dtField , Expression exp, string name)
+        {
+            if (dereferenced)
+            {
+                dereferenced = false;
+                exp = new Dereference(dtStructure, exp);
+            }
+            return new FieldAccess(dtField, exp, name);
         }
 
         public Expression VisitTypeReference(TypeReference typeref)

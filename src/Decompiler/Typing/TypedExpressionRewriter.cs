@@ -212,7 +212,7 @@ namespace Reko.Typing
                 else
                     throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
             }
-            Identifier idDst = dst as Identifier;
+            var idDst = dst as Identifier;
             if (idDst != null)
                 return new Assignment(idDst, src);
             else
@@ -425,6 +425,13 @@ namespace Reko.Typing
             var src = a.Src.Accept(this);
             var dst = a.Dst.Accept(this);
             return new Assignment((Identifier)dst, src);
+        }
+
+        public override Instruction TransformDeclaration(Declaration decl)
+        {
+            base.TransformDeclaration(decl);
+            decl.Identifier.DataType = decl.Identifier.TypeVariable.DataType;
+            return decl;
         }
 
         public override Instruction TransformStore(Store store)

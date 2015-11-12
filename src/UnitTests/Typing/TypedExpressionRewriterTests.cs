@@ -116,19 +116,21 @@ namespace Reko.UnitTests.Typing
             {
                 sw.WriteLine("** Exception **");
                 sw.WriteLine(ex);
+                throw;
             }
             finally
             {
                 sw.WriteLine("// After ///////");
                 DumpProgram(program, sw);
-                var sActual = sw.ToString();
-                if (expectedOutput != sActual)
-                {
-                    Debug.Print(sActual);
-                    Assert.AreEqual(expectedOutput, sActual);
-                }
+            }
+            var sActual = sw.ToString();
+            if (expectedOutput != sActual)
+            {
+                Debug.Print(sActual);
+                Assert.AreEqual(expectedOutput, sActual);
             }
         }
+
         private ProgramBuilder CreateProgramBuilder(uint linearAddress, int size)
         {
             return new ProgramBuilder(
@@ -652,6 +654,48 @@ proc1_entry:
 	// succ:  l1
 l1:
 	globals->w1000 = *eax
+proc1_exit:
+
+";
+            #endregion
+            RunStringTest(pm.BuildProgram(), sExp);
+        }
+
+        [Test]
+        public void Ter2PtrToStruct()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var eax = m.Reg32("eax");
+                m.Declare(eax, null);
+                m.Store(m.Word32(0x01000), m.LoadW(eax));
+                m.Store(m.Word32(0x01002), m.LoadW(m.IAdd(eax, 2)));
+            });
+            var sExp =
+            #region Expected String
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 eax
+	Mem0[0x00001000:word16] = Mem0[eax:word16]
+	Mem0[0x00001002:word16] = Mem0[eax + 0x00000002:word16]
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	Eq_2 * eax
+	globals->w1000 = eax->w0000
+	globals->w1002 = eax->w0002
 proc1_exit:
 
 ";
