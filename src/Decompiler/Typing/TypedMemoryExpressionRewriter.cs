@@ -39,6 +39,7 @@ namespace Reko.Typing
         private DataType dtResult;
         private TypedConstantRewriter tcr;
 
+        [Obsolete("", true)]
 		public TypedMemoryExpressionRewriter(Program program)
 		{
             this.program = program;
@@ -83,8 +84,7 @@ namespace Reko.Typing
                 new ArrayAccess(dtElement, arr, idx),
                 null, 
                 0);
-            ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(true);
         }
 
         public static Expression RescaleIndex(Expression idx, DataType dtElement)
@@ -143,7 +143,7 @@ namespace Reko.Typing
                 appl.TypeVariable.OriginalDataType,
                 basePointer, appl, null, 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(true);
         }
 
 		public Expression VisitArrayAccess(ArrayAccess acc)
@@ -159,8 +159,7 @@ namespace Reko.Typing
                 arr,
                 idx,
                 0);
-            ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(true);
 		}
 
         public Expression VisitBinaryExpression(BinaryExpression binExp)
@@ -216,8 +215,7 @@ namespace Reko.Typing
                     cRight != null ? null : binRight,
                     StructureField.ToOffset(binRight as Constant));
             }
-            ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(true);
         }
 		
 
@@ -254,7 +252,7 @@ namespace Reko.Typing
                     null,
                     StructureField.ToOffset(c));
                 ceb.Dereferenced = dereferenced;
-                return ceb.BuildComplex();
+                return ceb.BuildComplex(true);
             }
             else
             {
@@ -285,7 +283,7 @@ namespace Reko.Typing
 				id.TypeVariable.OriginalDataType,
 				basePointer, id, null, 0);
 			ceb.Dereferenced = true;
-			return ceb.BuildComplex();
+			return ceb.BuildComplex(true);
 		}
 
 		public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
@@ -295,7 +293,7 @@ namespace Reko.Typing
 
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
-            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(program);
+            TypedMemoryExpressionRewriter r = this;
             Expression e = r.Rewrite(access);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 dtResult,
@@ -304,7 +302,7 @@ namespace Reko.Typing
                 null,
                 e, null, 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(true);
         }
 
 		public Expression VisitMkSequence(MkSequence seq)
@@ -328,7 +326,7 @@ namespace Reko.Typing
                         null,
                         StructureField.ToOffset(c));
                     ceb.Dereferenced = true;
-                    return ceb.BuildComplex();
+                    return ceb.BuildComplex(true);
                 }
                 else
                 {
@@ -342,7 +340,7 @@ namespace Reko.Typing
                          null,
                          0);
                     ceb.Dereferenced = true;
-                    return ceb.BuildComplex();
+                    return ceb.BuildComplex(true);
 #else
                     var sel = new MemberPointerSelector(seq.TypeVariable.DataType,
                         new Dereference(head.DataType, head),
@@ -380,7 +378,7 @@ namespace Reko.Typing
 
 		public Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
-            var r = new TypedMemoryExpressionRewriter(program);
+            var r = this;
             var e = r.Rewrite(access);
             var ceb = new ComplexExpressionBuilder(
                 dtResult,
@@ -389,7 +387,7 @@ namespace Reko.Typing
                 basePointer,
                 e, null, 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(true);
 		}
 
 		public Expression VisitScopeResolution(ScopeResolution scope)

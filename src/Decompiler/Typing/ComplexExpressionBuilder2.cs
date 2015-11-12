@@ -21,6 +21,7 @@
 using System;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Core.Operators;
 
 namespace Reko.Typing
 {
@@ -29,26 +30,27 @@ namespace Reko.Typing
         private Expression complex;
         private DataType dtComplex;
         private DataType dtComplexOrig;
-        private Expression other;
+        private Expression index;
         private int offset;
         private bool dereferenced;
-        private bool seenPtr;
+        private DataType enclosingPtr;
+        private bool wasDereferenced;
 
-        public ComplexExpressionBuilder2()
-        {
-            seenPtr = false;
-        }
-
-        public Expression Rewrite(Expression complex, Expression other, bool dereferenced)
+        public ComplexExpressionBuilder2(
+            DataType dtResult,
+            Expression basePtr,
+            Expression complex, 
+            Expression index,
+            int offset)
         {
             this.complex = complex;
-            this.other = other;
-            Constant cOther;
-            if (other.As(out cOther))
-            {
-                offset = cOther.ToInt32();
-                this.other = null;
-            }
+            this.index = index;
+            this.offset = offset;
+        }
+
+        public Expression BuildComplex(bool dereferenced)
+        {
+            this.enclosingPtr = null;
             if (complex.TypeVariable != null)
             {
                 this.dtComplex = complex.TypeVariable.DataType;
@@ -59,13 +61,30 @@ namespace Reko.Typing
                 this.dtComplex = complex.DataType;
                 this.dtComplexOrig = complex.DataType;
             }
+            var dtComplex = this.dtComplex;
             this.dereferenced = dereferenced;
-            return this.dtComplex.Accept(this);
+            var exp = this.dtComplex.Accept(this);
+            if (!dereferenced && wasDereferenced)
+            {
+                exp = new UnaryExpression(Operator.AddrOf, dtComplex, exp);
+            }
+            if (dereferenced && !wasDereferenced)
+            {
+                exp = new Dereference(dtComplex, exp);
+            }
+            return exp;
         }
 
         public Expression VisitArray(ArrayType at)
         {
-            throw new NotImplementedException();
+            int i = (int)(offset / at.ElementType.Size);
+            int r = (int)(offset % at.ElementType.Size);
+            dtComplex = at.ElementType;
+            dtComplexOrig = at.ElementType;
+            this.complex.DataType = at;
+            complex = CreateArrayAccess(at.ElementType, at, i, index);
+            offset = r;
+            return dtComplex.Accept(this);
         }
 
         public Expression VisitCode(CodeType c)
@@ -91,48 +110,54 @@ namespace Reko.Typing
 
         public Expression VisitMemberPointer(MemberPointer memptr)
         {
-            throw new NotImplementedException();
+            var pointee = memptr.Pointee;
+            var origMemptr = dtComplexOrig.ResolveAs<MemberPointer>();
+            if (origMemptr != null)
+            {
+                pointee = origMemptr.Pointee;
+            }
+            return RewritePointer(memptr, memptr.Pointee, pointee);
         }
 
         public Expression VisitPointer(Pointer ptr)
         {
-            return RewritePointer(ptr);
+            var pointee = ptr.Pointee;
+            var origPtr = dtComplexOrig.ResolveAs<Pointer>();
+            if (origPtr != null)
+            {
+                pointee = origPtr.Pointee;
+            }
+            return RewritePointer(ptr, ptr.Pointee, pointee);
         }
 
-        private Expression RewritePointer(Pointer ptr)
+        private Expression RewritePointer(DataType ptr, DataType dtPointee, DataType dtOrigPointee)
         {
-            if (seenPtr)
+            if (enclosingPtr != null)
             {
-                if (dereferenced)
-                {
-                    return new Dereference(ptr.Pointee, complex);
-                }
-                else
-                {
-                    return complex;
-                }
+                return complex;
             }
-            seenPtr = true;
-            this.dtComplex = ptr.Pointee;
-            this.dtComplexOrig = dtComplexOrig.ResolveAs<Pointer>().Pointee;
-
-            return dtComplex.Accept(this);
+            else
+            {
+                enclosingPtr = ptr;
+                this.dtComplex = dtPointee;
+                this.dtComplexOrig = dtOrigPointee;
+                return dtComplex.Accept(this);
+            }
         }
 
         public Expression VisitPrimitive(PrimitiveType pt)
         {
-            if (!seenPtr)
+            if (enclosingPtr == null)
             {
                 // We're not in a pointer context.
                 complex.DataType = dtComplex;
                 return complex;
             }
-            if (other != null)
-                throw new NotImplementedException();    //$TODO arrays.
             if (offset == 0)
             {
-                if (dereferenced)
+                if (dereferenced && !wasDereferenced)
                 {
+                    wasDereferenced = true;
                     return new Dereference(pt, complex);
                 }
                 else
@@ -162,17 +187,6 @@ namespace Reko.Typing
             return dtComplex.Accept(this);
         }
 
-        private Expression CreateFieldAccess(StructureType dtStructure, DataType dtField , Expression exp, string name)
-        {
-            if (dereferenced)
-            {
-                dereferenced = false;
-                exp = new Dereference(dtStructure, exp);
-            }
-            var fa = new FieldAccess(dtField, exp, name);
-            return fa;
-        }
-
         public Expression VisitTypeReference(TypeReference typeref)
         {
             throw new NotImplementedException();
@@ -196,6 +210,53 @@ namespace Reko.Typing
         public Expression VisitVoidType(VoidType voidType)
         {
             throw new NotImplementedException();
+        }
+
+        private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex)
+        {
+            if (offset == 0 && arrayIndex == null && !dereferenced)
+                return complex;
+            arrayIndex = CreateArrayIndexExpression(offset, arrayIndex);
+            if (dereferenced)
+            {
+                wasDereferenced = true;
+                return new ArrayAccess(dtPointee, complex, arrayIndex);
+            }
+            else
+            {
+                wasDereferenced = false;
+                return new BinaryExpression(Operator.IAdd, dtPointer, complex, arrayIndex);
+            }
+        }
+
+        Expression CreateArrayIndexExpression(int offset, Expression arrayIndex)
+        {
+            BinaryOperator op = offset < 0 ? Operator.ISub : Operator.IAdd;
+            offset = Math.Abs(offset);
+            Constant cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
+            if (arrayIndex != null)
+            {
+                if (offset != 0)
+                {
+                    return new BinaryExpression(op, arrayIndex.DataType, arrayIndex, cOffset);
+                }
+            }
+            else
+            {
+                return cOffset;
+            }
+            return arrayIndex;
+        }
+
+        private Expression CreateFieldAccess(StructureType dtStructure, DataType dtField, Expression exp, string name)
+        {
+            if (enclosingPtr != null)
+            {
+                wasDereferenced = true;
+                exp = new Dereference(dtStructure, exp);
+            }
+            var fa = new FieldAccess(dtField, exp, name);
+            return fa;
         }
     }
 }

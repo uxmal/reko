@@ -48,9 +48,10 @@ namespace Reko.Typing
         private Expression indexExp;        // if not null, an index expression to use for arrays.
 		private int offset;
 		private bool dereferenced;
-		private bool seenPtr;
-        private DataTypeComparer comp; 
-        
+		private DataType enclosingPtr;
+        private DataTypeComparer comp;
+        private bool wasDereferenced;
+
         public ComplexExpressionBuilder(
             DataType dtResult, 
             DataType dt, 
@@ -70,14 +71,26 @@ namespace Reko.Typing
             this.comp = new DataTypeComparer();
         }
 
-		public Expression BuildComplex()
+		public Expression BuildComplex(bool dereferenced)
 		{
+            this.enclosingPtr = null;
+            this.dereferenced = dereferenced;
+            this.wasDereferenced = false;
             var exp = dt.Accept(this);
+            if (!dereferenced && wasDereferenced)
+            {
+                exp = new UnaryExpression(Operator.AddrOf, dt, exp);
+            }
+            if (dereferenced && !wasDereferenced)
+            {
+                exp = new Dereference(dt, exp);
+            }
             return exp;
 		}
 
 		private Expression CreateDereference(DataType dt, Expression e)
 		{
+            this.wasDereferenced = true;
 			if (basePointer != null)
 				return new MemberPointerSelector(dt, new Dereference(dt, basePointer), e);
 			else if (e != null)
@@ -116,28 +129,47 @@ namespace Reko.Typing
                 {
                     exp = new MemberPointerSelector(dtField, basePointer, exp);
                 }
-                return new FieldAccess(dtField, exp, fieldName);
+                if (enclosingPtr != null)
+                {
+                    exp = CreateDereference(dtStructure, exp);
+                }
+                exp = new FieldAccess(dtField, exp, fieldName); 
+                return exp;
             }
             else
             {
                 var scope = new ScopeResolution(dtStructure);
+                if (dereferenced)
+                {
+                    exp = CreateDereference(dtStructure, exp);
+                    dereferenced = false;
+                }
                 return new FieldAccess(dtField, scope, fieldName);
             }
         }
 
 		private Expression RewritePointer(DataType dtPtr, DataType dtPointee, DataType dtPointeeOriginal)
 		{
-			if (seenPtr)
+			if (enclosingPtr != null)
 			{
 				return complexExp;
 			}
 
-			seenPtr = true;
+			enclosingPtr = dtPtr;
             Expression result;
-			if (dtPointee is PrimitiveType || dtPointee is Pointer || dtPointee is MemberPointer ||
+            // Drill down.
+            dt = dtPointee;
+            dtOriginal = dtPointeeOriginal;
+            result = dtPointee.Accept(this);
+            return result;
+        }
+
+
+        /*
+            if (dtPointee is Pointer || dtPointee is MemberPointer ||
                 dtPointee is CodeType ||
                 comp.Compare(dtPtr, dtResult) == 0)
-			{
+            {
                 if (dtPointee.Size == 0)
                     Debug.Print("WARNING: {0} has size 0, which should be impossible", dtPointee);
                 if (offset == 0 || dtPointee is ArrayType || dtPointee.Size > 0 && offset % dtPointee.Size == 0)
@@ -161,25 +193,14 @@ namespace Reko.Typing
                 {
                     result = new PointerAddition(dtPtr, complexExp, offset);
                 }
-			}
-			else
-			{
-                // Drill down.
-				dtOriginal = dtPointeeOriginal;
-				complexExp = CreateDereference(dtPointee, complexExp);
-				bool deref = Dereferenced;  //$REVIEW: causes problems with arrayType
-				Dereferenced = true;       //$REVUEW: causes problems with arrayType
-				basePointer = null;
-				result = dtPointee.Accept(this);
-				if (!deref)
-				{
-					result = new UnaryExpression(UnaryOperator.AddrOf, dtPtr, result);
-				}
-				Dereferenced = deref;       //$REVIEW: causes problems with arrayType
-			}
-			seenPtr = false;
+            }
+            else
+            {
+            }
+			enclosingPtr = null;    //$BUG: should be previous.
             return result;
 		}
+        */
 
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex, bool dereferenced)
         {
@@ -246,8 +267,38 @@ namespace Reko.Typing
 
 		public Expression VisitPrimitive(PrimitiveType pt)
 		{
-			return complexExp;
-		}
+            if (enclosingPtr == null)
+            {
+                return complexExp;
+            }
+            if (offset == 0)
+                return CreateUnreferenced(pt, complexExp);
+
+            if (pt.Size == 0)
+                Debug.Print("WARNING: {0} has size 0, which should be impossible", pt);
+            if (offset == 0 || pt.Size > 0 && offset % pt.Size == 0)
+            {
+                int idx = (offset == 0)
+                    ? 0
+                    : offset / pt.Size;
+                if (idx == 0 && this.indexExp == null)
+                {
+                    if (Dereferenced)
+                        return CreateDereference(pt, complexExp);
+                    else
+                        return CreateUnreferenced(pt, complexExp);
+                }
+                else
+                {
+                    return CreateArrayAccess(pt, enclosingPtr, idx, indexExp, Dereferenced);
+                }
+            }
+            else
+            {
+                return new PointerAddition(enclosingPtr, complexExp, offset);
+            }
+
+        }
 
         public Expression VisitEnum(EnumType e)
         {
@@ -257,13 +308,19 @@ namespace Reko.Typing
         public Expression VisitEquivalenceClass(EquivalenceClass eq)
         {
             dt = eq.DataType;
-            dtOriginal = eq.DataType;
             return dt.Accept(this);
         }
 
 		public Expression VisitPointer(Pointer ptr)
 		{
-			return RewritePointer(ptr, ptr.Pointee, ptr.Pointee);
+            DataType dtPointeeOrig = ptr.Pointee;
+            if (complexExp.TypeVariable != null)
+            {
+                var ptOrig = complexExp.TypeVariable.OriginalDataType.ResolveAs<Pointer>();
+                if (ptOrig != null)
+                    dtPointeeOrig = ptOrig.Pointee;
+            }
+			return RewritePointer(ptr, ptr.Pointee, dtPointeeOrig);
 		}
 
 		public Expression VisitMemberPointer(MemberPointer memptr)
@@ -316,7 +373,7 @@ namespace Reko.Typing
 			}
 			else
 			{
-				complexExp = new FieldAccess(alt.DataType, complexExp, alt.Name);
+				complexExp = CreateFieldAccess(ut, alt.DataType, complexExp, alt.Name);
 			}
 			return dt.Accept(this);
 		}

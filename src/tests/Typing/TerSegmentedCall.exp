@@ -1,5 +1,6 @@
 // Before ///////
 // SegmentedCallFragment
+// Return size: 0
 void SegmentedCallFragment()
 SegmentedCallFragment_entry:
 	// succ:  l1
@@ -12,11 +13,12 @@ SegmentedCallFragment_exit:
 
 // After ///////
 // SegmentedCallFragment
+// Return size: 0
 void SegmentedCallFragment()
 SegmentedCallFragment_entry:
 	// succ:  l1
 l1:
-	bx = ds->ptr2040;
+	bx = ds->ptr2040
 	(0x2700->*bx)()
 	return
 	// succ:  SegmentedCallFragment_exit

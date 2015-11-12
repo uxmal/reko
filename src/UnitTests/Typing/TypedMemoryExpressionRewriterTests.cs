@@ -36,6 +36,7 @@ namespace Reko.UnitTests.Typing
 		private TypeStore store;
 		private TypeFactory  factory;
 		private StructureType point;
+        private ProcedureBuilder m;
 
 		[SetUp]
 		public void Setup()
@@ -54,9 +55,10 @@ namespace Reko.UnitTests.Typing
 			point = new StructureType(null, 0);
 			point.Fields.Add(0, PrimitiveType.Word32, null);
 			point.Fields.Add(4, PrimitiveType.Word32, null);
+            m = new ProcedureBuilder();
 		}
 
-        private Expression Wrap(Expression e)
+        private Expression CreateTv(Expression e)
         {
             store.EnsureExpressionTypeVariable(factory, e);
             e.TypeVariable.DataType = e.DataType;
@@ -64,20 +66,22 @@ namespace Reko.UnitTests.Typing
             return e;
         }
 
+        private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
+        {
+            store.EnsureExpressionTypeVariable(factory, e);
+            e.TypeVariable.DataType = dt;
+            e.TypeVariable.OriginalDataType = dtOrig;
+            return e.TypeVariable;
+        }
+
 		[Test]
 		public void Tmer_PointerToSingleItem()
 		{
-			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-			var tv = store.EnsureExpressionTypeVariable(factory, ptr);
-			tv.OriginalDataType = new Pointer(point, 4);
-			var eq = new EquivalenceClass(tv);
-			eq.DataType = point;
-			tv.DataType = new Pointer(eq, 4);
+            var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
+			var tv = CreateTv(ptr, new Pointer(point, 4), new Pointer(point, 4));
 
-			TypedExpressionRewriter tmer = new TypedExpressionRewriter(program);
-            var access = Wrap(new MemoryAccess(ptr, PrimitiveType.Word32));
-            TypeVariable tvAccess = access.TypeVariable;
-            tvAccess.DataType = PrimitiveType.Word32;
+            var tmer = new TypedExpressionRewriter2(program);
+            var access = CreateTv(m.LoadDw(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);
 			Assert.AreEqual("ptr->dw0000", e.ToString());
 		}
@@ -92,9 +96,9 @@ namespace Reko.UnitTests.Typing
 			ptr.TypeVariable.OriginalDataType = new Pointer(point, 4);
 			ptr.TypeVariable.DataType = new Pointer(eqPtr, 4);
 
-			var c = Wrap(Constant.Word32(4));
-			var bin = Wrap(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
-            var mem = Wrap(new MemoryAccess(bin, PrimitiveType.Word32));
+			var c = CreateTv(Constant.Word32(4));
+			var bin = CreateTv(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
+            var mem = CreateTv(new MemoryAccess(bin, PrimitiveType.Word32));
 			var tmer = new TypedExpressionRewriter(program);
 			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());

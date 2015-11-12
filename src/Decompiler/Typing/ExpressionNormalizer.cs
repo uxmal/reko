@@ -78,15 +78,13 @@ namespace Reko.Typing
                 }
                 return aem.Transform(null, access.DataType);
             }
-            else if (access.EffectiveAddress is Identifier)
-            {
-                access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
+            BinaryExpression bin;
+            if (access.EffectiveAddress.As(out bin) && bin.Operator == Operator.IAdd)
                 return access;
-            }
-            else
-            {
+            if (access.EffectiveAddress is Constant)
                 return access;
-            }
+            access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
+            return access;
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -96,15 +94,13 @@ namespace Reko.Typing
             {
                 return aem.Transform(access.BasePointer, access.DataType);
             }
-            else if (access.EffectiveAddress is Identifier)
-            {
-                access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
+            BinaryExpression bin;
+            if (access.EffectiveAddress.As(out bin) && bin.Operator == Operator.IAdd)
                 return access;
-            }
-            else
-            {
+            if (access.EffectiveAddress is Constant)
                 return access;
-            }
+            access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
+                return access;
         }
 
 		public void Transform(Program prog)

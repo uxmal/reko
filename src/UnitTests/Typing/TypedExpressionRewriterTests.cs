@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Typing
     [TestFixture]
     public class TypedExpressionRewriterTests : TypingTestBase
     {
-        private TypedExpressionRewriter ter;
+        private TypedExpressionRewriter2 ter;
         private ExpressionNormalizer aen;
         private EquivalenceClassBuilder eqb;
         private TraitCollector coll;
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Typing
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
 
-                ter = new TypedExpressionRewriter(program);
+                ter = new TypedExpressionRewriter2(program);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Typing
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
 
-            ter = new TypedExpressionRewriter(program);
+            ter = new TypedExpressionRewriter2(program);
             cmp = cmp.Accept(ter);
             Assert.AreEqual("v0->dw0004", cmp.ToString());
         }
@@ -339,7 +339,6 @@ namespace Reko.UnitTests.Typing
                 m.Store(p, m.Word16(4));
                 m.Store(m.IAdd(p, 4), m.Word16(4));
                 m.Assign(p, m.IAdd(p, i));
-
             });
             RunTest(prog.BuildProgram(), "Typing/TerAddNonConstantToPointer.txt");
         }
@@ -789,7 +788,61 @@ proc1_entry:
 l1:
 	Eq_2 * r1
 	r1 = r1->ptr0000
-	globals->b1004 = r1->ptr0000->b0004
+	globals->b1004 = r1->ptr0000->ptr0000->b0004
+proc1_exit:
+
+";
+            #endregion
+            RunStringTest(pm.BuildProgram(), sExp);
+        }
+
+        [Test]
+        public void Ter2AddrOfLinkedList()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                m.Declare(r1, null);
+                m.Declare(r2, null);
+                m.Assign(r1, m.LoadDw(r1));
+                m.Store(m.Word32(0x01004), m.Load(
+                    PrimitiveType.Char,
+                    m.IAdd(
+                        m.LoadDw(
+                            m.LoadDw(r1)),
+                        4)));
+                m.Assign(r2, m.IAdd(r1, 4));
+            });
+            var sExp =
+            #region Expected String
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 r1
+	word32 r2
+	r1 = Mem0[r1:word32]
+	Mem0[0x00001004:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 0x00000004:char]
+	r2 = r1 + 0x00000004
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	Eq_2 * r1
+	word32 r2
+	r1 = r1->ptr0000
+	globals->b1004 = r1->ptr0000->ptr0000->b0004
+	r2 = &r1->b0004
 proc1_exit:
 
 ";

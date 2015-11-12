@@ -42,6 +42,9 @@ namespace Reko.Typing
         private TypedConstantRewriter tcr;
         private ExpressionEmitter m;
         private Unifier unifier;
+        private Expression basePointer;
+
+        private bool dereferenced;
 
         public TypedExpressionRewriter(Program program)
         {
@@ -60,31 +63,6 @@ namespace Reko.Typing
             if (e.TypeVariable != null)
                 return e.TypeVariable.DataType;
             return e.DataType;
-        }
-
-        /// <summary>
-        /// Creates an "addressof" expression.
-        /// </summary>
-        /// <param name="dt">Datatype of expression</param>
-        /// <param name="e">expression to take address of</param>
-        /// <returns></returns>
-        public Expression MkAddrOf(DataType dt, Expression e)
-        {
-            // &*ptr == ptr
-            Dereference d = e as Dereference;
-            if (d != null)
-                return d.Expression;
-
-            // *&a[i] = a + i;
-            // *&a[0] = a
-            ArrayAccess acc = e as ArrayAccess;
-            if (acc != null)
-            {
-                Constant index = acc.Index as Constant;
-                if (index != null && index.ToInt32() == 0)
-                    return acc.Array;
-            }
-            return new UnaryExpression(Operator.AddrOf, dt, e);
         }
 
         /// <summary>
@@ -138,8 +116,10 @@ namespace Reko.Typing
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
 #if !NEW
-            var tmr = new TypedMemoryExpressionRewriter(program);
-            return tmr.RewriteArrayAccess(acc.TypeVariable, acc.Array, acc.Index);
+            var arr = Rewrite(acc.Array, false);
+            var idx = Rewrite(acc.Index, false);
+            var result = new ArrayAccess(acc.TypeVariable.DataType, arr, idx);
+            return result;
 #else
             var arrayPtr = acc.Array.Accept(this);
             var elemType = arrayPtr.DataType.ResolveAs<ArrayType>().ElementType;
@@ -147,6 +127,30 @@ namespace Reko.Typing
             var index = TypedMemoryExpressionRewriter.RescaleIndex(acc.Index, elemType);
             return new ArrayAccess(elemType, arrayPtr, index);
 #endif
+        }
+
+        public static Expression RescaleIndex(Expression idx, DataType dtElement)
+        {
+            if (dtElement.Size == 1)
+                return idx;
+            var bin = idx as BinaryExpression;
+            if (bin != null && bin.Operator is IMulOperator)
+            {
+                var k = bin.Right as Constant;
+                if (k != null)
+                {
+                    var kk = k.ToInt32();
+                    if (kk % dtElement.Size == 0)
+                    {
+                        kk /= dtElement.Size;
+                        if (kk == 1)
+                            return bin.Left;
+                        else
+                            return new BinaryExpression(bin.Operator, bin.DataType, bin.Left, Constant.Create(k.DataType, kk));
+                    }
+                }
+            }
+            return new BinaryExpression(Operator.SDiv, idx.DataType, idx, Constant.Create(idx.DataType, dtElement.Size));
         }
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)
@@ -202,12 +206,12 @@ namespace Reko.Typing
                 if (uDst != null)
                 {
                     var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
-                    dst = ceb.BuildComplex();
+                    dst = ceb.BuildComplex(false);
                 }
                 else if (uSrc != null)
                 {
                     var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
-                    src = ceb.BuildComplex();
+                    src = ceb.BuildComplex(false);
                 }
                 else
                     throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
@@ -236,6 +240,15 @@ namespace Reko.Typing
         public override Instruction TransformStore(Store store)
         {
             return MakeAssignment(store.Dst, store.Src);
+        }
+
+        public Expression Rewrite(Expression exp, bool dereferenced)
+        {
+            var old = this.dereferenced;
+            this.dereferenced = dereferenced;
+            exp = exp.Accept(this);
+            this.dereferenced = old;
+            return exp;
         }
 
         /// <summary>
@@ -299,18 +312,18 @@ namespace Reko.Typing
                     binExp.TypeVariable.DataType,
                     dtLeft,
                     binExp.Left.TypeVariable.OriginalDataType,
-                    null,
+                    basePointer,
                     binExp.Left,
                     null,
                     StructureField.ToOffset(c));
-                return ceb.BuildComplex();
+                return ceb.BuildComplex(dereferenced);
             }
             return binExp;
         }
 
         public override Expression VisitConstant(Constant c)
         {
-            return tcr.Rewrite(c, false);
+            return tcr.Rewrite(c, dereferenced);
         }
 
         public override Instruction TransformDeclaration(Declaration decl)
@@ -323,14 +336,20 @@ namespace Reko.Typing
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
-            var tmer = new TypedMemoryExpressionRewriter(program);
-            return tmer.Rewrite(access);
+            var oldBase = this.basePointer;
+            this.basePointer = null;
+            var exp = Rewrite(access.EffectiveAddress, true);
+            this.basePointer = oldBase;
+            return exp;
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
         {
-            var tmer = new TypedMemoryExpressionRewriter(program);
-            return tmer.Rewrite(access);
+            var oldBase = this.basePointer;
+            this.basePointer = access.BasePointer;
+            var exp = Rewrite(access.EffectiveAddress, true);
+            this.basePointer = oldBase;
+            return exp;
         }
 
         public override Expression VisitMkSequence(MkSequence seq)
@@ -360,7 +379,7 @@ namespace Reko.Typing
                         new MemberPointerSelector(seq.DataType, head, tail),
                         null,
                         0);
-                    return ceb.BuildComplex();
+                    return ceb.BuildComplex(dereferenced);
                 }
             }
             else
@@ -371,7 +390,6 @@ namespace Reko.Typing
 
 #endregion
     }
-
 
     /// <summary>
     /// Rewrites all the expressions in the program based on the type information provided.
@@ -404,7 +422,7 @@ namespace Reko.Typing
         {
             foreach (Procedure proc in program.Procedures.Values)
             {
-//                RewriteFormals(proc.Signature);
+                RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
                 {
                     try
@@ -416,6 +434,20 @@ namespace Reko.Typing
                         Debug.WriteLine(
                             string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
                     }
+                }
+            }
+        }
+
+        private void RewriteFormals(ProcedureSignature sig)
+        {
+            if (sig.ReturnValue != null)
+                sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;
+            if (sig.Parameters != null)
+            {
+                foreach (Identifier formalArg in sig.Parameters)
+                {
+                    if (formalArg.TypeVariable != null)
+                        formalArg.DataType = formalArg.TypeVariable.DataType;
                 }
             }
         }
@@ -450,10 +482,12 @@ namespace Reko.Typing
             return exp;
         }
 
-        public Expression RewriteComplexExpression(Expression complex, Expression other)
+        public Expression RewriteComplexExpression(Expression complex, Expression index)
         {
-            var ceb = new ComplexExpressionBuilder2();
-            return ceb.Rewrite(complex, other, dereferenced);
+            var cOther = index as Constant;
+            var offset = (cOther != null) ? cOther.ToInt32() : 0;
+            var ceb = new ComplexExpressionBuilder2(null, null, complex, index, offset);
+            return ceb.BuildComplex(dereferenced);
         }
 
         public override Expression VisitBinaryExpression(BinaryExpression binExp)
@@ -466,13 +500,13 @@ namespace Reko.Typing
                 {
                     if (DataTypeOf(right).IsComplex)
                         throw new TypeInferenceException(
-                                "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2} vs {3}.",
-                                Environment.NewLine, binExp,
-                                DataTypeOf(left),
-                                DataTypeOf(right));
+                            "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2} vs {3}.",
+                            Environment.NewLine, binExp,
+                            DataTypeOf(left),
+                            DataTypeOf(right));
                     return RewriteComplexExpression(left, right);
                 }
-                else if (right.TypeVariable.DataType.IsComplex)
+                else if (DataTypeOf(right).IsComplex)
                 {
                     return RewriteComplexExpression(right, left);
                 }
@@ -492,7 +526,8 @@ namespace Reko.Typing
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
-            return Rewrite(access.EffectiveAddress, true);
+            var ea = Rewrite(access.EffectiveAddress, true);
+            return ea;
         }
     }
 }

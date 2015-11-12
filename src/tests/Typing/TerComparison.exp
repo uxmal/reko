@@ -51,7 +51,7 @@ T_6: (in 0x00100028 : word32)
   Class: Eq_5
   DataType: (ptr Eq_5)
   OrigDataType: int32
-T_7: (in p->ptr0004 < &globals->t100028 : bool)
+T_7: (in Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] < 0x00100028 : bool)
   Class: Eq_7
   DataType: bool
   OrigDataType: bool

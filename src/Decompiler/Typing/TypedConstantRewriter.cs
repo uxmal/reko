@@ -56,8 +56,14 @@ namespace Reko.Typing
         public Expression Rewrite(Constant c, bool dereferenced)
         {
             this.c = c;
-            DataType dtInferred = c.TypeVariable.DataType.ResolveAs<DataType>();
-            this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
+            DataType dtInferred = c.DataType;
+            this.pOrig = c.DataType as PrimitiveType;
+            if (c.TypeVariable != null)
+            {
+                dtInferred = c.TypeVariable.DataType;
+                this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
+            }
+            dtInferred = dtInferred.ResolveAs<DataType>();
             this.dereferenced = dereferenced;
             return dtInferred.Accept(this);
         }
