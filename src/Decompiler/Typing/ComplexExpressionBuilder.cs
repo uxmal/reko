@@ -299,7 +299,7 @@ namespace Reko.Typing
 
         public Expression VisitTypeVariable(TypeVariable tv)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("TypeVariables should have been eliminated by now.");
         }
 
 		public Expression VisitUnion(UnionType ut)

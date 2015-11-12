@@ -29,75 +29,75 @@ using System.IO;
 
 namespace Reko.Typing
 {
-	/// <summary>
-	/// Rewrites all the expressions in the program based on the type information provided.
-	/// </summary>
-	public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
-	{
+    /// <summary>
+    /// Rewrites all the expressions in the program based on the type information provided.
+    /// </summary>
+    public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
+    {
         private Program program;
         private Platform platform;
-		private TypeStore store;
+        private TypeStore store;
         private Identifier globals;
-		private DataTypeComparer compTypes;
-		private TypedConstantRewriter tcr;
+        private DataTypeComparer compTypes;
+        private TypedConstantRewriter tcr;
         private ExpressionEmitter m;
         private Unifier unifier;
 
-		public TypedExpressionRewriter(Program program)
-		{
+        public TypedExpressionRewriter(Program program)
+        {
             this.program = program;
             this.platform = program.Platform;
-			this.store = program.TypeStore;
+            this.store = program.TypeStore;
             this.globals = program.Globals;
-			this.compTypes = new DataTypeComparer();
-			this.tcr = new TypedConstantRewriter(program);
+            this.compTypes = new DataTypeComparer();
+            this.tcr = new TypedConstantRewriter(program);
             this.m = new ExpressionEmitter();
             this.unifier = new Unifier();
-		}
+        }
 
-		public DataType DataTypeOf(Expression e)
-		{
-			if (e.TypeVariable != null)
-				return e.TypeVariable.DataType;
-			return e.DataType;
-		}
+        public DataType DataTypeOf(Expression e)
+        {
+            if (e.TypeVariable != null)
+                return e.TypeVariable.DataType;
+            return e.DataType;
+        }
 
-		/// <summary>
-		/// Creates an "addressof" expression.
-		/// </summary>
-		/// <param name="dt">Datatype of expression</param>
-		/// <param name="e">expression to take address of</param>
-		/// <returns></returns>
-		public Expression MkAddrOf(DataType dt, Expression e)
-		{
-			// &*ptr == ptr
-			Dereference d = e as Dereference;
-			if (d != null)
-				return d.Expression;
-			
-			// *&a[i] = a + i;
-			// *&a[0] = a
-			ArrayAccess acc = e as ArrayAccess;
-			if (acc != null)
-			{
-				Constant index = acc.Index as Constant;
-				if (index != null && index.ToInt32() == 0)
-					return acc.Array;
-			}
-			return new UnaryExpression(Operator.AddrOf, dt, e);
-		}
+        /// <summary>
+        /// Creates an "addressof" expression.
+        /// </summary>
+        /// <param name="dt">Datatype of expression</param>
+        /// <param name="e">expression to take address of</param>
+        /// <returns></returns>
+        public Expression MkAddrOf(DataType dt, Expression e)
+        {
+            // &*ptr == ptr
+            Dereference d = e as Dereference;
+            if (d != null)
+                return d.Expression;
 
-		/// <summary>
-		/// Builds an ArrayAccess expression.
-		/// </summary>
-		/// <param name="elementType"></param>
-		/// <param name="e"></param>
-		/// <param name="idx"></param>
-		/// <returns></returns>
-		public Expression MkArrayAccess(DataType elementType, Expression e, int idx)
-		{
-			return new ArrayAccess(elementType, e, Constant.Word32(idx));
-		}
+            // *&a[i] = a + i;
+            // *&a[0] = a
+            ArrayAccess acc = e as ArrayAccess;
+            if (acc != null)
+            {
+                Constant index = acc.Index as Constant;
+                if (index != null && index.ToInt32() == 0)
+                    return acc.Array;
+            }
+            return new UnaryExpression(Operator.AddrOf, dt, e);
+        }
+
+        /// <summary>
+        /// Builds an ArrayAccess expression.
+        /// </summary>
+        /// <param name="elementType"></param>
+        /// <param name="e"></param>
+        /// <param name="idx"></param>
+        /// <returns></returns>
+        public Expression MkArrayAccess(DataType elementType, Expression e, int idx)
+        {
+            return new ArrayAccess(elementType, e, Constant.Word32(idx));
+        }
 
         private void RewriteFormals(ProcedureSignature sig)
         {
@@ -114,9 +114,9 @@ namespace Reko.Typing
         }
 
         public void RewriteProgram(Program program)
-		{
-			foreach (Procedure proc in program.Procedures.Values)
-			{
+        {
+            foreach (Procedure proc in program.Procedures.Values)
+            {
                 RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
                 {
@@ -130,15 +130,23 @@ namespace Reko.Typing
                             string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
                     }
                 }
-			}
-		}
+            }
+        }
 
-		#region InstructionTransformer methods //////////////////////
+        #region InstructionTransformer methods //////////////////////
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
+#if !NEW
             var tmr = new TypedMemoryExpressionRewriter(program);
             return tmr.RewriteArrayAccess(acc.TypeVariable, acc.Array, acc.Index);
+#else
+            var arrayPtr = acc.Array.Accept(this);
+            var elemType = arrayPtr.DataType.ResolveAs<ArrayType>().ElementType;
+            //$TODO: what if index is complex?
+            var index = TypedMemoryExpressionRewriter.RescaleIndex(acc.Index, elemType);
+            return new ArrayAccess(elemType, arrayPtr, index);
+#endif
         }
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)
@@ -174,42 +182,42 @@ namespace Reko.Typing
             return a.Array;
         }
 
-		public override Instruction TransformAssignment(Assignment a)
-		{
-			return MakeAssignment(a.Dst, a.Src);
-		}
+        public override Instruction TransformAssignment(Assignment a)
+        {
+            return MakeAssignment(a.Dst, a.Src);
+        }
 
-		public Instruction MakeAssignment(Expression dst, Expression src)
-		{
-			var tvDst = dst.TypeVariable;
-			var tvSrc = src.TypeVariable;
-			src = src.Accept(this);
-			DataType dtSrc = DataTypeOf(src);
-			dst = dst.Accept(this);
-			DataType dtDst = DataTypeOf(dst);
+        public Instruction MakeAssignment(Expression dst, Expression src)
+        {
+            var tvDst = dst.TypeVariable;
+            var tvSrc = src.TypeVariable;
+            src = src.Accept(this);
+            DataType dtSrc = DataTypeOf(src);
+            dst = dst.Accept(this);
+            DataType dtDst = DataTypeOf(dst);
             if (!TypesAreCompatible(dtSrc, dtDst))
-			{
-				UnionType uDst = dtDst.ResolveAs<UnionType>();
-				UnionType uSrc = dtSrc.ResolveAs<UnionType>();
-				if (uDst != null)
-				{
-					var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
-					dst = ceb.BuildComplex();
-				}
-				else if (uSrc != null)
-				{
-					var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
-					src = ceb.BuildComplex();
-				}
-				else
-					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
-			}
+            {
+                UnionType uDst = dtDst.ResolveAs<UnionType>();
+                UnionType uSrc = dtSrc.ResolveAs<UnionType>();
+                if (uDst != null)
+                {
+                    var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
+                    dst = ceb.BuildComplex();
+                }
+                else if (uSrc != null)
+                {
+                    var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
+                    src = ceb.BuildComplex();
+                }
+                else
+                    throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
+            }
             Identifier idDst = dst as Identifier;
             if (idDst != null)
                 return new Assignment(idDst, src);
             else
                 return new Store(dst, src);
-		}
+        }
 
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
         {
@@ -220,15 +228,15 @@ namespace Reko.Typing
 
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
-            //var proc = ci.Callee.Accept(new TypedMemoryExpressionRewriter(arch, store, globals));
+            //var proc = ci.Callee.Accept(new TypedMemoryExpressionRewriter(program));
             return new SideEffect(
                 new Application(ci.Callee, VoidType.Instance));
         }
 
-		public override Instruction TransformStore(Store store)
-		{
-			return MakeAssignment(store.Dst, store.Src);
-		}
+        public override Instruction TransformStore(Store store)
+        {
+            return MakeAssignment(store.Dst, store.Src);
+        }
 
         /// <summary>
         /// Rewrites an expression of the type (a + b)
@@ -244,11 +252,11 @@ namespace Reko.Typing
         /// </remarks>
         /// <returns>The rewritten expression</returns>
 		public override Expression VisitBinaryExpression(BinaryExpression binExp)
-		{
+        {
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
-			DataType dtLeft = DataTypeOf(binExp.Left);
-			DataType dtRight = DataTypeOf(binExp.Right);
+            DataType dtLeft = DataTypeOf(binExp.Left);
+            DataType dtRight = DataTypeOf(binExp.Right);
             if (binExp.Operator == Operator.IAdd && dtLeft.IsComplex)
             {
                 return TransformComplexSum(binExp, dtLeft, dtRight);
@@ -274,7 +282,7 @@ namespace Reko.Typing
                 store.SetTypeVariableExpression(binExp.TypeVariable, binExp);
                 return binExp;
             }
-		}
+        }
 
         private Expression TransformComplexSum(BinaryExpression binExp, DataType dtLeft, DataType dtRight)
         {
@@ -300,30 +308,30 @@ namespace Reko.Typing
             return binExp;
         }
 
-		public override Expression VisitConstant(Constant c)
-		{
-			return tcr.Rewrite(c, false);
-		}
+        public override Expression VisitConstant(Constant c)
+        {
+            return tcr.Rewrite(c, false);
+        }
 
-		public override Instruction TransformDeclaration(Declaration decl)
-		{
-			base.TransformDeclaration(decl);
-			
-			decl.Identifier.DataType = decl.Identifier.TypeVariable.DataType;
-			return decl;
-		}
+        public override Instruction TransformDeclaration(Declaration decl)
+        {
+            base.TransformDeclaration(decl);
 
-		public override Expression VisitMemoryAccess(MemoryAccess access)
-		{
-			var tmer = new TypedMemoryExpressionRewriter(program);
-			return tmer.Rewrite(access);
-		}
+            decl.Identifier.DataType = decl.Identifier.TypeVariable.DataType;
+            return decl;
+        }
 
-		public override Expression VisitSegmentedAccess(SegmentedAccess access)
-		{
-			var tmer = new TypedMemoryExpressionRewriter(program);
-			return tmer.Rewrite(access);
-		}
+        public override Expression VisitMemoryAccess(MemoryAccess access)
+        {
+            var tmer = new TypedMemoryExpressionRewriter(program);
+            return tmer.Rewrite(access);
+        }
+
+        public override Expression VisitSegmentedAccess(SegmentedAccess access)
+        {
+            var tmer = new TypedMemoryExpressionRewriter(program);
+            return tmer.Rewrite(access);
+        }
 
         public override Expression VisitMkSequence(MkSequence seq)
         {
@@ -335,15 +343,12 @@ namespace Reko.Typing
             {
                 if (c != null)
                 {
-                    ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
-                        seq.TypeVariable.DataType,
-                        head.TypeVariable.DataType,
-                        head.TypeVariable.OriginalDataType,
-                        null,
-                        head,
-                        null,
-                        StructureField.ToOffset(c));
-                    return ceb.BuildComplex();
+                    var seg = head.TypeVariable.DataType.ResolveAs<Pointer>().Pointee;
+                    var fa = new FieldAccess(
+                        seq.TypeVariable.DataType.ResolveAs<Pointer>().Pointee,
+                        new Dereference(head.TypeVariable.DataType, head),
+                        seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()).Name);
+                    return fa;
                 }
                 else
                 {
@@ -364,6 +369,83 @@ namespace Reko.Typing
             return new MkSequence(seq.DataType, head, tail);
         }
 
-		#endregion
-	}
+#endregion
+    }
+
+
+    /// <summary>
+    /// Rewrites all the expressions in the program based on the type information provided.
+    /// </summary>
+    public class TypedExpressionRewriter2 : InstructionTransformer //, IDataTypeVisitor
+    {
+        private Program program;
+        private Platform platform;
+        private TypeStore store;
+        private Identifier globals;
+        private DataTypeComparer compTypes;
+        private TypedConstantRewriter tcr;
+        private ExpressionEmitter m;
+        private Unifier unifier;
+        private bool dereferenced;
+
+        public TypedExpressionRewriter2(Program program)
+        {
+            this.program = program;
+            this.platform = program.Platform;
+            this.store = program.TypeStore;
+            this.globals = program.Globals;
+            this.compTypes = new DataTypeComparer();
+            this.tcr = new TypedConstantRewriter(program);
+            this.m = new ExpressionEmitter();
+            this.unifier = new Unifier();
+        }
+
+        public void RewriteProgram(Program program)
+        {
+            foreach (Procedure proc in program.Procedures.Values)
+            {
+//                RewriteFormals(proc.Signature);
+                foreach (Statement stm in proc.Statements)
+                {
+                    try
+                    {
+                        stm.Instruction = stm.Instruction.Accept(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(
+                            string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
+                    }
+                }
+            }
+        }
+
+        public override Instruction TransformAssignment(Assignment a)
+        {
+            var src = a.Src.Accept(this);
+            var dst = a.Dst.Accept(this);
+            return new Assignment((Identifier)dst, src);
+        }
+
+        public override Instruction TransformStore(Store store)
+        {
+            var src = store.Src.Accept(this);
+            var dst = store.Dst.Accept(this);
+            return new Store(dst, src);
+        }
+
+        public override Expression VisitConstant(Constant c)
+        {
+            return tcr.Rewrite(c, this.dereferenced);
+        }
+
+        public override Expression VisitMemoryAccess(MemoryAccess access)
+        {
+            var oldDereferenced = this.dereferenced;
+            this.dereferenced = true;
+            var exp = access.EffectiveAddress.Accept(this);
+            this.dereferenced = oldDereferenced;
+            return exp;
+        }
+    }
 }

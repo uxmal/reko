@@ -27,6 +27,8 @@ using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.IO;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Typing
 {
@@ -47,7 +49,7 @@ namespace Reko.UnitTests.Typing
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
                 fut.TextWriter.WriteLine("// Before ///////");
-                DumpProgram(program, fut);
+                DumpProgram(program, fut.TextWriter);
 
                 SetupPreStages(program);
                 aen.Transform(program);
@@ -83,18 +85,62 @@ namespace Reko.UnitTests.Typing
             }
         }
 
+        protected void RunStringTest(Program program, string expectedOutput)
+        {
+            var sw = new StringWriter();
+            sw.WriteLine("// Before ///////");
+            DumpProgram(program, sw);
+
+            SetupPreStages(program);
+            aen.Transform(program);
+            eqb.Build(program);
+#if !OLD
+            coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
+            coll.CollectProgramTraits(program);
+#else
+            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program);
+            coll.CollectTypes();
+#endif
+            program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+            tvr.ReplaceTypeVariables();
+            trans.Transform();
+            ctn.RenameAllTypes(program.TypeStore);
+            program.TypeStore.Dump();
+
+            var ter = new TypedExpressionRewriter2(program);
+            try
+            {
+                ter.RewriteProgram(program);
+            }
+            catch (Exception ex)
+            {
+                sw.WriteLine("** Exception **");
+                sw.WriteLine(ex);
+            }
+            finally
+            {
+                sw.WriteLine("// After ///////");
+                DumpProgram(program, sw);
+                var sActual = sw.ToString();
+                if (expectedOutput != sActual)
+                {
+                    Debug.Print(sActual);
+                    Assert.AreEqual(expectedOutput, sActual);
+                }
+            }
+        }
         private ProgramBuilder CreateProgramBuilder(uint linearAddress, int size)
         {
             return new ProgramBuilder(
                 new LoadedImage(Address.Ptr32(linearAddress), new byte[size]));
         }
 
-        private void DumpProgram(Program program, FileUnitTester fut)
+        private void DumpProgram(Program program, TextWriter tw)
         {
             foreach (Procedure proc in program.Procedures.Values)
             {
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
+                proc.Write(false, tw);
+                tw.WriteLine();
             }
         }
 
@@ -540,56 +586,41 @@ namespace Reko.UnitTests.Typing
             });
             RunTest(pm, "Typing/TerArray.txt");
         }
+
+        [Test]
+        public void Ter2Integer()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var eax = m.Reg32("eax");
+                m.Store(m.Word32(0x01000), eax);
+            });
+            var sExp =
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	Mem0[0x00001000:word32] = eax
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	globals->dw1000 = eax
+proc1_exit:
+
+";
+            RunStringTest(pm.BuildProgram(), sExp);
+        }
     }
 
-	public class SegmentedMemoryPointerMock : ProcedureBuilder
-	{
-		protected override void BuildBody()
-		{
-			Identifier cs = Local16("cs");
-			cs.DataType = PrimitiveType.SegmentSelector;
-			Identifier ax = Local16("ax");
-			Identifier si = Local16("si");
-			Identifier si2 = Local16("si2");
-			Assign(si, Int16(0x0001));
-			Assign(ax, SegMemW(cs, si));
-			Assign(si2, Int16(0x0005));
-			Assign(ax, SegMemW(cs, si2));
-			Store(SegMemW(cs, Int16(0x1234)), ax);
-			Store(SegMemW(cs, IAdd(si, 2)), ax);
-		}
-	}
-
-	public class SegmentedMemoryPointerMock2 : ProcedureBuilder
-	{
-		protected override void BuildBody()
-		{
-			Identifier ds = Local16("ds");
-			ds.DataType = PrimitiveType.SegmentSelector;
-			Identifier ax = Local16("ax");
-			Identifier bx = Local16("bx");
-			Assign(ax, SegMemW(ds, bx));
-			Assign(ax, SegMemW(ds, IAdd(bx, 4)));
-		}
-	}
-	
-	public class SegMem3Mock : ProcedureBuilder
-	{
-		private Constant Seg(int seg)
-		{
-			return Constant.Create(PrimitiveType.SegmentSelector, seg);
-		}
-
-		protected override void BuildBody()
-		{
-			Identifier ds = base.Local(PrimitiveType.SegmentSelector, "ds");
-			Identifier ax = Local16("ax");
-			Identifier ds2 = base.Local(PrimitiveType.SegmentSelector, "ds2");
-			
-			base.Store(SegMemW(Seg(0x1796), Int16(0x0001)), Seg(0x0800));
-			Store(SegMemW(Seg(0x800), Int16(0x5422)), ds);
-			Store(SegMemW(Seg(0x800), Int16(0x0066)), SegMemW(Seg(0x0800), Int16(0x5420)));
-		}
-	}
 }
  

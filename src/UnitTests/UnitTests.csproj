@@ -207,7 +207,9 @@
     <Compile Include="Fragments\PointerChainFragment.cs" />
     <Compile Include="Fragments\Regressions\Reg00001.cs" />
     <Compile Include="Fragments\RepeatedLoadsFragment.cs" />
+    <Compile Include="Fragments\SegMem3Fragment.cs" />
     <Compile Include="Fragments\SegmentedCallFragment.cs" />
+    <Compile Include="Fragments\SegmentedMemoryPointerFragment.cs" />
     <Compile Include="Fragments\StaggeredArrayFragment.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Commands\Cmd_MarkProcedureTests.cs" />

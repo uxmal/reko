@@ -168,6 +168,7 @@ namespace Reko.Typing
 			Expression e = c;
             if (IsSegmentPointer(ptr))
             {
+                //$TODO: Segments have to be declared and their initial contents defined somewhere.
                 return e;
             } 
             else if (GlobalVars != null)

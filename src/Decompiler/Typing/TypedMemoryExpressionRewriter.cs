@@ -87,7 +87,7 @@ namespace Reko.Typing
             return ceb.BuildComplex();
         }
 
-        private Expression RescaleIndex(Expression idx, DataType dtElement)
+        public static Expression RescaleIndex(Expression idx, DataType dtElement)
         {
             if (dtElement.Size == 1)
                 return idx;
@@ -332,16 +332,24 @@ namespace Reko.Typing
                 }
                 else
                 {
+#if !NEW
                     var ceb = new ComplexExpressionBuilder(
-                        seq.TypeVariable.DataType,
-                        seq.TypeVariable.DataType,
-                        seq.TypeVariable.OriginalDataType,
-                        head,
-                        tail,
-                        null,
-                        0);
+                         seq.TypeVariable.DataType,
+                         seq.TypeVariable.DataType,
+                         seq.TypeVariable.OriginalDataType,
+                         head,
+                         tail,
+                         null,
+                         0);
                     ceb.Dereferenced = true;
                     return ceb.BuildComplex();
+#else
+                    var sel = new MemberPointerSelector(seq.TypeVariable.DataType,
+                        new Dereference(head.DataType, head),
+                        tail);
+                    sel.TypeVariable = seq.TypeVariable;
+                    return sel;
+#endif
                 }
             }
             else
