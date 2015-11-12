@@ -49,8 +49,16 @@ namespace Reko.Typing
                 offset = cOther.ToInt32();
                 this.other = null;
             }
-            this.dtComplex = complex.TypeVariable.DataType;
-            this.dtComplexOrig = complex.TypeVariable.OriginalDataType;
+            if (complex.TypeVariable != null)
+            {
+                this.dtComplex = complex.TypeVariable.DataType;
+                this.dtComplexOrig = complex.TypeVariable.OriginalDataType;
+            }
+            else
+            {
+                this.dtComplex = complex.DataType;
+                this.dtComplexOrig = complex.DataType;
+            }
             this.dereferenced = dereferenced;
             return this.dtComplex.Accept(this);
         }
@@ -95,8 +103,14 @@ namespace Reko.Typing
         {
             if (seenPtr)
             {
-                complex.DataType = dtComplex;
-                return complex;
+                if (dereferenced)
+                {
+                    return new Dereference(ptr.Pointee, complex);
+                }
+                else
+                {
+                    return complex;
+                }
             }
             seenPtr = true;
             this.dtComplex = ptr.Pointee;
@@ -155,7 +169,8 @@ namespace Reko.Typing
                 dereferenced = false;
                 exp = new Dereference(dtStructure, exp);
             }
-            return new FieldAccess(dtField, exp, name);
+            var fa = new FieldAccess(dtField, exp, name);
+            return fa;
         }
 
         public Expression VisitTypeReference(TypeReference typeref)

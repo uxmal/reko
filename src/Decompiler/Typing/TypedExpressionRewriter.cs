@@ -460,26 +460,29 @@ namespace Reko.Typing
         {
             var left = Rewrite(binExp.Left, false);
             var right = Rewrite(binExp.Right, false);
-            Debug.Assert(left.TypeVariable != null);
-            Debug.Assert(right.TypeVariable != null);
             if (binExp.Operator == Operator.IAdd)
             {
-                if (left.TypeVariable.DataType.IsComplex)
+                if (DataTypeOf(left).IsComplex)
                 {
-                    if (right.TypeVariable.DataType.IsComplex)
+                    if (DataTypeOf(right).IsComplex)
                         throw new TypeInferenceException(
                                 "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2} vs {3}.",
                                 Environment.NewLine, binExp,
-                                binExp.Left.DataType, 
-                                binExp.Left.DataType);
+                                DataTypeOf(left),
+                                DataTypeOf(right));
                     return RewriteComplexExpression(left, right);
                 }
                 else if (right.TypeVariable.DataType.IsComplex)
                 {
-                   return RewriteComplexExpression(right, left);
+                    return RewriteComplexExpression(right, left);
                 }
             }
             return base.VisitBinaryExpression(binExp);
+        }
+
+        private static DataType DataTypeOf(Expression exp)
+        {
+            return exp.TypeVariable != null ? exp.TypeVariable.DataType : exp.DataType;
         }
 
         public override Expression VisitConstant(Constant c)

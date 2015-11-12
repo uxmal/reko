@@ -538,7 +538,7 @@ namespace Reko.UnitTests.Typing
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
                 m.Declare(ax, m.Fn(rand));
-                m.Store( m.Word16(0x300), ax);
+                m.Store(m.Word16(0x300), ax);
                 m.Return();
             });
             RunTest(pm, "Typing/TerDeclaration.txt");
@@ -702,7 +702,99 @@ proc1_exit:
             #endregion
             RunStringTest(pm.BuildProgram(), sExp);
         }
-    }
 
+        [Test]
+        public void Ter2ThreeStarProgrammer()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var eax1 = m.Reg32("eax1");
+                var eax2 = m.Reg32("eax2");
+                var eax3 = m.Reg32("eax3");
+                m.Declare(eax1, null);
+                m.Assign(eax2, m.LoadDw(eax1));
+                m.Assign(eax3, m.LoadDw(eax2));
+                m.Store(m.Word32(0x01004), m.Load(PrimitiveType.Real32, eax3));
+            });
+            var sExp =
+            #region Expected String
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 eax1
+	eax2 = Mem0[eax1:word32]
+	eax3 = Mem0[eax2:word32]
+	Mem0[0x00001004:real32] = Mem0[eax3:real32]
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	real32 * * * eax1
+	eax2 = *eax1
+	eax3 = *eax2
+	globals->r1004 = *eax3
+proc1_exit:
+
+";
+            #endregion
+            RunStringTest(pm.BuildProgram(), sExp);
+        }
+
+        [Test]
+        public void Ter2LinkedList()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var r1 = m.Reg32("r1");
+                m.Declare(r1, null);
+                m.Assign(r1, m.LoadDw(r1));
+                m.Store(m.Word32(0x01004), m.Load(
+                    PrimitiveType.Char,
+                    m.IAdd(
+                        m.LoadDw(
+                            m.LoadDw(r1)),
+                        4)));
+            });
+            var sExp =
+            #region Expected String
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 r1
+	r1 = Mem0[r1:word32]
+	Mem0[0x00001004:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 0x00000004:char]
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	Eq_2 * r1
+	r1 = r1->ptr0000
+	globals->b1004 = r1->ptr0000->b0004
+proc1_exit:
+
+";
+            #endregion
+            RunStringTest(pm.BuildProgram(), sExp);
+        }
+    }
 }
- 
