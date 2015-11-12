@@ -434,6 +434,47 @@ namespace Reko.Typing
             return new Store(dst, src);
         }
 
+        public Expression Rewrite(Expression expression, bool dereferenced)
+        {
+            var oldDereferenced = this.dereferenced;
+            this.dereferenced = dereferenced;
+            var exp = expression.Accept(this);
+            this.dereferenced = oldDereferenced;
+            return exp;
+        }
+
+        public Expression RewriteComplexExpression(Expression complex, Expression other)
+        {
+            var ceb = new ComplexExpressionBuilder2();
+            return ceb.Rewrite(complex, other, dereferenced);
+        }
+
+        public override Expression VisitBinaryExpression(BinaryExpression binExp)
+        {
+            var left = Rewrite(binExp.Left, false);
+            var right = Rewrite(binExp.Right, false);
+            Debug.Assert(left.TypeVariable != null);
+            Debug.Assert(right.TypeVariable != null);
+            if (binExp.Operator == Operator.IAdd)
+            {
+                if (left.TypeVariable.DataType.IsComplex)
+                {
+                    if (right.TypeVariable.DataType.IsComplex)
+                        throw new TypeInferenceException(
+                                "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2} vs {3}.",
+                                Environment.NewLine, binExp,
+                                binExp.Left.DataType, 
+                                binExp.Left.DataType);
+                    return RewriteComplexExpression(left, right);
+                }
+                else if (right.TypeVariable.DataType.IsComplex)
+                {
+                   return RewriteComplexExpression(right, left);
+                }
+            }
+            return base.VisitBinaryExpression(binExp);
+        }
+
         public override Expression VisitConstant(Constant c)
         {
             return tcr.Rewrite(c, this.dereferenced);
@@ -441,11 +482,7 @@ namespace Reko.Typing
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
-            var oldDereferenced = this.dereferenced;
-            this.dereferenced = true;
-            var exp = access.EffectiveAddress.Accept(this);
-            this.dereferenced = oldDereferenced;
-            return exp;
+            return Rewrite(access.EffectiveAddress, true);
         }
     }
 }

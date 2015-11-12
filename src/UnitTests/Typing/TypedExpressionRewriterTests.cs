@@ -597,6 +597,7 @@ namespace Reko.UnitTests.Typing
                 m.Store(m.Word32(0x01000), eax);
             });
             var sExp =
+            #region Expected String
 @"// Before ///////
 // proc1
 // Return size: 0
@@ -618,6 +619,43 @@ l1:
 proc1_exit:
 
 ";
+            #endregion
+            RunStringTest(pm.BuildProgram(), sExp);
+        }
+
+        [Test]
+        public void Ter2PtrToInt16()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var eax = m.Reg32("eax");
+                m.Store(m.Word32(0x01000), m.LoadW(eax));
+            });
+            var sExp =
+            #region Expected String
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	Mem0[0x00001000:word16] = Mem0[eax:word16]
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	globals->w1000 = *eax
+proc1_exit:
+
+";
+            #endregion
             RunStringTest(pm.BuildProgram(), sExp);
         }
     }
