@@ -52,6 +52,7 @@ namespace Reko.Gui
 		public const int CtxAddressSearch = 13;
 		public const int CtxCodeView = 14;
 		public const int MainToolbar = 15;
+		public const int ProjectBrowserToolbar = 16;
 	}
 	
 	public class GroupIds
@@ -77,9 +78,10 @@ namespace Reko.Gui
 		public const int GrpBrowserProc = 19 + 1000;
 		public const int GrpToolbarFileOps = 20 + 1000;
 		public const int GrpToolbarActions = 21 + 1000;
-		public const int GrpProcedure = 22 + 1000;
-		public const int GrpAddressSearchView = 23 + 1000;
-		public const int GrpAddressSearch = 24 + 1000;
+		public const int GrpBrowserToolbar = 22 + 1000;
+		public const int GrpProcedure = 23 + 1000;
+		public const int GrpAddressSearchView = 24 + 1000;
+		public const int GrpAddressSearch = 25 + 1000;
 	}
 	
 	public class CmdIds
@@ -130,6 +132,7 @@ namespace Reko.Gui
 		public const int WindowsCloseAll = 44 + 2000;
 		public const int HelpAbout = 45 + 2000;
 		public const int ShowProcedureCallHierarchy = 46 + 2000;
+		public const int CollapseAllNodes = 47 + 2000;
 		public const int FileMru = 2200;
 	}
 }

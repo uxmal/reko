@@ -48,6 +48,7 @@ namespace Reko.Gui.Forms
         StatusStrip StatusStrip { get; }
         TabControl TabControl { get; }
         ToolStrip ToolBar { get; }
+        ToolStrip ProjectBrowserToolbar { get; }
         MainMenu Menu { get; set; }
         TabControl DocumentTabs { get; }
 
@@ -56,6 +57,7 @@ namespace Reko.Gui.Forms
         event KeyEventHandler ProcessCommandKey;
 
         void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
+        void AddProjectBrowserToolbar(System.Windows.Forms.ToolStrip toolStrip);
         void LayoutMdi(DocumentWindowLayout layout);
         
         void Show();

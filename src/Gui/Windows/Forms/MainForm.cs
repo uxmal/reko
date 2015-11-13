@@ -37,6 +37,7 @@ namespace Reko.Gui.Windows.Forms
         IMainForm
     {
         private ToolStrip toolBar;
+        private ToolStrip projectToolBar;
         private DocumentWindowCollection docWindows;
 
         public MainForm()
@@ -58,6 +59,12 @@ namespace Reko.Gui.Windows.Forms
         {
             this.Controls.Add(toolBar);
             this.toolBar = toolBar;
+        }
+
+        public void AddProjectBrowserToolbar(ToolStrip toolBar)
+        {
+            this.treeBrowser.Parent.Controls.Add(toolBar);
+            this.projectToolBar = toolBar;
         }
 
         public TabControl DocumentTabs
@@ -132,6 +139,11 @@ namespace Reko.Gui.Windows.Forms
         public ToolStrip ToolBar
         {
             get { return toolBar; }
+        }
+
+        public ToolStrip ProjectBrowserToolbar
+        {
+            get { return projectToolBar; }
         }
 
         public DialogResult ShowDialog(Form dialog)

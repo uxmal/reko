@@ -444,6 +444,7 @@
     <Content Include="Images\Binary.ico" />
     <Content Include="Images\CloseTab.ico" />
     <Content Include="Images\Code.ico" />
+    <Content Include="Images\Collapse.ico" />
     <Content Include="Images\Cpu.ico" />
     <Content Include="Images\Data.ico" />
     <Content Include="Images\Delete.ico" />

@@ -45,6 +45,7 @@ namespace Reko.Gui.Controls
         ITreeNodeCollection Nodes { get; }
         ContextMenu ContextMenu { get; set; }
 
+        void CollapseAll();
         ITreeNode CreateNode();
         ITreeNode CreateNode(string text);
     }
