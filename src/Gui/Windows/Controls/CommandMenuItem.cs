@@ -88,6 +88,8 @@ namespace Reko.Gui.Windows.Controls
 			set { isTemp = value; }
 		}
 
+        public string ToolTipText { get; set; }
+
         public override string ToString()
         {
             return string.Format("{0} {1} {2}", Text, IsDynamic ? "Dyn" : "", IsTemporary ? "Tmp" : "   ");

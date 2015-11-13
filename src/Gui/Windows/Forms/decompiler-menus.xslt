@@ -64,6 +64,8 @@ namespace Reko.Gui.Windows.Forms
             </if>
             <if test="@image">sl<value-of select="@id"/>.ImageIndex = <value-of select="@image"/>;
             </if>
+            <if test="@tip">sl<value-of select="@id"/>.ToolTipText = "<value-of select="@tip"/>";
+            </if>
             <if test="@container != @id">sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</if></for-each>
 			
 			// Create submenus

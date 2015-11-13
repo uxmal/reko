@@ -101,6 +101,7 @@ namespace Reko.Gui.Windows.Controls
                         btnNew.ImageKey = cmi.ImageKey;
                     else 
                         btnNew.ImageIndex = cmi.ImageIndex;
+                    btnNew.ToolTipText = cmi.ToolTipText;
                     items.Add(btnNew);
                 }
             }

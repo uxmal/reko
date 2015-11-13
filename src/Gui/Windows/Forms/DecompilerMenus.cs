@@ -263,6 +263,7 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slCollapseAllNodes = new CommandMenuItem("", new Guid(CmdSets.Reko), CmdIds.CollapseAllNodes);
             slCollapseAllNodes.IsDynamic = false;
             slCollapseAllNodes.ImageKey = "Collapse.ico";
+            slCollapseAllNodes.ToolTipText = "Collapse All";
             slGrpBrowserToolbar.Add(0, slCollapseAllNodes);
 			
 			// Create submenus
