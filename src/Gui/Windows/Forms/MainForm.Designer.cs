@@ -170,6 +170,7 @@
             this.imageList.Images.SetKeyName(5, "Error");
             this.imageList.Images.SetKeyName(6, "Warning");
             this.imageList.Images.SetKeyName(7, "CloseTab");
+            this.imageList.Images.SetKeyName(8, "Collapse.ico");
             // 
             // tabFindResults
             // 

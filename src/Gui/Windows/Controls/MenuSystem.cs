@@ -97,7 +97,10 @@ namespace Reko.Gui.Windows.Controls
                     ToolStripButton btnNew = new ToolStripButton();
                     btnNew.Text = cmi.Text;
                     btnNew.Tag = cmi.MenuCommand;
-                    btnNew.ImageIndex = cmi.ImageIndex;
+                    if (cmi.ImageKey != null)
+                        btnNew.ImageKey = cmi.ImageKey;
+                    else 
+                        btnNew.ImageIndex = cmi.ImageIndex;
                     items.Add(btnNew);
                 }
             }

@@ -115,7 +115,9 @@ namespace Reko.Gui.Forms
             form.Menu = dm.MainMenu;
             dm.MainToolbar.Text = "";
             dm.MainToolbar.ImageList = form.ImageList;
+            dm.ProjectBrowserToolbar.ImageList = form.ImageList;
             form.AddToolbar(dm.MainToolbar);
+            form.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
 
             var svcFactory = sc.RequireService<IServiceFactory>();
             CreateServices(svcFactory, sc, dm);
@@ -127,6 +129,8 @@ namespace Reko.Gui.Forms
             form.ProcessCommandKey += this.MainForm_ProcessCommandKey;
 
             form.ToolBar.ItemClicked += toolBar_ItemClicked;
+            form.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
+
             //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
             //MainForm.InitialPage.IsDirty = false;         //$REENABLE
 

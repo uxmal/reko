@@ -239,17 +239,34 @@ namespace Reko.Gui
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             var des = GetSelectedDesigner();
-            if (des == null)
-                return false;
-            return des.QueryStatus(cmdId, status, text);
+            if (des != null)
+                return des.QueryStatus(cmdId, status, text);
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.CollapseAllNodes: status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                }
+            }
+            return false;
         }
 
         public bool Execute(System.ComponentModel.Design.CommandID cmdId)
         {
             var des = GetSelectedDesigner();
-            if (des == null)
-                return false;
-            return des.Execute(cmdId);
+            if (des != null)
+            {
+                if (des.Execute(cmdId))
+                    return true;
+            }
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.CollapseAllNodes: tree.CollapseAll(); break;
+                }
+            }
+            return false;
         }
 
         void tree_DragEnter(object sender, DragEventArgs e)

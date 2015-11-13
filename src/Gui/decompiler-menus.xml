@@ -23,6 +23,7 @@
 
   <!-- Toolbars -->
   <menu type="ToolStrip" id="MainToolbar" cmdSet="GuidCmdSet"/>
+  <menu type="ToolStrip" id="ProjectBrowserToolbar" cmdSet="GuidCmdSet"/>
 
 	<!-- Groups ========================================================== -->
 
@@ -56,8 +57,9 @@
   <group id="GrpBrowserProc" cmdSet="Reko" container="CtxBrowser"/>
 
   <group id="GrpToolbarFileOps" cmdSet="Reko" container="MainToolbar" />
-
   <group id="GrpToolbarActions" cmdSet="Reko" container="MainToolbar" />
+
+  <group id="GrpBrowserToolbar" cmdSet="Reko" container="ProjectBrowserToolbar"/>
 
   <group id="GrpProcedure" cmdSet="Reko" container="CtxProcedure "/>
 
@@ -125,6 +127,8 @@
   <cmd id="HelpAbout" cmdSet="Reko" container="GrpHelp">_About Decompiler...</cmd>
 
   <cmd id="ShowProcedureCallHierarchy" cmdSet="Reko" container="GrpProcedure">Call graph</cmd>
+  
+  <cmd id="CollapseAllNodes" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="Collapse.ico"></cmd>
   
 	<!-- Placements ======================================================= -->
 

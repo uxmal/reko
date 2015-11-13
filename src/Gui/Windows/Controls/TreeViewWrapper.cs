@@ -130,6 +130,11 @@ namespace Reko.Gui.Windows.Controls
             return null;
         }
 
+        public void CollapseAll()
+        {
+            treeView.CollapseAll();
+        }
+
         public ITreeNode CreateNode()
         {
             return new WrappedNode();

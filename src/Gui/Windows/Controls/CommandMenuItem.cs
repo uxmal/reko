@@ -36,10 +36,12 @@ namespace Reko.Gui.Windows.Controls
 		private bool isDynamic;
 		private bool isTemp;
         private int imgIndex;
+        private string imgKey;
 
 		public CommandMenuItem()
 		{
             this.imgIndex = -1;
+            this.imgKey = null;
 		}
 
 		public CommandMenuItem(string text)
@@ -66,6 +68,12 @@ namespace Reko.Gui.Windows.Controls
         {
             get { return imgIndex; }
             set { imgIndex = value; }
+        }
+
+        public string ImageKey
+        {
+            get { return imgKey; }
+            set { imgKey = value; }
         }
 
 		public bool IsDynamic

@@ -155,6 +155,11 @@ namespace Reko.UnitTests.Gui.Windows
                 }
             }
 
+            public void CollapseAll()
+            {
+
+            }
+
             public ITreeNode CreateNode()
             {
                 return new FakeTreeNode();
