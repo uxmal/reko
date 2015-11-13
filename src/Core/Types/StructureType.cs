@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core.Types
 {
@@ -67,7 +68,29 @@ namespace Reko.Core.Types
 		/// </summary>
 		public bool IsSegment { get ; set; }
         public bool IsEmpty { get { return Size == 0 && Fields.Count == 0; } }
+
+        /// <summary>
+        /// Specific size. This is set if the actual size of a structure is known
+        /// (typically because it is an element of an array) or a user has specifically
+        /// set the size to a value. Use GetInferredSize() to get the size based on
+        /// what fields are present.
+        /// </summary>
 		public override int Size { get; set; }
+
+        /// <summary>
+        /// If the exact size is not known, compute the deferred size by finding 
+        /// the field with the highest offset.
+        /// </summary>
+        /// <returns></returns>
+        public int GetInferredSize()
+        {
+            if (Size > 0)
+                return Size;
+            if (Fields.Count == 0)
+                return 0;
+            var maxField = Fields.Last();
+            return maxField.Offset + maxField.DataType.Size;    //$BUG: nested structs?
+        }
 
         public DataType Simplify()
         {

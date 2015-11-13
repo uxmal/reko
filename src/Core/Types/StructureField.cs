@@ -105,6 +105,7 @@ namespace Reko.Core.Types
 			Add(new StructureField(offset, dt, name));
 		}
 
+        //$PERF: slow, should use binary search.
 		public void Add(StructureField f)
 		{
 			int i;
@@ -145,11 +146,6 @@ namespace Reko.Core.Types
             }
             return null;
         }
-
-        public void Insert(int i, StructureField f)
-		{
-			innerList.Insert(i, f);
-		}
 
         /// <summary>
         /// Gets the field with the highest offset that is less than or equal to the

@@ -86,6 +86,7 @@ namespace Reko.Typing
             dtComplexOrig = at.ElementType;
             this.complex.DataType = at;
             complex = CreateArrayAccess(at.ElementType, at, i, index);
+            index = null;       // we've consumed the index.
             offset = r;
             return dtComplex.Accept(this);
         }
@@ -157,16 +158,30 @@ namespace Reko.Typing
                 complex.DataType = dtComplex;
                 return complex;
             }
-            if (offset == 0)
+            if (offset == 0 || pt.Size > 0 && offset % pt.Size == 0)
             {
-                if (dereferenced && !wasDereferenced)
+                if (offset == 0 && index == null)
                 {
-                    wasDereferenced = true;
-                    return CreateDereference(pt, complex);
+                    if (dereferenced)
+                    {
+                        if (!wasDereferenced)
+                        {
+                            wasDereferenced = true;
+                            return CreateDereference(pt, complex);
+                        }
+                        else
+                        {
+                            return complex;
+                        }
+                    }
+                    else
+                    {
+                        return CreateUnreferenced(pt, complex);
+                    }
                 }
                 else
                 {
-                    return CreateUnreferenced(pt, complex);
+                    return CreateArrayAccess(pt, enclosingPtr, offset / pt.Size, index);
                 }
             }
             throw new NotImplementedException();
@@ -179,6 +194,22 @@ namespace Reko.Typing
 
         public Expression VisitStructure(StructureType str)
         {
+            if (enclosingPtr != null)
+            {
+                int strSize = str.GetInferredSize();
+                if ((offset >= strSize && offset % strSize == 0 && index == null))
+                {
+                    var exp = CreateArrayAccess(str, enclosingPtr, offset / strSize, index);
+                    index = null;
+                    return exp;
+                }
+                else if (index != null && offset == 0)
+                {
+                    var idx = this.ScaleDownIndex(index, strSize);
+                    index = null;
+                    return CreateArrayAccess(str, enclosingPtr, 0, idx);
+                }
+            }
             StructureField field = str.Fields.LowerBound(this.offset);
             if (field == null)
                 throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
@@ -265,7 +296,7 @@ namespace Reko.Typing
 
         private Expression CreateUnreferenced(DataType dt, Expression e)
         {
-            if (basePtr!= null)
+            if (basePtr != null)
             {
                 var mps = new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
                 if (dt is ArrayType)
@@ -285,13 +316,12 @@ namespace Reko.Typing
                 throw new NotImplementedException();
         }
 
-
         private Expression CreateFieldAccess(StructureType dtStructure, DataType dtField, Expression exp, string name)
         {
             if (enclosingPtr != null)
             {
                 wasDereferenced = true;
-                exp = new Dereference(dtStructure, exp);
+                exp = CreateDereference(dtStructure, exp);
             }
             var fa = new FieldAccess(dtField, exp, name);
             return fa;
@@ -299,10 +329,10 @@ namespace Reko.Typing
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)
         {
-            if (exp == null)
-                return null;
-            BinaryExpression bin = exp as BinaryExpression;
-            Constant cRight;
+            if (exp == null || elementSize == 1)
+                return exp;
+            BinaryExpression bin;
+            Constant cRight = null;
             if (!exp.As(out bin) || 
                 (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul) ||
                 !bin.Right.As(out cRight) ||
@@ -317,16 +347,14 @@ namespace Reko.Typing
             
             // Expression is of the form (* x c) where c is a multuple of elementSize.
 
-            var index = cRight.ToInt32() / elementSize;
-            if (index == 1)
+            var scale = cRight.ToInt32() / elementSize;
+            if (scale == 1)
                 return bin.Left;
             return new BinaryExpression(
                 bin.Operator,
                 bin.DataType,
                 bin.Left,
-                Constant.Int32(index));
+                Constant.Int32(scale));
         }
-
-      
     }
 }

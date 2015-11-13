@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Typing
         private Pointer ptrInt;
         private Pointer ptrWord;
         private Identifier globals;
+        private ExpressionEmitter m;
 
         [SetUp]
 		public void Setup()
@@ -76,6 +77,7 @@ namespace Reko.UnitTests.Typing
 
             ptrInt = new Pointer(PrimitiveType.Int32, 4);
             ptrWord = new Pointer(PrimitiveType.Word32, 4);
+            m = new ExpressionEmitter();
 		}
 
         private Pointer Ptr32(DataType dataType)
@@ -158,11 +160,12 @@ namespace Reko.UnitTests.Typing
             var i = new Identifier("i", PrimitiveType.Word32, null);
             DataType arrayOfBytes = new ArrayType(PrimitiveType.Byte, 0);
             StructureType str = Struct(
-                Fld(0x01000, arrayOfBytes));
+                Fld(0x800, arrayOfBytes));
+            str.Size = 0x2000;
             CreateTv(globals, Ptr32(str), Ptr32(PrimitiveType.Byte));
             CreateTv(i, PrimitiveType.Int32, PrimitiveType.Word32);
-            var ceb = CreateBuilder(PrimitiveType.Byte, null, globals, i, 0x1000);
-            Assert.AreEqual("globals->a1000[i]", ceb.BuildComplex(true).ToString());
+            var ceb = CreateBuilder(PrimitiveType.Byte, null, globals, i, 0x800);
+            Assert.AreEqual("globals->a0800[i]", ceb.BuildComplex(true).ToString());
 		}
 
         [Test]
@@ -172,6 +175,7 @@ namespace Reko.UnitTests.Typing
             DataType arrayOfBytes = new ArrayType(PrimitiveType.Byte, 0);
             StructureType str = Struct(
                 Fld(0x01000, arrayOfBytes));
+            str.Size = 0x2000;
             CreateTv(globals, Ptr32(str), Ptr32(PrimitiveType.Byte));
             CreateTv(i, PrimitiveType.Int32, PrimitiveType.Word32);
             var ceb = CreateBuilder(PrimitiveType.Byte, null, globals, i, 0x1000);
@@ -224,17 +228,6 @@ namespace Reko.UnitTests.Typing
             return new StructureField(offset, dt);
         }
 
-        [Test]
-        public void CEB_BuildMemberAccessFetch()
-        {
-            var ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
-            var bx = new Identifier("bx", PrimitiveType.Word16, null);
-            var tvDs = CreateTv(ds, Ptr16(Segment()), ds.DataType);
-            var tvBx = CreateTv(bx, MemPtr(Segment(), PrimitiveType.Word16), MemPtr(new TypeVariable(43), PrimitiveType.Word16));
-            var ceb = CreateBuilder(null, ds, bx);
-            Assert.AreEqual("&(ds->*bx)", ceb.BuildComplex(true).ToString());
-        }
-
 #if OLD
         private static ComplexExpressionBuilder CreateBuilder(
             DataType dtField, 
@@ -258,7 +251,18 @@ namespace Reko.UnitTests.Typing
         }
 #endif
 
-    [Test]
+        [Test]
+        public void CEB_BuildMemberAccessFetch()
+        {
+            var ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
+            var bx = new Identifier("bx", PrimitiveType.Word16, null);
+            var tvDs = CreateTv(ds, Ptr16(Segment()), ds.DataType);
+            var tvBx = CreateTv(bx, MemPtr(Segment(), PrimitiveType.Word16), MemPtr(new TypeVariable(43), PrimitiveType.Word16));
+            var ceb = CreateBuilder(null, ds, bx);
+            Assert.AreEqual("ds->*bx", ceb.BuildComplex(true).ToString());
+        }
+
+        [Test]
         public void CEB_MemberOffset()
         {
             var dtPseg = Ptr16(Segment());
@@ -284,7 +288,7 @@ namespace Reko.UnitTests.Typing
             var a = new Identifier("a", Ptr32(array), null);
             var i = new Identifier("i", PrimitiveType.Int32, null);
             var tvA = CreateTv(a, array, array);
-            var ceb = CreateBuilder(PrimitiveType.Word32, null, a, i);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, a, m.SMul(i, 8));
             Assert.AreEqual("a[i].dw0000", ceb.BuildComplex(true).ToString());
         }
     }

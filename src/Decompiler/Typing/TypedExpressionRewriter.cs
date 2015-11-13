@@ -467,7 +467,12 @@ namespace Reko.Typing
         public Expression RewriteComplexExpression(Expression complex, Expression index, bool dereferenced)
         {
             var cOther = index as Constant;
-            var offset = (cOther != null) ? cOther.ToInt32() : 0;
+            int offset = 0;
+            if (cOther != null)
+            {
+                offset = cOther.ToInt32();
+                index = null;
+            }
             var ceb = new ComplexExpressionBuilder2(null, basePtr, complex, index, offset);
             return ceb.BuildComplex(dereferenced);
         }
@@ -483,6 +488,7 @@ namespace Reko.Typing
         {
             var left = Rewrite(binExp.Left, false);
             var right = Rewrite(binExp.Right, false);
+
             if (binExp.Operator == Operator.IAdd)
             {
                 if (DataTypeOf(left).IsComplex)
@@ -568,7 +574,8 @@ namespace Reko.Typing
             Expression result;
             if (access.EffectiveAddress.As(out cEa))
             {
-                result = RewriteComplexExpression(basePtr, cEa, true);
+                uint uOffset = cEa.ToUInt32();
+                result = RewriteComplexExpression(basePtr, Constant.UInt32(uOffset), true);
             }
             else
             {

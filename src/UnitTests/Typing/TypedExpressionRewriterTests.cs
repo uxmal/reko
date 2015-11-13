@@ -328,7 +328,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TerAddNonConstantToPointer()
         {
             ProgramBuilder prog = new ProgramBuilder();
