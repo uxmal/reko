@@ -526,12 +526,14 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.ImageList).Return(imagelist);
             form.Stub(f => f.Menu).SetPropertyAndIgnoreArgument();
             form.Stub(f => f.AddToolbar(null)).IgnoreArguments();
+            form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
             form.Stub(f => f.Dispose());
             form.Stub(f => f.TabControl).Return(tabControl);
             form.Stub(f => f.FindResultsPage).Return(tabResults);
             form.Stub(f => f.DiagnosticsPage).Return(tabDiagnostics);
             form.Stub(f => f.FindResultsList).Return(listView);
             form.Stub(f => f.ToolBar).Return(toolStrip);
+            form.Stub(f => f.ProjectBrowserToolbar).Return(toolStrip);
             form.Stub(f => f.ProjectBrowser).Return(projectBrowser);
             form.Stub(f => f.StatusStrip).Return(statusStrip);
             form.Load += null;
