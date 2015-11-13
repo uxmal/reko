@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerPtrPtrInt()
         {
-            ProgramBuilder mock = CreateProgramBuilder(0x0010000, 0x1000);
+            var mock = CreateProgramBuilder(0x0010000, 0x1000);
             mock.Add(new PtrPtrIntMock());
             RunTest(mock.BuildProgram(), "Typing/TerPtrPtrInt.txt");
         }
@@ -211,7 +211,7 @@ namespace Reko.UnitTests.Typing
         [Ignore("scanning-development")]
         public void TerUnionIntReal()
         {
-            ProgramBuilder mock = new ProgramBuilder();
+            var mock = CreateProgramBuilder(0x10000, 0x1000);
             mock.Add(new UnionIntRealMock());
             RunTest(mock.BuildProgram(), "Typing/TerUnionIntReal.txt");
         }
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Typing
         [Ignore("scanning-development")]
         public void TerConstantUnion()
         {
-            ProgramBuilder mock = new ProgramBuilder();
+            var mock = CreateProgramBuilder(0x10000, 0x1000);
             mock.Add(new ConstantUnionMock());
             RunTest(mock.BuildProgram(), "Typing/TerConstantUnion.txt");
         }
@@ -296,7 +296,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerArrayConstantPointers()
         {
-            ProgramBuilder pp = new ProgramBuilder(new LoadedImage(Address.Ptr32(0x00123000), new byte[4000]));
+            var pp = CreateProgramBuilder(0x00123000,4000);
             pp.Add("Fn", m =>
             {
                 Identifier a = m.Local32("a");
@@ -328,6 +328,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("scanning-development")]
         public void TerAddNonConstantToPointer()
         {
             ProgramBuilder prog = new ProgramBuilder();
@@ -546,7 +547,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerShortArray()
         {
-            var pm = new ProgramBuilder();
+            var pm = CreateProgramBuilder(0x00001000, 0x1000);
             pm.Add("proc1", m =>
                 {
                     var ebp = m.Reg32("ebp");

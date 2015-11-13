@@ -153,25 +153,6 @@ namespace Reko.Typing
             return new BinaryExpression(Operator.SDiv, idx.DataType, idx, Constant.Create(idx.DataType, dtElement.Size));
         }
 
-        private Expression ScaleDownIndex(Expression exp, int elementSize)
-        {
-            var bin = exp as BinaryExpression;
-            if (exp == null || (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul))
-                return exp;
-            var cRight = bin.Right as Constant;
-            if (cRight == null)
-                return exp;
-            if (cRight.ToInt32() % elementSize != 0)
-                return exp;
-            var index = cRight.ToInt32() / elementSize;
-            if (index == 1)
-                return bin.Left;
-            return new BinaryExpression(
-                bin.Operator,
-                bin.DataType,
-                bin.Left,
-                Constant.Int32(index));
-        }
 
         private Expression NormalizeArrayPointer(Expression arrayExp)
         {
@@ -405,6 +386,7 @@ namespace Reko.Typing
         private ExpressionEmitter m;
         private Unifier unifier;
         private bool dereferenced;
+        private Expression basePtr;
 
         public TypedExpressionRewriter2(Program program)
         {
@@ -482,12 +464,19 @@ namespace Reko.Typing
             return exp;
         }
 
-        public Expression RewriteComplexExpression(Expression complex, Expression index)
+        public Expression RewriteComplexExpression(Expression complex, Expression index, bool dereferenced)
         {
             var cOther = index as Constant;
             var offset = (cOther != null) ? cOther.ToInt32() : 0;
-            var ceb = new ComplexExpressionBuilder2(null, null, complex, index, offset);
+            var ceb = new ComplexExpressionBuilder2(null, basePtr, complex, index, offset);
             return ceb.BuildComplex(dereferenced);
+        }
+
+        public override Expression VisitArrayAccess(ArrayAccess acc)
+        {
+            var arrayPtr = Rewrite(acc.Array, false);
+            var index = Rewrite(acc.Index, false);
+            return RewriteComplexExpression(arrayPtr, index, true);
         }
 
         public override Expression VisitBinaryExpression(BinaryExpression binExp)
@@ -504,11 +493,11 @@ namespace Reko.Typing
                             Environment.NewLine, binExp,
                             DataTypeOf(left),
                             DataTypeOf(right));
-                    return RewriteComplexExpression(left, right);
+                    return RewriteComplexExpression(left, right, dereferenced);
                 }
                 else if (DataTypeOf(right).IsComplex)
                 {
-                    return RewriteComplexExpression(right, left);
+                    return RewriteComplexExpression(right, left, dereferenced);
                 }
             }
             return base.VisitBinaryExpression(binExp);
@@ -526,8 +515,68 @@ namespace Reko.Typing
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
+            var oldBase = this.basePtr;
+            this.basePtr = null;
             var ea = Rewrite(access.EffectiveAddress, true);
+            this.basePtr = oldBase;
             return ea;
+        }
+
+        public override Expression VisitMkSequence(MkSequence seq)
+        {
+            Debug.Assert(false, "Not tested yet");
+            var head = seq.Head.Accept(this);
+            var tail = seq.Tail.Accept(this);
+            Constant c = seq.Tail as Constant;
+            var ptHead = DataTypeOf( head) as PrimitiveType;
+            if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
+            {
+                if (c != null)
+                {
+                    var seg = head.TypeVariable.DataType.ResolveAs<Pointer>().Pointee;
+                    var fa = new FieldAccess(
+                        seq.TypeVariable.DataType.ResolveAs<Pointer>().Pointee,
+                        new Dereference(head.TypeVariable.DataType, head),
+                        seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()).Name);
+                    return fa;
+                }
+                else
+                {
+                    var ceb = new ComplexExpressionBuilder(
+                        seq.TypeVariable.DataType,
+                        seq.TypeVariable.DataType,
+                        seq.TypeVariable.OriginalDataType,
+                        head,
+                        new MemberPointerSelector(seq.DataType, head, tail),
+                        null,
+                        0);
+                    return ceb.BuildComplex(dereferenced);
+                }
+            }
+            else
+            {
+            }
+            return new MkSequence(seq.DataType, head, tail);
+        }
+
+        public override Expression VisitSegmentedAccess(SegmentedAccess access)
+        {
+            var oldBase = this.basePtr;
+            this.basePtr = null;
+            var basePtr = Rewrite(access.BasePointer, false);
+            Constant cEa;
+            Expression result;
+            if (access.EffectiveAddress.As(out cEa))
+            {
+                result = RewriteComplexExpression(basePtr, cEa, true);
+            }
+            else
+            {
+                this.basePtr = basePtr;
+                result = Rewrite(access.EffectiveAddress, true);
+            }
+            this.basePtr = oldBase;
+            return result;
         }
     }
 }

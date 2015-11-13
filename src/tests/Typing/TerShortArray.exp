@@ -15,7 +15,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Mem6[0x00001234:word32] = (int32) fp->ptr0004[fp->dw0008]
+	globals->dw1234 = (int32) fp->ptr0004[fp->dw0008]
 proc1_exit:
 
 // Equivalence classes ////////////
@@ -60,7 +60,7 @@ T_9: (in 0x00000002 : word32)
   Class: Eq_9
   DataType: ui32
   OrigDataType: ui32
-T_10: (in fp->dw0008 * 0x00000002 : word32)
+T_10: (in Mem0[fp + 0x00000008:word32] * 0x00000002 : word32)
   Class: Eq_10
   DataType: ui32
   OrigDataType: ui32

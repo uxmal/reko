@@ -27,6 +27,7 @@ namespace Reko.Typing
 {
     public class ComplexExpressionBuilder2 : IDataTypeVisitor<Expression>
     {
+        private Expression basePtr;
         private Expression complex;
         private DataType dtComplex;
         private DataType dtComplexOrig;
@@ -43,6 +44,7 @@ namespace Reko.Typing
             Expression index,
             int offset)
         {
+            this.basePtr = basePtr;
             this.complex = complex;
             this.index = index;
             this.offset = offset;
@@ -70,7 +72,7 @@ namespace Reko.Typing
             }
             if (dereferenced && !wasDereferenced)
             {
-                exp = new Dereference(dtComplex, exp);
+                exp = CreateDereference(dtComplex, exp);
             }
             return exp;
         }
@@ -79,6 +81,7 @@ namespace Reko.Typing
         {
             int i = (int)(offset / at.ElementType.Size);
             int r = (int)(offset % at.ElementType.Size);
+            index = ScaleDownIndex(index, at.ElementType.Size);
             dtComplex = at.ElementType;
             dtComplexOrig = at.ElementType;
             this.complex.DataType = at;
@@ -110,6 +113,10 @@ namespace Reko.Typing
 
         public Expression VisitMemberPointer(MemberPointer memptr)
         {
+            if (enclosingPtr != null)
+            {
+                return complex;
+            }
             var pointee = memptr.Pointee;
             var origMemptr = dtComplexOrig.ResolveAs<MemberPointer>();
             if (origMemptr != null)
@@ -121,6 +128,10 @@ namespace Reko.Typing
 
         public Expression VisitPointer(Pointer ptr)
         {
+            if (enclosingPtr != null)
+            {
+                return complex;
+            }
             var pointee = ptr.Pointee;
             var origPtr = dtComplexOrig.ResolveAs<Pointer>();
             if (origPtr != null)
@@ -132,17 +143,10 @@ namespace Reko.Typing
 
         private Expression RewritePointer(DataType ptr, DataType dtPointee, DataType dtOrigPointee)
         {
-            if (enclosingPtr != null)
-            {
-                return complex;
-            }
-            else
-            {
-                enclosingPtr = ptr;
-                this.dtComplex = dtPointee;
-                this.dtComplexOrig = dtOrigPointee;
-                return dtComplex.Accept(this);
-            }
+            enclosingPtr = ptr;
+            this.dtComplex = dtPointee;
+            this.dtComplexOrig = dtOrigPointee;
+            return dtComplex.Accept(this);
         }
 
         public Expression VisitPrimitive(PrimitiveType pt)
@@ -158,12 +162,11 @@ namespace Reko.Typing
                 if (dereferenced && !wasDereferenced)
                 {
                     wasDereferenced = true;
-                    return new Dereference(pt, complex);
+                    return CreateDereference(pt, complex);
                 }
                 else
                 {
-                    complex.DataType = pt;
-                    return complex;
+                    return CreateUnreferenced(pt, complex);
                 }
             }
             throw new NotImplementedException();
@@ -219,6 +222,7 @@ namespace Reko.Typing
             arrayIndex = CreateArrayIndexExpression(offset, arrayIndex);
             if (dereferenced)
             {
+                enclosingPtr = null;
                 wasDereferenced = true;
                 return new ArrayAccess(dtPointee, complex, arrayIndex);
             }
@@ -248,6 +252,40 @@ namespace Reko.Typing
             return arrayIndex;
         }
 
+        private Expression CreateDereference(DataType dt, Expression e)
+        {
+            this.wasDereferenced = true;
+            if (basePtr != null)
+                return new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
+            else if (e != null)
+                return new Dereference(dt, e);
+            else
+                return new ScopeResolution(dt);
+        }
+
+        private Expression CreateUnreferenced(DataType dt, Expression e)
+        {
+            if (basePtr!= null)
+            {
+                var mps = new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
+                if (dt is ArrayType)
+                {
+                    return mps;
+                }
+                return new UnaryExpression(
+                    Operator.AddrOf,
+                    new Pointer(dt, 4),         //$BUG: hardwired '4'.
+                    mps);
+            }
+            else if (e != null)
+            {
+                return e;
+            }
+            else
+                throw new NotImplementedException();
+        }
+
+
         private Expression CreateFieldAccess(StructureType dtStructure, DataType dtField, Expression exp, string name)
         {
             if (enclosingPtr != null)
@@ -258,5 +296,37 @@ namespace Reko.Typing
             var fa = new FieldAccess(dtField, exp, name);
             return fa;
         }
+
+        private Expression ScaleDownIndex(Expression exp, int elementSize)
+        {
+            if (exp == null)
+                return null;
+            BinaryExpression bin = exp as BinaryExpression;
+            Constant cRight;
+            if (!exp.As(out bin) || 
+                (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul) ||
+                !bin.Right.As(out cRight) ||
+                cRight.ToInt32() % elementSize != 0)
+            {
+                return new BinaryExpression(
+                    Operator.SDiv,
+                    exp.DataType,
+                    exp,
+                    Constant.Int32(elementSize));
+            }
+            
+            // Expression is of the form (* x c) where c is a multuple of elementSize.
+
+            var index = cRight.ToInt32() / elementSize;
+            if (index == 1)
+                return bin.Left;
+            return new BinaryExpression(
+                bin.Operator,
+                bin.DataType,
+                bin.Left,
+                Constant.Int32(index));
+        }
+
+      
     }
 }
