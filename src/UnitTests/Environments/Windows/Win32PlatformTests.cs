@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Environments.Windows
                 }
             };
             dcSvc.Expect(d => d.GetEnvironment("win32")).Return(opEnv);
-            dcSvc.Stub(c => c.GetPath(null)).IgnoreArguments()
+            dcSvc.Stub(c => c.GetInstallationRelativePath(null)).IgnoreArguments()
                 .Do(new Func<string, string>(s => s));
             
             sc.AddService<IConfigurationService>(dcSvc);

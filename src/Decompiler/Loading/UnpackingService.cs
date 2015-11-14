@@ -60,7 +60,7 @@ namespace Reko.Loading
                 try
                 {
                     var ldr = CreateSignatureLoader(sfe);
-                    Signatures.AddRange(ldr.Load(cfgSvc.GetPath(sfe.Filename)));
+                    Signatures.AddRange(ldr.Load(cfgSvc.GetInstallationRelativePath(sfe.Filename)));
                 }
                 catch (Exception ex)
                 {

@@ -49,7 +49,13 @@ namespace Reko.Core.Configuration
 
          IEnumerable<UiStyle> GetDefaultPreferences ();
 
-         string GetPath(string path);
+         /// <summary>
+         /// Given a relative path with respect to the intallation directory, 
+         /// returns the absolute path.
+         /// </summary>
+         /// <param name="path"></param>
+         /// <returns></returns>
+         string GetInstallationRelativePath(string path);
     }
 
     public class DecompilerConfiguration : IConfigurationService
@@ -148,7 +154,7 @@ namespace Reko.Core.Configuration
             return handler.GetPreferences();
         }
 
-        public string GetPath(string filename)
+        public string GetInstallationRelativePath(string filename)
         {
             if (!Path.IsPathRooted(filename))
             {

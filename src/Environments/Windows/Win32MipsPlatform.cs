@@ -26,6 +26,7 @@ using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -146,7 +147,7 @@ namespace Reko.Environments.Windows
         private TypeLibrary LoadTypelibrary(IConfigurationService cfgSvc, ITypeLibraryElement tl, LoaderElement ldr)
         {
             var type = Type.GetType(ldr.TypeName, true);
-            var filename = cfgSvc.GetPath(tl.Name);
+            var filename = cfgSvc.GetInstallationRelativePath(tl.Name);
             var bytes = File.ReadAllBytes(filename);
             var loader = (MetadataLoader)Activator.CreateInstance(type, Services, filename, bytes);
             return loader.Load(this);

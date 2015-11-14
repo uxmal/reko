@@ -128,7 +128,7 @@ namespace Reko.Core
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetPath(tl.Name)))
+                    .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name)))
                     .Where(tl => tl != null).ToArray();
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()

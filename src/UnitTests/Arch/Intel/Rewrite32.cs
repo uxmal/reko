@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             configSvc.Stub(c => c.GetEnvironment("win32")).Return(win32env);
-            configSvc.Stub(c => c.GetPath(null)).IgnoreArguments()
+            configSvc.Stub(c => c.GetInstallationRelativePath(null)).IgnoreArguments()
                 .Do(new Func<string, string>(s => s));
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);

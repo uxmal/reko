@@ -100,7 +100,7 @@ namespace Reko.Environments.MacOS
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             this.TypeLibs = ((IEnumerable)envCfg.TypeLibraries)
                 .OfType<ITypeLibraryElement>()
-                .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetPath(tl.Name)))
+                .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name)))
                 .Where(tl => tl != null).ToArray();
         }
     }
