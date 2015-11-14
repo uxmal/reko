@@ -38,6 +38,7 @@ namespace Reko.Assemblers.x86
     /// </summary>
     public class X86Assembler
     {
+        private IServiceProvider services;
         private IntelArchitecture arch;
         private Address addrBase;
         private ModRmBuilder modRm;
@@ -52,10 +53,11 @@ namespace Reko.Assemblers.x86
         private Dictionary<string, AssembledSegment> mpNameToSegment;
         private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
 
-        public X86Assembler(IntelArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
+        public X86Assembler(IServiceProvider services, IntelArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
         {
+            this.services = services;
             this.arch = arch;
-            this.Platform = new MsdosPlatform(null, arch);
+            this.Platform = new MsdosPlatform(services, arch);  //$TODO: remove this hardwired msdosness, dude
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;
             this.defaultWordSize = arch.WordWidth;
@@ -1084,8 +1086,6 @@ namespace Reko.Assemblers.x86
 		};
         private Encoding textEncoding;
 
-
-
         public void i386()
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
@@ -1095,7 +1095,7 @@ namespace Reko.Assemblers.x86
         public void i86()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            Platform = new MsdosPlatform(null, arch);
+            Platform = new MsdosPlatform(services, arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 

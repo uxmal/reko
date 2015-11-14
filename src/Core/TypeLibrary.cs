@@ -20,6 +20,7 @@
 
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace Reko.Core
 			}
 		}
 
-		public static TypeLibrary Load(Platform platform, string fileName)
+		public static TypeLibrary Load(Platform platform, string fileName, IFileSystemService fsSvc)
 		{
             var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var libPath = Path.Combine(prefix, fileName);
@@ -83,7 +84,7 @@ namespace Reko.Core
             }
 			XmlSerializer ser = SerializedLibrary.CreateSerializer();
 			SerializedLibrary slib;
-			using (FileStream stm = new FileStream(libPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (Stream stm = fsSvc.CreateFileStream(libPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}

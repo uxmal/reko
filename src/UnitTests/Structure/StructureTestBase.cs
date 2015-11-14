@@ -48,32 +48,35 @@ namespace Reko.UnitTests.Structure
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureReal();
 
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new X86TextAssembler(arch) { Platform = new MsdosPlatform(null, arch) },
+                new X86TextAssembler(sc, arch) { Platform = new MsdosPlatform(sc, arch) },
                 addrBase);
             return RewriteProgram();
 		}
 
         protected Program RewriteProgram32(string sourceFilename, Address addrBase)
         {
-            var sc = new ServiceContainer();
+            sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureFlat32();
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new X86TextAssembler(arch) { Platform = new DefaultPlatform(null, arch) },
+                new X86TextAssembler(sc, arch) { Platform = new DefaultPlatform(sc, arch) },
                 addrBase);
             return RewriteProgram();
         }
 
         protected Program RewriteX86RealFragment(string asmFragment, Address addrBase)
         {
-            var asm = new X86TextAssembler(new X86ArchitectureReal());
+            var asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
@@ -83,7 +86,7 @@ namespace Reko.UnitTests.Structure
 
         protected Program RewriteX86_32Fragment(string asmFragment, Address addrBase)
         {
-            var asm = new X86TextAssembler(new X86ArchitectureFlat32());
+            var asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));

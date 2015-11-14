@@ -75,7 +75,6 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");
 		}
 
-
 		[Test]
 		public void DfaFpuOps()
 		{

@@ -39,6 +39,7 @@ namespace Reko.UnitTests
         MockRepository mr;
         ILoader loader;
         TestDecompiler decompiler;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
@@ -46,12 +47,13 @@ namespace Reko.UnitTests
             mr = new MockRepository();
             var config = new FakeDecompilerConfiguration();
             var host = new FakeDecompilerHost();
-            var sp = new ServiceContainer();
+            sc = new ServiceContainer();
             loader = mr.StrictMock<ILoader>();
-            sp.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            sp.AddService<DecompilerHost>(host);
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<DecompilerHost>(host);
             loader.Replay();
-            decompiler = new TestDecompiler(loader, sp);
+            decompiler = new TestDecompiler(loader, sc);
             loader.BackToRecord();
         }
 
@@ -78,7 +80,7 @@ namespace Reko.UnitTests
             var arch = new IntelArchitecture(ProcessorMode.Real);
             Program program = new Program { 
                 Architecture = arch,
-                Platform = new MsdosPlatform(null, arch)
+                Platform = new MsdosPlatform(sc, arch)
             };
             decompiler.Project = new Project
             {

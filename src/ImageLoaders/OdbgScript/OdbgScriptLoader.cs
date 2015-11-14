@@ -80,7 +80,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var state = (X86State)program.Architecture.CreateProcessorState();
             var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
             this.debugger = new Debugger(emu);
-            this.scriptInterpreter = new OllyLang();
+            this.scriptInterpreter = new OllyLang(Services);
             this.scriptInterpreter.Host = new Host(this);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;

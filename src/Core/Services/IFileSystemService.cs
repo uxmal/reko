@@ -25,9 +25,13 @@ using System.Text;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// Abstracts away file system accesses.
+    /// </summary>
     public interface IFileSystemService
     {
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
+        Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
     }
 
     public class FileSystemServiceImpl : IFileSystemService
@@ -35,6 +39,11 @@ namespace Reko.Core.Services
         public Stream CreateFileStream(string filename, FileMode mode, FileAccess access)
         {
             return new FileStream(filename, mode, access);
+        }
+
+        public Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share)
+        {
+            return new FileStream(filename, mode, access, share);
         }
     }
 }

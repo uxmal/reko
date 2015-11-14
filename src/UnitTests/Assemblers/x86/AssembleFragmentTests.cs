@@ -25,8 +25,10 @@ using Reko.Core.Types;
 using Reko.UnitTests.Arch.Intel;
 using Reko.UnitTests.Arch.Intel.Fragments;
 using NUnit.Framework;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Reko.UnitTests.Assemblers.x86
@@ -35,6 +37,14 @@ namespace Reko.UnitTests.Assemblers.x86
     public class AssembleFragmentTests
     {
         private string nl = Environment.NewLine;
+        private ServiceContainer sc;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+        }
 
         [Test]
         public void Factorial()
@@ -67,7 +77,7 @@ namespace Reko.UnitTests.Assemblers.x86
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
             Address addrBase=  Address.SegPtr(0xC00, 0);
-            X86Assembler asm = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
+            X86Assembler asm = new X86Assembler(sc, new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
             Program lr = asm.GetImage();
 

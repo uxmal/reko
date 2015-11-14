@@ -37,6 +37,7 @@ namespace Reko.Assemblers.x86
 	/// </summary>
 	public class X86TextAssembler : Assembler
 	{
+        private IServiceProvider services;
 		private Lexer lexer;
 		private Address addrBase;
 		private Address addrStart;
@@ -44,8 +45,9 @@ namespace Reko.Assemblers.x86
         private X86Assembler asm;
         private IntelArchitecture arch;
 
-		public X86TextAssembler(IntelArchitecture arch)
+		public X86TextAssembler(IServiceProvider services, IntelArchitecture arch)
 		{
+            this.services = services;
             this.entryPoints = new List<EntryPoint>();
             this.arch = arch;
         }
@@ -55,7 +57,7 @@ namespace Reko.Assemblers.x86
             addrBase = addr;
             lexer = new Lexer(rdr);
 
-            asm = new X86Assembler(arch, addrBase, entryPoints);
+            asm = new X86Assembler(services, arch, addrBase, entryPoints);
             asm.Platform = Platform;
 
             // Assemblers are strongly line-oriented.

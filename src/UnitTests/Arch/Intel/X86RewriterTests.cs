@@ -28,7 +28,9 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Arch.Intel
 {
@@ -46,6 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
         private Address baseAddr16;
         private Address baseAddr32;
         private Address baseAddr64;
+        private ServiceContainer sc;
 
         public X86RewriterTests()
         {
@@ -79,13 +82,15 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
+            sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
         private X86Assembler Create16bitAssembler()
         {
             arch = arch16;
             baseAddr = baseAddr16;
-            var asm = new X86Assembler(arch, baseAddr16, new List<EntryPoint>());
+            var asm = new X86Assembler(sc, arch, baseAddr16, new List<EntryPoint>());
             host = new RewriterHost(asm.ImportReferences);
             return asm;
         }
@@ -94,7 +99,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = arch32;
             baseAddr = baseAddr32;
-            var asm = new X86Assembler(arch, baseAddr32, new List<EntryPoint>());
+            var asm = new X86Assembler(sc, arch, baseAddr32, new List<EntryPoint>());
             host = new RewriterHost(asm.ImportReferences);
             return asm;
         }

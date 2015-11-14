@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Scanning
         private Identifier reg1;
         private IImportResolver importResolver;
         private IDictionary<Address, ProcedureSignature> callSigs;
-        private ServiceContainer services;
+        private ServiceContainer sc;
 
         public class TestScanner : Scanner
         {
@@ -80,10 +80,10 @@ namespace Reko.UnitTests.Scanning
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
-            this.services = new ServiceContainer();
-            services.AddService<DecompilerHost>(new FakeDecompilerHost());
-            services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-
+            this.sc = new ServiceContainer();
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
         private ProcedureSignature CreateSignature(string ret, params string[] args)
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
+            var m = new X86Assembler(sc, new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             test(m);
             var lr = m.GetImage();
             program = new Program(
@@ -141,10 +141,10 @@ namespace Reko.UnitTests.Scanning
             var project = new Project { Programs = { program } };
 
             var sc = new Scanner(
-                program,
+                this.program,
                 null,
                 new ImportResolver(project),
-                services);
+                this.sc);
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     Address.Ptr32(0x12314),
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Scanning
                 program,
                 callSigs,
                 importResolver,
-                services);
+                sc);
         }
 
         private TestScanner CreateScanner(Program prog)
@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Scanning
                 prog, 
                 callSigs, 
                 importResolver,
-                services);
+                sc);
         }
 
         private TestScanner CreateScanner(Program prog, uint startAddress, int imageSize)
@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Scanning
             prog.Platform = new FakePlatform(null, arch);
             prog.Image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
             prog.ImageMap = prog.Image.CreateImageMap();
-            return new TestScanner(prog, callSigs, importResolver, services);
+            return new TestScanner(prog, callSigs, importResolver, sc);
         }
 
         [Test]
@@ -271,13 +271,12 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(re.Match(data, 0), "Should have matched");
         }
 
-
         [Test]
         public void Scanner_CallGraphTree()
         {
             Program prog = new Program();
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
+            var m = new X86Assembler(sc, new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             m.i86();
 
             m.Proc("main");
@@ -305,7 +304,7 @@ namespace Reko.UnitTests.Scanning
             prog.Architecture = lr.Architecture;
             prog.Platform = new FakePlatform(null, arch);
             var proj = new Project { Programs = { prog } };
-            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), services);
+            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), sc);
             EntryPoint ep = new EntryPoint(addr, prog.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();

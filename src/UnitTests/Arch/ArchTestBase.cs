@@ -65,7 +65,6 @@ namespace Reko.UnitTests.Arch
                 throw new NotImplementedException();
             }
 
-
             public void Error(Address address, string message)
             {
                 throw new NotImplementedException();

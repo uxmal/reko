@@ -1,8 +1,9 @@
 ﻿#!/usr/bin/python
 # Run all regression tests on the subjects in the 
 # $(REKO)/subjects directory tree.
-# Subject files are identified by either having a dcproject file associated
-# with them or a subject.cmd file containing reko command lines to execute.
+# Subject binaries in the directory are identified by either:
+# * having a dcproject file associated with them or
+# * a subject.cmd file containing reko command lines to execute.
 
 import os
 import os.path

@@ -24,10 +24,12 @@ using Reko.Core.Types;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Assemblers.x86
 {
@@ -35,12 +37,15 @@ namespace Reko.UnitTests.Assemblers.x86
 	{
 		protected IntelArchitecture arch;
 		protected X86TextAssembler asm;
+        protected ServiceContainer sc;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
+            this.sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             arch = new IntelArchitecture(ProcessorMode.Real);
-            asm = new X86TextAssembler(arch);
+            asm = new X86TextAssembler(sc, arch);
         }
 
         protected void AssertEqualBytes(string expected, byte[] actual)

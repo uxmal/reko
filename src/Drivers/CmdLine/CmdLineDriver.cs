@@ -47,7 +47,7 @@ namespace Reko.CmdLine
             var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
-            services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl());
+            services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
             services.AddService<IDiagnosticsService>(diagnosticSvc);
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());
             services.AddService<DecompilerHost>(new CmdLineHost());

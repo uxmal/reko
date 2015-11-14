@@ -57,6 +57,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
     public partial class OllyLang : IScriptInterpreter
     {
+        private IServiceProvider services;
         private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
 
         const byte OS_VERSION_HI = 1;  // High plugin version
@@ -214,6 +215,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 bits = new Flagomizer(this);
             }
         }
+
 
         // Commands that can be executed
         Dictionary<string, Func<string[], bool>> commands = new Dictionary<string, Func<string[], bool>>();
@@ -425,8 +427,9 @@ namespace Reko.ImageLoaders.OdbgScript
 #endif
 };
 
-        public OllyLang()
+        public OllyLang(IServiceProvider services)
         {
+            this.services = services;
             this.script = new OllyScript(this);
 
             #region Initialize command array

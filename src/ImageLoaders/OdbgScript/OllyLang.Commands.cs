@@ -29,6 +29,7 @@ using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
+    using Core.Services;
     using rulong = System.UInt64;
 
     public partial class OllyLang
@@ -851,7 +852,8 @@ rulong hwnd;
                     filename = Host.TE_GetTargetDirectory() + filename;
 
                 // Truncate existing file
-                using (FileStream hfile = new FileStream(filename, FileMode.Create))
+                var fsSvc = services.RequireService<IFileSystemService>();
+                using (Stream hfile =  fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write))
                 {
                 }
                 return DoDMA(args);
@@ -4291,7 +4293,8 @@ string filename, data;
                 if (!Helper.IsFullPath(filename))
                     filename = Host.TE_GetTargetDirectory() + filename;
 
-                using (FileStream hFile = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
+                var fsSvc = services.RequireService<IFileSystemService>();
+                using (var hFile = fsSvc.CreateFileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
                 {
                     @out += data;
                     hFile.Seek(0, SeekOrigin.End);

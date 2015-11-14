@@ -18,21 +18,23 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
-using Reko.Core.Lib;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
-using NUnit.Framework;  
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Scanning
@@ -50,23 +52,26 @@ namespace Reko.UnitTests.Scanning
         private BlockWorkitem wi;
         private Program lr;
         private string nl = Environment.NewLine;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             repository = new MockRepository();
+            sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
         private void BuildTest32(Action<X86Assembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
-            BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(null, arch), m);
+            BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(sc, arch), m);
         }
 
         private void BuildTest16(Action<X86Assembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(null, arch), m);
+            BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
         private class RewriterHost : IRewriterHost, IImportResolver
@@ -148,7 +153,7 @@ namespace Reko.UnitTests.Scanning
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
-            var asm = new X86Assembler(arch, addr, new List<EntryPoint>());
+            var asm = new X86Assembler(sc, arch, addr, new List<EntryPoint>());
             scanner = repository.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();

@@ -18,17 +18,19 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using NUnit.Framework;
+using Reko.Environments.Msdos;
 using System;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using Reko.Environments.Msdos;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -41,10 +43,12 @@ namespace Reko.UnitTests.Core.Serialization
         [SetUp]
         public void Setup()
         {
+            var sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = new MsdosPlatform(null, arch);
-        }    
-        
+            this.platform = new MsdosPlatform(sc, arch);
+        }
+
         private void Given_X86ProcedureSerializer()
         {
             this.ser = new X86ProcedureSerializer((IntelArchitecture) platform.Architecture, new TypeLibraryLoader(platform, true), "stdapi");

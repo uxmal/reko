@@ -23,8 +23,10 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -37,11 +39,14 @@ namespace Reko.UnitTests.Core.Serialization
 		private IntelArchitecture arch;
         private X86ProcedureSerializer sser;
         private MsdosPlatform platform;
+        private ServiceContainer sc;
 
-		public SerializedSignatureTests()
+        public SerializedSignatureTests()
 		{
+            this.sc = new ServiceContainer();
+            this.sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
 			this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = new MsdosPlatform(null, arch);
+            this.platform = new MsdosPlatform(sc, arch);
 		}
 
         private void Given_X86ProcedureSerializer()

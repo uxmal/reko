@@ -18,26 +18,31 @@
  */
 #endregion
 
-using System;
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
 
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class X86DisassemblerTests
     {
+        private ServiceContainer sc;
         private X86Disassembler dasm;
 
         public X86DisassemblerTests()
         {
+            sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
         private X86Instruction Disassemble16(params byte[] bytes)
@@ -114,7 +119,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Dis_Sequence()
         {
-            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
+            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 @"	mov	ax,0
@@ -146,7 +151,7 @@ foo:
         [Test]
         public void SegmentOverrides()
         {
-            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
+            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
@@ -164,7 +169,7 @@ foo:
         [Test]
         public void Rotations()
         {
-            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
+            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             var lr = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
@@ -191,7 +196,7 @@ foo:
         [Test]
         public void Extensions()
         {
-            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
+            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xA14, 0),
 @"		.i86
@@ -219,7 +224,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void DisEdiTimes2()
         {
-            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureFlat32());
+            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
             var program = asm.AssembleFragment(Address.SegPtr(0x0B00, 0),
                 @"	.i386
 	mov ebx,[edi*2]
@@ -237,7 +242,7 @@ movzx	ax,byte ptr [bp+04]
         {
             using (FileUnitTester fut = new FileUnitTester("Intel/DisFpuInstructions.txt"))
             {
-                X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
+                X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
                 Program lr;
                 using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
                 {

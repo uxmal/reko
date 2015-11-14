@@ -207,7 +207,8 @@ namespace Reko.Gui.Forms
         {
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
-            return new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
         public IPhasePageInteractor CurrentPhase
@@ -322,7 +323,8 @@ namespace Reko.Gui.Forms
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archOption.Value));
 
                 var envOption = (ListOption) dlg.Platforms.SelectedValue;
-                platform = ((OperatingEnvironment)envOption.Value).Load(this.Services, arch);
+                var type = Type.GetType((string) envOption.Value);
+                platform = (Platform) Activator.CreateInstance(type, this.Services, arch);
 
                 Address addrBase;
                 var sAddr = dlg.AddressTextBox.Text.Trim();

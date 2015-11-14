@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private void Given_Engine()
         {
             this.host = mr.Stub<IHost>();
-            engine = new OllyLang();
+            engine = new OllyLang(null);
             engine.Host = host;
             engine.Debugger = new Debugger(null);
         }

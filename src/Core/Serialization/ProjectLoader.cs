@@ -100,7 +100,8 @@ namespace Reko.Core.Serialization
 
         public Project LoadProject(string filename)
         {
-            using (var fstm = new FileStream(filename, FileMode.Open))
+            var fsSvc = services.RequireService<IFileSystemService>();
+            using (var fstm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read))
             {
                 return LoadProject(fstm);
             }

@@ -18,14 +18,16 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Environments.Windows;
-using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -40,6 +42,7 @@ namespace Reko.UnitTests.Arch.Intel
         private LoadedImage image;
         private Dictionary<Address, ImportReference> importReferences;
         private Platform platform;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
@@ -47,6 +50,8 @@ namespace Reko.UnitTests.Arch.Intel
             mr = new MockRepository();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             importReferences = new Dictionary<Address, ImportReference>();
+            sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
         private void Given_RegValue(IntelRegister reg, uint value)
@@ -56,7 +61,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_Code(Action<X86Assembler> coder)
         {
-            var asm = new X86Assembler(arch, Address.Ptr32(0x00100000), new List<EntryPoint>());
+            var asm = new X86Assembler(sc, arch, Address.Ptr32(0x00100000), new List<EntryPoint>());
             coder(asm);
             var program = asm.GetImage();
             this.image = program.Image;

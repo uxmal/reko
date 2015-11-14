@@ -124,7 +124,7 @@ namespace Reko.Gui
 
         public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()
         {
-            return new TypeLibraryLoaderServiceImpl();
+            return new TypeLibraryLoaderServiceImpl(services);
         }
 
         public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)

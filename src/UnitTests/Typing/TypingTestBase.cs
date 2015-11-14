@@ -49,24 +49,25 @@ namespace Reko.UnitTests.Typing
 
 		protected Program RewriteFile(string relativePath, Address addrBase)
 		{
-            var services = new ServiceContainer();
+            var sc = new ServiceContainer();
             var config = new FakeDecompilerConfiguration();
-            services.AddService<IConfigurationService>(config);
-            services.AddService<DecompilerHost>(new FakeDecompilerHost());
-            services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            ILoader ldr = new Loader(services);
+            sc.AddService<IConfigurationService>(config);
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new X86TextAssembler(new IntelArchitecture(ProcessorMode.Real)),
+                new X86TextAssembler(sc, new IntelArchitecture(ProcessorMode.Real)),
                 addrBase);
-            program.Platform = new DefaultPlatform(services, program.Architecture);
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
-                services);
+                sc);
 			scan.EnqueueEntryPoint(ep);
 			scan.ScanImage();
 

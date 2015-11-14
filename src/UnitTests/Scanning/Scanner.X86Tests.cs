@@ -40,28 +40,32 @@ namespace Reko.UnitTests.Scanning
         private IntelArchitecture arch;
         private Scanner scanner;
         private Program program;
+        private ServiceContainer sc;
 
         private void BuildTest16(Action<X86Assembler> asmProg)
         {
+            sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             arch = new IntelArchitecture(ProcessorMode.Real);
-            BuildTest(Address.SegPtr(0x0C00, 0x0000), new MsdosPlatform(null, arch), asmProg);
+            BuildTest(Address.SegPtr(0x0C00, 0x0000), new MsdosPlatform(sc, arch), asmProg);
         }
 
         private void BuildTest32(Action<X86Assembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            BuildTest(Address.Ptr32(0x00100000), new FakePlatform(null, null), asmProg);
+            BuildTest(Address.Ptr32(0x00100000), new FakePlatform(sc, null), asmProg);
         }
 
         private void BuildTest(Address addrBase, Platform platform , Action<X86Assembler> asmProg)
         {
-            var entryPoints = new List<EntryPoint>();
-            var asm = new X86Assembler(arch, addrBase, entryPoints);
-            asmProg(asm);
-
             var sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            var entryPoints = new List<EntryPoint>();
+            var asm = new X86Assembler(sc, arch, addrBase, entryPoints);
+            asmProg(asm);
+
             var lr = asm.GetImage();
             program = new Program(
                 lr.Image,

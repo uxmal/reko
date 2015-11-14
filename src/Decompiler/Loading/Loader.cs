@@ -169,7 +169,8 @@ namespace Reko.Loading
         /// <returns>An array of bytes with the file contents at the specified offset.</returns>
         public virtual byte[] LoadImageBytes(string fileName, int offset)
         {
-            using (FileStream stm = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            using (var stm = fsSvc.CreateFileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 byte[] bytes = new Byte[stm.Length + offset];
                 stm.Read(bytes, offset, (int)stm.Length);

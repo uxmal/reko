@@ -18,24 +18,35 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
-using NUnit.Framework;
 using System;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class MsDosPlatformTests
 	{
+        private ServiceContainer sc;
+
+        [SetUp]
+        public void Setup()
+        {
+            sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+        }
+
 		[Test]
 		public void MspRealModeServices()
 		{
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-			Platform platform = new MsdosPlatform(null, arch);
+			Platform platform = new MsdosPlatform(sc, arch);
 
 			var state = arch.CreateProcessorState();
 			state.SetRegister(Registers.ah, Constant.Byte(0x3E));

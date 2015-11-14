@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Assemblers.x86
         public new void Setup()
         {
             base.Setup();
-            m = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), Address.SegPtr(0x100, 0x0100), new List<EntryPoint>());
+            m = new X86Assembler(sc, new IntelArchitecture(ProcessorMode.Real), Address.SegPtr(0x100, 0x0100), new List<EntryPoint>());
         }
 
         [Test]

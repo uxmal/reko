@@ -54,8 +54,9 @@ namespace Reko.UnitTests.Arch.Intel
 		{
             var arch = new IntelArchitecture(ProcessorMode.Real);
             program = new Program() { Architecture = arch };
-            asm = new X86TextAssembler(arch);
             sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            asm = new X86TextAssembler(sc, arch);
 			configFile = null;
 		}
 

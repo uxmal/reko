@@ -18,15 +18,17 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using NUnit.Framework;
-using System;
 using Reko.Environments.Msdos;
+using System;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -41,20 +43,22 @@ namespace Reko.UnitTests.Core.Serialization
 		[SetUp]
 		public void Setup()
 		{
+            var sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
 			arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(null, arch);
+            platform = new MsdosPlatform(sc, arch);
 			sigser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "stdapi");
             argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame(), null);
 		}
 
         [Test]
-        public void SerializeNullArgument()
+        public void SargSerializeNullArgument()
         {
             Assert.IsNull(argser.Serialize(null));
         }
 
         [Test]
-        public void SerializeRegister()
+        public void SargSerializeRegister()
         {
             var arg = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
             Argument_v1 sarg = argser.Serialize(arg);
@@ -105,7 +109,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void ArgSet_DerserializeReturnRegisterWithType()
+        public void ArgSer_DerserializeReturnRegisterWithType()
         {
             var arg = new Argument_v1
             {

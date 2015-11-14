@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.IO;
@@ -93,7 +94,8 @@ namespace Reko.Environments.Msdos
             }
 
             SerializedLibrary lib;
-            using (FileStream stm = new FileStream(libPath, FileMode.Open))
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            using (Stream stm = fsSvc.CreateFileStream(libPath, FileMode.Open, FileAccess.Read))
             {
                 lib = SerializedLibrary.LoadFromStream(stm);
             }

@@ -1,13 +1,15 @@
-﻿using Reko.Assemblers.x86;
+﻿using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
 
@@ -25,7 +27,9 @@ namespace Reko.UnitTests.Arch.Intel
         public void Setup()
         {
             arch = new X86ArchitectureFlat32();
-            asm = new X86Assembler(arch, loadAddress, new List<EntryPoint>());
+            var services = new ServiceContainer();
+            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            asm = new X86Assembler(services, arch, loadAddress, new List<EntryPoint>());
         }
 
         public override IProcessorArchitecture Architecture

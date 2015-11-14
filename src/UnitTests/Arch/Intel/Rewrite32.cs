@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Arch.Intel
             this.services = mr.Stub<IServiceProvider>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
             var configSvc = mr.StrictMock<IConfigurationService>();
+            var fsSvc = new FileSystemServiceImpl();
             var win32env = new OperatingEnvironmentElement
             {
                 TypeLibraries = 
@@ -65,10 +66,11 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
             services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
             services.Stub(s => s.GetService(typeof(CancellationTokenSource))).Return(null);
+            services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(new FileSystemServiceImpl());
             tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
                 .Do(new Func<Platform, string, TypeLibrary>((p, n) =>
                 {
-                    var lib = TypeLibrary.Load(p, Path.ChangeExtension(n, ".xml"));
+                    var lib = TypeLibrary.Load(p, Path.ChangeExtension(n, ".xml"), fsSvc);
                     return lib;
                 }));
             services.Replay();
@@ -141,7 +143,7 @@ namespace Reko.UnitTests.Arch.Intel
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
-            var asm = new X86TextAssembler(new X86ArchitectureFlat32());
+            var asm = new X86TextAssembler(services, new X86ArchitectureFlat32());
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
