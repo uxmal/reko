@@ -25,12 +25,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Core.Serialization
 {
 	[TestFixture]
 	public class SerializedLibraryTests
 	{
+        private IFileSystemService fsSvc;
+
+        [SetUp]
+        public void Setup()
+        {
+            fsSvc = new FileSystemServiceImpl();
+        }
+
 		[Test]
 		public void SlibWriteOneProcedure()
 		{
@@ -44,7 +53,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof (SerializedLibrary));
 			SerializedLibrary lib;
-			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/SlibOneProcedure.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("Core/SlibOneProcedure.xml"), FileMode.Open))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
@@ -60,7 +69,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
 			SerializedLibrary lib;
-			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"), FileMode.Open))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
@@ -72,7 +81,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
 			SerializedLibrary lib;
-			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/Msdos/realmodeintservices.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("../Environments/Msdos/realmodeintservices.xml"), FileMode.Open))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}

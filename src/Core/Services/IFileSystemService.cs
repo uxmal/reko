@@ -30,12 +30,19 @@ namespace Reko.Core.Services
     /// </summary>
     public interface IFileSystemService
     {
+        Stream CreateFileStream(string filename, FileMode mode);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
+        string MakeRelativePath(string fromPath, string toPath);
     }
 
     public class FileSystemServiceImpl : IFileSystemService
     {
+        public Stream CreateFileStream(string filename, FileMode mode)
+        {
+            return new FileStream(filename, mode);
+        }
+
         public Stream CreateFileStream(string filename, FileMode mode, FileAccess access)
         {
             return new FileStream(filename, mode, access);
@@ -45,5 +52,26 @@ namespace Reko.Core.Services
         {
             return new FileStream(filename, mode, access, share);
         }
+
+        public string MakeRelativePath(string fromPath, string toPath)
+        {
+            if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            if (string.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
+            Uri fromUri = new Uri(fromPath);
+            Uri toUri = new Uri(toPath);
+
+            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+
+            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+            string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            if (string.Compare(toUri.Scheme, "file", true) == 0)
+            {
+                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            }
+            return relativePath;
+        }
+
     }
 }

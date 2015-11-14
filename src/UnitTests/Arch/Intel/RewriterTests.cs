@@ -98,7 +98,8 @@ namespace Reko.UnitTests.Arch.Intel
             if (configFile != null)
             {
                 var absFile = FileUnitTester.MapTestPath(configFile);
-                using (Stream stm = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                var fsSvc = sc.RequireService<IFileSystemService>();
+                using (Stream stm = fsSvc.CreateFileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     project = new ProjectLoader(null, new Loader(sc)).LoadProject(stm);
                 }
