@@ -28,8 +28,24 @@ using System.Xml;
 
 namespace Reko.Core.Serialization
 {
-    public class ProjectSaver 
+    public class ProjectSaver : ProjectPersister
     {
+        public ProjectSaver(IServiceProvider services) : base(services)
+        {
+        }
+
+        public void Save(Project project, TextWriter sw)
+        {
+            var sProject = Save(project);
+            Save(sProject, sw);
+        }
+
+        public void Save(Project_v3 sProject, TextWriter sw)
+        {
+            var ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+            ser.Serialize(sw, sProject);
+        }
+
         public Project_v3 Save(Project project)
         {
             var inputs = new List<ProjectFile_v3>();

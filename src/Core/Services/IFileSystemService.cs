@@ -38,6 +38,18 @@ namespace Reko.Core.Services
 
     public class FileSystemServiceImpl : IFileSystemService
     {
+        private char sepChar;
+
+        public FileSystemServiceImpl()
+        {
+            this.sepChar = Path.DirectorySeparatorChar;
+        }
+
+        public FileSystemServiceImpl(char sepChar)
+        {
+            this.sepChar = sepChar;
+        }
+
         public Stream CreateFileStream(string filename, FileMode mode)
         {
             return new FileStream(filename, mode);
@@ -55,23 +67,28 @@ namespace Reko.Core.Services
 
         public string MakeRelativePath(string fromPath, string toPath)
         {
-            if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
-            if (string.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
-
-            Uri fromUri = new Uri(fromPath);
-            Uri toUri = new Uri(toPath);
-
-            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
-
-            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
-            string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
-
-            if (string.Compare(toUri.Scheme, "file", true) == 0)
+            int iLastDir = -1;
+            int i;
+            for (i = 0; i < fromPath.Length && i < toPath.Length; ++i)
             {
-                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+                if (fromPath[i] != toPath[i])
+                    break;
+                if (fromPath[i] == this.sepChar)
+                    iLastDir = i + 1;
             }
-            return relativePath;
+            var sb = new StringBuilder();
+            if (iLastDir <= 1)
+                return toPath;
+            for (i = iLastDir; i < fromPath.Length; ++i)
+            {
+                if (fromPath[i] == this.sepChar)
+                {
+                    sb.Append("..");
+                    sb.Append(sepChar);
+                }
+            }
+            sb.Append(toPath.Substring(iLastDir));
+            return sb.ToString();
         }
-
     }
 }

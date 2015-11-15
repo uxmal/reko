@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var sw = new StringWriter();
-            new ProjectLoader(sc, loader).Save(sp, sw);
+            new ProjectSaver(sc).Save(sp, sw);
             Console.WriteLine(sw);
         }
     }

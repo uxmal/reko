@@ -301,6 +301,7 @@
     <Compile Include="Serialization\MemberPointer_v1.cs" />
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
+    <Compile Include="Serialization\ProjectPersister.cs" />
     <Compile Include="Serialization\ProjectSaver.cs" />
     <Compile Include="Serialization\Procedure_v1.cs" />
     <Compile Include="Serialization\Project_v3.cs" />

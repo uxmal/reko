@@ -35,12 +35,11 @@ namespace Reko.Core.Serialization
     /// Loads a Reko decompiler project file. May optionally ask the user
     /// for help.
     /// </summary>
-    public class ProjectLoader 
+    public class ProjectLoader : ProjectPersister
     {
         public event EventHandler<ProgramEventArgs> ProgramLoaded;
         public event EventHandler<TypeLibraryEventArgs> TypeLibraryLoaded;
 
-        private IServiceProvider services;
         private ILoader loader;
         private Project project;
 
@@ -50,8 +49,8 @@ namespace Reko.Core.Serialization
         }
 
         public ProjectLoader(IServiceProvider services, ILoader loader, Project project)
+            : base(services)
         {
-            this.services = services;
             this.loader = loader;
             this.project = project;
         }
@@ -92,15 +91,9 @@ namespace Reko.Core.Serialization
             return false;
         }
 
-        public void Save(Project_v3 project, TextWriter sw)
-        {
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
-            ser.Serialize(sw, project);
-        }
-
         public Project LoadProject(string filename)
         {
-            var fsSvc = services.RequireService<IFileSystemService>();
+            var fsSvc = Services.RequireService<IFileSystemService>();
             using (var fstm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read))
             {
                 return LoadProject(fstm);
@@ -108,7 +101,7 @@ namespace Reko.Core.Serialization
         }
 
         /// <summary>
-        /// Loads a .dcproject from a file stream.
+        /// Loads a .dcproject from a stream.
         /// </summary>
         /// <param name="stm"></param>
         /// <returns></returns>
@@ -125,8 +118,8 @@ namespace Reko.Core.Serialization
         }
 
         /// <summary>
-        /// Loads a Project object from its serialized representation. First loads the program
-        /// and then any extra metadata.
+        /// Loads a Project object from its serialized representation. First loads the programs
+        /// and then any extra metadata files.
         /// </summary>
         /// <param name="sp"></param>
         /// <returns></returns>
@@ -141,8 +134,8 @@ namespace Reko.Core.Serialization
         }
 
         /// <summary>
-        /// Loads a Project object from its serialized representation. First loads the program
-        /// and then any extra metadata.
+        /// Loads a Project object from its serialized representation. First loads the programs
+        /// and then any extra metadata files.
         /// </summary>
         /// <param name="sp"></param>
         /// <returns></returns>
@@ -178,7 +171,7 @@ namespace Reko.Core.Serialization
             if (user == null || user.LoadAddress == null || user.Processor == null)
                 return null;
             Address addr;
-            if (!services.RequireService<IConfigurationService>()
+            if (!Services.RequireService<IConfigurationService>()
                 .GetArchitecture(user.Processor.Name)
                 .TryParseAddress(user.LoadAddress, out addr))
                 return null;
@@ -207,7 +200,7 @@ namespace Reko.Core.Serialization
                 program.User.Processor = sUser.Processor.Name;
                 if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
                 {
-                    program.Architecture = services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
+                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
                 }
                 //program.Architecture.LoadUserOptions();       //$TODO
             }
@@ -216,9 +209,9 @@ namespace Reko.Core.Serialization
                 program.User.Environment = sUser.PlatformOptions.Name;
                 if (program.Platform is DefaultPlatform && !string.IsNullOrEmpty(program.User.Environment))
                 {
-                    program.Platform = services.RequireService<IConfigurationService>()
+                    program.Platform = Services.RequireService<IConfigurationService>()
                         .GetEnvironment(program.User.Environment)
-                        .Load(services, program.Architecture);
+                        .Load(Services, program.Architecture);
                 }
                 program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
             }
@@ -395,7 +388,7 @@ namespace Reko.Core.Serialization
             Platform platform = null;
             if (platformsInUse.Length == 0)
             {
-                var oSvc = services.GetService<IOracleService>();
+                var oSvc = Services.GetService<IOracleService>();
                 if (oSvc != null)
                 {
                     platform = oSvc.QueryPlatform(string.Format(

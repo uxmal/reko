@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Core.Serialization
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
-                Project_v3 ud = new ProjectSaver().Save(project);
+                Project_v3 ud = new ProjectSaver(sc).Save(project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectSaver();
+            var ps = new ProjectSaver(sc);
             var sProject = ps.Save(project);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
@@ -364,7 +364,7 @@ namespace Reko.UnitTests.Core.Serialization
             var program = new Program();
             program.User.Heuristics.Add("shingle");
             
-            var pSaver = new ProjectSaver();
+            var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram(program);
             var ip = (DecompilerInput_v3)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
@@ -372,7 +372,7 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void When_SaveToTextWriter(Program program, TextWriter sw)
         {
-            var saver = new ProjectSaver();
+            var saver = new ProjectSaver(sc);
             var sProj = new Project_v3
             {
                 Inputs = { saver.VisitProgram(program) }

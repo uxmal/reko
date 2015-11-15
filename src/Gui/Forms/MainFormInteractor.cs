@@ -610,9 +610,7 @@ namespace Reko.Gui.Forms
 
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
-                //$REFACTOR: rule of Demeter, push this into a Save() method.
-                var sp = new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
-                new ProjectLoader(sc, loader).Save(sp, sw);
+                new ProjectSaver(sc).Save(decompilerSvc.Decompiler.Project, sw);
             }
             return true;
         }
