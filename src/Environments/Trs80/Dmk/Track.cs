@@ -96,7 +96,9 @@ namespace Reko.Environments.Trs80.Dmk
 			}
 		}
 
-		public static ushort calc_crc(ushort crc, byte bt)
+        public IEnumerable<Sector> Sectors { get { return m_sectors; } }
+
+        public static ushort calc_crc(ushort crc, byte bt)
 		{
 			uint num = Convert.ToUInt32((int)bt << 8);
 			uint num2 = Convert.ToUInt32(crc);

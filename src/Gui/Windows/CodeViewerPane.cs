@@ -74,8 +74,9 @@ namespace Reko.Gui.Windows
             this.codeView.ProcedureDeclaration.TextChanged += ProcedureDeclaration_TextChanged;
 
             this.TextView.Font = new Font("Lucida Console", 10F);
-            this.TextView.BackColor = SystemColors.Window;
+            this.TextView.BackColor = uiPrefsSvc.Styles[UiStyles.CodeWindow].Background.Color;
             this.TextView.Services = services;
+            this.TextView.StyleClass = UiStyles.CodeWindow;
 
             this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
 

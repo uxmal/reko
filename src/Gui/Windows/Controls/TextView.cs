@@ -55,6 +55,7 @@ namespace Reko.Gui.Windows.Controls
             this.Selection = new TextSelection(this);
             this.model = new EmptyEditorModel();
             this.stringFormat = StringFormat.GenericTypographic;
+            this.visibleLines = new SortedList<float, LayoutLine>();
             this.vScroll.ValueChanged += vScroll_ValueChanged;
         }
 

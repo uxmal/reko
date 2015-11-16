@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <procedure name="PutChar">
+    <address>0033</address>
+    <signature>
+      <arg name="a">
+        <reg>a</reg>
+      </arg>
+    </signature>
+  </procedure>
+</library>

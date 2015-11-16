@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Environments.Trs80.Dmk;
 using System;
@@ -44,7 +45,7 @@ namespace Reko.Environments.Trs80
         {
             get
             {
-                throw new NotImplementedException();
+                return Address.Ptr16(0x4000);
             }
 
             set
@@ -59,8 +60,16 @@ namespace Reko.Environments.Trs80
                 return null;
 
             var tracks = BuildTrackList(TrackLength);
-
-            throw new NotImplementedException();
+            var bytes = tracks.SelectMany(t => t.Sectors)
+                .SelectMany(s => s.GetData())
+                .ToArray();
+            var image = new LoadedImage(addrLoad, bytes);
+            return new Program
+            {
+                Architecture = new Z80ProcessorArchitecture(),
+                Image = image,
+                ImageMap = image.CreateImageMap(),
+            };
         }
 
         private List<Track> BuildTrackList(int trackLength)
@@ -155,7 +164,7 @@ namespace Reko.Environments.Trs80
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary(), new List<Address>());
         }
     }
 }

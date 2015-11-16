@@ -106,7 +106,24 @@ namespace Reko.Environments.Trs80.Dmk
 			}
 		}
 
-		public bool goodDataCRC
+        public byte[]  GetData()
+        {
+            if (DoubleBytes)
+            {
+                byte[] data = new byte[(m_data.Length + 1) / 2];
+                for (int i = 0; i < data.Length; ++i)
+                {
+                    data[i] = m_data[i * 2];
+                }
+                return data;
+            }
+            else
+            {
+                return m_data;
+            }
+        }
+
+        public bool goodDataCRC
 		{
 			get
 			{
