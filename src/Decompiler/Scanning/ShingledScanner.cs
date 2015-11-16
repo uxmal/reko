@@ -55,7 +55,6 @@ namespace Reko.Scanning
                 var y = ScanSegment(segment);
                 map.Add(segment, y);
             }
-
             return SpeculateCallDests(map);
         }
 
@@ -66,8 +65,6 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         public byte[] ScanSegment(ImageMapSegment segment)
         {
-            var addrBase = segment.Address;
-
             var G = new DiGraph<Address>();
             G.AddNode(bad);
             var y = new byte[segment.ContentSize];
@@ -79,31 +76,37 @@ namespace Reko.Scanning
                 var i = Dasm(segment, a);
                 var r = i.Instructions.Last();
                 if (i == null || r is RtlInvalid)
-                    AddEdge(G, bad, i.Address);
-                if (MayFallThrough(i, r))
-                { 
-                    if (!inDelaySlot)
-                    {
-                        if (a + i.Length < y.Length)
-                            AddEdge(G, i.Address + i.Length, i.Address);
-                        else
-                            AddEdge(G, bad, i.Address);
-                    }
-                }
-                var tr = r as RtlTransfer;
-                if (tr != null)
                 {
-                    var dest = Destination(tr);
-                    if (dest != null)
-                    {
-                        if (IsExecutable(dest))
-                            AddEdge(G, dest, i.Address);
-                        else
-                            AddEdge(G, bad, i.Address);
-                    }
+                    AddEdge(G, bad, i.Address);
+                    inDelaySlot = false;
                 }
-                // If this is a delayed unconditional branch...
-                inDelaySlot = i.Class == DT;
+                else
+                {
+                    if (MayFallThrough(i, r))
+                    {
+                        if (!inDelaySlot)
+                        {
+                            if (a + i.Length < y.Length)
+                                AddEdge(G, i.Address + i.Length, i.Address);
+                            else
+                                AddEdge(G, bad, i.Address);
+                        }
+                    }
+                    var tr = r as RtlTransfer;
+                    if (tr != null)
+                    {
+                        var dest = Destination(tr);
+                        if (dest != null)
+                        {
+                            if (IsExecutable(dest))
+                                AddEdge(G, dest, i.Address);
+                            else
+                                AddEdge(G, bad, i.Address);
+                        }
+                    }
+                    // If this is a delayed unconditional branch...
+                    inDelaySlot = i.Class == DT;
+                }
             }
             foreach (var a in new DfsIterator<Address>(G).PreOrder(bad))
             {

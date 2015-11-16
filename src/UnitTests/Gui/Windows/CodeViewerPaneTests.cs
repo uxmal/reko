@@ -63,7 +63,16 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc = mr.Stub<IDecompilerShellUiService>();
             frame = mr.Stub<IWindowFrame>();
             font = new Font("Arial", 10);
-            var styles = new Dictionary<string, UiStyle>();
+            var styles = new Dictionary<string, UiStyle>()
+            {
+                {
+                    UiStyles.CodeWindow,
+                    new UiStyle
+                    {
+                        Background = new SolidBrush(Color.White),
+                    }
+                }
+            };
             uiPreferencesSvc.Stub(u => u.Styles).Return(styles);
 
             var sc = new ServiceContainer();
