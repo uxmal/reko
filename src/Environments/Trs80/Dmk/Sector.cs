@@ -7,15 +7,12 @@ namespace Reko.Environments.Trs80.Dmk
 {
 	internal class Sector : IByteSource
 	{
-		private bool m_changed;
 		private int SectorNumber = -1;
 		private int m_actualSize;
 		private bool m_doubleDensity;
 		private byte[] m_data;
 		private bool m_goodHeaderCRC;
 		private bool m_goodDataCRC;
-		public event EventHandler LengthChanged;
-		public event EventHandler Changed;
 
         public Sector()
         {

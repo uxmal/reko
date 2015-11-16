@@ -58,9 +58,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Dmk\Form1.resources" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Trs80Rom.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -102,7 +102,7 @@ namespace Reko.Environments.Trs80
                     num2 = trackLength - 128;
                 }
                 track.setData(rawDMK, i, num2);
-                track.parseSectors();
+                track.ParseSectors();
                 i += num2;
                 listToProcess.Add(track);
             }

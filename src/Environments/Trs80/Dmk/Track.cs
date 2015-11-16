@@ -5,335 +5,241 @@ using System.Linq;
 
 namespace Reko.Environments.Trs80.Dmk
 {
-	internal class Track
-	{
+    internal class Track
+    {
         public event EventHandler LengthChanged;
 
         private List<Sector> m_sectors = new List<Sector>();
 
-		private bool m_changed;
-		private bool m_modified;
-		private int m_dmkOffset = -1;
-		private byte[] m_header = new byte[128];
-		private byte[] m_data;
-		private int m_number;
-		private int m_side;
-		private bool m_twoByteSingleDensity = true;
+        private int m_dmkOffset = -1;
+        private byte[] m_header = new byte[128];
+        private byte[] m_data;
+        private bool m_twoByteSingleDensity = true;
 
-		public bool changed
-		{
-			get
-			{
-				return this.m_changed;
-			}
-		}
+        public long Length
+        {
+            get
+            {
+                if (this.isEmpty())
+                {
+                    return 0L;
+                }
+                return this.m_data.LongLength;
+            }
+        }
 
-		public bool modified
-		{
-			get
-			{
-				return this.m_modified;
-			}
-			set
-			{
-				this.m_modified = value;
-			}
-		}
+        public int SectorCount
+        {
+            get
+            {
+                return this.m_sectors.Count;
+            }
+        }
 
-		public long Length
-		{
-			get
-			{
-				if (this.isEmpty())
-				{
-					return 0L;
-				}
-				return this.m_data.LongLength;
-			}
-		}
+        public bool twoByteSingleDensity
+        {
+            get
+            {
+                return this.m_twoByteSingleDensity;
+            }
+            set
+            {
+                this.m_twoByteSingleDensity = value;
+            }
+        }
 
-		public int sectorCount
-		{
-			get
-			{
-				return this.m_sectors.Count;
-			}
-		}
+        public int TrackNumber { get; set; }
 
-		public bool twoByteSingleDensity
-		{
-			get
-			{
-				return this.m_twoByteSingleDensity;
-			}
-			set
-			{
-				this.m_twoByteSingleDensity = value;
-			}
-		}
-
-		public int trackNumber
-		{
-			get
-			{
-				return this.m_number;
-			}
-			set
-			{
-				this.m_number = value;
-			}
-		}
-
-		public int side
-		{
-			get
-			{
-				return this.m_side;
-			}
-			set
-			{
-				this.m_side = value;
-			}
-		}
+        public int Side { get; set; }
 
         public IEnumerable<Sector> Sectors { get { return m_sectors; } }
 
         public static ushort calc_crc(ushort crc, byte bt)
-		{
-			uint num = Convert.ToUInt32((int)bt << 8);
-			uint num2 = Convert.ToUInt32(crc);
-			for (int i = 0; i < 8; i++)
-			{
-				bool flag = ((num2 ^ num) & 32768u) == 32768u;
-				num2 = Convert.ToUInt32((long)((ulong)((ulong)num2 << 1) ^ (ulong)(flag ? 4129L : 0L)));
-				num2 &= 65535u;
-				num <<= 1;
-			}
-			return Convert.ToUInt16(num2);
-		}
+        {
+            uint num = Convert.ToUInt32((int)bt << 8);
+            uint num2 = Convert.ToUInt32(crc);
+            for (int i = 0; i < 8; i++)
+            {
+                bool flag = ((num2 ^ num) & 32768u) == 32768u;
+                num2 = Convert.ToUInt32((long)((ulong)((ulong)num2 << 1) ^ (ulong)(flag ? 4129L : 0L)));
+                num2 &= 65535u;
+                num <<= 1;
+            }
+            return Convert.ToUInt16(num2);
+        }
 
-		public Track()
-		{
-		}
+        public Track()
+        {
+        }
 
-		public void applyChanges(byte[] data)
-		{
-			if (this.m_dmkOffset == -1)
-			{
-				return;
-			}
-			if (this.m_changed)
-			{
-				this.m_modified = true;
-			}
-			Buffer.BlockCopy(this.m_data, 0, data, this.m_dmkOffset, this.m_data.Count<byte>());
-			this.m_changed = false;
-		}
+        public byte ReadByte(long index)
+        {
+            if (this.isEmpty())
+            {
+                return 0;
+            }
+            if (index >= this.m_data.LongLength)
+            {
+                return 0;
+            }
+            return this.m_data[(int)(checked((IntPtr)index))];
+        }
 
-		public byte ReadByte(long index)
-		{
-			if (this.isEmpty())
-			{
-				return 0;
-			}
-			if (index >= this.m_data.LongLength)
-			{
-				return 0;
-			}
-			return this.m_data[(int)(checked((IntPtr)index))];
-		}
+        public Track(int number, int side)
+        {
+            this.TrackNumber = number;
+            this.Side = side;
+        }
 
-		public void WriteByte(long index, byte value)
-		{
-		}
+        public byte dataMarker(int index)
+        {
+            if (index < 0)
+            {
+                return 0;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return 0;
+            }
+            return this.m_sectors[index].Marker;
+        }
 
-		public void InsertBytes(long index, byte[] bs)
-		{
-		}
+        public byte crc1(int index)
+        {
+            if (index < 0)
+            {
+                return 0;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return 0;
+            }
+            return this.m_sectors[index].Crc1;
+        }
 
-		public void DeleteBytes(long index, long length)
-		{
-		}
+        public byte crc2(int index)
+        {
+            if (index < 0)
+            {
+                return 0;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return 0;
+            }
+            return this.m_sectors[index].Crc2;
+        }
 
-		public bool HasChanges()
-		{
-			return this.m_changed;
-		}
+        public byte datacrc1(int index)
+        {
+            if (index < 0)
+            {
+                return 0;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return 0;
+            }
+            return this.m_sectors[index].DataCrc1;
+        }
 
-		public void ApplyChanges()
-		{
-		}
+        public byte datacrc2(int index)
+        {
+            if (index < 0)
+            {
+                return 0;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return 0;
+            }
+            return this.m_sectors[index].DataCrc2;
+        }
 
-		public bool SupportsWriteByte()
-		{
-			return false;
-		}
+        public bool goodHeaderCRC(int index)
+        {
+            return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].goodHeaderCRC;
+        }
 
-		public bool SupportsInsertBytes()
-		{
-			return false;
-		}
+        public bool goodDataCRC(int index)
+        {
+            return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].goodDataCRC;
+        }
 
-		public bool SupportsDeleteBytes()
-		{
-			return false;
-		}
+        public int findSectorAndTrack(int track, int sector, bool doubleDensity)
+        {
+            for (int i = 0; i < this.m_sectors.Count; i++)
+            {
+                if (this.m_sectors[i].Track == track && this.m_sectors[i].sector == sector && this.m_sectors[i].doubleDensity == doubleDensity)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
-		public Track(int number, int side)
-		{
-			this.m_number = number;
-			this.m_side = side;
-		}
+        public int reportedSector(int index)
+        {
+            if (index < 0)
+            {
+                return -1;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return -1;
+            }
+            return this.m_sectors[index].sector;
+        }
 
-		public byte dataMarker(int index)
-		{
-			if (index < 0)
-			{
-				return 0;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return 0;
-			}
-			return this.m_sectors[index].Marker;
-		}
+        public int reportedTrack(int index)
+        {
+            if (index < 0)
+            {
+                return -1;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return -1;
+            }
+            return this.m_sectors[index].Track;
+        }
 
-		public byte crc1(int index)
-		{
-			if (index < 0)
-			{
-				return 0;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return 0;
-			}
-			return this.m_sectors[index].Crc1;
-		}
+        public bool doubleDensity(int index)
+        {
+            return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].doubleDensity;
+        }
 
-		public byte crc2(int index)
-		{
-			if (index < 0)
-			{
-				return 0;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return 0;
-			}
-			return this.m_sectors[index].Crc2;
-		}
+        public IByteSource sectorData(int index)
+        {
+            if (index < 0)
+            {
+                return null;
+            }
+            if (index >= this.m_sectors.Count)
+            {
+                return null;
+            }
+            return this.m_sectors[index];
+        }
 
-		public byte datacrc1(int index)
-		{
-			if (index < 0)
-			{
-				return 0;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return 0;
-			}
-			return this.m_sectors[index].DataCrc1;
-		}
+        private bool isEmpty()
+        {
+            return this.m_data == null || this.m_data.Length == 0;
+        }
 
-		public byte datacrc2(int index)
-		{
-			if (index < 0)
-			{
-				return 0;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return 0;
-			}
-			return this.m_sectors[index].DataCrc2;
-		}
+        public void setHeader(byte[] data, int startPosition)
+        {
+            Buffer.BlockCopy(data, startPosition, this.m_header, 0, 128);
+        }
 
-		public bool goodHeaderCRC(int index)
-		{
-			return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].goodHeaderCRC;
-		}
+        public void setData(byte[] data, int startPosition, int length)
+        {
+            this.m_dmkOffset = startPosition;
+            this.m_data = new byte[length];
+            Buffer.BlockCopy(data, startPosition, this.m_data, 0, length);
+        }
 
-		public bool goodDataCRC(int index)
-		{
-			return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].goodDataCRC;
-		}
-
-		public int findSectorAndTrack(int track, int sector, bool doubleDensity)
-		{
-			for (int i = 0; i < this.m_sectors.Count; i++)
-			{
-				if (this.m_sectors[i].Track == track && this.m_sectors[i].sector == sector && this.m_sectors[i].doubleDensity == doubleDensity)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
-
-		public int reportedSector(int index)
-		{
-			if (index < 0)
-			{
-				return -1;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return -1;
-			}
-			return this.m_sectors[index].sector;
-		}
-
-		public int reportedTrack(int index)
-		{
-			if (index < 0)
-			{
-				return -1;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return -1;
-			}
-			return this.m_sectors[index].Track;
-		}
-
-		public bool doubleDensity(int index)
-		{
-			return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].doubleDensity;
-		}
-
-		public IByteSource sectorData(int index)
-		{
-			if (index < 0)
-			{
-				return null;
-			}
-			if (index >= this.m_sectors.Count)
-			{
-				return null;
-			}
-			return this.m_sectors[index];
-		}
-
-		private bool isEmpty()
-		{
-			return this.m_data == null || this.m_data.Length == 0;
-		}
-
-		public void setHeader(byte[] data, int startPosition)
-		{
-			Buffer.BlockCopy(data, startPosition, this.m_header, 0, 128);
-		}
-
-		public void setData(byte[] data, int startPosition, int length)
-		{
-			this.m_dmkOffset = startPosition;
-			this.m_data = new byte[length];
-			Buffer.BlockCopy(data, startPosition, this.m_data, 0, length);
-		}
-
-		public void parseSectors()
+        public void ParseSectors()
 		{
 			this.m_sectors.Clear();
 			if (this.m_data == null)
