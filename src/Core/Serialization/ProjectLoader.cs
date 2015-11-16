@@ -68,7 +68,7 @@ namespace Reko.Core.Serialization
             try
             {
                 Stream stm = new MemoryStream(image);
-                return LoadProject(stm);
+                return LoadProject(fileName, stm);
             }
             catch (XmlException)
             {
@@ -94,9 +94,9 @@ namespace Reko.Core.Serialization
         public Project LoadProject(string filename)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            using (var fstm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read))
+            using (var stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read))
             {
-                return LoadProject(fstm);
+                return LoadProject(filename, stm);
             }
         }
 
@@ -105,12 +105,12 @@ namespace Reko.Core.Serialization
         /// </summary>
         /// <param name="stm"></param>
         /// <returns></returns>
-        public Project LoadProject(Stream stm)
+        public Project LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
             if (ser.CanDeserialize(rdr))
-                return LoadProject((Project_v3) ser.Deserialize(rdr));
+                return LoadProject(filename,(Project_v3) ser.Deserialize(rdr));
             ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
             if (ser.CanDeserialize(rdr))
                 return LoadProject((Project_v2) ser.Deserialize(rdr));
@@ -123,10 +123,10 @@ namespace Reko.Core.Serialization
         /// </summary>
         /// <param name="sp"></param>
         /// <returns></returns>
-        public Project LoadProject(Project_v3 sp)
+        public Project LoadProject(string filename, Project_v3 sp)
         {
-            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(m));
-            var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(s));
+            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
+            var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
             var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
             project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
@@ -149,19 +149,19 @@ namespace Reko.Core.Serialization
             return this.project;
         }
 
-        public Program VisitInputFile(DecompilerInput_v3 sInput)
+        public Program VisitInputFile(string projectFilePath, DecompilerInput_v3 sInput)
         {
-            var bytes = loader.LoadImageBytes(sInput.Filename, 0);
+            var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
             var address = LoadAddress(sInput.User);
             var program = loader.LoadExecutable(sInput.Filename, bytes, address);
-            program.Filename = sInput.Filename;
+            program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
+            program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
+            program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
+            program.OutputFilename = ConvertToAbsolutePath(projectFilePath, sInput.OutputFilename);
+            program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
+            program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
+            program.EnsureFilenames(program.Filename);
             LoadUserData(sInput.User, program, program.User);
-            program.DisassemblyFilename = sInput.DisassemblyFilename;
-            program.IntermediateFilename = sInput.IntermediateFilename;
-            program.OutputFilename = sInput.OutputFilename;
-            program.TypesFilename = sInput.TypesFilename;
-            program.GlobalsFilename = sInput.GlobalsFilename;
-            program.EnsureFilenames(sInput.Filename);
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }
@@ -355,9 +355,9 @@ namespace Reko.Core.Serialization
             }
         }
 
-        public MetadataFile VisitMetadataFile(MetadataFile_v3 sMetadata)
+        public MetadataFile VisitMetadataFile(string projectFilePath, MetadataFile_v3 sMetadata)
         {
-            string filename = sMetadata.Filename;
+            string filename = ConvertToAbsolutePath(projectFilePath, sMetadata.Filename);
             return LoadMetadataFile(filename);
         }
 

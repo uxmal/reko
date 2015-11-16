@@ -34,9 +34,9 @@ namespace Reko.Core.Serialization
         {
         }
 
-        public void Save(Project project, TextWriter sw)
+        public void Save(string projectAbsPath, Project project, TextWriter sw)
         {
-            var sProject = Save(project);
+            var sProject = Save(projectAbsPath, project);
             Save(sProject, sw);
         }
 
@@ -46,11 +46,11 @@ namespace Reko.Core.Serialization
             ser.Serialize(sw, sProject);
         }
 
-        public Project_v3 Save(Project project)
+        public Project_v3 Save(string projectAbsPath, Project project)
         {
             var inputs = new List<ProjectFile_v3>();
-            inputs.AddRange(project.Programs.Select(p => VisitProgram(p)));
-            inputs.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(m)));
+            inputs.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
+            inputs.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
             var sp = new Project_v3()
             {
                 Inputs = inputs
@@ -58,12 +58,12 @@ namespace Reko.Core.Serialization
             return sp;
         }
 
-        public ProjectFile_v3 VisitProgram(Program program)
+        public ProjectFile_v3 VisitProgram(string projectAbsPath, Program program)
         {
             var dtSerializer = new DataTypeSerializer();
             return new DecompilerInput_v3
             {
-                Filename = program.Filename,
+                Filename = ConvertToProjectRelativePath(projectAbsPath, program.Filename),
                 User = new UserData_v3
                 {
                     Procedures = program.User.Procedures
@@ -88,11 +88,11 @@ namespace Reko.Core.Serialization
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
                     Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList()
                 },
-                DisassemblyFilename = program.DisassemblyFilename,
-                IntermediateFilename = program.IntermediateFilename,
-                OutputFilename = program.OutputFilename,
-                TypesFilename = program.TypesFilename,
-                GlobalsFilename = program.GlobalsFilename,
+                DisassemblyFilename =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyFilename),
+                IntermediateFilename = ConvertToProjectRelativePath(projectAbsPath, program.IntermediateFilename),
+                OutputFilename =       ConvertToProjectRelativePath(projectAbsPath, program.OutputFilename),
+                TypesFilename =        ConvertToProjectRelativePath(projectAbsPath, program.TypesFilename),
+                GlobalsFilename =      ConvertToProjectRelativePath(projectAbsPath, program.GlobalsFilename),
             };
         }
 
@@ -182,11 +182,11 @@ namespace Reko.Core.Serialization
             throw new NotSupportedException(typeof(object).Name);
         }
 
-        public ProjectFile_v3 VisitMetadataFile(MetadataFile metadata)
+        public ProjectFile_v3 VisitMetadataFile(string projectAbsPath, MetadataFile metadata)
         {
             return new MetadataFile_v3
             {
-                 Filename = metadata.Filename,
+                 Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename),
                   ModuleName = metadata.ModuleName,
             };
         }

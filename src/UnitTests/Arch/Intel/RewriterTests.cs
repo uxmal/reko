@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Arch.Intel
                 var fsSvc = sc.RequireService<IFileSystemService>();
                 using (Stream stm = fsSvc.CreateFileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    project = new ProjectLoader(null, new Loader(sc)).LoadProject(stm);
+                    project = new ProjectLoader(null, new Loader(sc)).LoadProject(absFile, stm);
                 }
             }
             else

@@ -35,6 +35,7 @@ using System.Xml.Serialization;
 using Reko.Core.Lib;
 using System.Diagnostics;
 using System.Xml;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -51,6 +52,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             this.mr = new MockRepository();
             this.sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
         }
 
         [Test]
@@ -171,7 +173,7 @@ namespace Reko.UnitTests.Core.Serialization
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
-                Project_v3 ud = new ProjectSaver(sc).Save(project);
+                Project_v3 ud = new ProjectSaver(sc).Save("/var/foo/foo.proj", project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -299,7 +301,7 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var ps = new ProjectSaver(sc);
-            var sProject = ps.Save(project);
+            var sProject = ps.Save("c:\\test\\foo.project", project);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
             Assert.AreEqual("foo.def", project.MetadataFiles[0].ModuleName);
@@ -354,7 +356,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var ploader = new ProjectLoader(sc, loader);
-            var project = ploader.LoadProject(sProject);
+            var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
         }
 
@@ -365,7 +367,7 @@ namespace Reko.UnitTests.Core.Serialization
             program.User.Heuristics.Add("shingle");
             
             var pSaver = new ProjectSaver(sc);
-            var file = pSaver.VisitProgram(program);
+            var file = pSaver.VisitProgram("foo.proj", program);
             var ip = (DecompilerInput_v3)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
         }
@@ -375,7 +377,7 @@ namespace Reko.UnitTests.Core.Serialization
             var saver = new ProjectSaver(sc);
             var sProj = new Project_v3
             {
-                Inputs = { saver.VisitProgram(program) }
+                Inputs = { saver.VisitProgram("foo.exe", program) }
             };
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = System.Xml.Formatting.Indented;

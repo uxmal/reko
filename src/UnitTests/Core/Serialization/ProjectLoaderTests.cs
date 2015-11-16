@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            prld.LoadProject(new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             Assert.AreEqual(2, platform.Test_Options.Count);
             Assert.AreEqual("Bob", platform.Test_Options["Name"]);
@@ -172,7 +172,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            prld.LoadProject(new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            prld.LoadProject("/ff/b/foo.proj", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             var list = (IList)platform.Test_Options["Names"];
             Assert.AreEqual(3, list.Count);
@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void Prld_PlatformOptions_Dictionary()
         {
-            var sExp =
+            var sproject =
     @"<?xml version=""1.0"" encoding=""utf-8""?>
 <project xmlns=""http://schemata.jklnet.org/Reko/v3"">
   <input>
@@ -203,10 +203,34 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            prld.LoadProject(new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            prld.LoadProject("c:\\foo\\bar.proj", new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
 
             var list = (IDictionary)platform.Test_Options["Names"];
             Assert.AreEqual(3, list.Count);
+        }
+
+        [Test]
+        public void Prld_MakePathsAbsolute()
+        {
+            var sProject = new Project_v3
+            {
+                Inputs =
+                {
+                    new DecompilerInput_v3
+                    {
+                        Filename = "foo.exe",
+                    }
+                }
+            };
+
+            var ldr = mr.Stub<ILoader>();
+            ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
+            ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(new byte[1000]);
+            mr.ReplayAll();
+
+            var prld = new ProjectLoader(sc, ldr);
+            var project = prld.LoadProject(@"c:/users/bob/projects/foo.project", sProject);
+            Assert.AreEqual(@"c:\users\bob\projects\foo.exe", project.Programs[0].Filename);
         }
     }
 }

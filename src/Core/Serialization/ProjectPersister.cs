@@ -41,8 +41,11 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public string ConvertToAbsolutePath(string projectAbsPath, string projectRelative)
         {
+            if (string.IsNullOrEmpty(projectRelative))
+                return projectRelative;
             var dir = Path.GetDirectoryName(projectAbsPath);
-            return Path.Combine(dir, projectRelative);
+            var combined = Path.Combine(dir, projectRelative);
+            return Path.GetFullPath(combined);
         }
 
         /// <summary>
@@ -53,8 +56,9 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public string ConvertToProjectRelativePath(string projectAbsPath, string absPath)
         {
+            if (string.IsNullOrEmpty(absPath))
+                return absPath;
             var fsSvc = Services.RequireService<IFileSystemService>();
-
             return fsSvc.MakeRelativePath(projectAbsPath, absPath);
         }
     }

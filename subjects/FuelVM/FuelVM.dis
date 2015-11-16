@@ -1,346 +1,413 @@
-void fn00401000(word32 edx, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  edx fs
-// LiveOut:
-// Trashed: SCZDO eax ecx edi ax cx di al cl ah ch
-// Preserved: esp ebp
-// Stack args: Stack +0004(32) Stack +0008(32) Stack +000C(32)
+// fn00401000
+// Return size: 4
+void fn00401000()
 fn00401000_entry:
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
-
+	// succ:  l00401000
 l00401000:
-	Mem6[0x00403180:word32] = GetModuleHandleA(0x00000000)
-	DialogBoxParamA(Mem6[0x00403180:word32], 0x000003EC, 0x00000000, 0x0040102C, 0x00000000)
-	ExitProcess(0x00000000)
-	branch dwArg08 != 0x00000110 l004010EB
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
-
-l004010EB:
-	branch dwArg08 != 0x00000136 l00401102
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
-
-l00401102:
-	branch dwArg08 != 0x0000000F l0040112F
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
-
-l0040112F:
-	branch dwArg08 != 0x00000111 l0040118F
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
-
-l0040118F:
-	branch dwArg08 != 0x00000010 l004011BC
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32) Stack +0004(32)
-
-l00401195:
-	Mem206[fp - 0x00000008:word32] = 0x00090000
-	Mem208[fp - 0x0000000C:word32] = 0x000003E8
-	Mem210[fp - 0x00000010:word32] = dwArg04
-	AnimateWindow(0x000003EC, 0x00000000, 0x0040102C)
-	Mem214[fp - 0x00000008:word32] = Mem210[0x00403194:word32]
-	DeleteObject(0x0040102C)
-	Mem218[fp - 0x00000008:word32] = 0x00000000
-	Mem220[fp - 0x0000000C:word32] = dwArg04
-	EndDialog(0x00000000, 0x0040102C)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32)
-
-l00401138:
-	branch dwArg0C != 0x000003F2 l00401178
-// DataOut: eax edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32) Stack +0004(32)
-
-l00401178:
-	branch dwArg0C != 0x000003FA l004011BC
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32) Stack +0004(32)
-
-l0040117F:
-	Mem194[fp - 0x00000008:word32] = 0x00000000
-	Mem196[fp - 0x0000000C:word32] = 0x00000000
-	Mem198[fp - 0x00000010:word32] = 0x00000010
-	SendMessageA(dwArg04, 0x000003EC, 0x00000000, 0x0040102C)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32)
-
-l00401142:
-	Mem170[fp - 0x00000008:word32] = 0x0000000C
-	Mem172[fp - 0x0000000C:word32] = 0x00403198
-	Mem174[fp - 0x00000010:word32] = 0x000003F8
-	GetDlgItemTextA(dwArg04, 0x000003EC, 0x00000000, 0x0040102C)
-	Mem180[fp - 0x00000008:word32] = 0x0000000C
-	Mem182[fp - 0x0000000C:word32] = 0x004031B0
-	Mem184[fp - 0x00000010:word32] = 0x000003F9
-	GetDlgItemTextA(dwArg04, 0x000003EC, 0x00000000, 0x0040102C)
-	Mem189[0x004031CC:byte] = 0x00
-	fn00401238(edx)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32)
-
-l00401108:
-	Mem144[fp - 0x00000008:word32] = 0x00000001
-	Mem146[fp - 0x0000000C:word32] = 0x00000000
-	Mem148[fp - 0x00000010:word32] = dwArg04
-	InvalidateRect(0x000003EC, 0x00000000, 0x0040102C)
-	Mem152[fp - 0x00000008:word32] = dwArg04
-	UpdateWindow(0x0040102C)
-	Mem156[fp - 0x00000008:word32] = 0x00000001
-	Mem158[fp - 0x0000000C:word32] = dwArg04
-	ShowWindow(0x00000000, 0x0040102C)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-
-l004010F4:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	eax = GetModuleHandleA(Mem0[esp:LPCSTR])
+	esp = esp + 0x00000004
+	Mem0[0x00403180:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x0040102C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x000003EC
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403180:word32]
+	eax = DialogBoxParamA(Mem0[esp:HINSTANCE], Mem0[esp + 4:LPCSTR], Mem0[esp + 8:HWND], Mem0[esp + 12:DLGPROC], Mem0[esp + 16:LPARAM])
+	esp = esp + 0x00000014
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	ExitProcess(Mem0[esp:UINT])
+	esp = esp + 0x00000004
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	SCZO = cond(Mem0[ebp + 0x0000000C:word32] - 0x00000110)
+	branch Test(NE,Z) l004010EB
+	// succ:  l0040103C l004010EB
 l0040103C:
-	Mem53[fp - 0x00000008:word32] = 0x00000053
-	Mem55[fp - 0x0000000C:word32] = 0x00000000
-	Mem57[fp - 0x00000010:word32] = 0x00000000
-	SetWindowPos(dwArg04, 0x00000000, 0x00000000, 0x00000000, 0x000003EC, 0x00000000, 0x0040102C)
-	Mem70[fp - 0x00000008:word32] = 0x000007D1
-	Mem72[fp - 0x0000000C:word32] = Mem70[0x00403180:word32]
-	Mem76[fp - 0x00000008:word32] = LoadBitmapA(0x00000000, 0x0040102C)
-	Mem79[0x00403194:word32] = CreatePatternBrush(0x0040102C)
-	Mem81[fp - 0x00000008:word32] = 0x0000000A
-	Mem83[fp - 0x0000000C:word32] = 0x000007D2
-	Mem85[fp - 0x00000010:word32] = Mem83[0x00403180:word32]
-	Mem88[0x00403184:word32] = FindResourceA(0x000003EC, 0x00000000, 0x0040102C)
-	Mem90[fp - 0x00000008:word32] = Mem88[0x00403184:word32]
-	Mem92[fp - 0x0000000C:word32] = Mem90[0x00403180:word32]
-	Mem95[0x00403188:word32] = LoadResource(0x00000000, 0x0040102C)
-	Mem97[fp - 0x00000008:word32] = Mem95[0x00403184:word32]
-	Mem99[fp - 0x0000000C:word32] = Mem97[0x00403180:word32]
-	Mem102[0x00403190:word32] = SizeofResource(0x00000000, 0x0040102C)
-	Mem104[fp - 0x00000008:word32] = Mem102[0x00403188:word32]
-	Mem107[0x0040318C:word32] = LockResource(0x0040102C)
-	Mem109[fp - 0x00000008:word32] = Mem107[0x0040318C:word32]
-	Mem111[fp - 0x0000000C:word32] = Mem109[0x00403190:word32]
-	Mem113[fp - 0x00000010:word32] = 0x00000000
-	word32 eax_114 = ExtCreateRegion(0x000003EC, 0x00000000, 0x0040102C)
-	Mem117[fp - 0x00000008:word32] = 0x00000001
-	Mem119[fp - 0x0000000C:word32] = eax_114
-	Mem121[fp - 0x00000010:word32] = dwArg04
-	SetWindowRgn(0x000003EC, 0x00000000, 0x0040102C)
-	Mem125[fp - 0x00000008:word32] = 0x00000001
-	Mem127[fp - 0x0000000C:word32] = dwArg04
-	ShowWindow(0x00000000, 0x0040102C)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):0x000003EC -12(fp):0x00000000 -8(fp):0x0040102C -4(fp):ebp
-// LocalsOut: fp(32)
-
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000053
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = SetWindowPos(Mem0[esp:HWND], Mem0[esp + 4:HWND], Mem0[esp + 8:int32], Mem0[esp + 12:int32], Mem0[esp + 16:int32], Mem0[esp + 20:int32], Mem0[esp + 24:UINT])
+	esp = esp + 0x0000001C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x000007D1
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403180:word32]
+	eax = LoadBitmapA(Mem0[esp:HINSTANCE], Mem0[esp + 4:LPCSTR])
+	esp = esp + 0x00000008
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	eax = CreatePatternBrush(Mem0[esp:HBITMAP])
+	esp = esp + 0x00000004
+	Mem0[0x00403194:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x0000000A
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x000007D2
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403180:word32]
+	eax = FindResourceA(Mem0[esp:HMODULE], Mem0[esp + 4:LPCSTR], Mem0[esp + 8:LPCSTR])
+	esp = esp + 0x0000000C
+	Mem0[0x00403184:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403184:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403180:word32]
+	eax = LoadResource(Mem0[esp:HMODULE], Mem0[esp + 4:HRSRC])
+	esp = esp + 0x00000008
+	Mem0[0x00403188:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403184:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403180:word32]
+	eax = SizeofResource(Mem0[esp:HMODULE], Mem0[esp + 4:HRSRC])
+	esp = esp + 0x00000008
+	Mem0[0x00403190:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403188:word32]
+	eax = LockResource(Mem0[esp:HGLOBAL])
+	esp = esp + 0x00000004
+	Mem0[0x0040318C:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x0040318C:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403190:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	eax = ExtCreateRegion(Mem0[esp:(ptr XFORM)], Mem0[esp + 4:DWORD], Mem0[esp + 8:(ptr RGNDATA)])
+	esp = esp + 0x0000000C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000001
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = SetWindowRgn(Mem0[esp:HWND], Mem0[esp + 4:HRGN], Mem0[esp + 8:BOOL])
+	esp = esp + 0x0000000C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000001
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = ShowWindow(Mem0[esp:HWND], Mem0[esp + 4:int32])
+	esp = esp + 0x00000008
+	goto l004011BC
+	// succ:  l004011BC
+l004010EB:
+	SCZO = cond(Mem0[ebp + 0x0000000C:word32] - 0x00000136)
+	branch Test(NE,Z) l00401102
+	// succ:  l004010F4 l00401102
+l004010F4:
+	eax = Mem0[0x00403194:word32]
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn00401000_exit
+l00401102:
+	SCZO = cond(Mem0[ebp + 0x0000000C:word32] - 0x0000000F)
+	branch Test(NE,Z) l0040112F
+	// succ:  l00401108 l0040112F
+l00401108:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000001
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = InvalidateRect(Mem0[esp:HWND], Mem0[esp + 4:(ptr RECT)], Mem0[esp + 8:BOOL])
+	esp = esp + 0x0000000C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = UpdateWindow(Mem0[esp:HWND])
+	esp = esp + 0x00000004
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000001
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = ShowWindow(Mem0[esp:HWND], Mem0[esp + 4:int32])
+	esp = esp + 0x00000008
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn00401000_exit
+l0040112F:
+	SCZO = cond(Mem0[ebp + 0x0000000C:word32] - 0x00000111)
+	branch Test(NE,Z) l0040118F
+	// succ:  l00401138 l0040118F
+l00401138:
+	eax = Mem0[ebp + 0x00000010:word32]
+	SCZO = cond(eax - 0x000003F2)
+	branch Test(NE,Z) l00401178
+	// succ:  l00401142 l00401178
+l00401142:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x0000000C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00403198
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x000003F8
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = GetDlgItemTextA(Mem0[esp:HWND], Mem0[esp + 4:int32], Mem0[esp + 8:LPSTR], Mem0[esp + 12:int32])
+	esp = esp + 0x00000010
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x0000000C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x004031B0
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x000003F9
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = GetDlgItemTextA(Mem0[esp:HWND], Mem0[esp + 4:int32], Mem0[esp + 8:LPSTR], Mem0[esp + 12:int32])
+	esp = esp + 0x00000010
+	Mem0[0x004031CC:byte] = 0x00
+	call fn00401238 (retsize: 4;)
+	goto l004011BC
+	// succ:  l004011BC
+l00401178:
+	SCZO = cond(eax - 0x000003FA)
+	branch Test(NE,Z) l004011BC
+	// succ:  l0040117F l004011BC
+l0040117F:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000010
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = SendMessageA(Mem0[esp:HWND], Mem0[esp + 4:UINT], Mem0[esp + 8:WPARAM], Mem0[esp + 12:LPARAM])
+	esp = esp + 0x00000010
+	goto l004011BC
+	// succ:  l004011BC
+l0040118F:
+	SCZO = cond(Mem0[ebp + 0x0000000C:word32] - 0x00000010)
+	branch Test(NE,Z) l004011BC
+	// succ:  l00401195 l004011BC
+l00401195:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00090000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x000003E8
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = AnimateWindow(Mem0[esp:HWND], Mem0[esp + 4:DWORD], Mem0[esp + 8:DWORD])
+	esp = esp + 0x0000000C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[0x00403194:word32]
+	eax = DeleteObject(Mem0[esp:HGDIOBJ])
+	esp = esp + 0x00000004
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebp + 0x00000008:word32]
+	eax = EndDialog(Mem0[esp:HWND], Mem0[esp + 4:INT_PTR])
+	esp = esp + 0x00000008
+	// succ:  l004011BC
 l004011BC:
+	eax = eax ^ eax
+	SZO = cond(eax)
+	C = false
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edi:<invalid> al:0x00 -32(fp):<invalid> -28(fp):0x00000000 -24(fp):0x00000000 -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
-
+	// succ:  fn00401000_exit
 fn00401000_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp eax:<invalid> ebp:ebp ecx:<invalid> edi:<invalid> al:<invalid> -32(fp):<invalid> -28(fp):0x00000000 -24(fp):0x00000000 -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
 
 
-
-word32 fn004011C2(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut: ecx
-// Trashed: SCZDO ecx edi ax cx di al cl ch
-// Preserved: esp ebp
-// Stack args: Stack +0004(32)
+// fn004011C2
+// Return size: 4
+void fn004011C2()
 fn004011C2_entry:
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0004(32)
-
+	// succ:  l004011C2
 l004011C2:
-	word32 edi_16 = dwArg04
-	word32 ecx_11 = ~0x00000000
-// DataOut: ecx edx edi fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32)
-
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	edi = Mem0[ebp + 0x00000008:word32]
+	ecx = ecx - ecx
+	SCZO = cond(ecx)
+	al = al - al
+	SCZO = cond(al)
+	ecx = ~ecx
+	D = false
+	// succ:  l004011CF
 l004011CF:
-	branch ecx_11 == 0x00000000 l004011D1
-// DataOut: ecx edx edi fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
-// LocalsOut: fp(32)
-
+	branch ecx == 0x00000000 l004011D1
+	// succ:  l004011CF_1 l004011D1
 l004011CF_1:
-	edi_16 = edi_33 + 0x00000001
-	ecx_11 = ecx_11 - 0x00000001
-	word32 edi_33 = edi_16
-	branch 0x00 != Mem0[edi_33:byte] l004011CF
-// DataOut: ecx edx edi fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
-// LocalsOut: fp(32)
-
+	SCZO = cond(al - Mem0[edi:byte])
+	edi = edi + 0x00000001
+	ecx = ecx - 0x00000001
+	branch Test(NE,Z) l004011CF
+	// succ:  l004011D1 l004011CF
 l004011D1:
-	return ~ecx_11 - 0x00000001
-// DataOut: ecx edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
-
+	ecx = ~ecx
+	ecx = ecx - 0x00000001
+	SZO = cond(ecx)
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn004011C2_exit
 fn004011C2_exit:
-// DataOut: ecx edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp ebp:ebp edi:<invalid> ecx:<invalid> al:0x00 -4(fp):ebp
 
 
-
+// fn004011D8
+// Return size: 4
 void fn004011D8()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SCZO eax ecx ebx ax cx bx al cl bl ah ch bh
-// Preserved: esp
 fn004011D8_entry:
-// DataOut: fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-
+	// succ:  l004011D8
 l004011D8:
-	Mem4[0x004035CF:word32] = 0x00000000
-	Mem5[0x004035D7:word32] = 0x00000000
-	Mem6[0x004035DF:word32] = 0x00000000
-	Mem14[0x004035E7:word32] = (word32) Mem6[(word32) Mem6[0x004031CC:byte] + 0x00403198:byte]
-	Mem15[0x004035EF:word32] = 0x00000032
-	Mem16[0x004035FF:word32] = 0x00000000
-	Mem17[0x00403610:byte] = 0x00
-	Mem18[0x0040360F:byte] = 0x00
-	Mem20[0x004031CC:byte] = Mem18[0x004031CC:byte] + 0x01
+	esp = fp
+	ebx = ebx ^ ebx
+	SZO = cond(ebx)
+	C = false
+	eax = ebx
+	Mem0[0x004035CF:word32] = 0x00000000
+	Mem0[0x004035D7:word32] = 0x00000000
+	Mem0[0x004035DF:word32] = 0x00000000
+	ecx = 0x004031CC
+	bl = Mem0[ecx:byte]
+	ebx = ebx + 0x00403198
+	SCZO = cond(ebx)
+	al = Mem0[ebx:byte]
+	Mem0[0x004035E7:word32] = eax
+	Mem0[0x004035EF:word32] = 0x00000032
+	Mem0[0x004035FF:word32] = 0x00000000
+	Mem0[0x00403610:byte] = 0x00
+	Mem0[0x0040360F:byte] = 0x00
+	v11 = Mem0[0x004031CC:byte] + 0x01
+	Mem0[0x004031CC:byte] = v11
+	SZO = cond(v11)
 	return
-// DataOut: fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-
+	// succ:  fn004011D8_exit
 fn004011D8_exit:
-// DataOut: fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp ebx:<invalid> eax:<invalid> ecx:0x004031CC bl:<invalid> al:<invalid>
 
 
-
-void fn00401238(word32 edx)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  edx fs
-// LiveOut:
-// Trashed: SCZDO eax ecx edi ax cx di al cl ah ch
-// Preserved: esp ebp
-l004012D4:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
+// fn00401238
+// Return size: 4
+void fn00401238()
 fn00401238_entry:
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0010(32)
-
+	// succ:  l00401238
 l00401238:
-	word32 ecx_10 = fn004011C2(0x00403198)
-	branch ecx_10 >=u 0x00000007 l0040124F
-// DataOut: ecx edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -000C(32) Local -0010(32)
-
-l0040124F:
-	Mem29[0x004031CD:word32] = ecx_10
-	Mem31[fp + 0xFFFFFFF4:word32] = 0x004031B0
-	branch fn004011C2(0x00403198) >=u 0x00000007 l00401268
-// DataOut: edx fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x00403198 -4(fp):ebp
-// LocalsOut: fp(32)
-
-l00401268:
-	Mem43[fp + 0xFFFFFFF4:word32] = edx
-	word32 ecx_39 = 0x00000000
-// DataOut: ecx cl fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 eax:0x004031CD ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x004031B0 -4(fp):ebp
-// LocalsOut: fp(32)
-
-l00401271:
-	Mem52[ecx_39 + 0x00403198:byte] = (byte) (Mem43[ecx_39 + 0x00403198:word32] ^ ecx_39)
-	ecx_39 = ecx_39 + 0x00000001
-	branch ecx_39 <= Mem52[0x004031CD:word32] l00401271
-// DataOut: ecx cl fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF4 ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:0x004031CD ebx:<invalid> edi:<invalid> al:<invalid> -12(fp):edx -4(fp):ebp
-// LocalsOut: fp(32)
-
-l00401293:
-	Mem61[0x004031CE:word32] = ecx_39
-	Mem66[0x004031C8:word32] = Mem61[0x004035FF:word32]
-	fn004011D8()
-	Mem73[fs:0x00000000:word32] = fp + 0xFFFFFFF0
-	fn004011D8()
-	int3()
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF4 ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:0x004031CD ebx:<invalid> edi:<invalid> al:<invalid> -12(fp):edx -4(fp):ebp
-
-l00401266:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 eax:0x004031CD ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x004031B0 -4(fp):ebp
-
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp + 0xFFFFFFFC
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00403198
+	call fn004011C2 (retsize: 4;)
+	esp = esp + 0x00000004
+	SCZO = cond(ecx - 0x00000007)
+	branch Test(UGE,C) l0040124F
+	// succ:  l0040124D l0040124F
 l0040124D:
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:fp - 0x00000004 ecx:<invalid> edi:<invalid> al:0x00 -12(fp):0x00403198 -4(fp):ebp
-
+	// succ:  fn00401238_exit
+l0040124F:
+	eax = 0x004031CD
+	Mem0[eax:word32] = ecx
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x004031B0
+	call fn004011C2 (retsize: 4;)
+	esp = esp + 0x00000004
+	SCZO = cond(ecx - 0x00000007)
+	branch Test(UGE,C) l00401268
+	// succ:  l00401266 l00401268
+l00401266:
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn00401238_exit
+l00401268:
+	ecx = ecx ^ ecx
+	SZO = cond(ecx)
+	C = false
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	edx = 0x004031CD
+	// succ:  l00401271
+l00401271:
+	eax = ebp - 0x00000004
+	ebx = ebx ^ ebx
+	SZO = cond(ebx)
+	C = false
+	eax = 0x00403198
+	ebx = Mem0[ecx + eax:word32]
+	ebx = ebx ^ ecx
+	SZO = cond(ebx)
+	C = false
+	eax = eax + ecx
+	SCZO = cond(eax)
+	Mem0[eax:byte] = bl
+	eax = 0x00403198
+	eax = Mem0[ebp - 0x00000004:word32]
+	ecx = ecx + 0x00000001
+	SZO = cond(ecx)
+	SCZO = cond(ecx - Mem0[edx:word32])
+	branch Test(LE,SZO) l00401271
+	// succ:  l00401293 l00401271
+l00401293:
+	edx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	eax = 0x004031CE
+	Mem0[eax:word32] = ecx
+	eax = 0x00403000
+	ebx = 0x004035FF
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[ebx:word32]
+	Mem0[0x004031C8:word32] = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	call fn004011D8 (retsize: 4;)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x004012D7
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[fs:0x00000000:word32]
+	Mem0[fs:0x00000000:word32] = esp
+	call fn004011D8 (retsize: 4;)
+	int3()
+	eax = eax ^ eax
+	SZO = cond(eax)
+	C = false
+	edx_eax = ecx *u eax
+	SCZO = cond(edx_eax)
+	esp = esp + 0xFFFFFFFF
+	SCZO = cond(esp)
+l004012D4:
+	call ebx (retsize: 4;)
+	return
+	// succ:  l004012D4 fn00401238_exit
 fn00401238_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp ebp:ebp eax:0x004031CD ecx:<invalid> edi:<invalid> al:0x00 -12(fp):<invalid> -4(fp):ebp
-
 
 

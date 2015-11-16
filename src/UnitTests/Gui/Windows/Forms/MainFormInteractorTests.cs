@@ -87,6 +87,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_DecompilerInstance();
             dcSvc.Stub(d => d.Decompiler = null);
             Given_SavePrompt(true);
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -110,6 +112,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_DecompilerInstance();
             Given_SavePrompt(true);
             dcSvc.Expect(d => d.Decompiler = null);
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -131,6 +135,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Expect_MainForm_SizeSet();
             Given_SavePrompt(true);
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -164,6 +170,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_SavePrompt(true);
             dcSvc.Stub(d => d.Decompiler = null);
             uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -196,6 +204,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_LoadPreferences();
             Given_DecompilerInstance();
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
+
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -233,6 +244,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_Loader();
             Given_DecompilerInstance();
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -447,6 +460,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_DecompilerInstance();
             Given_SavePrompt(true);
             dcSvc.Expect(d => d.Decompiler = Arg<IDecompiler>.Is.Anything);
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Anything, Arg<string>.Is.Null)).Return(null);
+
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();

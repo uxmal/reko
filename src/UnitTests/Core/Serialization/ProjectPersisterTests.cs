@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Core.Serialization
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
             var pp = new ProjectPersister(sc);
-            var s  = pp.ConvertToProjectRelativePath("/home/bob/projects/foo.dcproj", "/home/bob/projects/reko/foo.c");
+            var s = pp.ConvertToProjectRelativePath("/home/bob/projects/foo.dcproj", "/home/bob/projects/reko/foo.c");
             Assert.AreEqual("reko/foo.c", s);
         }
 
@@ -82,6 +82,16 @@ namespace Reko.UnitTests.Core.Serialization
             var pp = new ProjectPersister(sc);
             var s = pp.ConvertToProjectRelativePath(@"d:\Users\Bob\foo.dcproj", @"c:\Users\Bob\reko\foo.c");
             Assert.AreEqual(@"c:\Users\Bob\reko\foo.c", s);
+        }
+
+        [Test]
+        public void Prp_ToAbsolute_Msdos1()
+        {
+            var sc = new ServiceContainer();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl('\\'));
+            var pp = new ProjectPersister(sc);
+            var s = pp.ConvertToAbsolutePath(@"d:\Users\Bob\foo.dcproj", @"..\reko\foo.c");
+            Assert.AreEqual(@"d:\Users\reko\foo.c", s);
         }
     }
 }

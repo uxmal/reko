@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var ps = new ProjectLoader(sc, loader);
-            var p = ps.LoadProject(sp);
+            var p = ps.LoadProject("c:\\tmp\\fproj.proj", sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 
             Assert.AreEqual(1, inputFile.User.Procedures.Count);

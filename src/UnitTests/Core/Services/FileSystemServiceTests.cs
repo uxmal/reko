@@ -35,13 +35,13 @@ namespace Reko.UnitTests.Core.Services
         [SetUp]
         public void Setup()
         {
-            fs = new FileSystemServiceImpl();
         }
 
         [Test]
         public void FS_MakeRelative_1()
         {
-            Assert.AreEqual("/home/ox", fs.MakeRelativePath("/home/ox", "/home/ax"));
+            fs = new FileSystemServiceImpl('/');
+            Assert.AreEqual("ax", fs.MakeRelativePath("/home/ox", "/home/ax"));
         }
     }
 }

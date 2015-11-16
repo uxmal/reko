@@ -40,11 +40,13 @@ namespace Reko.UnitTests
         ILoader loader;
         TestDecompiler decompiler;
         private ServiceContainer sc;
+        private IFileSystemService fsSvc;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            fsSvc = mr.Stub<IFileSystemService>();
             var config = new FakeDecompilerConfiguration();
             var host = new FakeDecompilerHost();
             sc = new ServiceContainer();
@@ -55,23 +57,6 @@ namespace Reko.UnitTests
             loader.Replay();
             decompiler = new TestDecompiler(loader, sc);
             loader.BackToRecord();
-        }
-
-        [Test]
-        public void Dec_LoadProjectFileNoBom()
-        {
-            byte [] bytes = new byte[1000];
-            loader.Stub(l => l.LoadImageBytes("test.dcproject", 0))
-                .Return(new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Reko/v3\">" +
-                    "<input><filename>foo.bar</filename></input></project>"));
-            loader.Stub(l => l.LoadImageBytes("foo.bar", 0)).Return(bytes);
-            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
-            mr.ReplayAll();
-
-            decompiler.Load("test.dcproject");
-
-            Assert.AreEqual("foo.bar", decompiler.Project.Programs[0].Filename);
-            mr.VerifyAll();
         }
 
         [Test]

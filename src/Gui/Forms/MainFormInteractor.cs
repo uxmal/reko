@@ -610,7 +610,7 @@ namespace Reko.Gui.Forms
 
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
-                new ProjectSaver(sc).Save(decompilerSvc.Decompiler.Project, sw);
+                new ProjectSaver(sc).Save(ProjectFileName, decompilerSvc.Decompiler.Project, sw);
             }
             return true;
         }
