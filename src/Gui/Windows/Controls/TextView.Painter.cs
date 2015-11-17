@@ -91,7 +91,6 @@ namespace Reko.Gui.Windows.Controls
                         rcTrailer);
                 }
 
-
                 for (int iSpan = 0; iSpan < line.Spans.Length; ++iSpan)
                 {
                     this.span = line.Spans[iSpan];

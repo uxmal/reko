@@ -366,7 +366,7 @@ namespace Reko.ImageLoaders.Elf
                     if ((segment.sh_flags & SHF_EXECINSTR) != 0)
                         mode |= AccessMode.Execute;
                     var seg = imageMap.AddSegment(
-                        platform.MakeAddressFromLinear(segment.sh_addr), 
+                        platform.MakeAddressFromLinear(segment.sh_addr),
                         GetSectionName(segment.sh_name),
                         mode,
                         (uint)segment.sh_size);
@@ -379,7 +379,10 @@ namespace Reko.ImageLoaders.Elf
                 {
                     if (ph.p_vaddr > 0 && ph.p_filesz > 0)
                         Array.Copy(RawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
+                    Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+
                 }
+            
                 foreach (var segment in SectionHeaders)
                 {
                     if (segment.sh_name == 0 || segment.sh_addr == 0)

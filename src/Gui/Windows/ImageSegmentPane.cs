@@ -38,6 +38,7 @@ namespace Reko.Gui.Windows
         public Control CreateControl()
         {
             this.segmentView = new ImageSegmentView();
+            this.segmentView.TextView.Services = services;
             this.segmentView.TextView.Navigate += TextView_Navigate;
             return this.segmentView;
         }
