@@ -232,19 +232,28 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual("1234:5678", addr.ToString());
         }
 
-      
-
-        [Test][Ignore("need to implement protected 16-bit mode first")]
+        [Test]
         public void ReadCodeAddress_ProtectedMode16_Offset()
         {
+            arch = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
+            var rdr = CreateImageReader(0x78, 0x56);
+            var state = arch.CreateProcessorState();
+            state.SetRegister(Registers.cs, Constant.Word16(0x1234));
+            Address addr = arch.ReadCodeAddress(2, rdr, state);
 
+            Assert.AreEqual("1234:5678", addr.ToString());
         }
 
         [Test]
-        [Ignore("need to implement protected 16-bit mode first")]
         public void ReadCodeAddress_ProtectedMode16_SegOffset()
         {
+            arch = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
+            var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
+            var state = arch.CreateProcessorState();
+            state.SetRegister(Registers.cs, Constant.Word16(0x1111));
+            Address addr = arch.ReadCodeAddress(4, rdr, state);
 
+            Assert.AreEqual("1234:5678", addr.ToString());
         }
 
         [Test]
