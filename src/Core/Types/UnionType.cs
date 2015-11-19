@@ -52,7 +52,7 @@ namespace Reko.Core.Types
 			this.Name = name; this.PreferredType = preferredType; 
 			foreach (DataType dt in alternatives)
 			{
-				Alternatives.Add(new UnionAlternative(dt));
+                AddAlternative(dt);
 			}
 		}
 
@@ -61,7 +61,7 @@ namespace Reko.Core.Types
             this.PreferredType = preferredType;
             foreach (DataType dt in alternatives)
             {
-                Alternatives.Add(new UnionAlternative(dt));
+                AddAlternative(dt);
             }
         }
 
@@ -75,14 +75,20 @@ namespace Reko.Core.Types
 			get { return alts; }
 		}
 
+        public UnionAlternative AddAlternative(DataType dt)
+        {
+            var alt = new UnionAlternative(dt, Alternatives.Count);
+            Alternatives.Add(alt);
+            return alt;
+        }
+
 		public override DataType Clone()
 		{
 			DataType pre = PreferredType != null ? PreferredType.Clone() : null;
 			UnionType u = new UnionType(Name, pre);
 			foreach (UnionAlternative a in this.Alternatives.Values)
 			{
-				UnionAlternative aClone = new UnionAlternative(a.DataType.Clone());
-				u.Alternatives.Add(aClone);
+                u.Alternatives.Add(a.Clone());
 			}
 			return u;
 		}
@@ -132,30 +138,36 @@ namespace Reko.Core.Types
 		}
 	}
 
-	public class UnionAlternative
+	public class UnionAlternative : Field
 	{
-		public UnionAlternative(DataType t)
+        private int index;
+
+        public UnionAlternative(DataType t, int index)
 		{
 			this.DataType = t;
+            this.index = index;
 		}
 
-		public UnionAlternative(string name, DataType dt)
+		public UnionAlternative(string name, DataType dt, int index)
 		{
 			DataType = dt;
 			Name = name;
-		}
+            this.index = index;
+        }
 
-        public DataType DataType { get; set; }
-        public string Name { get; set; }
+        public override string Name { get { if (name == null) return GenerateDefaultName(); return name; } set { name = value; } }
+        private string name;
 
-		public string MakeName(int i)
-		{
-			if (Name == null)
-				return string.Format("u{0}", i);
-			else
-				return Name;
-		}
-	}
+        private string GenerateDefaultName()
+        {
+            return string.Format("u{0}", index);
+        }
+
+        public UnionAlternative Clone()
+        {
+            return new UnionAlternative(name, DataType, index);
+        }
+    }
 
 	public class UnionAlternativeCollection : SortedList<DataType,UnionAlternative>
 	{
@@ -170,7 +182,7 @@ namespace Reko.Core.Types
 
 		public void Add(DataType dt)
 		{
-			Add(new UnionAlternative(dt));
+			Add(new UnionAlternative(dt, Count));
 		}
 
         public void AddRange(IEnumerable<UnionAlternative> alternatives)

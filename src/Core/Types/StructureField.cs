@@ -27,17 +27,13 @@ namespace Reko.Core.Types
     /// <summary>
     /// Describes a field of a structure.
     /// </summary>
-	public class StructureField
+	public class StructureField : Field
 	{
-        public TypeVariable TypeVariable;
-
-		private string name;
-
         public StructureField()
         {
         }
 
-		public StructureField(int offset, DataType type)
+        public StructureField(int offset, DataType type)
 		{
             if (type == null)
                 throw new ArgumentNullException("type");
@@ -51,23 +47,20 @@ namespace Reko.Core.Types
             this.Offset = offset; this.DataType = type; this.name = name;
 		}
 
-		public StructureField Clone()
+        public override string Name { get { if (name == null) return GenerateDefaultName(); return name; } set { name = value; } }
+        private string name;
+
+        public int Offset { get; set; }
+
+        public StructureField Clone()
 		{
 			return new StructureField(Offset, DataType.Clone(), name);
 		}
 
-        public DataType DataType { get; set; }
-
-		public string Name
-		{
-			get 
-			{ 
-				if (name != null) return name;
-				return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$Naming should be given at a different level.
-			}
-		}
-
-        public int Offset;
+        private string GenerateDefaultName()
+        {
+            return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$Naming should be given at a different level.
+        }
 
         public static int ToOffset(Constant offset)
         {

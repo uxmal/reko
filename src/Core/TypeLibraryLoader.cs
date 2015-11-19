@@ -254,7 +254,7 @@ namespace Reko.Core
                 un = new UnionType { Name = union.Name };
                 if (union.Name != null)
                     unions.Add(union.Name, un);
-                var alts = union.Alternatives.Select(a => new UnionAlternative(a.Name, a.Type.Accept(this)));
+                var alts = union.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type.Accept(this), i));
                 un.Alternatives.AddRange(alts);
                 return un;
             }

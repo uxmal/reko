@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
+       [Ignore("scanning-development")]
         public void TerUnionIntReal()
         {
             var mock = CreateProgramBuilder(0x10000, 0x1000);
@@ -250,7 +250,7 @@ namespace Reko.UnitTests.Typing
             ctn.RenameAllTypes(prog.TypeStore);
             TypedExpressionRewriter ter = new TypedExpressionRewriter(prog);
             Instruction instr = ter.TransformAssignment(ass);
-            Assert.AreEqual("x.u1 = 3F", instr.ToString());
+            Assert.AreEqual("x.u0 = 3F", instr.ToString());
         }
 
         [Test]

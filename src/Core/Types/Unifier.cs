@@ -410,7 +410,7 @@ namespace Reko.Core.Types
 					return;
 				}
 			}
-			u.Alternatives.Add(new UnionAlternative(dt));
+			u.Alternatives.Add(new UnionAlternative(dt, u.Alternatives.Count));
 		}
 
 		public DataType UnifyFunctions(FunctionType a, FunctionType b)

@@ -101,8 +101,8 @@ namespace Reko.UnitTests.Core
 			tyfo.Write(u, "bar");
 			Assert.AreEqual(
 @"union foo {
-	int32 u0;
-	real32 u1;
+	int32 u1;
+	real32 u0;
 } bar", 
 				sw.ToString());
 		}

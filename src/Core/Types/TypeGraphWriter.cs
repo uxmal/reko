@@ -196,7 +196,7 @@ namespace Reko.Core.Types
                 {
                     writer.Write(" (");
                     alt.DataType.Accept(this);
-                    writer.Write(" {0})", alt.MakeName(i));
+                    writer.Write(" {0})", alt.Name);
                     ++i;
                 }
             }

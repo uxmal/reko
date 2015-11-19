@@ -210,18 +210,18 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TtranUnion()
         {
-            UnionType t = factory.CreateUnionType("foo", null);
-            t.Alternatives.Add(new UnionAlternative(PrimitiveType.Word32));
-            t.Alternatives.Add(new UnionAlternative(PrimitiveType.Word32));
-            t.Alternatives.Add(new UnionAlternative(PrimitiveType.Word32));
-            t.Alternatives.Add(new UnionAlternative(PrimitiveType.Word32));
+            UnionType ut = factory.CreateUnionType("foo", null);
+            ut.AddAlternative(PrimitiveType.Word32);
+            ut.AddAlternative(PrimitiveType.Word32);
+            ut.AddAlternative(PrimitiveType.Word32);
+            ut.AddAlternative(PrimitiveType.Word32);
             TypeTransformer trans = new TypeTransformer(factory, null, null);
-            PrimitiveType dt = (PrimitiveType) t.Accept(trans);
+            PrimitiveType dt = (PrimitiveType) ut.Accept(trans);
             Assert.AreEqual("word32", dt.ToString());
 
-            t.Alternatives.Add(PrimitiveType.Real32);
-            t.Alternatives.Add(PrimitiveType.Int32);
-            DataType d = t.Accept(trans);
+            ut.AddAlternative(PrimitiveType.Real32);
+            ut.AddAlternative(PrimitiveType.Int32);
+            DataType d = ut.Accept(trans);
             Assert.AreEqual("(union \"foo\" (int32 u0) (real32 u1))", d.ToString());
         }
 

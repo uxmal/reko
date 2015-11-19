@@ -63,8 +63,8 @@ namespace Reko.UnitTests.Typing
             UnionType u = new UnionType("RealInt", null)
             {
                 Alternatives = {
-                    new UnionAlternative("w", PrimitiveType.Word32),
-			        new UnionAlternative("r", PrimitiveType.Real32),
+                    new UnionAlternative("w", PrimitiveType.Word32, 0),
+			        new UnionAlternative("r", PrimitiveType.Real32, 1),
                 }
             };
 			TypeVariable tvUnion = store.CreateTypeVariable(factory);

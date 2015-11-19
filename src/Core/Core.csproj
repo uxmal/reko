@@ -636,6 +636,7 @@
     <Compile Include="Types\EquivalenceClass.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\Field.cs" />
     <Compile Include="Types\FunctionType.cs">
       <SubType>Code</SubType>
     </Compile>

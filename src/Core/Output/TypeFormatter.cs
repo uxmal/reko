@@ -344,9 +344,8 @@ namespace Reko.Core.Output
 			foreach (UnionAlternative alt in ut.Alternatives.Values)
 			{
 				BeginLine();
-				name = alt.MakeName(i);
                 var trf = new TypeReferenceFormatter(writer, true);
-                trf.WriteDeclaration(alt.DataType, name);
+                trf.WriteDeclaration(alt.DataType, alt.Name);
 				EndLine(";");
 				++i;
 			}

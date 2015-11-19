@@ -47,12 +47,12 @@ namespace Reko.Core.Serialization
             return visitor.VisitUnion(this);
         }
 
-        public override DataType BuildDataType(Reko.Core.Types.TypeFactory factory)
+        public override DataType BuildDataType(TypeFactory factory)
         {
             UnionType u = factory.CreateUnionType(Name, null);
             foreach (var alt in Alternatives)
             {
-                u.Alternatives.Add(new UnionAlternative(alt.Name, alt.Type.BuildDataType(factory)));
+                u.Alternatives.Add(new UnionAlternative(alt.Name, alt.Type.BuildDataType(factory), u.Alternatives.Count));
             }
             return u;
         }
