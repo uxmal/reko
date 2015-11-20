@@ -125,9 +125,9 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.FDiv, PrimitiveType.Real64, a, b);
         }
 
-        public FieldAccess Field(DataType dt, Expression e, string name)
+        public FieldAccess Field(DataType dt, Expression e, Field field)
         {
-            return new FieldAccess(dt, e, name);
+            return new FieldAccess(dt, e, field);
         }
 
         public Expression FMul(Expression a, Expression b)

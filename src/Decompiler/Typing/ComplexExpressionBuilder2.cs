@@ -216,7 +216,7 @@ namespace Reko.Typing
 
             dtComplex = field.DataType;
             dtComplexOrig = field.DataType;
-            this.expComplex = CreateFieldAccess(str, field.DataType, expComplex, field.Name);
+            this.expComplex = CreateFieldAccess(str, field.DataType, expComplex, field);
             offset -= field.Offset;
             return dtComplex.Accept(this);
         }
@@ -245,7 +245,7 @@ namespace Reko.Typing
             }
             else
             {
-                expComplex = CreateFieldAccess(ut, alt.DataType, expComplex, alt.Name);
+                expComplex = CreateFieldAccess(ut, alt.DataType, expComplex, alt);
             }
             return dtComplex.Accept(this);
         }
@@ -330,14 +330,14 @@ namespace Reko.Typing
                 throw new NotImplementedException();
         }
 
-        private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, string name)
+        private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, Field field)
         {
             if (enclosingPtr != null)
             {
                 wasDereferenced = true;
                 exp = CreateDereference(dtStructure, exp);
             }
-            var fa = new FieldAccess(dtField, exp, name);
+            var fa = new FieldAccess(dtField, exp, field);
             return fa;
         }
 

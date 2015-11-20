@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-       [Ignore("scanning-development")]
+ //      [Ignore("scanning-development")]
         public void TerUnionIntReal()
         {
             var mock = CreateProgramBuilder(0x10000, 0x1000);

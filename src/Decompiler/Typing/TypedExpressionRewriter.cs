@@ -347,7 +347,7 @@ namespace Reko.Typing
                     var fa = new FieldAccess(
                         seq.TypeVariable.DataType.ResolveAs<Pointer>().Pointee,
                         new Dereference(head.TypeVariable.DataType, head),
-                        seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()).Name);
+                        seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()));
                     return fa;
                 }
                 else
@@ -543,7 +543,7 @@ namespace Reko.Typing
                     var fa = new FieldAccess(
                         seq.TypeVariable.DataType.ResolveAs<Pointer>().Pointee,
                         new Dereference(head.TypeVariable.DataType, head),
-                        seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()).Name);
+                        seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()));
                     return fa;
                 }
                 else

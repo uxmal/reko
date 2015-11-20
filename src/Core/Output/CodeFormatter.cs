@@ -266,7 +266,7 @@ namespace Reko.Core.Output
             if (d != null)
             {
                 d.Expression.Accept(this);
-                writer.Write("->{0}", acc.FieldName);
+                writer.Write("->{0}", acc.Field.Name);
             }
             else
             {
@@ -274,12 +274,12 @@ namespace Reko.Core.Output
                 if (scope != null)
                 {
                     scope.Accept(this);
-                    writer.Write("::{0}", acc.FieldName);
+                    writer.Write("::{0}", acc.Field.Name);
                 }
                 else
                 {
                     acc.Structure.Accept(this);
-                    writer.Write(".{0}", acc.FieldName);
+                    writer.Write(".{0}", acc.Field.Name);
                 }
             }
 			ResetPresedence(prec);

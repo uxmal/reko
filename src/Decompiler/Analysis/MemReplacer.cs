@@ -69,17 +69,22 @@ namespace Reko.Analysis
 			Identifier id = ea as Identifier;
 			if (id != null)
 			{
-				return new FieldAccess(type, new Dereference(type, id), string.Format("{0}00000000", type.Prefix));
+                return new FieldAccess(type, new Dereference(type, id), CreateField(type, 0));
 			}
 			BinaryExpression b = ea as BinaryExpression;
 			if (b != null)
 			{
 				c = b.Right as Constant;
 				if (c != null && b.Operator == Operator.IAdd)
-					return new FieldAccess(type, new Dereference(type, b.Left), string.Format("{0}{1:X8}", type.Prefix, c.ToUInt32()));
+					return new FieldAccess(type, new Dereference(type, b.Left), CreateField(type, c.ToInt32()));
 			}
 			return new Dereference(null, ea);
 		}
+
+        private Field CreateField(DataType type, int offset)
+        {
+            return new StructureField(offset, type);
+        }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
         {
@@ -90,7 +95,7 @@ namespace Reko.Analysis
             Constant c = ea as Constant;
             if (c != null)
             {
-                return new FieldAccess(type, new Dereference(type, basePtr), string.Format("{0}{1:X4}", type.Prefix, c.ToInt16()));
+                return new FieldAccess(type, new Dereference(type, basePtr), CreateField(type, c.ToInt16()));
             }
             BinaryExpression b = ea as BinaryExpression;
             if (b != null && b.Operator == Operator.IAdd)
@@ -99,7 +104,7 @@ namespace Reko.Analysis
                 if (c != null)
                 {
                     return new FieldAccess(type, new MemberPointerSelector(type, basePtr, b.Left),
-                        string.Format("{0}{1:X4}", type.Prefix, c.ToInt16()));
+                        CreateField(type, c.ToInt16()));
                 }
             }
             return new MemberPointerSelector(null, basePtr, ea);

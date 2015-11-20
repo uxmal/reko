@@ -33,11 +33,11 @@ namespace Reko.Core.Expressions
 	public class FieldAccess : Expression
 	{
 		public Expression Structure;
-		public string FieldName;
+		public Field Field;
 
-		public FieldAccess(DataType fieldType, Expression expr, string fieldName) : base(fieldType)
+		public FieldAccess(DataType fieldType, Expression expr, Field field) : base(fieldType)
 		{
-			this.Structure = expr; this.FieldName = fieldName;
+			this.Structure = expr; this.Field = field;
 		}
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -57,7 +57,7 @@ namespace Reko.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new FieldAccess(DataType, Structure.CloneExpression(), FieldName);
+			return new FieldAccess(DataType, Structure.CloneExpression(), Field);
 		}
 
 		public override Expression Invert()

@@ -100,7 +100,6 @@ namespace Reko.UnitTests
 					return;
 				Assert.IsNotNull(expLine, string.Format("File should have ended before line {0}", line));
 				Assert.IsNotNull(tstLine, string.Format("File ended unexpectedly at line {0}", line));
-
 				Assert.AreEqual(expLine, tstLine, string.Format("File differs on line {0}", line));
 				++line;
 			}

@@ -149,7 +149,7 @@ namespace Reko.Typing
 
             var dt = memptr.Pointee.ResolveAs<DataType>();
             var f = EnsureFieldAtOffset(baseType, dt, c.ToInt32());
-            Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f.Name);
+            Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f);
 			if (dereferenced)
 			{
 				ex.DataType = memptr.Pointee;
@@ -206,7 +206,7 @@ namespace Reko.Typing
                 }
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
                 var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.Size);
-                e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f.Name);
+                e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f);
                 if (dereferenced)
                 {
                     e.DataType = ptr.Pointee;

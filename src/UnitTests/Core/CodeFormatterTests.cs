@@ -83,7 +83,10 @@ namespace Reko.UnitTests.Core
 		public void CfFieldAccessDeref()
 		{
 			Identifier id1 = new Identifier("v1", PrimitiveType.Word32, null);
-            Expression e = new FieldAccess(PrimitiveType.Pointer32, new Dereference(PrimitiveType.Word32, id1), "foo");
+            Expression e = new FieldAccess(
+                PrimitiveType.Pointer32,
+                new Dereference(PrimitiveType.Word32, id1),
+                new StructureField(4, PrimitiveType.Word32, "foo"));
 			e.Accept(cf);
 
 			Assert.AreEqual("v1->foo", sw.ToString());
@@ -93,7 +96,10 @@ namespace Reko.UnitTests.Core
 		public void CfDerefFieldAccess()
 		{
 			Identifier id1 = new Identifier("v1", PrimitiveType.Word32, null);
-			Expression e = new Dereference(PrimitiveType.Pointer32, new FieldAccess(PrimitiveType.Word32, id1, "foo"));
+			Expression e = new Dereference(PrimitiveType.Pointer32, new FieldAccess(
+                PrimitiveType.Word32, 
+                id1,
+                new StructureField(4, PrimitiveType.Word32, "foo")));
 			e.Accept(cf);
 
 			Assert.AreEqual("*v1.foo", sw.ToString());
@@ -136,7 +142,7 @@ namespace Reko.UnitTests.Core
         {
             var eq = new EquivalenceClass(new TypeVariable("Eq_2", 2));
             var sr = new ScopeResolution(eq);
-            var e = new FieldAccess(PrimitiveType.Int32, sr, "i0004");
+            var e = new FieldAccess(PrimitiveType.Int32, sr, new StructureField(4, PrimitiveType.Int32, "i0004"));
             e.Accept(cf);
             Assert.AreEqual("Eq_2::i0004", sw.ToString());
         }
@@ -225,7 +231,7 @@ namespace Reko.UnitTests.Core
             var c = new Identifier("c", PrimitiveType.Int32, TemporaryStorage.None);
             var e = m.Array(
                 PrimitiveType.Byte,
-                m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), "a0004"),
+                m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), new StructureField(4, PrimitiveType.Pointer32, "a0004")),
                 c);
             e.Accept(cf);
             Assert.AreEqual("(a->*b).a0004[c]", sw.ToString());
