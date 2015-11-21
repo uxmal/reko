@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
- //      [Ignore("scanning-development")]
+       [Ignore("scanning-development")]
         public void TerUnionIntReal()
         {
             var mock = CreateProgramBuilder(0x10000, 0x1000);
@@ -490,7 +490,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TerCallTable()
         {
             var pb = new ProgramBuilder();
@@ -499,7 +498,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
+        //[Ignore("scanning-development")]
         public void TerSegmentedCall()
         {
             var pb = new ProgramBuilder();
@@ -568,7 +567,7 @@ namespace Reko.UnitTests.Typing
         [Ignore("FIXME")]
         public void TerArray()
         {
-            var pm = new ProgramBuilder();
+            var pm = CreateProgramBuilder(0x00F000, 0x2000);
             pm.Add("proc1", m =>
             {
                 var eax = m.Reg32("eax");

@@ -441,6 +441,13 @@ namespace Reko.Typing
             return new Assignment((Identifier)dst, src);
         }
 
+
+        public override Instruction TransformCallInstruction(CallInstruction ci)
+        {
+            var exp = Rewrite(ci.Callee, true);
+            return new SideEffect(new Application(exp, VoidType.Instance));
+        }
+
         public override Instruction TransformDeclaration(Declaration decl)
         {
             base.TransformDeclaration(decl);
@@ -530,9 +537,8 @@ namespace Reko.Typing
 
         public override Expression VisitMkSequence(MkSequence seq)
         {
-            Debug.Assert(false, "Not tested yet");
-            var head = seq.Head.Accept(this);
-            var tail = seq.Tail.Accept(this);
+            var head = Rewrite(seq.Head, dereferenced);
+            var tail = Rewrite(seq.Tail, dereferenced);
             Constant c = seq.Tail as Constant;
             var ptHead = DataTypeOf( head) as PrimitiveType;
             if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
@@ -542,7 +548,7 @@ namespace Reko.Typing
                     var seg = head.TypeVariable.DataType.ResolveAs<Pointer>().Pointee;
                     var fa = new FieldAccess(
                         seq.TypeVariable.DataType.ResolveAs<Pointer>().Pointee,
-                        new Dereference(head.TypeVariable.DataType, head),
+                        new Dereference(head.DataType, head),
                         seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()));
                     return fa;
                 }
@@ -553,10 +559,13 @@ namespace Reko.Typing
                         seq.TypeVariable.DataType,
                         seq.TypeVariable.OriginalDataType,
                         head,
-                        new MemberPointerSelector(seq.DataType, head, tail),
+                        new MemberPointerSelector(seq.DataType,
+                            new Dereference(head.DataType, head),
+                        tail),
                         null,
                         0);
-                    return ceb.BuildComplex(dereferenced);
+                    var x = ceb.BuildComplex(dereferenced);
+                    return x;
                 }
             }
             else

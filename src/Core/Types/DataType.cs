@@ -82,5 +82,7 @@ namespace Reko.Core.Types
             this.Accept(typeGraphWriter);
             return sw.ToString();
 		}
-	}
+
+
+    }
 }

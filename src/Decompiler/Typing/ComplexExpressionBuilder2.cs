@@ -93,7 +93,7 @@ namespace Reko.Typing
 
         public Expression VisitCode(CodeType c)
         {
-            throw new NotImplementedException();
+            return expComplex;
         }
 
         public Expression VisitEnum(EnumType e)
@@ -215,7 +215,7 @@ namespace Reko.Typing
                 throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
 
             dtComplex = field.DataType;
-            dtComplexOrig = field.DataType;
+            dtComplexOrig = field.DataType.ResolveAs<DataType>();
             this.expComplex = CreateFieldAccess(str, field.DataType, expComplex, field);
             offset -= field.Offset;
             return dtComplex.Accept(this);
@@ -235,7 +235,9 @@ namespace Reko.Typing
         {
             UnionAlternative alt = ut.FindAlternative(dtComplexOrig);
             if (alt == null)
+            {
                 throw new TypeInferenceException("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);
+            }
 
             dtComplex = alt.DataType;
             dtComplexOrig = alt.DataType;
