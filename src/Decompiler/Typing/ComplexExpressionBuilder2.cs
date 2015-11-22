@@ -197,7 +197,8 @@ namespace Reko.Typing
             if (enclosingPtr != null)
             {
                 int strSize = str.GetInferredSize();
-                if (str.Size > 0 && (offset >= strSize && offset % strSize == 0 && index == null))
+                if (str.Size > 0 // We know the size of the struct, for sure.
+                    && (offset >= strSize && offset % strSize == 0 && index == null))
                 {
                     var exp = CreateArrayAccess(str, enclosingPtr, offset / strSize, index);
                     index = null;
@@ -338,6 +339,10 @@ namespace Reko.Typing
             {
                 wasDereferenced = true;
                 exp = CreateDereference(dtStructure, exp);
+                if (dtField.ResolveAs<ArrayType>() != null)
+                {
+                    wasDereferenced = false;
+                }
             }
             var fa = new FieldAccess(dtField, exp, field);
             return fa;
