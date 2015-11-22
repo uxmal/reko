@@ -197,7 +197,7 @@ namespace Reko.Typing
             if (enclosingPtr != null)
             {
                 int strSize = str.GetInferredSize();
-                if ((offset >= strSize && offset % strSize == 0 && index == null))
+                if (str.Size > 0 && (offset >= strSize && offset % strSize == 0 && index == null))
                 {
                     var exp = CreateArrayAccess(str, enclosingPtr, offset / strSize, index);
                     index = null;

@@ -564,7 +564,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("FIXME")]
+ //       [Ignore("FIXME")]
         public void TerArray()
         {
             var pm = CreateProgramBuilder(0x00F000, 0x2000);
