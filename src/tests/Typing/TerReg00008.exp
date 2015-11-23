@@ -134,7 +134,7 @@ T_19: (in 0x0001 : word16)
   Class: Eq_19
   DataType: word16
   OrigDataType: word16
-T_20: (in Mem12[ds:0x9A26:word16] - 0x0001 : word16)
+T_20: (in ds->w9A26 - 0x0001 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16

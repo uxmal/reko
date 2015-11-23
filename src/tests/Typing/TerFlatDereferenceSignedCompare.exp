@@ -72,7 +72,7 @@ T_10: (in 0x0014 : word16)
   Class: Eq_9
   DataType: ci16
   OrigDataType: ci16
-T_11: (in Mem0[Mem0[ds + 0x00005404:word32] + 0x00000004:word16] < 0x0014 : bool)
+T_11: (in ds->ptr5404->w0004 < 0x0014 : bool)
   Class: Eq_11
   DataType: bool
   OrigDataType: bool
