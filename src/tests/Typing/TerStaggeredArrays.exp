@@ -16,8 +16,8 @@ void StaggeredArraysFragment()
 StaggeredArraysFragment_entry:
 	// succ:  l1
 l1:
-	x = p[i].dw0000;
-	x = p[i].dw0004;
+	x = p[i].dw0000
+	x = p[i].dw0004
 StaggeredArraysFragment_exit:
 
 // Equivalence classes ////////////
@@ -32,7 +32,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))
-T_2: (in p : word32)
+T_2: (in p : (arr Eq_13))
   Class: Eq_2
   DataType: (ptr (arr Eq_13))
   OrigDataType: (ptr (struct (0 (arr T_13) a0000) (4 (arr T_14) a0004)))

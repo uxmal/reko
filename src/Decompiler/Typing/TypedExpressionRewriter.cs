@@ -471,13 +471,12 @@ namespace Reko.Typing
             return exp;
         }
 
-        public Expression RewriteComplexExpression(Expression complex, Expression index, bool dereferenced)
+        public Expression RewriteComplexExpression(Expression complex, Expression index, int offset, bool dereferenced)
         {
             var cOther = index as Constant;
-            int offset = 0;
             if (cOther != null)
             {
-                offset = cOther.ToInt32();
+                offset += cOther.ToInt32();
                 index = null;
             }
             var ceb = new ComplexExpressionBuilder2(null, basePtr, complex, index, offset);
@@ -486,9 +485,24 @@ namespace Reko.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var arrayPtr = Rewrite(acc.Array, false);
-            var index = Rewrite(acc.Index, false);
-            return RewriteComplexExpression(arrayPtr, index, true);
+            BinaryExpression bin;
+            Constant c;
+            if (acc.Array.As(out bin) &&
+                bin.Operator == Operator.IAdd &&
+                bin.Right.As(out c))
+            {
+                // (x + C)[...]
+                var arrayPtr = Rewrite(bin.Left, false);
+                var index = Rewrite(acc.Index, false);
+                return RewriteComplexExpression(arrayPtr, index, c.ToInt32(), true);
+            }
+            else
+            {
+                // (x)[...]
+                var arrayPtr = Rewrite(acc.Array, false);
+                var index = Rewrite(acc.Index, false);
+                return RewriteComplexExpression(arrayPtr, index, 0, true);
+            }
         }
 
         public override Expression VisitBinaryExpression(BinaryExpression binExp)
@@ -506,11 +520,11 @@ namespace Reko.Typing
                             Environment.NewLine, binExp,
                             DataTypeOf(left),
                             DataTypeOf(right));
-                    return RewriteComplexExpression(left, right, dereferenced);
+                    return RewriteComplexExpression(left, right, 0, dereferenced);
                 }
                 else if (DataTypeOf(right).IsComplex)
                 {
-                    return RewriteComplexExpression(right, left, dereferenced);
+                    return RewriteComplexExpression(right, left, 0, dereferenced);
                 }
             }
             return base.VisitBinaryExpression(binExp);
@@ -584,7 +598,7 @@ namespace Reko.Typing
             if (access.EffectiveAddress.As(out cEa))
             {
                 uint uOffset = cEa.ToUInt32();
-                result = RewriteComplexExpression(basePtr, Constant.UInt32(uOffset), true);
+                result = RewriteComplexExpression(basePtr, Constant.UInt32(uOffset), 0, true);
             }
             else
             {

@@ -515,7 +515,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TerStaggeredArrays()
         {
             ProgramBuilder prog = new ProgramBuilder();
