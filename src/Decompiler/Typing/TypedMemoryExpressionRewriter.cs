@@ -68,7 +68,7 @@ namespace Reko.Typing
 
         public Expression RewriteArrayAccess(TypeVariable typeVariable, Expression arr, Expression idx)
         {
-            var ter = new TypedExpressionRewriter(program);
+            var ter = new TypedExpressionRewriter2(program);
             basePointer = null;
             dtResult = new Pointer(typeVariable.DataType, platform.PointerType.Size);
             var dtElement = Dereference(arr.TypeVariable.DataType);
@@ -148,7 +148,7 @@ namespace Reko.Typing
 
 		public Expression VisitArrayAccess(ArrayAccess acc)
 		{
-            var ter = new TypedExpressionRewriter(program);
+            var ter = new TypedExpressionRewriter2(program);
             var arr = acc.Array.Accept(ter);
             var idx = acc.Index.Accept(ter);
             var ceb = new ComplexExpressionBuilder(
@@ -184,7 +184,7 @@ namespace Reko.Typing
                     binExp, tvLeft.DataType, tvRight.DataType);
             }
 
-            var ter = new TypedExpressionRewriter(program);
+            var ter = new TypedExpressionRewriter2(program);
             ComplexExpressionBuilder ceb;
             Constant cLeft = left as Constant;
             if (cLeft != null)
@@ -307,7 +307,7 @@ namespace Reko.Typing
 
 		public Expression VisitMkSequence(MkSequence seq)
 		{
-            var ter = new TypedExpressionRewriter(program);
+            var ter = new TypedExpressionRewriter2(program);
             //$TODO: identical to TypedExpressionRewriter except for the ceb.Dereferenced statements. How to combine?
             var head = seq.Head.Accept(ter);
             var tail = seq.Tail.Accept(ter);
