@@ -37,9 +37,21 @@ namespace Reko.Core.Configuration
             get { return (TypeLibraryElement) this.BaseGet(index); }
         }
 
+        // Note: Mono doesn't define an "Add" method for ConfigurationElementCollection
+        public void Add(TypeLibraryElement element)
+        {
+            LockItem = false;  // the workaround
+            BaseAdd(element);
+        }
+
         public override ConfigurationElementCollectionType CollectionType
         {
             get { return ConfigurationElementCollectionType.BasicMap; }
+        }
+
+        protected override bool IsElementName(string elementName)
+        {
+            return elementName == ElementName;
         }
 
         protected override ConfigurationElement CreateNewElement()
