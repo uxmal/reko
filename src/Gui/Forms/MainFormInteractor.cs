@@ -393,7 +393,7 @@ namespace Reko.Gui.Forms
 
         private static string MruListFile
         {
-            get { return SettingsDirectory + "\\mru.txt"; }
+            get { return Path.Combine(SettingsDirectory, "mru.txt"); }
         }
 
         public void RestartRecompilation()
@@ -630,7 +630,8 @@ namespace Reko.Gui.Forms
             {
                 if (dirSettings == null)
                 {
-                    string dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\jkl\\grovel";
+                    string dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    dir = Path.Combine(dir, "reko");
                     if (!Directory.Exists(dir))
                         Directory.CreateDirectory(dir);
                     dirSettings = dir;
