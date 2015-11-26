@@ -37,21 +37,9 @@ namespace Reko.Core.Configuration
             get { return (TypeLibraryElement) this.BaseGet(index); }
         }
 
-
-        public void Add(TypeLibraryElement element)
-        {
-            LockItem = false;  // the workaround
-            BaseAdd(element);
-        }
-
         public override ConfigurationElementCollectionType CollectionType
         {
             get { return ConfigurationElementCollectionType.BasicMap; }
-        }
-
-        protected override bool IsElementName(string elementName)
-        {
-            throw new NotImplementedException();
         }
 
         protected override ConfigurationElement CreateNewElement()

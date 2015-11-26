@@ -42,6 +42,11 @@ namespace Reko.Typing
                 ExpressionMatcher.AnyDataType(null),
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
+        private ExpressionMatcher segFieldAccessPattern = new ExpressionMatcher(
+            new MkSequence(
+                ExpressionMatcher.AnyDataType(null),
+                ExpressionMatcher.AnyExpression("p"),
+                ExpressionMatcher.AnyConstant("c")));
 
         private Platform platform;
         private TypeStore store;
@@ -122,6 +127,11 @@ namespace Reko.Typing
             {
                 arr = fieldAccessPattern.CapturedExpression("p");
                 offset = OffsetOf((Constant)fieldAccessPattern.CapturedExpression("c"));
+            }
+            else if (segFieldAccessPattern.Match(acc.Array))
+            {
+                arr = segFieldAccessPattern.CapturedExpression("p");
+                offset = OffsetOf((Constant)segFieldAccessPattern.CapturedExpression("c"));
             }
             else
             {
