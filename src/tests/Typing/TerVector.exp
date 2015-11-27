@@ -68,11 +68,11 @@ T_11: (in Mem0[v + 0x00000008:real32] : real32)
   Class: Eq_11
   DataType: real32
   OrigDataType: real32
-T_12: (in Mem0[v + 0x00000004:real32] + Mem0[v + 0x00000008:real32] : real32)
+T_12: (in v->r0004 + v->r0008 : real32)
   Class: Eq_12
   DataType: real32
   OrigDataType: real32
-T_13: (in Mem0[v + 0x00000000:real32] + (Mem0[v + 0x00000004:real32] + Mem0[v + 0x00000008:real32]) : real32)
+T_13: (in v->r0000 + (v->r0004 + v->r0008) : real32)
   Class: Eq_13
   DataType: real32
   OrigDataType: real32

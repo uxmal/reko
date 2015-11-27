@@ -32,6 +32,7 @@ namespace Reko.Typing
     /// <summary>
     /// Rewrites all the expressions in the program based on the type information provided.
     /// </summary>
+    [Obsolete("",false)]
     public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
     {
         private Program program;
@@ -128,31 +129,6 @@ namespace Reko.Typing
             return new ArrayAccess(elemType, arrayPtr, index);
 #endif
         }
-
-        public static Expression RescaleIndex(Expression idx, DataType dtElement)
-        {
-            if (dtElement.Size == 1)
-                return idx;
-            var bin = idx as BinaryExpression;
-            if (bin != null && bin.Operator is IMulOperator)
-            {
-                var k = bin.Right as Constant;
-                if (k != null)
-                {
-                    var kk = k.ToInt32();
-                    if (kk % dtElement.Size == 0)
-                    {
-                        kk /= dtElement.Size;
-                        if (kk == 1)
-                            return bin.Left;
-                        else
-                            return new BinaryExpression(bin.Operator, bin.DataType, bin.Left, Constant.Create(k.DataType, kk));
-                    }
-                }
-            }
-            return new BinaryExpression(Operator.SDiv, idx.DataType, idx, Constant.Create(idx.DataType, dtElement.Size));
-        }
-
 
         private Expression NormalizeArrayPointer(Expression arrayExp)
         {
@@ -375,7 +351,7 @@ namespace Reko.Typing
     /// <summary>
     /// Rewrites all the expressions in the program based on the type information provided.
     /// </summary>
-    public class TypedExpressionRewriter2 : InstructionTransformer //, IDataTypeVisitor
+    public class TypedExpressionRewriter2 : InstructionTransformer
     {
         private Program program;
         private Platform platform;
@@ -436,11 +412,38 @@ namespace Reko.Typing
 
         public override Instruction TransformAssignment(Assignment a)
         {
-            var src = a.Src.Accept(this);
-            var dst = a.Dst.Accept(this);
-            return new Assignment((Identifier)dst, src);
+            return MakeAssignment(a.Dst, a.Src);
         }
 
+        private Instruction MakeAssignment(Expression dst, Expression src)
+        {
+            src = src.Accept(this);
+            dst = dst.Accept(this);
+            var dtSrc = DataTypeOf(src);
+            var dtDst = DataTypeOf(dst);
+            if (!TypesAreCompatible(dtSrc, dtDst))
+            {
+                UnionType uDst = dtDst.ResolveAs<UnionType>();
+                UnionType uSrc = dtSrc.ResolveAs<UnionType>();
+                if (uDst != null)
+                {
+                    var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
+                    dst = ceb.BuildComplex(false);
+                }
+                else if (uSrc != null)
+                {
+                    var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
+                    src = ceb.BuildComplex(false);
+                }
+                else
+                    throw new NotImplementedException(string.Format("{2} [{0}] = {3} [{1}] not supported.", dtDst, dtSrc, dst, src));
+            }
+            var idDst = dst as Identifier;
+            if (idDst != null)
+                return new Assignment(idDst, src);
+            else
+                return new Store(dst, src);
+        }
 
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
@@ -457,9 +460,7 @@ namespace Reko.Typing
 
         public override Instruction TransformStore(Store store)
         {
-            var src = store.Src.Accept(this);
-            var dst = store.Dst.Accept(this);
-            return new Store(dst, src);
+            return MakeAssignment(store.Dst, store.Src);
         }
 
         public Expression Rewrite(Expression expression, bool dereferenced)
@@ -527,7 +528,24 @@ namespace Reko.Typing
                     return RewriteComplexExpression(right, left, 0, dereferenced);
                 }
             }
-            return base.VisitBinaryExpression(binExp);
+            var binOp = binExp.Operator;
+            if (binOp == Operator.Uge)
+                binOp = Operator.Ge;
+            else if (binOp == Operator.Ugt)
+                binOp = Operator.Gt;
+            else if (binOp == Operator.Ule)
+                binOp = Operator.Le;
+            else if (binOp == Operator.Ult)
+                binOp = Operator.Lt;
+            else if (binOp == Operator.UMul)
+                binOp = Operator.IMul;
+            else if (binOp == Operator.USub)
+                binOp = Operator.ISub;
+            else if (binOp == Operator.Shr)
+                binOp = Operator.Sar;
+            binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
+            store.SetTypeVariableExpression(binExp.TypeVariable, binExp);
+            return binExp;
         }
 
         private static DataType DataTypeOf(Expression exp)
@@ -559,11 +577,11 @@ namespace Reko.Typing
             {
                 if (c != null)
                 {
-                    var seg = head.TypeVariable.DataType.ResolveAs<Pointer>().Pointee;
-                    var fa = new FieldAccess(
-                        seq.TypeVariable.DataType.ResolveAs<Pointer>().Pointee,
-                        new Dereference(head.DataType, head),
-                        seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32()));
+                    var seg = DataTypeOf(head).ResolveAs<Pointer>().Pointee;
+                    var dtSeq = DataTypeOf(seq).ResolveAs<Pointer>().Pointee;
+                    var deref = new Dereference(DataTypeOf(head), head);
+                    var field = seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32());
+                    var fa = new FieldAccess(dtSeq, deref, field);
                     return fa;
                 }
                 else
@@ -607,6 +625,13 @@ namespace Reko.Typing
             }
             this.basePtr = oldBase;
             return result;
+        }
+
+        private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
+        {
+            if (compTypes.Compare(dtSrc, dtDst) == 0)
+                return true;
+            return unifier.AreCompatible(dtSrc, dtDst);
         }
     }
 }

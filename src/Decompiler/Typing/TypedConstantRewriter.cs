@@ -213,7 +213,7 @@ namespace Reko.Typing
                 }
                 else
                 {
-                    var array = dt as ArrayType;
+                    var array = f.DataType as ArrayType;
                     if (array != null) // C language rules 'promote' arrays to pointers.
                     {
                         //$BUG: no factory?
@@ -265,6 +265,31 @@ namespace Reko.Typing
                 str.Fields.Add(f);
             }
             return f;
+#if TODO
+            var f = GlobalVars.Fields.LowerBound(c.ToInt32());
+            //StructureField f = str.Fields.AtOffset(offset);
+            if (f != null)
+            {
+                Unifier u = new Unifier();
+                if (u.AreCompatible(f.DataType, dt))
+                {
+                    return f;
+                }
+
+                // Check for special case when an array ends at the offset.
+                f = GlobalVars.Fields.LowerBound(c.ToInt32() - 1);
+                var array = f.DataType.ResolveAs<ArrayType>();
+                if (array != null && u.AreCompatible(array.ElementType, dt))
+                {
+                    return f;
+                }
+            }
+            //$TODO: overlaps and conflicts.
+            //$TODO: strings.
+            f = new StructureField(offset, dt);
+            str.Fields.Add(f);
+            return f;
+#endif
         }
 
 		public Expression VisitPrimitive(PrimitiveType pt)

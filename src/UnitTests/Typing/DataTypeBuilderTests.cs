@@ -113,7 +113,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void DtbArrayLoopMock()
         {
             var pb = new Mocks.ProgramBuilder();

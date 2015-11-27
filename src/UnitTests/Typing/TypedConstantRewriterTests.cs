@@ -68,6 +68,12 @@ namespace Reko.UnitTests.Typing
             tcr = new TypedConstantRewriter(program);
 		}
 
+        private void Given_Global(uint address, DataType dt)
+        {
+            var str = globals.DataType.ResolveAs<Pointer>().Pointee.ResolveAs<StructureType>();
+            str.Fields.Add((int)(address - 0x00100000u), dt);
+        }
+
 		[Test]
 		public void Tcr_RewriteWord32()
 		{
@@ -178,6 +184,20 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = charPtr;
             var e = tcr.Rewrite(c, false);
             Assert.AreEqual("&globals->dw100000", e.ToString());
+        }
+
+        [Test(Description="Pointers to the end of arrays are well-defined.")]
+        public void Tcr_ArrayEnd()
+        {
+            Given_Global(0x00100000, new ArrayType(PrimitiveType.Real32, 16));
+            Given_Global(0x00100040, PrimitiveType.Word16);
+            var c = Constant.Word32(0x00100040);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Real32, 4);
+            c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Real32, 4);
+
+            var e = tcr.Rewrite(c, false);
+            Assert.AreEqual("@@@", e.ToString());
         }
     }
 }

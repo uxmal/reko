@@ -221,13 +221,14 @@ struct a {
             string sExp =
                 "struct b;" + nl +
                 "struct a {" + nl +
-                "\tstruct b seg::*ptr0000;\t// 0" + nl +
+                "\tstruct b seg::* ptr0000;\t// 0" + nl +
                 "};" + nl +
                 nl +
                 "struct b {" + nl +
                 "\tstruct a seg::*ptr0000;\t// 0" + nl +
                 "};" + nl;
-            
+
+            Console.Write(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 
