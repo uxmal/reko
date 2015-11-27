@@ -11,6 +11,8 @@
     <AssemblyName>Reko.Environments.Trs80</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,11 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Z80\Z80.csproj">
-      <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
+      <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
       <Name>Z80</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>

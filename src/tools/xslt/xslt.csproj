@@ -39,6 +39,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseMSBuildEngine>False</UseMSBuildEngine>
     <TargetFrameworkProfile />
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -142,6 +144,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools" />
+    <Message Text="Project dir = $(ProjectDir)" />
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
   </Target>
 </Project>
