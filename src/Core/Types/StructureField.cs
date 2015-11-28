@@ -47,7 +47,8 @@ namespace Reko.Core.Types
             this.Offset = offset; this.DataType = type; this.name = name;
 		}
 
-        public override string Name { get { if (name == null) return GenerateDefaultName(); return name; } set { name = value; } }
+        public override string Name { get { if (name == null) return GenerateDefaultName(); return name; }
+            set { name = value; } }
         private string name;
 
         public int Offset { get; set; }

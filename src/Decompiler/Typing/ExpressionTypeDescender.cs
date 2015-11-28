@@ -148,21 +148,24 @@ namespace Reko.Typing
                     stride = c.ToInt32();
                 }
             }
-            ArrayField(null, arr, arr.DataType.Size, offset, stride, 0, acc);
+            var dtElement = ArrayField(null, arr, arr.DataType.Size, offset, stride, 0, acc);
+            MeetDataType(acc.Array, factory.CreatePointer(dtElement, acc.Array.DataType.Size));
             acc.Array.Accept(this, acc.Array.TypeVariable);
             acc.Index.Accept(this, acc.Index.TypeVariable);
             return false;
         }
 
-        void ArrayField(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
+        DataType ArrayField(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
         {
-            var element = factory.CreateStructureType(null, elementSize);
-            element.Fields.Add(0, expField.TypeVariable);
+            var dtElement = factory.CreateStructureType(null, elementSize);
+            dtElement.Fields.Add(0, expField.TypeVariable);
             var tvElement = store.CreateTypeVariable(factory);
-            tvElement.OriginalDataType = element;
+            tvElement.DataType = dtElement;
+            tvElement.OriginalDataType = dtElement;
 
             DataType dtArray = factory.CreateArrayType(tvElement, length);
             MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
+            return dtArray;
         }
 
         public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
