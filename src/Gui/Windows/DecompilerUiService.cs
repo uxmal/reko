@@ -55,8 +55,7 @@ namespace Reko.Gui.Windows
                 () => { dlgr = MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
             return dlgr == DialogResult.Yes;
         }
-
-        [Conditional("DEBUG")]
+        #if DEBUG
         private Thread GetControlOwnerThread(Control ctrl)
         {
             if (ctrl.InvokeRequired)
@@ -64,6 +63,7 @@ namespace Reko.Gui.Windows
             else
                 return System.Threading.Thread.CurrentThread;
         }
+        #endif
         private DialogResult ShowModalDialog(Form dlg)
         {
             var ownthr = GetControlOwnerThread(dlg);
