@@ -30,6 +30,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel.Design;
+using Reko.Gui.Forms;
 
 namespace Reko.Gui.Windows
 {
@@ -38,7 +39,7 @@ namespace Reko.Gui.Windows
     /// </summary>
     public class WindowsDecompilerEventListener : IWorkerDialogService, DecompilerEventListener
     {
-        private WorkerDialog dlg;
+        private IWorkerDialog dlg;
         private Action task;
         private IServiceProvider sp;
         private IDecompilerShellUiService uiSvc;
@@ -56,11 +57,11 @@ namespace Reko.Gui.Windows
             diagnosticSvc = sp.GetService<IDiagnosticsService>();
         }
 
-        private WorkerDialog CreateDialog(string caption)
+        private IWorkerDialog CreateDialog(string caption)
         {
             if (dlg != null)
                 throw new InvalidOperationException("Dialog is already running.");
-            this.dlg = new WorkerDialog();
+            this.dlg = sp.RequireService<IDialogFactory>().CreateWorkerDialog();
             this.cancellationSvc = new CancellationTokenSource();
             this.sp.RequireService<IServiceContainer>().AddService<CancellationTokenSource>(cancellationSvc);
             dlg.Load += new EventHandler(dlg_Load);
@@ -110,20 +111,12 @@ namespace Reko.Gui.Windows
         /// <param name="newCaption"></param>
         public void SetCaption(string newCaption)
         {
-            dlg.Invoke(new Action<string>(delegate(string c)
-                {
-                    dlg.Caption.Text = c;
-                }),
-                newCaption);
+            dlg.Invoke(() => { dlg.Caption.Text = newCaption; });
         }
 
         public void ShowError(string failedOperation, Exception ex)
         {
-            dlg.Invoke(new Action<Exception>(delegate(Exception exc)
-                {
-                    uiSvc.ShowError(ex, failedOperation);
-                }),
-                ex);
+            dlg.Invoke(() => { uiSvc.ShowError(ex, failedOperation); });
         }
 
         public void FinishBackgroundWork()
@@ -137,8 +130,8 @@ namespace Reko.Gui.Windows
 
         private void dlg_Closed(object sender, EventArgs e)
         {
-            dlg.Worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-            dlg.Worker.ProgressChanged -= new ProgressChangedEventHandler(Worker_ProgressChanged);
+            dlg.Worker.RunWorkerCompleted -= Worker_RunWorkerCompleted;
+            dlg.Worker.ProgressChanged -= Worker_ProgressChanged;
             task = null;
             sp.RequireService<IServiceContainer>().RemoveService(typeof(CancellationTokenSource));
         }
