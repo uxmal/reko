@@ -28,6 +28,7 @@ namespace Reko.UnitTests.Core
     public class AddressTests
     {
         [Test]
+        [Category("UnitTests")]
         public void Addr_ToString()
         {
             Address addr = Address.SegPtr(0xC00, 0x1234);

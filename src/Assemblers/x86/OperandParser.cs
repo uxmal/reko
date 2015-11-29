@@ -262,7 +262,15 @@ namespace Reko.Assemblers.x86
 					totalInt += lexer.Integer;
 					return IntegerCommon();
 				}
-				return new ParsedOperand(
+                var symStr = lexer.StringLiteral;
+                if (lexer.PeekToken() == Token.BRA)
+                {
+                    lexer.GetToken();
+                    var memOp = ParseMemoryOperand(RegisterStorage.None);
+                    memOp.Symbol = symtab.CreateSymbol(symStr);
+                    return memOp;
+                }
+                return new ParsedOperand(
 							   new MemoryOperand(addrWidth, Constant.Create(defaultWordWidth, addrBase.Offset)),
 							   symtab.CreateSymbol(lexer.StringLiteral));
 			}

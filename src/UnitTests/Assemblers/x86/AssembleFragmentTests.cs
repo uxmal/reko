@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
+using Reko.Environments.Msdos;
 
 namespace Reko.UnitTests.Assemblers.x86
 {
@@ -77,7 +78,7 @@ namespace Reko.UnitTests.Assemblers.x86
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
             Address addrBase=  Address.SegPtr(0xC00, 0);
-            X86Assembler asm = new X86Assembler(sc, new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
+            X86Assembler asm = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal()), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
             Program lr = asm.GetImage();
 

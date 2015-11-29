@@ -39,7 +39,7 @@ namespace Reko.Assemblers.x86
     public class X86Assembler
     {
         private IServiceProvider services;
-        private IntelArchitecture arch;
+        private IProcessorArchitecture arch;
         private Address addrBase;
         private ModRmBuilder modRm;
         private PrimitiveType defaultWordSize;
@@ -53,11 +53,10 @@ namespace Reko.Assemblers.x86
         private Dictionary<string, AssembledSegment> mpNameToSegment;
         private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
 
-        public X86Assembler(IServiceProvider services, IntelArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
+        public X86Assembler(IServiceProvider services, Platform platform, Address addrBase, List<EntryPoint> entryPoints)
         {
             this.services = services;
-            this.arch = arch;
-            this.Platform = new MsdosPlatform(services, arch);  //$TODO: remove this hardwired msdosness, dude
+            this.arch = platform.Architecture;
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;
             this.defaultWordSize = arch.WordWidth;
@@ -75,11 +74,6 @@ namespace Reko.Assemblers.x86
             SwitchSegment(unknownSegment);
 
             SetDefaultWordWidth(defaultWordSize);
-        }
-
-        public IntelArchitecture Architecture
-        {
-            get { return arch; }
         }
 
         public Platform Platform { get; set; }

@@ -29,7 +29,7 @@ namespace Reko.UnitTests.Arch.Intel
             arch = new X86ArchitectureFlat32();
             var services = new ServiceContainer();
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            asm = new X86Assembler(services, arch, loadAddress, new List<EntryPoint>());
+            asm = new X86Assembler(services, new DefaultPlatform(services, arch), loadAddress, new List<EntryPoint>());
         }
 
         public override IProcessorArchitecture Architecture

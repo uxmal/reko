@@ -203,5 +203,5 @@ namespace Reko.UnitTests.Analysis
         {
             RunFileTest("Fragments/pushpop.asm", "Analysis/RlPushPop.txt");
         }
-	}
+    }
 }

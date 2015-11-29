@@ -165,7 +165,7 @@ namespace Reko.Typing
 
             DataType dtArray = factory.CreateArrayType(tvElement, length);
             MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
-            return dtArray;
+            return dtElement;
         }
 
         public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
