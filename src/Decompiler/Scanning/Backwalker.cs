@@ -78,7 +78,9 @@ namespace Reko.Scanning
         public int JumpSize { get; set; }
 
         /// <summary>
-        /// Walks backward along the <paramref name="block"/>, recording the operations done to the idx register.
+        /// Walks backward along the <paramref name="block"/>, recording the operations 
+        /// done to the idx register. The operations are used to reconstruct
+        /// the indexing expression, which gives clues to its layout.
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
@@ -110,8 +112,9 @@ namespace Reko.Scanning
             var ass = instr as Assignment;
             if (ass != null)
             {
-                var regSrc = RegisterOf(ass.Src as Identifier);
-                var binSrc = ass.Src as BinaryExpression;
+                var assSrc = ass.Src.Accept(eval);
+                var regSrc = RegisterOf(assSrc as Identifier);
+                var binSrc = assSrc as BinaryExpression;
                 if (binSrc != null)
                 {
                     if (RegisterOf(ass.Dst) == Index)
@@ -160,8 +163,19 @@ namespace Reko.Scanning
                         Index = Index.GetSubregister(0, 8);
                     }
                 }
-
-                var cof = ass.Src as ConditionOf;
+                var cSrc = assSrc as Constant;
+                if (Index != null &&
+                    cSrc != null &&
+                    cSrc.IsIntegerZero &&
+                    RegisterOf(ass.Dst) == Index.GetSubregister(8, 8))
+                {
+                    // mov bh,0 ;; xor bh,bh
+                    // jmp [bx...]
+                    Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
+                    Index = Index.GetSubregister(0, 8);
+                    return true;
+                }
+                var cof = assSrc as ConditionOf;
                 if (cof != null && UsedFlagIdentifier != null)
                 {
                     var grfDef = (ass.Dst.Storage as FlagGroupStorage).FlagGroupBits;
@@ -189,7 +203,9 @@ namespace Reko.Scanning
                     }
                 }
 
-                var src = ass.Src;
+                //$BUG: this is rubbish, the simplifier should _just_
+                // perform simplification, no substitutions.
+                var src = assSrc == Constant.Invalid ? ass.Src : assSrc;
                 var castSrc = src as Cast;
                 if (castSrc != null)
                     src = castSrc.Expression;

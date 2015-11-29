@@ -67,7 +67,8 @@ namespace Reko.Assemblers.x86
             {
                 try {
                     ProcessLine();
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Debug.Print("Error on line {0}: {1}", lexer.LineNumber, ex.Message);
                     throw;
@@ -269,20 +270,21 @@ namespace Reko.Assemblers.x86
 				break;
 			case Token.ID:
                 var str = lexer.StringLiteral;
-                var opsId = ParseOperandList(1);
-                if (opsId[0].Operand is MemoryOperand)
+                lexer.DiscardToken();
+                if (lexer.PeekToken() == Token.BRA)
                 {
+                    var opp = asm.CreateOperandParser(lexer);
+                    var target = opp.ParseIdOperand(str);
                     int indir = isCall
                         ? (far ? 0x03 : 0x02)
                         : (far ? 0x05 : 0x04);
-                    asm.ProcessCallJmp(far, indir, opsId[0]);
+                    asm.ProcessCallJmp(far, indir, target);
                 }
                 else
                 {
                     int direct = isCall
                         ? (far ? 0x9A : 0xE8)
                         : (far ? 0xEA : 0xE9);
-                    lexer.DiscardToken();
                     asm.ProcessCallJmp(far, direct, str);
                 }
 				break;
