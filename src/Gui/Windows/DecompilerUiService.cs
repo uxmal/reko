@@ -64,9 +64,14 @@ namespace Reko.Gui.Windows
                 return System.Threading.Thread.CurrentThread;
         }
         #endif
+
         private DialogResult ShowModalDialog(Form dlg)
         {
-            var ownthr = GetControlOwnerThread(dlg);
+#if DEBUG
+            Thread ownthr = GetControlOwnerThread(dlg);
+#else
+            Thread ownthr = null;
+#endif
             return (DialogResult)
                 form.Invoke(new Func<Form, DialogResult>(delegate(Form dlgToShow)
                 {
@@ -128,7 +133,7 @@ namespace Reko.Gui.Windows
                 { MessageBox.Show(form, s.ToString(), "Reko decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
                 sb);
         }
-        #endregion
+#endregion
 
 
         public void ShowMessage(string msg)
