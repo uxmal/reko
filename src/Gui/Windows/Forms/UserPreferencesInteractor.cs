@@ -63,11 +63,11 @@ namespace Reko.Gui.Windows.Forms
             dlg.WindowFontButton.Click += WindowFontButton_Click;
             dlg.WindowFgButton.Click += WindowFgButton_Click;
             dlg.WindowBgButton.Click += WindowBgButton_Click;
+            dlg.ResetButton.Click += ResetButton_Click;
 
             dlg.ImagebarList.SelectedIndexChanged += ImagebarList_SelectedIndexChanged;
             dlg.ImagebarFgButton.Click += ImagebarFgButton_Click;
             dlg.ImagebarBgButton.Click += ImagebarBgButton_Click;
-
         }
 
         void PopulateStyleTree()
@@ -270,8 +270,10 @@ namespace Reko.Gui.Windows.Forms
             PopulateStyleTree();
 
             this.sc = new ServiceContainer();
-            this.localSettings = new UiPreferencesService(null, null);
-            sc.AddService(typeof(IUiPreferencesService), localSettings);
+            var cfgSvc = dlg.Services.RequireService<IConfigurationService>();
+            var settingsSvc = dlg.Services.RequireService<ISettingsService>();
+            this.localSettings = new UiPreferencesService(cfgSvc, settingsSvc);
+            sc.AddService<IUiPreferencesService>(localSettings);
             CopyStyles(uipSvc, localSettings);
 
             GenerateSimulatedProgram();
@@ -288,6 +290,7 @@ namespace Reko.Gui.Windows.Forms
 
         private void CopyStyles(IUiPreferencesService from, IUiPreferencesService to)
         {
+            to.Styles.Clear();
             foreach (var style in from.Styles.Values)
             {
                 to.Styles[style.Name] = style.Clone();
@@ -400,7 +403,6 @@ namespace Reko.Gui.Windows.Forms
             var desc = descs[(string)dlg.ImagebarList.SelectedItem];
         }
 
-
         private UiStyleDesigner GetSelectedDesigner()
         {
             return (UiStyleDesigner)dlg.WindowTree.SelectedNode.Tag;
@@ -433,6 +435,14 @@ namespace Reko.Gui.Windows.Forms
             }
         }
 
+        void ResetButton_Click(object sender, EventArgs e)
+        {
+            var des = GetSelectedDesigner();
+            var name = des.Style.Name;
+            localSettings.ResetStyle(name);
+            des.Control.Refresh();
+        }
+
         void WindowTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             var node = dlg.WindowTree.SelectedNode;
@@ -444,6 +454,7 @@ namespace Reko.Gui.Windows.Forms
             {
                 var designer = (UiStyleDesigner)nodeWnd.Tag;
                 dlg.WindowFontButton.Enabled = designer.EnableFont;
+                dlg.ResetButton.Enabled = designer.EnableFont;
                 designer.Control.BringToFront();
             }
         }

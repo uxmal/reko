@@ -36,6 +36,7 @@ namespace Reko.Gui
 
         void SetList(string name, IEnumerable<string> values);
         void Set(string name, object value);
+        void Delete(string name);
 
         void Load();        // Load settings from their persistent location
         void Save();        // Save settings to their persistent location

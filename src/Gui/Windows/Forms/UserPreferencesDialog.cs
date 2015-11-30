@@ -46,6 +46,7 @@ namespace Reko.Gui.Windows.Forms
         public Button WindowFontButton { get { return btnWindowFont; } }
         public Button WindowFgButton   { get { return btnWindowFgColor; } }
         public Button WindowBgButton   { get { return btnWindowBgColor; } }
+        public Button ResetButton      { get { return btnReset; } }
 
         public ListBox ImagebarList    { get { return lbxUiElements; } }
         public Button ImagebarFgButton { get { return btnElementFgColor; } }
