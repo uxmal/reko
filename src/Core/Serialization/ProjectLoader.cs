@@ -153,7 +153,18 @@ namespace Reko.Core.Serialization
         {
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
             var address = LoadAddress(sInput.User);
-            var program = loader.LoadExecutable(sInput.Filename, bytes, address);
+            Program program;
+            if (sInput.User.Processor != null && sInput.User.PlatformOptions.Name != null)
+            {
+                var arch = sInput.User.Processor.Name;
+                var platform = sInput.User.PlatformOptions.Name;
+                program = loader.LoadRawImage(sInput.Filename, bytes, arch, platform, address);
+            }
+            else
+            {
+                program = loader.LoadExecutable(sInput.Filename, bytes, address);
+
+            }
             program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
             program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
@@ -183,6 +194,15 @@ namespace Reko.Core.Serialization
             if (sUser == null)
                 return;
             user.OnLoadedScript = sUser.OnLoadedScript;
+            if (sUser.Processor != null)
+            {
+                program.User.Processor = sUser.Processor.Name;
+                if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
+                {
+                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
+                }
+                //program.Architecture.LoadUserOptions();       //$TODO
+            }
             if (sUser.Procedures != null)
             {
                 user.Procedures = sUser.Procedures
@@ -195,24 +215,10 @@ namespace Reko.Core.Serialization
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
-            if (sUser.Processor != null)
-            {
-                program.User.Processor = sUser.Processor.Name;
-                if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
-                {
-                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
-                }
-                //program.Architecture.LoadUserOptions();       //$TODO
-            }
+
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                if (program.Platform is DefaultPlatform && !string.IsNullOrEmpty(program.User.Environment))
-                {
-                    program.Platform = Services.RequireService<IConfigurationService>()
-                        .GetEnvironment(program.User.Environment)
-                        .Load(Services, program.Architecture);
-                }
                 program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)

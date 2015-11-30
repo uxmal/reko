@@ -26,8 +26,19 @@ l10000012:
 	ecx = eax + eax * 0x00000002
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
-	call <NORK>
+	call Mem0[0x10000022 + ecx * 0x00000004:word32] (retsize: 4;)
+	// succ:  l10000021
 l10000021:
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:
+// fn1000006E
+// Return size: 4
+void fn1000006E()
+fn1000006E_entry:
+	// succ:  l1000006E
+l1000006E:
+	esp = fp
+	return
+	// succ:  fn1000006E_exit
+fn1000006E_exit:

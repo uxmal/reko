@@ -102,6 +102,21 @@ namespace Reko.Loading
             return program;
         }
 
+        public Program LoadRawImage(string filename, byte[] image, string archName, string platformName, Address addrLoad)
+        {
+            var arch = cfgSvc.GetArchitecture(archName);
+            var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
+            var loadedImage = new LoadedImage(addrLoad, image);
+            var program = new Program(
+                loadedImage,
+                loadedImage.CreateImageMap(),
+                arch, platform);
+            program.Name = Path.GetFileName(filename);
+            program.User.Processor = arch.Name;
+            program.User.Environment = platform.Name;
+            return program;
+        }
+
         public ImageLoader CreateDefaultImageLoader(string filename, byte[] image)
         {
             var imgLoader = new NullImageLoader(Services, filename, image);

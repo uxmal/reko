@@ -35,7 +35,7 @@ namespace Reko.Gui.Windows.Forms
     public interface InitialPageInteractor : IPhasePageInteractor
     {
         bool OpenBinary(string file);
-        bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase);
+        bool OpenBinaryAs(string file, string arch, string platform, Address addrBase);
         bool Assemble(string file, Assembler asm);
     }
 
@@ -120,8 +120,8 @@ namespace Reko.Gui.Windows.Forms
 
         public bool OpenBinaryAs(
             string file, 
-            IProcessorArchitecture arch,
-            Platform platform, 
+            string arch,
+            string platform, 
             Address addrBase)
         {
             var ldr = Services.RequireService<ILoader>();
@@ -130,8 +130,8 @@ namespace Reko.Gui.Windows.Forms
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 var program = Decompiler.LoadRawImage(file, arch, platform, addrBase);
-                program.User.Processor = arch.Name;
-                program.User.Environment = platform.Name;
+                program.User.Processor = arch;
+                program.User.Environment = platform;
                 program.User.LoadAddress = addrBase;
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanPrograms();

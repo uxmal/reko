@@ -29,6 +29,7 @@ namespace Reko.Typing
 	/// <summary>
 	/// Rewrites expressions that are located in a memory expression context.
 	/// </summary>
+        [Obsolete("", true)]
 	public class TypedMemoryExpressionRewriter : ExpressionVisitor<Expression>
 	{
         private Program program;
