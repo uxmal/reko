@@ -22,19 +22,28 @@ using Reko.Core;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
 {
 	public class WindowsFormsDialogFactory : IDialogFactory
 	{
         private IServiceProvider services;
+        private Form syncForm;  // used _only_ to make sure forms are created on the UI thread for Mono compatibility.
 
 		public WindowsFormsDialogFactory(IServiceProvider services)
 		{
             this.services = services;
-		}
+            // Note: this constructor must run on the main, UI thread under Mono, as the FAQ states:
+            // http://www.mono-project.com/docs/faq/winforms/
+            // Mono’s implementation of WinForms does not support Forms or Controls being created on multiple threads. 
+            // All Forms/Controls must be created on the same thread.
+            this.syncForm = new Form();     // this form is never shown.
+            this.syncForm.Visible = false;
+            this.syncForm.CreateControl();
+        }
 
-		public IAddressPromptDialog CreateAddressPromptDialog()
+        public IAddressPromptDialog CreateAddressPromptDialog()
 		{
 			return new AddressPromptDialog();
 		}
@@ -102,6 +111,23 @@ namespace Reko.Gui.Windows
             {
                 Services = services,
             };
+        }
+
+        public IWorkerDialog CreateWorkerDialog()
+        {
+            if (syncForm.InvokeRequired)
+            {
+                IWorkerDialog dlg = null;
+                syncForm.Invoke(new Action(() =>
+                {
+                    dlg = new WorkerDialog();
+                }));
+                return dlg;
+            }
+            else
+            { 
+                return new WorkerDialog();
+            }
         }
     }
 }

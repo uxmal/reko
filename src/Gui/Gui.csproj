@@ -5,8 +5,6 @@
     <ProjectGuid>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>Reko.Gui</AssemblyName>
@@ -40,6 +38,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseMSBuildEngine>False</UseMSBuildEngine>
     <TargetFrameworkProfile />
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -74,9 +74,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup />
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
     <OutputPath>bin\TravisRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -86,6 +83,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -109,6 +107,7 @@
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Controls\IControl.cs" />
+    <Compile Include="Controls\ILabel.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\PlatformDesigner.cs" />
@@ -120,6 +119,7 @@
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
     <Compile Include="IResourceEditorService.cs" />
+    <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
     <Compile Include="CommandGroup.cs" />
@@ -242,6 +242,8 @@
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\LabelWrapper.cs" />
+    <Compile Include="Windows\ProgressbarWrapper.cs" />
     <Compile Include="Windows\StyleStack.cs" />
     <Compile Include="Windows\Controls\TextBuffer.cs" />
     <Compile Include="Windows\Controls\TextPointer.cs" />
@@ -560,8 +562,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/xslt.exe $(ProjectDir)Windows/Forms/cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/CmdIds.cs" />
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/xslt.exe $(ProjectDir)Windows/Forms/decompiler-menus.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/DecompilerMenus.cs" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)Windows/Forms/cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/CmdIds.cs" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)Windows/Forms/decompiler-menus.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/DecompilerMenus.cs" />
     <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\CmdIds.cs&quot;" />
     <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\DecompilerMenus.cs&quot;" />
   </Target>

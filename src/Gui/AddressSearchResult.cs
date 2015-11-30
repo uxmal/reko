@@ -94,7 +94,7 @@ namespace Reko.Gui
             var program = hit.Program;
             var addr = addresses[i].Address;
             ImageMapItem item;
-            var type = program.ImageMap.TryFindItem(addr, out item);
+            program.ImageMap.TryFindItem(addr, out item);
             if (program.Architecture == null)
             {
                 return new SearchResultItem
