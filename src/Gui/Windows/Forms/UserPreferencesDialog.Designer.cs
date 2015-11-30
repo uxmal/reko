@@ -29,17 +29,27 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserPreferencesDialog));
             Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel2 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserPreferencesDialog));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabWindows = new System.Windows.Forms.TabPage();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.listView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
+            this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
+            this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.btnWindowBgColor = new System.Windows.Forms.Button();
             this.btnWindowFgColor = new System.Windows.Forms.Button();
             this.btnWindowFont = new System.Windows.Forms.Button();
+            this.treeBrowser = new System.Windows.Forms.TreeView();
+            this.imlBrowser = new System.Windows.Forms.ImageList(this.components);
             this.tabColors = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.btnElementBgColor = new System.Windows.Forms.Button();
@@ -48,15 +58,6 @@
             this.lbxUiElements = new System.Windows.Forms.ListBox();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
             this.fontPicker = new System.Windows.Forms.FontDialog();
-            this.treeBrowser = new System.Windows.Forms.TreeView();
-            this.imlBrowser = new System.Windows.Forms.ImageList(this.components);
-            this.listView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.dasmCtl = new Reko.Gui.Windows.Controls.DisassemblyControl();
-            this.codeCtl = new Reko.Gui.Windows.Controls.TextView();
-            this.memCtl = new Reko.Gui.Windows.Controls.MemoryControl();
             this.tabControl1.SuspendLayout();
             this.tabWindows.SuspendLayout();
             this.tabColors.SuspendLayout();
@@ -99,6 +100,7 @@
             // 
             // tabWindows
             // 
+            this.tabWindows.Controls.Add(this.btnReset);
             this.tabWindows.Controls.Add(this.listView);
             this.tabWindows.Controls.Add(this.dasmCtl);
             this.tabWindows.Controls.Add(this.codeCtl);
@@ -116,135 +118,14 @@
             this.tabWindows.Text = "Windows";
             this.tabWindows.UseVisualStyleBackColor = true;
             // 
-            // treeView1
+            // button1
             // 
-            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.treeView1.HideSelection = false;
-            this.treeView1.Location = new System.Drawing.Point(7, 7);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.ShowPlusMinus = false;
-            this.treeView1.Size = new System.Drawing.Size(164, 219);
-            this.treeView1.TabIndex = 5;
-            // 
-            // btnWindowBgColor
-            // 
-            this.btnWindowBgColor.Location = new System.Drawing.Point(376, 8);
-            this.btnWindowBgColor.Name = "btnWindowBgColor";
-            this.btnWindowBgColor.Size = new System.Drawing.Size(94, 23);
-            this.btnWindowBgColor.TabIndex = 3;
-            this.btnWindowBgColor.Text = "Background...";
-            this.btnWindowBgColor.UseVisualStyleBackColor = true;
-            // 
-            // btnWindowFgColor
-            // 
-            this.btnWindowFgColor.Location = new System.Drawing.Point(278, 7);
-            this.btnWindowFgColor.Name = "btnWindowFgColor";
-            this.btnWindowFgColor.Size = new System.Drawing.Size(92, 23);
-            this.btnWindowFgColor.TabIndex = 2;
-            this.btnWindowFgColor.Text = "Foreground...";
-            this.btnWindowFgColor.UseVisualStyleBackColor = true;
-            // 
-            // btnWindowFont
-            // 
-            this.btnWindowFont.Location = new System.Drawing.Point(180, 7);
-            this.btnWindowFont.Name = "btnWindowFont";
-            this.btnWindowFont.Size = new System.Drawing.Size(92, 23);
-            this.btnWindowFont.TabIndex = 1;
-            this.btnWindowFont.Text = "Font...";
-            this.btnWindowFont.UseVisualStyleBackColor = true;
-            // 
-            // tabColors
-            // 
-            this.tabColors.Controls.Add(this.label1);
-            this.tabColors.Controls.Add(this.btnElementBgColor);
-            this.tabColors.Controls.Add(this.label2);
-            this.tabColors.Controls.Add(this.btnElementFgColor);
-            this.tabColors.Controls.Add(this.lbxUiElements);
-            this.tabColors.Location = new System.Drawing.Point(4, 22);
-            this.tabColors.Name = "tabColors";
-            this.tabColors.Padding = new System.Windows.Forms.Padding(3);
-            this.tabColors.Size = new System.Drawing.Size(587, 241);
-            this.tabColors.TabIndex = 1;
-            this.tabColors.Text = "Image Bar";
-            this.tabColors.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(180, 36);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(368, 47);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "label1";
-            // 
-            // btnElementBgColor
-            // 
-            this.btnElementBgColor.Location = new System.Drawing.Point(265, 6);
-            this.btnElementBgColor.Name = "btnElementBgColor";
-            this.btnElementBgColor.Size = new System.Drawing.Size(85, 23);
-            this.btnElementBgColor.TabIndex = 4;
-            this.btnElementBgColor.Text = "&Background...";
-            this.btnElementBgColor.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(177, 95);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(401, 131);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "lblImageBarPreview";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnElementFgColor
-            // 
-            this.btnElementFgColor.Location = new System.Drawing.Point(177, 6);
-            this.btnElementFgColor.Name = "btnElementFgColor";
-            this.btnElementFgColor.Size = new System.Drawing.Size(82, 23);
-            this.btnElementFgColor.TabIndex = 2;
-            this.btnElementFgColor.Text = "&Foreground...";
-            this.btnElementFgColor.UseVisualStyleBackColor = true;
-            // 
-            // lbxUiElements
-            // 
-            this.lbxUiElements.FormattingEnabled = true;
-            this.lbxUiElements.IntegralHeight = false;
-            this.lbxUiElements.Items.AddRange(new object[] {
-            "Code",
-            "Heuristic code",
-            "Data",
-            "Address",
-            "Unknown"});
-            this.lbxUiElements.Location = new System.Drawing.Point(7, 7);
-            this.lbxUiElements.Name = "lbxUiElements";
-            this.lbxUiElements.Size = new System.Drawing.Size(164, 172);
-            this.lbxUiElements.TabIndex = 1;
-            // 
-            // treeBrowser
-            // 
-            this.treeBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeBrowser.ImageIndex = 0;
-            this.treeBrowser.ImageList = this.imlBrowser;
-            this.treeBrowser.Location = new System.Drawing.Point(180, 37);
-            this.treeBrowser.Name = "treeBrowser";
-            this.treeBrowser.SelectedImageIndex = 0;
-            this.treeBrowser.Size = new System.Drawing.Size(404, 185);
-            this.treeBrowser.TabIndex = 9;
-            // 
-            // imlBrowser
-            // 
-            this.imlBrowser.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlBrowser.ImageStream")));
-            this.imlBrowser.TransparentColor = System.Drawing.Color.Transparent;
-            this.imlBrowser.Images.SetKeyName(0, "Binary.ico");
-            this.imlBrowser.Images.SetKeyName(1, "RxSection.ico");
-            this.imlBrowser.Images.SetKeyName(2, "Code.ico");
-            this.imlBrowser.Images.SetKeyName(3, "EntryProcedure.ico");
-            this.imlBrowser.Images.SetKeyName(4, "Usercode.ico");
+            this.btnReset.Location = new System.Drawing.Point(474, 7);
+            this.btnReset.Name = "button1";
+            this.btnReset.Size = new System.Drawing.Size(92, 23);
+            this.btnReset.TabIndex = 11;
+            this.btnReset.Text = "&Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
             // 
             // listView
             // 
@@ -325,6 +206,136 @@
             this.memCtl.TopAddress = null;
             this.memCtl.WordSize = ((uint)(1u));
             // 
+            // treeView1
+            // 
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.treeView1.HideSelection = false;
+            this.treeView1.Location = new System.Drawing.Point(7, 7);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.ShowPlusMinus = false;
+            this.treeView1.Size = new System.Drawing.Size(164, 215);
+            this.treeView1.TabIndex = 5;
+            // 
+            // btnWindowBgColor
+            // 
+            this.btnWindowBgColor.Location = new System.Drawing.Point(376, 7);
+            this.btnWindowBgColor.Name = "btnWindowBgColor";
+            this.btnWindowBgColor.Size = new System.Drawing.Size(92, 23);
+            this.btnWindowBgColor.TabIndex = 3;
+            this.btnWindowBgColor.Text = "&Background...";
+            this.btnWindowBgColor.UseVisualStyleBackColor = true;
+            // 
+            // btnWindowFgColor
+            // 
+            this.btnWindowFgColor.Location = new System.Drawing.Point(278, 7);
+            this.btnWindowFgColor.Name = "btnWindowFgColor";
+            this.btnWindowFgColor.Size = new System.Drawing.Size(92, 23);
+            this.btnWindowFgColor.TabIndex = 2;
+            this.btnWindowFgColor.Text = "&Foreground...";
+            this.btnWindowFgColor.UseVisualStyleBackColor = true;
+            // 
+            // btnWindowFont
+            // 
+            this.btnWindowFont.Location = new System.Drawing.Point(180, 7);
+            this.btnWindowFont.Name = "btnWindowFont";
+            this.btnWindowFont.Size = new System.Drawing.Size(92, 23);
+            this.btnWindowFont.TabIndex = 1;
+            this.btnWindowFont.Text = "Fo&nt...";
+            this.btnWindowFont.UseVisualStyleBackColor = true;
+            // 
+            // treeBrowser
+            // 
+            this.treeBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeBrowser.ImageIndex = 0;
+            this.treeBrowser.ImageList = this.imlBrowser;
+            this.treeBrowser.Location = new System.Drawing.Point(180, 37);
+            this.treeBrowser.Name = "treeBrowser";
+            this.treeBrowser.SelectedImageIndex = 0;
+            this.treeBrowser.Size = new System.Drawing.Size(404, 185);
+            this.treeBrowser.TabIndex = 9;
+            // 
+            // imlBrowser
+            // 
+            this.imlBrowser.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlBrowser.ImageStream")));
+            this.imlBrowser.TransparentColor = System.Drawing.Color.Transparent;
+            this.imlBrowser.Images.SetKeyName(0, "Binary.ico");
+            this.imlBrowser.Images.SetKeyName(1, "RxSection.ico");
+            this.imlBrowser.Images.SetKeyName(2, "Code.ico");
+            this.imlBrowser.Images.SetKeyName(3, "EntryProcedure.ico");
+            this.imlBrowser.Images.SetKeyName(4, "Usercode.ico");
+            // 
+            // tabColors
+            // 
+            this.tabColors.Controls.Add(this.label1);
+            this.tabColors.Controls.Add(this.btnElementBgColor);
+            this.tabColors.Controls.Add(this.label2);
+            this.tabColors.Controls.Add(this.btnElementFgColor);
+            this.tabColors.Controls.Add(this.lbxUiElements);
+            this.tabColors.Location = new System.Drawing.Point(4, 22);
+            this.tabColors.Name = "tabColors";
+            this.tabColors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabColors.Size = new System.Drawing.Size(587, 241);
+            this.tabColors.TabIndex = 1;
+            this.tabColors.Text = "Image Bar";
+            this.tabColors.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(180, 36);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(368, 47);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "label1";
+            // 
+            // btnElementBgColor
+            // 
+            this.btnElementBgColor.Location = new System.Drawing.Point(265, 6);
+            this.btnElementBgColor.Name = "btnElementBgColor";
+            this.btnElementBgColor.Size = new System.Drawing.Size(85, 23);
+            this.btnElementBgColor.TabIndex = 4;
+            this.btnElementBgColor.Text = "&Background...";
+            this.btnElementBgColor.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Location = new System.Drawing.Point(177, 95);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(401, 131);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "lblImageBarPreview";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnElementFgColor
+            // 
+            this.btnElementFgColor.Location = new System.Drawing.Point(177, 6);
+            this.btnElementFgColor.Name = "btnElementFgColor";
+            this.btnElementFgColor.Size = new System.Drawing.Size(82, 23);
+            this.btnElementFgColor.TabIndex = 2;
+            this.btnElementFgColor.Text = "&Foreground...";
+            this.btnElementFgColor.UseVisualStyleBackColor = true;
+            // 
+            // lbxUiElements
+            // 
+            this.lbxUiElements.FormattingEnabled = true;
+            this.lbxUiElements.IntegralHeight = false;
+            this.lbxUiElements.Items.AddRange(new object[] {
+            "Code",
+            "Heuristic code",
+            "Data",
+            "Address",
+            "Unknown"});
+            this.lbxUiElements.Location = new System.Drawing.Point(7, 7);
+            this.lbxUiElements.Name = "lbxUiElements";
+            this.lbxUiElements.Size = new System.Drawing.Size(164, 172);
+            this.lbxUiElements.TabIndex = 1;
+            // 
             // UserPreferencesDialog
             // 
             this.AcceptButton = this.btnOK;
@@ -376,5 +387,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.Button btnReset;
     }
 }
