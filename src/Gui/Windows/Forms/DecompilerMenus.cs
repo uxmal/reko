@@ -1,4 +1,3 @@
-
 #region License
 /* 
  * Copyright (C) 1999-2015 John Källén.
@@ -463,4 +462,3 @@ namespace Reko.Gui.Windows.Forms
     }
 }
   
- 
