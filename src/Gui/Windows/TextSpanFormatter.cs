@@ -203,6 +203,9 @@ namespace Reko.Gui.Windows
             }
         }
 
+        /// <summary>
+        /// Simple span containing a string/text.
+        /// </summary>
         private class FixedTextSpan : TextSpan
         {
             public StringBuilder Text;

@@ -553,8 +553,6 @@ namespace Reko.Gui.Windows.Controls
             {
                 vScroll.Enabled = false;
             }
-          
-
             Invalidate();
         }
 
