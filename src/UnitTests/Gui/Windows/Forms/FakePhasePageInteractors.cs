@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             OpenBinaryCalled = true;
             return false;
         }
-        public bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase)
+        public bool OpenBinaryAs(string file, string arch, string platform, Address addrBase)
         {
             throw new NotImplementedException();
         }
