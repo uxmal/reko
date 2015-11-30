@@ -55,6 +55,7 @@ namespace Reko.Gui.Windows
                 () => { dlgr = MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
             return dlgr == DialogResult.Yes;
         }
+
         #if DEBUG
         private Thread GetControlOwnerThread(Control ctrl)
         {
