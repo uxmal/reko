@@ -18,45 +18,30 @@
  */
 #endregion
 
-using Reko.Gui.Controls;
-using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Windows
 {
-    public partial class WorkerDialog : Form, IWorkerDialog
+    public class ProgressbarWrapper : IProgressBar
     {
-        public WorkerDialog()
+        private ProgressBar pbar;
+
+        public ProgressbarWrapper(ProgressBar pbar)
         {
-            InitializeComponent();
-            CancellationButton = new ButtonWrapper(btnCancel);
-            Caption = new LabelWrapper(lblCaption);
-            Detail = new LabelWrapper(lblDetailText);
-            ProgressBar = new ProgressbarWrapper(progressBar);
+            this.pbar = pbar;
         }
 
-        public IButton CancellationButton { get; private set; }
+        public int Maximum { get { return pbar.Maximum; } set { pbar.Maximum = value; } }
+        public int Minimum{ get { return pbar.Minimum; } set { pbar.Minimum = value; } }
+        public int Value { get { return pbar.Value; } set { pbar.Value = value; } }
 
-        public BackgroundWorker Worker
+        public void Update()
         {
-            get { return backgroundWorker; }
-        }
-
-        public IProgressBar ProgressBar { get; private set; }
-
-        public ILabel Caption { get; private set; }
-
-        public ILabel Detail { get; private set; }
-
-        public void Invoke(Action action)
-        {
-            base.Invoke(action);
+            pbar.Update();
         }
     }
 }

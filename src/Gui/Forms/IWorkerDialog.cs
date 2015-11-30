@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
 * Copyright (C) 1999-2015 John Källén.
 *
@@ -18,25 +18,29 @@
 */
 #endregion
 
-using Reko.Core;
-using Reko.Gui.Forms;
+using Reko.Gui.Controls;
 using System;
-using Reko.Gui.Windows.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Gui
+namespace Reko.Gui.Forms
 {
-    public interface IDialogFactory
+    public interface IWorkerDialog : IDialog
     {
-        IAssembleFileDialog CreateAssembleFileDialog();
-        IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
-        IAddressPromptDialog CreateAddressPromptDialog();
-        IFindStringsDialog CreateFindStringDialog();
-        IMainForm CreateMainForm();
-        IOpenAsDialog CreateOpenAsDialog();
-        IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
-        IResourceEditor CreateResourceEditor();
-        ISearchDialog CreateSearchDialog();
-        IUserPreferencesDialog CreateUserPreferencesDialog();
-        IWorkerDialog CreateWorkerDialog();
+        event EventHandler Load;
+        event EventHandler Closed;
+
+        BackgroundWorker Worker { get; }
+        IButton CancellationButton { get; }
+        DialogResult DialogResult { get; set; }
+        IProgressBar ProgressBar { get; }
+        ILabel Caption { get; }
+        ILabel Detail { get; }
+
+        void Invoke(Action action);     // Performs the action on the UI thread.
+        void Close();
     }
 }

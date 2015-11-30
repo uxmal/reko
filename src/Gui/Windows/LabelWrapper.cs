@@ -19,44 +19,23 @@
 #endregion
 
 using Reko.Gui.Controls;
-using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Windows
 {
-    public partial class WorkerDialog : Form, IWorkerDialog
+    public class LabelWrapper : ILabel
     {
-        public WorkerDialog()
+        private Label lbl;
+
+        public LabelWrapper(Label lbl)
         {
-            InitializeComponent();
-            CancellationButton = new ButtonWrapper(btnCancel);
-            Caption = new LabelWrapper(lblCaption);
-            Detail = new LabelWrapper(lblDetailText);
-            ProgressBar = new ProgressbarWrapper(progressBar);
+            this.lbl = lbl;
         }
 
-        public IButton CancellationButton { get; private set; }
-
-        public BackgroundWorker Worker
-        {
-            get { return backgroundWorker; }
-        }
-
-        public IProgressBar ProgressBar { get; private set; }
-
-        public ILabel Caption { get; private set; }
-
-        public ILabel Detail { get; private set; }
-
-        public void Invoke(Action action)
-        {
-            base.Invoke(action);
-        }
+        public string Text { get { return lbl.Text; } set { lbl.Text = value; } }
     }
 }

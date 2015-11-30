@@ -24,6 +24,8 @@ using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
@@ -53,12 +55,22 @@ namespace Reko.Gui.Windows
                 () => { dlgr = MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
             return dlgr == DialogResult.Yes;
         }
-
+        #if DEBUG
+        private Thread GetControlOwnerThread(Control ctrl)
+        {
+            if (ctrl.InvokeRequired)
+                return (Thread)ctrl.Invoke(new Func<Thread>(() => GetControlOwnerThread(ctrl)));
+            else
+                return System.Threading.Thread.CurrentThread;
+        }
+        #endif
         private DialogResult ShowModalDialog(Form dlg)
         {
+            var ownthr = GetControlOwnerThread(dlg);
             return (DialogResult)
                 form.Invoke(new Func<Form, DialogResult>(delegate(Form dlgToShow)
                 {
+                    Debug.Assert(ownthr == System.Threading.Thread.CurrentThread);
                     return dlgToShow.ShowDialog(form);
                 }), dlg);
         }

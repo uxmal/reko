@@ -537,6 +537,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var tabControl = new TabControl { TabPages = { tabResults, tabDiagnostics } };
             var toolStrip = new ToolStrip { };
             var statusStrip = new StatusStrip { Items = { new ToolStripLabel() } };
+            var brToolbar = new ToolStrip();
             var projectBrowser = mr.Stub<ITreeView>();
             form.Stub(f => f.DiagnosticsList).Return(listView);
             form.Stub(f => f.ImageList).Return(imagelist);
@@ -552,6 +553,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.ProjectBrowserToolbar).Return(toolStrip);
             form.Stub(f => f.ProjectBrowser).Return(projectBrowser);
             form.Stub(f => f.StatusStrip).Return(statusStrip);
+            form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
+            form.Stub(f => f.ProjectBrowserToolbar).Return(brToolbar);
             form.Load += null;
             LastCall.IgnoreArguments();
             form.Closed += null;
