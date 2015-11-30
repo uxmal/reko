@@ -101,6 +101,11 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
+        public void ResetStyle(string sName)
+        {
+
+        }
+
         public void UpdateControlStyle(string list, Control ctrl)
         {
             throw new NotImplementedException();

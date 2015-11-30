@@ -70,12 +70,16 @@ namespace Reko.Gui.Windows
                     key.SetValue(name, value);
             }
 
+            public void DeleteValue(string name)
+            {
+                key.DeleteValue(name, false);
+            }
+
             public void Dispose()
             {
                 if (key != null)
                     key.Dispose();
             }
-
         }
     }
 }

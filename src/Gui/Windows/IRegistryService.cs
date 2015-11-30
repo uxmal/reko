@@ -36,6 +36,7 @@ namespace Reko.Gui.Windows
 
     public interface IRegistryKey : IDisposable
     {
+        void DeleteValue(string name);
         object GetValue(string name, object defaultValue);
         IRegistryKey OpenSubKey(string keyName, bool writeable);
         void SetValue(string name, object value);
