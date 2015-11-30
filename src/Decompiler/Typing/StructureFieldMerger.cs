@@ -139,7 +139,8 @@ namespace Reko.Typing
                     yield return overlappingFields;
                     overlappingFields = new List<StructureField>();
                 }
-                AddFieldToCluster(new StructureField(field.Offset,  field.DataType,field.Name), overlappingFields);
+                //$REVIEW: what happens if a field has a user-given name?
+                AddFieldToCluster(new StructureField(field.Offset,  field.DataType), overlappingFields);
             }
             if (overlappingFields.Count > 0)
                 yield return overlappingFields;

@@ -213,6 +213,7 @@ namespace Reko.Assemblers.x86
 				return new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(totalInt, defaultWordWidth)));
 			}
 		}
+
 		public ParsedOperand ParseOperand()
 		{
 			sym = null;
@@ -255,18 +256,8 @@ namespace Reko.Assemblers.x86
 					symtab.CreateSymbol(lexer.StringLiteral));
 				
 			case Token.ID:
-			{
-                int v;
-                if (symtab.Equates.TryGetValue(lexer.StringLiteral.ToLower(), out v))
-                {
-					totalInt += lexer.Integer;
-					return IntegerCommon();
-				}
-				return new ParsedOperand(
-							   new MemoryOperand(addrWidth, Constant.Create(defaultWordWidth, addrBase.Offset)),
-							   symtab.CreateSymbol(lexer.StringLiteral));
-			}
-			case Token.WORD:
+                return ParseIdOperand(lexer.StringLiteral);
+            case Token.WORD:
 				return ParsePtrOperand(PrimitiveType.Word16);
 			case Token.BYTE:
 				return ParsePtrOperand(PrimitiveType.Byte);
@@ -279,7 +270,27 @@ namespace Reko.Assemblers.x86
 			}
 		}
 
-		private void OnError(string msg )
+        public ParsedOperand ParseIdOperand(string symStr)
+        {
+            int v;
+            if (symtab.Equates.TryGetValue(symStr.ToLower(), out v))
+            {
+                totalInt += lexer.Integer;
+                return IntegerCommon();
+            }
+            if (lexer.PeekToken() == Token.BRA)
+            {
+                lexer.GetToken();
+                var memOp = ParseMemoryOperand(RegisterStorage.None);
+                memOp.Symbol = symtab.CreateSymbol(symStr);
+                return memOp;
+            }
+            return new ParsedOperand(
+                           new MemoryOperand(addrWidth, Constant.Create(defaultWordWidth, addrBase.Offset)),
+                           symtab.CreateSymbol(symStr));
+        }
+
+        private void OnError(string msg )
 		{
 			if (Error != null)
 			{

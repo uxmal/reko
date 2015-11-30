@@ -177,8 +177,11 @@ namespace Reko.Gui.Design
         private Dictionary<RegisterStorage, string> GetAssumedRegisterValues(Address Address)
         {
             Procedure_v1 up;
-            if (!program.User.Procedures.TryGetValue(this.Address, out up))
+            if (!program.User.Procedures.TryGetValue(this.Address, out up) ||
+                up.Assume == null)
+            {
                 return new Dictionary<RegisterStorage, string>();
+            }
             return up.Assume
                 .Select(ass => new
                 {

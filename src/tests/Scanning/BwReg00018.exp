@@ -1,0 +1,44 @@
+// fn10000000
+// Return size: 4
+void fn10000000()
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
+	esp = fp
+	ecx = Mem0[esi + 0x0000006C:word32]
+	SZO = cond(ecx & ecx)
+	C = false
+	branch Test(NE,Z) l10000012
+	// succ:  l10000007 l10000012
+l10000007:
+	SZO = cond(ebp & ebp)
+	C = false
+	branch Test(EQ,Z) l10000021
+	// succ:  l1000000B l10000021
+l1000000B:
+	SCZO = cond(eax - 0x0000029A)
+	branch Test(EQ,Z) l10000021
+	// succ:  l10000012 l10000021
+l10000012:
+	eax = Mem0[esi + 0x0000007C:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ecx = eax + eax * 0x00000002
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = esi
+	call Mem0[0x10000022 + ecx * 0x00000004:word32] (retsize: 4;)
+	// succ:  l10000021
+l10000021:
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+// fn1000006E
+// Return size: 4
+void fn1000006E()
+fn1000006E_entry:
+	// succ:  l1000006E
+l1000006E:
+	esp = fp
+	return
+	// succ:  fn1000006E_exit
+fn1000006E_exit:

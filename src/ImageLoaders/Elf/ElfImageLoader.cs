@@ -380,9 +380,7 @@ namespace Reko.ImageLoaders.Elf
                     if (ph.p_vaddr > 0 && ph.p_filesz > 0)
                         Array.Copy(RawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
                     Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
-
                 }
-            
                 foreach (var segment in SectionHeaders)
                 {
                     if (segment.sh_name == 0 || segment.sh_addr == 0)
@@ -418,13 +416,8 @@ namespace Reko.ImageLoaders.Elf
             {
             case ELFOSABI_NONE: // Unspecified ABI
                 envName = "elf-neutral";
-                //defaultPlatform.TypeLibraries.AddRange(LoadTypeLibraries());
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
-                //$TODO: I know nothing about that platform, so use
-                // defaults. If you think you know better, and you think
-                // the platform differs by a significant amount, 
-                // implement a PS/3 platform and use it here.
                 envName = "elf-cell-lv2";
                 break;
             default:

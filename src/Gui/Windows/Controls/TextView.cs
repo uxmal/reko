@@ -143,6 +143,7 @@ namespace Reko.Gui.Windows.Controls
 
         private void SetCaret()
         {
+            //$TODO: want a cross-platform caret
         }
 
         private void ClearCaret()
@@ -186,6 +187,7 @@ namespace Reko.Gui.Windows.Controls
         {
             if (Capture && !dragging)
             {
+                // We're extending the selection
                 var pos = ClientToLogicalPosition(e.Location);
                 if (ComparePositions(cursorPos, pos) != 0)
                 {
@@ -195,6 +197,8 @@ namespace Reko.Gui.Windows.Controls
             }
             else
             {
+                // Not captured, so rat is just floating over us.
+                // Show the right cursor.
                 var span = GetSpan(e.Location);
                 if (span != null)
                 {
@@ -530,6 +534,13 @@ namespace Reko.Gui.Windows.Controls
         {
             if (Services == null)
                 return;
+
+            // Need to recompute the layout first so we can count
+            // the fully visible lines.
+            var g = CreateGraphics();
+            ComputeLayout(g);
+            g.Dispose();
+
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
             if (model != null)
@@ -542,10 +553,6 @@ namespace Reko.Gui.Windows.Controls
             {
                 vScroll.Enabled = false;
             }
-            var g = CreateGraphics();
-            ComputeLayout(g);
-            g.Dispose();
-
             Invalidate();
         }
 

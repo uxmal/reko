@@ -148,11 +148,6 @@ namespace Reko.Core
 			return id;
 		}
 
-        [Obsolete("", true)]
-        public Identifier EnsureFlagGroup(uint grfMask, string name, DataType dt)
-        {
-            throw new NotImplementedException();
-        }
         public Identifier EnsureFlagGroup(FlagRegister freg, uint grfMask, string name, DataType dt)
 		{
 			if (grfMask == 0)

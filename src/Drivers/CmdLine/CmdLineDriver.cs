@@ -147,7 +147,7 @@ namespace Reko.CmdLine
 
 
             var state = CreateInitialState(arch, pArgs);
-            dec.LoadRawImage((string)pArgs["filename"], arch, platform, addrBase);
+            dec.LoadRawImage((string)pArgs["filename"], (string)pArgs["--arch"], (string) sEnv, addrBase);
             dec.Project.Programs[0].EntryPoints.Add(new EntryPoint(addrEntry, state));
             object oHeur;
             if (pArgs.TryGetValue("heuristics", out oHeur))

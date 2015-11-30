@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Scanning
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
-            var asm = new X86Assembler(sc, arch, addr, new List<EntryPoint>());
+            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<EntryPoint>());
             scanner = repository.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();

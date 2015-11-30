@@ -31,6 +31,11 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using Reko.Assemblers.x86;
+using System.ComponentModel.Design;
+using System.IO;
+using System.Collections.Generic;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -91,6 +96,35 @@ namespace Reko.UnitTests.Scanning
             expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
             SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
+        }
+
+        private void RunFileTestx86_32(string relativePath, string outputFile)
+        {
+            Program program;
+            var sc = new ServiceContainer();
+            var fsSvc = new FileSystemServiceImpl();
+            var el = new FakeDecompilerEventListener();
+            sc.AddService<IFileSystemService>(fsSvc);
+            sc.AddService<DecompilerEventListener>(el);
+            var arch = new X86ArchitectureFlat32();
+            var asm = new X86TextAssembler(sc, arch);
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
+            {
+                var platform = new DefaultPlatform(sc, arch);
+                asm.Platform = platform;
+                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+            }
+            var scanner = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), null, sc);
+            scanner.EnqueueEntryPoint(new EntryPoint(program.Image.BaseAddress, arch.CreateProcessorState()));
+            scanner.ScanImage();
+            using (var fut = new FileUnitTester(outputFile))
+            {
+                foreach (var proc in program.Procedures.Values)
+                {
+                    proc.Write(false, fut.TextWriter);
+                }
+                fut.AssertFilesEqual();
+            }
         }
 
         private void RunTest(IntelArchitecture arch, RtlTransfer rtlTransfer, string outputFile)
@@ -390,6 +424,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
+        [Category("UnitTests")]
         public void BwUnresolveableIndirect()
         {
             var eax = m.Frame.CreateTemporary("eax", PrimitiveType.Word32);
@@ -407,6 +442,13 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("eax", bw.Index.Name);
             bw.BackWalk(m.Block);
             Assert.AreEqual("None", bw.Index.Name);
+        }
+
+        [Test]
+        [Category("Regressions")]
+        public void BwReg00018()
+        {
+            RunFileTestx86_32("Fragments/regressions/r00018.asm", "Scanning/BwReg00018.txt");
         }
 	}
 }

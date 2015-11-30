@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Typing
 			var c = CreateTv(Constant.Word32(4));
 			var bin = CreateTv(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
             var mem = CreateTv(new MemoryAccess(bin, PrimitiveType.Word32));
-			var tmer = new TypedExpressionRewriter(program);
+			var tmer = new TypedExpressionRewriter2(program);
 			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());
 		}

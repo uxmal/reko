@@ -101,14 +101,14 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new X86Assembler(sc, new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
+            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<EntryPoint>());
             test(m);
             var lr = m.GetImage();
             program = new Program(
                 lr.Image,
                 lr.ImageMap,
                 lr.Architecture,
-                new FakePlatform(null, arch));
+                lr.Platform);
             scan = CreateScanner(program);
             EntryPoint ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
@@ -276,7 +276,7 @@ namespace Reko.UnitTests.Scanning
         {
             Program prog = new Program();
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(sc, new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
+            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<EntryPoint>());
             m.i86();
 
             m.Proc("main");

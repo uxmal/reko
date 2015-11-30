@@ -323,8 +323,7 @@ namespace Reko.Gui.Forms
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archOption.Value));
 
                 var envOption = (ListOption) dlg.Platforms.SelectedValue;
-                var type = Type.GetType((string) envOption.Value);
-                platform = (Platform) Activator.CreateInstance(type, this.Services, arch);
+                var env = (OperatingEnvironment)envOption.Value;
 
                 Address addrBase;
                 var sAddr = dlg.AddressTextBox.Text.Trim();
@@ -333,8 +332,8 @@ namespace Reko.Gui.Forms
                 OpenBinary(dlg.FileName.Text, (f) =>
                     pageInitial.OpenBinaryAs(
                         f,
-                        arch,
-                        platform,
+                        (string)archOption.Value,
+                        ((OperatingEnvironment)envOption.Value).Name,
                         addrBase));
             }
             catch (Exception ex)

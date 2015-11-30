@@ -28,26 +28,25 @@ namespace Reko.Assemblers.x86
 	public class ParsedOperand
 	{
 		private MachineOperand op;
-		private Symbol sym;
 		private bool longJmp;
 
 		public ParsedOperand(MachineOperand op, Symbol sym, bool longJmp)
 		{
 			this.op = op;
-			this.sym = sym;
+			this.Symbol = sym;
 			this.longJmp = longJmp;
 		}
 
 		public ParsedOperand(MachineOperand op, Symbol sym)
 		{
 			this.op = op;
-			this.sym = sym;
+			this.Symbol = sym;
 		}
 
 		public ParsedOperand(MachineOperand op)
 		{
 			this.op = op;
-			this.sym = null;
+			this.Symbol = null;
 		}
 
 		public bool Long
@@ -60,9 +59,6 @@ namespace Reko.Assemblers.x86
 			get { return op; }
 		}
 
-		public Symbol Symbol
-		{
-			get { return sym; }
-		}
+		public Symbol Symbol { get; set; }
 	}
 }

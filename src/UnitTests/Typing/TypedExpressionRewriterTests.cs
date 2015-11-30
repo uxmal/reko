@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Typing
                 aen.Transform(program);
                 eqb.Build(program);
 #if OLD
-                coll = new TraitCollector(factory, store, dtb, program);
+                coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
                 coll.CollectProgramTraits(program);
 #else
                 var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program);
@@ -248,7 +248,7 @@ namespace Reko.UnitTests.Typing
             tvI.DataType = u;
             tvX.DataType = u;
             ctn.RenameAllTypes(prog.TypeStore);
-            TypedExpressionRewriter ter = new TypedExpressionRewriter(prog);
+            var ter = new TypedExpressionRewriter2(prog);
             Instruction instr = ter.TransformAssignment(ass);
             Assert.AreEqual("x.u0 = 3F", instr.ToString());
         }
@@ -520,6 +520,14 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(new StaggeredArraysFragment());
             RunTest(prog.BuildProgram(), "Typing/TerStaggeredArrays.txt");
+        }
+
+        [Test]
+        public void TerArrayLoopMock()
+        {
+            var pb = CreateProgramBuilder(0x04000000, 0x9000);
+            pb.Add(new ArrayLoopMock());
+            RunTest(pb, "Typing/TerArrayLoopMock.txt");
         }
 
         [Test]

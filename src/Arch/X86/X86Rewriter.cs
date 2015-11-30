@@ -286,6 +286,7 @@ namespace Reko.Arch.X86
                 case Opcode.setl: RewriteSet(ConditionCode.LT); break;
                 case Opcode.setle: RewriteSet(ConditionCode.LE); break;
                 case Opcode.setnc: RewriteSet(ConditionCode.UGE); break;
+                case Opcode.setno: RewriteSet(ConditionCode.NO); break;
                 case Opcode.setns: RewriteSet(ConditionCode.NS); break;
                 case Opcode.setnz: RewriteSet(ConditionCode.NE); break;
                 case Opcode.setpe: RewriteSet(ConditionCode.PE); break;

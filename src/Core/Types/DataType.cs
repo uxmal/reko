@@ -50,6 +50,7 @@ namespace Reko.Core.Types
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
         public abstract DataType Clone();
+        //public abstract int GetInferredSize();                  // Computes the size of an item.
         object ICloneable.Clone() { return Clone(); }
 
         public T ResolveAs<T>() where T : DataType
@@ -82,7 +83,5 @@ namespace Reko.Core.Types
             this.Accept(typeGraphWriter);
             return sw.ToString();
 		}
-
-
     }
 }

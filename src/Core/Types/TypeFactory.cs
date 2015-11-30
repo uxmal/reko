@@ -55,6 +55,7 @@ namespace Reko.Core.Types
 
 		public ArrayType CreateArrayType(DataType elType, int length)
 		{
+            if (elType is ArrayType) elType.ToString(); //$DEBUG
 			return new ArrayType(elType, length);
 		}
 

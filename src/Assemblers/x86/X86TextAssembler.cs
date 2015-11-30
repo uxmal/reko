@@ -24,6 +24,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -57,14 +58,21 @@ namespace Reko.Assemblers.x86
             addrBase = addr;
             lexer = new Lexer(rdr);
 
-            asm = new X86Assembler(services, arch, addrBase, entryPoints);
+            asm = new X86Assembler(services, new MsdosPlatform(services, arch), addrBase, entryPoints);
             asm.Platform = Platform;
 
             // Assemblers are strongly line-oriented.
 
             while (lexer.PeekToken() != Token.EOFile)
             {
-                ProcessLine();
+                try {
+                    ProcessLine();
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print("Error on line {0}: {1}", lexer.LineNumber, ex.Message);
+                    throw;
+                }
             }
 
             asm.ReportUnresolvedSymbols();
@@ -243,9 +251,9 @@ namespace Reko.Assemblers.x86
             {
                 lexer.DiscardToken();
                 far = true;
+			    token = lexer.PeekToken();
             }
-			token = lexer.PeekToken();
-			switch (token)
+            switch (token)
 			{
 			default:
 				Error("Unexpected token: " + token);
@@ -261,11 +269,24 @@ namespace Reko.Assemblers.x86
                 asm.ProcessCallJmp(far, indirect, ops[0]);
 				break;
 			case Token.ID:
-                int direct = isCall
-                    ? (far ? 0x9A : 0xE8)
-                    : (far ? 0xEA : 0xE9);
-				lexer.DiscardToken();
-                asm.ProcessCallJmp(far, direct, lexer.StringLiteral);
+                var str = lexer.StringLiteral;
+                lexer.DiscardToken();
+                if (lexer.PeekToken() == Token.BRA)
+                {
+                    var opp = asm.CreateOperandParser(lexer);
+                    var target = opp.ParseIdOperand(str);
+                    int indir = isCall
+                        ? (far ? 0x03 : 0x02)
+                        : (far ? 0x05 : 0x04);
+                    asm.ProcessCallJmp(far, indir, target);
+                }
+                else
+                {
+                    int direct = isCall
+                        ? (far ? 0x9A : 0xE8)
+                        : (far ? 0xEA : 0xE9);
+                    asm.ProcessCallJmp(far, direct, str);
+                }
 				break;
 			}
 		}

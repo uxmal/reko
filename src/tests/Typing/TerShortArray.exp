@@ -60,7 +60,7 @@ T_9: (in 0x00000002 : word32)
   Class: Eq_9
   DataType: ui32
   OrigDataType: ui32
-T_10: (in Mem0[fp + 0x00000008:word32] * 0x00000002 : word32)
+T_10: (in fp->dw0008 * 0x00000002 : word32)
   Class: Eq_10
   DataType: ui32
   OrigDataType: ui32

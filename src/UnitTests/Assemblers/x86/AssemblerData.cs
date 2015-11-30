@@ -128,6 +128,12 @@ foo		endp
 			}));
 		}
 
+        [Test]
+        public void AsIndirectCall()
+        {
+
+        }
+
 		[Test]
 		public void AsAutoArray32()
 		{
@@ -223,7 +229,6 @@ foo		endp
 		{
 			RunTest("Fragments/multiple/popnopop.asm", "Intel/AsPopNoPop.txt", Address.SegPtr(0xB00, 0));
 		}
-
 
 		[Test]
 		public void AsPseudoprocs()

@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var entryPoints = new List<EntryPoint>();
-            var asm = new X86Assembler(sc, arch, addrBase, entryPoints);
+            var asm = new X86Assembler(sc, platform, addrBase, entryPoints);
             asmProg(asm);
 
             var lr = asm.GetImage();
