@@ -76,7 +76,7 @@
        Other similar extension points exist, see Microsoft.Common.targets.
        -->
   <Target Name="BeforeBuild">
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)/tools/c2xml/bin/$(Configuration)/c2xml.exe %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml/bin/$(Configuration)/c2xml.exe %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
     <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
   </Target>
   <!--
