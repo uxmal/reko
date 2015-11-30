@@ -534,6 +534,13 @@ namespace Reko.Gui.Windows.Controls
         {
             if (Services == null)
                 return;
+
+            // Need to recompute the layout first so we can count
+            // the fully visible lines.
+            var g = CreateGraphics();
+            ComputeLayout(g);
+            g.Dispose();
+
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
             if (model != null)
@@ -546,9 +553,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 vScroll.Enabled = false;
             }
-            var g = CreateGraphics();
-            ComputeLayout(g);
-            g.Dispose();
+          
 
             Invalidate();
         }
