@@ -145,6 +145,12 @@ namespace Reko.Gui
                 },
                 new StyleSettingNames
                 {
+                    Name = UiStyles.MemoryData,
+                    ForeColor = UiStyles.MemoryDataForeColor,
+                    BackColor = UiStyles.MemoryDataBackColor,
+                },
+                new StyleSettingNames
+                {
                     Name = UiStyles.MemoryHeuristic,
                     ForeColor = UiStyles.MemoryHeuristicForeColor,
                     BackColor = UiStyles.MemoryHeuristicBackColor,

@@ -35,6 +35,11 @@ namespace Reko.WindowsItp
         {
             throw new NotImplementedException();
         }
+
+        public void Delete(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

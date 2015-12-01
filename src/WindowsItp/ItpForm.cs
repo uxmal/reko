@@ -108,6 +108,11 @@ namespace Reko.WindowsItp
             public void Save()
             {
             }
+
+            public void Delete(string name)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void treeViewToolStripMenuItem_Click(object sender, EventArgs e)
