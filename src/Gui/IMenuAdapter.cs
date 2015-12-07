@@ -38,7 +38,6 @@ namespace Reko.Gui
 
         bool IsDynamic(int i);
 
-
         void InsertAt(int i, object itemNew);
         void SetText(int i, string text);
     }

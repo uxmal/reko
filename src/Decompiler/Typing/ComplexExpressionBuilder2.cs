@@ -25,6 +25,21 @@ using Reko.Core.Operators;
 
 namespace Reko.Typing
 {
+    /// <summary>
+    /// Given an expression whose type is "complex" (e.g. pointer
+    /// or structure types), and optional index expresssion and/or 
+    /// integer offset, creates a C-like expression of the type:
+    ///     - array index reference (e.g. a[i])
+    ///     - structure field reference (e.g. ptr->x)
+    ///     - union alternative reference (e.g. u->r)
+    ///     - member pointer dereference (e.g. ptr->*foo)
+    ///     - simple pointer dereference (e.g. *ptr)
+    /// </summary>
+    /// <remarks>
+    /// It is assumed that the constituent expressions have already
+    /// been converted; this class is not intended to execute
+    /// recursively.
+    /// </remarks>
     public class ComplexExpressionBuilder2 : IDataTypeVisitor<Expression>
     {
         private Expression expComplex;      // The expression we wish to convert to high-level code.
@@ -35,7 +50,7 @@ namespace Reko.Typing
         private int offset;                 // constant offset from expComplex.
         private DataType enclosingPtr;      
         private bool dereferenced;          // True if expComplex was dereferenced (Mem0[expComplex])
-        private bool wasDereferenced;       // True if a dereferencing expression has been emitted (field access or the like.
+        private bool dereferenceGenerated;       // True if a dereferencing expression has been emitted (field access or the like.
 
         public ComplexExpressionBuilder2(
             DataType dtResult,
@@ -50,6 +65,12 @@ namespace Reko.Typing
             this.offset = offset;
         }
 
+        /// <summary>
+        /// Build the complex expression.
+        /// </summary>
+        /// <param name="dereferenced">True if this is being executed
+        /// in the context of a MemAccess or SegmentedMemAccess.</param>
+        /// <returns>The rewritten expression.</returns>
         public Expression BuildComplex(bool dereferenced)
         {
             this.enclosingPtr = null;
@@ -66,11 +87,11 @@ namespace Reko.Typing
             var dtComplex = this.dtComplex;
             this.dereferenced = dereferenced;
             var exp = this.dtComplex.Accept(this);
-            if (!dereferenced && wasDereferenced)
+            if (!dereferenced && dereferenceGenerated)
             {
                 exp = new UnaryExpression(Operator.AddrOf, dtComplex, exp);
             }
-            if (dereferenced && !wasDereferenced)
+            if (dereferenced && !dereferenceGenerated)
             {
                 exp = CreateDereference(dtComplex, exp);
             }
@@ -164,9 +185,9 @@ namespace Reko.Typing
                 {
                     if (dereferenced)
                     {
-                        if (!wasDereferenced)
+                        if (!dereferenceGenerated)
                         {
-                            wasDereferenced = true;
+                            dereferenceGenerated = true;
                             return CreateDereference(pt, expComplex);
                         }
                         else
@@ -271,12 +292,14 @@ namespace Reko.Typing
             if (dereferenced)
             {
                 enclosingPtr = null;
-                wasDereferenced = true;
+                dereferenceGenerated = true;
                 return new ArrayAccess(dtPointee, expComplex, arrayIndex);
             }
             else
             {
-                wasDereferenced = false;
+                // Could generate &a[index] here, but 
+                // a + index is more idiomatic C/C++
+                dereferenceGenerated = false;
                 return new BinaryExpression(Operator.IAdd, dtPointer, expComplex, arrayIndex);
             }
         }
@@ -302,7 +325,7 @@ namespace Reko.Typing
 
         private Expression CreateDereference(DataType dt, Expression e)
         {
-            this.wasDereferenced = true;
+            this.dereferenceGenerated = true;
             if (basePtr != null)
                 return new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
             else if (e != null)
@@ -337,11 +360,11 @@ namespace Reko.Typing
         {
             if (enclosingPtr != null)
             {
-                wasDereferenced = true;
+                dereferenceGenerated = true;
                 exp = CreateDereference(dtStructure, exp);
                 if (dtField.ResolveAs<ArrayType>() != null)
                 {
-                    wasDereferenced = false;
+                    dereferenceGenerated = false;
                 }
             }
             var fa = new FieldAccess(dtField, exp, field);

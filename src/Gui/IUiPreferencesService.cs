@@ -177,7 +177,7 @@ namespace Reko.Gui
                 new StyleSettingNames
                 {
                     Name = UiStyles.CodeKeyword,
-                    ForeColor= UiStyles.CodeKeywordColor,
+                    ForeColor = UiStyles.CodeKeywordColor,
                     FontName = UiStyles.CodeKeywordFont,
                 },
                 new StyleSettingNames

@@ -113,15 +113,21 @@ namespace Reko.Core.Types
 			get { return "u"; }
 		}
 
+        private static int nestoMatic;
+
 		public override int Size
 		{
 			get
 			{
 				int size = 0;
+                ++nestoMatic;
+                if (nestoMatic > 100)
+                    return 4; ;
 				foreach (UnionAlternative alt in Alternatives.Values)
 				{
 					size = Math.Max(size, alt.DataType.Size);
 				}
+                --nestoMatic;
 				return size;
 			}
 			set { ThrowBadSize(); }

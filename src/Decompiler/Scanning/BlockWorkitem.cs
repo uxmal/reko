@@ -723,7 +723,6 @@ namespace Reko.Scanning
                     throw new NotImplementedException();
                 Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
-            //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
             program.ImageMap.AddItem(
                 bw.VectorAddress,
                 new ImageMapVectorTable(

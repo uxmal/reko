@@ -31,7 +31,6 @@ namespace Reko.Scanning
 	/// </summary>
 	public class Trie<T>
 	{
-		private int count;
 		private TrieNode root;
 
 		public Trie(IEqualityComparer<T> hasher)
@@ -39,10 +38,7 @@ namespace Reko.Scanning
 			this.root = new TrieNode(hasher);
 		}
 
-		public int Count
-		{
-			get { return count; }
-		}
+		public int Count { get; private set; }
 
 		public void Add(T [] instrs)
 		{
@@ -51,7 +47,7 @@ namespace Reko.Scanning
 			{
 				node = node.Add(instr);
 				++node.Tally;
-				++count;
+				++Count;
 			}
 		}
 

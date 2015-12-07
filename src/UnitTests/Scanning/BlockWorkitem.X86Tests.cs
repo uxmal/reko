@@ -321,14 +321,6 @@ namespace Reko.UnitTests.Scanning
 
                 //prog.image = new LoadedImage(Address.Ptr32(0x0C00, 0), new byte[100]);
                 //var imageMap = image.CreateImageMap();
-                scanner.Expect(x => x.EnqueueVectorTable(
-                    Arg<Address>.Is.Anything,
-                    Arg<Address>.Is.Anything,
-                    Arg<PrimitiveType>.Is.Same(PrimitiveType.Word16),
-                    Arg<ushort>.Is.Anything,
-                    Arg<bool>.Is.Equal(false),
-                    Arg<Procedure>.Is.Anything,
-                    Arg<ProcessorState>.Is.Anything));
                 scanner.Stub(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));

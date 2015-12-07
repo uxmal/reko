@@ -101,7 +101,6 @@ namespace Reko.Typing
                     null,
                     types.ToArray());
             }
-
         }
 
         private StructureType FindStructureToFitIn(StructureField field,int commonOffset, List<StructureType> types)

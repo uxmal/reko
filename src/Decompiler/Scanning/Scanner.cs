@@ -52,7 +52,6 @@ namespace Reko.Scanning
         void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
-        void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
@@ -417,25 +416,6 @@ namespace Reko.Scanning
                     return false;
                 block = block.Succ[0];
             }
-        }
-
-        public void EnqueueVectorTable(Address addrFrom, Address addrTable, PrimitiveType elemSize, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
-        {
-            ImageMapVectorTable table;
-            if (vectors.TryGetValue(addrTable, out table))
-                return;
-
-            table = new ImageMapVectorTable(addrTable, calltable);
-            var wi = new VectorWorkItem(this, program, table, proc);
-            wi.State = state.Clone();
-            wi.Stride = elemSize;
-            wi.SegBase = segBase;
-            wi.Table = table;
-            wi.AddrFrom = addrFrom;
-
-            imageMap.AddItem(addrTable, table);
-            vectors[addrTable] = table;
-            queue.Enqueue(PriorityVector, wi);
         }
 
         /// <summary>

@@ -30,24 +30,14 @@ namespace Reko.Core
     [Obsolete("Deprecate this in favor of just storing the datatype in the DataType property")]
     public class ImageMapVectorTable : ImageMapItem
     {
-        public ImageMapVectorTable(Address addrTable, bool fCallTable)
-        {
-            this.TableAddress = addrTable;
-            this.IsCallTable = fCallTable;
-            this.Addresses = new List<Address>();
-            this.RegisterUsed = new Dictionary<Address, int>();
-        }
-
         public ImageMapVectorTable(bool isCallTable, Address[] vector, int size)
         {
             this.IsCallTable = isCallTable;
             this.Addresses = new List<Address>(vector);
-            this.RegisterUsed = new Dictionary<Address,int>();
         }
 
         public Address TableAddress { get; private set; }
         public List<Address> Addresses { get; private set; }
         public bool IsCallTable { get; private set;}
-        public Dictionary<Address,int> RegisterUsed { get; private set; }
     }
 }

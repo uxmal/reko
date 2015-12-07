@@ -25,6 +25,9 @@ using System;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Rewrite call statements to Applications.
+    /// </summary>
 	public class CallRewriter
 	{
 		public CallRewriter(Program program)

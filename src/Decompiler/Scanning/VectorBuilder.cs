@@ -37,7 +37,6 @@ namespace Reko.Scanning
     {
         private IScanner scanner;
         private Program program;
-        private int cbTable;
         private Backwalker bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
@@ -47,6 +46,8 @@ namespace Reko.Scanning
             this.program = program;
             this.jumpGraph = jumpGraph;
         }
+
+        public int TableByteSize { get; private set; }
 
         public List<Address> Build(Address addrTable, Address addrFrom, ProcessorState state)
         {
@@ -92,7 +93,6 @@ namespace Reko.Scanning
         {
             int[] map = new int[limit];
             var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
-            
             var rdr = program.CreateImageReader(addrTableStart);
             for (int i = 0; i < limit; ++i)
             {
@@ -143,7 +143,7 @@ namespace Reko.Scanning
                     }
                     vector.Add(entryAddr);
                 }
-                cbTable = limit;
+                TableByteSize = limit;
             }
             return vector;
         }
@@ -203,10 +203,6 @@ namespace Reko.Scanning
             return new List<Address>();
         }
 
-        public int TableByteSize
-        {
-            get { return cbTable; }
-        }
 
         public bool IsValidAddress(Address addr)
         {
