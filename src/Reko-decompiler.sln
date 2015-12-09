@@ -1313,7 +1313,6 @@ Global
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.TravisRelease|Any CPU.ActiveCfg = Release|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.TravisRelease|Any CPU.Build.0 = Release|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.TravisRelease|Mixed Platforms.ActiveCfg = Release|x86
-		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.TravisRelease|Mixed Platforms.Build.0 = Release|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.TravisRelease|Win32.ActiveCfg = Release|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.TravisRelease|Win32.Build.0 = Release|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.TravisRelease|x86.ActiveCfg = Release|x86
@@ -1339,7 +1338,6 @@ Global
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|Any CPU.ActiveCfg = Release|x86
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|Any CPU.Build.0 = Release|x86
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|Mixed Platforms.ActiveCfg = Release|x86
-		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|Mixed Platforms.Build.0 = Release|x86
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|Win32.ActiveCfg = Release|x86
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|Win32.Build.0 = Release|x86
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|x86.ActiveCfg = Release|x86
