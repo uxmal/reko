@@ -84,6 +84,23 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, sActual);
         }
 
+        private void RunTest2(string sExp, Action<ProcedureBuilder> builder)
+        {
+            var pb = new ProcedureBuilder(this.pb.Program.Architecture);
+            builder(pb);
+            var proc = pb.Procedure;
+
+            var ssa = new SsaTransform2();
+            ssa.Transform(proc);
+
+            var writer = new StringWriter();
+            proc.Write(false, writer);
+            var sActual = writer.ToString();
+            if (sActual != sExp)
+                Debug.Print(sActual);
+            Assert.AreEqual(sExp, sActual);
+        }
+
         [Test]
         public void SsarSimple()
         {
@@ -467,5 +484,55 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void Ssa2_Simple_DefUse()
+        {
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	a_0 = 0x00000003
+	b_1 = a_0
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            RunTest2(sExp, m =>
+            {
+                var a = m.Reg32("a");
+                var b = m.Reg32("b");
+                m.Assign(a, 3);
+                m.Assign(b, a);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void Ssa2_UseUndefined()
+        {
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def a
+	def Mem0
+	// succ:  l1
+l1:
+	Mem0[0x00123400:word32] = a
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            RunTest2(sExp, m =>
+            {
+                var a = m.Reg32("a");
+                m.Store(m.Word32(0x123400), a);
+                m.Return();
+            });
+        }
     }
+
 }

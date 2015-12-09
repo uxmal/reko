@@ -26,6 +26,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Reko.Analysis
 {
@@ -711,5 +712,194 @@ namespace Reko.Analysis
                 return base.TransformUseInstruction(u);
             }
 		}
+    }
+
+    public class SsaTransform2 : InstructionTransformer 
+    {
+        private Block block;
+        private Statement stm;
+        private Dictionary<Block, Dictionary<Identifier, SsaIdentifier>> currentDef;
+        private Dictionary<Block, Dictionary<Identifier, SsaIdentifier>> incompletePhis;
+        private HashSet<Block> sealedBlocks;
+
+        public void Transform(Procedure proc)
+        {
+            this.SsaState = new SsaState(proc, null);
+            this.currentDef = new Dictionary<Block, Dictionary<Identifier, SsaIdentifier>>();
+            this.incompletePhis = new Dictionary<Block, Dictionary<Identifier, SsaIdentifier>>();
+            this.sealedBlocks = new HashSet<Block>();
+            foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
+            {
+                this.block = b;
+                this.currentDef.Add(block, new Dictionary<Identifier, SsaIdentifier>());
+                foreach (var s in b.Statements)
+                {
+                    this.stm = s;
+                    stm.Instruction = stm.Instruction.Accept(this);
+                }
+            }
+        }
+
+        public SsaState SsaState;
+
+        public override Instruction TransformAssignment(Assignment a)
+        {
+            var src = a.Src.Accept(this);
+            var sid = SsaState.Identifiers.Add(a.Dst, this.stm, src, false);
+            var idNew = writeVariable(a.Dst, block, sid);
+            return new Assignment(idNew, src);
+        }
+
+
+        public Identifier writeVariable(Identifier id, Block b, SsaIdentifier sid)
+        {
+            currentDef[block][id] = sid;
+            return sid.Identifier;
+        }
+
+        public override Expression VisitIdentifier(Identifier id)
+        {
+            return readVariable(id, block).Identifier;
+        }
+
+        public SsaIdentifier readVariable(Identifier id, Block b)
+        { 
+            // Read of an identifier.
+            SsaIdentifier ssaId;
+            if (currentDef[b].TryGetValue(id, out ssaId))
+            {
+                // Defined locally in this block.
+                return ssaId;
+            }
+            else
+            {
+                return readVariableRecursive(id, b);
+            }
+        }
+
+        private SsaIdentifier readVariableRecursive(Identifier id, Block b)
+        {
+            SsaIdentifier val;
+            if (false)  // !sealedBlocks.Contains(b))
+            {
+                // Incomplete CFG
+                val = newPhi(id, b);
+                incompletePhis[b][id] = val;
+            }
+            else if (b.Pred.Count == 0)
+            {
+                // Undef'ined or unreachable parameter; assume it's a def.
+                val = newDef(id, b);
+            }
+            else if (b.Pred.Count == 1)
+            {
+                val = readVariable(id, b.Pred[0]);
+            }
+            else
+            {
+                // Break potential cycles with operandless phi
+                val = newPhi(id, b);
+                writeVariable(id, b, val);
+                val = addPhiOperands(id, val);
+            }
+            writeVariable(id, b, val);
+            return val;
+        }
+
+
+        /// <summary>
+        /// Creates a phi statement with no slots for the predecessor blocks, then
+        /// inserts the phi statement as the first statement of the block.
+        /// </summary>
+        /// <param name="b">Block into which the phi statement is inserted</param>
+        /// <param name="v">Destination variable for the phi assignment</param>
+        /// <returns>The inserted phi Assignment</returns>
+        private SsaIdentifier newPhi( Identifier id, Block b)
+        {
+            var phiAss = new PhiAssignment(id, 0);
+            var stm = new Statement(0, phiAss, b);
+            b.Statements.Insert(0, stm);
+
+            var sid = SsaState.Identifiers.Add(phiAss.Dst, this.stm, phiAss.Src, false);
+            phiAss.Dst = sid.Identifier;
+            return sid;
+        }
+
+        private SsaIdentifier addPhiOperands(Identifier id, SsaIdentifier phi)
+        {
+            // Determine operands from predecessors.
+            ((PhiAssignment)phi.DefStatement.Instruction).Src =
+                new PhiFunction(
+                    id.DataType,
+                    phi.DefStatement.Block.Pred.Select(p => readVariable(id, p).Identifier).ToArray());
+            return tryRemoveTrivial(phi);
+        }
+
+        private SsaIdentifier tryRemoveTrivial(SsaIdentifier phi)
+        {
+            Identifier same = null;
+            foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
+            {
+                if (op == same || op == phi.Identifier)
+                {
+                    // Unique value or self-reference
+                    continue;
+                }
+                if (same != null)
+                {
+                    // The phi merges at least two values; not trivial
+                    return phi;
+                }
+                same = op;
+            }
+            SsaIdentifier sid;
+            if (same == null)
+            {
+                // Undef'ined or unreachable parameter; assume it's a def.
+                sid = newDef(phi.OriginalIdentifier, phi.DefStatement.Block);
+            }
+            else
+            {
+                sid = SsaState.Identifiers[same];
+            }
+
+            // Remember all users except for phi
+            var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
+
+            // Reroute all uses of phi to use same. Remove phi.
+            replaceBy(phi, same);
+
+            // Remove all phi uses which may have become trivial now.
+            foreach (var use in users)
+            {
+                var phiAss = use.Instruction as PhiAssignment;
+                if (phiAss != null)
+                {
+                    tryRemoveTrivial(SsaState.Identifiers[phiAss.Dst]);
+                }
+            }
+            return sid;
+        }
+
+        private SsaIdentifier newDef(Identifier id, Block b)
+        {
+            var sid = SsaState.Identifiers.Add(id, null, null, false);
+            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+            b.Statements.Add(sid.DefStatement);
+            return sid;
+        }
+
+        private void replaceBy(SsaIdentifier phi, Identifier same)
+        {
+        }
+
+        private void sealBlock(Block block)
+        {
+            foreach (var sid in incompletePhis[block].Values)
+            {
+                addPhiOperands(sid.Identifier, sid);
+            }
+            sealedBlocks.Add(block);
+        }
     }
 }
