@@ -17,7 +17,7 @@ void IndirectCallFragment()
 IndirectCallFragment_entry:
 	// succ:  l1
 l1:
-	(*(0x2700->*(ds->a2040)[di]))()
+	(0x2700->*(ds->a2040)[di])()
 	return
 	// succ:  IndirectCallFragment_exit
 IndirectCallFragment_exit:

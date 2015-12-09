@@ -217,7 +217,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TerConstantUnion()
         {
             var mock = CreateProgramBuilder(0x10000, 0x1000);
@@ -419,7 +418,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TerUnionConstants()
         {
             ProgramBuilder prog = new ProgramBuilder();

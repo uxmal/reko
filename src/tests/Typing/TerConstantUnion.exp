@@ -16,8 +16,8 @@ void ConstantUnionMock()
 ConstantUnionMock_entry:
 	// succ:  l1
 l1:
-	x.u0 = 3;
-	x.u1 = 3F;
+	x.u0 = 3
+	x.u1 = 3F
 ConstantUnionMock_exit:
 
 // Equivalence classes ////////////
@@ -39,7 +39,7 @@ T_2: (in 3 : int32)
 T_3: (in x : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: (union (int32 u0) (real32 u1))
+  OrigDataType: real32
 T_4: (in 3F : real32)
   Class: Eq_2
   DataType: real32

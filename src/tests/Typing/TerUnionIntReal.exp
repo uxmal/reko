@@ -20,10 +20,10 @@ void UnionIntRealMock()
 UnionIntRealMock_entry:
 	// succ:  l1
 l1:
-	x = i;
-	x = r;
-	ptr->t0000 = i;
-	ptr->t0004 = r;
+	x = i
+	x = r
+	ptr->t0000 = i
+	ptr->t0004 = r
 	return
 	// succ:  UnionIntRealMock_exit
 UnionIntRealMock_exit:

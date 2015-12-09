@@ -19,7 +19,7 @@ SegmentedCallFragment_entry:
 	// succ:  l1
 l1:
 	bx = ds->ptr2040
-	(*(0x2700->*bx))()
+	(0x2700->*bx)()
 	return
 	// succ:  SegmentedCallFragment_exit
 SegmentedCallFragment_exit:
