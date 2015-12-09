@@ -321,7 +321,6 @@
     <Compile Include="Structure\Region.cs" />
     <Compile Include="Structure\RegionFactory.cs" />
     <Compile Include="Structure\ReverseGraph.cs" />
-    <Compile Include="Typing\ComplexExpressionBuilder2.cs" />
     <Compile Include="Typing\ConstantPointerTraversal.cs" />
     <Compile Include="Typing\ExpressionTypeAscender.cs" />
     <Compile Include="Typing\ExpressionTypeDescender.cs" />

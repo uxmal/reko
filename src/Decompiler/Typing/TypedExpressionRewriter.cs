@@ -113,7 +113,7 @@ namespace Reko.Typing
                     tvDst.DataType = dtDst;
                     tvDst.OriginalDataType = dtSrc;
                     dst.TypeVariable = tvDst;
-                    var ceb = new ComplexExpressionBuilder2(dtSrc, null, dst, null, 0);
+                    var ceb = new ComplexExpressionBuilder(dtSrc, null, dst, null, 0);
                     dst = ceb.BuildComplex(false);
                 }
                 else if (uSrc != null)
@@ -167,7 +167,7 @@ namespace Reko.Typing
                 offset += cOther.ToInt32();
                 index = null;
             }
-            var ceb = new ComplexExpressionBuilder2(null, basePtr, complex, index, offset);
+            var ceb = new ComplexExpressionBuilder(null, basePtr, complex, index, offset);
             return ceb.BuildComplex(dereferenced);
         }
 

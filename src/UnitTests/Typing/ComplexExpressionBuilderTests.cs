@@ -123,14 +123,14 @@ namespace Reko.UnitTests.Typing
             return new StructureField(offset, dt);
         }
 
-        private static ComplexExpressionBuilder2 CreateBuilder(
+        private static ComplexExpressionBuilder CreateBuilder(
             DataType dtField,
             Expression basePtr,
             Expression complex,
             Expression index = null,
             int offset = 0)
         {
-            return new ComplexExpressionBuilder2(dtField, basePtr, complex, index, offset);
+            return new ComplexExpressionBuilder(dtField, basePtr, complex, index, offset);
         }
 
         private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Typing
         public void CEB_BuildPrimitive()
 		{
 			var id = new Identifier("id", PrimitiveType.Word32, null);
-            var ceb = new ComplexExpressionBuilder2(PrimitiveType.Word32, null, id, null, 0);
+            var ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, null, id, null, 0);
 			Assert.AreEqual("id", ceb.BuildComplex(false).ToString());
 		}
 
@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Typing
 		{
 			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrPoint, Ptr32(PrimitiveType.Word32));
-			var ceb = new ComplexExpressionBuilder2(PrimitiveType.Word32, null, ptr, null, 0);
+			var ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, null, ptr, null, 0);
 			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex(false).ToString());
 		}
 
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Typing
 		{
 			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrPoint, Ptr32(PrimitiveType.Word32));
-            var ceb = new ComplexExpressionBuilder2(PrimitiveType.Word32, null, ptr, null, 0);
+            var ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, null, ptr, null, 0);
 			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex(true).ToString());
 		}
 
@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Typing
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrUnion, Ptr32(PrimitiveType.Real32));
-            var ceb = new ComplexExpressionBuilder2(PrimitiveType.Real32, null, ptr, null, 0);
+            var ceb = new ComplexExpressionBuilder(PrimitiveType.Real32, null, ptr, null, 0);
             Assert.AreEqual("ptr->r", ceb.BuildComplex(true).ToString());
         }
 
