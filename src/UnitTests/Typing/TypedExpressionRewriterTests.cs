@@ -580,6 +580,8 @@ namespace Reko.UnitTests.Typing
                 var eax = m.Reg32("eax");
                 var ecx = m.Reg32("ecx");
                 var eax_2 = m.Reg32("eax_2");
+
+                // eax_2 = (int32) ecx[eax];
                 m.Assign(
                     eax_2,
                     m.Cast(PrimitiveType.Int32,

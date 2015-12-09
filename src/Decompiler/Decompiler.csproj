@@ -342,7 +342,7 @@
     <Compile Include="Typing\DataTypeBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\DerivedPointerAnalysis.cs">
+    <Compile Include="Typing\ConstantPointerAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\EquivalenceClassBuilder.cs">

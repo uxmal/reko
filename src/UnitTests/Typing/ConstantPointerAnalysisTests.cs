@@ -30,7 +30,7 @@ using System;
 namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
-	public class DerivedPointerAnalysisTests
+	public class ConstantPointerAnalysisTests
 	{
 		private TypeStore store;
 		private TypeFactory factory;
@@ -56,8 +56,8 @@ namespace Reko.UnitTests.Typing
             var ppr = new PtrPrimitiveReplacer(factory, store, prog);
             ppr.ReplaceAll();
 
-            var dpa = new DerivedPointerAnalysis(factory, store, prog);
-            dpa.FollowDerivedPointers();
+            var cpa = new ConstantPointerAnalysis(factory, store, prog);
+            cpa.FollowConstantPointers();
 
             Verify(null, outputFile);
         }

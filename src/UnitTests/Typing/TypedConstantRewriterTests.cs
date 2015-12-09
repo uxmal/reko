@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Real32, 4);
 
             var e = tcr.Rewrite(c, false);
-            Assert.AreEqual("@@@", e.ToString());
+            Assert.AreEqual("&globals->r1000040", e.ToString());
         }
     }
 }

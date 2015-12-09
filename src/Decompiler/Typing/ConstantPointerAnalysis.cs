@@ -28,19 +28,15 @@ using System;
 namespace Reko.Typing
 {
 	/// <summary>
-    /// Determines whether something is a pointer.
+    /// Determines whether a constaint is a pointer, and if so adds it to 
+    /// the global data structure.
     /// </summary>
     /// <remarks>
     /// Given an expression of type (ptr(X)):
     ///  [[C]] = ptr(T)                                      => merge field of type T at offset C in globals
     ///  [[C]] = memptr(R,T)                                 => merge field of type T at offset C in R
-    ///  [[x + C]] = ptr(T) and [[x]] = ptr(S)               => merge field of type T at offset C in S
-    ///  [[x + C]] = memptr(*,T) and [[x]] = memptr(*,S)     => merge field of type T at offset C in S
     /// </remarks>
-	/// Some useful inferences can be made when looking at expressions like
-	///     reg + Const
-	/// if [[reg]] = ptr(struct(...))
-	public class DerivedPointerAnalysis : InstructionVisitorBase
+	public class ConstantPointerAnalysis : InstructionVisitorBase
 	{
 		private TypeFactory factory;
 		private TypeStore store;
@@ -48,7 +44,7 @@ namespace Reko.Typing
 		private Identifier globals;
 		private Unifier unifier;
 
-		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
+		public ConstantPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
@@ -63,7 +59,7 @@ namespace Reko.Typing
 				program.Platform.PointerType.Size);
 		}
 
-		public void FollowDerivedPointers()
+		public void FollowConstantPointers()
 		{
 			foreach (Procedure proc in program.Procedures.Values)
 			{
@@ -120,43 +116,9 @@ namespace Reko.Typing
             }
         }
 
-        public override void VisitBinaryExpression(BinaryExpression binExp)
-        {
-            base.VisitBinaryExpression(binExp);
-            if (binExp.Operator == Operator.IAdd)
-            {
-                var ptSum = ResolveAs<Pointer>(binExp.TypeVariable.DataType);
-                var ptAddend = ResolveAs<Pointer>(binExp.Left.TypeVariable.DataType);
-                var prtSum = ResolveAs < PrimitiveType> (binExp.TypeVariable.DataType);
-                var prtAddend = ResolveAs<PrimitiveType>(binExp.Left.TypeVariable.DataType);
-                var c = binExp.Right as Constant;
-                if (ptSum != null)
-                {
-                    if (ptAddend != null && c != null)
-                    {
-                        if (ptSum.Pointee == ptAddend.Pointee)
-                        {
-                            return;
-                        }
-                        var strAddend = ResolveAs<StructureType>(ptAddend.Pointee);
-                        if (strAddend != null)
-                        {
-                            strAddend.Fields.Add(c.ToInt32(), ptSum.Pointee);
-                        }
-                    }
-                    else if (prtAddend != null && prtAddend.Domain == Domain.Pointer && c != null)
-                    {
-                        if (prtAddend != null && prtAddend.Domain == Domain.Pointer && ptAddend != null && c != null)
-                        {
-                        }
-                    }
-                }
-            }
-        }
-
 		public override void VisitConstant(Constant c)
 		{
-			 DataType dt = c.TypeVariable.DataType;
+			DataType dt = c.TypeVariable.DataType;
             int offset = StructureField.ToOffset(c);
 			Pointer ptr = dt as Pointer;
 			if (ptr != null)

@@ -478,7 +478,7 @@
     <Compile Include="Typing\ConstantPointerTraversalTests.cs" />
     <Compile Include="Typing\ConstantUnionMock.cs" />
     <Compile Include="Typing\DataTypeBuilderTests.cs" />
-    <Compile Include="Typing\DerivedPointerAnalysisTests.cs" />
+    <Compile Include="Typing\ConstantPointerAnalysisTests.cs" />
     <Compile Include="Typing\EquivalenceClassBuilderTests.cs" />
     <Compile Include="Typing\ExpressionTypeAscenderTests.cs" />
     <Compile Include="Typing\ExpressionNormalizerTests.cs" />

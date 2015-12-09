@@ -50,6 +50,7 @@ namespace Reko.Core.Types
 
 		private int AllocateTypeVariable()
 		{
+            if (typeVars == 11 || typeVars == 3) typeVars.ToString();    //$DEBUG
 			return ++typeVars;
 		}
 

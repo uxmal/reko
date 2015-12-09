@@ -229,10 +229,10 @@ namespace Reko.Typing
 
 		public void Transform()
 		{
-            var dpa = new DerivedPointerAnalysis(factory, store, program);
 			var ppr = new PtrPrimitiveReplacer(factory, store, program);
             ppr.ReplaceAll();
-            dpa.FollowDerivedPointers();
+            var cpa = new ConstantPointerAnalysis(factory, store, program);
+            cpa.FollowConstantPointers();
 			int iteration = 0;
 			do
 			{

@@ -148,14 +148,15 @@ namespace Reko.Typing
                     stride = c.ToInt32();
                 }
             }
-            var dtElement = ArrayField(null, arr, arr.DataType.Size, offset, stride, 0, acc);
-            MeetDataType(acc.Array, factory.CreatePointer(dtElement, acc.Array.DataType.Size));
+            var tvElement = ArrayField(null, arr, arr.DataType.Size, offset, stride, 0, acc);
+
+            MeetDataType(acc.Array, factory.CreatePointer(tvElement, acc.Array.DataType.Size));
             acc.Array.Accept(this, acc.Array.TypeVariable);
             acc.Index.Accept(this, acc.Index.TypeVariable);
             return false;
         }
 
-        DataType ArrayField(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
+        TypeVariable ArrayField(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
         {
             var dtElement = factory.CreateStructureType(null, elementSize);
             dtElement.Fields.Add(0, expField.TypeVariable);
@@ -165,7 +166,7 @@ namespace Reko.Typing
 
             DataType dtArray = factory.CreateArrayType(tvElement, length);
             MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
-            return dtElement;
+            return tvElement;
         }
 
         public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
