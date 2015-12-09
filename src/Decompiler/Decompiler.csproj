@@ -372,7 +372,6 @@
     <Compile Include="Typing\TypedExpressionRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\TypedMemoryExpressionRewriter.cs" />
     <Compile Include="Typing\TypeInferenceException.cs">
       <SubType>Code</SubType>
     </Compile>

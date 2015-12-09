@@ -97,6 +97,42 @@ namespace Reko.UnitTests.Typing
                 fieldType, 2);
         }
 
+        private StructureType Struct(params StructureField[] fields)
+        {
+            StructureType str = new StructureType();
+            foreach (StructureField f in fields)
+            {
+                str.Fields.Add(f);
+            }
+            return str;
+        }
+
+        private StructureType Segment(params StructureField[] fields)
+        {
+            StructureType str = new StructureType();
+            str.IsSegment = true;
+            foreach (StructureField f in fields)
+            {
+                str.Fields.Add(f);
+            }
+            return str;
+        }
+
+        private StructureField Fld(int offset, DataType dt)
+        {
+            return new StructureField(offset, dt);
+        }
+
+        private static ComplexExpressionBuilder2 CreateBuilder(
+            DataType dtField,
+            Expression basePtr,
+            Expression complex,
+            Expression index = null,
+            int offset = 0)
+        {
+            return new ComplexExpressionBuilder2(dtField, basePtr, complex, index, offset);
+        }
+
         private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
         {
             TypeVariable tv = store.EnsureExpressionTypeVariable(factory, e);
@@ -115,7 +151,7 @@ namespace Reko.UnitTests.Typing
         public void CEB_BuildPrimitive()
 		{
 			var id = new Identifier("id", PrimitiveType.Word32, null);
-            var ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, PrimitiveType.Word32, PrimitiveType.Word32, null, id, null, 0);
+            var ceb = new ComplexExpressionBuilder2(PrimitiveType.Word32, null, id, null, 0);
 			Assert.AreEqual("id", ceb.BuildComplex(false).ToString());
 		}
 
@@ -124,7 +160,7 @@ namespace Reko.UnitTests.Typing
 		{
 			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrPoint, Ptr32(PrimitiveType.Word32));
-			var ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
+			var ceb = new ComplexExpressionBuilder2(PrimitiveType.Word32, null, ptr, null, 0);
 			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex(false).ToString());
 		}
 
@@ -132,8 +168,8 @@ namespace Reko.UnitTests.Typing
         public void CEB_BuildPointerFetch()
 		{
 			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-            var ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
-            ceb.Dereferenced = true;
+            CreateTv(ptr, ptrPoint, Ptr32(PrimitiveType.Word32));
+            var ceb = new ComplexExpressionBuilder2(PrimitiveType.Word32, null, ptr, null, 0);
 			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex(true).ToString());
 		}
 
@@ -142,15 +178,7 @@ namespace Reko.UnitTests.Typing
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrUnion, Ptr32(PrimitiveType.Real32));
-            var ceb = new ComplexExpressionBuilder(
-                ptrWord,
-                ptrUnion,
-                dtOrig: ptr.TypeVariable.OriginalDataType,
-                basePointer: null,
-                complexExp: ptr,
-                indexExp: null,
-                offset: 0);
-            ceb.Dereferenced = true;
+            var ceb = new ComplexExpressionBuilder2(PrimitiveType.Real32, null, ptr, null, 0);
             Assert.AreEqual("ptr->r", ceb.BuildComplex(true).ToString());
         }
 
@@ -201,55 +229,6 @@ namespace Reko.UnitTests.Typing
             CreateTv(globals, Ptr32(factory.CreateStructureType()), Ptr32(factory.CreateStructureType()));
             CreateTv(ds, Ptr16(seg), Ptr16(factory.CreateStructureType()));
         }
-
-        private StructureType Struct(params StructureField [] fields)
-        {
-            StructureType str = new StructureType();
-            foreach (StructureField f in fields)
-            {
-                str.Fields.Add(f);
-            }
-            return str;
-        }
-
-        private StructureType Segment(params StructureField[] fields)
-        {
-            StructureType str = new StructureType();
-            str.IsSegment = true;
-            foreach (StructureField f in fields)
-            {
-                str.Fields.Add(f);
-            }
-            return str;
-        }
-
-        private StructureField Fld(int offset, DataType dt)
-        {
-            return new StructureField(offset, dt);
-        }
-
-#if OLD
-        private static ComplexExpressionBuilder CreateBuilder(
-            DataType dtField, 
-            Expression basePtr,
-            Expression complex,
-            Expression other)
-        {
-            return new ComplexExpressionBuilder(
-                dtField, complex.TypeVariable.DataType, complex.TypeVariable.OriginalDataType, 
-                basePtr, complex, other, 0);
-        }
-#else
-        private static ComplexExpressionBuilder2 CreateBuilder(
-            DataType dtField,
-            Expression basePtr,
-            Expression complex,
-            Expression index = null,
-            int offset = 0)
-        {
-            return new ComplexExpressionBuilder2(dtField, basePtr, complex, index, offset);
-        }
-#endif
 
         [Test]
         public void CEB_BuildMemberAccessFetch()
