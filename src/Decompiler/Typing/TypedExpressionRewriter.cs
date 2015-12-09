@@ -569,20 +569,15 @@ namespace Reko.Typing
 
         public override Expression VisitMkSequence(MkSequence seq)
         {
-            var head = Rewrite(seq.Head, dereferenced);
-            var tail = Rewrite(seq.Tail, dereferenced);
+            var head = Rewrite(seq.Head, false);
+            var tail = Rewrite(seq.Tail, false);
             Constant c = seq.Tail as Constant;
             var ptHead = DataTypeOf( head) as PrimitiveType;
             if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
             {
                 if (c != null)
                 {
-                    var seg = DataTypeOf(head).ResolveAs<Pointer>().Pointee;
-                    var dtSeq = DataTypeOf(seq).ResolveAs<Pointer>().Pointee;
-                    var deref = new Dereference(DataTypeOf(head), head);
-                    var field = seg.ResolveAs<StructureType>().Fields.AtOffset(c.ToInt32());
-                    var fa = new FieldAccess(dtSeq, deref, field);
-                    return fa;
+                    return RewriteComplexExpression(head, null, c.ToInt32(), dereferenced);
                 }
                 else
                 {

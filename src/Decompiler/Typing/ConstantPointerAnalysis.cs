@@ -137,7 +137,10 @@ namespace Reko.Typing
                 var strGlobals = Globals.TypeVariable.Class.ResolveAs<StructureType>();
                 if (strGlobals.Fields.AtOffset(offset) == null)
                 {
-                    strGlobals.Fields.Add(offset, pointee);
+                    if (!IsInsideArray(strGlobals, offset, pointee))
+                    {
+                        strGlobals.Fields.Add(offset, pointee);
+                    }
                 }
 				return;
 			}
@@ -154,12 +157,23 @@ namespace Reko.Typing
 			}
 		}
 
+        public bool IsInsideArray(StructureType strGlobals, int offset, DataType dt)
+        {
+            var field = strGlobals.Fields.LowerBound(offset - 1);
+            if (field == null)
+                return false;
+            var array = field.DataType.ResolveAs<ArrayType>();
+            if (array == null)
+                return false;
+            return unifier.AreCompatible(array.ElementType, dt);
+        }
+
         /// <summary>
         /// If a constant pointer into a structure is found, make sure there is a variable there.
         /// </summary>
         /// <param name="offset"></param>
         /// <param name="mptr"></param>
-		private void VisitConstantMemberPointer(int offset, MemberPointer mptr)
+        private void VisitConstantMemberPointer(int offset, MemberPointer mptr)
 		{
 			TypeVariable tvField = GetTypeVariableForField(mptr.Pointee);
 			if (tvField == null)

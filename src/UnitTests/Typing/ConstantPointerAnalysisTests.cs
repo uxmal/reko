@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Typing
         }
 
 		[Test]
-		public void DpaSimple()
+		public void CpaSimple()
 		{
 			var prog = new ProgramBuilder();
             prog.Add("test", m=>
@@ -71,19 +71,19 @@ namespace Reko.UnitTests.Typing
                    var r1 = m.Register(1);
                    m.Assign(r1, m.Load(PrimitiveType.Real32, m.Word32(0x10000000)));
                });
-			RunTest(prog.BuildProgram(), "Typing/DpaSimple.txt");
+			RunTest(prog.BuildProgram(), "Typing/CpaSimple.txt");
 		}
 
 		[Test]
-		public void DpaGlobalVariables()
+		public void CpaGlobalVariables()
 		{
 			ProgramBuilder prog = new ProgramBuilder();
 			prog.Add(new GlobalVariablesMock());
-			RunTest(prog.BuildProgram(), "Typing/DpaGlobalVariables.txt");
+			RunTest(prog.BuildProgram(), "Typing/CpaGlobalVariables.txt");
 		}
 
 		[Test]
-		public void DpaConstantPointer()
+		public void CpaConstantPointer()
 		{
 			ProgramBuilder prog = new ProgramBuilder();
 			ProcedureBuilder m = new ProcedureBuilder();
@@ -92,11 +92,11 @@ namespace Reko.UnitTests.Typing
 			m.Store(r1, m.Int32(0x42));
 			prog.Add(m);
 
-			RunTest(prog.BuildProgram(), "Typing/DpaConstantPointer.txt");
+			RunTest(prog.BuildProgram(), "Typing/CpaConstantPointer.txt");
 		}
 
 		[Test]
-		public void DpaConstantMemberPointer()
+		public void CpaConstantMemberPointer()
 		{
 			ProgramBuilder prog = new ProgramBuilder();
 			ProcedureBuilder m = new ProcedureBuilder();
@@ -108,8 +108,9 @@ namespace Reko.UnitTests.Typing
 			m.Store(m.SegMemW(ds, bx), m.Int16(0x0042));
 			prog.Add(m);
 
-			RunTest(prog.BuildProgram(), "Typing/DpaConstantMemberPointer.txt");
+			RunTest(prog.BuildProgram(), "Typing/CpaConstantMemberPointer.txt");
 		}
+
 
 		private void Verify(Program prog, string outputFile)
 		{
@@ -127,5 +128,17 @@ namespace Reko.UnitTests.Typing
 				fut.AssertFilesEqual();
 			}
 		}
-	}
+
+        [Test(Description = "If the data type at a particular offset is compatible with an array, it's considered part of the array.")]
+        public void CpaPointerToArray()
+        {
+            var cpa = new ConstantPointerAnalysis(factory, store, new Program());
+            var isInside = cpa.IsInsideArray(
+                new StructureType { Fields = { new StructureField(300, new ArrayType(PrimitiveType.Int32, 0)) } },
+                304,
+                PrimitiveType.Int32);
+            Assert.IsTrue(isInside, "Since the array has no specified size, offset 304 should be inside the array.");
+        }
+
+    }
 }
