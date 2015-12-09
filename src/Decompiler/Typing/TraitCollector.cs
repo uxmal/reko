@@ -434,7 +434,16 @@ namespace Reko.Typing
 				handler.DataTypeTrait(binExp.Right, dt);
                 return dt;
             }
-			throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
+            else if (binExp.Operator == Operator.Cand ||
+                binExp.Operator == Operator.Cor)
+            {
+                var dt = PrimitiveType.Bool;
+                handler.DataTypeTrait(binExp, dt);
+                handler.DataTypeTrait(binExp.Left, dt);
+                handler.DataTypeTrait(binExp.Right, dt);
+                return dt;
+            }
+            throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
 		}
 
 		public DataType VisitBranch(Branch b)

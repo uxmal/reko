@@ -50,6 +50,12 @@ namespace Reko.Gui.Windows
         private DataType dataType;
         private NavigationInteractor<Procedure> navInteractor;
         private bool ignoreEvents;
+        private StyleStack styleStack;
+
+        public CodeViewerPane()
+        {
+
+        }
 
         public TextView TextView { get { return codeView.TextView; } }
         public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
@@ -74,7 +80,8 @@ namespace Reko.Gui.Windows
             this.codeView.ProcedureDeclaration.TextChanged += ProcedureDeclaration_TextChanged;
 
             this.TextView.Font = new Font("Lucida Console", 10F);
-            this.TextView.BackColor = uiPrefsSvc.Styles[UiStyles.CodeWindow].Background.Color;
+            // ###@@@###
+            this.TextView.BackColor = SystemColors.Window;
             this.TextView.Services = services;
             this.TextView.StyleClass = UiStyles.CodeWindow;
 
@@ -100,6 +107,13 @@ namespace Reko.Gui.Windows
                 }
             }
             codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
+        }
+
+        private StyleStack GetStyleStack()
+        {
+            if (styleStack == null)
+                styleStack = new StyleStack(services.RequireService<IUiPreferencesService>());
+            return styleStack;
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
