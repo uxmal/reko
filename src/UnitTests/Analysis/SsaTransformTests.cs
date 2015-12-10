@@ -533,6 +533,87 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void Ssa2_IfThen()
+        {
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def a
+	def b
+	// succ:  l1
+l1:
+	branch a == 0x00000000 m_2
+	// succ:  m_1 m_2
+m_1:
+	b_1 = 0xFFFFFFFF
+	// succ:  m_2
+m_2:
+	b_2 = PHI(b, b_1)
+	return b_2
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            RunTest2(sExp, m =>
+            {
+                var a = m.Reg32("a");
+                var b = m.Reg32("b");
+                m.BranchIf(m.Eq0(a), "m_2");
+                m.Label("m_1");
+                m.Assign(b, -1);
+                m.Label("m_2");
+                m.Return(b);
+            });
+        }
+
+
+        [Test]
+        public void Ssa2_RegisterAlias()
+        {
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def a
+	def b
+	// succ:  l1
+l1:
+	branch a == 0x00000000 m_2
+	// succ:  m_1 m_2
+m_1:
+	b_1 = 0xFFFFFFFF
+	// succ:  m_2
+m_2:
+	b_2 = PHI(b, b_1)
+	return b_2
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            RunTest2(sExp, m =>
+            {
+                var regEax = new RegStorage("eax", 0, PrimitiveType.Word32, 0);
+                var regAh = new RegStorage("ah", 0, PrimitiveType.Word32, 8);
+                var eax = m.Frame.EnsureRegister(regEax);
+                var ah = m.Frame.EnsureRegister(regAh);
+                m.Assign(eax, m.LoadDw(eax));
+                m.Store(m.Word32(0x1234), ah);
+                m.Return();
+            });
+        }
+
+
+        public class RegStorage : RegisterStorage
+        {
+            public RegStorage(string name, int regNumber, PrimitiveType size, uint bitOffset)
+                : base(name, regNumber, size)
+            {
+                this.BitAddress = bitOffset;
+            }
+
+            public override ulong BitSize {  get { return (uint) base.DataType.BitSize;  } }
+        }
     }
 
 }

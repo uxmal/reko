@@ -57,6 +57,8 @@ namespace Reko.Analysis
         /// </summary>
         public Identifier Identifier { get; private set; }
 
+        public SsaIdentifier Previous { get; set; }
+
 		public bool IsOriginal
 		{
 			get { return Identifier == OriginalIdentifier; }

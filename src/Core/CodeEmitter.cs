@@ -57,13 +57,6 @@ namespace Reko.Core
             return Assign(dst, f ? Constant.True() : Constant.False());
         }
 
-        public Branch Branch(Expression condition, Block target)
-        {
-            Branch b = new Branch(condition, target);
-            Emit(b);
-            return b;
-        }
-
         public GotoInstruction Goto(Expression dest)
         {
             var gi = new GotoInstruction(dest);

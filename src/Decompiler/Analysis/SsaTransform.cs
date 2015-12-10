@@ -718,21 +718,22 @@ namespace Reko.Analysis
     {
         private Block block;
         private Statement stm;
-        private Dictionary<Block, Dictionary<Identifier, SsaIdentifier>> currentDef;
-        private Dictionary<Block, Dictionary<Identifier, SsaIdentifier>> incompletePhis;
+        private Dictionary<Block, Dictionary<Storage, SsaIdentifier>> currentDef;
+        private Dictionary<Block, Dictionary<Storage, SsaIdentifier>> incompletePhis;
         private HashSet<Block> sealedBlocks;
+        private SsaState ssa;
 
         public void Transform(Procedure proc)
         {
-            this.SsaState = new SsaState(proc, null);
-            this.currentDef = new Dictionary<Block, Dictionary<Identifier, SsaIdentifier>>();
-            this.incompletePhis = new Dictionary<Block, Dictionary<Identifier, SsaIdentifier>>();
+            this.ssa = new SsaState(proc, null);
+            this.currentDef = new Dictionary<Block, Dictionary<Storage, SsaIdentifier>>();
+            this.incompletePhis = new Dictionary<Block, Dictionary<Storage, SsaIdentifier>>();
             this.sealedBlocks = new HashSet<Block>();
             foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
             {
                 this.block = b;
-                this.currentDef.Add(block, new Dictionary<Identifier, SsaIdentifier>());
-                foreach (var s in b.Statements)
+                this.currentDef.Add(block, new Dictionary<Storage, SsaIdentifier>(new StorageEquality()));
+                foreach (var s in b.Statements.ToList())
                 {
                     this.stm = s;
                     stm.Instruction = stm.Instruction.Accept(this);
@@ -740,20 +741,21 @@ namespace Reko.Analysis
             }
         }
 
-        public SsaState SsaState;
+        public SsaState SsaState { get { return ssa; } }
 
         public override Instruction TransformAssignment(Assignment a)
         {
             var src = a.Src.Accept(this);
-            var sid = SsaState.Identifiers.Add(a.Dst, this.stm, src, false);
-            var idNew = writeVariable(a.Dst, block, sid);
+            var sid = ssa.Identifiers.Add(a.Dst, this.stm, src, false);
+            var sidPrev = readVariable(a.Dst, block);
+            var idNew = writeVariable(a.Dst, block, sid, sidPrev);
             return new Assignment(idNew, src);
         }
 
-
-        public Identifier writeVariable(Identifier id, Block b, SsaIdentifier sid)
+        public Identifier writeVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev)
         {
-            currentDef[block][id] = sid;
+            currentDef[block][id.Storage] = sid;
+            sid.Previous = sidPrev;
             return sid.Identifier;
         }
 
@@ -766,7 +768,7 @@ namespace Reko.Analysis
         { 
             // Read of an identifier.
             SsaIdentifier ssaId;
-            if (currentDef[b].TryGetValue(id, out ssaId))
+            if (currentDef[b].TryGetValue(id.Storage, out ssaId))
             {
                 // Defined locally in this block.
                 return ssaId;
@@ -780,11 +782,12 @@ namespace Reko.Analysis
         private SsaIdentifier readVariableRecursive(Identifier id, Block b)
         {
             SsaIdentifier val;
+            SsaIdentifier sidPrev = null;
             if (false)  // !sealedBlocks.Contains(b))
             {
                 // Incomplete CFG
                 val = newPhi(id, b);
-                incompletePhis[b][id] = val;
+                incompletePhis[b][id.Storage] = val;
             }
             else if (b.Pred.Count == 0)
             {
@@ -794,15 +797,16 @@ namespace Reko.Analysis
             else if (b.Pred.Count == 1)
             {
                 val = readVariable(id, b.Pred[0]);
+                sidPrev = val;
             }
             else
             {
                 // Break potential cycles with operandless phi
                 val = newPhi(id, b);
-                writeVariable(id, b, val);
+                writeVariable(id, b, val, null);
                 val = addPhiOperands(id, val);
             }
-            writeVariable(id, b, val);
+            writeVariable(id, b, val, sidPrev);
             return val;
         }
 
@@ -820,7 +824,7 @@ namespace Reko.Analysis
             var stm = new Statement(0, phiAss, b);
             b.Statements.Insert(0, stm);
 
-            var sid = SsaState.Identifiers.Add(phiAss.Dst, this.stm, phiAss.Src, false);
+            var sid = ssa.Identifiers.Add(phiAss.Dst, stm, phiAss.Src, false);
             phiAss.Dst = sid.Identifier;
             return sid;
         }
@@ -860,7 +864,7 @@ namespace Reko.Analysis
             }
             else
             {
-                sid = SsaState.Identifiers[same];
+                sid = ssa.Identifiers[same];
             }
 
             // Remember all users except for phi
@@ -875,7 +879,7 @@ namespace Reko.Analysis
                 var phiAss = use.Instruction as PhiAssignment;
                 if (phiAss != null)
                 {
-                    tryRemoveTrivial(SsaState.Identifiers[phiAss.Dst]);
+                    tryRemoveTrivial(ssa.Identifiers[phiAss.Dst]);
                 }
             }
             return sid;
@@ -883,7 +887,7 @@ namespace Reko.Analysis
 
         private SsaIdentifier newDef(Identifier id, Block b)
         {
-            var sid = SsaState.Identifiers.Add(id, null, null, false);
+            var sid = ssa.Identifiers.Add(id, null, null, false);
             sid.DefStatement = new Statement(0, new DefInstruction(id), b);
             b.Statements.Add(sid.DefStatement);
             return sid;
@@ -900,6 +904,25 @@ namespace Reko.Analysis
                 addPhiOperands(sid.Identifier, sid);
             }
             sealedBlocks.Add(block);
+        }
+
+        public class StorageEquality : IEqualityComparer<Storage>
+        {
+            public bool Equals(Storage x, Storage y)
+            {
+                if (x.Domain != y.Domain)
+                    return false;
+                var xStart = x.BitAddress;
+                var xEnd = x.BitAddress + x.BitSize;
+                var yStart = y.BitAddress;
+                var yEnd = y.BitAddress + y.BitSize;
+                return (xEnd > yStart || yEnd > xStart);
+            }
+
+            public int GetHashCode(Storage obj)
+            {
+                return ((int)obj.Domain).GetHashCode();
+            }
         }
     }
 }

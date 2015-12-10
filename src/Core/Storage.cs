@@ -41,8 +41,11 @@ namespace Reko.Core
 		}
 
 		public string Kind { get; private set; }
-		public abstract int OffsetOf(Storage storage);
+        public StorageDomain Domain { get; set; }
+        public ulong BitAddress { get; set; }
+        public virtual ulong BitSize { get; set; }
 
+        public abstract int OffsetOf(Storage storage);
         public abstract T Accept<T>(StorageVisitor<T> visitor);
         public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
 
@@ -59,6 +62,14 @@ namespace Reko.Core
 		}
 
 		public abstract void Write(TextWriter writer);
+    }
+
+    public enum StorageDomain
+    {
+        None = -1,
+        Register = 0,
+        Stack = 4096,   // Few architectures have this many registers (fingers xD)
+        Memory = 4097 
     }
 
     /// <summary>
@@ -287,6 +298,7 @@ namespace Reko.Core
 			this.Name = name;
             this.Number = number;
             this.DataType = dt;
+            this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
 		}
 
         /// <summary>
@@ -424,7 +436,7 @@ namespace Reko.Core
 
         public static RegisterStorage None { get { return none; } }
 
-        private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Create(Domain.Any, 0));
+        private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Create(Types.Domain.Any, 0));
 
         public Expression GetSlice(Expression value)
         {
