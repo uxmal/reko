@@ -80,7 +80,6 @@ test_exit:
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -104,9 +103,9 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	word32 r1_5 = dwArg04 + dwArg08
-	Mem6[0x00010008:word32] = r1_5
-	r63_1 = fp
+	Mem6[0x00010008:word32] = dwArg04 + dwArg08
+	word32 r63_1 = fp
+	word32 r2_4 = dwArg08
 	return
 	// succ:  test_exit
 test_exit:
