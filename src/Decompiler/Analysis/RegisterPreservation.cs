@@ -76,19 +76,43 @@ namespace Reko.Analysis
                 while (worklist.Count > 0)
                 {
                     var id = worklist.Dequeue();
-                    var defExp = scc[proc].Identifiers[id].DefExpression;
-                    Debug.Print("Tracing {0} defined by {1}", id, defExp);
-                    if (defExp is Constant)
+                    var sid = scc[proc].Identifiers[id];
+                    Debug.Print("Tracing {0} defined by {1}", id, sid);
+                    if (sid.DefStatement.Instruction is DefInstruction)
                     {
-                        procFlow.Trashed.Add(id.Storage);
-                        procFlow.Constants.Add(id.Storage, (Constant)defExp);
+                        if (id == idFinal)
+                        {
+                            MarkPreserved(id, procFlow);
+                        }
+                        else
+                        {
+                            MarkTrashed(id, procFlow);
+                        }
                         continue;
                     }
-                    throw new NotImplementedException();
+                    if (sid.DefExpression is Constant)
+                    {
+                        MarkTrashed(id, procFlow);
+                        procFlow.Constants[id.Storage] = (Constant)sid.DefExpression;
+                        continue;
+                    }
+                    MarkTrashed(id, procFlow);
                 }
-
-
             }
+        }
+
+        private void MarkTrashed(Identifier id, ProcedureFlow2 procFlow)
+        {
+            procFlow.Preserved.Remove(id.Storage);
+            procFlow.Trashed.Add(id.Storage);
+            procFlow.Constants.Remove(id.Storage);
+        }
+
+        private static void MarkPreserved(Identifier id, ProcedureFlow2 procFlow)
+        {
+            procFlow.Preserved.Add(id.Storage);
+            procFlow.Trashed.Remove(id.Storage);
+            procFlow.Constants.Remove(id.Storage);
         }
 
         private ProcedureFlow2 EnsureProcedureFlow(Procedure proc)

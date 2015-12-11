@@ -130,5 +130,42 @@ test:
             #endregion
             AssertProgram(sExp, pb);
         }
+
+        [Test(Description ="Loading from memory trashes the loaded register but not memory.")]
+        public void Regp_Preserve()
+        {
+            var pb = new ProgramBuilder(new FakeArchitecture());
+            pb.Add("test", m =>
+            {
+                var r1 = m.Register(1);
+                m.Assign(r1, m.LoadDw(m.Word32(0x3000)));
+                m.Return();
+            });
+            RunTest(pb);
+
+            var sExp =
+            #region Expected
+@"// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+	def Mem_0
+l1:
+	r1_0 = Mem0[0x3000:word32]
+	return
+	// succ:  test_exit
+test_exit:
+	use Mem_0
+	use r1_1
+
+test:
+    Preserved: Global memory
+    Trashed:   r1
+    Constants: 
+";
+            #endregion
+            AssertProgram(sExp, pb);
+        }
     }
 }
