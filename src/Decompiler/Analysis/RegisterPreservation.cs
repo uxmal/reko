@@ -92,8 +92,7 @@ namespace Reko.Analysis
                     }
                     if (sid.DefExpression is Constant)
                     {
-                        MarkTrashed(id, procFlow);
-                        procFlow.Constants[id.Storage] = (Constant)sid.DefExpression;
+                        SetConstant(id, (Constant)sid.DefExpression, procFlow);
                         continue;
                     }
                     MarkTrashed(id, procFlow);
@@ -108,11 +107,21 @@ namespace Reko.Analysis
             procFlow.Constants.Remove(id.Storage);
         }
 
+        private void SetConstant(Identifier id, Constant c, ProcedureFlow2 procFlow)
+        {
+            if (procFlow.Trashed.Contains(id.Storage))
+                procFlow.Trashed.Add(id.Storage);
+
+            procFlow.Preserved.Remove(id.Storage);
+            procFlow.Trashed.Add(id.Storage);
+            procFlow.Constants.Add(id.Storage, c);
+        }
+
         private static void MarkPreserved(Identifier id, ProcedureFlow2 procFlow)
         {
+            if (procFlow.Trashed.Contains(id.Storage))
+                return;
             procFlow.Preserved.Add(id.Storage);
-            procFlow.Trashed.Remove(id.Storage);
-            procFlow.Constants.Remove(id.Storage);
         }
 
         private ProcedureFlow2 EnsureProcedureFlow(Procedure proc)

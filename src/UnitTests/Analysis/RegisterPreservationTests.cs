@@ -149,18 +149,67 @@ test:
 // Return size: 0
 void test()
 test_entry:
+	def Mem0
 	// succ:  l1
-	def Mem_0
 l1:
-	r1_0 = Mem0[0x3000:word32]
+	r1_1 = Mem0[0x00003000:word32]
 	return
 	// succ:  test_exit
 test_exit:
-	use Mem_0
+	use Mem0
 	use r1_1
 
 test:
     Preserved: Global memory
+    Trashed:   r1
+    Constants: 
+";
+            #endregion
+            AssertProgram(sExp, pb);
+        }
+
+        [Test(Description = "Both branches of a phi should be followed.")]
+        public void Regp_If_Then()
+        {
+            var pb = new ProgramBuilder(new FakeArchitecture());
+            pb.Add("test", m =>
+            {
+                var r1 = m.Register(1);
+                m.BranchIf(m.Ge(r1, 0), "m_ge");
+
+                m.Label("m_lt");
+                m.Assign(r1, 0);
+
+                m.Label("m_ge");
+                m.Return();
+            });
+            RunTest(pb);
+
+            var sExp =
+            #region Expected
+@"// test
+// Return size: 0
+void test()
+test_entry:
+	def r1
+	// succ:  l1
+l1:
+	branch r1 >= 0x00000000 m_ge
+	goto m_lt
+	// succ:  m_lt m_ge
+m_ge:
+	r1_1 = PHI(r1, r1_2)
+	return
+	// succ:  test_exit
+m_lt:
+	r1_2 = 0x00000000
+	goto m_ge
+	// succ:  m_ge
+test_exit:
+	use r1_1
+
+test:
+    Preserved: 
     Trashed:   r1
     Constants: 
 ";
