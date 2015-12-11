@@ -28,8 +28,10 @@ namespace Reko.Core.Code
     /// <summary>
     /// Models a low-level call instruction.
     /// </summary>
-    /// <remarks>CallInstructions only exist right after scanning. Subsequent decompiler
-    /// phases will replace them with <code>Application</code> expressions.</remarks>
+    /// <remarks>CallInstructions only exist right after scanning. Subsequent
+    /// decompiler phases will replace them with <code>Application</code> 
+    /// expressions.
+    /// </remarks>
     public class CallInstruction : Instruction
     {
         public CallInstruction(Expression callee, CallSite site)
@@ -48,6 +50,7 @@ namespace Reko.Core.Code
         // Set of variables that reach the call site. These need to be reconciled 
         // with the variables used by the callee, if these are known.
         public HashSet<UseInstruction> Uses { get; private set; }
+
         // Set of variables that the called function defines.
         public HashSet<DefInstruction> Definitions { get; private set; }
 

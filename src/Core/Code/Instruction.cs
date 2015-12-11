@@ -152,7 +152,7 @@ namespace Reko.Core.Code
 			this.OutArgument = argument;
 		}
 
-        public Expression Expression  {get ;set; }
+        public Expression Expression { get;  set; }
         public override bool IsControlFlow { get { return false; } }
         public Identifier OutArgument { get; set; }
 
