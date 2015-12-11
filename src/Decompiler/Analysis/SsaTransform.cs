@@ -648,7 +648,10 @@ namespace Reko.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-				return NewUse(id, stmCur);
+                if (!this.renameFrameAccess)
+                    return NewUse(id, stmCur);
+                else
+                    return id;
 			}
 
             public override Expression VisitMemoryAccess(MemoryAccess access)

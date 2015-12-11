@@ -33,7 +33,6 @@ using System.Text;
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
-    //[Ignore("Do the subanalyses first")]
     public class DataFlowAnalysisTests2
     {
         private ProgramBuilder pb;
@@ -52,7 +51,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -73,7 +71,7 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem6[0x00010008:word32] = Mem0[0x00010000:word32] + Mem0[0x00010004:word32]
+	Mem3[0x00010008:word32] = Mem0[0x00010000:word32] + Mem0[0x00010004:word32]
 	return
 	// succ:  test_exit
 test_exit:
