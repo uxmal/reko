@@ -5866,7 +5866,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xF2C0, 0x0C40);  // movt        r12,#0x40
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = DPB(ip, 0x0040, 16, 16)");
+                "1|L--|ip = DPB(ip, 0x0040, 16)");
         }
 
         [Test]

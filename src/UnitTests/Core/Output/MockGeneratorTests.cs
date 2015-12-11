@@ -324,7 +324,7 @@ namespace Reko.UnitTests.Core.Output
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");
 
-                m.Assign(a, m.Dpb(a, m.Slice(PrimitiveType.Word16, b, 16), 0, 16));
+                m.Assign(a, m.Dpb(a, m.Slice(PrimitiveType.Word16, b, 16), 0));
             });
             VerifyTest(
                 "public class ProcedureBuilder : ProcedureMock" + nl +
@@ -333,7 +333,7 @@ namespace Reko.UnitTests.Core.Output
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Assign(a, Dpb(a, Slice(PrimitiveType.Word16, b, 16), 0, 16));" + nl +
+                "    Assign(a, Dpb(a, Slice(PrimitiveType.Word16, b, 16), 0));" + nl +
                 "}" + nl +
                 "" + nl);
 

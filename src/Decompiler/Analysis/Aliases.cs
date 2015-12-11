@@ -224,7 +224,7 @@ namespace Reko.Analysis
 				}
 				else
 				{
-					aliasExpr = new DepositBits(varTo, varFrom, offsetTo, cbitsFrom);
+					aliasExpr = new DepositBits(varTo, varFrom, offsetTo);
 				}
 			}		
 			else if (cbitsFrom > cbitsTo)

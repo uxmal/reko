@@ -43,7 +43,7 @@ Mem9: orig: Mem0
 eax_10: orig: eax
     def:  eax_10 = Mem9[ds:si_8:word32]
     uses: Mem12[ds:0x0304:word32] = eax_10
-          eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+          eax_17 = DPB(eax_10, ax_16, 0) (alias)
 si_11: orig: si
     def:  si_11 = si_8 + 0x0004
     uses: ax_13 = Mem12[ds:si_11:word16]
@@ -63,10 +63,10 @@ Mem15: orig: Mem0
     uses: ax_16 = Mem15[ds:si_14:word16]
 ax_16: orig: ax
     def:  ax_16 = Mem15[ds:si_14:word16]
-    uses: eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+    uses: eax_17 = DPB(eax_10, ax_16, 0) (alias)
           Mem19[ds:0x030A:word16] = ax_16
 eax_17: orig: eax
-    def:  eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+    def:  eax_17 = DPB(eax_10, ax_16, 0) (alias)
 si_18: orig: si
     def:  si_18 = si_14 + 0x0002
 Mem19: orig: Mem0
@@ -98,7 +98,7 @@ l0C00_0000:
 	si_14 = si_11 + 0x0002
 	Mem15[ds:0x0308:word16] = ax_13
 	ax_16 = Mem15[ds:si_14:word16]
-	eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+	eax_17 = DPB(eax_10, ax_16, 0) (alias)
 	si_18 = si_14 + 0x0002
 	Mem19[ds:0x030A:word16] = ax_16
 	fn0C00_0026(es, ds)
@@ -156,7 +156,7 @@ Mem9: orig: Mem0
 eax_10: orig: eax
     def:  eax_10 = Mem9[ds:si + 0x0004:word32]
     uses: Mem12[ds:0x0304:word32] = eax_10
-          eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+          eax_17 = DPB(eax_10, ax_16, 0) (alias)
 si_11: orig: si
     def:  si_11 = si + 0x0008
 Mem12: orig: Mem0
@@ -172,10 +172,10 @@ Mem15: orig: Mem0
     uses: ax_16 = Mem15[ds:si + 0x000A:word16]
 ax_16: orig: ax
     def:  ax_16 = Mem15[ds:si + 0x000A:word16]
-    uses: eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+    uses: eax_17 = DPB(eax_10, ax_16, 0) (alias)
           Mem19[ds:0x030A:word16] = ax_16
 eax_17: orig: eax
-    def:  eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+    def:  eax_17 = DPB(eax_10, ax_16, 0) (alias)
 si_18: orig: si
     def:  si_18 = si + 0x000C
 Mem19: orig: Mem0
@@ -207,7 +207,7 @@ l0C00_0000:
 	si_14 = si + 0x000A
 	Mem15[ds:0x0308:word16] = ax_13
 	ax_16 = Mem15[ds:si + 0x000A:word16]
-	eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+	eax_17 = DPB(eax_10, ax_16, 0) (alias)
 	si_18 = si + 0x000C
 	Mem19[ds:0x030A:word16] = ax_16
 	fn0C00_0026(es, ds)

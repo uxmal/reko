@@ -58,13 +58,13 @@ cl_7: orig: cl
     uses: cl_17 = PHI(cl_7, cl_68)
 al_8: orig: al
     def:  al_8 = 0x00
-    uses: ax_10 = DPB(ax, al_8, 0, 8) (alias)
+    uses: ax_10 = DPB(ax, al_8, 0) (alias)
 ax:ax
     def:  def ax
-    uses: ax_10 = DPB(ax, al_8, 0, 8) (alias)
+    uses: ax_10 = DPB(ax, al_8, 0) (alias)
 ax_10: orig: ax
-    def:  ax_10 = DPB(ax, al_8, 0, 8) (alias)
-    uses: ax_40 = DPB(ax_10, ah_39, 8, 8) (alias)
+    def:  ax_10 = DPB(ax, al_8, 0) (alias)
+    uses: ax_40 = DPB(ax_10, ah_39, 8) (alias)
           ax_30 = PHI(ax_40, ax_10)
 SZO_11: orig: SZO
     def:  SZO_11 = cond(0x00)
@@ -111,7 +111,7 @@ di_22: orig: di
           bx_46 = di_22
 cx_23: orig: cx
     def:  cx_23 = PHI(cx_16, cx_67)
-    uses: cx_56 = DPB(cx_23, cl_55, 0, 8) (alias)
+    uses: cx_56 = DPB(cx_23, cl_55, 0) (alias)
 cl_24: orig: cl
     def:  cl_24 = PHI(cl_17, cl_68)
 SCZO_25: orig: SCZO
@@ -147,10 +147,10 @@ Mem0:Global memory
           SCZO_62 = cond(0x00 - Mem0[es_4:di_15:byte])
 ah_39: orig: ah
     def:  ah_39 = Mem0[ds:di_22 + 0x0001:byte]
-    uses: ax_40 = DPB(ax_10, ah_39, 8, 8) (alias)
+    uses: ax_40 = DPB(ax_10, ah_39, 8) (alias)
           ah_29 = PHI(ah_39, ah)
 ax_40: orig: ax
-    def:  ax_40 = DPB(ax_10, ah_39, 8, 8) (alias)
+    def:  ax_40 = DPB(ax_10, ah_39, 8) (alias)
     uses: Z_41 = ax_40 == 0x0000
           cx_42 = __bsr(ax_40)
           ax_30 = PHI(ax_40, ax_10)
@@ -202,10 +202,10 @@ C_54: orig: C
     def:  C_54 = false
 cl_55: orig: cl
     def:  cl_55 = 0x00
-    uses: cx_56 = DPB(cx_23, cl_55, 0, 8) (alias)
+    uses: cx_56 = DPB(cx_23, cl_55, 0) (alias)
           cl_32 = PHI(cl_44, cl_55)
 cx_56: orig: cx
-    def:  cx_56 = DPB(cx_23, cl_55, 0, 8) (alias)
+    def:  cx_56 = DPB(cx_23, cl_55, 0) (alias)
     uses: cx_31 = PHI(cx_43, cx_56)
 SZO_57: orig: SZO
     def:  SZO_57 = cond(0x00)
@@ -275,7 +275,7 @@ l0C00_000C:
 	cx_6 = 0x000C
 	cl_7 = (byte) cx_6 (alias)
 	al_8 = 0x00
-	ax_10 = DPB(ax, al_8, 0, 8) (alias)
+	ax_10 = DPB(ax, al_8, 0) (alias)
 	SZO_11 = cond(0x00)
 	Z_12 = SZO_11 (alias)
 	C_13 = false
@@ -313,7 +313,7 @@ l0C00_001B:
 	// succ:  l0C00_001D l0C00_002D
 l0C00_001D:
 	ah_39 = Mem0[ds:di_22 + 0x0001:byte]
-	ax_40 = DPB(ax_10, ah_39, 8, 8) (alias)
+	ax_40 = DPB(ax_10, ah_39, 8) (alias)
 	Z_41 = ax_40 == 0x0000
 	cx_42 = __bsr(ax_40)
 	cx_43 = cx_42 - 0x0008
@@ -332,7 +332,7 @@ l0C00_002D:
 	SZO_53 = cond(0x0000)
 	C_54 = false
 	cl_55 = 0x00
-	cx_56 = DPB(cx_23, cl_55, 0, 8) (alias)
+	cx_56 = DPB(cx_23, cl_55, 0) (alias)
 	SZO_57 = cond(0x00)
 	Z_58 = SZO_57 (alias)
 	C_59 = false

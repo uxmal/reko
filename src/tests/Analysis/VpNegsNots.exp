@@ -50,7 +50,7 @@ C_12: orig: C
 ecx_13: orig: ecx
     def:  ecx_13 = 0x00000000 - (v8_10 == 0x0000)
     uses: Mem14[ds:0x0308:word32] = ecx_13
-          ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+          ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 Mem14: orig: Mem0
     def:  Mem14[ds:0x0308:word32] = ecx_13
 bx:bx
@@ -76,12 +76,12 @@ cx_21: orig: cx
     uses: cx_22 = -cx_21
 cx_22: orig: cx
     def:  cx_22 = -cx_21
-    uses: ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+    uses: ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
           SCZO_24 = cond(cx_22)
           C_25 = cx_22 == 0x0000
           Mem27[ds:0x0306:word16] = cx_22
 ecx_23: orig: ecx
-    def:  ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+    def:  ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 SCZO_24: orig: SCZO
     def:  SCZO_24 = cond(cx_22)
 C_25: orig: C
@@ -120,7 +120,7 @@ l0C00_0000:
 	cx_20 = Mem19[ds:0x0304:word16]
 	cx_21 = cx_20 - 0x03E8
 	cx_22 = -cx_21
-	ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+	ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 	SCZO_24 = cond(cx_22)
 	C_25 = cx_22 == 0x0000
 	SCZO_26 = C_25 (alias)
@@ -180,7 +180,7 @@ C_12: orig: C
 ecx_13: orig: ecx
     def:  ecx_13 = 0x00000000 - (v8_10 == 0x0000)
     uses: Mem14[ds:0x0308:word32] = ecx_13
-          ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+          ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 Mem14: orig: Mem0
     def:  Mem14[ds:0x0308:word32] = ecx_13
 bx:bx
@@ -206,13 +206,13 @@ cx_21: orig: cx
     def:  cx_21 = cx_20 - 0x03E8
 cx_22: orig: cx
     def:  cx_22 = 0x03E8 - cx_20
-    uses: ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+    uses: ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
           SCZO_24 = cond(cx_22)
           C_25 = cx_22 == 0x0000
           Mem27[ds:0x0306:word16] = cx_22
           SCZO_26 = cx_22 == 0x0000 (alias)
 ecx_23: orig: ecx
-    def:  ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+    def:  ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 SCZO_24: orig: SCZO
     def:  SCZO_24 = cond(cx_22)
 C_25: orig: C
@@ -250,7 +250,7 @@ l0C00_0000:
 	cx_20 = Mem19[ds:0x0304:word16]
 	cx_21 = cx_20 - 0x03E8
 	cx_22 = 0x03E8 - cx_20
-	ecx_23 = DPB(ecx_13, cx_22, 0, 16) (alias)
+	ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 	SCZO_24 = cond(cx_22)
 	C_25 = cx_22 == 0x0000
 	SCZO_26 = cx_22 == 0x0000 (alias)

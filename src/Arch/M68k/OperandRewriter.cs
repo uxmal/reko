@@ -189,7 +189,7 @@ namespace Reko.Arch.M68k
                         tmp = frame.CreateTemporary(dataWidth);
                         m.Assign(tmp, srcExp);
                     }
-                    src = m.Dpb(r, tmp, 0, dataWidth.BitSize);
+                    src = m.Dpb(r, tmp, 0);
                 }
                 else
                 {
@@ -299,7 +299,7 @@ namespace Reko.Arch.M68k
                 {
                     var tmp = frame.CreateTemporary(dataWidth);
                     m.Assign(tmp, opGen(m.Cast(dataWidth, r)));
-                    m.Assign(r, m.Dpb(r, tmp, 0, dataWidth.BitSize));
+                    m.Assign(r, m.Dpb(r, tmp, 0));
                     return tmp;
                 }
                 else 
@@ -358,7 +358,7 @@ namespace Reko.Arch.M68k
                 if (r.DataType.Size > dataWidth.Size)
                 {
                     var tmp = frame.CreateTemporary(dataWidth);
-                    m.Assign(r, m.Dpb(r, src, 0, dataWidth.BitSize));
+                    m.Assign(r, m.Dpb(r, src, 0));
                     return tmp;
                 }
                 else

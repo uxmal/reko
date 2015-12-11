@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace Reko.Core.Expressions
 {
@@ -30,14 +31,12 @@ namespace Reko.Core.Expressions
 		private Expression src;
 		private Expression bits;
 		private int bitPos;
-		private int bitCount;
 
-		public DepositBits(Expression src, Expression bits, int bitPos, int bitCount) : base(src.DataType)
+		public DepositBits(Expression src, Expression bits, int bitPos) : base(src.DataType)
 		{
 			this.src = src;
 			this.bits = bits;
 			this.bitPos = bitPos;
-			this.bitCount = bitCount;
 		}
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -55,11 +54,6 @@ namespace Reko.Core.Expressions
 			visit.VisitDepositBits(this);
 		}
 
-		public int BitCount
-		{
-			get { return bitCount; }
-		}
-
 		public int BitPosition
 		{
 			get { return bitPos; }
@@ -67,9 +61,8 @@ namespace Reko.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new DepositBits(src.CloneExpression(), bits.CloneExpression(), bitPos, bitCount);
+			return new DepositBits(src.CloneExpression(), bits.CloneExpression(), bitPos);
 		}
-
 
 		public Expression Source
 		{
@@ -80,7 +73,7 @@ namespace Reko.Core.Expressions
 		public Expression InsertedBits
 		{
 			get { return bits; }
-			set { bits = value; }
+			// [Obsolete("", true)]set { bits = value; }
 		}
 	}
 }

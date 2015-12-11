@@ -194,7 +194,7 @@ Trashed: cl,cx
                 m.BranchIf(m.Eq0(ax), "zero");
 
                 m.Assign(cl, 0);
-                m.Assign(cx, m.Dpb(cx, cl, 0, 8));
+                m.Assign(cx, m.Dpb(cx, cl, 0));
                 m.Return();
 
                 m.Label("zero");
@@ -219,12 +219,12 @@ Constants: cl:0x00
                 var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, PrimitiveType.Byte));
                 m.BranchIf(m.Eq0(ax), "zero");
                 m.Assign(cl, 0);
-                m.Assign(cx, m.Dpb(cx, cl, 0, 8));
+                m.Assign(cx, m.Dpb(cx, cl, 0));
                 m.Goto("done");
 
                 m.Label("zero");
                 m.Assign(cl, 0);
-                m.Assign(cx, m.Dpb(cx, cl, 0, 8));
+                m.Assign(cx, m.Dpb(cx, cl, 0));
                 
                 m.Label("done");
                 m.Return();

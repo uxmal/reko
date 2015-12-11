@@ -53,7 +53,6 @@ namespace Reko.Evaluation
             if (!dpbDef.Source.As(out idSrc))
                 return false;
             return
-                dpbDef.BitCount == dpbUse.BitCount &&
                 dpbDef.BitPosition == dpbUse.BitPosition;
         }
 
@@ -61,7 +60,7 @@ namespace Reko.Evaluation
         {
             ctx.RemoveIdentifierUse(idDef);
             ctx.UseExpression(idSrc);
-            return new DepositBits(idSrc, dpbUse.InsertedBits, dpbUse.BitPosition, dpbUse.BitCount);
+            return new DepositBits(idSrc, dpbUse.InsertedBits, dpbUse.BitPosition);
         }
     }
 }

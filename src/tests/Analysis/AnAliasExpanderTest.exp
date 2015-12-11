@@ -21,7 +21,7 @@ l0C00_0000:
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = cx
 	cl = 0x03
-	cx = DPB(cx, cl, 0, 8) (alias)
+	cx = DPB(cx, cl, 0) (alias)
 	ax = ax ^ ax
 	al = (byte) ax (alias)
 	SZO = cond(ax)
@@ -31,11 +31,11 @@ l0C00_0000:
 	// succ:  l0C00_0005
 l0C00_0005:
 	al = al + cl
-	ax = DPB(ax, al, 0, 8) (alias)
+	ax = DPB(ax, al, 0) (alias)
 	SCZO = cond(al)
 	C = SCZO (alias)
 	cl = cl - 0x01
-	cx = DPB(cx, cl, 0, 8) (alias)
+	cx = DPB(cx, cl, 0) (alias)
 	SZO = cond(cl)
 	Z = SZO (alias)
 	SCZO = SZO (alias)

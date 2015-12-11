@@ -143,7 +143,7 @@ namespace Reko.Core
 			{
                 if (idOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
                 {
-                    appl = new DepositBits(idOut, appl, 0, sigCallee.ReturnValue.DataType.BitSize);
+                    appl = new DepositBits(idOut, appl, 0);
                 }
                 return new Assignment(idOut, appl);
 			}

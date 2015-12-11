@@ -28,11 +28,11 @@ l0C00_0000:
 	SZO = cond(cl)
 	C = false
 	cl = cl | Mem0[ds:bx + 0x0003:byte]
-	cx = DPB(cx, cl, 0, 8) (alias)
+	cx = DPB(cx, cl, 0) (alias)
 	SZO = cond(cl)
 	C = false
 	al = al | cl
-	ax = DPB(ax, al, 0, 8) (alias)
+	ax = DPB(ax, al, 0) (alias)
 	SZO = cond(al)
 	C = false
 	SCZO = C (alias)

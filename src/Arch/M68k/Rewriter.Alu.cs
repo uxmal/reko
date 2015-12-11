@@ -304,8 +304,8 @@ namespace Reko.Arch.M68k
                 var regDst = frame.EnsureRegister(((RegisterOperand) di.op2).Register);
                 emitter.Assign(rem, emitter.Cast(rem.DataType, emitter.Remainder(regDst, src)));
                 emitter.Assign(quot, emitter.Cast(quot.DataType, emitter.UDiv(regDst, src)));
-                emitter.Assign(regDst, emitter.Dpb(regDst, rem, 16, 16));
-                emitter.Assign(regDst, emitter.Dpb(regDst, quot, 0, 16));
+                emitter.Assign(regDst, emitter.Dpb(regDst, rem, 16));
+                emitter.Assign(regDst, emitter.Dpb(regDst, quot, 0));
                 emitter.Assign(
                     orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
                     emitter.Cond(quot));
@@ -554,7 +554,7 @@ namespace Reko.Arch.M68k
         {
             if (dst is Identifier && dst.DataType.BitSize > bitSize)
             {
-                var dpb = emitter.Dpb(dst, src, 0, bitSize);
+                var dpb = emitter.Dpb(dst, src, 0);
                 emitter.Assign(dst, dpb);
             }
             else

@@ -436,11 +436,11 @@ namespace Reko.UnitTests.Analysis
 				var edx = Local32("edx");
 
 				Assign(edx, Int32(0x0AAA00AA));
-				Assign(edx, Dpb(edx, Int8(0x55), 8, 8));
+				Assign(edx, Dpb(edx, Int8(0x55), 8));
 				Store(Int32(0x1000000), edx);
 
 				Assign(edx, Int32(0));
-                Assign(edx, Dpb(edx, dl, 0, 8));
+                Assign(edx, Dpb(edx, dl, 0));
 				Return(edx);
 			}
 		}
@@ -453,8 +453,8 @@ namespace Reko.UnitTests.Analysis
             var a1 = m.Reg32("a32");
             var tmp = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
-            m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0, 16));
-            m.Assign(d1, m.Dpb(d1, m.LoadW(m.IAdd(a1, 4)), 0, 16));
+            m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0));
+            m.Assign(d1, m.Dpb(d1, m.LoadW(m.IAdd(a1, 4)), 0));
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();

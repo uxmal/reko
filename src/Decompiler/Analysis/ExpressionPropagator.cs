@@ -335,8 +335,7 @@ namespace Reko.Analysis
             var d = new DepositBits(
                 dpb.Source.Accept(this).PropagatedExpression,
                 dpb.InsertedBits.Accept(this).PropagatedExpression,
-                dpb.BitPosition,
-                dpb.BitCount);
+                dpb.BitPosition);
             return SimplifyExpression(d);
         }
 

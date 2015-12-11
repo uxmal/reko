@@ -184,8 +184,7 @@ namespace Reko.Core.Expressions
                 return false;
             if (!Match(dP.InsertedBits, d.InsertedBits))
                 return false;
-            return (dP.BitPosition == d.BitPosition &&
-                dP.BitCount == d.BitCount);
+            return (dP.BitPosition == d.BitPosition);
         }
 
         bool ExpressionVisitor<bool>.VisitDereference(Dereference deref)

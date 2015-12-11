@@ -239,7 +239,7 @@ namespace Reko.Core.Output
 			WriteExpression(d.Source);
 			writer.Write(", ");
 			WriteExpression(d.InsertedBits);
-			writer.Write(", {0}, {1})", d.BitPosition, d.BitCount);
+			writer.Write(", {0})", d.BitPosition);
 		}
 
 		public void VisitMkSequence(MkSequence seq)

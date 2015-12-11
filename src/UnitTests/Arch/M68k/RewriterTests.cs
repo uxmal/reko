@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
                 "1|L--|v4 = (byte) d3 ^ (byte) d0",
-                "2|L--|d3 = DPB(d3, v4, 0, 8)",
+                "2|L--|d3 = DPB(d3, v4, 0)",
                 "3|L--|ZN = cond(v4)",
                 "4|L--|C = false",
                 "5|L--|V = false");
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
                 "1|L--|v3 = (word16) d3 | 0x1123",
-                "2|L--|d3 = DPB(d3, v3, 0, 16)",
+                "2|L--|d3 = DPB(d3, v3, 0)",
                 "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
                 "5|L--|V = false");
@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|v4 = Mem0[a0:word16]",
-                "2|L--|d2 = DPB(d2, v4, 0, 16)",
+                "2|L--|d2 = DPB(d2, v4, 0)",
                 "3|L--|CVZN = cond(v4)");
         }
 
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
                 "1|L--|v3 = ~(word16) d3",
-                "2|L--|d3 = DPB(d3, v3, 0, 16)",
+                "2|L--|d3 = DPB(d3, v3, 0)",
                 "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
                 "5|L--|V = false");
@@ -267,7 +267,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
                 "1|L--|v3 = (byte) d2 & 0xF0",
-                "2|L--|d2 = DPB(d2, v3, 0, 8)",
+                "2|L--|d2 = DPB(d2, v3, 0)",
                 "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
                 "5|L--|V = false");
@@ -280,7 +280,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|v3 = (byte) d0 >> 0x07",
-                "2|L--|d0 = DPB(d0, v3, 0, 8)",
+                "2|L--|d0 = DPB(d0, v3, 0)",
                 "3|L--|CVZNX = cond(v3)");
         }
 
@@ -328,7 +328,7 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a4 = a4 - 0x00000002",
                 "2|L--|v4 = (word16) d0 - Mem0[a4:word16]",
-                "3|L--|d0 = DPB(d0, v4, 0, 16)",
+                "3|L--|d0 = DPB(d0, v4, 0)",
                 "4|L--|CVZNX = cond(v4)");
         }
 
@@ -341,7 +341,7 @@ namespace Reko.UnitTests.Arch.M68k
                 "1|L--|v3 = Mem0[a4:word16]",
                 "2|L--|a4 = a4 + 0x00000002",
                 "3|L--|v5 = (word16) a0 - v3",
-                "4|L--|a0 = DPB(a0, v5, 0, 16)");
+                "4|L--|a0 = DPB(a0, v5, 0)");
         }
 
         [Test]
@@ -363,7 +363,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x4240);        // clr.w\td0
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|d0 = DPB(d0, 0x0000, 0, 16)",
+                "1|L--|d0 = DPB(d0, 0x0000, 0)",
                 "2|L--|Z = true",
                 "3|L--|C = false",
                 "4|L--|N = false",
@@ -490,7 +490,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|v3 = (word16) d0 << 0x0008",
-                "2|L--|d0 = DPB(d0, v3, 0, 16)",
+                "2|L--|d0 = DPB(d0, v3, 0)",
                 "3|L--|CVZNX = cond(v3)");
         }
 
@@ -501,7 +501,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
                 "1|L--|v3 = (word16) d0 - 0x0140",
-                "2|L--|d0 = DPB(d0, v3, 0, 16)",
+                "2|L--|d0 = DPB(d0, v3, 0)",
                 "3|L--|CVZNX = cond(v3)");
         }
 
@@ -588,7 +588,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|v4 = (word16) d4 << (word16) d1",
-                "2|L--|d4 = DPB(d4, v4, 0, 16)",
+                "2|L--|d4 = DPB(d4, v4, 0)",
                 "3|L--|CVZNX = cond(v4)");
         }
 
@@ -732,7 +732,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|v3 = (byte) d1 + 0x02",
-                "2|L--|d1 = DPB(d1, v3, 0, 8)",
+                "2|L--|d1 = DPB(d1, v3, 0)",
                 "3|L--|CVZNX = cond(v3)");
         }
 
@@ -814,7 +814,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x4241);
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|d1 = DPB(d1, 0x0000, 0, 16)",
+                "1|L--|d1 = DPB(d1, 0x0000, 0)",
                 "2|L--|Z = true",
                 "3|L--|C = false",
                 "4|L--|N = false",
@@ -869,8 +869,8 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(2): 6 instructions",
                 "1|L--|v3 = (uint16) (d0 % (uint16) d1)",
                 "2|L--|v4 = (uint16) (d0 /u (uint16) d1)",
-                "3|L--|d0 = DPB(d0, v3, 16, 16)",
-                "4|L--|d0 = DPB(d0, v4, 0, 16)",
+                "3|L--|d0 = DPB(d0, v3, 16)",
+                "4|L--|d0 = DPB(d0, v4, 0)",
                 "5|L--|VZN = cond(v4)",
                 "6|L--|C = false");
         }
@@ -924,7 +924,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|v4 = __rcr((byte) d4, 0x08, X)",
-                "2|L--|d4 = DPB(d4, v4, 0, 8)",
+                "2|L--|d4 = DPB(d4, v4, 0)",
                 "3|L--|CZNX = cond(v4)");
         }
 
@@ -990,7 +990,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
                 "1|L--|v3 = (word16) d6 + 0x000F",
-                "2|L--|d6 = DPB(d6, v3, 0, 16)",
+                "2|L--|d6 = DPB(d6, v3, 0)",
                 "3|L--|CVZNX = cond(v3)");
         }
 
@@ -1001,7 +1001,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
                 "1|L--|v3 = (word16) d0 ^ 0x000F",
-                "2|L--|d0 = DPB(d0, v3, 0, 16)",
+                "2|L--|d0 = DPB(d0, v3, 0)",
                 "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
                 "5|L--|V = false");

@@ -95,9 +95,9 @@ namespace Reko.Core.Expressions
             return new Dereference(a.DataType, a);
         }
 
-        public DepositBits Dpb(Expression dst, Expression src, int offset, int bitCount)
+        public DepositBits Dpb(Expression dst, Expression src, int offset)
         {
-            return new DepositBits(dst, src, offset, bitCount);
+            return new DepositBits(dst, src, offset);
         }
 
         public BinaryExpression Eq(Expression a, Expression b)

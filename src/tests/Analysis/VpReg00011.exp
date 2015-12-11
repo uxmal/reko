@@ -90,7 +90,7 @@ ax_16: orig: ax
 ax_17: orig: ax
     def:  ax_17 = ax_16 << 0x0004
     uses: ah_18 = SLICE(ax_17, byte, 8) (alias)
-          ax_23 = DPB(ax_17, al_22, 0, 8) (alias)
+          ax_23 = DPB(ax_17, al_22, 0) (alias)
 ah_18: orig: ah
     def:  ah_18 = SLICE(ax_17, byte, 8) (alias)
     uses: ah_21 = ah_18 & 0x0F
@@ -105,10 +105,10 @@ ah_21: orig: ah
     uses: al_22 = al_20 | ah_21
 al_22: orig: al
     def:  al_22 = al_20 | ah_21
-    uses: ax_23 = DPB(ax_17, al_22, 0, 8) (alias)
+    uses: ax_23 = DPB(ax_17, al_22, 0) (alias)
           Mem25[0x4DE1:bx_9:byte] = al_22
 ax_23: orig: ax
-    def:  ax_23 = DPB(ax_17, al_22, 0, 8) (alias)
+    def:  ax_23 = DPB(ax_17, al_22, 0) (alias)
 C_24: orig: C
     def:  C_24 = false
 Mem25: orig: Mem0
@@ -165,7 +165,7 @@ l0C00_000C:
 	al_20 = al_19 & 0xF0
 	ah_21 = ah_18 & 0x0F
 	al_22 = al_20 | ah_21
-	ax_23 = DPB(ax_17, al_22, 0, 8) (alias)
+	ax_23 = DPB(ax_17, al_22, 0) (alias)
 	C_24 = false
 	Mem25[0x4DE1:bx_9:byte] = al_22
 	bx_26 = bx_9 - 0x0001
@@ -231,7 +231,7 @@ ax_16: orig: ax
     def:  ax_16 = ah_15 *u al_13
     uses: ax_17 = ax_16 << 0x0004
           ah_18 = SLICE(ax_16 << 0x0004, byte, 8) (alias)
-          ax_23 = DPB(ax_16 << 0x0004, al_22, 0, 8) (alias)
+          ax_23 = DPB(ax_16 << 0x0004, al_22, 0) (alias)
 ax_17: orig: ax
     def:  ax_17 = ax_16 << 0x0004
 ah_18: orig: ah
@@ -247,10 +247,10 @@ ah_21: orig: ah
     def:  ah_21 = ah_18 & 0x0F
 al_22: orig: al
     def:  al_22 = al_20 | ah_18 & 0x0F
-    uses: ax_23 = DPB(ax_16 << 0x0004, al_22, 0, 8) (alias)
+    uses: ax_23 = DPB(ax_16 << 0x0004, al_22, 0) (alias)
           Mem25[0x4DE1:bx_9:byte] = al_22
 ax_23: orig: ax
-    def:  ax_23 = DPB(ax_16 << 0x0004, al_22, 0, 8) (alias)
+    def:  ax_23 = DPB(ax_16 << 0x0004, al_22, 0) (alias)
 C_24: orig: C
     def:  C_24 = false
 Mem25: orig: Mem0
@@ -307,7 +307,7 @@ l0C00_000C:
 	al_20 = bl_11 & 0xF0
 	ah_21 = ah_18 & 0x0F
 	al_22 = al_20 | ah_18 & 0x0F
-	ax_23 = DPB(ax_16 << 0x0004, al_22, 0, 8) (alias)
+	ax_23 = DPB(ax_16 << 0x0004, al_22, 0) (alias)
 	C_24 = false
 	Mem25[0x4DE1:bx_9:byte] = al_22
 	bx_26 = bx_9 - 0x0001

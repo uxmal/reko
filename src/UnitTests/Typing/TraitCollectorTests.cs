@@ -484,7 +484,7 @@ namespace Reko.UnitTests.Typing
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier a = m.Local32("a");
             Identifier b = m.LocalByte("b");
-            var s = m.Assign(a, m.Dpb(a, b, 0, 8));
+            var s = m.Assign(a, m.Dpb(a, b, 0));
             coll = CreateCollector();
             s.Accept(eqb);
             s.Accept(coll);
@@ -499,7 +499,7 @@ namespace Reko.UnitTests.Typing
                 "\ttrait_equal(T_3)" + nl +
                 "T_2 (in b : byte)" + nl +
                 "\ttrait_primitive(byte)" + nl +
-                "T_3 (in DPB(a, b, 0, 8) : word32)" + nl +
+                "T_3 (in DPB(a, b, 0) : word32)" + nl +
                 "\ttrait_primitive(word32)" + nl;
             Assert.AreEqual(exp, sb.ToString());
         }

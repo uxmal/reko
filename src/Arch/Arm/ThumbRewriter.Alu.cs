@@ -159,7 +159,7 @@ namespace Reko.Arch.Arm
         {
             var dst = GetReg(ops[0].RegisterValue.Value);
             var src = Constant.Word16((ushort)ops[1].ImmediateValue.Value);
-            emitter.Assign(dst, emitter.Dpb(dst, src, 16, 16));
+            emitter.Assign(dst, emitter.Dpb(dst, src, 16));
         }
 
         private void RewriteMovw()

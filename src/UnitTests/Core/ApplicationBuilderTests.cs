@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Core
                 new ProcedureSignature(new Identifier("bRet", PrimitiveType.Byte, Registers.eax)),
                 true);
             var instr = ab.CreateInstruction();
-            Assert.AreEqual("eax = DPB(eax, foo(), 0, 8)", instr.ToString());
+            Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
         }
 	}
 }

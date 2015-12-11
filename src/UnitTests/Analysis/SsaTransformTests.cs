@@ -502,8 +502,10 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var a = m.Reg32("a");
-                var b = m.Reg32("b");
+                var regA = new RegStorage("a", 0, PrimitiveType.Word32, 0);
+                var regB = new RegStorage("b", 1, PrimitiveType.Word32, 0);
+                var a = m.Frame.EnsureRegister(regA);
+                var b = m.Frame.EnsureRegister(regB);
                 m.Assign(a, 3);
                 m.Assign(b, a);
                 m.Return();
@@ -558,8 +560,10 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var a = m.Reg32("a");
-                var b = m.Reg32("b");
+                var regA = new RegStorage("a", 0, PrimitiveType.Word32, 0);
+                var regB = new RegStorage("b", 1, PrimitiveType.Word32, 0);
+                var a = m.Frame.EnsureRegister(regA);
+                var b = m.Frame.EnsureRegister(regB);
                 m.BranchIf(m.Eq0(a), "m_2");
                 m.Label("m_1");
                 m.Assign(b, -1);
@@ -570,31 +574,28 @@ ProcedureBuilder_exit:
 
 
         [Test]
+        [Ignore]
         public void Ssa2_RegisterAlias()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
-	def a
-	def b
+	def eax
+	def Mem0
 	// succ:  l1
 l1:
-	branch a == 0x00000000 m_2
-	// succ:  m_1 m_2
-m_1:
-	b_1 = 0xFFFFFFFF
-	// succ:  m_2
-m_2:
-	b_2 = PHI(b, b_1)
-	return b_2
+	eax_2 = Mem0[eax:word32]
+    vx_3 = DPB(vx_x, eax_2, 0)
+	Mem0[0x00001234:word32] = eax_2
+	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
                 var regEax = new RegStorage("eax", 0, PrimitiveType.Word32, 0);
-                var regAh = new RegStorage("ah", 0, PrimitiveType.Word32, 8);
+                var regAh = new RegStorage("ah", 0, PrimitiveType.Byte, 8);
                 var eax = m.Frame.EnsureRegister(regEax);
                 var ah = m.Frame.EnsureRegister(regAh);
                 m.Assign(eax, m.LoadDw(eax));

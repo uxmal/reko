@@ -732,7 +732,7 @@ namespace Reko.Analysis
             foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
             {
                 this.block = b;
-                this.currentDef.Add(block, new Dictionary<Storage, SsaIdentifier>(new StorageEquality()));
+                this.currentDef.Add(block, new Dictionary<Storage, SsaIdentifier>()); // new StorageEquality()));
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stm = s;
@@ -747,8 +747,8 @@ namespace Reko.Analysis
         {
             var src = a.Src.Accept(this);
             var sid = ssa.Identifiers.Add(a.Dst, this.stm, src, false);
-            var sidPrev = readVariable(a.Dst, block);
-            var idNew = writeVariable(a.Dst, block, sid, sidPrev);
+       //     var sidPrev = readVariable(a.Dst, block);
+            var idNew = writeVariable(a.Dst, block, sid, null);
             return new Assignment(idNew, src);
         }
 
@@ -786,8 +786,8 @@ namespace Reko.Analysis
             if (false)  // !sealedBlocks.Contains(b))
             {
                 // Incomplete CFG
-                val = newPhi(id, b);
-                incompletePhis[b][id.Storage] = val;
+                //val = newPhi(id, b);
+                //incompletePhis[b][id.Storage] = val;
             }
             else if (b.Pred.Count == 0)
             {

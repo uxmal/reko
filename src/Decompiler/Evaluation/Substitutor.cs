@@ -105,7 +105,7 @@ namespace Reko.Evaluation
             var inserted = d.InsertedBits.Accept(this);
             if (inserted == Constant.Invalid)
                 return inserted;
-            return new DepositBits(source, inserted, d.BitPosition, d.BitCount);
+            return new DepositBits(source, inserted, d.BitPosition);
         }
 
         public Expression VisitDereference(Dereference deref)

@@ -127,13 +127,13 @@ namespace Reko.Core.Expressions
                 delegate(Expression ea, Expression eb)
                 {
                     DepositBits a = (DepositBits) ea, b = (DepositBits) eb;
-                    return a.BitCount == b.BitCount && a.BitPosition == b.BitPosition &&
+                    return a.BitPosition == b.BitPosition &&
                         EqualsImpl(a.Source, b.Source) && EqualsImpl(a.InsertedBits, b.InsertedBits);
                 },
                 delegate(Expression obj)
                 {
                     DepositBits dpb = (DepositBits) obj;
-                    return GetHashCodeImpl(dpb.Source) * 67 ^ GetHashCodeImpl(dpb.InsertedBits) * 43 ^ dpb.BitPosition * 7 ^ dpb.BitCount;
+                    return GetHashCodeImpl(dpb.Source) * 67 ^ GetHashCodeImpl(dpb.InsertedBits) * 43 ^ dpb.BitPosition;
                 });
 
             Add(typeof(Dereference),

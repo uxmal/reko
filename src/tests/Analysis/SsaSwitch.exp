@@ -26,15 +26,15 @@ Mem0:Global memory
     uses: bl_9 = Mem0[ds_5:si:byte]
 bl_9: orig: bl
     def:  bl_9 = Mem0[ds_5:si:byte]
-    uses: bx_11 = DPB(bx, bl_9, 0, 8) (alias)
+    uses: bx_11 = DPB(bx, bl_9, 0) (alias)
           SCZO_12 = cond(bl_9 - 0x02)
           bl_17 = PHI(bl_9, bl_29, bl_29, bl_29)
 bx:bx
     def:  def bx
-    uses: bx_11 = DPB(bx, bl_9, 0, 8) (alias)
+    uses: bx_11 = DPB(bx, bl_9, 0) (alias)
 bx_11: orig: bx
-    def:  bx_11 = DPB(bx, bl_9, 0, 8) (alias)
-    uses: bx_25 = DPB(bx_11, bh_24, 8, 8) (alias)
+    def:  bx_11 = DPB(bx, bl_9, 0) (alias)
+    uses: bx_25 = DPB(bx_11, bh_24, 8) (alias)
           bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
 SCZO_12: orig: SCZO
     def:  SCZO_12 = cond(bl_9 - 0x02)
@@ -70,9 +70,9 @@ ax_23: orig: ax
     def:  ax_23 = PHI(ax_38, ax_36, ax_37, ax_35)
 bh_24: orig: bh
     def:  bh_24 = 0x00
-    uses: bx_25 = DPB(bx_11, bh_24, 8, 8) (alias)
+    uses: bx_25 = DPB(bx_11, bh_24, 8) (alias)
 bx_25: orig: bx
-    def:  bx_25 = DPB(bx_11, bh_24, 8, 8) (alias)
+    def:  bx_25 = DPB(bx_11, bh_24, 8) (alias)
     uses: bx_28 = bx_25 + bx_25
           bx_28 = bx_25 + bx_25
 SZO_26: orig: SZO
@@ -154,7 +154,7 @@ l0C00_0000:
 	ds_5 = wLoc02_4
 	sp_6 = fp
 	bl_9 = Mem0[ds_5:si:byte]
-	bx_11 = DPB(bx, bl_9, 0, 8) (alias)
+	bx_11 = DPB(bx, bl_9, 0) (alias)
 	SCZO_12 = cond(bl_9 - 0x02)
 	SZO_13 = SCZO_12 (alias)
 	CZ_14 = SCZO_12 (alias)
@@ -163,7 +163,7 @@ l0C00_0000:
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
 	bh_24 = 0x00
-	bx_25 = DPB(bx_11, bh_24, 8, 8) (alias)
+	bx_25 = DPB(bx_11, bh_24, 8) (alias)
 	SZO_26 = cond(0x00)
 	C_27 = false
 	bx_28 = bx_25 + bx_25

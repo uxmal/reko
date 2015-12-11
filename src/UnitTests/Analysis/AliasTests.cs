@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Analysis
             Identifier argSeg = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
             Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);
             Assignment ass = alias.CreateAliasInstruction(argOff, argPtr);
-            Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0, 16) (alias)", ass.ToString());
+            Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0) (alias)", ass.ToString());
         }
 
         [Test]

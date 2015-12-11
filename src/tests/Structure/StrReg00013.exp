@@ -13,7 +13,7 @@ fn0C00_0000_entry:
 	msdos_resize_memory_block(es_17, bx_18, out bx_25)
 	Mem27[0x0800:0x0400:word16] = 0x1758
 	fn0C00_0288()
-	word16 sp_13 = (word16) (DPB(esp, fp, 0, 16) & 0x0000FFFF)
+	word16 sp_13 = (word16) (DPB(esp, fp, 0) & 0x0000FFFF)
 	Mem31[ss:sp_13 - 0x0002:word16] = cs
 	msdos_set_interrupt_vector(0x24, SEQ(Mem31[ss:sp_13 - 0x0002:selector], 0x0295))
 	Mem39[ss:sp_13 - 0x0002:word16] = 0x0800
@@ -176,7 +176,7 @@ l0C00_01B7:
 	word16 dx_183 = Mem181[ds_121:0x541A:word16]
 	Mem185[ds_121:0x541A:word16] = ax_130
 	word16 ax_186 = ax_130 - dx_183
-	Mem198[ds_121:0x5408:word16] = SLICE(DPB(ax_186, (byte) (v29_180 - (ax_186 <u 0x0000)), 8, 8) *u 0x3865, word16, 16)
+	Mem198[ds_121:0x5408:word16] = SLICE(DPB(ax_186, (byte) (v29_180 - (ax_186 <u 0x0000)), 8) *u 0x3865, word16, 16)
 	branch (Mem198[ds_121:Mem198[ds_121:0x5A02:word16] + 0x0094:word16] & 0xFFFF) != 0x0000 l0C00_01FA
 	// succ:  l0C00_01EC l0C00_01FA
 l0C00_01EC:
@@ -241,7 +241,7 @@ void fn0C00_0000(selector ds)
 	msdos_resize_memory_block(es_17, bx_18, out bx_25);
 	Mem27[0x0800:0x0400:word16] = 0x1758;
 	fn0C00_0288();
-	word16 sp_13 = (word16) (DPB(esp, fp, 0, 16) & 0x0000FFFF);
+	word16 sp_13 = (word16) (DPB(esp, fp, 0) & 0x0000FFFF);
 	Mem31[ss:sp_13 - 0x0002:word16] = cs;
 	msdos_set_interrupt_vector(0x24, SEQ(Mem31[ss:sp_13 - 0x0002:selector], 0x0295));
 	Mem39[ss:sp_13 - 0x0002:word16] = 0x0800;
@@ -359,7 +359,7 @@ void fn0C00_0000(selector ds)
 				word16 dx_183 = Mem181[ds_121:0x541A:word16];
 				Mem185[ds_121:0x541A:word16] = ax_130;
 				word16 ax_186 = ax_130 - dx_183;
-				Mem198[ds_121:0x5408:word16] = SLICE(DPB(ax_186, (byte) (v29_180 - (ax_186 <u 0x0000)), 8, 8) *u 0x3865, word16, 16);
+				Mem198[ds_121:0x5408:word16] = SLICE(DPB(ax_186, (byte) (v29_180 - (ax_186 <u 0x0000)), 8) *u 0x3865, word16, 16);
 				if ((Mem198[ds_121:Mem198[ds_121:0x5A02:word16] + 0x0094:word16] & 0xFFFF) != 0x0000 || (Mem198[ds_121:Mem198[ds_121:0x5BD8:word16] + 0x0094:word16] & 0xFFFF) != 0x0000)
 					Mem237[ds_121:0x5408:word16] = 0x0000;
 				if ((Mem198[ds_121:0x919E:word16] & 0x02FF) == 0x0000)

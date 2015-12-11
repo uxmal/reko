@@ -311,8 +311,9 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitDepositBits(DepositBits d)
         {
-            d.Source = d.Source.Accept(this);
-            d.InsertedBits = d.InsertedBits.Accept(this);
+            var src = d.Source.Accept(this);
+            var bits = d.InsertedBits.Accept(this);
+            d = new DepositBits(src, bits, d.BitPosition);
             if (dpbConstantRule.Match(d))
             {
                 Changed = true;

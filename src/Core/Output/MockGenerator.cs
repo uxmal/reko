@@ -337,7 +337,7 @@ namespace Reko.Core.Output
             d.Source.Accept(this);
             writer.Write(", ");
             d.InsertedBits.Accept(this);
-            writer.Write(", {0}, {1})", d.BitPosition, d.BitCount);
+            writer.Write(", {0})", d.BitPosition);
         }
 
         void IExpressionVisitor.VisitDereference(Dereference deref)
