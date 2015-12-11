@@ -46,6 +46,7 @@ namespace Reko.UnitTests.Analysis
                 sw.WriteLine("{0}:", de.Key.Name);
                 DumpSet("Preserved: ", de.Value.Preserved, sw);
                 DumpSet("Trashed:   ", de.Value.Trashed, sw);
+                DumpMap("Constants: ", de.Value.Constants, sw);
             }
 
             var sActual = sw.ToString();
@@ -57,13 +58,13 @@ namespace Reko.UnitTests.Analysis
         private void DumpSet<T>(string caption, ISet<T> items, StringWriter sw)
         {
             sw.Write("    {0}", caption);
-            sw.Write(string.Join(" ", items.Select(e => e.ToString()).OrderBy(e => e)));
+            sw.WriteLine(string.Join(" ", items.Select(e => e.ToString()).OrderBy(e => e)));
         }
 
         private void DumpMap<K, V>(string caption, IDictionary<K, V> items, StringWriter sw)
         {
             sw.Write("    {0}", caption);
-            sw.Write(string.Join(" ", items.Select(e => string.Format("{0}:{1}", e.Key, e.Value)).OrderBy(e => e)));
+            sw.WriteLine(string.Join(" ", items.Select(e => string.Format("{0}:{1}", e.Key, e.Value)).OrderBy(e => e)));
         }
 
         public void RunTest(ProgramBuilder pb)
@@ -83,6 +84,8 @@ namespace Reko.UnitTests.Analysis
                 // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
                 var sst = new SsaTransform(flow, proc, doms);
+                sst.AddUseInstructions = true;
+                sst.Transform();
                 var ssa = sst.SsaState;
 
                 scc.Add(proc, ssa);
@@ -115,12 +118,14 @@ test_entry:
 l1:
 	r1_0 = 0x00000003
 	return
-	// succ: test_exit
+	// succ:  test_exit
 test_exit:
+	use r1_0
 
 test:
-    Preserved: @@@@
-    Trashed:   @@@
+    Preserved: 
+    Trashed:   r1
+    Constants: r1:0x00000003
 ";
             #endregion
             AssertProgram(sExp, pb);

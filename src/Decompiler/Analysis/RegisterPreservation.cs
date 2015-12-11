@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -37,6 +38,7 @@ namespace Reko.Analysis
     {
         private Dictionary<Procedure, SsaState> scc;
         private DataFlow2 dataFlow;
+
 
         public RegisterPreservation(Dictionary<Procedure, SsaState> scc, DataFlow2 dataFlow)
         {
@@ -65,6 +67,7 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public void Compute(Procedure proc)
         {
+            var procFlow = EnsureProcedureFlow(proc);
             foreach (var use in proc.ExitBlock.Statements.Select(s => (UseInstruction)s.Instruction))
             {
                 var idFinal = (Identifier)use.Expression;
@@ -72,11 +75,32 @@ namespace Reko.Analysis
                 worklist.Enqueue(idFinal);
                 while (worklist.Count > 0)
                 {
-                    var id = idFinal;
+                    var id = worklist.Dequeue();
+                    var defExp = scc[proc].Identifiers[id].DefExpression;
+                    Debug.Print("Tracing {0} defined by {1}", id, defExp);
+                    if (defExp is Constant)
+                    {
+                        procFlow.Trashed.Add(id.Storage);
+                        procFlow.Constants.Add(id.Storage, (Constant)defExp);
+                        continue;
+                    }
+                    throw new NotImplementedException();
                 }
 
 
             }
+        }
+
+        private ProcedureFlow2 EnsureProcedureFlow(Procedure proc)
+        {
+            ProcedureFlow2 procFlow;
+            if (!dataFlow.ProcedureFlows.TryGetValue(proc, out procFlow))
+            {
+                procFlow = new ProcedureFlow2();
+                dataFlow.ProcedureFlows.Add(proc, procFlow);
+            }
+
+            return procFlow;
         }
     }
 
