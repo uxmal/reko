@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Core;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -33,20 +34,42 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class RegisterPreservationTests
     {
+        private DataFlow2 dataFlow;
 
         private void AssertProgram(string sExp, ProgramBuilder pb)
         {
             var sw = new StringWriter();
             pb.Program.Procedures.Values.First().Write(false, sw);
+            sw.WriteLine();
+            foreach (var de in dataFlow.ProcedureFlows.OrderBy(e => e.Key.Name))
+            {
+                sw.WriteLine("{0}:", de.Key.Name);
+                DumpSet("Preserved: ", de.Value.Preserved, sw);
+                DumpSet("Trashed:   ", de.Value.Trashed, sw);
+            }
+
             var sActual = sw.ToString();
             if (sExp != sActual)
                 Debug.WriteLine(sActual);
             Assert.AreEqual(sExp, sw.ToString());
         }
 
+        private void DumpSet<T>(string caption, ISet<T> items, StringWriter sw)
+        {
+            sw.Write("    {0}", caption);
+            sw.Write(string.Join(" ", items.Select(e => e.ToString()).OrderBy(e => e)));
+        }
+
+        private void DumpMap<K, V>(string caption, IDictionary<K, V> items, StringWriter sw)
+        {
+            sw.Write("    {0}", caption);
+            sw.Write(string.Join(" ", items.Select(e => string.Format("{0}:{1}", e.Key, e.Value)).OrderBy(e => e)));
+        }
+
         public void RunTest(ProgramBuilder pb)
         {
             var program = pb.BuildProgram();
+            var scc = new Dictionary<Procedure, SsaState>();
             foreach (var proc in program.Procedures.Values)
             {
                 var flow = new ProgramDataFlow(program);
@@ -61,21 +84,46 @@ namespace Reko.UnitTests.Analysis
                 var doms = proc.CreateBlockDominatorGraph();
                 var sst = new SsaTransform(flow, proc, doms);
                 var ssa = sst.SsaState;
+
+                scc.Add(proc, ssa);
             }
+
+            this.dataFlow = new DataFlow2();
+            var regp = new RegisterPreservation(scc, dataFlow);
+            regp.Compute();
         }
+
         [Test]
         public void Regp_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
+                var r1 = m.Register(1);
+                m.Assign(r1, 3);
                 m.Return();
             });
             RunTest(pb);
 
-            var sExp = "@@@";
-            AssertProgram(sExp, pb);
+            var sExp =
+            #region Expected
+@"// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	r1_0 = 0x00000003
+	return
+	// succ: test_exit
+test_exit:
 
+test:
+    Preserved: @@@@
+    Trashed:   @@@
+";
+            #endregion
+            AssertProgram(sExp, pb);
         }
     }
 }

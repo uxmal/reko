@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,14 +30,18 @@ namespace Reko.Analysis
 {
     /// <summary>
     /// Use SSA to determine register preservation / trash status.
+    /// Does not modify the procedures, but collects the trash 
+    /// information in the DataFlow collection.
     /// </summary>
     public class RegisterPreservation
     {
         private Dictionary<Procedure, SsaState> scc;
+        private DataFlow2 dataFlow;
 
-        public RegisterPreservation(Dictionary<Procedure, SsaState> scc)
+        public RegisterPreservation(Dictionary<Procedure, SsaState> scc, DataFlow2 dataFlow)
         {
             this.scc = scc;
+            this.dataFlow = dataFlow;
         }
 
         public void Compute()
@@ -46,9 +52,42 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Compute the preserved and modified registers of this procedure.
+        /// </summary>
+        /// <remarks>
+        /// The strategy is to start at the Exit block, where SSA 
+        /// transformation should have created UseInstructions for all
+        /// registers used in the program. for each used identifier, we follow
+        /// the definition chain backwards. If we hit a phi function, we 
+        /// enqueue more chains. Eventually we hit either a def statement,
+        /// or a load statement. </remarks>
+        /// <param name="proc"></param>
         public void Compute(Procedure proc)
         {
+            foreach (var use in proc.ExitBlock.Statements.Select(s => (UseInstruction)s.Instruction))
+            {
+                var idFinal = (Identifier)use.Expression;
+                var worklist = new Queue<Identifier>();
+                worklist.Enqueue(idFinal);
+                while (worklist.Count > 0)
+                {
+                    var id = idFinal;
+                }
 
+
+            }
+        }
+    }
+
+    public class DataFlow2
+    {
+        public Dictionary<Procedure, ProcedureFlow2> ProcedureFlows { get; private set; }
+
+        public DataFlow2()
+        {
+            this.ProcedureFlows = new Dictionary<Procedure, ProcedureFlow2>();
         }
     }
 }
+
