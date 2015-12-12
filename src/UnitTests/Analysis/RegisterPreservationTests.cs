@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.UnitTests.Mocks;
+using Reko.UnitTests.TestCode;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -352,5 +353,19 @@ test:
             #endregion
             AssertProgram(sExp, program.Procedures.Values);
         }
+
+        [Test(Description = "Processes a self-recursive program")]
+        public void Regp_Factorial()
+        {
+            program = Factorial.BuildSample();
+            RunTest(program.Procedures.Values.Take(1));
+
+            var sExp =
+            #region Expected
+                "@@@";
+            #endregion
+            AssertProgram(sExp, program.Procedures.Values.Take(1));
+        }
     }
+
 }

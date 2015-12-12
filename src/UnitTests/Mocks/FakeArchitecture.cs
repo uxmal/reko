@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Mocks
             uint grf = 0;
             for (int i = 0; i < s.Length; ++i)
             {
-                switch (s[i])
+                switch (char.ToUpper(s[i]))
                 {
                 case 'S': grf |= 0x01; break;
                 case 'C': grf |= 0x02; break;

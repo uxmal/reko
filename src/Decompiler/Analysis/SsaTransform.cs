@@ -604,13 +604,21 @@ namespace Reko.Analysis
                     }
                 }
 
-				// Hell node implementation - use all register variables.
+                // Hell node implementation - use all register variables.
 
-				foreach (Identifier id in proc.Frame.Identifiers)
-				{
-					if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage)
+                var oldUses = ci.Uses.Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier).ToHashSet();
+				foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct())
+                {
+                     
+					if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
+                        id.Storage is StackLocalStorage)
 					{
-						NewUse(id, stmCur);
+                        SsaIdentifier sid;
+                        if (!oldUses.Contains(id))
+                        {
+                            var newId = NewUse(id, stmCur);
+                            ci.Uses.Add(new UseInstruction(newId));
+                        }
 					}
 				}
 				return ci;
