@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
                 sw.WriteLine("{0}:", de.Key.Name);
                 DumpSet("Preserved: ", de.Value.Preserved, sw);
                 DumpSet("Trashed:   ", de.Value.Trashed, sw);
-                DumpMap("Constants: ", de.Value.Constants, sw);
+               // DumpMap("Constants: ", de.Value.Constants, sw);
             }
 
             var sActual = sw.ToString();
@@ -125,13 +125,12 @@ test_exit:
 test:
     Preserved: 
     Trashed:   r1
-    Constants: r1:0x00000003
 ";
             #endregion
             AssertProgram(sExp, pb);
         }
 
-        [Test(Description ="Loading from memory trashes the loaded register but not memory.")]
+        [Test(Description = "Loading from memory trashes the loaded register but not memory.")]
         public void Regp_Preserve()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -162,7 +161,6 @@ test_exit:
 test:
     Preserved: Global memory
     Trashed:   r1
-    Constants: 
 ";
             #endregion
             AssertProgram(sExp, pb);
@@ -211,10 +209,74 @@ test_exit:
 test:
     Preserved: 
     Trashed:   r1
-    Constants: 
 ";
             #endregion
             AssertProgram(sExp, pb);
+        }
+
+        /// <summary>
+        /// Looks a little redundant, but some compilers actually emit
+        /// code like this.
+        /// </summary>
+        [Test(Description = "Both branches of a phi should be followed.")]
+        public void Regp_Phi_Branches()
+        {
+            var pb = new ProgramBuilder(new FakeArchitecture());
+            pb.Add("test", m =>
+            {
+                var r1 = m.Register(1);
+                var r2 = m.Register(2);
+                m.Assign(r2, r1);
+                m.BranchIf(m.Ge(r1, 0), "m_ge");
+
+                m.Label("m_lt");
+                m.Assign(r1, r2);
+                m.Goto("m_done");
+
+                m.Label("m_ge");
+                m.Assign(r1, r2);
+
+                m.Label("m_done");
+                m.Return();
+            });
+            RunTest(pb);
+
+            var sExp =
+            #region Expected
+@"// test
+// Return size: 0
+void test()
+test_entry:
+	def r1
+	// succ:  l1
+l1:
+	r2_1 = r1
+	branch r1 >= 0x00000000 m_ge
+	goto m_lt
+	// succ:  m_lt m_ge
+m_done:
+	r1_2 = PHI(r1_3, r1_4)
+	return
+	// succ:  test_exit
+m_ge:
+	r1_4 = r2_1
+	goto m_done
+	// succ:  m_done
+m_lt:
+	r1_3 = r2_1
+	goto m_done
+	// succ:  m_done
+test_exit:
+	use r1_2
+	use r2_1
+
+test:
+    Preserved: r1
+    Trashed:   r2
+";
+            #endregion
+            AssertProgram(sExp, pb);
+
         }
     }
 }

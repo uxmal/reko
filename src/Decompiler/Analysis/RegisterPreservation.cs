@@ -38,12 +38,14 @@ namespace Reko.Analysis
     {
         private Dictionary<Procedure, SsaState> scc;
         private DataFlow2 dataFlow;
-
+        private ExpressionValueComparer cmp;
+        private Identifier idFinal;
 
         public RegisterPreservation(Dictionary<Procedure, SsaState> scc, DataFlow2 dataFlow)
         {
             this.scc = scc;
             this.dataFlow = dataFlow;
+            this.cmp = new ExpressionValueComparer();
         }
 
         public void Compute()
@@ -70,33 +72,63 @@ namespace Reko.Analysis
             var procFlow = EnsureProcedureFlow(proc);
             foreach (var use in proc.ExitBlock.Statements.Select(s => (UseInstruction)s.Instruction))
             {
-                var idFinal = (Identifier)use.Expression;
+                this.idFinal = (Identifier)use.Expression;
                 var worklist = new Queue<Identifier>();
                 worklist.Enqueue(idFinal);
                 while (worklist.Count > 0)
                 {
                     var id = worklist.Dequeue();
                     var sid = scc[proc].Identifiers[id];
-                    Debug.Print("Tracing {0} defined by {1}", id, sid);
+                    Debug.Print("id: {0} stm: {1}", id.Name, sid.DefStatement.Instruction);
                     if (sid.DefStatement.Instruction is DefInstruction)
                     {
-                        if (id == idFinal)
+                        if (id.Storage != idFinal.Storage)
                         {
-                            MarkPreserved(id, procFlow);
+                            MarkTrashed(idFinal, procFlow);
+                            break;
                         }
                         else
                         {
-                            MarkTrashed(id, procFlow);
+                            MarkPreserved(idFinal, procFlow);
                         }
-                        continue;
                     }
-                    if (sid.DefExpression is Constant)
+                    else if (sid.DefStatement.Instruction is PhiAssignment)
                     {
-                        SetConstant(id, (Constant)sid.DefExpression, procFlow);
-                        continue;
+                        ProcessPhi((PhiAssignment)sid.DefStatement.Instruction, worklist);
                     }
-                    MarkTrashed(id, procFlow);
+                    else if (sid.DefStatement.Instruction is Assignment)
+                    {
+                        ProcessAssignment((Assignment)sid.DefStatement.Instruction, procFlow, worklist);
+                    }
+                    else
+                    {
+                        MarkTrashed(id, procFlow);
+                    }
                 }
+            }
+        }
+
+        private void ProcessAssignment(Assignment ass, ProcedureFlow2 procFlow, Queue<Identifier> worklist)
+        {
+            if (ass.Src is Constant)
+            {
+                SetConstant(ass.Dst, (Constant)ass.Src, procFlow);
+            }
+            else if (ass.Src is Identifier)
+            {
+                worklist.Enqueue((Identifier)ass.Src);
+            }
+            else
+            {
+                MarkTrashed(idFinal, procFlow);
+            }
+        }
+
+        private void ProcessPhi(PhiAssignment phi, Queue<Identifier> worklist)
+        {
+            foreach (Identifier id in phi.Src.Arguments)
+            {
+                worklist.Enqueue(id);
             }
         }
 
@@ -110,11 +142,19 @@ namespace Reko.Analysis
         private void SetConstant(Identifier id, Constant c, ProcedureFlow2 procFlow)
         {
             if (procFlow.Trashed.Contains(id.Storage))
+            {
+                Constant c2;
+                if (!procFlow.Constants.TryGetValue(id.Storage, out c2))
+                    return;
+                if (!cmp.Equals(c, c2))
+                    procFlow.Constants.Remove(id.Storage);
+            }
+            else
+            {
+                procFlow.Preserved.Remove(id.Storage);
                 procFlow.Trashed.Add(id.Storage);
-
-            procFlow.Preserved.Remove(id.Storage);
-            procFlow.Trashed.Add(id.Storage);
-            procFlow.Constants.Add(id.Storage, c);
+                procFlow.Constants.Add(id.Storage, c);
+            }
         }
 
         private static void MarkPreserved(Identifier id, ProcedureFlow2 procFlow)
