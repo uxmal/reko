@@ -471,6 +471,7 @@
     <Compile Include="Structure\MockWhileBreak.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />
+    <Compile Include="TestCode\Factorial.cs" />
     <Compile Include="TestCode\ManyIncrements.cs" />
     <Compile Include="Typing\AddressTraitCollectorTests.cs" />
     <Compile Include="Typing\ArrayExpressionMatcherTests.cs" />

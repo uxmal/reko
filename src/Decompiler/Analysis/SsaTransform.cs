@@ -600,8 +600,8 @@ namespace Reko.Analysis
                     {
                         AddUseInstructions(ci);
                         AddDefInstructions(ci, procFlow);
+                        return ci;
                     }
-                    return ci;
                 }
 
 				// Hell node implementation - use all register variables.

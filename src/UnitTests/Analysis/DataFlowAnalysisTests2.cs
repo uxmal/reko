@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.UnitTests.TestCode;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -36,14 +37,16 @@ namespace Reko.UnitTests.Analysis
     public class DataFlowAnalysisTests2
     {
         private ProgramBuilder pb;
+        private DataFlow2 dataFlow;
+
         private void GivenProgram(ProgramBuilder pb)
         {
         }
 
-        private void AssertProgram(string sExp, ProgramBuilder pb)
+        private void AssertProgram(string sExp, Program program)
         {
             var sw = new StringWriter();
-            pb.Program.Procedures.Values.First().Write(false, sw);
+            program.Procedures.Values.First().Write(false, sw);
             var sActual = sw.ToString();
             if (sExp != sActual) 
                 Debug.WriteLine(sActual);
@@ -76,7 +79,7 @@ l1:
 	// succ:  test_exit
 test_exit:
 ";
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, pb.Program);
         }
 
         [Test]
@@ -110,7 +113,7 @@ l1:
 	// succ:  test_exit
 test_exit:
 ";
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, pb.Program);
         }
 
         private ProcedureBase GivenFunction(string name, RegisterStorage ret, params object [] args)
@@ -164,44 +167,19 @@ l1:
 	// succ:  test_exit
 test_exit:
 ";
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, pb.Program);
         }
 
         [Test]
         [Ignore()]
         public void Dfa2_FactorialReg()
         {
-            pb = new ProgramBuilder();
-            pb.Add("fact", m =>
-            {
-                var sp = m.Register(m.Architecture.StackRegister);
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
-                var r3 = m.Register(3);
-                var cc = m.Flags("cc");
-                m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r2, r1);
-                m.Assign(r1, 1);
-                m.Assign(cc, m.Cond(m.ISub(r2, r1)));
-                m.BranchIf(m.Test(ConditionCode.LE, cc), "done");
-
-                m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, r2);
-                m.Assign(r1, m.ISub(r2, r1));
-                m.Call("fact", 0);
-                m.Assign(r2, m.LoadDw(sp));
-                m.Assign(sp, m.IAdd(sp, 4));
-                m.Assign(r1, m.IMul(r1, r2));
-
-                m.Label("done");
-                m.Return();
-            });
-
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            var program = Factorial.BuildSample();
+            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
             dfa.UntangleProcedures2();
             var sExp =
             @"@@@";
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, program);
         }
     }
 }
