@@ -35,11 +35,13 @@ namespace Reko.UnitTests.Analysis
     public class RegisterPreservationTests
     {
         private DataFlow2 dataFlow;
+        private Program program;
 
-        private void AssertProgram(string sExp, ProgramBuilder pb)
+        private void AssertProgram(string sExp, IEnumerable<Procedure> procs)
         {
             var sw = new StringWriter();
-            pb.Program.Procedures.Values.First().Write(false, sw);
+            foreach (var proc in procs)
+                proc.Write(false, sw);
             sw.WriteLine();
             foreach (var de in dataFlow.ProcedureFlows.OrderBy(e => e.Key.Name))
             {
@@ -67,13 +69,12 @@ namespace Reko.UnitTests.Analysis
             sw.WriteLine(string.Join(" ", items.Select(e => string.Format("{0}:{1}", e.Key, e.Value)).OrderBy(e => e)));
         }
 
-        public void RunTest(ProgramBuilder pb)
+        public void RunTest(IEnumerable<Procedure> procs)
         {
-            var program = pb.BuildProgram();
+            var flow = new ProgramDataFlow(program);
             var scc = new Dictionary<Procedure, SsaState>();
-            foreach (var proc in program.Procedures.Values)
+            foreach (var proc in procs)
             {
-                var flow = new ProgramDataFlow(program);
                 Aliases alias = new Aliases(proc, program.Architecture, flow);
                 alias.Transform();
 
@@ -106,7 +107,8 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(r1, 3);
                 m.Return();
             });
-            RunTest(pb);
+            program = pb.BuildProgram();
+            RunTest(program.Procedures.Values);
 
             var sExp =
             #region Expected
@@ -127,7 +129,7 @@ test:
     Trashed:   r1
 ";
             #endregion
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, program.Procedures.Values);
         }
 
         [Test(Description = "Loading from memory trashes the loaded register but not memory.")]
@@ -140,7 +142,8 @@ test:
                 m.Assign(r1, m.LoadDw(m.Word32(0x3000)));
                 m.Return();
             });
-            RunTest(pb);
+            program = pb.BuildProgram();
+            RunTest(program.Procedures.Values);
 
             var sExp =
             #region Expected
@@ -163,7 +166,7 @@ test:
     Trashed:   r1
 ";
             #endregion
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, program.Procedures.Values);
         }
 
         [Test(Description = "Both branches of a phi should be followed.")]
@@ -181,7 +184,8 @@ test:
                 m.Label("m_ge");
                 m.Return();
             });
-            RunTest(pb);
+            program = pb.BuildProgram();
+            RunTest(program.Procedures.Values);
 
             var sExp =
             #region Expected
@@ -211,7 +215,7 @@ test:
     Trashed:   r1
 ";
             #endregion
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, program.Procedures.Values);
         }
 
         /// <summary>
@@ -239,7 +243,8 @@ test:
                 m.Label("m_done");
                 m.Return();
             });
-            RunTest(pb);
+            program = pb.BuildProgram();
+            RunTest(program.Procedures.Values);
 
             var sExp =
             #region Expected
@@ -275,7 +280,7 @@ test:
     Trashed:   r2
 ";
             #endregion
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, program.Procedures.Values);
 
         }
 
@@ -304,7 +309,8 @@ test:
                 m.Assign(r1, r2);
                 m.Return();
             });
-            RunTest(pb);
+            program = pb.BuildProgram();
+            RunTest(program.Procedures.Values);
 
             var sExp =
             #region Expected
@@ -344,7 +350,7 @@ test:
     Trashed:   r2 r3
 ";
             #endregion
-            AssertProgram(sExp, pb);
+            AssertProgram(sExp, program.Procedures.Values);
         }
     }
 }
