@@ -278,5 +278,73 @@ test:
             AssertProgram(sExp, pb);
 
         }
+
+        [Test(Description = "While-do loops shouldn't confuse this analysis.")]
+        public void Regp_WhileDo()
+        {
+            var pb = new ProgramBuilder(new FakeArchitecture());
+            pb.Add("test", m =>
+            {
+                var r1 = m.Register(1);
+                var r2 = m.Register(2);
+                var r3 = m.Register(3);
+                m.Assign(r2, r1);
+                m.Assign(r3, r2);
+                m.Assign(r1, 10);
+                m.Goto("m_loopHead");
+
+                m.Label("m_loopStatements");
+                m.Assign(r1, m.ISub(r1, 1));
+                m.Assign(r2, r3);
+
+                m.Label("m_loopHead");
+                m.BranchIf(m.Ge(r1, 0), "m_loopStatements");
+
+                m.Label("m_xit");
+                m.Assign(r1, r2);
+                m.Return();
+            });
+            RunTest(pb);
+
+            var sExp =
+            #region Expected
+@"// test
+// Return size: 0
+void test()
+test_entry:
+	def r1
+	// succ:  l1
+l1:
+	r2_1 = r1
+	r3_2 = r2_1
+	r1_3 = 0x0000000A
+	// succ:  m_loopHead
+m_loopHead:
+	r2_4 = PHI(r2_1, r2_8)
+	r1_5 = PHI(r1_3, r1_7)
+	branch r1_5 >= 0x00000000 m_loopStatements
+	goto m_xit
+	// succ:  m_xit m_loopStatements
+m_loopStatements:
+	r1_7 = r1_5 - 0x00000001
+	r2_8 = r3_2
+	goto m_loopHead
+	// succ:  m_loopHead
+m_xit:
+	r1_6 = r2_4
+	return
+	// succ:  test_exit
+test_exit:
+	use r1_6
+	use r2_4
+	use r3_2
+
+test:
+    Preserved: r1
+    Trashed:   r2 r3
+";
+            #endregion
+            AssertProgram(sExp, pb);
+        }
     }
 }
