@@ -88,8 +88,6 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         public AddressRange GetAddressRange()
         {
-            Debug.Print("GetAddressRange: sel: {0}, anchor {1}", addrSelected, addrAnchor);
-
             if (addrSelected == null || addrAnchor == null)
             {
                 return AddressRange.Empty;
