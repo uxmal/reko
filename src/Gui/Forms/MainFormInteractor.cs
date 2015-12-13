@@ -323,7 +323,7 @@ namespace Reko.Gui.Forms
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archOption.Value));
 
                 var envOption = (ListOption) dlg.Platforms.SelectedValue;
-                var env = (OperatingEnvironment)envOption.Value;
+                var envName = (string)envOption.Value;
 
                 Address addrBase;
                 var sAddr = dlg.AddressTextBox.Text.Trim();
@@ -333,7 +333,7 @@ namespace Reko.Gui.Forms
                     pageInitial.OpenBinaryAs(
                         f,
                         (string)archOption.Value,
-                        ((OperatingEnvironment)envOption.Value).Name,
+                        envName,
                         addrBase));
             }
             catch (Exception ex)

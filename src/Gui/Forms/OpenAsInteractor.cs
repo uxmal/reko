@@ -59,14 +59,14 @@ namespace Reko.Gui.Forms
             var noneOption = new ListOption
             {
                 Text = "(None)",
-                Value = typeof(DefaultPlatform).AssemblyQualifiedName
+                Value = "",
             };
             var platforms = new ListOption[] { noneOption }
                 .Concat(
                     dcCfg.GetEnvironments()
                     .OfType<OperatingEnvironment>()
                     .OrderBy(p => p.Description)
-                    .Where(p => !string.IsNullOrEmpty(p.TypeName))
+                    .Where(p => !string.IsNullOrEmpty(p.Name))
                     .Select(p => new ListOption { Text = p.Description, Value = p }));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }

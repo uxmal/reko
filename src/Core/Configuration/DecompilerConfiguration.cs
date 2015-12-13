@@ -136,7 +136,14 @@ namespace Reko.Core.Configuration
    
         public OperatingEnvironment GetEnvironment(string envName)
         {
-            return GetEnvironments().OfType<OperatingEnvironment>().Where(e => e.Name == envName).SingleOrDefault();
+            var env = GetEnvironments().OfType<OperatingEnvironment>().Where(e => e.Name == envName).SingleOrDefault();
+            if (env != null)
+                return env;
+
+            return new OperatingEnvironmentElement
+            {
+                TypeName = typeof(DefaultPlatform).FullName,
+            };
         }
 
         public virtual RawFileElement GetRawFile(string rawFileFormat)
