@@ -759,11 +759,11 @@ namespace Reko.Analysis
             var src = a.Src.Accept(this);
             var sid = ssa.Identifiers.Add(a.Dst, this.stm, src, false);
        //     var sidPrev = readVariable(a.Dst, block);
-            var idNew = writeVariable(a.Dst, block, sid, null);
+            var idNew = WriteVariable(a.Dst, block, sid, null);
             return new Assignment(idNew, src);
         }
 
-        public Identifier writeVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev)
+        public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev)
         {
             currentDef[block][id.Storage] = sid;
             sid.Previous = sidPrev;
@@ -772,10 +772,10 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            return readVariable(id, block).Identifier;
+            return ReadVariable(id, block).Identifier;
         }
 
-        public SsaIdentifier readVariable(Identifier id, Block b)
+        public SsaIdentifier ReadVariable(Identifier id, Block b)
         { 
             // Read of an identifier.
             SsaIdentifier ssaId;
@@ -786,11 +786,11 @@ namespace Reko.Analysis
             }
             else
             {
-                return readVariableRecursive(id, b);
+                return ReadVariableRecursive(id, b);
             }
         }
 
-        private SsaIdentifier readVariableRecursive(Identifier id, Block b)
+        private SsaIdentifier ReadVariableRecursive(Identifier id, Block b)
         {
             SsaIdentifier val;
             SsaIdentifier sidPrev = null;
@@ -803,21 +803,21 @@ namespace Reko.Analysis
             else if (b.Pred.Count == 0)
             {
                 // Undef'ined or unreachable parameter; assume it's a def.
-                val = newDef(id, b);
+                val = NewDef(id, b);
             }
             else if (b.Pred.Count == 1)
             {
-                val = readVariable(id, b.Pred[0]);
+                val = ReadVariable(id, b.Pred[0]);
                 sidPrev = val;
             }
             else
             {
                 // Break potential cycles with operandless phi
-                val = newPhi(id, b);
-                writeVariable(id, b, val, null);
+                val = NewPhi(id, b);
+                WriteVariable(id, b, val, null);
                 val = addPhiOperands(id, val);
             }
-            writeVariable(id, b, val, sidPrev);
+            WriteVariable(id, b, val, sidPrev);
             return val;
         }
 
@@ -829,7 +829,7 @@ namespace Reko.Analysis
         /// <param name="b">Block into which the phi statement is inserted</param>
         /// <param name="v">Destination variable for the phi assignment</param>
         /// <returns>The inserted phi Assignment</returns>
-        private SsaIdentifier newPhi( Identifier id, Block b)
+        private SsaIdentifier NewPhi( Identifier id, Block b)
         {
             var phiAss = new PhiAssignment(id, 0);
             var stm = new Statement(0, phiAss, b);
@@ -846,11 +846,11 @@ namespace Reko.Analysis
             ((PhiAssignment)phi.DefStatement.Instruction).Src =
                 new PhiFunction(
                     id.DataType,
-                    phi.DefStatement.Block.Pred.Select(p => readVariable(id, p).Identifier).ToArray());
-            return tryRemoveTrivial(phi);
+                    phi.DefStatement.Block.Pred.Select(p => ReadVariable(id, p).Identifier).ToArray());
+            return TryRemoveTrivial(phi);
         }
 
-        private SsaIdentifier tryRemoveTrivial(SsaIdentifier phi)
+        private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi)
         {
             Identifier same = null;
             foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
@@ -871,7 +871,7 @@ namespace Reko.Analysis
             if (same == null)
             {
                 // Undef'ined or unreachable parameter; assume it's a def.
-                sid = newDef(phi.OriginalIdentifier, phi.DefStatement.Block);
+                sid = NewDef(phi.OriginalIdentifier, phi.DefStatement.Block);
             }
             else
             {
@@ -890,13 +890,13 @@ namespace Reko.Analysis
                 var phiAss = use.Instruction as PhiAssignment;
                 if (phiAss != null)
                 {
-                    tryRemoveTrivial(ssa.Identifiers[phiAss.Dst]);
+                    TryRemoveTrivial(ssa.Identifiers[phiAss.Dst]);
                 }
             }
             return sid;
         }
 
-        private SsaIdentifier newDef(Identifier id, Block b)
+        private SsaIdentifier NewDef(Identifier id, Block b)
         {
             var sid = ssa.Identifiers.Add(id, null, null, false);
             sid.DefStatement = new Statement(0, new DefInstruction(id), b);
