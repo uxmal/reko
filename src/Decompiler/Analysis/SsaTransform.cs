@@ -317,8 +317,12 @@ namespace Reko.Analysis
                 else
                 {
                     // Hell node implementation - define all register variables.
+                    if (ci.Uses.Count > 0 || ci.Definitions.Count > 0)
+                        return;
                     foreach (Identifier id in proc.Frame.Identifiers)
                     {
+                        ci.Uses.Add(new UseInstruction(id));
+                        ci.Definitions.Add(new DefInstruction(id));
                         if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage)
                         {
                             MarkDefined(id);
@@ -598,29 +602,30 @@ namespace Reko.Analysis
                     ProcedureFlow2 procFlow;
                     if (procCallee != null && programFlow.ProcedureFlows2.TryGetValue(procCallee, out procFlow))
                     {
-                        AddUseInstructions(ci);
-                        AddDefInstructions(ci, procFlow);
                         return ci;
                     }
                 }
 
                 // Hell node implementation - use all register variables.
 
-                var oldUses = ci.Uses.Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier).ToHashSet();
-				foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct())
+				foreach (UseInstruction use in ci.Uses)
                 {
-                     
+                    var id = (Identifier)use.Expression;
 					if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
                         id.Storage is StackLocalStorage)
 					{
-                        SsaIdentifier sid;
-                        if (!oldUses.Contains(id))
-                        {
-                            var newId = NewUse(id, stmCur);
-                            ci.Uses.Add(new UseInstruction(newId));
-                        }
+                        use.Expression = NewUse(id, stmCur);
 					}
 				}
+                foreach (DefInstruction def in ci.Definitions)
+                {
+                    var id = (Identifier)def.Expression;
+                    if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
+                        id.Storage is StackLocalStorage)
+                    {
+                        def.Expression = NewDef(id, null, false);
+                    }
+                }
 				return ci;
 			}
 
