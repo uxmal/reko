@@ -161,7 +161,7 @@ Trashed: Global memory,Local -0004
         public void TrfConstants()
         {
             var sExp =
-@"Preserved: fp,r63
+@"Preserved: r63
 Trashed: ds,Local -0002
 Constants: ds:0x0C00,Local -0002:0x0C00
 ";

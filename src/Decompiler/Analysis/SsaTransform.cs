@@ -661,7 +661,7 @@ namespace Reko.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-                if (!this.renameFrameAccess || this.addUseInstructions)
+                if (!this.renameFrameAccess)
                     return NewUse(id, stmCur);
                 else
                     return id;

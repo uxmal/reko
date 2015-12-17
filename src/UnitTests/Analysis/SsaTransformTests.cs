@@ -217,7 +217,6 @@ ProcedureBuilder_exit:
 	use bp_8
 	use CZS_6
 	use dwLoc04_12
-	use fp
 	use r1_7
 	use r63_9
 	use wArg04
