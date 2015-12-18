@@ -323,6 +323,7 @@ namespace Reko.Core.Output
             if (mode == Mode.Writing)
             {
                 writer.Write(typeref.Name);
+                WriteName(true);
             }
             return writer;
         }
