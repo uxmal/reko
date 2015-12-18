@@ -653,10 +653,10 @@ namespace Reko.Analysis
                 return new OutArgument(outArg.DataType, exp);
             }
 
-			public override Expression VisitIdentifier(Identifier id)
-			{
+            public override Expression VisitIdentifier(Identifier id)
+            {
                 return NewUse(id, stmCur);
-			}
+            }
 
             public override Expression VisitMemoryAccess(MemoryAccess access)
             {

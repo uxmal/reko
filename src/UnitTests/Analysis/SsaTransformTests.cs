@@ -118,6 +118,7 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 	use r1_2
+	use r2
 ";
             RunTest(sExp, m =>
             {
@@ -154,6 +155,7 @@ l1:
 ProcedureBuilder_exit:
 	use dwLoc04_12
 	use dwLoc08_13
+	use fp
 	use Mem11
 	use r1_10
 	use r2_9
@@ -215,6 +217,7 @@ ProcedureBuilder_exit:
 	use bp_8
 	use CZS_6
 	use dwLoc04_12
+	use fp
 	use r1_7
 	use r63_9
 	use wArg04
@@ -344,14 +347,12 @@ l1:
 	r1_0 = 0x00000003
 	r2_1 = 0x00000004
 	call Adder (retsize: 4;)
-		uses: r1_0,r2_1
-		defs: r1_2
-	Mem3[0x00012300:word32] = r1_2
+	Mem2[0x00012300:word32] = 0x00000003
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use Mem3
-	use r1_2
+	use Mem2
+	use r1_0
 	use r2_1
 ";
             RunTest(sExp, m =>
