@@ -623,7 +623,7 @@ namespace Reko.Arch.X86
             RewritePush(dasm.Current.dataWidth, SrcOp(dasm.Current.op1));
         }
 
-        private void RewritePush(IntelRegister reg)
+        private void RewritePush(RegisterStorage reg)
         {
             RewritePush(instrCur.dataWidth, orw.AluRegister(reg));
         }
@@ -701,7 +701,7 @@ namespace Reko.Arch.X86
             emitter.Assign(sp, emitter.IAdd(sp, width.Size));
         }
 
-        private void EmitPop(IntelRegister reg)
+        private void EmitPop(RegisterStorage reg)
         {
             RewritePop(orw.AluRegister(reg), instrCur.dataWidth);
         }

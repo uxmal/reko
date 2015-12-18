@@ -173,12 +173,12 @@ namespace Reko.UnitTests.Analysis
 
         private Identifier EnsureRegister16(ProcedureBuilder m, string name)
         {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, PrimitiveType.Word16));
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word16));
         }
 
         private Identifier EnsureRegister32(ProcedureBuilder m, string name)
         {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, PrimitiveType.Word32));
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word32));
         }
 
 		protected override void RunTest(Program prog, TextWriter writer)

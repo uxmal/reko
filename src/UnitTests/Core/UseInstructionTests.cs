@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void UseCreateWithArg()
 		{
-			var reg_edx = new RegisterStorage("edx",1,PrimitiveType.Word32);
+			var reg_edx = new RegisterStorage("edx", 1, 0, PrimitiveType.Word32);
 			var id2 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
 			var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
 			var arg = new Identifier("barOut", PrimitiveType.Pointer32, new OutArgumentStorage(r));
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void UseToString()
 		{
-			var reg_edx = new RegisterStorage("edx",1,PrimitiveType.Word32);
+			var reg_edx = new RegisterStorage("edx",1, 0,PrimitiveType.Word32);
 			var id1 = new Identifier("foo", PrimitiveType.Word32, null);
 			var use = new UseInstruction(id1);
 			Assert.AreEqual("use foo", use.ToString());

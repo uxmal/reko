@@ -94,8 +94,8 @@ namespace Reko.Arch.M68k
             fp7 = new FpRegister("fp7", 23, PrimitiveType.Real64);
 
             ccr = new FlagRegister("ccr", PrimitiveType.Byte);
-            sr = new RegisterStorage("sr", 25, PrimitiveType.Word16);
-            usp = new RegisterStorage("usp", 26, PrimitiveType.Word32);
+            sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);
+            usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
 
             Max = 28;
@@ -182,7 +182,7 @@ namespace Reko.Arch.M68k
 
     public class AddressRegister : RegisterStorage
     {
-        public AddressRegister(string name, int number, PrimitiveType dt) : base(name, number, dt)
+        public AddressRegister(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
         {
         }
 
@@ -194,7 +194,7 @@ namespace Reko.Arch.M68k
 
     public class DataRegister : RegisterStorage
     {
-        public DataRegister(string name, int number, PrimitiveType dt) : base(name, number, dt)
+        public DataRegister(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
         {
         }
     }
@@ -202,7 +202,7 @@ namespace Reko.Arch.M68k
     public class FpRegister : RegisterStorage
     {
         public FpRegister(string name, int number, PrimitiveType dt)
-            : base(name, number, dt)
+            : base(name, number, 0, dt)
         {
         }
     }

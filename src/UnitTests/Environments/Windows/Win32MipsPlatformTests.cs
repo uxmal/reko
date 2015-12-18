@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             var instrs = new List<RtlInstructionCluster>();
             var frame = new Frame(PrimitiveType.Pointer32);
-            var r9 = frame.EnsureRegister(new RegisterStorage("r9", 9, PrimitiveType.Word32));
+            var r9 = frame.EnsureRegister(new RegisterStorage("r9", 9, 0, PrimitiveType.Word32));
             var rtl = new RtlTrace(0x123460)
             {
                 m => m.Assign(r9, 0x00030000),

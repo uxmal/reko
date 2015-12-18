@@ -105,7 +105,7 @@ namespace Reko.Arch.X86
             return instrCur;
         }
 
-        private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
+        private RegisterStorage RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
             return GpRegFromBits((bits & 7) | ((rexPrefix & 8)), dataWidth);
         }
@@ -143,7 +143,7 @@ namespace Reko.Arch.X86
             return fnReg((bits & 7) | ((rexPrefix & 1) << 3), dataWidth);
         }
 
-        private IntelRegister GpRegFromBits(int bits, PrimitiveType dataWidth)
+        private RegisterStorage GpRegFromBits(int bits, PrimitiveType dataWidth)
 		{
             int bitSize = dataWidth.BitSize;
 			switch (bitSize)
@@ -260,7 +260,7 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-		public static IntelRegister SegFromBits(int bits)
+		public static RegisterStorage SegFromBits(int bits)
 		{
 			switch (bits&0x7)
 			{
@@ -861,7 +861,7 @@ namespace Reko.Arch.X86
             }
         }
 
-		private static IntelRegister [] s_ma16Base = 
+		private static RegisterStorage [] s_ma16Base = 
 		{
 			Registers.bx,
 			Registers.bx,

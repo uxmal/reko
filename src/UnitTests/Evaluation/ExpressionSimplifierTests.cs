@@ -86,8 +86,8 @@ namespace Reko.UnitTests.Evaluation
 
 		private SsaIdentifierCollection BuildSsaIdentifiers()
 		{
-			var mrFoo = new RegisterStorage("foo", 1, PrimitiveType.Word32);
-			var mrBar = new RegisterStorage("bar", 2, PrimitiveType.Word32);
+			var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
+			var mrBar = new RegisterStorage("bar", 2, 1, PrimitiveType.Word32);
 			foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
 			bar = new Identifier(mrBar.Name, mrBar.DataType, mrBar);
 

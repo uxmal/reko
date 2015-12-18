@@ -729,10 +729,12 @@ namespace Reko.Analysis
         private Dictionary<Block, Dictionary<Storage, SsaIdentifier>> incompletePhis;
         private HashSet<Block> sealedBlocks;
         private SsaState ssa;
+        private AliasState asta;
 
         public void Transform(Procedure proc)
         {
             this.ssa = new SsaState(proc, null);
+            this.asta = new AliasState();
             this.currentDef = new Dictionary<Block, Dictionary<Storage, SsaIdentifier>>();
             this.incompletePhis = new Dictionary<Block, Dictionary<Storage, SsaIdentifier>>();
             this.sealedBlocks = new HashSet<Block>();
@@ -754,13 +756,13 @@ namespace Reko.Analysis
         {
             var src = a.Src.Accept(this);
             var sid = ssa.Identifiers.Add(a.Dst, this.stm, src, false);
-       //     var sidPrev = readVariable(a.Dst, block);
             var idNew = WriteVariable(a.Dst, block, sid, null);
             return new Assignment(idNew, src);
         }
 
         public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev)
         {
+            asta.Add(id.Storage);
             currentDef[block][id.Storage] = sid;
             sid.Previous = sidPrev;
             return sid.Identifier;
@@ -768,12 +770,12 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
+            asta.Add(id.Storage);
             return ReadVariable(id, block).Identifier;
         }
 
         public SsaIdentifier ReadVariable(Identifier id, Block b)
         { 
-            // Read of an identifier.
             SsaIdentifier ssaId;
             if (currentDef[b].TryGetValue(id.Storage, out ssaId))
             {

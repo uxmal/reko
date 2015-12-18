@@ -1298,7 +1298,7 @@ namespace Reko.Assemblers.x86
             ProcessBinop(0x02, op1, op2);
         }
 
-        public void Add(IntelRegister reg, int constant)
+        public void Add(RegisterStorage reg, int constant)
         {
             ProcessBinop(
                 0x00,
@@ -2036,7 +2036,7 @@ namespace Reko.Assemblers.x86
             return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
         }
 
-        public ParsedOperand MemW(SegmentRegister seg, RegisterStorage @base, int offset)
+        public ParsedOperand MemW(RegisterStorage seg, RegisterStorage @base, int offset)
         {
             var mem = new MemoryOperand(PrimitiveType.Word16);
             mem.Base = @base;
@@ -2076,7 +2076,7 @@ namespace Reko.Assemblers.x86
             return Mem(PrimitiveType.Byte, null, @base, null, 1, offset);
         }
 
-        public ParsedOperand MemW(SegmentRegister seg, RegisterStorage @base, string offset)
+        public ParsedOperand MemW(RegisterStorage seg, RegisterStorage @base, string offset)
         {
             return Mem(PrimitiveType.Word16, seg, @base, null, 1, offset);
         }
@@ -2103,7 +2103,7 @@ namespace Reko.Assemblers.x86
 
         private ParsedOperand Mem(
             PrimitiveType width, 
-            SegmentRegister seg, 
+            RegisterStorage seg, 
             RegisterStorage @base,  
             RegisterStorage index, 
             int scale, 

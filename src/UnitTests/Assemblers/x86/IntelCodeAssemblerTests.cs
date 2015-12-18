@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Assemblers.x86
             AssertEqualBytes("8BC3", m.GetImage().Image.Bytes);
         }
 
-        private ParsedOperand Reg(IntelRegister reg)
+        private ParsedOperand Reg(RegisterStorage reg)
         {
             return new ParsedOperand(new RegisterOperand(reg));
         }

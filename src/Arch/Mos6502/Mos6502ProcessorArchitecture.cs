@@ -143,19 +143,19 @@ namespace Reko.Arch.Mos6502
 
     public  static class Registers
     {
-        public static readonly RegisterStorage a = new RegisterStorage("a", 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage x = new RegisterStorage("x", 1, PrimitiveType.Byte);
-        public static readonly RegisterStorage y = new RegisterStorage("y", 2, PrimitiveType.Byte);
-        public static readonly RegisterStorage s = new RegisterStorage("s", 3, PrimitiveType.Byte);
+        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage x = new RegisterStorage("x", 1, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage y = new RegisterStorage("y", 2, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage s = new RegisterStorage("s", 3, 0, PrimitiveType.Byte);
 
         public static readonly FlagRegister p = new FlagRegister("p", PrimitiveType.Byte);
 
-        public static readonly RegisterStorage N = new RegisterStorage("N", 4, PrimitiveType.Byte);
-        public static readonly RegisterStorage V = new RegisterStorage("V", 5, PrimitiveType.Byte);
-        public static readonly RegisterStorage C = new RegisterStorage("C", 6, PrimitiveType.Byte);
-        public static readonly RegisterStorage Z = new RegisterStorage("Z", 7, PrimitiveType.Byte);
-        public static readonly RegisterStorage I = new RegisterStorage("I", 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage D = new RegisterStorage("D", 9, PrimitiveType.Byte);
+        public static readonly RegisterStorage N = new RegisterStorage("N", 4, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage V = new RegisterStorage("V", 5, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage C = new RegisterStorage("C", 6, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage Z = new RegisterStorage("Z", 7, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage I = new RegisterStorage("I", 8, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage D = new RegisterStorage("D", 9, 0, PrimitiveType.Byte);
         
         internal static RegisterStorage[] All;
 

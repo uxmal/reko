@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch.Intel
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
-        private void Given_RegValue(IntelRegister reg, uint value)
+        private void Given_RegValue(RegisterStorage reg, uint value)
         {
             emu.WriteRegister(reg, value);
         }

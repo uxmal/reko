@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void VisitRegister()
 		{
-			var reg = new RegisterStorage("r0", 0, PrimitiveType.Word16);
+			var reg = new RegisterStorage("r0", 0, 0, PrimitiveType.Word16);
 			var r = new Identifier(reg.Name, reg.DataType, reg);
 			var type = r.Storage.Accept(this);
 			Assert.AreEqual("reg", type);
@@ -51,8 +51,8 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void VisitSequenceVariable()
 		{
-			var r_ax = new RegisterStorage("ax", 0, PrimitiveType.Word16);
-			var r_dx = new RegisterStorage("dx", 0, PrimitiveType.Word16);
+			var r_ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
+			var r_dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
 			var ax = new Identifier(r_ax.Name, r_ax.DataType, r_ax);
 			var dx = new Identifier(r_dx.Name, r_dx.DataType, r_dx);
 			var seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(dx, ax));

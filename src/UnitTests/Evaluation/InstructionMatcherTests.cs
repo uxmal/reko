@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Evaluation
 
         private Identifier RegW(string name)
         {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, 0, PrimitiveType.Word16));
+            return m.Frame.EnsureRegister(new RegisterStorage(name, 0, 0, PrimitiveType.Word16));
         }
 
         [Test]

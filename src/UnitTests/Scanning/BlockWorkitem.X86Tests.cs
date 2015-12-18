@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Scanning
                 {
                     "GetDC", 
                     new ProcedureSignature(
-                        new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, PrimitiveType.Word32)),
+                        new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
                         new Identifier("arg", 
                             new TypeReference(
                                 "HWND",
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Scanning
         }
 
 
-        private Identifier Reg(IntelRegister r)
+        private Identifier Reg(RegisterStorage r)
         {
             return new Identifier(r.Name, r.DataType, r);
         }

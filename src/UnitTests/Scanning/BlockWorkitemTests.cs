@@ -58,9 +58,9 @@ namespace Reko.UnitTests.Scanning
             proc = new Procedure("testProc", new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             trace = new RtlTrace(0x00100000);
-            r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, PrimitiveType.Word32));
-            r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 0, PrimitiveType.Word32));
-            r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 0, PrimitiveType.Word32));
+            r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, 0, PrimitiveType.Word32));
+            r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
 
             scanner = mr.StrictMock<IScanner>();
@@ -396,9 +396,9 @@ testProc_exit:
         {
             var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
             var sig = new ProcedureSignature(
-                proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, PrimitiveType.Word32)));
+                proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
+                proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
+                proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32)));
             proc2.Signature = sig;
             var block2 = new Block(proc, "l00100008");
             var block3 = new Block(proc, "l00100004");
@@ -444,8 +444,8 @@ testProc_exit:
         public void Bwi_IndirectCallMatchedByPlatform()
         {
             var platform = mr.StrictMock<Platform>(null, arch);
-            var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, PrimitiveType.Pointer32));
-            var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Pointer32));
+            var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, 0, PrimitiveType.Pointer32));
+            var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Pointer32));
             var sysSvc = new SystemService {
                 Name = "SysSvc", 
                 Signature = new ProcedureSignature(null, reg1),
@@ -472,7 +472,7 @@ testProc_exit:
         public void Bwi_IndirectJump()
         {
             var platform = mr.StrictMock<Platform>(null, arch);
-            var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14, PrimitiveType.Pointer32));
+            var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14,  0, PrimitiveType.Pointer32));
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(null);
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);

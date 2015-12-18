@@ -58,22 +58,22 @@ namespace Reko.Arch.PowerPC
             FramePointerType = PointerType;
             InstructionBitSize = 32;
 
-            this.lr = new RegisterStorage("lr", 0x68,   wordWidth);
-            this.ctr = new RegisterStorage("ctr", 0x6A, wordWidth);
-            this.xer = new RegisterStorage("xer", 0x6B, wordWidth);
-            this.fpscr = new RegisterStorage("fpscr", 0x6C, wordWidth);
+            this.lr = new RegisterStorage("lr", 0x68, 0, wordWidth);
+            this.ctr = new RegisterStorage("ctr", 0x6A, 0, wordWidth);
+            this.xer = new RegisterStorage("xer", 0x6B, 0, wordWidth);
+            this.fpscr = new RegisterStorage("fpscr", 0x6C, 0, wordWidth);
 
             this.cr = new FlagRegister("cr", wordWidth);
 
             regs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("r" + n, n, wordWidth))
+                    .Select(n => new RegisterStorage("r" + n, n, 0, wordWidth))
                 .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("f" + n, n + 0x20, PrimitiveType.Word64)))
+                    .Select(n => new RegisterStorage("f" + n, n + 0x20, 0, PrimitiveType.Word64)))
                 .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("v" + n, n + 0x40, PrimitiveType.Word128)))
+                    .Select(n => new RegisterStorage("v" + n, n + 0x40, 0, PrimitiveType.Word128)))
                 .Concat(Enumerable.Range(0, 8)
-                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, PrimitiveType.Byte)))
+                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, 0, PrimitiveType.Byte)))
                 .Concat(new[] { lr, ctr, xer })
                 .ToList());
 

@@ -78,7 +78,7 @@ namespace Reko.Core
     public class FlagRegister : RegisterStorage
     {
         public FlagRegister(string name, PrimitiveType size) :
-            base(name, 0, size)
+            base(name, 0, 0, size)
         {
         }
 
@@ -292,20 +292,40 @@ namespace Reko.Core
     /// Used to represent a machine register.
     /// </summary>
 	public class RegisterStorage : Storage
-	{
-		public RegisterStorage(string name, int number, PrimitiveType dt) : base("Register")
-		{
-			this.Name = name;
+    {
+        [Obsolete("", true)]
+        public RegisterStorage(string name, int number, PrimitiveType dt) : base("Register")
+        {
+            this.Name = name;
             this.Number = number;
             this.DataType = dt;
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
-		}
+        }
+
+        private RegisterStorage(string kind) : base(kind)
+        {
+
+        }
+
+        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dt) : base("Register")
+        {
+            this.Name = regName;
+            this.Number = number;
+            this.BitAddress = bitAddress;
+            this.DataType = dt;
+            this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
+        }
 
         /// <summary>
         /// If this register is a subregister of a wider register, this property the bit offset within that wider register.
         /// </summary>
         /// <remarks>For instance, on i386 systems, AH would return 8 here, since it is located at that bit offset of EAX.</remarks>
         public virtual int AliasOffset { get { return 0; } }
+
+        public override ulong BitSize {
+            get { return (ulong)DataType.BitSize; }
+            set { throw new NotSupportedException(); }
+        }
 
         /// <summary>
         /// The name of the register.
@@ -327,27 +347,28 @@ namespace Reko.Core
         public int Number { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
-		{
-			return visitor.VisitRegisterStorage(this);
-		}
+        {
+            return visitor.VisitRegisterStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitRegisterStorage(this, context);
         }
 
-		public override bool Equals(object obj)
-		{
-			var rs = obj as RegisterStorage;
-			if (rs == null)
-				return false;
-			return Number == rs.Number;
-		}
+        public override bool Equals(object obj)
+        {
+            var rs = obj as RegisterStorage;
+            if (rs == null)
+                return false;
+            return Number == rs.Number;
+        }
 
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ Number;
-		}
+        [Obsolete("Use Domain and BitOffsets.")]
+        public override int GetHashCode()
+        {
+            return GetType().GetHashCode() ^ Number;
+        }
 
         public RegisterStorage GetPart(DataType width)
         {
@@ -375,20 +396,29 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual bool IsSubRegisterOf(RegisterStorage reg2)
         {
-            return false;
+            if (this.BitSize >= reg2.BitSize)
+                return false;
+            return this.OverlapsWith(reg2);
         }
 
-		public override int OffsetOf(Storage stgSub)
-		{
-			var regSub = stgSub as RegisterStorage;
-			if (regSub == null)
-				return -1;
-			if (regSub == this)
-				return 0;
-			return regSub.IsSubRegisterOf(this)
-				? regSub.AliasOffset
-				: -1;
-		}
+        public override int OffsetOf(Storage stgSub)
+        {
+            var regSub = stgSub as RegisterStorage;
+            if (regSub == null)
+                return -1;
+            return (int)BitAddress;
+        }
+
+        public bool OverlapsWith(RegisterStorage that)
+        {
+            if (this.Domain != that.Domain)
+                return false;
+            var thisStart = this.BitAddress;
+            var thisEnd = this.BitAddress + this.BitSize;
+            var thatStart = that.BitAddress;
+            var thatEnd = that.BitAddress + this.BitSize;
+            return thisStart < thatEnd && thatStart < thisEnd;
+        }
 
         /// <summary>
 		/// Given a register, sets/resets the bits corresponding to the register
@@ -398,14 +428,14 @@ namespace Reko.Core
 		/// <param name="bits">BitSet to modify</param>
 		/// <param name="f">truth value to set</param>
 		public virtual void SetAliases(BitSet bitset, bool f)
-		{
-			bitset[Number] = f;
-		}
+        {
+            bitset[Number] = f;
+        }
 
-		public override SerializedKind Serialize()
-		{
-			return new Register_v1(Name);
-		}
+        public override SerializedKind Serialize()
+        {
+            return new Register_v1(Name);
+        }
 
         public virtual void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
         {
@@ -429,15 +459,23 @@ namespace Reko.Core
             return -1;
         }
 
-		public override void Write(TextWriter writer)
-		{
-			writer.Write(Name);
-		}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write(Name);
+        }
 
         public static RegisterStorage None { get { return none; } }
 
-        private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Create(Types.Domain.Any, 0));
-
+        private static RegisterStorage none  = 
+            new RegisterStorage("None")
+            {
+                Number = -1,
+                Domain = StorageDomain.None,
+                BitAddress = 0,
+                BitSize = 0,
+                DataType = PrimitiveType.Create(Types.Domain.Any, 0)
+            };
+            
         public Expression GetSlice(Expression value)
         {
             var c = value as Constant;
@@ -652,7 +690,7 @@ namespace Reko.Core
     /// </remarks>
 	public class TemporaryStorage : RegisterStorage
 	{
-		public TemporaryStorage(string name, int number, PrimitiveType dt) : base(name, number, dt)
+		public TemporaryStorage(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
 		{
 		}
 

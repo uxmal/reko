@@ -144,13 +144,13 @@ namespace Reko.Arch.M68k
             throw new NotImplementedException();
         }
 
-
+        //$REVIEW: shouldn't this be flaggroup?
         private static RegisterStorage[] flagRegisters = {
-            new RegisterStorage("C", 0, PrimitiveType.Bool),
-            new RegisterStorage("V", 0, PrimitiveType.Bool),
-            new RegisterStorage("Z", 0, PrimitiveType.Bool),
-            new RegisterStorage("N", 0, PrimitiveType.Bool),
-            new RegisterStorage("X", 0, PrimitiveType.Bool),
+            new RegisterStorage("C", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("V", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("Z", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("N", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("X", 0, 0, PrimitiveType.Bool),
         };
 
         public override string GrfToString(uint grf)

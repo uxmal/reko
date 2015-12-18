@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,20 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#endregion
-
-using Reko.Core;
-using Reko.Core.Machine;
-using Reko.Core.Types;
-using NUnit.Framework;
+#endregion 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Reko.UnitTests.Core
+namespace Reko.Core.Lib
 {
-	[TestFixture]
-	public class RegisterStorageTests
-	{
-		[Test]
-		public void Create()
-		{
-			RegisterStorage reg = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
-			Assert.AreEqual("eax", reg.Name);
-			Assert.AreEqual(0, reg.Number);
-			Assert.AreEqual("word32", reg.DataType.ToString());
-		}
-	}
+    public interface UndirectedGraph<T>
+    {
+        ICollection<T> Neighbors(T node);
+        void AddEdge(T nodeFrom, T nodeTo);
+        void RemoveEdge(T nodeFrom, T nodeTo);
+        bool ContainsEdge(T nodeFrom, T nodeTo);
+    }
 }

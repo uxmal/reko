@@ -88,12 +88,12 @@ namespace Reko.UnitTests.Scanning
 
         private ProcedureSignature CreateSignature(string ret, params string[] args)
         {
-            var retReg = new Identifier(ret, PrimitiveType.Word32, new RegisterStorage(ret, 0, PrimitiveType.Word32));
+            var retReg = new Identifier(ret, PrimitiveType.Word32, new RegisterStorage(ret, 0, 0, PrimitiveType.Word32));
             var argIds = new List<Identifier>();
             foreach (var arg in args)
             {
                 argIds.Add(new Identifier(arg, PrimitiveType.Word32,
-                    new RegisterStorage(ret, argIds.Count + 1, PrimitiveType.Word32)));
+                    new RegisterStorage(ret, argIds.Count + 1, 0, PrimitiveType.Word32)));
             }
             return new ProcedureSignature(retReg, argIds.ToArray());
         }

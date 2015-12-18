@@ -74,7 +74,7 @@ namespace Reko.Arch.X86
             return frame.EnsureRegister(reg);
         }
 
-        public Identifier AluRegister(IntelRegister reg, PrimitiveType vt)
+        public Identifier AluRegister(RegisterStorage reg, PrimitiveType vt)
         {
             return frame.EnsureRegister(reg.GetPart(vt));
         }

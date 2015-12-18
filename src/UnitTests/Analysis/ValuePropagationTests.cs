@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Analysis
 
         private Identifier Reg32(string name)
         {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
+            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Word32);
             Identifier id = new Identifier(mr.Name, mr.DataType, mr);
             SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
             ssaIds.Add(id, sid);
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Analysis
 
         private Identifier Reg16(string name)
         {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word16);
+            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Word16);
             Identifier id = new Identifier(mr.Name, mr.DataType, mr);
             SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
             ssaIds.Add(id, sid);
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Analysis
 
         private Identifier Reg8(string name)
         {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Byte);
+            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Byte);
             Identifier id = new Identifier(mr.Name, mr.DataType, mr);
             SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
             ssaIds.Add(id, sid);

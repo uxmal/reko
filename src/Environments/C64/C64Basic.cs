@@ -39,7 +39,7 @@ namespace Reko.Environments.C64
     public class C64Basic : ProcessorArchitecture
     {
         private SortedList<ushort, C64BasicInstruction> program;
-        private RegisterStorage stackRegister = new RegisterStorage("sp", 1, PrimitiveType.Ptr16);
+        private RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
 
         public C64Basic(SortedList<ushort, C64BasicInstruction> program)
         {

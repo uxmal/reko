@@ -389,7 +389,7 @@ namespace Reko.Arch.M68k
 
         private RegisterOperand get_ctrl_reg(string regName, int number)
         {
-            return new RegisterOperand(new RegisterStorage(regName, number, PrimitiveType.Word16));
+            return new RegisterOperand(new RegisterStorage(regName, number, 0, PrimitiveType.Word16));
         }
 
         private DoubleRegisterOperand get_double_data_reg(uint d1, uint d2)

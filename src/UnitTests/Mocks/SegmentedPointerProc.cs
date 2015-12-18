@@ -33,9 +33,9 @@ namespace Reko.UnitTests.Mocks
         protected override void BuildBody()
         {
             var m = this;
-            Identifier ds = m.Frame.EnsureRegister(new RegisterStorage("ds", 1, PrimitiveType.SegmentSelector));
-            Identifier es = m.Frame.EnsureRegister(new RegisterStorage("es", 2, PrimitiveType.SegmentSelector));
-            Identifier bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, PrimitiveType.Word16));
+            Identifier ds = m.Frame.EnsureRegister(new RegisterStorage("ds", 1, 0, PrimitiveType.SegmentSelector));
+            Identifier es = m.Frame.EnsureRegister(new RegisterStorage("es", 2, 0, PrimitiveType.SegmentSelector));
+            Identifier bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
             Identifier es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.SegPtr32);
             m.SegStore(ds, m.Word16(0x300), m.Word16(0x1234));
             m.SegStore(ds, m.Word16(0x302), m.Word16(0x5550));

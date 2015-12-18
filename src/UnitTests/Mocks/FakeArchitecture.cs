@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Mocks
 
 	public class MockMachineRegister : RegisterStorage
 	{
-		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, dt) { }
+		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, 0, dt) { }
 
         public override RegisterStorage GetSubregister(int offset, int size)
 		{

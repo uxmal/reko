@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Core.Serialization
         public void ArgSer_SerializeOutArgument()
         {
             Identifier id = new Identifier("qOut",  PrimitiveType.Word32,
-                new OutArgumentStorage(new Identifier("q", PrimitiveType.Word32, new RegisterStorage("q", 4, PrimitiveType.Word32))));
+                new OutArgumentStorage(new Identifier("q", PrimitiveType.Word32, new RegisterStorage("q", 4, 0, PrimitiveType.Word32))));
             Argument_v1 arg = argser.Serialize(id);
             Assert.AreEqual("qOut", arg.Name);
             Assert.IsTrue(arg.OutParameter);

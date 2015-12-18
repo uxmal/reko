@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Analysis
 
         private Identifier Reg32(string name)
         {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
+            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Word32);
             var id = new Identifier(name, PrimitiveType.Word32, mr);
             return ssaIds.Add(id, null, null, false).Identifier;
         }

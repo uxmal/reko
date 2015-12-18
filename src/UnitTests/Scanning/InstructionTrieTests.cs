@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Scanning
 			Assert.AreEqual(0, score);
 		}
 
-		private X86Instruction CreateMov(IntelRegister regDst, IntelRegister regSrc)
+		private X86Instruction CreateMov(RegisterStorage regDst, RegisterStorage regSrc)
 		{
             X86Instruction inst = new X86Instruction(
                 Opcode.mov,
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Scanning
 			return inst;
 		}
 
-		private X86Instruction CreatePush(IntelRegister reg)
+		private X86Instruction CreatePush(RegisterStorage reg)
 		{
             X86Instruction inst = new X86Instruction(
                 Opcode.push,

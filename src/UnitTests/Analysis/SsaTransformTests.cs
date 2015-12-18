@@ -90,6 +90,8 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
+            var alias = new Aliases(proc, this.pb.Program.Architecture);
+            alias.Transform();
             var ssa = new SsaTransform2();
             ssa.Transform(proc);
 
@@ -500,8 +502,8 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var regA = new RegStorage("a", 0, PrimitiveType.Word32, 0);
-                var regB = new RegStorage("b", 1, PrimitiveType.Word32, 0);
+                var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
+                var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
                 var a = m.Frame.EnsureRegister(regA);
                 var b = m.Frame.EnsureRegister(regB);
                 m.Assign(a, 3);
@@ -558,8 +560,8 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var regA = new RegStorage("a", 0, PrimitiveType.Word32, 0);
-                var regB = new RegStorage("b", 1, PrimitiveType.Word32, 0);
+                var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
+                var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
                 var a = m.Frame.EnsureRegister(regA);
                 var b = m.Frame.EnsureRegister(regB);
                 m.BranchIf(m.Eq0(a), "m_2");
@@ -572,7 +574,6 @@ ProcedureBuilder_exit:
 
 
         [Test]
-        [Ignore]
         public void Ssa2_RegisterAlias()
         {
             var sExp = @"// ProcedureBuilder
@@ -592,26 +593,14 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var regEax = new RegStorage("eax", 0, PrimitiveType.Word32, 0);
-                var regAh = new RegStorage("ah", 0, PrimitiveType.Byte, 8);
+                var regEax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
+                var regAh = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
                 var eax = m.Frame.EnsureRegister(regEax);
                 var ah = m.Frame.EnsureRegister(regAh);
                 m.Assign(eax, m.LoadDw(eax));
                 m.Store(m.Word32(0x1234), ah);
                 m.Return();
             });
-        }
-
-
-        public class RegStorage : RegisterStorage
-        {
-            public RegStorage(string name, int regNumber, PrimitiveType size, uint bitOffset)
-                : base(name, regNumber, size)
-            {
-                this.BitAddress = bitOffset;
-            }
-
-            public override ulong BitSize {  get { return (uint) base.DataType.BitSize;  } }
         }
     }
 

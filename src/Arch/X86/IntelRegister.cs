@@ -38,7 +38,7 @@ namespace Reko.Arch.X86
 		protected bool isBaseRegister;
 
 		public IntelRegister(string name, int number, PrimitiveType width, int regDword, int regWord, int regLoByte, int regHiByte)
-			: base(name, number, width)
+			: base(name, number, 0, width)
 		{
 			this.regDword  = regDword;
 			this.regWord   = regWord;
@@ -670,12 +670,4 @@ namespace Reko.Arch.X86
 			return null;
 		}
 	}
-
-    public class SseRegister : RegisterStorage
-    {
-        public SseRegister(string name, int number)
-            : base(name, number, PrimitiveType.Word128)
-        {
-        }
-    }
 }

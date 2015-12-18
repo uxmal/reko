@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
+                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, 0, PrimitiveType.Word32));
                 m.Assign(a, 2);
                 m.Assign(a, 3);
             });
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
+                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, 0, PrimitiveType.Word32));
                 m.Assign(a, 2);
                 m.Call("foo", 4);
                 m.Assign(a, 3);
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Analysis
                 var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);
                 var Z = m.Frame.EnsureFlagGroup(flags, 0x4, "Z", PrimitiveType.Bool);
                 
-                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
+                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, 0, PrimitiveType.Word32));
                 m.Assign(N, m.Cond(a));
                 m.Assign(C, m.Cond(a));
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Analysis
                 var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C", PrimitiveType.Bool);
                 var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);
                 var Z = m.Frame.EnsureFlagGroup(flags, 0x4, "Z", PrimitiveType.Bool);
-                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
+                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, 0, PrimitiveType.Word32));
                 m.Assign(a, m.IAdd(a, 3));
                 m.Assign(N, m.Cond(a));
                 m.Assign(a, m.IAdd(a, a));
