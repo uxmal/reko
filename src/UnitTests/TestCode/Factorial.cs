@@ -44,7 +44,7 @@ namespace Reko.UnitTests.TestCode
                 m.Assign(r2, r1);
                 m.Assign(r1, 1);
                 m.Assign(cc, m.Cond(m.ISub(r2, r1)));
-                m.BranchIf(m.Test(ConditionCode.LE, cc), "done");
+                m.BranchIf(m.Test(ConditionCode.LE, cc), "m_done");
 
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r2);
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.TestCode
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Assign(r1, m.IMul(r1, r2));
 
-                m.Label("done");
+                m.Label("m_done");
                 m.Return();
             });
             pb.Add("main", m =>

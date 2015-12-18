@@ -118,7 +118,6 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 	use r1_2
-	use r2
 ";
             RunTest(sExp, m =>
             {
@@ -155,7 +154,6 @@ l1:
 ProcedureBuilder_exit:
 	use dwLoc04_12
 	use dwLoc08_13
-	use fp
 	use Mem11
 	use r1_10
 	use r2_9

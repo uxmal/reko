@@ -321,10 +321,12 @@ namespace Reko.Analysis
                         return;
                     foreach (Identifier id in proc.Frame.Identifiers)
                     {
-                        ci.Uses.Add(new UseInstruction(id));
-                        ci.Definitions.Add(new DefInstruction(id));
-                        if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage)
+                        
+                        if ((id.Storage is RegisterStorage  && !(id.Storage is TemporaryStorage)) 
+                            || id.Storage is FlagGroupStorage)
                         {
+                            ci.Uses.Add(new UseInstruction(id));
+                            ci.Definitions.Add(new DefInstruction(id));
                             MarkDefined(id);
                         }
                     }
@@ -497,14 +499,6 @@ namespace Reko.Analysis
                     .Select(id => new Statement(0, new UseInstruction(id), block)));
             }
 
-            private void AddUseInstructions(CallInstruction ci)
-            {
-                var existing = ci.Uses.Select(u => u.Expression).ToHashSet();
-                ci.Uses.UnionWith(rename.Values
-                    .Where(id => !existing.Contains(id))
-                    .Select(id => new UseInstruction(id)));
-            }
-
             private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
             {
                 var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier).ToHashSet();
@@ -661,10 +655,7 @@ namespace Reko.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-                if (!this.renameFrameAccess)
-                    return NewUse(id, stmCur);
-                else
-                    return id;
+                return NewUse(id, stmCur);
 			}
 
             public override Expression VisitMemoryAccess(MemoryAccess access)
