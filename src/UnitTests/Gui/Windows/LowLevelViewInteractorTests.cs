@@ -148,7 +148,6 @@ namespace Reko.UnitTests.Gui.Windows
             var e = mr.Stub<IEnumerator<MachineInstruction>>();
             arch.Stub(a => a.InstructionBitSize).Return(8);
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
-            arch.Stub(a => a.CreateRegisterBitset()).Return(new BitSet(32));
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
                 .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));

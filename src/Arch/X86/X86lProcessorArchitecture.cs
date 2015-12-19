@@ -114,11 +114,6 @@ namespace Reko.Arch.X86
             return CreateDisassemblerImpl(imageReader);
 		}
 
-        public override BitSet CreateRegisterBitset()
-		{
-			return new BitSet((int) Registers.Max);
-		}
-
 		public override ProcessorState CreateProcessorState()
 		{
 			return new X86State(this);

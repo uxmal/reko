@@ -81,11 +81,6 @@ namespace Reko.Environments.C64
             return new C64BasicState(this);
         }
 
-        public override Core.Lib.BitSet CreateRegisterBitset()
-        {
-            return new Core.Lib.BitSet(0x10);
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new C64BasicRewriter(this, rdr.Address, program, host);

@@ -211,11 +211,6 @@ namespace Reko.UnitTests.Mocks
 			return new FakeProcessorState(this);
 		}
 
-		public BitSet CreateRegisterBitset()
-		{
-			return new BitSet(RegisterCount);
-		}
-
 		public string GrfToString(uint grf)
 		{
             var sb = new StringBuilder();

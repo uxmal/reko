@@ -211,11 +211,6 @@ namespace Reko.Arch.PowerPC
             return new PowerPcState(this);
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet(0x80);
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < regs.Count)

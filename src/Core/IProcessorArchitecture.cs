@@ -52,9 +52,6 @@ namespace Reko.Core
         /// <returns></returns>
 		ProcessorState CreateProcessorState();
 
-        [Obsolete]
-		BitSet CreateRegisterBitset();
-
         /// <summary>
         /// Returns a stream of machine-independent instructions, which it generates by successively disassembling
         /// machine-specific instructions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
@@ -171,8 +168,6 @@ namespace Reko.Core
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
-        [Obsolete]
-        public abstract BitSet CreateRegisterBitset();
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
 

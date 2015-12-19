@@ -967,7 +967,7 @@ namespace Reko.Scanning
 
             public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
             {
-                throw new NotImplementedException();
+                return arch.GetSubregister(reg, offset, width);
             }
 
             public bool IsValidAddress(Address addr)

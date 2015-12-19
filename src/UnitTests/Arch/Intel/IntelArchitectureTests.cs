@@ -57,13 +57,6 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RegisterBitset()
-		{
-			BitSet regs = arch.CreateRegisterBitset();
-			Assert.IsTrue(regs.Count >= (int) Registers.Max);
-		}
-
-		[Test]
 		public void IaGetRegisterFromString()
 		{
 			Assert.AreSame(Registers.eax, arch.GetRegister("eax"));

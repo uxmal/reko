@@ -74,11 +74,6 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();

@@ -112,11 +112,6 @@ namespace Reko.Arch.Pdp11
             return new Pdp11ProcessorState(this);
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet(16);
-        }
-
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();

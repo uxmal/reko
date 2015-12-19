@@ -51,7 +51,14 @@ namespace Reko.UnitTests.Scanning
 
         private class BackwalkerHost : IBackWalkHost
         {
+            private IProcessorArchitecture arch;
+
             #region IBackWalkHost Members
+
+            public BackwalkerHost(IProcessorArchitecture arch)
+            {
+                this.arch = arch;
+            }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {
@@ -68,9 +75,9 @@ namespace Reko.UnitTests.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
             }
 
-            public RegisterStorage GetSubregister(RegisterStorage reg, int off, int size)
+            public RegisterStorage GetSubregister(RegisterStorage reg, int off, int width)
             {
-                throw new NotImplementedException();
+                return arch.GetSubregister(reg, off, width);
             }
 
             public bool IsValidAddress(Address addr)
@@ -100,7 +107,7 @@ namespace Reko.UnitTests.Scanning
             state = arch.CreateProcessorState();
             expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
             SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-            host = new BackwalkerHost();
+            host = new BackwalkerHost(arch);
         }
 
         private void RunFileTestx86_32(string relativePath, string outputFile)
@@ -411,6 +418,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
+        [Category("UnitTests")]
         public void BwTempRegister()
         {
             var v1 = m.Frame.CreateTemporary(PrimitiveType.Word32);

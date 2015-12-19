@@ -67,11 +67,6 @@ namespace Reko.Arch.M68k
             return new M68kState(this);
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet((int)Registers.Max);
-        }
-
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();

@@ -72,11 +72,6 @@ namespace Reko.Arch.Arm
             return new ArmProcessorState(this);
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet(16);
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);

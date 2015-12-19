@@ -94,11 +94,6 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Reko.Core.Lib.BitSet CreateRegisterBitset()
-            {
-                throw new NotImplementedException();
-            }
-
             public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
             {
                 throw new NotImplementedException();

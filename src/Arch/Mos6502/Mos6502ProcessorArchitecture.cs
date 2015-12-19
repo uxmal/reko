@@ -69,11 +69,6 @@ namespace Reko.Arch.Mos6502
             return new Mos6502ProcessorState(this);
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Rewriter(this, rdr.Clone(), state, frame, host);

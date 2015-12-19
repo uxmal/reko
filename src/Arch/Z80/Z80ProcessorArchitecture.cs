@@ -74,11 +74,6 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Z80Rewriter(this, rdr, state, frame, host);

@@ -241,7 +241,6 @@ namespace Reko.UnitTests.Analysis
 		public void Rl_CallToProcedureWithStackArgs()
 		{
 			Procedure callee = new Procedure("callee", null);
-			BitSet trash = program.Architecture.CreateRegisterBitset();
 			callee.Signature = new ProcedureSignature(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {

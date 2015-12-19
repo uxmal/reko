@@ -66,7 +66,6 @@ namespace Reko.UnitTests.Scanning
             scanner = mr.StrictMock<IScanner>();
             arch = mr.DynamicMock<IProcessorArchitecture>();
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
-            arch.Stub(s => s.CreateRegisterBitset()).Return(new BitSet(32));
             program.Architecture = arch;
             arch.Replay();
             program.Platform = new DefaultPlatform(null, arch);
