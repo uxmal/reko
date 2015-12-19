@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			frame = new Frame(PrimitiveType.Word16);
 			vl = new IdentifierLiveness(arch);
-			vl.BitSet = arch.CreateRegisterBitset();
+            vl.BitSet = new HashSet<RegisterStorage>();
 		}
 
 		[Test]

@@ -56,9 +56,9 @@ namespace Reko.Environments.SysV
             return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return Architecture.CreateRegisterBitset();
+            return new HashSet<RegisterStorage>();
         }
 
         private void EnsureTypeLibraries()

@@ -372,7 +372,8 @@ namespace Reko.Core
             return (int)Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
         }
 
-        public virtual RegisterStorage GetWidestSubregister(BitSet bits)
+        [Obsolete("Move to arch")]
+        public virtual RegisterStorage GetWidestSubregister(HashSet<RegisterStorage> bits)
         {
             return null;
         }
@@ -416,9 +417,12 @@ namespace Reko.Core
 		/// <param name="iReg">Register to set</param>
 		/// <param name="bits">BitSet to modify</param>
 		/// <param name="f">truth value to set</param>
-		public virtual void SetAliases(BitSet bitset, bool f)
+		public virtual void SetAliases(ISet<RegisterStorage> bitset, bool f)
         {
-            bitset[Number] = f;
+            if (f)
+                bitset.Add(this);
+            else
+                bitset.Remove(this);
         }
 
         public override SerializedKind Serialize()
@@ -686,11 +690,6 @@ namespace Reko.Core
         {
 			return visitor.VisitTemporaryStorage(this);
 		}
-
-        public override bool IsSubRegisterOf(RegisterStorage reg2)
-        {
-            return false;
-        }
 
 		public override int OffsetOf(Storage stgSub)
 		{

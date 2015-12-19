@@ -25,6 +25,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -42,14 +43,15 @@ namespace Reko.Environments.Msdos
 
         public override string PlatformIdentifier { get { return "ms-dos"; } }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            var bitset = Architecture.CreateRegisterBitset();
-            Registers.cs.SetAliases(bitset, true);
-            Registers.ss.SetAliases(bitset, true);
-            Registers.sp.SetAliases(bitset, true);
-            Registers.esp.SetAliases(bitset, true);
-            return bitset;
+            return new HashSet<RegisterStorage>
+            {
+            Registers.cs,
+            Registers.ss,
+            Registers.sp,
+            Registers.esp,
+            };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

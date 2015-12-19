@@ -336,10 +336,11 @@ namespace Reko.Analysis
 			foreach (Procedure p in program.CallGraph.Callees(stm))
 			{
 				var flow = mpprocData[p];
-				varLive.BitSet = liveOrig - flow.PreservedRegisters;
+                varLive.BitSet = new HashSet<RegisterStorage>(liveOrig);
+                varLive.BitSet.ExceptWith(flow.PreservedRegisters);
 				varLive.LiveStorages = new Dictionary<Storage,int>();
 				MergeBlockInfo(p.ExitBlock);
-				varLive.BitSet = new BitSet(liveOrig);
+				varLive.BitSet = new HashSet<RegisterStorage>(liveOrig);
 				varLive.Grf = grfOrig;
                 varLive.LiveStorages = new Dictionary<Storage, int>(stackOrig);
 			}
@@ -531,7 +532,6 @@ namespace Reko.Analysis
                 var procCallee = pc.Procedure as Procedure;
                 if (procCallee == null)
                     return;
-                if (varLive.BitSet[0x1F]) varLive.ToString();
 
                 if (state.PropagateThroughExitNodes)
 				{
@@ -543,12 +543,12 @@ namespace Reko.Analysis
 				ProcedureFlow pi = mpprocData[procCallee];
 				ProcedureFlow item = mpprocData[Procedure];
 
-				// The registers that are still live before a call are those
-				// that were live after the call and were bypassed by the called function
-				// or used by the called function.
-				varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
-				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
-                if (varLive.BitSet[0x1F]) varLive.ToString();
+                // The registers that are still live before a call are those
+                // that were live after the call and were bypassed by the called function
+                // or used by the called function.
+                throw new NotImplementedException("Get the following 2 lines working!");
+				//varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
+				//varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
 				// Any stack parameters are also considered live.
 				MarkLiveStackParameters(ci);
 			}
@@ -651,9 +651,10 @@ namespace Reko.Analysis
 			public virtual bool MergeBlockInfo(IdentifierLiveness varLive, BlockFlow blockFlow)
 			{
 				bool ret = false;
-				if (!(varLive.BitSet & (~blockFlow.DataOut)).IsEmpty)
+                int oldCount = blockFlow.DataOut.Count;
+				blockFlow.DataOut.UnionWith(varLive.BitSet);
+                if (blockFlow.DataOut.Count != oldCount)
 				{
-					blockFlow.DataOut |= varLive.BitSet;
 					ret = true;
 				}
 				if ((varLive.Grf & (~blockFlow.grfOut)) != 0)
@@ -715,18 +716,22 @@ namespace Reko.Analysis
 						RegisterStorage rs = os.OriginalIdentifier.Storage as RegisterStorage;
 						if (rs != null) 
 						{
-							rs.SetAliases(bf.DataOut, true);
+                            bf.DataOut.UnionWith(arch.GetAliases(rs));
 						}
 					}
 				}
                 else if (bf.TerminatesProcess)
                 {
-                    bf.DataOut.SetAll(false);
+                    bf.DataOut.Clear();
                 }
                 else
 				{
-					bf.DataOut.SetAll(isExitBlock);
-					bf.DataOut &= ~flow[block.Procedure].PreservedRegisters;
+                    bf.DataOut.Clear();
+                    if (isExitBlock)
+                    {
+                        //Add all registers except preserved registers
+                        //bf.DataOut &= ~flow[block.Procedure].PreservedRegisters;
+                    }
 				}
 			}
 
@@ -866,7 +871,6 @@ namespace Reko.Analysis
 			public bool VisitRegisterStorage(RegisterStorage reg)
 			{
 				//$REFACTOR: make SetAliases be a bitset of Register.
-				BitSet b = new BitSet(liveState.BitSet.Count);
                 var aliases = arch.GetAliases(reg);
                 return liveState.BitSet.Overlaps(aliases);
 			}

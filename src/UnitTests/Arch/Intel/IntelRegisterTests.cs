@@ -107,25 +107,25 @@ namespace Reko.UnitTests.Arch.Intel
 		[Test]
 		public void WidestSubregisterEcx()
 		{
-			BitSet bits = new BitSet(64);
+            var bits = new HashSet<RegisterStorage>();
 			Assert.IsNull(Registers.ecx.GetWidestSubregister(bits));
-			bits[Registers.cl.Number] = true;
+            bits.Add(Registers.cl);
 			Assert.AreSame(Registers.cl, Registers.ecx.GetWidestSubregister(bits));
-			bits.SetAll(false);
-			bits[Registers.ch.Number] = true;
+            bits.Clear();
+			bits.Add(Registers.ch);
 			Assert.AreSame(Registers.ch, Registers.ecx.GetWidestSubregister(bits));
-			bits[Registers.cx.Number] = true;
+            bits.Add(Registers.cx);
 			Assert.AreSame(Registers.cx, Registers.ecx.GetWidestSubregister(bits));
-			bits[Registers.ecx.Number] = true;
+			bits.Add(Registers.ecx);
 			Assert.AreSame(Registers.ecx, Registers.ecx.GetWidestSubregister(bits));
 		}
 
 		[Test]
 		public void WidestSubregisterChClTogether()
 		{
-			BitSet bits = new BitSet(64);
-			bits[Registers.cl.Number] = true;
-			bits[Registers.ch.Number] = true;
+            var bits = new HashSet<RegisterStorage>();
+            bits.Add(Registers.cl);
+            bits.Add(Registers.ch);
 			Assert.AreSame(Registers.cx, Registers.ecx.GetWidestSubregister(bits));
 
 		}
@@ -133,74 +133,62 @@ namespace Reko.UnitTests.Arch.Intel
 		[Test]
 		public void WidestSubregisterEsi()
 		{
-			BitSet bits = new BitSet(64);
-			Assert.IsNull(Registers.esi.GetWidestSubregister(bits));
-			bits[Registers.si.Number] = true;
+            var bits = new HashSet<RegisterStorage>();
+            Assert.IsNull(Registers.esi.GetWidestSubregister(bits));
+			bits.Add(Registers.si);
 			Assert.AreSame(Registers.si, Registers.esi.GetWidestSubregister(bits));
-			bits[Registers.esi.Number] = true;
+			bits.Add(Registers.esi);
 			Assert.AreSame(Registers.esi, Registers.esi.GetWidestSubregister(bits));
 		}
 
 		[Test]
 		public void WidestSubregisterDx()
 		{
-			BitSet bits = new BitSet(64);
+            var bits = new HashSet<RegisterStorage>();
 			Assert.IsNull(Registers.dx.GetWidestSubregister(bits));
-			bits[Registers.dl.Number] = true;
+            bits.Add(Registers.dl);
 			Assert.AreSame(Registers.dl, Registers.dx.GetWidestSubregister(bits));
-			bits.SetAll(false);
-			bits[Registers.dh.Number] = true;
+            bits.Clear();
+			bits.Add(Registers.dh);
 			Assert.AreSame(Registers.dh, Registers.dx.GetWidestSubregister(bits));
-			bits[Registers.dx.Number] = true;
+			bits.Add(Registers.dx);
 			Assert.AreSame(Registers.dx, Registers.dx.GetWidestSubregister(bits));
-			bits[Registers.edx.Number] = true;
+			bits.Add(Registers.edx);
 			Assert.AreSame(Registers.dx, Registers.dx.GetWidestSubregister(bits));
 		}
 
 		[Test]
 		public void WidestSubregisterSp()
 		{
-			BitSet bits = new BitSet(64);
+            var bits = new HashSet<RegisterStorage>();
 			Assert.IsNull(Registers.sp.GetWidestSubregister(bits));
-			bits[Registers.sp.Number] = true;
+			bits.Add(Registers.sp);
 			Assert.AreSame(Registers.sp, Registers.sp.GetWidestSubregister(bits));
-			bits[Registers.esp.Number] = true;
+			bits.Add(Registers.esp);
 			Assert.AreSame(Registers.sp, Registers.sp.GetWidestSubregister(bits));
 		}
 
 		[Test]
 		public void WidestSubregisterBh()
 		{
-			BitSet bits = new BitSet(64);
-			Assert.IsNull(Registers.bh.GetWidestSubregister(bits));
-			bits[Registers.bh.Number] = true;
+            var bits = new HashSet<RegisterStorage>();
+            Assert.IsNull(Registers.bh.GetWidestSubregister(bits));
+			bits.Add(Registers.bh);
 			Assert.AreSame(Registers.bh, Registers.bh.GetWidestSubregister(bits));
-			bits[Registers.bx.Number] = true;
+			bits.Add(Registers.bx);
 			Assert.AreSame(Registers.bh, Registers.bh.GetWidestSubregister(bits));
-			bits[Registers.ebx.Number] = true;
+			bits.Add(Registers.ebx);
 			Assert.AreSame(Registers.bh, Registers.bh.GetWidestSubregister(bits));
 		}
 
 		[Test]
 		public void SetAxAliasesTrue()
 		{
-			BitSet bits = arch.CreateRegisterBitset();
-			Registers.ax.SetAliases(bits, true);
-			Assert.IsTrue(bits[Registers.ax.Number], "Expected ax set");
-			Assert.IsTrue(bits[Registers.ah.Number], "Expected ah set");
-			Assert.IsTrue(bits[Registers.al.Number], "Expected al set");
-		}
-
-		[Test]
-		public void SetAhAliasesFalse()
-		{
-			BitSet bits = arch.CreateRegisterBitset();
-			bits.SetAll(true);
-			Registers.ah.SetAliases(bits, false);
-			Assert.IsFalse(bits[Registers.ax.Number], "Expected ax not set");
-			Assert.IsFalse(bits[Registers.ah.Number], "Expected ah not set");
-			Assert.IsTrue(bits[Registers.al.Number], "Expected al set");
-			Assert.IsTrue(bits[Registers.eax.Number], "Expected eax set");
+            var bits = new HashSet<RegisterStorage>();
+            Registers.ax.SetAliases(bits, true);
+			Assert.IsTrue(bits.Contains(Registers.ax), "Expected ax set");
+			Assert.IsTrue(bits.Contains(Registers.ah), "Expected ah set");
+			Assert.IsTrue(bits.Contains(Registers.al), "Expected al set");
 		}
 
 		[Test]

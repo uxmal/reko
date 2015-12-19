@@ -22,7 +22,6 @@ using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BitSet = Reko.Core.Lib.BitSet;
 using Expression = Reko.Core.Expressions.Expression;
 using IProcessorArchitecture = Reko.Core.IProcessorArchitecture;
 using SortedList = System.Collections.SortedList;
@@ -84,7 +83,7 @@ namespace Reko.Analysis
             sb.Write(" {0}", arch.GrfToString(grfFlags));
         }
 
-		public string EmitRegisters(IProcessorArchitecture arch, string caption, BitSet regs)
+		public string EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<RegisterStorage> regs)
 		{
 			StringWriter sw = new StringWriter();
 			EmitRegisters(arch, caption, regs, sw);

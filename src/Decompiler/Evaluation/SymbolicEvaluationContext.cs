@@ -244,9 +244,8 @@ namespace Reko.Evaluation
         /// <param name="pf"></param>
         public void UpdateRegistersTrashedByProcedure(ProcedureFlow pf)
         {
-            foreach (int r in pf.TrashedRegisters)
+            foreach (var reg in pf.TrashedRegisters)
             {
-                var reg = arch.GetRegister(r);
                 Constant c;
                 if (!pf.ConstantRegisters.TryGetValue(reg, out c))
                 {

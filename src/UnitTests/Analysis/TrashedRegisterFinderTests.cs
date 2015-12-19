@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Analysis
         {
             var bflow = new BlockFlow(
                 block,
-                program.Architecture.CreateRegisterBitset(),
+                new HashSet<RegisterStorage>(),
                 new SymbolicEvaluationContext(
                     program.Architecture,
                     frame));
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Analysis
             var callee = new Procedure("Callee", program.Architecture.CreateFrame());
             var stm = m.Call(callee, 4);
             var pf = new ProcedureFlow(callee, program.Architecture);
-            pf.TrashedRegisters[Registers.ebx.Number] = true;
+            pf.TrashedRegisters.Add(Registers.ebx);
             flow[callee] = pf;
 
             trf = CreateTrashedRegisterFinder();
@@ -647,7 +647,7 @@ const ax:0x0000 cx:<invalid>
         {
             frame = new Frame(PrimitiveType.Pointer32);
             ctx = new SymbolicEvaluationContext(arch, frame);
-            blockflow = new BlockFlow(null, arch.CreateRegisterBitset(), ctx);
+            blockflow = new BlockFlow(null, new HashSet<RegisterStorage>(), ctx);
             trf.EnsureEvaluationContext(blockflow);
         }
     }

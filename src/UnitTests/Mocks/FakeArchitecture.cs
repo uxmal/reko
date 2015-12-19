@@ -280,7 +280,7 @@ namespace Reko.UnitTests.Mocks
 	{
 		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, 0, dt) { }
 
-		public override RegisterStorage GetWidestSubregister(BitSet bits)
+		public RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			return (bits[Number])
 				? this

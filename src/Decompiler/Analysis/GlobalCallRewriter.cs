@@ -98,7 +98,7 @@ namespace Reko.Analysis
 		private void AdjustLiveOut(ProcedureFlow flow)
 		{
 			flow.grfLiveOut &= flow.grfTrashed;
-			flow.LiveOut &= flow.TrashedRegisters;
+			flow.LiveOut.ExceptWith(flow.TrashedRegisters);
 		}
 
 		public static void Rewrite(Program program, ProgramDataFlow summaries)
@@ -139,11 +139,11 @@ namespace Reko.Analysis
             var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
             var mayUse = new HashSet<RegisterStorage>(flow.MayUse);
             mayUse.ExceptWith(implicitRegs);
-			foreach (var r in mayUse)
+			foreach (var reg in mayUse)
 			{
-				if (!IsSubRegisterOfRegisters(r, mayUse))
+				if (!IsSubRegisterOfRegisters(reg, mayUse))
 				{
-					sb.AddRegisterArgument(r);
+					sb.AddRegisterArgument(reg);
 				}
 			}
 
@@ -157,12 +157,13 @@ namespace Reko.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-            BitSet liveOut = flow.LiveOut - implicitRegs;
-			foreach (int r in liveOut)
+            var liveOut = new HashSet<RegisterStorage>(flow.LiveOut);
+            liveOut.ExceptWith(implicitRegs);
+			foreach (var r in liveOut)
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
-					sb.AddArgument(frame.EnsureRegister(Program.Architecture.GetRegister(r)), true);
+					sb.AddArgument(frame.EnsureRegister(r), true);
 				}
 			}
 
@@ -222,11 +223,11 @@ namespace Reko.Analysis
 		/// <param name="r"></param>
 		/// <param name="regs"></param>
 		/// <returns></returns>
-		private bool IsSubRegisterOfRegisters(RegisterStorage rr, BitSet regs)
+		private bool IsSubRegisterOfRegisters(RegisterStorage rr, HashSet<RegisterStorage> regs)
 		{
-			foreach (int r2 in regs)
+			foreach (var r2 in regs)
 			{
-				if (rr.IsSubRegisterOf(Program.Architecture.GetRegister(r2)))
+				if (rr.IsSubRegisterOf(r2))
 					return true;
 			}
 			return false;

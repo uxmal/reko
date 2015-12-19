@@ -59,14 +59,14 @@ namespace Reko.UnitTests.Analysis
             terminates = new HashSet<Procedure>();
 			rl = new RegisterLiveness(program, mpprocflow, null);
 			rl.Procedure = proc;
-			rl.IdentifierLiveness.BitSet = program.Architecture.CreateRegisterBitset();
+            rl.IdentifierLiveness.BitSet = new HashSet<RegisterStorage>();
 		}
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)
         {
             return new BlockFlow(
                 block,
-                program.Architecture.CreateRegisterBitset(),
+                new HashSet<RegisterStorage>(),
                 new SymbolicEvaluationContext(program.Architecture, frame));
         }
 
@@ -228,9 +228,9 @@ namespace Reko.UnitTests.Analysis
 					f.EnsureOutArgument(f.EnsureRegister(Registers.edi), PrimitiveType.Pointer32)
 				});
 			
-			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
-			rl.IdentifierLiveness.BitSet[Registers.esi.Number] = true;
-			rl.IdentifierLiveness.BitSet[Registers.edi.Number] = true;
+			rl.IdentifierLiveness.BitSet.Add(Registers.eax);
+			rl.IdentifierLiveness.BitSet.Add(Registers.esi);
+			rl.IdentifierLiveness.BitSet.Add(Registers.edi);
 			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
 			rl.VisitCallInstruction(ci);
 			Assert.AreEqual(" ecx ebx esi", Dump(rl.IdentifierLiveness));
@@ -278,7 +278,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier loc08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
 			Identifier loc0C = m.Frame.EnsureStackLocal(-12, PrimitiveType.Word32);
 			Identifier loc10 = m.Frame.EnsureStackLocal(-16, PrimitiveType.Word32);
-			rl.CurrentState = new RegisterLiveness.ByPassState();
+			rl.CurrentState = new RegisterLiveness.ByPassState(program.Architecture);
             var ci = new CallInstruction(
                 new ProcedureConstant(PrimitiveType.Pointer32, callee),
                 new CallSite(4, 0) { StackDepthOnEntry = 16 });
@@ -298,15 +298,15 @@ namespace Reko.UnitTests.Analysis
 								   new Identifier("arg04",  PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 								   new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(edx))});
 
-			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
+			RegisterLiveness.State st = new RegisterLiveness.ByPassState(program.Architecture);
 			BlockFlow bf = CreateBlockFlow(callee.ExitBlock, null);
 			mpprocflow[callee.ExitBlock] = bf;
 			st.InitializeBlockFlow(callee.ExitBlock, mpprocflow, true);
-			Assert.IsTrue(bf.DataOut[Registers.eax.Number],"eax is a return register");
-			Assert.IsTrue(bf.DataOut[Registers.edx.Number],"edx is an out register");
-			Assert.IsTrue(bf.DataOut[Registers.ax.Number], "ax is aliased by eax");
-			Assert.IsFalse(bf.DataOut[Registers.ecx.Number], "ecx is an in register");
-			Assert.IsFalse(bf.DataOut[Registers.esi.Number], "esi is not present in signature");
+			Assert.IsTrue(bf.DataOut.Contains(Registers.eax),"eax is a return register");
+			Assert.IsTrue(bf.DataOut.Contains(Registers.edx),"edx is an out register");
+			Assert.IsTrue(bf.DataOut.Contains(Registers.ax), "ax is aliased by eax");
+			Assert.IsFalse(bf.DataOut.Contains(Registers.ecx), "ecx is an in register");
+			Assert.IsFalse(bf.DataOut.Contains(Registers.esi), "esi is not present in signature");
 		}
 
 		/// <summary>
@@ -318,19 +318,19 @@ namespace Reko.UnitTests.Analysis
             Procedure proc = new Procedure("test", program.Architecture.CreateFrame());
 			ProcedureFlow pf = new ProcedureFlow(proc, program.Architecture);
 			mpprocflow[proc] = pf;
-			pf.TrashedRegisters[Registers.eax.Number] = true;
-			pf.TrashedRegisters[Registers.ebx.Number] = true;
-			pf.PreservedRegisters[Registers.ebp.Number] = true;
-			pf.PreservedRegisters[Registers.bp.Number] = true;
+			pf.TrashedRegisters.Add(Registers.eax);
+            pf.TrashedRegisters.Add(Registers.ebx);
+			pf.PreservedRegisters.Add(Registers.ebp);
+			pf.PreservedRegisters.Add(Registers.bp);
 
-			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
+			RegisterLiveness.State st = new RegisterLiveness.ByPassState(program.Architecture);
 			BlockFlow bf = CreateBlockFlow(proc.ExitBlock, proc.Frame);
 			mpprocflow[proc.ExitBlock] = bf;
 			st.InitializeBlockFlow(proc.ExitBlock, mpprocflow, true);
-			Assert.IsFalse(bf.DataOut[Registers.ebp.Number], "preserved registers cannot be live out");
-			Assert.IsFalse(bf.DataOut[Registers.bp.Number], "preserved registers cannot be live out");
-			Assert.IsTrue(bf.DataOut[Registers.eax.Number], "trashed registers may be live out");
-			Assert.IsTrue(bf.DataOut[Registers.esi.Number], "Unmentioned registers may be live out");
+			Assert.IsFalse(bf.DataOut.Contains(Registers.ebp), "preserved registers cannot be live out");
+			Assert.IsFalse(bf.DataOut.Contains(Registers.bp), "preserved registers cannot be live out");
+			Assert.IsTrue(bf.DataOut.Contains(Registers.eax), "trashed registers may be live out");
+			Assert.IsTrue(bf.DataOut.Contains(Registers.esi), "Unmentioned registers may be live out");
 		}
 
 		private string Dump(IdentifierLiveness vl)

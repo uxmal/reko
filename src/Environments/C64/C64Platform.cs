@@ -53,9 +53,9 @@ namespace Reko.Environments.C64
         public override string PlatformIdentifier { get { return "c64"; } }
 
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return Architecture.CreateRegisterBitset();
+            return new HashSet<RegisterStorage>();
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

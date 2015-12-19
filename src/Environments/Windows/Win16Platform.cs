@@ -26,6 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -47,9 +48,12 @@ namespace Reko.Environments.Windows
 
         public override string PlatformIdentifier { get { return "win16"; } }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new BitSet(0);
+            return new HashSet<RegisterStorage>
+            {
+                Registers.ss, Registers.ds, Registers.sp
+            };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

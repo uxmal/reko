@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Analysis
 
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
-                new Reko.Arch.X86.X86ArchitectureFlat32().CreateRegisterBitset());
+                new HashSet<RegisterStorage>());
             Given_Platform(platform);
         }
 	}

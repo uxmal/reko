@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Mocks
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return Architecture.CreateRegisterBitset();
+            return new HashSet<RegisterStorage>();
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

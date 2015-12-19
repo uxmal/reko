@@ -28,7 +28,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Environments.Windows
@@ -96,15 +96,17 @@ namespace Reko.Environments.Windows
             return addr;
         }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            var bitset = Architecture.CreateRegisterBitset();
-            Registers.cs.SetAliases(bitset, true);
-            Registers.ss.SetAliases(bitset, true);
-            Registers.sp.SetAliases(bitset, true);
-            Registers.esp.SetAliases(bitset, true);
-            Registers.fs.SetAliases(bitset, true);
-            Registers.gs.SetAliases(bitset, true);
+            var bitset = new HashSet<RegisterStorage>()
+            {
+                 Registers.cs,
+                 Registers.ss,
+                 Registers.sp,
+                 Registers.esp,
+                 Registers.fs,
+                 Registers.gs,
+            };
             return bitset;
         }
 

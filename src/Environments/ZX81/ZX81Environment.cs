@@ -45,11 +45,9 @@ namespace Reko.Environments.ZX81
 
         public override string PlatformIdentifier { get { return "zx81"; } }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            var bitset = Architecture.CreateRegisterBitset();
-            Registers.sp.SetAliases(bitset, true);
-            return bitset;
+            return new HashSet<RegisterStorage> { Registers.sp };
         }
 
         public override Core.Serialization.ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

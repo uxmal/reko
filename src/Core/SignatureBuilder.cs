@@ -58,9 +58,9 @@ namespace Reko.Core
 			AddArgument(proc.Frame.EnsureFpuStackVariable(x, id.DataType), false);
 		}
 
-		public void AddRegisterArgument(int r)
+		public void AddRegisterArgument(RegisterStorage reg)
 		{
-			AddArgument(proc.Frame.EnsureRegister(arch.GetRegister(r)), false);
+			AddArgument(proc.Frame.EnsureRegister(reg), false);
 		}
 
 		public void AddArgument(Identifier idOrig, bool isOut)

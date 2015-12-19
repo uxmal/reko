@@ -48,9 +48,9 @@ namespace Reko.Environments.RiscOS
 
         public override string PlatformIdentifier { get { return "riscOS"; } }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return Architecture.CreateRegisterBitset();
+            return new HashSet<RegisterStorage>();
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

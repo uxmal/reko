@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void RegisterArgument()
 		{
-			flow.MayUse[Registers.eax.Number] = true;
+            flow.MayUse.Add(Registers.eax); ;
 			gcr.EnsureSignature(proc, flow);
 			Assert.AreEqual("void foo(Register word32 eax)", proc.Signature.ToString(proc.Name));
 		}
@@ -60,8 +60,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void RegisterOutArgument()
 		{
-			flow.LiveOut[Registers.eax.Number] = true;		// becomes the return value.
-			flow.LiveOut[Registers.ebx.Number] = true;
+			flow.LiveOut.Add(Registers.eax);		// becomes the return value.
+			flow.LiveOut.Add(Registers.ebx);
 			gcr.EnsureSignature(proc, flow);
 			Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
 		}
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void FpuOutArgument()
 		{
-			flow.LiveOut[Registers.eax.Number] = true;
+            flow.LiveOut.Add(Registers.eax);
 			proc.Frame.EnsureFpuStackVariable(0, PrimitiveType.Real80);
 			proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
 			proc.Signature.FpuStackDelta = 1;

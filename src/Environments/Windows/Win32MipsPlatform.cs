@@ -56,14 +56,14 @@ namespace Reko.Environments.Windows
             return addr;
         }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            var bitset = base.Architecture.CreateRegisterBitset();
             var gp = Architecture.GetRegister("r28");
             var sp = Architecture.GetRegister("sp");
-            bitset[gp.Number] = true;
-            bitset[sp.Number] = true;
-            return bitset;
+            return new HashSet<RegisterStorage>
+            {
+                gp, sp
+            };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

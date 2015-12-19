@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
@@ -56,9 +57,12 @@ namespace Reko.Environments.Windows
             get { throw new NotImplementedException(); }
         }
 
-        public override Core.Lib.BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>
+            {
+                Registers.rsp,
+            };
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

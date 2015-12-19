@@ -277,11 +277,11 @@ namespace Reko.Analysis
     public class AliasDeadVariableMarker : StorageVisitor<Storage>
     {
         private Identifier idCur;
-        private BitSet liveRegs;
+        private HashSet<RegisterStorage> liveRegs;
         private uint liveGrf;
         private HashSet<Identifier> liveVars;
 
-        public AliasDeadVariableMarker(BitSet regs, uint grfLive)
+        public AliasDeadVariableMarker(HashSet<RegisterStorage> regs, uint grfLive)
         {
             this.liveRegs = regs;
             this.liveGrf = grfLive;
@@ -357,7 +357,7 @@ namespace Reko.Analysis
 
         public Storage VisitRegisterStorage(RegisterStorage reg)
         {
-            if (liveRegs[reg.Number])
+            if (liveRegs.Contains(reg))
                 liveVars.Add(idCur);
             else 
                 liveVars.Remove(idCur);

@@ -38,7 +38,7 @@ namespace Reko.Analysis
 	{
 		private Procedure proc;
 
-		public BitSet PreservedRegisters;			// Registers explicitly preserved by the procedure.
+		public HashSet<RegisterStorage> PreservedRegisters;			// Registers explicitly preserved by the procedure.
 		public uint grfPreserved;
 
 		public uint grfTrashed;
@@ -67,8 +67,8 @@ namespace Reko.Analysis
         {
             this.proc = proc;
 
-            PreservedRegisters = arch.CreateRegisterBitset();
-            TrashedRegisters = arch.CreateRegisterBitset();
+            PreservedRegisters = new HashSet<RegisterStorage>();
+            TrashedRegisters = new HashSet<RegisterStorage>();
             ConstantRegisters = new Dictionary<Storage, Constant>();
 
             ByPass = new HashSet<RegisterStorage>();
@@ -132,7 +132,7 @@ namespace Reko.Analysis
 			RegisterStorage reg = id.Storage as RegisterStorage;
 			if (reg != null)
 			{
-				return LiveOut[reg.Number];
+                return LiveOut.Contains(reg);
 			}
 			return false;
 		}

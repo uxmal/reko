@@ -119,9 +119,9 @@ namespace Reko.Environments.Windows
             return Address.Ptr32((uint)addr.ToLinear() & ~1u);
         }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

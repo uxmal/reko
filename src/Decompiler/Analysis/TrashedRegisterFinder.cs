@@ -80,9 +80,9 @@ namespace Reko.Analysis
             foreach (Procedure proc in procedures)
             {
                 var pf = flow[proc];
-                foreach (int r in pf.TrashedRegisters)
+                foreach (var reg in pf.TrashedRegisters)
                 {
-                    program.Architecture.GetRegister(r).SetAliases(pf.TrashedRegisters, true);
+                    pf.TrashedRegisters.UnionWith(program.Architecture.GetAliases(reg));
                 }
             }
         }
