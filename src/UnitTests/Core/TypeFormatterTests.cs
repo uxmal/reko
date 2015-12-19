@@ -280,5 +280,16 @@ struct a {
                 "} meeble";
             Assert.AreEqual(sExp, sw.ToString());
         }
-	}
+
+        [Test]
+        public void TyfoPtrToTypeReference()
+        {
+            var typeReference = new TypeReference("testDataType", PrimitiveType.Int32);
+            var ptr = new Pointer(typeReference, 4);
+            tyfo.Write(ptr, "var");
+
+            string sExp = "testDataType * var";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+    }
 }
