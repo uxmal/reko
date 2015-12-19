@@ -219,6 +219,16 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+            {
+                throw new NotImplementedException();
+            }
+
+            public RegisterStorage GetPart(RegisterStorage reg, DataType width)
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion
         }
 

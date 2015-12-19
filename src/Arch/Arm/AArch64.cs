@@ -99,6 +99,11 @@ namespace Reko.Arch.Arm
             return A64Registers.XRegs;
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotSupportedException();
+        }
+
         public override string GrfToString(uint grf)
         {
             throw new NotImplementedException();

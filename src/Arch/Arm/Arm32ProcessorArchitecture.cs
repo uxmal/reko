@@ -120,6 +120,11 @@ namespace Reko.Arch.Arm
             return A32Registers.GpRegs.ToArray();
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());

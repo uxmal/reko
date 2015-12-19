@@ -27,13 +27,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Analysis
 {
 	public class IdentifierLiveness : StorageVisitor<Storage>	
 	{
 		private Identifier id;
-		private BitSet bits;
+		private HashSet<RegisterStorage> bits;
 		private uint grf;
 		private Dictionary<Storage,int> liveStackVars;
 		private IProcessorArchitecture arch;
@@ -144,7 +145,8 @@ namespace Reko.Analysis
             Debug.WriteLine(sw.ToString());
         }
 
-		public BitSet BitSet
+        [Obsolete("Rename this")]
+		public HashSet<RegisterStorage> BitSet
 		{
 			get { return bits; }
 			set { bits = value; }
@@ -160,7 +162,7 @@ namespace Reko.Analysis
 				defOffset = Math.Max(widestSub.AliasOffset, defOffset);
 				defBitSize = Math.Min(widestSub.DataType.BitSize, defBitSize);
 			}
-			reg.SetAliases(bits, false);
+            bits.ExceptWith(arch.GetAliases(reg));
 		}
 
 		public uint Grf
@@ -219,10 +221,10 @@ namespace Reko.Analysis
 			{
 				RegisterStorage r = (useBitSize == 0)
 					? reg
-					: reg.GetSubregister(useOffset, useBitSize);
+					: arch.GetSubregister(reg, useOffset, useBitSize);
 				if (r == null)
 					r = reg;
-				bits[r.Number] = true;
+                bits.Add(r);
 			}
             return null;
 		}
@@ -330,21 +332,10 @@ namespace Reko.Analysis
 
 		private void WriteRegisters(TextWriter writer)
 		{
-			if (this.bits != null && !bits.IsEmpty)
-			{
-				for (int i = 0; i < bits.Count; ++i)
-				{
-					if (bits[i])
-					{
-						var reg = arch.GetRegister(i);
-                        if (reg != null && reg.IsAluRegister)
-						{
-							writer.Write(' ');
-							writer.Write(reg.ToString());
-						}
-					}
-				}
-			}
+            foreach (var reg in bits.OrderBy(r => r.Name))
+            {
+                writer.Write(" {0}", reg.Name);
+            }
 		}
 			
 

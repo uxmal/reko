@@ -185,11 +185,6 @@ namespace Reko.Arch.M68k
         public AddressRegister(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
         {
         }
-
-        public override RegisterStorage GetSubregister(int offset, int size)
-        {
-            return null;
-        }
     }
 
     public class DataRegister : RegisterStorage

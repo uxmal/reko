@@ -28,7 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-using BitSet = Reko.Core.Lib.BitSet;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -74,7 +74,7 @@ namespace Reko.Analysis
         {
             var live = new RegisterLiveness(p, procFlow, eventListener);
             Debug.WriteLineIf(trace.TraceError, "** Computing ByPass ****");
-            live.CurrentState = new ByPassState();
+            live.CurrentState = new ByPassState(p.Architecture);
             live.ProcessWorklist();
 
             Debug.WriteLineIf(trace.TraceError, "** Computing MayUse ****");
@@ -105,7 +105,7 @@ namespace Reko.Analysis
             this.eventListener = eventListener;
             this.worklist = new WorkList<BlockFlow>();
 			this.varLive = new IdentifierLiveness(program.Architecture);
-			this.isLiveHelper = new IsLiveHelper();
+			this.isLiveHelper = new IsLiveHelper(program.Architecture);
 			AddAllBasicBlocksToWorklist();
 			if (trace.TraceInfo) Dump();
 		}
@@ -153,22 +153,15 @@ namespace Reko.Analysis
 			Debug.WriteLine(sw.ToString());
 		}
 
-		private string DumpRegisters(BitSet arr)
+		private string DumpRegisters(HashSet<RegisterStorage> arr)
 		{
 			var sb = new StringBuilder();
 			var arch = program.Architecture;
-			for (int i = 0; i < arr.Count; ++i)
-			{
-				if (arr[i])
-				{
-					var reg = arch.GetRegister(i);
-					if (reg != null && reg.IsAluRegister)
-					{
-						sb.Append(reg.Name);
-						sb.Append(" ");
-					}
-				}
-			}
+            foreach (var reg in arr.OrderBy(r => r.Name))
+            {
+                sb.Append(reg.Name);
+                sb.Append(" ");
+            }
 			return sb.ToString();
 		}
 
@@ -210,7 +203,7 @@ namespace Reko.Analysis
 				DumpBlock(item.Block);
 			}
 			
-			varLive.BitSet = new BitSet(item.DataOut);
+			varLive.BitSet = new HashSet<RegisterStorage>(item.DataOut);
 			varLive.Grf = item.grfOut;
             varLive.LiveStorages = new Dictionary<Storage,int>(item.StackVarsOut);
 			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.BitSet)));
@@ -247,7 +240,7 @@ namespace Reko.Analysis
 			}
 		}
 
-		private void Dump(bool enable, string s, BitSet a)
+		private void Dump(bool enable, string s, HashSet<RegisterStorage> a)
 		{
 			if (enable)
 			{
@@ -292,11 +285,11 @@ namespace Reko.Analysis
 		
 		public bool MergeIntoProcedureFlow(IdentifierLiveness varLive, ProcedureFlow flow)
 		{
-            if (varLive.BitSet[0x1F]) varLive.ToString();
 			bool fChange = false;
-			if (!(varLive.BitSet & ~flow.Summary).IsEmpty)
+            int oldcount = flow.Summary.Count;
+            flow.Summary.UnionWith(varLive.BitSet);
+			if (flow.Summary.Count != oldcount)
 			{
-				flow.Summary |= varLive.BitSet;
 				fChange = true;
 			}
 			if ((varLive.Grf & ~flow.grfSummary) != 0)
@@ -337,7 +330,7 @@ namespace Reko.Analysis
 		/// <param name="stm"></param>
 		private void PropagateToCalleeExitBlocks(Statement stm)
 		{
-			BitSet liveOrig = new BitSet(varLive.BitSet);
+			var liveOrig = new HashSet<RegisterStorage>(varLive.BitSet);
 			uint grfOrig = varLive.Grf;
             var stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
 			foreach (Procedure p in program.CallGraph.Callees(stm))
@@ -549,7 +542,6 @@ namespace Reko.Analysis
 
 				ProcedureFlow pi = mpprocData[procCallee];
 				ProcedureFlow item = mpprocData[Procedure];
-                if (varLive.BitSet[0x1F]) varLive.ToString();
 
 				// The registers that are still live before a call are those
 				// that were live after the call and were bypassed by the called function
@@ -691,8 +683,11 @@ namespace Reko.Analysis
 
 		public class ByPassState : State
 		{
-			public ByPassState() : base(false)
+            private IProcessorArchitecture arch;
+
+            public ByPassState(IProcessorArchitecture arch) : base(false)
 			{
+                this.arch = arch;
 			}
 
 			public override void ApplySavedRegisters(ProcedureFlow procFlow, IdentifierLiveness varLive)
@@ -709,8 +704,8 @@ namespace Reko.Analysis
 					if (ret != null)
 					{
 						RegisterStorage rs = ret.Storage as RegisterStorage;
-						if (rs != null)
-							rs.SetAliases(bf.DataOut, true);
+                        if (rs != null)
+                            bf.DataOut.UnionWith(arch.GetAliases(rs));
 					}
 					foreach (Identifier id in block.Procedure.Signature.Parameters)
 					{
@@ -738,28 +733,29 @@ namespace Reko.Analysis
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
 				flow.Summary = flow.ByPass;
-				flow.Summary.SetAll(false);
+                flow.Summary.Clear();
 			}
 
 			public override void UpdateSummary(ProcedureFlow item)
 			{
-				item.ByPass = item.Summary.Clone();
+                item.ByPass = new HashSet<RegisterStorage>(item.Summary);
 			}
 
 			public override bool MergeBlockInfo(IdentifierLiveness varLive, BlockFlow blockFlow)
 			{
-				bool ret = false;
-				if (!(~varLive.BitSet & blockFlow.DataOut).IsEmpty)
+				bool changed = false;
+                int oldCount = blockFlow.DataOut.Count;
+                blockFlow.DataOut.UnionWith(varLive.BitSet);
+                if (blockFlow.DataOut.Count != oldCount)
 				{
-					blockFlow.DataOut |= varLive.BitSet;
-					ret = true;
+					changed = true;
 				}
 				if ((~varLive.Grf & blockFlow.grfOut) != 0)
 				{
 					blockFlow.grfOut |= varLive.Grf;
-					ret = true;
+					changed = true;
 				}
-				return ret;
+				return changed;
 			}
 		}
 
@@ -776,21 +772,21 @@ namespace Reko.Analysis
 
 			public override void InitializeBlockFlow(Block block, ProgramDataFlow flow, bool isExitBlock)
 			{
-				flow[block].DataOut.SetAll(false);
+                flow[block].DataOut.Clear();
 			}
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
-				flow.ByPass = flow.Summary.Clone();
-				flow.Summary.SetAll(false);
+                flow.ByPass = new HashSet<RegisterStorage>(flow.Summary);
+                flow.Summary.Clear();
 				flow.grfByPass = flow.grfSummary;
 				flow.grfSummary = 0;
 			}
 
 			public override void UpdateSummary(ProcedureFlow item)
 			{
-				item.MayUse = item.Summary.Clone();
-			}
+				item.MayUse = new HashSet<RegisterStorage>(item.Summary);
+            }
 		}
 
 
@@ -802,13 +798,13 @@ namespace Reko.Analysis
 
 			public override void InitializeBlockFlow(Block block, ProgramDataFlow flow, bool isExitBlock)
 			{
-				flow[block].DataOut.SetAll(false);
+                flow[block].DataOut.Clear();
 			}
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
-				flow.MayUse = new BitSet(flow.Summary);
-				flow.Summary.SetAll(false);
+				flow.MayUse = new HashSet<RegisterStorage>(flow.Summary);
+                flow.Summary.Clear();
 				flow.grfMayUse = flow.grfSummary;
 				flow.grfSummary = 0;
 			}
@@ -828,8 +824,14 @@ namespace Reko.Analysis
 		/// </summary>
 		public class IsLiveHelper : StorageVisitor<bool>
 		{
+            private IProcessorArchitecture arch;
 			private bool retval;
 			private IdentifierLiveness liveState;
+
+            public IsLiveHelper(IProcessorArchitecture arch)
+            {
+                this.arch = arch;
+            }
 
 			public bool IsLive(Identifier id, IdentifierLiveness liveState)
 			{
@@ -865,8 +867,8 @@ namespace Reko.Analysis
 			{
 				//$REFACTOR: make SetAliases be a bitset of Register.
 				BitSet b = new BitSet(liveState.BitSet.Count);
-				reg.SetAliases(b, true);
-				return !(liveState.BitSet & b).IsEmpty;
+                var aliases = arch.GetAliases(reg);
+                return liveState.BitSet.Overlaps(aliases);
 			}
 
 			public bool VisitFpuStackStorage(FpuStackStorage fpu)

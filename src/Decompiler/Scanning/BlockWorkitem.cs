@@ -965,6 +965,11 @@ namespace Reko.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
             }
 
+            public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+            {
+                throw new NotImplementedException();
+            }
+
             public bool IsValidAddress(Address addr)
             {
                 return image.IsValidAddress(addr);

@@ -86,7 +86,7 @@ namespace Reko.Core
         /// Typically, the stack pointer register is one of these registers. Some architectures define
         /// global registers that are preserved across calls; these should also be present in this set.
         /// </remarks>
-        public abstract BitSet CreateImplicitArgumentRegisters();
+        public abstract HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
 
         public IEnumerable<Address> CreatePointerScanner(
             ImageMap imageMap,
@@ -229,9 +229,9 @@ namespace Reko.Core
 
         public override string PlatformIdentifier {  get { return "default"; } }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return Architecture.CreateRegisterBitset();
+            return new HashSet<RegisterStorage>();
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

@@ -300,6 +300,11 @@ namespace Reko.Arch.PowerPC
                 .Select(u => Address.Ptr32(u));
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
@@ -323,6 +328,11 @@ namespace Reko.Arch.PowerPC
                 .ToHashSet();
             return new PowerPcPointerScanner64(rdr, knownLinAddresses, flags)
                 .Select(u => Address.Ptr64(u));
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
         }
 
         public override Address MakeAddressFromConstant(Constant c)

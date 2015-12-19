@@ -493,7 +493,7 @@ namespace Reko.Arch.X86
 
         public void WriteRegister(RegisterStorage r, TWord value)
         {
-            ((IntelRegister)r).SetRegisterFileValues(Registers, value, Valid);
+            r.SetRegisterFileValues(Registers, value, Valid);
         }
 
         public void Loop(MachineOperand op)

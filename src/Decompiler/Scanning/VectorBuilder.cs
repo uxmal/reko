@@ -148,6 +148,11 @@ namespace Reko.Scanning
             return vector;
         }
 
+        public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
+        }
+
         public Block GetSinglePredecessor(Block block)
         {
             return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();

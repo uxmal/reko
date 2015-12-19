@@ -168,6 +168,11 @@ namespace Reko.UnitTests.Mocks
             return null;
 		}
 
+        public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
+        }
+
         public RegisterStorage[] GetRegisters()
         {
             return registers;
@@ -258,17 +263,22 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public RegisterStorage GetPart(RegisterStorage reg, DataType width)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 
 	public class MockMachineRegister : RegisterStorage
 	{
 		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, 0, dt) { }
-
-        public override RegisterStorage GetSubregister(int offset, int size)
-		{
-			return this;
-		}
 
 		public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{

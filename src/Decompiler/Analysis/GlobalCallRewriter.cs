@@ -137,8 +137,9 @@ namespace Reko.Analysis
 			}
 
             var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
-            BitSet mayUse = flow.MayUse - implicitRegs;
-			foreach (int r in mayUse)
+            var mayUse = new HashSet<RegisterStorage>(flow.MayUse);
+            mayUse.ExceptWith(implicitRegs);
+			foreach (var r in mayUse)
 			{
 				if (!IsSubRegisterOfRegisters(r, mayUse))
 				{
@@ -221,11 +222,8 @@ namespace Reko.Analysis
 		/// <param name="r"></param>
 		/// <param name="regs"></param>
 		/// <returns></returns>
-		private bool IsSubRegisterOfRegisters(int r, BitSet regs)
+		private bool IsSubRegisterOfRegisters(RegisterStorage rr, BitSet regs)
 		{
-            var rr = Program.Architecture.GetRegister(r);
-            if (rr == null)
-                return false;
 			foreach (int r2 in regs)
 			{
 				if (rr.IsSubRegisterOf(Program.Architecture.GetRegister(r2)))

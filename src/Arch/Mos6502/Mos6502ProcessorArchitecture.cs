@@ -104,6 +104,11 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
+        }
+
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();

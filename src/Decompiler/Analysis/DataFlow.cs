@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, BitSet regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, HashSet<RegisterStorage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			if (grfFlags != 0)
@@ -53,7 +54,7 @@ namespace Reko.Analysis
 			EmitRegistersCore(arch, regs, sb);
 		}
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, BitSet regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<RegisterStorage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			EmitRegistersCore(arch, regs, sb);
@@ -68,23 +69,13 @@ namespace Reko.Analysis
             }
         }
         
-		private static void EmitRegistersCore(IProcessorArchitecture arch, BitSet regs, TextWriter sb)
+		private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<RegisterStorage> regs, TextWriter sb)
 		{
-			if (regs != null && !regs.IsEmpty)
-			{
-				for (int i = 0; i < regs.Count; ++i)
-				{
-					if (regs[i])
-					{
-						var r = arch.GetRegister(i);
-						if (r != null && r.IsAluRegister)
-						{
-							sb.Write(" ");
-							sb.Write(r.Name);
-						}
-					}
-				}
-			}
+            foreach (var reg in regs.OrderBy(r => r.Name))
+            {
+                sb.Write(" ");
+                sb.Write(reg.Name);
+            }
 		}
 
         public void EmitFlagGroup(IProcessorArchitecture arch, string caption, uint grfFlags, TextWriter sb)

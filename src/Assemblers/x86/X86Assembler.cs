@@ -468,11 +468,11 @@ namespace Reko.Assemblers.x86
             if (regOpDst != null)	//$BUG: what about segment registers?
             {
                 byte reg = RegisterEncoding(regOpDst.Register);
-                if (regOpDst.Register is SegmentRegister)
+                if (IsSegmentRegister(regOpDst.Register))
                 {
                     if (regOpSrc != null)
                     {
-                        if (regOpSrc.Register is SegmentRegister)
+                        if (IsSegmentRegister(regOpSrc.Register ))
                             Error("Cannot assign between two segment registers");
                         if (ops[1].Operand.Width != PrimitiveType.Word16)
                             Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
@@ -489,9 +489,9 @@ namespace Reko.Assemblers.x86
                     }
                 }
 
-                if (regOpSrc != null && regOpSrc.Register is SegmentRegister)
+                if (regOpSrc != null && IsSegmentRegister(regOpSrc.Register))
                 {
-                    if (regOpDst.Register is SegmentRegister)
+                    if (IsSegmentRegister(regOpDst.Register))
                         Error("Cannot assign between two segment registers");
                     if (ops[0].Operand.Width != PrimitiveType.Word16)
                         Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
@@ -540,7 +540,7 @@ namespace Reko.Assemblers.x86
             regOpSrc = ops[1].Operand as RegisterOperand;
             if (regOpSrc != null)
             {
-                if (regOpSrc.Register is SegmentRegister)
+                if (IsSegmentRegister(regOpSrc.Register))
                 {
                     EmitOpcode(0x8C, PrimitiveType.Word16);
                 }
@@ -559,6 +559,17 @@ namespace Reko.Assemblers.x86
                 emitter.EmitLeImmediate(immOpSrc.Value, dataWidth);
             }
         }
+
+        public static bool IsSegmentRegister(RegisterStorage seg)
+        {
+            return seg.Domain == Registers.cs.Domain ||
+                   seg.Domain == Registers.ds.Domain ||
+                   seg.Domain == Registers.es.Domain ||
+                   seg.Domain == Registers.fs.Domain ||
+                   seg.Domain == Registers.gs.Domain ||
+                   seg.Domain == Registers.ss.Domain;
+        }
+
         internal void ProcessMovx(int opcode, ParsedOperand[] ops)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(ops[1]);
@@ -609,8 +620,8 @@ namespace Reko.Assemblers.x86
             RegisterOperand regOp = op.Operand as RegisterOperand;
             if (regOp != null)
             {
-                IntelRegister rrr = (IntelRegister) regOp.Register;
-                if (rrr.IsBaseRegister)
+                var rrr = regOp.Register;
+                if (IsBaseRegister(rrr))
                 {
                     EmitOpcode(0x50 | (fPop ? 8 : 0) | RegisterEncoding(regOp.Register), dataWidth);
                 }
@@ -634,6 +645,12 @@ namespace Reko.Assemblers.x86
 
             EmitOpcode(fPop ? 0x8F : 0xFF, dataWidth);
             EmitModRM(fPop ? 0 : 6, op);
+        }
+
+        private bool IsBaseRegister(RegisterStorage reg)
+        {
+            var r = (int)reg.Domain;
+            return (int)Registers.eax.Domain <= r && r <= (int)Registers.edi.Domain;
         }
 
         internal void ProcessSetCc(byte bits, ParsedOperand op)

@@ -158,6 +158,11 @@ namespace Reko.Arch.Pdp11
             return false;
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
+        }
+
         public override FlagGroupStorage GetFlagGroup(uint grf)
 		{
             FlagGroupStorage f;

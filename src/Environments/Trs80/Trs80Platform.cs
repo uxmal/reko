@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.Arch.Z80;
 
 namespace Reko.Environments.Trs80
 {
@@ -54,9 +55,9 @@ namespace Reko.Environments.Trs80
             }
         }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage> { Registers.sp };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

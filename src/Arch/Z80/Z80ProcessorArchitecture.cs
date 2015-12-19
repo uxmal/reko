@@ -104,6 +104,19 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (offset == 0 && reg.BitSize == (ulong)width)
+                return reg;
+            Dictionary<uint, RegisterStorage> dict;
+            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
+                return null;
+            RegisterStorage subReg;
+            if (!dict.TryGetValue((uint)(offset + width * 16), out subReg))
+                return null;
+            return subReg;
+        }
+
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
@@ -175,6 +188,7 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage C = new RegisterStorage("C", 23, 0, PrimitiveType.Bool);
 
         internal static RegisterStorage[] All;
+        internal static Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters;
 
         static Registers()
         {
@@ -207,6 +221,33 @@ namespace Reko.Arch.Z80
              Z ,
              P ,
              C ,
+            };
+
+            SubRegisters = new Dictionary<
+                RegisterStorage, 
+                Dictionary<uint, RegisterStorage>>
+            {
+                {
+                    bc, new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x08, Registers.c },
+                        { 0x88, Registers.b },
+                    }
+                },
+                {
+                    de, new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x08, Registers.e },
+                        { 0x88, Registers.d },
+                    }
+                },
+                {
+                    hl, new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x08, Registers.l },
+                        { 0x88, Registers.h },
+                    }
+                }
             };
         }
 

@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Arch.Intel
             return asm;
         }
 
-        private Identifier Reg(IntelRegister r)
+        private Identifier Reg(RegisterStorage r)
         {
             return new Identifier(r.Name, r.DataType, r);
         }

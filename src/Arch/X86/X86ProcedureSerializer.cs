@@ -153,7 +153,8 @@ namespace Reko.Arch.X86
                         new Identifier("eax", PrimitiveType.Word16, Architecture.GetRegister("eax")));
                 break;
             }
-            return Architecture.GetRegister("rax").GetSubregister(0, bitSize);
+            var reg = Architecture.GetRegister("rax");
+            return Architecture.GetSubregister(reg, 0, bitSize);
         }
     }
 }

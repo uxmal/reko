@@ -240,7 +240,7 @@ namespace Reko.Assemblers.x86
 				switch (lexer.PeekToken())
 				{
 				case Token.COLON:		// Segment override of the form "es:" usually precedes a memory operand.
-					if (!(reg is SegmentRegister))
+					if (!X86Assembler.IsSegmentRegister(reg))
 						throw new ApplicationException(reg.ToString() + " is not a segment register.");
 					Expect(Token.COLON);			// Discard ':'
 					Expect(Token.BRA);

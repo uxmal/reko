@@ -36,5 +36,6 @@ namespace Reko.Core
         Block GetSinglePredecessor(Block block);
 
         bool IsValidAddress(Address addr);
+        RegisterStorage GetSubregister(RegisterStorage rIdx, int v1, int v2);
     }
 }

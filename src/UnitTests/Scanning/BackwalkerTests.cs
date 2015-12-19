@@ -68,6 +68,11 @@ namespace Reko.UnitTests.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
             }
 
+            public RegisterStorage GetSubregister(RegisterStorage reg, int off, int size)
+            {
+                throw new NotImplementedException();
+            }
+
             public bool IsValidAddress(Address addr)
             {
                 return true;

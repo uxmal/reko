@@ -155,10 +155,10 @@ namespace Reko.Arch.X86
 				case 1: return Registers.cl;
 				case 2: return Registers.dl;
 				case 3: return Registers.bl;
-				case 4: return rexPrefix != 0 ? Registers.spl : (IntelRegister) Registers.ah;
-                case 5: return rexPrefix != 0 ? Registers.bpl : (IntelRegister) Registers.ch;
-                case 6: return rexPrefix != 0 ? Registers.sil : (IntelRegister) Registers.dh;
-                case 7: return rexPrefix != 0 ? Registers.dil : (IntelRegister) Registers.bh;
+				case 4: return rexPrefix != 0 ? Registers.spl : Registers.ah;
+                case 5: return rexPrefix != 0 ? Registers.bpl : Registers.ch;
+                case 6: return rexPrefix != 0 ? Registers.sil : Registers.dh;
+                case 7: return rexPrefix != 0 ? Registers.dil : Registers.bh;
                 case 8: return Registers.r8b;
                 case 9: return Registers.r9b;
                 case 10: return Registers.r10b;

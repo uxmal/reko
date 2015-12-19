@@ -47,11 +47,9 @@ namespace Reko.Environments.MacOS
 
         public override string PlatformIdentifier { get { return "macOs"; } }
 
-        public override BitSet CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            var bitset = Architecture.CreateRegisterBitset();
-            Registers.a7.SetAliases(bitset, true);
-            return bitset;
+            return new HashSet<RegisterStorage> { Registers.a7 };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

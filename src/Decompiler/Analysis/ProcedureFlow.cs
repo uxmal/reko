@@ -42,19 +42,19 @@ namespace Reko.Analysis
 		public uint grfPreserved;
 
 		public uint grfTrashed;
-		public BitSet TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
+		public HashSet<RegisterStorage> TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
         public Dictionary<Storage, Constant> ConstantRegisters; // If present, indicates a register always has a constant value leaving the procedure.
 
-		public BitSet ByPass;
+		public HashSet<RegisterStorage> ByPass;
 		public uint grfByPass;
-		public BitSet MayUse;
+		public HashSet<RegisterStorage> MayUse;
 		public uint grfMayUse;
-		public BitSet Summary;
+		public HashSet<RegisterStorage> Summary;
 		public uint grfSummary;
 
 		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
 
-		public BitSet LiveOut;
+		public HashSet<RegisterStorage> LiveOut;
 		public uint grfLiveOut;
 
 		public ProcedureSignature Signature;
@@ -71,9 +71,9 @@ namespace Reko.Analysis
             TrashedRegisters = arch.CreateRegisterBitset();
             ConstantRegisters = new Dictionary<Storage, Constant>();
 
-            ByPass = arch.CreateRegisterBitset();
-            MayUse = arch.CreateRegisterBitset();
-            LiveOut = arch.CreateRegisterBitset();
+            ByPass = new HashSet<RegisterStorage>();
+            MayUse = new HashSet<RegisterStorage>();
+            LiveOut = new HashSet<RegisterStorage>();
 
             StackArguments = new Hashtable();
         }

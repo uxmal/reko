@@ -52,10 +52,7 @@ namespace Reko.Core
         /// <returns></returns>
 		ProcessorState CreateProcessorState();
 
-        /// <summary>
-        /// Creates a BitSet large enough to fit all the registers.
-        /// </summary>
-        /// <returns></returns>
+        [Obsolete]
 		BitSet CreateRegisterBitset();
 
         /// <summary>
@@ -108,8 +105,11 @@ namespace Reko.Core
         /// <returns></returns>
         IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
 
-		RegisterStorage GetRegister(int i);			        // Returns register corresponding to number i.
-		RegisterStorage GetRegister(string name);	        // Returns register whose name is 'name'
+        IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
+        RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
+        RegisterStorage GetRegister(string name);	        // Returns register whose name is 'name'
+        RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+        RegisterStorage GetPart(RegisterStorage reg, DataType width);
         RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
@@ -171,13 +171,20 @@ namespace Reko.Core
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        [Obsolete]
         public abstract BitSet CreateRegisterBitset();
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
 
+        public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
+        public abstract RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+        public virtual RegisterStorage GetPart(RegisterStorage reg, DataType dt)
+        {
+            return GetSubregister(reg, 0, dt.BitSize);
+        }
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
         public abstract FlagGroupStorage GetFlagGroup(uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);

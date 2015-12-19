@@ -199,6 +199,19 @@ namespace Reko.Arch.X86
 			return r;
 		}
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (offset == 0 && reg.BitSize == (ulong) width)
+                return reg;
+            Dictionary<uint, RegisterStorage> dict;
+            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
+                return null;
+            RegisterStorage subReg;
+            if (!dict.TryGetValue((uint)(offset * 256 + width), out subReg))
+                return null;
+            return subReg;
+        }
+
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.All.Where(a => a != null).ToArray();

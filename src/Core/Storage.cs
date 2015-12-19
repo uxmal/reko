@@ -213,6 +213,7 @@ namespace Reko.Core
 	{
 		public MemoryStorage() : base("Global")
 		{
+            this.Domain = StorageDomain.Memory;
 		}
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -358,29 +359,17 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            var rs = obj as RegisterStorage;
-            if (rs == null)
+            var that = obj as RegisterStorage;
+            if (that == null)
                 return false;
-            return Number == rs.Number;
+            return this.Domain == that.Domain &&
+                this.BitAddress == that.BitAddress &&
+                this.BitSize == that.BitSize;
         }
 
-        [Obsolete("Use Domain and BitOffsets.")]
         public override int GetHashCode()
         {
-            return GetType().GetHashCode() ^ Number;
-        }
-
-        public RegisterStorage GetPart(DataType width)
-        {
-            return GetSubregister(0, width.BitSize);
-        }
-
-        public virtual RegisterStorage GetSubregister(int offset, int bitSize)
-        {
-            if (offset == 0 && bitSize == DataType.BitSize)
-                return this;
-            else
-                return null;
+            return (int)Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
         }
 
         public virtual RegisterStorage GetWidestSubregister(BitSet bits)
@@ -394,7 +383,7 @@ namespace Reko.Core
         /// <param name="reg1"></param>
         /// <param name="reg2"></param>
         /// <returns></returns>
-        public virtual bool IsSubRegisterOf(RegisterStorage reg2)
+        public bool IsSubRegisterOf(RegisterStorage reg2)
         {
             if (this.BitSize >= reg2.BitSize)
                 return false;
@@ -472,7 +461,6 @@ namespace Reko.Core
                 Number = -1,
                 Domain = StorageDomain.None,
                 BitAddress = 0,
-                BitSize = 0,
                 DataType = PrimitiveType.Create(Types.Domain.Any, 0)
             };
             
@@ -698,11 +686,6 @@ namespace Reko.Core
         {
 			return visitor.VisitTemporaryStorage(this);
 		}
-
-        public override RegisterStorage GetSubregister(int offset, int size)
-        {
-            return null;
-        }
 
         public override bool IsSubRegisterOf(RegisterStorage reg2)
         {

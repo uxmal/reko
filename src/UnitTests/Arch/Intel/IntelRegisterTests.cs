@@ -43,37 +43,37 @@ namespace Reko.UnitTests.Arch.Intel
 		[Test]
 		public void GetSubregisterOfAx()
 		{
-			Assert.AreSame(Registers.al, Registers.ax.GetSubregister(0, 8));
+			Assert.AreSame(Registers.al, arch.GetSubregister(Registers.ax, 0, 8));
 		}
 
 		[Test]
 		public void GetSubregisterOfEsi()
 		{
-			Assert.AreSame(Registers.esi, Registers.esi.GetSubregister(0, 32));
+			Assert.AreSame(Registers.esi, arch.GetSubregister(Registers.esi, 0, 32));
 		}
 
 		[Test]
 		public void GetSubregisterOfEdx()
 		{
-			Assert.AreSame(Registers.edx, Registers.edx.GetSubregister(0, 32));
+			Assert.AreSame(Registers.edx, arch.GetSubregister(Registers.edx, 0, 32));
 		}
 
 		[Test]
 		public void GetSubregisterOfAh()
 		{
-			Assert.AreSame(Registers.ah, Registers.ah.GetSubregister(8, 8));
+			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.ah, 8, 8));
 		}
 
 		[Test]
 		public void GetSubregisterOfEax()
 		{
-			Assert.AreSame(Registers.ah, Registers.eax.GetSubregister(8, 8));
+			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.eax, 8, 8));
 		}
 
 		[Test]
 		public void GetPartEsi()
 		{
-			Assert.AreSame(Registers.si, Registers.esi.GetPart(PrimitiveType.Word16));
+            Assert.AreSame(Registers.si, arch.GetSubregister(Registers.esi, 0, 16));
 		}
 
 		[Test]
@@ -98,10 +98,10 @@ namespace Reko.UnitTests.Arch.Intel
 		[Test]
 		public void RegisterPartsByteCount()
 		{
-			Assert.AreEqual(Registers.al, Registers.eax.GetPart(PrimitiveType.Byte));
-			Assert.AreEqual(Registers.bx, Registers.ebx.GetPart(PrimitiveType.Word16));
-			Assert.AreEqual(Registers.ecx, Registers.ecx.GetPart(PrimitiveType.Word32));
-			Assert.AreEqual(null, Registers.esi.GetPart(PrimitiveType.Byte));
+            Assert.AreEqual(Registers.al, arch.GetSubregister(Registers.eax, 0, 8));
+            Assert.AreEqual(Registers.bx, arch.GetSubregister(Registers.ebx, 0, 16));
+            Assert.AreEqual(Registers.ecx, arch.GetSubregister(Registers.ecx, 0, 32));
+            Assert.AreEqual(null, arch.GetSubregister(Registers.esi, 0, 8));
 		}
 
 		[Test]
