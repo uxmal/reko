@@ -139,6 +139,8 @@ namespace Reko.Arch.X86
 
         public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
+            if (bitSize == 0)
+                bitSize = Architecture.WordWidth.BitSize;
             switch (bitSize)
             {
             case 32: 

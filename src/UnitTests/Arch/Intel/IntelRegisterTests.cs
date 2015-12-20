@@ -41,62 +41,62 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void GetSubregisterOfAx()
+		public void X86r_GetSubregisterOfAx()
 		{
 			Assert.AreSame(Registers.al, arch.GetSubregister(Registers.ax, 0, 8));
 		}
 
 		[Test]
-		public void GetSubregisterOfEsi()
+		public void X86r_GetSubregisterOfEsi()
 		{
 			Assert.AreSame(Registers.esi, arch.GetSubregister(Registers.esi, 0, 32));
 		}
 
 		[Test]
-		public void GetSubregisterOfEdx()
+		public void X86r_GetSubregisterOfEdx()
 		{
 			Assert.AreSame(Registers.edx, arch.GetSubregister(Registers.edx, 0, 32));
 		}
 
 		[Test]
-		public void GetSubregisterOfAh()
+		public void X86r_GetSubregisterOfAh()
 		{
 			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.ah, 8, 8));
 		}
 
 		[Test]
-		public void GetSubregisterOfEax()
+		public void X86r_GetSubregisterOfEax()
 		{
 			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.eax, 8, 8));
 		}
 
 		[Test]
-		public void GetPartEsi()
+		public void X86r_GetPartEsi()
 		{
             Assert.AreSame(Registers.si, arch.GetSubregister(Registers.esi, 0, 16));
 		}
 
 		[Test]
-		public void AliasOffset32Acc()
+		public void X86r_BitOffset32Acc()
 		{
-			Assert.AreEqual(0, Registers.eax.AliasOffset);
+			Assert.AreEqual(0, Registers.eax.BitAddress);
 		}
 
 		[Test]
-		public void AliasOffsetHiByte()
+		public void X86r_BitOffsetHiByte()
 		{
-			Assert.AreEqual(8, Registers.ch.AliasOffset);
+			Assert.AreEqual(8, Registers.ch.BitAddress);
 		}
 
 		[Test]
-		public void IsAluRegister()
+		public void X86r_IsAluRegister()
 		{
 			Assert.IsTrue(Registers.gs.IsAluRegister);
 			Assert.IsFalse(Registers.Z.IsAluRegister);
 		}
 
 		[Test]
-		public void RegisterPartsByteCount()
+		public void X86r_RegisterPartsByteCount()
 		{
             Assert.AreEqual(Registers.al, arch.GetSubregister(Registers.eax, 0, 8));
             Assert.AreEqual(Registers.bx, arch.GetSubregister(Registers.ebx, 0, 16));
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void WidestSubregisterEcx()
+		public void X86r_WidestSubregisterEcx()
 		{
             var bits = new HashSet<RegisterStorage>();
 			Assert.IsNull(Registers.ecx.GetWidestSubregister(bits));
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void WidestSubregisterChClTogether()
+		public void X86r_WidestSubregisterChClTogether()
 		{
             var bits = new HashSet<RegisterStorage>();
             bits.Add(Registers.cl);
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void WidestSubregisterEsi()
+		public void X86r_WidestSubregisterEsi()
 		{
             var bits = new HashSet<RegisterStorage>();
             Assert.IsNull(Registers.esi.GetWidestSubregister(bits));
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void WidestSubregisterDx()
+		public void X86r_WidestSubregisterDx()
 		{
             var bits = new HashSet<RegisterStorage>();
 			Assert.IsNull(Registers.dx.GetWidestSubregister(bits));
@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void WidestSubregisterSp()
+		public void X86r_WidestSubregisterSp()
 		{
             var bits = new HashSet<RegisterStorage>();
 			Assert.IsNull(Registers.sp.GetWidestSubregister(bits));
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void WidestSubregisterBh()
+		public void X86r_WidestSubregisterBh()
 		{
             var bits = new HashSet<RegisterStorage>();
             Assert.IsNull(Registers.bh.GetWidestSubregister(bits));
@@ -182,17 +182,17 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void SetAxAliasesTrue()
+		public void X86r_SetAxAliasesTrue()
 		{
             var bits = new HashSet<RegisterStorage>();
-            Registers.ax.SetAliases(bits, true);
+            var aliases = arch.GetAliases(Registers.ax);
 			Assert.IsTrue(bits.Contains(Registers.ax), "Expected ax set");
 			Assert.IsTrue(bits.Contains(Registers.ah), "Expected ah set");
 			Assert.IsTrue(bits.Contains(Registers.al), "Expected al set");
 		}
 
 		[Test]
-		public void SetAhRegisterFileValue()
+		public void X86r_SetAhRegisterFileValue()
 		{
 			ulong [] regFile = new ulong[32];
 			bool [] valid = new bool[32];
@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void SetAhThenAl()
+		public void X86r_SetAhThenAl()
 		{
 			ulong [] regFile = new ulong[32];
 			bool [] valid = new bool[32];
@@ -218,7 +218,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void SetBp()
+		public void X86r_SetBp()
 		{
 			ulong [] regFile = new ulong[32];
 			bool [] valid = new bool[32];
@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void SetCx()
+		public void X86r_SetCx()
 		{
 			ulong [] regFile = new ulong[32];
 			bool [] valid = new bool[32];
@@ -244,7 +244,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void SetEsi()
+		public void X86r_SetEsi()
 		{
 			ulong [] regFile = new ulong[32];
 			bool [] valid = new bool[32];
@@ -256,7 +256,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void SetEdx()
+		public void X86r_SetEdx()
 		{
 			ulong [] regFile = new ulong[32];
 			bool [] valid = new bool[32];

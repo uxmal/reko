@@ -154,12 +154,12 @@ namespace Reko.Analysis
 
 		public virtual void DefinedRegister(RegisterStorage reg)
 		{
-			defOffset = reg.AliasOffset;
+			defOffset = (int) reg.BitAddress;
 			defBitSize = reg.DataType.BitSize;
 			var widestSub = reg.GetWidestSubregister(bits);
 			if (widestSub != null)
 			{
-				defOffset = Math.Max(widestSub.AliasOffset, defOffset);
+				defOffset = Math.Max((int)widestSub.BitAddress, defOffset);
 				defBitSize = Math.Min(widestSub.DataType.BitSize, defBitSize);
 			}
             bits.ExceptWith(arch.GetAliases(reg));

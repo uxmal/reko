@@ -317,12 +317,6 @@ namespace Reko.Core
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
         }
 
-        /// <summary>
-        /// If this register is a subregister of a wider register, this property the bit offset within that wider register.
-        /// </summary>
-        /// <remarks>For instance, on i386 systems, AH would return 8 here, since it is located at that bit offset of EAX.</remarks>
-        public virtual int AliasOffset { get { return 0; } }
-
         public override ulong BitSize {
             get { return (ulong)DataType.BitSize; }
             set { throw new NotSupportedException(); }
@@ -432,7 +426,7 @@ namespace Reko.Core
 
         public virtual void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
         {
-            registerFile[Number] = value;
+            registerFile[(int)Domain] = value;
             valid[Number] = true;
         }
 

@@ -219,7 +219,7 @@ namespace Reko.UnitTests.Arch.Intel
             Given_RegValue(Registers.eax, 0xFFFFFFFF);
             emu.Start();
 
-            Assert.AreEqual(0xFFFF1234u, emu.Registers[Registers.eax.Number]);
+            Assert.AreEqual(0xFFFF1234u, emu.Registers[(int)Registers.eax.Domain]);
         }
 
         [Test]
