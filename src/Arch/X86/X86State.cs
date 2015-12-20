@@ -38,8 +38,8 @@ namespace Reko.Arch.X86
     /// </summary>
 	public class X86State : ProcessorState
 	{
-		private ulong [] regs;
-		private bool [] valid;
+		private ulong [] regs;              // register values
+		private ulong [] valid;             // masks out only valid bits
         private uint flags;
         private uint validFlags;
         private IntelArchitecture arch;
@@ -50,7 +50,7 @@ namespace Reko.Arch.X86
 		{
             this.arch = arch;
 			this.regs = new ulong[(int)Registers.Max];
-			this.valid = new bool[(int)Registers.Max];
+			this.valid = new ulong[(int)Registers.Max];
 		}
 
 		public X86State(X86State st) : base(st)
@@ -58,7 +58,7 @@ namespace Reko.Arch.X86
             arch = st.arch;
             FpuStackItems = st.FpuStackItems;
             regs = (ulong[])st.regs.Clone();
-			valid = (bool []) st.valid.Clone();
+			valid = (ulong []) st.valid.Clone();
 		}
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -91,10 +91,18 @@ namespace Reko.Arch.X86
 			return new X86State(this);
 		}
 
+        public bool IsValid(RegisterStorage reg)
+        {
+            return (valid[reg.Number] & reg.BitMask) == reg.BitMask;
+        }
+
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (valid[reg.Number])
-                return Constant.Create(reg.DataType, regs[reg.Number]);
+            if (IsValid(reg))
+            {
+                var val = (regs[reg.Number] & reg.BitMask) >> (int)reg.BitAddress;
+                return Constant.Create(reg.DataType, val);
+            }
             else
                 return Constant.Invalid;
         }
@@ -103,11 +111,12 @@ namespace Reko.Arch.X86
 		{
 			if (c == null || !c.IsValid)
 			{
-				valid[reg.Number] = false;
+                valid[reg.Number] &= ~reg.BitMask;
 			}
 			else
 			{
-				reg.SetRegisterFileValues(regs, c.ToUInt64(), valid);
+                valid[reg.Number] |= reg.BitMask;
+                regs[reg.Number] = (regs[reg.Number] & reg.BitMask) | (c.ToUInt64() << (int)reg.BitAddress);
 			}
 		}
 

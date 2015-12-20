@@ -546,9 +546,11 @@ namespace Reko.Analysis
                 // The registers that are still live before a call are those
                 // that were live after the call and were bypassed by the called function
                 // or used by the called function.
-                throw new NotImplementedException("Get the following 2 lines working!");
-				//varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
-				//varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
+                varLive.BitSet.ExceptWith(pi.TrashedRegisters);
+                varLive.BitSet.IntersectWith(pi.ByPass);
+                varLive.BitSet.Union(pi.MayUse);
+				// varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
+				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
 				// Any stack parameters are also considered live.
 				MarkLiveStackParameters(ci);
 			}

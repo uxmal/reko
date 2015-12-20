@@ -315,12 +315,26 @@ namespace Reko.Core
             this.BitAddress = bitAddress;
             this.DataType = dt;
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
+            int bitSize = dt.BitSize;
+            if (bitSize == 64)
+            {
+                BitMask = ~0ul;
+            }
+            else
+            {
+                BitMask = ((1ul << bitSize) - 1) << (int) bitAddress;
+            }
         }
 
         public override ulong BitSize {
             get { return (ulong)DataType.BitSize; }
             set { throw new NotSupportedException(); }
         }
+
+        /// <summary>
+        /// Bitmask used to extract subregister values from a larger backing register.
+        /// </summary>
+        public ulong BitMask { get; private set; }
 
         /// <summary>
         /// The name of the register.
@@ -424,6 +438,7 @@ namespace Reko.Core
             return new Register_v1(Name);
         }
 
+        [Obsolete("Don't use this; instead use mask paradigm", true)]
         public virtual void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
         {
             registerFile[(int)Domain] = value;

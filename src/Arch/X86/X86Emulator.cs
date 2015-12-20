@@ -466,7 +466,7 @@ namespace Reko.Arch.X86
 
         public TWord ReadRegister(RegisterStorage r)
         {
-            return (TWord) Registers[r.Number];
+            return (TWord)(Registers[r.Number] & r.BitMask) >> (int)r.BitAddress;
         }
 
         private void Write(MachineOperand op, TWord w)
@@ -493,7 +493,7 @@ namespace Reko.Arch.X86
 
         public void WriteRegister(RegisterStorage r, TWord value)
         {
-            r.SetRegisterFileValues(Registers, value, Valid);
+            Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int)r.BitAddress);
         }
 
         public void Loop(MachineOperand op)

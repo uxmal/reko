@@ -32,20 +32,20 @@ namespace Reko.Arch.PowerPC
     {
         private PowerPcArchitecture arch;
         private ulong[] regs;
-        private bool[] valid;
+        private ulong[] valid;
 
         public PowerPcState(PowerPcArchitecture arch)
         {
             this.arch = arch;
             this.regs = new ulong[0x80];
-            this.valid = new bool[0x80];
+            this.valid = new ulong[0x80];
         }
 
         public PowerPcState(PowerPcState other)
         {
             this.arch = other.arch;
             this.regs = new ulong[other.regs.Length];
-            this.valid = new bool[other.valid.Length];
+            this.valid = new ulong[other.valid.Length];
             for (int i = 0; i < other.regs.Length; ++i)
             {
                 this.regs[i] = other.regs[i];
@@ -65,8 +65,11 @@ namespace Reko.Arch.PowerPC
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (valid[reg.Number])
-                return Constant.Create(reg.DataType, regs[reg.Number]);
+            if ((valid[reg.Number] & reg.BitMask) == reg.BitMask)
+            {
+                var val = (regs[reg.Number] & reg.BitMask) >> (int)reg.BitAddress;
+                return Constant.Create(reg.DataType, val);
+            }
             else
                 return Constant.Invalid;
         }
@@ -75,11 +78,13 @@ namespace Reko.Arch.PowerPC
         {
             if (c == null || !c.IsValid)
             {
-                valid[reg.Number] = false;
+                valid[reg.Number] &= ~reg.BitMask;
             }
             else
             {
-                reg.SetRegisterFileValues(regs, c.ToUInt32(), valid);	//$REVIEW: AsUint64 for PPC-64?
+                valid[reg.Number] |= reg.BitMask;
+                var val = (regs[reg.Number] & ~reg.BitMask) | (c.ToUInt64() & reg.BitMask);
+                regs[reg.Number] = val;
             }
         }
 
