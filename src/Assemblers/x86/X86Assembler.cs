@@ -1017,14 +1017,9 @@ namespace Reko.Assemblers.x86
             }
         }
 
-        public static byte RegisterEncoding(byte b)
-        {
-            return registerEncodings[b];
-        }
-
         public static byte RegisterEncoding(RegisterStorage reg)
         {
-            return registerEncodings[reg.Number];
+            return registerEncodings[reg];
         }
 
         public static Constant IntegralConstant(int i, PrimitiveType width)
@@ -1059,41 +1054,42 @@ namespace Reko.Assemblers.x86
             Error(args.Message);
         }
 
-        private static readonly byte[] registerEncodings = 
+        private static readonly Dictionary<RegisterStorage, byte> registerEncodings = 
+            new Dictionary<RegisterStorage, byte>
 		{
-			0x00, // eax
-			0x01, // ecx
-			0x02, // edx
-			0x03, // ebx
-			0x04, // esp
-			0x05, // ebp
-			0x06, // esi
-			0x07, // edi
+			{ Registers.eax, 0x00 },
+			{ Registers.ecx, 0x01 },
+			{ Registers.edx, 0x02 },
+			{ Registers.ebx, 0x03 },
+			{ Registers.esp, 0x04 },
+			{ Registers.ebp, 0x05 },
+			{ Registers.esi, 0x06 },
+			{ Registers.edi, 0x07 },
 
-			0x00, // ax
-			0x01, // cx
-			0x02, // dx
-			0x03, // bx
-			0x04, // sp
-			0x05, // bp
-			0x06, // si
-			0x07, // di
+			{ Registers.ax, 0x00 },
+			{ Registers.cx, 0x01 },
+			{ Registers.dx, 0x02 },
+			{ Registers.bx, 0x03 },
+			{ Registers.sp, 0x04 },
+			{ Registers.bp, 0x05 },
+			{ Registers.si, 0x06 },
+			{ Registers.di, 0x07 },
 
-			0x00, // al
-			0x01, // cl
-			0x02, // dl
-			0x03, // bl
-			0x04, // ah
-			0x05, // ch
-			0x06, // dh
-			0x07, // bh
+			{ Registers.al, 0x00 },
+			{ Registers.cl, 0x01 },
+			{ Registers.dl, 0x02 },
+			{ Registers.bl, 0x03 },
+			{ Registers.ah, 0x04 },
+			{ Registers.ch, 0x05 },
+			{ Registers.dh, 0x06 },
+			{ Registers.bh, 0x07 },
 
-			0x00, // es
-			0x01, // cs
-			0x02, // ss
-			0x03, // ds
-			0x04, // fs
-			0x05, // gs
+			{ Registers.es, 0x00 },
+			{ Registers.cs, 0x01 },
+			{ Registers.ss, 0x02 },
+			{ Registers.ds, 0x03 },
+			{ Registers.fs, 0x04 },
+			{ Registers.gs, 0x05 },
 		};
         private Encoding textEncoding;
 

@@ -267,7 +267,7 @@ foo		endp
         }
 
         [Test]
-        public void Jpo()
+        public void AsJpo()
         {
             var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0x0100),
                 "jpo label\r\n" +
