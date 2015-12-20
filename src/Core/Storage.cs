@@ -462,6 +462,7 @@ namespace Reko.Core
         private static RegisterStorage none  = 
             new RegisterStorage("None")
             {
+                Name = "None",
                 Number = -1,
                 Domain = StorageDomain.None,
                 BitAddress = 0,
