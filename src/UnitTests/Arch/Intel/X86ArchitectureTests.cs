@@ -36,11 +36,11 @@ using BitSet = Reko.Core.Lib.BitSet;
 namespace Reko.UnitTests.Arch.Intel
 {
 	[TestFixture]
-	public class IntelArchitectureTests
+	public class X86ArchitectureTests
 	{
 		private IntelArchitecture arch;
 
-		public IntelArchitectureTests()
+		public X86ArchitectureTests()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
 		}

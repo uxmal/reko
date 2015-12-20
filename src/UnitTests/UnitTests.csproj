@@ -250,7 +250,7 @@
     <Compile Include="Arch\Intel\X86DisassemblerTests.cs" />
     <Compile Include="Arch\Intel\Fragments\Factorial.cs" />
     <Compile Include="Arch\Intel\ImportResolution.cs" />
-    <Compile Include="Arch\Intel\IntelArchitectureTests.cs" />
+    <Compile Include="Arch\Intel\X86ArchitectureTests.cs" />
     <Compile Include="Arch\Intel\IntelAssemblerTests.cs" />
     <Compile Include="Arch\Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Arch\Intel\IntelRegisterTests.cs" />
