@@ -109,7 +109,12 @@ namespace Reko.Arch.X86
             return new X86InstructionComparer(norm);
         }
 
-		public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override RegisterStorage GetWidestSubregister(RegisterStorage ecx, HashSet<RegisterStorage> bits)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
 		{
             return CreateDisassemblerImpl(imageReader);
 		}

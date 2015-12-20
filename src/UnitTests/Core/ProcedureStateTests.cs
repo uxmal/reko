@@ -229,6 +229,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion
         }
 

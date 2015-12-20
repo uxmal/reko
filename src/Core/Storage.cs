@@ -348,11 +348,6 @@ namespace Reko.Core
         /// General-purpose registers can use the Domain.Word </remarks>
         public PrimitiveType DataType { get; private set; }
 
-        /// <summary>
-        /// Returns true if this is an ALU register that supports operations like addition, address dereference and the like.
-        /// </summary>
-        public virtual bool IsAluRegister { get { return true; } }
-
         public int Number { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -380,7 +375,7 @@ namespace Reko.Core
             return (int)Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
         }
 
-        [Obsolete("Move to arch")]
+        [Obsolete("Move to arch", true)]
         public virtual RegisterStorage GetWidestSubregister(HashSet<RegisterStorage> bits)
         {
             return null;

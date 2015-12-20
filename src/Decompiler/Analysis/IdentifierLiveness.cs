@@ -156,7 +156,7 @@ namespace Reko.Analysis
 		{
 			defOffset = (int) reg.BitAddress;
 			defBitSize = reg.DataType.BitSize;
-			var widestSub = reg.GetWidestSubregister(bits);
+			var widestSub = arch.GetWidestSubregister(reg, bits);
 			if (widestSub != null)
 			{
 				defOffset = Math.Max((int)widestSub.BitAddress, defOffset);
