@@ -25,8 +25,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-
-namespace Reko.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class CodeEmitterTests

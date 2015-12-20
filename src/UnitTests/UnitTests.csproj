@@ -245,7 +245,6 @@
     <Compile Include="Mocks\SegmentedPointerProc.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
-    <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
     <Compile Include="Arch\Intel\X86DisassemblerTests.cs" />
     <Compile Include="Arch\Intel\Fragments\Factorial.cs" />
