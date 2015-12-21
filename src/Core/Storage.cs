@@ -409,7 +409,7 @@ namespace Reko.Core
             var thisStart = this.BitAddress;
             var thisEnd = this.BitAddress + this.BitSize;
             var thatStart = that.BitAddress;
-            var thatEnd = that.BitAddress + this.BitSize;
+            var thatEnd = that.BitAddress + that.BitSize;
             return thisStart < thatEnd && thatStart < thisEnd;
         }
 
@@ -478,15 +478,11 @@ namespace Reko.Core
             var c = value as Constant;
             if (c != null && c.IsValid)
             {
-                return GetSliceImpl(c);
+                var newValue = (c.ToUInt64() & this.BitMask) >> (int)this.BitAddress;
+                return Constant.Create(this.DataType, newValue);
             }
             else
                 return Constant.Invalid;
-        }
-
-        protected virtual Expression GetSliceImpl(Constant c)
-        {
-            return c;
         }
     }
 

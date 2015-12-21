@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Intel
 		[Test]
 		public void X86r_GetSubregisterOfAh()
 		{
-			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.ah, 8, 8));
+			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.ah, 0, 8));
 		}
 
 		[Test]
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(Registers.al, arch.GetSubregister(Registers.eax, 0, 8));
             Assert.AreEqual(Registers.bx, arch.GetSubregister(Registers.ebx, 0, 16));
             Assert.AreEqual(Registers.ecx, arch.GetSubregister(Registers.ecx, 0, 32));
-            Assert.AreEqual(null, arch.GetSubregister(Registers.esi, 0, 8));
+            Assert.AreEqual(Registers.sil, arch.GetSubregister(Registers.esi, 0, 8));
 		}
 
 		[Test]
@@ -172,17 +172,6 @@ namespace Reko.UnitTests.Arch.Intel
 			bits.Add(Registers.ebx);
 			Assert.AreSame(Registers.bh, arch.GetWidestSubregister(Registers.bh, bits));
 		}
-
-		[Test]
-		public void X86r_SetAxAliasesTrue()
-		{
-            var bits = new HashSet<RegisterStorage>();
-            var aliases = arch.GetAliases(Registers.ax);
-			Assert.IsTrue(bits.Contains(Registers.ax), "Expected ax set");
-			Assert.IsTrue(bits.Contains(Registers.ah), "Expected ah set");
-			Assert.IsTrue(bits.Contains(Registers.al), "Expected al set");
-		}
-
 
         [Test]
         public void X86reg_GetSliceAh()

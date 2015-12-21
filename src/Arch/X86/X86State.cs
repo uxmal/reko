@@ -116,7 +116,7 @@ namespace Reko.Arch.X86
 			else
 			{
                 valid[reg.Number] |= reg.BitMask;
-                regs[reg.Number] = (regs[reg.Number] & reg.BitMask) | (c.ToUInt64() << (int)reg.BitAddress);
+                regs[reg.Number] = (regs[reg.Number] & ~reg.BitMask) | (c.ToUInt64() << (int)reg.BitAddress);
 			}
 		}
 

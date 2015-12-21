@@ -109,9 +109,25 @@ namespace Reko.Arch.X86
             return new X86InstructionComparer(norm);
         }
 
-        public override RegisterStorage GetWidestSubregister(RegisterStorage ecx, HashSet<RegisterStorage> bits)
+        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {
-            throw new NotImplementedException();
+            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            Dictionary<uint, RegisterStorage> subregs;
+            if ((mask & reg.BitMask) == reg.BitMask)
+                return reg;
+                RegisterStorage rMax = null;
+            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
+            {
+                foreach (var subreg in subregs.Values)
+                {
+                    if ((subreg.BitMask & mask) == subreg.BitMask &&
+                        (rMax == null || subreg.BitSize > rMax.BitSize))
+                    {
+                        rMax = subreg;
+                    }
+                }
+            }
+            return rMax;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
@@ -198,6 +214,11 @@ namespace Reko.Arch.X86
 				throw new ArgumentException(string.Format("'{0}' is not a register name.", name));
 			return r;
 		}
+
+        public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
+        {
+            return Registers.All.Where(r => r != null && r.OverlapsWith(reg));
+        }
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
