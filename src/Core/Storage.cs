@@ -69,7 +69,8 @@ namespace Reko.Core
         None = -1,
         Register = 0,
         Stack = 4096,   // Few architectures have this many registers (fingers xD)
-        Memory = 4097 
+        Memory = 4097, 
+        Temporary = 8192,
     }
 
     /// <summary>
@@ -685,6 +686,7 @@ namespace Reko.Core
 	{
 		public TemporaryStorage(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
 		{
+            Domain = StorageDomain.Temporary + number;
 		}
 
         public override T Accept<T>(StorageVisitor<T> visitor)
