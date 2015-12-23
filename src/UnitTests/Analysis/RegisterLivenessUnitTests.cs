@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Analysis
 			m.Store(m.Int32(0x01F3004), al).Instruction.Accept(rl);
 			Assert.AreEqual(" al", Dump(rl.IdentifierLiveness));
 			m.Store(m.Int32(0x01F3008), ah).Instruction.Accept(rl);	
-			Assert.AreEqual(" al ah", Dump(rl.IdentifierLiveness));
+			Assert.AreEqual(" ah al", Dump(rl.IdentifierLiveness));
 			m.Assign(eax, ecx).Accept(rl);		
 			Assert.AreEqual(" cx", Dump(rl.IdentifierLiveness));
 		}
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Analysis
 			m.Store(m.Int32(0x01F3004), ax).Instruction.Accept(rl);	// use al and ah
 			Assert.AreEqual(" ax", Dump(rl.IdentifierLiveness));
 			m.Assign(ah, m.IAdd(ah, 3)).Accept(rl);
-			Assert.AreEqual(" al ah", Dump(rl.IdentifierLiveness));
+			Assert.AreEqual(" ah al", Dump(rl.IdentifierLiveness));
 		}
 
 		[Test]
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Analysis
 			rl.IdentifierLiveness.BitSet.Add(Registers.edi);
 			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
 			rl.VisitCallInstruction(ci);
-			Assert.AreEqual(" ecx ebx esi", Dump(rl.IdentifierLiveness));
+			Assert.AreEqual(" ebx ecx esi", Dump(rl.IdentifierLiveness));
 		}
 
 		[Test]

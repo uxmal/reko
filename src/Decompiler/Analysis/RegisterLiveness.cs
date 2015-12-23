@@ -135,9 +135,9 @@ namespace Reko.Analysis
 				pi.LiveOut = bi.DataOut;
 				pi.grfLiveOut = bi.grfOut;
 
-				// Remove unneeded data. Done for performance (and to give GC something to do).
+                // Remove unneeded data. Done for performance (and to give GC something to do).
 
-				pi.ByPass = null;
+                pi.ByPass.Clear();
 			}
 		}
 

@@ -45,7 +45,7 @@ namespace Reko.Analysis
 		public HashSet<RegisterStorage> TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
         public Dictionary<Storage, Constant> ConstantRegisters; // If present, indicates a register always has a constant value leaving the procedure.
 
-		public HashSet<RegisterStorage> ByPass;
+		public HashSet<RegisterStorage> ByPass { get; set; }
 		public uint grfByPass;
 		public HashSet<RegisterStorage> MayUse;
 		public uint grfMayUse;

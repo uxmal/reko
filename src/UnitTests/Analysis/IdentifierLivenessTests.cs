@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void BitOffsetAl()
+		public void Idlv_BitOffsetAl()
 		{
 			Identifier al = frame.EnsureRegister(Registers.al);
 			Def(al);
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void Subregisters()
+		public void Idlv_Subregisters()
 		{
 			Identifier ax = frame.EnsureRegister(Registers.ax);
 			Identifier al = frame.EnsureRegister(Registers.al);
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void LocalVar()
+		public void Idlv_LocalVar()
 		{
 			vl.LiveStorages = new Dictionary<Storage,int>();
 			Identifier loc = frame.EnsureStackLocal(-8, PrimitiveType.Word32);		// pushed as a word.
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void UseStackArg()
+		public void Idlv_UseStackArg()
 		{
 			vl.LiveStorages = new Dictionary<Storage,int>();
 			Identifier arg = frame.EnsureStackArgument(4, PrimitiveType.Word32);
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void Sequences()
+		public void Idlv_Sequences()
 		{
 			Identifier es = frame.EnsureRegister(Registers.es);
 			Identifier bx = frame.EnsureRegister(Registers.bx);
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void StackArgumentDef()
+		public void Idlv_StackArgumentDef()
 		{
 			Identifier arg04 = frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			vl.LiveStorages[arg04.Storage] = 16;
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void UseTemporary()
+		public void Idlv_UseTemporary()
 		{
 			vl.LiveStorages = new Dictionary<Storage,int>();
 			Identifier tmp = frame.CreateTemporary(PrimitiveType.Word16);

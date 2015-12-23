@@ -440,8 +440,8 @@ namespace Reko.UnitTests.Scanning
         [Category("UnitTests")]
         public void BwUnresolveableIndirect()
         {
-            var eax = m.Frame.CreateTemporary("eax", PrimitiveType.Word32);
-            var esi = m.Frame.CreateTemporary("esi", PrimitiveType.Word32);
+            var eax = m.Reg32("eax", 0);
+            var esi = m.Reg32("esi", 6);
             var Z = m.Frame.EnsureFlagGroup(Registers.eflags, 1, "Z", PrimitiveType.Bool);
 
             var xfer = new RtlCall(eax, 4, RtlClass.Transfer);
