@@ -398,14 +398,16 @@ namespace Reko.Core
         public override int OffsetOf(Storage stgSub)
         {
             var regSub = stgSub as RegisterStorage;
-            if (regSub == null || this.Number != regSub.Number)
+            if (regSub == null)
+                return -1;
+            if (!OverlapsWith(regSub))
                 return -1;
             return (int)stgSub.BitAddress;
         }
 
         public bool OverlapsWith(RegisterStorage that)
         {
-            if (this.Domain != that.Domain)
+            if (this.Number != that.Number)
                 return false;
             var thisStart = this.BitAddress;
             var thisEnd = this.BitAddress + this.BitSize;
