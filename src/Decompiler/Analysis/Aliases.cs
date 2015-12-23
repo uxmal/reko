@@ -80,7 +80,7 @@ namespace Reko.Analysis
 			}
 		}
 
-		/// We've encountered a variable that is defined. We must generate an
+		// We've encountered a variable that is defined. We must generate an
 		// alias statement for all aliased variables.
 		private void Def(Identifier idar)
 		{

@@ -682,22 +682,35 @@ namespace Reko.Core
     /// SCZ = Cond(tmp)
     /// </code>
     /// </remarks>
-	public class TemporaryStorage : RegisterStorage
+	public class TemporaryStorage : Storage
 	{
-		public TemporaryStorage(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
-		{
+		public TemporaryStorage(string name, int number, PrimitiveType dt) : base("Temporary")
+        {
             Domain = StorageDomain.Temporary + number;
+            Name = name;
 		}
+
+        public string Name { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
 			return visitor.VisitTemporaryStorage(this);
 		}
 
-		public override int OffsetOf(Storage stgSub)
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitTemporaryStorage(this, context);
+        }
+
+        public override int OffsetOf(Storage stgSub)
 		{
 			return -1;
 		}
-	}
+
+        public override void Write(TextWriter writer)
+        {
+            writer.Write(Name);
+        }
+    }
 }
 

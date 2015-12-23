@@ -28,7 +28,7 @@ namespace Reko.UnitTests.Gui.Windows
 	public class MruListTests
 	{
 		[Test]
-		public void Add()
+		public void Mru_Add()
 		{
 			MruList m = new MruList(2);
             m.Use("Hiz");

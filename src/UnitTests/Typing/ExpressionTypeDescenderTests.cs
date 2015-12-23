@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Typing
         }
         private static Identifier Id(string name, DataType dt)
         {
-            return new Identifier(name, dt, TemporaryStorage.None);
+            return new Identifier(name, dt, RegisterStorage.None);
         }
 
         private void Verify(string outputFileName)

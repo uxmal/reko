@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Typing
 
         private static Identifier Id(string name, DataType dt)
         {
-            return new Identifier(name, dt, TemporaryStorage.None);
+            return new Identifier(name, dt, RegisterStorage.None);
         }
 
         private void Verify(string outputFileName)
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Typing
 
         private void RunTest(Expression e)
         {
-            var globals = new Identifier("globals", PrimitiveType.Pointer32, TemporaryStorage.None);
+            var globals = new Identifier("globals", PrimitiveType.Pointer32, RegisterStorage.None);
             store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store);
             e.Accept(eq);

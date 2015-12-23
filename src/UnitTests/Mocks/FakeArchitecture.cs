@@ -265,12 +265,13 @@ namespace Reko.UnitTests.Mocks
 
         public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            yield return reg;
         }
 
         public RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {
-            throw new NotImplementedException();
+            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            return mask != 0 ? reg : null;
         }
 
         #endregion

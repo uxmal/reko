@@ -182,8 +182,8 @@ ProcedureBuilder_exit:
                 var scz = m.Frame.EnsureFlagGroup(Registers.eflags, 7, "SZ", PrimitiveType.Byte);
                 var cz = m.Frame.EnsureFlagGroup(Registers.eflags, 3, "CZ", PrimitiveType.Byte);
                 var c = m.Frame.EnsureFlagGroup(Registers.eflags, 1, "C", PrimitiveType.Bool);
-                var al = m.Reg8("al");
-                var esi = m.Reg32("esi");
+                var al = m.Reg8("al", 0);
+                var esi = m.Reg32("esi", 6);
                 m.Assign(scz, m.Cond(m.And(esi, esi)));
                 m.Assign(c, Constant.False());
                 m.Emit(new AliasAssignment(cz, c));

@@ -124,7 +124,7 @@ namespace Reko.Typing
         {
             string name;
             if (e.Members.TryGetValue(c.ToInt64(), out name))
-                return new Identifier(name, e, TemporaryStorage.None);
+                return new Identifier(name, e, RegisterStorage.None);
             return new Cast(e, c);
         }
 
