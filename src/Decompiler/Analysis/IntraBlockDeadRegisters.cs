@@ -394,7 +394,7 @@ namespace Reko.Analysis
 
         public bool VisitTemporaryStorage(TemporaryStorage temp, bool defining)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }
