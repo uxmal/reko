@@ -398,9 +398,9 @@ namespace Reko.Core
         public override int OffsetOf(Storage stgSub)
         {
             var regSub = stgSub as RegisterStorage;
-            if (regSub == null)
+            if (regSub == null || this.Number != regSub.Number)
                 return -1;
-            return (int)BitAddress;
+            return (int)stgSub.BitAddress;
         }
 
         public bool OverlapsWith(RegisterStorage that)
