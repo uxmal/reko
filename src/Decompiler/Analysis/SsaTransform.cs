@@ -607,7 +607,7 @@ namespace Reko.Analysis
                 // Hell node implementation - use all register variables.
 
                 var oldUses = ci.Uses.Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier).ToHashSet();
-				foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct())
+				foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct().ToList())
                 {
                      
 					if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||

@@ -485,6 +485,47 @@ ProcedureBuilder_exit:
             });
         }
 
+
+        [Test]
+       public void SsaHellNode()
+        {
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r1
+	def r3
+	def r2
+	// succ:  l1
+l1:
+	branch r1 true
+	// succ:  l2 true
+l2:
+	r2_2 = 0x00000010
+	// succ:  true
+true:
+	call r3 (retsize: 4;)
+		uses: r1,r2,r3
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use r1
+	use r2
+	use r3
+";
+            RunTest(sExp, m =>
+            {
+            var r1 = m.Register("r1");
+            var r2 = m.Register("r2");
+            var r3 = m.Register("r3");
+            m.BranchIf(r1, "true");
+            m.Assign(r2, m.Int32(16));
+            m.Label("true");
+            m.Call(r3, 4);
+            m.Return();
+                        });
+        }
+
         [Test]
         public void Ssa2_Simple_DefUse()
         {
