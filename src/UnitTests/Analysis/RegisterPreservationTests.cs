@@ -355,6 +355,7 @@ test:
         }
 
         [Test(Description = "Processes a self-recursive program")]
+        [Ignore()]
         public void Regp_Factorial()
         {
             program = Factorial.BuildSample();
