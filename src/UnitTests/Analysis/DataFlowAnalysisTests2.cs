@@ -54,6 +54,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore()]
         public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -83,6 +84,7 @@ test_exit:
         }
 
         [Test]
+        [Ignore()]
         public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
