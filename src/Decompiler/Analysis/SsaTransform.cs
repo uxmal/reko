@@ -33,6 +33,10 @@ namespace Reko.Analysis
 	/// <summary>
 	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
 	/// </summary>
+    /// <remarks>
+    /// This class implements the SSA algorithm from Appel's "Modern compiler 
+    /// implementatation in [language of your choice]."
+    /// </remarks>
 	public class SsaTransform
 	{
         private ProgramDataFlow programFlow;
@@ -725,6 +729,14 @@ namespace Reko.Analysis
 		}
     }
 
+	/// <summary>
+	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
+	/// </summary>
+    /// <remarks>
+    /// This class implements another SSA algorithm that doesn't require 
+    /// calculation of the dominator graph. It is expected that when it is fully
+    /// implemented, it will take over from SsaTransform above.
+    /// </remarks>
     public class SsaTransform2 : InstructionTransformer 
     {
         private Block block;
