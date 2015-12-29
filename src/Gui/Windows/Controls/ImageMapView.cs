@@ -18,6 +18,7 @@ namespace Reko.Gui.Windows.Controls
         private const float ZoomInFactor = 4.0F / 5.0F;
         private const int CySelection = 3;
         private const int CxScroll = 16;            // horizontal space for scrollers
+        private const int CxSegmentBorder = 1;      // border between segments.
         private const int CyScroll = 16;
         private const int ScrollStep = 8;
         private readonly List<SegmentLayout> segLayouts;
@@ -135,6 +136,15 @@ namespace Reko.Gui.Windows.Controls
             Rectangle rcPaint = rcBody;
             rcPaint.Width = 0;
             Brush brNew = null;
+            foreach (var sl in this.segLayouts)
+            {
+                var linAddr = sl.Segment.Address.ToLinear();
+                if (linAddr  + sl.Segment.Size < (uint)cbOffset && linAddr < (ulong)(cbOffset + rcBody.Width * granularity))
+                {
+                    var cxOffset = cbOffset / granularity;
+
+                }
+            }
             for (int x = rcBody.X; x < rcBody.Right; ++x, cbOffset += granularity)
             {
                 brNew = GetColorForOffset(cbOffset);
@@ -183,10 +193,9 @@ namespace Reko.Gui.Windows.Controls
                 long cx = 0;
                 foreach (var segment in imageMap.Segments.Values)
                 {
-                    var linOffset = (segment.Address - image.BaseAddress);
-                    x = (linOffset + granularity - 1) / granularity;
                     cx = (segment.Size + granularity - 1) / granularity;
                     segLayouts.Add(new SegmentLayout { Segment = segment, X = x, Width = cx });
+                    x += cx + CxSegmentBorder;
                 }
             }
             var rc = new Rectangle(
