@@ -131,36 +131,53 @@ namespace Reko.Gui.Windows.Controls
 
         private void RenderBody(Graphics g, Rectangle rcBody)
         {
-            int cbOffset = offset;
-            Brush brOld = brBack;
             Rectangle rcPaint = rcBody;
             rcPaint.Width = 0;
             Brush brNew = null;
             foreach (var sl in this.segLayouts)
             {
-                var linAddr = sl.Segment.Address.ToLinear();
-                if (linAddr  + sl.Segment.Size < (uint)cbOffset && linAddr < (ulong)(cbOffset + rcBody.Width * granularity))
+                Brush brOld = brBack;
+                var segOffset = sl.Segment.Address.ToLinear() - image.BaseAddress.ToLinear();
+                if ((ulong)offset <= segOffset + sl.Segment.Size && segOffset < (ulong)(offset + rcBody.Width * granularity))
                 {
-                    var cxOffset = cbOffset / granularity;
+                    int cbOffset = offset;
+                    var cxOffset = cbOffset / granularity + rcBody.Left;
+                    var cxEnd = cxOffset + (int) sl.Width / granularity;
+                    for (int x = cxOffset; x < cxEnd; ++x, cbOffset += granularity)
+                    {
+                        brNew = GetColorForOffset(cbOffset);
+                        if (brNew != brOld)
+                        {
+                            rcPaint.Width = x - rcPaint.X;
+                            g.FillRectangle(brOld, rcPaint);
+                            brOld = brNew;
+                            rcPaint.X = x;
+                        }
+                    }
+                    if (brNew != null)
+                    {
+                        rcPaint.Width = cxEnd - rcPaint.X;
+                        g.FillRectangle(brNew, rcPaint);
+                    }
 
                 }
             }
-            for (int x = rcBody.X; x < rcBody.Right; ++x, cbOffset += granularity)
-            {
-                brNew = GetColorForOffset(cbOffset);
-                if (brNew != brOld)
-                {
-                    rcPaint.Width = x - rcPaint.X;
-                    g.FillRectangle(brOld, rcPaint);
-                    brOld = brNew;
-                    rcPaint.X = x;
-                }
-            }
-            if (brNew != null)
-            {
-                rcPaint.Width = rcBody.Right - rcPaint.X;
-                g.FillRectangle(brNew, rcPaint);
-            }
+            //for (int x = rcBody.X; x < rcBody.Right; ++x, cbOffset += granularity)
+            //{
+            //    brNew = GetColorForOffset(cbOffset);
+            //    if (brNew != brOld)
+            //    {
+            //        rcPaint.Width = x - rcPaint.X;
+            //        g.FillRectangle(brOld, rcPaint);
+            //        brOld = brNew;
+            //        rcPaint.X = x;
+            //    }
+            //}
+            //if (brNew != null)
+            //{
+            //    rcPaint.Width = rcBody.Right - rcPaint.X;
+            //    g.FillRectangle(brNew, rcPaint);
+            //}
         }
 
         private Brush GetColorForOffset(int cbOffset)
