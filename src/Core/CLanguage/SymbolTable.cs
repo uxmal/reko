@@ -68,7 +68,9 @@ namespace Reko.Core.CLanguage
                 isTypedef = true;
             }
 
-            var ntde = new NamedDataTypeExtractor(declspecs, this);
+            //$TODO: need a pointer size passed into the symbol table instead
+            // of the constant '4' below.
+            var ntde = new NamedDataTypeExtractor(declspecs, this, 4);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);

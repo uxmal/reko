@@ -193,6 +193,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void DtbFnPointerMock()
         {
+            //$TODO: find out where pfn_0 is comingfrom.
             ProgramBuilder mock = new ProgramBuilder();
             mock.Add(new FnPointerFragment());
             RunTest(mock, "Typing/DtbFnPointerMock.txt");
