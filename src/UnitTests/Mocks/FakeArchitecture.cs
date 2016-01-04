@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Mocks
 			registers = new RegisterStorage[RegisterCount];
 			for (int i = 0; i < registers.Length; ++i)
 			{
-				registers[i] = new MockMachineRegister("r" + i, i, PrimitiveType.Word32);
+				registers[i] = new RegisterStorage("r" + i, i, 0, PrimitiveType.Word32);
 			}
 		}
 
@@ -280,11 +280,6 @@ namespace Reko.UnitTests.Mocks
 	public class MockMachineRegister : RegisterStorage
 	{
 		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, 0, dt) { }
-
-        public override RegisterStorage GetWidestSubregister(HashSet<RegisterStorage> bits)
-        {
-            return bits.Contains(this) ? this : null;
-		}
 	}
 
 	public class FakeProcessorState : ProcessorState

@@ -295,15 +295,6 @@ namespace Reko.Core
     /// </summary>
 	public class RegisterStorage : Storage
     {
-        [Obsolete("", true)]
-        public RegisterStorage(string name, int number, PrimitiveType dt) : base("Register")
-        {
-            this.Name = name;
-            this.Number = number;
-            this.DataType = dt;
-            this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
-        }
-
         private RegisterStorage(string kind) : base(kind)
         {
 
@@ -374,12 +365,6 @@ namespace Reko.Core
         public override int GetHashCode()
         {
             return (int)Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
-        }
-
-        [Obsolete("Move to arch", true)]
-        public virtual RegisterStorage GetWidestSubregister(HashSet<RegisterStorage> bits)
-        {
-            return null;
         }
 
         /// <summary>

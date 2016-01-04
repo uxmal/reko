@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Core
 		public void FrEnsureRegister()
 		{
 			Frame f = new Frame(PrimitiveType.Word32);
-			f.EnsureRegister(new Mocks.MockMachineRegister("eax", 0, PrimitiveType.Word32));
+			f.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
 			Assert.AreEqual("eax", f.Identifiers[2].Name);
 			Assert.AreSame(PrimitiveType.Word32, f.Identifiers[2].DataType);
 		}
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Core
 		public void EnsureOutRegister()
 		{
 			Frame f = new Frame(PrimitiveType.Word32);
-			Identifier r = f.EnsureRegister(new Mocks.MockMachineRegister("r1", 1, PrimitiveType.Word32));
+			Identifier r = f.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
 			Identifier arg = f.EnsureOutArgument(r, PrimitiveType.Pointer32);
 			Assert.AreEqual("r1Out", arg.Name);
 			Assert.AreSame(PrimitiveType.Pointer32, arg.DataType);
