@@ -203,10 +203,10 @@ namespace Reko.Analysis
 				DumpBlock(item.Block);
 			}
 			
-			varLive.BitSet = new HashSet<RegisterStorage>(item.DataOut);
+			varLive.Identifiers = new HashSet<RegisterStorage>(item.DataOut);
 			varLive.Grf = item.grfOut;
             varLive.LiveStorages = new Dictionary<Storage,int>(item.StackVarsOut);
-			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.BitSet)));
+			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.Identifiers)));
 			Procedure = item.Block.Procedure;		// Used by statements because we need to look up registers using identifiers and the procedure frame.
 			StatementList stms = item.Block.Statements;
 			for (int i = stms.Count - 1; i >= 0; --i)
@@ -214,7 +214,7 @@ namespace Reko.Analysis
 				stmCur = stms[i];
 				Debug.WriteLineIf(t, stms[i].Instruction);
 				stmCur.Instruction.Accept(this);
-				if (t) Debug.WriteLineIf(t, string.Format("\tin: {0}", DumpRegisters(varLive.BitSet)));
+				Debug.WriteLineIf(t, string.Format("\tin: {0}", DumpRegisters(varLive.Identifiers)));
 			}
 
 			if (item.Block == item.Block.Procedure.EntryBlock)
@@ -287,7 +287,7 @@ namespace Reko.Analysis
 		{
 			bool fChange = false;
             int oldcount = flow.Summary.Count;
-            flow.Summary.UnionWith(varLive.BitSet);
+            flow.Summary.UnionWith(varLive.Identifiers);
 			if (flow.Summary.Count != oldcount)
 			{
 				fChange = true;
@@ -330,17 +330,17 @@ namespace Reko.Analysis
 		/// <param name="stm"></param>
 		private void PropagateToCalleeExitBlocks(Statement stm)
 		{
-			var liveOrig = new HashSet<RegisterStorage>(varLive.BitSet);
+			var liveOrig = new HashSet<RegisterStorage>(varLive.Identifiers);
 			uint grfOrig = varLive.Grf;
             var stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
 			foreach (Procedure p in program.CallGraph.Callees(stm))
 			{
 				var flow = mpprocData[p];
-                varLive.BitSet = new HashSet<RegisterStorage>(liveOrig);
-                varLive.BitSet.ExceptWith(flow.PreservedRegisters);
+                varLive.Identifiers = new HashSet<RegisterStorage>(liveOrig);
+                varLive.Identifiers.ExceptWith(flow.PreservedRegisters);
 				varLive.LiveStorages = new Dictionary<Storage,int>();
 				MergeBlockInfo(p.ExitBlock);
-				varLive.BitSet = new HashSet<RegisterStorage>(liveOrig);
+				varLive.Identifiers = new HashSet<RegisterStorage>(liveOrig);
 				varLive.Grf = grfOrig;
                 varLive.LiveStorages = new Dictionary<Storage, int>(stackOrig);
 			}
@@ -546,9 +546,9 @@ namespace Reko.Analysis
                 // The registers that are still live before a call are those
                 // that were live after the call and were bypassed by the called function
                 // or used by the called function.
-                varLive.BitSet.ExceptWith(pi.TrashedRegisters);
-                varLive.BitSet.IntersectWith(pi.ByPass);
-                varLive.BitSet.Union(pi.MayUse);
+                varLive.Identifiers.ExceptWith(pi.TrashedRegisters);
+                varLive.Identifiers.IntersectWith(pi.ByPass);
+                varLive.Identifiers.Union(pi.MayUse);
 				// varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
 				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
 				// Any stack parameters are also considered live.
@@ -654,7 +654,7 @@ namespace Reko.Analysis
 			{
 				bool ret = false;
                 int oldCount = blockFlow.DataOut.Count;
-				blockFlow.DataOut.UnionWith(varLive.BitSet);
+				blockFlow.DataOut.UnionWith(varLive.Identifiers);
                 if (blockFlow.DataOut.Count != oldCount)
 				{
 					ret = true;
@@ -752,7 +752,7 @@ namespace Reko.Analysis
 			{
 				bool changed = false;
                 int oldCount = blockFlow.DataOut.Count;
-                blockFlow.DataOut.UnionWith(varLive.BitSet);
+                blockFlow.DataOut.UnionWith(varLive.Identifiers);
                 if (blockFlow.DataOut.Count != oldCount)
 				{
 					changed = true;
@@ -874,7 +874,7 @@ namespace Reko.Analysis
 			{
 				//$REFACTOR: make SetAliases be a bitset of Register.
                 var aliases = arch.GetAliases(reg);
-                return liveState.BitSet.Overlaps(aliases);
+                return liveState.Identifiers.Overlaps(aliases);
 			}
 
 			public bool VisitFpuStackStorage(FpuStackStorage fpu)

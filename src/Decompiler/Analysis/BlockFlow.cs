@@ -18,7 +18,6 @@
  */
 #endregion
 
-using BitSet = Reko.Core.Lib.BitSet;
 using Block = Reko.Core.Block;
 using DataType = Reko.Core.Types.DataType;    
 using Expression = Reko.Core.Expressions.Expression;

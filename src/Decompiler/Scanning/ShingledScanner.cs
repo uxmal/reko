@@ -26,14 +26,14 @@ namespace Reko.Scanning
         private const byte MaybeCode = 1;
         private const byte Data = 0;
 
-        private const RtlClass L = RtlClass.Linear;
-        private const RtlClass T = RtlClass.Transfer;
+        private const InstructionClass L = InstructionClass.Linear;
+        private const InstructionClass T = InstructionClass.Transfer;
         
-        private const RtlClass CL = RtlClass.Linear | RtlClass.Conditional;
-        private const RtlClass CT = RtlClass.Transfer | RtlClass.Conditional;
+        private const InstructionClass CL = InstructionClass.Linear | InstructionClass.Conditional;
+        private const InstructionClass CT = InstructionClass.Transfer | InstructionClass.Conditional;
         
-        private const RtlClass DT = RtlClass.Transfer | RtlClass.Delay;
-        private const RtlClass DCT = RtlClass.Transfer | RtlClass.Conditional | RtlClass.Delay;
+        private const InstructionClass DT = InstructionClass.Transfer | InstructionClass.Delay;
+        private const InstructionClass DCT = InstructionClass.Transfer | InstructionClass.Conditional | InstructionClass.Delay;
 
         private Program program;
         private readonly Address bad;
@@ -63,6 +63,8 @@ namespace Reko.Scanning
         /// are code as MaybeCode, everything else as data.
         /// </summary>
         /// <param name="segment"></param>
+        /// <returns>An array of bytes classifying each byte as code or data.
+        /// </returns>
         public byte[] ScanSegment(ImageMapSegment segment)
         {
             var G = new DiGraph<Address>();
@@ -74,15 +76,14 @@ namespace Reko.Scanning
             {
                 y[a] = MaybeCode;
                 var i = Dasm(segment, a);
-                var r = i.Instructions.Last();
-                if (i == null || r is RtlInvalid)
+                if (i == null || i.InstructionClass == InstructionClass.Invalid)
                 {
                     AddEdge(G, bad, i.Address);
                     inDelaySlot = false;
                 }
                 else
                 {
-                    if (MayFallThrough(i, r))
+                    if (MayFallThrough(i))
                     {
                         if (!inDelaySlot)
                         {
@@ -92,10 +93,9 @@ namespace Reko.Scanning
                                 AddEdge(G, bad, i.Address);
                         }
                     }
-                    var tr = r as RtlTransfer;
-                    if (tr != null)
+                    if ((i.InstructionClass & InstructionClass.Transfer) != 0) 
                     {
-                        var dest = Destination(tr);
+                        var dest = Destination(i);
                         if (dest != null)
                         {
                             if (IsExecutable(dest))
@@ -105,7 +105,7 @@ namespace Reko.Scanning
                         }
                     }
                     // If this is a delayed unconditional branch...
-                    inDelaySlot = i.Class == DT;
+                    inDelaySlot = i.InstructionClass == DT;
                 }
             }
             foreach (var a in new DfsIterator<Address>(G).PreOrder(bad))
@@ -118,11 +118,12 @@ namespace Reko.Scanning
             return y;
         }
 
-        private bool MayFallThrough(RtlInstructionCluster i, RtlInstruction r)
+        private bool MayFallThrough(MachineInstruction i)
         {
-            return r is RtlAssignment
-                || r is RtlBranch
-                || r is RtlCall;        //$REVIEW: what if you call a terminating function.
+            return (i.InstructionClass &
+                (InstructionClass.Linear 
+                | InstructionClass.Conditional 
+                | InstructionClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
         }
 
         private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)
@@ -145,12 +146,29 @@ namespace Reko.Scanning
             return (seg.Access & AccessMode.Execute) != 0;
         }
 
-        private Address Destination(RtlTransfer r)
+        private Address Destination(MachineInstruction i)
         {
-            return r.Target as Address;
+            var op = i.GetOperand(0) as AddressOperand;
+            if (op == null)
+            {
+                // Z80 has JP Z,<dest> instructions...
+                op = i.GetOperand(1) as AddressOperand;
+            }
+            if (op != null)
+            {
+                return op.Address;
+            }
+
+            return null;
         }
 
-        private RtlInstructionCluster Dasm(ImageMapSegment segment, int a)
+        private MachineInstruction Dasm(ImageMapSegment segment, int a)
+        {
+            var dasm = program.CreateDisassembler(segment.Address + a);
+            return dasm.FirstOrDefault();
+        }
+
+        private RtlInstructionCluster DasmOld(ImageMapSegment segment, int a)
         {
             var rw = program.Architecture.CreateRewriter(
                 program.CreateImageReader(segment.Address + a),
@@ -178,11 +196,9 @@ namespace Reko.Scanning
                     if (item.Value[a] != MaybeCode)
                         continue;
                     var i = Dasm(item.Key, a);
-                    var r = i.Instructions.Last();
-                    var c = r as RtlCall;
-                    if (c != null)
+                    if ((i.InstructionClass & InstructionClass.Call) != 0)
                     {
-                        var dest = Destination(c);
+                        var dest = Destination(i);
                         if (dest != null && IsExecutable(dest))
                         {
                             yield return dest;

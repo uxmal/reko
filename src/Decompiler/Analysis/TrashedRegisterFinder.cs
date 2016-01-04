@@ -146,7 +146,6 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         private void SetInitialValueOfStackPointer(Procedure proc)
         {
-            Debug.Print("SetInitialValueSP: {0}", proc.Name);
             flow[proc.EntryBlock].SymbolicIn.SetValue(
                 proc.Frame.EnsureRegister(program.Architecture.StackRegister),
                 proc.Frame.FramePointer);

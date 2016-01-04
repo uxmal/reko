@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using BitSet = Reko.Core.Lib.BitSet;
 using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
 using Frame = Reko.Core.Frame;

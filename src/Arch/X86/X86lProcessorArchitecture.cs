@@ -19,24 +19,15 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.Serialization;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-//using System.Reflection;
 using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
-
-using BitSet = Reko.Core.Lib.BitSet;
-using Reko.Core.Lib;
 
 namespace Reko.Arch.X86
 {

@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			frame = new Frame(PrimitiveType.Word16);
 			vl = new IdentifierLiveness(arch);
-            vl.BitSet = new HashSet<RegisterStorage>();
+            vl.Identifiers = new HashSet<RegisterStorage>();
 		}
 
 		[Test]
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
 		private string Dump()
 		{
 			StringWriter w = new StringWriter();
-			DataFlow.EmitRegisters(arch, "", 0, vl.BitSet, w);
+			DataFlow.EmitRegisters(arch, "", 0, vl.Identifiers, w);
 			return w.ToString();
 		}
 	}

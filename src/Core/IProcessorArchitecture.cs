@@ -21,13 +21,10 @@
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using BitSet = Reko.Core.Lib.BitSet;
 
 namespace Reko.Core
 {

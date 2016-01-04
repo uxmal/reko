@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Analysis
             terminates = new HashSet<Procedure>();
 			rl = new RegisterLiveness(program, mpprocflow, null);
 			rl.Procedure = proc;
-            rl.IdentifierLiveness.BitSet = new HashSet<RegisterStorage>();
+            rl.IdentifierLiveness.Identifiers = new HashSet<RegisterStorage>();
 		}
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)
@@ -228,9 +228,9 @@ namespace Reko.UnitTests.Analysis
 					f.EnsureOutArgument(f.EnsureRegister(Registers.edi), PrimitiveType.Pointer32)
 				});
 			
-			rl.IdentifierLiveness.BitSet.Add(Registers.eax);
-			rl.IdentifierLiveness.BitSet.Add(Registers.esi);
-			rl.IdentifierLiveness.BitSet.Add(Registers.edi);
+			rl.IdentifierLiveness.Identifiers.Add(Registers.eax);
+			rl.IdentifierLiveness.Identifiers.Add(Registers.esi);
+			rl.IdentifierLiveness.Identifiers.Add(Registers.edi);
 			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
 			rl.VisitCallInstruction(ci);
 			Assert.AreEqual(" ebx ecx esi", Dump(rl.IdentifierLiveness));

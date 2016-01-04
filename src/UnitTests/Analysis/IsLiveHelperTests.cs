@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void IsRegisterLive()
 		{
-            liveness.BitSet = new HashSet<RegisterStorage> { Registers.ecx };
+            liveness.Identifiers = new HashSet<RegisterStorage> { Registers.ecx };
 			var eax = f.EnsureRegister(Registers.eax);
 			var ecx = f.EnsureRegister(Registers.ecx);
 			Assert.IsTrue(isLiveHelper.IsLive(ecx, liveness), "ECX should be live");

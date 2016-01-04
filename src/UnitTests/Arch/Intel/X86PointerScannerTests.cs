@@ -31,7 +31,6 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Text;
-using BitSet = Reko.Core.Lib.BitSet;
 
 namespace Reko.UnitTests.Arch.Intel
 {

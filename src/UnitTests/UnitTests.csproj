@@ -274,7 +274,6 @@
     <Compile Include="Core\AddressTests.cs" />
     <Compile Include="Core\ApplicationBuilderTests.cs" />
     <Compile Include="Core\Assemblers\SymbolTableTests.cs" />
-    <Compile Include="Core\BitSetTests.cs" />
     <Compile Include="Core\BlockTests.cs" />
     <Compile Include="Core\CallGraphTests.cs" />
     <Compile Include="Core\CastTests.cs" />

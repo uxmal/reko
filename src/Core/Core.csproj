@@ -420,9 +420,6 @@
     <Compile Include="IRewriterHost.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\BitSet.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Lib\DfsIterator.cs">
       <SubType>Code</SubType>
     </Compile>
