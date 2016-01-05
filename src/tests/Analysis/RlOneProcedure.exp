@@ -2,8 +2,8 @@
 	LiveOut:  
 	MayUseIn:  ax ds
 	BypassIn: 
-	Trashed:   SCZO ax si al ah
-	Preserved: sp bp
+	Trashed:   SCZO ah al ax eax esi rax rsi si sil
+	Preserved: bp sp
 // fn0C00_0000
 void fn0C00_0000()
 // SymbolicIn: sp:fp

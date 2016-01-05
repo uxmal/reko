@@ -2,7 +2,7 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax si al ah
+	Trashed:   SCZO ah al ax eax esi rax rsi si sil
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
@@ -19,7 +19,7 @@ l0C00_0000:
 // DataOut: ax ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp ax:<invalid> si:<invalid>
+// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
 l0C00_0005:
 	v6 = Mem0[ds:0x0300:word16] + ax
 	Mem0[ds:0x0300:word16] = v6
@@ -27,13 +27,13 @@ l0C00_0005:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp ax:<invalid> si:<invalid>
+// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
 l0C00_0009:
 	return
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp ax:<invalid> si:<invalid>
+// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -42,7 +42,7 @@ fn0C00_0000_exit:
 	LiveOut:   C ax ds
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax si al ah
+	Trashed:   SCZO ah al ax eax esi rax rsi si sil
 	Preserved: sp
 // fn0C00_000A
 void fn0C00_000A()
@@ -57,7 +57,7 @@ l0C00_000A:
 	si = Mem0[ds:0x0100:word16]
 	SCZO = cond(si - Mem0[ds:0x0102:word16])
 	branch Test(EQ,Z) l0C00_001E
-// DataOut: ax si ds
+// DataOut: ax ds si
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp si:<invalid>

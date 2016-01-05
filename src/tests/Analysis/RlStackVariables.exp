@@ -2,8 +2,8 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax bx al bl ah bh es
-	Preserved: sp bp
+	Trashed:   SCZO ah al ax bh bl bx eax ebx es rax rbx
+	Preserved: bp sp
 // fn0C00_0000
 void fn0C00_0000()
 // SymbolicIn: sp:fp
@@ -43,7 +43,7 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp bp:bp Sequence es:bx:<invalid> ax:<invalid> bx:<invalid> es:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:fp bp:bp Sequence es:bx:<invalid> es:<invalid> bx:<invalid> ax:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -52,8 +52,8 @@ fn0C00_0000_exit:
 	LiveOut:   ax ds
 	MayUseIn: 
 	BypassIn: 
-	Trashed:   ax bx al bl ah bh es
-	Preserved: sp bp
+	Trashed:   ah al ax bh bl bx eax ebx es rax rbx
+	Preserved: bp sp
 // fn0C00_0020
 void fn0C00_0020()
 // SymbolicIn: sp:fp
@@ -86,8 +86,8 @@ fn0C00_0020_exit:
 	LiveOut:   ax ds
 	MayUseIn: 
 	BypassIn: 
-	Trashed:   SCZO ax bx al bl ah bh es
-	Preserved: sp bp
+	Trashed:   SCZO ah al ax bh bl bx eax ebx es rax rbx
+	Preserved: bp sp
 // fn0C00_002E
 void fn0C00_002E()
 // SymbolicIn: sp:fp

@@ -2,7 +2,7 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax cx dx al cl dl ah ch dh
+	Trashed:   SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
@@ -21,7 +21,7 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp cx:<invalid> ax:<invalid> dx:<invalid>
+// SymbolicIn: sp:fp cx:<invalid> dx:<invalid> ax:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -30,8 +30,8 @@ fn0C00_0000_exit:
 	LiveOut:   ax ds
 	MayUseIn:  cx
 	BypassIn: 
-	Trashed:   SCZO ax cx dx al cl dl ah ch dh
-	Preserved: sp si
+	Trashed:   SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+	Preserved: si sp
 // fn0C00_000B
 void fn0C00_000B()
 // SymbolicIn: sp:fp

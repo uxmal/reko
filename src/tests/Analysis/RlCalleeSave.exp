@@ -2,7 +2,7 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   ax si al ah
+	Trashed:   ah al ax eax esi rax rsi si sil
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
@@ -31,8 +31,8 @@ fn0C00_0000_exit:
 	LiveOut:   ax ds
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   ax al ah
-	Preserved: sp si
+	Trashed:   ah al ax eax rax
+	Preserved: si sp
 // fn0C00_000D
 void fn0C00_000D()
 // SymbolicIn: sp:fp
@@ -62,15 +62,15 @@ fn0C00_000D_exit:
 
 // fn0C00_001A /////////////////////
 	LiveOut:   ax ds
-	MayUseIn:  si ds
+	MayUseIn:  ds si
 	BypassIn: 
-	Trashed:   ax al ah
-	Preserved: sp si
+	Trashed:   ah al ax eax rax
+	Preserved: si sp
 // fn0C00_001A
 void fn0C00_001A()
 // SymbolicIn: sp:fp
 fn0C00_001A_entry:
-// DataOut: si ds
+// DataOut: ds si
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
