@@ -534,7 +534,7 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder pm = new ProgramBuilder();
             pm.Add("proc1", m =>
             {
-                var ax = m.Reg16("ax");
+                var ax = m.Reg16("ax", 0);
                 var rand = new ExternalProcedure(
                     "rand",
                     new ProcedureSignature(
@@ -553,10 +553,10 @@ namespace Reko.UnitTests.Typing
             var pm = CreateProgramBuilder(0x00001000, 0x1000);
             pm.Add("proc1", m =>
                 {
-                    var ebp = m.Reg32("ebp");
-                    var esp = m.Reg32("esp");
-                    var ecx = m.Reg32("ecx");
-                    var eax = m.Reg32("eax");
+                    var ebp = m.Reg32("ebp", 4);
+                    var esp = m.Reg32("esp", 5);
+                    var ecx = m.Reg32("ecx", 1);
+                    var eax = m.Reg32("eax", 0);
 
                     m.Assign(ebp, m.ISub(m.Frame.FramePointer, 4));
                     m.Assign(eax, m.LoadDw(m.IAdd(ebp, 0x0C)));
@@ -575,9 +575,9 @@ namespace Reko.UnitTests.Typing
             var pm = CreateProgramBuilder(0x00F000, 0x2000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
-                var ecx = m.Reg32("ecx");
-                var eax_2 = m.Reg32("eax_2");
+                var eax = m.Reg32("eax", 0);
+                var ecx = m.Reg32("ecx", 1);
+                var eax_2 = m.Reg32("eax_2", 0);
 
                 // eax_2 = (int32) ecx[eax];
                 m.Assign(
@@ -600,7 +600,7 @@ namespace Reko.UnitTests.Typing
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
+                var eax = m.Reg32("eax", 0);
                 m.Store(m.Word32(0x01000), eax);
             });
             var sExp =
@@ -636,7 +636,7 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
+                var eax = m.Reg32("eax", 0);
                 m.Store(m.Word32(0x01000), m.LoadW(eax));
             });
             var sExp =
@@ -672,7 +672,7 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
+                var eax = m.Reg32("eax", 0);
                 m.Declare(eax, null);
                 m.Store(m.Word32(0x01000), m.LoadW(eax));
                 m.Store(m.Word32(0x01002), m.LoadW(m.IAdd(eax, 2)));
@@ -714,9 +714,9 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax1 = m.Reg32("eax1");
-                var eax2 = m.Reg32("eax2");
-                var eax3 = m.Reg32("eax3");
+                var eax1 = m.Reg32("eax1", 0);
+                var eax2 = m.Reg32("eax2", 0);
+                var eax3 = m.Reg32("eax3", 0);
                 m.Declare(eax1, null);
                 m.Assign(eax2, m.LoadDw(eax1));
                 m.Assign(eax3, m.LoadDw(eax2));
@@ -761,7 +761,7 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var r1 = m.Reg32("r1");
+                var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, null);
                 m.Assign(r1, m.LoadDw(r1));
                 m.Store(m.Word32(0x01004), m.Load(
@@ -808,8 +808,8 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 m.Declare(r1, null);
                 m.Declare(r2, null);
                 m.Assign(r1, m.LoadDw(r1));

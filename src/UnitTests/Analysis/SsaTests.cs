@@ -149,8 +149,8 @@ namespace Reko.UnitTests.Analysis
         public void SsaCallIndirect()
         {
             var m = new ProcedureBuilder("SsaCallIndirect");
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
             m.Assign(r1, m.LoadDw(r2));
             m.Call(r1, 4);
             m.Return();

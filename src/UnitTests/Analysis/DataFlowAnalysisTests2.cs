@@ -59,8 +59,8 @@ namespace Reko.UnitTests.Analysis
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m=>
                 {
-                    var r1 = m.Reg32("r1");
-                    var r2 = m.Reg32("r2");
+                    var r1 = m.Reg32("r1", 1);
+                    var r2 = m.Reg32("r2", 2);
                     m.Assign(r1, m.LoadDw(m.Word32(0x010000)));
                     m.Assign(r2, m.LoadDw(m.Word32(0x010004)));
                     m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
@@ -89,8 +89,8 @@ test_exit:
             pb.Add("test", m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
                 m.Assign(r2, m.LoadDw(m.IAdd(sp, 8)));

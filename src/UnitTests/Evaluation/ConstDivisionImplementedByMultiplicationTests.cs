@@ -32,8 +32,8 @@ namespace Reko.UnitTests.Evaluation
     edx = edx >>u 0x03
 */
             var c = Constant.UInt32(0x55555555);
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
             var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
 
             var ass = m.Assign(r2_r1, m.UMul(r1, c));

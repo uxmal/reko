@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_IfThen()
         {
-            var r1 = m.Reg32("r1");
+            var r1 = m.Reg32("r1", 1);
             m.Label("head");
             m.BranchIf(m.Le(r1, 0), "tail");
             m.Label("doit");
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_IfThenElse()
         {
-            var r1 = m.Reg32("r1");
+            var r1 = m.Reg32("r1", 1);
             m.Label("head");
             m.BranchIf(m.Le(r1, 0), "thenn");
             m.Label("elsee");
@@ -112,8 +112,8 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_While()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("head");
             m.BranchIf(m.Eq(r1, r2), "done");
@@ -142,8 +142,8 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_While2()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("start");
             m.Goto("head");
@@ -174,8 +174,8 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_BigHeadWhile()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("head");
             m.Store(m.Word32(0x1000), r2);
@@ -208,8 +208,8 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_DoWhile()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("loop");
             m.Store(r1, m.LoadDw(r2));
@@ -234,8 +234,8 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_NestedWhile()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("head1");
             m.BranchIf(m.Ge(r1, 4), "done1");
@@ -284,8 +284,8 @@ namespace Reko.UnitTests.Structure
         [Test]
         public void ProcStr_WhileBreak()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("head");
             m.BranchIf(m.Eq(r1, r2), "done");
@@ -319,8 +319,8 @@ namespace Reko.UnitTests.Structure
         [Test(Description="Here, the block leaving the loop does some work first.")]
         public void ProcStr_WhileBreak2()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("head");
             m.BranchIf(m.Eq(r1, r2), "done");
@@ -364,8 +364,8 @@ namespace Reko.UnitTests.Structure
         [Test(Description = "This forces a goto, because the loop leaving goto isn't going to the follow node.")]
         public void ProcStr_WhileGoto()
         {
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
 
             m.Label("head");
             m.BranchIf(m.Eq(r1, r2), "done");
@@ -447,7 +447,7 @@ unstructuredexit:
         [Test]
         public void ProcStr_InfiniteLoop()
         {
-            var r1 = m.Reg32("r1");
+            var r1 = m.Reg32("r1", 1);
 
             m.Label("head");
             m.Assign(r1, 0);
@@ -467,7 +467,7 @@ unstructuredexit:
         [Test]
         public void ProcStr_Switch()
         {
-            var r1 = m.Reg32("r1");
+            var r1 = m.Reg32("r1", 1);
 
             m.Label("head");
             m.Switch(r1, "case_0", "case_1", "case_2");
@@ -508,7 +508,7 @@ unstructuredexit:
         [Test]
         public void ProcStr_Switch_Fallthru()
         {
-            var r1 = m.Reg32("r1");
+            var r1 = m.Reg32("r1", 1);
 
             m.Label("head");
             m.Switch(r1, "case_0", "case_1", "case_2");
@@ -550,7 +550,7 @@ case_2:
         [Test(Description="A do-while with a nested if-then-else")]
         public void ProcStr_DoWhile_NestedIfElse()
         {
-            var r1 = m.Reg32("r1");
+            var r1 = m.Reg32("r1", 1);
 
             m.Label("head");
             m.SideEffect(m.Fn("foo", r1));
@@ -588,7 +588,7 @@ case_2:
         [Test(Description="A do-while loop with many continue statements.")]
         public void ProcStr_DoWhile_ManyContinues()
         {
-            var r1 = m.Reg32("r1");
+            var r1 = m.Reg32("r1", 1);
 
                 m.Label("head");
                 m.SideEffect(m.Fn("foo", r1));

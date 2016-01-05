@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Analysis
             var b = new ProgramBuilder();
             b.Add("main", m =>
             {
-                var r = m.Reg32("r0");
+                var r = m.Reg32("r0", 0);
                 var zf = m.Flags("Z");
                 m.Label("l0000");
                 m.Store(r, 0);
@@ -449,8 +449,8 @@ namespace Reko.UnitTests.Analysis
         public void VpDbpDbp()
         {
             var m = new ProcedureBuilder();
-            var d1 = m.Reg32("d32");
-            var a1 = m.Reg32("a32");
+            var d1 = m.Reg32("d32",0);
+            var a1 = m.Reg32("a32",1);
             var tmp = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
             m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0));
