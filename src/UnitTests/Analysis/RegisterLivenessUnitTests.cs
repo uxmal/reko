@@ -314,8 +314,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_ProcedureWithTrashedAndPreservedRegisters()
 		{
-            Procedure proc = new Procedure("test", program.Architecture.CreateFrame());
-			ProcedureFlow pf = new ProcedureFlow(proc, program.Architecture);
+            var proc = new Procedure("test", program.Architecture.CreateFrame());
+			var pf = new ProcedureFlow(proc, program.Architecture);
 			mpprocflow[proc] = pf;
 			pf.TrashedRegisters.Add(Registers.eax);
             pf.TrashedRegisters.Add(Registers.ebx);
@@ -323,7 +323,7 @@ namespace Reko.UnitTests.Analysis
 			pf.PreservedRegisters.Add(Registers.bp);
 
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState(program.Architecture);
-			BlockFlow bf = CreateBlockFlow(proc.ExitBlock, proc.Frame);
+			var bf = CreateBlockFlow(proc.ExitBlock, proc.Frame);
 			mpprocflow[proc.ExitBlock] = bf;
 			st.InitializeBlockFlow(proc.ExitBlock, mpprocflow, true);
 			Assert.IsFalse(bf.DataOut.Contains(Registers.ebp), "preserved registers cannot be live out");
