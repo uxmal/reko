@@ -421,13 +421,6 @@ namespace Reko.Core
             return new Register_v1(Name);
         }
 
-        [Obsolete("Don't use this; instead use mask paradigm", true)]
-        public virtual void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
-        {
-            registerFile[(int)Domain] = value;
-            valid[Number] = true;
-        }
-
         public virtual void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
         {
             ctx[this] = value;

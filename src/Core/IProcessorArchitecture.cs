@@ -101,8 +101,9 @@ namespace Reko.Core
 
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
         RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
-        RegisterStorage GetRegister(string name);	        // Returns register whose name is 'name'
+        RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
 
         /// <summary>
         /// Find the widest subregister that covers the register reg.
@@ -187,6 +188,7 @@ namespace Reko.Core
             return GetSubregister(reg, 0, dt.BitSize);
         }
         public virtual RegisterStorage GetWidestSubregister(RegisterStorage ecx, HashSet<RegisterStorage> bits) { throw new NotImplementedException(); }
+        public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
 
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
         public abstract FlagGroupStorage GetFlagGroup(uint grf);

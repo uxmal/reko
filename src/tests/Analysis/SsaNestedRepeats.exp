@@ -94,7 +94,7 @@ Mem29: orig: Mem0
     def:  Mem29[ds:0x0300:word16] = dx_18
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 si, selector ds)
+void fn0C00_0000(selector ds, word16 si)
 fn0C00_0000_entry:
 	def fp
 	def si

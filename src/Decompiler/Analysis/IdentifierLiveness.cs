@@ -161,6 +161,7 @@ namespace Reko.Analysis
 				defOffset = Math.Max((int)widestSub.BitAddress, defOffset);
 				defBitSize = Math.Min(widestSub.DataType.BitSize, defBitSize);
 			}
+            arch.RemoveAliases(ids, reg);
             ids.ExceptWith(arch.GetAliases(reg));
 		}
 

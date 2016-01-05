@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
 using Frame = Reko.Core.Frame;
@@ -29,10 +30,8 @@ using PrimtiveType = Reko.Core.Types.PrimitiveType;
 using Procedure = Reko.Core.Procedure;
 using Program = Reko.Core.Program;
 using RegisterStorage = Reko.Core.RegisterStorage;
-using ReturnInstruction = Reko.Core.Code.ReturnInstruction;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage= Reko.Core.StackArgumentStorage;
-using Statement = Reko.Core.Statement;
 using UseInstruction = Reko.Core.Code.UseInstruction;
 
 namespace Reko.Analysis
@@ -138,7 +137,7 @@ namespace Reko.Analysis
             var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
             var mayUse = new HashSet<RegisterStorage>(flow.MayUse);
             mayUse.ExceptWith(implicitRegs);
-			foreach (var reg in mayUse)
+			foreach (var reg in mayUse.OrderBy(r => r.Number))
 			{
 				if (!IsSubRegisterOfRegisters(reg, mayUse))
 				{

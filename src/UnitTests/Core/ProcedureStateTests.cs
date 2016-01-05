@@ -234,6 +234,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion
         }
 

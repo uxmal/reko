@@ -274,6 +274,11 @@ namespace Reko.UnitTests.Mocks
             return mask != 0 ? reg : null;
         }
 
+        public void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 

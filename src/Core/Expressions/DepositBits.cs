@@ -73,7 +73,6 @@ namespace Reko.Core.Expressions
 		public Expression InsertedBits
 		{
 			get { return bits; }
-			// [Obsolete("", true)]set { bits = value; }
 		}
 	}
 }

@@ -229,6 +229,18 @@ namespace Reko.Arch.X86
             return Registers.All.Where(a => a != null).ToArray();
         }
 
+        public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
+        {
+            foreach (var rAlias in GetAliases(reg))
+            {
+                ids.Remove(rAlias);
+                if (reg.BitAddress > 0 && rAlias.BitSize == 16)
+                {
+                    ids.Add(GetSubregister(rAlias, 0, 8));
+                }
+            }
+        }
+
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             reg = Registers.GetRegister(name);

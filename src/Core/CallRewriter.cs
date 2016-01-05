@@ -28,6 +28,10 @@ namespace Reko.Core
     /// <summary>
     /// Rewrite call statements to Applications.
     /// </summary>
+    /// <remarks>
+    /// Call statements are rewritten by consulting the ProcedureSignature
+    /// of the called function (callee). 
+    /// </remarks>
 	public class CallRewriter
 	{
 		public CallRewriter(Program program)

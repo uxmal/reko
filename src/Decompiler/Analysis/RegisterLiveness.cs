@@ -735,8 +735,9 @@ namespace Reko.Analysis
                     if (isExitBlock)
                     {
                         //Add all registers except preserved registers
-                        //bf.DataOut &= ~flow[block.Procedure].PreservedRegisters;
-                    }
+                        bf.DataOut.UnionWith(arch.GetRegisters());
+                        bf.DataOut.ExceptWith(flow[block.Procedure].PreservedRegisters);
+                    } 
 				}
 			}
 
@@ -909,8 +910,6 @@ namespace Reko.Analysis
 			}
 
 			#endregion
-
 		}
-
 	}
 }

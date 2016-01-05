@@ -56,7 +56,7 @@ cx_15: orig: cx
     uses: cx_9 = PHI(cx_13, cx_15)
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 bx, word16 si, selector ds)
+void fn0C00_0000(selector ds, word16 bx, word16 si)
 fn0C00_0000_entry:
 	def fp
 	def ds
