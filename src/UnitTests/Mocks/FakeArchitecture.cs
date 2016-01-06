@@ -170,7 +170,10 @@ namespace Reko.UnitTests.Mocks
 
         public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0 && width == (int)reg.BitSize)
+                return reg;
+            else
+                return null;
         }
 
         public RegisterStorage[] GetRegisters()
@@ -276,7 +279,7 @@ namespace Reko.UnitTests.Mocks
 
         public void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            ids.Remove(reg);
         }
 
         #endregion

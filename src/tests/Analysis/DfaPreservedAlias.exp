@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds
 // LiveOut:
-// Trashed: ax al ah
+// Trashed: ah al ax eax rax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -21,7 +21,7 @@ fn0C00_0000_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds
 // LiveOut:
-// Trashed: ax al
+// Trashed: al ax eax rax
 // Preserved: ax sp
 // fn0C00_000C
 // Return size: 0

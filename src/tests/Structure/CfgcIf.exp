@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 ax, selector ds, word16 si)
+void fn0C00_0000(word16 ax, word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -22,7 +22,7 @@ fn0C00_0000_exit:
 
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 ax, selector ds, word16 si)
+void fn0C00_0000(word16 ax, word16 si, selector ds)
 fn0C00_0000_entry:
 	word16 bx_10
 	branch ax != 0x0000 l0C00_000B

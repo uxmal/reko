@@ -169,7 +169,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
         public void DfaReg00010()
 		{
 			RunFileTest("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");

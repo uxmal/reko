@@ -1,6 +1,6 @@
 // void fn0C00_0000(Register word16 bx, Register word16 si, Register selector ds, FpuStack real64 rArg0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx si ds
+// MayUse:  bx ds si
 // LiveOut:
 // Trashed: SCZOFPUF
 // Preserved: sp

@@ -24,7 +24,7 @@ si:si
 ax_8: orig: ax
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 si, word16 di, selector ds)
+void fn0C00_0000(word16 di, selector ds)
 fn0C00_0000_entry:
 	def di
 	def ds

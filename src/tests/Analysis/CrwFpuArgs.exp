@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
-// Trashed: SCZO ax bx al bl ah bh
+// Trashed: SCZO ah al ax bh bl bx eax ebx rax rbx
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -42,8 +42,8 @@ fn0C00_0000_exit:
 void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg0, FpuStack real64 rArg1)
 // MayUse:  ds
 // LiveOut:
-// Trashed: bx bl bh
-// Preserved: sp bp
+// Trashed: bh bl bx ebx rbx
+// Preserved: bp sp
 // Stack args: Stack +0002(16)
 // fn0C00_0024
 // Return size: 0
@@ -78,8 +78,8 @@ fn0C00_0024_exit:
 FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // MayUse:  ds
 // LiveOut:
-// Trashed: bx bl bh
-// Preserved: sp bp
+// Trashed: bh bl bx ebx rbx
+// Preserved: bp sp
 // Stack args: Stack +0002(16)
 // fn0C00_0031
 // Return size: 0

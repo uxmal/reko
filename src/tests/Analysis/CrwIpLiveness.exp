@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
-// Trashed: SCZO ax bx si di al bl ah bh
+// Trashed: SCZO ah al ax bh bl bx di dil eax ebx edi esi rax rbx rdi rsi si sil
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -35,10 +35,10 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register word16 fn0C00_0026(Register word16 si, Register selector ds)
-// MayUse:  si ds
+// MayUse:  ds si
 // LiveOut: ax
-// Trashed: SCZO ax al ah
-// Preserved: sp di
+// Trashed: SCZO ah al ax eax rax
+// Preserved: di sp
 // fn0C00_0026
 // Return size: 0
 // Mem0:Global memory
@@ -71,9 +71,9 @@ l0C00_0026:
 	// succ:  fn0C00_0026_exit
 fn0C00_0026_exit:
 Register word16 fn0C00_0033(Register word16 si, Register selector ds)
-// MayUse:  si ds
+// MayUse:  ds si
 // LiveOut: ax
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0033
 // Return size: 0

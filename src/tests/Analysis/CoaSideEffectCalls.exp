@@ -1,20 +1,20 @@
 fp:fp
 sp_1: orig: sp
-bx_2: orig: bx
-    def:  fn0C00_000E(out bx_2)
-ax_3: orig: ax
+ax_2: orig: ax
+    def:  fn0C00_000E(out ax_2)
+bx_3: orig: bx
 Mem4: orig: Mem0
     def:  Mem4[ds:0x0300:word16] = 0x002B
 ds:ds
     def:  def ds
     uses: Mem4[ds:0x0300:word16] = 0x002B
-          fn0C00_0015(ax_7, bx_6, ds)
-bx_6: orig: bx
-    def:  ax_7 = fn0C00_000E(out bx_6)
-    uses: fn0C00_0015(ax_7, bx_6, ds)
-ax_7: orig: ax
-    def:  ax_7 = fn0C00_000E(out bx_6)
-    uses: fn0C00_0015(ax_7, bx_6, ds)
+          fn0C00_0015(ax_6, bx_7, ds)
+ax_6: orig: ax
+    def:  bx_7 = fn0C00_000E(out ax_6)
+    uses: fn0C00_0015(ax_6, bx_7, ds)
+bx_7: orig: bx
+    def:  bx_7 = fn0C00_000E(out ax_6)
+    uses: fn0C00_0015(ax_6, bx_7, ds)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -22,10 +22,10 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	fn0C00_000E(out bx_2)
+	fn0C00_000E(out ax_2)
 	Mem4[ds:0x0300:word16] = 0x002B
-	ax_7 = fn0C00_000E(out bx_6)
-	fn0C00_0015(ax_7, bx_6, ds)
+	bx_7 = fn0C00_000E(out ax_6)
+	fn0C00_0015(ax_6, bx_7, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -33,21 +33,21 @@ fn0C00_0000_exit:
 fp:fp
 sp_1: orig: sp
 ax_2: orig: ax
+    def:  ax_2 = 0x002A
+    uses: use ax_2 (=> axOut)
 bx_3: orig: bx
-    def:  bx_3 = 0x002B
-    uses: use bx_3 (=> bxOut)
-bxOut:Out:bx
+axOut:Out:ax
 // fn0C00_000E
 // Return size: 0
-word16 fn0C00_000E(ptr16 bxOut)
+word16 fn0C00_000E(ptr16 axOut)
 fn0C00_000E_entry:
 	// succ:  l0C00_000E
 l0C00_000E:
-	bx_3 = 0x002B
-	return 0x002A
+	ax_2 = 0x002A
+	return 0x002B
 	// succ:  fn0C00_000E_exit
 fn0C00_000E_exit:
-	use bx_3 (=> bxOut)
+	use ax_2 (=> axOut)
 
 fp:fp
 sp_1: orig: sp

@@ -30,7 +30,7 @@ r0_8: orig: r0
           r0_6 = PHI(r0_5, r0_8)
 // main
 // Return size: 0
-void main(word32 r1)
+void main(word32 r0)
 main_entry:
 	def r0
 	// succ:  l0000
@@ -86,7 +86,7 @@ r0_8: orig: r0
           r0_6 = PHI(r0_5, r0_8)
 // main
 // Return size: 0
-void main(word32 r1)
+void main(word32 r0)
 main_entry:
 	def r0
 	// succ:  l0000

@@ -1,8 +1,8 @@
 // void fn0C00_0000(Register word16 bx, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx ss ds
+// MayUse:  bx ds ss
 // LiveOut:
-// Trashed: ax sp al ah ss
+// Trashed: ah al ax eax esp rax rsp sp spl ss
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -17,9 +17,9 @@ fn0C00_0000_exit:
 
 // Register word16 fn0C00_0008(Register word16 bx, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx ss ds
+// MayUse:  bx ds ss
 // LiveOut: ax
-// Trashed: ax sp al ah ss
+// Trashed: ah al ax eax esp rax rsp sp spl ss
 // Preserved: sp
 // fn0C00_0008
 // Return size: 0

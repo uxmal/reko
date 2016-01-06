@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -29,7 +29,7 @@ fn0C00_0000_exit:
 Register byte fn0C00_0015(Register word16 ax)
 // MayUse:  ax
 // LiveOut: al
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0015
 // Return size: 0
@@ -68,7 +68,7 @@ fn0C00_0015_exit:
 Register byte fn0C00_0020(Register word16 ax)
 // MayUse:  ax
 // LiveOut: al
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0020
 // Return size: 0

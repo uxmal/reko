@@ -1,7 +1,7 @@
 void fn0C00_0000(Register word16 dx)
 // MayUse:  dx
 // LiveOut:
-// Trashed: SCZO ax dx al dl ah dh
+// Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -23,7 +23,7 @@ fn0C00_0000_exit:
 Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // MayUse:  dx
 // LiveOut: ax dx
-// Trashed: SCZO ax dx al dl ah dh
+// Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
 // Preserved: sp
 // fn0C00_0004
 // Return size: 0
@@ -62,7 +62,7 @@ fn0C00_0004_exit:
 Register word16 fn0C00_0013(Register word16 dx)
 // MayUse:  dx
 // LiveOut: dx
-// Trashed: SCZO ax dx al dl ah dh
+// Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
 // Preserved: sp
 // fn0C00_0013
 // Return size: 0

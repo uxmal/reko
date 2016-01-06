@@ -410,7 +410,7 @@ namespace Reko.UnitTests.Analysis
             trf = CreateTrashedRegisterFinder(program);
             trf.Compute();
             ProcedureFlow pf = flow[proc];
-            Assert.AreEqual(" esp ebp", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
+            Assert.AreEqual(" ebp esp", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
         }
 
         [Test]
@@ -467,13 +467,13 @@ namespace Reko.UnitTests.Analysis
             });
 
             RunTest(p,
-@"main ebx bx bl bh
+@"main bh bl bx ebx rbx
 const ebx:0x01231313
     main_entry esp:fp
     l1 esp:fp
     main_exit eax:eax ebx:0x01231313 esp:fp
 
-TrashEaxEbx eax ebx ax bx al bl ah bh
+TrashEaxEbx ah al ax bh bl bx eax ebx rax rbx
 const eax:<invalid> ebx:0x01231313
     TrashEaxEbx_entry esp:fp
     l1 esp:fp
@@ -517,7 +517,7 @@ const eax:<invalid> ebx:0x01231313
             });
 
             var sExp =
-@"main SCZO eax ax al ah
+@"main SCZO ah al ax eax rax
 const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp
@@ -566,7 +566,7 @@ const eax:<invalid>
             });
 
             var sExp =
-@"main eax ax al ah
+@"main ah al ax eax rax
 const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp
@@ -609,7 +609,6 @@ const ax:0x0000 cx:<invalid>
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TrfReg00005()
         {
             RunFileTest("Fragments/regressions/r00005.asm", "Analysis/TrfReg00005.txt");
