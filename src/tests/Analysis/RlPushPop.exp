@@ -1,6 +1,6 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  di ds si
+	MayUseIn:  di ds
 	BypassIn: 
 	Trashed:   SCZO ah al ax ch cl cx eax ecx rax rcx
 	Preserved: sp
@@ -8,7 +8,7 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: di ds si
+// DataOut: di ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp

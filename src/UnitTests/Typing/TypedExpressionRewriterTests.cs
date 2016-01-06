@@ -66,7 +66,6 @@ namespace Reko.UnitTests.Typing
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
-                program.TypeStore.Dump();   //$DEBUG
                 ter = new TypedExpressionRewriter2(program);
                 try
                 {

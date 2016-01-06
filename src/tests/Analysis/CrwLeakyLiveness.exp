@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
-// Trashed: SCZO ax si al ah
+// Trashed: SCZO ah al ax eax esi rax rsi si sil
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -34,7 +34,7 @@ fn0C00_0000_exit:
 FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // MayUse:  ds
 // LiveOut: C ax
-// Trashed: SCZO ax si al ah
+// Trashed: SCZO ah al ax eax esi rax rsi si sil
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0

@@ -1,4 +1,4 @@
-fn0C00_0000 SCZO ax al
+fn0C00_0000 SCZO al ax eax rax
 const al:0x20
     fn0C00_0000_entry sp:fp
     l0C00_0000 sp:fp

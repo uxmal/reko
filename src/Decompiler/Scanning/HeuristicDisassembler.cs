@@ -91,8 +91,6 @@ namespace Reko.Scanning
                     // Fresh instruction
                     AddNode(current);
                     current.Instructions.Add(instr);
-                    if (instr.Address.ToString().EndsWith("1082")) //$DEBUG
-                        instr.ToString();
                     blockMap.Add(instr.Address, current);
                     var op0 = instr.GetOperand(0);
                     var addrOp= op0 as AddressOperand;

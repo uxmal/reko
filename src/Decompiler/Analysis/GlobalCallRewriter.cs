@@ -96,7 +96,7 @@ namespace Reko.Analysis
 		private void AdjustLiveOut(ProcedureFlow flow)
 		{
 			flow.grfLiveOut &= flow.grfTrashed;
-			flow.LiveOut.ExceptWith(flow.TrashedRegisters);
+			flow.LiveOut.IntersectWith(flow.TrashedRegisters);
 		}
 
 		public static void Rewrite(Program program, ProgramDataFlow summaries)
@@ -127,8 +127,8 @@ namespace Reko.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-			SignatureBuilder sb = new SignatureBuilder(proc, Program.Architecture);
-			Frame frame = proc.Frame;
+			var sb = new SignatureBuilder(proc, Program.Architecture);
+			var frame = proc.Frame;
 			if (flow.grfLiveOut != 0)
 			{
 				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);

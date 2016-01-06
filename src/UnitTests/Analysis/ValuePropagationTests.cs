@@ -102,6 +102,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 			}
 		}
+
 		[Test]
 		public void VpChainTest()
 		{

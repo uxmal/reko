@@ -547,10 +547,9 @@ namespace Reko.Analysis
                 // that were live after the call and were bypassed by the called function
                 // or used by the called function.
 
-                var ids = new HashSet<RegisterStorage>(varLive.Identifiers);
-                varLive.Identifiers.ExceptWith(pi.TrashedRegisters);
-                ids.IntersectWith(pi.ByPass);
-                varLive.Identifiers.UnionWith(ids);
+                var ids = new HashSet<RegisterStorage>(pi.ByPass);
+                ids.ExceptWith(pi.TrashedRegisters);
+                varLive.Identifiers.IntersectWith(ids);
                 varLive.Identifiers.UnionWith(pi.MayUse);
 				// varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
 				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
@@ -770,7 +769,6 @@ namespace Reko.Analysis
 			}
 		}
 
-
 		private class MayUseState : State
 		{
 			public MayUseState() : base(false)
@@ -799,7 +797,6 @@ namespace Reko.Analysis
 				item.MayUse = new HashSet<RegisterStorage>(item.Summary);
             }
 		}
-
 
 		private class LiveInState : State
 		{

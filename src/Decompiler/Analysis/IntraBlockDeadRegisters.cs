@@ -252,6 +252,8 @@ namespace Reko.Analysis
                 return false;
             if (id.Storage is MemoryStorage)
                 return false;
+            if (id.Storage is TemporaryStorage)
+                return false;
             throw new NotImplementedException(id.Storage.GetType().Name);
         }
 

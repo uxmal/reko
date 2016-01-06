@@ -30,7 +30,6 @@ namespace Reko.Core.Types
 	{
 		public ArrayType(DataType elType, int length)
 		{
-            if (elType is ArrayType) elType.ToString(); //$DEBUG
 			this.ElementType = elType;
 			this.Length = length;
 		}
