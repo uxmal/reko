@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,10 @@ namespace Reko.Analysis
 	/// <summary>
 	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
 	/// </summary>
+    /// <remarks>
+    /// This class implements the SSA algorithm from Appel's "Modern compiler 
+    /// implementatation in [language of your choice]."
+    /// </remarks>
 	public class SsaTransform
 	{
         private ProgramDataFlow programFlow;
@@ -602,15 +606,16 @@ namespace Reko.Analysis
 
                 // Hell node implementation - use all register variables.
 
-				foreach (UseInstruction use in ci.Uses)
+                var oldUses = ci.Uses.Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier).ToHashSet();
+				foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct().ToList())
                 {
                     var id = (Identifier)use.Expression;
 					if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
                         id.Storage is StackLocalStorage)
 					{
                         use.Expression = NewUse(id, stmCur);
+                        }
 					}
-				}
                 foreach (DefInstruction def in ci.Definitions)
                 {
                     var id = (Identifier)def.Expression;
@@ -618,7 +623,7 @@ namespace Reko.Analysis
                         id.Storage is StackLocalStorage)
                     {
                         def.Expression = NewDef(id, null, false);
-                    }
+				}
                 }
 				return ci;
 			}
@@ -653,10 +658,10 @@ namespace Reko.Analysis
                 return new OutArgument(outArg.DataType, exp);
             }
 
-            public override Expression VisitIdentifier(Identifier id)
-            {
-                return NewUse(id, stmCur);
-            }
+			public override Expression VisitIdentifier(Identifier id)
+			{
+                    return NewUse(id, stmCur);
+			}
 
             public override Expression VisitMemoryAccess(MemoryAccess access)
             {
@@ -721,6 +726,14 @@ namespace Reko.Analysis
 		}
     }
 
+	/// <summary>
+	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
+	/// </summary>
+    /// <remarks>
+    /// This class implements another SSA algorithm that doesn't require 
+    /// calculation of the dominator graph. It is expected that when it is fully
+    /// implemented, it will take over from SsaTransform above.
+    /// </remarks>
     public class SsaTransform2 : InstructionTransformer 
     {
         private Block block;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(88, lib.Procedures.Count);
+			Assert.AreEqual(89, lib.Procedures.Count);
 		}
 
         [Test]

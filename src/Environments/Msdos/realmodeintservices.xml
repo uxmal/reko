@@ -1053,6 +1053,20 @@
 	  </return>
 	</signature>
   </service>
+  <service name="msdos_rename_file">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">56</regvalue>
+    </syscallinfo>
+    <signature>
+      <return>
+        <flag>C</flag>
+      </return>
+      <arg name="oldName"><seq><reg>ds</reg><reg>dx</reg></seq></arg>
+      <arg name="newName"><seq><reg>es</reg><reg>di</reg></seq></arg>
+      <arg name="errorCode" out="true"><reg>ax</reg></arg>
+    </signature>
+  </service>
   <service name="msdos_set_memory_allocation_strategy">
 	<syscallinfo>
 	  <vector>21</vector>

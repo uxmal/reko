@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ namespace Reko.Core.CLanguage
         private CTokenType callingConvention;
         private CConstantEvaluator eval;
         private SimpleSize simpleSize;
+        private int pointerSize;            // Pointer sizes, in bytes.
 
         private enum SimpleSize
         {
@@ -57,13 +58,14 @@ namespace Reko.Core.CLanguage
             Int64,
         }
 
-        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, SymbolTable converter)
+        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, SymbolTable converter, int pointerSize)
         {
             this.specs = specs;
             this.symbolTable = converter;
             this.callingConvention = CTokenType.None;
             this.eval = new CConstantEvaluator(converter.Constants);
             this.simpleSize = SimpleSize.None;
+            this.pointerSize = pointerSize;
             foreach (var declspec in specs)
             {
                 dt = declspec.Accept(this);
@@ -148,8 +150,7 @@ namespace Reko.Core.CLanguage
             if (specs.OfType<TypeQualifier>()
                     .Any(t => t.Qualifier == CTokenType._Near))
                 return 2;
-            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
-            return 4;
+            return pointerSize;
         }
 
         public Func<NamedDataType, NamedDataType> VisitFunction(FunctionDeclarator function)
@@ -205,7 +206,7 @@ namespace Reko.Core.CLanguage
             }
             else
             {
-                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, symbolTable);
+                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, symbolTable, pointerSize);
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 var kind = GetArgumentKindFromAttributes(decl.Attributes);
                 return new Argument_v1
@@ -261,7 +262,7 @@ namespace Reko.Core.CLanguage
                 {
                     Name = nt.Name,
                     DataType = new PointerType_v1 { DataType = at.ElementType },
-                    Size = 4   //$BUGBUG: this is different for z80 and x86-64
+                    Size = pointerSize,
                 };
             }
             else
@@ -502,7 +503,7 @@ namespace Reko.Core.CLanguage
             int offset = 0;
             foreach (var decl in decls)
             {
-                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable);
+                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable, pointerSize);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
@@ -523,7 +524,7 @@ namespace Reko.Core.CLanguage
         {
             foreach (var decl in decls)
             {
-                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable);
+                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable, pointerSize);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ndte.GetNameAndType(declarator);

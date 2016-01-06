@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)
         {
-            var ndte = new NamedDataTypeExtractor(declSpecs, symbolTable);
+            var ndte = new NamedDataTypeExtractor(declSpecs, symbolTable, 4);
             this.nt = ndte.GetNameAndType(decl);
         }
 
@@ -120,7 +120,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         [Test(Description="If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
-            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable);
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable, 4);
             var kind = ndte.GetArgumentKindFromAttributes(null);
             Assert.IsNull(kind);
         }
@@ -128,7 +128,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         [Test(Description = "If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
         {
-            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable);
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable, 4);
             var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
             {
                 new CAttribute {
@@ -141,7 +141,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         [Test(Description = "If there is a reko::reg attribute present, us it to determine kind.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
         {
-            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable);
+            var ndte = new NamedDataTypeExtractor(new DeclSpec[0], symbolTable, 4);
             var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
             {
                 new CAttribute {

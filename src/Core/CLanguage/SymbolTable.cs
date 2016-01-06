@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,9 @@ namespace Reko.Core.CLanguage
                 isTypedef = true;
             }
 
-            var ntde = new NamedDataTypeExtractor(declspecs, this);
+            //$TODO: need a pointer size passed into the symbol table instead
+            // of the constant '4' below.
+            var ntde = new NamedDataTypeExtractor(declspecs, this, 4);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);
