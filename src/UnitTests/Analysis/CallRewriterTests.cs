@@ -144,7 +144,8 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
 		}
 
-		protected override void RunTest(Program prog, TextWriter writer)
+
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
 			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();

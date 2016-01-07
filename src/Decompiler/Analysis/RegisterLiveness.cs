@@ -196,7 +196,9 @@ namespace Reko.Analysis
 		/// <param name="item">The block dataflow item we are about to process</param>
 		public void ProcessBlock(BlockFlow item)
 		{
-			bool t = trace.TraceInfo;
+            bool t = trace.TraceInfo | true;    //$DEBUG
+            if (item.Block.Name.Contains("007"))
+                item.ToString();
 			if (t)
 			{
 				Debug.Write(item.Block.Procedure.Name + ", ");
@@ -547,9 +549,9 @@ namespace Reko.Analysis
                 // that were live after the call and were bypassed by the called function
                 // or used by the called function.
 
-                var ids = new HashSet<RegisterStorage>(pi.ByPass);
-                ids.ExceptWith(pi.TrashedRegisters);
-                varLive.Identifiers.IntersectWith(ids);
+                var ids = new HashSet<RegisterStorage>(pi.TrashedRegisters);
+                ids.ExceptWith(pi.ByPass);
+                varLive.Identifiers.ExceptWith(ids);
                 varLive.Identifiers.UnionWith(pi.MayUse);
 				// varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
 				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
@@ -786,7 +788,7 @@ namespace Reko.Analysis
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
-                flow.ByPass = new HashSet<RegisterStorage>(flow.Summary);
+                flow.ByPass = flow.Summary;
                 flow.Summary.Clear();
 				flow.grfByPass = flow.grfSummary;
 				flow.grfSummary = 0;

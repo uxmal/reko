@@ -349,12 +349,13 @@ l1:
 	r1_0 = 0x00000003
 	r2_1 = 0x00000004
 	call Adder (retsize: 4;)
-	Mem2[0x00012300:word32] = 0x00000003
+		defs: r1_2
+	Mem3[0x00012300:word32] = r1_2
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use Mem2
-	use r1_0
+	use Mem3
+	use r1_2
 	use r2_1
 ";
             RunTest(sExp, m =>
@@ -500,18 +501,18 @@ l1:
 	branch r1 true
 	// succ:  l2 true
 l2:
-	r2_2 = 0x00000010
+	r2_5 = 0x00000010
 	// succ:  true
 true:
 	call r3 (retsize: 4;)
 		uses: r1,r2,r3
-		defs: r1,r2,r3
+		defs: r1_2,r2_3,r3_4
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1
-	use r2
-	use r3
+	use r1_2
+	use r2_3
+	use r3_4
 ";
             RunTest(sExp, m =>
             {

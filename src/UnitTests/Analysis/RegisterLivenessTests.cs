@@ -222,5 +222,11 @@ namespace Reko.UnitTests.Analysis
         {
             RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/RlSliceReturn.txt");
         }
+
+        [Test]
+        public void RlRecurseWithPushes()
+        {
+            RunFileTest("Fragments/multiple/recurse_with_pushes.asm", "Analysis/RlRecurseWithPushes.txt");
+        }
     }
 }
