@@ -119,7 +119,8 @@ namespace Reko.Analysis
 		}
 
 		/// <summary>
-		/// Creates a signature for this procedure, and ensures that all registers accessed by the procedure are in the procedure
+		/// Creates a signature for this procedure, and ensures that all 
+        /// registers accessed by the procedure are in the procedure
 		/// Frame.
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
@@ -157,7 +158,7 @@ namespace Reko.Analysis
 
             var liveOut = new HashSet<RegisterStorage>(flow.LiveOut);
             liveOut.ExceptWith(implicitRegs);
-			foreach (var r in liveOut)
+			foreach (var r in liveOut.OrderBy(r => r.Number))
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{

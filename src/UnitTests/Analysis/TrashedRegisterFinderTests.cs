@@ -602,6 +602,7 @@ const ax:0x0000 cx:<invalid>
 ";
             RunTest(p, sExp);
         }
+
         [Test]
         public void TrfFactorial()
         {
