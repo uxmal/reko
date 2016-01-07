@@ -325,11 +325,9 @@ namespace Reko.Analysis
                         return;
                     foreach (Identifier id in proc.Frame.Identifiers)
                     {
-                        
                         if ((id.Storage is RegisterStorage  && !(id.Storage is TemporaryStorage)) 
                             || id.Storage is FlagGroupStorage)
                         {
-                            ci.Uses.Add(new UseInstruction(id));
                             ci.Definitions.Add(new DefInstruction(id));
                             MarkDefined(id);
                         }
@@ -591,7 +589,7 @@ namespace Reko.Analysis
 			}
 
 			public override Instruction TransformCallInstruction(CallInstruction ci)
-			{
+            {
                 ci.Callee = ci.Callee.Accept(this);
                 ProcedureConstant pc;
                 if (ci.Callee.As(out pc))
@@ -600,22 +598,37 @@ namespace Reko.Analysis
                     ProcedureFlow2 procFlow;
                     if (procCallee != null && programFlow.ProcedureFlows2.TryGetValue(procCallee, out procFlow))
                     {
+                        AddDefInstructions(ci, procFlow);
                         return ci;
                     }
                 }
+                RenameAllRegisterIdentifiers(ci);
+                return ci;
+            }
 
+            /// <summary>
+            /// Because we don't have a proper signature for the callee, we're forced to
+            /// guess. Use all registers and flags in this procedure.
+            /// </summary>
+            /// <param name="ci"></param>
+            private void RenameAllRegisterIdentifiers(CallInstruction ci)
+            {
                 // Hell node implementation - use all register variables.
 
-                var oldUses = ci.Uses.Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier).ToHashSet();
-				foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct().ToList())
+                var alreadyExistingUses = ci.Uses.Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier).ToHashSet();
+                foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct().ToList())
                 {
-                    var id = (Identifier)use.Expression;
-					if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
+                    if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
                         id.Storage is StackLocalStorage)
-					{
-                        use.Expression = NewUse(id, stmCur);
+                    {
+                        if (!alreadyExistingUses.Contains(id))
+                        {
+                            alreadyExistingUses.Add(id);
+                            var newId = NewUse(id, stmCur);
+                            ci.Uses.Add(new UseInstruction(newId));
                         }
-					}
+                    }
+                }
                 foreach (DefInstruction def in ci.Definitions)
                 {
                     var id = (Identifier)def.Expression;
@@ -623,12 +636,11 @@ namespace Reko.Analysis
                         id.Storage is StackLocalStorage)
                     {
                         def.Expression = NewDef(id, null, false);
-				}
+                    }
                 }
-				return ci;
-			}
+            }
 
-			public override Expression VisitApplication(Application appl)
+            public override Expression VisitApplication(Application appl)
 			{
 				for (int i = 0; i < appl.Arguments.Length; ++i)
 				{

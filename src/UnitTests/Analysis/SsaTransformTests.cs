@@ -485,9 +485,8 @@ ProcedureBuilder_exit:
             });
         }
 
-
         [Test]
-       public void SsaHellNode()
+        public void SsaHellNode()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -506,6 +505,7 @@ l2:
 true:
 	call r3 (retsize: 4;)
 		uses: r1,r2,r3
+		defs: r1,r2,r3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -626,8 +626,8 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	eax_2 = Mem0[eax:word32]
-    vx_3 = DPB(vx_x, eax_2, 0)
-	Mem0[0x00001234:word32] = eax_2
+	ah_3 = SLICE(eax_2, byte, 8)
+	Mem0[0x00001234:byte] = ah_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
