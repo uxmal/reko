@@ -4,7 +4,7 @@
 
 #include "redir.h"
 
-void fn00400230(Eq_3 * ra, word32 dwArg00)
+void fn00400230(word32 ra, word32 dwArg00)
 {
 fn00400230_entry:
 l00400230:
@@ -12,8 +12,19 @@ l00400230_ds_f:
 	goto l00400238
 l00400230_ds_t:
 l00400238:
-	code * r25_18 = ra->ptrFC00690
-	r25_18()
+	word32 r25_18 = Mem0[ra + 0x0FC00690:word32]
+	word32 sp_19
+	word32 r28_20
+	word32 ra_21
+	word32 r4_22
+	word32 r5_23
+	word32 r6_24
+	word32 r7_25
+	word32 r2_26
+	word32 r25_27
+	call r25_18 (retsize: 0; depth: 24)
+		uses: dwLoc08_17,r2_16,r25_18,r28_5,r4_8,r5_9,r6_12,r7_14,ra_6,sp_15
+		defs: r2_26,r25_27,r28_20,r4_22,r5_23,r6_24,r7_25,ra_21,sp_19
 l00400284:
 	goto l00400284
 fn00400230_exit:

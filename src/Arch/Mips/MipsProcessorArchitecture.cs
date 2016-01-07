@@ -109,11 +109,6 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
@@ -127,7 +122,7 @@ namespace Reko.Arch.Mips
         public override string GrfToString(uint grf)
         {
             if (grf != 0)   // MIPS has no traditional status register.
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             return "";
         }
 

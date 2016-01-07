@@ -111,7 +111,7 @@ namespace Reko.Core
         /// <param name="reg"></param>
         /// <param name="bits"></param>
         /// <returns></returns>
-        RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits);
+        RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
         RegisterStorage GetPart(RegisterStorage reg, DataType width);
         RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
@@ -182,12 +182,33 @@ namespace Reko.Core
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
-        public abstract RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+
+        /// <summary>
+        /// Get the improper subregister of <paramref name="reg"/> that starts
+        /// at offset <paramref name="offset"/> and is of size 
+        /// <paramref name="width"/>.
+        /// </summary>
+        /// <remarks>
+        /// Most architectures not have subregisters, and will use this 
+        /// default implementation. This method is overridden for 
+        /// architectures like x86 and Z80, where subregisters (ah al etc)
+        /// do exist.
+        /// </remarks>
+        /// <param name="reg"></param>
+        /// <param name="offset"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
+        public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            return (offset == 0 && reg.BitSize == (ulong)width) ? reg : null;
+        }
+
         public virtual RegisterStorage GetPart(RegisterStorage reg, DataType dt)
         {
             return GetSubregister(reg, 0, dt.BitSize);
         }
-        public virtual RegisterStorage GetWidestSubregister(RegisterStorage ecx, HashSet<RegisterStorage> bits) { throw new NotImplementedException(); }
+
+        public virtual RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
         public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
 
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);

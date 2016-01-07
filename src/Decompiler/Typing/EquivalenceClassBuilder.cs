@@ -54,11 +54,7 @@ namespace Reko.Typing
 
             foreach (Procedure proc in program.Procedures.Values)
             {
-                signature = proc.Signature;
-                if (signature != null && signature.ReturnValue != null)
-                {
-                   signature.ReturnValue.Accept(this);
-                }
+                EnsureSignatureTypeVariables(proc.Signature);
                 
                 foreach (Statement stm in proc.Statements)
                 {
@@ -67,7 +63,21 @@ namespace Reko.Typing
             }
 		}
 
-		public TypeVariable EnsureTypeVariable(Expression e)
+        public void EnsureSignatureTypeVariables(ProcedureSignature signature)
+        {
+            if (signature == null || !signature.ParametersValid)
+                return;
+            if (signature.ReturnValue != null)
+            {
+                signature.ReturnValue.Accept(this);
+            }
+            foreach (var param in signature.Parameters)
+            {
+                param.Accept(this);
+            }
+        }
+
+        public TypeVariable EnsureTypeVariable(Expression e)
 		{
 			return store.EnsureExpressionTypeVariable(factory, e);
 		}

@@ -112,6 +112,27 @@ namespace Reko.Arch.Z80
             return subReg;
         }
 
+        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
+        {
+            ulong mask = regs.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            Dictionary<uint, RegisterStorage> subregs;
+            if ((mask & reg.BitMask) == reg.BitMask)
+                return reg;
+            RegisterStorage rMax = null;
+            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
+            {
+                foreach (var subreg in subregs.Values)
+                {
+                    if ((subreg.BitMask & mask) == subreg.BitMask &&
+                        (rMax == null || subreg.BitSize > rMax.BitSize))
+                    {
+                        rMax = subreg;
+                    }
+                }
+            }
+            return rMax;
+        }
+
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();

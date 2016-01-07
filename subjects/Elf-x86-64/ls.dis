@@ -1,10 +1,11 @@
-void fn0000000000404890(word32 eax, word64 qwArg00, word32 dwArg04)
+void fn0000000000404890(word64 rax, word64 rdx, word64 qwArg00, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  eax
+// MayUse:  rax rdx
 // LiveOut:
 // Trashed:
 // Preserved:
+// Stack args: Stack +0000(64)
 // Terminates process
 fn0000000000404890_exit:
 // DataOut:
@@ -12,13 +13,14 @@ fn0000000000404890_exit:
 // SymbolicIn:
 
 fn0000000000404890_entry:
-// DataOut: eax
+// DataOut: rax rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
+// LocalsOut: fp(64) Stack +0000(64)
 
 l0000000000404890:
 	__align(fp + 0x0000000000000008)
+	word64 rax_20 = DPB(rax, __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, DPB(qwArg00, fp, 0)), 0)
 	__hlt()
 // DataOut:
 // DataOut (flags): 

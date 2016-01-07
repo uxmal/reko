@@ -4,40 +4,65 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_3: (struct "Eq_3" (FC00690 (ptr code) ptrFC00690))
-	T_3 (in ra : (ptr Eq_3))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
-T_2: (in r25_18 : (ptr code))
+  DataType: (ptr (struct))
+  OrigDataType: (ptr (struct))
+T_2: (in r25_18 : word32)
   Class: Eq_2
-  DataType: (ptr code)
-  OrigDataType: (ptr code)
-T_3: (in ra : (ptr Eq_3))
+  DataType: 
+  OrigDataType: 
+T_3: (in ra : word32)
   Class: Eq_3
-  DataType: (ptr Eq_3)
-  OrigDataType: (ptr (struct (FC00690 T_6 tFC00690)))
+  DataType: word32
+  OrigDataType: word32
 T_4: (in 0x0FC00690 : word32)
   Class: Eq_4
-  DataType: word32
-  OrigDataType: word32
+  DataType: 
+  OrigDataType: 
 T_5: (in ra + 0x0FC00690 : word32)
   Class: Eq_5
-  DataType: word32
-  OrigDataType: word32
+  DataType: 
+  OrigDataType: 
 T_6: (in Mem0[ra + 0x0FC00690:word32] : word32)
   Class: Eq_2
-  DataType: (ptr code)
-  OrigDataType: word32
+  DataType: 
+  OrigDataType: 
+T_7: (in sp_19 : word32)
+  Class: Eq_7
+  DataType: 
+  OrigDataType: 
+T_8: (in r28_20 : word32)
+  Class: Eq_8
+  DataType: 
+  OrigDataType: 
+T_9: (in ra_21 : word32)
+  Class: Eq_9
+  DataType: 
+  OrigDataType: 
+T_10: (in r4_22 : word32)
+  Class: Eq_10
+  DataType: 
+  OrigDataType: 
+T_11: (in r5_23 : word32)
+  Class: Eq_11
+  DataType: 
+  OrigDataType: 
+T_12: (in r6_24 : word32)
+  Class: Eq_12
+  DataType: 
+  OrigDataType: 
+T_13: (in r7_25 : word32)
+  Class: Eq_13
+  DataType: 
+  OrigDataType: 
+T_14: (in r2_26 : word32)
+  Class: Eq_14
+  DataType: 
+  OrigDataType: 
+T_15: (in r25_27 : word32)
+  Class: Eq_15
+  DataType: 
+  OrigDataType: 
 */
-typedef struct Globals {
-} Eq_1;
-
-typedef struct Eq_3 {
-	 <anonymous> * ptrFC00690;	// FC00690
-} Eq_3;
-

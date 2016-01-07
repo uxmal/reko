@@ -54,7 +54,7 @@ namespace Reko.Core.Output
             this.formatter = formatter;
             this.codeFormatter = new CodeFormatter(formatter);
             this.tw = new TypeReferenceFormatter(formatter, true);
-            var dtGlobalStruct = ((Pointer)program.Globals.TypeVariable.DataType).Pointee;
+            var dtGlobalStruct = program.Globals.TypeVariable.DataType;
             this.globals = dtGlobalStruct.ResolveAs<StructureType>();
             this.queue = new Queue<StructureField>(globals.Fields);
             while (queue.Count > 0)
