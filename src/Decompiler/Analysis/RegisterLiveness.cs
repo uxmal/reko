@@ -196,9 +196,7 @@ namespace Reko.Analysis
 		/// <param name="item">The block dataflow item we are about to process</param>
 		public void ProcessBlock(BlockFlow item)
 		{
-            bool t = trace.TraceInfo | true;    //$DEBUG
-            if (item.Block.Name.Contains("007"))
-                item.ToString();
+            bool t = trace.TraceInfo;
 			if (t)
 			{
 				Debug.Write(item.Block.Procedure.Name + ", ");
@@ -751,6 +749,7 @@ namespace Reko.Analysis
 			public override void UpdateSummary(ProcedureFlow item)
 			{
                 item.ByPass = new HashSet<RegisterStorage>(item.Summary);
+                item.ByPass.ExceptWith(item.TrashedRegisters);
 			}
 
 			public override bool MergeBlockInfo(IdentifierLiveness varLive, BlockFlow blockFlow)
@@ -788,7 +787,8 @@ namespace Reko.Analysis
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
-                flow.ByPass = flow.Summary;
+                flow.ByPass = new HashSet<RegisterStorage>(flow.Summary);
+                flow.ByPass.ExceptWith(flow.TrashedRegisters);
                 flow.Summary.Clear();
 				flow.grfByPass = flow.grfSummary;
 				flow.grfSummary = 0;

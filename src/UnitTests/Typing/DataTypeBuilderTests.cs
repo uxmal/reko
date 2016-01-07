@@ -422,6 +422,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("Re-enable when new SSA is in place")]
         public void DtbReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
