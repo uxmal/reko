@@ -18,21 +18,25 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
+using Reko.UnitTests.TestCode;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Reko.UnitTests.TestCode;
 
 namespace Reko.UnitTests.Analysis
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [TestFixture]
     public class DataFlowAnalysisTests2
     {
@@ -182,6 +186,67 @@ test_exit:
             var sExp =
             @"@@@";
             AssertProgram(sExp, program);
+        }
+
+        [Test]
+        public void Dfa2_UserDefinedStackArgs()
+        {
+            var pb = new ProgramBuilder(new X86ArchitectureFlat32());
+            var test = pb.Add(
+                new Procedure_v1
+                {
+                    CSignature = "void test(int a, int b)"
+                },
+                m => {
+                    var sp = m.Register(m.Architecture.StackRegister);
+                    var r1 = m.Reg32("r1", 1);
+                    var r2 = m.Reg32("r2", 2);
+                    var fp = m.Frame.FramePointer;
+                    m.Assign(r1, m.LoadDw(m.IAdd(fp, 4)));
+                    m.Assign(r2, m.LoadDw(m.IAdd(fp, 8)));
+                    m.Assign(r1, m.IAdd(r1, r2));
+                    m.Store(m.Word32(0x010008), r1);
+                    m.Return();
+                });
+            var program = pb.BuildProgram();
+            var platform = new FakePlatform(null, program.Architecture);
+            platform.Test_CreateProcedureSerializer = (t, d) =>
+            {
+                var typeLoader = new TypeLibraryLoader(platform, false);
+                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
+            };
+
+            program.Platform = platform;
+            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            dfa.UntangleProcedures2();
+            var sExp = @"// test
+// Return size: 4
+void test(int32 a, int32 b)
+test_entry:
+	// succ:  l1
+l1:
+	word32 r1_4 = a + b
+	Mem5[0x00010008:word32] = r1_4
+	return
+	// succ:  test_exit
+test_exit:
+";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            AssertProgram(sExp, pb.Program);
         }
     }
 }

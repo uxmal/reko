@@ -19,35 +19,39 @@ T_3: (in n : uint32)
   Class: Eq_3
   DataType: uint32
   OrigDataType: uint32
-T_4: (in 0xFFFFFFFE : word32)
-  Class: Eq_3
+T_4: (in n : uint32)
+  Class: Eq_4
   DataType: uint32
   OrigDataType: uint32
-T_5: (in n > 0xFFFFFFFE : bool)
-  Class: Eq_5
+T_5: (in 0xFFFFFFFE : word32)
+  Class: Eq_4
+  DataType: uint32
+  OrigDataType: uint32
+T_6: (in n > 0xFFFFFFFE : bool)
+  Class: Eq_6
   DataType: bool
   OrigDataType: bool
-T_6: (in 0x10072000 : ptr32)
+T_7: (in 0x10072000 : ptr32)
   Class: Eq_2
   DataType: (ptr char)
   OrigDataType: ptr32
-T_7: (in 0x00000001 : word32)
-  Class: Eq_7
-  DataType: word32
-  OrigDataType: word32
-T_8: (in n + 0x00000001 : word32)
+T_8: (in 0x00000001 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in 0x10072018 : ptr32)
+T_9: (in n + 0x00000001 : word32)
+  Class: Eq_9
+  DataType: word32
+  OrigDataType: word32
+T_10: (in 0x10072018 : ptr32)
   Class: Eq_2
   DataType: (ptr char)
   OrigDataType: ptr32
-T_10: (in 0x10072014 : ptr32)
+T_11: (in 0x10072014 : ptr32)
   Class: Eq_2
   DataType: (ptr char)
   OrigDataType: ptr32
-T_11: (in 0x10072010 : ptr32)
+T_12: (in 0x10072010 : ptr32)
   Class: Eq_2
   DataType: (ptr char)
   OrigDataType: ptr32

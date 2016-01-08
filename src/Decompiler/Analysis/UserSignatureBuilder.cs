@@ -73,13 +73,13 @@ namespace Reko.Analysis
                 {
                     dst = proc.Frame.EnsureStackArgument(
                         starg.StackOffset + sig.ReturnAddressOnStack,
-                        param.DataType);
+                        param.DataType,
+                        param.Name);
                 }
                 else
                 {
                     dst = proc.Frame.EnsureIdentifier(param.Storage);
                 }
-                stmts.Insert(i, linAddr, new Assignment(dst, param));
                 ++i;
             }
         }

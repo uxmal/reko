@@ -193,8 +193,11 @@ namespace Reko.Analysis
 
         public void UntangleProcedures2()
         {
-            eventListener.ShowStatus("Eliminating intra-block dead registers.");
-            IntraBlockDeadRegisters.Apply(program);
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures();
+
+            //eventListener.ShowStatus("Eliminating intra-block dead registers.");
+            //IntraBlockDeadRegisters.Apply(program);
 
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
             foreach (var procedure in program.Procedures.Values)
@@ -208,6 +211,7 @@ namespace Reko.Analysis
             if (procs.Count == 1)
             {
                 var proc = procs[0];
+
                 Aliases alias = new Aliases(proc, program.Architecture, flow);
                 alias.Transform();
                 

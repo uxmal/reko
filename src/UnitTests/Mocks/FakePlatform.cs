@@ -42,9 +42,10 @@ namespace Reko.UnitTests.Mocks
             return new HashSet<RegisterStorage>();
         }
 
+        public Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer> Test_CreateProcedureSerializer;
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            throw new NotImplementedException();
+            return Test_CreateProcedureSerializer(typeLoader, defaultConvention);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -54,7 +55,7 @@ namespace Reko.UnitTests.Mocks
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
