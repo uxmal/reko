@@ -43,22 +43,35 @@ namespace Reko.Analysis
             this.symbolTable = new SymbolTable();
         }
 
+        /// <summary>
+        /// For each user-supplied signature, locate a scanned procedure
+        /// and apply the signature to it.
+        /// </summary>
         public void BuildSignatures()
         {
-            foreach (var de in program.User.Procedures
-                .Where(d => !string.IsNullOrEmpty(d.Value.CSignature)))
+            foreach (var de in program.User.Procedures)
             {
                 Procedure proc;
                 if (!program.Procedures.TryGetValue(de.Key, out proc))
                     continue;
-                var sig = BuildSignature(de.Value.CSignature, proc.Frame);
-                if (sig == null)
-                    continue;
-                ApplySignatureToProcedure(de.Key, sig, proc);
+                var sig = DeserializeSignature(de.Value, proc);
+                if (sig != null)
+                {
+                    ApplySignatureToProcedure(de.Key, sig, proc);
+                }
             }
         }
 
-        private void ApplySignatureToProcedure(Address addr, ProcedureSignature sig, Procedure proc)
+        public ProcedureSignature DeserializeSignature(Procedure_v1 userProc, Procedure proc)
+        {
+            if (!string.IsNullOrEmpty(userProc.CSignature))
+            {
+                return BuildSignature(userProc.CSignature, proc.Frame);
+            }
+            return null;
+        }
+
+        public void ApplySignatureToProcedure(Address addr, ProcedureSignature sig, Procedure proc)
         {
             proc.Signature = sig;
 
@@ -71,17 +84,33 @@ namespace Reko.Analysis
                 var starg = param.Storage as StackArgumentStorage;
                 if (starg != null)
                 {
-                    dst = proc.Frame.EnsureStackArgument(
+                    proc.Frame.EnsureStackArgument(
                         starg.StackOffset + sig.ReturnAddressOnStack,
                         param.DataType,
                         param.Name);
                 }
                 else
                 {
-                    dst = proc.Frame.EnsureIdentifier(param.Storage);
+                    var paramId = proc.Frame.EnsureIdentifier(param.Storage);
+                    paramId.DataType = param.DataType;
+
+                    // Need to take an extra step with parameters being passed
+                    // in a register. It's perfectly possible for a user to 
+                    // create a variable which they want to call 'r2' but which
+                    // the calling convention of the machine wants to call 'r1'.
+                    // To avoid this, we create a temporary identifier for 
+                    // the formal parameter, and inject an copy statement in the
+                    // entry block that moves the parameter value into the 
+                    // register.
+                    stmts.Insert(i, linAddr, NewMethod(param, paramId));
+                    ++i;
                 }
-                ++i;
             }
+        }
+
+        private static Assignment NewMethod(Identifier param, Identifier dst)
+        {
+            return new Assignment(dst, param);
         }
 
         public ProcedureSignature BuildSignature(string str, Frame frame)

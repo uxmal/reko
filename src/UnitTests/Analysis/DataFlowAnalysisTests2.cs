@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Analysis
                     m.Return();
                 });
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
-            dfa.UntangleProcedures2();
+            dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
 void test()
@@ -105,7 +105,7 @@ test_exit:
                 m.Return();
             });
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
-            dfa.UntangleProcedures2();
+            dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
 void test()
@@ -161,7 +161,7 @@ test_exit:
             });
 
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
-            dfa.UntangleProcedures2();
+            dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
 void test()
@@ -182,7 +182,7 @@ test_exit:
         {
             var program = Factorial.BuildSample();
             var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
-            dfa.UntangleProcedures2();
+            dfa.AnalyzeProgram2();
             var sExp =
             @"@@@";
             AssertProgram(sExp, program);
@@ -218,7 +218,7 @@ test_exit:
 
             program.Platform = platform;
             var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
-            dfa.UntangleProcedures2();
+            dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 4
 void test(int32 a, int32 b)
@@ -231,21 +231,6 @@ l1:
 	// succ:  test_exit
 test_exit:
 ";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             AssertProgram(sExp, pb.Program);
         }
     }

@@ -743,6 +743,8 @@ namespace Reko.Analysis
     /// form.
 	/// </summary>
     /// <remarks>
+    /// EXPERIMENTAL - consult uxmal before using
+    /// 
     /// This class implements another SSA algorithm that doesn't require 
     /// calculation of the dominator graph. It is expected that when it is fully
     /// implemented, it will take over from SsaTransform above.

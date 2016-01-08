@@ -191,13 +191,16 @@ namespace Reko.Analysis
 			GlobalCallRewriter.Rewrite(program, flow);
 		}
 
-        public void UntangleProcedures2()
+
+        // EXPERIMENTAL - consult uxmal before using
+        /// <summary>
+        /// Analyizes the procedures of a program by finding all strongly 
+        /// connected components (SCCs) and processing the SCCs one by one.
+        /// </summary>
+        public void AnalyzeProgram2()
         {
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures();
-
-            //eventListener.ShowStatus("Eliminating intra-block dead registers.");
-            //IntraBlockDeadRegisters.Apply(program);
 
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
             foreach (var procedure in program.Procedures.Values)

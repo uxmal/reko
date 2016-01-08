@@ -21,11 +21,14 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -96,6 +99,44 @@ namespace Reko.UnitTests.Analysis
             var usb = new UserSignatureBuilder(program);
             var sig = usb.BuildSignature("int foo(char *)", proc.Frame);
             mr.ReplayAll();
+        }
+
+        [Test(Description ="Verifies that the user can override register names.")]
+        public void Usb_BuildSignatureWithRegisterArgs()
+        {
+            var arch = new FakeArchitecture();
+            var m = new ProcedureBuilder(arch, "test");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+            m.Store(m.Word32(0x123400), m.Cast(PrimitiveType.Byte, r1));
+            m.Store(m.Word32(0x123404), m.Cast(PrimitiveType.Real32, r2));
+            m.Return();
+
+            var usb = new UserSignatureBuilder(program);
+            usb.ApplySignatureToProcedure(
+                Address.Create(PrimitiveType.Pointer32, 0x1000),
+                new ProcedureSignature(
+                    null,
+                    new Identifier("r2", PrimitiveType.Char, r1.Storage),  // perverse but legal.
+                    new Identifier("r1", PrimitiveType.Real32, r2.Storage)),
+                m.Procedure);
+            var sExp = @"// test
+// Return size: 0
+void test(char r2, real32 r1)
+test_entry:
+	// succ:  l1
+l1:
+	r1 = r2
+	r2 = r1
+	Mem0[0x00123400:byte] = (byte) r1
+	Mem0[0x00123404:real32] = (real32) r2
+	return
+	// succ:  test_exit
+test_exit:
+";
+            var sb = new StringWriter();
+            m.Procedure.Write(false, sb);
+            Assert.AreEqual(sExp, sb.ToString());
         }
     }
 }
