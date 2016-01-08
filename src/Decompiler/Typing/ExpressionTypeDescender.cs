@@ -312,6 +312,8 @@ namespace Reko.Typing
             var ptSub = dtSub as PrimitiveType;
             if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
             {
+                if (ptSub != null && (ptSub.Domain & Domain.Integer) != 0)
+                    return dtDiff;  //$REVIEW: is this really OK? should probably be pointer.
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtSub));
             }
             return dtDiff;
@@ -320,9 +322,11 @@ namespace Reko.Typing
         private DataType PushSubtrahendDataType(DataType dtDiff, DataType dtMin)
         {
             var ptDiff = dtDiff as PrimitiveType;
-            var ptSub = dtMin as PrimitiveType;
+            var ptMin = dtMin as PrimitiveType;
             if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
             {
+                if (dtMin is Pointer || ptMin != null && ptMin.Domain == Domain.Pointer)
+                    return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             return dtMin;
@@ -364,8 +368,9 @@ namespace Reko.Typing
             MeetDataType(c, tv.DataType);
             if (c.DataType == PrimitiveType.SegmentSelector)
             {
-                //$REVIEW: instead of pushing it into globals, it should allocate special types for
-                // each segment. This can be done at start time 
+                //$TODO: instead of pushing it into globals, it should 
+                // allocate special types for each segment. This can be 
+                // done at load time.
                 MemoryAccessCommon(
                     null,
                     globals, 
@@ -378,7 +383,10 @@ namespace Reko.Typing
 
         public bool VisitDepositBits(DepositBits d, TypeVariable tv)
         {
-            throw new NotImplementedException();
+            MeetDataType(d, tv.DataType);
+            d.Source.Accept(this, d.Source.TypeVariable);
+            d.InsertedBits.Accept(this, d.InsertedBits.TypeVariable);
+            return false;
         }
 
         public bool VisitDereference(Dereference deref, TypeVariable tv)
@@ -612,7 +620,8 @@ namespace Reko.Typing
 
         public bool VisitOutArgument(OutArgument outArgument, TypeVariable tv)
         {
-            throw new NotImplementedException();
+            outArgument.Expression.Accept(this, outArgument.TypeVariable);
+            return false;
         }
 
         public bool VisitPhiFunction(PhiFunction phi, TypeVariable tv)

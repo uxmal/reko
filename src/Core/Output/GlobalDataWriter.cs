@@ -56,6 +56,11 @@ namespace Reko.Core.Output
             this.tw = new TypeReferenceFormatter(formatter, true);
             var eqGlobalStruct = program.Globals.TypeVariable.Class;
             this.globals = eqGlobalStruct.ResolveAs<StructureType>();
+            if (this.globals == null)
+            {
+                Debug.Print("No global variables found.");
+                return;
+            }
             this.queue = new Queue<StructureField>(globals.Fields);
             while (queue.Count > 0)
             {

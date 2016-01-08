@@ -128,7 +128,7 @@ namespace Reko.Arch.M68k
                 fp6,
                 fp7,
 
-                null,
+                ccr,
                 sr,
                 usp,
                 pc,

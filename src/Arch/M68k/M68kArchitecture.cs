@@ -116,11 +116,6 @@ namespace Reko.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Rewriter(this, rdr, (M68kState)state, frame, host);

@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Core.Output
         private ServiceContainer sc;
 
         [SetUp]
-        public void SEtup()
+        public void Setup()
         {
             this.sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());

@@ -153,7 +153,11 @@ namespace Reko.Typing
             var ptLeft = dtLeft as PrimitiveType;
             var ptRight = dtRight as PrimitiveType;
             if (ptLeft.Domain == Domain.Pointer || dtLeft is Pointer)
+            {
+                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
+                    return dtLeft;
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+            }
             if (ptRight.Domain == Domain.Pointer || dtRight is Pointer)
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             if (ptLeft.IsIntegral)
@@ -186,7 +190,14 @@ namespace Reko.Typing
 
         public DataType VisitDepositBits(DepositBits d)
         {
-            throw new NotImplementedException();
+            var dtSource = d.Source.Accept(this);
+            var dtBits = d.InsertedBits.Accept(this);
+            if (d.TypeVariable.DataType == null)
+            {
+                d.TypeVariable.DataType = dtSource;
+                d.TypeVariable.OriginalDataType = dtSource;
+            }
+            return d.TypeVariable.DataType;
         }
 
         public DataType VisitDereference(Dereference deref)

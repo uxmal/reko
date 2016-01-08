@@ -55,7 +55,7 @@ namespace Reko.Typing
             foreach (Procedure proc in program.Procedures.Values)
             {
                 this.signature = proc.Signature;
-                EnsureSignatureTypeVariables(proc.Signature);
+                EnsureSignatureTypeVariables(this.signature);
                 
                 foreach (Statement stm in proc.Statements)
                 {
