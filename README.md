@@ -35,6 +35,14 @@ about the Reko project's internal workings.
 
 ## Recent versions
 
+### Version 0.5.5.0
+* Shingled disassembler implementation, in preparation for heuristic discovery of code.
+* Support for WinCE / MIPS
+* Improved data type inference
+* New project file format supports saving of more user options.
+* Better support for MonoDevelop
+* Many many small bugfixes
+
 ### Version 0.5.4.0
 * Support for renaming decompiled procedures and changing their signatures.
   Changing signatures will affect following decompilation stages, as
