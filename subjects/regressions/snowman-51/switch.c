@@ -4,19 +4,19 @@
 
 #include "switch.h"
 
-ERROR: EQ_2.DataType is Null get(ERROR: EQ_3.DataType is Null n)
+char * get(uint32 n)
 {
-	if (n >u ~0x01)
-		return 0x10072000;
+	if (n > ~0x01)
+		return "other";
 	else
 		switch (n + 0x01)
 		{
 		case 0x00:
-			return 0x10072018;
+			return "zero";
 		case 0x01:
-			return 0x10072014;
+			return "one";
 		case 0x02:
-			return 0x10072010;
+			return "two";
 		}
 }
 

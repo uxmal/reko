@@ -40,14 +40,14 @@ fn0C00_0037_exit:
 // Equivalence classes ////////////
 Eq_1: (struct)
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (fn void ((ptr Eq_4), word16, word16))
-	T_2 (in fn0C00_0010 : ptr32)
-	T_3 (in signature of fn0C00_0010 : void)
-Eq_4: (segment (400 real64 r0400) (408 int32 dw0408))
-	T_4 (in ds : selector)
-	T_7 (in ds : selector)
+Eq_2: (segment (400 real64 r0400) (408 int32 dw0408))
+	T_2 (in ds : selector)
+	T_5 (in ds : selector)
 	T_13 (in ds : selector)
-Eq_11: (fn void ((ptr Eq_4)))
+Eq_3: (fn void ((ptr Eq_2), word16, word16))
+	T_3 (in fn0C00_0010 : ptr32)
+	T_4 (in signature of fn0C00_0010 : void)
+Eq_11: (fn void ((ptr Eq_2)))
 	T_11 (in fn0C00_0037 : ptr32)
 	T_12 (in signature of fn0C00_0037 : void)
 Eq_16: (struct (0 real64 r0000) (8 real64 r0008) (10 real64 r0010))
@@ -59,36 +59,36 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))
-T_2: (in fn0C00_0010 : ptr32)
+T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)
-  OrigDataType: (ptr (fn T_10 (T_7, T_8, T_9)))
-T_3: (in signature of fn0C00_0010 : void)
-  Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: 
-T_4: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr Eq_4)
   OrigDataType: (ptr (segment))
-T_5: (in wArg02 : word16)
-  Class: Eq_5
-  DataType: word16
-  OrigDataType: word16
-T_6: (in wArg04 : word16)
+T_3: (in fn0C00_0010 : ptr32)
+  Class: Eq_3
+  DataType: (ptr Eq_3)
+  OrigDataType: (ptr (fn T_10 (T_2, T_8, T_9)))
+T_4: (in signature of fn0C00_0010 : void)
+  Class: Eq_3
+  DataType: (ptr Eq_3)
+  OrigDataType: 
+T_5: (in ds : selector)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (segment))
+T_6: (in wArg02 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr Eq_4)
-  OrigDataType: (ptr (segment))
+T_7: (in wArg04 : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
 T_8: (in 0x0300 : word16)
-  Class: Eq_5
+  Class: Eq_6
   DataType: word16
   OrigDataType: word16
 T_9: (in 0x0320 : word16)
-  Class: Eq_6
+  Class: Eq_7
   DataType: word16
   OrigDataType: word16
 T_10: (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
@@ -98,14 +98,14 @@ T_10: (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
 T_11: (in fn0C00_0037 : ptr32)
   Class: Eq_11
   DataType: (ptr Eq_11)
-  OrigDataType: (ptr (fn T_14 (T_7)))
+  OrigDataType: (ptr (fn T_14 (T_2)))
 T_12: (in signature of fn0C00_0037 : void)
   Class: Eq_11
   DataType: (ptr Eq_11)
   OrigDataType: 
 T_13: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr Eq_4)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
   OrigDataType: (ptr (segment (400 real64 r0400) (408 T_50 t0408)))
 T_14: (in fn0C00_0037(ds) : void)
   Class: Eq_14
@@ -117,8 +117,8 @@ T_15: (in rLoc1_10 : real64)
   OrigDataType: real64
 T_16: (in wArg02 : word16)
   Class: Eq_16
-  DataType: (memptr (ptr Eq_4) Eq_16)
-  OrigDataType: (memptr T_4 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
+  DataType: (memptr (ptr Eq_2) Eq_16)
+  OrigDataType: (memptr T_5 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
 T_17: (in 0x0000 : word16)
   Class: Eq_17
   DataType: word16
@@ -185,8 +185,8 @@ T_32: (in rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 + rLoc2_15 * rLoc2_15 : real
   OrigDataType: real64
 T_33: (in wArg04 : word16)
   Class: Eq_33
-  DataType: (memptr (ptr Eq_4) Eq_33)
-  OrigDataType: (memptr T_4 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
+  DataType: (memptr (ptr Eq_2) Eq_33)
+  OrigDataType: (memptr T_5 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
 T_34: (in 0x0000 : word16)
   Class: Eq_34
   DataType: word16
@@ -233,7 +233,7 @@ T_44: (in 0 : real64)
   OrigDataType: real64
 T_45: (in 0x0400 : word16)
   Class: Eq_45
-  DataType: (memptr (ptr Eq_4) real64)
+  DataType: (memptr (ptr Eq_2) real64)
   OrigDataType: (memptr T_13 (struct (0 T_46 t0000)))
 T_46: (in Mem3[ds:0x0400:real64] : real64)
   Class: Eq_44
@@ -249,7 +249,7 @@ T_48: (in (int32) 1 : int32)
   OrigDataType: int32
 T_49: (in 0x0408 : word16)
   Class: Eq_49
-  DataType: (memptr (ptr Eq_4) int32)
+  DataType: (memptr (ptr Eq_2) int32)
   OrigDataType: (memptr T_13 (struct (0 T_50 t0000)))
 T_50: (in Mem6[ds:0x0408:int32] : int32)
   Class: Eq_48

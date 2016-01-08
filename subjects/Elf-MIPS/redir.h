@@ -4,65 +4,80 @@
 
 /*
 // Equivalence classes ////////////
+Eq_1: (struct "Eq_1")
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_2: (struct "Eq_2" (FC00690 (ptr code) ptrFC00690))
+	T_2 (in ra : (ptr Eq_2))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct))
+  DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))
-T_2: (in r25_18 : word32)
+T_2: (in ra : (ptr Eq_2))
   Class: Eq_2
-  DataType: 
-  OrigDataType: 
-T_3: (in ra : word32)
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (FC00690 T_7 tFC00690)))
+T_3: (in dwArg00 : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_4: (in 0x0FC00690 : word32)
+T_4: (in r25_18 : (ptr code))
   Class: Eq_4
-  DataType: 
-  OrigDataType: 
-T_5: (in ra + 0x0FC00690 : word32)
+  DataType: (ptr code)
+  OrigDataType: (ptr code)
+T_5: (in 0x0FC00690 : word32)
   Class: Eq_5
-  DataType: 
-  OrigDataType: 
-T_6: (in Mem0[ra + 0x0FC00690:word32] : word32)
-  Class: Eq_2
-  DataType: 
-  OrigDataType: 
-T_7: (in sp_19 : word32)
-  Class: Eq_7
-  DataType: 
-  OrigDataType: 
-T_8: (in r28_20 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_6: (in ra + 0x0FC00690 : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_7: (in Mem0[ra + 0x0FC00690:word32] : word32)
+  Class: Eq_4
+  DataType: (ptr code)
+  OrigDataType: word32
+T_8: (in sp_19 : Eq_8)
   Class: Eq_8
-  DataType: 
+  DataType: Eq_8
   OrigDataType: 
-T_9: (in ra_21 : word32)
+T_9: (in r28_20 : Eq_9)
   Class: Eq_9
-  DataType: 
+  DataType: Eq_9
   OrigDataType: 
-T_10: (in r4_22 : word32)
+T_10: (in ra_21 : Eq_10)
   Class: Eq_10
-  DataType: 
+  DataType: Eq_10
   OrigDataType: 
-T_11: (in r5_23 : word32)
+T_11: (in r4_22 : Eq_11)
   Class: Eq_11
-  DataType: 
+  DataType: Eq_11
   OrigDataType: 
-T_12: (in r6_24 : word32)
+T_12: (in r5_23 : Eq_12)
   Class: Eq_12
-  DataType: 
+  DataType: Eq_12
   OrigDataType: 
-T_13: (in r7_25 : word32)
+T_13: (in r6_24 : Eq_13)
   Class: Eq_13
-  DataType: 
+  DataType: Eq_13
   OrigDataType: 
-T_14: (in r2_26 : word32)
+T_14: (in r7_25 : Eq_14)
   Class: Eq_14
-  DataType: 
+  DataType: Eq_14
   OrigDataType: 
-T_15: (in r25_27 : word32)
+T_15: (in r2_26 : Eq_15)
   Class: Eq_15
-  DataType: 
+  DataType: Eq_15
+  OrigDataType: 
+T_16: (in r25_27 : Eq_16)
+  Class: Eq_16
+  DataType: Eq_16
   OrigDataType: 
 */
+typedef struct Eq_1 {
+} Eq_1;
+
+typedef struct Eq_2 {
+	 <anonymous> * ptrFC00690;	// FC00690
+} Eq_2;
+

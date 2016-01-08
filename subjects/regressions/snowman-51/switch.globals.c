@@ -4,3 +4,8 @@
 
 #include "switch.h"
 
+char g_str10072000[] = "other";
+char g_str10072010[] = "two";
+char g_str10072014[] = "one";
+char g_str10072018[] = "zero";
+

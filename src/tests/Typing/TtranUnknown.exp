@@ -12,23 +12,23 @@ fn0C00_0000_exit:
 // Equivalence classes ////////////
 Eq_1: (struct)
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (segment)
-	T_2 (in ds : selector)
-Eq_3: (struct (0 word32 dw0000) (4 word32 dw0004))
-	T_3 (in bx : word16)
+Eq_2: (struct (0 word32 dw0000) (4 word32 dw0004))
+	T_2 (in bx : word16)
+Eq_3: (segment)
+	T_3 (in ds : selector)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))
-T_2: (in ds : selector)
+T_2: (in bx : word16)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (segment))
-T_3: (in bx : word16)
+  DataType: (memptr (ptr Eq_3) Eq_2)
+  OrigDataType: (memptr T_3 (struct (0 T_9 t0000) (4 T_6 t0004)))
+T_3: (in ds : selector)
   Class: Eq_3
-  DataType: (memptr (ptr Eq_2) Eq_3)
-  OrigDataType: (memptr T_2 (struct (0 T_9 t0000) (4 T_6 t0004)))
+  DataType: (ptr Eq_3)
+  OrigDataType: (ptr (segment))
 T_4: (in 0x0004 : word16)
   Class: Eq_4
   DataType: word16

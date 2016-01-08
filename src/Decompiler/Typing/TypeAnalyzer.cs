@@ -99,6 +99,7 @@ namespace Reko.Typing
 #else
             eventListener.ShowStatus("Collecting data types");
             tyco.CollectTypes();
+            store.BuildEquivalenceClassDataTypes(factory);
 #endif
             //dpa.FollowConstantPointers(prog);
             tvr.ReplaceTypeVariables();

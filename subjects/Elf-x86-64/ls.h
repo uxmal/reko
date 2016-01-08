@@ -9,112 +9,120 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct))
   OrigDataType: (ptr (struct))
-T_2: (in __align : ptr64)
+T_2: (in rax : word64)
   Class: Eq_2
+  DataType: word64
+  OrigDataType: word64
+T_3: (in rdx : word64)
+  Class: Eq_3
+  DataType: word64
+  OrigDataType: word64
+T_4: (in qwArg00 : word64)
+  Class: Eq_4
+  DataType: word64
+  OrigDataType: word64
+T_5: (in dwArg04 : word32)
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_6: (in __align : ptr64)
+  Class: Eq_6
+  DataType: (ptr (fn T_10 (T_9)))
+  OrigDataType: (ptr (fn T_10 (T_9)))
+T_7: (in fp : ptr64)
+  Class: Eq_7
+  DataType: ptr64
+  OrigDataType: ptr64
+T_8: (in 0x0000000000000008 : word64)
+  Class: Eq_8
+  DataType: int64
+  OrigDataType: int64
+T_9: (in fp + 0x0000000000000008 : word64)
+  Class: Eq_9
+  DataType: ptr64
+  OrigDataType: ptr64
+T_10: (in __align(fp + 0x0000000000000008) : void)
+  Class: Eq_10
+  DataType: void
+  OrigDataType: void
+T_11: (in rax_20 : word64)
+  Class: Eq_11
   DataType: 
   OrigDataType: 
-T_3: (in fp : ptr64)
+T_12: (in __libc_start_main : ptr64)
+  Class: Eq_12
+  DataType: 
+  OrigDataType: 
+T_13: (in signature of __libc_start_main : void)
+  Class: Eq_12
+  DataType: 
+  OrigDataType: 
+T_14: (in rdi : word64)
+  Class: Eq_14
+  DataType: 
+  OrigDataType: 
+T_15: (in rsi : word64)
+  Class: Eq_15
+  DataType: 
+  OrigDataType: 
+T_16: (in rdx : word64)
+  Class: Eq_16
+  DataType: 
+  OrigDataType: 
+T_17: (in rcx : word64)
+  Class: Eq_17
+  DataType: 
+  OrigDataType: 
+T_18: (in r8 : word64)
+  Class: Eq_18
+  DataType: 
+  OrigDataType: 
+T_19: (in r9 : word64)
   Class: Eq_3
   DataType: 
   OrigDataType: 
-T_4: (in 0x0000000000000008 : word64)
-  Class: Eq_4
+T_20: (in stack_end : (ptr void))
+  Class: Eq_20
   DataType: 
   OrigDataType: 
-T_5: (in fp + 0x0000000000000008 : word64)
-  Class: Eq_5
-  DataType: 
-  OrigDataType: 
-T_6: (in __align(fp + 0x0000000000000008) : void)
-  Class: Eq_6
-  DataType: 
-  OrigDataType: 
-T_7: (in rax_20 : word64)
-  Class: Eq_7
-  DataType: 
-  OrigDataType: 
-T_8: (in rax : word64)
-  Class: Eq_8
-  DataType: word64
-  OrigDataType: word64
-T_9: (in __libc_start_main : ptr64)
-  Class: Eq_9
-  DataType: 
-  OrigDataType: 
-T_10: (in signature of __libc_start_main : void)
-  Class: Eq_9
-  DataType: 
-  OrigDataType: 
-T_11: (in rdi : word64)
-  Class: Eq_11
-  DataType: 
-  OrigDataType: 
-T_12: (in rsi : word64)
-  Class: Eq_12
-  DataType: 
-  OrigDataType: 
-T_13: (in rdx : word64)
-  Class: Eq_13
-  DataType: 
-  OrigDataType: 
-T_14: (in rcx : word64)
+T_21: (in 0x00000000004028C0 : word64)
   Class: Eq_14
   DataType: 
   OrigDataType: 
-T_15: (in r8 : word64)
+T_22: (in qwArg00 : word64)
   Class: Eq_15
   DataType: 
   OrigDataType: 
-T_16: (in r9 : word64)
+T_23: (in fp + 0x0000000000000008 : word64)
   Class: Eq_16
   DataType: 
   OrigDataType: 
-T_17: (in stack_end : (ptr void))
+T_24: (in 0x0000000000411E60 : word64)
   Class: Eq_17
   DataType: 
   OrigDataType: 
-T_18: (in 0x00000000004028C0 : word64)
-  Class: Eq_11
+T_25: (in 0x0000000000411ED0 : word64)
+  Class: Eq_18
   DataType: 
   OrigDataType: 
-T_19: (in qwArg00 : word64)
-  Class: Eq_12
+T_26: (in DPB(qwArg00, fp, 0) : word64)
+  Class: Eq_20
   DataType: 
   OrigDataType: 
-T_20: (in fp + 0x0000000000000008 : word64)
-  Class: Eq_13
-  DataType: 
-  OrigDataType: 
-T_21: (in 0x0000000000411E60 : word64)
-  Class: Eq_14
-  DataType: 
-  OrigDataType: 
-T_22: (in 0x0000000000411ED0 : word64)
-  Class: Eq_15
-  DataType: 
-  OrigDataType: 
-T_23: (in rdx : word64)
-  Class: Eq_16
-  DataType: word64
-  OrigDataType: word64
-T_24: (in DPB(qwArg00, fp, 0) : word64)
-  Class: Eq_17
-  DataType: 
-  OrigDataType: 
-T_25: (in __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, DPB(qwArg00, fp, 0)) : int32)
-  Class: Eq_25
-  DataType: 
-  OrigDataType: 
-T_26: (in DPB(rax, __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, DPB(qwArg00, fp, 0)), 0) : word64)
-  Class: Eq_7
-  DataType: 
-  OrigDataType: 
-T_27: (in __hlt : ptr64)
+T_27: (in __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, DPB(qwArg00, fp, 0)) : int32)
   Class: Eq_27
   DataType: 
   OrigDataType: 
-T_28: (in __hlt() : void)
-  Class: Eq_28
+T_28: (in DPB(rax, __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, DPB(qwArg00, fp, 0)), 0) : word64)
+  Class: Eq_11
+  DataType: 
+  OrigDataType: 
+T_29: (in __hlt : ptr64)
+  Class: Eq_29
+  DataType: 
+  OrigDataType: 
+T_30: (in __hlt() : void)
+  Class: Eq_30
   DataType: 
   OrigDataType: 
 */
