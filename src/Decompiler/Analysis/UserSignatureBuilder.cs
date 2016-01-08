@@ -80,7 +80,6 @@ namespace Reko.Analysis
             var linAddr = addr.ToLinear();
             foreach (var param in sig.Parameters)
             {
-                Identifier dst;
                 var starg = param.Storage as StackArgumentStorage;
                 if (starg != null)
                 {
