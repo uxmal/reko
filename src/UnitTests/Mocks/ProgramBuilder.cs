@@ -28,7 +28,8 @@ using System.Collections.Generic;
 namespace Reko.UnitTests.Mocks
 {
 	/// <summary>
-	/// Supports building a intermediate code program directly without having to first generate machine code and scanning it.
+	/// Supports building a intermediate code program directly without having
+    /// to first generate machine code and scanning it.
 	/// </summary>
 	public class ProgramBuilder
 	{
