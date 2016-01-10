@@ -22,6 +22,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -315,6 +317,19 @@ namespace Reko.Core
                 return (uint)(rdr.Address - addr);
             }
             throw new NotImplementedException();
+        }
+
+        public SymbolTable CreateSymbolTable()
+        {
+            var namedTypes = new Dictionary<string, SerializedType>();
+            var platformTypedefs = Platform.GetTypedefs();
+            var dtSer = new DataTypeSerializer();
+            foreach(var typedef in platformTypedefs)
+            {
+                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
+            }
+
+            return new SymbolTable(namedTypes);
         }
     } 
 

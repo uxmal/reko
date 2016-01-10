@@ -35,12 +35,19 @@ namespace Reko.Analysis
     public class UserSignatureBuilder
     {
         private Program program;
-        private SymbolTable symbolTable;
+        private SymbolTable symTable;
+
+        private SymbolTable SymbolTable {
+            get {
+                if (symTable == null)
+                    symTable = program.CreateSymbolTable();
+                return symTable;
+            }
+        }
 
         public UserSignatureBuilder(Program program)
         {
             this.program = program;
-            this.symbolTable = new SymbolTable();
         }
 
         /// <summary>
@@ -116,10 +123,10 @@ namespace Reko.Analysis
         {
             try {
                 var lexer = new CLexer(new StringReader(str + ";"));
-                var cstate = new ParserState();
+                var cstate = new ParserState(SymbolTable);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
-                var sSig = symbolTable.AddDeclaration(decl)
+                var sSig = SymbolTable.AddDeclaration(decl)
                     .OfType<SerializedSignature>()
                     .FirstOrDefault();
                 if (sSig == null)
