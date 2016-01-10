@@ -28,7 +28,11 @@ namespace Reko.Core.CLanguage
 {
     public class SymbolTable 
     {
-        public SymbolTable()
+        public SymbolTable() : this(new Dictionary<string, SerializedType>())
+        {
+        }
+
+        public SymbolTable(Dictionary<string, SerializedType> namedTypes)
         {
             this.Types = new List<SerializedType>();
             this.StructsSeen = new Dictionary<string, SerializedStructType>();
@@ -36,7 +40,7 @@ namespace Reko.Core.CLanguage
             this.EnumsSeen = new Dictionary<string, SerializedEnumType>();
             this.Constants = new Dictionary<string, int>();
             this.Procedures = new List<ProcedureBase_v1>();
-            this.NamedTypes = new Dictionary<string, SerializedType>();
+            this.NamedTypes = namedTypes;
             this.Sizer = new TypeSizer(this.NamedTypes);
         }
 

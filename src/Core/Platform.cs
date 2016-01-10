@@ -137,7 +137,23 @@ namespace Reko.Core
             }
         }
 
-		public abstract SystemService FindService(int vector, ProcessorState state);
+        public IDictionary<string, DataType> GetTypedefs()
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+
+            var typedefs = new Dictionary<string, DataType>();
+
+            foreach (var typeLib in TypeLibs)
+            {
+                foreach(var typedef in typeLib.Types)
+                    if (!typedefs.ContainsKey(typedef.Key))
+                        typedefs.Add(typedef.Key, typedef.Value);
+            }
+
+            return typedefs;
+        }
+
+        public abstract SystemService FindService(int vector, ProcessorState state);
 
         public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {
