@@ -97,7 +97,7 @@ namespace Reko.Core.Serialization
             typeof(ArrayType_v1),
             typeof(CodeType_v1),
             typeof(SerializedEnumType),
-            typeof(SerializedStructType),
+            typeof(StructType_v1),
             typeof(StructField_v1),
             typeof(UnionType_v1),
             typeof(SerializedUnionAlternative),

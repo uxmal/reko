@@ -31,7 +31,7 @@ namespace Reko.Core.CLanguage
         public SymbolTable()
         {
             this.Types = new List<SerializedType>();
-            this.StructsSeen = new Dictionary<string, SerializedStructType>();
+            this.StructsSeen = new Dictionary<string, StructType_v1>();
             this.UnionsSeen = new Dictionary<string, UnionType_v1>();
             this.EnumsSeen = new Dictionary<string, SerializedEnumType>();
             this.Constants = new Dictionary<string, int>();
@@ -41,7 +41,7 @@ namespace Reko.Core.CLanguage
         }
 
         public List<SerializedType> Types { get; private set; }
-        public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
+        public Dictionary<string, StructType_v1> StructsSeen { get; private set; }
         public Dictionary<string, UnionType_v1> UnionsSeen { get; private set; }
         public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
         public Dictionary<string, int> Constants { get; private set; }

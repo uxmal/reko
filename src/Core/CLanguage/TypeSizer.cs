@@ -84,7 +84,7 @@ namespace Reko.Core.CLanguage
             throw new NotImplementedException();
         }
 
-        public int VisitStructure(SerializedStructType structure)
+        public int VisitStructure(StructType_v1 structure)
         {
             var size = 0;
             if (structure.Fields == null)

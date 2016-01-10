@@ -414,10 +414,10 @@ namespace Reko.Core.CLanguage
         {
             if (complexType.Type == CTokenType.Struct)
             {
-                SerializedStructType str;
+                StructType_v1 str;
                 if (complexType.Name == null || symbolTable.StructsSeen.TryGetValue(complexType.Name, out str))
                 {
-                    str = new SerializedStructType {
+                    str = new StructType_v1 {
                         Name = complexType.Name != null
                             ? complexType.Name
                             : string.Format("struct_{0}", symbolTable.StructsSeen.Count)
@@ -426,14 +426,14 @@ namespace Reko.Core.CLanguage
                 }
                 else
                 {
-                    str = new SerializedStructType { Name = complexType.Name };
+                    str = new StructType_v1 { Name = complexType.Name };
                 }
                 if (!complexType.IsForwardDeclaration() && str.Fields == null)
                 {
                     str.Fields = ExpandStructFields(complexType.DeclList).ToArray();
                     symbolTable.Sizer.SetSize(str);
                     symbolTable.Types.Add(str);
-                    str = new SerializedStructType { Name = str.Name };
+                    str = new StructType_v1 { Name = str.Name };
                 }
                 return str;
             }

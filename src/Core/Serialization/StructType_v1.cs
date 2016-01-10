@@ -27,13 +27,13 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-	public class SerializedStructType : SerializedTaggedType
+	public class StructType_v1 : SerializedTaggedType
 	{
 		[XmlAttribute("size")]
         [DefaultValue(0)]
 		public int ByteSize;
 
-		public SerializedStructType()
+		public StructType_v1()
 		{
 		}
 

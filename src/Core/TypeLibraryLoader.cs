@@ -211,7 +211,7 @@ namespace Reko.Core
             return new Pointer(new CodeType(), platform.PointerType.Size);
         }
 
-        public DataType VisitStructure(SerializedStructType structure)
+        public DataType VisitStructure(StructType_v1 structure)
         {
             StructureType str;
             if (!structures.TryGetValue(structure.Name, out str))
