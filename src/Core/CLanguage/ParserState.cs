@@ -39,11 +39,11 @@ namespace Reko.Core.CLanguage
             Typedefs.Add("va_list");
         }
 
-        public ParserState(SymbolTable symbolTable) : this()
+        public ParserState(IEnumerable<string> knownNames) : this()
         {
-            foreach(var namedType in symbolTable.NamedTypes)
+            foreach (var name in knownNames)
             {
-                Typedefs.Add(namedType.Key);
+                Typedefs.Add(name);
             }
         }
 

@@ -123,7 +123,7 @@ namespace Reko.Analysis
         {
             try {
                 var lexer = new CLexer(new StringReader(str + ";"));
-                var cstate = new ParserState(SymbolTable);
+                var cstate = new ParserState(SymbolTable.NamedTypes.Keys);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
                 var sSig = SymbolTable.AddDeclaration(decl)
