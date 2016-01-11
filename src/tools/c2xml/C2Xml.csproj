@@ -131,7 +131,7 @@
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName).config" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Core.dll" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="$(SolutionDir)..\external\docopt.net-0.6.1.4\docoptnet.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(SolutionDir)..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder="$(SolutionDir)tools" />
   </Target>
   <PropertyGroup>
     <PreBuildEvent>
