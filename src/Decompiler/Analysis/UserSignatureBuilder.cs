@@ -55,23 +55,24 @@ namespace Reko.Analysis
                 Procedure proc;
                 if (!program.Procedures.TryGetValue(de.Key, out proc))
                     continue;
-                var ssig = DeserializeSignature(de.Value, proc);
-                if (ssig == null)
+                var sProc = DeserializeSignature(de.Value, proc);
+                if (sProc == null)
                     continue;
                 var ser = program.Platform.CreateProcedureSerializer();
-                var sig = ser.Deserialize(ssig, proc.Frame);
+                var sig = ser.Deserialize(sProc.Signature, proc.Frame);
                 if (sig != null)
                 {
+                    proc.Name = sProc.Name;
                     ApplySignatureToProcedure(de.Key, sig, proc);
                 }
             }
         }
 
-        public SerializedSignature DeserializeSignature(Procedure_v1 userProc, Procedure proc)
+        public ProcedureBase_v1 DeserializeSignature(Procedure_v1 userProc, Procedure proc)
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {
-                return BuildSignature(userProc.CSignature, proc.Frame);
+                return ParseFunctionDeclaration(userProc.CSignature, proc.Frame);
             }
             return null;
         }
@@ -117,18 +118,24 @@ namespace Reko.Analysis
             return new Assignment(dst, param);
         }
 
-        public SerializedSignature BuildSignature(string str, Frame frame)
+        public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl, Frame frame)
         {
             try {
-                var lexer = new CLexer(new StringReader(str + ";"));
+                var lexer = new CLexer(new StringReader(fnDecl + ";"));
                 var symbols = program.Platform.CreateSymbolTable();
+                var oldProcs = symbols.Procedures.Count;
                 var cstate = new ParserState(symbols.NamedTypes.Keys);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
-                var sSig = symbols.AddDeclaration(decl)
-                    .OfType<SerializedSignature>()
-                    .FirstOrDefault();
-                return sSig;
+                if (decl == null)
+                    return null;
+
+                //$HACK: Relying on a side effect here to
+                // get both the procedure name and the signature. Ew.
+                symbols.AddDeclaration(decl);
+                if (symbols.Procedures.Count == oldProcs)
+                    return null;
+                return symbols.Procedures.Last();
             }
             catch (Exception ex)
             {

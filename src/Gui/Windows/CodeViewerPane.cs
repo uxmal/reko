@@ -33,6 +33,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Reko.Core.Types;
+using Reko.Analysis;
 
 namespace Reko.Gui.Windows
 {
@@ -94,7 +95,7 @@ namespace Reko.Gui.Windows
 
         private void EnableControls()
         {
-            Core.Serialization.Procedure_v1 sProc;
+            Core.Serialization.ProcedureBase_v1 sProc;
             if (!TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
             {
                 // If parser failed, perhaps it's simply a valid name? 
@@ -167,7 +168,7 @@ namespace Reko.Gui.Windows
             return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
         }
 
-        private bool TryParseSignature(string txtSignature, out Core.Serialization.Procedure_v1 sProc)
+        private bool TryParseSignature(string txtSignature, out Core.Serialization.ProcedureBase_v1 sProc)
         {
             sProc = null;
             if (program == null || program.Platform == null)
@@ -175,30 +176,10 @@ namespace Reko.Gui.Windows
                 return false;
             }
 
-            // Save the user a keystroke.
-            txtSignature = txtSignature + ";";
-
-
-            var lexer = new CLexer(new StringReader(txtSignature));
-            var syms = program.Platform.CreateSymbolTable();
-            var cstate = new ParserState(syms.NamedTypes.Keys);
-            var cParser = new CParser(cstate, lexer);
-            try
-            {
-                var decl = cParser.Parse_Decl();
-                sProc = null;
-                if (decl == null)
-                    return false;
-                syms.AddDeclaration(decl);
-                if (syms.Procedures.Count != 1)
-                    return false;
-                sProc = (Core.Serialization.Procedure_v1)syms.Procedures[0];
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            // Attempt to parse the signature.
+            var usb = new UserSignatureBuilder(program);
+            sProc = usb.ParseFunctionDeclaration(txtSignature, this.proc.Frame);
+            return sProc != null;
         }
 
         public void SetSite(IServiceProvider sp)
@@ -260,7 +241,7 @@ namespace Reko.Gui.Windows
                 return;
             var addr = this.program.Procedures.Keys[iAddr];
             var declText = codeView.ProcedureDeclaration.Text.Trim();
-            Core.Serialization.Procedure_v1 sProc;
+            Core.Serialization.ProcedureBase_v1 sProc;
             if (TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
             {
                 var up = program.EnsureUserProcedure(addr, sProc.Name);

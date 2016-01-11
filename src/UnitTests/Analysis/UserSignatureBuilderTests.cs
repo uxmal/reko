@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void Usb_BuildSignature()
+        public void Usb_ParseFunctionDeclaration()
         {
             Given_Procedure(0x1000);
             platform.Stub(p => p.PlatformIdentifier).Return("testPlatform");
@@ -107,14 +107,16 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
-            var sig = usb.BuildSignature("int foo(char *)", proc.Frame);
+            var sProc = usb.ParseFunctionDeclaration("int foo(char *)", proc.Frame);
             mr.ReplayAll();
 
-            Assert.AreEqual("fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))", sig.ToString());
+            Assert.AreEqual(
+                "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
+                sProc.Signature.ToString());
         }
 
         [Test(Description ="Verifies that the user can override register names.")]
-        public void Usb_BuildSignatureWithRegisterArgs()
+        public void Usb_ParseFunctionDeclaration_WithRegisterArgs()
         {
             var arch = new FakeArchitecture();
             var m = new ProcedureBuilder(arch, "test");
