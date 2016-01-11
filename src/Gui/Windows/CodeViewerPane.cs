@@ -54,7 +54,6 @@ namespace Reko.Gui.Windows
 
         public CodeViewerPane()
         {
-
         }
 
         public TextView TextView { get { return codeView.TextView; } }
@@ -175,8 +174,11 @@ namespace Reko.Gui.Windows
             {
                 return false;
             }
-            // save the user a keystroke.
+
+            // Save the user a keystroke.
             txtSignature = txtSignature + ";";
+
+
             var lexer = new CLexer(new StringReader(txtSignature));
             var syms = program.Platform.CreateSymbolTable();
             var cstate = new ParserState(syms.NamedTypes.Keys);
@@ -228,7 +230,7 @@ namespace Reko.Gui.Windows
             this.program = program;
             this.proc = proc;
             SetTextView(proc);
-            SetDeclaration(proc);
+            this.codeView.ProcedureDeclaration.Text = this.GetProcedureDeclarationText();
             this.proc.NameChanged += Procedure_NameChanged;
 
             // Navigate 
@@ -248,31 +250,59 @@ namespace Reko.Gui.Windows
             SetDeclaration(dt);
         }
 
+        private void ModifyProcedure()
+        {
+            //$REVIEW: slow, but we don't have to add an `Address` property to 
+            // procedure. Adding an Address property has big repercussions in 
+            // teh code base.
+            var iAddr = this.program.Procedures.IndexOfValue(proc);
+            if (iAddr < 0)
+                return;
+            var addr = this.program.Procedures.Keys[iAddr];
+            var declText = codeView.ProcedureDeclaration.Text.Trim();
+            Core.Serialization.Procedure_v1 sProc;
+            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
+            {
+                var up = program.EnsureUserProcedure(addr, sProc.Name);
+                up.CSignature = codeView.ProcedureDeclaration.Text;
+                proc.Name = sProc.Name;
+            }
+            else
+            {
+                if (IsValidCIdentifier(declText) &&
+                    proc.Name != declText)
+                {
+                    var up = program.EnsureUserProcedure(addr, proc.Name);
+                    proc.Name = declText;
+                }
+            }
+        }
+
         /// <summary>
         /// If the user has provided us with a declaration, use that. Otherwise
         /// just show a function name.
         /// </summary>
         /// <param name="proc"></param>
-        private void SetDeclaration(Procedure proc)
+        private string GetProcedureDeclarationText()
         {
+            if (proc == null)
+                return "";
             int i = program.Procedures.IndexOfValue(proc);
             if (i >= 0)
             {
                 Reko.Core.Serialization.Procedure_v1 uProc;
                 if (program.User.Procedures.TryGetValue(program.Procedures.Keys[i], out uProc))
                 {
-                    this.codeView.ProcedureDeclaration.Text = uProc.CSignature;
-                    return;
+                    return uProc.CSignature;
                 }
             }
-            this.codeView.ProcedureDeclaration.Text = proc.Name;
+            return proc.Name;
         }
 
         private void SetDeclaration(DataType dt)
         {
             codeView.ProcedureDeclaration.Text = "";
         }
-
 
         private void SetTextView(Procedure proc)
         {
@@ -314,33 +344,6 @@ namespace Reko.Gui.Windows
             if (pbSvc != null)
             {
                 pbSvc.SelectedObject = procDst;
-            }
-        }
-
-        private void ModifyProcedure()
-        {
-            //$REVIEW: slow, but we don't have to add an `Address` property to procedure.
-            // It has big repercussions in teh code base.
-            var iAddr = this.program.Procedures.IndexOfValue(proc);
-            if (iAddr < 0)
-                return;
-            var addr = this.program.Procedures.Keys[iAddr];
-            var declText = codeView.ProcedureDeclaration.Text.Trim();
-            Core.Serialization.Procedure_v1 sProc;
-            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
-            {
-                var up = program.EnsureUserProcedure(addr, sProc.Name);
-                up.CSignature = codeView.ProcedureDeclaration.Text;
-                proc.Name = sProc.Name;
-            }
-            else
-            {
-                if (IsValidCIdentifier(declText) &&
-                    proc.Name != declText)
-                {
-                    var up = program.EnsureUserProcedure(addr, proc.Name);
-                    proc.Name = declText;
-                }
             }
         }
 

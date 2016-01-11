@@ -54,7 +54,7 @@ namespace Reko.Core
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
-        public TypeLibrary[] TypeLibs { get; protected set; }
+        public virtual TypeLibrary[] TypeLibs { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
@@ -110,7 +110,7 @@ namespace Reko.Core
         /// </summary>
         /// <returns>Prepopulated symbol table.
         /// </returns>
-        public SymbolTable CreateSymbolTable()
+        public virtual SymbolTable CreateSymbolTable()
         {
             var namedTypes = new Dictionary<string, SerializedType>();
             var platformTypedefs = GetTypedefs();
@@ -119,7 +119,6 @@ namespace Reko.Core
             {
                 namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
             }
-
             return new SymbolTable(this, namedTypes);
         }
 
@@ -135,7 +134,7 @@ namespace Reko.Core
         /// Utility function for subclasses that loads all type libraries and characteristics libraries 
         /// </summary>
         /// <param name="envName"></param>
-        protected virtual void EnsureTypeLibraries(string envName)
+        public virtual void EnsureTypeLibraries(string envName)
         {
             if (TypeLibs == null)
             {

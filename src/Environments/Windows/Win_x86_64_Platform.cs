@@ -23,11 +23,9 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.Windows
 {
@@ -53,7 +51,12 @@ namespace Reko.Environments.Windows
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
+        }
+
+        public override string PlatformIdentifier
+        {
+            get { return "win64"; }
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -107,7 +110,7 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            EnsureTypeLibraries("win64");
+            EnsureTypeLibraries(PlatformIdentifier);
             var ep = TypeLibs.Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)
                 .Select(s => new ExternalProcedure(procName, s))

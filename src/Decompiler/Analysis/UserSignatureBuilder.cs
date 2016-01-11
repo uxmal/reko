@@ -55,7 +55,11 @@ namespace Reko.Analysis
                 Procedure proc;
                 if (!program.Procedures.TryGetValue(de.Key, out proc))
                     continue;
-                var sig = DeserializeSignature(de.Value, proc);
+                var ssig = DeserializeSignature(de.Value, proc);
+                if (ssig == null)
+                    continue;
+                var ser = program.Platform.CreateProcedureSerializer();
+                var sig = ser.Deserialize(ssig, proc.Frame);
                 if (sig != null)
                 {
                     ApplySignatureToProcedure(de.Key, sig, proc);
@@ -63,7 +67,7 @@ namespace Reko.Analysis
             }
         }
 
-        public ProcedureSignature DeserializeSignature(Procedure_v1 userProc, Procedure proc)
+        public SerializedSignature DeserializeSignature(Procedure_v1 userProc, Procedure proc)
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {
@@ -113,7 +117,7 @@ namespace Reko.Analysis
             return new Assignment(dst, param);
         }
 
-        public ProcedureSignature BuildSignature(string str, Frame frame)
+        public SerializedSignature BuildSignature(string str, Frame frame)
         {
             try {
                 var lexer = new CLexer(new StringReader(str + ";"));
@@ -124,10 +128,7 @@ namespace Reko.Analysis
                 var sSig = symbols.AddDeclaration(decl)
                     .OfType<SerializedSignature>()
                     .FirstOrDefault();
-                if (sSig == null)
-                    return null;
-                var ser = program.Platform.CreateProcedureSerializer();
-                return ser.Deserialize(sSig, frame);
+                return sSig;
             }
             catch (Exception ex)
             {

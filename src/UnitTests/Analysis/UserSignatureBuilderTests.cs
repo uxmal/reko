@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -78,6 +79,7 @@ namespace Reko.UnitTests.Analysis
         public void Usb_EmptyUserSignature()
         {
             Given_Procedure(0x1000);
+            mr.ReplayAll();
 
             var oldSig = proc.Signature;
             var usb = new UserSignatureBuilder(program);
@@ -89,6 +91,14 @@ namespace Reko.UnitTests.Analysis
         public void Usb_BuildSignature()
         {
             Given_Procedure(0x1000);
+            platform.Stub(p => p.PlatformIdentifier).Return("testPlatform");
+            platform.Stub(p => p.TypeLibs).Return(new TypeLibrary[0]);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
+            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(platform));
+            platform.Stub(p => p.EnsureTypeLibraries(null))
+                .IgnoreArguments();
             var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
             platform.Expect(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
             ser.Expect(s => s.Deserialize(
@@ -99,6 +109,8 @@ namespace Reko.UnitTests.Analysis
             var usb = new UserSignatureBuilder(program);
             var sig = usb.BuildSignature("int foo(char *)", proc.Frame);
             mr.ReplayAll();
+
+            Assert.AreEqual("fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))", sig.ToString());
         }
 
         [Test(Description ="Verifies that the user can override register names.")]

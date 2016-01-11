@@ -130,7 +130,7 @@ namespace Reko.Environments.Windows
             return host.GetInterceptedCall(addrTarget);
         }
 
-        protected override void EnsureTypeLibraries(string envName)
+        public override void EnsureTypeLibraries(string envName)
         {
             if (TypeLibs != null)
                 return;
