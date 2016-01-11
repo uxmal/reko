@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
+    /// <summary>
+    /// Symbol table for the C parser.
+    /// </summary>
     public class SymbolTable 
     {
         public SymbolTable() : this(new Dictionary<string, SerializedType>())

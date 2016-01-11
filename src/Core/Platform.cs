@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -136,6 +137,15 @@ namespace Reko.Core
                     .Where(cl => cl != null).ToArray();
             }
         }
+
+        /// <summary>
+        /// Given a C basic type, returns the number of bytes that type is
+        /// represented with on this platform.
+        /// </summary>
+        /// <param name="cb">A C Basic type, like int, float etc.</param>
+        /// <returns>Number of bytes used by this platform.
+        /// </returns>
+        public abstract int GetByteSizeFromCBasicType(CBasicType cb);
 
         public IDictionary<string, DataType> GetTypedefs()
         {
@@ -260,6 +270,23 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.WChar_t: return 2;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;      // Assume 32-bit int.
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
+        }
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
             // No trampolines are supported.

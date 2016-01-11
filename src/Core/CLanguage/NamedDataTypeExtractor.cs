@@ -40,23 +40,8 @@ namespace Reko.Core.CLanguage
         private int byteSize;
         private CTokenType callingConvention;
         private CConstantEvaluator eval;
-        private SimpleSize simpleSize;
+        private CBasicType simpleSize;
         private int pointerSize;            // Pointer sizes, in bytes.
-
-        private enum SimpleSize
-        {
-            None,
-            Char,
-            WChar_t,
-            Short,
-            Int,
-            Long,
-            LongLong,
-            Float,
-            Double,
-            LongDouble,
-            Int64,
-        }
 
         public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, SymbolTable converter, int pointerSize)
         {
@@ -64,7 +49,7 @@ namespace Reko.Core.CLanguage
             this.symbolTable = converter;
             this.callingConvention = CTokenType.None;
             this.eval = new CConstantEvaluator(converter.Constants);
-            this.simpleSize = SimpleSize.None;
+            this.simpleSize = CBasicType.None;
             this.pointerSize = pointerSize;
             foreach (var declspec in specs)
             {
@@ -314,34 +299,34 @@ namespace Reko.Core.CLanguage
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}.", domain));
-                simpleSize = SimpleSize.Char;
+                simpleSize = CBasicType.Char;
                 return CreatePrimitive();
             case CTokenType.Wchar_t:
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                simpleSize = SimpleSize.WChar_t;
+                simpleSize = CBasicType.WChar_t;
                 return CreatePrimitive();
             case CTokenType.Short:
                 if (domain != Domain.None && domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                simpleSize = SimpleSize.Short;
+                simpleSize = CBasicType.Short;
                 return CreatePrimitive();
             case CTokenType.Int:
                 if (domain == Domain.None)
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                if (simpleSize == SimpleSize.None)
-                    simpleSize = SimpleSize.Int;
+                if (simpleSize == CBasicType.None)
+                    simpleSize = CBasicType.Int;
                 return CreatePrimitive();
             //$TODO: bitsize is platform-dependent. For instance, an 'int' is 32-bits on Windows x86-64 but 16-bits on MS-DOS
             case CTokenType.Long:
-                if (simpleSize == SimpleSize.None)
-                    simpleSize = SimpleSize.Long;
-                else if (simpleSize == SimpleSize.Long)
-                    simpleSize = SimpleSize.LongLong;
+                if (simpleSize == CBasicType.None)
+                    simpleSize = CBasicType.Long;
+                else if (simpleSize == CBasicType.Long)
+                    simpleSize = CBasicType.LongLong;
                 return CreatePrimitive();
             //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
             case CTokenType.__Int64:
@@ -349,22 +334,22 @@ namespace Reko.Core.CLanguage
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                simpleSize = SimpleSize.Int64;
+                simpleSize = CBasicType.Int64;
                 return CreatePrimitive();
             case CTokenType.Float:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
                 domain = Domain.Real;
-                simpleSize = SimpleSize.Float;
+                simpleSize = CBasicType.Float;
                 return CreatePrimitive();
             case CTokenType.Double:
                 if (domain != Domain.None && domain != Domain.SignedInt)  //$REVIEW: short double? long double? long long double?
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
                 domain = Domain.Real;
-                if (simpleSize == SimpleSize.None)
-                    simpleSize = SimpleSize.Double;
-                else if (simpleSize == SimpleSize.Long)
-                    simpleSize = SimpleSize.LongDouble;
+                if (simpleSize == CBasicType.None)
+                    simpleSize = CBasicType.Double;
+                else if (simpleSize == CBasicType.Long)
+                    simpleSize = CBasicType.LongDouble;
                 return CreatePrimitive();
             }
         }
@@ -374,17 +359,17 @@ namespace Reko.Core.CLanguage
             //$BUG: all these are architecture depeendent.
             switch (simpleSize)
             {
-            case SimpleSize.None: byteSize = 0; break;
-            case SimpleSize.Char: byteSize = 1; break;
-            case SimpleSize.WChar_t: byteSize = 2; break;
-            case SimpleSize.Short: byteSize = 2; break;
-            case SimpleSize.Int: byteSize = 4; break;
-            case SimpleSize.Long: byteSize = 4; break;
-            case SimpleSize.LongLong: byteSize = 8; break;
-            case SimpleSize.Int64: byteSize = 8; break;
-            case SimpleSize.Float: byteSize = 4; break;
-            case SimpleSize.Double: byteSize = 8; break;
-            case SimpleSize.LongDouble: byteSize = 8; break;
+            case CBasicType.None: byteSize = 0; break;
+            case CBasicType.Char: byteSize = 1; break;
+            case CBasicType.WChar_t: byteSize = 2; break;
+            case CBasicType.Short: byteSize = 2; break;
+            case CBasicType.Int: byteSize = 4; break;
+            case CBasicType.Long: byteSize = 4; break;
+            case CBasicType.LongLong: byteSize = 8; break;
+            case CBasicType.Int64: byteSize = 8; break;
+            case CBasicType.Float: byteSize = 4; break;
+            case CBasicType.Double: byteSize = 8; break;
+            case CBasicType.LongDouble: byteSize = 8; break;
             default: throw new NotImplementedException();
             }
             if (domain == Domain.None)

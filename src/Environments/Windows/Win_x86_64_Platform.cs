@@ -49,7 +49,6 @@ namespace Reko.Environments.Windows
                 Signature = new ProcedureSignature(null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
-
         }
 
         public override string DefaultCallingConvention
