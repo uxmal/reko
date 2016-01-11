@@ -32,7 +32,7 @@ namespace Reko.Environments.Cpm
     public class CpmPlatform : Platform
     {
         public CpmPlatform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "cpm")
         {
         }
 
@@ -40,9 +40,6 @@ namespace Reko.Environments.Cpm
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier { get { return "cpm"; } }
-
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

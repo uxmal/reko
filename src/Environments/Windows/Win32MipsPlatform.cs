@@ -37,23 +37,16 @@ using System.Text;
 namespace Reko.Environments.Windows
 {
     // https://msdn.microsoft.com/en-us/library/ms881468.aspx
-    public class Win32MipsPlatform : Win32Platform
+    public class Win32MipsPlatform : Platform
     {
         public Win32MipsPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
-            base(services, arch)
+            base(services, arch, "winMips")
         {
         }
 
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override string PlatformIdentifier {  get { return "winMips";  } }
-        
-        public override Address AdjustProcedureAddress(Address addr)
-        {
-            return addr;
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -69,6 +62,11 @@ namespace Reko.Environments.Windows
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
+        }
+
+        public override SystemService FindService(int vector, ProcessorState state)
+        {
+            throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
         }
 
         private readonly RtlInstructionMatcher[] trampPattern = new RtlInstructionMatcher[] {

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,12 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    public class Win32ThumbPlatform : Win32Platform
+    public class Win32ThumbPlatform : Platform
     {
         private Dictionary<int, SystemService> systemServices;
 
         public Win32ThumbPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
-            base(services, arch)
+            base(services, arch, "winArm")
         {
             this.systemServices = new Dictionary<int, SystemService>
             {
@@ -122,6 +123,11 @@ namespace Reko.Environments.Windows
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage>();
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

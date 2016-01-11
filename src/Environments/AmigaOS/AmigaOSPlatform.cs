@@ -46,7 +46,7 @@ namespace Reko.Environments.AmigaOS
         private Dictionary<int, SystemService> funcs;
 
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "amigaOS")
         {
             this.a6Pattern = new RtlInstructionMatcher(
                 new RtlCall(
@@ -58,8 +58,6 @@ namespace Reko.Environments.AmigaOS
                     4,
                     RtlClass.Transfer));
         }
-
-        public override string PlatformIdentifier { get { return "amigaOS"; } }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {

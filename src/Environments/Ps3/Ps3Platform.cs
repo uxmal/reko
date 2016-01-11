@@ -39,13 +39,11 @@ namespace Reko.Environments.Ps3
     public class Ps3Platform : Platform
     {
         public Ps3Platform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch) 
+            : base(services, arch, "ps3") 
         {
         }
 
         public override string DefaultCallingConvention { get { return ""; } }
-
-        public override string PlatformIdentifier { get { return "ps3"; } }
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Pointer32; } }
 

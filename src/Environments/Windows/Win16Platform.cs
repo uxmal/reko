@@ -37,7 +37,7 @@ namespace Reko.Environments.Windows
         private TypeLibrary[] typelibs;
 
         public Win16Platform(IServiceProvider services, IProcessorArchitecture arch) 
-            : base(services, arch)
+            : base(services, arch, "win16")
         {
         }
 
@@ -45,8 +45,6 @@ namespace Reko.Environments.Windows
         {
             get { return "pascal";  }
         }
-
-        public override string PlatformIdentifier { get { return "win16"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

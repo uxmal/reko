@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,12 +32,12 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    public class Win_x86_64_Platform : Win32Platform
+    public class Win_x86_64_Platform : Platform
     {
         private SystemService int3svc;
 
         public Win_x86_64_Platform(IServiceProvider sp, IProcessorArchitecture arch)
-            : base(sp, arch)
+            : base(sp, arch, "win64")
         {
             int3svc = new SystemService
             {
@@ -63,6 +64,12 @@ namespace Reko.Environments.Windows
             {
                 Registers.rsp,
             };
+        }
+
+
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

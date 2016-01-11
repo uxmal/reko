@@ -31,11 +31,9 @@ namespace Reko.UnitTests.Mocks
     public class FakePlatform : Platform
     {
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "fake")
         {
         }
-
-        public override string PlatformIdentifier { get { return "fake"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

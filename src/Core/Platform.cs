@@ -41,12 +41,14 @@ namespace Reko.Core
     {
         IProcessorArchitecture Architecture { get; }
         string DefaultCallingConvention { get; }
+        Encoding DefaultTextEncoding { get; }
         string Description { get; }
         PrimitiveType FramePointerType { get; }
         PlatformHeuristics Heuristics { get; }
         string Name { get; }
         PrimitiveType PointerType { get; }
 
+        Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
         IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
@@ -72,10 +74,11 @@ namespace Reko.Core
         /// Initializes a Platform instance
         /// </summary>
         /// <param name="arch"></param>
-        protected Platform(IServiceProvider services, IProcessorArchitecture arch) 
+        protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId) 
         {
             this.Services = services;
             this.Architecture = arch;
+            this.PlatformIdentifier = platformId;
             this.Heuristics = new PlatformHeuristics();
         }
 
@@ -93,7 +96,7 @@ namespace Reko.Core
         /// String identifier used by Reko to locate platform-specfic information from the 
         /// app.config file.
         /// </summary>
-        public abstract string PlatformIdentifier { get;  }
+        public string PlatformIdentifier { get; private set; }
 
         /// <summary>
         /// The default encoding for byte-encoded text.
@@ -105,6 +108,17 @@ namespace Reko.Core
         public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
 
         public abstract string DefaultCallingConvention { get; }
+
+        /// <summary>
+        /// Some architectures platforms (I'm looking at you ARM Thumb) will use addresses
+        /// that are offset by 1. Most don't.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>Adjusted address</returns>
+        public virtual Address AdjustProcedureAddress(Address addr)
+        {
+            return addr;
+        }
 
         /// <summary>
         /// Creates a bitset that represents those registers that are never used as arguments to a 
@@ -236,7 +250,7 @@ namespace Reko.Core
     /// </summary>
     public class DefaultPlatform : Platform
     {
-        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "default")
         {
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = "(Unknown operating environment)";
@@ -248,8 +262,6 @@ namespace Reko.Core
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier {  get { return "default"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
