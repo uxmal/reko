@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Mocks
             {
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
-            case CBasicType.Int: return 2;
+            case CBasicType.Int: return 4;
             case CBasicType.Long: return 4;
             case CBasicType.LongLong: return 8;
             case CBasicType.Float: return 4;

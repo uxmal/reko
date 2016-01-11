@@ -45,6 +45,7 @@ namespace Reko.Core.CLanguage
 
         public NamedDataTypeExtractor(Platform platform, IEnumerable<DeclSpec> specs, SymbolTable converter)
         {
+            if (platform == null) throw new ArgumentNullException("platform");
             this.platform = platform;
             this.specs = specs;
             this.symbolTable = converter;

@@ -38,7 +38,6 @@ namespace Reko.Analysis
     public class UserSignatureBuilder
     {
         private Program program;
-        private SymbolTable symTable;
 
         public UserSignatureBuilder(Program program)
         {

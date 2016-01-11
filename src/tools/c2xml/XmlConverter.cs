@@ -42,11 +42,13 @@ namespace Reko.Tools.C2Xml
         private TextReader rdr;
         private XmlWriter writer;
         private ParserState parserState;
+        private Platform platform;
 
-        public XmlConverter(TextReader rdr, XmlWriter writer)
+        public XmlConverter(TextReader rdr, XmlWriter writer, Platform platform)
         {
             this.rdr = rdr;
             this.writer = writer;
+            this.platform = platform;
             this.parserState = new ParserState();
        }
 
@@ -55,7 +57,6 @@ namespace Reko.Tools.C2Xml
             var lexer = new CLexer(rdr);
             var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
-            var platform = new DefaultPlatform(null, null);
             var symbolTable = new SymbolTable(platform)
             {
                 NamedTypes = {

@@ -18,11 +18,14 @@
  */
 #endregion
 
+using DocoptNet;
 using Reko.Core;
 using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -55,37 +58,56 @@ Options:
         {
             TextReader input = Console.In;
             TextWriter output = Console.Out;
+            var sc = new ServiceContainer();
             var rekoCfg = new DecompilerConfiguration();
 
-            var docopt = new DocoptNet.Docopt();
-            var options = docopt.Apply(usage, args);
-            if (args.Length > 3)
+            var docopt = new Docopt();
+            IDictionary<string, ValueObject> options;
+            try {
+                options = docopt.Apply(usage, args);
+            } catch (Exception ex)
             {
-                Usage();
+                Console.Error.WriteLine(ex);
                 return 1;
             }
-            if (args.Length >= 2)
+            var arch = rekoCfg.GetArchitecture(options["-a"].ToString());
+            if (arch == null)
             {
-                try
-                {
-                    input = new StreamReader(args[0]);
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine("c2xml: Unable to open file {0} for reading. {1}", args[0], ex.Message);
-                    Usage();
-                    return 1;
-                }
+                Console.WriteLine(
+                    "c2xml: unknown architecture '{0}'. Check the c2xml config file for supported architectures.",
+                    options["-a"]);
+                return -1;
             }
-            if (args.Length == 2)
+            var envElem = rekoCfg.GetEnvironment(options["-e"].ToString());
+            if (envElem == null)
+            {
+                Console.WriteLine(
+                   "c2xml: unknown environment '{0}'. Check the c2xml config file for supported architectures.",
+                   options["-e"]);
+                return -1;
+            }
+
+            var platform = envElem.Load(sc, arch);
+            try
+            {
+                input = new StreamReader(options["<inputfile>"].ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("c2xml: unable to open file {0} for reading. {1}", options["<inputfile>"], ex.Message);
+                return 1;
+            }
+
+            if (options.ContainsKey("<outputfile>") &&  
+                options["<outputfile>"] != null)
             {
                 try
                 {
-                    output = new StreamWriter(args[1]);
+                    output = new StreamWriter(options["<outputfile>"].ToString());
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("c2xml: Unable to open file {0} for writing. {1}", args[1], ex.Message);
+                    Console.Error.WriteLine("c2xml: unable to open file {0} for writing. {1}", options["<outputfile>"], ex.Message);
                     return 1;
                 }
             }
@@ -93,7 +115,8 @@ Options:
             {
                 Formatting = Formatting.Indented
             };
-            XmlConverter c = new XmlConverter(input, xWriter);
+
+            XmlConverter c = new XmlConverter(input, xWriter, platform);
             c.Convert();
             output.Flush();
             return 0;

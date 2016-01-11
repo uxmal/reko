@@ -27,6 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.Core.CLanguage.UnitTests
 {
@@ -36,17 +37,19 @@ namespace Reko.Core.CLanguage.UnitTests
         private Platform platform;
         private NamedDataType nt;
         private SymbolTable symbolTable;
+        private FakeArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
-            this.platform = new DefaultPlatform(null, null);
+            this.arch = new FakeArchitecture();
+            this.platform = new DefaultPlatform(null, arch);
             symbolTable = new SymbolTable(platform);
         }
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)
         {
-            var ndte = new NamedDataTypeExtractor(null, declSpecs, symbolTable);
+            var ndte = new NamedDataTypeExtractor(platform, declSpecs, symbolTable);
             this.nt = ndte.GetNameAndType(decl);
         }
 
@@ -68,15 +71,16 @@ namespace Reko.Core.CLanguage.UnitTests
         [Test]
         public void NamedDataTypeExtractor_PtrChar()
         {
-            Run(new [] { SType(CTokenType.Char),},
-                new PointerDeclarator {
-                    Pointee = new IdDeclarator { Name="Sue" }
+            Run(new[] { SType(CTokenType.Char), },
+                new PointerDeclarator
+                {
+                    Pointee = new IdDeclarator { Name = "Sue" }
                 });
             Assert.AreEqual("Sue", nt.Name);
             Assert.IsInstanceOf<PointerType_v1>(nt.DataType);
-            var ptr = (PointerType_v1) nt.DataType;
+            var ptr = (PointerType_v1)nt.DataType;
             Assert.IsInstanceOf<PrimitiveType_v1>(ptr.DataType);
-            var p = (PrimitiveType_v1) ptr.DataType;
+            var p = (PrimitiveType_v1)ptr.DataType;
             Assert.AreEqual(Domain.Character, p.Domain);
             Assert.AreEqual(1, p.ByteSize);
         }
@@ -84,10 +88,12 @@ namespace Reko.Core.CLanguage.UnitTests
         [Test]
         public void NamedDataTypeExtractor_Pfn()
         {
-            Run(new [] { SType(CTokenType.Int) },
-                new FunctionDeclarator {
-                    Declarator = new PointerDeclarator { 
-                        Pointee = new IdDeclarator { Name="fn" },
+            Run(new[] { SType(CTokenType.Int) },
+                new FunctionDeclarator
+                {
+                    Declarator = new PointerDeclarator
+                    {
+                        Pointee = new IdDeclarator { Name = "fn" },
                     },
                     Parameters = new List<ParamDecl>
                     {
@@ -118,7 +124,7 @@ namespace Reko.Core.CLanguage.UnitTests
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
 
-        [Test(Description="If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
+        [Test(Description = "If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
             var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
