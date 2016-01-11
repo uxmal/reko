@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Intel
         private X86Emulator emu;
         private LoadedImage image;
         private Dictionary<Address, ImportReference> importReferences;
-        private Platform platform;
+        private IPlatform platform;
         private ServiceContainer sc;
 
         [SetUp]
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_Platform()
         {
-            platform = mr.PartialMock<Platform>(null, arch);
+            platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.LookupProcedureByName("", "")).IgnoreArguments().Return(new ExternalProcedure("", null));
             platform.Replay();
         }

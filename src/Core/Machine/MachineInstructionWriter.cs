@@ -35,7 +35,7 @@ namespace Reko.Core.Machine
         /// The current platform we're in. May be null, so make sure
         /// you test for that before dereferencing.
         /// </summary>
-        Platform Platform { get;  }
+        IPlatform Platform { get;  }
 
         void WriteOpcode(string opcode);
         void WriteAddress(string formattedAddress, Address addr);
@@ -54,9 +54,9 @@ namespace Reko.Core.Machine
         private StringBuilder sb;
 
         public StringRenderer() { sb = new StringBuilder(); }
-        public StringRenderer(Platform platform) { sb = new StringBuilder(); this.Platform = platform; }
+        public StringRenderer(IPlatform platform) { sb = new StringBuilder(); this.Platform = platform; }
 
-        public Platform Platform { get;private set; }
+        public IPlatform Platform { get;private set; }
 
         public void WriteOpcode(string opcode)
         {

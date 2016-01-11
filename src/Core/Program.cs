@@ -62,7 +62,7 @@ namespace Reko.Core
             this.User = new UserData();
         }
 
-        public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
+        public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
             this.Image = image;
             this.ImageMap = imageMap;
@@ -146,7 +146,7 @@ namespace Reko.Core
 
         public ImageMap ImageMap { get; set; }
 
-        public Platform Platform { get; set; }
+        public IPlatform Platform { get; set; }
 
         /// <summary>
         /// The list of known entry points to the program.

@@ -84,7 +84,7 @@ namespace Reko.Gui.Windows.Forms
             }
         }
 
-        public void ApplyChangesToProcedure(Platform platform, Procedure procedure)
+        public void ApplyChangesToProcedure(IPlatform platform, Procedure procedure)
         {
             var ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");          //BUG:Where does convetion come from? Platform?
             var sp = new SignatureParser(arch);

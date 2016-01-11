@@ -27,7 +27,7 @@ namespace Reko.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
-        TypeLibrary LoadLibrary(Platform platform, string name);
+        TypeLibrary LoadLibrary(IPlatform platform, string name);
 
         string InstalledFileLocation(string name);
 
@@ -49,7 +49,7 @@ namespace Reko.Core.Services
             this.services = services;
         }
 
-        public TypeLibrary LoadLibrary(Platform platform, string name)
+        public TypeLibrary LoadLibrary(IPlatform platform, string name)
         {
             try
             {

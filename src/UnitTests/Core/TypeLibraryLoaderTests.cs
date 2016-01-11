@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core
     {
         private MockRepository mr;
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 
         [SetUp]
         public void Setup()
@@ -52,11 +52,12 @@ namespace Reko.UnitTests.Core
         private void Given_ArchitectureStub()
         {
             arch = mr.DynamicMock<IProcessorArchitecture>();
-            platform = mr.DynamicMock<Platform>(null, arch);
+            platform = mr.DynamicMock<IPlatform>();
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             var procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
             platform.Stub(p => p.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
             procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(new ProcedureSignature());
+            platform.Stub(p => p.Architecture).Return(arch);
         }
 
         private void Given_Arch_PointerDataType(PrimitiveType dt)
@@ -150,7 +151,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Tlldr_bothordinalandname()
+        public void Tlldr_BothOrdinalAndName()
         {  
             Given_ArchitectureStub();
             mr.ReplayAll();

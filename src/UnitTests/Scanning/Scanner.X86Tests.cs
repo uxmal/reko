@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Scanning
             BuildTest(Address.Ptr32(0x00100000), new FakePlatform(sc, null), asmProg);
         }
 
-        private void BuildTest(Address addrBase, Platform platform , Action<X86Assembler> asmProg)
+        private void BuildTest(Address addrBase, IPlatform platform , Action<X86Assembler> asmProg)
         {
             var sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());

@@ -39,7 +39,7 @@ namespace Reko.Gui.Design
 
         private void SetTreeNodeProperties()
         {
-            TreeNode.Text = ((Platform)this.Component).Description;
+            TreeNode.Text = ((IPlatform)this.Component).Description;
             TreeNode.ImageName = "Platform.ico";
             TreeNode.ToolTipText = null;
         }

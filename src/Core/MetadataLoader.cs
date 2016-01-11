@@ -35,7 +35,7 @@ namespace Reko.Core
         {
         }
 
-        public abstract TypeLibrary Load(Platform platform);
+        public abstract TypeLibrary Load(IPlatform platform);
     }
 
     public class NullMetadataLoader : MetadataLoader
@@ -45,7 +45,7 @@ namespace Reko.Core
         {
         }
 
-        public override TypeLibrary Load(Platform platform)
+        public override TypeLibrary Load(IPlatform platform)
         {
             return new TypeLibrary();
         }

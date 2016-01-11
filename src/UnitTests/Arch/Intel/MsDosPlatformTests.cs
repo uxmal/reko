@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.Intel
 		public void MspRealModeServices()
 		{
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-			Platform platform = new MsdosPlatform(sc, arch);
+			IPlatform platform = new MsdosPlatform(sc, arch);
 
 			var state = arch.CreateProcessorState();
 			state.SetRegister(Registers.ah, Constant.Byte(0x3E));

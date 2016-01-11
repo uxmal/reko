@@ -442,7 +442,7 @@ testProc_exit:
         [Test]
         public void Bwi_IndirectCallMatchedByPlatform()
         {
-            var platform = mr.StrictMock<Platform>(null, arch);
+            var platform = mr.StrictMock<IPlatform>();
             var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, 0, PrimitiveType.Pointer32));
             var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Pointer32));
             var sysSvc = new SystemService {
@@ -470,7 +470,7 @@ testProc_exit:
         [Test]
         public void Bwi_IndirectJump()
         {
-            var platform = mr.StrictMock<Platform>(null, arch);
+            var platform = mr.StrictMock<IPlatform>();
             var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14,  0, PrimitiveType.Pointer32));
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(null);
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);

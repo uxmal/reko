@@ -34,7 +34,7 @@ namespace Reko.Core
     /// </summary>
     public class TypeLibraryLoader : ISerializedTypeVisitor<DataType>
     {
-        private Platform platform;
+        private IPlatform platform;
         private Dictionary<string, DataType> types;
         private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
@@ -44,7 +44,7 @@ namespace Reko.Core
         private Dictionary<int, SystemService> servicesByOrdinal;
         private string moduleName;
 
-        public TypeLibraryLoader(Platform platform, bool caseInsensitive)
+        public TypeLibraryLoader(IPlatform platform, bool caseInsensitive)
         {
             this.platform = platform;
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;

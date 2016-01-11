@@ -33,13 +33,41 @@ using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// A Platform is an abstraction of the operating environment,
+    /// <summary>
+    /// A Platform is an abstraction of the operating environment,
     /// say MS-DOS, Win32, or Posix.
-	/// </summary>
+    /// </summary>
+    public interface IPlatform
+    {
+        IProcessorArchitecture Architecture { get; }
+        string DefaultCallingConvention { get; }
+        string Description { get; }
+        PrimitiveType FramePointerType { get; }
+        PlatformHeuristics Heuristics { get; }
+        string Name { get; }
+        PrimitiveType PointerType { get; }
+
+        HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
+        IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+        SystemService FindService(int vector, ProcessorState state);
+        SystemService FindService(RtlInstruction call, ProcessorState state);
+        void LoadUserOptions(Dictionary<string, object> options);
+        ExternalProcedure LookupProcedureByName(string moduleName, string procName);
+        ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
+        Address MakeAddressFromConstant(Constant c);
+        Address MakeAddressFromLinear(ulong uAddr);
+        Dictionary<string, object> SaveUserOptions();
+        ProcedureSignature SignatureFromName(string importName);
+    }
+
+    /// <summary>
+    /// Implementation of functionality common to most platforms.
+    /// </summary>
     [Designer("Reko.Gui.Design.PlatformDesigner,Reko.Gui")]
-	public abstract class Platform
-	{
+	public abstract class Platform : IPlatform
+	{ 
         /// <summary>
         /// Initializes a Platform instance
         /// </summary>
@@ -95,12 +123,6 @@ namespace Reko.Core
             PointerScannerFlags pointerScannerFlags)
         {
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
-        }
-
-        public ProcedureSerializer CreateProcedureSerializer()
-        {
-            var typeLoader = new TypeLibraryLoader(this, true);
-            return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
         }
 
         /// <summary>

@@ -42,14 +42,14 @@ namespace Reko.UnitTests.Analysis
         private MockRepository mr;
         private Program program;
         private Procedure proc;
-        private Platform platform;
+        private IPlatform platform;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
             this.arch = mr.Stub<IProcessorArchitecture>();
-            this.platform = mr.Stub<Platform>(null, arch);
+            this.platform = mr.Stub<IPlatform>();
 
             platform.Stub(p => p.FramePointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.DefaultCallingConvention).Return("cdecl");

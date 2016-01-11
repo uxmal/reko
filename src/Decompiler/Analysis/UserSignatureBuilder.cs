@@ -125,7 +125,9 @@ namespace Reko.Analysis
                     .FirstOrDefault();
                 if (sSig == null)
                     return null;
-                var ser = program.Platform.CreateProcedureSerializer();
+                var typeLoader = new TypeLibraryLoader(program.Platform, true);
+                //$BUG: calling convention!
+                var ser = program.Platform.CreateProcedureSerializer(typeLoader, program.Platform.DefaultCallingConvention);
                 return ser.Deserialize(sSig, frame);
             }
             catch (Exception ex)

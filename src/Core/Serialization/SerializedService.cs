@@ -36,7 +36,7 @@ namespace Reko.Core.Serialization
 		[XmlElement("syscallinfo")]
 		public SerializedSyscallInfo SyscallInfo;
 
-		public SystemService Build(Platform platform)
+		public SystemService Build(IPlatform platform)
 		{
 			SystemService svc = new SystemService();
 			svc.Name = Name;

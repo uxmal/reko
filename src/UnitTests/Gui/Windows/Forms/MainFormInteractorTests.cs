@@ -433,7 +433,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_DecompilerInstance();
             loader.Expect(d => d.LoadMetadata(
                 Arg<string>.Is.Equal("foo.def"),
-                Arg<Platform>.Is.NotNull))
+                Arg<IPlatform>.Is.NotNull))
                     .Return(new TypeLibrary());
             services.AddService(typeof(IDecompilerService), dcSvc);
             uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.def");

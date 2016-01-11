@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Scanning
                     return null;
             }
 
-            public ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform)
+            public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
             {
                 ProcedureSignature sig;
                 if (signatures.TryGetValue(importName, out sig))
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Scanning
                     return null;
             }
 
-            public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform)
+            public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
             {
                 throw new NotImplementedException();
             }
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Scanning
             }
         }
 
-        private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<X86Assembler> m)
+        private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
             this.arch = new IntelArchitecture(ProcessorMode.Protected32);
             proc = new Procedure("test", arch.CreateFrame());

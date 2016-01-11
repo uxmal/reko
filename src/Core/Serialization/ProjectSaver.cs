@@ -115,7 +115,7 @@ namespace Reko.Core.Serialization
                 return new ProcessorOptions_v3 { Name = user.Processor };
         }
 
-        private PlatformOptions_v3 SerializePlatformOptions(UserData user, Platform platform)
+        private PlatformOptions_v3 SerializePlatformOptions(UserData user, IPlatform platform)
         {
             if (platform == null)
                 return null;
