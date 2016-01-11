@@ -33,6 +33,7 @@ namespace Reko.UnitTests.Mocks
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
+            TypeLibs = new TypeLibrary[0];
         }
 
         public override string PlatformIdentifier { get { return "fake"; } }
