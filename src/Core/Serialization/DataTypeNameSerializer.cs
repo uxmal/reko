@@ -87,12 +87,22 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitStructure(StructureType str)
         {
-            throw new NotImplementedException();
+            var structure = new SerializedStructType {
+                Name = str.Name,
+                ByteSize = str.Size
+            };
+
+            if (str.Fields != null)
+            {
+                var fields = str.Fields.Select(f => new StructField_v1(f.Offset, f.Name, f.DataType.Accept(this)));
+                structure.Fields = fields.ToArray();
+            }
+            return structure;
         }
 
         public SerializedType VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return new SerializedTypeReference(typeref.Name);
         }
 
         public SerializedType VisitTypeVariable(TypeVariable tv)
@@ -112,7 +122,7 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitVoidType(VoidType ut)
         {
-            throw new NotImplementedException();
+            return new VoidType_v1();
         }
     }
 }

@@ -55,7 +55,13 @@ namespace Reko.UnitTests.Gui.Windows
         public void Setup()
         {
             mr = new MockRepository();
-            program = new Program();
+            var arch = new FakeArchitecture();
+            var platform = new DefaultPlatform(null, arch);
+            program = new Program
+            {
+                Architecture = arch,
+                Platform = platform,
+            };
             codeViewer = new CodeViewerPane();
             decompilerSvc = mr.Stub<IDecompilerService>();
             decompiler = mr.Stub<IDecompiler>();

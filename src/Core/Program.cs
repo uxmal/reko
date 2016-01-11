@@ -22,6 +22,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

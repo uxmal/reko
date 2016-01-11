@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -104,6 +105,25 @@ namespace Reko.Core
         }
 
         /// <summary>
+        /// Creates a symbol table for this platform populated with the types 
+        /// defined by the platform.
+        /// </summary>
+        /// <returns>Prepopulated symbol table.
+        /// </returns>
+        public SymbolTable CreateSymbolTable()
+        {
+            var namedTypes = new Dictionary<string, SerializedType>();
+            var platformTypedefs = GetTypedefs();
+            var dtSer = new DataTypeSerializer();
+            foreach (var typedef in platformTypedefs)
+            {
+                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
+            }
+
+            return new SymbolTable(this, namedTypes);
+        }
+
+        /// <summary>
         /// Creates a procedure serializer that understands the calling conventions used on this
         /// processor and environment
         /// </summary>
@@ -137,7 +157,31 @@ namespace Reko.Core
             }
         }
 
-		public abstract SystemService FindService(int vector, ProcessorState state);
+        /// <summary>
+        /// Given a C basic type, returns the number of bytes that type is
+        /// represented with on this platform.
+        /// </summary>
+        /// <param name="cb">A C Basic type, like int, float etc.</param>
+        /// <returns>Number of bytes used by this platform.
+        /// </returns>
+        public abstract int GetByteSizeFromCBasicType(CBasicType cb);
+
+        public IDictionary<string, DataType> GetTypedefs()
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+
+            var typedefs = new Dictionary<string, DataType>();
+
+            foreach (var typeLib in TypeLibs)
+            {
+                foreach(var typedef in typeLib.Types)
+                    if (!typedefs.ContainsKey(typedef.Key))
+                        typedefs.Add(typedef.Key, typedef.Value);
+            }
+            return typedefs;
+        }
+
+        public abstract SystemService FindService(int vector, ProcessorState state);
 
         public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {
@@ -212,6 +256,9 @@ namespace Reko.Core
     /// <summary>
     /// The default platform is used when a specific platform cannot be determined.
     /// </summary>
+    /// <remarks>
+    /// "All the world's a VAX"  -- not Henry Spencer
+    /// </remarks>
     public class DefaultPlatform : Platform
     {
         public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
@@ -244,6 +291,23 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.WChar_t: return 2;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;      // Assume 32-bit int.
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
+        }
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
             // No trampolines are supported.

@@ -26,8 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-#if DEBUG
-namespace Reko.Tools.C2Xml.UnitTests
+namespace Reko.Core.CLanguage.UnitTests
 {
     [TestFixture]
     public class CLexerTests
@@ -417,4 +416,3 @@ namespace Reko.Tools.C2Xml.UnitTests
         }
     }
 }
-#endif

@@ -170,10 +170,16 @@ namespace Reko.Gui.Windows
 
         private bool TryParseSignature(string txtSignature, out Core.Serialization.Procedure_v1 sProc)
         {
+            sProc = null;
+            if (program == null || program.Platform == null)
+            {
+                return false;
+            }
             // save the user a keystroke.
             txtSignature = txtSignature + ";";
-            var lexer = new Core.CLanguage.CLexer(new StringReader(txtSignature));
-            var cstate = new Core.CLanguage.ParserState();
+            var lexer = new CLexer(new StringReader(txtSignature));
+            var syms = program.Platform.CreateSymbolTable();
+            var cstate = new ParserState(syms.NamedTypes.Keys);
             var cParser = new CParser(cstate, lexer);
             try
             {
@@ -181,16 +187,14 @@ namespace Reko.Gui.Windows
                 sProc = null;
                 if (decl == null)
                     return false;
-                var syms = new SymbolTable();
                 syms.AddDeclaration(decl);
                 if (syms.Procedures.Count != 1)
                     return false;
-                sProc = (Core.Serialization.Procedure_v1) syms.Procedures[0];
+                sProc = (Core.Serialization.Procedure_v1)syms.Procedures[0];
                 return true;
             }
             catch
             {
-                sProc = null;
                 return false;
             }
         }
