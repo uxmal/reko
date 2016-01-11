@@ -105,6 +105,25 @@ namespace Reko.Core
         }
 
         /// <summary>
+        /// Creates a symbol table for this platform populated with the types 
+        /// defined by the platform.
+        /// </summary>
+        /// <returns>Prepopulated symbol table.
+        /// </returns>
+        public SymbolTable CreateSymbolTable()
+        {
+            var namedTypes = new Dictionary<string, SerializedType>();
+            var platformTypedefs = GetTypedefs();
+            var dtSer = new DataTypeSerializer();
+            foreach (var typedef in platformTypedefs)
+            {
+                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
+            }
+
+            return new SymbolTable(this, namedTypes);
+        }
+
+        /// <summary>
         /// Creates a procedure serializer that understands the calling conventions used on this
         /// processor and environment
         /// </summary>
@@ -159,7 +178,6 @@ namespace Reko.Core
                     if (!typedefs.ContainsKey(typedef.Key))
                         typedefs.Add(typedef.Key, typedef.Value);
             }
-
             return typedefs;
         }
 
@@ -238,6 +256,9 @@ namespace Reko.Core
     /// <summary>
     /// The default platform is used when a specific platform cannot be determined.
     /// </summary>
+    /// <remarks>
+    /// "All the world's a VAX"  -- not Henry Spencer
+    /// </remarks>
     public class DefaultPlatform : Platform
     {
         public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)

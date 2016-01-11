@@ -31,12 +31,16 @@ namespace Reko.Core.CLanguage
     /// </summary>
     public class SymbolTable 
     {
-        public SymbolTable() : this(new Dictionary<string, SerializedType>())
+        private Platform platform;
+
+        public SymbolTable(Platform platform) : this(platform, new Dictionary<string, SerializedType>())
         {
         }
 
-        public SymbolTable(Dictionary<string, SerializedType> namedTypes)
+        public SymbolTable(Platform platform, Dictionary<string, SerializedType> namedTypes)
         {
+            this.platform = platform;
+
             this.Types = new List<SerializedType>();
             this.StructsSeen = new Dictionary<string, SerializedStructType>();
             this.UnionsSeen = new Dictionary<string, UnionType_v1>();
@@ -75,9 +79,7 @@ namespace Reko.Core.CLanguage
                 isTypedef = true;
             }
 
-            //$TODO: need a pointer size passed into the symbol table instead
-            // of the constant '4' below.
-            var ntde = new NamedDataTypeExtractor(declspecs, this, 4);
+            var ntde = new NamedDataTypeExtractor(platform, declspecs, this);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);

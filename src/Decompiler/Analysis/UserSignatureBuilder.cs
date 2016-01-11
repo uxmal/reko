@@ -32,18 +32,13 @@ using System.Text;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Builds ProcedureSignatures from user-supplied signatures.
+    /// </summary>
     public class UserSignatureBuilder
     {
         private Program program;
         private SymbolTable symTable;
-
-        private SymbolTable SymbolTable {
-            get {
-                if (symTable == null)
-                    symTable = program.CreateSymbolTable();
-                return symTable;
-            }
-        }
 
         public UserSignatureBuilder(Program program)
         {
@@ -123,10 +118,11 @@ namespace Reko.Analysis
         {
             try {
                 var lexer = new CLexer(new StringReader(str + ";"));
-                var cstate = new ParserState(SymbolTable.NamedTypes.Keys);
+                var symbols = program.Platform.CreateSymbolTable();
+                var cstate = new ParserState(symbols.NamedTypes.Keys);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
-                var sSig = SymbolTable.AddDeclaration(decl)
+                var sSig = symbols.AddDeclaration(decl)
                     .OfType<SerializedSignature>()
                     .FirstOrDefault();
                 if (sSig == null)
@@ -136,6 +132,9 @@ namespace Reko.Analysis
             }
             catch (Exception ex)
             {
+                //$TODO: if user has supplied a signature that can't parse,
+                // we must notify them in the diagnostics window with a 
+                // WARNING.
                 Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
                 return null;
             }

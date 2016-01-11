@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,21 +34,37 @@ namespace Reko.Tools.C2Xml
     /// </summary>
     class Program
     {
+        private const string usage = @"c2xml - Convert ANSI C to Reko XML
+
+Usage: 
+    c2xml -a <arch> 
+          -e <env>
+          <inputfile> [<outputfile>]
+
+Options:
+  -a (x86|z80)     Processor architecture
+  -e (win32|sysV)  Operating environment
+";
+
         static int Main(string[] args)
         {
             return new Program().Execute(args);
         }
 
-        public int Execute(string []args)
+        public int Execute(string [] args)
         {
             TextReader input = Console.In;
             TextWriter output = Console.Out;
-            if (args.Length > 2)
+            var rekoCfg = new DecompilerConfiguration();
+
+            var docopt = new DocoptNet.Docopt();
+            var options = docopt.Apply(usage, args);
+            if (args.Length > 3)
             {
                 Usage();
                 return 1;
             }
-            if (args.Length >= 1)
+            if (args.Length >= 2)
             {
                 try
                 {
@@ -84,7 +101,8 @@ namespace Reko.Tools.C2Xml
 
         static void Usage()
         {
-            Console.Error.WriteLine("usage: c2xml [<input-filename> [<output-filename>]]");
+            Console.Error.WriteLine("usage: c2xml <platform> [<input-filename> [<output-filename>]]");
+            Console.Error.WriteLine("   <platform>        name of platform the file is for");
             Console.Error.WriteLine("   <input-filename>  preprocessed c file  - standard input if omitted");
             Console.Error.WriteLine("   <output-filename> destination xml file - standard output if omitted");
             Console.Error.WriteLine("   ----------------------------------------------------");
