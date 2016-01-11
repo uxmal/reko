@@ -191,7 +191,8 @@ test_exit:
         [Test]
         public void Dfa2_UserDefinedStackArgs()
         {
-            var pb = new ProgramBuilder(new X86ArchitectureFlat32());
+            var arch = new X86ArchitectureFlat32();
+            var pb = new ProgramBuilder(arch);
             var test = pb.Add(
                 new Procedure_v1
                 {
@@ -209,7 +210,7 @@ test_exit:
                     m.Return();
                 });
             var program = pb.BuildProgram();
-            var platform = new FakePlatform(null, program.Architecture);
+            var platform = new FakePlatform(null, arch);
             platform.Test_CreateProcedureSerializer = (t, d) =>
             {
                 var typeLoader = new TypeLibraryLoader(platform, false);

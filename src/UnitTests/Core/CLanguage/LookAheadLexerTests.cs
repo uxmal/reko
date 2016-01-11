@@ -26,8 +26,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-#if DEBUG
-namespace Reko.Tools.C2Xml.UnitTests
+namespace Reko.Core.CLanguage.UnitTests
 {
     [TestFixture]
     public class LookAheadLexerTests
@@ -108,4 +107,3 @@ namespace Reko.Tools.C2Xml.UnitTests
 
     }
 }
-#endif

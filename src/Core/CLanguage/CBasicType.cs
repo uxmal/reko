@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,39 +25,21 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
-    public class ParserState
+    /// <summary>
+    /// The basic types of the C language.
+    /// </summary>
+    public enum CBasicType
     {
-        private Stack<int> alignments;
-        
-        public ParserState()
-        {
-            Typedefs = new HashSet<string>();
-            alignments = new Stack<int>();
-            alignments.Push(8);
-            Typedefs.Add("size_t");
-            Typedefs.Add("va_list");
-        }
-
-        public ParserState(IEnumerable<string> knownNames) : this()
-        {
-            foreach (var name in knownNames)
-            {
-                Typedefs.Add(name);
-            }
-        }
-
-        public HashSet<string> Typedefs { get; private set; }
-
-        public int Alignment { get { return alignments.Peek(); } }
-
-        public void PushAlignment(int align)
-        {
-            alignments.Push(align);
-        }
-
-        public void PopAlignment()
-        {
-            alignments.Pop();
-        }
+        None,
+        Char,
+        WChar_t,
+        Short,
+        Int,
+        Long,
+        LongLong,
+        Float,
+        Double,
+        LongDouble,
+        Int64,
     }
 }

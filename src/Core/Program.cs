@@ -318,19 +318,6 @@ namespace Reko.Core
             }
             throw new NotImplementedException();
         }
-
-        public SymbolTable CreateSymbolTable()
-        {
-            var namedTypes = new Dictionary<string, SerializedType>();
-            var platformTypedefs = Platform.GetTypedefs();
-            var dtSer = new DataTypeSerializer();
-            foreach(var typedef in platformTypedefs)
-            {
-                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
-            }
-
-            return new SymbolTable(namedTypes);
-        }
     } 
 
 	public class VectorUse

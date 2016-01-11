@@ -18,10 +18,14 @@
  */
 #endregion
 
+using DocoptNet;
 using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -33,42 +37,77 @@ namespace Reko.Tools.C2Xml
     /// </summary>
     class Program
     {
+        private const string usage = @"c2xml - Convert ANSI C to Reko XML
+
+Usage: 
+    c2xml -a <arch> 
+          -e <env>
+          <inputfile> [<outputfile>]
+
+Options:
+  -a (x86|z80)     Processor architecture
+  -e (win32|sysV)  Operating environment
+";
+
         static int Main(string[] args)
         {
             return new Program().Execute(args);
         }
 
-        public int Execute(string []args)
+        public int Execute(string [] args)
         {
             TextReader input = Console.In;
             TextWriter output = Console.Out;
-            if (args.Length > 2)
+            var sc = new ServiceContainer();
+            var rekoCfg = new DecompilerConfiguration();
+
+            var docopt = new Docopt();
+            IDictionary<string, ValueObject> options;
+            try {
+                options = docopt.Apply(usage, args);
+            } catch (Exception ex)
             {
-                Usage();
+                Console.Error.WriteLine(ex);
                 return 1;
             }
-            if (args.Length >= 1)
+            var arch = rekoCfg.GetArchitecture(options["-a"].ToString());
+            if (arch == null)
             {
-                try
-                {
-                    input = new StreamReader(args[0]);
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine("c2xml: Unable to open file {0} for reading. {1}", args[0], ex.Message);
-                    Usage();
-                    return 1;
-                }
+                Console.WriteLine(
+                    "c2xml: unknown architecture '{0}'. Check the c2xml config file for supported architectures.",
+                    options["-a"]);
+                return -1;
             }
-            if (args.Length == 2)
+            var envElem = rekoCfg.GetEnvironment(options["-e"].ToString());
+            if (envElem == null)
+            {
+                Console.WriteLine(
+                   "c2xml: unknown environment '{0}'. Check the c2xml config file for supported architectures.",
+                   options["-e"]);
+                return -1;
+            }
+
+            var platform = envElem.Load(sc, arch);
+            try
+            {
+                input = new StreamReader(options["<inputfile>"].ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("c2xml: unable to open file {0} for reading. {1}", options["<inputfile>"], ex.Message);
+                return 1;
+            }
+
+            if (options.ContainsKey("<outputfile>") &&  
+                options["<outputfile>"] != null)
             {
                 try
                 {
-                    output = new StreamWriter(args[1]);
+                    output = new StreamWriter(options["<outputfile>"].ToString());
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("c2xml: Unable to open file {0} for writing. {1}", args[1], ex.Message);
+                    Console.Error.WriteLine("c2xml: unable to open file {0} for writing. {1}", options["<outputfile>"], ex.Message);
                     return 1;
                 }
             }
@@ -76,7 +115,8 @@ namespace Reko.Tools.C2Xml
             {
                 Formatting = Formatting.Indented
             };
-            XmlConverter c = new XmlConverter(input, xWriter);
+
+            XmlConverter c = new XmlConverter(input, xWriter, platform);
             c.Convert();
             output.Flush();
             return 0;
@@ -84,7 +124,8 @@ namespace Reko.Tools.C2Xml
 
         static void Usage()
         {
-            Console.Error.WriteLine("usage: c2xml [<input-filename> [<output-filename>]]");
+            Console.Error.WriteLine("usage: c2xml <platform> [<input-filename> [<output-filename>]]");
+            Console.Error.WriteLine("   <platform>        name of platform the file is for");
             Console.Error.WriteLine("   <input-filename>  preprocessed c file  - standard input if omitted");
             Console.Error.WriteLine("   <output-filename> destination xml file - standard output if omitted");
             Console.Error.WriteLine("   ----------------------------------------------------");
