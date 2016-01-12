@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -205,60 +206,29 @@ namespace Reko.Analysis
 
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
-            if (procs.Count == 1)
-            {
-                var proc = procs[0];
-                Aliases alias = new Aliases(proc, program.Architecture, flow);
-                alias.Transform();
-                
-                // Transform the procedure to SSA state. When encountering 'call' instructions,
-                // they can be to functions already visited. If so, they have a "ProcedureFlow" 
-                // associated with them. If they have not been visited, or are computed destinations
-                // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
-                // which case the the SSA treats the call as a "hell node".
-                var doms = proc.CreateBlockDominatorGraph();
-                var sst = new SsaTransform(flow, proc, doms);
-                var ssa = sst.SsaState;
+            // Convert all procedures in the SCC to SSA form and perform
+            // value propagation where possible.
+            var ssas = procs.Select(p => ConvertToSsa(p));
 
-                // Propagate condition codes and registers. At the end, the hope is that 
-                // all statements like (x86) mem[esp_42+4] will have been converted to
-                // mem[fp - 30]. We also hope that procedure constants kept in registers
-                // are propagated to the corresponding call sites.
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
-                cce.Transform();
-                var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
-                vp.Transform();
+            // At this point, the computation of ProcedureFlow is be possible.
+            var tid = new TrashedRegisterFinder2(program.Architecture, flow, ssas, this.eventListener);
+            tid.Compute();
+            DeadCode.Eliminate(proc, ssa);
 
-                // Now compute SSA for the stack-based variables as well. That is:
-                // mem[fp - 30] becomes wLoc30, while 
-                // mem[fp + 30] becomes wArg30.
-                // This allows us to compute the dataflow of this procedure.
-                sst.RenameFrameAccesses = true;
-                sst.AddUseInstructions = true;
-                sst.Transform();
+            // Build expressions. A definition with a single use can be subsumed
+            // into the using expression. 
 
-                // Propagate those newly discovered identifiers.
-                vp.Transform();
+            var coa = new Coalescer(proc, ssa);
+            coa.Transform();
+            DeadCode.Eliminate(proc, ssa);
 
-                // At this point, the computation of _actual_ ProcedureFlow should be possible.
-                var tid = new TrashedRegisterFinder2(program.Architecture, flow, proc, ssa.Identifiers, this.eventListener);
-                tid.Compute();
-                DeadCode.Eliminate(proc, ssa);
+            var liv = new LinearInductionVariableFinder(
+                proc,
+                ssa.Identifiers,
+                new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
+            liv.Find();
 
-                // Build expressions. A definition with a single use can be subsumed
-                // into the using expression. 
-
-                var coa = new Coalescer(proc, ssa);
-                coa.Transform();
-                DeadCode.Eliminate(proc, ssa);
-
-                var liv = new LinearInductionVariableFinder(
-                    proc,
-                    ssa.Identifiers,
-                    new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
-                liv.Find();
-
-                foreach (var de in liv.Contexts)
+            foreach (var de in liv.Contexts)
                 {
                     var str = new StrengthReduction(ssa, de.Key, de.Value);
                     str.ClassifyUses();
@@ -273,11 +243,44 @@ namespace Reko.Analysis
                 var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
                 web.Transform();
                 ssa.ConvertBack(false);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
         }
+
+        public SsaTransform ConvertToSsa(Procedure proc)
+{
+    Aliases alias = new Aliases(proc, program.Architecture, flow);
+    alias.Transform();
+
+    // Transform the procedure to SSA state. When encountering 'call' instructions,
+    // they can be to functions already visited. If so, they have a "ProcedureFlow" 
+    // associated with them. If they have not been visited, or are computed destinations
+    // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
+    // which case the the SSA treats the call as a "hell node".
+    var doms = proc.CreateBlockDominatorGraph();
+    var sst = new SsaTransform(flow, proc, doms);
+    var ssa = sst.SsaState;
+
+    // Propagate condition codes and registers. At the end, the hope is that 
+    // all statements like (x86) mem[esp_42+4] will have been converted to
+    // mem[fp - 30]. We also hope that procedure constants kept in registers
+    // are propagated to the corresponding call sites.
+    var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
+    cce.Transform();
+    var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
+    vp.Transform();
+
+    // Now compute SSA for the stack-based variables as well. That is:
+    // mem[fp - 30] becomes wLoc30, while 
+    // mem[fp + 30] becomes wArg30.
+    // This allows us to compute the dataflow of this procedure.
+    sst.RenameFrameAccesses = true;
+    sst.AddUseInstructions = true;
+    sst.Transform();
+
+    // Propagate those newly discovered identifiers.
+    vp.Transform();
+}
+
+
 	}
 }
++
