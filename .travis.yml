@@ -6,5 +6,9 @@ install:
 
 script:
   - xbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
+  
+after_failure:
+  - ls -lr src
+
 
 

@@ -43,6 +43,14 @@ namespace Reko.Analysis
         private ISet<SsaTransform> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
 
+        public enum Effect
+        {
+            Preserved,
+            Trashed,
+            Constant,
+            Copy,
+        }
+
         public TrashedRegisterFinder2(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
@@ -54,61 +62,121 @@ namespace Reko.Analysis
             this.sccGroup = sccGroup.ToHashSet();
             this.assumedPreserved = sccGroup.ToDictionary(k => k.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
-            this.flow = new ProcedureFlow2();
         }
 
         public ProcedureFlow2 Compute(SsaTransform ssa)
         {
-            foreach (var id in ssa.Procedure.ExitBlock.Statements
+            this.ssa = ssa;
+            this.flow = new ProcedureFlow2();
+            this.progFlow.ProcedureFlows2.Add(ssa.Procedure, flow);
+
+            foreach (var sid in ssa.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
-                .Select(u => (Identifier) u.Expression))
+                .Select(u => ssa.SsaState.Identifiers[(Identifier) u.Expression]))
             {
-                CategorizeIdentifier(ssa.SsaState.Identifiers[id]);
+                CategorizeIdentifier(sid, new HashSet<PhiAssignment>());
             }
             return flow;
         }
 
-        private void CategorizeIdentifier(SsaIdentifier sid)
+        private Tuple<Effect, Expression> CategorizeIdentifier(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
-            if (sid.DefStatement.Instruction is DefInstruction &&
-                sid.DefStatement.Block == ssa.Procedure.EntryBlock)
+            var c = GetIdentifierCategory(sid, activePhis);
+            switch (c.Item1)
             {
-                // Reaching definition was a DefInstruction;
+            case Effect.Preserved:
                 flow.Preserved.Add(sid.OriginalIdentifier.Storage);
-                return;
+                break;
+            case Effect.Trashed:
+                flow.Trashed.Add(sid.OriginalIdentifier.Storage);
+                break;
+            case Effect.Constant:
+                flow.Constants.Add(sid.OriginalIdentifier.Storage, (Constant) c.Item2);
+                flow.Trashed.Add(sid.OriginalIdentifier.Storage);
+                break;
             }
-            Assignment ass;
-            if (sid.DefStatement.Instruction.As(out ass))
-            {
-                if ((ass.Src == sid.OriginalIdentifier) 
-                    ||
-                   (sid.OriginalIdentifier.Storage == arch.StackRegister &&
-                    ass.Src == ssa.Procedure.Frame.FramePointer))
-                {
-                    flow.Preserved.Add(sid.OriginalIdentifier.Storage);
-                    return;
-                }
-                Constant c;
-                if (ass.Src.As(out c))
-                {
-                    flow.Constants.Add(sid.OriginalIdentifier.Storage, c);
-                    // Fall through to Trashed below --v
-                }
-            }
-            CallInstruction call;
-            if (sid.DefStatement.Instruction.As(out call))
-            {
-                VisitCall(call, sid);
-                return;
-            }
-            flow.Trashed.Add(sid.OriginalIdentifier.Storage);
+            return c;
         }
 
-        public void VisitCall(CallInstruction call, SsaIdentifier sid)
+        private Tuple<Effect, Expression> GetIdentifierCategory(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
+        {
+            var sidOrig = sid;
+            while (true)
+            {
+                var defInstr = sid.DefStatement.Instruction;
+                if (defInstr is DefInstruction &&
+                    sid.DefStatement.Block == ssa.Procedure.EntryBlock)
+                {
+                    // Reaching definition was a DefInstruction;
+                    return (sid == sidOrig) ? Preserve() : Trash();
+                }
+                Assignment ass;
+                if (defInstr.As(out ass))
+                {
+                    var c = VisitAssignment(ass, sid);
+                    if (c.Item1 != Effect.Copy)
+                        return c;
+                    sid = ssa.SsaState.Identifiers[(Identifier)c.Item2];
+                }
+                CallInstruction call;
+                if (defInstr.As(out call))
+                {
+                    return VisitCall(call, sid);
+                }
+                PhiAssignment phi;
+                if (defInstr.As(out phi))
+                {
+                    Effect eff = Effect.Preserved;
+                    activePhis.Add(phi);
+                    foreach (var id in phi.Src.Arguments.OfType<Identifier>())
+                    {
+                        var c = GetIdentifierCategory(ssa.SsaState.Identifiers[id], activePhis);
+                        if (c.Item1 != Effect.Preserved)
+                            eff = Effect.Trashed;
+                    }
+                    activePhis.Remove(phi);
+                    return new Tuple<Effect, Expression>(eff, null);
+                }
+            }
+        }
+
+        private static Tuple<Effect, Expression> Trash()
+        {
+            return new Tuple<Effect, Expression>(Effect.Trashed, null);
+        }
+
+        private static Tuple<Effect, Expression> Preserve()
+        {
+            return new Tuple<Effect, Expression>(Effect.Preserved, null);
+        }
+
+        private Tuple<Effect, Expression> VisitAssignment(Assignment ass, SsaIdentifier sid)
+        {
+            if ((ass.Src == sid.OriginalIdentifier)
+                ||
+               (sid.OriginalIdentifier.Storage == arch.StackRegister &&
+                ass.Src == ssa.Procedure.Frame.FramePointer))
+            {
+                return new Tuple<Effect, Expression>(Effect.Preserved, null);
+            }
+            Constant c;
+            if (ass.Src.As(out c))
+            {
+                return new Tuple<Effect, Expression>(Effect.Constant, c);
+            }
+            Identifier id;
+            if (ass.Src.As(out id))
+            {
+                return new Tuple<Effect, Expression>(Effect.Copy, id);
+            }
+            return new Tuple<Effect, Expression>(Effect.Trashed, id);
+        }
+
+        public Tuple<Effect, Expression> VisitCall(CallInstruction call, SsaIdentifier sid)
         {
             if (!call.Definitions.Any(d => d.Expression == sid.Identifier))
-                return;
+                throw new InvalidOperationException("Call should have defined identifier.");
             ProcedureConstant callee;
             if (!call.Callee.As(out callee))
             {
@@ -119,8 +187,7 @@ namespace Reko.Analysis
             // know it to be trashed for sure.
             if (!sccGroup.Any(s => s.Procedure == callee.Procedure ))
             {
-                flow.Trashed.Add(sid.OriginalIdentifier.Storage);
-                return;
+                return new Tuple<Effect, Expression>(Effect.Trashed, null);
             }
 
             // Assume that it preserves it.
