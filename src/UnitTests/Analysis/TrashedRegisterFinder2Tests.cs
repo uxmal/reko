@@ -117,7 +117,6 @@ namespace Reko.UnitTests.Analysis
                 Debug.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
-            pf.ProcedureFlows2.Add(proc, flow);
             return proc;
         }
 
@@ -286,7 +285,7 @@ Constants: cl:0x00
                 m.Assign(r1, 1);
 
                 m.Label("m3Done");
-                m.Assign(r2, m.ISub(fp, 4));    // restore r2
+                m.Assign(r2, m.LoadDw(m.ISub(fp, 4)));    // restore r2
                 m.Return();
             });
         }

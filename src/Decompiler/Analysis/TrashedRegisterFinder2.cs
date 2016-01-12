@@ -37,11 +37,12 @@ namespace Reko.Analysis
     {
         private IProcessorArchitecture arch;
         private ProgramDataFlow progFlow;
-        private SsaTransform ssa;
+        private SsaTransform sst;
         private DecompilerEventListener decompilerEventListener;
         private ProcedureFlow2 flow;
         private ISet<SsaTransform> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
+        private ExpressionValueComparer cmp;
 
         public enum Effect
         {
@@ -62,18 +63,19 @@ namespace Reko.Analysis
             this.sccGroup = sccGroup.ToHashSet();
             this.assumedPreserved = sccGroup.ToDictionary(k => k.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
+            this.cmp = new ExpressionValueComparer();
         }
 
-        public ProcedureFlow2 Compute(SsaTransform ssa)
+        public ProcedureFlow2 Compute(SsaTransform sst)
         {
-            this.ssa = ssa;
+            this.sst = sst;
             this.flow = new ProcedureFlow2();
-            this.progFlow.ProcedureFlows2.Add(ssa.Procedure, flow);
+            this.progFlow.ProcedureFlows2.Add(sst.Procedure, flow);
 
-            foreach (var sid in ssa.Procedure.ExitBlock.Statements
+            foreach (var sid in sst.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
-                .Select(u => ssa.SsaState.Identifiers[(Identifier) u.Expression]))
+                .Select(u => sst.SsaState.Identifiers[(Identifier) u.Expression]))
             {
                 CategorizeIdentifier(sid, new HashSet<PhiAssignment>());
             }
@@ -82,7 +84,7 @@ namespace Reko.Analysis
 
         private Tuple<Effect, Expression> CategorizeIdentifier(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
-            var c = GetIdentifierCategory(sid, activePhis);
+            var c = GetIdentifierExpression(sid, activePhis);
             switch (c.Item1)
             {
             case Effect.Preserved:
@@ -99,14 +101,14 @@ namespace Reko.Analysis
             return c;
         }
 
-        private Tuple<Effect, Expression> GetIdentifierCategory(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
+        private Tuple<Effect, Expression> GetIdentifierExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
             var sidOrig = sid;
             while (true)
             {
                 var defInstr = sid.DefStatement.Instruction;
                 if (defInstr is DefInstruction &&
-                    sid.DefStatement.Block == ssa.Procedure.EntryBlock)
+                    sid.DefStatement.Block == sst.Procedure.EntryBlock)
                 {
                     // Reaching definition was a DefInstruction;
                     return (sid == sidOrig) ? Preserve() : Trash();
@@ -117,7 +119,7 @@ namespace Reko.Analysis
                     var c = VisitAssignment(ass, sid);
                     if (c.Item1 != Effect.Copy)
                         return c;
-                    sid = ssa.SsaState.Identifiers[(Identifier)c.Item2];
+                    sid = sst.SsaState.Identifiers[(Identifier)c.Item2];
                 }
                 CallInstruction call;
                 if (defInstr.As(out call))
@@ -127,16 +129,23 @@ namespace Reko.Analysis
                 PhiAssignment phi;
                 if (defInstr.As(out phi))
                 {
-                    Effect eff = Effect.Preserved;
+                    Expression value = null;
                     activePhis.Add(phi);
                     foreach (var id in phi.Src.Arguments.OfType<Identifier>())
                     {
-                        var c = GetIdentifierCategory(ssa.SsaState.Identifiers[id], activePhis);
-                        if (c.Item1 != Effect.Preserved)
-                            eff = Effect.Trashed;
+                        var c = GetIdentifierExpression(sst.SsaState.Identifiers[id], activePhis);
+                        if (value == null)
+                        {
+                            value = c.Item2;
+                        } else if (!cmp.Equals(value, c.Item2))
+                        {
+                            value = Constant.Invalid;
+                        }
                     }
                     activePhis.Remove(phi);
-                    return new Tuple<Effect, Expression>(eff, null);
+                    return new Tuple<Effect, Expression>(
+                        value == Constant.Invalid ? Effect.Trashed : Effect.Copy,
+                        value);
                 }
             }
         }
@@ -156,7 +165,7 @@ namespace Reko.Analysis
             if ((ass.Src == sid.OriginalIdentifier)
                 ||
                (sid.OriginalIdentifier.Storage == arch.StackRegister &&
-                ass.Src == ssa.Procedure.Frame.FramePointer))
+                ass.Src == sst.Procedure.Frame.FramePointer))
             {
                 return new Tuple<Effect, Expression>(Effect.Preserved, null);
             }
