@@ -62,6 +62,16 @@ namespace Reko.UnitTests.Analysis
             };
         }
 
+        private void Given_Program(IDictionary<string, DataType> types)
+        {
+            platform = new FakePlatform(null, arch, types);
+            program = new Program
+            {
+                Architecture = arch,
+                Platform = platform,
+            };
+        }
+
         private void Given_UserSignature(uint address, string str)
         {
             program.User.Procedures.Add(Address.Ptr32(address), new Reko.Core.Serialization.Procedure_v1
@@ -112,6 +122,24 @@ namespace Reko.UnitTests.Analysis
 
             Assert.AreEqual(
                 "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
+                sProc.Signature.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseFunctionDeclaration_PredefinedTypes()
+        {
+            var types = new Dictionary<string, DataType>()
+            {
+                { "BYTE", PrimitiveType.Byte},
+            };
+            Given_Program(types);
+            Given_Procedure(0x1000);
+
+            var usb = new UserSignatureBuilder(program);
+            var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)", proc.Frame);
+
+            Assert.AreEqual(
+                "fn(arg(BYTE),(arg(a,BYTE)arg(b,BYTE))",
                 sProc.Signature.ToString());
         }
 

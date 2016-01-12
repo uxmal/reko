@@ -175,6 +175,18 @@ namespace Reko.UnitTests.Gui.Windows
             decompiler.Stub(d => d.Project).Return(project);
         }
 
+        private void Given_Program(IDictionary<string, DataType> types)
+        {
+            var arch = new FakeArchitecture();
+            var platform = new FakePlatform(null, arch, types);
+            program = new Program
+            {
+                Architecture = arch,
+                Platform = platform,
+            };
+            Given_Program();
+        }
+
         private void Given_SymbolTable()
         {
             this.program.Platform.Stub(p => p.CreateSymbolTable()).Return(symbolTable);
@@ -275,6 +287,26 @@ namespace Reko.UnitTests.Gui.Windows
 
             Assert.AreEqual("foo", proc.Name);
             Assert.AreEqual("char * foo(int)", program.User.Procedures.Values.First().CSignature);
+        }
+
+        [Test]
+        public void Cvp_Accept_Declaration_PredefinedTypes()
+        {
+            var types = new Dictionary<string, DataType>()
+            {
+                { "BYTE", PrimitiveType.Byte},
+            };
+            Given_Program(types);
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            When_CodeViewCreated();
+            var oldSig = proc.Signature;
+            codeViewer.DisplayProcedure(program, proc);
+            codeViewer.Declaration.Text = "BYTE foo(BYTE a, BYTE b)";
+
+            Assert.AreEqual("foo", proc.Name);
+            Assert.AreEqual("BYTE foo(BYTE a, BYTE b)", program.User.Procedures.Values.First().CSignature);
         }
     }
 }

@@ -37,6 +37,12 @@ namespace Reko.UnitTests.Mocks
             TypeLibs = new TypeLibrary[0];
         }
 
+        public FakePlatform(IServiceProvider services, IProcessorArchitecture arch, IDictionary<string, DataType> types)
+            : base(services, arch)
+        {
+            TypeLibs = new TypeLibrary[] { new TypeLibrary(types, null) };
+        }
+
         public override string PlatformIdentifier { get { return "fake"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
