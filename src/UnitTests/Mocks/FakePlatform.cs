@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Mocks
             TypeLibs = new TypeLibrary[0];
         }
 
+        //$REFACTOR: this becomes unnecesary once IPlatform changes are merged.
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch, IDictionary<string, DataType> types)
             : base(services, arch)
         {

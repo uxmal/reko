@@ -62,6 +62,7 @@ namespace Reko.UnitTests.Analysis
             };
         }
 
+        //$REFACTOR: change this to Given_NamedTypes once IPlatform changeis merged
         private void Given_Program(IDictionary<string, DataType> types)
         {
             platform = new FakePlatform(null, arch, types);

@@ -175,6 +175,7 @@ namespace Reko.UnitTests.Gui.Windows
             decompiler.Stub(d => d.Project).Return(project);
         }
 
+        //$REFACTOR: change to Given_NamedTypes once IPlatform changes are merged.
         private void Given_Program(IDictionary<string, DataType> types)
         {
             var arch = new FakeArchitecture();
