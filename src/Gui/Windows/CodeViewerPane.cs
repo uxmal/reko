@@ -339,8 +339,11 @@ namespace Reko.Gui.Windows
 
         private void Procedure_NameChanged(object sender, EventArgs e)
         {
-            SetTextView(proc);
-            FrameWindow.Title = proc.Name;
+            TextView.Invoke(new Action(() =>
+            {
+                SetTextView(proc);
+                FrameWindow.Title = proc.Name;
+            }));
         }
     }
 }
