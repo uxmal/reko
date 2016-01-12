@@ -183,6 +183,7 @@ Constants: ds:0x0C00,Local -0002:0x0C00
         }
 
         [Test(Description = "Constant in one branch, not constant in the other")]
+        [Ignore("Use the new SSA transform to handle register aliasing.")]
         public void TrfConstNonConst()
         {
             var sExp =
@@ -265,7 +266,7 @@ Constants: cl:0x00
         [Test(Description = "Tests detection of trashed variables in the presence of recursion")]
         public void TrfRecursion()
         {
-            var sExp1 = Expect("Preserved: fp,r2", "Trashed: local -0004,r1", "");
+            var sExp1 = Expect("Preserved: r2", "Trashed: Local -0004,r1", "");
             RunTest(sExp1, "fact", m =>
             {
                 var fp = m.Frame.FramePointer;

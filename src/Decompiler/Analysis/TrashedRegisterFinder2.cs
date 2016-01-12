@@ -104,50 +104,50 @@ namespace Reko.Analysis
         private Tuple<Effect, Expression> GetIdentifierExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
             var sidOrig = sid;
-            while (true)
+            var defInstr = sid.DefStatement.Instruction;
+            if (defInstr is DefInstruction &&
+                sid.DefStatement.Block == sst.Procedure.EntryBlock)
             {
-                var defInstr = sid.DefStatement.Instruction;
-                if (defInstr is DefInstruction &&
-                    sid.DefStatement.Block == sst.Procedure.EntryBlock)
-                {
-                    // Reaching definition was a DefInstruction;
-                    return (sid == sidOrig) ? Preserve() : Trash();
-                }
-                Assignment ass;
-                if (defInstr.As(out ass))
-                {
-                    var c = VisitAssignment(ass, sid);
-                    if (c.Item1 != Effect.Copy)
-                        return c;
-                    sid = sst.SsaState.Identifiers[(Identifier)c.Item2];
-                }
-                CallInstruction call;
-                if (defInstr.As(out call))
-                {
-                    return VisitCall(call, sid);
-                }
-                PhiAssignment phi;
-                if (defInstr.As(out phi))
-                {
-                    Expression value = null;
-                    activePhis.Add(phi);
-                    foreach (var id in phi.Src.Arguments.OfType<Identifier>())
-                    {
-                        var c = GetIdentifierExpression(sst.SsaState.Identifiers[id], activePhis);
-                        if (value == null)
-                        {
-                            value = c.Item2;
-                        } else if (!cmp.Equals(value, c.Item2))
-                        {
-                            value = Constant.Invalid;
-                        }
-                    }
-                    activePhis.Remove(phi);
-                    return new Tuple<Effect, Expression>(
-                        value == Constant.Invalid ? Effect.Trashed : Effect.Copy,
-                        value);
-                }
+                // Reaching definition was a DefInstruction;
+                return (sid == sidOrig) ? Preserve() : Trash();
             }
+            Assignment ass;
+            if (defInstr.As(out ass))
+            {
+                var c = VisitAssignment(ass, sid);
+                if (c.Item1 != Effect.Copy)
+                    return c;
+                sid = sst.SsaState.Identifiers[(Identifier)c.Item2];
+                return GetIdentifierExpression(sid, activePhis);
+            }
+            CallInstruction call;
+            if (defInstr.As(out call))
+            {
+                return VisitCall(call, sid);
+            }
+            PhiAssignment phi;
+            if (defInstr.As(out phi))
+            {
+                Expression value = null;
+                activePhis.Add(phi);
+                foreach (var id in phi.Src.Arguments.OfType<Identifier>())
+                {
+                    var c = GetIdentifierExpression(sst.SsaState.Identifiers[id], activePhis);
+                    if (value == null)
+                    {
+                        value = c.Item2;
+                    }
+                    else if (!cmp.Equals(value, c.Item2))
+                    {
+                        value = Constant.Invalid;
+                    }
+                }
+                activePhis.Remove(phi);
+                return new Tuple<Effect, Expression>(
+                    value == Constant.Invalid ? Effect.Trashed : Effect.Copy,
+                    value);
+            }
+            return Trash();
         }
 
         private static Tuple<Effect, Expression> Trash()
@@ -179,7 +179,7 @@ namespace Reko.Analysis
             {
                 return new Tuple<Effect, Expression>(Effect.Copy, id);
             }
-            return new Tuple<Effect, Expression>(Effect.Trashed, id);
+            return new Tuple<Effect, Expression>(Effect.Trashed, ass.Src);
         }
 
         public Tuple<Effect, Expression> VisitCall(CallInstruction call, SsaIdentifier sid)
