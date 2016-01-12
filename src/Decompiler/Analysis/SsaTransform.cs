@@ -65,6 +65,7 @@ namespace Reko.Analysis
         public SsaState SsaState { get; private set; }
         public bool RenameFrameAccesses { get; set; }
         public bool AddUseInstructions { get; set; }
+        public Procedure Procedure { get { return proc; } }
 
 		/// <summary>
 		/// Creates a phi statement with slots for each predecessor block, then

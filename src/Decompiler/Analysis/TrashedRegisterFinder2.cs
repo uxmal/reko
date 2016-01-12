@@ -37,34 +37,34 @@ namespace Reko.Analysis
     {
         private IProcessorArchitecture arch;
         private ProgramDataFlow progFlow;
-        private Procedure proc;
-        private SsaIdentifierCollection ssa;
+        private SsaTransform ssa;
         private DecompilerEventListener decompilerEventListener;
         private ProcedureFlow2 flow;
+        private ISet<SsaTransform> sccGroup;
+        private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
 
         public TrashedRegisterFinder2(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
-            Procedure proc,
-            SsaIdentifierCollection ssa,
+            IEnumerable<SsaTransform> sccGroup,
             DecompilerEventListener listener)
         {
             this.arch = arch;
             this.progFlow = flow;
-            this.proc = proc;
-            this.ssa = ssa;
+            this.sccGroup = sccGroup.ToHashSet();
+            this.assumedPreserved = sccGroup.ToDictionary(k => k.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
             this.flow = new ProcedureFlow2();
         }
 
-        public ProcedureFlow2 Compute()
+        public ProcedureFlow2 Compute(SsaTransform ssa)
         {
-            foreach (var id in proc.ExitBlock.Statements
+            foreach (var id in ssa.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
                 .Select(u => (Identifier) u.Expression))
             {
-                CategorizeIdentifier(ssa[id]);
+                CategorizeIdentifier(ssa.SsaState.Identifiers[id]);
             }
             return flow;
         }
@@ -72,7 +72,7 @@ namespace Reko.Analysis
         private void CategorizeIdentifier(SsaIdentifier sid)
         {
             if (sid.DefStatement.Instruction is DefInstruction &&
-                sid.DefStatement.Block == proc.EntryBlock)
+                sid.DefStatement.Block == ssa.Procedure.EntryBlock)
             {
                 // Reaching definition was a DefInstruction;
                 flow.Preserved.Add(sid.OriginalIdentifier.Storage);
@@ -84,7 +84,7 @@ namespace Reko.Analysis
                 if ((ass.Src == sid.OriginalIdentifier) 
                     ||
                    (sid.OriginalIdentifier.Storage == arch.StackRegister &&
-                    ass.Src == proc.Frame.FramePointer))
+                    ass.Src == ssa.Procedure.Frame.FramePointer))
                 {
                     flow.Preserved.Add(sid.OriginalIdentifier.Storage);
                     return;
@@ -96,7 +96,37 @@ namespace Reko.Analysis
                     // Fall through to Trashed below --v
                 }
             }
+            CallInstruction call;
+            if (sid.DefStatement.Instruction.As(out call))
+            {
+                VisitCall(call, sid);
+                return;
+            }
             flow.Trashed.Add(sid.OriginalIdentifier.Storage);
+        }
+
+        public void VisitCall(CallInstruction call, SsaIdentifier sid)
+        {
+            if (!call.Definitions.Any(d => d.Expression == sid.Identifier))
+                return;
+            ProcedureConstant callee;
+            if (!call.Callee.As(out callee))
+            {
+                throw new NotImplementedException("Indirect calls not handled yet.");
+            }
+
+            // Call trashes this identifier. If it's not in our SCC group we
+            // know it to be trashed for sure.
+            if (!sccGroup.Any(s => s.Procedure == callee.Procedure ))
+            {
+                flow.Trashed.Add(sid.OriginalIdentifier.Storage);
+                return;
+            }
+
+            // Assume that it preserves it.
+
+            throw new NotImplementedException();
+            // assumedPreserved[proc].Add(sid.OriginalIdentifier.Storage);
         }
     }
 }

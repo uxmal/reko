@@ -47,6 +47,11 @@ namespace Reko.UnitTests.Analysis
             this.progBuilder = new ProgramBuilder();
         }
 
+        private static string Expect(string preserved, string trashed, string consts)
+        {
+            return String.Join(Environment.NewLine, new[] { preserved, trashed, consts });
+        }
+
         private Procedure RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             var pb = new ProcedureBuilder();
@@ -87,10 +92,9 @@ namespace Reko.UnitTests.Analysis
             var trf = new TrashedRegisterFinder2(
                 arch, 
                 pf,
-                proc, 
-                ssa.SsaState.Identifiers,
+                new[] { ssa },
                 NullDecompilerEventListener.Instance);
-            var flow = trf.Compute();
+            var flow = trf.Compute(ssa);
             var sw = new StringWriter();
             sw.Write("Preserved: ");
             sw.WriteLine(string.Join(",", flow.Preserved.OrderBy(p => p.ToString())));
@@ -169,7 +173,7 @@ Constants: ds:0x0C00,Local -0002:0x0C00
             RunTest(sExp, m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var ds = m.Reg16("ds");
+                var ds = m.Reg16("ds", 10);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x0C00));
@@ -234,7 +238,7 @@ Constants: cl:0x00
         [Test(Description="Tests propagation between caller and callee.")]
         public void TrfSubroutine_WithRegisterParameters()
         {
-            var sExp1 = String.Join(Environment.NewLine,new []{"Preserved: r2","Trashed: r1",""});
+            var sExp1 = Expect("Preserved: r2", "Trashed: r1", "");
 
             // Subroutine does a small calculation in registers
             RunTest(sExp1, "Addition", m =>
@@ -245,16 +249,44 @@ Constants: cl:0x00
                 m.Return();
             });
 
-            var sExp2 = String.Join(Environment.NewLine,new []{"Preserved: ","Trashed: Global memory,r1,r2",""});
+            var sExp2 = String.Join(Environment.NewLine, new[] { "Preserved: ", "Trashed: Global memory,r1,r2", "" });
 
             RunTest(sExp2, m =>
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
-                m.Assign(r2 ,m.LoadDw(m.IAdd(r1, 4)));
+                m.Assign(r2, m.LoadDw(m.IAdd(r1, 4)));
                 m.Assign(r1, m.LoadDw(m.IAdd(r1, 8)));
                 m.Call("Addition", 4);
                 m.Store(m.Word32(0x123000), r1);
+                m.Return();
+            });
+        }
+
+        [Test(Description = "Tests detection of trashed variables in the presence of recursion")]
+        public void TrfRecursion()
+        {
+            var sExp1 = Expect("Preserved: fp,r2", "Trashed: local -0004,r1", "");
+            RunTest(sExp1, "fact", m =>
+            {
+                var fp = m.Frame.FramePointer;
+                var r1 = m.Register(1);
+                var r2 = m.Register(2);
+                m.Store(m.ISub(fp, 4), r2);     // save r2
+                m.BranchIf(m.Le(r2, 2), "m2Base");
+
+                m.Label("m1Recursive");
+                m.Assign(r2, m.ISub(r2, 1));
+                m.Call("fact", 0);
+                m.Assign(r2, m.LoadDw(m.ISub(fp, 4)));
+                m.Assign(r1, m.IMul(r1, r2));
+                m.Goto("m3Done");
+
+                m.Label("m2Base");  // Base case just returns 1.
+                m.Assign(r1, 1);
+
+                m.Label("m3Done");
+                m.Assign(r2, m.ISub(fp, 4));    // restore r2
                 m.Return();
             });
         }
