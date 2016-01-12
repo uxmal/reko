@@ -316,6 +316,14 @@ namespace Reko.Core
             }
             throw new NotImplementedException();
         }
+
+        public void Reset()
+        {
+            Procedures.Clear();
+            globals = null;
+            TypeFactory = new TypeFactory();
+            TypeStore = new TypeStore();
+        }
     } 
 
 	public class VectorUse
