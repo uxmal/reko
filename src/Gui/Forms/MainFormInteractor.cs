@@ -406,7 +406,9 @@ namespace Reko.Gui.Forms
                 program.Reset();
             }
             SwitchInteractor(this.InitialPageInteractor);
+            
             CloseAllDocumentWindows();
+            projectBrowserSvc.Reload();
         }
 
         public void NextPhase()
