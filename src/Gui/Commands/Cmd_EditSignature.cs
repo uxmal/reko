@@ -48,7 +48,7 @@ namespace Reko.Gui.Commands
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             var platform = program.Platform;
-            var ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
+            var ser = platform.CreateProcedureSerializer(new TypeLibraryDeserializer(platform, true), "stdapi");
             var sProc = ser.Serialize(procedure, address);
             //$REVIEW: use dialog factory.
             var i = new ProcedureDialogInteractor(platform.Architecture, sProc);
@@ -58,7 +58,7 @@ namespace Reko.Gui.Commands
                 {
                     program.User.Procedures[address] =
                         i.SerializedProcedure;
-                    ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
+                    ser = platform.CreateProcedureSerializer(new TypeLibraryDeserializer(platform, true), "stdapi");
                     procedure.Signature =
                         ser.Deserialize(i.SerializedProcedure.Signature, procedure.Frame);
 

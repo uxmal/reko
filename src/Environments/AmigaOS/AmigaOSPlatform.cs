@@ -133,7 +133,7 @@ namespace Reko.Environments.AmigaOS
             var fsSvc = Services.RequireService<IFileSystemService>();
             var sser = new M68kProcedureSerializer(
                 (M68kArchitecture)Architecture,
-                new TypeLibraryLoader(this, true),
+                new TypeLibraryDeserializer(this, true),
                 DefaultCallingConvention);
 
             using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation( lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))

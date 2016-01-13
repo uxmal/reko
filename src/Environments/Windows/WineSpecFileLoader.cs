@@ -36,7 +36,7 @@ namespace Reko.Environments.Windows
         private string filename;
         private Lexer lexer;
         private Token bufferedToken;
-        private TypeLibraryLoader tlLoader;
+        private TypeLibraryDeserializer tlLoader;
         private IPlatform platform;
 
         public WineSpecFileLoader(IServiceProvider services, string filename, byte[] bytes)
@@ -56,7 +56,7 @@ namespace Reko.Environments.Windows
         public TypeLibrary Load(IPlatform platform, string module)
         {
             this.platform = platform;
-            this.tlLoader = new TypeLibraryLoader(platform, true);
+            this.tlLoader = new TypeLibraryDeserializer(platform, true);
             tlLoader.SetModuleName(module);
             for (;;)
             {

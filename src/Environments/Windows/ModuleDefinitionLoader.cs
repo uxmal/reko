@@ -50,7 +50,7 @@ namespace Reko.Environments.Windows
         public override TypeLibrary Load(IPlatform platform)
         {
             this.platform = platform;
-            var loader = new TypeLibraryLoader(platform, true);
+            var loader = new TypeLibraryDeserializer(platform, true);
             loader.SetModuleName(DefaultModuleName(filename));
             for (;;)
             {
@@ -74,7 +74,7 @@ namespace Reko.Environments.Windows
             return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
         }
 
-        private void ParseExports(TypeLibraryLoader lib)
+        private void ParseExports(TypeLibraryDeserializer lib)
         {
             while (Peek().Type == TokenType.Id)
             {
@@ -108,7 +108,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        private void ParseLibrary(TypeLibraryLoader lib)
+        private void ParseLibrary(TypeLibraryDeserializer lib)
         {
             if (Peek().Type == TokenType.Id)
             {
@@ -120,7 +120,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        private ProcedureSignature ParseSignature(string entryName, TypeLibraryLoader loader)
+        private ProcedureSignature ParseSignature(string entryName, TypeLibraryDeserializer loader)
         {
             return SignatureGuesser.SignatureFromName(entryName, loader, platform);
         }

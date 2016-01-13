@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), cConvention);
+            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryDeserializer(platform, true), cConvention);
         }
 
         [Test]

@@ -437,7 +437,7 @@ namespace Reko
                 .Select(sc =>
                 {
                     var sser = program.Platform.CreateProcedureSerializer(
-                        new TypeLibraryLoader(program.Platform, true), null);
+                        new TypeLibraryDeserializer(program.Platform, true), null);
                     Address addr;
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
                     {

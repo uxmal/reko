@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true);
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
         }
 
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true);
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core
             Given_Arch_PointerDataType(PrimitiveType.Pointer32);
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true);
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true);
             var slib = new SerializedLibrary
             {
                 Procedures = {
@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Core
         {  
             Given_ArchitectureStub();
             mr.ReplayAll();
-            var tlLDr = new TypeLibraryLoader(platform, true);
+            var tlLDr = new TypeLibraryDeserializer(platform, true);
             var slib = new SerializedLibrary {
                 Procedures = {
                     new Procedure_v1 {

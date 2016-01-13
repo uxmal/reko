@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private void Given_ProcedureSerializer()
         {
-            this.ser = new PowerPcProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "");
+            this.ser = new PowerPcProcedureSerializer(arch, new TypeLibraryDeserializer(platform, true), "");
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)

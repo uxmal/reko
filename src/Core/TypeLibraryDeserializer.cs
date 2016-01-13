@@ -32,7 +32,7 @@ namespace Reko.Core
     /// <summary>
     /// Knows how to persist and depersist Decompiler type libraries (which are just XML files).
     /// </summary>
-    public class TypeLibraryLoader : ISerializedTypeVisitor<DataType>
+    public class TypeLibraryDeserializer : ISerializedTypeVisitor<DataType>
     {
         private IPlatform platform;
         private Dictionary<string, DataType> types;
@@ -44,7 +44,7 @@ namespace Reko.Core
         private Dictionary<int, SystemService> servicesByOrdinal;
         private string moduleName;
 
-        public TypeLibraryLoader(IPlatform platform, bool caseInsensitive)
+        public TypeLibraryDeserializer(IPlatform platform, bool caseInsensitive)
         {
             this.platform = platform;
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;

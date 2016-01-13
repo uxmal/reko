@@ -212,7 +212,7 @@ test_exit:
             var platform = new FakePlatform(null, arch);
             platform.Test_CreateProcedureSerializer = (t, d) =>
             {
-                var typeLoader = new TypeLibraryLoader(platform, false);
+                var typeLoader = new TypeLibraryDeserializer(platform, false);
                 return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
             };
 

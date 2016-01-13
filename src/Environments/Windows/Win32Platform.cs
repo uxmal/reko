@@ -199,7 +199,7 @@ namespace Reko.Environments.Windows
         {
             return SignatureGuesser.SignatureFromName(
                 fnName, 
-                new TypeLibraryLoader(this, true),
+                new TypeLibraryDeserializer(this, true),
                 this);
         }
 	}

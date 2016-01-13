@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Environments.SysV
 
         private void Given_ProcedureSerializer()
         {
-            this.ser = new X86_64ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "");
+            this.ser = new X86_64ProcedureSerializer(arch, new TypeLibraryDeserializer(platform, true), "");
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)
