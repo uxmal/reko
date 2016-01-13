@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -45,7 +46,7 @@ namespace Reko.Environments.Windows
             // x86-specific.
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
 		{
-            //$REVIEW: should probably be loaded from configuration.
+            //$REVIEW: should be loaded from configuration file.
             Heuristics.ProcedurePrologs = new BytePattern[] {
                 new BytePattern
                 {
@@ -102,6 +103,23 @@ namespace Reko.Environments.Windows
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)

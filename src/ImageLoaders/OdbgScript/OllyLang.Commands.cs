@@ -1965,8 +1965,8 @@ rulong addr;
                     errorstr = "Second operand bad";
                     return false;
                 }
-                */
                 return true;
+                */
             }
             return false;
         }
@@ -2889,14 +2889,13 @@ string filename;
                 errorstr = "Unsupported command!";
                 return false;
 
-                if (Remote.LoadLibrary(Host.TE_GetProcessHandle(), str, false))
-                {
+                /*
+
                     // $RESULT EAX!!!
                     resumeDebuggee = true;
                     return true;
                 }
 
-                /*
                 ulong fnload;
 
                 SaveRegisters(true);
@@ -3118,7 +3117,7 @@ string filename;
                     {
                         if (maxsize == 0)
                             maxsize = reg.size;
-                        dw = Helper.resize(dw, Math.Min((int)maxsize, (int)reg.size));
+                        dw = Helper.resize(dw, Math.Min((int)maxsize, reg.size));
                         if (reg.size < sizeof(rulong))
                         {
                             rulong oldval, newval;
@@ -4186,9 +4185,9 @@ rulong dw1, dw2;
                 }
                 Settracecondition(buffer, 0, 0, 0, 0, 0);
                 Sendshortcut(PM_MAIN, 0, WM_KEYDOWN, 1, 0, VK_F12); 
-                */
                 //back_to_debugloop = true;
                 return true;
+                */
             }
             return false;
         }

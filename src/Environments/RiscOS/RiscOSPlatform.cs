@@ -20,6 +20,7 @@
 
 using Reko.Arch.Arm;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
@@ -73,6 +74,24 @@ namespace Reko.Environments.RiscOS
                 };
             }
             throw new NotSupportedException(string.Format("Unknown RiscOS vector &{0:X}.", vector)); 
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.WChar_t: return 2;  //$REVIEW: Does RiscOS support wchar_t?
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)

@@ -40,10 +40,10 @@ namespace Reko.Gui.Design
         private bool isEntryPoint;
 
         public ProcedureDesigner(
-            Program program, 
-            Procedure procedure, 
-            Procedure_v1 userProc, 
-            Address address, 
+            Program program,
+            Procedure procedure,
+            Procedure_v1 userProc,
+            Address address,
             bool isEntryPoint)
         {
             base.Component = procedure;
@@ -76,7 +76,7 @@ namespace Reko.Gui.Design
             TreeNode.Text = name;
             TreeNode.ToolTipText = Address.ToString();
             TreeNode.ImageName = userProc != null
-                ? (isEntryPoint ? "UserEntryProcedure.ico" : "Userproc.ico") 
+                ? (isEntryPoint ? "UserEntryProcedure.ico" : "Userproc.ico")
                 : (isEntryPoint ? "EntryProcedure.ico" : "Procedure.ico");
         }
 
@@ -147,7 +147,7 @@ namespace Reko.Gui.Design
             var addrControl = arch.CreatePointerScanner(
                 program.ImageMap,
                 rdr,
-                new Address[]  { 
+                new Address[]  {
                     this.Address,
                 },
                 PointerScannerFlags.All);
@@ -226,6 +226,18 @@ namespace Reko.Gui.Design
         }
 
         void procedure_NameChanged(object sender, EventArgs e)
+        {
+            if (TreeNode != null)
+            {
+                TreeNode.Invoke(OnNameChanged);
+            }
+            else
+            {
+                OnNameChanged();
+            }
+        }
+
+        private void OnNameChanged()
         {
             userProc = program.EnsureUserProcedure(Address, procedure.Name);
             userProc.Name = procedure.Name;

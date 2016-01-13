@@ -106,6 +106,7 @@
     <Compile Include="Core\CLanguage\CParserTests.cs" />
     <Compile Include="Core\CLanguage\EnumEvaluatorTests.cs" />
     <Compile Include="Core\CLanguage\LookAheadLexerTests.cs" />
+    <Compile Include="Core\CLanguage\NamedDataTypeExtractorTests.cs" />
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />

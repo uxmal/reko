@@ -40,7 +40,6 @@ namespace Reko.Gui.Windows.Forms
     {
         private UserPreferencesDialog dlg;
         private Program program;
-        private TreeNode curNodeWnd;
         private UiPreferencesService localSettings;
         private ServiceContainer sc;
         private Dictionary<string, string> descs;
@@ -450,13 +449,10 @@ namespace Reko.Gui.Windows.Forms
             if (node.Parent != null)
                 nodeWnd = node.Parent;
 
-            if (nodeWnd != curNodeWnd)
-            {
-                var designer = (UiStyleDesigner)nodeWnd.Tag;
-                dlg.WindowFontButton.Enabled = designer.EnableFont;
-                dlg.ResetButton.Enabled = designer.EnableFont;
-                designer.Control.BringToFront();
-            }
+            var designer = (UiStyleDesigner)nodeWnd.Tag;
+            dlg.WindowFontButton.Enabled = designer.EnableFont;
+            dlg.ResetButton.Enabled = designer.EnableFont;
+            designer.Control.BringToFront();
         }
 
         private void dlg_Closed(object sender, FormClosedEventArgs e)

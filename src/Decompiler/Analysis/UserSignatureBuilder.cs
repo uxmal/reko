@@ -32,15 +32,16 @@ using System.Text;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Builds ProcedureSignatures from user-supplied signatures.
+    /// </summary>
     public class UserSignatureBuilder
     {
         private Program program;
-        private SymbolTable symbolTable;
 
         public UserSignatureBuilder(Program program)
         {
             this.program = program;
-            this.symbolTable = new SymbolTable();
         }
 
         /// <summary>
@@ -54,19 +55,24 @@ namespace Reko.Analysis
                 Procedure proc;
                 if (!program.Procedures.TryGetValue(de.Key, out proc))
                     continue;
-                var sig = DeserializeSignature(de.Value, proc);
+                var sProc = DeserializeSignature(de.Value, proc);
+                if (sProc == null)
+                    continue;
+                var ser = program.Platform.CreateProcedureSerializer();
+                var sig = ser.Deserialize(sProc.Signature, proc.Frame);
                 if (sig != null)
                 {
+                    proc.Name = sProc.Name;
                     ApplySignatureToProcedure(de.Key, sig, proc);
                 }
             }
         }
 
-        public ProcedureSignature DeserializeSignature(Procedure_v1 userProc, Procedure proc)
+        public ProcedureBase_v1 DeserializeSignature(Procedure_v1 userProc, Procedure proc)
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {
-                return BuildSignature(userProc.CSignature, proc.Frame);
+                return ParseFunctionDeclaration(userProc.CSignature, proc.Frame);
             }
             return null;
         }
@@ -112,25 +118,30 @@ namespace Reko.Analysis
             return new Assignment(dst, param);
         }
 
-        public ProcedureSignature BuildSignature(string str, Frame frame)
+        public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl, Frame frame)
         {
             try {
-                var lexer = new CLexer(new StringReader(str + ";"));
-                var cstate = new ParserState();
+                var lexer = new CLexer(new StringReader(fnDecl + ";"));
+                var symbols = program.Platform.CreateSymbolTable();
+                var oldProcs = symbols.Procedures.Count;
+                var cstate = new ParserState(symbols.NamedTypes.Keys);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
-                var sSig = symbolTable.AddDeclaration(decl)
-                    .OfType<SerializedSignature>()
-                    .FirstOrDefault();
-                if (sSig == null)
+                if (decl == null)
                     return null;
-                var typeLoader = new TypeLibraryLoader(program.Platform, true);
-                //$BUG: calling convention!
-                var ser = program.Platform.CreateProcedureSerializer(typeLoader, program.Platform.DefaultCallingConvention);
-                return ser.Deserialize(sSig, frame);
+
+                //$HACK: Relying on a side effect here to
+                // get both the procedure name and the signature. Ew.
+                symbols.AddDeclaration(decl);
+                if (symbols.Procedures.Count == oldProcs)
+                    return null;
+                return symbols.Procedures.Last();
             }
             catch (Exception ex)
             {
+                //$TODO: if user has supplied a signature that can't parse,
+                // we must notify them in the diagnostics window with a 
+                // WARNING.
                 Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
                 return null;
             }

@@ -205,7 +205,7 @@ namespace Reko.Gui.Windows
                 {
                     switch (cmdId.ID)
                     {
-                    case CmdIds.EditAnnotation: return EditDasmAnnotation(); break;
+                    case CmdIds.EditAnnotation: return EditDasmAnnotation();
                     }
                 }
             }

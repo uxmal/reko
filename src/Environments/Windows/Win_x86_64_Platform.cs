@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -28,7 +29,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.Windows
 {
@@ -50,12 +50,11 @@ namespace Reko.Environments.Windows
                 Signature = new ProcedureSignature(null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
-
         }
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -77,6 +76,23 @@ namespace Reko.Environments.Windows
             if (int3svc.SyscallInfo.Matches(vector, state))
                 return int3svc;
             throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
@@ -115,7 +131,7 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            EnsureTypeLibraries("win64");
+            EnsureTypeLibraries(PlatformIdentifier);
             var ep = TypeLibs.Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)
                 .Select(s => new ExternalProcedure(procName, s))

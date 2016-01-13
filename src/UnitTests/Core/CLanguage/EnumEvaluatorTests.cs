@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml.UnitTests
+namespace Reko.Core.CLanguage.UnitTests
 {
     [TestFixture]
     public class EnumEvaluatorTests

@@ -22,6 +22,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,7 +42,6 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
     public class Program
     {
-        private SortedList<Address, ImageMapVectorTable> vectors;
         private Identifier globals;
         private StructureType globalFields;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
@@ -50,7 +51,6 @@ namespace Reko.Core
             this.EntryPoints = new List<EntryPoint>();
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
-            this.vectors = new SortedList<Address, ImageMapVectorTable>();
             this.CallGraph = new CallGraph();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
@@ -212,15 +212,6 @@ namespace Reko.Core
         /// User-specified data.
         /// </summary>
         public UserData User { get; set; }
-
-		/// <summary>
-		/// Provides access to the program's jump and call tables, sorted by address.
-		/// </summary>
-        //$REVIEW: is this ever used? What for?
-		public SortedList<Address, ImageMapVectorTable> Vectors
-		{
-			get { return vectors; }
-		}
 
         /// <summary>
         /// The name of the file in which disassemblies are dumped.

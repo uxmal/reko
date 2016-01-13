@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -61,6 +62,11 @@ namespace Reko.UnitTests.Analysis
             };
         }
 
+        private void Given_NamedTypes(Dictionary<string, SerializedType> types)
+        {
+            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(this.platform, types));
+        }
+
         private void Given_UserSignature(uint address, string str)
         {
             program.User.Procedures.Add(Address.Ptr32(address), new Reko.Core.Serialization.Procedure_v1
@@ -78,6 +84,7 @@ namespace Reko.UnitTests.Analysis
         public void Usb_EmptyUserSignature()
         {
             Given_Procedure(0x1000);
+            mr.ReplayAll();
 
             var oldSig = proc.Signature;
             var usb = new UserSignatureBuilder(program);
@@ -86,9 +93,14 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void Usb_BuildSignature()
+        public void Usb_ParseFunctionDeclaration()
         {
             Given_Procedure(0x1000);
+            platform.Stub(p => p.PlatformIdentifier).Return("testPlatform");
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
+            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(platform));
             var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
             platform.Expect(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
             ser.Expect(s => s.Deserialize(
@@ -97,12 +109,34 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
-            var sig = usb.BuildSignature("int foo(char *)", proc.Frame);
+            var sProc = usb.ParseFunctionDeclaration("int foo(char *)", proc.Frame);
+
+            Assert.AreEqual(
+                "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
+                sProc.Signature.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseFunctionDeclaration_PredefinedTypes()
+        {
+            var types = new Dictionary<string, SerializedType>()
+            {
+                { "BYTE", new PrimitiveType_v1 { ByteSize=1, Domain=PrimitiveType.Byte.Domain } },
+            };
+            Given_NamedTypes(types);
+            Given_Procedure(0x1000);
             mr.ReplayAll();
+
+            var usb = new UserSignatureBuilder(program);
+            var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)", proc.Frame);
+
+            Assert.AreEqual(
+                "fn(arg(BYTE),(arg(a,BYTE)arg(b,BYTE))",
+                sProc.Signature.ToString());
         }
 
         [Test(Description ="Verifies that the user can override register names.")]
-        public void Usb_BuildSignatureWithRegisterArgs()
+        public void Usb_ParseFunctionDeclaration_WithRegisterArgs()
         {
             var arch = new FakeArchitecture();
             var m = new ProcedureBuilder(arch, "test");

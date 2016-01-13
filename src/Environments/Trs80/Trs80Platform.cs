@@ -28,6 +28,7 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Arch.Z80;
+using Reko.Core.CLanguage;
 
 namespace Reko.Environments.Trs80
 {
@@ -59,6 +60,23 @@ namespace Reko.Environments.Trs80
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 2;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)

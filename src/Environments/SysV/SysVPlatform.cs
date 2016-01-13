@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -36,7 +37,6 @@ namespace Reko.Environments.SysV
     //$TODO: rename to Elf-Neutral? Or Posix?
     public class SysVPlatform : Platform
     {
-        private CharacteristicsLibrary[] CharacteristicsLibs;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
@@ -85,6 +85,24 @@ namespace Reko.Environments.SysV
                 .Where(svc => svc.Value.SyscallInfo.Matches(vector, state))
                 .Select(svc => svc.Value)
                 .FirstOrDefault();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.WChar_t: return 2; 
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)

@@ -307,7 +307,6 @@ namespace Reko.Gui.Forms
         {
             IOpenAsDialog dlg = null;
             IProcessorArchitecture arch = null;
-            IPlatform platform = null;
             try
             {
                 dlg = dlgFactory.CreateOpenAsDialog();

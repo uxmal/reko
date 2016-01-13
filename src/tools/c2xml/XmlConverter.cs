@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -41,11 +42,13 @@ namespace Reko.Tools.C2Xml
         private TextReader rdr;
         private XmlWriter writer;
         private ParserState parserState;
+        private IPlatform platform;
 
-        public XmlConverter(TextReader rdr, XmlWriter writer)
+        public XmlConverter(TextReader rdr, XmlWriter writer, IPlatform platform)
         {
             this.rdr = rdr;
             this.writer = writer;
+            this.platform = platform;
             this.parserState = new ParserState();
        }
 
@@ -54,11 +57,11 @@ namespace Reko.Tools.C2Xml
             var lexer = new CLexer(rdr);
             var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
-            var symbolTable = new SymbolTable
+            var symbolTable = new SymbolTable(platform)
             {
                 NamedTypes = {
                     { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 } },    //$BUGBUG: arch-dependent!
-                    { "va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = 4 } } //$BUGBUG: arch-dependent!
+                    { "va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = platform.PointerType.Size } }
                 }
             };
 

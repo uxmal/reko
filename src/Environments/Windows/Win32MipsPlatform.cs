@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
@@ -128,7 +129,7 @@ namespace Reko.Environments.Windows
             return host.GetInterceptedCall(addrTarget);
         }
 
-        protected override void EnsureTypeLibraries(string envName)
+        public override void EnsureTypeLibraries(string envName)
         {
             if (TypeLibs != null)
                 return;
@@ -140,6 +141,23 @@ namespace Reko.Environments.Windows
                  where !string.IsNullOrEmpty(tl.Loader)
                  select LoadTypelibrary(cfgSvc, tl, ldr))
                 .ToArray();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         private TypeLibrary LoadTypelibrary(IConfigurationService cfgSvc, ITypeLibraryElement tl, LoaderElement ldr)
