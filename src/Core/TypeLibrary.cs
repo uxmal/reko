@@ -53,7 +53,6 @@ namespace Reko.Core
             this.ServicesByVector = new Dictionary<int, SystemService>();
         }
 
-        public string Filename { get; set; }
         public string ModuleName { get; set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, ProcedureSignature> Signatures { get; private set; }

@@ -59,7 +59,6 @@ namespace Reko.Core.Services
 
                 var fsSvc = services.RequireService<IFileSystemService>();
                 var lib = TypeLibrary.Load(platform, libFileName, fsSvc);
-                lib.Filename = libFileName;
                 return lib;
             }
             catch
