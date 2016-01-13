@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +27,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 
 #if DEBUG
 namespace Reko.Tools.C2Xml.UnitTests
@@ -33,6 +38,104 @@ namespace Reko.Tools.C2Xml.UnitTests
     [TestFixture]
     public class XmlConverterTests
     {
+        public class FakeArchitecture : ProcessorArchitecture
+        {
+            public FakeArchitecture()
+            {
+                base.PointerType = PrimitiveType.Pointer32;
+            }
+
+            public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ImageReader CreateImageReader(LoadedImage img, ulong off)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ImageReader CreateImageReader(LoadedImage img, Address addr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ProcessorState CreateProcessorState()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override FlagGroupStorage GetFlagGroup(string name)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override FlagGroupStorage GetFlagGroup(uint grf)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override RegisterStorage GetRegister(string name)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override RegisterStorage GetRegister(int i)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override RegisterStorage[] GetRegisters()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override string GrfToString(uint grf)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override Address MakeAddressFromConstant(Constant c)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override bool TryGetRegister(string name, out RegisterStorage reg)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override bool TryParseAddress(string txtAddr, out Address addr)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         void RunTest(string c_code, string expectedXml)
         {
             StringReader reader = null;
@@ -45,7 +148,9 @@ namespace Reko.Tools.C2Xml.UnitTests
                 {
                     Formatting = Formatting.Indented
                 };
-                var xc = new XmlConverter(reader, xWriter);
+                var arch = new FakeArchitecture();
+                var platform = new DefaultPlatform(null, arch);
+                var xc = new XmlConverter(reader, xWriter, platform);
                 xc.Convert();
                 writer.Flush();
                 Assert.AreEqual(expectedXml, writer.ToString());

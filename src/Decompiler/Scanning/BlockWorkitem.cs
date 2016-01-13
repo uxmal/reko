@@ -726,7 +726,6 @@ namespace Reko.Scanning
             program.ImageMap.AddItem(
                 bw.VectorAddress,
                 new ImageMapVectorTable(
-                    xfer is RtlCall,
                     vector.ToArray(),
                     builder.TableByteSize));
             return true;
@@ -939,7 +938,7 @@ namespace Reko.Scanning
         {
             private IScanner scanner;
             private LoadedImage image;
-            private Platform platform;
+            private IPlatform platform;
             private IProcessorArchitecture arch;
 
             public BackwalkerHost(BlockWorkitem item)

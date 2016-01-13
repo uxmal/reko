@@ -32,7 +32,7 @@ namespace Reko.Typing
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
         private Program program;
-        private Platform platform;
+        private IPlatform platform;
 		private TypeStore store;
 		private Identifier globals;
 		private Constant c;

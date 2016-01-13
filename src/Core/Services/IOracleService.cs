@@ -33,6 +33,6 @@ namespace Reko.Core.Services
         /// </summary>
         /// <param name="question"></param>
         /// <returns></returns>
-        Platform QueryPlatform(string question);
+        IPlatform QueryPlatform(string question);
     }
 }

@@ -35,7 +35,7 @@ namespace Reko.Typing
     public class TypedExpressionRewriter2 : InstructionTransformer
     {
         private Program program;
-        private Platform platform;
+        private IPlatform platform;
         private TypeStore store;
         private Identifier globals;
         private DataTypeComparer compTypes;

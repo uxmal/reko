@@ -573,7 +573,7 @@ namespace Reko.Assemblers.M68k
 
         public IProcessorArchitecture Architecture { get { return arch; } }
 
-        public Platform Platform
+        public IPlatform Platform
         {
             get { throw new NotImplementedException(); }
         }

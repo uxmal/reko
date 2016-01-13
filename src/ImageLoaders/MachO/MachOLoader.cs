@@ -87,7 +87,7 @@ namespace Reko.ImageLoaders.MachO
             };
         }
 
-        class mach_header_32
+        public class mach_header_32
         {
             public uint magic;
             public uint cputype;
@@ -98,7 +98,7 @@ namespace Reko.ImageLoaders.MachO
             public uint flags;
         }
 
-        class mach_header_64
+        public class mach_header_64
         {
             public uint magic;
             public uint cputype;

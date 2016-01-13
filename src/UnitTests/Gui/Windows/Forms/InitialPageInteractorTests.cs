@@ -67,9 +67,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var image = new LoadedImage(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = image.CreateImageMap();
             var arch = mr.StrictMock<IProcessorArchitecture>();
-            arch.Replay();
-            var platform = mr.StrictMock<Platform>(null, arch);
-            arch.BackToRecord();
+            var platform = mr.StrictMock<IPlatform>();
             program = new Program(image, imageMap, arch, platform);
             project = new Project { Programs = { program } };
 

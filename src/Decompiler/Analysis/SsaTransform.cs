@@ -740,9 +740,12 @@ namespace Reko.Analysis
     }
 
 	/// <summary>
-	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
+	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment
+    /// form.
 	/// </summary>
     /// <remarks>
+    /// EXPERIMENTAL - consult uxmal before using
+    /// 
     /// This class implements another SSA algorithm that doesn't require 
     /// calculation of the dominator graph. It is expected that when it is fully
     /// implemented, it will take over from SsaTransform above.
@@ -839,12 +842,11 @@ namespace Reko.Analysis
                 // Break potential cycles with operandless phi
                 val = NewPhi(id, b);
                 WriteVariable(id, b, val, null);
-                val = addPhiOperands(id, val);
+                val = AddPhiOperands(id, val);
             }
             WriteVariable(id, b, val, sidPrev);
             return val;
         }
-
 
         /// <summary>
         /// Creates a phi statement with no slots for the predecessor blocks, then
@@ -864,7 +866,7 @@ namespace Reko.Analysis
             return sid;
         }
 
-        private SsaIdentifier addPhiOperands(Identifier id, SsaIdentifier phi)
+        private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi)
         {
             // Determine operands from predecessors.
             ((PhiAssignment)phi.DefStatement.Instruction).Src =
@@ -874,6 +876,11 @@ namespace Reko.Analysis
             return TryRemoveTrivial(phi);
         }
 
+        /// <summary>
+        /// If the phi function is trivial, remove it.
+        /// </summary>
+        /// <param name="phi"></param>
+        /// <returns></returns>
         private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi)
         {
             Identifier same = null;
@@ -936,7 +943,7 @@ namespace Reko.Analysis
         {
             foreach (var sid in incompletePhis[block].Values)
             {
-                addPhiOperands(sid.Identifier, sid);
+                AddPhiOperands(sid.Identifier, sid);
             }
             sealedBlocks.Add(block);
         }

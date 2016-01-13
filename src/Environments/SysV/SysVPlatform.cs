@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -33,14 +34,12 @@ using System.Text;
 
 namespace Reko.Environments.SysV
 {
-    //$TODO: rename to Elf-Neutral?
+    //$TODO: rename to Elf-Neutral? Or Posix?
     public class SysVPlatform : Platform
     {
-        private TypeLibrary[] typelibs;
-        private CharacteristicsLibrary[] CharacteristicsLibs;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "elf-neutral")
         {
         }
 
@@ -48,8 +47,6 @@ namespace Reko.Environments.SysV
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier { get { return "elf-neutral"; } }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
@@ -63,12 +60,12 @@ namespace Reko.Environments.SysV
 
         private void EnsureTypeLibraries()
         {
-            if (typelibs == null)
+            if (TypeLibs == null)
             {
                 var cfgSvc = Services.RequireService<IConfigurationService>();
                 var envCfg = cfgSvc.GetEnvironment("elf-neutral");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
+                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(this, tl.Name))
                     .Where(tl => tl != null).ToArray();
@@ -82,12 +79,30 @@ namespace Reko.Environments.SysV
         public override SystemService FindService(int vector, ProcessorState state)
         {
             EnsureTypeLibraries();
-            return this.typelibs
+            return this.TypeLibs
                 .Where(t => t.ServicesByVector != null && t.ServicesByVector.Count > 0)
                 .SelectMany(t => t.ServicesByVector)
                 .Where(svc => svc.Value.SyscallInfo.Matches(vector, state))
                 .Select(svc => svc.Value)
                 .FirstOrDefault();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.WChar_t: return 2; 
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
@@ -135,7 +150,7 @@ namespace Reko.Environments.SysV
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
             EnsureTypeLibraries();
-            var proc = typelibs.Select(t => t.Lookup(procName))
+            var proc = TypeLibs.Select(t => t.Lookup(procName))
                         .Where(sig => sig != null)
                         .Select(s => new ExternalProcedure(procName, s))
                         .FirstOrDefault();

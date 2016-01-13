@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -43,9 +44,9 @@ namespace Reko.Environments.Windows
 
             //$BUG: we need a Win32Base platform, possibly with a Windows base platform, and make this
             // x86-specific.
-		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
 		{
-            //$REVIEW: should probably be loaded from configuration.
+            //$REVIEW: should be loaded from configuration file.
             Heuristics.ProcedurePrologs = new BytePattern[] {
                 new BytePattern
                 {
@@ -83,18 +84,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override string PlatformIdentifier { get { return "win32"; } }
-
-        /// <summary>
-        /// Some Win32 platforms (I'm looking at you ARM Thumb) will use addresses
-        /// that are offset by 1. 
-        /// </summary>
-        /// <param name="addr"></param>
-        /// <returns>Adjusted address</returns>
-        public virtual Address AdjustProcedureAddress(Address addr)
-        {
-            return addr;
-        }
+  
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -113,6 +103,23 @@ namespace Reko.Environments.Windows
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
@@ -180,10 +187,6 @@ namespace Reko.Environments.Windows
 
 		public override SystemService FindService(int vector, ProcessorState state)
 		{
-			if (int3svc.SyscallInfo.Matches(vector, state))
-				return int3svc;
-            if (int29svc.SyscallInfo.Matches(vector, state))
-                return int29svc;
 			throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
 		}
 

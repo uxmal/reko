@@ -120,7 +120,7 @@ namespace Reko.CmdLine
                 throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
 
             object sEnv;
-            Platform platform;
+            IPlatform platform;
             if (pArgs.TryGetValue("--env", out sEnv))
             {
                 var opEnv = config.GetEnvironment((string)sEnv);

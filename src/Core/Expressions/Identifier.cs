@@ -27,8 +27,13 @@ using System.IO;
 namespace Reko.Core.Expressions
 {
 	/// <summary>
-	/// Represents an access to a named "register" or "variable".
+	/// Represents an access to a named "register" or "variable". 
 	/// </summary>
+    /// <remarks>
+    /// Identifiers inherit a data type from the Expression base
+    /// class. They also have a Storage property, which identifies
+    /// which "memory space" the identifier lives in.
+    /// </remarks>
 	public class Identifier : Expression
 	{
 		public Identifier(string name, DataType type, Storage stg) : base(type)
@@ -38,6 +43,19 @@ namespace Reko.Core.Expressions
 		}
 
         public string Name { get; private set; }
+
+        /// <summary>
+        /// What storage area the identifier refers to.
+        /// </summary>
+        /// <remarks>
+        /// Especially when considering register storage, the size of the 
+        /// DataType property of an Identifier is allowed to be less than 
+        /// or equal to the storage in which it is stored. This is in
+        /// order to accomodate small values being passed in registers on
+        /// architectures where there are no subregisters. For example, a 
+        /// byte value on a PowerPC would be stored in a 32-bit register 
+        /// 'r6'.
+        /// </remarks>
         public Storage Storage { get; private set; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)

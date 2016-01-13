@@ -37,7 +37,7 @@ namespace Reko.Core
             this.ModuleName = moduleName;
         }
   
-        public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, Platform platform, AddressContext ctx);
+        public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
     }
 
     public class NamedImportReference : ImportReference
@@ -52,7 +52,7 @@ namespace Reko.Core
 
         public override ExternalProcedure ResolveImportedProcedure(
             IImportResolver resolver, 
-            Platform platform, 
+            IPlatform platform, 
             AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
@@ -91,7 +91,7 @@ namespace Reko.Core
             this.Ordinal = ordinal;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform, AddressContext ctx)
+        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, IPlatform platform, AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, Ordinal, platform);
             if (ep != null)

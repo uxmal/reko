@@ -28,26 +28,18 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Arch.Z80;
+using Reko.Core.CLanguage;
 
 namespace Reko.Environments.Trs80
 {
     public class Trs80Platform : Platform
     {
-        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base( services,  arch)
+        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base( services,  arch, "trs80")
         {
-
         }
 
         // http://fjkraan.home.xs4all.nl/comp/trs80-4p/dmkeilImages/trstech.htm
         public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override string PlatformIdentifier
         {
             get
             {
@@ -68,6 +60,23 @@ namespace Reko.Environments.Trs80
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 2;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)

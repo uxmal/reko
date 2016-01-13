@@ -41,9 +41,9 @@ namespace Reko.Typing
 		private ITypeStore store;
 		private TypeFactory factory;
 		private DataTypeBuilderUnifier unifier;
-        private Platform platform;
+        private IPlatform platform;
 
-		public DataTypeBuilder(TypeFactory factory, ITypeStore store, Platform platform)
+		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IPlatform platform)
 		{
 			this.store = store;
 			this.factory = factory;

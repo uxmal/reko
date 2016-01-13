@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core.Serialization
 	[TestFixture]
 	public class SerializedSequenceTests
 	{
-        private Platform platform;
+        private IPlatform platform;
         private X86ProcedureSerializer ser;
 
         [SetUp]

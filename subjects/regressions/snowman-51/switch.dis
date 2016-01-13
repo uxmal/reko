@@ -5,12 +5,12 @@ char * get(uint32 n)
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0004(32)
 get_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: Stack +0000(32)
+// LocalsOut: Stack +0004(32)
 
 l10071000:
 	branch n >u 0xFFFFFFFE l10071029
@@ -22,36 +22,36 @@ l10071029:
 	return 0x10072000
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+// SymbolicIn: esp:fp eax:<invalid>
 
 l1007100A:
 	switch (n + 0x00000001) { l10071011 l10071017 l1007101D }
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+// SymbolicIn: esp:fp eax:<invalid>
 
 l1007101D:
 	return 0x10072010
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+// SymbolicIn: esp:fp eax:<invalid>
 
 l10071017:
 	return 0x10072014
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+// SymbolicIn: esp:fp eax:<invalid>
 
 l10071011:
 	return 0x10072018
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+// SymbolicIn: esp:fp eax:<invalid>
 
 get_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:<invalid> 4(fp):n
+// SymbolicIn: esp:fp eax:<invalid>
 
 
 

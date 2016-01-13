@@ -85,8 +85,7 @@ namespace Reko.Core
 					ImageMapVectorTable table = i as ImageMapVectorTable;
 					if (table != null)
 					{
-						stm.WriteLine("{0} table at {1} ({2} bytes)",
-							table.IsCallTable?"Call":"Jump",
+						stm.WriteLine("Code vector at {0} ({1} bytes)",
 							table.Address, table.Size);
 						foreach (Address addr in table.Addresses)
 						{

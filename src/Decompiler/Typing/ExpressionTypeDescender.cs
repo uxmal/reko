@@ -48,7 +48,7 @@ namespace Reko.Typing
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
 
-        private Platform platform;
+        private IPlatform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;

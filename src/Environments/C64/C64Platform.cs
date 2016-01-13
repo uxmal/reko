@@ -20,6 +20,7 @@
 
 using Reko.Arch.Mos6502;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
@@ -40,7 +41,7 @@ namespace Reko.Environments.C64
         private Mos6502ProcessorArchitecture arch;
 
         public C64Platform(IServiceProvider services, Mos6502ProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "c64")
         {
             this.arch = arch;
         }
@@ -49,9 +50,6 @@ namespace Reko.Environments.C64
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier { get { return "c64"; } }
-
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -71,6 +69,23 @@ namespace Reko.Environments.C64
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 2;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)

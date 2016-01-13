@@ -27,8 +27,8 @@ namespace Reko.Core
 {
     public interface IImportResolver
     {
-        ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform);
-        ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform);
+        ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
+        ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ namespace Reko.Core
             this.project = project;
         }
 
-        public ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform)
+        public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
             foreach (var module in project.MetadataFiles.Where(m => m.TypeLibrary != null))
             {
@@ -60,7 +60,7 @@ namespace Reko.Core
             return platform.LookupProcedureByName(moduleName, importName);
         }
 
-        public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform)
+        public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var module in project.MetadataFiles.Where(m =>
                 string.Compare(m.ModuleName, moduleName, true) == 0 && //$BUGBUG: platform-dependent string comparison.

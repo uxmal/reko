@@ -31,32 +31,32 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
-    /// <summary>
-    /// We are keenly interested in discovering the register linkage 
-    /// between procedures, i.e. what registers are used by a called 
-    /// procedure, and what modified registers are used by a calling 
-    /// procedure. Once these registers have been discovered, we can
-    /// separate the procedures from each other and proceed with the
-    /// decompilation.
-    /// </summary>
-    public class DataFlowAnalysis
-    {
-        private Program program;
-        private DecompilerEventListener eventListener;
-        private ProgramDataFlow flow;
+	/// <summary>
+	/// We are keenly interested in discovering the register linkage 
+	/// between procedures, i.e. what registers are used by a called 
+	/// procedure, and what modified registers are used by a calling 
+	/// procedure. Once these registers have been discovered, we can
+	/// separate the procedures from each other and proceed with the
+	/// decompilation.
+	/// </summary>
+	public class DataFlowAnalysis
+	{
+		private Program program;
+		private DecompilerEventListener eventListener;
+		private ProgramDataFlow flow;
 
         public DataFlowAnalysis(Program program, DecompilerEventListener eventListener)
-        {
-            this.program = program;
+		{
+			this.program = program;
             this.eventListener = eventListener;
-            this.flow = new ProgramDataFlow(program);
-        }
+			this.flow = new ProgramDataFlow(program);
+		}
 
-        public void AnalyzeProgram()
-        {
-            UntangleProcedures();
-            BuildExpressionTrees();
-        }
+		public void AnalyzeProgram()
+		{
+			UntangleProcedures();
+			BuildExpressionTrees();
+		}
 
         /// <summary>
         /// Processes procedures individually, building complex expression trees out
@@ -64,10 +64,10 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="rl"></param>
 		public void BuildExpressionTrees()
-        {
+		{
             int i = 0;
-            foreach (Procedure proc in program.Procedures.Values)
-            {
+			foreach (Procedure proc in program.Procedures.Values)
+			{
                 eventListener.ShowProgress("Building complex expressions.", i, program.Procedures.Values.Count);
                 ++i;
 
@@ -123,56 +123,56 @@ namespace Reko.Analysis
                 {
                     eventListener.Error(new NullCodeLocation(proc.Name), ex, "An error occurred during data flow analysis.");
                 }
-            }
-        }
+			} 
+		}
 
-        public void DumpProgram()
-        {
-            foreach (Procedure proc in program.Procedures.Values)
-            {
-                StringWriter output = new StringWriter();
+		public void DumpProgram()
+		{
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+				StringWriter output = new StringWriter();
                 ProcedureFlow pf = this.flow[proc];
                 TextFormatter f = new TextFormatter(output);
-                if (pf.Signature != null)
-                    pf.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
-                else if (proc.Signature != null)
-                    proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
-                else
-                    output.Write("Warning: no signature found for {0}", proc.Name);
-                output.WriteLine();
-                pf.Emit(program.Architecture, output);
+				if (pf.Signature != null)
+					pf.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+				else if (proc.Signature != null)
+					proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+				else
+					output.Write("Warning: no signature found for {0}", proc.Name);
+				output.WriteLine();
+				pf.Emit(program.Architecture, output);
 
-                output.WriteLine("// {0}", proc.Name);
-                proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
-                output.WriteLine();
-                foreach (Block block in proc.ControlGraph.Blocks)
-                {
-                    if (block != null)
-                    {
-                        BlockFlow bf = this.flow[block];
-                        bf.Emit(program.Architecture, output);
-                        output.WriteLine();
-                        block.Write(output);
-                    }
-                }
-                Debug.WriteLine(output.ToString());
-            }
-        }
+				output.WriteLine("// {0}", proc.Name);
+				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+				output.WriteLine();
+				foreach (Block block in proc.ControlGraph.Blocks)
+				{
+					if (block != null)
+					{
+						BlockFlow bf = this.flow[block];
+						bf.Emit(program.Architecture, output);
+						output.WriteLine();
+						block.Write(output);
+					}
+				}
+				Debug.WriteLine(output.ToString());
+			}
+		}
 
-        public ProgramDataFlow ProgramDataFlow
-        {
-            get { return flow; }
-        }
+		public ProgramDataFlow ProgramDataFlow
+		{
+			get { return flow; }
+		}
 
-        /// <summary>
-        /// Finds all interprocedural register dependencies (in- and out-parameters) and
-        /// abstracts them away by rewriting as calls.
-        /// </summary>
+		/// <summary>
+		/// Finds all interprocedural register dependencies (in- and out-parameters) and
+		/// abstracts them away by rewriting as calls.
+		/// </summary>
         /// <returns>A RegisterLiveness object that summarizes the interprocedural register
         /// liveness analysis. This information can be used to generate SSA form.
         /// </returns>
-        public void UntangleProcedures()
-        {
+		public void UntangleProcedures()
+		{
             eventListener.ShowStatus("Eliminating intra-block dead registers.");
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures();
@@ -181,21 +181,27 @@ namespace Reko.Analysis
             eventListener.ShowStatus("Finding terminating procedures.");
             var term = new TerminationAnalysis(flow);
             term.Analyze(program);
-            eventListener.ShowStatus("Finding trashed registers.");
+			eventListener.ShowStatus("Finding trashed registers.");
             var trf = new TrashedRegisterFinder(program, program.Procedures.Values, flow, eventListener);
-            trf.Compute();
+			trf.Compute();
             eventListener.ShowStatus("Rewriting affine expressions.");
             trf.RewriteBasicBlocks();
             eventListener.ShowStatus("Computing register liveness.");
             var rl = RegisterLiveness.Compute(program, flow, eventListener);
             eventListener.ShowStatus("Rewriting calls.");
-            GlobalCallRewriter.Rewrite(program, flow);
-        }
+			GlobalCallRewriter.Rewrite(program, flow);
+		}
 
-        public void UntangleProcedures2()
+
+        // EXPERIMENTAL - consult uxmal before using
+        /// <summary>
+        /// Analyizes the procedures of a program by finding all strongly 
+        /// connected components (SCCs) and processing the SCCs one by one.
+        /// </summary>
+        public void AnalyzeProgram2()
         {
-            eventListener.ShowStatus("Eliminating intra-block dead registers.");
-            IntraBlockDeadRegisters.Apply(program);
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures();
 
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
             foreach (var procedure in program.Procedures.Values)
@@ -256,40 +262,40 @@ namespace Reko.Analysis
         }
 
         public SsaTransform ConvertToSsa(Procedure proc)
-        {
-            Aliases alias = new Aliases(proc, program.Architecture, flow);
-            alias.Transform();
+            {
+                Aliases alias = new Aliases(proc, program.Architecture, flow);
+                alias.Transform();
+                
+                // Transform the procedure to SSA state. When encountering 'call' instructions,
+                // they can be to functions already visited. If so, they have a "ProcedureFlow" 
+                // associated with them. If they have not been visited, or are computed destinations
+                // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
+                // which case the the SSA treats the call as a "hell node".
+                var doms = proc.CreateBlockDominatorGraph();
+                var sst = new SsaTransform(flow, proc, doms);
+                var ssa = sst.SsaState;
 
-            // Transform the procedure to SSA state. When encountering 'call' instructions,
-            // they can be to functions already visited. If so, they have a "ProcedureFlow" 
-            // associated with them. If they have not been visited, or are computed destinations
-            // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
-            // which case the the SSA treats the call as a "hell node".
-            var doms = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(flow, proc, doms);
-            var ssa = sst.SsaState;
+                // Propagate condition codes and registers. At the end, the hope is that 
+                // all statements like (x86) mem[esp_42+4] will have been converted to
+                // mem[fp - 30]. We also hope that procedure constants kept in registers
+                // are propagated to the corresponding call sites.
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
+                cce.Transform();
+                var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
+                vp.Transform();
 
-            // Propagate condition codes and registers. At the end, the hope is that 
-            // all statements like (x86) mem[esp_42+4] will have been converted to
-            // mem[fp - 30]. We also hope that procedure constants kept in registers
-            // are propagated to the corresponding call sites.
-            var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
-            cce.Transform();
-            var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
-            vp.Transform();
+                // Now compute SSA for the stack-based variables as well. That is:
+                // mem[fp - 30] becomes wLoc30, while 
+                // mem[fp + 30] becomes wArg30.
+                // This allows us to compute the dataflow of this procedure.
+                sst.RenameFrameAccesses = true;
+                sst.AddUseInstructions = true;
+                sst.Transform();
 
-            // Now compute SSA for the stack-based variables as well. That is:
-            // mem[fp - 30] becomes wLoc30, while 
-            // mem[fp + 30] becomes wArg30.
-            // This allows us to compute the dataflow of this procedure.
-            sst.RenameFrameAccesses = true;
-            sst.AddUseInstructions = true;
-            sst.Transform();
-
-            // Propagate those newly discovered identifiers.
-            vp.Transform();
+                // Propagate those newly discovered identifiers.
+                vp.Transform();
 
             return sst;
         }
-    }
+	}
 }

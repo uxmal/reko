@@ -379,7 +379,7 @@ fn0C00_0000_exit:
             importResolver.Stub(i => i.ResolveProcedure(
                 Arg<string>.Is.Equal("module"),
                 Arg<string>.Is.Equal("grox"),
-                Arg<Platform>.Is.NotNull)).Return(grox);
+                Arg<IPlatform>.Is.NotNull)).Return(grox);
             mr.ReplayAll();
 
             var scan = CreateScanner(program, 0x1000, 0x2000);
@@ -480,7 +480,7 @@ fn00001100_exit:
         public void Scanner_Trampoline()
         {
             var scan = CreateScanner(0x1000, 0x2000);
-            var platform = mr.Stub<Platform>(null, program.Architecture);
+            var platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.GetTrampolineDestination(null, null))
                 .IgnoreArguments()
                 .Return(new ExternalProcedure("bar", new ProcedureSignature()));

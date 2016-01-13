@@ -197,6 +197,11 @@ namespace Reko.UnitTests.Gui.Windows
             {
                 MouseWheel(this, e);
             }
+
+            public void Invoke(Action action)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class FakeNodeCollection : ITreeNodeCollection
@@ -304,6 +309,8 @@ namespace Reko.UnitTests.Gui.Windows
             public void Expand()
             {
             }
+
+            public void Invoke(Action a) { a();  }
         }
 
         [Designer(typeof(TestDesigner))]
@@ -346,6 +353,7 @@ namespace Reko.UnitTests.Gui.Windows
             public string ToolTipText { get; set; }
 
             public void Expand() { }
+            public void Invoke(Action a) { a(); }
         }
 
         #endregion

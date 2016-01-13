@@ -20,6 +20,9 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.CLanguage;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Windows;
 using Reko.Gui.Windows.Controls;
@@ -50,12 +53,25 @@ namespace Reko.UnitTests.Gui.Windows
         private Program program;
         private Procedure proc;
         private IWindowFrame frame;
+        private SymbolTable symbolTable;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
-            program = new Program();
+            var arch = new FakeArchitecture();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Float)).Return(4);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            symbolTable = new SymbolTable(platform);
+
+            program = new Program
+            {
+                Architecture = arch,
+                Platform = platform,
+            };
             codeViewer = new CodeViewerPane();
             decompilerSvc = mr.Stub<IDecompilerService>();
             decompiler = mr.Stub<IDecompiler>();
@@ -74,7 +90,6 @@ namespace Reko.UnitTests.Gui.Windows
                 }
             };
             uiPreferencesSvc.Stub(u => u.Styles).Return(styles);
-
             var sc = new ServiceContainer();
             decompilerSvc.Decompiler = decompiler;
             sc.AddService<IDecompilerService>(decompilerSvc);
@@ -130,6 +145,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_StubProcedure();
             Given_Program();
+            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -160,12 +176,30 @@ namespace Reko.UnitTests.Gui.Windows
             decompiler.Stub(d => d.Project).Return(project);
         }
 
+        private void Given_NamedTypes(Dictionary<string, SerializedType> types)
+        {
+            var arch = new FakeArchitecture();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(platform, types));
+            program = new Program
+            {
+                Architecture = arch,
+                Platform = platform,
+            };
+        }
+
+        private void Given_SymbolTable()
+        {
+            this.program.Platform.Stub(p => p.CreateSymbolTable()).Return(symbolTable);
+        }
+
         [Test(Description = "When a previously uncustomized procedure is displayed, show its name in the "+
             "declaration box")]
         public void Cvp_SetProcedure_ShowFnName()
         {
             Given_Program();
             Given_StubProcedure();
+            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -179,6 +213,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_Program();
             Given_StubProcedure();
+            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -194,6 +229,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_Program();
             Given_StubProcedure();
+            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -209,6 +245,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_Program();
             Given_StubProcedure();
+            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -223,6 +260,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void Cvp_Accept_Declaration()
         {
             Given_Program();
+            Given_SymbolTable();
             Given_StubProcedure();
             mr.ReplayAll();
 
@@ -239,6 +277,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void Cvp_Accept_Declaration_Returning_CharPtr()
         {
             Given_Program();
+            Given_SymbolTable();
             Given_StubProcedure();
             mr.ReplayAll();
 
@@ -249,6 +288,27 @@ namespace Reko.UnitTests.Gui.Windows
 
             Assert.AreEqual("foo", proc.Name);
             Assert.AreEqual("char * foo(int)", program.User.Procedures.Values.First().CSignature);
+        }
+
+        [Test]
+        public void Cvp_Accept_Declaration_PredefinedTypes()
+        {
+            var types = new Dictionary<string, SerializedType>()
+            {
+                { "BYTE", new PrimitiveType_v1 { ByteSize = 1, Domain = PrimitiveType.Byte.Domain } },
+            };
+            Given_Program();
+            Given_NamedTypes(types);
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            When_CodeViewCreated();
+            var oldSig = proc.Signature;
+            codeViewer.DisplayProcedure(program, proc);
+            codeViewer.Declaration.Text = "BYTE foo(BYTE a, BYTE b)";
+
+            Assert.AreEqual("foo", proc.Name);
+            Assert.AreEqual("BYTE foo(BYTE a, BYTE b)", program.User.Procedures.Values.First().CSignature);
         }
     }
 }

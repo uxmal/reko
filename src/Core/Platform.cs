@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -33,28 +34,63 @@ using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// A Platform is an abstraction of the operating environment,
+    /// <summary>
+    /// A Platform is an abstraction of the operating environment,
     /// say MS-DOS, Win32, or Posix.
-	/// </summary>
+    /// </summary>
+    public interface IPlatform
+    {
+        IProcessorArchitecture Architecture { get; }
+        string DefaultCallingConvention { get; }
+        Encoding DefaultTextEncoding { get; }
+        string Description { get; }
+        PrimitiveType FramePointerType { get; }
+        PlatformHeuristics Heuristics { get; }
+        string Name { get; }
+        string PlatformIdentifier { get; }
+        PrimitiveType PointerType { get; }
+
+        Address AdjustProcedureAddress(Address addrCode);
+        HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
+        IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        ProcedureSerializer CreateProcedureSerializer();
+        ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        SymbolTable CreateSymbolTable();
+        int GetByteSizeFromCBasicType(CBasicType cb);
+        ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+        SystemService FindService(int vector, ProcessorState state);
+        SystemService FindService(RtlInstruction call, ProcessorState state);
+        void LoadUserOptions(Dictionary<string, object> options);
+        ExternalProcedure LookupProcedureByName(string moduleName, string procName);
+        ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
+        Address MakeAddressFromConstant(Constant c);
+        Address MakeAddressFromLinear(ulong uAddr);
+        Dictionary<string, object> SaveUserOptions();
+        ProcedureSignature SignatureFromName(string importName);
+    }
+
+    /// <summary>
+    /// Implementation of functionality common to most platforms.
+    /// </summary>
     [Designer("Reko.Gui.Design.PlatformDesigner,Reko.Gui")]
-	public abstract class Platform
-	{
+	public abstract class Platform : IPlatform
+	{ 
         /// <summary>
         /// Initializes a Platform instance
         /// </summary>
         /// <param name="arch"></param>
-        protected Platform(IServiceProvider services, IProcessorArchitecture arch) 
+        protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId) 
         {
             this.Services = services;
             this.Architecture = arch;
+            this.PlatformIdentifier = platformId;
             this.Heuristics = new PlatformHeuristics();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
-        public TypeLibrary[] TypeLibs { get; protected set; }
-        public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
+        public virtual TypeLibrary[] TypeLibs { get; protected set; }
+        public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
         public string Name { get; set; }
@@ -65,7 +101,7 @@ namespace Reko.Core
         /// String identifier used by Reko to locate platform-specfic information from the 
         /// app.config file.
         /// </summary>
-        public abstract string PlatformIdentifier { get;  }
+        public string PlatformIdentifier { get; private set; }
 
         /// <summary>
         /// The default encoding for byte-encoded text.
@@ -77,6 +113,17 @@ namespace Reko.Core
         public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
 
         public abstract string DefaultCallingConvention { get; }
+
+        /// <summary>
+        /// Some architectures platforms (I'm looking at you ARM Thumb) will use addresses
+        /// that are offset by 1. Most don't.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>Adjusted address</returns>
+        public virtual Address AdjustProcedureAddress(Address addr)
+        {
+            return addr;
+        }
 
         /// <summary>
         /// Creates a bitset that represents those registers that are never used as arguments to a 
@@ -97,6 +144,24 @@ namespace Reko.Core
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }
 
+        /// <summary>
+        /// Creates a symbol table for this platform populated with the types 
+        /// defined by the platform.
+        /// </summary>
+        /// <returns>Prepopulated symbol table.
+        /// </returns>
+        public virtual SymbolTable CreateSymbolTable()
+        {
+            var namedTypes = new Dictionary<string, SerializedType>();
+            var platformTypedefs = GetTypedefs();
+            var dtSer = new DataTypeSerializer();
+            foreach (var typedef in platformTypedefs)
+            {
+                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
+            }
+            return new SymbolTable(this, namedTypes);
+        }
+
         public ProcedureSerializer CreateProcedureSerializer()
         {
             var typeLoader = new TypeLibraryLoader(this, true);
@@ -115,7 +180,7 @@ namespace Reko.Core
         /// Utility function for subclasses that loads all type libraries and characteristics libraries 
         /// </summary>
         /// <param name="envName"></param>
-        protected virtual void EnsureTypeLibraries(string envName)
+        public virtual void EnsureTypeLibraries(string envName)
         {
             if (TypeLibs == null)
             {
@@ -137,7 +202,31 @@ namespace Reko.Core
             }
         }
 
-		public abstract SystemService FindService(int vector, ProcessorState state);
+        /// <summary>
+        /// Given a C basic type, returns the number of bytes that type is
+        /// represented with on this platform.
+        /// </summary>
+        /// <param name="cb">A C Basic type, like int, float etc.</param>
+        /// <returns>Number of bytes used by this platform.
+        /// </returns>
+        public abstract int GetByteSizeFromCBasicType(CBasicType cb);
+
+        public IDictionary<string, DataType> GetTypedefs()
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+
+            var typedefs = new Dictionary<string, DataType>();
+
+            foreach (var typeLib in TypeLibs)
+            {
+                foreach(var typedef in typeLib.Types)
+                    if (!typedefs.ContainsKey(typedef.Key))
+                        typedefs.Add(typedef.Key, typedef.Value);
+            }
+            return typedefs;
+        }
+
+        public abstract SystemService FindService(int vector, ProcessorState state);
 
         public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {
@@ -212,9 +301,12 @@ namespace Reko.Core
     /// <summary>
     /// The default platform is used when a specific platform cannot be determined.
     /// </summary>
+    /// <remarks>
+    /// "All the world's a VAX"  -- not Henry Spencer
+    /// </remarks>
     public class DefaultPlatform : Platform
     {
-        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "default")
         {
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = "(Unknown operating environment)";
@@ -226,8 +318,6 @@ namespace Reko.Core
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier {  get { return "default"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -244,6 +334,23 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.WChar_t: return 2;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;      // Assume 32-bit int.
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
+        }
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
             // No trampolines are supported.

@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
@@ -37,7 +38,7 @@ namespace Reko.Environments.Windows
         private TypeLibrary[] typelibs;
 
         public Win16Platform(IServiceProvider services, IProcessorArchitecture arch) 
-            : base(services, arch)
+            : base(services, arch, "win16")
         {
         }
 
@@ -45,8 +46,6 @@ namespace Reko.Environments.Windows
         {
             get { return "pascal";  }
         }
-
-        public override string PlatformIdentifier { get { return "win16"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -65,6 +64,23 @@ namespace Reko.Environments.Windows
         {
             EnsureTypeLibraries();
             return null;
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 2;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)

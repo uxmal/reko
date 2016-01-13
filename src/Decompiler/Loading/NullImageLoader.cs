@@ -43,7 +43,7 @@ namespace Reko.Loading
 
         public IProcessorArchitecture Architecture { get; set; }
         public List<EntryPoint> EntryPoints { get; private set; }
-        public Platform Platform { get; set; }
+        public IPlatform Platform { get; set; }
         public override Address PreferredBaseAddress
         {
             get { return this.baseAddr; }

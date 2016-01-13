@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.MzExe
     public class ExePackLoader : ImageLoader
     {
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 
         private uint exeHdrSize;
         private uint hdrOffset;

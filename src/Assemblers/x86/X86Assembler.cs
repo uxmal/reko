@@ -53,7 +53,7 @@ namespace Reko.Assemblers.x86
         private Dictionary<string, AssembledSegment> mpNameToSegment;
         private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
 
-        public X86Assembler(IServiceProvider services, Platform platform, Address addrBase, List<EntryPoint> entryPoints)
+        public X86Assembler(IServiceProvider services, IPlatform platform, Address addrBase, List<EntryPoint> entryPoints)
         {
             this.services = services;
             this.arch = platform.Architecture;
@@ -76,7 +76,7 @@ namespace Reko.Assemblers.x86
             SetDefaultWordWidth(defaultWordSize);
         }
 
-        public Platform Platform { get; set; }
+        public IPlatform Platform { get; set; }
 
         public Dictionary<Address, ImportReference> ImportReferences
         {

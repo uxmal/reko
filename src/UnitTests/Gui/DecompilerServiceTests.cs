@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Gui
             var loader = mr.StrictMock<ILoader>();
             var host = mr.StrictMock<DecompilerHost>();
             var arch = mr.StrictMock<IProcessorArchitecture>();
-            var platform = mr.StrictMock<Platform>(sc, arch);
+            var platform = mr.StrictMock<IPlatform>();
             var fileName = "foo\\bar\\baz.exe";
             var bytes = new byte[100];
             var image = new LoadedImage(Address.Ptr32(0x1000), bytes);
