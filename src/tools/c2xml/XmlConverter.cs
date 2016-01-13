@@ -42,9 +42,9 @@ namespace Reko.Tools.C2Xml
         private TextReader rdr;
         private XmlWriter writer;
         private ParserState parserState;
-        private Platform platform;
+        private IPlatform platform;
 
-        public XmlConverter(TextReader rdr, XmlWriter writer, Platform platform)
+        public XmlConverter(TextReader rdr, XmlWriter writer, IPlatform platform)
         {
             this.rdr = rdr;
             this.writer = writer;

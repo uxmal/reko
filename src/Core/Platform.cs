@@ -34,21 +34,56 @@ using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// A Platform is an abstraction of the operating environment,
+    /// <summary>
+    /// A Platform is an abstraction of the operating environment,
     /// say MS-DOS, Win32, or Posix.
-	/// </summary>
+    /// </summary>
+    public interface IPlatform
+    {
+        IProcessorArchitecture Architecture { get; }
+        string DefaultCallingConvention { get; }
+        Encoding DefaultTextEncoding { get; }
+        string Description { get; }
+        PrimitiveType FramePointerType { get; }
+        PlatformHeuristics Heuristics { get; }
+        string Name { get; }
+        string PlatformIdentifier { get; }
+        PrimitiveType PointerType { get; }
+
+        Address AdjustProcedureAddress(Address addrCode);
+        HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
+        IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        ProcedureSerializer CreateProcedureSerializer();
+        ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        SymbolTable CreateSymbolTable();
+        int GetByteSizeFromCBasicType(CBasicType cb);
+        ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+        SystemService FindService(int vector, ProcessorState state);
+        SystemService FindService(RtlInstruction call, ProcessorState state);
+        void LoadUserOptions(Dictionary<string, object> options);
+        ExternalProcedure LookupProcedureByName(string moduleName, string procName);
+        ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
+        Address MakeAddressFromConstant(Constant c);
+        Address MakeAddressFromLinear(ulong uAddr);
+        Dictionary<string, object> SaveUserOptions();
+        ProcedureSignature SignatureFromName(string importName);
+    }
+
+    /// <summary>
+    /// Implementation of functionality common to most platforms.
+    /// </summary>
     [Designer("Reko.Gui.Design.PlatformDesigner,Reko.Gui")]
-	public abstract class Platform
-	{
+	public abstract class Platform : IPlatform
+	{ 
         /// <summary>
         /// Initializes a Platform instance
         /// </summary>
         /// <param name="arch"></param>
-        protected Platform(IServiceProvider services, IProcessorArchitecture arch) 
+        protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId) 
         {
             this.Services = services;
             this.Architecture = arch;
+            this.PlatformIdentifier = platformId;
             this.Heuristics = new PlatformHeuristics();
         }
 
@@ -66,7 +101,7 @@ namespace Reko.Core
         /// String identifier used by Reko to locate platform-specfic information from the 
         /// app.config file.
         /// </summary>
-        public abstract string PlatformIdentifier { get;  }
+        public string PlatformIdentifier { get; private set; }
 
         /// <summary>
         /// The default encoding for byte-encoded text.
@@ -78,6 +113,17 @@ namespace Reko.Core
         public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
 
         public abstract string DefaultCallingConvention { get; }
+
+        /// <summary>
+        /// Some architectures platforms (I'm looking at you ARM Thumb) will use addresses
+        /// that are offset by 1. Most don't.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>Adjusted address</returns>
+        public virtual Address AdjustProcedureAddress(Address addr)
+        {
+            return addr;
+        }
 
         /// <summary>
         /// Creates a bitset that represents those registers that are never used as arguments to a 
@@ -98,12 +144,6 @@ namespace Reko.Core
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }
 
-        public ProcedureSerializer CreateProcedureSerializer()
-        {
-            var typeLoader = new TypeLibraryLoader(this, true);
-            return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
-        }
-
         /// <summary>
         /// Creates a symbol table for this platform populated with the types 
         /// defined by the platform.
@@ -120,6 +160,12 @@ namespace Reko.Core
                 namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
             }
             return new SymbolTable(this, namedTypes);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer()
+        {
+            var typeLoader = new TypeLibraryLoader(this, true);
+            return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
         }
 
         /// <summary>
@@ -260,7 +306,7 @@ namespace Reko.Core
     /// </remarks>
     public class DefaultPlatform : Platform
     {
-        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "default")
         {
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = "(Unknown operating environment)";
@@ -272,8 +318,6 @@ namespace Reko.Core
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier {  get { return "default"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

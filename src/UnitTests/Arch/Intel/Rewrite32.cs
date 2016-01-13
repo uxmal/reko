@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(CancellationTokenSource))).Return(null);
             services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(new FileSystemServiceImpl());
             tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
-                .Do(new Func<Platform, string, TypeLibrary>((p, n) =>
+                .Do(new Func<IPlatform, string, TypeLibrary>((p, n) =>
                 {
                     var lib = TypeLibrary.Load(p, Path.ChangeExtension(n, ".xml"), fsSvc);
                     return lib;

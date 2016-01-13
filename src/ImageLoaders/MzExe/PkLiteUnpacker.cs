@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class PkLiteUnpacker : ImageLoader
 	{
         private IntelArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 
 		private byte [] abU;
 		private LoadedImage imgU;

@@ -37,7 +37,7 @@ namespace Reko.Environments.Windows
         private Lexer lexer;
         private Token bufferedTok;
         private string filename;
-        private Platform platform;
+        private IPlatform platform;
 
         public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
         {
@@ -47,7 +47,7 @@ namespace Reko.Environments.Windows
             this.bufferedTok = null;
         }
 
-        public override TypeLibrary Load(Platform platform)
+        public override TypeLibrary Load(IPlatform platform)
         {
             this.platform = platform;
             var loader = new TypeLibraryLoader(platform, true);

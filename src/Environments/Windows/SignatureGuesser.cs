@@ -37,7 +37,7 @@ namespace Reko.Environments.Windows
         /// <param name="loader"></param>
         /// <param name="arch"></param>
         /// <returns></returns>
-        public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryLoader loader, Platform platform)
+        public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryLoader loader, IPlatform platform)
         {
             int argBytes;
             if (fnName[0] == '_')

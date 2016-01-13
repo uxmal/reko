@@ -386,12 +386,12 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private Platform DeterminePlatform(string filename)
+        private IPlatform DeterminePlatform(string filename)
         {
             var platformsInUse = project.Programs.Select(p => p.Platform).Distinct().ToArray();
             if (platformsInUse.Length == 1 && platformsInUse[0] != null)
                 return platformsInUse[0];
-            Platform platform = null;
+            IPlatform platform = null;
             if (platformsInUse.Length == 0)
             {
                 var oSvc = Services.GetService<IOracleService>();

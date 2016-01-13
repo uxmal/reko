@@ -74,7 +74,7 @@ namespace Reko.Core
 			}
 		}
 
-		public static TypeLibrary Load(Platform platform, string fileName, IFileSystemService fsSvc)
+		public static TypeLibrary Load(IPlatform platform, string fileName, IFileSystemService fsSvc)
 		{
             var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var libPath = Path.Combine(prefix, fileName);
@@ -91,7 +91,7 @@ namespace Reko.Core
             return Load(platform, slib);
 		}
 
-        public static TypeLibrary Load(Platform platform, SerializedLibrary slib)
+        public static TypeLibrary Load(IPlatform platform, SerializedLibrary slib)
         {
             var tlldr = new TypeLibraryLoader(platform, true);
             var tlib = tlldr.Load(slib);

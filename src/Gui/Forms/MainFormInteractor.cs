@@ -402,10 +402,12 @@ namespace Reko.Gui.Forms
 
             foreach (var program in decompilerSvc.Decompiler.Project.Programs)
             {
-                program.Procedures.Clear();
+                program.Reset();
             }
             SwitchInteractor(this.InitialPageInteractor);
+            
             CloseAllDocumentWindows();
+            projectBrowserSvc.Reload();
         }
 
         public void NextPhase()

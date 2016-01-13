@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class LzExeUnpacker : ImageLoader
 	{
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 
 		private int lzHdrOffset;
 		private bool isLz91;

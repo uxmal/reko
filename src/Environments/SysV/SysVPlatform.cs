@@ -34,13 +34,12 @@ using System.Text;
 
 namespace Reko.Environments.SysV
 {
-    //$TODO: rename to Elf-Neutral?
+    //$TODO: rename to Elf-Neutral? Or Posix?
     public class SysVPlatform : Platform
     {
-        private TypeLibrary[] Typelibs;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "elf-neutral")
         {
         }
 
@@ -48,8 +47,6 @@ namespace Reko.Environments.SysV
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier { get { return "elf-neutral"; } }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
@@ -63,12 +60,12 @@ namespace Reko.Environments.SysV
 
         private void EnsureTypeLibraries()
         {
-            if (Typelibs == null)
+            if (TypeLibs == null)
             {
                 var cfgSvc = Services.RequireService<IConfigurationService>();
                 var envCfg = cfgSvc.GetEnvironment("elf-neutral");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.Typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
+                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(this, tl.Name))
                     .Where(tl => tl != null).ToArray();
@@ -82,7 +79,7 @@ namespace Reko.Environments.SysV
         public override SystemService FindService(int vector, ProcessorState state)
         {
             EnsureTypeLibraries();
-            return this.Typelibs
+            return this.TypeLibs
                 .Where(t => t.ServicesByVector != null && t.ServicesByVector.Count > 0)
                 .SelectMany(t => t.ServicesByVector)
                 .Where(svc => svc.Value.SyscallInfo.Matches(vector, state))
@@ -153,7 +150,7 @@ namespace Reko.Environments.SysV
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
             EnsureTypeLibraries();
-            var proc = Typelibs.Select(t => t.Lookup(procName))
+            var proc = TypeLibs.Select(t => t.Lookup(procName))
                         .Where(sig => sig != null)
                         .Select(s => new ExternalProcedure(procName, s))
                         .FirstOrDefault();

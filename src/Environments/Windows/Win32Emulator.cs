@@ -40,9 +40,9 @@ namespace Reko.Environments.Windows
         private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
         private LoadedImage img;
-        private Platform platform;
+        private IPlatform platform;
 
-        public Win32Emulator(LoadedImage img, Platform platform, Dictionary<Address, ImportReference> importReferences)
+        public Win32Emulator(LoadedImage img, IPlatform platform, Dictionary<Address, ImportReference> importReferences)
         {
             this.img = img;
             this.platform = platform;
@@ -107,13 +107,13 @@ namespace Reko.Environments.Windows
             }
         }
 
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, Platform platform)
+        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
             Module module = EnsureModule(moduleName);
             return EnsureProc(module, importName, NYI);
         }
 
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, Platform platform)
+        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
             throw new NotImplementedException();
         }

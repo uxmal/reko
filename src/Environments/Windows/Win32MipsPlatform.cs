@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
@@ -37,23 +38,16 @@ using System.Text;
 namespace Reko.Environments.Windows
 {
     // https://msdn.microsoft.com/en-us/library/ms881468.aspx
-    public class Win32MipsPlatform : Win32Platform
+    public class Win32MipsPlatform : Platform
     {
         public Win32MipsPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
-            base(services, arch)
+            base(services, arch, "winMips")
         {
         }
 
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override string PlatformIdentifier {  get { return "winMips";  } }
-        
-        public override Address AdjustProcedureAddress(Address addr)
-        {
-            return addr;
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -69,6 +63,11 @@ namespace Reko.Environments.Windows
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
+        }
+
+        public override SystemService FindService(int vector, ProcessorState state)
+        {
+            throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
         }
 
         private readonly RtlInstructionMatcher[] trampPattern = new RtlInstructionMatcher[] {
@@ -142,6 +141,23 @@ namespace Reko.Environments.Windows
                  where !string.IsNullOrEmpty(tl.Loader)
                  select LoadTypelibrary(cfgSvc, tl, ldr))
                 .ToArray();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         private TypeLibrary LoadTypelibrary(IConfigurationService cfgSvc, ITypeLibraryElement tl, LoaderElement ldr)

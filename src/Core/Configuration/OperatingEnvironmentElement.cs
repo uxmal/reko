@@ -33,7 +33,7 @@ namespace Reko.Core.Configuration
         TypeLibraryElementCollection TypeLibraries { get; }
         TypeLibraryElementCollection CharacteristicsLibraries { get; set; }
 
-        Platform Load(IServiceProvider services, IProcessorArchitecture arch);
+        IPlatform Load(IServiceProvider services, IProcessorArchitecture arch);
 
     }
 
@@ -81,7 +81,7 @@ namespace Reko.Core.Configuration
             set { this["Characteristics"] = value; }
         }
 
-        public Platform Load(IServiceProvider services, IProcessorArchitecture arch)
+        public IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {
             var type = Type.GetType(TypeName);
             if (type == null)

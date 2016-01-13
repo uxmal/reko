@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
 {
 	public abstract class AnalysisTestBase
 	{
-        private Platform platform;
+        private IPlatform platform;
         private ServiceContainer sc;
 
         public AnalysisTestBase()
@@ -286,14 +286,14 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        protected void Given_Platform(Platform platform)
+        protected void Given_Platform(IPlatform platform)
         {
             this.platform = platform;
         }
 
         protected void Given_FakeWin32Platform(MockRepository mr)
         {
-            var platform = mr.StrictMock<Platform>(null, null);
+            var platform = mr.StrictMock<IPlatform>();
             var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
             var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
             var tBool = new TypeReference("BOOL", PrimitiveType.Int32);

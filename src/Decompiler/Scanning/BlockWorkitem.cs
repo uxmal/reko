@@ -938,7 +938,7 @@ namespace Reko.Scanning
         {
             private IScanner scanner;
             private LoadedImage image;
-            private Platform platform;
+            private IPlatform platform;
             private IProcessorArchitecture arch;
 
             public BackwalkerHost(BlockWorkitem item)

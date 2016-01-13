@@ -73,7 +73,7 @@ namespace Reko.Core.Machine
             return renderer.ToString();
         }
 
-        public string ToString(Platform platform)
+        public string ToString(IPlatform platform)
         {
             var renderer = new StringRenderer(platform);
             this.Render(renderer);

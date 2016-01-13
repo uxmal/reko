@@ -55,9 +55,9 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             var oracle = mr.StrictMock<IOracleService>();
             var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<Platform>(this.sc, arch);
+            var platform = mr.Stub<IPlatform>();
             var typeLib = new TypeLibrary();
-            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<Platform>.Is.Equal(platform))).Return(typeLib);
+            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Equal(platform))).Return(typeLib);
             oracle.Expect(o => o.QueryPlatform(Arg<string>.Is.NotNull)).Return(platform);
             sc.AddService<IOracleService>(oracle);
             mr.ReplayAll();
@@ -80,10 +80,10 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             var oracle = mr.StrictMock<IOracleService>();
             var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<Platform>(this.sc, arch);
+            var platform = mr.Stub<IPlatform>();
             var typelibrary = new TypeLibrary();
             Given_Binary(ldr, platform);
-            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<Platform>.Is.Same(platform))).Return(typelibrary);
+            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Same(platform))).Return(typelibrary);
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.VerifyAll();
         }
 
-        private void Given_Binary(ILoader ldr, Platform platform)
+        private void Given_Binary(ILoader ldr, IPlatform platform)
         {
             ldr.Stub(l => l.LoadImageBytes(
                 Arg<string>.Is.Anything,

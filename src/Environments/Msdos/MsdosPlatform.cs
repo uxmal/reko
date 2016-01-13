@@ -37,12 +37,10 @@ namespace Reko.Environments.Msdos
 	{
 		private SystemService [] realModeServices; 
 
-		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos")
 		{
 			LoadRealmodeServices(arch);
 		}
-
-        public override string PlatformIdentifier { get { return "ms-dos"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

@@ -31,13 +31,13 @@ namespace Reko.Core.CLanguage
     /// </summary>
     public class SymbolTable 
     {
-        private Platform platform;
+        private IPlatform platform;
 
-        public SymbolTable(Platform platform) : this(platform, new Dictionary<string, SerializedType>())
+        public SymbolTable(IPlatform platform) : this(platform, new Dictionary<string, SerializedType>())
         {
         }
 
-        public SymbolTable(Platform platform, Dictionary<string, SerializedType> namedTypes)
+        public SymbolTable(IPlatform platform, Dictionary<string, SerializedType> namedTypes)
         {
             this.platform = platform;
 

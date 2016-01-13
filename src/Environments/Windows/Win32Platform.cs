@@ -44,7 +44,7 @@ namespace Reko.Environments.Windows
 
             //$BUG: we need a Win32Base platform, possibly with a Windows base platform, and make this
             // x86-specific.
-		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
 		{
             //$REVIEW: should be loaded from configuration file.
             Heuristics.ProcedurePrologs = new BytePattern[] {
@@ -84,18 +84,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override string PlatformIdentifier { get { return "win32"; } }
-
-        /// <summary>
-        /// Some Win32 platforms (I'm looking at you ARM Thumb) will use addresses
-        /// that are offset by 1. 
-        /// </summary>
-        /// <param name="addr"></param>
-        /// <returns>Adjusted address</returns>
-        public virtual Address AdjustProcedureAddress(Address addr)
-        {
-            return addr;
-        }
+  
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -198,10 +187,6 @@ namespace Reko.Environments.Windows
 
 		public override SystemService FindService(int vector, ProcessorState state)
 		{
-			if (int3svc.SyscallInfo.Matches(vector, state))
-				return int3svc;
-            if (int29svc.SyscallInfo.Matches(vector, state))
-                return int29svc;
 			throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
 		}
 

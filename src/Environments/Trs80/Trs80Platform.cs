@@ -34,9 +34,8 @@ namespace Reko.Environments.Trs80
 {
     public class Trs80Platform : Platform
     {
-        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base( services,  arch)
+        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base( services,  arch, "trs80")
         {
-
         }
 
         // http://fjkraan.home.xs4all.nl/comp/trs80-4p/dmkeilImages/trstech.htm
@@ -47,8 +46,6 @@ namespace Reko.Environments.Trs80
                 throw new NotImplementedException();
             }
         }
-
-        public override string PlatformIdentifier {  get { return "trs80";  } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

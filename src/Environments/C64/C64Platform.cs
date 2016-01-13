@@ -41,7 +41,7 @@ namespace Reko.Environments.C64
         private Mos6502ProcessorArchitecture arch;
 
         public C64Platform(IServiceProvider services, Mos6502ProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "c64")
         {
             this.arch = arch;
         }
@@ -50,9 +50,6 @@ namespace Reko.Environments.C64
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier { get { return "c64"; } }
-
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

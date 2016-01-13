@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class MsdosImageLoader : ImageLoader
 	{
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 		private ExeImageLoader exe;
 		private LoadedImage imgLoaded;
         private ImageMap imgLoadedMap;

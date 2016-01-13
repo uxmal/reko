@@ -32,19 +32,10 @@ namespace Reko.UnitTests.Mocks
     public class FakePlatform : Platform
     {
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "fake")
         {
             TypeLibs = new TypeLibrary[0];
         }
-
-        //$REFACTOR: this becomes unnecesary once IPlatform changes are merged.
-        public FakePlatform(IServiceProvider services, IProcessorArchitecture arch, IDictionary<string, DataType> types)
-            : base(services, arch)
-        {
-            TypeLibs = new TypeLibrary[] { new TypeLibrary(types, null) };
-        }
-
-        public override string PlatformIdentifier { get { return "fake"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

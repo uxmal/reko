@@ -41,9 +41,9 @@ namespace Reko.Core.CLanguage
         private CTokenType callingConvention;
         private CConstantEvaluator eval;
         private CBasicType basicType;
-        private Platform platform;
+        private IPlatform platform;
 
-        public NamedDataTypeExtractor(Platform platform, IEnumerable<DeclSpec> specs, SymbolTable converter)
+        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable converter)
         {
             if (platform == null) throw new ArgumentNullException("platform");
             this.platform = platform;

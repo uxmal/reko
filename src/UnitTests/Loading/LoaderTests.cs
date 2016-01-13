@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Loading
         private IConfigurationService cfgSvc;
         private List<SignatureFileElement> signatureFiles;
         private IProcessorArchitecture x86arch;
-        private Platform msdosPlatform;
+        private IPlatform msdosPlatform;
         private byte[] testImage;
 
         [SetUp]
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Loading
         {
             this.x86arch = mr.Stub<IProcessorArchitecture>();
             var env = mr.Stub<OperatingEnvironment>();
-            this.msdosPlatform = mr.Stub<Platform>(sc, x86arch);
+            this.msdosPlatform = mr.Stub<IPlatform>();
             var state = mr.Stub<ProcessorState>();
             var rawFile = new RawFileElementImpl
             {

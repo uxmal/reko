@@ -43,14 +43,14 @@ namespace Reko.UnitTests.Analysis
         private MockRepository mr;
         private Program program;
         private Procedure proc;
-        private Platform platform;
+        private IPlatform platform;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
             this.arch = mr.Stub<IProcessorArchitecture>();
-            this.platform = mr.Stub<Platform>(null, arch);
+            this.platform = mr.Stub<IPlatform>();
 
             platform.Stub(p => p.FramePointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.DefaultCallingConvention).Return("cdecl");
@@ -62,15 +62,9 @@ namespace Reko.UnitTests.Analysis
             };
         }
 
-        //$REFACTOR: change this to Given_NamedTypes once IPlatform changeis merged
-        private void Given_Program(IDictionary<string, DataType> types)
+        private void Given_NamedTypes(Dictionary<string, SerializedType> types)
         {
-            platform = new FakePlatform(null, arch, types);
-            program = new Program
-            {
-                Architecture = arch,
-                Platform = platform,
-            };
+            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(this.platform, types));
         }
 
         private void Given_UserSignature(uint address, string str)
@@ -103,13 +97,10 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Procedure(0x1000);
             platform.Stub(p => p.PlatformIdentifier).Return("testPlatform");
-            platform.Stub(p => p.TypeLibs).Return(new TypeLibrary[0]);
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
             platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(platform));
-            platform.Stub(p => p.EnsureTypeLibraries(null))
-                .IgnoreArguments();
             var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
             platform.Expect(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
             ser.Expect(s => s.Deserialize(
@@ -119,7 +110,6 @@ namespace Reko.UnitTests.Analysis
 
             var usb = new UserSignatureBuilder(program);
             var sProc = usb.ParseFunctionDeclaration("int foo(char *)", proc.Frame);
-            mr.ReplayAll();
 
             Assert.AreEqual(
                 "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
@@ -129,12 +119,13 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Usb_ParseFunctionDeclaration_PredefinedTypes()
         {
-            var types = new Dictionary<string, DataType>()
+            var types = new Dictionary<string, SerializedType>()
             {
-                { "BYTE", PrimitiveType.Byte},
+                { "BYTE", new PrimitiveType_v1 { ByteSize=1, Domain=PrimitiveType.Byte.Domain } },
             };
-            Given_Program(types);
+            Given_NamedTypes(types);
             Given_Procedure(0x1000);
+            mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)", proc.Frame);

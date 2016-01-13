@@ -254,7 +254,7 @@ namespace Reko.ImageLoaders.Elf
         private byte fileVersion;
         private byte osAbi;
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
         private Address addrPreferred;
         private LoadedImage image;
         private ImageMap imageMap;
@@ -408,7 +408,7 @@ namespace Reko.ImageLoaders.Elf
             return program;
         }
 
-        public Platform CreatePlatform(byte osAbi)
+        public IPlatform CreatePlatform(byte osAbi)
         {
             string envName;
             var cfgSvc = Services.RequireService<IConfigurationService>();

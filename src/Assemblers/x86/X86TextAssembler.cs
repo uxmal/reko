@@ -173,7 +173,7 @@ namespace Reko.Assemblers.x86
 			}
 		}
 
-        public Platform Platform
+        public IPlatform Platform
         {
             get;
             set;

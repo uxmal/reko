@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Windows;
@@ -59,7 +60,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             mr = new MockRepository();
             var arch = new FakeArchitecture();
-            var platform = mr.Stub<Platform>(null, arch);
+            var platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Float)).Return(4);
@@ -175,17 +176,16 @@ namespace Reko.UnitTests.Gui.Windows
             decompiler.Stub(d => d.Project).Return(project);
         }
 
-        //$REFACTOR: change to Given_NamedTypes once IPlatform changes are merged.
-        private void Given_Program(IDictionary<string, DataType> types)
+        private void Given_NamedTypes(Dictionary<string, SerializedType> types)
         {
             var arch = new FakeArchitecture();
-            var platform = new FakePlatform(null, arch, types);
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(platform, types));
             program = new Program
             {
                 Architecture = arch,
                 Platform = platform,
             };
-            Given_Program();
         }
 
         private void Given_SymbolTable()
@@ -293,11 +293,12 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Cvp_Accept_Declaration_PredefinedTypes()
         {
-            var types = new Dictionary<string, DataType>()
+            var types = new Dictionary<string, SerializedType>()
             {
-                { "BYTE", PrimitiveType.Byte},
+                { "BYTE", new PrimitiveType_v1 { ByteSize = 1, Domain = PrimitiveType.Byte.Domain } },
             };
-            Given_Program(types);
+            Given_Program();
+            Given_NamedTypes(types);
             Given_StubProcedure();
             mr.ReplayAll();
 

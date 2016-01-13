@@ -38,7 +38,7 @@ namespace Reko.Environments.RiscOS
 {
     public class RiscOSPlatform : Platform
     {
-        public RiscOSPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+        public RiscOSPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "riscOS")
         {
         }
 
@@ -46,8 +46,6 @@ namespace Reko.Environments.RiscOS
         {
             get { return ""; }
         }
-
-        public override string PlatformIdentifier { get { return "riscOS"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

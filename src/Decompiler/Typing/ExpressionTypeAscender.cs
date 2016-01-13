@@ -35,12 +35,12 @@ namespace Reko.Typing
     /// </summary>
     public class ExpressionTypeAscender : ExpressionVisitor<DataType>
     {
-        private Platform platform;
+        private IPlatform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
 
-        public ExpressionTypeAscender(Platform platform, TypeStore store, TypeFactory factory)
+        public ExpressionTypeAscender(IPlatform platform, TypeStore store, TypeFactory factory)
         {
             this.platform = platform;
             this.store = store;

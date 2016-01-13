@@ -130,7 +130,7 @@ namespace Reko.Loading
             }
             var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
             var env = cfgSvc.GetEnvironment(rawFile.Environment);
-            Platform platform;
+            IPlatform platform;
             Address baseAddr;
             Address entryAddr;
             if (env != null)
@@ -166,7 +166,7 @@ namespace Reko.Loading
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public TypeLibrary LoadMetadata(string fileName, Platform platform)
+        public TypeLibrary LoadMetadata(string fileName, IPlatform platform)
         {
             var rawBytes = LoadImageBytes(fileName, 0);
             var mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());

@@ -39,13 +39,11 @@ namespace Reko.Environments.MacOS
         private MacOsRomanEncoding encoding;
 
         public MacOSClassic(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "macOs")
         {
             encoding = new MacOsRomanEncoding();
             LoadMacOsServices();
         }
-
-        public override string PlatformIdentifier { get { return "macOs"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

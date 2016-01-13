@@ -39,12 +39,10 @@ namespace Reko.Environments.ZX81
         private ZX81Encoding encoding;
 
         public ZX81Environment(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch)
+            : base(services, arch, "zx81")
         {
             encoding = new ZX81Encoding();
         }
-
-        public override string PlatformIdentifier { get { return "zx81"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

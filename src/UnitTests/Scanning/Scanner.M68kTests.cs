@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Scanning
             RunTest(addrBase);
         }
 
-        private void BuildTest(Address addrBase, Platform platform, Action<M68kAssembler> asmProg)
+        private void BuildTest(Address addrBase, IPlatform platform, Action<M68kAssembler> asmProg)
         {
             var entryPoints = new List<EntryPoint>();
             var asm = new M68kAssembler(arch, addrBase, entryPoints);
