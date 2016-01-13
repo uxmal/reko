@@ -55,19 +55,19 @@ namespace Reko.WindowsItp
             var sz = TextRenderer.MeasureText(graphics, text, this.Font, new Size(0, 0), tf);
             return sz;
 
-            var bounds = new RectangleF();
-            using (var textPath = new System.Drawing.Drawing2D.GraphicsPath())
-            {
-                textPath.AddString(
-                    text,
-                    font.FontFamily,
-                    (int)font.Style,
-                    font.Size,
-                    new PointF(0, 0),
-                    StringFormat.GenericTypographic);
-                bounds = textPath.GetBounds();
-            }
-            return new Size((int)bounds.Width, (int)bounds.Height);
+            //var bounds = new RectangleF();
+            //using (var textPath = new System.Drawing.Drawing2D.GraphicsPath())
+            //{
+            //    textPath.AddString(
+            //        text,
+            //        font.FontFamily,
+            //        (int)font.Style,
+            //        font.Size,
+            //        new PointF(0, 0),
+            //        StringFormat.GenericTypographic);
+            //    bounds = textPath.GetBounds();
+            //}
+            //return new Size((int)bounds.Width, (int)bounds.Height);
         }
 
         private void TextViewDialog_MouseDown(object sender, MouseEventArgs e)

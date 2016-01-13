@@ -169,7 +169,7 @@ Constants: ds:0x0C00,Local -0002:0x0C00
             RunTest(sExp, m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var ds = m.Reg16("ds");
+                var ds = m.Reg16("ds", 10);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x0C00));

@@ -37,8 +37,7 @@ namespace Reko.Environments.SysV
     //$TODO: rename to Elf-Neutral?
     public class SysVPlatform : Platform
     {
-        private TypeLibrary[] typelibs;
-        private CharacteristicsLibrary[] CharacteristicsLibs;
+        private TypeLibrary[] Typelibs;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
@@ -64,12 +63,12 @@ namespace Reko.Environments.SysV
 
         private void EnsureTypeLibraries()
         {
-            if (typelibs == null)
+            if (Typelibs == null)
             {
                 var cfgSvc = Services.RequireService<IConfigurationService>();
                 var envCfg = cfgSvc.GetEnvironment("elf-neutral");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
+                this.Typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(this, tl.Name))
                     .Where(tl => tl != null).ToArray();
@@ -83,7 +82,7 @@ namespace Reko.Environments.SysV
         public override SystemService FindService(int vector, ProcessorState state)
         {
             EnsureTypeLibraries();
-            return this.typelibs
+            return this.Typelibs
                 .Where(t => t.ServicesByVector != null && t.ServicesByVector.Count > 0)
                 .SelectMany(t => t.ServicesByVector)
                 .Where(svc => svc.Value.SyscallInfo.Matches(vector, state))
@@ -154,7 +153,7 @@ namespace Reko.Environments.SysV
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
             EnsureTypeLibraries();
-            var proc = typelibs.Select(t => t.Lookup(procName))
+            var proc = Typelibs.Select(t => t.Lookup(procName))
                         .Where(sig => sig != null)
                         .Select(s => new ExternalProcedure(procName, s))
                         .FirstOrDefault();

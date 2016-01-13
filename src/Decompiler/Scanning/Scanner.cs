@@ -100,7 +100,6 @@ namespace Reko.Scanning
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private IDictionary<Address, ProcedureSignature> callSigs;
-        private IDictionary<Address, ImageMapVectorTable> vectors;
         private Dictionary<Address, ImportReference> importReferences;
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
@@ -132,7 +131,6 @@ namespace Reko.Scanning
             this.blocks = new Map<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.pseudoProcs = program.PseudoProcedures;
-            this.vectors = program.Vectors;
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }

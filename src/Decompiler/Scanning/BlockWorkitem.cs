@@ -726,7 +726,6 @@ namespace Reko.Scanning
             program.ImageMap.AddItem(
                 bw.VectorAddress,
                 new ImageMapVectorTable(
-                    xfer is RtlCall,
                     vector.ToArray(),
                     builder.TableByteSize));
             return true;

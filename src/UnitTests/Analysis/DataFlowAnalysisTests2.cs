@@ -41,7 +41,6 @@ namespace Reko.UnitTests.Analysis
     public class DataFlowAnalysisTests2
     {
         private ProgramBuilder pb;
-        private DataFlow2 dataFlow;
 
         private void GivenProgram(ProgramBuilder pb)
         {

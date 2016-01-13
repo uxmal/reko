@@ -27,8 +27,6 @@ namespace Reko.Core.Lib
 {
     public class UndirectedGraphImpl<T> : UndirectedGraph<T>
     {
-        private HashSet<Tuple<T, T>> entries;
-
         public UndirectedGraphImpl()
         {
 

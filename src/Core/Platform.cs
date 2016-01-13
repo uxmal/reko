@@ -55,7 +55,7 @@ namespace Reko.Core
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
         public virtual TypeLibrary[] TypeLibs { get; protected set; }
-        public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
+        public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
         public string Name { get; set; }

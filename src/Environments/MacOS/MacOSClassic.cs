@@ -37,7 +37,6 @@ namespace Reko.Environments.MacOS
     public class MacOSClassic : Platform
     {
         private MacOsRomanEncoding encoding;
-        private TypeLibrary[] TypeLibs;
 
         public MacOSClassic(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
