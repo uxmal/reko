@@ -35,14 +35,14 @@ namespace Reko.Environments.Windows
 {
     public class Win16Platform : Platform
     {
-        public Win16Platform(IServiceProvider services, IProcessorArchitecture arch) 
+        public Win16Platform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "win16")
         {
         }
 
         public override string DefaultCallingConvention
         {
-            get { return "pascal";  }
+            get { return "pascal"; }
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -60,7 +60,6 @@ namespace Reko.Environments.Windows
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            EnsureTypeLibraries();
             return null;
         }
 
@@ -88,13 +87,13 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            EnsureTypeLibraries();
+            EnsureTypeLibraries(PlatformIdentifier);
             return null;
         }
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries();
+            EnsureTypeLibraries(PlatformIdentifier);
             foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
                 SystemService svc;
@@ -106,20 +105,17 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public void EnsureTypeLibraries()
+        public override void EnsureTypeLibraries(string envName)
         {
-            throw new NotImplementedException();
-            //$BUG: implement this
-            /*
-                var cfgSvc = Services.RequireService<IConfigurationService>();
-                var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);
-                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Select(tl => new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
-                                    .Load(this, tl.Module))
-                    .Where(tl => tl != null).ToArray();
-            */
+            base.EnsureTypeLibraries(envName);
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);
+            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+            foreach (ITypeLibraryElement tl in envCfg.TypeLibraries)
+            {
+                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
+                                .Load(this, tl.Module, Metadata);
+            }
         }
     }
 }

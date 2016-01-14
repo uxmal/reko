@@ -42,7 +42,7 @@ namespace Reko.Environments.Windows
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
 
-            //$BUG: we need a Win32Base platform, possibly with a Windows base platform, and make this
+            //$TODO: we need a Win32Base platform, possibly with a Windows base platform, and make this
             // x86-specific.
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
 		{
@@ -83,8 +83,6 @@ namespace Reko.Environments.Windows
                 }
             };
         }
-
-  
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -158,34 +156,30 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            //$REVIEW: common code with Win32_64 platform, consider pushing to base class?
-            EnsureTypeLibraries(PlatformIdentifier);
-            var sig = Metadata.Lookup(procName);
-            if (sig == null)
+            ModuleDescriptor mod;
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
                 return null;
-            return new ExternalProcedure(procName, sig);
+            SystemService svc;
+            if (mod.ServicesByName.TryGetValue(procName, out svc))
+            {
+                return new ExternalProcedure(svc.Name, svc.Signature);
+            }
+            else
+                return null;
         }
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            //$TODO: this is all broken now.
-            throw new NotImplementedException();
-            //$BUG: overlapped entries. Change Services to have a different key.
-            //EnsureTypeLibraries(PlatformIdentifier);
-            //return Metadata.ServicesByVector
-            //    .Where(de => string.Compare(de.Value.ModuleName, moduleName, true) == 0)
-            //    .Select(t =>
-            //    {
-            //        SystemService svc;
-            //        if (t.ServicesByVector.TryGetValue(ordinal, out svc))
-            //        {
-            //            return new ExternalProcedure(svc.Name, svc.Signature);
-            //        }
-            //        else
-            //            return null;
-            //    })
-            //    .Where(p => p != null)
-            //    .FirstOrDefault();
+            ModuleDescriptor mod;
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+                return null;
+            SystemService svc;
+            if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+            {
+                return new ExternalProcedure(svc.Name, svc.Signature);
+            }
+            else
+                return null;
         }
 
 		public override SystemService FindService(int vector, ProcessorState state)

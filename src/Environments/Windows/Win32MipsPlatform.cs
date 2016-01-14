@@ -157,20 +157,7 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            //$BUG: look at Win32Platform for advice.
             throw new NotImplementedException();
-            //foreach (var tl in TypeLibs.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
-            //{
-            //    SystemService svc;
-            //    if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
-            //    {
-            //        if (svc.Signature != null)
-            //            svc.Signature.ReturnAddressOnStack = 0; //$HACK: should be done when signatures are created.
-            //        return new ExternalProcedure(svc.Name, svc.Signature);
-            //    }
-            //}
-            //return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

@@ -60,14 +60,7 @@ namespace Reko.Environments.SysV
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException(); //$BUG
-            /*
-            EnsureTypeLibraries(PlatformIdentifier);
-            return this.Metadata.ServicesByVector
-                .Where(svc => svc.Value.SyscallInfo.Matches(vector, state))
-                .Select(svc => svc.Value)
-                .FirstOrDefault();
-                */
+            throw new NotImplementedException(); 
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

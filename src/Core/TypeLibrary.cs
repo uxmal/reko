@@ -62,7 +62,7 @@ namespace Reko.Core
             var clone = new TypeLibrary();
             clone.Types = new Dictionary<string, DataType>(this.Types);
             clone.Signatures = new Dictionary<string, ProcedureSignature>(this.Signatures);
-            clone.Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone());
+            clone.Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase);
             return clone;
         }
 
