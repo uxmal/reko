@@ -97,10 +97,12 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected)
         {
+            var dstLib = new TypeLibrary();
             tlSvc.Expect(t => t.LoadLibrary(
                 Arg<IPlatform>.Is.NotNull,
-                Arg<string>.Is.Equal(expected))).
-                Return(new TypeLibrary());
+                Arg<string>.Is.Equal(expected),
+                Arg<TypeLibrary>.Is.NotNull))
+                .Return(dstLib);
         }
 
         private void Given_Configuration_With_Win32_Element()
@@ -132,7 +134,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             tlSvc.Expect(f => f.LoadLibrary(
                 Arg<IPlatform>.Is.Anything,
-                Arg<string>.Matches(s => filename.EndsWith(s))))
+                Arg<string>.Matches(s => filename.EndsWith(s)),
+                Arg<TypeLibrary>.Is.NotNull))
                 .Return(CreateFakeLib());
         }
 

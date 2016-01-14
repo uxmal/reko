@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -49,15 +50,21 @@ namespace Reko.Core
         {
             this.Types = types;
             this.Signatures = procedures;
-            this.ServicesByName = new Dictionary<string, SystemService>();
-            this.ServicesByVector = new Dictionary<int, SystemService>();
+            this.Modules = new Dictionary<string, ModuleDescriptor>();
         }
 
-        public string ModuleName { get; set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
-        public IDictionary<string, SystemService> ServicesByName { get; private set; }
-        public IDictionary<int, SystemService> ServicesByVector { get; private set; }
+        public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
+
+        public TypeLibrary Clone()
+        {
+            var clone = new TypeLibrary();
+            clone.Types = new Dictionary<string, DataType>(this.Types);
+            clone.Signatures = new Dictionary<string, ProcedureSignature>(this.Signatures);
+            clone.Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone());
+            return clone;
+        }
 
 		public void Write(TextWriter writer)
 		{
@@ -73,7 +80,7 @@ namespace Reko.Core
 			}
 		}
 
-		public static TypeLibrary Load(IPlatform platform, string fileName, IFileSystemService fsSvc)
+        public static TypeLibrary Load(IPlatform platform, string fileName, IFileSystemService fsSvc, TypeLibrary dstLib)
 		{
             var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var libPath = Path.Combine(prefix, fileName);
@@ -87,13 +94,13 @@ namespace Reko.Core
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-            return Load(platform, slib);
+            return Load(platform, slib, dstLib);
 		}
 
-        public static TypeLibrary Load(IPlatform platform, SerializedLibrary slib)
+        public static TypeLibrary Load(IPlatform platform, SerializedLibrary slib, TypeLibrary dstLib)
         {
             var tlldr = new TypeLibraryDeserializer(platform, true);
-            var tlib = tlldr.Load(slib);
+            var tlib = tlldr.Load(slib, dstLib);
             return tlib;
         }
 

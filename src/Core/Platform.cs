@@ -89,7 +89,7 @@ namespace Reko.Core
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
-        public virtual TypeLibrary[] TypeLibs { get; protected set; }
+        public virtual TypeLibrary Metadata { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
@@ -182,7 +182,7 @@ namespace Reko.Core
         /// <param name="envName"></param>
         public virtual void EnsureTypeLibraries(string envName)
         {
-            if (TypeLibs == null)
+            if (Metadata == null)
             {
                 var cfgSvc = Services.RequireService<IConfigurationService>();
                 var envCfg = cfgSvc.GetEnvironment(envName);
@@ -191,10 +191,12 @@ namespace Reko.Core
                         "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
                         envName));
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name)))
-                    .Where(tl => tl != null).ToArray();
+                this.Metadata = new TypeLibrary();
+                foreach (var tl in envCfg.TypeLibraries
+                    .OfType<ITypeLibraryElement>())
+                {
+                    Metadata = tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name), Metadata);
+                }
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
@@ -216,14 +218,7 @@ namespace Reko.Core
             EnsureTypeLibraries(PlatformIdentifier);
 
             var typedefs = new Dictionary<string, DataType>();
-
-            foreach (var typeLib in TypeLibs)
-            {
-                foreach(var typedef in typeLib.Types)
-                    if (!typedefs.ContainsKey(typedef.Key))
-                        typedefs.Add(typedef.Key, typedef.Value);
-            }
-            return typedefs;
+            return Metadata.Types;
         }
 
         public abstract SystemService FindService(int vector, ProcessorState state);

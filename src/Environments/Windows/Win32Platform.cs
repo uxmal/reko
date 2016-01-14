@@ -160,29 +160,32 @@ namespace Reko.Environments.Windows
         {
             //$REVIEW: common code with Win32_64 platform, consider pushing to base class?
             EnsureTypeLibraries(PlatformIdentifier);
-            return TypeLibs.Select(t => t.Lookup(procName))
-                .Where(sig => sig != null)
-                .Select(s => new ExternalProcedure(procName, s))
-                .FirstOrDefault();
+            var sig = Metadata.Lookup(procName);
+            if (sig == null)
+                return null;
+            return new ExternalProcedure(procName, sig);
         }
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            return TypeLibs
-                .Where(t => string.Compare(t.ModuleName, moduleName, true) == 0)
-                .Select(t =>
-                {
-                    SystemService svc;
-                    if (t.ServicesByVector.TryGetValue(ordinal, out svc))
-                    {
-                        return new ExternalProcedure(svc.Name, svc.Signature);
-                    }
-                    else
-                        return null;
-                })
-                .Where(p => p != null)
-                .FirstOrDefault();
+            //$TODO: this is all broken now.
+            throw new NotImplementedException();
+            //$BUG: overlapped entries. Change Services to have a different key.
+            //EnsureTypeLibraries(PlatformIdentifier);
+            //return Metadata.ServicesByVector
+            //    .Where(de => string.Compare(de.Value.ModuleName, moduleName, true) == 0)
+            //    .Select(t =>
+            //    {
+            //        SystemService svc;
+            //        if (t.ServicesByVector.TryGetValue(ordinal, out svc))
+            //        {
+            //            return new ExternalProcedure(svc.Name, svc.Signature);
+            //        }
+            //        else
+            //            return null;
+            //    })
+            //    .Where(p => p != null)
+            //    .FirstOrDefault();
         }
 
 		public override SystemService FindService(int vector, ProcessorState state)

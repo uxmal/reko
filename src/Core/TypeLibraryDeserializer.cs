@@ -35,10 +35,10 @@ namespace Reko.Core
     public class TypeLibraryDeserializer : ISerializedTypeVisitor<DataType>
     {
         private IPlatform platform;
-        private Dictionary<string, DataType> types;
+        private IDictionary<string, DataType> types;
         private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
-        private Dictionary<string, ProcedureSignature> signaturesByName;
+        private IDictionary<string, ProcedureSignature> signaturesByName;
         private string defaultConvention;
         private Dictionary<string, SystemService> servicesByName;
         private Dictionary<int, SystemService> servicesByOrdinal;
@@ -48,40 +48,53 @@ namespace Reko.Core
         {
             this.platform = platform;
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
-            this.types = new Dictionary<string, DataType>(cmp)
-            {
-                { "va_list", platform.FramePointerType } ,  
-                { "size_t", platform.Architecture.WordWidth },
-            };
-            this.signaturesByName = new Dictionary<string, ProcedureSignature>(cmp);
             this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
             this.servicesByName = new Dictionary<string, SystemService>(cmp);
             this.servicesByOrdinal = new Dictionary<int, SystemService>();
         }
 
+        [Obsolete]
         public TypeLibrary Load(SerializedLibrary sLib)
         {
+            return Load(sLib, new TypeLibrary());
+        }
+        public TypeLibrary Load(SerializedLibrary sLib, TypeLibrary dstLib)
+        {
             moduleName = sLib.ModuleName;
+            signaturesByName = dstLib.Signatures;
+            types = dstLib.Types;
             ReadDefaults(sLib.Defaults);
             LoadTypes(sLib);
             LoadProcedures(sLib);
-            return BuildLibrary();
+            return BuildLibrary(dstLib);
         }
 
-        public TypeLibrary BuildLibrary()
+        public TypeLibrary BuildLibrary(TypeLibrary dstLib)
         {
-            var lib = new TypeLibrary(types, signaturesByName);
-            lib.ModuleName = moduleName;
             foreach (var de in servicesByName)
             {
+                var lib = EnsureModule(de.Value.ModuleName, dstLib);
                 lib.ServicesByName.Add(de.Key, de.Value);
             }
             foreach (var de in servicesByOrdinal)
             {
+                var lib = EnsureModule(de.Value.ModuleName, dstLib);
                 lib.ServicesByVector.Add(de.Key, de.Value);
             }
-            return lib;
+            return dstLib;
+        }
+
+        private ModuleDescriptor EnsureModule(string moduleName, TypeLibrary dstLib)
+        {
+            ModuleDescriptor mod;
+            moduleName = moduleName ?? "";
+            if (!dstLib.Modules.TryGetValue(moduleName, out mod))
+            {
+                mod = new ModuleDescriptor(moduleName);
+                dstLib.Modules.Add(moduleName, mod);
+            }
+            return mod;
         }
 
         private void LoadProcedures(SerializedLibrary serializedLibrary)
@@ -110,10 +123,11 @@ namespace Reko.Core
             {
                 var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
                 var signature = sser.Deserialize(sp.Signature, platform.Architecture.CreateFrame());
-                signaturesByName[sp.Name] =  signature;   //$BUGBUG: catch dupes?   
+                signaturesByName[sp.Name] = signature;   //$BUGBUG: catch dupes?   
                 if (sp.Ordinal != Procedure_v1.NoOrdinal)
                 {
                     servicesByOrdinal[sp.Ordinal] = new SystemService { 
+                        ModuleName = "",
                         Name = sp.Name,
                         Signature = signature,
                     };

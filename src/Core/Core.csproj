@@ -262,6 +262,7 @@
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="Machine\InstructionComparer.cs" />
     <Compile Include="MetadataLoader.cs" />
+    <Compile Include="ModuleDescriptor.cs" />
     <Compile Include="Operators\CommaOperator.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
     <Compile Include="Output\GlobalDataWriter.cs" />

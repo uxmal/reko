@@ -58,33 +58,16 @@ namespace Reko.Environments.SysV
             return new HashSet<RegisterStorage>();
         }
 
-        private void EnsureTypeLibraries()
-        {
-            if (TypeLibs == null)
-            {
-                var cfgSvc = Services.RequireService<IConfigurationService>();
-                var envCfg = cfgSvc.GetEnvironment("elf-neutral");
-                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(this, tl.Name))
-                    .Where(tl => tl != null).ToArray();
-                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
-                    .Where(cl => cl != null).ToArray();
-            }
-        }
-
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            EnsureTypeLibraries();
-            return this.TypeLibs
-                .Where(t => t.ServicesByVector != null && t.ServicesByVector.Count > 0)
-                .SelectMany(t => t.ServicesByVector)
+            throw new NotImplementedException(); //$BUG
+            /*
+            EnsureTypeLibraries(PlatformIdentifier);
+            return this.Metadata.ServicesByVector
                 .Where(svc => svc.Value.SyscallInfo.Matches(vector, state))
                 .Select(svc => svc.Value)
                 .FirstOrDefault();
+                */
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)
@@ -149,11 +132,11 @@ namespace Reko.Environments.SysV
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
-            EnsureTypeLibraries();
-            var proc = TypeLibs.Select(t => t.Lookup(procName))
-                        .Where(sig => sig != null)
-                        .Select(s => new ExternalProcedure(procName, s))
-                        .FirstOrDefault();
+            EnsureTypeLibraries(PlatformIdentifier);
+            var sig = Metadata.Lookup(procName);
+            if (sig == null)
+                return null;
+            var proc = new ExternalProcedure(procName, sig);
             var characteristics = CharacteristicsLibs.Select(cl => cl.Lookup(procName))
                 .Where(c => c != null)
                 .FirstOrDefault();

@@ -55,16 +55,24 @@ namespace Reko.UnitTests.Core
                          ModuleName = "foo",
                          TypeLibrary = new TypeLibrary 
                          {
-                              ServicesByName =
-                              {
-                                  {
-                                      "bar@4", 
-                                      new SystemService 
-                                      { 
+                             Modules =
+                             {
+                                 {
+                                     "foo",
+                                    new ModuleDescriptor("foo")
+                                    {
+                                    ServicesByName =
+                                    {
+                                            { "bar@4",
+                                      new SystemService
+                                      {
                                           Name = "bar", Signature= new ProcedureSignature()
                                       }
                                   }
                               }
+                                    }
+                                 }
+                             }
                          }
                     }
                 }
@@ -80,26 +88,35 @@ namespace Reko.UnitTests.Core
         {
             var proj = new Project
             {
-                MetadataFiles = 
+                MetadataFiles =
                 {
                     new MetadataFile
                     {
                          ModuleName = "foo",
-                         TypeLibrary = new TypeLibrary 
+                         TypeLibrary = new TypeLibrary
                          {
-                              ServicesByVector =
-                              {
-                                  {
-                                      9, 
-                                      new SystemService 
-                                      { 
+                             Modules =
+                             {
+                                 {
+                                     "foo",
+                                     new ModuleDescriptor("foo")
+                                     {
+                                         ServicesByVector =
+                                         {
+                                             {
+                                      9,
+                                      new SystemService
+                                      {
                                           Name = "bar", Signature= new ProcedureSignature()
                                       }
                                   }
-                              }
+                                         }
+                                     }
+                                 }
+                             }
                          }
                     }
-                }
+                    }
             };
 
             var impres = new ImportResolver(proj);

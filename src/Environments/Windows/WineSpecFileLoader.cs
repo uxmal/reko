@@ -38,6 +38,7 @@ namespace Reko.Environments.Windows
         private Token bufferedToken;
         private TypeLibraryDeserializer tlLoader;
         private IPlatform platform;
+        private string moduleName;
 
         public WineSpecFileLoader(IServiceProvider services, string filename, byte[] bytes)
             : base(services, filename, bytes)
@@ -49,14 +50,20 @@ namespace Reko.Environments.Windows
 
         public override TypeLibrary Load(IPlatform platform)
         {
-            return Load(platform, DefaultModuleName(filename));
+            return Load(platform, DefaultModuleName(filename), new TypeLibrary());
+        }
+
+        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
+        {
+            return Load(platform, DefaultModuleName(filename), dstLib);
         }
 
 
-        public TypeLibrary Load(IPlatform platform, string module)
+        public TypeLibrary Load(IPlatform platform, string module, TypeLibrary dstLib)
         {
             this.platform = platform;
             this.tlLoader = new TypeLibraryDeserializer(platform, true);
+            this.moduleName = module;
             tlLoader.SetModuleName(module);
             for (;;)
             {
@@ -68,7 +75,7 @@ namespace Reko.Environments.Windows
                 ParseLine();
 
             }
-            return tlLoader.BuildLibrary();
+            return tlLoader.BuildLibrary(dstLib);
         }
 
  
@@ -105,6 +112,7 @@ namespace Reko.Environments.Windows
                 var sig = deser.Deserialize(ssig, new Frame(PrimitiveType.Word16));
                 var svc = new SystemService
                 {
+                    ModuleName = moduleName.ToUpper(),
                     Name = fnName,
                     Signature = sig
                 };

@@ -51,8 +51,11 @@ namespace Reko.Core
         {
             foreach (var module in project.MetadataFiles.Where(m => m.TypeLibrary != null))
             {
+                ModuleDescriptor mod;
+                if (!module.TypeLibrary.Modules.TryGetValue(module.ModuleName, out mod))
+                    continue;
                 SystemService svc;
-                if (module.TypeLibrary.ServicesByName.TryGetValue(importName, out svc))
+                if (mod.ServicesByName.TryGetValue(importName, out svc))
                 {
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
@@ -63,11 +66,13 @@ namespace Reko.Core
         public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var module in project.MetadataFiles.Where(m =>
-                string.Compare(m.ModuleName, moduleName, true) == 0 && //$BUGBUG: platform-dependent string comparison.
                 m.TypeLibrary != null))
             {
+                ModuleDescriptor mod;
+                if (!module.TypeLibrary.Modules.TryGetValue(module.ModuleName, out mod))
+                    continue;
                 SystemService svc;
-                if (module.TypeLibrary.ServicesByVector.TryGetValue(ordinal, out svc))
+                if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
                 {
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }

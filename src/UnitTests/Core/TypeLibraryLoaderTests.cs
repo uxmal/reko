@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-            var lib = tlLdr.Load(slib);
+            var lib = tlLdr.Load(slib, new TypeLibrary());
 
             mr.VerifyAll();
             Assert.AreEqual(
@@ -172,8 +172,8 @@ namespace Reko.UnitTests.Core
             var lib = tlLDr.Load(slib);
 
             mr.VerifyAll();
-            Assert.AreEqual(1, lib.ServicesByVector.Count);
-            Assert.IsNotNull(lib.ServicesByVector[2]);
+            Assert.AreEqual(1, lib.Modules[""].ServicesByVector.Count);
+            Assert.IsNotNull(lib.Modules[""].ServicesByVector[2]);
         }
     }
 }

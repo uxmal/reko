@@ -38,6 +38,7 @@ namespace Reko.Environments.Windows
         private Token bufferedTok;
         private string filename;
         private IPlatform platform;
+        private string moduleName;
 
         public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
         {
@@ -47,17 +48,24 @@ namespace Reko.Environments.Windows
             this.bufferedTok = null;
         }
 
+        [Obsolete]
         public override TypeLibrary Load(IPlatform platform)
+        {
+            return Load(platform, new TypeLibrary());
+        }
+
+        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             this.platform = platform;
             var loader = new TypeLibraryDeserializer(platform, true);
-            loader.SetModuleName(DefaultModuleName(filename));
+            this.moduleName = DefaultModuleName(filename);
+            loader.SetModuleName(moduleName);
             for (;;)
             {
                 var tok = Get();
                 switch (tok.Type)
                 {
-                case TokenType.EOF: return loader.BuildLibrary();
+                case TokenType.EOF: return loader.BuildLibrary(dstLib);
                 case TokenType.EXPORTS: ParseExports(loader); break;
                 case TokenType.LIBRARY: ParseLibrary(loader); break;
                 default: throw new NotImplementedException(
@@ -74,7 +82,7 @@ namespace Reko.Environments.Windows
             return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
         }
 
-        private void ParseExports(TypeLibraryDeserializer lib)
+        private void ParseExports(TypeLibraryDeserializer deserializer)
         {
             while (Peek().Type == TokenType.Id)
             {
@@ -95,16 +103,17 @@ namespace Reko.Environments.Windows
 
                 var svc = new SystemService
                 {
+                    ModuleName = moduleName,
                     Name = entryName,
-                    Signature = ParseSignature(entryName, lib),
+                    Signature = ParseSignature(entryName, deserializer),
                 };
                 Debug.Print("Loaded {0} @ {1}", entryName, ordinal);
                 if (ordinal != -1)
                 {
                     svc.SyscallInfo = new SyscallInfo { Vector = ordinal };
-                    lib.LoadService(ordinal, svc);
+                    deserializer.LoadService(ordinal, svc);
                 }
-                lib.LoadService(entryName, svc);
+                deserializer.LoadService(entryName, svc);
             }
         }
 
@@ -112,7 +121,7 @@ namespace Reko.Environments.Windows
         {
             if (Peek().Type == TokenType.Id)
             {
-                lib.SetModuleName(Get().Text);
+                moduleName = Get().Text;
             }
             if (PeekAndDiscard(TokenType.BASE))
             {

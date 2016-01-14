@@ -381,7 +381,6 @@ namespace Reko.Core.Serialization
             return new MetadataFile
             {
                 Filename = filename,
-                ModuleName = typeLib.ModuleName,
                 TypeLibrary = typeLib
             };
         }

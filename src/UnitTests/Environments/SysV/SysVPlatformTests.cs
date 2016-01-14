@@ -46,6 +46,8 @@ namespace Reko.UnitTests.Environments.SysV
             var cfgSvc = mr.Stub<IConfigurationService>();
             sc.AddService<IConfigurationService>(cfgSvc);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            cfgSvc.Stub(c => c.GetInstallationRelativePath("libc.xml"))
+                .Return("libc.xml");
             cfgSvc.Stub(c => c.GetEnvironment(null))
                 .IgnoreArguments()
                 .Return(new OperatingEnvironmentElement
@@ -79,7 +81,7 @@ namespace Reko.UnitTests.Environments.SysV
                         }
                     }
                 });
-            tlSvc.Stub(t => t.LoadLibrary(null, null))
+            tlSvc.Stub(t => t.LoadLibrary(null, null, null))
                 .IgnoreArguments()
                 .Return(new TypeLibrary
                 {

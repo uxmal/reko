@@ -67,10 +67,10 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
             services.Stub(s => s.GetService(typeof(CancellationTokenSource))).Return(null);
             services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(new FileSystemServiceImpl());
-            tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
-                .Do(new Func<IPlatform, string, TypeLibrary>((p, n) =>
+            tlSvc.Stub(t => t.LoadLibrary(null, null, null)).IgnoreArguments()
+                .Do(new Func<IPlatform, string, TypeLibrary, TypeLibrary>((p, n, l) =>
                 {
-                    var lib = TypeLibrary.Load(p, Path.ChangeExtension(n, ".xml"), fsSvc);
+                    var lib = TypeLibrary.Load(p, Path.ChangeExtension(n, ".xml"), fsSvc, l);
                     return lib;
                 }));
             services.Replay();

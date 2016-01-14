@@ -42,7 +42,6 @@ namespace Reko.Environments.MacOS
             : base(services, arch, "macOs")
         {
             encoding = new MacOsRomanEncoding();
-            LoadMacOsServices();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -57,12 +56,16 @@ namespace Reko.Environments.MacOS
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            if (TypeLibs.Length == 0)
-                return null;
-            SystemService svc;
-            this.TypeLibs[0].ServicesByVector.TryGetValue(vector&0xFFFF , out svc);
-            return svc;
+            base.EnsureTypeLibraries(base.PlatformIdentifier);
+            foreach (var module in this.Metadata.Modules.Values)
+            {
+                SystemService svc;
+                if (module.ServicesByVector.TryGetValue(vector & 0xFFFF, out svc));
+                    return svc;
+            }
+            return null;
         }
+
 
         public override string DefaultCallingConvention
         {
@@ -91,6 +94,7 @@ namespace Reko.Environments.MacOS
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }
+
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
             return null;
@@ -104,17 +108,6 @@ namespace Reko.Environments.MacOS
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             return base.LookupProcedureByOrdinal(moduleName, ordinal);
-        }
-
-        public void LoadMacOsServices()
-        {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var envCfg = cfgSvc.GetEnvironment("macOs");
-            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-            this.TypeLibs = ((IEnumerable)envCfg.TypeLibraries)
-                .OfType<ITypeLibraryElement>()
-                .Select(tl => tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name)))
-                .Where(tl => tl != null).ToArray();
         }
     }
 }

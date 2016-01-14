@@ -27,7 +27,8 @@ namespace Reko.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
-        TypeLibrary LoadLibrary(IPlatform platform, string name);
+        [Obsolete]TypeLibrary LoadLibrary(IPlatform platform, string name);
+        TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary libDst);
 
         string InstalledFileLocation(string name);
 
@@ -49,7 +50,13 @@ namespace Reko.Core.Services
             this.services = services;
         }
 
-        public TypeLibrary LoadLibrary(IPlatform platform, string name)
+        [Obsolete]public TypeLibrary LoadLibrary(IPlatform platform, string name)
+        {
+            var tl = new TypeLibrary();
+            return LoadLibrary(platform, name, tl);
+        }
+        
+        public TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary dstLib)
         {
             try
             {
@@ -58,7 +65,7 @@ namespace Reko.Core.Services
                     return null;
 
                 var fsSvc = services.RequireService<IFileSystemService>();
-                var lib = TypeLibrary.Load(platform, libFileName, fsSvc);
+                var lib = TypeLibrary.Load(platform, libFileName, fsSvc, dstLib);
                 return lib;
             }
             catch

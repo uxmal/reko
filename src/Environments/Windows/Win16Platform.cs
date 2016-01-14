@@ -35,8 +35,6 @@ namespace Reko.Environments.Windows
 {
     public class Win16Platform : Platform
     {
-        private TypeLibrary[] typelibs;
-
         public Win16Platform(IServiceProvider services, IProcessorArchitecture arch) 
             : base(services, arch, "win16")
         {
@@ -97,7 +95,7 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries();
-            foreach (var tl in typelibs.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
+            foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
                 SystemService svc;
                 if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
@@ -110,8 +108,9 @@ namespace Reko.Environments.Windows
 
         public void EnsureTypeLibraries()
         {
-            if (typelibs == null)
-            {
+            throw new NotImplementedException();
+            //$BUG: implement this
+            /*
                 var cfgSvc = Services.RequireService<IConfigurationService>();
                 var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
@@ -120,7 +119,7 @@ namespace Reko.Environments.Windows
                     .Select(tl => new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
                                     .Load(this, tl.Module))
                     .Where(tl => tl != null).ToArray();
-            }
+            */
         }
     }
 }

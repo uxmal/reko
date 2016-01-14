@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Mocks
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "fake")
         {
-            TypeLibs = new TypeLibrary[0];
+            Metadata = new TypeLibrary();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
