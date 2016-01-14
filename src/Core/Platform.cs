@@ -56,7 +56,16 @@ namespace Reko.Core
         ProcedureSerializer CreateProcedureSerializer();
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         SymbolTable CreateSymbolTable();
+
+        /// <summary>
+        /// Given a C basic type, returns the number of bytes that type is
+        /// represented with on this platform.
+        /// </summary>
+        /// <param name="cb">A C Basic type, like int, float etc.</param>
+        /// <returns>Number of bytes used by this platform.
+        /// </returns>
         int GetByteSizeFromCBasicType(CBasicType cb);
+
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
@@ -204,13 +213,6 @@ namespace Reko.Core
             }
         }
 
-        /// <summary>
-        /// Given a C basic type, returns the number of bytes that type is
-        /// represented with on this platform.
-        /// </summary>
-        /// <param name="cb">A C Basic type, like int, float etc.</param>
-        /// <returns>Number of bytes used by this platform.
-        /// </returns>
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
 
         public IDictionary<string, DataType> GetTypedefs()

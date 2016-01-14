@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core.CLanguage;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +31,19 @@ namespace Reko.Core.CLanguage.UnitTests
     [TestFixture]
     public class EnumEvaluatorTests
     {
+        private MockRepository mr;
         private EnumEvaluator enev;
         private Dictionary<string, int> constants;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Replay();
             constants = new Dictionary<string, int>();
-            enev = new EnumEvaluator(new CConstantEvaluator(constants));
+            enev = new EnumEvaluator(new CConstantEvaluator(platform, constants));
         }
 
         [Test]

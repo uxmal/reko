@@ -59,6 +59,7 @@ namespace Reko.Core
         {
             return Load(sLib, new TypeLibrary());
         }
+
         public TypeLibrary Load(SerializedLibrary sLib, TypeLibrary dstLib)
         {
             moduleName = sLib.ModuleName;
