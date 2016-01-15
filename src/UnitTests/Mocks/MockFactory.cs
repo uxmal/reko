@@ -25,15 +25,22 @@ using Rhino.Mocks;
 
 namespace Reko.UnitTests.Mocks
 {
+    /// <summary>
+    /// Utility class to simplify common unit test setup tasks.
+    /// </summary>
     public class MockFactory
     {
         private MockRepository mr;
 
-		public MockFactory()
+		public MockFactory(MockRepository mr)
 		{
-            this.mr = new MockRepository();
+            this.mr = mr;
 		}
 
+        /// <summary>
+        /// Create a deserializer that doesn't depend on TypeLibrary.
+        /// </summary>
+        /// <returns></returns>
         public ISerializedTypeVisitor<DataType> CreateDeserializer()
         {
             var deserializer = mr.Stub<ISerializedTypeVisitor<DataType>>();
@@ -48,11 +55,5 @@ namespace Reko.UnitTests.Mocks
 
             return deserializer;
         }
-
-        public void ReplayAll()
-        {
-            mr.ReplayAll();
-        }
-
     }
 }

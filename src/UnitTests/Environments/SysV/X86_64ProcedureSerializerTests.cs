@@ -30,12 +30,14 @@ using Reko.UnitTests.Mocks;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Environments.SysV
 {
     [TestFixture]
     public class X86_64ProcedureSerializerTests
     {
+        private MockRepository mr;
         private MockFactory mockFactory;
         private X86ArchitectureFlat64 arch;
         private X86_64ProcedureSerializer ser;
@@ -45,7 +47,8 @@ namespace Reko.UnitTests.Environments.SysV
         [SetUp]
         public void Setup()
         {
-            mockFactory = new MockFactory();
+            mr = new MockRepository();
+            mockFactory = new MockFactory(mr);
             arch = new X86ArchitectureFlat64();
             platform = new SysVPlatform(null, arch);
         }
@@ -73,7 +76,7 @@ namespace Reko.UnitTests.Environments.SysV
         {
             Given_ProcedureSerializer();
 
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = new ProcedureSignature(
                 new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx")),
@@ -95,7 +98,7 @@ namespace Reko.UnitTests.Environments.SysV
             Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer();
 
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
@@ -117,7 +120,7 @@ namespace Reko.UnitTests.Environments.SysV
             Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer();
 
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("rax", sproc.Signature.ReturnValue.Name);
@@ -136,7 +139,7 @@ namespace Reko.UnitTests.Environments.SysV
             };
             Given_ProcedureSerializer();
 
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("Register int test(Register word128 xmm0)", sig.ToString("test"));
@@ -178,7 +181,7 @@ namespace Reko.UnitTests.Environments.SysV
             };
             Given_ProcedureSerializer();
 
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("xmm0", sig.ReturnValue.Storage.ToString());
@@ -199,7 +202,7 @@ namespace Reko.UnitTests.Environments.SysV
                 }
             };
             Given_ProcedureSerializer();
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(0, sig.StackDelta);
@@ -250,7 +253,7 @@ namespace Reko.UnitTests.Environments.SysV
             };
             Given_ProcedureSerializer();
 
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var args = sig.Parameters;

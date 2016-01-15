@@ -30,12 +30,14 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 using Reko.Environments.Windows;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class X86ProcedureSerializerTests
     {
+        private MockRepository mr;
         private MockFactory mockFactory;
         private IntelArchitecture arch;
         private X86ProcedureSerializer ser;
@@ -45,7 +47,8 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            mockFactory = new MockFactory();
+            mr = new MockRepository();
+            mockFactory = new MockFactory(mr);
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             platform = new Win32Platform(null, arch);
         }
@@ -88,7 +91,7 @@ namespace Reko.UnitTests.Arch.Intel
                 new Identifier(Registers.es.Name, Registers.es.DataType, Registers.es),
                 new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx)));
             Given_ProcedureSerializer("stdapi");
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             SerializedSignature ssig = ser.Serialize(new ProcedureSignature(seq, new Identifier[0]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
@@ -100,7 +103,7 @@ namespace Reko.UnitTests.Arch.Intel
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer("stdapi");
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             Procedure_v1 sproc =  ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
@@ -121,7 +124,7 @@ namespace Reko.UnitTests.Arch.Intel
             
             Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer("stdapi");
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);
@@ -139,7 +142,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer("stdapi");
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
@@ -184,7 +187,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer("stdapi");
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(1, sig.FpuStackDelta);
@@ -206,7 +209,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
 
             Given_ProcedureSerializer("stdcall");
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("ecx", sig.Parameters[0].ToString());
@@ -227,7 +230,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, sig.StackDelta);
@@ -248,7 +251,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
@@ -275,7 +278,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
-            mockFactory.ReplayAll();
+            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
