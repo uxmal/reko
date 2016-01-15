@@ -173,7 +173,7 @@ namespace Reko.Core
 
         public ProcedureSerializer CreateProcedureSerializer()
         {
-            var typeLoader = new TypeLibraryDeserializer(this, true);
+            var typeLoader = new TypeLibraryDeserializer(this, true, Metadata);
             return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
         }
 

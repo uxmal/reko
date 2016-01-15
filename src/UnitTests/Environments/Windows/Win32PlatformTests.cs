@@ -153,6 +153,9 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void Win32_SignatureFromName_stdcall()
         {
+            Given_TypeLibraryLoaderService();
+            Given_Configuration_With_Win32_Element();
+
             var fnName = "_foo@4";
             When_Creating_Win32_Platform();
 

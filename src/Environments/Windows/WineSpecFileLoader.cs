@@ -58,11 +58,10 @@ namespace Reko.Environments.Windows
             return Load(platform, DefaultModuleName(filename), dstLib);
         }
 
-
         public TypeLibrary Load(IPlatform platform, string module, TypeLibrary dstLib)
         {
             this.platform = platform;
-            this.tlLoader = new TypeLibraryDeserializer(platform, true);
+            this.tlLoader = new TypeLibraryDeserializer(platform, true, dstLib);
             this.moduleName = module;
             tlLoader.SetModuleName(module);
             for (;;)
@@ -75,7 +74,7 @@ namespace Reko.Environments.Windows
                 ParseLine();
 
             }
-            return tlLoader.BuildLibrary(dstLib);
+            return dstLib;
         }
 
  

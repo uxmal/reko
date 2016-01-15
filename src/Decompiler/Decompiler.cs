@@ -436,8 +436,8 @@ namespace Reko
                 .Where(sc => sc != null && sc.Signature != null)
                 .Select(sc =>
                 {
-                    var sser = program.Platform.CreateProcedureSerializer(
-                        new TypeLibraryDeserializer(program.Platform, true), null);
+                //$BUG: need access to platform.Metadata.
+                    var sser = program.Platform.CreateProcedureSerializer();
                     Address addr;
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
                     {

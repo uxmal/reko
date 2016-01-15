@@ -477,9 +477,7 @@ namespace Reko.Scanning
             var proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
-                var sser = program.Platform.CreateProcedureSerializer(
-                    new TypeLibraryDeserializer(program.Platform, true),
-                    program.Platform.DefaultCallingConvention);
+                var sser = program.Platform.CreateProcedureSerializer();
                 proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
             }
             if (sp.Characteristics != null)

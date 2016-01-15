@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
         }
 
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core
             Given_Arch_PointerDataType(PrimitiveType.Pointer32);
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Procedures = {
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-            var lib = tlLdr.Load(slib, new TypeLibrary());
+            var lib = tlLdr.Load(slib);
 
             mr.VerifyAll();
             Assert.AreEqual(
@@ -155,10 +155,10 @@ namespace Reko.UnitTests.Core
         {  
             Given_ArchitectureStub();
             mr.ReplayAll();
-            var tlLDr = new TypeLibraryDeserializer(platform, true);
+            var tlLDr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary {
                 Procedures = {
-                    new Procedure_v1 {
+                    new SerializedService {
                         Name="foo",
                         Ordinal=2,
                         Signature = new SerializedSignature {

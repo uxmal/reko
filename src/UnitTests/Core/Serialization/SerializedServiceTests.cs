@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core.Serialization
 		[Test]
 		public void SserBuild()
 		{
-			SystemService ssvc = svc.Build(platform);
+			SystemService ssvc = svc.Build(platform, new TypeLibrary());
 			
 			Assert.AreEqual(svc.Name, ssvc.Name);
 			Assert.AreEqual(0x21, ssvc.SyscallInfo.Vector);

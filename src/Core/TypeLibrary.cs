@@ -99,8 +99,8 @@ namespace Reko.Core
 
         public static TypeLibrary Load(IPlatform platform, SerializedLibrary slib, TypeLibrary dstLib)
         {
-            var tlldr = new TypeLibraryDeserializer(platform, true);
-            var tlib = tlldr.Load(slib, dstLib);
+            var tlldr = new TypeLibraryDeserializer(platform, true, dstLib);
+            var tlib = tlldr.Load(slib);
             return tlib;
         }
 

@@ -156,20 +156,33 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
+            EnsureTypeLibraries(PlatformIdentifier);
             ModuleDescriptor mod;
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
-                return null;
-            SystemService svc;
-            if (mod.ServicesByName.TryGetValue(procName, out svc))
+            if (Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
             {
-                return new ExternalProcedure(svc.Name, svc.Signature);
+                SystemService svc;
+                if (mod.ServicesByName.TryGetValue(procName, out svc))
+                {
+                    return new ExternalProcedure(svc.Name, svc.Signature);
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
-                return null;
+            {
+                ProcedureSignature sig;
+                if (Metadata.Signatures.TryGetValue(procName, out sig))
+                    return new ExternalProcedure(procName, sig);
+                else
+                    return null;
+            }
         }
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
+            EnsureTypeLibraries(PlatformIdentifier);
             ModuleDescriptor mod;
             if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
                 return null;
@@ -194,9 +207,10 @@ namespace Reko.Environments.Windows
 
         public override ProcedureSignature SignatureFromName(string fnName)
         {
+            EnsureTypeLibraries(PlatformIdentifier); 
             return SignatureGuesser.SignatureFromName(
                 fnName, 
-                new TypeLibraryDeserializer(this, true),
+                new TypeLibraryDeserializer(this, true, Metadata),
                 this);
         }
 	}

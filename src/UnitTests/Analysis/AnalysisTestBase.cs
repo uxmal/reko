@@ -125,7 +125,18 @@ namespace Reko.UnitTests.Analysis
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
             var sc = new ServiceContainer();
+            var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
+            var env = MockRepository.GenerateStub<OperatingEnvironment>();
+            var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            cfgSvc.Replay();
+            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            env.Replay();
+            tlSvc.Replay();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             Program program;
             Assembler asm = new X86TextAssembler(sc, arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))

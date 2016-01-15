@@ -147,7 +147,7 @@ namespace Reko.Environments.Windows
         {
             return SignatureGuesser.SignatureFromName(
                 fnName,
-                new TypeLibraryDeserializer(this, true),
+                new TypeLibraryDeserializer(this, true, Metadata),
                 this);
         }
     }

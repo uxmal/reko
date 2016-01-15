@@ -57,7 +57,7 @@ namespace Reko.Environments.Windows
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             this.platform = platform;
-            var loader = new TypeLibraryDeserializer(platform, true);
+            var loader = new TypeLibraryDeserializer(platform, true, dstLib);
             this.moduleName = DefaultModuleName(filename);
             loader.SetModuleName(moduleName);
             for (;;)
@@ -65,7 +65,7 @@ namespace Reko.Environments.Windows
                 var tok = Get();
                 switch (tok.Type)
                 {
-                case TokenType.EOF: return loader.BuildLibrary(dstLib);
+                case TokenType.EOF: return dstLib;
                 case TokenType.EXPORTS: ParseExports(loader); break;
                 case TokenType.LIBRARY: ParseLibrary(loader); break;
                 default: throw new NotImplementedException(

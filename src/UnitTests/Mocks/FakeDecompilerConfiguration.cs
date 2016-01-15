@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Mocks
 
         public OperatingEnvironment GetEnvironment(string envName)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public RawFileElement GetRawFile(string rawFileFormat)
