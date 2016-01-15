@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Core
             };
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
             var platform = new SysVPlatform(null, arch);
-            var lib = TypeLibrary.Load(platform, slib);
+            var lib = TypeLibrary.Load(platform, slib, new TypeLibrary());
             Assert.AreEqual(PrimitiveType.Int32, lib.LookupType("int"));
         }
 	}

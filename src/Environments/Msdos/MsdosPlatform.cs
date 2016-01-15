@@ -39,7 +39,6 @@ namespace Reko.Environments.Msdos
 
 		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos")
 		{
-			LoadRealmodeServices(arch);
 		}
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -59,8 +58,15 @@ namespace Reko.Environments.Msdos
             return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
         }
 
-		public override SystemService FindService(int vector, ProcessorState state)
+        public override void EnsureTypeLibraries(string envName)
+        {
+            base.EnsureTypeLibraries(envName);
+            LoadRealmodeServices(Architecture);
+        }
+
+        public override SystemService FindService(int vector, ProcessorState state)
 		{
+            EnsureTypeLibraries(PlatformIdentifier);
 			foreach (SystemService svc in realModeServices)
 			{
 				if (svc.SyscallInfo.Matches(vector, state))
@@ -120,7 +126,7 @@ namespace Reko.Environments.Msdos
 
             realModeServices = lib.Procedures
                 .Cast<SerializedService>()
-                .Select(s => s.Build(this))
+                .Select(s => s.Build(this, Metadata))
                 .ToArray();
         }
 

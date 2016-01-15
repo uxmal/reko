@@ -30,34 +30,29 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Knows how to persist and depersist Decompiler type libraries (which are just XML files).
+    /// Knows how to deserialize Reko type libraries and add types and 
+    /// functions into a TypeLibrary.
     /// </summary>
-    public class TypeLibraryLoader : ISerializedTypeVisitor<DataType>
+    public class TypeLibraryDeserializer : ISerializedTypeVisitor<DataType>
     {
         private IPlatform platform;
-        private Dictionary<string, DataType> types;
+        private IDictionary<string, DataType> types;
         private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
-        private Dictionary<string, ProcedureSignature> signaturesByName;
         private string defaultConvention;
-        private Dictionary<string, SystemService> servicesByName;
-        private Dictionary<int, SystemService> servicesByOrdinal;
         private string moduleName;
+        private TypeLibrary library;
 
-        public TypeLibraryLoader(IPlatform platform, bool caseInsensitive)
+        public TypeLibraryDeserializer(IPlatform platform, bool caseInsensitive, TypeLibrary dstLib)
         {
+            if (dstLib == null)
+                throw new ArgumentNullException("dstLib");
             this.platform = platform;
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
-            this.types = new Dictionary<string, DataType>(cmp)
-            {
-                { "va_list", platform.FramePointerType } ,  
-                { "size_t", platform.Architecture.WordWidth },
-            };
-            this.signaturesByName = new Dictionary<string, ProcedureSignature>(cmp);
+            this.library = dstLib;
+            types = dstLib.Types;
             this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
-            this.servicesByName = new Dictionary<string, SystemService>(cmp);
-            this.servicesByOrdinal = new Dictionary<int, SystemService>();
         }
 
         public TypeLibrary Load(SerializedLibrary sLib)
@@ -66,22 +61,19 @@ namespace Reko.Core
             ReadDefaults(sLib.Defaults);
             LoadTypes(sLib);
             LoadProcedures(sLib);
-            return BuildLibrary();
+            return library;
         }
 
-        public TypeLibrary BuildLibrary()
+        private ModuleDescriptor EnsureModule(string moduleName, TypeLibrary dstLib)
         {
-            var lib = new TypeLibrary(types, signaturesByName);
-            lib.ModuleName = moduleName;
-            foreach (var de in servicesByName)
+            ModuleDescriptor mod;
+            moduleName = moduleName ?? "";
+            if (!dstLib.Modules.TryGetValue(moduleName, out mod))
             {
-                lib.ServicesByName.Add(de.Key, de.Value);
+                mod = new ModuleDescriptor(moduleName);
+                dstLib.Modules.Add(moduleName, mod);
             }
-            foreach (var de in servicesByOrdinal)
-            {
-                lib.ServicesByVector.Add(de.Key, de.Value);
-            }
-            return lib;
+            return mod;
         }
 
         private void LoadProcedures(SerializedLibrary serializedLibrary)
@@ -110,13 +102,19 @@ namespace Reko.Core
             {
                 var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
                 var signature = sser.Deserialize(sp.Signature, platform.Architecture.CreateFrame());
-                signaturesByName[sp.Name] =  signature;   //$BUGBUG: catch dupes?   
+                library.Signatures[sp.Name] = signature;
+                var mod = EnsureModule(this.moduleName, this.library);
+                var svc = new SystemService
+                {
+                    ModuleName = mod.ModuleName,
+                    Name = sp.Name,
+                    Signature = signature,
+                };
+                mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
+
                 if (sp.Ordinal != Procedure_v1.NoOrdinal)
                 {
-                    servicesByOrdinal[sp.Ordinal] = new SystemService { 
-                        Name = sp.Name,
-                        Signature = signature,
-                    };
+                    mod.ServicesByVector[sp.Ordinal] = svc;
                 }
             }
             catch (Exception ex)
@@ -130,8 +128,20 @@ namespace Reko.Core
 
         public void LoadService(SerializedService ssvc)
         {
-            var svc = ssvc.Build(platform);
-            servicesByOrdinal[svc.SyscallInfo.Vector] = svc;
+            var svc = ssvc.Build(platform, this.library);
+            LoadService(svc.SyscallInfo.Vector, svc);
+        }
+
+        public void LoadService(string entryName, SystemService svc)
+        {
+            var mod = EnsureModule(svc.ModuleName, this.library);
+            mod.ServicesByName.Add(entryName, svc);
+        }
+
+        public void LoadService(int ordinal, SystemService svc)
+        {
+            var mod = EnsureModule(svc.ModuleName, this.library);
+            mod.ServicesByVector.Add(ordinal, svc);
         }
 
         private void LoadTypes(SerializedLibrary serializedLibrary)
@@ -279,19 +289,9 @@ namespace Reko.Core
             return VoidType.Instance;
         }
 
-        public void LoadService(string entryName, SystemService svc)
-        {
-            this.servicesByName[entryName] = svc;
-        }
-
         public void SetModuleName(string libName)
         {
             this.moduleName = libName;
-        }
-
-        public void LoadService(int ordinal, SystemService svc)
-        {
-            this.servicesByOrdinal[ordinal] = svc;
         }
     }
 }

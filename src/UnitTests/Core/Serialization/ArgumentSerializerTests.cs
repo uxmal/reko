@@ -47,7 +47,10 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
 			arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(sc, arch);
-			sigser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "stdapi");
+			sigser = new X86ProcedureSerializer(
+                arch, 
+                new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
+                "stdapi");
             argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame(), null);
 		}
 

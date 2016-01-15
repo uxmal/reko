@@ -18,42 +18,36 @@
  */
 #endregion
 
-using Reko.Core;
-using System;
+ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Reko.Core
 {
-    /// <summary>
-    /// Base class for files that know how to load metadata from some file format.
-    /// </summary>
-    public abstract class MetadataLoader
+    public class ModuleDescriptor
     {
-        public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)
+        public ModuleDescriptor(string name)
         {
+            this.ModuleName = name;
+            this.ServicesByName = new Dictionary<string, SystemService>();
+            this.ServicesByVector = new Dictionary<int, SystemService>();
         }
 
-       [Obsolete] public abstract TypeLibrary Load(IPlatform platform);
-        public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
-    }
-
-    public class NullMetadataLoader : MetadataLoader
-    {
-        public NullMetadataLoader()
-            : base(null, "", new byte[0])
+        public ModuleDescriptor(ModuleDescriptor other)
         {
+            this.ModuleName = other.ModuleName;
+            this.ServicesByName = new Dictionary<string, SystemService>(other.ServicesByName);
+            this.ServicesByVector = new Dictionary<int, SystemService>(other.ServicesByVector);
         }
 
-        [Obsolete] public override TypeLibrary Load(IPlatform platform)
-        {
-            return new TypeLibrary();
-        }
+        public string ModuleName { get; private set; }
+        public IDictionary<string, SystemService> ServicesByName { get; private set; }
+        public IDictionary<int, SystemService> ServicesByVector { get; private set; }
 
-        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
+        public ModuleDescriptor Clone()
         {
-            return dstLib;
+            return new ModuleDescriptor(this);
         }
     }
 }

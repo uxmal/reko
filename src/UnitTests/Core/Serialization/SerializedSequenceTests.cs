@@ -51,7 +51,10 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_X86ProcedureSerializer()
         {
-            this.ser = new X86ProcedureSerializer((IntelArchitecture) platform.Architecture, new TypeLibraryLoader(platform, true), "stdapi");
+            this.ser = new X86ProcedureSerializer(
+                (IntelArchitecture) platform.Architecture,
+                new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
+                "stdapi");
         }
 
 		[Test]

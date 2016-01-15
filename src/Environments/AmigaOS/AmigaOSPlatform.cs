@@ -77,6 +77,7 @@ namespace Reko.Environments.AmigaOS
 
         public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {
+            EnsureTypeLibraries(PlatformIdentifier);
             if (!a6Pattern.Match(rtl))
                 return null;
             var reg = ((Identifier) a6Pattern.CapturedExpressions("addrReg")).Storage as RegisterStorage;
@@ -84,7 +85,7 @@ namespace Reko.Environments.AmigaOS
             if (reg != Registers.a6)
                 return null;
             if (funcs == null)
-                funcs = LoadLibraryDef("exec", 33);
+                funcs = LoadLibraryDef("exec", 33, Metadata);
             SystemService svc;
             return funcs.TryGetValue(offset, out svc) ? svc : null;
         }
@@ -127,13 +128,13 @@ namespace Reko.Environments.AmigaOS
             return Address.Ptr32(c.ToUInt32());
         }
 
-        private Dictionary<int, SystemService> LoadLibraryDef(string lib_name, int version)
+        private Dictionary<int, SystemService> LoadLibraryDef(string lib_name, int version, TypeLibrary libDst)
         {
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             var fsSvc = Services.RequireService<IFileSystemService>();
             var sser = new M68kProcedureSerializer(
                 (M68kArchitecture)Architecture,
-                new TypeLibraryLoader(this, true),
+                new TypeLibraryDeserializer(this, true, libDst),
                 DefaultCallingConvention);
 
             using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation( lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))

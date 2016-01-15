@@ -131,26 +131,23 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            var ep = TypeLibs.Select(t => t.Lookup(procName))
-                .Where(sig => sig != null)
-                .Select(s => new ExternalProcedure(procName, s))
-                .FirstOrDefault();
-            if (ep != null)
+            ModuleDescriptor mod;
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+                return null;
+            SystemService svc;
+            if (mod.ServicesByName.TryGetValue(procName, out svc))
             {
-                var ch = CharacteristicsLibs
-                    .Select(c => c.Lookup(ep.Name))
-                    .FirstOrDefault();
-                ep.Characteristics = ch;
+                return new ExternalProcedure(svc.Name, svc.Signature);
             }
-            return ep;
+            else
+                return null;
         }
 
         public override ProcedureSignature SignatureFromName(string fnName)
         {
             return SignatureGuesser.SignatureFromName(
                 fnName,
-                new TypeLibraryLoader(this, true),
+                new TypeLibraryDeserializer(this, true, Metadata),
                 this);
         }
     }

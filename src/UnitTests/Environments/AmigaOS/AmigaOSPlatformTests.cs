@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Environments.AmigaOS
 {
@@ -53,9 +54,15 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.fsSvc = mr.StrictMock<IFileSystemService>();
             this.tllSvc = mr.Stub<ITypeLibraryLoaderService>();
             this.services = mr.StrictMock<IServiceProvider>();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var env = mr.Stub<OperatingEnvironment>();
             this.arch = new M68kArchitecture();
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
+            cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(env);
+            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            this.services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(cfgSvc);
             this.services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(fsSvc);
             this.services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tllSvc);
             this.frame = new Frame(arch.FramePointerType);

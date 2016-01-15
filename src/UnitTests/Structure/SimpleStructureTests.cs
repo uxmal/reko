@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sourceFilename, string outFilename)
         {
-            RunTest16(sourceFilename, outFilename, Address.SegPtr(0xC00, 0));
+            RunTestMsdos(sourceFilename, outFilename, Address.SegPtr(0xC00, 0));
         }
 
         private void RunTest(ProcedureBuilder mock, string outFilename)
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Structure
             }
         }
 
-        private void RunTest16(string sourceFilename, string outFilename, Address addrBase)
+        private void RunTestMsdos(string sourceFilename, string outFilename, Address addrBase)
         {
             using (FileUnitTester fut = new FileUnitTester(outFilename))
             {

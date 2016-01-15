@@ -26,29 +26,37 @@ using Reko.Core.Serialization;
 using Reko.Environments.SysV;
 using Reko.Core.Types;
 using Reko.UnitTests.Core.Serialization;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Environments.SysV
 {
     [TestFixture]
     public class X86_64ProcedureSerializerTests
     {
+        private MockRepository mr;
+        private MockFactory mockFactory;
         private X86ArchitectureFlat64 arch;
         private X86_64ProcedureSerializer ser;
         private SysVPlatform platform;
+        private ISerializedTypeVisitor<DataType> deserializer;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
+            mockFactory = new MockFactory(mr);
             arch = new X86ArchitectureFlat64();
             platform = new SysVPlatform(null, arch);
         }
 
         private void Given_ProcedureSerializer()
         {
-            this.ser = new X86_64ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "");
+            this.deserializer = mockFactory.CreateDeserializer();
+            this.ser = new X86_64ProcedureSerializer(arch, deserializer, "");
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)
@@ -67,6 +75,9 @@ namespace Reko.UnitTests.Environments.SysV
         public void SvAmdPs_Serialize()
         {
             Given_ProcedureSerializer();
+
+            mr.ReplayAll();
+
             var sig = new ProcedureSignature(
                 new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx")),
                 new Identifier[] {
@@ -86,6 +97,9 @@ namespace Reko.UnitTests.Environments.SysV
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer();
+
+            mr.ReplayAll();
+
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
             Assert.AreEqual("00012345", sproc.Address);
@@ -105,6 +119,9 @@ namespace Reko.UnitTests.Environments.SysV
 
             Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer();
+
+            mr.ReplayAll();
+
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("rax", sproc.Signature.ReturnValue.Name);
         }
@@ -121,6 +138,9 @@ namespace Reko.UnitTests.Environments.SysV
                 }
             };
             Given_ProcedureSerializer();
+
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("Register int test(Register word128 xmm0)", sig.ToString("test"));
         }
@@ -160,6 +180,9 @@ namespace Reko.UnitTests.Environments.SysV
                 }
             };
             Given_ProcedureSerializer();
+
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("xmm0", sig.ReturnValue.Storage.ToString());
         }
@@ -179,6 +202,8 @@ namespace Reko.UnitTests.Environments.SysV
                 }
             };
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(0, sig.StackDelta);
         }
@@ -227,6 +252,9 @@ namespace Reko.UnitTests.Environments.SysV
                 }
             };
             Given_ProcedureSerializer();
+
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var args = sig.Parameters;
             Assert.AreEqual("rdi", args[0].Storage.ToString());

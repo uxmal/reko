@@ -24,31 +24,39 @@ using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Core.Serialization;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
 using Reko.Environments.Windows;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class X86ProcedureSerializerTests
     {
+        private MockRepository mr;
+        private MockFactory mockFactory;
         private IntelArchitecture arch;
         private X86ProcedureSerializer ser;
         private Win32Platform platform;
+        private ISerializedTypeVisitor<DataType> deserializer;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
+            mockFactory = new MockFactory(mr);
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             platform = new Win32Platform(null, arch);
         }
 
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), cConvention);
+            this.deserializer = mockFactory.CreateDeserializer();
+            this.ser = new X86ProcedureSerializer(arch, deserializer, cConvention);
         }
 
         [Test]
@@ -83,9 +91,10 @@ namespace Reko.UnitTests.Arch.Intel
                 new Identifier(Registers.es.Name, Registers.es.DataType, Registers.es),
                 new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx)));
             Given_ProcedureSerializer("stdapi");
+            mr.ReplayAll();
+
             SerializedSignature ssig = ser.Serialize(new ProcedureSignature(seq, new Identifier[0]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
-
         }
 
         [Test]
@@ -94,6 +103,8 @@ namespace Reko.UnitTests.Arch.Intel
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer("stdapi");
+            mr.ReplayAll();
+
             Procedure_v1 sproc =  ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
             Assert.AreEqual("00012345", sproc.Address);
@@ -113,12 +124,14 @@ namespace Reko.UnitTests.Arch.Intel
             
             Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer("stdapi");
+            mr.ReplayAll();
+
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);
         }
 
         [Test]
-        public void DeserializeFpuStackargument()
+        public void X86ps_DeserializeFpuStackargument()
         {
             var ssig = new SerializedSignature
             {
@@ -129,6 +142,8 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer("stdapi");
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
             Assert.AreEqual(4, sig.StackDelta);
@@ -172,6 +187,8 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer("stdapi");
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(1, sig.FpuStackDelta);
         }
@@ -192,6 +209,8 @@ namespace Reko.UnitTests.Arch.Intel
             };
 
             Given_ProcedureSerializer("stdcall");
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("ecx", sig.Parameters[0].ToString());
         }
@@ -211,6 +230,8 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, sig.StackDelta);
         }
@@ -230,6 +251,8 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
         }
@@ -255,6 +278,8 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
             Assert.AreEqual(0, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);

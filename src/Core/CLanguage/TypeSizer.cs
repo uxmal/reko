@@ -64,6 +64,7 @@ namespace Reko.Core.CLanguage
         {
             return 4;       //$BUGBUG: architecture dependent
         }
+
         public int VisitArray(ArrayType_v1 array)
         {
             return Align(array.ElementType.Accept(this)) * array.Length;

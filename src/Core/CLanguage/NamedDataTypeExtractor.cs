@@ -50,7 +50,7 @@ namespace Reko.Core.CLanguage
             this.specs = specs;
             this.symbolTable = converter;
             this.callingConvention = CTokenType.None;
-            this.eval = new CConstantEvaluator(converter.Constants);
+            this.eval = new CConstantEvaluator(platform, converter.Constants);
             this.basicType = CBasicType.None;
             foreach (var declspec in specs)
             {
@@ -442,7 +442,7 @@ namespace Reko.Core.CLanguage
                         : string.Format("enum_{0}", symbolTable.EnumsSeen.Count)
                 };
                 symbolTable.EnumsSeen.Add(en.Name, en);
-                var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(symbolTable.Constants));
+                var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(platform, symbolTable.Constants));
                 var listMembers = new List<SerializedEnumValue>();
                 foreach (var item in e.Enums)
                 {

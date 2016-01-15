@@ -1462,7 +1462,7 @@ l0800_17AE:
 	mov	bx,ax
 	shl	bx,01
 	jmp	word ptr cs:[bx+17B7]
-Jump table at 0800:17B7 (44 bytes)
+Code vector at 0800:17B7 (44 bytes)
 	0800:17E6
 	0800:17E6
 	0800:17E6
@@ -2307,7 +2307,7 @@ l0800_1D48:
 0800:1DA0 00 EB 09 EB 02 FF 0C B8 FF FF EB 00 5E 5D C3 00 ............^]..
 ;;; Segment 09DB (09DB:0000)
 09DB:0000 00 00 00 00                                     ....           
-Call table at 09DB:0004 (1508 bytes)
+Code vector at 09DB:0004 (1508 bytes)
 09DB:0004             54 75 72 62 6F 2D 43 20 2D 20 43 6F     Turbo-C - Co
 09DB:0010 70 79 72 69 67 68 74 20 28 63 29 20 31 39 38 38 pyright (c) 1988
 09DB:0020 20 42 6F 72 6C 61 6E 64 20 49 6E 74 6C 2E 00 4E  Borland Intl..N
@@ -2403,7 +2403,7 @@ Call table at 09DB:0004 (1508 bytes)
 09DB:05C0 0A 0A 0C 09 02 02 0D 02 11 0E 13 02 02 0F 02 08 ................
 09DB:05D0 02 02 12 02 02 02 02 02 02 02 D2 01 D2 01 D9 01 ................
 09DB:05E0 3E 0D 43 0D 43 0D 43 0D                         >.C.C.C.       
-Call table at 09DB:05E8 (616 bytes)
+Code vector at 09DB:05E8 (616 bytes)
 	0800:0000
 09DB:05E8                         00 00 00 00 00 00 00 00         ........
 09DB:05F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................

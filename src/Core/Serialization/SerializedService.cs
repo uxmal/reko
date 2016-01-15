@@ -36,29 +36,34 @@ namespace Reko.Core.Serialization
 		[XmlElement("syscallinfo")]
 		public SerializedSyscallInfo SyscallInfo;
 
-		public SystemService Build(IPlatform platform)
+		public SystemService Build(IPlatform platform, TypeLibrary library)
 		{
 			SystemService svc = new SystemService();
 			svc.Name = Name;
 			svc.SyscallInfo = new SyscallInfo();
-			svc.SyscallInfo.Vector = Convert.ToInt32(SyscallInfo.Vector, 16);
-			if (SyscallInfo.RegisterValues != null)
-			{
-				svc.SyscallInfo.RegisterValues = new RegValue[SyscallInfo.RegisterValues.Length];
-				for (int i = 0; i < SyscallInfo.RegisterValues.Length; ++i)
-				{
-                    svc.SyscallInfo.RegisterValues[i] = new RegValue
+            svc.SyscallInfo.Vector = SyscallInfo != null
+                ? Convert.ToInt32(SyscallInfo.Vector, 16)
+                : this.Ordinal;
+            if (SyscallInfo != null)
+            {
+                if (SyscallInfo.RegisterValues != null)
+                {
+                    svc.SyscallInfo.RegisterValues = new RegValue[SyscallInfo.RegisterValues.Length];
+                    for (int i = 0; i < SyscallInfo.RegisterValues.Length; ++i)
                     {
-                        Register = platform.Architecture.GetRegister(SyscallInfo.RegisterValues[i].Register),
-                        Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16),
-                    };
-				}
-			}
-			else
+                        svc.SyscallInfo.RegisterValues[i] = new RegValue
+                        {
+                            Register = platform.Architecture.GetRegister(SyscallInfo.RegisterValues[i].Register),
+                            Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16),
+                        };
+                    }
+                }
+            }
+			if (svc.SyscallInfo.RegisterValues == null)
 			{
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
-            TypeLibraryLoader loader = new TypeLibraryLoader(platform, true);
+            TypeLibraryDeserializer loader = new TypeLibraryDeserializer(platform, true, library);
 			var sser = platform.CreateProcedureSerializer(loader, "stdapi");
             svc.Signature = sser.Deserialize(Signature, platform.Architecture.CreateFrame());
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;

@@ -42,7 +42,7 @@ namespace Reko.Environments.Windows
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
 
-            //$BUG: we need a Win32Base platform, possibly with a Windows base platform, and make this
+            //$TODO: we need a Win32Base platform, possibly with a Windows base platform, and make this
             // x86-specific.
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
 		{
@@ -83,8 +83,6 @@ namespace Reko.Environments.Windows
                 }
             };
         }
-
-  
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -158,31 +156,43 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            //$REVIEW: common code with Win32_64 platform, consider pushing to base class?
             EnsureTypeLibraries(PlatformIdentifier);
-            return TypeLibs.Select(t => t.Lookup(procName))
-                .Where(sig => sig != null)
-                .Select(s => new ExternalProcedure(procName, s))
-                .FirstOrDefault();
+            ModuleDescriptor mod;
+            if (Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            {
+                SystemService svc;
+                if (mod.ServicesByName.TryGetValue(procName, out svc))
+                {
+                    return new ExternalProcedure(svc.Name, svc.Signature);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                ProcedureSignature sig;
+                if (Metadata.Signatures.TryGetValue(procName, out sig))
+                    return new ExternalProcedure(procName, sig);
+                else
+                    return null;
+            }
         }
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            return TypeLibs
-                .Where(t => string.Compare(t.ModuleName, moduleName, true) == 0)
-                .Select(t =>
-                {
-                    SystemService svc;
-                    if (t.ServicesByVector.TryGetValue(ordinal, out svc))
-                    {
-                        return new ExternalProcedure(svc.Name, svc.Signature);
-                    }
-                    else
-                        return null;
-                })
-                .Where(p => p != null)
-                .FirstOrDefault();
+            ModuleDescriptor mod;
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+                return null;
+            SystemService svc;
+            if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+            {
+                return new ExternalProcedure(svc.Name, svc.Signature);
+            }
+            else
+                return null;
         }
 
 		public override SystemService FindService(int vector, ProcessorState state)
@@ -197,9 +207,10 @@ namespace Reko.Environments.Windows
 
         public override ProcedureSignature SignatureFromName(string fnName)
         {
+            EnsureTypeLibraries(PlatformIdentifier); 
             return SignatureGuesser.SignatureFromName(
                 fnName, 
-                new TypeLibraryLoader(this, true),
+                new TypeLibraryDeserializer(this, true, Metadata),
                 this);
         }
 	}

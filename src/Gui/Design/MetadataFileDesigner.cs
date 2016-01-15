@@ -35,7 +35,11 @@ namespace Reko.Gui.Design
             base.Initialize(obj);
             var mf = (MetadataFile)obj;
             if (mf.TypeLibrary != null)
-                Host.AddComponents(obj, mf.TypeLibrary.ServicesByName.Values);
+                Host.AddComponents(
+                    obj,
+                    mf.TypeLibrary.Modules
+                        .OrderBy(de => de.Key)
+                        .SelectMany(de => de.Value.ServicesByName.Values));
             SetTreeNodeProperties(mf);
         }
 

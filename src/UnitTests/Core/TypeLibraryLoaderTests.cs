@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
         }
 
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core
             Given_Arch_PointerDataType(PrimitiveType.Pointer32);
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(platform, true);
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Procedures = {
@@ -155,10 +155,10 @@ namespace Reko.UnitTests.Core
         {  
             Given_ArchitectureStub();
             mr.ReplayAll();
-            var tlLDr = new TypeLibraryLoader(platform, true);
+            var tlLDr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary {
                 Procedures = {
-                    new Procedure_v1 {
+                    new SerializedService {
                         Name="foo",
                         Ordinal=2,
                         Signature = new SerializedSignature {
@@ -172,8 +172,8 @@ namespace Reko.UnitTests.Core
             var lib = tlLDr.Load(slib);
 
             mr.VerifyAll();
-            Assert.AreEqual(1, lib.ServicesByVector.Count);
-            Assert.IsNotNull(lib.ServicesByVector[2]);
+            Assert.AreEqual(1, lib.Modules[""].ServicesByVector.Count);
+            Assert.IsNotNull(lib.Modules[""].ServicesByVector[2]);
         }
     }
 }

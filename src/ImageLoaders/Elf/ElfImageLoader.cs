@@ -581,6 +581,7 @@ namespace Reko.ImageLoaders.Elf
             case EM_MIPS: arch = "mips-be-32"; break;
             case EM_PPC: arch = "ppc32"; break;
             case EM_PPC64: arch = "ppc64"; break;
+            case EM_ARM: arch = "arm"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -759,6 +760,7 @@ namespace Reko.ImageLoaders.Elf
                     RelocatePpc32();
                     break;
                 case EM_MIPS:
+                case EM_ARM:
                     break;
                 default:
                     throw new NotImplementedException();

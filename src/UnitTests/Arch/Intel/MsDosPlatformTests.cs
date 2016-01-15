@@ -21,10 +21,12 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
+using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 
@@ -33,18 +35,29 @@ namespace Reko.UnitTests.Arch.Intel
 	[TestFixture]
 	public class MsDosPlatformTests
 	{
+        private MockRepository mr;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            var env = mr.Stub<OperatingEnvironment>();
+            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
         }
 
 		[Test]
 		public void MspRealModeServices()
 		{
+            mr.ReplayAll();
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			IPlatform platform = new MsdosPlatform(sc, arch);
 

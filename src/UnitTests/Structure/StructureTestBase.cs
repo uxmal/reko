@@ -18,37 +18,42 @@
  */
 #endregion
 
-using Reko;
 using Reko.Analysis;
-using Reko.Assemblers.x86;
 using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using Reko.Core;
-using Reko.Core.Serialization;
+using Reko.Core.Configuration;
 using Reko.Core.Services;
+using Reko.Environments.Msdos;
 using Reko.Loading;
 using Reko.Scanning;
-using Reko.Structure;
 using Reko.UnitTests.Mocks;
-using System;
+using Rhino.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Reko.Environments.Msdos;
-using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Structure
 {
-	public class StructureTestBase
+    public class StructureTestBase
 	{
 		protected Program program;
         private ServiceContainer sc;
 
         protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
+            var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
+            var env = MockRepository.GenerateStub<OperatingEnvironment>();
+            var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            cfgSvc.Stub(c => c.GetSignatureFiles()).Return(new List<SignatureFileElement>());
+            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
             sc = new ServiceContainer();
-            sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
+            sc.AddService<IConfigurationService>(cfgSvc);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureReal();
 

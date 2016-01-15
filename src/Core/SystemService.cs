@@ -34,6 +34,7 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko.Gui")]
 	public class SystemService
 	{
+        public string ModuleName;
 		public string Name;
 		public SyscallInfo SyscallInfo;
 		public ProcedureSignature Signature;

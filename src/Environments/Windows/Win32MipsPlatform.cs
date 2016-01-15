@@ -129,20 +129,6 @@ namespace Reko.Environments.Windows
             return host.GetInterceptedCall(addrTarget);
         }
 
-        public override void EnsureTypeLibraries(string envName)
-        {
-            if (TypeLibs != null)
-                return;
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var env = cfgSvc.GetEnvironment(envName);
-            TypeLibs =
-                (from tl in env.TypeLibraries.OfType<ITypeLibraryElement>()
-                 join ldr in cfgSvc.GetImageLoaders().OfType<LoaderElement>() on tl.Loader equals ldr.Label
-                 where !string.IsNullOrEmpty(tl.Loader)
-                 select LoadTypelibrary(cfgSvc, tl, ldr))
-                .ToArray();
-        }
-
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
@@ -171,18 +157,7 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            foreach (var tl in TypeLibs.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
-            {
-                SystemService svc;
-                if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
-                {
-                    if (svc.Signature != null)
-                        svc.Signature.ReturnAddressOnStack = 0; //$HACK: should be done when signatures are created.
-                    return new ExternalProcedure(svc.Name, svc.Signature);
-                }
-            }
-            return null;
+            throw new NotImplementedException();
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

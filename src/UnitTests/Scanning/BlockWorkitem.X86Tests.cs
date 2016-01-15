@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Services;
@@ -42,12 +43,12 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class BlockWorkItem_X86Tests
     {
+        private MockRepository mr;
         private IntelArchitecture arch;
         private Procedure proc;
         private Block block;
         private IScanner scanner;
         private RewriterHost host;
-        private MockRepository repository;
         private ProcessorState state;
         private BlockWorkitem wi;
         private Program lr;
@@ -57,9 +58,17 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var env = mr.Stub<OperatingEnvironment>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            env.Stub(c => c.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
         }
 
         private void BuildTest32(Action<X86Assembler> m)
@@ -154,7 +163,7 @@ namespace Reko.UnitTests.Scanning
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<EntryPoint>());
-            scanner = repository.StrictMock<IScanner>();
+            scanner = mr.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();
             host = new RewriterHost(asm.ImportReferences,
@@ -184,7 +193,7 @@ namespace Reko.UnitTests.Scanning
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };
-            using (repository.Record())
+            using (mr.Record())
             {
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(rw);
@@ -466,7 +475,7 @@ namespace Reko.UnitTests.Scanning
             });
             wi.ProcessInternal();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
             var sExp =
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +
