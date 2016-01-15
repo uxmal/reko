@@ -56,13 +56,14 @@ namespace Reko.Core.Services
             return LoadLibrary(platform, name, tl);
         }
         
+        //$REFACTOR: needs a better name.
         public TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary dstLib)
         {
             try
             {
                 string libFileName = ImportFileLocation(name);
                 if (!File.Exists(libFileName))
-                    return null;
+                    return dstLib;
 
                 var fsSvc = services.RequireService<IFileSystemService>();
                 var lib = TypeLibrary.Load(platform, libFileName, fsSvc, dstLib);
@@ -70,7 +71,7 @@ namespace Reko.Core.Services
             }
             catch
             {
-                return null;
+                return dstLib;
             }
         }
 
