@@ -24,19 +24,19 @@ using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Core.Serialization;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
 using Reko.Environments.Windows;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     public class X86ProcedureSerializerTests
     {
-        private MockRepository mr;
+        private MockFactory mockFactory;
         private IntelArchitecture arch;
         private X86ProcedureSerializer ser;
         private Win32Platform platform;
@@ -45,23 +45,15 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
+            mockFactory = new MockFactory();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             platform = new Win32Platform(null, arch);
         }
 
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.deserializer = mr.Stub<ISerializedTypeVisitor<DataType>>();
+            this.deserializer = mockFactory.CreateDeserializer();
             this.ser = new X86ProcedureSerializer(arch, deserializer, cConvention);
-            this.deserializer.Stub(d => d.VisitPrimitive(null))
-                .IgnoreArguments()
-                .Do(new Func<PrimitiveType_v1, PrimitiveType>(
-                    p => PrimitiveType.Create(p.Domain, p.ByteSize)));
-            this.deserializer.Stub(d => d.VisitTypeReference(null))
-                .IgnoreArguments()
-                .Do(new Func<SerializedTypeReference, TypeReference>(
-                    t => new TypeReference(t.TypeName, null)));
         }
 
         [Test]
@@ -96,7 +88,7 @@ namespace Reko.UnitTests.Arch.Intel
                 new Identifier(Registers.es.Name, Registers.es.DataType, Registers.es),
                 new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx)));
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             SerializedSignature ssig = ser.Serialize(new ProcedureSignature(seq, new Identifier[0]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
@@ -108,7 +100,7 @@ namespace Reko.UnitTests.Arch.Intel
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             Procedure_v1 sproc =  ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
@@ -129,7 +121,7 @@ namespace Reko.UnitTests.Arch.Intel
             
             Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);
@@ -147,7 +139,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
@@ -192,7 +184,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(1, sig.FpuStackDelta);
@@ -214,7 +206,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
 
             Given_ProcedureSerializer("stdcall");
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("ecx", sig.Parameters[0].ToString());
@@ -235,7 +227,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, sig.StackDelta);
@@ -256,7 +248,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
@@ -283,7 +275,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_ProcedureSerializer(ssig.Convention);
-            mr.ReplayAll();
+            mockFactory.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
