@@ -283,7 +283,7 @@ l10071029:
 	mov	eax,10072000
 	ret	
 1007102F                                              90                .
-Jump table at 10071030 (80 bytes)
+Code vector at 10071030 (80 bytes)
 	10071011
 	10071017
 	1007101D
