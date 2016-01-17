@@ -18,9 +18,12 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.Core.CLanguage;
 using System;
+using System.Collections.Generic;
 using Rhino.Mocks;
 
 namespace Reko.UnitTests.Mocks
@@ -31,11 +34,13 @@ namespace Reko.UnitTests.Mocks
     public class MockFactory
     {
         private MockRepository mr;
+        private IPlatform platform;
+        private SymbolTable symbolTable;
 
-		public MockFactory(MockRepository mr)
-		{
+        public MockFactory(MockRepository mr)
+        {
             this.mr = mr;
-		}
+        }
 
         /// <summary>
         /// Create a deserializer that doesn't depend on TypeLibrary.
@@ -54,6 +59,40 @@ namespace Reko.UnitTests.Mocks
                     t => new TypeReference(t.TypeName, null)));
 
             return deserializer;
+        }
+
+        public IPlatform CreatePlatform()
+        {
+            platform = mr.Stub<IPlatform>();
+
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Return(2);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongLong)).Return(8);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Float)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
+            this.symbolTable = new SymbolTable(platform);
+            platform.Stub(p => p.CreateSymbolTable()).Do(new Func<SymbolTable>(() => this.symbolTable));
+            var arch = mr.Stub<IProcessorArchitecture>();
+            var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
+            platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
+            ser.Stub(s => s.Deserialize(
+                Arg<SerializedSignature>.Is.NotNull,
+                Arg<Frame>.Is.NotNull)).Return(new ProcedureSignature());
+            platform.Stub(p => p.CreateTypeLibraryDeserializer()).Return(
+                new TypeLibraryDeserializer(platform, true, new TypeLibrary())
+            );
+
+            return platform;
+        }
+
+        public void Given_NamedTypes(Dictionary<string, SerializedType> types)
+        {
+            this.symbolTable = new SymbolTable(platform, types);
         }
     }
 }

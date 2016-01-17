@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using Reko.Loading;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -43,6 +44,7 @@ namespace Reko.UnitTests.Core.Serialization
 	public class SerializedProjectTests
 	{
         private MockRepository mr;
+        private MockFactory mockFactory;
         private ServiceContainer sc;
         private ILoader loader;
         private IProcessorArchitecture arch;
@@ -51,6 +53,7 @@ namespace Reko.UnitTests.Core.Serialization
         public void Setup()
         {
             this.mr = new MockRepository();
+            this.mockFactory = new MockFactory(mr);
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
         }
@@ -250,6 +253,7 @@ namespace Reko.UnitTests.Core.Serialization
             var program = new Program
             {
                 Architecture = arch,
+                Platform = mockFactory.CreatePlatform(),
                 Image = image,
                 ImageMap = image.CreateImageMap(),
             };
@@ -508,7 +512,6 @@ namespace Reko.UnitTests.Core.Serialization
                 Debug.Print("{0}", sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
-
 
     }
 }
