@@ -36,12 +36,6 @@ namespace Reko.Core.Serialization
         [DefaultValue(0)]
         public int Length;
 
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            var et = ElementType.BuildDataType(factory);
-            return new ArrayType(et, Length);
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitArray(this);

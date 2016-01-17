@@ -36,10 +36,5 @@ namespace Reko.Core.Serialization
         {
             return visitor.VisitMemberPointer(this);
         }
-
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

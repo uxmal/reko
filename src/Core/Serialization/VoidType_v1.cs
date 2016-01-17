@@ -28,11 +28,6 @@ namespace Reko.Core.Serialization
 {
     public class VoidType_v1 :  SerializedType
     {
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            return VoidType.Instance;
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitVoidType(this);

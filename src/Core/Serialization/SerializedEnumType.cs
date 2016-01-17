@@ -52,11 +52,6 @@ namespace Reko.Core.Serialization
             this.Name = p;
         }
 
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            return factory.CreateEnum(Size, Domain, Name, Values);
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitEnum(this);

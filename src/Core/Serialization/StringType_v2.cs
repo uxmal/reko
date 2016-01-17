@@ -37,21 +37,6 @@ namespace Reko.Core.Serialization
 
         public SerializedType CharType;
 
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            var ch = CharType.BuildDataType(factory);
-
-            if (Termination == null)
-                throw new NotImplementedException();
-            switch (Termination[0])
-            {
-            case 'z':
-                return StringType.NullTerminated(ch);
-            default:
-                throw new NotImplementedException();
-            }
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitString(this);

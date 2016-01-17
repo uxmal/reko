@@ -45,6 +45,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private CodeViewerPane codeViewer;
         private MockRepository mr;
+        private MockFactory mockFactory;
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
         private IUiPreferencesService uiPreferencesSvc;
@@ -53,23 +54,17 @@ namespace Reko.UnitTests.Gui.Windows
         private Program program;
         private Procedure proc;
         private IWindowFrame frame;
-        private SymbolTable symbolTable;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
-            var arch = new FakeArchitecture();
-            var platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Float)).Return(4);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-            symbolTable = new SymbolTable(platform);
+            mockFactory = new MockFactory(mr);
+            var platform = mockFactory.CreatePlatform(); ;
 
             program = new Program
             {
-                Architecture = arch,
+                Architecture = platform.Architecture,
                 Platform = platform,
             };
             codeViewer = new CodeViewerPane();
@@ -145,7 +140,6 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_StubProcedure();
             Given_Program();
-            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -176,30 +170,12 @@ namespace Reko.UnitTests.Gui.Windows
             decompiler.Stub(d => d.Project).Return(project);
         }
 
-        private void Given_NamedTypes(Dictionary<string, SerializedType> types)
-        {
-            var arch = new FakeArchitecture();
-            var platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(platform, types));
-            program = new Program
-            {
-                Architecture = arch,
-                Platform = platform,
-            };
-        }
-
-        private void Given_SymbolTable()
-        {
-            this.program.Platform.Stub(p => p.CreateSymbolTable()).Return(symbolTable);
-        }
-
         [Test(Description = "When a previously uncustomized procedure is displayed, show its name in the "+
             "declaration box")]
         public void Cvp_SetProcedure_ShowFnName()
         {
             Given_Program();
             Given_StubProcedure();
-            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -213,7 +189,6 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_Program();
             Given_StubProcedure();
-            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -229,7 +204,6 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_Program();
             Given_StubProcedure();
-            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -245,7 +219,6 @@ namespace Reko.UnitTests.Gui.Windows
         {
             Given_Program();
             Given_StubProcedure();
-            Given_SymbolTable();
             mr.ReplayAll();
 
             When_CodeViewCreated();
@@ -260,7 +233,6 @@ namespace Reko.UnitTests.Gui.Windows
         public void Cvp_Accept_Declaration()
         {
             Given_Program();
-            Given_SymbolTable();
             Given_StubProcedure();
             mr.ReplayAll();
 
@@ -277,7 +249,6 @@ namespace Reko.UnitTests.Gui.Windows
         public void Cvp_Accept_Declaration_Returning_CharPtr()
         {
             Given_Program();
-            Given_SymbolTable();
             Given_StubProcedure();
             mr.ReplayAll();
 
@@ -298,7 +269,7 @@ namespace Reko.UnitTests.Gui.Windows
                 { "BYTE", new PrimitiveType_v1 { ByteSize = 1, Domain = PrimitiveType.Byte.Domain } },
             };
             Given_Program();
-            Given_NamedTypes(types);
+            mockFactory.Given_NamedTypes(types);
             Given_StubProcedure();
             mr.ReplayAll();
 
