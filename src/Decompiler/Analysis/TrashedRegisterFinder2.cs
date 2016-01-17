@@ -33,6 +33,9 @@ namespace Reko.Analysis
     /// This class is used to find registers that are modified or preserved by
     /// a procedure.
     /// </summary>
+    /// <remarks>
+    /// Assumes that value propagation has been carried out beforehand. 
+    /// This means that </remarks>
     public class TrashedRegisterFinder2 
     {
         private IProcessorArchitecture arch;
@@ -82,26 +85,31 @@ namespace Reko.Analysis
             return flow;
         }
 
-        private Tuple<Effect, Expression> CategorizeIdentifier(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
+        private void CategorizeIdentifier(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
-            var c = GetIdentifierExpression(sid, activePhis);
-            switch (c.Item1)
+            var e = GetReachingExpression(sid, activePhis);
+            Identifier id;
+            Constant c;
+            if (e.As(out id))
             {
-            case Effect.Preserved:
-                flow.Preserved.Add(sid.OriginalIdentifier.Storage);
-                break;
-            case Effect.Trashed:
-                flow.Trashed.Add(sid.OriginalIdentifier.Storage);
-                break;
-            case Effect.Constant:
-                flow.Constants.Add(sid.OriginalIdentifier.Storage, (Constant) c.Item2);
-                flow.Trashed.Add(sid.OriginalIdentifier.Storage);
-                break;
+                if (id == sid.OriginalIdentifier
+                    ||
+                    id == sst.Procedure.Frame.FramePointer)
+                {
+                    flow.Preserved.Add(sid.OriginalIdentifier.Storage);
+                    return;
+                }
+                // Fall through to trash case.
             }
-            return c;
+            else if (e.As(out c) && c.IsValid)
+            {
+                flow.Constants.Add(sid.OriginalIdentifier.Storage, c);
+                // Fall through to trash case.
+            }
+            flow.Trashed.Add(sid.OriginalIdentifier.Storage);
         }
 
-        private Tuple<Effect, Expression> GetIdentifierExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
+        private Expression GetReachingExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
             var sidOrig = sid;
             var defInstr = sid.DefStatement.Instruction;
@@ -109,16 +117,19 @@ namespace Reko.Analysis
                 sid.DefStatement.Block == sst.Procedure.EntryBlock)
             {
                 // Reaching definition was a DefInstruction;
-                return (sid == sidOrig) ? Preserve() : Trash();
+                return sid.Identifier;
             }
             Assignment ass;
             if (defInstr.As(out ass))
             {
                 var c = VisitAssignment(ass, sid);
-                if (c.Item1 != Effect.Copy)
-                    return c;
-                sid = sst.SsaState.Identifiers[(Identifier)c.Item2];
-                return GetIdentifierExpression(sid, activePhis);
+                var idCopy = c as Identifier;
+                if (idCopy != null)
+                {
+                    sid = sst.SsaState.Identifiers[(Identifier)c];
+                    return GetReachingExpression(sid, activePhis);
+                }
+                return GetReachingExpression(sid, activePhis);
             }
             CallInstruction call;
             if (defInstr.As(out call))
@@ -132,22 +143,20 @@ namespace Reko.Analysis
                 activePhis.Add(phi);
                 foreach (var id in phi.Src.Arguments.OfType<Identifier>())
                 {
-                    var c = GetIdentifierExpression(sst.SsaState.Identifiers[id], activePhis);
+                    var c = GetReachingExpression(sst.SsaState.Identifiers[id], activePhis);
                     if (value == null)
                     {
-                        value = c.Item2;
+                        value = c;
                     }
-                    else if (!cmp.Equals(value, c.Item2))
+                    else if (c == Constant.Invalid || !cmp.Equals(value, c))
                     {
                         value = Constant.Invalid;
                     }
                 }
                 activePhis.Remove(phi);
-                return new Tuple<Effect, Expression>(
-                    value == Constant.Invalid ? Effect.Trashed : Effect.Copy,
-                    value);
+                return value;
             }
-            return Trash();
+            return Constant.Invalid;
         }
 
         private static Tuple<Effect, Expression> Trash()
@@ -160,29 +169,29 @@ namespace Reko.Analysis
             return new Tuple<Effect, Expression>(Effect.Preserved, null);
         }
 
-        private Tuple<Effect, Expression> VisitAssignment(Assignment ass, SsaIdentifier sid)
+        private Expression VisitAssignment(Assignment ass, SsaIdentifier sid)
         {
-            if ((ass.Src == sid.OriginalIdentifier)
-                ||
-               (sid.OriginalIdentifier.Storage == arch.StackRegister &&
-                ass.Src == sst.Procedure.Frame.FramePointer))
-            {
-                return new Tuple<Effect, Expression>(Effect.Preserved, null);
-            }
+            //if ((ass.Src == sid.OriginalIdentifier)
+            //    ||
+            //   (sid.OriginalIdentifier.Storage == arch.StackRegister &&
+            //    ass.Src == sst.Procedure.Frame.FramePointer))
+            //{
+            //    return new Tuple<Effect, Expression>(Effect.Preserved, null);
+            //}
             Constant c;
             if (ass.Src.As(out c))
             {
-                return new Tuple<Effect, Expression>(Effect.Constant, c);
+                return c;
             }
             Identifier id;
             if (ass.Src.As(out id))
             {
-                return new Tuple<Effect, Expression>(Effect.Copy, id);
+                return id;
             }
-            return new Tuple<Effect, Expression>(Effect.Trashed, ass.Src);
+            return Constant.Invalid;
         }
 
-        public Tuple<Effect, Expression> VisitCall(CallInstruction call, SsaIdentifier sid)
+        public Expression VisitCall(CallInstruction call, SsaIdentifier sid)
         {
             if (!call.Definitions.Any(d => d.Expression == sid.Identifier))
                 throw new InvalidOperationException("Call should have defined identifier.");
@@ -194,15 +203,48 @@ namespace Reko.Analysis
 
             // Call trashes this identifier. If it's not in our SCC group we
             // know it to be trashed for sure.
-            if (!sccGroup.Any(s => s.Procedure == callee.Procedure ))
+            if (!sccGroup.Any(s => s.Procedure == callee.Procedure))
             {
-                return new Tuple<Effect, Expression>(Effect.Trashed, null);
+                return Constant.Invalid;
+            }
+
+            // Are we already assuming that sid is preserved? If so, continue.
+            HashSet<Storage> preserved;
+            var stg = sid.Identifier.Storage;
+            if (this.assumedPreserved.TryGetValue(sst.Procedure, out preserved) &&
+                preserved.Contains(sid.Identifier.Storage))
+            {
+                var sidBeforeCall = GetIdentifierFor(stg, call.Uses);
+                var exBeforeCall = GetReachingExpression(sidBeforeCall,
+                    new HashSet<PhiAssignment>());
+                return exBeforeCall;
             }
 
             // Assume that it preserves it.
+            preserved.Add(stg);
+            var sidUse = GetIdentifierFor(stg, call.Uses);
+            var ex = GetReachingExpression(sidUse, new HashSet<PhiAssignment>());
+            preserved.Remove(stg);
+            return ex;
+        }
 
-            throw new NotImplementedException();
-            // assumedPreserved[proc].Add(sid.OriginalIdentifier.Storage);
+        /// <summary>
+        /// Find a use that uses the specified storage location <paramref name="stg"/>.
+        /// </summary>
+        /// <param name="stg"></param>
+        /// <param name="uses"></param>
+        /// <returns></returns>
+        private SsaIdentifier GetIdentifierFor(Storage stg, HashSet<UseInstruction> uses)
+        {
+            foreach (var use in uses)
+            {
+                Identifier id;
+                if (!use.Expression.As(out id))
+                    continue;
+                if (id.Storage == stg)
+                    return sst.SsaState.Identifiers[id];
+            }
+            return null;
         }
     }
 }
