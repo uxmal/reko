@@ -46,6 +46,7 @@ namespace Reko.Analysis
         private ISet<SsaTransform> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
         private ExpressionValueComparer cmp;
+        private HashSet<PhiAssignment> activePhis;
 
         public enum Effect
         {
@@ -74,18 +75,18 @@ namespace Reko.Analysis
             this.sst = sst;
             this.flow = new ProcedureFlow2();
             this.progFlow.ProcedureFlows2.Add(sst.Procedure, flow);
-
+            this.activePhis = new HashSet<PhiAssignment>();
             foreach (var sid in sst.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
                 .Select(u => sst.SsaState.Identifiers[(Identifier) u.Expression]))
             {
-                CategorizeIdentifier(sid, new HashSet<PhiAssignment>());
+                CategorizeIdentifier(sid);
             }
             return flow;
         }
 
-        private void CategorizeIdentifier(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
+        private void CategorizeIdentifier(SsaIdentifier sid)
         {
             var e = GetReachingExpression(sid, activePhis);
             Identifier id;
@@ -109,6 +110,12 @@ namespace Reko.Analysis
             flow.Trashed.Add(sid.OriginalIdentifier.Storage);
         }
 
+        /// <summary>
+        /// Looks "backwards" for the uniquely defining expression.
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="activePhis"></param>
+        /// <returns></returns>
         private Expression GetReachingExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
             var sidOrig = sid;
@@ -122,14 +129,8 @@ namespace Reko.Analysis
             Assignment ass;
             if (defInstr.As(out ass))
             {
-                var c = VisitAssignment(ass, sid);
-                var idCopy = c as Identifier;
-                if (idCopy != null)
-                {
-                    sid = sst.SsaState.Identifiers[(Identifier)c];
-                    return GetReachingExpression(sid, activePhis);
-                }
-                return GetReachingExpression(sid, activePhis);
+                var src = VisitAssignment(ass, sid);
+                return src;
             }
             CallInstruction call;
             if (defInstr.As(out call))
@@ -171,22 +172,16 @@ namespace Reko.Analysis
 
         private Expression VisitAssignment(Assignment ass, SsaIdentifier sid)
         {
-            //if ((ass.Src == sid.OriginalIdentifier)
-            //    ||
-            //   (sid.OriginalIdentifier.Storage == arch.StackRegister &&
-            //    ass.Src == sst.Procedure.Frame.FramePointer))
-            //{
-            //    return new Tuple<Effect, Expression>(Effect.Preserved, null);
-            //}
             Constant c;
             if (ass.Src.As(out c))
             {
                 return c;
             }
-            Identifier id;
-            if (ass.Src.As(out id))
+            Identifier idCopy;
+            if (ass.Src.As(out idCopy))
             {
-                return id;
+                sid = sst.SsaState.Identifiers[idCopy];
+                return GetReachingExpression(sid, activePhis);
             }
             return Constant.Invalid;
         }

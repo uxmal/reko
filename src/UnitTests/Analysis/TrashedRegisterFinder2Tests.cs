@@ -279,7 +279,7 @@ Constants: cl:0x00
                 m.Assign(r2, m.ISub(r2, 1));
                 m.Call("fact", 0);
                 m.Assign(r2, m.LoadDw(m.ISub(fp, 4)));
-                m.Assign(r1, m.IMul(r1, r2));
+                m.Assign(r1, m.IMul(r1, r2));   // r1 clobbered as it is the return value.
                 m.Goto("m3Done");
 
                 m.Label("m2Base");  // Base case just returns 1.
