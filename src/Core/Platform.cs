@@ -55,6 +55,7 @@ namespace Reko.Core
         IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
         ProcedureSerializer CreateProcedureSerializer();
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        TypeLibraryDeserializer CreateTypeLibraryDeserializer();
         SymbolTable CreateSymbolTable();
 
         /// <summary>
@@ -178,6 +179,12 @@ namespace Reko.Core
             return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
         }
 
+        public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+            return new TypeLibraryDeserializer(this, true, Metadata.Clone());
+        }
+
         /// <summary>
         /// Creates a procedure serializer that understands the calling conventions used on this
         /// processor and environment
@@ -219,8 +226,6 @@ namespace Reko.Core
         public IDictionary<string, DataType> GetTypedefs()
         {
             EnsureTypeLibraries(PlatformIdentifier);
-
-            var typedefs = new Dictionary<string, DataType>();
             return Metadata.Types;
         }
 

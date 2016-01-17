@@ -39,12 +39,6 @@ namespace Reko.Core.Serialization
             this.TypeArguments = typeArguments;
         }
 
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            //$TODO: type system needs to support this too.
-            throw new NotImplementedException();
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitTemplate(this);

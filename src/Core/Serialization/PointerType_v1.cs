@@ -46,11 +46,6 @@ namespace Reko.Core.Serialization
             return visitor.VisitPointer(this);
         }
 
-		public override DataType BuildDataType(TypeFactory factory)
-		{
-			return factory.CreatePointer(DataType.BuildDataType(factory), PointerSize);
-		}
-
 		public override string ToString()
 		{
 			return string.Format("ptr({0})", DataType);

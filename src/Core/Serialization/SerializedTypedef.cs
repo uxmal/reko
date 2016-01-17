@@ -37,12 +37,6 @@ namespace Reko.Core.Serialization
 
         public SerializedType DataType;
 
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            var type = DataType.BuildDataType(factory);
-            throw new NotImplementedException();
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitTypedef(this);
