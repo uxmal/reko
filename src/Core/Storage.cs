@@ -44,12 +44,25 @@ namespace Reko.Core
         public StorageDomain Domain { get; set; }
         public ulong BitAddress { get; set; }
         public virtual ulong BitSize { get; set; }
+        public int Number { get; protected set; }
 
         public abstract int OffsetOf(Storage storage);
         public abstract T Accept<T>(StorageVisitor<T> visitor);
         public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
 
-		public virtual SerializedKind Serialize()
+
+        public bool OverlapsWith(Storage that)
+        {
+            if (this.Domain != that.Domain || this.Number != that.Number)
+                return false;
+            var thisStart = this.BitAddress;
+            var thisEnd = this.BitAddress + this.BitSize;
+            var thatStart = that.BitAddress;
+            var thatEnd = that.BitAddress + that.BitSize;
+            return thisStart < thatEnd && thatStart < thisEnd;
+        }
+
+        public virtual SerializedKind Serialize()
 		{
 			throw new NotImplementedException(this.GetType().Name + ".Serialize not implemented.");
 		}
@@ -340,8 +353,6 @@ namespace Reko.Core
         /// General-purpose registers can use the Domain.Word </remarks>
         public PrimitiveType DataType { get; private set; }
 
-        public int Number { get; private set; }
-
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitRegisterStorage(this);
@@ -388,17 +399,6 @@ namespace Reko.Core
             if (!OverlapsWith(regSub))
                 return -1;
             return (int)stgSub.BitAddress;
-        }
-
-        public bool OverlapsWith(RegisterStorage that)
-        {
-            if (this.Number != that.Number)
-                return false;
-            var thisStart = this.BitAddress;
-            var thisEnd = this.BitAddress + this.BitSize;
-            var thatStart = that.BitAddress;
-            var thatEnd = that.BitAddress + that.BitSize;
-            return thisStart < thatEnd && thatStart < thisEnd;
         }
 
         /// <summary>

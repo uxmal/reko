@@ -90,8 +90,8 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
-            var alias = new Aliases(proc, this.pb.Program.Architecture);
-            alias.Transform();
+            //var alias = new Aliases(proc, this.pb.Program.Architecture);
+            //alias.Transform();
             var ssa = new SsaTransform2();
             ssa.Transform(proc);
 
@@ -562,10 +562,9 @@ ProcedureBuilder_exit:
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	def a
-	def Mem0
 	// succ:  l1
 l1:
-	Mem0[0x00123400:word32] = a
+	Mem1[0x00123400:word32] = a
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -627,8 +626,8 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	eax_2 = Mem0[eax:word32]
-	ah_3 = SLICE(eax_2, byte, 8)
-	Mem0[0x00001234:byte] = ah_3
+	ah_3 = SLICE(eax_2, byte, 8) (alias)
+	Mem4[0x00001234:byte] = ah_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -642,6 +641,53 @@ ProcedureBuilder_exit:
                 m.Assign(eax, m.LoadDw(eax));
                 m.Store(m.Word32(0x1234), ah);
                 m.Return();
+            });
+        }
+
+        [Test]
+        public void Ssa2_AliasedPhi()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	def ecx
+	// succ:  l1
+l1:
+	branch Mem0[0x00010042:bool] mBranch2
+	// succ:  mBranch1 mBranch2
+mBranch1:
+	cl_1 = 0x2A
+	ecx_3 = DPB(ecx, cl_1, 0) (alias)
+	goto mCommon
+	// succ:  mCommon
+mBranch2:
+	ecx_6 = 0x00000020
+	// succ:  mCommon
+mCommon:
+	ecx_2 = PHI(ecx_3, ecx_6)
+	Mem5[0x00010232:word32] = ecx_2
+ProcedureBuilder_exit:
+";
+            #endregion
+            RunTest2(sExp, m =>
+            {
+                var ecx = m.Frame.EnsureRegister(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
+                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 1, 0, PrimitiveType.Byte));
+                m.BranchIf(m.Load(PrimitiveType.Bool, m.Word32(0x10042)), "mBranch2");
+
+                m.Label("mBranch1");
+                m.Assign(cl, 42);
+                m.Goto("mCommon");
+
+                m.Label("mBranch2");
+                m.Assign(ecx, 32);
+
+                m.Label("mCommon");
+                m.Store(m.Word32(0x10232), ecx);
             });
         }
     }

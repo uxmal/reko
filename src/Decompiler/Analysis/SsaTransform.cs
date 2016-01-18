@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Analysis
 {
@@ -754,23 +755,25 @@ namespace Reko.Analysis
     {
         private Block block;
         private Statement stm;
-        private Dictionary<Block, Dictionary<Storage, SsaIdentifier>> currentDef;
-        private Dictionary<Block, Dictionary<Storage, SsaIdentifier>> incompletePhis;
+        private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> currentDef;
+        private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> incompletePhis;
         private HashSet<Block> sealedBlocks;
         private SsaState ssa;
-        private AliasState asta;
+        private bool storing;
+
+        public SsaState SsaState { get { return ssa; } }
 
         public void Transform(Procedure proc)
         {
             this.ssa = new SsaState(proc, null);
-            this.asta = new AliasState();
-            this.currentDef = new Dictionary<Block, Dictionary<Storage, SsaIdentifier>>();
-            this.incompletePhis = new Dictionary<Block, Dictionary<Storage, SsaIdentifier>>();
+            this.currentDef = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
+            this.incompletePhis = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
             this.sealedBlocks = new HashSet<Block>();
             foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
             {
+                Debug.Print("SSA2: visiting {0}", b.Name);
                 this.block = b;
-                this.currentDef.Add(block, new Dictionary<Storage, SsaIdentifier>()); // new StorageEquality()));
+                EnsureStateFor(b);
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stm = s;
@@ -779,45 +782,96 @@ namespace Reko.Analysis
             }
         }
 
-        public SsaState SsaState { get { return ssa; } }
+        private void EnsureStateFor(Block b)
+        {
+            if (!currentDef.ContainsKey(b))
+            {
+                this.currentDef.Add(b, new Dictionary<StorageDomain, SsaIdentifier>());
+            }
+        }
 
         public override Instruction TransformAssignment(Assignment a)
         {
             var src = a.Src.Accept(this);
             var sid = ssa.Identifiers.Add(a.Dst, this.stm, src, false);
-            var idNew = WriteVariable(a.Dst, block, sid, null);
+            var idNew = WriteVariable(a.Dst, block, sid, null, true);
             return new Assignment(idNew, src);
         }
 
-        public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev)
+        public override Instruction TransformStore(Store store)
         {
-            asta.Add(id.Storage);
-            currentDef[block][id.Storage] = sid;
-            sid.Previous = sidPrev;
-            return sid.Identifier;
+            store.Src = store.Src.Accept(this);
+            this.storing = true;
+            store.Dst = store.Dst.Accept(this);
+            this.storing = false;
+            return store;
         }
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            asta.Add(id.Storage);
-            return ReadVariable(id, block).Identifier;
+            return ReadVariable(id, block, false).Identifier;
         }
 
-        public SsaIdentifier ReadVariable(Identifier id, Block b)
-        { 
-            SsaIdentifier ssaId;
-            if (currentDef[b].TryGetValue(id.Storage, out ssaId))
+        public override Expression VisitMemoryAccess(MemoryAccess access)
+        {
+            var storing = this.storing;
+            this.storing = false;
+            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+            UpdateMemoryIdentifier(access, storing);
+            return access;
+        }
+
+        public override Expression VisitSegmentedAccess(SegmentedAccess access)
+        {
+            var storing = this.storing;
+            this.storing = false;
+            access.BasePointer = access.BasePointer.Accept(this);
+            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+            UpdateMemoryIdentifier(access, storing);
+            return access;
+        }
+
+        private void UpdateMemoryIdentifier(MemoryAccess access, bool storing)
+        {
+            if (storing)
             {
-                // Defined locally in this block.
-                return ssaId;
+                var sid = ssa.Identifiers.Add(access.MemoryId, this.stm, null, false);
+                access.MemoryId = (MemoryIdentifier)WriteVariable(access.MemoryId, block, sid, null, false);
             }
             else
             {
-                return ReadVariableRecursive(id, b);
+                access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
             }
         }
 
-        private SsaIdentifier ReadVariableRecursive(Identifier id, Block b)
+        public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev, bool performProbe)
+        {
+            if (performProbe)
+            {
+                var alias = ReadVariable(id, b, true);
+            }
+            currentDef[block][id.Storage.Domain] = sid;
+            sid.Previous = sidPrev;
+            return sid.Identifier;
+        }
+
+        public SsaIdentifier ReadVariable(Identifier id, Block b, bool aliasProbe)
+        { 
+            SsaIdentifier ssaId;
+            EnsureStateFor(b);
+            if (currentDef[b].TryGetValue(id.Storage.Domain, out ssaId))
+            {
+                // Defined locally in this block. Does it intersect the probed value?
+                if (ssaId.Identifier.Storage.OverlapsWith(id.Storage))
+                {
+                    return MaybeGenerateAliasStatement(id, ssaId);
+                }
+            }
+            // Keep probin'.
+            return ReadVariableRecursive(id, b, aliasProbe);
+        }
+
+        private SsaIdentifier ReadVariableRecursive(Identifier id, Block b, bool aliasProbe)
         {
             SsaIdentifier val;
             SsaIdentifier sidPrev = null;
@@ -830,22 +884,66 @@ namespace Reko.Analysis
             else if (b.Pred.Count == 0)
             {
                 // Undef'ined or unreachable parameter; assume it's a def.
-                val = NewDef(id, b);
+                if (!aliasProbe)
+                    val = NewDef(id, b);
+                else
+                    val = null;
             }
             else if (b.Pred.Count == 1)
             {
-                val = ReadVariable(id, b.Pred[0]);
+                val = ReadVariable(id, b.Pred[0], aliasProbe);
                 sidPrev = val;
             }
             else
             {
                 // Break potential cycles with operandless phi
                 val = NewPhi(id, b);
-                WriteVariable(id, b, val, null);
-                val = AddPhiOperands(id, val);
+                WriteVariable(id, b, val, null, false);
+                val = AddPhiOperands(id, val, aliasProbe);
             }
-            WriteVariable(id, b, val, sidPrev);
+            if (val != null)
+                WriteVariable(id, b, val, sidPrev, false);
             return val;
+        }
+
+        /// <summary>
+        /// If <paramref name="idTo"/> is smaller than <paramref name="sidFrom" />, then
+        /// it doesn't cover it completely. Therefore, we must generate a SLICE / cast 
+        /// statement.
+        /// </summary>
+        /// <param name="idTo"></param>
+        /// <param name="sidFrom"></param>
+        /// <returns></returns>
+        private SsaIdentifier MaybeGenerateAliasStatement(Identifier idTo, SsaIdentifier sidFrom)
+        {
+            var stgFrom = sidFrom.Identifier.Storage;
+            var stgTo = idTo.Storage;
+            if (stgFrom == stgTo)
+                return sidFrom;
+            Expression e = null;
+            if (stgTo.BitSize < stgFrom.BitSize)
+            {
+                if (stgTo.BitAddress != 0)
+                    e = new Slice(idTo.DataType, sidFrom.Identifier, (uint)stgTo.BitAddress);
+                else
+                    e = new Cast(idTo.DataType, sidFrom.Identifier);
+            }
+            else
+            {
+                e = new DepositBits(idTo, sidFrom.Identifier, (int)stgFrom.BitAddress);
+            }
+            var ass = new AliasAssignment(idTo, e);
+            return InsertAfterDefinition(sidFrom, ass);
+        }
+
+        private SsaIdentifier InsertAfterDefinition(SsaIdentifier sidFrom, AliasAssignment ass)
+        {
+            int i = sidFrom.DefStatement.Block.Statements.IndexOf(sidFrom.DefStatement);
+            sidFrom.DefStatement.Block.Statements.Insert(i + 1, sidFrom.DefStatement.LinearAddress, ass);
+
+            var sidTo = ssa.Identifiers.Add(ass.Dst, this.stm, ass.Src, false);
+            ass.Dst = sidTo.Identifier;
+            return sidTo;
         }
 
         /// <summary>
@@ -855,7 +953,7 @@ namespace Reko.Analysis
         /// <param name="b">Block into which the phi statement is inserted</param>
         /// <param name="v">Destination variable for the phi assignment</param>
         /// <returns>The inserted phi Assignment</returns>
-        private SsaIdentifier NewPhi( Identifier id, Block b)
+        private SsaIdentifier NewPhi(Identifier id, Block b)
         {
             var phiAss = new PhiAssignment(id, 0);
             var stm = new Statement(0, phiAss, b);
@@ -866,14 +964,26 @@ namespace Reko.Analysis
             return sid;
         }
 
-        private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi)
+        private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi, bool aliasProbe)
         {
             // Determine operands from predecessors.
+            var preds = phi.DefStatement.Block.Pred;
+            var sids = preds.Select(p => ReadVariable(id, p, aliasProbe)).ToArray();
+            if (aliasProbe && sids.Any(s => s != null))
+            {
+                for (int i =0; i < sids.Length; ++i)
+                {
+                    if (sids[i] == null)
+                        sids[i] = ReadVariable(id, preds[i], false);
+                }
+            }
+            if (aliasProbe && sids.Any(s => s == null))
+                return null;
             ((PhiAssignment)phi.DefStatement.Instruction).Src =
                 new PhiFunction(
                     id.DataType,
-                    phi.DefStatement.Block.Pred.Select(p => ReadVariable(id, p).Identifier).ToArray());
-            return TryRemoveTrivial(phi);
+                    sids.Select(s => s.Identifier).ToArray());
+            return TryRemoveTrivial(phi, aliasProbe);
         }
 
         /// <summary>
@@ -881,8 +991,9 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="phi"></param>
         /// <returns></returns>
-        private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi)
+        private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
         {
+            bool firstTime = true;
             Identifier same = null;
             foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
             {
@@ -891,12 +1002,13 @@ namespace Reko.Analysis
                     // Unique value or self-reference
                     continue;
                 }
-                if (same != null)
+                if (!firstTime)
                 {
                     // The phi merges at least two values; not trivial
                     return phi;
                 }
                 same = op;
+                firstTime = false;
             }
             SsaIdentifier sid;
             if (same == null)
@@ -913,7 +1025,7 @@ namespace Reko.Analysis
             var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
 
             // Reroute all uses of phi to use same. Remove phi.
-            replaceBy(phi, same);
+            ReplaceBy(phi, same);
 
             // Remove all phi uses which may have become trivial now.
             foreach (var use in users)
@@ -921,7 +1033,7 @@ namespace Reko.Analysis
                 var phiAss = use.Instruction as PhiAssignment;
                 if (phiAss != null)
                 {
-                    TryRemoveTrivial(ssa.Identifiers[phiAss.Dst]);
+                    TryRemoveTrivial(ssa.Identifiers[phiAss.Dst], aliasProbe);
                 }
             }
             return sid;
@@ -935,15 +1047,15 @@ namespace Reko.Analysis
             return sid;
         }
 
-        private void replaceBy(SsaIdentifier phi, Identifier same)
+        private void ReplaceBy(SsaIdentifier phi, Identifier same)
         {
         }
 
-        private void sealBlock(Block block)
+        private void SealBlock(Block block)
         {
             foreach (var sid in incompletePhis[block].Values)
             {
-                AddPhiOperands(sid.Identifier, sid);
+                AddPhiOperands(sid.Identifier, sid, false);
             }
             sealedBlocks.Add(block);
         }
