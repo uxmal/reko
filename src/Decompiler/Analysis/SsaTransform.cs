@@ -769,7 +769,7 @@ namespace Reko.Analysis
             this.currentDef = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
             this.incompletePhis = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
             this.sealedBlocks = new HashSet<Block>();
-            foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
+            foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).ReversePostOrder())
             {
                 Debug.Print("SSA2: visiting {0}", b.Name);
                 this.block = b;
@@ -930,6 +930,8 @@ namespace Reko.Analysis
             }
             else
             {
+                // Find the old bits.
+                var sidTo = ReadVariable(idTo, sidFrom.DefStatement.Block, false);
                 e = new DepositBits(idTo, sidFrom.Identifier, (int)stgFrom.BitAddress);
             }
             var ass = new AliasAssignment(idTo, e);

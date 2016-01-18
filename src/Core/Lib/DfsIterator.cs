@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Core.Lib
 {
@@ -112,6 +113,11 @@ namespace Reko.Core.Lib
                     yield return cur.Item;
                 }
             }
+        }
+
+        public IEnumerable<T> ReversePostOrder()
+        {
+            return PostOrder().Reverse();
         }
     }
 }
