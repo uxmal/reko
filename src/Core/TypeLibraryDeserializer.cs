@@ -226,7 +226,7 @@ namespace Reko.Core
             StructureType str;
             if (!structures.TryGetValue(structure.Name, out str))
             {
-                 str = new StructureType(structure.Name, structure.ByteSize);
+                str = new StructureType(structure.Name, structure.ByteSize);
                 structures.Add(structure.Name, str);
                 if (structure.Fields != null)
                 {
@@ -235,9 +235,20 @@ namespace Reko.Core
                 }
                 return str;
             }
-            else
+            else if (str.Fields.Count == 0 && structure.Fields != null)
             {
-                return new TypeReference(str);
+                // Forward reference resolved.
+                var fields = structure.Fields.Select(
+                    f => new StructureField(
+                        f.Offset,
+                        f.Type.Accept(this),
+                        f.Name));
+                str.Fields.AddRange(fields);
+                return str;
+            }
+            else
+            { 
+                return str;
             }
         }
 
@@ -256,21 +267,31 @@ namespace Reko.Core
             return new TypeReference(typeReference.TypeName, new UnknownType());
         }
 
-        public DataType VisitUnion(UnionType_v1 union)
+        public DataType VisitUnion(UnionType_v1 sUnion)
         {
-            UnionType un;
-            if (union.Name == null || !unions.TryGetValue(union.Name, out un))
+            UnionType union;
+            if (sUnion.Name == null || !unions.TryGetValue(sUnion.Name, out union))
             {
-                un = new UnionType { Name = union.Name };
-                if (union.Name != null)
-                    unions.Add(union.Name, un);
-                var alts = union.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type.Accept(this), i));
-                un.Alternatives.AddRange(alts);
-                return un;
+                union = new UnionType { Name = sUnion.Name };
+                if (sUnion.Name != null)
+                    unions.Add(sUnion.Name, union);
+                if (sUnion.Alternatives != null)
+                {
+                    var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type.Accept(this), i));
+                    union.Alternatives.AddRange(alts);
+                }
+                return union;
             }
-            else 
+            else if (union.Alternatives.Count == 0)
             {
-                return new TypeReference(un);
+                // Resolve forward reference.
+                var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type.Accept(this), i));
+                union.Alternatives.AddRange(alts);
+                return union;
+            }
+            else
+            {
+                return union;
             }
         }
 

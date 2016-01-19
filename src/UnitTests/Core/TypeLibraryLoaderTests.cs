@@ -175,5 +175,107 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(1, lib.Modules[""].ServicesByVector.Count);
             Assert.IsNotNull(lib.Modules[""].ServicesByVector[2]);
         }
+
+        [Test(Description = "Resolve a typedef declaration of a structure")]
+        public void Tlldr_typedef_struct()
+        {
+            Given_ArchitectureStub();
+            mr.ReplayAll();
+
+            var typelib = new TypeLibrary();
+            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            new SerializedStructType
+            {
+                Name = "localeinfo_struct",
+                Fields = new StructField_v1[]
+                {
+                                new StructField_v1 {
+                                    Name = "foo",
+                                    Offset =0,
+                                    Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize=4 }
+                                }
+                }
+            }.Accept(tlldr);
+            new SerializedTypedef
+            {
+                Name = "_locale_tstruct",
+                DataType = new SerializedStructType
+                {
+                    Name = "localeinfo_struct",
+                }
+            }.Accept(tlldr);
+
+            var str = (StructureType)typelib.Types["_locale_tstruct"];
+            Assert.AreEqual("(struct \"localeinfo_struct\" (0 ui32 foo))", str.ToString());
+        }
+
+        [Test(Description = "Resolve a forward declaration of a structure")]
+        public void Tlldr_typedef_forwarded_struct()
+        {
+            Given_ArchitectureStub();
+            mr.ReplayAll();
+
+            var typelib = new TypeLibrary();
+            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            new SerializedTypedef
+            {
+                Name = "_locale_tstruct",
+                DataType = new SerializedStructType
+                {
+                    Name = "localeinfo_struct",
+                }
+            }.Accept(tlldr);
+            new SerializedStructType
+            {
+                Name = "localeinfo_struct",
+                Fields = new StructField_v1[]
+                {
+                    new StructField_v1 {
+                        Name = "foo",
+                        Offset =0,
+                        Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize=4 }
+                    }
+                }
+            }.Accept(tlldr);
+
+            var str = (StructureType) typelib.Types["_locale_tstruct"];
+            Assert.AreEqual("(struct \"localeinfo_struct\" (0 ui32 foo))", str.ToString());
+        }
+
+        [Test(Description = "Resolve a forward declaration of a union")]
+        public void Tlldr_typedef_forwarded_union()
+        {
+            Given_ArchitectureStub();
+            mr.ReplayAll();
+
+            var typelib = new TypeLibrary();
+            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            new SerializedTypedef
+            {
+                Name = "variant_t",
+                DataType = new UnionType_v1
+                {
+                    Name = "variant_union",
+                }
+            }.Accept(tlldr);
+            new UnionType_v1
+            {
+                Name = "variant_union",
+                Alternatives = new[]
+                {
+                    new SerializedUnionAlternative {
+                        Name = "foo",
+                        Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize=4 },
+                    },
+                    new SerializedUnionAlternative {
+                        Name = "bar",
+                        Type = new PrimitiveType_v1 { Domain = Domain.Real, ByteSize=4 }
+                    }
+                }
+            }.Accept(tlldr);
+
+            var str = (UnionType)typelib.Types["variant_t"];
+            Assert.AreEqual("(union \"variant_union\" (ui32 foo) (real32 bar))", str.ToString());
+        }
     }
 }
