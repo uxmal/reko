@@ -782,19 +782,11 @@ namespace Reko.Analysis
             }
         }
 
-        private void EnsureStateFor(Block b)
-        {
-            if (!currentDef.ContainsKey(b))
-            {
-                this.currentDef.Add(b, new Dictionary<StorageDomain, SsaIdentifier>());
-            }
-        }
-
         public override Instruction TransformAssignment(Assignment a)
         {
             var src = a.Src.Accept(this);
             var sid = ssa.Identifiers.Add(a.Dst, this.stm, src, false);
-            var idNew = WriteVariable(a.Dst, block, sid, null, true);
+            var idNew = WriteVariable(a.Dst, block, sid, true);
             return new Assignment(idNew, src);
         }
 
@@ -836,7 +828,7 @@ namespace Reko.Analysis
             if (storing)
             {
                 var sid = ssa.Identifiers.Add(access.MemoryId, this.stm, null, false);
-                access.MemoryId = (MemoryIdentifier)WriteVariable(access.MemoryId, block, sid, null, false);
+                access.MemoryId = (MemoryIdentifier)WriteVariable(access.MemoryId, block, sid, false);
             }
             else
             {
@@ -844,17 +836,30 @@ namespace Reko.Analysis
             }
         }
 
-        public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev, bool performProbe)
+        /// <summary>
+        /// Registers the fact that identifier <paramref name="id"/> is
+        /// modified in the block <paramref name="b" />. 
+        /// </summary>
+        /// <param name="id">The identifier before being SSA transformed</param>
+        /// <param name="b">The block in which the identifier was changed</param>
+        /// <param name="sid">The identifier after being SSA transformed.</param>
+        /// <param name="performProbe">if true, looks "backwards" to see
+        ///   if <paramref name="id"/> overlaps with another identifier</param>
+        /// <returns></returns>
+        public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, bool performProbe)
         {
             SsaIdentifier alias = sid;
             if (performProbe)
             {
+                // Did a previous SSA id modify the same storage as id?
                 alias = ReadVariable(id, b, true);
                 if (alias != null)
                 {
+                    // Was the previous modification larger than this modification?
                     if (alias.Identifier.Storage.BitSize > id.Storage.BitSize)
                     {
-                        // Find the old bits.
+                        // Generate a DPB so the previous modification "shines
+                        // through".
                         var dpb = new DepositBits(alias.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
                         var ass = new AliasAssignment(alias.OriginalIdentifier, dpb);
                         alias = InsertAfterDefinition(sid, ass);
@@ -870,7 +875,6 @@ namespace Reko.Analysis
                 }
             }
             currentDef[block][id.Storage.Domain] = alias;
-            sid.Previous = sidPrev;
             return sid.Identifier;
         }
 
@@ -904,7 +908,6 @@ namespace Reko.Analysis
         private SsaIdentifier ReadVariableRecursive(Identifier id, Block b, bool aliasProbe)
         {
             SsaIdentifier val;
-            SsaIdentifier sidPrev = null;
             if (false)  // !sealedBlocks.Contains(b))
             {
                 // Incomplete CFG
@@ -922,17 +925,16 @@ namespace Reko.Analysis
             else if (b.Pred.Count == 1)
             {
                 val = ReadVariable(id, b.Pred[0], aliasProbe);
-                sidPrev = val;
             }
             else
             {
                 // Break potential cycles with operandless phi
                 val = NewPhi(id, b);
-                WriteVariable(id, b, val, null, false);
+                WriteVariable(id, b, val, false);
                 val = AddPhiOperands(id, val, aliasProbe);
             }
             if (val != null && !aliasProbe)
-                WriteVariable(id, b, val, sidPrev, false);
+                WriteVariable(id, b, val, false);
             return val;
         }
 
@@ -963,7 +965,6 @@ namespace Reko.Analysis
             }
             else
             {
-                // Find the old bits.
                 var sidTo = ReadVariable(idTo, sidFrom.DefStatement.Block, false);
                 e = new DepositBits(idTo, sidFrom.Identifier, (int)stgFrom.BitAddress);
             }
@@ -1095,22 +1096,11 @@ namespace Reko.Analysis
             sealedBlocks.Add(block);
         }
 
-        public class StorageEquality : IEqualityComparer<Storage>
+        private void EnsureStateFor(Block b)
         {
-            public bool Equals(Storage x, Storage y)
+            if (!currentDef.ContainsKey(b))
             {
-                if (x.Domain != y.Domain)
-                    return false;
-                var xStart = x.BitAddress;
-                var xEnd = x.BitAddress + x.BitSize;
-                var yStart = y.BitAddress;
-                var yEnd = y.BitAddress + y.BitSize;
-                return (xEnd > yStart || yEnd > xStart);
-            }
-
-            public int GetHashCode(Storage obj)
-            {
-                return ((int)obj.Domain).GetHashCode();
+                this.currentDef.Add(b, new Dictionary<StorageDomain, SsaIdentifier>());
             }
         }
     }
