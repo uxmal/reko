@@ -112,7 +112,19 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitUnion(UnionType ut)
         {
-            throw new NotImplementedException();
+            var union = new UnionType_v1
+            {
+                Name = ut.Name,
+            };
+
+            if (ut.Alternatives != null)
+            {
+                var alts = ut.Alternatives.Select(
+                    a => new SerializedUnionAlternative(a.Value.Name, a.Value.DataType.Accept(this))
+                );
+                union.Alternatives = alts.ToArray();
+            }
+            return union;
         }
 
         public SerializedType VisitUnknownType(UnknownType ut)
