@@ -303,7 +303,7 @@
     <Compile Include="Core\ProcedureTests.cs" />
     <Compile Include="Core\ProgramImageTests.cs" />
     <Compile Include="Core\ProgramTests.cs" />
-    <Compile Include="Core\RegisterTests.cs" />
+    <Compile Include="Core\StorageTests.cs" />
     <Compile Include="Core\RelocationDictionaryTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureCharacteristicsTests.cs" />

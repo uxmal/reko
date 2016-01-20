@@ -448,7 +448,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void SsaFlagRegisters()
+        public void Ssa2_FlagRegisters()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -470,7 +470,7 @@ ProcedureBuilder_exit:
 	use esi
 	use SZ_1
 ";
-            RunTest(sExp, m =>
+            RunTest2(sExp, m =>
             {
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var scz = m.Frame.EnsureFlagGroup(flags, 7, "SZ", PrimitiveType.Byte);
@@ -480,7 +480,6 @@ ProcedureBuilder_exit:
                 var esi = m.Reg32("esi", 6);
                 m.Assign(scz, m.Cond(m.And(esi, esi)));
                 m.Assign(c, Constant.False());
-                m.Emit(new AliasAssignment(cz, c));
                 m.Assign(al, m.Test(ConditionCode.ULE, cz));
                 m.Return();
             });

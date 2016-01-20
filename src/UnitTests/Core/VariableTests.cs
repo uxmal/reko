@@ -30,7 +30,7 @@ using System.IO;
 namespace Reko.UnitTests.Core
 {
 	[TestFixture]
-	public class StorageTests
+	public class OutStorageTests
 	{
 		[Test]
 		public void CreateOutArgumentRegister()

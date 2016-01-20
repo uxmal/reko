@@ -24,7 +24,6 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-//$REFACTOR: rename this file to StorageVisitorTests
 namespace Reko.UnitTests.Core
 {
 	[TestFixture]

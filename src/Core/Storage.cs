@@ -67,6 +67,18 @@ namespace Reko.Core
             return thisStart < thatEnd && thatStart < thisEnd;
         }
 
+        /// <summary>
+        /// A storage <code>a</code> is said to cover a storage 
+        /// <code>b</code> if they alias a location, but after 
+        /// assigning a with b, some of the original contents of 
+        /// a still peek through.
+        /// For instance, the x86 register 'eax' covers the 'ah' register,
+        /// but the 'ah' register doesn't cover 'eax'.
+        /// </summary>
+        /// <param name="that"></param>
+        /// <returns></returns>
+        public abstract bool Covers(Storage that);
+
         public virtual SerializedKind Serialize()
 		{
 			throw new NotImplementedException(this.GetType().Name + ".Serialize not implemented.");
@@ -148,7 +160,12 @@ namespace Reko.Core
             return visitor.VisitFlagGroupStorage(this, context);
         }
 
-		public override bool Equals(object obj)
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
 		{
 			FlagGroupStorage fgs = obj as FlagGroupStorage;
 			if (fgs == null)
@@ -201,7 +218,12 @@ namespace Reko.Core
             return visitor.VisitFpuStackStorage(this, context);
         }
 
-		public override bool Equals(object obj)
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
+
+        }
+        public override bool Equals(object obj)
 		{
 			FpuStackStorage fss = obj as FpuStackStorage;
 			if (fss == null)
@@ -245,7 +267,12 @@ namespace Reko.Core
             return visitor.VisitMemoryStorage(this, context);
         }
 
-		public override int OffsetOf(Storage stgSub)
+        public override bool Covers(Storage that)
+        {
+            return false;
+        }
+
+        public override int OffsetOf(Storage stgSub)
 		{
 			return -1;
 		}
@@ -283,7 +310,12 @@ namespace Reko.Core
             return visitor.VisitOutArgumentStorage(this, context);
         }
 
-		public override bool Equals(object obj)
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
 		{
 			OutArgumentStorage oas = obj as OutArgumentStorage;
 			if (oas == null)
@@ -375,6 +407,11 @@ namespace Reko.Core
             return visitor.VisitRegisterStorage(this, context);
         }
 
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
+
+        }
         public override bool Equals(object obj)
         {
             var that = obj as RegisterStorage;
@@ -501,7 +538,12 @@ namespace Reko.Core
             return visitor.VisitSequenceStorage(this, context);
         }
 
-		public override bool Equals(object obj)
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
 		{
 			SequenceStorage ss = obj as SequenceStorage;
 			if (ss == null)
@@ -575,7 +617,12 @@ namespace Reko.Core
             return visitor.VisitStackArgumentStorage(this, context);
         }
 
-		public override bool Equals(object obj)
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
 		{
 			StackArgumentStorage sas = obj as StackArgumentStorage;
 			if (sas == null)
@@ -629,6 +676,11 @@ namespace Reko.Core
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitStackLocalStorage(this, context);
+        }
+
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
         }
 
         public override bool Equals(object obj)
@@ -692,6 +744,11 @@ namespace Reko.Core
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitTemporaryStorage(this, context);
+        }
+
+        public override bool Covers(Storage that)
+        {
+            throw new NotImplementedException();
         }
 
         public override int OffsetOf(Storage stgSub)

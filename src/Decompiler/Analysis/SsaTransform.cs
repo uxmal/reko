@@ -763,12 +763,24 @@ namespace Reko.Analysis
 
         public SsaState SsaState { get { return ssa; } }
 
+        /// <summary>
+        /// Transforms <paramref name="proc"/> into Static Single
+        /// Assignment form.
+        /// </summary>
+        /// <remarks>
+        /// The resulting SSA identifiers are conventiently kept in the
+        /// SsaState property.
+        /// </remarks>
+        /// <param name="proc"></param>
         public void Transform(Procedure proc)
         {
             this.ssa = new SsaState(proc, null);
             this.currentDef = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
             this.incompletePhis = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
             this.sealedBlocks = new HashSet<Block>();
+
+            // Visit blocks in RPO order so that we are guaranteed that a 
+            // block with predecessors is always visited after them.
             foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).ReversePostOrder())
             {
                 Debug.Print("SSA2: visiting {0}", b.Name);
