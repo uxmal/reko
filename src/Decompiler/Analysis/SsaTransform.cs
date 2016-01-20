@@ -846,15 +846,45 @@ namespace Reko.Analysis
 
         public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, SsaIdentifier sidPrev, bool performProbe)
         {
+            SsaIdentifier alias = sid;
             if (performProbe)
             {
-                var alias = ReadVariable(id, b, true);
+                alias = ReadVariable(id, b, true);
+                if (alias != null)
+                {
+                    if (alias.Identifier.Storage.BitSize > id.Storage.BitSize)
+                    {
+                        // Find the old bits.
+                        var dpb = new DepositBits(alias.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
+                        var ass = new AliasAssignment(alias.OriginalIdentifier, dpb);
+                        alias = InsertAfterDefinition(sid, ass);
+                    }
+                    else
+                    {
+                        alias = sid;
+                    }
+                }
+                else
+                {
+                    alias = sid;
+                }
             }
-            currentDef[block][id.Storage.Domain] = sid;
+            currentDef[block][id.Storage.Domain] = alias;
             sid.Previous = sidPrev;
             return sid.Identifier;
         }
 
+        /// <summary>
+        /// Reaches "backwards" to locate the SSA identifier that defines
+        /// the identifier <paramref name="id"/>, starting in block <paramref name="b"/>.
+        /// </summary>
+        /// If no definition of <paramref name="id"/> is found, a new 
+        /// DefStatement is created in the entry block of the procedure,
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="b"></param>
+        /// <param name="aliasProbe"></param>
+        /// <returns></returns>
         public SsaIdentifier ReadVariable(Identifier id, Block b, bool aliasProbe)
         { 
             SsaIdentifier ssaId;
@@ -864,7 +894,7 @@ namespace Reko.Analysis
                 // Defined locally in this block. Does it intersect the probed value?
                 if (ssaId.Identifier.Storage.OverlapsWith(id.Storage))
                 {
-                    return MaybeGenerateAliasStatement(id, ssaId);
+                    return MaybeGenerateAliasStatement(id, ssaId, aliasProbe);
                 }
             }
             // Keep probin'.
@@ -901,7 +931,7 @@ namespace Reko.Analysis
                 WriteVariable(id, b, val, null, false);
                 val = AddPhiOperands(id, val, aliasProbe);
             }
-            if (val != null)
+            if (val != null && !aliasProbe)
                 WriteVariable(id, b, val, sidPrev, false);
             return val;
         }
@@ -914,12 +944,15 @@ namespace Reko.Analysis
         /// <param name="idTo"></param>
         /// <param name="sidFrom"></param>
         /// <returns></returns>
-        private SsaIdentifier MaybeGenerateAliasStatement(Identifier idTo, SsaIdentifier sidFrom)
+        private SsaIdentifier MaybeGenerateAliasStatement(Identifier idTo, SsaIdentifier sidFrom, bool aliasProbe)
         {
             var stgFrom = sidFrom.Identifier.Storage;
             var stgTo = idTo.Storage;
-            if (stgFrom == stgTo)
+            if (stgFrom == stgTo ||
+                (aliasProbe && stgTo.BitSize < stgFrom.BitSize))
+            {
                 return sidFrom;
+            }
             Expression e = null;
             if (stgTo.BitSize < stgFrom.BitSize)
             {

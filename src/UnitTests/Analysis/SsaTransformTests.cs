@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Analysis
         public void SsarSimple()
         {
             var sExp =
-                @"// ProcedureBuilder
+@"// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -654,22 +654,24 @@ ProcedureBuilder_exit:
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	def Mem0
-	def ecx
 	// succ:  l1
 l1:
+	ecx_1 = Mem0[0x00542300:word32]
 	branch Mem0[0x00010042:bool] mBranch2
 	// succ:  mBranch1 mBranch2
 mBranch1:
-	cl_1 = 0x2A
-	ecx_3 = DPB(ecx, cl_1, 0) (alias)
+	cl_3 = 0x2A
+	ecx_4 = DPB(ecx_1, cl_3, 0) (alias)
 	goto mCommon
 	// succ:  mCommon
 mBranch2:
-	ecx_6 = 0x00000020
+	ecx_2 = 0x00000020
 	// succ:  mCommon
 mCommon:
-	ecx_2 = PHI(ecx_3, ecx_6)
-	Mem5[0x00010232:word32] = ecx_2
+	ecx_5 = PHI(ecx_4, ecx_2)
+	Mem6[0x00010232:word32] = ecx_5
+	return
+	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -677,6 +679,8 @@ ProcedureBuilder_exit:
             {
                 var ecx = m.Frame.EnsureRegister(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
                 var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 1, 0, PrimitiveType.Byte));
+
+                m.Assign(ecx, m.LoadDw(m.Word32(0x542300)));
                 m.BranchIf(m.Load(PrimitiveType.Bool, m.Word32(0x10042)), "mBranch2");
 
                 m.Label("mBranch1");
@@ -688,8 +692,8 @@ ProcedureBuilder_exit:
 
                 m.Label("mCommon");
                 m.Store(m.Word32(0x10232), ecx);
+                m.Return();
             });
         }
     }
-
 }

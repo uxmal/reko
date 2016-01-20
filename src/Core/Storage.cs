@@ -53,6 +53,11 @@ namespace Reko.Core
 
         public bool OverlapsWith(Storage that)
         {
+            if (this.Domain == StorageDomain.Memory && 
+                that.Domain == StorageDomain.Memory)
+            {
+                return true;
+            }
             if (this.Domain != that.Domain || this.Number != that.Number)
                 return false;
             var thisStart = this.BitAddress;
