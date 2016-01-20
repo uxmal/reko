@@ -168,9 +168,6 @@ namespace Reko.Core
             var dtSer = new DataTypeSerializer();
             foreach (var typedef in platformTypedefs)
             {
-                Debug.Print("qlucq: typedef: {0}", typedef.Key);
-                if (typedef.Key == "LIST_ENTRY") //$DEBUG
-                    typedef.ToString();
                 namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
             }
             return new SymbolTable(this, namedTypes);

@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Core.Serialization
             var str = new StructureType("foo", 0);
             str.Fields.Add(0, new Pointer(str, 4), "bar");
             var sStr = str.Accept(new DataTypeSerializer());
-            Assert.AreEqual("struct(foo, (0, bar, ptr(struct(foo)))", sStr.ToString());
+            Assert.AreEqual("struct(foo, (0, bar, ptr(struct(foo, ))))", sStr.ToString());
         }
     }
 }
