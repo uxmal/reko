@@ -440,7 +440,7 @@ ProcedureBuilder_exit:
                 m.Store(m.IAdd(bp, -8), r1);
 
                 m.Label("done");
-                m.Assign(r1, m.LoadDw(m.IAdd(bp,-8)));
+                m.Assign(r1, m.LoadDw(m.IAdd(bp, -8)));
                 m.Assign(bp, m.LoadDw(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
@@ -516,15 +516,15 @@ ProcedureBuilder_exit:
 ";
             RunTest(sExp, m =>
             {
-            var r1 = m.Register("r1");
-            var r2 = m.Register("r2");
-            var r3 = m.Register("r3");
-            m.BranchIf(r1, "true");
-            m.Assign(r2, m.Int32(16));
-            m.Label("true");
-            m.Call(r3, 4);
-            m.Return();
-                        });
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var r3 = m.Register("r3");
+                m.BranchIf(r1, "true");
+                m.Assign(r2, m.Int32(16));
+                m.Label("true");
+                m.Call(r3, 4);
+                m.Return();
+            });
         }
 
         [Test]
@@ -692,6 +692,76 @@ ProcedureBuilder_exit:
 
                 m.Label("mCommon");
                 m.Store(m.Word32(0x10232), ecx);
+                m.Return();
+            });
+        }
+
+        [Test(Description = "Multiple assignments in the same block")]
+        public void Ssa2_ManyAssignments()
+        {
+            var sExp =
+            #region Expected@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	eax_1 = Mem0[0x00543200:word32]
+	edx_2 = Mem0[0x00543208:word32]
+	eax_3 = eax_1 + edx_2
+	Mem4[0x00642300:word32] = eax_3
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest2(sExp, m =>
+            {
+                var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
+                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+
+                m.Assign(eax, m.LoadDw(m.Word32(0x543200)));
+                m.Assign(edx, m.LoadDw(m.Word32(0x543208)));
+                m.Assign(eax, m.IAdd(eax, edx));
+                m.Store(m.Word32(0x642300), eax);
+                m.Return();
+            });
+        }
+
+        [Test(Description = "Multiple assignments in the same block with aliases")]
+        public void Ssa2_ManyAssignmentsWithAliases()
+        {
+            var sExp =
+            #region Expected@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	edx_1 = Mem0[0x00543200:word32]
+	dl_2 = (byte) edx_1 (alias)
+	Mem3[0x00642300:byte] = dl_2
+	edx_4 = Mem3[0x00543208:word32]
+	dl_5 = (byte) edx_4 (alias)
+	Mem6[0x00642308:byte] = dl_5
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest2(sExp, m =>
+            {
+                var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
+                var dl = m.Frame.EnsureRegister(new RegisterStorage("dl", 2, 0, PrimitiveType.Byte));
+
+                m.Assign(edx, m.LoadDw(m.Word32(0x543200)));
+                m.Store(m.Word32(0x642300), dl);
+                m.Assign(edx, m.LoadDw(m.Word32(0x543208)));
+                m.Store(m.Word32(0x642308), dl);
                 m.Return();
             });
         }

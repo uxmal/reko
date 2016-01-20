@@ -123,11 +123,11 @@ namespace Reko.Core.Expressions
 	{
 		private static MemoryIdentifier g;
 
-		public MemoryIdentifier(int i, DataType dt) : base("Mem" + i, dt, new MemoryStorage())
+		public MemoryIdentifier(int i, DataType dt) : base("Mem" + i, dt, MemoryStorage.Instance)
 		{
 		}
 
-        public MemoryIdentifier(string name, DataType dt) : base(name, dt, new MemoryStorage())
+        public MemoryIdentifier(string name, DataType dt) : base(name, dt, MemoryStorage.Instance)
         {
 
         }

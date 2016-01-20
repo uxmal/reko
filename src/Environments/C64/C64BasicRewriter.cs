@@ -247,7 +247,7 @@ namespace Reko.Environments.C64
                 }
             }
             sb.AppendFormat("_{0}", suffix);
-            id = new Identifier(sb.ToString(), dt, new MemoryStorage());
+            id = new Identifier(sb.ToString(), dt, MemoryStorage.Instance);
             return true;
         }
 

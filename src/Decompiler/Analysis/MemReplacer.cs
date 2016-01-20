@@ -64,7 +64,7 @@ namespace Reko.Analysis
 			Constant c = ea as Constant;
 			if (c != null)
 			{
-				return new Identifier(string.Format("g_{0}{1:X8}", type.Prefix, c.ToUInt32()), type, new MemoryStorage());
+				return new Identifier(string.Format("g_{0}{1:X8}", type.Prefix, c.ToUInt32()), type, MemoryStorage.Instance);
 			}
 			Identifier id = ea as Identifier;
 			if (id != null)

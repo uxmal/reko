@@ -230,7 +230,7 @@ namespace Reko.Core
 	/// </summary>
 	public class MemoryStorage : Storage
 	{
-		public MemoryStorage() : base("Global")
+		private MemoryStorage() : base("Global")
 		{
             this.Domain = StorageDomain.Memory;
 		}
@@ -254,6 +254,13 @@ namespace Reko.Core
 		{
 			writer.Write("Global memory");
 		}
+
+        public static MemoryStorage Instance { get; private set; }
+
+        static MemoryStorage()
+        {
+            Instance = new MemoryStorage();
+        }
 	}
 
 	/// <summary>
