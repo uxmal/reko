@@ -457,10 +457,10 @@ ProcedureBuilder_entry:
 	def esi
 	// succ:  l1
 l1:
-	SZ_1 = cond(esi)
+	SZ_1 = cond(esi & esi)
 	C_2 = false
-	CZ_3 = false (alias)
-	al_4 = Test(ULE,false)
+	CZ_3 = DPB(CZ, 0, SZ_1)
+	al_4 = Test(ULE,CZ_3)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

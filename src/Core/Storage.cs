@@ -51,7 +51,8 @@ namespace Reko.Core
         public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
 
 
-        public bool OverlapsWith(Storage that)
+        public abstract bool OverlapsWith(Storage that);
+        /*
         {
             if (this.Domain == StorageDomain.Memory && 
                 that.Domain == StorageDomain.Memory)
@@ -66,6 +67,7 @@ namespace Reko.Core
             var thatEnd = that.BitAddress + that.BitSize;
             return thisStart < thatEnd && thatStart < thisEnd;
         }
+        */
 
         /// <summary>
         /// A storage <code>a</code> is said to cover a storage 
@@ -78,6 +80,12 @@ namespace Reko.Core
         /// <param name="that"></param>
         /// <returns></returns>
         public abstract bool Covers(Storage that);
+
+        public virtual bool Exceeds(Storage that)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public virtual SerializedKind Serialize()
 		{
@@ -160,9 +168,12 @@ namespace Reko.Core
             return visitor.VisitFlagGroupStorage(this, context);
         }
 
-        public override bool Covers(Storage that)
+        public override bool Covers(Storage sThat)
         {
-            throw new NotImplementedException();
+            var that = sThat as FlagGroupStorage;
+            if (that == null || this.FlagRegister != that.FlagRegister)
+                return false;
+            return (this.FlagGroupBits | that.FlagGroupBits) == this.FlagGroupBits;
         }
 
         public override bool Equals(object obj)
@@ -173,7 +184,15 @@ namespace Reko.Core
 			return FlagGroupBits == fgs.FlagGroupBits;
 		}
 
-		public override int GetHashCode()
+        public override bool Exceeds(Storage sThat)
+        {
+            var that = sThat as FlagGroupStorage;
+            if (that == null || this.FlagRegister != that.FlagRegister)
+                return false;
+            return (this.FlagGroupBits & ~that.FlagGroupBits) != 0;
+        }
+
+        public override int GetHashCode()
 		{
 			return GetType().GetHashCode() ^ FlagGroupBits.GetHashCode();
 		}
@@ -186,7 +205,15 @@ namespace Reko.Core
 			return ((f.FlagGroupBits & FlagGroupBits) != 0) ? 0 : -1;
 		}
 
-		public override SerializedKind Serialize()
+        public override bool OverlapsWith(Storage sThat)
+        {
+            var that = sThat as FlagGroupStorage;
+            if (that == null || this.FlagRegister != that.FlagRegister)
+                return false;
+            return (this.FlagGroupBits & that.FlagGroupBits) != 0;
+        }
+
+        public override SerializedKind Serialize()
 		{
 			return new FlagGroup_v1(Name);
 		}
@@ -220,9 +247,10 @@ namespace Reko.Core
 
         public override bool Covers(Storage that)
         {
-            throw new NotImplementedException();
-
+            return that is FpuStackStorage &&
+                this.Number == that.Number;
         }
+
         public override bool Equals(object obj)
 		{
 			FpuStackStorage fss = obj as FpuStackStorage;
@@ -241,7 +269,12 @@ namespace Reko.Core
 			return -1;
 		}
 
-		public override void Write(TextWriter writer)
+        public override bool OverlapsWith(Storage that)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write(TextWriter writer)
 		{
 			writer.Write("FPU stack");
 		}
@@ -277,7 +310,12 @@ namespace Reko.Core
 			return -1;
 		}
 
-		public override void Write(TextWriter writer)
+        public override bool OverlapsWith(Storage that)
+        {
+            return that is MemoryStorage;
+        }
+
+        public override void Write(TextWriter writer)
 		{
 			writer.Write("Global memory");
 		}
@@ -299,6 +337,8 @@ namespace Reko.Core
 		{
 			this.OriginalIdentifier = originalId;
 		}
+
+        public Identifier OriginalIdentifier { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -333,7 +373,10 @@ namespace Reko.Core
 			return -1;
 		}
 
-		public Identifier OriginalIdentifier { get; private set; }
+        public override bool OverlapsWith(Storage that)
+        {
+            throw new NotImplementedException();
+        }
 
         public override SerializedKind Serialize()
         {
@@ -415,6 +458,14 @@ namespace Reko.Core
             return (this.BitMask | that.BitMask) != 0;
         }
 
+        public override bool Exceeds(Storage sThat)
+        {
+            var that = sThat as RegisterStorage;
+            if (that == null || that.Domain != this.Domain)
+                return false;
+            return (this.BitMask & ~that.BitMask) != 0;
+        }
+
         public override bool Equals(object obj)
         {
             var that = obj as RegisterStorage;
@@ -451,6 +502,18 @@ namespace Reko.Core
             if (!OverlapsWith(regSub))
                 return -1;
             return (int)stgSub.BitAddress;
+        }
+
+        public override bool OverlapsWith(Storage sThat)
+        {
+            var that = sThat as RegisterStorage;
+            if (that == null || this.Domain != that.Domain)
+                return false;
+            var thisStart = this.BitAddress;
+            var thisEnd = this.BitAddress + this.BitSize;
+            var thatStart = that.BitAddress;
+            var thatEnd = that.BitAddress + that.BitSize;
+            return thisStart < thatEnd && thatStart < thisEnd;
         }
 
         /// <summary>
@@ -570,7 +633,12 @@ namespace Reko.Core
 			return -1;
 		}
 
-		public override SerializedKind Serialize()
+        public override bool OverlapsWith(Storage that)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SerializedKind Serialize()
 		{
 			return new SerializedSequence(this);
 		}
@@ -587,9 +655,20 @@ namespace Reko.Core
             : base(kind)
         {
         }
+
+        public override bool OverlapsWith(Storage that)
+        {
+            if (this.Domain != that.Domain || this.Number != that.Number)
+                return false;
+            var thisStart = this.BitAddress;
+            var thisEnd = this.BitAddress + this.BitSize;
+            var thatStart = that.BitAddress;
+            var thatEnd = that.BitAddress + that.BitSize;
+            return thisStart < thatEnd && thatStart < thisEnd;
+        }
     }
 
-	public class StackArgumentStorage : StackStorage
+    public class StackArgumentStorage : StackStorage
 	{
 		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
 		{
@@ -751,13 +830,18 @@ namespace Reko.Core
 
         public override bool Covers(Storage that)
         {
-            throw new NotImplementedException();
+            return ReferenceEquals(this, that);
         }
 
         public override int OffsetOf(Storage stgSub)
 		{
 			return -1;
 		}
+
+        public override bool OverlapsWith(Storage that)
+        {
+            return ReferenceEquals(this, that);
+        }
 
         public override void Write(TextWriter writer)
         {

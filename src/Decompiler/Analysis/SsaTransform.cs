@@ -868,7 +868,7 @@ namespace Reko.Analysis
                 if (alias != null)
                 {
                     // Was the previous modification larger than this modification?
-                    if (alias.Identifier.Storage.BitSize > id.Storage.BitSize)
+                    if (alias.Identifier.Storage.Exceeds(id.Storage))
                     {
                         // Generate a DPB so the previous modification "shines
                         // through".
@@ -963,7 +963,7 @@ namespace Reko.Analysis
             var stgFrom = sidFrom.Identifier.Storage;
             var stgTo = idTo.Storage;
             if (stgFrom == stgTo ||
-                (aliasProbe && stgTo.BitSize < stgFrom.BitSize))
+                (aliasProbe && stgFrom.Exceeds(stgTo)))
             {
                 return sidFrom;
             }
