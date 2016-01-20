@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -167,6 +168,9 @@ namespace Reko.Core
             var dtSer = new DataTypeSerializer();
             foreach (var typedef in platformTypedefs)
             {
+                Debug.Print("qlucq: typedef: {0}", typedef.Key);
+                if (typedef.Key == "LIST_ENTRY") //$DEBUG
+                    typedef.ToString();
                 namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
             }
             return new SymbolTable(this, namedTypes);
@@ -212,6 +216,7 @@ namespace Reko.Core
                 foreach (var tl in envCfg.TypeLibraries
                     .OfType<ITypeLibraryElement>())
                 {
+                    Debug.Print("Loading {0}", tl.Name);
                     Metadata = tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name), Metadata);
                 }
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
