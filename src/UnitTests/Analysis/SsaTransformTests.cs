@@ -90,8 +90,6 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
-            //var alias = new Aliases(proc, this.pb.Program.Architecture);
-            //alias.Transform();
             var ssa = new SsaTransform2();
             ssa.Transform(proc);
 
@@ -473,12 +471,12 @@ ProcedureBuilder_exit:
             RunTest2(sExp, m =>
             {
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var scz = m.Frame.EnsureFlagGroup(flags, 7, "SZ", PrimitiveType.Byte);
+                var sz = m.Frame.EnsureFlagGroup(flags, 6, "SZ", PrimitiveType.Byte);
                 var cz = m.Frame.EnsureFlagGroup(flags, 3, "CZ", PrimitiveType.Byte);
                 var c = m.Frame.EnsureFlagGroup(flags, 1, "C", PrimitiveType.Bool);
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
-                m.Assign(scz, m.Cond(m.And(esi, esi)));
+                m.Assign(sz, m.Cond(m.And(esi, esi)));
                 m.Assign(c, Constant.False());
                 m.Assign(al, m.Test(ConditionCode.ULE, cz));
                 m.Return();

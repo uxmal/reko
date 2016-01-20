@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Analysis
 		public void Setup()
 		{
 			ssaIds = new SsaIdentifierCollection();
-            freg = new FlagRegister("flags", PrimitiveType.Word32);
+            freg = new FlagRegister("flags", 0, PrimitiveType.Word32);
 		}
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
@@ -393,7 +393,7 @@ done:
                 var r2 = MockReg(m, 2);
                 var r3 = MockReg(m, 3);
                 var r4 = MockReg(m, 4);
-                var flags = new FlagRegister("flags", PrimitiveType.Word32);
+                var flags = new FlagRegister("flags", 0, PrimitiveType.Word32);
                 var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);
 

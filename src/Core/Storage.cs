@@ -108,6 +108,7 @@ namespace Reko.Core
         Register = 0,
         Stack = 4096,   // Few architectures have this many registers (fingers xD)
         Memory = 4097, 
+        Flags = 4100,
         Temporary = 8192,
     }
 
@@ -116,8 +117,12 @@ namespace Reko.Core
     /// </summary>
     public class FlagRegister : RegisterStorage
     {
-        public FlagRegister(string name, PrimitiveType size) :
-            base(name, 0, 0, size)
+        public FlagRegister(string name, int flagDomain, PrimitiveType size) :
+            base(
+                name, 
+                (flagDomain + (int)StorageDomain.Flags - (int) StorageDomain.Flags),
+                0, 
+                size)
         {
         }
 
@@ -147,6 +152,7 @@ namespace Reko.Core
 	{
         public FlagGroupStorage(FlagRegister freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
         {
+            this.Domain = freg.Domain;
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
             this.Name = name;

@@ -740,16 +740,20 @@ namespace Reko.Analysis
 		}
     }
 
-	/// <summary>
-	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment
+    /// <summary>
+    /// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment
     /// form.
-	/// </summary>
+    /// </summary>
     /// <remarks>
     /// EXPERIMENTAL - consult uxmal before using
     /// 
-    /// This class implements another SSA algorithm that doesn't require 
-    /// calculation of the dominator graph. It is expected that when it is fully
-    /// implemented, it will take over from SsaTransform above.
+    /// This class implements an SSA algorithm that doesn't require 
+    /// calculation of the dominator graph. It is based on the algorithm
+    /// described in "Simple and Efficient Construction of Static Single
+    /// Assignment Form" by Matthias Braun, Sebastian Buchwald, Sebastian 
+    /// Hack, Roland Leiﬂa, Christoph Mallon, and Andreas Zwinkau. It is
+    /// expected that when it is fully implemented, it will take over from 
+    /// SsaTransform above.
     /// </remarks>
     public class SsaTransform2 : InstructionTransformer 
     {
@@ -986,7 +990,11 @@ namespace Reko.Analysis
 
         private SsaIdentifier InsertAfterDefinition(SsaIdentifier sidFrom, AliasAssignment ass)
         {
-            int i = sidFrom.DefStatement.Block.Statements.IndexOf(sidFrom.DefStatement);
+            var b = sidFrom.DefStatement.Block;
+            int i = b.Statements.IndexOf(sidFrom.DefStatement);
+            // Skip alias statements
+            while (i < b.Statements.Count-1 && b.Statements[i].Instruction is AliasAssignment)
+                ++i;
             sidFrom.DefStatement.Block.Statements.Insert(i + 1, sidFrom.DefStatement.LinearAddress, ass);
 
             var sidTo = ssa.Identifiers.Add(ass.Dst, this.stm, ass.Src, false);
