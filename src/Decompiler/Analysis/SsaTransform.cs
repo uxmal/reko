@@ -968,7 +968,7 @@ namespace Reko.Analysis
                 return sidFrom;
             }
             Expression e = null;
-            if (stgTo.BitSize < stgFrom.BitSize)
+            if (stgFrom.Covers(stgTo))
             {
                 if (stgTo.BitAddress != 0)
                     e = new Slice(idTo.DataType, sidFrom.Identifier, (uint)stgTo.BitAddress);

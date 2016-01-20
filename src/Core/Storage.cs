@@ -407,11 +407,14 @@ namespace Reko.Core
             return visitor.VisitRegisterStorage(this, context);
         }
 
-        public override bool Covers(Storage that)
+        public override bool Covers(Storage sThat)
         {
-            throw new NotImplementedException();
-
+            var that = sThat as RegisterStorage;
+            if (that == null || that.Domain != this.Domain)
+                return false;
+            return (this.BitMask | that.BitMask) != 0;
         }
+
         public override bool Equals(object obj)
         {
             var that = obj as RegisterStorage;
