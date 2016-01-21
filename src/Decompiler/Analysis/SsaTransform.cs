@@ -759,21 +759,24 @@ namespace Reko.Analysis
     {
         private Block block;
         private Statement stm;
-        private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> currentDef;
-        private Dictionary<Block, Dictionary<uint, SsaIdentifier>> currentFlagDef;
-        private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> incompletePhis;
+        private Dictionary<Block, BlockState> blockstates;
+        //private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> currentDef;
+        //private Dictionary<Block, Dictionary<uint, SsaIdentifier>> currentFlagDef;
+        //private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> incompletePhis;
         private HashSet<Block> sealedBlocks;
         private SsaState ssa;
         private bool storing;
 
         public class BlockState
         {
+            public readonly Block Block;
             public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
             public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
             public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
 
-            public BlockState()
+            public BlockState(Block block)
             {
+                this.Block = block;
                 this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
                 this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
                 this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
@@ -794,9 +797,7 @@ namespace Reko.Analysis
         public void Transform(Procedure proc)
         {
             this.ssa = new SsaState(proc, null);
-            this.currentDef = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
-            this.currentFlagDef = new Dictionary<Block, Dictionary<uint, SsaIdentifier>>();
-            this.incompletePhis = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
+            this.blockstates = new Dictionary<Block, BlockState>();
             this.sealedBlocks = new HashSet<Block>();
 
             // Visit blocks in RPO order so that we are guaranteed that a 
@@ -954,11 +955,11 @@ namespace Reko.Analysis
             }
             if (flagMask != 0)
             {
-                currentFlagDef[block][flagMask] = alias;
+                blockstates[b].currentFlagDef[flagMask] = alias;
             }
             else
             {
-                currentDef[block][id.Storage.Domain] = alias;
+                blockstates[b].currentDef[id.Storage.Domain] = alias;
             }
             return sid.Identifier;
         }
@@ -980,13 +981,13 @@ namespace Reko.Analysis
             EnsureStateFor(b);
             if (flagMask != 0)
             {
-                if (currentFlagDef[b].TryGetValue(flagMask, out ssaId))
+                if (blockstates[b].currentFlagDef.TryGetValue(flagMask, out ssaId))
                 {
                     // Defined locally in this block.
                     return ssaId;
                 }
             }
-            else if (currentDef[b].TryGetValue(id.Storage.Domain, out ssaId))
+            else if (blockstates[b].currentDef.TryGetValue(id.Storage.Domain, out ssaId))
             {
                 // Defined locally in this block.
                 // Does ssaId intersect the probed value?
@@ -1188,7 +1189,7 @@ namespace Reko.Analysis
 
         private void SealBlock(Block block)
         {
-            foreach (var sid in incompletePhis[block].Values)
+            foreach (var sid in blockstates[block].incompletePhis.Values)
             {
                 AddPhiOperands(sid.Identifier, sid, 0, false);
             }
@@ -1197,13 +1198,9 @@ namespace Reko.Analysis
 
         private void EnsureStateFor(Block b)
         {
-            if (!currentDef.ContainsKey(b))
+            if (!blockstates.ContainsKey(b))
             {
-                this.currentDef.Add(b, new Dictionary<StorageDomain, SsaIdentifier>());
-            }
-            if (!currentFlagDef.ContainsKey(b))
-            {
-                this.currentFlagDef.Add(b, new Dictionary<uint, SsaIdentifier>());
+                this.blockstates.Add(b, new BlockState(b));
             }
         }
     }
