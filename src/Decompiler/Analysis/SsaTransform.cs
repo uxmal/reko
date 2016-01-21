@@ -833,10 +833,10 @@ namespace Reko.Analysis
             {
                 // Analyze each flag in the flag group separately.
                 var ids = new HashSet<Identifier>();
-                var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
                 foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
                 {
-                    ids.Add(ss.ReadVariable(bs, flagBitMask, false).Identifier);
+                    var ss = new SsaFlagTransformer(id, flagBitMask, ssa.Identifiers, stm, blockstates);
+                    ids.Add(ss.ReadVariable(bs, false).Identifier);
                 }
                 if (ids.Count == 1)
                 {
@@ -850,7 +850,7 @@ namespace Reko.Analysis
             else
             {
                 var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
-                return ss.ReadVariable(bs, 0, false).Identifier;
+                return ss.ReadVariable(bs, false).Identifier;
             }
         }
 
@@ -901,20 +901,19 @@ namespace Reko.Analysis
         }
     }
 
-    public class SsaFlagTransformer : SsaIdentifierTransformer
+    public class SsaBlockState
     {
-        private uint flagMask;
+        public readonly Block Block;
+        public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
+        public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
+        public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
 
-        public SsaFlagTransformer(Identifier id, uint flagMask, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
-            : base(id, ssaIds, stm, blockstates)
+        public SsaBlockState(Block block)
         {
-            this.flagMask = flagMask;
-        }
-
-        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
-        {
-            bs.currentFlagDef[flagMask] = sid;
-            return sid.Identifier;
+            this.Block = block;
+            this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
+            this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
+            this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
         }
     }
 
@@ -949,7 +948,7 @@ namespace Reko.Analysis
             if (performProbe)
             {
                 // Did a previous SSA id modify the same storage as id?
-                alias = ReadVariable(bs, 0, performProbe);
+                alias = ReadVariable(bs, performProbe);
                 if (alias != null)
                 {
                     // Was the previous modification larger than this modification?
@@ -986,18 +985,10 @@ namespace Reko.Analysis
         /// <param name="b"></param>
         /// <param name="aliasProbe"></param>
         /// <returns></returns>
-        public SsaIdentifier ReadVariable(SsaBlockState bs, uint flagMask, bool aliasProbe)
+        public virtual SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
         {
             SsaIdentifier ssaId;
-            if (flagMask != 0)
-            {
-                if (bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
-                {
-                    // Defined locally in this block.
-                    return ssaId;
-                }
-            }
-            else if (bs.currentDef.TryGetValue(id.Storage.Domain, out ssaId))
+            if (bs.currentDef.TryGetValue(id.Storage.Domain, out ssaId))
             {
                 // Defined locally in this block.
                 // Does ssaId intersect the probed value?
@@ -1007,10 +998,10 @@ namespace Reko.Analysis
                 }
             }
             // Keep probin'.
-            return ReadVariableRecursive(bs, flagMask, aliasProbe);
+            return ReadVariableRecursive(bs, aliasProbe);
         }
 
-        private SsaIdentifier ReadVariableRecursive(SsaBlockState bs, uint flagMask, bool aliasProbe)
+        public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
         {
             SsaIdentifier val;
             if (false)  // !sealedBlocks.Contains(b))
@@ -1029,14 +1020,14 @@ namespace Reko.Analysis
             }
             else if (bs.Block.Pred.Count == 1)
             {
-                val = ReadVariable(blockstates[bs.Block.Pred[0]], flagMask, aliasProbe);
+                val = ReadVariable(blockstates[bs.Block.Pred[0]], aliasProbe);
             }
             else
             {
                 // Break potential cycles with operandless phi
                 val = NewPhi(id, bs.Block);
                 WriteVariable(bs, val, false);
-                val = AddPhiOperands(id, val, flagMask, aliasProbe);
+                val = AddPhiOperands(id, val, aliasProbe);
             }
             if (val != null && !aliasProbe)
                 WriteVariable(bs, val, false);
@@ -1071,7 +1062,7 @@ namespace Reko.Analysis
             }
             else
             {
-                var sidTo = ReadVariable(blockstates[sidFrom.DefStatement.Block], 0, false);
+                var sidTo = ReadVariable(blockstates[sidFrom.DefStatement.Block], false);
                 e = new DepositBits(id, sidFrom.Identifier, (int)stgFrom.BitAddress);
             }
             var ass = new AliasAssignment(id, e);
@@ -1110,17 +1101,17 @@ namespace Reko.Analysis
             return sid;
         }
 
-        private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi, uint flagMask, bool aliasProbe)
+        private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi, bool aliasProbe)
         {
             // Determine operands from predecessors.
             var preds = phi.DefStatement.Block.Pred;
-            var sids = preds.Select(p => ReadVariable(blockstates[p], flagMask, aliasProbe)).ToArray();
+            var sids = preds.Select(p => ReadVariable(blockstates[p], aliasProbe)).ToArray();
             if (aliasProbe && sids.Any(s => s != null))
             {
                 for (int i = 0; i < sids.Length; ++i)
                 {
                     if (sids[i] == null)
-                        sids[i] = ReadVariable(blockstates[preds[i]], flagMask, false);
+                        sids[i] = ReadVariable(blockstates[preds[i]], false);
                 }
             }
             if (aliasProbe && sids.Any(s => s == null))
@@ -1198,20 +1189,34 @@ namespace Reko.Analysis
         }
     }
 
-    public class SsaBlockState
+    public class SsaFlagTransformer : SsaIdentifierTransformer
     {
-        public readonly Block Block;
-        public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
-        public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
-        public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
+        private uint flagMask;
 
-        public SsaBlockState(Block block)
+        public SsaFlagTransformer(Identifier id, uint flagMask, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
+            : base(id, ssaIds, stm, blockstates)
         {
-            this.Block = block;
-            this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
-            this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
-            this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
+            this.flagMask = flagMask;
+        }
+
+        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
+        {
+            bs.currentFlagDef[flagMask] = sid;
+            return sid.Identifier;
+        }
+
+        public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+        {
+            SsaIdentifier ssaId;
+            if (bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
+            {
+                // Defined locally in this block.
+                return ssaId;
+            }
+            // Keep probin'.
+            return ReadVariableRecursive(bs, aliasProbe);
         }
     }
+
 
 }
