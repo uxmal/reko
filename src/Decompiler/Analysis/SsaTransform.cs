@@ -762,6 +762,7 @@ namespace Reko.Analysis
         private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> currentDef;
         private Dictionary<Block, Dictionary<uint, SsaIdentifier>> currentFlagDef;
         private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> incompletePhis;
+        private Dictionary<SsaIdentifier, SsaIdentifier> previousId; 
         private HashSet<Block> sealedBlocks;
         private SsaState ssa;
         private bool storing;
@@ -797,6 +798,7 @@ namespace Reko.Analysis
             this.currentDef = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
             this.currentFlagDef = new Dictionary<Block, Dictionary<uint, SsaIdentifier>>();
             this.incompletePhis = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
+            this.previousId = new Dictionary<SsaIdentifier, SsaIdentifier>();
             this.sealedBlocks = new HashSet<Block>();
 
             // Visit blocks in RPO order so that we are guaranteed that a 
@@ -880,33 +882,34 @@ namespace Reko.Analysis
         /// <returns></returns>
         public Identifier WriteVariable(Identifier id, Block b, SsaIdentifier sid, bool performProbe)
         {
-            SsaIdentifier alias = sid;
+            SsaIdentifier previous = sid;
             if (performProbe)
             {
                 // Did a previous SSA id modify the same storage as id?
-                alias = ReadVariable(id, b, true);
-                if (alias != null)
+                previous = ReadVariable(id, b, true);
+                if (previous != null)
                 {
                     // Was the previous modification larger than this modification?
-                    if (alias.Identifier.Storage.Exceeds(id.Storage))
+                    if (previous.Identifier.Storage.Exceeds(id.Storage))
                     {
                         // Generate a DPB so the previous modification "shines
                         // through".
-                        var dpb = new DepositBits(alias.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
-                        var ass = new AliasAssignment(alias.OriginalIdentifier, dpb);
-                        alias = InsertAfterDefinition(sid, ass);
+                        var dpb = new DepositBits(previous.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
+                        var ass = new AliasAssignment(previous.OriginalIdentifier, dpb);
+                        previous = InsertAfterDefinition(sid, ass);
+                        this.previousId[sid] = previous;
                     }
                     else
                     {
-                        alias = sid;
+                        previous = sid;
                     }
                 }
                 else
                 {
-                    alias = sid;
+                    previous = sid;
                 }
             }
-            currentDef[block][id.Storage.Domain] = alias;
+            currentDef[block][id.Storage.Domain] = previous;
             return sid.Identifier;
         }
 
@@ -999,6 +1002,7 @@ namespace Reko.Analysis
             {
                 var sidTo = ReadVariable(idTo, sidFrom.DefStatement.Block, false);
                 e = new DepositBits(idTo, sidFrom.Identifier, (int)stgFrom.BitAddress);
+                this.previousId[sidTo] = sidFrom;
             }
             var ass = new AliasAssignment(idTo, e);
             return InsertAfterDefinition(sidFrom, ass);
