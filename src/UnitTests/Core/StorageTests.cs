@@ -43,7 +43,6 @@ namespace Reko.UnitTests.Core
         private FlagGroupStorage c;
         private FlagGroupStorage z;
         private FlagGroupStorage s;
-        private IProcessorArchitecture arch;
 
         public StorageTests()
         {
@@ -58,15 +57,6 @@ namespace Reko.UnitTests.Core
             this.c = new FlagGroupStorage(freg, 0x1, "c", PrimitiveType.Bool);
             this.z = new FlagGroupStorage(freg, 0x2, "z", PrimitiveType.Bool);
             this.s = new FlagGroupStorage(freg, 0x4, "s", PrimitiveType.Bool);
-        }
-        
-        [SetUp]
-        public void Setup()
-        {
-            this.arch = MockRepository.GenerateStub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.GetFlagGroup(1u)).Return(c);
-            this.arch.Stub(a => a.GetFlagGroup(2u)).Return(z);
-            this.arch.Stub(a => a.GetFlagGroup(4u)).Return(s);
         }
 
         [Test]
@@ -109,16 +99,6 @@ namespace Reko.UnitTests.Core
             Assert.IsFalse(c.Covers(szc));
             Assert.IsFalse(c.Covers(sz));
             Assert.IsFalse(sz.Covers(c));
-        }
-
-        [Test]
-        public void Stg_ExpandFlaggroup()
-        {
-            var subflags = szc.GetSubstorages(arch).ToArray();
-            Assert.AreEqual(3, subflags.Length);
-            Assert.AreEqual(1, ((FlagGroupStorage)subflags[0]).FlagGroupBits);
-            Assert.AreEqual(2, ((FlagGroupStorage)subflags[1]).FlagGroupBits);
-            Assert.AreEqual(4, ((FlagGroupStorage)subflags[2]).FlagGroupBits);
         }
     }
 }

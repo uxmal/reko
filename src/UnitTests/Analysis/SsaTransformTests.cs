@@ -457,16 +457,10 @@ ProcedureBuilder_entry:
 l1:
 	SZ_1 = cond(esi & esi)
 	C_2 = false
-	CZ_3 = DPB(CZ, 0, SZ_1)
-	al_4 = Test(ULE,CZ_3)
+	al_3 = Test(ULE,C_2 | SZ_1)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use al_4
-	use C_2
-	use CZ_3
-	use esi
-	use SZ_1
 ";
             RunTest2(sExp, m =>
             {
