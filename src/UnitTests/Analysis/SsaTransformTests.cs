@@ -43,12 +43,16 @@ namespace Reko.UnitTests.Analysis
     {
         private ProgramBuilder pb;
         private ProgramDataFlow programFlow;
+        private DataFlow2 programFlow2;
+        private bool addUseInstructions;
 
         [SetUp]
         public void Setup()
         {
             this.pb = new ProgramBuilder();
             this.programFlow = new ProgramDataFlow();
+            this.programFlow2 = new DataFlow2();
+            this.addUseInstructions = false;
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -90,7 +94,8 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
-            var ssa = new SsaTransform2();
+            var ssa = new SsaTransform2(this.pb.Program.Architecture, programFlow2);
+            ssa.AddUseInstructions = addUseInstructions;
             ssa.Transform(proc);
 
             var writer = new StringWriter();
@@ -326,7 +331,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void SsaSubroutine()
+        public void Ssa2_Subroutine()
         {
             Storage r1_ = null;
             // Simulate the creation of a subroutine.
@@ -336,7 +341,7 @@ ProcedureBuilder_exit:
             });
 
             var procSubFlow = new ProcedureFlow2 { Trashed = { r1_ } };
-            programFlow.ProcedureFlows2.Add(procSub, procSubFlow);
+            programFlow2.ProcedureFlows.Add(procSub, procSubFlow);
 
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -356,7 +361,8 @@ ProcedureBuilder_exit:
 	use r1_2
 	use r2_1
 ";
-            RunTest(sExp, m =>
+            addUseInstructions = true;
+            RunTest2(sExp, m =>
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
@@ -559,7 +565,9 @@ l1:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
+	use Mem1
 ";
+            this.addUseInstructions = true;
             RunTest2(sExp, m =>
             {
                 var a = m.Reg32("a", 0);

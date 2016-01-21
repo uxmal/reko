@@ -757,12 +757,24 @@ namespace Reko.Analysis
     /// </remarks>
     public class SsaTransform2 : InstructionTransformer
     {
+        private IProcessorArchitecture arch;
+        private DataFlow2 programFlow;
         private Block block;
         private Statement stm;
         private Dictionary<Block, SsaBlockState> blockstates;
         private SsaState ssa;
         private bool storing;
 
+        [Obsolete("Don't need the dominator graph.")]
+        public SsaTransform2(IProcessorArchitecture arch, DataFlow2 programFlow, DominatorGraph<Block> gr) : this(arch, programFlow) { }
+
+        public SsaTransform2(IProcessorArchitecture arch, DataFlow2 programFlow)
+        {
+            this.arch = arch;
+            this.programFlow = programFlow;
+        }
+
+        public bool AddUseInstructions { get; set; }
         public SsaState SsaState { get { return ssa; } }
 
         /// <summary>
@@ -790,30 +802,122 @@ namespace Reko.Analysis
                     stm.Instruction = stm.Instruction.Accept(this);
                 }
             }
+
+            // Optionally, add Use instructions in the exit block.
+            if (this.AddUseInstructions)
+                AddUsesToExitBlock();
         }
+
+        /// <summary>
+        /// Adds a UseInstruction for each SsaIdentifier.
+        /// </summary>
+        /// <remarks>
+        /// Doing this will allow us to detect what definitions reach the end of the function.
+        /// //$TODO: what about functions that don't terminate, or have branches that don't terminate? In such cases,
+        /// the identifiers should be removed.</remarks>
+        private void AddUsesToExitBlock()
+        {
+            var block = ssa.Procedure.ExitBlock;
+            var existing = block.Statements
+                .Select(s => s.Instruction as UseInstruction)
+                .Where(u => u != null)
+                .Select(u => u.Expression)
+                .ToHashSet();
+            var reachingIds = ssa.Identifiers
+                .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name)
+                .Select(sid => sid.OriginalIdentifier)
+                .Distinct()
+                .Select(id => (Identifier) UseIdentifier(id));
+
+            block.Statements.AddRange(reachingIds
+                .Where(id => !existing.Contains(id))
+                .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
+                .Select(id => new Statement(0, new UseInstruction(id), block)));
+        }
+
 
         public override Instruction TransformAssignment(Assignment a)
         {
             var src = a.Src.Accept(this);
-            var sid = ssa.Identifiers.Add(a.Dst, this.stm, src, false);
-            var flagGroup = a.Dst.Storage as FlagGroupStorage;
+            Identifier idNew = NewDef(a.Dst, src, false);
+            return new Assignment(idNew, src);
+        }
+
+        private Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
+        {
+            var sid = ssa.Identifiers.Add(idOld, this.stm, src, isSideEffect);
+            var flagGroup = idOld.Storage as FlagGroupStorage;
             Identifier idNew;
             var bs = blockstates[block];
             if (flagGroup != null)
             {
                 foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
                 {
-                    var ss = new SsaFlagTransformer(a.Dst, flagBitMask, ssa.Identifiers, stm, blockstates);
+                    var ss = new SsaFlagTransformer(idOld, flagBitMask, ssa.Identifiers, stm, blockstates);
                     ss.WriteVariable(bs, sid, true);
                 }
                 idNew = sid.Identifier;
             }
             else
             {
-                var ss = new SsaIdentifierTransformer(a.Dst, ssa.Identifiers, stm, blockstates);
+                var ss = new SsaIdentifierTransformer(idOld, ssa.Identifiers, stm, blockstates);
                 idNew = ss.WriteVariable(bs, sid, true);
             }
-            return new Assignment(idNew, src);
+            return idNew;
+        }
+
+        /// <summary>
+        /// Unresolved calls can be "hell nodes". A hell node is an indirect calls or indirect
+        /// jump that prior passes of the decompiler have been unable to resolve.
+        /// </summary>
+        /// <param name="ci"></param>
+        /// <returns></returns>
+        public override Instruction TransformCallInstruction(CallInstruction ci)
+        {
+            Procedure callee = GetUserProcedure(ci);
+            ProcedureFlow2 flow;
+            if (callee != null && programFlow.ProcedureFlows.TryGetValue(callee, out flow))
+            {
+                var ab = new ApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
+                foreach (var use in callee.EntryBlock.Statements
+                    .Select(s => (Identifier)((DefInstruction) s.Instruction).Expression))
+                {
+                    var u = ab.Bind(use);
+                    ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
+                }
+                foreach (var def in flow.Trashed)
+                {
+                    var d = ssa.Procedure.Frame.EnsureIdentifier(def);
+                    ci.Definitions.Add(
+                        new DefInstruction(
+                            NewDef((Identifier)d, ci.Callee, false)));
+                }
+            }
+            else
+            {
+                // Hell node implementation - define all register variables.
+                if (ci.Uses.Count > 0 || ci.Definitions.Count > 0)
+                    return ci;
+                foreach (Identifier id in ssa.Procedure.Frame.Identifiers)
+                {
+                    if ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
+                        || id.Storage is FlagGroupStorage)
+                    {
+                        ci.Definitions.Add(
+                            new DefInstruction(
+                                NewDef(id, ci.Callee, false)));
+                    }
+                }
+            }
+            return ci;
+        }
+
+        private Procedure GetUserProcedure(CallInstruction ci)
+        {
+            var pc = ci.Callee as ProcedureConstant;
+            if (pc == null)
+                return null;
+            return pc.Procedure as Procedure;
         }
 
         public override Instruction TransformStore(Store store)
@@ -826,6 +930,11 @@ namespace Reko.Analysis
         }
 
         public override Expression VisitIdentifier(Identifier id)
+        {
+            return UseIdentifier(id);
+        }
+
+        private Expression UseIdentifier(Identifier id)
         {
             var bs = blockstates[block];
             var flagGroup = id.Storage as FlagGroupStorage;
@@ -1217,6 +1326,4 @@ namespace Reko.Analysis
             return ReadVariableRecursive(bs, aliasProbe);
         }
     }
-
-
 }
