@@ -199,6 +199,7 @@
     <Compile Include="Core\StructureReaderTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryDeserializerTests.cs" />
+    <Compile Include="Core\TypeLibraryLoaderTests.cs" />
     <Compile Include="DchexLoader.cs" />
     <Compile Include="Environments\AmigaOS\AmigaOSPlatformTests.cs" />
     <Compile Include="Environments\AmigaOS\FuncsFileParserTests.cs" />
