@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 
 namespace Reko.Core
 {
@@ -86,6 +87,17 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// A storage may either be a simple item, like a register, or be 
+        /// composed of several bits (FlagGroupStorage). This method lets
+        /// the client expand the storage without caring what subclass
+        /// it is.
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<Storage> GetSubstorages(IProcessorArchitecture arch)
+        {
+            yield return this;
+        }
 
         public virtual SerializedKind Serialize()
 		{
@@ -105,11 +117,26 @@ namespace Reko.Core
     public enum StorageDomain
     {
         None = -1,
-        Register = 0,
+        Register = 0,   // Register
         Stack = 4096,   // Few architectures have this many registers (fingers xD)
         Memory = 4097, 
         Flags = 4100,
         Temporary = 8192,
+    }
+
+    public static class StorageDomainEx
+    {
+        public static StorageDomain FromRegister(int regNumber)
+        {
+            Debug.Assert(regNumber >= 0);
+            return (StorageDomain)(regNumber + (int)StorageDomain.Register);
+        }
+
+        public static StorageDomain FromFlag(int flagNumber)
+        {
+            Debug.Assert(flagNumber >= 0);
+            return (StorageDomain)(flagNumber + (int)StorageDomain.Flags);
+        }
     }
 
     /// <summary>
@@ -203,7 +230,20 @@ namespace Reko.Core
 			return GetType().GetHashCode() ^ FlagGroupBits.GetHashCode();
 		}
 
-		public override int OffsetOf(Storage stgSub)
+        public override IEnumerable<Storage> GetSubstorages(IProcessorArchitecture arch)
+        {
+            uint bits = this.FlagGroupBits;
+            for (uint mask = 1u; bits != 0; mask <<= 1)
+            {
+                if ((bits & mask) != 0)
+                {
+                    yield return arch.GetFlagGroup(mask);
+                    bits &= ~mask;
+                }
+            }
+        }
+
+        public override int OffsetOf(Storage stgSub)
 		{
 			FlagGroupStorage f = stgSub as FlagGroupStorage;
 			if (f == null)
@@ -461,7 +501,7 @@ namespace Reko.Core
             var that = sThat as RegisterStorage;
             if (that == null || that.Domain != this.Domain)
                 return false;
-            return (this.BitMask | that.BitMask) != 0;
+            return (this.BitMask | that.BitMask) == this.BitMask;
         }
 
         public override bool Exceeds(Storage sThat)
