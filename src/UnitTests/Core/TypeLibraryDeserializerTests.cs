@@ -31,7 +31,7 @@ using System.Text;
 namespace Reko.UnitTests.Core
 {
     [TestFixture]
-    public class TypeLibraryLoaderTests
+    public class TypeLibraryDeserializerTests
     {
         private MockRepository mr;
         private IProcessorArchitecture arch;
