@@ -763,18 +763,17 @@ namespace Reko.Analysis
         private Statement stm;
         private Dictionary<Block, SsaBlockState> blockstates;
         private SsaState ssa;
-        private bool storing;
 
-        [Obsolete("Don't need the dominator graph.")]
-        public SsaTransform2(IProcessorArchitecture arch, DataFlow2 programFlow, DominatorGraph<Block> gr) : this(arch, programFlow) { }
-
-        public SsaTransform2(IProcessorArchitecture arch, DataFlow2 programFlow)
+        public SsaTransform2(IProcessorArchitecture arch, Procedure proc, DataFlow2 programFlow)
         {
             this.arch = arch;
             this.programFlow = programFlow;
+            this.ssa = new SsaState(proc, null);
+            this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
         }
 
         public bool AddUseInstructions { get; set; }
+        public bool RenameFrameAccesses { get; set; }
         public SsaState SsaState { get { return ssa; } }
 
         /// <summary>
@@ -786,14 +785,11 @@ namespace Reko.Analysis
         /// SsaState property.
         /// </remarks>
         /// <param name="proc"></param>
-        public void Transform(Procedure proc)
+        public void Transform()
         {
-            this.ssa = new SsaState(proc, null);
-            this.blockstates = proc.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
-
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
-            foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).ReversePostOrder())
+            foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
@@ -827,14 +823,13 @@ namespace Reko.Analysis
                 .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name)
                 .Select(sid => sid.OriginalIdentifier)
                 .Distinct()
-                .Select(id => (Identifier) UseIdentifier(id));
+                .Select(id => (Identifier) NewUse(id));
 
             block.Statements.AddRange(reachingIds
                 .Where(id => !existing.Contains(id))
                 .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
                 .Select(id => new Statement(0, new UseInstruction(id), block)));
         }
-
 
         public override Instruction TransformAssignment(Assignment a)
         {
@@ -845,6 +840,15 @@ namespace Reko.Analysis
 
         private Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
         {
+            SsaIdentifier sidOld;
+            if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out sidOld))
+            {
+                if (sidOld.OriginalIdentifier != sidOld.Identifier)
+                {
+                    // Already renamed by a previous pass.
+                    return sidOld.Identifier;
+                }
+            }
             var sid = ssa.Identifiers.Add(idOld, this.stm, src, isSideEffect);
             var flagGroup = idOld.Storage as FlagGroupStorage;
             Identifier idNew;
@@ -920,22 +924,51 @@ namespace Reko.Analysis
             return pc.Procedure as Procedure;
         }
 
+        public override Instruction TransformDefInstruction(DefInstruction def)
+        {
+            return def;
+        }
+
         public override Instruction TransformStore(Store store)
         {
             store.Src = store.Src.Accept(this);
-            this.storing = true;
-            store.Dst = store.Dst.Accept(this);
-            this.storing = false;
+            var acc = store.Dst as MemoryAccess;
+            if (acc != null)
+            {
+                if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
+                {
+                    var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
+                    var idDst = NewDef(idFrame, store.Src, false);
+                    return new Assignment(idDst, store.Src);
+                }
+                else
+                {
+                    SegmentedAccess sa = acc as SegmentedAccess;
+                    if (sa != null)
+                        sa.BasePointer = sa.BasePointer.Accept(this);
+                    acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
+                    UpdateMemoryIdentifier(acc, true);
+                }
+            }
+            else
+            {
+                store.Dst = store.Dst.Accept(this);
+            }
             return store;
         }
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            return UseIdentifier(id);
+            return NewUse(id);
         }
 
-        private Expression UseIdentifier(Identifier id)
+        private Expression NewUse(Identifier id)
         {
+            SsaIdentifier sid;
+            if (ssa.Identifiers.TryGetValue(id, out sid))
+            {
+                id = sid.OriginalIdentifier;
+            }
             var bs = blockstates[block];
             var flagGroup = id.Storage as FlagGroupStorage;
             if (flagGroup != null)
@@ -978,21 +1011,35 @@ namespace Reko.Analysis
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
-            var storing = this.storing;
-            this.storing = false;
-            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-            UpdateMemoryIdentifier(access, storing);
-            return access;
+            if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
+            {
+                var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
+                var idNew = NewUse(idFrame);
+                return idNew;
+            }
+            else
+            {
+                access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId);
+                return access;
+            }
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
         {
-            var storing = this.storing;
-            this.storing = false;
-            access.BasePointer = access.BasePointer.Accept(this);
-            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-            UpdateMemoryIdentifier(access, storing);
-            return access;
+            if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
+            {
+                var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
+                var idNew = NewUse(idFrame);
+                return idNew;
+            }
+            else
+            {
+                access.BasePointer = access.BasePointer.Accept(this);
+                access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+                access.MemoryId = (MemoryIdentifier) NewUse(access.MemoryId);
+                return access;
+            }
         }
 
         private void UpdateMemoryIdentifier(MemoryAccess access, bool storing)
@@ -1007,6 +1054,30 @@ namespace Reko.Analysis
             {
                 access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
             }
+        }
+
+        private static bool IsFrameAccess(Procedure proc, Expression e)
+        {
+            if (e == proc.Frame.FramePointer)
+                return true;
+            var bin = e as BinaryExpression;
+            if (bin == null)
+                return false;
+            if (bin.Left != proc.Frame.FramePointer)
+                return false;
+            return bin.Right is Constant;
+        }
+
+        private static Identifier EnsureStackVariable(Procedure proc, Expression effectiveAddress, DataType dt)
+        {
+            if (effectiveAddress == proc.Frame.FramePointer)
+                return proc.Frame.EnsureStackVariable(0, dt);
+            var bin = (BinaryExpression)effectiveAddress;
+            var offset = ((Constant)bin.Right).ToInt32();
+            if (bin.Operator == Operator.ISub)
+                offset = -offset;
+            var idFrame = proc.Frame.EnsureStackVariable(offset, dt);
+            return idFrame;
         }
     }
 

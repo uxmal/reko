@@ -94,9 +94,43 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
-            var ssa = new SsaTransform2(this.pb.Program.Architecture, programFlow2);
+            var ssa = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
             ssa.AddUseInstructions = addUseInstructions;
-            ssa.Transform(proc);
+            ssa.Transform();
+
+            var writer = new StringWriter();
+            proc.Write(false, writer);
+            var sActual = writer.ToString();
+            if (sActual != sExp)
+                Debug.Print(sActual);
+            Assert.AreEqual(sExp, sActual);
+        }
+
+        private void RunTest_FrameAccesses(string sExp, Action<ProcedureBuilder> builder)
+        {
+            var pb = new ProcedureBuilder(this.pb.Program.Architecture);
+            builder(pb);
+            var proc = pb.Procedure;
+
+            // Perform initial transformation.
+            var ssa = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
+            ssa.AddUseInstructions = false;
+            ssa.Transform();
+
+            // Propagate values and simplify the results.
+            // We hope the the sequence
+            //   esp = fp - 4
+            //   mov [esp-4],eax
+            // will become
+            //   esp_2 = fp - 4
+            //   mov [fp - 8],eax
+
+            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState.Identifiers, proc);
+            vp.Transform();
+
+            ssa.RenameFrameAccesses = true;
+            ssa.AddUseInstructions = true;
+            ssa.Transform();
 
             var writer = new StringWriter();
             proc.Write(false, writer);
@@ -107,7 +141,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void SsarSimple()
+        public void Ssa2_Simple()
         {
             var sExp =
 @"// ProcedureBuilder
@@ -123,9 +157,9 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 	use r1_2
-	use r2
 ";
-            RunTest(sExp, m =>
+            addUseInstructions = true;
+            RunTest2(sExp, m =>
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
@@ -135,7 +169,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void SsarStackLocals()
+        public void Ssa2_StackLocals()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -166,7 +200,8 @@ ProcedureBuilder_exit:
 	use r2_9
 	use r63_5
 ";
-            RunTest(sExp, m =>
+            addUseInstructions = true;
+            RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var r1 = m.Reg32("r1", 1);

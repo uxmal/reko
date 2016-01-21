@@ -83,9 +83,8 @@ namespace Reko.Core
 
         public virtual bool Exceeds(Storage that)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(string.Format("Exceeds not implemented for {0}.", that.GetType().Name));
         }
-
 
         public virtual SerializedKind Serialize()
         {
@@ -318,6 +317,11 @@ namespace Reko.Core
         }
 
         public override bool Covers(Storage that)
+        {
+            return true;
+        }
+
+        public override bool Exceeds(Storage that)
         {
             return false;
         }
