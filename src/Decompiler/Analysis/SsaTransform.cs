@@ -760,10 +760,25 @@ namespace Reko.Analysis
         private Block block;
         private Statement stm;
         private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> currentDef;
+        private Dictionary<Block, Dictionary<uint, SsaIdentifier>> currentFlagDef;
         private Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>> incompletePhis;
         private HashSet<Block> sealedBlocks;
         private SsaState ssa;
         private bool storing;
+
+        public class BlockState
+        {
+            public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
+            public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
+            public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
+            
+            public BlockState()
+            {
+                this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
+                this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
+                this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
+            }
+        }
 
         public SsaState SsaState { get { return ssa; } }
 
@@ -780,6 +795,7 @@ namespace Reko.Analysis
         {
             this.ssa = new SsaState(proc, null);
             this.currentDef = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
+            this.currentFlagDef = new Dictionary<Block, Dictionary<uint, SsaIdentifier>>();
             this.incompletePhis = new Dictionary<Block, Dictionary<StorageDomain, SsaIdentifier>>();
             this.sealedBlocks = new HashSet<Block>();
 
