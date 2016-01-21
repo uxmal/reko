@@ -801,17 +801,17 @@ namespace Reko.Analysis
             var bs = blockstates[block];
             if (flagGroup != null)
             {
-                var ss = new SsaIdentifierTransformer(a.Dst, ssa.Identifiers, stm, blockstates);
                 foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
                 {
-                    ss.WriteVariable(bs, sid, flagBitMask, true);
+                    var ss = new SsaFlagTransformer(a.Dst, flagBitMask, ssa.Identifiers, stm, blockstates);
+                    ss.WriteVariable(bs, sid, true);
                 }
                 idNew = sid.Identifier;
             }
             else
             {
                 var ss = new SsaIdentifierTransformer(a.Dst, ssa.Identifiers, stm, blockstates);
-                idNew = ss.WriteVariable(bs, sid, 0, true);
+                idNew = ss.WriteVariable(bs, sid, true);
             }
             return new Assignment(idNew, src);
         }
@@ -892,12 +892,29 @@ namespace Reko.Analysis
             {
                 var sid = ssa.Identifiers.Add(access.MemoryId, this.stm, null, false);
                 var ss = new SsaIdentifierTransformer(access.MemoryId, ssa.Identifiers, stm, blockstates);
-                access.MemoryId = (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, 0, false);
+                access.MemoryId = (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, false);
             }
             else
             {
                 access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
             }
+        }
+    }
+
+    public class SsaFlagTransformer : SsaIdentifierTransformer
+    {
+        private uint flagMask;
+
+        public SsaFlagTransformer(Identifier id, uint flagMask, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
+            : base(id, ssaIds, stm, blockstates)
+        {
+            this.flagMask = flagMask;
+        }
+
+        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
+        {
+            bs.currentFlagDef[flagMask] = sid;
+            return sid.Identifier;
         }
     }
 
@@ -926,10 +943,10 @@ namespace Reko.Analysis
         /// <param name="performProbe">if true, looks "backwards" to see
         ///   if <paramref name="id"/> overlaps with another identifier</param>
         /// <returns></returns>
-        public Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, uint flagMask, bool performProbe)
+        public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
         {
             SsaIdentifier alias = sid;
-            if (flagMask == 0 && performProbe)
+            if (performProbe)
             {
                 // Did a previous SSA id modify the same storage as id?
                 alias = ReadVariable(bs, 0, performProbe);
@@ -954,14 +971,7 @@ namespace Reko.Analysis
                     alias = sid;
                 }
             }
-            if (flagMask != 0)
-            {
-                bs.currentFlagDef[flagMask] = alias;
-            }
-            else
-            {
-                bs.currentDef[id.Storage.Domain] = alias;
-            }
+            bs.currentDef[id.Storage.Domain] = alias;
             return sid.Identifier;
         }
 
@@ -1025,11 +1035,11 @@ namespace Reko.Analysis
             {
                 // Break potential cycles with operandless phi
                 val = NewPhi(id, bs.Block);
-                WriteVariable(bs, val, flagMask, false);
+                WriteVariable(bs, val, false);
                 val = AddPhiOperands(id, val, flagMask, aliasProbe);
             }
             if (val != null && !aliasProbe)
-                WriteVariable(bs, val, flagMask, false);
+                WriteVariable(bs, val, false);
             return val;
         }
 
