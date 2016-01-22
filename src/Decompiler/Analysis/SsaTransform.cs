@@ -1369,6 +1369,7 @@ namespace Reko.Analysis
                     TryRemoveTrivial(ssaIds[phiAss.Dst], aliasProbe);
                 }
             }
+            phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
             return sid;
         }
 

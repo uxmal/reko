@@ -185,7 +185,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void SsarDiamond()
+        public void SsaDiamond()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -197,35 +197,33 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_7 = PHI(r1_10, r1_11)
-	bp_8 = dwLoc04_12
-	r63_9 = fp
+	r1_19 = PHI(r1_8, r1_7)
+	bp_11 = dwLoc04_14
+	r63_13 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	r1_11 = 0x00000001
+	r1_7 = 0x00000001
 	goto done
 	// succ:  done
 l1:
 	r63_1 = fp
 	r63_2 = fp - 0x00000004
-	dwLoc04_12 = bp
+	dwLoc04_14 = bp
 	bp_5 = fp - 0x00000004
 	CZS_6 = wArg04 - 0x0003
 	branch Test(GE,CZS_6) ge3
 	// succ:  l2 ge3
 l2:
-	r1_10 = 0x00000000
+	r1_8 = 0x00000000
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_8
+	use bp_11
 	use CZS_6
-	use dwLoc04_12
-	use fp
-	use r1_7
-	use r63_9
-	use wArg04
+	use dwLoc04_14
+	use r1_19
+	use r63_13
 ";
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -264,42 +262,42 @@ void ProcedureBuilder()
 ProcedureBuilder_entry:
 	def fp
 	def bp
-	def r1
 	def wArg04
+	def r1
 	goto l1
 	// succ:  l1
 done:
-	wArg04_16 = PHI(wArg04_17, wArg04_18)
-	r1_7 = PHI(r1, r1_13)
-	bp_8 = dwLoc04_14
-	r63_9 = fp
+	wArg04_24 = PHI(wArg04_18, wArg04_17)
+	r1_22 = PHI(r1, r1_8)
+	Mem11 = PHI(Mem9, Mem7)
+	bp_12 = dwLoc04_15
+	r63_14 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	wArg04_18 = -3
-	r1_13 = 0x00000001
+	wArg04_17 = -3
+	r1_8 = 0x00000001
 	goto done
 	// succ:  done
 l1:
 	r63_1 = fp
 	r63_2 = fp - 0x00000004
-	dwLoc04_14 = bp
+	dwLoc04_15 = bp
 	bp_5 = fp - 0x00000004
 	CZS_6 = wArg04 - 0x0003
 	branch Test(GE,CZS_6) ge3
 	// succ:  l2 ge3
 l2:
-	wArg04_17 = 0x0003
+	wArg04_18 = 0x0003
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_8
+	use bp_12
 	use CZS_6
-	use dwLoc04_14
-	use fp
-	use r1_7
-	use r63_9
-	use wArg04_16
+	use dwLoc04_15
+	use r1_22
+	use r63_14
+	use wArg04_24
 ";
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -387,38 +385,37 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	dwLoc0C_17 = PHI(dwLoc0C_18, dwLoc0C_19)
-	r1_8 = dwLoc0C_17
-	bp_9 = dwLoc04_14
-	r63_10 = fp
+	dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
+	Mem12 = PHI(Mem10, Mem9)
+	r1_13 = dwLoc0C_23
+	bp_16 = dwLoc04_18
+	r63_17 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	dwLoc0C_19 = r1
+	dwLoc0C_21 = r1
 	goto done
 	// succ:  done
 l1:
 	r63_1 = fp
 	r63_2 = fp - 0x00000004
-	dwLoc04_14 = bp
+	dwLoc04_18 = bp
 	bp_5 = fp - 0x00000004
-	dwLoc0C_15 = 0x00000000
+	dwLoc0C_19 = 0x00000000
 	CZS_7 = wArg04 - 0x0003
 	branch Test(GE,CZS_7) ge3
 	// succ:  l2 ge3
 l2:
-	dwLoc0C_18 = r1
+	dwLoc0C_22 = r1
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_9
+	use bp_16
 	use CZS_7
-	use dwLoc04_14
-	use dwLoc0C_17
-	use fp
-	use r1_8
-	use r63_10
-	use wArg04
+	use dwLoc04_18
+	use dwLoc0C_23
+	use r1_13
+	use r63_17
 ";
             RunTest_FrameAccesses(sExp, m =>
             {
