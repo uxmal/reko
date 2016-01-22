@@ -842,7 +842,7 @@ ProcedureBuilder_exit:
         public void SsaOutArgs()
         {
             var sExp =
-            #region Expected
+                #region Expected
 @"// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -866,6 +866,45 @@ ProcedureBuilder_exit:
 
                 m.Assign(C, m.Fn(func, ebx, m.Out(ebx.DataType, ebx)));
                 m.Store(m.Word32(0x123400), ebx);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void SsaSequence()
+        {
+            var sExp =
+            #region Expected
+                @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def es
+	def bx
+	def Mem0
+	// succ:  l1
+l1:
+	es_bx_3 = Mem0[es:bx:word32]
+	es_4 = SLICE(es_bx_3, word16, 16)
+	bx_4 = (word16) es_bx_3
+	bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
+	es_bx_7 = DPB(es_bx_3, bx_4, 16)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use bx_4
+	use es_bx_7
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var es = m.Reg16("es", 10);
+                var bx = m.Reg16("bx", 3);
+                var es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.SegPtr32);
+
+                m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
+                m.Assign(bx, m.SegMem(PrimitiveType.Word32, es, m.IAdd(bx,16)));
                 m.Return();
             });
         }

@@ -1004,6 +1004,15 @@ namespace Reko.Analysis
                 var ss = new SsaStackTransformer(idOld, stack.StackOffset, ssa.Identifiers, stmCur, blockstates);
                 return ss.WriteVariable(bs, sid, true);
             }
+            var seq = idOld.Storage as SequenceStorage;
+            if (seq != null)
+            {
+                var ss = new SsaSequenceTransformer(idOld, seq, seq.Head, ssa.Identifiers, stmCur, blockstates);
+                var header = ss.WriteVariable(bs, sid, true);
+                ss = new SsaSequenceTransformer(idOld, seq, seq.Tail, ssa.Identifiers, stmCur, blockstates);
+                var tail = ss.WriteVariable(bs, sid, true);
+
+            }
             else if (!RenameFrameAccesses)
             {
                 var ss = new SsaIdentifierTransformer(idOld, ssa.Identifiers, stmCur, blockstates);
@@ -1479,7 +1488,12 @@ namespace Reko.Analysis
     {
         private int stackOffset;
 
-        public SsaStackTransformer(Identifier id, int stackOffset, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block,SsaBlockState> blockstates)
+        public SsaStackTransformer(
+            Identifier id,
+            int stackOffset, 
+            SsaIdentifierCollection ssaIds,
+            Statement stm,
+            IDictionary<Block,SsaBlockState> blockstates)
             : base(id, ssaIds, stm, blockstates)
         {
             this.stackOffset = stackOffset;
@@ -1501,6 +1515,23 @@ namespace Reko.Analysis
         {
             bs.currentStackDef[stackOffset] = sid;
             return sid.Identifier;
+        }
+    }
+
+    public class SsaSequenceTransformer : SsaIdentifierTransformer
+    {
+        private Identifier idSub;
+
+        public SsaSequenceTransformer(
+            Identifier id, 
+            SequenceStorage seq, 
+            Identifier idSub,
+            SsaIdentifierCollection ssaIds, 
+            Statement stm,
+            IDictionary<Block, SsaBlockState> blockstates)
+            : base(id, ssaIds, stm, blockstates)
+        {
+            this.idSub = idSub;
         }
     }
 }

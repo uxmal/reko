@@ -657,6 +657,8 @@ namespace Reko.Core
 
         public override bool OverlapsWith(Storage that)
         {
+            if (this == that)
+                return true;
             throw new NotImplementedException();
         }
 

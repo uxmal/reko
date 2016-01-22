@@ -1,4 +1,6 @@
 # reko - a general purpose decompiler.
+# ![Reko decompiler](https://github.com/uxmal/blob/analysis-development/web/images/design.png)
+
 
  [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko)
  
