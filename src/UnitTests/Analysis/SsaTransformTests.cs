@@ -188,14 +188,12 @@ l1:
 	r1_8 = dwLoc04_12
 	r2_9 = dwLoc08_13
 	r1_10 = r1_8 + r2_9
-	Mem11[0x00010008:word32] = r1_10
+	Mem14[0x00010008:word32] = r1_10
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 	use dwLoc04_12
 	use dwLoc08_13
-	use fp
-	use Mem11
 	use r1_10
 	use r2_9
 	use r63_5
@@ -392,7 +390,6 @@ l1:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use Mem3
 	use r1_2
 	use r2_1
 ";
@@ -600,7 +597,6 @@ l1:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use Mem1
 ";
             this.addUseInstructions = true;
             RunTest2(sExp, m =>

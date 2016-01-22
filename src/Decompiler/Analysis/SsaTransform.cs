@@ -773,6 +773,9 @@ namespace Reko.Analysis
         }
 
         public bool AddUseInstructions { get; set; }
+        /// <summary>
+        /// If set, only renames frame accesses.
+        /// </summary>
         public bool RenameFrameAccesses { get; set; }
         public SsaState SsaState { get { return ssa; } }
 
@@ -787,6 +790,7 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public void Transform()
         {
+
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
@@ -820,10 +824,11 @@ namespace Reko.Analysis
                 .Select(u => u.Expression)
                 .ToHashSet();
             var reachingIds = ssa.Identifiers
-                .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name)
+                .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
+                              !(sid.Identifier.Storage is MemoryStorage))
                 .Select(sid => sid.OriginalIdentifier)
                 .Distinct()
-                .Select(id => (Identifier) NewUse(id));
+                .Select(id => (Identifier) NewUse(id, true));
 
             block.Statements.AddRange(reachingIds
                 .Where(id => !existing.Contains(id))
@@ -836,38 +841,6 @@ namespace Reko.Analysis
             var src = a.Src.Accept(this);
             Identifier idNew = NewDef(a.Dst, src, false);
             return new Assignment(idNew, src);
-        }
-
-        private Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
-        {
-            SsaIdentifier sidOld;
-            if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out sidOld))
-            {
-                if (sidOld.OriginalIdentifier != sidOld.Identifier)
-                {
-                    // Already renamed by a previous pass.
-                    return sidOld.Identifier;
-                }
-            }
-            var sid = ssa.Identifiers.Add(idOld, this.stm, src, isSideEffect);
-            var flagGroup = idOld.Storage as FlagGroupStorage;
-            Identifier idNew;
-            var bs = blockstates[block];
-            if (flagGroup != null)
-            {
-                foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
-                {
-                    var ss = new SsaFlagTransformer(idOld, flagBitMask, ssa.Identifiers, stm, blockstates);
-                    ss.WriteVariable(bs, sid, true);
-                }
-                idNew = sid.Identifier;
-            }
-            else
-            {
-                var ss = new SsaIdentifierTransformer(idOld, ssa.Identifiers, stm, blockstates);
-                idNew = ss.WriteVariable(bs, sid, true);
-            }
-            return idNew;
         }
 
         /// <summary>
@@ -959,19 +932,53 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            return NewUse(id);
+            return NewUse(id, false);
         }
 
-        private Expression NewUse(Identifier id)
+        private Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
+            SsaIdentifier sidOld;
+            if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out sidOld))
             {
-                id = sid.OriginalIdentifier;
+                if (sidOld.OriginalIdentifier != sidOld.Identifier)
+                {
+                    // Already renamed by a previous pass.
+                    return sidOld.Identifier;
+                }
             }
+            var sid = ssa.Identifiers.Add(idOld, this.stm, src, isSideEffect);
+            var flagGroup = idOld.Storage as FlagGroupStorage;
+            Identifier idNew;
+            var bs = blockstates[block];
+            if (flagGroup != null && !RenameFrameAccesses)
+            {
+                foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
+                {
+                    var ss = new SsaFlagTransformer(idOld, flagBitMask, ssa.Identifiers, stm, blockstates);
+                    ss.WriteVariable(bs, sid, true);
+                }
+                idNew = sid.Identifier;
+                return idNew;
+            }
+            var stack = idOld.Storage as StackStorage;
+            if (stack != null)
+            {
+                var ss = new SsaStackTransformer(idOld, stack.StackOffset, ssa.Identifiers, stm, blockstates);
+                return ss.WriteVariable(bs, sid, true);
+            }
+            else if (!RenameFrameAccesses)
+            {
+                var ss = new SsaIdentifierTransformer(idOld, ssa.Identifiers, stm, blockstates);
+                return ss.WriteVariable(bs, sid, true);
+            }
+            return idOld;
+        }
+
+        private Expression NewUse(Identifier id, bool force)
+        {
             var bs = blockstates[block];
             var flagGroup = id.Storage as FlagGroupStorage;
-            if (flagGroup != null)
+            if (flagGroup != null && (!RenameFrameAccesses || force))
             {
                 // Analyze each flag in the flag group separately.
                 var ids = new HashSet<Identifier>();
@@ -989,11 +996,18 @@ namespace Reko.Analysis
                     return OrTogether(ids);
                 }
             }
-            else
+            var stack = id.Storage as StackStorage;
+            if (stack != null && (RenameFrameAccesses || force))
+            {
+                var ss = new SsaStackTransformer(id, stack.StackOffset, ssa.Identifiers, stm, blockstates);
+                return ss.ReadVariable(bs, false).Identifier;
+            }
+            else if (!RenameFrameAccesses || force)
             {
                 var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
                 return ss.ReadVariable(bs, false).Identifier;
             }
+            return id;
         }
 
         private Expression OrTogether(HashSet<Identifier> ids)
@@ -1014,13 +1028,13 @@ namespace Reko.Analysis
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame);
+                var idNew = NewUse(idFrame,false);
                 return idNew;
             }
             else
             {
                 access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId);
+                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, false);
                 return access;
             }
         }
@@ -1030,14 +1044,14 @@ namespace Reko.Analysis
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame);
+                var idNew = NewUse(idFrame, false);
                 return idNew;
             }
             else
             {
                 access.BasePointer = access.BasePointer.Accept(this);
                 access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-                access.MemoryId = (MemoryIdentifier) NewUse(access.MemoryId);
+                access.MemoryId = (MemoryIdentifier) NewUse(access.MemoryId, false);
                 return access;
             }
         }
@@ -1086,6 +1100,7 @@ namespace Reko.Analysis
         public readonly Block Block;
         public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
         public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
+        public readonly Dictionary<int, SsaIdentifier> currentStackDef;
         public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
 
         public SsaBlockState(Block block)
@@ -1093,6 +1108,7 @@ namespace Reko.Analysis
             this.Block = block;
             this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
             this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
+            this.currentStackDef = new Dictionary<int, SsaIdentifier>();
             this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
         }
     }
@@ -1194,7 +1210,7 @@ namespace Reko.Analysis
             {
                 // Undef'ined or unreachable parameter; assume it's a def.
                 if (!aliasProbe)
-                    val = NewDef(id, bs.Block);
+                    val = NewDefInstruction(id, bs.Block);
                 else
                     val = null;
             }
@@ -1331,7 +1347,7 @@ namespace Reko.Analysis
             if (same == null)
             {
                 // Undef'ined or unreachable parameter; assume it's a def.
-                sid = NewDef(phi.OriginalIdentifier, phi.DefStatement.Block);
+                sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
             }
             else
             {
@@ -1356,7 +1372,7 @@ namespace Reko.Analysis
             return sid;
         }
 
-        private SsaIdentifier NewDef(Identifier id, Block b)
+        private SsaIdentifier NewDefInstruction(Identifier id, Block b)
         {
             var sid = ssaIds.Add(id, null, null, false);
             sid.DefStatement = new Statement(0, new DefInstruction(id), b);
@@ -1395,6 +1411,35 @@ namespace Reko.Analysis
             }
             // Keep probin'.
             return ReadVariableRecursive(bs, aliasProbe);
+        }
+    }
+
+    public class SsaStackTransformer : SsaIdentifierTransformer
+    {
+        private int stackOffset;
+
+        public SsaStackTransformer(Identifier id, int stackOffset, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block,SsaBlockState> blockstates)
+            : base(id, ssaIds, stm, blockstates)
+        {
+            this.stackOffset = stackOffset;
+        }
+
+        public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+        {
+            SsaIdentifier ssaId;
+            if (bs.currentStackDef.TryGetValue(stackOffset, out ssaId))
+            {
+                // Defined locally in this block.
+                return ssaId;
+            }
+            // Keep probin'.
+            return ReadVariableRecursive(bs, aliasProbe);
+        }
+
+        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
+        {
+            bs.currentStackDef[stackOffset] = sid;
+            return sid.Identifier;
         }
     }
 }

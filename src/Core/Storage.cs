@@ -673,10 +673,23 @@ namespace Reko.Core
 
     public abstract class StackStorage : Storage
     {
-        public StackStorage(string kind)
+        public StackStorage(string kind, int cbOffset)
             : base(kind)
         {
+            this.StackOffset = cbOffset;
         }
+
+        /// <summary>
+        /// Offset from stack pointer as it was when the procedure was entered.
+        /// </summary>
+        /// <remarks>
+        /// If the architecture stores the return address on the stack, the return address will be at offset 0 and
+        /// any stack arguments will have offsets > 0. If the architecture passes the return address in a
+        /// register or a separate return stack, there may be stack arguments with offset 0. Depending on which
+        /// direction the stack grows, there may be negative stack offsets for parameters, although most popular
+        /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
+        /// </remarks>
+        public int StackOffset { get; private set; }
 
         public override bool OverlapsWith(Storage that)
         {
@@ -692,23 +705,11 @@ namespace Reko.Core
 
     public class StackArgumentStorage : StackStorage
     {
-        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
+        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack", cbOffset)
         {
-            this.StackOffset = cbOffset;
             this.DataType = dataType;
         }
 
-        /// <summary>
-        /// Offset from stack pointer as it was when the procedure was entered.
-        /// </summary>
-        /// <remarks>
-        /// If the architecture stores the return address on the stack, the return address will be at offset 0 and
-        /// any stack arguments will have offsets > 0. If the architecture passes the return address in a
-        /// register or a separate return stack, there may be stack arguments with offset 0. Depending on which
-        /// direction the stack grows, there may be negative stack offsets for parameters, although most popular
-        /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
-        /// </remarks>
-        public int StackOffset { get; private set; }
         public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -763,14 +764,12 @@ namespace Reko.Core
     public class StackLocalStorage : StackStorage
     {
         public StackLocalStorage(int cbOffset, DataType dataType)
-            : base("Local")
+            : base("Local", cbOffset)
         {
-            this.StackOffset = cbOffset;
             this.DataType = dataType;
         }
 
         public DataType DataType { get; private set; }
-        public int StackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
