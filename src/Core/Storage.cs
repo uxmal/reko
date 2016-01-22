@@ -628,7 +628,17 @@ namespace Reko.Core
 
         public override bool Covers(Storage that)
         {
-            throw new NotImplementedException();
+            if (this == that)
+                return true;
+            if (this.Head.Storage.Domain == that.Domain)
+            {
+                return this.Head.Storage.Covers(that);
+            }
+            if (this.Tail.Storage.Domain == that.Domain)
+            {
+                return this.Tail.Storage.Covers(that);
+            }
+            return false;
         }
 
         public override bool Equals(object obj)
@@ -637,6 +647,21 @@ namespace Reko.Core
             if (ss == null)
                 return false;
             return Head.Equals(ss.Head) && Tail.Equals(ss.Tail);
+        }
+
+        public override bool Exceeds(Storage that)
+        {
+            if (this == that)
+                return true;
+            if (this.Head.Storage.Domain == that.Domain)
+            {
+                return this.Head.Storage.Exceeds(that);
+            }
+            if (this.Tail.Storage.Domain == that.Domain)
+            {
+                return this.Tail.Storage.Exceeds(that);
+            }
+            return false;
         }
 
         public override int GetHashCode()
@@ -659,7 +684,15 @@ namespace Reko.Core
         {
             if (this == that)
                 return true;
-            throw new NotImplementedException();
+            if (this.Head.Storage.Domain == that.Domain)
+            {
+                return this.Head.Storage.OverlapsWith(that);
+            }
+            if (this.Tail.Storage.Domain == that.Domain)
+            {
+                return this.Tail.Storage.OverlapsWith(that);
+            }
+            return false;
         }
 
         public override SerializedKind Serialize()

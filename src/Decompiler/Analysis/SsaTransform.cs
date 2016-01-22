@@ -841,6 +841,8 @@ namespace Reko.Analysis
 
         public override Instruction TransformAssignment(Assignment a)
         {
+            if (a is AliasAssignment)
+                return a;
             var src = a.Src.Accept(this);
             Identifier idNew = NewDef(a.Dst, src, false);
             return new Assignment(idNew, src);
@@ -1008,10 +1010,10 @@ namespace Reko.Analysis
             if (seq != null)
             {
                 var ss = new SsaSequenceTransformer(idOld, seq, seq.Head, ssa.Identifiers, stmCur, blockstates);
-                var header = ss.WriteVariable(bs, sid, true);
+                var head = ss.WriteVariable(bs, sid, true);
                 ss = new SsaSequenceTransformer(idOld, seq, seq.Tail, ssa.Identifiers, stmCur, blockstates);
                 var tail = ss.WriteVariable(bs, sid, true);
-
+                return sid.Identifier;
             }
             else if (!RenameFrameAccesses)
             {
@@ -1053,6 +1055,16 @@ namespace Reko.Analysis
                 var sid = ss.ReadVariable(bs, false);
                 sid.Uses.Add(stm);
                 return sid.Identifier;
+            }
+            var seq = id.Storage as SequenceStorage;
+            if (seq != null)
+            {
+                var ss = new SsaIdentifierTransformer(seq.Head, ssa.Identifiers, stmCur, blockstates);
+                var head = ss.ReadVariable(bs, false);
+                ss = new SsaIdentifierTransformer(seq.Tail, ssa.Identifiers, stmCur, blockstates);
+                var tail = ss.ReadVariable(bs, false);
+                var sqs = new SsaSequenceTransformer(id, seq, null, ssa.Identifiers, stm, blockstates);
+                return sqs.Fuse(head, tail);
             }
             else if (!RenameFrameAccesses || force)
             {
@@ -1329,7 +1341,7 @@ namespace Reko.Analysis
         /// <param name="stmBefore"></param>
         /// <param name="ass"></param>
         /// <returns></returns>
-        private SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
+        public SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
         {
             var b = stmBefore.Block;
             int i = b.Statements.IndexOf(stmBefore);
@@ -1521,6 +1533,7 @@ namespace Reko.Analysis
     public class SsaSequenceTransformer : SsaIdentifierTransformer
     {
         private Identifier idSub;
+        private SequenceStorage seq;
 
         public SsaSequenceTransformer(
             Identifier id, 
@@ -1531,7 +1544,30 @@ namespace Reko.Analysis
             IDictionary<Block, SsaBlockState> blockstates)
             : base(id, ssaIds, stm, blockstates)
         {
+            this.seq = seq;
             this.idSub = idSub;
+        }
+
+        public Identifier Fuse(SsaIdentifier head, SsaIdentifier tail)
+        {
+            AliasAssignment assHead, assTail;
+            if (head.DefStatement.Instruction.As(out assHead) &&
+                tail.DefStatement.Instruction.As(out assTail))
+            {
+                Slice eHead;
+                Cast eTail;
+                if (assHead.Src.As(out eHead) && assTail.Src.As(out eTail))
+                {
+                    return (Identifier)eHead.Expression;
+                }
+            }
+            throw new NotImplementedException();
+        }
+
+        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
+        {
+            bs.currentDef[idSub.Storage.Domain] = sid;
+            return sid.Identifier;
         }
     }
 }
