@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Analysis
     /// on a procedure that already has been transformed once.
     /// </summary>
     [TestFixture]
+    [Category("UnitTests")]
     public class SsaTransformTests
     {
         private ProgramBuilder pb;
@@ -517,6 +518,82 @@ ProcedureBuilder_exit:
                 m.Assign(r2, m.Int32(16));
                 m.Label("true");
                 m.Call(r3, 4);
+                m.Return();
+            });
+        }
+
+        [Test(Description = "Self-recursive functions that pass parameters on stack should work.")]
+        public void SsaHellNode_WithStackArgs()
+        {
+            var sExp =
+            #region Expected
+               @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def fp
+	def Mem0
+	def r3
+	def dwArg04
+	def dwLoc04
+	// succ:  l1
+l1:
+	r63_1 = fp
+	r4_3 = dwArg04
+	branch r4_3 == 0x00000000 m1Base
+	// succ:  m0Induction m1Base
+m0Induction:
+	r4_5 = Mem0[r4_3 + 0x00000004:word32]
+	r63_6 = fp - 0x00000004
+	dwLoc04_15 = r4_5
+	call ProcedureBuilder (retsize: 0;)
+		uses: r3,r4_5,r63_6,dwArg04,dwLoc04
+		defs: r3_10,r4_11,r63_8
+	r4_12 = r4_11 + 0x00000001
+	r63_13 = r63_8 + 0x00000004
+	goto m2Done
+	// succ:  m2Done
+m1Base:
+	r4_4 = 0x00000000
+	// succ:  m2Done
+m2Done:
+	r63_20 = PHI(r63_13, r63_1)
+	r4_19 = PHI(r4_12, r4_4)
+	r3_18 = PHI(r3_10, r3)
+	dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use dwLoc04_16
+	use r3_18
+	use r4_19
+	use r63_20
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var sp = m.Register(m.Architecture.StackRegister);
+                var r3 = m.Reg32("r3", 3);
+                var r4 = m.Reg32("r4", 4);
+                m.Assign(sp, m.Frame.FramePointer);   // Establish frame.
+                m.Assign(r4, m.LoadDw(m.IAdd(sp, 4)));
+                m.BranchIf(m.Eq0(r4), "m1Base");
+
+                m.Label("m0Induction");
+                m.Assign(r4, m.LoadDw(m.IAdd(r4, 4)));
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, r4);
+                m.Call(m.Procedure, 0);
+                m.Assign(r4, m.IAdd(r4, 1));
+                m.Assign(sp, m.IAdd(sp, 4));
+
+                m.Goto("m2Done");
+
+                m.Label("m1Base");
+                m.Assign(r4, 0);
+
+                m.Label("m2Done");
                 m.Return();
             });
         }

@@ -34,7 +34,12 @@ using System.IO;
 
 namespace Reko.UnitTests.Analysis
 {
+    /// <summary>
+    /// These are SSA integration tests: they hit the filesystem a lot. 
+    /// Therefore they aren't strictly speaking "unit" tests.
+    /// </summary>
 	[TestFixture]
+    [Category("IntegrationTests")]
 	public class SsaTests : AnalysisTestBase
 	{
 		private SsaState ssa;

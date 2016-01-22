@@ -834,8 +834,8 @@ namespace Reko.Analysis
             block.Statements.AddRange(stms);
             stms.ForEach(u =>
             {
-                stmCur = u;
-                u.Instruction = u.Instruction.Accept(this);
+                var use = (UseInstruction)u.Instruction;
+                use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
         }
 
@@ -858,45 +858,62 @@ namespace Reko.Analysis
             ProcedureFlow2 flow;
             if (callee != null && programFlow.ProcedureFlows.TryGetValue(callee, out flow))
             {
-                var ab = new ApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
-                foreach (var use in callee.EntryBlock.Statements
-                    .Select(s => (Identifier)((DefInstruction) s.Instruction).Expression))
-                {
-                    var u = ab.Bind(use);
-                    ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
-                }
-                foreach (var def in flow.Trashed)
-                {
-                    var d = ssa.Procedure.Frame.EnsureIdentifier(def);
-                    ci.Definitions.Add(
-                        new DefInstruction(
-                            NewDef(d, ci.Callee, false)));
-                }
+                GenerateUseDefsForKnownCallee(ci, callee, flow);
             }
             else
             {
-                // Hell node implementation - use and define all variables.
-                if (ci.Uses.Count > 0 || ci.Definitions.Count > 0)
-                    return ci;
-                foreach (Identifier id in ssa.Procedure.Frame.Identifiers)
-                {
-                    if (id.Storage is RegisterStorage)
-                        if ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
-                            || id.Storage is StackStorage)
-                        {
-                            ci.Uses.Add(
-                                new UseInstruction((Identifier)NewUse(id, stmCur, false)));
-                        }
-                    if ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
-                        || id.Storage is FlagGroupStorage)
-                    {
-                        ci.Definitions.Add(
-                            new DefInstruction(
-                                NewDef(id, ci.Callee, false)));
-                    }
-                }
+                GenerateUseDefsForUnknownCallee(ci);
             }
             return ci;
+        }
+
+        private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 flow)
+        {
+            var ab = new ApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
+            foreach (var use in callee.EntryBlock.Statements
+                .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
+            {
+                var u = ab.Bind(use);
+                ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
+            }
+            foreach (var def in flow.Trashed)
+            {
+                var d = ssa.Procedure.Frame.EnsureIdentifier(def);
+                ci.Definitions.Add(
+                    new DefInstruction(
+                        NewDef(d, ci.Callee, false)));
+            }
+        }
+
+        private void GenerateUseDefsForUnknownCallee(CallInstruction ci)
+        {
+            //$TODO special case for flags; unify them all into an überflag.
+            var existingUses = ci.Uses
+                .Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier)
+                .ToHashSet();
+            var existingDefs = ci.Definitions
+                .Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier)
+                .ToHashSet();
+
+            // Hell node implementation - use and define all variables.
+            foreach (Identifier id in ssa.Procedure.Frame.Identifiers)
+            {
+                if (!existingUses.Contains(id) &&
+                    (id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
+                        || id.Storage is StackStorage)
+                {
+                    ci.Uses.Add(
+                        new UseInstruction((Identifier)NewUse(id, stmCur, false)));
+                }
+                if (!existingDefs.Contains(id) &&
+                    (id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
+                    || id.Storage is FlagGroupStorage)
+                {
+                    ci.Definitions.Add(
+                        new DefInstruction(
+                            NewDef(id, ci.Callee, false)));
+                }
+            }
         }
 
         private Procedure GetUserProcedure(CallInstruction ci)
