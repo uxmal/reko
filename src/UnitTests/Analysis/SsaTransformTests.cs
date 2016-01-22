@@ -547,7 +547,7 @@ m0Induction:
 	r63_6 = fp - 0x00000004
 	dwLoc04_15 = r4_5
 	call ProcedureBuilder (retsize: 0;)
-		uses: r3,r4_5,r63_6,dwArg04,dwLoc04
+		uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6
 		defs: r3_10,r4_11,r63_8
 	r4_12 = r4_11 + 0x00000001
 	r63_13 = r63_8 + 0x00000004
