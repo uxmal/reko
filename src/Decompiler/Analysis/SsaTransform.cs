@@ -935,6 +935,17 @@ namespace Reko.Analysis
             return NewUse(id, false);
         }
 
+        public override Expression VisitOutArgument(OutArgument outArg)
+        {
+            var id = outArg.Expression as Identifier;
+            Expression exp;
+            if (id != null)
+                exp = NewDef(id, outArg, true);
+            else
+                exp = outArg.Expression.Accept(this);
+            return new OutArgument(outArg.DataType, exp);
+        }
+
         private Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
         {
             SsaIdentifier sidOld;

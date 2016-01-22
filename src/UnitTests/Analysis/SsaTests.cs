@@ -37,6 +37,46 @@ namespace Reko.UnitTests.Analysis
 	{
 		private SsaState ssa;
 
+        private Identifier EnsureRegister16(ProcedureBuilder m, string name)
+        {
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word16));
+        }
+
+        private Identifier EnsureRegister32(ProcedureBuilder m, string name)
+        {
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word32));
+        }
+
+		protected override void RunTest(Program prog, TextWriter writer)
+		{
+            var flow = new ProgramDataFlow(prog);
+            var eventListener = new FakeDecompilerEventListener();
+            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
+            trf.Compute();
+            trf.RewriteBasicBlocks();
+            Dump(prog.CallGraph);
+            var rl = RegisterLiveness.Compute(prog, flow, eventListener);
+            GlobalCallRewriter.Rewrite(prog, flow);
+
+			foreach (Procedure proc in prog.Procedures.Values)
+			{
+				Aliases alias = new Aliases(proc, prog.Architecture);
+				alias.Transform();
+				var gr = proc.CreateBlockDominatorGraph();
+				SsaTransform sst = new SsaTransform(flow, proc, gr);
+				ssa = sst.SsaState;
+				ssa.Write(writer);
+				proc.Write(false, true, writer);
+				writer.WriteLine();
+			}
+		}
+
+        private void Dump(CallGraph cg)
+        {
+            var sw = new StringWriter();
+            cg.Write(sw);
+        }
+
 		[Test]
 		public void SsaSimple()
 		{
@@ -171,45 +211,6 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private Identifier EnsureRegister16(ProcedureBuilder m, string name)
-        {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word16));
-        }
 
-        private Identifier EnsureRegister32(ProcedureBuilder m, string name)
-        {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word32));
-        }
-
-		protected override void RunTest(Program prog, TextWriter writer)
-		{
-            var flow = new ProgramDataFlow(prog);
-            var eventListener = new FakeDecompilerEventListener();
-            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
-            trf.Compute();
-            trf.RewriteBasicBlocks();
-            Dump(prog.CallGraph);
-            var rl = RegisterLiveness.Compute(prog, flow, eventListener);
-            GlobalCallRewriter.Rewrite(prog, flow);
-
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
-				alias.Transform();
-				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(flow, proc, gr);
-				ssa = sst.SsaState;
-				ssa.Write(writer);
-				proc.Write(false, true, writer);
-				writer.WriteLine();
-			}
-		}
-
-        private void Dump(CallGraph cg)
-        {
-            var sw = new StringWriter();
-            cg.Write(sw);
-            Debug.Print("{0}", sw.ToString());
-        }
 	}
 }

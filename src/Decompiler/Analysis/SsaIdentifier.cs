@@ -26,16 +26,21 @@ using System.IO;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// An SSA identifier is actually a node in the SSA graph. The edges of 
+    /// the SSA graphs are the uses and definition of a particular SSA
+    /// identifier
+    /// </summary>
 	public class SsaIdentifier
 	{
-		public SsaIdentifier(Identifier id, Identifier eOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
+		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
 			if (id == null)
 				throw new ArgumentNullException("id");
-			if (eOrig == null)
+			if (idOrig == null)
 				throw new ArgumentNullException("eOrig");
 			this.Identifier = id;
-			this.OriginalIdentifier = eOrig;
+			this.OriginalIdentifier = idOrig;
 			this.DefStatement = stmDef;
             this.DefExpression = exprDef;
             this.IsSideEffect = isSideEffect;

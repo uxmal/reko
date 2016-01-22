@@ -759,5 +759,37 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsaOutArgs()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def ebx
+	// succ:  l1
+l1:
+	C_2 = os_service(ebx, out ebx_1)
+	Mem3[0x00123400:word32] = ebx_1
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest2(sExp, m =>
+            {
+                var ebx = m.Reg32("ebx", 2);
+                var C = m.Flags("C");
+                var func = new ExternalProcedure("os_service", new ProcedureSignature(C, ebx));
+
+                m.Assign(C, m.Fn(func, ebx, m.Out(ebx.DataType, ebx)));
+                m.Store(m.Word32(0x123400), ebx);
+                m.Return();
+            });
+        }
     }
 }
