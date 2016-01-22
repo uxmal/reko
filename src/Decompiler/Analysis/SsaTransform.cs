@@ -1154,7 +1154,7 @@ namespace Reko.Analysis
                         // through".
                         var dpb = new DepositBits(alias.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
                         var ass = new AliasAssignment(alias.OriginalIdentifier, dpb);
-                        alias = InsertAfterDefinition(sid, ass);
+                        alias = InsertAfterDefinition(sid.DefStatement, ass);
                     }
                     else
                     {
@@ -1262,17 +1262,26 @@ namespace Reko.Analysis
                 e = new DepositBits(id, sidFrom.Identifier, (int)stgFrom.BitAddress);
             }
             var ass = new AliasAssignment(id, e);
-            return InsertAfterDefinition(sidFrom, ass);
+            return InsertAfterDefinition(sidFrom.DefStatement, ass);
         }
 
-        private SsaIdentifier InsertAfterDefinition(SsaIdentifier sidFrom, AliasAssignment ass)
+        /// <summary>
+        /// Inserts the statement <paramref name="ass"/> after the statement
+        /// <paramref name="stmBefore"/>, skipping any AliasAssignments that
+        /// statements that may have been added after 
+        /// <paramref name="stmBefore"/>.
+        /// </summary>
+        /// <param name="stmBefore"></param>
+        /// <param name="ass"></param>
+        /// <returns></returns>
+        private SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
         {
-            var b = sidFrom.DefStatement.Block;
-            int i = b.Statements.IndexOf(sidFrom.DefStatement);
+            var b = stmBefore.Block;
+            int i = b.Statements.IndexOf(stmBefore);
             // Skip alias statements
             while (i < b.Statements.Count - 1 && b.Statements[i].Instruction is AliasAssignment)
                 ++i;
-            sidFrom.DefStatement.Block.Statements.Insert(i + 1, sidFrom.DefStatement.LinearAddress, ass);
+            stmBefore.Block.Statements.Insert(i + 1, stmBefore.LinearAddress, ass);
 
             var sidTo = ssaIds.Add(ass.Dst, this.stm, ass.Src, false);
             ass.Dst = sidTo.Identifier;

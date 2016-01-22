@@ -477,7 +477,7 @@ namespace Reko.Core
             var that = sThat as RegisterStorage;
             if (that == null || that.Domain != this.Domain)
                 return false;
-            return (this.BitMask | that.BitMask) != 0;
+            return (this.BitMask | that.BitMask) == this.BitMask;
         }
 
         public override bool Exceeds(Storage sThat)
