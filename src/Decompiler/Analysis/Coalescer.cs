@@ -123,7 +123,7 @@ namespace Reko.Analysis
 		{
             PreCoalesceDump(sid, def, use);
 			def.Instruction.Accept(new UsedIdentifierAdjuster(def, ssa.Identifiers, use));
-            use.Instruction.Accept(new IdentifierReplacer(ssa, use, sid.Identifier, defExpr));
+            use.Instruction.Accept(new IdentifierReplacer(ssa.Identifiers, use, sid.Identifier, defExpr));
 
 			List<SsaIdentifier> sids;
 			if (defsByStatement.TryGetValue(def, out sids))
@@ -246,36 +246,6 @@ namespace Reko.Analysis
 			}
 			return MoveAssignment(initialPosition, block.Statements.Count, block);
 		}
-    }
-
-	/// <summary>
-	/// Replaces all occurences of an identifier with an expression.
-	/// </summary>
-    public class IdentifierReplacer : InstructionTransformer
-    {
-        private SsaState ssaIds;
-        private Statement use;
-        private Identifier idOld;
-        private Expression exprNew;
-
-        public IdentifierReplacer(SsaState ssaIds, Statement use, Identifier idOld, Expression exprNew)
-        {
-            this.ssaIds = ssaIds;
-            this.use = use;
-            this.idOld = idOld;
-            this.exprNew = exprNew;
-        }
-
-        public override Expression VisitIdentifier(Identifier id)
-        {
-            if (idOld == id)
-            {
-                ssaIds.Identifiers[id].Uses.Remove(use);
-                return exprNew;
-            }
-            else
-                return id;
-        }
     }
 
     /// <summary>

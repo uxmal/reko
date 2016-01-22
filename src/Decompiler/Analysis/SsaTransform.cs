@@ -823,7 +823,7 @@ namespace Reko.Analysis
                 .Where(u => u != null)
                 .Select(u => u.Expression)
                 .ToHashSet();
-            var reachingIds = ssa.Identifiers
+            var reachingIds = ssa.Identifiers.ToList()
                 .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               !(sid.Identifier.Storage is MemoryStorage))
                 .Select(sid => sid.OriginalIdentifier)
@@ -1380,8 +1380,12 @@ namespace Reko.Analysis
             return sid;
         }
 
-        private void ReplaceBy(SsaIdentifier phi, Identifier same)
+        private void ReplaceBy(SsaIdentifier sidOld, Identifier idNew)
         {
+            foreach (var use in sidOld.Uses)
+            {
+                use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew));
+            }
         }
     }
 

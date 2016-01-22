@@ -55,39 +55,6 @@ namespace Reko.UnitTests.Analysis
             this.addUseInstructions = false;
         }
 
-        private void RunTest(string sExp, Action<ProcedureBuilder> builder)
-        {
-            var pb = new ProcedureBuilder(this.pb.Program.Architecture);
-            builder(pb);
-            var proc = pb.Procedure;
-            var dg = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-
-            // Perform the initial transformation
-            var ssa = new SsaTransform(programFlow, proc, dg);
-
-            // Propagate values and simplify the results.
-            // We hope the the sequence
-            //   esp = fp - 4
-            //   mov [esp-4],eax
-            // will become
-            //   esp_2 = fp - 4
-            //   mov [fp - 8],eax
-
-            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState.Identifiers, proc);
-            vp.Transform();
-
-            ssa.RenameFrameAccesses = true;
-            ssa.AddUseInstructions = true;
-            ssa.Transform();
-
-            var writer = new StringWriter();
-            proc.Write(false, writer);
-            var sActual = writer.ToString();
-            if (sActual != sExp)
-                Debug.Print(sActual);
-            Assert.AreEqual(sExp, sActual);
-        }
-
         private void RunTest2(string sExp, Action<ProcedureBuilder> builder)
         {
             var pb = new ProcedureBuilder(this.pb.Program.Architecture);
@@ -141,7 +108,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void Ssa2_Simple()
+        public void SsaSimple()
         {
             var sExp =
 @"// ProcedureBuilder
@@ -169,7 +136,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void Ssa2_StackLocals()
+        public void SsaStackLocals()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -260,7 +227,7 @@ ProcedureBuilder_exit:
 	use r63_9
 	use wArg04
 ";
-            RunTest(sExp, m =>
+            RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
@@ -334,7 +301,7 @@ ProcedureBuilder_exit:
 	use r63_9
 	use wArg04_16
 ";
-            RunTest(sExp, m =>
+            RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
@@ -364,7 +331,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void Ssa2_Subroutine()
+        public void SsaSubroutine()
         {
             Storage r1_ = null;
             // Simulate the creation of a subroutine.
@@ -453,7 +420,7 @@ ProcedureBuilder_exit:
 	use r63_10
 	use wArg04
 ";
-            RunTest(sExp, m =>
+            RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
@@ -484,7 +451,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void Ssa2_FlagRegisters()
+        public void SsaFlagRegisters()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -543,7 +510,7 @@ ProcedureBuilder_exit:
 	use r2_3
 	use r3_4
 ";
-            RunTest(sExp, m =>
+            RunTest_FrameAccesses(sExp, m =>
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
@@ -557,7 +524,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void Ssa2_Simple_DefUse()
+        public void SsaSimple_DefUse()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -584,7 +551,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void Ssa2_UseUndefined()
+        public void SsaUseUndefined()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -608,7 +575,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void Ssa2_IfThen()
+        public void SsaIfThen()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -645,7 +612,7 @@ ProcedureBuilder_exit:
 
 
         [Test]
-        public void Ssa2_RegisterAlias()
+        public void SsaRegisterAlias()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -675,7 +642,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void Ssa2_AliasedPhi()
+        public void SsaAliasedPhi()
         {
             var sExp =
             #region Expected
@@ -727,7 +694,7 @@ ProcedureBuilder_exit:
         }
 
         [Test(Description = "Multiple assignments in the same block")]
-        public void Ssa2_ManyAssignments()
+        public void SsaManyAssignments()
         {
             var sExp =
             #region Expected@"// ProcedureBuilder
@@ -761,7 +728,7 @@ ProcedureBuilder_exit:
         }
 
         [Test(Description = "Multiple assignments in the same block with aliases")]
-        public void Ssa2_ManyAssignmentsWithAliases()
+        public void SsaManyAssignmentsWithAliases()
         {
             var sExp =
             #region Expected@"// ProcedureBuilder

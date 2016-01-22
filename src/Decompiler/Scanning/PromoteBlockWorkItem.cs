@@ -46,7 +46,7 @@ namespace Reko.Scanning
             var movedBlocks = new HashSet<Block>();
             var stack = new Stack<IEnumerator<Block>>();
             stack.Push(new Block[] { Block }.Cast<Block>().GetEnumerator());
-            var replacer = new IdentifierReplacer(ProcNew.Frame);
+            var replacer = new IdentifierRelocator(ProcNew.Frame);
             while (stack.Count != 0)
             {
                 DumpBlocks(Block.Procedure);

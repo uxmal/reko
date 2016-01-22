@@ -28,13 +28,17 @@ using System.Text;
 
 namespace Reko.Scanning
 {
-    public class IdentifierReplacer : InstructionTransformer, StorageVisitor<Identifier>
+    /// <summary>
+    /// Relocates identifiers in an instruction from their current frame to an
+    /// another given frame.
+    /// </summary>
+    public class IdentifierRelocator : InstructionTransformer, StorageVisitor<Identifier>
     {
         private Frame frame;
         private Dictionary<Identifier, Identifier> mapIds;
         private Identifier id;
 
-        public IdentifierReplacer(Frame frame)
+        public IdentifierRelocator(Frame frame)
         {
             this.frame = frame;
             this.mapIds = new Dictionary<Identifier, Identifier>();

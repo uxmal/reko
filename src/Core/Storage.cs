@@ -854,6 +854,11 @@ namespace Reko.Core
             return ReferenceEquals(this, that);
         }
 
+        public override bool Exceeds(Storage that)
+        {
+            return false;
+        }
+
         public override int OffsetOf(Storage stgSub)
         {
             return -1;
