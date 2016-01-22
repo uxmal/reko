@@ -7,6 +7,7 @@ sp_1: orig: sp
     def:  sp_1 = fp
 bp_2: orig: bp
     def:  bp_2 = fp
+    uses: use bp_2
 wArg06:Stack +0006
     def:  def wArg06
     uses: ax_4 = wArg06
@@ -17,22 +18,21 @@ ax_4: orig: ax
 ax_5: orig: ax
     def:  ax_5 = ax_4 | ax_4
     uses: SZO_6 = cond(ax_5)
-          ax_9 = PHI(ax_5, ax_11)
 SZO_6: orig: SZO
     def:  SZO_6 = cond(ax_5)
-    uses: Z_7 = SZO_6 (alias)
-Z_7: orig: Z
-    def:  Z_7 = SZO_6 (alias)
-    uses: branch Test(NE,Z_7) l0C00_000C
-C_8: orig: C
-    def:  C_8 = false
-ax_9: orig: ax
-    def:  ax_9 = PHI(ax_5, ax_11)
+    uses: branch Test(NE,SZO_6) l0C00_000C
+          use SZO_6
+C_7: orig: C
+    def:  C_7 = false
+    uses: use C_7
+ax_8: orig: ax
+    def:  ax_8 = 0xFFFF
 sp_10: orig: sp
     def:  sp_10 = fp
-ax_11: orig: ax
-    def:  ax_11 = 0xFFFF
-    uses: ax_9 = PHI(ax_5, ax_11)
+    uses: use sp_10
+ax_12: orig: ax
+    def:  ax_12 = PHI(ax_5, ax_8)
+    uses: use ax_12
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 wArg06)
@@ -46,17 +46,21 @@ l0C00_0000:
 	ax_4 = wArg06
 	ax_5 = ax_4 | ax_4
 	SZO_6 = cond(ax_5)
-	Z_7 = SZO_6 (alias)
-	C_8 = false
-	branch Test(NE,Z_7) l0C00_000C
+	C_7 = false
+	branch Test(NE,SZO_6) l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
-	ax_11 = 0xFFFF
+	ax_8 = 0xFFFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	ax_9 = PHI(ax_5, ax_11)
+	ax_12 = PHI(ax_5, ax_8)
 	sp_10 = fp
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
+	use ax_12
+	use bp_2
+	use C_7
+	use sp_10
+	use SZO_6
 

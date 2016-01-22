@@ -760,7 +760,7 @@ namespace Reko.Analysis
         private IProcessorArchitecture arch;
         private DataFlow2 programFlow;
         private Block block;
-        private Statement stm;
+        private Statement stmCur;
         private Dictionary<Block, SsaBlockState> blockstates;
         private SsaState ssa;
 
@@ -797,8 +797,8 @@ namespace Reko.Analysis
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
                 {
-                    this.stm = s;
-                    stm.Instruction = stm.Instruction.Accept(this);
+                    this.stmCur = s;
+                    s.Instruction = s.Instruction.Accept(this);
                 }
             }
 
@@ -822,17 +822,21 @@ namespace Reko.Analysis
                 .Where(u => u != null)
                 .Select(u => u.Expression)
                 .ToHashSet();
-            var reachingIds = ssa.Identifiers.ToList()
+            var reachingIds = ssa.Identifiers
                 .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
-                              !(sid.Identifier.Storage is MemoryStorage))
+                              !(sid.Identifier.Storage is MemoryStorage) &&
+                              !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier)
                 .Distinct()
-                .Select(id => (Identifier) NewUse(id, true));
+                .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
 
-            block.Statements.AddRange(reachingIds
-                .Where(id => !existing.Contains(id))
-                .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
-                .Select(id => new Statement(0, new UseInstruction(id), block)));
+            var stms = reachingIds.Select(id => new Statement(0, new UseInstruction(id), block)).ToList();
+            block.Statements.AddRange(stms);
+            stms.ForEach(u =>
+            {
+                stmCur = u;
+                u.Instruction = u.Instruction.Accept(this);
+            });
         }
 
         public override Instruction TransformAssignment(Assignment a)
@@ -881,7 +885,7 @@ namespace Reko.Analysis
                             || id.Storage is StackStorage)
                         {
                             ci.Uses.Add(
-                                new UseInstruction((Identifier)NewUse(id, false)));
+                                new UseInstruction((Identifier)NewUse(id, stmCur, false)));
                         }
                     if ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
                         || id.Storage is FlagGroupStorage)
@@ -938,7 +942,7 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            return NewUse(id, false);
+            return NewUse(id, stmCur, false);
         }
 
         public override Expression VisitOutArgument(OutArgument outArg)
@@ -963,7 +967,7 @@ namespace Reko.Analysis
                     return sidOld.Identifier;
                 }
             }
-            var sid = ssa.Identifiers.Add(idOld, this.stm, src, isSideEffect);
+            var sid = ssa.Identifiers.Add(idOld, stmCur, src, isSideEffect);
             var flagGroup = idOld.Storage as FlagGroupStorage;
             Identifier idNew;
             var bs = blockstates[block];
@@ -971,7 +975,7 @@ namespace Reko.Analysis
             {
                 foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
                 {
-                    var ss = new SsaFlagTransformer(idOld, flagBitMask, ssa.Identifiers, stm, blockstates);
+                    var ss = new SsaFlagTransformer(idOld, flagBitMask, ssa.Identifiers, stmCur, blockstates);
                     ss.WriteVariable(bs, sid, true);
                 }
                 idNew = sid.Identifier;
@@ -980,40 +984,40 @@ namespace Reko.Analysis
             var stack = idOld.Storage as StackStorage;
             if (stack != null)
             {
-                var ss = new SsaStackTransformer(idOld, stack.StackOffset, ssa.Identifiers, stm, blockstates);
+                var ss = new SsaStackTransformer(idOld, stack.StackOffset, ssa.Identifiers, stmCur, blockstates);
                 return ss.WriteVariable(bs, sid, true);
             }
             else if (!RenameFrameAccesses)
             {
-                var ss = new SsaIdentifierTransformer(idOld, ssa.Identifiers, stm, blockstates);
+                var ss = new SsaIdentifierTransformer(idOld, ssa.Identifiers, stmCur, blockstates);
                 return ss.WriteVariable(bs, sid, true);
             }
             return idOld;
         }
 
-        private Expression NewUse(Identifier id, bool force)
+        private Expression NewUse(Identifier id, Statement stm, bool force)
         {
             var bs = blockstates[block];
             var flagGroup = id.Storage as FlagGroupStorage;
             if (flagGroup != null && (!RenameFrameAccesses || force))
             {
                 // Analyze each flag in the flag group separately.
-                var ids = new HashSet<Identifier>();
+                var ids = new Dictionary<Identifier, SsaIdentifier>();
                 foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
                 {
                     var ss = new SsaFlagTransformer(id, flagBitMask, ssa.Identifiers, stm, blockstates);
                     var sid = ss.ReadVariable(bs, false);
-                    sid.Uses.Add(stm);
-                    ids.Add(sid.Identifier);
-
+                    ids[sid.Identifier] = sid;
                 }
                 if (ids.Count == 1)
                 {
-                    return ids.First();
+                    var de = ids.First();
+                    de.Value.Uses.Add(stm);
+                    return de.Key;
                 }
                 else
                 {
-                    return OrTogether(ids);
+                    return OrTogether(ids.Values, stm);
                 }
             }
             var stack = id.Storage as StackStorage;
@@ -1034,16 +1038,16 @@ namespace Reko.Analysis
             return id;
         }
 
-        private Expression OrTogether(HashSet<Identifier> ids)
+        private Expression OrTogether(IEnumerable<SsaIdentifier> sids, Statement stm)
         {
             Expression e = null;
-            foreach (var id in ids.OrderBy(id => id.Name))
+            foreach (var sid in sids.OrderBy(id => id.Identifier.Name))
             {
-                this.ssa.Identifiers[id].Uses.Add(stm);
+                sid.Uses.Add(stm);
                 if (e == null)
-                    e = id;
+                    e = sid.Identifier;
                 else
-                    e = new BinaryExpression(Operator.Or, PrimitiveType.Byte, e, id);
+                    e = new BinaryExpression(Operator.Or, PrimitiveType.Byte, e, sid.Identifier);
             }
             return e;
         }
@@ -1053,13 +1057,13 @@ namespace Reko.Analysis
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame,false);
+                var idNew = NewUse(idFrame, stmCur, false);
                 return idNew;
             }
             else
             {
                 access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, false);
+                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
                 return access;
             }
         }
@@ -1069,14 +1073,14 @@ namespace Reko.Analysis
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame, false);
+                var idNew = NewUse(idFrame, stmCur, false);
                 return idNew;
             }
             else
             {
                 access.BasePointer = access.BasePointer.Accept(this);
                 access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-                access.MemoryId = (MemoryIdentifier) NewUse(access.MemoryId, false);
+                access.MemoryId = (MemoryIdentifier) NewUse(access.MemoryId, stmCur, false);
                 return access;
             }
         }
@@ -1085,8 +1089,8 @@ namespace Reko.Analysis
         {
             if (storing)
             {
-                var sid = ssa.Identifiers.Add(access.MemoryId, this.stm, null, false);
-                var ss = new SsaIdentifierTransformer(access.MemoryId, ssa.Identifiers, stm, blockstates);
+                var sid = ssa.Identifiers.Add(access.MemoryId, this.stmCur, null, false);
+                var ss = new SsaIdentifierTransformer(access.MemoryId, ssa.Identifiers, stmCur, blockstates);
                 access.MemoryId = (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, false);
             }
             else

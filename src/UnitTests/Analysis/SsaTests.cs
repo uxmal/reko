@@ -18,6 +18,8 @@
  */
 #endregion
 
+#define NEW_SSA2
+
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Lib;
@@ -60,11 +62,17 @@ namespace Reko.UnitTests.Analysis
 
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
+#if NEW_SSA2
+                var sst = new SsaTransform2(prog.Architecture, proc, flow.ToDataFlow2());
+                sst.AddUseInstructions = true;
+                sst.Transform();
+#else
+                Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(flow, proc, gr);
-				ssa = sst.SsaState;
+#endif
+                ssa = sst.SsaState;
 				ssa.Write(writer);
 				proc.Write(false, true, writer);
 				writer.WriteLine();
