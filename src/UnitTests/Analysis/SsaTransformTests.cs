@@ -80,9 +80,9 @@ namespace Reko.UnitTests.Analysis
             var proc = pb.Procedure;
 
             // Perform initial transformation.
-            var ssa = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
-            ssa.AddUseInstructions = false;
-            ssa.Transform();
+            var sst = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
+            sst.AddUseInstructions = false;
+            sst.Transform();
 
             // Propagate values and simplify the results.
             // We hope the the sequence
@@ -92,12 +92,12 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState.Identifiers, proc);
+            var vp = new ValuePropagator(this.pb.Program.Architecture, sst.SsaState);
             vp.Transform();
 
-            ssa.RenameFrameAccesses = true;
-            ssa.AddUseInstructions = true;
-            ssa.Transform();
+            sst.RenameFrameAccesses = true;
+            sst.AddUseInstructions = true;
+            sst.Transform();
 
             var writer = new StringWriter();
             proc.Write(false, writer);
@@ -487,25 +487,26 @@ ProcedureBuilder_exit:
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	def r1
-	def r3
 	def r2
+	def r3
 	// succ:  l1
 l1:
 	branch r1 true
 	// succ:  l2 true
 l2:
-	r2_5 = 0x00000010
+	r2_1 = 0x00000010
 	// succ:  true
 true:
+	r2_4 = PHI(r2, r2_1)
 	call r3 (retsize: 4;)
-		uses: r1,r2,r3
-		defs: r1_2,r2_3,r3_4
+		uses: r1,r2_4,r3
+		defs: r1_3,r2_6,r3_9
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_2
-	use r2_3
-	use r3_4
+	use r1_3
+	use r2_6
+	use r3_9
 ";
             RunTest_FrameAccesses(sExp, m =>
             {

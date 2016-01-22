@@ -30,10 +30,12 @@ namespace Reko.Analysis
 	{
         private Dictionary<Identifier, SsaIdentifier> sids =
             new Dictionary<Identifier, SsaIdentifier>();
+        private int serialNumber = 0;
 
 		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
-			int i = sids.Count;
+			int i = serialNumber;
+            ++serialNumber;
 			Identifier idNew;
 			if (stmDef != null)
 			{
@@ -75,13 +77,18 @@ namespace Reko.Analysis
         {
             return GetEnumerator();
         }
-        
+
+        public void Remove(SsaIdentifier phi)
+        {
+            sids.Remove(phi.Identifier);
+        }
+
         public bool TryGetValue(Identifier id, out SsaIdentifier sid)
         {
             return sids.TryGetValue(id, out sid);
         }
 
-		public string FormatSsaName(Expression e, int v)
+		private string FormatSsaName(Expression e, int v)
 		{
             string prefix = null;
             var id = e as Identifier;

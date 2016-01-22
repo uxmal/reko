@@ -30,7 +30,9 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 using Rhino.Mocks;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -95,7 +97,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
+                ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa);
 				vp.Transform();
 
 				ssa.Write(writer);
@@ -196,7 +198,7 @@ namespace Reko.UnitTests.Analysis
 
             ssa.DebugDump(true);
 
-			ValuePropagator vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+            ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -253,58 +255,60 @@ namespace Reko.UnitTests.Analysis
 			// y = x - 2
 			// if (x == 2)
 
-			Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
             ProcedureBuilder m = new ProcedureBuilder();
-            var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
-			ssaIds[x].DefStatement = m.Block.Statements.Last;
-            var stmY = m.Assign(y, m.ISub(x, 2));
-			ssaIds[y].DefStatement = m.Block.Statements.Last;
-			var stm = m.BranchIf(m.Eq(y, 0), "test");
-			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.ToString());
-			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
-			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
+			Identifier x = m.Reg32("x", 0);
+			Identifier y = m.Reg32("y", 1);
+            m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
+            m.Assign(y, m.ISub(x, 2));
+			m.BranchIf(m.Eq(y, 0), "test");
+            m.Return();
+            m.Label("test");
+            m.Return();
+            var sst = new SsaTransform2(m.Architecture, m.Procedure, new DataFlow2());
+            sst.Transform();
 
-			var vp = new ValuePropagator(arch, ssaIds, null);
+            var vp = new ValuePropagator(arch, sst.SsaState);
+            var stm = m.Procedure.EntryBlock.Succ[0].Statements.Last;
 			vp.Transform(stm);
-			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
+			Assert.AreEqual("branch x_1 == 0x00000002 test", stm.Instruction.ToString());
 		}
 
 		[Test]
 		public void VpCopyPropagate()
 		{
-			Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
-			Identifier z = Reg32("z");
-			Identifier w = Reg32("w");
-			Statement stmX = new Statement(0, new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x10004000), PrimitiveType.Word32)), null);
-			Statement stmY = new Statement(1, new Assignment(y, x), null);
-			Statement stmZ = new Statement(2, new Assignment(z, new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, y, Constant.Word32(2))), null);
-			Statement stmW = new Statement(3, new Assignment(w, y), null);
-			ssaIds[x].DefStatement = stmX;
-			ssaIds[y].DefStatement = stmY;
-			ssaIds[z].DefStatement = stmZ;
-			ssaIds[w].DefStatement = stmW;
-			ssaIds[x].Uses.Add(stmY);
-			ssaIds[y].Uses.Add(stmZ);
-			ssaIds[y].Uses.Add(stmW);
-			Assert.AreEqual("x = Mem0[0x10004000:word32]", stmX.Instruction.ToString());
-			Assert.AreEqual("y = x", stmY.Instruction.ToString());
-			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
-			Assert.AreEqual("w = y", stmW.Instruction.ToString());
+            var m = new ProcedureBuilder();
+			Identifier x = m.Reg32("x", 0);
+			Identifier y = m.Reg32("y", 1);
+			Identifier z = m.Reg32("z", 2);
+			Identifier w = m.Reg32("w", 3);
+            m.Assign(x, m.LoadDw(m.Word32(0x10004000)));
+            m.Assign(y, x);
+            m.Assign(z, m.IAdd(y, 2));
+            m.Assign(w, y);
+            var sst = new SsaTransform2(m.Architecture, m.Procedure, new DataFlow2());
+            sst.Transform();
+            ssaIds = sst.SsaState.Identifiers;
+            var stms = m.Procedure.EntryBlock.Succ[0].Statements;
+			Assert.AreEqual("x_1 = Mem0[0x10004000:word32]", stms[0].ToString());
+			Assert.AreEqual("y_2 = x_1", stms[1].ToString());
+			Assert.AreEqual("z_3 = y_2 + 0x00000002", stms[2].ToString());
+			Assert.AreEqual("w_4 = y_2", stms[3].ToString());
+            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "x_1").Uses));
+            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "y_2").Uses));
+            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "z_3").Uses));
+            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "w_4").Uses));
 
-			ValuePropagator vp = new ValuePropagator(arch, ssaIds, null);
-			vp.Transform(stmX);
-			vp.Transform(stmY);
-			vp.Transform(stmZ);
-			vp.Transform(stmW);
 
-			Assert.AreEqual("x = Mem0[0x10004000:word32]", stmX.Instruction.ToString());
-			Assert.AreEqual("y = x", stmY.Instruction.ToString());
-			Assert.AreEqual("z = x + 0x00000002", stmZ.Instruction.ToString());
-			Assert.AreEqual("w = x", stmW.Instruction.ToString());
-			Assert.AreEqual(3, ssaIds[x].Uses.Count);
-			Assert.AreEqual(0, ssaIds[y].Uses.Count);
+            ValuePropagator vp = new ValuePropagator(arch, sst.SsaState);
+            stms.ForEach(s => vp.Transform(s));
+
+			Assert.AreEqual("x_1 = Mem0[0x10004000:word32]", stms[0].ToString());
+			Assert.AreEqual("y_2 = x_1", stms[1].ToString());
+			Assert.AreEqual("z_3 = x_1 + 0x00000002", stms[2].ToString());
+			Assert.AreEqual("w_4 = x_1", stms[3].ToString());
+
+            Assert.AreEqual(3, ssaIds.Single(i => i.Identifier.Name == "x_1").Uses.Count);
+			Assert.AreEqual(0, ssaIds.Single(i => i.Identifier.Name == "y_2").Uses.Count);
 		}
 
 		[Test]
@@ -422,7 +426,7 @@ namespace Reko.UnitTests.Analysis
             var stm2 = new Statement(2, new Assignment(r2, c2), null);
             ssaIds[r1].DefStatement = stm1;
             ssaIds[r2].DefStatement = stm2;
-            var vp = new ValuePropagator(arch, ssaIds, null);
+            var vp = new ValuePropagator(arch, null);
             Instruction instr = new PhiAssignment(r3, new PhiFunction(r1.DataType, r1, r2));
             instr = instr.Accept(vp);
             Assert.AreEqual("r3 = 0x4711", instr.ToString());
@@ -464,7 +468,7 @@ namespace Reko.UnitTests.Analysis
 
             ssa.DebugDump(true);
 
-			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+            var vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))

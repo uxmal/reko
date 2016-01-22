@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
 
                 proc.Dump(true);
 
-                var vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
+                var vp = new ValuePropagator(prog.Architecture, ssa);
                 vp.Transform();
 
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);

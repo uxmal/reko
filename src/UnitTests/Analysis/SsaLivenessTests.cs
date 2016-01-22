@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Analysis
 			ssa = sst.SsaState;
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, platform);
 			cce.Transform();
-			ValuePropagator vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+            ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 			DeadCode.Eliminate(proc, ssa);
 			Coalescer coa = new Coalescer(proc, ssa);

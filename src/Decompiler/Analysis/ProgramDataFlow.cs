@@ -80,6 +80,17 @@ namespace Reko.Analysis
             get { return procFlow.Values; }
         }
 
+        // These functions are place holders. Once the new SSA is adpoted, they will bcome
+        // unnecessary -- like this whole class.
         public Dictionary<Procedure, ProcedureFlow2> ProcedureFlows2 { get { return procFlow2; } }
+        public DataFlow2 ToDataFlow2()
+        {
+            var df = new DataFlow2();
+            foreach (var de in ProcedureFlows2)
+            {
+                df.ProcedureFlows.Add(de.Key, de.Value);
+            }
+            return df;
+        }
 	}
 }

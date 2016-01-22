@@ -790,7 +790,6 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public void Transform()
         {
-
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
@@ -867,16 +866,23 @@ namespace Reko.Analysis
                     var d = ssa.Procedure.Frame.EnsureIdentifier(def);
                     ci.Definitions.Add(
                         new DefInstruction(
-                            NewDef((Identifier)d, ci.Callee, false)));
+                            NewDef(d, ci.Callee, false)));
                 }
             }
             else
             {
-                // Hell node implementation - define all register variables.
+                // Hell node implementation - use and define all variables.
                 if (ci.Uses.Count > 0 || ci.Definitions.Count > 0)
                     return ci;
                 foreach (Identifier id in ssa.Procedure.Frame.Identifiers)
                 {
+                    if (id.Storage is RegisterStorage)
+                        if ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
+                            || id.Storage is StackStorage)
+                        {
+                            ci.Uses.Add(
+                                new UseInstruction((Identifier)NewUse(id, false)));
+                        }
                     if ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
                         || id.Storage is FlagGroupStorage)
                     {
@@ -996,7 +1002,10 @@ namespace Reko.Analysis
                 foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
                 {
                     var ss = new SsaFlagTransformer(id, flagBitMask, ssa.Identifiers, stm, blockstates);
-                    ids.Add(ss.ReadVariable(bs, false).Identifier);
+                    var sid = ss.ReadVariable(bs, false);
+                    sid.Uses.Add(stm);
+                    ids.Add(sid.Identifier);
+
                 }
                 if (ids.Count == 1)
                 {
@@ -1011,12 +1020,16 @@ namespace Reko.Analysis
             if (stack != null && (RenameFrameAccesses || force))
             {
                 var ss = new SsaStackTransformer(id, stack.StackOffset, ssa.Identifiers, stm, blockstates);
-                return ss.ReadVariable(bs, false).Identifier;
+                var sid = ss.ReadVariable(bs, false);
+                sid.Uses.Add(stm);
+                return sid.Identifier;
             }
             else if (!RenameFrameAccesses || force)
             {
                 var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
-                return ss.ReadVariable(bs, false).Identifier;
+                var sid = ss.ReadVariable(bs, false);
+                sid.Uses.Add(stm);
+                return sid.Identifier;
             }
             return id;
         }
@@ -1026,6 +1039,7 @@ namespace Reko.Analysis
             Expression e = null;
             foreach (var id in ids.OrderBy(id => id.Name))
             {
+                this.ssa.Identifiers[id].Uses.Add(stm);
                 if (e == null)
                     e = id;
                 else
@@ -1390,6 +1404,7 @@ namespace Reko.Analysis
                 }
             }
             phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
+            ssaIds.Remove(phi);
             return sid;
         }
 

@@ -87,7 +87,7 @@ namespace Reko.Analysis
                     cce.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
-                    var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
+                    var vp = new ValuePropagator(program.Architecture, ssa);
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
@@ -281,7 +281,7 @@ namespace Reko.Analysis
             // are propagated to the corresponding call sites.
             var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
             cce.Transform();
-            var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
+            var vp = new ValuePropagator(program.Architecture, ssa);
             vp.Transform();
 
             // Now compute SSA for the stack-based variables as well. That is:

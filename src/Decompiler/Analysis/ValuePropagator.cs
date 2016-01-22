@@ -30,12 +30,14 @@ using System.Diagnostics;
 namespace Reko.Analysis
 {
     /// <summary>
-    /// Performs propagation by replacing occurences of expressions with simpler expressions if these are beneficial. 
-    /// Constants are folded, and so on.
+    /// Performs propagation by replacing occurences of expressions with 
+    /// simpler expressions if these are beneficial. Constants are folded,
+    /// and so on.
     /// </summary>
     /// <remarks>
-    /// This is a useful transform that doesn't cause too many problems for later transforms. Calling it will flush out
-    /// lots of dead expressions that can be removed with DeadCode.Eliminate()
+    /// This is a useful transform that doesn't cause too many problems for
+    /// later transforms. Calling it will flush out lots of dead expressions
+    /// that can be removed with DeadCode.Eliminate()
     /// </remarks>
     public class ValuePropagator : InstructionVisitor<Instruction>
     {
@@ -46,10 +48,10 @@ namespace Reko.Analysis
 
         private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 
-        public ValuePropagator(IProcessorArchitecture arch, SsaIdentifierCollection ssaIds, Procedure proc)
+        public ValuePropagator(IProcessorArchitecture arch, SsaState ssa)
         {
-            this.ssaIds = ssaIds;
-            this.proc = proc;
+            this.ssaIds = ssa.Identifiers;
+            this.proc = ssa.Procedure;
             this.evalCtx = new SsaEvaluationContext(arch, ssaIds);
             this.eval = new ExpressionSimplifier(evalCtx);
         }
