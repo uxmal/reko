@@ -39,8 +39,8 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class UserSignatureBuilderTests
     {
-        private IProcessorArchitecture arch;
         private MockRepository mr;
+        private MockFactory mockFactory;
         private Program program;
         private Procedure proc;
         private IPlatform platform;
@@ -49,22 +49,14 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.mr = new MockRepository();
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.platform = mr.Stub<IPlatform>();
-
-            platform.Stub(p => p.FramePointerType).Return(PrimitiveType.Pointer32);
-            platform.Stub(p => p.DefaultCallingConvention).Return("cdecl");
+            this.mockFactory = new MockFactory(mr);
+            this.platform = mockFactory.CreatePlatform();
 
             this.program = new Program
             {
-                Architecture = arch,
+                Architecture = platform.Architecture,
                 Platform = platform,
             };
-        }
-
-        private void Given_NamedTypes(Dictionary<string, SerializedType> types)
-        {
-            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(this.platform, types));
         }
 
         private void Given_UserSignature(uint address, string str)
@@ -96,16 +88,6 @@ namespace Reko.UnitTests.Analysis
         public void Usb_ParseFunctionDeclaration()
         {
             Given_Procedure(0x1000);
-            platform.Stub(p => p.PlatformIdentifier).Return("testPlatform");
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
-            platform.Stub(p => p.CreateSymbolTable()).Return(new SymbolTable(platform));
-            var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
-            platform.Expect(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
-            ser.Expect(s => s.Deserialize(
-                Arg<SerializedSignature>.Is.NotNull,
-                Arg<Frame>.Is.NotNull)).Return(new ProcedureSignature());
             mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
@@ -123,7 +105,7 @@ namespace Reko.UnitTests.Analysis
             {
                 { "BYTE", new PrimitiveType_v1 { ByteSize=1, Domain=PrimitiveType.Byte.Domain } },
             };
-            Given_NamedTypes(types);
+            mockFactory.Given_NamedTypes(types);
             Given_Procedure(0x1000);
             mr.ReplayAll();
 

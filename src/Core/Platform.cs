@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -55,6 +56,7 @@ namespace Reko.Core
         IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
         ProcedureSerializer CreateProcedureSerializer();
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        TypeLibraryDeserializer CreateTypeLibraryDeserializer();
         SymbolTable CreateSymbolTable();
 
         /// <summary>
@@ -178,6 +180,12 @@ namespace Reko.Core
             return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
         }
 
+        public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+            return new TypeLibraryDeserializer(this, true, Metadata.Clone());
+        }
+
         /// <summary>
         /// Creates a procedure serializer that understands the calling conventions used on this
         /// processor and environment
@@ -205,6 +213,7 @@ namespace Reko.Core
                 foreach (var tl in envCfg.TypeLibraries
                     .OfType<ITypeLibraryElement>())
                 {
+                    Debug.Print("Loading {0}", tl.Name);
                     Metadata = tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name), Metadata);
                 }
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
@@ -219,8 +228,6 @@ namespace Reko.Core
         public IDictionary<string, DataType> GetTypedefs()
         {
             EnsureTypeLibraries(PlatformIdentifier);
-
-            var typedefs = new Dictionary<string, DataType>();
             return Metadata.Types;
         }
 

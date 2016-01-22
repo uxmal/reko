@@ -45,16 +45,6 @@ namespace Reko.Core.Serialization
             return visitor.VisitStructure(this);
         }
 
-		public override DataType BuildDataType(TypeFactory factory)
-		{
-			StructureType str = factory.CreateStructureType(null, 0);
-			foreach (StructField_v1 f in Fields)
-			{
-				str.Fields.Add(new StructureField(f.Offset, f.Type.BuildDataType(factory), f.Name));
-			}
-			return str;
-		}
-
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -63,10 +53,13 @@ namespace Reko.Core.Serialization
                 sb.AppendFormat("{0}, ", Name);
             if (ByteSize > 0)
                 sb.AppendFormat("{0}, ", ByteSize);
-			foreach (StructField_v1 f in Fields)
-			{
-				sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null?f.Name: "?", f.Type);
-			}
+            if (Fields != null)
+            {
+                foreach (StructField_v1 f in Fields)
+                {
+                    sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null ? f.Name : "?", f.Type);
+                }
+            }
 			sb.Append(")");
 			return sb.ToString();
 		}

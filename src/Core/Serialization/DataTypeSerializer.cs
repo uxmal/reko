@@ -28,6 +28,9 @@ namespace Reko.Core.Serialization
 {
     public class DataTypeSerializer : IDataTypeVisitor<SerializedType>
     {
+        private HashSet<string> structs = new HashSet<string>();
+        private HashSet<string> unions = new HashSet<string>();
+
         public SerializedType VisitArray(ArrayType at)
         {
             var et = at.ElementType.Accept(this);
@@ -87,17 +90,25 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitStructure(StructureType str)
         {
-            var structure = new SerializedStructType {
+            var sStr = new SerializedStructType
+            {
                 Name = str.Name,
                 ByteSize = str.Size
             };
 
-            if (str.Fields != null)
+            // If this is a forward reference with 0 fields or 
+            // we've already serialized the structure, emit
+            // a struct reference.
+            if (str.Fields.Count == 0 ||
+                structs.Contains(str.Name))
             {
-                var fields = str.Fields.Select(f => new StructField_v1(f.Offset, f.Name, f.DataType.Accept(this)));
-                structure.Fields = fields.ToArray();
+                return sStr;
             }
-            return structure;
+
+            structs.Add(str.Name);
+            var fields = str.Fields.Select(f => new StructField_v1(f.Offset, f.Name, f.DataType.Accept(this)));
+            sStr.Fields = fields.ToArray();
+            return sStr;
         }
 
         public SerializedType VisitTypeReference(TypeReference typeref)
@@ -112,7 +123,26 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitUnion(UnionType ut)
         {
-            throw new NotImplementedException();
+            var union = new UnionType_v1
+            {
+                Name = ut.Name,
+            };
+
+            // If this is a forward reference with 0 alternatives or
+            // we've already serialized the union, emit a union
+            // reference.
+            if (ut.Alternatives.Count == 0 ||
+                unions.Contains(ut.Name))
+            {
+                return union;
+            }
+
+            unions.Add(ut.Name);
+            var alts = ut.Alternatives.Select(
+                    a => new SerializedUnionAlternative(a.Value.Name, a.Value.DataType.Accept(this))
+            );
+            union.Alternatives = alts.ToArray();
+            return union;
         }
 
         public SerializedType VisitUnknownType(UnknownType ut)

@@ -58,11 +58,6 @@ namespace Reko.Core.Serialization
             return visitor.VisitSignature(this);
         }
 
-        public override Types.DataType BuildDataType(Types.TypeFactory factory)
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             var sb = new StringBuilder();

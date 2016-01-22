@@ -38,7 +38,6 @@ namespace Reko.Core.Serialization
         {
         }
 
-        public abstract DataType BuildDataType(TypeFactory factory);
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
 
         /// <summary>
