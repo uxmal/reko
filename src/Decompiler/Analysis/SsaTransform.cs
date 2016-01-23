@@ -763,6 +763,7 @@ namespace Reko.Analysis
         private Statement stmCur;
         private Dictionary<Block, SsaBlockState> blockstates;
         private SsaState ssa;
+        private TransformerFactory factory;
 
         public SsaTransform2(IProcessorArchitecture arch, Procedure proc, DataFlow2 programFlow)
         {
@@ -770,6 +771,7 @@ namespace Reko.Analysis
             this.programFlow = programFlow;
             this.ssa = new SsaState(proc, null);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
+            this.factory = new TransformerFactory(this);
         }
 
         public bool AddUseInstructions { get; set; }
@@ -1025,7 +1027,7 @@ namespace Reko.Analysis
                 return id;
             var bs = blockstates[block];
             var flagGroup = id.Storage as FlagGroupStorage;
-            if (flagGroup != null && (!RenameFrameAccesses || force))
+            if (flagGroup != null)
             {
                 var ss = new SsaFlagTransformer(id, flagGroup, ssa.Identifiers, stm, blockstates);
                 return ss.NewUse(bs, !RenameFrameAccesses || force);
@@ -1034,13 +1036,13 @@ namespace Reko.Analysis
             if (stack != null)
             {
                 var ss = new SsaStackTransformer(id, stack.StackOffset, ssa.Identifiers, stm, blockstates);
-                return ss.NewUse(bs, (RenameFrameAccesses || force));
+                return ss.NewUse(bs, !RenameFrameAccesses || force);
             }
             var seq = id.Storage as SequenceStorage;
             if (seq != null)
             {
                 var sqs = new SsaSequenceTransformer(id, seq, ssa.Identifiers, stm, blockstates);
-                return sqs.NewUse(bs, force);
+                return sqs.NewUse(bs, !RenameFrameAccesses || force);
             }
             else 
             {
