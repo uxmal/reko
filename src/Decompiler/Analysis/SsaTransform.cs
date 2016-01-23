@@ -1029,12 +1029,10 @@ namespace Reko.Analysis
                 return ss.NewUse(bs, !RenameFrameAccesses || force);
             }
             var stack = id.Storage as StackStorage;
-            if (stack != null && (RenameFrameAccesses || force))
+            if (stack != null)
             {
                 var ss = new SsaStackTransformer(id, stack.StackOffset, ssa.Identifiers, stm, blockstates);
-                var sid = ss.ReadVariable(bs, false);
-                sid.Uses.Add(stm);
-                return sid.Identifier;
+                return ss.NewUse(bs, (RenameFrameAccesses || force));
             }
             var seq = id.Storage as SequenceStorage;
             if (seq != null)
@@ -1055,7 +1053,7 @@ namespace Reko.Analysis
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame, stmCur, false);
+                var idNew = NewUse(idFrame, stmCur, true);
                 return idNew;
             }
             else
@@ -1612,6 +1610,15 @@ var seq = idOld.Storage as SequenceStorage;
                 : base(id, ssaIds, stm, blockstates)
             {
                 this.stackOffset = stackOffset;
+            }
+
+            public override Expression NewUse(SsaBlockState bs, bool force)
+            {
+                if (!force)
+                    return id;
+                var sid = ReadVariable(bs, false);
+                sid.Uses.Add(stm);
+                return sid.Identifier;
             }
 
             public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
