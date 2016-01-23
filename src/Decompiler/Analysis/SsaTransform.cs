@@ -816,6 +816,8 @@ namespace Reko.Analysis
         /// the identifiers should be removed.</remarks>
         private void AddUsesToExitBlock()
         {
+            //$TODO: sequences and flag groups need to be grouped on exit
+            // We don't do them yet.
             var block = ssa.Procedure.ExitBlock;
             var existing = block.Statements
                 .Select(s => s.Instruction as UseInstruction)
@@ -825,6 +827,7 @@ namespace Reko.Analysis
             var reachingIds = ssa.Identifiers
                 .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               !(sid.Identifier.Storage is MemoryStorage) &&
+                              !(sid.Identifier.Storage is SequenceStorage) &&
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier)
                 .Distinct()
@@ -1118,7 +1121,7 @@ namespace Reko.Analysis
             {
                 access.BasePointer = access.BasePointer.Accept(this);
                 access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-                access.MemoryId = (MemoryIdentifier) NewUse(access.MemoryId, stmCur, false);
+                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
                 return access;
             }
         }
@@ -1160,414 +1163,415 @@ namespace Reko.Analysis
             var idFrame = proc.Frame.EnsureStackVariable(offset, dt);
             return idFrame;
         }
-    }
 
-    public class SsaBlockState
-    {
-        public readonly Block Block;
-        public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
-        public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
-        public readonly Dictionary<int, SsaIdentifier> currentStackDef;
-        public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
-
-        public SsaBlockState(Block block)
+        public class SsaBlockState
         {
-            this.Block = block;
-            this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
-            this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
-            this.currentStackDef = new Dictionary<int, SsaIdentifier>();
-            this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
-        }
-    }
+            public readonly Block Block;
+            public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
+            public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
+            public readonly Dictionary<int, SsaIdentifier> currentStackDef;
+            public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
 
-    public class SsaIdentifierTransformer
-    {
-        private Identifier id;
-        private SsaIdentifierCollection ssaIds;
-        private Statement stm;
-        private IDictionary<Block, SsaBlockState> blockstates;
-
-        public SsaIdentifierTransformer(Identifier id, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
-        {
-            this.id = id;
-            this.ssaIds = ssaIds;
-            this.stm = stm;
-            this.blockstates = blockstates;
-        }
-
-        /// <summary>
-        /// Registers the fact that identifier <paramref name="id"/> is
-        /// modified in the block <paramref name="b" />. 
-        /// </summary>
-        /// <param name="id">The identifier before being SSA transformed</param>
-        /// <param name="b">The block in which the identifier was changed</param>
-        /// <param name="sid">The identifier after being SSA transformed.</param>
-        /// <param name="performProbe">if true, looks "backwards" to see
-        ///   if <paramref name="id"/> overlaps with another identifier</param>
-        /// <returns></returns>
-        public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
-        {
-            SsaIdentifier alias = sid;
-            if (performProbe)
+            public SsaBlockState(Block block)
             {
-                // Did a previous SSA id modify the same storage as id?
-                alias = ReadVariable(bs, performProbe);
-                if (alias != null)
+                this.Block = block;
+                this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
+                this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
+                this.currentStackDef = new Dictionary<int, SsaIdentifier>();
+                this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
+            }
+        }
+
+        public class SsaIdentifierTransformer
+        {
+            private Identifier id;
+            private SsaIdentifierCollection ssaIds;
+            private Statement stm;
+            private IDictionary<Block, SsaBlockState> blockstates;
+
+            public SsaIdentifierTransformer(Identifier id, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
+            {
+                this.id = id;
+                this.ssaIds = ssaIds;
+                this.stm = stm;
+                this.blockstates = blockstates;
+            }
+
+            /// <summary>
+            /// Registers the fact that identifier <paramref name="id"/> is
+            /// modified in the block <paramref name="b" />. 
+            /// </summary>
+            /// <param name="id">The identifier before being SSA transformed</param>
+            /// <param name="b">The block in which the identifier was changed</param>
+            /// <param name="sid">The identifier after being SSA transformed.</param>
+            /// <param name="performProbe">if true, looks "backwards" to see
+            ///   if <paramref name="id"/> overlaps with another identifier</param>
+            /// <returns></returns>
+            public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
+            {
+                SsaIdentifier alias = sid;
+                if (performProbe)
                 {
-                    // Was the previous modification larger than this modification?
-                    if (alias.Identifier.Storage.Exceeds(id.Storage))
+                    // Did a previous SSA id modify the same storage as id?
+                    alias = ReadVariable(bs, performProbe);
+                    if (alias != null)
                     {
-                        // Generate a DPB so the previous modification "shines
-                        // through".
-                        var dpb = new DepositBits(alias.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
-                        var ass = new AliasAssignment(alias.OriginalIdentifier, dpb);
-                        alias = InsertAfterDefinition(sid.DefStatement, ass);
+                        // Was the previous modification larger than this modification?
+                        if (alias.Identifier.Storage.Exceeds(id.Storage))
+                        {
+                            // Generate a DPB so the previous modification "shines
+                            // through".
+                            var dpb = new DepositBits(alias.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
+                            var ass = new AliasAssignment(alias.OriginalIdentifier, dpb);
+                            alias = InsertAfterDefinition(sid.DefStatement, ass);
+                        }
+                        else
+                        {
+                            alias = sid;
+                        }
                     }
                     else
                     {
                         alias = sid;
                     }
                 }
+                bs.currentDef[id.Storage.Domain] = alias;
+                return sid.Identifier;
+            }
+
+            /// <summary>
+            /// Reaches "backwards" to locate the SSA identifier that defines
+            /// the identifier <paramref name="id"/>, starting in block <paramref name="b"/>.
+            /// </summary>
+            /// If no definition of <paramref name="id"/> is found, a new 
+            /// DefStatement is created in the entry block of the procedure,
+            /// </summary>
+            /// <param name="id"></param>
+            /// <param name="b"></param>
+            /// <param name="aliasProbe"></param>
+            /// <returns></returns>
+            public virtual SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            {
+                SsaIdentifier ssaId;
+                if (bs.currentDef.TryGetValue(id.Storage.Domain, out ssaId))
+                {
+                    // Defined locally in this block.
+                    // Does ssaId intersect the probed value?
+                    if (ssaId.Identifier.Storage.OverlapsWith(id.Storage))
+                    {
+                        return MaybeGenerateAliasStatement(ssaId, aliasProbe);
+                    }
+                }
+                // Keep probin'.
+                return ReadVariableRecursive(bs, aliasProbe);
+            }
+
+            public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
+            {
+                SsaIdentifier val;
+                if (false)  // !sealedBlocks.Contains(b))
+                {
+                    // Incomplete CFG
+                    //val = newPhi(id, b);
+                    //incompletePhis[b][id.Storage] = val;
+                }
+                else if (bs.Block.Pred.Count == 0)
+                {
+                    // Undef'ined or unreachable parameter; assume it's a def.
+                    if (!aliasProbe)
+                        val = NewDefInstruction(id, bs.Block);
+                    else
+                        val = null;
+                }
+                else if (bs.Block.Pred.Count == 1)
+                {
+                    val = ReadVariable(blockstates[bs.Block.Pred[0]], aliasProbe);
+                }
                 else
                 {
-                    alias = sid;
+                    // Break potential cycles with operandless phi
+                    val = NewPhi(id, bs.Block);
+                    WriteVariable(bs, val, false);
+                    val = AddPhiOperands(id, val, aliasProbe);
                 }
+                if (val != null && !aliasProbe)
+                    WriteVariable(bs, val, false);
+                return val;
             }
-            bs.currentDef[id.Storage.Domain] = alias;
-            return sid.Identifier;
-        }
 
-        /// <summary>
-        /// Reaches "backwards" to locate the SSA identifier that defines
-        /// the identifier <paramref name="id"/>, starting in block <paramref name="b"/>.
-        /// </summary>
-        /// If no definition of <paramref name="id"/> is found, a new 
-        /// DefStatement is created in the entry block of the procedure,
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="b"></param>
-        /// <param name="aliasProbe"></param>
-        /// <returns></returns>
-        public virtual SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
-        {
-            SsaIdentifier ssaId;
-            if (bs.currentDef.TryGetValue(id.Storage.Domain, out ssaId))
+            /// <summary>
+            /// If <paramref name="idTo"/> is smaller than <paramref name="sidFrom" />, then
+            /// it doesn't cover it completely. Therefore, we must generate a SLICE / cast 
+            /// statement.
+            /// </summary>
+            /// <param name="idTo"></param>
+            /// <param name="sidFrom"></param>
+            /// <returns></returns>
+            private SsaIdentifier MaybeGenerateAliasStatement(SsaIdentifier sidFrom, bool aliasProbe)
             {
-                // Defined locally in this block.
-                // Does ssaId intersect the probed value?
-                if (ssaId.Identifier.Storage.OverlapsWith(id.Storage))
+                var stgFrom = sidFrom.Identifier.Storage;
+                Debug.Assert(!(id.Storage is FlagGroupStorage), "Should never be called on a flag group");
+                var stgTo = id.Storage;
+                if (stgFrom == stgTo ||
+                    (aliasProbe && stgFrom.Exceeds(stgTo)))
                 {
-                    return MaybeGenerateAliasStatement(ssaId, aliasProbe);
+                    return sidFrom;
                 }
-            }
-            // Keep probin'.
-            return ReadVariableRecursive(bs, aliasProbe);
-        }
-
-        public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
-        {
-            SsaIdentifier val;
-            if (false)  // !sealedBlocks.Contains(b))
-            {
-                // Incomplete CFG
-                //val = newPhi(id, b);
-                //incompletePhis[b][id.Storage] = val;
-            }
-            else if (bs.Block.Pred.Count == 0)
-            {
-                // Undef'ined or unreachable parameter; assume it's a def.
-                if (!aliasProbe)
-                    val = NewDefInstruction(id, bs.Block);
+                Expression e = null;
+                if (stgFrom.Covers(stgTo))
+                {
+                    int offset = stgFrom.OffsetOf(stgTo);
+                    if (offset > 0)
+                        e = new Slice(id.DataType, sidFrom.Identifier, (uint)offset);
+                    else
+                        e = new Cast(id.DataType, sidFrom.Identifier);
+                }
                 else
-                    val = null;
+                {
+                    var sidTo = ReadVariable(blockstates[sidFrom.DefStatement.Block], false);
+                    e = new DepositBits(id, sidFrom.Identifier, (int)stgFrom.BitAddress);
+                }
+                var ass = new AliasAssignment(id, e);
+                return InsertAfterDefinition(sidFrom.DefStatement, ass);
             }
-            else if (bs.Block.Pred.Count == 1)
-            {
-                val = ReadVariable(blockstates[bs.Block.Pred[0]], aliasProbe);
-            }
-            else
-            {
-                // Break potential cycles with operandless phi
-                val = NewPhi(id, bs.Block);
-                WriteVariable(bs, val, false);
-                val = AddPhiOperands(id, val, aliasProbe);
-            }
-            if (val != null && !aliasProbe)
-                WriteVariable(bs, val, false);
-            return val;
-        }
 
-        /// <summary>
-        /// If <paramref name="idTo"/> is smaller than <paramref name="sidFrom" />, then
-        /// it doesn't cover it completely. Therefore, we must generate a SLICE / cast 
-        /// statement.
-        /// </summary>
-        /// <param name="idTo"></param>
-        /// <param name="sidFrom"></param>
-        /// <returns></returns>
-        private SsaIdentifier MaybeGenerateAliasStatement(SsaIdentifier sidFrom, bool aliasProbe)
-        {
-            var stgFrom = sidFrom.Identifier.Storage;
-            Debug.Assert(!(id.Storage is FlagGroupStorage), "Should never be called on a flag group");
-            var stgTo = id.Storage;
-            if (stgFrom == stgTo ||
-                (aliasProbe && stgFrom.Exceeds(stgTo)))
+            /// <summary>
+            /// Inserts the statement <paramref name="ass"/> after the statement
+            /// <paramref name="stmBefore"/>, skipping any AliasAssignments that
+            /// statements that may have been added after 
+            /// <paramref name="stmBefore"/>.
+            /// </summary>
+            /// <param name="stmBefore"></param>
+            /// <param name="ass"></param>
+            /// <returns></returns>
+            public SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
             {
-                return sidFrom;
+                var b = stmBefore.Block;
+                int i = b.Statements.IndexOf(stmBefore);
+                // Skip alias statements
+                while (i < b.Statements.Count - 1 && b.Statements[i].Instruction is AliasAssignment)
+                    ++i;
+                stmBefore.Block.Statements.Insert(i + 1, stmBefore.LinearAddress, ass);
+
+                var sidTo = ssaIds.Add(ass.Dst, this.stm, ass.Src, false);
+                ass.Dst = sidTo.Identifier;
+                return sidTo;
             }
-            Expression e = null;
-            if (stgFrom.Covers(stgTo))
+
+            /// <summary>
+            /// Creates a phi statement with no slots for the predecessor blocks, then
+            /// inserts the phi statement as the first statement of the block.
+            /// </summary>
+            /// <param name="b">Block into which the phi statement is inserted</param>
+            /// <param name="v">Destination variable for the phi assignment</param>
+            /// <returns>The inserted phi Assignment</returns>
+            private SsaIdentifier NewPhi(Identifier id, Block b)
             {
-                if (stgTo.BitAddress != 0)
-                    e = new Slice(id.DataType, sidFrom.Identifier, (uint)stgTo.BitAddress);
+                var phiAss = new PhiAssignment(id, 0);
+                var stm = new Statement(0, phiAss, b);
+                b.Statements.Insert(0, stm);
+
+                var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
+                phiAss.Dst = sid.Identifier;
+                return sid;
+            }
+
+            private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi, bool aliasProbe)
+            {
+                // Determine operands from predecessors.
+                var preds = phi.DefStatement.Block.Pred;
+                var sids = preds.Select(p => ReadVariable(blockstates[p], aliasProbe)).ToArray();
+                if (aliasProbe && sids.Any(s => s != null))
+                {
+                    for (int i = 0; i < sids.Length; ++i)
+                    {
+                        if (sids[i] == null)
+                            sids[i] = ReadVariable(blockstates[preds[i]], false);
+                    }
+                }
+                if (aliasProbe && sids.Any(s => s == null))
+                    return null;
+                ((PhiAssignment)phi.DefStatement.Instruction).Src =
+                    new PhiFunction(
+                        id.DataType,
+                        sids.Select(s => s.Identifier).ToArray());
+                return TryRemoveTrivial(phi, aliasProbe);
+            }
+
+            /// <summary>
+            /// If the phi function is trivial, remove it.
+            /// </summary>
+            /// <param name="phi"></param>
+            /// <returns></returns>
+            private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
+            {
+                bool firstTime = true;
+                Identifier same = null;
+                foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
+                {
+                    if (op == same || op == phi.Identifier)
+                    {
+                        // Unique value or self-reference
+                        continue;
+                    }
+                    if (!firstTime)
+                    {
+                        // The phi merges at least two values; not trivial
+                        return phi;
+                    }
+                    same = op;
+                    firstTime = false;
+                }
+                SsaIdentifier sid;
+                if (same == null)
+                {
+                    // Undef'ined or unreachable parameter; assume it's a def.
+                    sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
+                }
                 else
-                    e = new Cast(id.DataType, sidFrom.Identifier);
-            }
-            else
-            {
-                var sidTo = ReadVariable(blockstates[sidFrom.DefStatement.Block], false);
-                e = new DepositBits(id, sidFrom.Identifier, (int)stgFrom.BitAddress);
-            }
-            var ass = new AliasAssignment(id, e);
-            return InsertAfterDefinition(sidFrom.DefStatement, ass);
-        }
-
-        /// <summary>
-        /// Inserts the statement <paramref name="ass"/> after the statement
-        /// <paramref name="stmBefore"/>, skipping any AliasAssignments that
-        /// statements that may have been added after 
-        /// <paramref name="stmBefore"/>.
-        /// </summary>
-        /// <param name="stmBefore"></param>
-        /// <param name="ass"></param>
-        /// <returns></returns>
-        public SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
-        {
-            var b = stmBefore.Block;
-            int i = b.Statements.IndexOf(stmBefore);
-            // Skip alias statements
-            while (i < b.Statements.Count - 1 && b.Statements[i].Instruction is AliasAssignment)
-                ++i;
-            stmBefore.Block.Statements.Insert(i + 1, stmBefore.LinearAddress, ass);
-
-            var sidTo = ssaIds.Add(ass.Dst, this.stm, ass.Src, false);
-            ass.Dst = sidTo.Identifier;
-            return sidTo;
-        }
-
-        /// <summary>
-        /// Creates a phi statement with no slots for the predecessor blocks, then
-        /// inserts the phi statement as the first statement of the block.
-        /// </summary>
-        /// <param name="b">Block into which the phi statement is inserted</param>
-        /// <param name="v">Destination variable for the phi assignment</param>
-        /// <returns>The inserted phi Assignment</returns>
-        private SsaIdentifier NewPhi(Identifier id, Block b)
-        {
-            var phiAss = new PhiAssignment(id, 0);
-            var stm = new Statement(0, phiAss, b);
-            b.Statements.Insert(0, stm);
-
-            var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
-            phiAss.Dst = sid.Identifier;
-            return sid;
-        }
-
-        private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi, bool aliasProbe)
-        {
-            // Determine operands from predecessors.
-            var preds = phi.DefStatement.Block.Pred;
-            var sids = preds.Select(p => ReadVariable(blockstates[p], aliasProbe)).ToArray();
-            if (aliasProbe && sids.Any(s => s != null))
-            {
-                for (int i = 0; i < sids.Length; ++i)
                 {
-                    if (sids[i] == null)
-                        sids[i] = ReadVariable(blockstates[preds[i]], false);
+                    sid = ssaIds[same];
+                }
+
+                // Remember all users except for phi
+                var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
+
+                // Reroute all uses of phi to use same. Remove phi.
+                ReplaceBy(phi, same);
+
+                // Remove all phi uses which may have become trivial now.
+                foreach (var use in users)
+                {
+                    var phiAss = use.Instruction as PhiAssignment;
+                    if (phiAss != null)
+                    {
+                        TryRemoveTrivial(ssaIds[phiAss.Dst], aliasProbe);
+                    }
+                }
+                phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
+                ssaIds.Remove(phi);
+                return sid;
+            }
+
+            private SsaIdentifier NewDefInstruction(Identifier id, Block b)
+            {
+                var sid = ssaIds.Add(id, null, null, false);
+                sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+                b.Statements.Add(sid.DefStatement);
+                return sid;
+            }
+
+            private void ReplaceBy(SsaIdentifier sidOld, Identifier idNew)
+            {
+                foreach (var use in sidOld.Uses)
+                {
+                    use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew));
                 }
             }
-            if (aliasProbe && sids.Any(s => s == null))
-                return null;
-            ((PhiAssignment)phi.DefStatement.Instruction).Src =
-                new PhiFunction(
-                    id.DataType,
-                    sids.Select(s => s.Identifier).ToArray());
-            return TryRemoveTrivial(phi, aliasProbe);
         }
 
-        /// <summary>
-        /// If the phi function is trivial, remove it.
-        /// </summary>
-        /// <param name="phi"></param>
-        /// <returns></returns>
-        private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
+        public class SsaFlagTransformer : SsaIdentifierTransformer
         {
-            bool firstTime = true;
-            Identifier same = null;
-            foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
+            private uint flagMask;
+
+            public SsaFlagTransformer(Identifier id, uint flagMask, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
+                : base(id, ssaIds, stm, blockstates)
             {
-                if (op == same || op == phi.Identifier)
+                this.flagMask = flagMask;
+            }
+
+            public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
+            {
+                bs.currentFlagDef[flagMask] = sid;
+                return sid.Identifier;
+            }
+
+            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            {
+                SsaIdentifier ssaId;
+                if (bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
                 {
-                    // Unique value or self-reference
-                    continue;
+                    // Defined locally in this block.
+                    return ssaId;
                 }
-                if (!firstTime)
+                // Keep probin'.
+                return ReadVariableRecursive(bs, aliasProbe);
+            }
+        }
+
+        public class SsaStackTransformer : SsaIdentifierTransformer
+        {
+            private int stackOffset;
+
+            public SsaStackTransformer(
+                Identifier id,
+                int stackOffset,
+                SsaIdentifierCollection ssaIds,
+                Statement stm,
+                IDictionary<Block, SsaBlockState> blockstates)
+                : base(id, ssaIds, stm, blockstates)
+            {
+                this.stackOffset = stackOffset;
+            }
+
+            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            {
+                SsaIdentifier ssaId;
+                if (bs.currentStackDef.TryGetValue(stackOffset, out ssaId))
                 {
-                    // The phi merges at least two values; not trivial
-                    return phi;
+                    // Defined locally in this block.
+                    return ssaId;
                 }
-                same = op;
-                firstTime = false;
-            }
-            SsaIdentifier sid;
-            if (same == null)
-            {
-                // Undef'ined or unreachable parameter; assume it's a def.
-                sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
-            }
-            else
-            {
-                sid = ssaIds[same];
+                // Keep probin'.
+                return ReadVariableRecursive(bs, aliasProbe);
             }
 
-            // Remember all users except for phi
-            var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
-
-            // Reroute all uses of phi to use same. Remove phi.
-            ReplaceBy(phi, same);
-
-            // Remove all phi uses which may have become trivial now.
-            foreach (var use in users)
+            public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                var phiAss = use.Instruction as PhiAssignment;
-                if (phiAss != null)
+                bs.currentStackDef[stackOffset] = sid;
+                return sid.Identifier;
+            }
+        }
+
+        public class SsaSequenceTransformer : SsaIdentifierTransformer
+        {
+            private Identifier idSub;
+            private SequenceStorage seq;
+
+            public SsaSequenceTransformer(
+                Identifier id,
+                SequenceStorage seq,
+                Identifier idSub,
+                SsaIdentifierCollection ssaIds,
+                Statement stm,
+                IDictionary<Block, SsaBlockState> blockstates)
+                : base(id, ssaIds, stm, blockstates)
+            {
+                this.seq = seq;
+                this.idSub = idSub;
+            }
+
+            public Identifier Fuse(SsaIdentifier head, SsaIdentifier tail)
+            {
+                AliasAssignment assHead, assTail;
+                if (head.DefStatement.Instruction.As(out assHead) &&
+                    tail.DefStatement.Instruction.As(out assTail))
                 {
-                    TryRemoveTrivial(ssaIds[phiAss.Dst], aliasProbe);
+                    Slice eHead;
+                    Cast eTail;
+                    if (assHead.Src.As(out eHead) && assTail.Src.As(out eTail))
+                    {
+                        return (Identifier)eHead.Expression;
+                    }
                 }
+                throw new NotImplementedException();
             }
-            phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
-            ssaIds.Remove(phi);
-            return sid;
-        }
 
-        private SsaIdentifier NewDefInstruction(Identifier id, Block b)
-        {
-            var sid = ssaIds.Add(id, null, null, false);
-            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
-            b.Statements.Add(sid.DefStatement);
-            return sid;
-        }
-
-        private void ReplaceBy(SsaIdentifier sidOld, Identifier idNew)
-        {
-            foreach (var use in sidOld.Uses)
+            public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew));
+                bs.currentDef[idSub.Storage.Domain] = sid;
+                return sid.Identifier;
             }
-        }
-    }
-
-    public class SsaFlagTransformer : SsaIdentifierTransformer
-    {
-        private uint flagMask;
-
-        public SsaFlagTransformer(Identifier id, uint flagMask, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
-            : base(id, ssaIds, stm, blockstates)
-        {
-            this.flagMask = flagMask;
-        }
-
-        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
-        {
-            bs.currentFlagDef[flagMask] = sid;
-            return sid.Identifier;
-        }
-
-        public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
-        {
-            SsaIdentifier ssaId;
-            if (bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
-            {
-                // Defined locally in this block.
-                return ssaId;
-            }
-            // Keep probin'.
-            return ReadVariableRecursive(bs, aliasProbe);
-        }
-    }
-
-    public class SsaStackTransformer : SsaIdentifierTransformer
-    {
-        private int stackOffset;
-
-        public SsaStackTransformer(
-            Identifier id,
-            int stackOffset, 
-            SsaIdentifierCollection ssaIds,
-            Statement stm,
-            IDictionary<Block,SsaBlockState> blockstates)
-            : base(id, ssaIds, stm, blockstates)
-        {
-            this.stackOffset = stackOffset;
-        }
-
-        public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
-        {
-            SsaIdentifier ssaId;
-            if (bs.currentStackDef.TryGetValue(stackOffset, out ssaId))
-            {
-                // Defined locally in this block.
-                return ssaId;
-            }
-            // Keep probin'.
-            return ReadVariableRecursive(bs, aliasProbe);
-        }
-
-        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
-        {
-            bs.currentStackDef[stackOffset] = sid;
-            return sid.Identifier;
-        }
-    }
-
-    public class SsaSequenceTransformer : SsaIdentifierTransformer
-    {
-        private Identifier idSub;
-        private SequenceStorage seq;
-
-        public SsaSequenceTransformer(
-            Identifier id, 
-            SequenceStorage seq, 
-            Identifier idSub,
-            SsaIdentifierCollection ssaIds, 
-            Statement stm,
-            IDictionary<Block, SsaBlockState> blockstates)
-            : base(id, ssaIds, stm, blockstates)
-        {
-            this.seq = seq;
-            this.idSub = idSub;
-        }
-
-        public Identifier Fuse(SsaIdentifier head, SsaIdentifier tail)
-        {
-            AliasAssignment assHead, assTail;
-            if (head.DefStatement.Instruction.As(out assHead) &&
-                tail.DefStatement.Instruction.As(out assTail))
-            {
-                Slice eHead;
-                Cast eTail;
-                if (assHead.Src.As(out eHead) && assTail.Src.As(out eTail))
-                {
-                    return (Identifier)eHead.Expression;
-                }
-            }
-            throw new NotImplementedException();
-        }
-
-        public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
-        {
-            bs.currentDef[idSub.Storage.Domain] = sid;
-            return sid.Identifier;
         }
     }
 }

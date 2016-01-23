@@ -46,6 +46,13 @@ namespace Reko.Core
         public virtual ulong BitSize { get; set; }
         public int Number { get; protected set; }
 
+        /// <summary>
+        /// Returns the bit offset of <paramref name="storage"/> within this 
+        /// storage, or -1 if <paramref name="storage"/> is not a part of 
+        /// this storage.
+        /// </summary>
+        /// <param name="storage"></param>
+        /// <returns>The offset in bits, or -1.</returns>
         public abstract int OffsetOf(Storage storage);
         public abstract T Accept<T>(StorageVisitor<T> visitor);
         public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
