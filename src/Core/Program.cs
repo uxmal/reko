@@ -45,6 +45,7 @@ namespace Reko.Core
         private Identifier globals;
         private StructureType globalFields;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
+        private TypeLibrary metadata;
 
         public Program()
         {
@@ -147,6 +148,35 @@ namespace Reko.Core
         public ImageMap ImageMap { get; set; }
 
         public IPlatform Platform { get; set; }
+
+        public TypeLibrary Metadata {
+            get {
+                if (metadata == null)
+                    metadata = Platform.CreateMetadata();
+                return metadata;
+            }
+            set {
+                metadata = value;
+            }
+        }
+
+        /// <summary>
+        /// Creates a symbol table for this program populated with the types 
+        /// defined by the platform of the program and user-defined types.
+        /// </summary>
+        /// <returns>Prepopulated symbol table.
+        /// </returns>
+        public virtual SymbolTable CreateSymbolTable()
+        {
+            var namedTypes = new Dictionary<string, SerializedType>();
+            var typedefs = Metadata.Types;
+            var dtSer = new DataTypeSerializer();
+            foreach (var typedef in typedefs)
+            {
+                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
+            }
+            return new SymbolTable(Platform, namedTypes);
+        }
 
         /// <summary>
         /// The list of known entry points to the program.

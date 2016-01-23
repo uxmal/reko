@@ -378,12 +378,11 @@ namespace Reko.Core.Serialization
         public MetadataFile LoadMetadataFile(string filename)
         {
             var platform = DeterminePlatform(filename);
-            var typeLib = loader.LoadMetadata(filename, platform);
-            TypeLibraryLoaded.Fire(this, new TypeLibraryEventArgs(typeLib));
+            project.LoadMetadataFile(loader, platform, filename);
+            TypeLibraryLoaded.Fire(this, new TypeLibraryEventArgs(project.Metadata));
             return new MetadataFile
             {
                 Filename = filename,
-                TypeLibrary = typeLib
             };
         }
 

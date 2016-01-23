@@ -45,6 +45,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 	public class MainFormInteractorTests
 	{
         private MockRepository mr;
+        private MockFactory mockFactory;
         private IMainForm form;
 		private TestMainFormInteractor interactor;
         private Program program;
@@ -72,6 +73,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 		public void Setup()
 		{
             mr = new MockRepository();
+            mockFactory = new MockFactory(mr);
             services = new ServiceContainer();
             configSvc = mr.Stub<IConfigurationService>();
             services.AddService<IConfigurationService>(configSvc);
@@ -193,7 +195,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 .Return(new Program
                 {
                     Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes),
-                    Platform = new DefaultPlatform(null, null)
+                    Platform = mockFactory.CreatePlatform()
                 });
         }
 
@@ -353,7 +355,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 { 
                     Filename="foo.exe" ,
                     Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]),
-                    Platform = new DefaultPlatform(null, null)
+                    Platform = mockFactory.CreatePlatform()
                 }
                 }
             };
@@ -433,7 +435,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_DecompilerInstance();
             loader.Expect(d => d.LoadMetadata(
                 Arg<string>.Is.Equal("foo.def"),
-                Arg<IPlatform>.Is.NotNull))
+                Arg<IPlatform>.Is.NotNull, Arg<TypeLibrary>.Is.NotNull))
                     .Return(new TypeLibrary());
             services.AddService(typeof(IDecompilerService), dcSvc);
             uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.def");

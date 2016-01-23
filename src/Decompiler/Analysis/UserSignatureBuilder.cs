@@ -122,7 +122,7 @@ namespace Reko.Analysis
         {
             try {
                 var lexer = new CLexer(new StringReader(fnDecl + ";"));
-                var symbols = program.Platform.CreateSymbolTable();
+                var symbols = program.CreateSymbolTable();
                 var oldProcs = symbols.Procedures.Count;
                 var cstate = new ParserState(symbols.NamedTypes.Keys);
                 var cParser = new CParser(cstate, lexer);

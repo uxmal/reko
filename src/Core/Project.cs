@@ -23,6 +23,7 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -36,10 +37,44 @@ namespace Reko.Core
         {
             Programs = new ObservableRangeCollection<Program>();
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
+            Programs.CollectionChanged += Programs_CollectionChanged;
         }
 
         public ObservableRangeCollection<Program> Programs { get; private set; }
         public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
+        public TypeLibrary Metadata { get; private set; }
+
+
+        public void LoadMetadataFile(ILoader loader, IPlatform platform, string filename)
+        {
+            if (Metadata == null)
+            {
+                Metadata = platform.CreateMetadata();
+            }
+            loader.LoadMetadata(filename, platform, Metadata);
+            foreach(var program in Programs)
+            {
+                program.Metadata = Metadata;
+            }
+        }
+
+        private void Programs_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (Metadata == null)
+                return;
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    foreach (var item in e.NewItems)
+                    {
+                        var program = (Program)item;
+                        program.Metadata = Metadata;
+                    }
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
     }
 }

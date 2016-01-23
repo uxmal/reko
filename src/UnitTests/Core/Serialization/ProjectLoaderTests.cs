@@ -25,6 +25,7 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections;
@@ -40,12 +41,14 @@ namespace Reko.UnitTests.Core.Serialization
     public class ProjectLoaderTests
     {
         private MockRepository mr;
+        private MockFactory mockFactory;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
+            this.mockFactory = new MockFactory(mr);
             this.sc = new ServiceContainer();
         }
 
@@ -55,9 +58,9 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             var oracle = mr.StrictMock<IOracleService>();
             var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<IPlatform>();
+            var platform = mockFactory.CreatePlatform();
             var typeLib = new TypeLibrary();
-            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Equal(platform))).Return(typeLib);
+            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Equal(platform), Arg<TypeLibrary>.Is.NotNull)).Return(typeLib);
             oracle.Expect(o => o.QueryPlatform(Arg<string>.Is.NotNull)).Return(platform);
             sc.AddService<IOracleService>(oracle);
             mr.ReplayAll();
@@ -80,10 +83,10 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             var oracle = mr.StrictMock<IOracleService>();
             var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<IPlatform>();
+            var platform = mockFactory.CreatePlatform();
             var typelibrary = new TypeLibrary();
             Given_Binary(ldr, platform);
-            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Same(platform))).Return(typelibrary);
+            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Same(platform), Arg<TypeLibrary>.Is.NotNull)).Return(typelibrary);
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);

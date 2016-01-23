@@ -325,7 +325,10 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var loader = mr.Stub<ILoader>();
             var typelib = new TypeLibrary();
-            loader.Stub(l => l.LoadMetadata("", null)).IgnoreArguments().Return(typelib);
+            loader.Stub(l => l.LoadMetadata("", null, null)).IgnoreArguments().Return(typelib);
+            var oracle = mr.Stub<IOracleService>();
+            oracle.Stub(o => o.QueryPlatform(Arg<string>.Is.NotNull)).Return(mockFactory.CreatePlatform());
+            sc.AddService<IOracleService>(oracle);
             mr.ReplayAll();
 
             var ploader = new ProjectLoader(sc, loader);

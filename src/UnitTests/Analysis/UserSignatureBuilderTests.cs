@@ -101,9 +101,9 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Usb_ParseFunctionDeclaration_PredefinedTypes()
         {
-            var types = new Dictionary<string, SerializedType>()
+            var types = new Dictionary<string, DataType>()
             {
-                { "BYTE", new PrimitiveType_v1 { ByteSize=1, Domain=PrimitiveType.Byte.Domain } },
+                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
             };
             mockFactory.Given_NamedTypes(types);
             Given_Procedure(0x1000);

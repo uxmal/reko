@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Mocks
     {
         private MockRepository mr;
         private IPlatform platform;
-        private SymbolTable symbolTable;
+        private TypeLibrary metadata;
 
         public MockFactory(MockRepository mr)
         {
@@ -75,9 +75,10 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
-            this.symbolTable = new SymbolTable(platform);
-            platform.Stub(p => p.CreateSymbolTable()).Do(new Func<SymbolTable>(() => this.symbolTable));
+            this.metadata = new TypeLibrary();
+            platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.metadata));
             var arch = mr.Stub<IProcessorArchitecture>();
+            platform.Stub(p => p.Architecture).Return(arch);
             var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
             platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
             ser.Stub(s => s.Deserialize(
@@ -86,13 +87,16 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.CreateTypeLibraryDeserializer()).Return(
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary())
             );
+            platform.Stub(p => p.SaveUserOptions()).Return(null);
+
+            platform.Replay();
 
             return platform;
         }
 
-        public void Given_NamedTypes(Dictionary<string, SerializedType> types)
+        public void Given_NamedTypes(Dictionary<string, DataType> types)
         {
-            this.symbolTable = new SymbolTable(platform, types);
+            this.metadata = new TypeLibrary(types, null);
         }
     }
 }
