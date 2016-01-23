@@ -1026,30 +1026,8 @@ namespace Reko.Analysis
             if (RenameFrameAccesses && !force)
                 return id;
             var bs = blockstates[block];
-            var flagGroup = id.Storage as FlagGroupStorage;
-            if (flagGroup != null)
-            {
-                var ss = new SsaFlagTransformer(id, flagGroup, ssa.Identifiers, stm, blockstates);
-                return ss.NewUse(bs);
-            }
-            var stack = id.Storage as StackStorage;
-            if (stack != null)
-            {
-                var ss = new SsaStackTransformer(id, stack.StackOffset, ssa.Identifiers, stm, blockstates);
-                return ss.NewUse(bs);
-            }
-            var seq = id.Storage as SequenceStorage;
-            if (seq != null)
-            {
-                var sqs = new SsaSequenceTransformer(id, seq, ssa.Identifiers, stm, blockstates);
-                return sqs.NewUse(bs);
-            }
-            else 
-            {
-                var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
-                return ss.NewUse(bs);
-            }
-            return id;
+            var x = id.Storage.Accept(factory, id);
+            return x.NewUse(bs);
         }
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
@@ -1187,7 +1165,7 @@ var seq = idOld.Storage as SequenceStorage;
 
             public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global, Identifier id)
             {
-                throw new NotImplementedException();
+                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
             }
 
             public SsaIdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg, Identifier id)
@@ -1212,12 +1190,12 @@ var seq = idOld.Storage as SequenceStorage;
 
             public SsaIdentifierTransformer VisitStackLocalStorage(StackLocalStorage local, Identifier id)
             {
-                throw new NotImplementedException();
+                return new SsaStackTransformer(id, local.StackOffset, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
             }
 
             public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp, Identifier id)
             {
-                throw new NotImplementedException();
+                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
             }
         }
 
