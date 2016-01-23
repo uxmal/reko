@@ -1062,19 +1062,13 @@ namespace Reko.Analysis
             var seq = id.Storage as SequenceStorage;
             if (seq != null)
             {
-                var ss = new SsaIdentifierTransformer(seq.Head, ssa.Identifiers, stmCur, blockstates);
-                var head = ss.ReadVariable(bs, false);
-                ss = new SsaIdentifierTransformer(seq.Tail, ssa.Identifiers, stmCur, blockstates);
-                var tail = ss.ReadVariable(bs, false);
                 var sqs = new SsaSequenceTransformer(id, seq, null, ssa.Identifiers, stm, blockstates);
-                return sqs.Fuse(head, tail);
+                return sqs.NewUse(bs, force);
             }
             else if (!RenameFrameAccesses || force)
             {
                 var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
-                var sid = ss.ReadVariable(bs, false);
-                sid.Uses.Add(stm);
-                return sid.Identifier;
+                return ss.NewUse(bs, !RenameFrameAccesses || force );
             }
             return id;
         }
@@ -1182,12 +1176,92 @@ namespace Reko.Analysis
             }
         }
 
+        public class TransformerFactory : StorageVisitor<Identifier, SsaIdentifierTransformer>
+        {
+            private SsaTransform2 transform;
+
+            public TransformerFactory(SsaTransform2 transform)
+            {
+                this.transform = transform;
+            }
+
+            /*
+            ss.WriteVariable(bs, sid, true);
+                }
+        idNew = sid.Identifier;
+                return idNew;
+            }
+    var stack = idOld.Storage as StackStorage;
+            if (stack != null)
+            {
+                var ss = new SsaStackTransformer(idOld, stack.StackOffset, ssa.Identifiers, stmCur, blockstates);
+                return ss.WriteVariable(bs, sid, true);
+            }
+var seq = idOld.Storage as SequenceStorage;
+            if (seq != null)
+            {
+                var ss = new SsaSequenceTransformer(idOld, seq, seq.Head, ssa.Identifiers, stmCur, blockstates);
+
+
+    */
+
+            public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf, Identifier id)
+            {
+                return new SsaFlagTransformer(id, 0, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+            }
+
+            public SsaIdentifierTransformer VisitFlagRegister(FlagRegister freg, Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public SsaIdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu, Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global, Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public SsaIdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg, Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public SsaIdentifierTransformer VisitRegisterStorage(RegisterStorage reg, Identifier id)
+            {
+                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+            }
+
+            public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq, Identifier id)
+            {
+                return new SsaSequenceTransformer(id, seq, seq.Head, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+            }
+
+            public SsaIdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack, Identifier id)
+            {
+                return new SsaStackTransformer(id, stack.StackOffset, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+            }
+
+            public SsaIdentifierTransformer VisitStackLocalStorage(StackLocalStorage local, Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp, Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public class SsaIdentifierTransformer
         {
-            private Identifier id;
-            private SsaIdentifierCollection ssaIds;
-            private Statement stm;
-            private IDictionary<Block, SsaBlockState> blockstates;
+            protected readonly Identifier id;
+            protected readonly SsaIdentifierCollection ssaIds;
+            protected readonly Statement stm;
+            protected readonly IDictionary<Block, SsaBlockState> blockstates;
 
             public SsaIdentifierTransformer(Identifier id, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
             {
@@ -1196,6 +1270,16 @@ namespace Reko.Analysis
                 this.stm = stm;
                 this.blockstates = blockstates;
             }
+
+            public virtual Expression NewUse(SsaBlockState bs, bool force)
+            {
+                if (!force)
+                    return id;
+                var sid = ReadVariable(bs, false);
+                sid.Uses.Add(stm);
+                return sid.Identifier;
+            }
+
 
             /// <summary>
             /// Registers the fact that identifier <paramref name="id"/> is
@@ -1549,6 +1633,15 @@ namespace Reko.Analysis
             {
                 this.seq = seq;
                 this.idSub = idSub;
+            }
+
+            public override Expression NewUse(SsaBlockState bs, bool force)
+            {
+                var ss = new SsaIdentifierTransformer(seq.Head, base.ssaIds, stm, base.blockstates);
+                var head = ss.ReadVariable(bs, false);
+                ss = new SsaIdentifierTransformer(seq.Tail, ssaIds, stm, blockstates);
+                var tail = ss.ReadVariable(bs, false);
+                return Fuse(head, tail);
             }
 
             public Identifier Fuse(SsaIdentifier head, SsaIdentifier tail)
