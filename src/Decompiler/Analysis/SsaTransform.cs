@@ -908,7 +908,7 @@ namespace Reko.Analysis
                         || id.Storage is StackStorage)
                 {
                     ci.Uses.Add(
-                        new UseInstruction((Identifier)NewUse(id, stmCur, false)));
+                        new UseInstruction((Identifier)NewUse(id, stmCur, true)));
                 }
                 if (!existingDefs.Contains(id) &&
                     (id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
@@ -1021,6 +1021,8 @@ namespace Reko.Analysis
 
         private Expression NewUse(Identifier id, Statement stm, bool force)
         {
+            if (RenameFrameAccesses && !force)
+                return id;
             var bs = blockstates[block];
             var flagGroup = id.Storage as FlagGroupStorage;
             if (flagGroup != null && (!RenameFrameAccesses || force))
