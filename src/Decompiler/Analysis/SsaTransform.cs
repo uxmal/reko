@@ -1030,24 +1030,24 @@ namespace Reko.Analysis
             if (flagGroup != null)
             {
                 var ss = new SsaFlagTransformer(id, flagGroup, ssa.Identifiers, stm, blockstates);
-                return ss.NewUse(bs, !RenameFrameAccesses || force);
+                return ss.NewUse(bs);
             }
             var stack = id.Storage as StackStorage;
             if (stack != null)
             {
                 var ss = new SsaStackTransformer(id, stack.StackOffset, ssa.Identifiers, stm, blockstates);
-                return ss.NewUse(bs, !RenameFrameAccesses || force);
+                return ss.NewUse(bs);
             }
             var seq = id.Storage as SequenceStorage;
             if (seq != null)
             {
                 var sqs = new SsaSequenceTransformer(id, seq, ssa.Identifiers, stm, blockstates);
-                return sqs.NewUse(bs, !RenameFrameAccesses || force);
+                return sqs.NewUse(bs);
             }
             else 
             {
                 var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
-                return ss.NewUse(bs, !RenameFrameAccesses || force );
+                return ss.NewUse(bs);
             }
             return id;
         }
@@ -1236,10 +1236,8 @@ var seq = idOld.Storage as SequenceStorage;
                 this.blockstates = blockstates;
             }
 
-            public virtual Expression NewUse(SsaBlockState bs, bool force)
+            public virtual Expression NewUse(SsaBlockState bs)
             {
-                if (!force)
-                    return id;
                 var sid = ReadVariable(bs, false);
                 sid.Uses.Add(stm);
                 return sid.Identifier;
@@ -1536,7 +1534,7 @@ var seq = idOld.Storage as SequenceStorage;
                 this.flagGroup = flagGroup;
             }
 
-            public override Expression NewUse(SsaBlockState bs, bool force)
+            public override Expression NewUse(SsaBlockState bs)
             {
                 // Analyze each flag in the flag group separately.
                 var ids = new Dictionary<Identifier, SsaIdentifier>();
@@ -1616,10 +1614,8 @@ var seq = idOld.Storage as SequenceStorage;
                 this.stackOffset = stackOffset;
             }
 
-            public override Expression NewUse(SsaBlockState bs, bool force)
+            public override Expression NewUse(SsaBlockState bs)
             {
-                if (!force)
-                    return id;
                 var sid = ReadVariable(bs, false);
                 sid.Uses.Add(stm);
                 return sid.Identifier;
@@ -1659,7 +1655,7 @@ var seq = idOld.Storage as SequenceStorage;
                 this.seq = seq;
             }
 
-            public override Expression NewUse(SsaBlockState bs, bool force)
+            public override Expression NewUse(SsaBlockState bs)
             {
                 var ss = new SsaIdentifierTransformer(seq.Head, base.ssaIds, stm, base.blockstates);
                 var head = ss.ReadVariable(bs, false);
