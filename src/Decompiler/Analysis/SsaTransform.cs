@@ -995,13 +995,8 @@ namespace Reko.Analysis
             var bs = blockstates[block];
             if (flagGroup != null && !RenameFrameAccesses)
             {
-                foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
-                {
-                    var ss = new SsaFlagTransformer(idOld, flagBitMask, ssa.Identifiers, stmCur, blockstates);
-                    ss.WriteVariable(bs, sid, true);
-                }
-                idNew = sid.Identifier;
-                return idNew;
+                var ss = new SsaFlagTransformer(idOld, flagGroup, ssa.Identifiers, stmCur, blockstates);
+                return ss.NewDef(bs, sid);
             }
             var stack = idOld.Storage as StackStorage;
             if (stack != null)
@@ -1012,10 +1007,8 @@ namespace Reko.Analysis
             var seq = idOld.Storage as SequenceStorage;
             if (seq != null)
             {
-                var ss = new SsaSequenceTransformer(idOld, seq, seq.Head, ssa.Identifiers, stmCur, blockstates);
+                var ss = new SsaSequenceTransformer(idOld, seq, ssa.Identifiers, stmCur, blockstates);
                 var head = ss.WriteVariable(bs, sid, true);
-                ss = new SsaSequenceTransformer(idOld, seq, seq.Tail, ssa.Identifiers, stmCur, blockstates);
-                var tail = ss.WriteVariable(bs, sid, true);
                 return sid.Identifier;
             }
             else if (!RenameFrameAccesses)
@@ -1032,24 +1025,8 @@ namespace Reko.Analysis
             var flagGroup = id.Storage as FlagGroupStorage;
             if (flagGroup != null && (!RenameFrameAccesses || force))
             {
-                // Analyze each flag in the flag group separately.
-                var ids = new Dictionary<Identifier, SsaIdentifier>();
-                foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
-                {
-                    var ss = new SsaFlagTransformer(id, flagBitMask, ssa.Identifiers, stm, blockstates);
-                    var sid = ss.ReadVariable(bs, false);
-                    ids[sid.Identifier] = sid;
-                }
-                if (ids.Count == 1)
-                {
-                    var de = ids.First();
-                    de.Value.Uses.Add(stm);
-                    return de.Key;
-                }
-                else
-                {
-                    return OrTogether(ids.Values, stm);
-                }
+                var ss = new SsaFlagTransformer(id, flagGroup, ssa.Identifiers, stm, blockstates);
+                return ss.NewUse(bs, !RenameFrameAccesses || force);
             }
             var stack = id.Storage as StackStorage;
             if (stack != null && (RenameFrameAccesses || force))
@@ -1062,29 +1039,15 @@ namespace Reko.Analysis
             var seq = id.Storage as SequenceStorage;
             if (seq != null)
             {
-                var sqs = new SsaSequenceTransformer(id, seq, null, ssa.Identifiers, stm, blockstates);
+                var sqs = new SsaSequenceTransformer(id, seq, ssa.Identifiers, stm, blockstates);
                 return sqs.NewUse(bs, force);
             }
-            else if (!RenameFrameAccesses || force)
+            else 
             {
                 var ss = new SsaIdentifierTransformer(id, ssa.Identifiers, stm, blockstates);
                 return ss.NewUse(bs, !RenameFrameAccesses || force );
             }
             return id;
-        }
-
-        private Expression OrTogether(IEnumerable<SsaIdentifier> sids, Statement stm)
-        {
-            Expression e = null;
-            foreach (var sid in sids.OrderBy(id => id.Identifier.Name))
-            {
-                sid.Uses.Add(stm);
-                if (e == null)
-                    e = sid.Identifier;
-                else
-                    e = new BinaryExpression(Operator.Or, PrimitiveType.Byte, e, sid.Identifier);
-            }
-            return e;
         }
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
@@ -1207,7 +1170,7 @@ var seq = idOld.Storage as SequenceStorage;
 
             public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf, Identifier id)
             {
-                return new SsaFlagTransformer(id, 0, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaFlagTransformer(id, grf, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
             }
 
             public SsaIdentifierTransformer VisitFlagRegister(FlagRegister freg, Identifier id)
@@ -1237,7 +1200,7 @@ var seq = idOld.Storage as SequenceStorage;
 
             public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq, Identifier id)
             {
-                return new SsaSequenceTransformer(id, seq, seq.Head, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaSequenceTransformer(id, seq, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
             }
 
             public SsaIdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack, Identifier id)
@@ -1278,6 +1241,12 @@ var seq = idOld.Storage as SequenceStorage;
                 var sid = ReadVariable(bs, false);
                 sid.Uses.Add(stm);
                 return sid.Identifier;
+            }
+
+
+            public virtual Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
+            {
+                throw new NotImplementedException();
             }
 
 
@@ -1557,11 +1526,48 @@ var seq = idOld.Storage as SequenceStorage;
         public class SsaFlagTransformer : SsaIdentifierTransformer
         {
             private uint flagMask;
+            private FlagGroupStorage flagGroup;
 
-            public SsaFlagTransformer(Identifier id, uint flagMask, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
+            public SsaFlagTransformer(Identifier id, FlagGroupStorage flagGroup, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
                 : base(id, ssaIds, stm, blockstates)
             {
-                this.flagMask = flagMask;
+                this.flagGroup = flagGroup;
+            }
+
+            public override Expression NewUse(SsaBlockState bs, bool force)
+            {
+                // Analyze each flag in the flag group separately.
+                var ids = new Dictionary<Identifier, SsaIdentifier>();
+                foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
+                {
+                    this.flagMask = flagBitMask;
+                    var sid = ReadVariable(bs, false);
+                    ids[sid.Identifier] = sid;
+                }
+                if (ids.Count == 1)
+                {
+                    var de = ids.First();
+                    de.Value.Uses.Add(stm);
+                    return de.Key;
+                }
+                else
+                {
+                    return OrTogether(ids.Values, stm);
+                }
+            }
+
+            private Expression OrTogether(IEnumerable<SsaIdentifier> sids, Statement stm)
+            {
+                Expression e = null;
+                foreach (var sid in sids.OrderBy(id => id.Identifier.Name))
+                {
+                    sid.Uses.Add(stm);
+                    if (e == null)
+                        e = sid.Identifier;
+                    else
+                        e = new BinaryExpression(Operator.Or, PrimitiveType.Byte, e, sid.Identifier);
+                }
+                return e;
             }
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
@@ -1580,6 +1586,16 @@ var seq = idOld.Storage as SequenceStorage;
                 }
                 // Keep probin'.
                 return ReadVariableRecursive(bs, aliasProbe);
+            }
+
+            public override Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
+            {
+                foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
+                {
+                    this.flagMask = flagBitMask;
+                    WriteVariable(bs, sid, true);
+                }
+                return sid.Identifier;
             }
         }
 
@@ -1619,20 +1635,17 @@ var seq = idOld.Storage as SequenceStorage;
 
         public class SsaSequenceTransformer : SsaIdentifierTransformer
         {
-            private Identifier idSub;
             private SequenceStorage seq;
 
             public SsaSequenceTransformer(
                 Identifier id,
                 SequenceStorage seq,
-                Identifier idSub,
                 SsaIdentifierCollection ssaIds,
                 Statement stm,
                 IDictionary<Block, SsaBlockState> blockstates)
                 : base(id, ssaIds, stm, blockstates)
             {
                 this.seq = seq;
-                this.idSub = idSub;
             }
 
             public override Expression NewUse(SsaBlockState bs, bool force)
@@ -1662,7 +1675,8 @@ var seq = idOld.Storage as SequenceStorage;
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                bs.currentDef[idSub.Storage.Domain] = sid;
+                bs.currentDef[id.Storage.Domain] = sid;
+                // subones too.
                 return sid.Identifier;
             }
         }
