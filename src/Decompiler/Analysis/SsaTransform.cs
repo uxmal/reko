@@ -849,7 +849,7 @@ namespace Reko.Analysis
             if (a is AliasAssignment)
                 return a;
             var src = a.Src.Accept(this);
-            Identifier idNew = NewDef(a.Dst, src, false);
+            Identifier idNew = this.RenameFrameAccesses ? a.Dst : NewDef(a.Dst, src, false);
             return new Assignment(idNew, src);
         }
 
@@ -974,7 +974,9 @@ namespace Reko.Analysis
             var id = outArg.Expression as Identifier;
             Expression exp;
             if (id != null)
-                exp = NewDef(id, outArg, true);
+            {
+                exp = RenameFrameAccesses ? id : NewDef(id, outArg, true);
+            }
             else
                 exp = outArg.Expression.Accept(this);
             return new OutArgument(outArg.DataType, exp);
@@ -992,33 +994,9 @@ namespace Reko.Analysis
                 }
             }
             var sid = ssa.Identifiers.Add(idOld, stmCur, src, isSideEffect);
-            var flagGroup = idOld.Storage as FlagGroupStorage;
-            Identifier idNew;
             var bs = blockstates[block];
-            if (flagGroup != null && !RenameFrameAccesses)
-            {
-                var ss = new SsaFlagTransformer(idOld, flagGroup, ssa.Identifiers, stmCur, blockstates);
-                return ss.NewDef(bs, sid);
-            }
-            var stack = idOld.Storage as StackStorage;
-            if (stack != null)
-            {
-                var ss = new SsaStackTransformer(idOld, stack.StackOffset, ssa.Identifiers, stmCur, blockstates);
-                return ss.WriteVariable(bs, sid, true);
-            }
-            var seq = idOld.Storage as SequenceStorage;
-            if (seq != null)
-            {
-                var ss = new SsaSequenceTransformer(idOld, seq, ssa.Identifiers, stmCur, blockstates);
-                var head = ss.WriteVariable(bs, sid, true);
-                return sid.Identifier;
-            }
-            else if (!RenameFrameAccesses)
-            {
-                var ss = new SsaIdentifierTransformer(idOld, ssa.Identifiers, stmCur, blockstates);
-                return ss.WriteVariable(bs, sid, true);
-            }
-            return idOld;
+            var x = idOld.Storage.Accept(factory, idOld);
+            return x.NewDef(bs, sid);
         }
 
         private Expression NewUse(Identifier id, Statement stm, bool force)
@@ -1224,9 +1202,8 @@ var seq = idOld.Storage as SequenceStorage;
 
             public virtual Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
             {
-                throw new NotImplementedException();
+                return WriteVariable(bs, sid, true);
             }
-
 
             /// <summary>
             /// Registers the fact that identifier <paramref name="id"/> is
@@ -1597,6 +1574,11 @@ var seq = idOld.Storage as SequenceStorage;
                 var sid = ReadVariable(bs, false);
                 sid.Uses.Add(stm);
                 return sid.Identifier;
+            }
+
+            public override Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
+            {
+                return WriteVariable(bs, sid, true);
             }
 
             public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
