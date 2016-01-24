@@ -35,7 +35,8 @@ namespace Reko.UnitTests.Mocks
     {
         private MockRepository mr;
         private IPlatform platform;
-        private TypeLibrary metadata;
+        private TypeLibrary platformMetadata;
+        private TypeLibrary loaderMetadata;
 
         public MockFactory(MockRepository mr)
         {
@@ -75,8 +76,8 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
-            this.metadata = new TypeLibrary();
-            platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.metadata));
+            this.platformMetadata = new TypeLibrary();
+            platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata));
             var arch = mr.Stub<IProcessorArchitecture>();
             platform.Stub(p => p.Architecture).Return(arch);
             var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
@@ -96,7 +97,41 @@ namespace Reko.UnitTests.Mocks
 
         public void Given_NamedTypes(Dictionary<string, DataType> types)
         {
-            this.metadata = new TypeLibrary(types, null);
+            this.platformMetadata = new TypeLibrary(types, null);
+        }
+
+        public void Given_LoaderMetadata(TypeLibrary metadata)
+        {
+            this.loaderMetadata = metadata;
+        }
+
+        public string MetafileName { get { return "meta.xml"; } }
+
+        public ILoader CreateLoader()
+        {
+            var loader = mr.Stub<ILoader>();
+            loader.Stub(l => l.LoadMetadata(
+                    Arg<string>.Is.Equal(MetafileName),
+                    Arg<IPlatform>.Is.Equal(platform),
+                    Arg<TypeLibrary>.Is.NotNull
+            )).Do(new Func<string, IPlatform, TypeLibrary, TypeLibrary>((f, p, tl) =>
+                {
+                    foreach (var module in loaderMetadata.Modules)
+                        tl.Modules.Add(module);
+
+                    foreach(var sig in loaderMetadata.Signatures)
+                        tl.Signatures.Add(sig);
+
+                    foreach (var type in loaderMetadata.Types)
+                        tl.Types.Add(type);
+
+                    return loaderMetadata;
+                }
+            ));
+
+            loader.Replay();
+
+            return loader;
         }
     }
 }

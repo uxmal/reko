@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -32,15 +33,17 @@ namespace Reko.UnitTests.Core
     public class ImportResolverTests
     {
         private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IServiceProvider services;
+        private MockFactory mockFactory;
+        private IPlatform platform;
+        private ILoader loader;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.services = mr.Stub<IServiceProvider>();
+            this.mockFactory = new MockFactory(mr);
+            this.platform = mockFactory.CreatePlatform();
+            this.loader = mockFactory.CreateLoader();
         }
 
         [Test]
@@ -52,34 +55,41 @@ namespace Reko.UnitTests.Core
                 {
                     new MetadataFile
                     {
-                         ModuleName = "foo",
-                         TypeLibrary = new TypeLibrary 
-                         {
-                             Modules =
-                             {
-                                 {
-                                     "foo",
-                                    new ModuleDescriptor("foo")
-                                    {
-                                    ServicesByName =
-                                    {
-                                            { "bar@4",
-                                      new SystemService
-                                      {
-                                          Name = "bar", Signature= new ProcedureSignature()
-                                      }
-                                  }
-                              }
-                                    }
-                                 }
-                             }
-                         }
+                         ModuleName = "foo"
                     }
                 }
             };
 
+            var metadata = new TypeLibrary
+            {
+                Modules =
+                {
+                    {
+                        "foo",
+                        new ModuleDescriptor("foo")
+                        {
+                            ServicesByName =
+                            {
+                                {
+                                    "bar@4",
+                                    new SystemService
+                                    {
+                                        Name = "bar",
+                                        Signature = new ProcedureSignature()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            mockFactory.Given_LoaderMetadata(metadata);
+
+            proj.LoadMetadataFile(loader, platform, mockFactory.MetafileName);
+
             var impres = new ImportResolver(proj);
-            var ep = impres.ResolveProcedure("foo", "bar@4", new DefaultPlatform(services, arch));
+            var ep = impres.ResolveProcedure("foo", "bar@4", platform);
             Assert.AreEqual("bar", ep.Name);
         }
 
@@ -92,35 +102,40 @@ namespace Reko.UnitTests.Core
                 {
                     new MetadataFile
                     {
-                         ModuleName = "foo",
-                         TypeLibrary = new TypeLibrary
-                         {
-                             Modules =
-                             {
-                                 {
-                                     "foo",
-                                     new ModuleDescriptor("foo")
-                                     {
-                                         ServicesByVector =
-                                         {
-                                             {
-                                      9,
-                                      new SystemService
-                                      {
-                                          Name = "bar", Signature= new ProcedureSignature()
-                                      }
-                                  }
-                                         }
-                                     }
-                                 }
-                             }
-                         }
+                         ModuleName = "foo"
                     }
-                    }
+                }
             };
 
+            var metadata = new TypeLibrary
+            {
+                Modules =
+                {
+                    {
+                        "foo",
+                        new ModuleDescriptor("foo")
+                        {
+                            ServicesByVector =
+                            {
+                                {
+                                    9,
+                                    new SystemService
+                                    {
+                                        Name = "bar", Signature= new ProcedureSignature()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            mockFactory.Given_LoaderMetadata(metadata);
+
+            proj.LoadMetadataFile(loader, platform, mockFactory.MetafileName);
+
             var impres = new ImportResolver(proj);
-            var ep = impres.ResolveProcedure("foo", 9, new DefaultPlatform(services, arch));
+            var ep = impres.ResolveProcedure("foo", 9, platform);
             Assert.AreEqual("bar", ep.Name);
         }
     }

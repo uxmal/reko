@@ -42,25 +42,49 @@ namespace Reko.Core
 
         public ObservableRangeCollection<Program> Programs { get; private set; }
         public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
-        public TypeLibrary Metadata { get; private set; }
+
+        private TypeLibrary metadata;
+
+        public TypeLibrary Metadata {
+            get
+            {
+                if (metadata == null)
+                {
+                    var platform = DeterminePlatform();
+                    if (platform == null)
+                        return new TypeLibrary();
+                    return platform.CreateMetadata();
+                }
+                return metadata;
+            }
+        }
+
+
+        private IPlatform DeterminePlatform()
+        {
+            var platformsInUse = Programs.Select(p => p.Platform).Distinct().ToArray();
+            if (platformsInUse.Length == 1 && platformsInUse[0] != null)
+                return platformsInUse[0];
+            return null;
+        }
 
 
         public void LoadMetadataFile(ILoader loader, IPlatform platform, string filename)
         {
-            if (Metadata == null)
+            if (metadata == null)
             {
-                Metadata = platform.CreateMetadata();
+                metadata = platform.CreateMetadata();
             }
-            loader.LoadMetadata(filename, platform, Metadata);
+            loader.LoadMetadata(filename, platform, metadata);
             foreach(var program in Programs)
             {
-                program.Metadata = Metadata;
+                program.Metadata = metadata;
             }
         }
 
         private void Programs_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (Metadata == null)
+            if (metadata == null)
                 return;
             switch (e.Action)
             {
@@ -68,7 +92,7 @@ namespace Reko.Core
                     foreach (var item in e.NewItems)
                     {
                         var program = (Program)item;
-                        program.Metadata = Metadata;
+                        program.Metadata = metadata;
                     }
                     break;
                 default:

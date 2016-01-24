@@ -558,7 +558,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             project.MetadataFiles.Add(new MetadataFile
             {
-                ModuleName = "..\\foo.tlb"
+                Filename = "..\\foo.tlb"
             });
 
             Assert.AreEqual(1, mockTree.Nodes.Count);
