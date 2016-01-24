@@ -56,7 +56,6 @@ namespace Reko.Core
         IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
         ProcedureSerializer CreateProcedureSerializer();
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
-        TypeLibraryDeserializer CreateTypeLibraryDeserializer();
         TypeLibrary CreateMetadata();
 
         /// <summary>
@@ -160,12 +159,6 @@ namespace Reko.Core
             EnsureTypeLibraries(PlatformIdentifier);
             var typeLoader = new TypeLibraryDeserializer(this, true, Metadata);
             return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
-        }
-
-        public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
-        {
-            EnsureTypeLibraries(PlatformIdentifier);
-            return new TypeLibraryDeserializer(this, true, Metadata.Clone());
         }
 
         public TypeLibrary CreateMetadata()

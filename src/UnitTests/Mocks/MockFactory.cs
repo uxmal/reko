@@ -85,9 +85,6 @@ namespace Reko.UnitTests.Mocks
             ser.Stub(s => s.Deserialize(
                 Arg<SerializedSignature>.Is.NotNull,
                 Arg<Frame>.Is.NotNull)).Return(new ProcedureSignature());
-            platform.Stub(p => p.CreateTypeLibraryDeserializer()).Return(
-                new TypeLibraryDeserializer(platform, true, new TypeLibrary())
-            );
             platform.Stub(p => p.SaveUserOptions()).Return(null);
 
             platform.Replay();

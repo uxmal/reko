@@ -178,6 +178,11 @@ namespace Reko.Core
             return new SymbolTable(Platform, namedTypes);
         }
 
+        public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
+        {
+            return new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+        }
+
         /// <summary>
         /// The list of known entry points to the program.
         /// </summary>

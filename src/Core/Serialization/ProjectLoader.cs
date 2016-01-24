@@ -237,7 +237,7 @@ namespace Reko.Core.Serialization
             }
             foreach (var kv in user.Globals)
             {
-                var tlDeser = program.Platform.CreateTypeLibraryDeserializer();
+                var tlDeser = program.CreateTypeLibraryDeserializer();
                 var dt = kv.Value.DataType.Accept(tlDeser);
                 var item = new ImageMapItem((uint)dt.Size)
                 {
@@ -340,7 +340,7 @@ namespace Reko.Core.Serialization
             }
             foreach (var kv in user.Globals)
             {
-                var tlDeser = program.Platform.CreateTypeLibraryDeserializer();
+                var tlDeser = program.CreateTypeLibraryDeserializer();
                 var dt = kv.Value.DataType.Accept(tlDeser);
                 var item = new ImageMapItem((uint)dt.Size)
                 {
