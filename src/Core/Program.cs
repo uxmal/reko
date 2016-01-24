@@ -178,6 +178,12 @@ namespace Reko.Core
             return new SymbolTable(Platform, namedTypes);
         }
 
+        public ProcedureSerializer CreateProcedureSerializer()
+        {
+            var typeLoader = new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+            return Platform.CreateProcedureSerializer(typeLoader, Platform.DefaultCallingConvention);
+        }
+
         public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
         {
             return new TypeLibraryDeserializer(Platform, true, Metadata.Clone());

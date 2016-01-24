@@ -437,7 +437,7 @@ namespace Reko
                 .Select(sc =>
                 {
                 //$BUG: need access to platform.Metadata.
-                    var sser = program.Platform.CreateProcedureSerializer();
+                    var sser = program.CreateProcedureSerializer();
                     Address addr;
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
                     {

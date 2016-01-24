@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Environments.Windows
         private ITypeLibraryLoaderService tlSvc;
         private ServiceContainer sc;
         private Win32Platform win32;
+        private Program program;
         private IntelArchitecture arch;
         private ExternalProcedure extProc;
         private IConfigurationService dcSvc;
@@ -92,7 +93,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, IDictionary<string, DataType> types)
         {
-            Expect_TypeLibraryLoaderService_LoadLibrary(expected, new TypeLibrary(types, null));
+            Expect_TypeLibraryLoaderService_LoadLibrary(expected, new TypeLibrary(types, new Dictionary<string, ProcedureSignature>()));
         }
 
         private void Given_Configuration_With_Win32_Element()
@@ -118,6 +119,15 @@ namespace Reko.UnitTests.Environments.Windows
         private void When_Creating_Win32_Platform()
         {
             win32 = new Win32Platform(sc, arch);
+        }
+
+        private void Given_Program()
+        {
+            program = new Program
+            {
+                Architecture = win32.Architecture,
+                Platform = win32,
+            };
         }
 
         private void Given_TypeLibraryLoaderService()
@@ -155,8 +165,9 @@ namespace Reko.UnitTests.Environments.Windows
             repository.ReplayAll();
 
             When_Creating_Win32_Platform();
+            Given_Program();
 
-            var ser = win32.CreateProcedureSerializer();
+            var ser = program.CreateProcedureSerializer();
             var sSig = new SerializedSignature
             {
                 Convention = "__cdecl",

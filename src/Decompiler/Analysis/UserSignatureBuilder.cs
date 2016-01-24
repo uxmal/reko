@@ -58,7 +58,7 @@ namespace Reko.Analysis
                 var sProc = DeserializeSignature(de.Value, proc);
                 if (sProc == null)
                     continue;
-                var ser = program.Platform.CreateProcedureSerializer();
+                var ser = program.CreateProcedureSerializer();
                 var sig = ser.Deserialize(sProc.Signature, proc.Frame);
                 if (sig != null)
                 {

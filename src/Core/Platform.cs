@@ -54,7 +54,6 @@ namespace Reko.Core
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
         IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
-        ProcedureSerializer CreateProcedureSerializer();
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
 
@@ -152,13 +151,6 @@ namespace Reko.Core
             PointerScannerFlags pointerScannerFlags)
         {
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
-        }
-
-        public ProcedureSerializer CreateProcedureSerializer()
-        {
-            EnsureTypeLibraries(PlatformIdentifier);
-            var typeLoader = new TypeLibraryDeserializer(this, true, Metadata);
-            return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
         }
 
         public TypeLibrary CreateMetadata()
