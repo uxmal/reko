@@ -995,7 +995,7 @@ namespace Reko.Analysis
             }
             var sid = ssa.Identifiers.Add(idOld, stmCur, src, isSideEffect);
             var bs = blockstates[block];
-            var x = idOld.Storage.Accept(factory, idOld);
+            var x = factory.Create(idOld, stmCur);
             return x.NewDef(bs, sid);
         }
 
@@ -1004,7 +1004,7 @@ namespace Reko.Analysis
             if (RenameFrameAccesses && !force)
                 return id;
             var bs = blockstates[block];
-            var x = id.Storage.Accept(factory, id);
+            var x = factory.Create(id, stm);
             return x.NewUse(bs);
         }
 
@@ -1097,83 +1097,72 @@ namespace Reko.Analysis
             }
         }
 
-        public class TransformerFactory : StorageVisitor<Identifier, SsaIdentifierTransformer>
+        public class TransformerFactory : StorageVisitor<SsaIdentifierTransformer>
         {
             private SsaTransform2 transform;
+            private Identifier id;
+            private Statement stm;
 
             public TransformerFactory(SsaTransform2 transform)
             {
                 this.transform = transform;
             }
 
-            /*
-            ss.WriteVariable(bs, sid, true);
-                }
-        idNew = sid.Identifier;
-                return idNew;
-            }
-    var stack = idOld.Storage as StackStorage;
-            if (stack != null)
+            public SsaIdentifierTransformer Create(Identifier id, Statement stm)
             {
-                var ss = new SsaStackTransformer(idOld, stack.StackOffset, ssa.Identifiers, stmCur, blockstates);
-                return ss.WriteVariable(bs, sid, true);
-            }
-var seq = idOld.Storage as SequenceStorage;
-            if (seq != null)
-            {
-                var ss = new SsaSequenceTransformer(idOld, seq, seq.Head, ssa.Identifiers, stmCur, blockstates);
-
-
-    */
-
-            public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf, Identifier id)
-            {
-                return new SsaFlagTransformer(id, grf, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                this.id = id;
+                this.stm = stm;
+                return id.Storage.Accept(this);
             }
 
-            public SsaIdentifierTransformer VisitFlagRegister(FlagRegister freg, Identifier id)
+            public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
+            {
+                return new SsaFlagTransformer(id, grf, transform.ssa.Identifiers, stm, transform.blockstates);
+            }
+
+            public SsaIdentifierTransformer VisitFlagRegister(FlagRegister freg)
             {
                 throw new NotImplementedException();
             }
 
-            public SsaIdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu, Identifier id)
+            public SsaIdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
             {
                 throw new NotImplementedException();
             }
 
-            public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global, Identifier id)
+            public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global)
             {
-                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, stm, transform.blockstates);
             }
 
-            public SsaIdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg, Identifier id)
+            public SsaIdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg)
             {
                 throw new NotImplementedException();
             }
 
-            public SsaIdentifierTransformer VisitRegisterStorage(RegisterStorage reg, Identifier id)
+            public SsaIdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
             {
-                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, stm, transform.blockstates);
             }
 
-            public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq, Identifier id)
+            public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
             {
-                return new SsaSequenceTransformer(id, seq, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaSequenceTransformer(id, seq, transform.ssa.Identifiers, stm, transform.blockstates);
             }
 
-            public SsaIdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack, Identifier id)
+            public SsaIdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack)
             {
-                return new SsaStackTransformer(id, stack.StackOffset, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaStackTransformer(id, stack.StackOffset, transform.ssa.Identifiers, stm, transform.blockstates);
             }
 
-            public SsaIdentifierTransformer VisitStackLocalStorage(StackLocalStorage local, Identifier id)
+            public SsaIdentifierTransformer VisitStackLocalStorage(StackLocalStorage local)
             {
-                return new SsaStackTransformer(id, local.StackOffset, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaStackTransformer(id, local.StackOffset, transform.ssa.Identifiers, stm, transform.blockstates);
             }
 
-            public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp, Identifier id)
+            public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
             {
-                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, transform.stmCur, transform.blockstates);
+                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, stm, transform.blockstates);
             }
         }
 
