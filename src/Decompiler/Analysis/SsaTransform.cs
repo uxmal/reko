@@ -1046,7 +1046,7 @@ namespace Reko.Analysis
             if (storing)
             {
                 var sid = ssa.Identifiers.Add(access.MemoryId, this.stmCur, null, false);
-                var ss = new SsaIdentifierTransformer(access.MemoryId, ssa.Identifiers, stmCur, blockstates);
+                var ss = new SsaIdentifierTransformer(access.MemoryId, stmCur, this);
                 access.MemoryId = (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, false);
             }
             else
@@ -1117,7 +1117,7 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
             {
-                return new SsaFlagTransformer(id, grf, transform.ssa.Identifiers, stm, transform.blockstates);
+                return new SsaFlagTransformer(id, grf, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitFlagRegister(FlagRegister freg)
@@ -1132,7 +1132,7 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global)
             {
-                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, stm, transform.blockstates);
+                return new SsaIdentifierTransformer(id, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg)
@@ -1142,43 +1142,45 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
             {
-                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, stm, transform.blockstates);
+                return new SsaIdentifierTransformer(id, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
             {
-                return new SsaSequenceTransformer(id, seq, transform.ssa.Identifiers, stm, transform.blockstates);
+                return new SsaSequenceTransformer(id, seq, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack)
             {
-                return new SsaStackTransformer(id, stack.StackOffset, transform.ssa.Identifiers, stm, transform.blockstates);
+                return new SsaStackTransformer(id, stack.StackOffset, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitStackLocalStorage(StackLocalStorage local)
             {
-                return new SsaStackTransformer(id, local.StackOffset, transform.ssa.Identifiers, stm, transform.blockstates);
+                return new SsaStackTransformer(id, local.StackOffset, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
             {
-                return new SsaIdentifierTransformer(id, transform.ssa.Identifiers, stm, transform.blockstates);
+                return new SsaIdentifierTransformer(id, stm, transform);
             }
         }
 
         public class SsaIdentifierTransformer
         {
             protected readonly Identifier id;
-            protected readonly SsaIdentifierCollection ssaIds;
             protected readonly Statement stm;
+            protected readonly SsaTransform2 outer;
+            protected readonly SsaIdentifierCollection ssaIds;
             protected readonly IDictionary<Block, SsaBlockState> blockstates;
 
-            public SsaIdentifierTransformer(Identifier id, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
+            public SsaIdentifierTransformer(Identifier id, Statement stm, SsaTransform2 outer)
             {
                 this.id = id;
-                this.ssaIds = ssaIds;
                 this.stm = stm;
-                this.blockstates = blockstates;
+                this.ssaIds = outer.ssa.Identifiers;
+                this.blockstates = outer.blockstates;
+                this.outer = outer;
             }
 
             public virtual Expression NewUse(SsaBlockState bs)
@@ -1472,8 +1474,8 @@ namespace Reko.Analysis
             private uint flagMask;
             private FlagGroupStorage flagGroup;
 
-            public SsaFlagTransformer(Identifier id, FlagGroupStorage flagGroup, SsaIdentifierCollection ssaIds, Statement stm, IDictionary<Block, SsaBlockState> blockstates)
-                : base(id, ssaIds, stm, blockstates)
+            public SsaFlagTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform2 outer)
+                : base(id, stm, outer)
             {
                 this.flagGroup = flagGroup;
             }
@@ -1550,10 +1552,9 @@ namespace Reko.Analysis
             public SsaStackTransformer(
                 Identifier id,
                 int stackOffset,
-                SsaIdentifierCollection ssaIds,
                 Statement stm,
-                IDictionary<Block, SsaBlockState> blockstates)
-                : base(id, ssaIds, stm, blockstates)
+                SsaTransform2 outer)
+                : base(id, stm, outer)
             {
                 this.stackOffset = stackOffset;
             }
@@ -1596,19 +1597,18 @@ namespace Reko.Analysis
             public SsaSequenceTransformer(
                 Identifier id,
                 SequenceStorage seq,
-                SsaIdentifierCollection ssaIds,
                 Statement stm,
-                IDictionary<Block, SsaBlockState> blockstates)
-                : base(id, ssaIds, stm, blockstates)
+                SsaTransform2 outer)
+                : base(id, stm, outer)
             {
                 this.seq = seq;
             }
 
             public override Expression NewUse(SsaBlockState bs)
             {
-                var ss = new SsaIdentifierTransformer(seq.Head, base.ssaIds, stm, base.blockstates);
+                var ss = outer.factory.Create(seq.Head, stm);
                 var head = ss.ReadVariable(bs, false);
-                ss = new SsaIdentifierTransformer(seq.Tail, ssaIds, stm, blockstates);
+                ss = outer.factory.Create(seq.Tail, stm);
                 var tail = ss.ReadVariable(bs, false);
                 return Fuse(head, tail);
             }
@@ -1632,7 +1632,10 @@ namespace Reko.Analysis
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
                 bs.currentDef[id.Storage.Domain] = sid;
-                // subones too.
+                var ss = outer.factory.Create(seq.Head, stm);
+                ss.WriteVariable(bs, sid, performProbe);
+                ss = outer.factory.Create(seq.Tail, stm);
+                ss.WriteVariable(bs, sid, performProbe);
                 return sid.Identifier;
             }
         }
