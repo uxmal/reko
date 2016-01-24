@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Serialization;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -36,6 +37,7 @@ namespace Reko.UnitTests.Core
         private MockFactory mockFactory;
         private IPlatform platform;
         private ILoader loader;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -44,6 +46,11 @@ namespace Reko.UnitTests.Core
             this.mockFactory = new MockFactory(mr);
             this.platform = mockFactory.CreatePlatform();
             this.loader = mockFactory.CreateLoader();
+            this.program = new Program()
+            {
+                Platform = platform,
+                Architecture = platform.Architecture,
+            };
         }
 
         [Test]
@@ -57,6 +64,10 @@ namespace Reko.UnitTests.Core
                     {
                          ModuleName = "foo"
                     }
+                },
+                Programs =
+                {
+                    program
                 }
             };
 
@@ -86,7 +97,8 @@ namespace Reko.UnitTests.Core
 
             mockFactory.Given_LoaderMetadata(metadata);
 
-            proj.LoadMetadataFile(loader, platform, mockFactory.MetafileName);
+            var projLoader = new ProjectLoader(null, loader, proj);
+            projLoader.LoadMetadataFile(platform, mockFactory.MetafileName);
 
             var impres = new ImportResolver(proj);
             var ep = impres.ResolveProcedure("foo", "bar@4", platform);
@@ -104,6 +116,10 @@ namespace Reko.UnitTests.Core
                     {
                          ModuleName = "foo"
                     }
+                },
+                Programs =
+                {
+                    program
                 }
             };
 
@@ -132,7 +148,8 @@ namespace Reko.UnitTests.Core
 
             mockFactory.Given_LoaderMetadata(metadata);
 
-            proj.LoadMetadataFile(loader, platform, mockFactory.MetafileName);
+            var projLoader = new ProjectLoader(null, loader, proj);
+            projLoader.LoadMetadataFile(platform, mockFactory.MetafileName);
 
             var impres = new ImportResolver(proj);
             var ep = impres.ResolveProcedure("foo", 9, platform);

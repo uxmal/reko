@@ -155,9 +155,11 @@ namespace Reko.Core
                     metadata = Platform.CreateMetadata();
                 return metadata;
             }
-            set {
-                metadata = value;
-            }
+        }
+
+        public void LoadMetadataFile(ILoader loader, string filename)
+        {
+            loader.LoadMetadata(filename, Platform, Metadata);
         }
 
         /// <summary>

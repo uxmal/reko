@@ -49,9 +49,12 @@ namespace Reko.Core
 
         public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
-            ModuleDescriptor mod;
-            if (project.Metadata.Modules.TryGetValue(moduleName, out mod))
+            foreach (var program in project.Programs)
             {
+                ModuleDescriptor mod;
+                if (!program.Metadata.Modules.TryGetValue(moduleName, out mod))
+                    continue;
+
                 SystemService svc;
                 if (mod.ServicesByName.TryGetValue(importName, out svc))
                 {
@@ -59,24 +62,33 @@ namespace Reko.Core
                 }
             }
 
-            ProcedureSignature sig;
-            if (project.Metadata.Signatures.TryGetValue(importName, out sig))
-                return new ExternalProcedure(importName, sig);
+            foreach (var program in project.Programs)
+            {
+                ProcedureSignature sig;
+                if (program.Metadata.Signatures.TryGetValue(importName, out sig))
+                {
+                    return new ExternalProcedure(importName, sig);
+                }
+            }
 
             return platform.LookupProcedureByName(moduleName, importName);
         }
 
         public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
-            ModuleDescriptor mod;
-            if (project.Metadata.Modules.TryGetValue(moduleName, out mod))
+            foreach (var program in project.Programs)
             {
+                ModuleDescriptor mod;
+                if (!program.Metadata.Modules.TryGetValue(moduleName, out mod))
+                    continue;
+
                 SystemService svc;
                 if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
                 {
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
+
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
     }

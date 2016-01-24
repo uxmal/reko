@@ -38,7 +38,6 @@ namespace Reko.Core.Serialization
     public class ProjectLoader : ProjectPersister
     {
         public event EventHandler<ProgramEventArgs> ProgramLoaded;
-        public event EventHandler<TypeLibraryEventArgs> TypeLibraryLoaded;
 
         private ILoader loader;
         private Project project;
@@ -378,12 +377,19 @@ namespace Reko.Core.Serialization
         public MetadataFile LoadMetadataFile(string filename)
         {
             var platform = DeterminePlatform(filename);
-            project.LoadMetadataFile(loader, platform, filename);
-            TypeLibraryLoaded.Fire(this, new TypeLibraryEventArgs(project.Metadata));
+            LoadMetadataFile(platform, filename);
             return new MetadataFile
             {
                 Filename = filename,
             };
+        }
+
+        public void LoadMetadataFile(IPlatform platform, string filename)
+        {
+            foreach (var program in project.Programs)
+            {
+                program.LoadMetadataFile(loader, filename);
+            }
         }
 
         private IPlatform DeterminePlatform(string filename)
