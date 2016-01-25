@@ -908,5 +908,37 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test(Description = "Two uses of an aliased register shoudn't crate two alias assignments")]
+        public void SsaDoubleAlias()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def eax
+	def Mem0
+	// succ:  l1
+l1:
+	eax_2 = Mem0[eax:word32]
+	al_3 = (byte) eax_2 (alias)
+	Mem4[0x00123100:byte] = al_3
+	Mem6[0x00123108:byte] = al_3
+ProcedureBuilder_exit:
+";          
+                #endregion
+
+            RunTest2(sExp, m =>
+            {
+                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
+
+                m.Assign(eax, m.LoadDw(eax));
+                m.Store(m.Word32(0x123100), al);            // store the low-order byte
+                m.Store(m.Word32(0x123108), al);            // ...twice.
+            });
+        }
     }
 }
