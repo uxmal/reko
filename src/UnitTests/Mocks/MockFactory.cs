@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Arch.X86;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Core.CLanguage;
@@ -82,14 +83,20 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
-            platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata));
+            platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata.Clone()));
             var arch = mr.Stub<IProcessorArchitecture>();
             platform.Stub(p => p.Architecture).Return(arch);
-            var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
-            platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
-            ser.Stub(s => s.Deserialize(
-                Arg<SerializedSignature>.Is.NotNull,
-                Arg<Frame>.Is.NotNull)).Return(new ProcedureSignature());
+            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
+
+            platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Do(
+                new Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer>((tlDeser, dc) =>
+                    new X86ProcedureSerializer(
+                        new X86ArchitectureFlat32(),
+                        tlDeser,
+                        dc
+                    )
+                )
+            );
             platform.Stub(p => p.SaveUserOptions()).Return(null);
 
             platform.Replay();
@@ -99,7 +106,9 @@ namespace Reko.UnitTests.Mocks
 
         public void Given_PlatformTypes(Dictionary<string, DataType> types)
         {
-            this.platformMetadata = new TypeLibrary(types, null);
+            this.platformMetadata = new TypeLibrary(
+                types, new Dictionary<string, ProcedureSignature>()
+            );
         }
 
         public ILoader CreateLoader()

@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_UserSignature(uint address, string str)
         {
-            program.User.Procedures.Add(Address.Ptr32(address), new Reko.Core.Serialization.Procedure_v1
+            program.User.Procedures.Add(Address.Ptr32(address), new Procedure_v1
             {
                  CSignature = str
             });
@@ -64,7 +64,10 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_Procedure(uint address)
         {
-            this.proc = Procedure.Create(Address.Ptr32(address), new Frame(PrimitiveType.Pointer32));
+            var m = new ProcedureBuilder("fnTest");
+            m.Return();
+            this.proc = m.Procedure;
+            this.program.Procedures[Address.Ptr32(address)] = this.proc;
         }
 
         [Test(Description = "Empty user signature should't affect procedure signature")]
@@ -151,6 +154,40 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(
                 "fn(arg(BYTE),(arg(a,USRDEF1)arg(b,USRDEF2))",
                 sProc.Signature.ToString());
+        }
+
+        [Test]
+        public void Usb_BuildSignatures_UserDefinedTypes()
+        {
+            var platformTypes = new Dictionary<string, DataType>()
+            {
+                { "PLATFORMDEF", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
+            };
+            var userDefinedTypes = new Dictionary<string, DataType>()
+            {
+                { "USRDEF", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
+            };
+            mockFactory.Given_PlatformTypes(platformTypes);
+            mockFactory.Given_UserDefinedMetafile("mod", userDefinedTypes, null, null);
+            Given_Procedure(0x1000);
+            Given_UserSignature(0x01000, "int test(PLATFORMDEF a, USRDEF b)");
+
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures();
+
+            var sigExp =
+@"Register int32 ()(Stack PLATFORMDEF a, Stack USRDEF b)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, proc.Signature.ToString());
+
+            Assert.AreEqual(2, proc.Signature.Parameters.Length);
+            Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());
+            Assert.AreEqual("a", proc.Signature.Parameters[0].Name);
+            Assert.AreEqual("byte", (proc.Signature.Parameters[0].DataType as TypeReference).Referent.ToString());
+            Assert.AreEqual("b", proc.Signature.Parameters[1].Name);
+            Assert.AreEqual("int16", (proc.Signature.Parameters[1].DataType as TypeReference).Referent.ToString());
         }
 
         [Test(Description ="Verifies that the user can override register names.")]
