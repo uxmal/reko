@@ -1082,7 +1082,7 @@ namespace Reko.Analysis
         public class SsaBlockState
         {
             public readonly Block Block;
-            public readonly Dictionary<StorageDomain, SsaIdentifier> currentDef;
+            public readonly Dictionary<StorageDomain, AliasState> currentDef;
             public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
             public readonly Dictionary<int, SsaIdentifier> currentStackDef;
             public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
@@ -1090,10 +1090,22 @@ namespace Reko.Analysis
             public SsaBlockState(Block block)
             {
                 this.Block = block;
-                this.currentDef = new Dictionary<StorageDomain, SsaIdentifier>();
+                this.currentDef = new Dictionary<StorageDomain, AliasState>();
                 this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
                 this.currentStackDef = new Dictionary<int, SsaIdentifier>();
                 this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
+            }
+        }
+
+        public class AliasState
+        {
+            public readonly SsaIdentifier SsaId;        // The id that actually was modified.
+            public readonly IDictionary<Identifier, SsaIdentifier> Aliases;     // Other ids that were affected by this stm.
+
+            public AliasState(SsaIdentifier ssaId)
+            {
+                this.SsaId = ssaId;
+                this.Aliases = new Dictionary<Identifier, SsaIdentifier>();
             }
         }
 
@@ -1234,7 +1246,7 @@ namespace Reko.Analysis
                         alias = sid;
                     }
                 }
-                bs.currentDef[id.Storage.Domain] = alias;
+                bs.currentDef[id.Storage.Domain] = new AliasState(alias);
                 return sid.Identifier;
             }
 
@@ -1251,14 +1263,22 @@ namespace Reko.Analysis
             /// <returns></returns>
             public virtual SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
             {
-                SsaIdentifier ssaId;
-                if (bs.currentDef.TryGetValue(id.Storage.Domain, out ssaId))
+                AliasState alias;
+                if (bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
                 {
                     // Defined locally in this block.
-                    // Does ssaId intersect the probed value?
-                    if (ssaId.Identifier.Storage.OverlapsWith(id.Storage))
+                    // Has the alias already been calculated?
+                    SsaIdentifier ssaId = alias.SsaId;
+                    if (alias.SsaId.OriginalIdentifier == id ||
+                        alias.Aliases.TryGetValue(id, out ssaId))
                     {
-                        return MaybeGenerateAliasStatement(ssaId, aliasProbe);
+                        return ssaId;
+                    }
+
+                    // Does ssaId intersect the probed value?
+                    if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
+                    {
+                        return MaybeGenerateAliasStatement(alias, aliasProbe);
                     }
                 }
                 // Keep probin'.
@@ -1306,32 +1326,34 @@ namespace Reko.Analysis
             /// <param name="idTo"></param>
             /// <param name="sidFrom"></param>
             /// <returns></returns>
-            private SsaIdentifier MaybeGenerateAliasStatement(SsaIdentifier sidFrom, bool aliasProbe)
+            private SsaIdentifier MaybeGenerateAliasStatement(AliasState alias, bool aliasProbe)
             {
-                var stgFrom = sidFrom.Identifier.Storage;
+                var stgFrom = alias.SsaId.Identifier.Storage;
                 Debug.Assert(!(id.Storage is FlagGroupStorage), "Should never be called on a flag group");
                 var stgTo = id.Storage;
                 if (stgFrom == stgTo ||
                     (aliasProbe && stgFrom.Exceeds(stgTo)))
                 {
-                    return sidFrom;
+                    return alias.SsaId;
                 }
                 Expression e = null;
                 if (stgFrom.Covers(stgTo))
                 {
                     int offset = stgFrom.OffsetOf(stgTo);
                     if (offset > 0)
-                        e = new Slice(id.DataType, sidFrom.Identifier, (uint)offset);
+                        e = new Slice(id.DataType, alias.SsaId.Identifier, (uint)offset);
                     else
-                        e = new Cast(id.DataType, sidFrom.Identifier);
+                        e = new Cast(id.DataType, alias.SsaId.Identifier);
                 }
                 else
                 {
-                    var sidTo = ReadVariable(blockstates[sidFrom.DefStatement.Block], false);
-                    e = new DepositBits(id, sidFrom.Identifier, (int)stgFrom.BitAddress);
+                    var sidTo = ReadVariable(blockstates[alias.SsaId.DefStatement.Block], false);
+                    e = new DepositBits(id, alias.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
-                return InsertAfterDefinition(sidFrom.DefStatement, ass);
+                var sidAlias = InsertAfterDefinition(alias.SsaId.DefStatement, ass);
+                alias.Aliases[id] = sidAlias;
+                return sidAlias;
             }
 
             /// <summary>
@@ -1348,7 +1370,7 @@ namespace Reko.Analysis
                 var b = stmBefore.Block;
                 int i = b.Statements.IndexOf(stmBefore);
                 // Skip alias statements
-                while (i < b.Statements.Count - 1 && b.Statements[i].Instruction is AliasAssignment)
+                while (i < b.Statements.Count - 1 && b.Statements[i+1].Instruction is AliasAssignment)
                     ++i;
                 stmBefore.Block.Statements.Insert(i + 1, stmBefore.LinearAddress, ass);
 
@@ -1631,7 +1653,7 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                bs.currentDef[id.Storage.Domain] = sid;
+                bs.currentDef[id.Storage.Domain] = new AliasState(sid);
                 var ss = outer.factory.Create(seq.Head, stm);
                 ss.WriteVariable(bs, sid, performProbe);
                 ss = outer.factory.Create(seq.Tail, stm);

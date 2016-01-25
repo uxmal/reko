@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Analysis
             this.addUseInstructions = false;
         }
 
-        private void RunTest2(string sExp, Action<ProcedureBuilder> builder)
+        private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             var pb = new ProcedureBuilder(this.pb.Program.Architecture);
             builder(pb);
@@ -127,7 +127,7 @@ ProcedureBuilder_exit:
 	use r1_2
 ";
             addUseInstructions = true;
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
@@ -360,7 +360,7 @@ ProcedureBuilder_exit:
 	use r2_1
 ";
             addUseInstructions = true;
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
@@ -465,7 +465,7 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var sz = m.Frame.EnsureFlagGroup(flags, 6, "SZ", PrimitiveType.Byte);
@@ -613,7 +613,7 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
                 var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
@@ -641,7 +641,7 @@ l1:
 ProcedureBuilder_exit:
 ";
             this.addUseInstructions = true;
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var a = m.Reg32("a", 0);
                 m.Store(m.Word32(0x123400), a);
@@ -671,7 +671,7 @@ m_2:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
                 var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
@@ -704,7 +704,7 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var regEax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
                 var regAh = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
@@ -747,7 +747,7 @@ mCommon:
 ProcedureBuilder_exit:
 ";
             #endregion
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var ecx = m.Frame.EnsureRegister(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
                 var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 1, 0, PrimitiveType.Byte));
@@ -789,7 +789,7 @@ ProcedureBuilder_exit:
 ";
             #endregion
 
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
@@ -825,7 +825,7 @@ ProcedureBuilder_exit:
 ";
             #endregion
 
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
                 var dl = m.Frame.EnsureRegister(new RegisterStorage("dl", 2, 0, PrimitiveType.Byte));
@@ -858,7 +858,7 @@ ProcedureBuilder_exit:
 ";
             #endregion
 
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var ebx = m.Reg32("ebx", 2);
                 var C = m.Flags("C");
@@ -885,15 +885,14 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	es_bx_3 = Mem0[es:bx:word32]
-	es_4 = SLICE(es_bx_3, word16, 16)
-	bx_4 = (word16) es_bx_3
+	es_4 = SLICE(es_bx_3, word16, 16) (alias)
+	bx_5 = (word16) es_bx_3 (alias)
 	bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
-	es_bx_7 = DPB(es_bx_3, bx_4, 16)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use bx_4
-	use es_bx_7
+	use bx_6
+	use es_4
 ";
             #endregion
 
@@ -925,12 +924,12 @@ l1:
 	eax_2 = Mem0[eax:word32]
 	al_3 = (byte) eax_2 (alias)
 	Mem4[0x00123100:byte] = al_3
-	Mem6[0x00123108:byte] = al_3
+	Mem5[0x00123108:byte] = al_3
 ProcedureBuilder_exit:
 ";          
                 #endregion
 
-            RunTest2(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
