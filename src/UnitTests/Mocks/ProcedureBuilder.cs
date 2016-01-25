@@ -312,26 +312,31 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        [Obsolete]
-        public Identifier Reg32(string name) { return Reg32(name, 1); }
+        public Identifier Reg64(string name, int number)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word64));
+        }
 
         public Identifier Reg32(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word32));
         }
 
-        [Obsolete]
-        public Identifier Reg16(string name) { return Reg16(name, 1); }
         public Identifier Reg16(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word16));
         }
 
-        [Obsolete]
-        public Identifier Reg8(string name) { return Reg8(name, 1); }
         public Identifier Reg8(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Byte));
+        }
+
+        // Use this method to model the x86 "ah" or the z80 "h" registers which are 
+        // offset from the start of their word registers.
+        public Identifier Reg8(string name, int number, uint bitOffset)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, number, bitOffset, PrimitiveType.Byte));
         }
     }
 }

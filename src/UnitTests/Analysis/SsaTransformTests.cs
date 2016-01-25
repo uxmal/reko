@@ -939,5 +939,60 @@ ProcedureBuilder_exit:
                 m.Store(m.Word32(0x123108), al);            // ...twice.
             });
         }
+
+        [Test(Description = "Make sure SSA state behaves correctly in presence of loops.")]
+        public void SsaWhileLoop()
+        {
+            var sExp =
+            #region Expected
+                @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def ebx
+	def Mem0
+	// succ:  l1
+l1:
+	eax_0 = 0x00000000
+	goto l3Head
+	// succ:  l3Head
+l2Body:
+	eax_7 = eax_0 + Mem0[ebx_1:word32]
+	ebx_8 = Mem0[ebx_1 + 0x00000004:word32]
+	// succ:  l3Head
+l3Head:
+	eax_7 = PHI(eax_0, eax_??)
+	SCZ_3 = cond(ebx - 0x00000000)
+	branch Test(NE,SCZ_3) l2Body
+	// succ:  l4Exit l2Body
+l4Exit:
+	return eax_0
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var ebx = m.Reg32("ebx", 3);
+                var SCZ = m.Flags("SCZ");
+                var Z = m.Flags("Z");
+
+                m.Assign(eax, 0);
+                m.Goto("l3Head");
+
+                m.Label("l2Body");
+                m.Assign(eax, m.IAdd(eax, m.LoadDw(ebx)));
+                m.Assign(ebx, m.LoadDw(m.IAdd(ebx, 4)));
+
+                m.Label("l3Head");
+                m.Assign(SCZ, m.Cond(m.ISub(ebx, 0)));
+                m.BranchIf(m.Test(ConditionCode.NE, Z), "l2Body");
+
+                m.Label("l4Exit");
+                m.Return(eax);      // forces liveness of eax.
+            });
+        }
     }
 }
