@@ -36,11 +36,14 @@ namespace Reko.UnitTests.Mocks
         private MockRepository mr;
         private IPlatform platform;
         private TypeLibrary platformMetadata;
-        private TypeLibrary loaderMetadata;
+        private ILoader loader;
+        private ICollection<Program> programs;
 
         public MockFactory(MockRepository mr)
         {
             this.mr = mr;
+            this.platformMetadata = new TypeLibrary();
+            this.programs = new List<Program>();
         }
 
         /// <summary>
@@ -64,6 +67,9 @@ namespace Reko.UnitTests.Mocks
 
         public IPlatform CreatePlatform()
         {
+            if (platform != null)
+                return platform;
+
             platform = mr.Stub<IPlatform>();
 
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
@@ -76,7 +82,6 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
-            this.platformMetadata = new TypeLibrary();
             platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata));
             var arch = mr.Stub<IProcessorArchitecture>();
             platform.Stub(p => p.Architecture).Return(arch);
@@ -92,25 +97,29 @@ namespace Reko.UnitTests.Mocks
             return platform;
         }
 
-        public void Given_NamedTypes(Dictionary<string, DataType> types)
+        public void Given_PlatformTypes(Dictionary<string, DataType> types)
         {
             this.platformMetadata = new TypeLibrary(types, null);
         }
 
-        public void Given_LoaderMetadata(TypeLibrary metadata)
-        {
-            this.loaderMetadata = metadata;
-        }
-
-        public string MetafileName { get { return "meta.xml"; } }
-
         public ILoader CreateLoader()
         {
-            var loader = mr.Stub<ILoader>();
+            if (loader != null)
+                return loader;
+
+            loader = mr.Stub<ILoader>();
+
+            return loader;
+        }
+
+        private void CreateLoadMetadataStub(
+            string metafileName, IPlatform platform, TypeLibrary loaderMetadata
+        )
+        {
             loader.Stub(l => l.LoadMetadata(
-                    Arg<string>.Is.Equal(MetafileName),
-                    Arg<IPlatform>.Is.Equal(platform),
-                    Arg<TypeLibrary>.Is.NotNull
+                Arg<string>.Is.Equal(metafileName),
+                Arg<IPlatform>.Is.Equal(platform),
+                Arg<TypeLibrary>.Is.NotNull
             )).Do(new Func<string, IPlatform, TypeLibrary, TypeLibrary>((f, p, tl) =>
                 {
                     foreach (var module in loaderMetadata.Modules)
@@ -122,13 +131,50 @@ namespace Reko.UnitTests.Mocks
                     foreach (var type in loaderMetadata.Types)
                         tl.Types.Add(type);
 
-                    return loaderMetadata;
+                    return tl;
                 }
             ));
 
             loader.Replay();
+        }
 
-            return loader;
+        public Program CreateProgram()
+        {
+            var platform = CreatePlatform();
+
+            var program = new Program {
+                Architecture = platform.Architecture,
+                Platform = platform,
+            };
+
+            programs.Add(program);
+
+            return program;
+        }
+
+        public void Given_UserDefinedMetafile(
+            string moduleName, Dictionary<string, DataType> types,
+            Dictionary<string, ProcedureSignature> signatures,
+            ModuleDescriptor module)
+        {
+            if (types == null)
+                types = new Dictionary<string, DataType>();
+            if (signatures == null)
+                signatures = new Dictionary<string, ProcedureSignature>();
+            var loaderMetadata = new TypeLibrary(types, signatures);
+            if (module != null)
+                loaderMetadata.Modules.Add(moduleName, module);
+
+            var loader = CreateLoader();
+
+            var metafileName = moduleName+".xml";
+
+            CreateLoadMetadataStub(metafileName, platform, loaderMetadata);
+
+            foreach(var program in programs)
+            {
+                program.LoadMetadataFile(loader, metafileName);
+            }
         }
     }
 }

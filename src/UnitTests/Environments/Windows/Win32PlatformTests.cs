@@ -147,11 +147,16 @@ namespace Reko.UnitTests.Environments.Windows
 
             var sig = win32.SignatureFromName(fnName);
 
-            Assert.AreEqual("void ()()\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
+            var sigExp =
+@"void ()()
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, sig.ToString());
         }
 
         [Test]
-        public void Win32_Deserialize_PredefinedTypes()
+        public void Win32_Deserialize_PlatformTypes()
         {
             var types = new Dictionary<string, DataType>()
             {
@@ -180,10 +185,12 @@ namespace Reko.UnitTests.Environments.Windows
             };
             var sig = ser.Deserialize(sSig, win32.Architecture.CreateFrame());
 
-            Assert.AreEqual(
-                "Register TESTTYPE1 ()(Stack TESTTYPE2 a, Stack TESTTYPE3 b)\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
-                sig.ToString()
-            );
+            var sigExp =
+@"Register TESTTYPE1 ()(Stack TESTTYPE2 a, Stack TESTTYPE3 b)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, sig.ToString());
             Assert.AreEqual("byte", (sig.ReturnValue.DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int16", (sig.Parameters[0].DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int32", (sig.Parameters[1].DataType as TypeReference).Referent.ToString());

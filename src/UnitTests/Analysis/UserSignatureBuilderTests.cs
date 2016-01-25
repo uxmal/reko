@@ -51,12 +51,7 @@ namespace Reko.UnitTests.Analysis
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
             this.platform = mockFactory.CreatePlatform();
-
-            this.program = new Program
-            {
-                Architecture = platform.Architecture,
-                Platform = platform,
-            };
+            this.program = mockFactory.CreateProgram();
         }
 
         private void Given_UserSignature(uint address, string str)
@@ -76,7 +71,6 @@ namespace Reko.UnitTests.Analysis
         public void Usb_EmptyUserSignature()
         {
             Given_Procedure(0x1000);
-            mr.ReplayAll();
 
             var oldSig = proc.Signature;
             var usb = new UserSignatureBuilder(program);
@@ -88,7 +82,6 @@ namespace Reko.UnitTests.Analysis
         public void Usb_ParseFunctionDeclaration()
         {
             Given_Procedure(0x1000);
-            mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
             var sProc = usb.ParseFunctionDeclaration("int foo(char *)", proc.Frame);
@@ -99,21 +92,64 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void Usb_ParseFunctionDeclaration_PredefinedTypes()
+        public void Usb_ParseFunctionDeclaration_PlatfromTypes()
         {
-            var types = new Dictionary<string, DataType>()
+            var platformTypes = new Dictionary<string, DataType>()
             {
                 { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
             };
-            mockFactory.Given_NamedTypes(types);
+            mockFactory.Given_PlatformTypes(platformTypes);
             Given_Procedure(0x1000);
-            mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)", proc.Frame);
 
             Assert.AreEqual(
                 "fn(arg(BYTE),(arg(a,BYTE)arg(b,BYTE))",
+                sProc.Signature.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseFunctionDeclaration_UserDefinedTypes()
+        {
+            var platformTypes = new Dictionary<string, DataType>()
+            {
+                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
+            };
+            var userDefinedTypes1 = new Dictionary<string, DataType>()
+            {
+                { "USRDEF1", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
+            };
+            var userDefinedTypes2 = new Dictionary<string, DataType>()
+            {
+                { "USRDEF2", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
+            };
+            mockFactory.Given_PlatformTypes(platformTypes);
+            Given_Procedure(0x1000);
+
+            var usb = new UserSignatureBuilder(program);
+
+            //should accept user defined type USRDEF1
+            mockFactory.Given_UserDefinedMetafile("mod1", userDefinedTypes1, null, null);
+
+            var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)", proc.Frame);
+
+            Assert.AreEqual(
+                "fn(arg(BYTE),(arg(a,USRDEF1)arg(b,BYTE))",
+                sProc.Signature.ToString());
+
+            //should not accept undefined type USRDEF2
+            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
+
+            Assert.AreEqual(null, sProc);
+
+            //define USRDEF2 so parser should accept it
+            mockFactory.Given_UserDefinedMetafile("mod2", userDefinedTypes2, null, null);
+
+            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
+
+            Assert.AreEqual(
+                "fn(arg(BYTE),(arg(a,USRDEF1)arg(b,USRDEF2))",
                 sProc.Signature.ToString());
         }
 

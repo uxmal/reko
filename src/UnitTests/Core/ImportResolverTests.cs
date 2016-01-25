@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Core
         private MockRepository mr;
         private MockFactory mockFactory;
         private IPlatform platform;
-        private ILoader loader;
         private Program program;
 
         [SetUp]
@@ -45,12 +44,7 @@ namespace Reko.UnitTests.Core
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
             this.platform = mockFactory.CreatePlatform();
-            this.loader = mockFactory.CreateLoader();
-            this.program = new Program()
-            {
-                Platform = platform,
-                Architecture = platform.Architecture,
-            };
+            this.program = mockFactory.CreateProgram();
         }
 
         [Test]
@@ -71,34 +65,22 @@ namespace Reko.UnitTests.Core
                 }
             };
 
-            var metadata = new TypeLibrary
+            var module = new ModuleDescriptor("foo")
             {
-                Modules =
+                ServicesByName =
                 {
                     {
-                        "foo",
-                        new ModuleDescriptor("foo")
-                        {
-                            ServicesByName =
-                            {
-                                {
-                                    "bar@4",
-                                    new SystemService
-                                    {
-                                        Name = "bar",
-                                        Signature = new ProcedureSignature()
-                                    }
-                                }
-                            }
-                        }
+                        "bar@4",
+                         new SystemService
+                         {
+                            Name = "bar",
+                            Signature = new ProcedureSignature()
+                         }
                     }
                 }
             };
 
-            mockFactory.Given_LoaderMetadata(metadata);
-
-            var projLoader = new ProjectLoader(null, loader, proj);
-            projLoader.LoadMetadataFile(platform, mockFactory.MetafileName);
+            mockFactory.Given_UserDefinedMetafile("foo", null, null, module);
 
             var impres = new ImportResolver(proj);
             var ep = impres.ResolveProcedure("foo", "bar@4", platform);
@@ -123,33 +105,22 @@ namespace Reko.UnitTests.Core
                 }
             };
 
-            var metadata = new TypeLibrary
+            var module = new ModuleDescriptor("foo")
             {
-                Modules =
+                ServicesByVector =
                 {
                     {
-                        "foo",
-                        new ModuleDescriptor("foo")
-                        {
-                            ServicesByVector =
-                            {
-                                {
-                                    9,
-                                    new SystemService
-                                    {
-                                        Name = "bar", Signature= new ProcedureSignature()
-                                    }
-                                }
-                            }
-                        }
+                         9,
+                         new SystemService
+                         {
+                            Name = "bar",
+                            Signature = new ProcedureSignature()
+                         }
                     }
                 }
             };
 
-            mockFactory.Given_LoaderMetadata(metadata);
-
-            var projLoader = new ProjectLoader(null, loader, proj);
-            projLoader.LoadMetadataFile(platform, mockFactory.MetafileName);
+            mockFactory.Given_UserDefinedMetafile("foo", null, null, module);
 
             var impres = new ImportResolver(proj);
             var ep = impres.ResolveProcedure("foo", 9, platform);
