@@ -1280,7 +1280,18 @@ namespace Reko.Analysis
             /// <param name="b"></param>
             /// <param name="aliasProbe"></param>
             /// <returns></returns>
-            public abstract SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe);
+            public SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            {
+                var sid = ReadBlockLocalVariable(bs, aliasProbe);
+                if (sid != null)
+                    return sid;
+                // Keep probin'.
+                return ReadVariableRecursive(bs, aliasProbe);
+            }
+
+            public abstract SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool aliasProbe);
+
+
 
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
             {
@@ -1489,7 +1500,7 @@ namespace Reko.Analysis
             {
             }
 
-            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool aliasProbe)
             {
                 AliasState alias;
                 if (bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
@@ -1509,8 +1520,7 @@ namespace Reko.Analysis
                         return MaybeGenerateAliasStatement(alias, aliasProbe);
                     }
                 }
-                // Keep probin'.
-                return ReadVariableRecursive(bs, aliasProbe);
+                return null;
             }
         }
 
@@ -1567,7 +1577,7 @@ namespace Reko.Analysis
                 return sid.Identifier;
             }
 
-            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool aliasProbe)
             {
                 SsaIdentifier ssaId;
                 if (bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
@@ -1575,8 +1585,7 @@ namespace Reko.Analysis
                     // Defined locally in this block.
                     return ssaId;
                 }
-                // Keep probin'.
-                return ReadVariableRecursive(bs, aliasProbe);
+                return null;
             }
 
             public override Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
@@ -1616,7 +1625,7 @@ namespace Reko.Analysis
                 return WriteVariable(bs, sid, true);
             }
 
-            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool aliasProbe)
             {
                 SsaIdentifier ssaId;
                 if (bs.currentStackDef.TryGetValue(stackOffset, out ssaId))
@@ -1624,8 +1633,7 @@ namespace Reko.Analysis
                     // Defined locally in this block.
                     return ssaId;
                 }
-                // Keep probin'.
-                return ReadVariableRecursive(bs, aliasProbe);
+                return null;
             }
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
@@ -1649,7 +1657,7 @@ namespace Reko.Analysis
                 this.seq = seq;
             }
 
-            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool aliasProbe)
             {
                 var ss = outer.factory.Create(seq.Head, stm);
                 var head = ss.ReadVariable(bs, false);
