@@ -212,7 +212,7 @@ l1:
 	r63_2 = fp - 0x00000004
 	dwLoc04_14 = bp
 	bp_5 = fp - 0x00000004
-	CZS_6 = wArg04 - 0x0003
+	CZS_6 = cond(wArg04 - 0x0003)
 	branch Test(GE,CZS_6) ge3
 	// succ:  l2 ge3
 l2:
@@ -238,7 +238,7 @@ ProcedureBuilder_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
-                m.Assign(cr, m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3));
+                m.Assign(cr, m.Cond( m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3)));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Assign(r1, 0);

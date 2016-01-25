@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Diagnostics;
+using System.Text;
 
 namespace Reko.Analysis
 {
@@ -764,6 +765,7 @@ namespace Reko.Analysis
         private Dictionary<Block, SsaBlockState> blockstates;
         private SsaState ssa;
         private TransformerFactory factory;
+        private bool writeOnly;
 
         public SsaTransform2(IProcessorArchitecture arch, Procedure proc, DataFlow2 programFlow)
         {
@@ -794,6 +796,8 @@ namespace Reko.Analysis
         {
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
+
+            this.writeOnly = false;
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
                 this.block = b;
@@ -877,11 +881,14 @@ namespace Reko.Analysis
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 flow)
         {
             var ab = new ApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
-            foreach (var use in callee.EntryBlock.Statements
-                .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
+            if (!writeOnly)
             {
-                var u = ab.Bind(use);
-                ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
+                foreach (var use in callee.EntryBlock.Statements
+                    .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
+                {
+                    var u = ab.Bind(use);
+                    ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
+                }
             }
             foreach (var def in flow.Trashed)
             {
@@ -1046,7 +1053,7 @@ namespace Reko.Analysis
             if (storing)
             {
                 var sid = ssa.Identifiers.Add(access.MemoryId, this.stmCur, null, false);
-                var ss = new SsaIdentifierTransformer(access.MemoryId, stmCur, this);
+                var ss = new SsaRegisterTransformer(access.MemoryId, stmCur, this);
                 access.MemoryId = (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, false);
             }
             else
@@ -1095,6 +1102,18 @@ namespace Reko.Analysis
                 this.currentStackDef = new Dictionary<int, SsaIdentifier>();
                 this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
             }
+
+#if DEBUG
+            public override string ToString()
+            {
+                var sb = new StringBuilder();
+                sb.AppendFormat("BlockState {0}", Block.Name);
+                sb.AppendLine();
+                sb.AppendFormat("    {0}",
+                    string.Join(",", currentDef.Keys.Select(k => ((int)k).ToString())));
+                return sb.ToString();
+            }
+#endif
         }
 
         public class AliasState
@@ -1144,7 +1163,7 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global)
             {
-                return new SsaIdentifierTransformer(id, stm, transform);
+                return new SsaRegisterTransformer(id, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg)
@@ -1154,7 +1173,7 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
             {
-                return new SsaIdentifierTransformer(id, stm, transform);
+                return new SsaRegisterTransformer(id, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
@@ -1174,11 +1193,11 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
             {
-                return new SsaIdentifierTransformer(id, stm, transform);
+                return new SsaRegisterTransformer(id, stm, transform);
             }
         }
 
-        public class SsaIdentifierTransformer
+        public abstract class SsaIdentifierTransformer
         {
             protected readonly Identifier id;
             protected readonly Statement stm;
@@ -1261,29 +1280,7 @@ namespace Reko.Analysis
             /// <param name="b"></param>
             /// <param name="aliasProbe"></param>
             /// <returns></returns>
-            public virtual SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
-            {
-                AliasState alias;
-                if (bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
-                {
-                    // Defined locally in this block.
-                    // Has the alias already been calculated?
-                    SsaIdentifier ssaId = alias.SsaId;
-                    if (alias.SsaId.OriginalIdentifier == id ||
-                        alias.Aliases.TryGetValue(id, out ssaId))
-                    {
-                        return ssaId;
-                    }
-
-                    // Does ssaId intersect the probed value?
-                    if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
-                    {
-                        return MaybeGenerateAliasStatement(alias, aliasProbe);
-                    }
-                }
-                // Keep probin'.
-                return ReadVariableRecursive(bs, aliasProbe);
-            }
+            public abstract SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe);
 
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
             {
@@ -1326,7 +1323,7 @@ namespace Reko.Analysis
             /// <param name="idTo"></param>
             /// <param name="sidFrom"></param>
             /// <returns></returns>
-            private SsaIdentifier MaybeGenerateAliasStatement(AliasState alias, bool aliasProbe)
+            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState alias, bool aliasProbe)
             {
                 var stgFrom = alias.SsaId.Identifier.Storage;
                 Debug.Assert(!(id.Storage is FlagGroupStorage), "Should never be called on a flag group");
@@ -1430,18 +1427,12 @@ namespace Reko.Analysis
                 Identifier same = null;
                 foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
                 {
-                    if (op == same || op == phi.Identifier)
+                    if (!firstTime && (op != same && op != phi.Identifier))
                     {
-                        // Unique value or self-reference
-                        continue;
-                    }
-                    if (!firstTime)
-                    {
-                        // The phi merges at least two values; not trivial
                         return phi;
                     }
-                    same = op;
                     firstTime = false;
+                    same = op;
                 }
                 SsaIdentifier sid;
                 if (same == null)
@@ -1488,6 +1479,38 @@ namespace Reko.Analysis
                 {
                     use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew));
                 }
+            }
+        }
+
+        public class SsaRegisterTransformer : SsaIdentifierTransformer
+        {
+            public SsaRegisterTransformer(Identifier id, Statement stm, SsaTransform2 outer) 
+                : base(id, stm, outer)
+            {
+            }
+
+            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
+            {
+                AliasState alias;
+                if (bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
+                {
+                    // Defined locally in this block.
+                    // Has the alias already been calculated?
+                    SsaIdentifier ssaId = alias.SsaId;
+                    if (alias.SsaId.OriginalIdentifier == id ||
+                        alias.Aliases.TryGetValue(id, out ssaId))
+                    {
+                        return ssaId;
+                    }
+
+                    // Does ssaId intersect the probed value?
+                    if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
+                    {
+                        return MaybeGenerateAliasStatement(alias, aliasProbe);
+                    }
+                }
+                // Keep probin'.
+                return ReadVariableRecursive(bs, aliasProbe);
             }
         }
 
@@ -1626,7 +1649,7 @@ namespace Reko.Analysis
                 this.seq = seq;
             }
 
-            public override Expression NewUse(SsaBlockState bs)
+            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
             {
                 var ss = outer.factory.Create(seq.Head, stm);
                 var head = ss.ReadVariable(bs, false);
@@ -1635,7 +1658,7 @@ namespace Reko.Analysis
                 return Fuse(head, tail);
             }
 
-            public Identifier Fuse(SsaIdentifier head, SsaIdentifier tail)
+            public SsaIdentifier Fuse(SsaIdentifier head, SsaIdentifier tail)
             {
                 AliasAssignment assHead, assTail;
                 if (head.DefStatement.Instruction.As(out assHead) &&
@@ -1645,7 +1668,7 @@ namespace Reko.Analysis
                     Cast eTail;
                     if (assHead.Src.As(out eHead) && assTail.Src.As(out eTail))
                     {
-                        return (Identifier)eHead.Expression;
+                        return ssaIds[(Identifier)eHead.Expression];
                     }
                 }
                 throw new NotImplementedException();
