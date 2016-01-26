@@ -384,7 +384,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        public void LoadMetadataFile(IPlatform platform, string filename)
+        private void LoadMetadataFile(IPlatform platform, string filename)
         {
             foreach (var program in project.Programs)
             {

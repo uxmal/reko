@@ -235,5 +235,65 @@ namespace Reko.UnitTests.Core.Serialization
             var project = prld.LoadProject(@"c:/users/bob/projects/foo.project", sProject);
             Assert.AreEqual(@"c:\users\bob\projects\foo.exe", project.Programs[0].Filename);
         }
+
+        [Test]
+        public void Prld_LoadUserDefinedMetadata()
+        {
+            var sProject = new Project_v3
+            {
+                Inputs =
+                {
+                    new DecompilerInput_v3
+                    {
+                        Filename = "foo.exe",
+                    },
+                    new MetadataFile_v3 {
+                        Filename = "meta1.xml",
+                    },
+                    new MetadataFile_v3 {
+                        Filename = "meta2.xml",
+                    },
+                }
+            };
+
+            var types1 = new Dictionary<string, DataType>()
+            {
+                {"USRTYPE1", PrimitiveType.Word16}
+            };
+            var types2 = new Dictionary<string, DataType>()
+            {
+                {"USRTYPE2", PrimitiveType.Word32}
+            };
+
+            var ldr = mockFactory.CreateLoader();
+            var platform = mockFactory.CreatePlatform();
+
+            mockFactory.CreateLoadMetadataStub(
+                "c:/meta1.xml",
+                platform,
+                new TypeLibrary(
+                    types1, new Dictionary<string, ProcedureSignature>()
+                )
+            );
+            mockFactory.CreateLoadMetadataStub(
+                "c:/meta2.xml",
+                platform,
+                new TypeLibrary(
+                    types2, new Dictionary<string, ProcedureSignature>()
+                )
+            );
+
+            var prld = new ProjectLoader(sc, ldr);
+            var project = prld.LoadProject("c:/foo.project", sProject);
+            Assert.AreEqual(2, project.Programs[0].Metadata.Types.Count);
+            Assert.AreEqual(
+                "word16",
+                project.Programs[0].Metadata.Types["USRTYPE1"].ToString()
+            );
+            Assert.AreEqual(
+                "word32",
+                project.Programs[0].Metadata.Types["USRTYPE2"].ToString()
+            );
+        }
     }
 }

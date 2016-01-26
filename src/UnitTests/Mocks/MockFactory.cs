@@ -118,10 +118,20 @@ namespace Reko.UnitTests.Mocks
 
             loader = mr.Stub<ILoader>();
 
+            loader.Stub(
+                l => l.LoadExecutable(null, null, null)
+            ).IgnoreArguments().Return(CreateProgram());
+
+            loader.Stub(
+                l => l.LoadImageBytes(null, 0)
+            ).IgnoreArguments().Return(new byte[1000]);
+
+            loader.Replay();
+
             return loader;
         }
 
-        private void CreateLoadMetadataStub(
+        public void CreateLoadMetadataStub(
             string metafileName, IPlatform platform, TypeLibrary loaderMetadata
         )
         {
