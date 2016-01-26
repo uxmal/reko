@@ -269,14 +269,14 @@ namespace Reko.UnitTests.Core.Serialization
             var platform = mockFactory.CreatePlatform();
 
             mockFactory.CreateLoadMetadataStub(
-                "c:/meta1.xml",
+                @"c:\meta1.xml",
                 platform,
                 new TypeLibrary(
                     types1, new Dictionary<string, ProcedureSignature>()
                 )
             );
             mockFactory.CreateLoadMetadataStub(
-                "c:/meta2.xml",
+                @"c:\meta2.xml",
                 platform,
                 new TypeLibrary(
                     types2, new Dictionary<string, ProcedureSignature>()
@@ -284,7 +284,7 @@ namespace Reko.UnitTests.Core.Serialization
             );
 
             var prld = new ProjectLoader(sc, ldr);
-            var project = prld.LoadProject("c:/foo.project", sProject);
+            var project = prld.LoadProject(@"c:\foo.project", sProject);
             Assert.AreEqual(2, project.Programs[0].Metadata.Types.Count);
             Assert.AreEqual(
                 "word16",
