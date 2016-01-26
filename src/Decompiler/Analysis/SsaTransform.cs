@@ -765,7 +765,6 @@ namespace Reko.Analysis
         private Dictionary<Block, SsaBlockState> blockstates;
         private SsaState ssa;
         private TransformerFactory factory;
-        private bool writeOnly;
 
         public SsaTransform2(IProcessorArchitecture arch, Procedure proc, DataFlow2 programFlow)
         {
@@ -797,7 +796,6 @@ namespace Reko.Analysis
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
 
-            this.writeOnly = false;
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
                 this.block = b;
@@ -881,14 +879,11 @@ namespace Reko.Analysis
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 flow)
         {
             var ab = new ApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
-            if (!writeOnly)
+            foreach (var use in callee.EntryBlock.Statements
+                .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
             {
-                foreach (var use in callee.EntryBlock.Statements
-                    .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
-                {
-                    var u = ab.Bind(use);
-                    ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
-                }
+                var u = ab.Bind(use);
+                ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
             }
             foreach (var def in flow.Trashed)
             {
@@ -1092,15 +1087,17 @@ namespace Reko.Analysis
             public readonly Dictionary<StorageDomain, AliasState> currentDef;
             public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
             public readonly Dictionary<int, SsaIdentifier> currentStackDef;
-            public readonly Dictionary<StorageDomain, SsaIdentifier> incompletePhis;
+            public readonly List<SsaIdentifier> incompletePhis;
+            public bool Visited;
 
             public SsaBlockState(Block block)
             {
                 this.Block = block;
+                this.Visited = false;
                 this.currentDef = new Dictionary<StorageDomain, AliasState>();
                 this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
                 this.currentStackDef = new Dictionary<int, SsaIdentifier>();
-                this.incompletePhis = new Dictionary<StorageDomain, SsaIdentifier>();
+                this.incompletePhis = new List<SsaIdentifier>();
             }
 
 #if DEBUG
@@ -1291,8 +1288,6 @@ namespace Reko.Analysis
 
             public abstract SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool aliasProbe);
 
-
-
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
             {
                 SsaIdentifier val;
@@ -1409,6 +1404,16 @@ namespace Reko.Analysis
             {
                 // Determine operands from predecessors.
                 var preds = phi.DefStatement.Block.Pred;
+
+                if (preds.Any(p => !blockstates[p].Visited))
+                {
+                    foreach (var p in preds)
+                    {
+                        blockstates[p].incompletePhis.Add(phi);
+                    }
+                    return phi;
+                }
+
                 var sids = preds.Select(p => ReadVariable(blockstates[p], aliasProbe)).ToArray();
                 if (aliasProbe && sids.Any(s => s != null))
                 {
@@ -1489,6 +1494,13 @@ namespace Reko.Analysis
                 foreach (var use in sidOld.Uses)
                 {
                     use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew));
+                }
+            }
+
+            private void ResolvePhis(SsaBlockState bs)
+            {
+                foreach (var phi in blockstates[b].incompletePhis)
+                {
                 }
             }
         }
