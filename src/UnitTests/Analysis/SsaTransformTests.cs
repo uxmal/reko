@@ -957,16 +957,17 @@ l1:
 	goto l3Head
 	// succ:  l3Head
 l2Body:
-	eax_7 = eax_0 + Mem0[ebx_1:word32]
-	ebx_8 = Mem0[ebx_1 + 0x00000004:word32]
+	eax_5 = eax_3 + Mem4[ebx_1:word32]
+	ebx_6 = Mem4[ebx_1 + 0x00000004:word32]
 	// succ:  l3Head
 l3Head:
-	eax_7 = PHI(eax_0, eax_??)
-	SCZ_3 = cond(ebx - 0x00000000)
-	branch Test(NE,SCZ_3) l2Body
+	eax_3 = PHI(eax_0, eax_5)
+	ebx_1 = PHI(ebx, ebx_6)
+	SCZ_2 = cond(ebx_1 - 0x00000000)
+	branch Test(NE,SCZ_2) l2Body
 	// succ:  l4Exit l2Body
 l4Exit:
-	return eax_0
+	return eax_3
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";

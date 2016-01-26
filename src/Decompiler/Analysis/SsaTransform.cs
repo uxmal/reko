@@ -765,6 +765,7 @@ namespace Reko.Analysis
         private Dictionary<Block, SsaBlockState> blockstates;
         private SsaState ssa;
         private TransformerFactory factory;
+        public readonly HashSet<SsaIdentifier> incompletePhis;
 
         public SsaTransform2(IProcessorArchitecture arch, Procedure proc, DataFlow2 programFlow)
         {
@@ -773,6 +774,7 @@ namespace Reko.Analysis
             this.ssa = new SsaState(proc, null);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
             this.factory = new TransformerFactory(this);
+            this.incompletePhis = new HashSet<SsaIdentifier>();
         }
 
         public bool AddUseInstructions { get; set; }
@@ -804,7 +806,9 @@ namespace Reko.Analysis
                     this.stmCur = s;
                     s.Instruction = s.Instruction.Accept(this);
                 }
+                blockstates[b].Visited = true;
             }
+            ProcessIncompletePhis();
 
             // Optionally, add Use instructions in the exit block.
             if (this.AddUseInstructions)
@@ -1081,13 +1085,22 @@ namespace Reko.Analysis
             return idFrame;
         }
 
+        private void ProcessIncompletePhis()
+        {
+            foreach (var phi in incompletePhis)
+            {
+                var phiBlock = phi.DefStatement.Block;
+                var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
+                x.AddPhiOperandsCore(phi, false);
+            }
+        }
+
         public class SsaBlockState
         {
             public readonly Block Block;
             public readonly Dictionary<StorageDomain, AliasState> currentDef;
             public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
             public readonly Dictionary<int, SsaIdentifier> currentStackDef;
-            public readonly List<SsaIdentifier> incompletePhis;
             public bool Visited;
 
             public SsaBlockState(Block block)
@@ -1097,7 +1110,6 @@ namespace Reko.Analysis
                 this.currentDef = new Dictionary<StorageDomain, AliasState>();
                 this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
                 this.currentStackDef = new Dictionary<int, SsaIdentifier>();
-                this.incompletePhis = new List<SsaIdentifier>();
             }
 
 #if DEBUG
@@ -1314,7 +1326,7 @@ namespace Reko.Analysis
                     // Break potential cycles with operandless phi
                     val = NewPhi(id, bs.Block);
                     WriteVariable(bs, val, false);
-                    val = AddPhiOperands(id, val, aliasProbe);
+                    val = AddPhiOperands(val, aliasProbe);
                 }
                 if (val != null && !aliasProbe)
                     WriteVariable(bs, val, false);
@@ -1400,20 +1412,26 @@ namespace Reko.Analysis
                 return sid;
             }
 
-            private SsaIdentifier AddPhiOperands(Identifier id, SsaIdentifier phi, bool aliasProbe)
+            private SsaIdentifier AddPhiOperands(SsaIdentifier phi, bool aliasProbe)
             {
                 // Determine operands from predecessors.
                 var preds = phi.DefStatement.Block.Pred;
 
                 if (preds.Any(p => !blockstates[p].Visited))
                 {
-                    foreach (var p in preds)
-                    {
-                        blockstates[p].incompletePhis.Add(phi);
-                    }
+                    // Haven't visited some of the predecessors yet,
+                    // so we can't backwalk... yet. 
+                    ((PhiAssignment)phi.DefStatement.Instruction).Src =
+                        new PhiFunction(phi.Identifier.DataType, new Expression[preds.Count]);
+                     outer.incompletePhis.Add(phi);
                     return phi;
                 }
+                return AddPhiOperandsCore(phi, aliasProbe);
+            }
 
+            public SsaIdentifier AddPhiOperandsCore(SsaIdentifier phi, bool aliasProbe)
+            {
+                var preds = phi.DefStatement.Block.Pred;
                 var sids = preds.Select(p => ReadVariable(blockstates[p], aliasProbe)).ToArray();
                 if (aliasProbe && sids.Any(s => s != null))
                 {
@@ -1427,7 +1445,7 @@ namespace Reko.Analysis
                     return null;
                 ((PhiAssignment)phi.DefStatement.Instruction).Src =
                     new PhiFunction(
-                        id.DataType,
+                        phi.Identifier.DataType,
                         sids.Select(s => s.Identifier).ToArray());
                 return TryRemoveTrivial(phi, aliasProbe);
             }
@@ -1491,16 +1509,9 @@ namespace Reko.Analysis
 
             private void ReplaceBy(SsaIdentifier sidOld, Identifier idNew)
             {
-                foreach (var use in sidOld.Uses)
+                foreach (var use in sidOld.Uses.ToList())
                 {
                     use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew));
-                }
-            }
-
-            private void ResolvePhis(SsaBlockState bs)
-            {
-                foreach (var phi in blockstates[b].incompletePhis)
-                {
                 }
             }
         }

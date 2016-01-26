@@ -827,6 +827,11 @@ namespace Reko.Core.Output
 		/// <param name="expr"></param>
 		public void WriteExpression(Expression expr)
 		{
+            if (expr == null)
+            {
+                writer.Write("<NULL>");
+                return;
+            }
 			int prec = precedenceCur;
 			precedenceCur = PrecedenceLeast;
 			expr.Accept(this);
