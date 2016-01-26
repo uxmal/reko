@@ -19,7 +19,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -125,6 +127,60 @@ namespace Reko.UnitTests.Core
             var impres = new ImportResolver(proj);
             var ep = impres.ResolveProcedure("foo", 9, platform);
             Assert.AreEqual("bar", ep.Name);
+        }
+
+        [Test]
+        public void Impres_ProcedureByName_NoModule()
+        {
+            var proj = new Project
+            {
+                MetadataFiles =
+                {
+                    new MetadataFile
+                    {
+                         ModuleName = "foo"
+                    }
+                },
+                Programs =
+                {
+                    program
+                }
+            };
+
+            var sigs = new Dictionary<string, ProcedureSignature>();
+            sigs.Add(
+                "bar",
+                new ProcedureSignature(
+                    new Identifier(
+                        "res",
+                        PrimitiveType.Word16,
+                        new RegisterStorage("ax", 0, 0, PrimitiveType.Word16)
+                    ),
+                    new Identifier(
+                        "a",
+                        PrimitiveType.Word16,
+                        new RegisterStorage("cx", 0, 0, PrimitiveType.Word16)
+                    ),
+                    new Identifier(
+                        "b",
+                        PrimitiveType.Word16,
+                        new RegisterStorage("dx", 0, 0, PrimitiveType.Word16)
+                    )
+                )
+            );
+
+            mockFactory.Given_UserDefinedMetafile("foo", null, sigs, null);
+
+            var impres = new ImportResolver(proj);
+            var ep = impres.ResolveProcedure("foo", "bar", platform);
+            Assert.AreEqual("bar", ep.Name);
+
+            var sigExp =
+@"Register word16 ()(Register word16 a, Register word16 b)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, ep.Signature.ToString());
         }
     }
 }
