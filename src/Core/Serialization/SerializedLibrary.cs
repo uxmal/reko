@@ -68,33 +68,35 @@ namespace Reko.Core.Serialization
         {
             if (serializer == null)
             {
-                serializer = CreateSerializer_v1(typeof(SerializedLibrary));
+                serializer = CreateSerializer(typeof(SerializedLibrary), Namespace_v1);
             }
             return serializer;
         }
 
+        public static XmlSerializer CreateSerializer(Type rootType, string @namespace)
+        {
+            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, @namespace);
+            return new XmlSerializer(rootType, attrOverrides);
+        }
+
         public static XmlSerializer CreateSerializer_v4(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v4);
-            return new XmlSerializer(rootType, attrOverrides);
+            return CreateSerializer(rootType, Namespace_v4);
         }
 
         public static XmlSerializer CreateSerializer_v3(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v3);
-            return new XmlSerializer(rootType, attrOverrides);
+            return CreateSerializer(rootType, Namespace_v3);
         }
 
         public static XmlSerializer CreateSerializer_v2(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v2);
-            return new XmlSerializer(rootType, attrOverrides);
+            return CreateSerializer(rootType, Namespace_v2);
         }
 
         public static XmlSerializer CreateSerializer_v1(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v1);
-            return new XmlSerializer(rootType, attrOverrides);
+            return CreateSerializer(rootType, Namespace_v1);
         }
 
         private static Type[] TypesToDecorate = new Type[] 

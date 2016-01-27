@@ -101,23 +101,33 @@ namespace Reko.Core.Serialization
             }
         }
 
+        private static readonly Tuple<Type, string>[] supportedProjectFileFormats =
+        {
+            Tuple.Create(typeof(Project_v4), SerializedLibrary.Namespace_v4),
+            Tuple.Create(typeof(Project_v3), SerializedLibrary.Namespace_v3),
+            Tuple.Create(typeof(Project_v2), SerializedLibrary.Namespace_v2),
+        };
+
         /// <summary>
         /// Loads a .dcproject from a stream.
         /// </summary>
         /// <param name="stm"></param>
-        /// <returns></returns>
+        /// <returns>The Project if the file format was recognized, otherwise null.</returns>
         public Project LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
-            if (ser.CanDeserialize(rdr))
-                return LoadProject(filename, (Project_v4)ser.Deserialize(rdr));
-            ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
-            if (ser.CanDeserialize(rdr))
-                return LoadProject(filename, (Project_v3)ser.Deserialize(rdr));
-            ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
-            if (ser.CanDeserialize(rdr))
-                return LoadProject((Project_v2) ser.Deserialize(rdr));
+            foreach (var fileFormat in supportedProjectFileFormats)
+            {
+                XmlSerializer ser = SerializedLibrary.CreateSerializer(fileFormat.Item1, fileFormat.Item2);
+                if (ser.CanDeserialize(rdr))
+                {
+                    var method = this.GetType().GetMethod(
+                        "LoadProject", new Type[] { typeof(string), fileFormat.Item1 });
+                    return (Project)method.Invoke(
+                        this,
+                        new object[] { filename, ser.Deserialize(rdr) });
+                }
+            }
             return null;
         }
 
