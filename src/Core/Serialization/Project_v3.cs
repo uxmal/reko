@@ -45,6 +45,12 @@ namespace Reko.Core.Serialization
             this.Inputs = new List<ProjectFile_v3>();
         }
 
+        [XmlElement("arch")]
+        public string ArchitectureName;
+
+        [XmlElement("platform")]
+        public string PlatformName;
+
         [XmlElement("input", typeof(DecompilerInput_v3))]
         [XmlElement("metadata",typeof(MetadataFile_v3))]
         [XmlElement("asm", typeof(AssemblerFile_v3))]

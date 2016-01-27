@@ -41,6 +41,8 @@ namespace Reko.Core.Serialization
 
         private ILoader loader;
         private Project project;
+        private IProcessorArchitecture arch;
+        private IPlatform platform;
 
         public ProjectLoader(IServiceProvider services, ILoader loader)
             : this(services, loader, new Project())
@@ -107,13 +109,45 @@ namespace Reko.Core.Serialization
         public Project LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
             if (ser.CanDeserialize(rdr))
-                return LoadProject(filename,(Project_v3) ser.Deserialize(rdr));
+                return LoadProject(filename, (Project_v4)ser.Deserialize(rdr));
+            ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+            if (ser.CanDeserialize(rdr))
+                return LoadProject(filename, (Project_v3)ser.Deserialize(rdr));
             ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
             if (ser.CanDeserialize(rdr))
                 return LoadProject((Project_v2) ser.Deserialize(rdr));
             return null;
+        }
+
+
+        /// <summary>
+        /// Loads a Project object from its serialized representation. First loads the
+        /// common architecture and platform then metadata, and finally any programs.
+        /// </summary>
+        /// <param name="sp"></param>
+        /// <returns></returns>
+        public Project LoadProject(string filename, Project_v4 sp)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
+            if (arch == null)
+                throw new ApplicationException(
+                    string.Format("Unknown architecture '{0}' in project file.",
+                        sp.ArchitectureName ?? "(null)"));
+            var env = cfgSvc.GetEnvironment(sp.PlatformName);
+            if (env == null)
+                throw new ApplicationException(
+                    string.Format("Unknown operating environment '{0}' in project file.",
+                        sp.PlatformName ?? "(null)"));
+            this.platform = env.Load(Services, arch);
+            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
+            var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
+            var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
+            project.Programs.AddRange(programs);
+            project.MetadataFiles.AddRange(typelibs);
+            return this.project;
         }
 
         /// <summary>
@@ -124,8 +158,8 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project LoadProject(string filename, Project_v3 sp)
         {
-            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
             var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
+            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
             var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
             project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
@@ -394,6 +428,12 @@ namespace Reko.Core.Serialization
 
         private IPlatform DeterminePlatform(string filename)
         {
+            // If a platform was defined for the whole project use that.
+            if (this.platform != null)
+                return this.platform;
+
+            // Otherwise try to guess the platform or ask the user.
+            // (this code will soon go away).
             var platformsInUse = project.Programs.Select(p => p.Platform).Distinct().ToArray();
             if (platformsInUse.Length == 1 && platformsInUse[0] != null)
                 return platformsInUse[0];

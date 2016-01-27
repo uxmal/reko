@@ -29,6 +29,7 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary
     {
+        public const string Namespace_v4 = "http://schemata.jklnet.org/Reko/v4";
         public const string Namespace_v3 = "http://schemata.jklnet.org/Reko/v3";
         public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
@@ -70,6 +71,12 @@ namespace Reko.Core.Serialization
                 serializer = CreateSerializer_v1(typeof(SerializedLibrary));
             }
             return serializer;
+        }
+
+        public static XmlSerializer CreateSerializer_v4(Type rootType)
+        {
+            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v4);
+            return new XmlSerializer(rootType, attrOverrides);
         }
 
         public static XmlSerializer CreateSerializer_v3(Type rootType)

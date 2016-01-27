@@ -18,29 +18,23 @@
  */
 #endregion
 
-using Reko.Arch.X86;
+using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Reko.Loading;
-using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Reko.Core.Lib;
-using System.Diagnostics;
-using System.Xml;
-using Reko.Core.Services;
 
 namespace Reko.UnitTests.Core.Serialization
 {
-	[TestFixture]
+    [TestFixture]
 	public class SerializedProjectTests
 	{
         private MockRepository mr;
@@ -48,6 +42,7 @@ namespace Reko.UnitTests.Core.Serialization
         private ServiceContainer sc;
         private ILoader loader;
         private IProcessorArchitecture arch;
+        private IPlatform platform;
 
         [SetUp]
         public void Setup()
@@ -58,10 +53,26 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
         }
 
+        private void Given_Architecture()
+        {
+            this.arch = mr.StrictMock<IProcessorArchitecture>();
+            this.arch.Stub(a => a.Name).Return("testArch");
+        }
+
+        private void Given_TestOS_Platform()
+        {
+            Debug.Assert(arch != null, "Must call Given_Architecture first.");
+            // A very simple dumb platform with no intelligent behaviour.
+            this.platform = mr.Stub<IPlatform>();
+            this.platform.Stub(p => p.Name).Return("testOS");
+            this.platform.Stub(p => p.SaveUserOptions()).Return(null);
+            this.platform.Stub(p => p.Architecture).Return(arch);
+        }
+
         [Test]
         public void SudWrite()
         {
-            Project_v3 ud = new Project_v3
+            Project_v4 ud = new Project_v4
             {
                 Inputs =
                 {
@@ -107,7 +118,7 @@ namespace Reko.UnitTests.Core.Serialization
 			{
 			    var writer = new FilteringXmlWriter(fut.TextWriter);
 				writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
 				ser.Serialize(writer, ud);
 				fut.AssertFilesEqual();
 			}
@@ -116,12 +127,16 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SudSaveProject()
         {
+            Given_Architecture();
+            Given_TestOS_Platform();
             Project project = new Project
             {
                 Programs =
                 {
                     new Program
                     {
+                        Architecture = arch,
+                        Platform = platform,
                         Image = new LoadedImage(Address.SegPtr(0x1000, 0), new byte[100]),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
@@ -171,12 +186,14 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
+            mr.ReplayAll();
+
             using (FileUnitTester fut = new FileUnitTester("Core/SudSaveProject.txt"))
             {
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
-                Project_v3 ud = new ProjectSaver(sc).Save("/var/foo/foo.proj", project);
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v4));
+                Project_v4 ud = new ProjectSaver(sc).Save("/var/foo/foo.proj", project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -273,11 +290,6 @@ namespace Reko.UnitTests.Core.Serialization
                 out Arg<Address>.Out(Address.SegPtr(0x1000, 0x0400)).Dummy)).Return(true);
         }
 
-        private void Given_Architecture()
-        {
-            this.arch = mr.StrictMock<IProcessorArchitecture>();
-        }
-
         private void Given_Loader()
         {
             this.loader = mr.Stub<ILoader>();
@@ -286,12 +298,16 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void Sud_SaveMetadataReference()
         {
+            Given_Architecture();
+            Given_TestOS_Platform();
             var project = new Project
             {
                 Programs =
                 {
                     new Program
                     {
+                        Architecture = arch,
+                        Platform = platform,
                         Filename = "c:\\test\\foo.exe",
                     }
                 },
@@ -304,6 +320,8 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
+            mr.ReplayAll();
+
             var ps = new ProjectSaver(sc);
             var sProject = ps.Save("c:\\test\\foo.project", project);
             Assert.AreEqual(1, project.MetadataFiles.Count);

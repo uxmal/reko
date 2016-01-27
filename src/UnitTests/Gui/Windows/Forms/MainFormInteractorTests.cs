@@ -225,7 +225,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v4"">
+  <arch>x86-protected-32</arch>
+  <platform>TestPlatform</platform>
   <input>
     <filename>foo.exe</filename>
     <user>
@@ -349,13 +351,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             this.decompiler = mr.StrictMock<IDecompiler>();
             // Having a compiler presupposes having a project.
+            var platform = mockFactory.CreatePlatform();
             var project = new Project
             {
-                Programs = { new Program 
-                { 
+                Programs = { new Program
+                {
                     Filename="foo.exe" ,
                     Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]),
-                    Platform = mockFactory.CreatePlatform()
+                    Platform = platform,
+                    Architecture = platform.Architecture,
                 }
                 }
             };

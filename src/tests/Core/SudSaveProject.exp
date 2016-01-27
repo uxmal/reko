@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://schemata.jklnet.org/Reko/v3">
+<project xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>testArch</arch>
+  <platform>testOS</platform>
   <input>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
@@ -10,11 +12,11 @@
             <reg>eax</reg>
           </return>
           <arg>
-            <prim domain="SignedInt" size="4" />
+            <prim domain="SignedInt" size="4" xmlns="http://schemata.jklnet.org/Reko/v3" />
             <stack />
           </arg>
           <arg>
-            <prim domain="SignedInt" size="4" />
+            <prim domain="SignedInt" size="4" xmlns="http://schemata.jklnet.org/Reko/v3" />
             <stack />
           </arg>
         </signature>
@@ -22,7 +24,7 @@
       </procedure>
       <global>
         <Address>2000:0000</Address>
-        <str term="z">
+        <str term="z" xmlns="http://schemata.jklnet.org/Reko/v3">
           <prim domain="Character" size="1" />
         </str>
         <Name>g_20000</Name>

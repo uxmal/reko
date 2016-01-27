@@ -73,6 +73,7 @@ namespace Reko.UnitTests.Mocks
 
             platform = mr.Stub<IPlatform>();
 
+            platform.Stub(p => p.Name).Return("TestPlatform");
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Return(2);
@@ -84,23 +85,18 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
             platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata.Clone()));
-            var arch = mr.Stub<IProcessorArchitecture>();
+            var arch = new X86ArchitectureFlat32();
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
 
             platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Do(
                 new Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer>((tlDeser, dc) =>
-                    new X86ProcedureSerializer(
-                        new X86ArchitectureFlat32(),
-                        tlDeser,
-                        dc
-                    )
+                    new X86ProcedureSerializer(arch, tlDeser, dc)
                 )
             );
             platform.Stub(p => p.SaveUserOptions()).Return(null);
 
             platform.Replay();
-
             return platform;
         }
 
