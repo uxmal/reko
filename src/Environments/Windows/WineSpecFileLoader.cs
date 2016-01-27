@@ -48,11 +48,6 @@ namespace Reko.Environments.Windows
             this.lexer = new Lexer(rdr);
         }
 
-        public override TypeLibrary Load(IPlatform platform)
-        {
-            return Load(platform, DefaultModuleName(filename), new TypeLibrary());
-        }
-
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             return Load(platform, DefaultModuleName(filename), dstLib);
