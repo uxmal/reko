@@ -48,12 +48,6 @@ namespace Reko.Environments.Windows
             this.bufferedTok = null;
         }
 
-        [Obsolete]
-        public override TypeLibrary Load(IPlatform platform)
-        {
-            return Load(platform, new TypeLibrary());
-        }
-
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             this.platform = platform;

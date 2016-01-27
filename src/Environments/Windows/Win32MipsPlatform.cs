@@ -146,15 +146,6 @@ namespace Reko.Environments.Windows
             }
         }
 
-        private TypeLibrary LoadTypelibrary(IConfigurationService cfgSvc, ITypeLibraryElement tl, LoaderElement ldr)
-        {
-            var type = Type.GetType(ldr.TypeName, true);
-            var filename = cfgSvc.GetInstallationRelativePath(tl.Name);
-            var bytes = File.ReadAllBytes(filename);
-            var loader = (MetadataLoader)Activator.CreateInstance(type, Services, filename, bytes);
-            return loader.Load(this);
-        }
-
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             throw new NotImplementedException();

@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Core;
 using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             CreateWineSpecFileLoader("foo.spec",
                 " # comment");
-            var lib = wsfl.Load(platform);
+            var lib = wsfl.Load(platform, new TypeLibrary());
             Assert.AreEqual(0, lib.Modules.Count);
         }
 
@@ -54,7 +55,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             CreateWineSpecFileLoader("foo.spec",
                 " 624 pascal SetFastQueue(long long) SetFastQueue16\n");
-            var lib = wsfl.Load(platform);
+            var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(1, mod.ServicesByVector.Count);
             Assert.AreEqual(0, mod.ServicesByName.Count);
@@ -72,7 +73,7 @@ namespace Reko.UnitTests.Environments.Windows
                 " 2   pascal -ret16 ExitKernel() ExitKernel16\n" +
                 "3    pascal GetVersion() GetVersion16\n" +
                 "4   pascal -ret16 LocalInit(word word word) LocalInit16\n");
-            var lib = wsfl.Load(platform);
+            var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(3, mod.ServicesByVector.Count);
             Assert.AreEqual(
@@ -91,7 +92,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             CreateWineSpecFileLoader("foo.spec",
                 " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()\r\n");
-            var lib = wsfl.Load(platform);
+            var lib = wsfl.Load(platform, new TypeLibrary());
             Assert.AreEqual(0, lib.Modules.Count);
         }
     }
