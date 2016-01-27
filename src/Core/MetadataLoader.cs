@@ -35,7 +35,6 @@ namespace Reko.Core
         {
         }
 
-       [Obsolete] public abstract TypeLibrary Load(IPlatform platform);
         public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
     }
 
@@ -44,11 +43,6 @@ namespace Reko.Core
         public NullMetadataLoader()
             : base(null, "", new byte[0])
         {
-        }
-
-        [Obsolete] public override TypeLibrary Load(IPlatform platform)
-        {
-            return new TypeLibrary();
         }
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
