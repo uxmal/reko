@@ -801,6 +801,8 @@ namespace Reko.Analysis
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
                 this.block = b;
+                Debug.Print("SsaTransform2: Processing {0}", block.Name);
+                block.Dump();
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;

@@ -995,5 +995,26 @@ ProcedureBuilder_exit:
                 m.Return(eax);      // forces liveness of eax.
             });
         }
+
+        [Test]
+        public void SsaAliasedSequence()
+        {
+            var sExp = "@@@";
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var es = m.Reg16("es", 2);
+                var cx = m.Reg16("cx", 1);
+                var cl = m.Reg8("cl", 1);
+                var es_cx = m.Frame.EnsureSequence(es, cx, PrimitiveType.SegPtr32);
+
+                m.Label("m0");
+                m.Assign(cx, m.LoadW(m.Word16(0x1234)));
+                m.Store(m.Word32(0x1236), cx);
+                m.Assign(es_cx, m.LoadDw(m.Word32(0x1238)));
+                m.Assign(cl, m.Byte(45));
+                m.Return();
+            });
+        }
     }
 }
