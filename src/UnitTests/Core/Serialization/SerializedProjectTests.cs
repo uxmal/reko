@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v4));
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
                 Project_v4 ud = new ProjectSaver(sc).Save("/var/foo/foo.proj", project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();

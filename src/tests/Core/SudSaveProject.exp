@@ -12,11 +12,11 @@
             <reg>eax</reg>
           </return>
           <arg>
-            <prim domain="SignedInt" size="4" xmlns="http://schemata.jklnet.org/Reko/v3" />
+            <prim domain="SignedInt" size="4" />
             <stack />
           </arg>
           <arg>
-            <prim domain="SignedInt" size="4" xmlns="http://schemata.jklnet.org/Reko/v3" />
+            <prim domain="SignedInt" size="4" />
             <stack />
           </arg>
         </signature>
@@ -24,7 +24,7 @@
       </procedure>
       <global>
         <Address>2000:0000</Address>
-        <str term="z" xmlns="http://schemata.jklnet.org/Reko/v3">
+        <str term="z">
           <prim domain="Character" size="1" />
         </str>
         <Name>g_20000</Name>
