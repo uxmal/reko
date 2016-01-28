@@ -40,7 +40,7 @@ using Reko.Core.Services;
 namespace Reko.UnitTests.Scanning
 {
 	[TestFixture]
-	public class BackwalkerTests
+	public class Backwalker_x86_Tests
 	{
         ProcedureBuilder m;
         private IProcessorArchitecture arch;
