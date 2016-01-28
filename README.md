@@ -1,10 +1,9 @@
-<img src="https://raw.githubusercontent.com/uxmal/reko/analysis-development/web/images/reko.png" />
 
 # reko - a general purpose decompiler.
 
  [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko)
  
-**Reko** (Swedish: "decent, obliging") is a C# project containing 
+<img class="keyboard-shortcuts"  src="https://raw.githubusercontent.com/uxmal/reko/analysis-development/web/images/reko.png" /> **Reko** (Swedish: "decent, obliging") is a C# project containing 
 a decompiler for machine code binaries.  This project is freely 
 available under the GNU General Public License.
 
