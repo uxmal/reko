@@ -41,6 +41,7 @@ namespace Reko.Scanning
 	{
         private IBackWalkHost host;
         private ExpressionSimplifier eval;
+        private bool tableIndirectionSeen = false;
         private static TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
 
 		public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
@@ -117,9 +118,9 @@ namespace Reko.Scanning
                 var binSrc = assSrc as BinaryExpression;
                 if (binSrc != null)
                 {
-                    if (RegisterOf(ass.Dst) == Index)
+                    if (RegisterOf(ass.Dst) == Index || ass.Dst == IndexExpression)
                     {
-                        regSrc = RegisterOf(binSrc.Left as Identifier);
+                        regSrc = RegisterOf(binSrc.Left);
                         var immSrc = binSrc.Right as Constant;
                         if (binSrc.Operator == Operator.IAdd || binSrc.Operator == Operator.ISub)
                         {
@@ -201,6 +202,14 @@ namespace Reko.Scanning
                             }
                         }
                     }
+                    var idCof = cof.Expression as Identifier;
+                    if (idCof != null)
+                    {
+                        IndexExpression = idCof;
+                        Index = null;
+                        UsedFlagIdentifier = null;
+                        return true;
+                    }
                 }
 
                 //$BUG: this is rubbish, the simplifier should _just_
@@ -211,12 +220,15 @@ namespace Reko.Scanning
                     src = castSrc.Expression;
                 var memSrc = src as MemoryAccess;
                 var regDst = RegisterOf(ass.Dst);
-                if (memSrc != null && (regDst == Index || regDst.IsSubRegisterOf(Index)))
+                if (memSrc != null && 
+                    (regDst == Index || 
+                     (regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
                 {
                     // R = Mem[xxx]
                     var rIdx = Index;
                     var rDst = RegisterOf(ass.Dst);
-                    if (rDst != host.GetSubregister(rIdx, 0, 8) && castSrc == null)
+                    if ((rDst != host.GetSubregister(rIdx, 0, 8) && castSrc == null) &&
+                        rDst != rIdx)
                     {
                         Index = RegisterStorage.None;
                         IndexExpression = src;
@@ -239,6 +251,17 @@ namespace Reko.Scanning
                             return true;
                         }
                     }
+
+                    // Some architectures have pc-relative addressing, which the rewriters
+                    // should convert to an _address_.
+                    var addr = binEa.Left as Address;
+                    baseReg = GetBaseRegister(binEa.Right);
+                    if (addr != null && VectorAddress == null)
+                    {
+                        this.VectorAddress = addr;
+                        Index = baseReg;
+                        return true;
+                    }
                     return false;
                 }
 
@@ -256,16 +279,8 @@ namespace Reko.Scanning
                 var cond = bra.Condition as TestCondition;
                 if (cond != null)
                 {
-                    if (cond.ConditionCode == ConditionCode.UGT)
-                    {
-                        Operations.Add(new BackwalkBranch(ConditionCode.UGT));
-                        UsedFlagIdentifier = (Identifier)cond.Expression;
-                    }
-                    else if (cond.ConditionCode == ConditionCode.ULE)
-                    {
-                        Operations.Add(new BackwalkBranch(ConditionCode.ULE));
-                        UsedFlagIdentifier = (Identifier)cond.Expression;
-                    }
+                    Operations.Add(new BackwalkBranch(cond.ConditionCode));
+                    UsedFlagIdentifier = (Identifier)cond.Expression;
                 }
                 return true;
             }
@@ -274,8 +289,12 @@ namespace Reko.Scanning
             return true;
         }
 
-        private RegisterStorage RegisterOf(Identifier id)
+        private RegisterStorage RegisterOf(Expression e)
         {
+            var c = e as Cast;
+            if (c != null)
+                e = c.Expression;
+            var id = e as Identifier;
             if (id == null)
                 return RegisterStorage.None;
             var reg = id.Storage as RegisterStorage;

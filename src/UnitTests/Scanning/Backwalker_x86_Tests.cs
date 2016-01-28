@@ -462,45 +462,5 @@ namespace Reko.UnitTests.Scanning
         {
             RunFileTestx86_32("Fragments/regressions/r00018.asm", "Scanning/BwReg00018.txt");
         }
-
-        [Test(Description = "Part of regression of issue #121")]
-        [Category("Regressions")]
-        [Category("UnitTests")]
-        public void BwReg_00121()
-        {
-            var d0 = m.Reg32("d0", 0);
-            var d3 = m.Reg32("d3", 3);
-            var a5 = m.Reg32("a5", 5);
-            var v38 = m.Temp(PrimitiveType.Word16, "v38");
-            var v39 = m.Temp(PrimitiveType.Byte, "v39");
-            var v40 = m.Temp(PrimitiveType.Word16, "v40");
-            var VZN = m.Flags("VZN");
-            var ZN = m.Flags("ZN");
-            var C = m.Flags("C");
-            var V = m.Flags("V");
-            var CVZN = m.Flags("CVZN");
-            var CVZNX = m.Flags("CVZNX");
-            m.Assign(d0, d3);
-            m.Assign(CVZN, m.Cond(d0));
-            m.Assign(v38, m.And(m.Cast(PrimitiveType.Word16, d0), 0xF0));
-            m.Assign(d0, m.Dpb(d0, v38, 0));
-            m.Assign(ZN, m.Cond(v38));
-            m.Assign(C, false);
-            m.Assign(V, false);
-            m.Assign(v39, m.Shl(m.Cast(PrimitiveType.Byte, d0), 2));
-            m.Assign(d0, m.Dpb(d0, v39, 0));
-            m.Assign(CVZNX, m.Cond(v39));
-            m.Assign(v40, m.ISub(m.Cast(PrimitiveType.Word16, d0), 44));
-            m.Assign(CVZN, m.Cond(v40));
-            m.BranchIf(m.Test(ConditionCode.GT, VZN), "lDefault");
-            m.Assign(a5, m.LoadDw(m.IAdd(Address.Ptr32(0x0000C046), d0)));
-            var xfer = new RtlCall(a5, 4, RtlClass.Transfer);
-
-            var bw = new Backwalker(host, xfer, expSimp);
-            Assert.IsTrue(bw.CanBackwalk());
-            Assert.AreEqual("a5", bw.Index.Name);
-            bw.BackWalk(m.Block);
-            Assert.AreEqual("None", bw.Index.Name);
-        }
 	}
 }

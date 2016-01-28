@@ -1,0 +1,183 @@
+﻿#region License
+/* 
+ * Copyright (C) 1999-2016 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using Reko.Evaluation;
+using Reko.Scanning;
+using Reko.UnitTests.Mocks;
+using NUnit.Framework;
+using System;
+using System.Linq;
+using Reko.Assemblers.x86;
+using System.ComponentModel.Design;
+using System.IO;
+using System.Collections.Generic;
+using Reko.Core.Services;
+
+namespace Reko.UnitTests.Scanning
+{
+    /// <summary>
+    /// These unit tests should be architecture independent.
+    /// </summary>
+    [TestFixture]
+    public class BackwalkerTests
+    {
+        ProcedureBuilder m;
+        private IProcessorArchitecture arch;
+        private ProcessorState state;
+        private ExpressionSimplifier expSimp;
+        private IBackWalkHost host;
+
+        private class BackwalkerHost : IBackWalkHost
+        {
+            private IProcessorArchitecture arch;
+
+            #region IBackWalkHost Members
+
+            public BackwalkerHost(IProcessorArchitecture arch)
+            {
+                this.arch = arch;
+            }
+
+            public AddressRange GetSinglePredecessorAddressRange(Address block)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Address GetBlockStartAddress(Address addr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Block GetSinglePredecessor(Block block)
+            {
+                return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
+            }
+
+            public RegisterStorage GetSubregister(RegisterStorage reg, int off, int width)
+            {
+                return arch.GetSubregister(reg, off, width);
+            }
+
+            public bool IsValidAddress(Address addr)
+            {
+                return true;
+            }
+
+            public Address MakeAddressFromConstant(Constant c)
+            {
+                return Address.Ptr32(c.ToUInt32());
+            }
+
+            public Address MakeSegmentedAddress(Constant selector, Constant offset)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            arch = new FakeArchitecture();
+            m = new ProcedureBuilder();
+            state = arch.CreateProcessorState();
+            expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
+            host = new BackwalkerHost(arch);
+        }
+
+        private void RunFileTestx86_32(string relativePath, string outputFile)
+        {
+            Program program;
+            var sc = new ServiceContainer();
+            var fsSvc = new FileSystemServiceImpl();
+            var el = new FakeDecompilerEventListener();
+            sc.AddService<IFileSystemService>(fsSvc);
+            sc.AddService<DecompilerEventListener>(el);
+            var arch = new X86ArchitectureFlat32();
+            var asm = new X86TextAssembler(sc, arch);
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
+            {
+                var platform = new DefaultPlatform(sc, arch);
+                asm.Platform = platform;
+                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+            }
+            var scanner = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), null, sc);
+            scanner.EnqueueEntryPoint(new EntryPoint(program.Image.BaseAddress, arch.CreateProcessorState()));
+            scanner.ScanImage();
+            using (var fut = new FileUnitTester(outputFile))
+            {
+                foreach (var proc in program.Procedures.Values)
+                {
+                    proc.Write(false, fut.TextWriter);
+                }
+                fut.AssertFilesEqual();
+            }
+        }
+
+
+        [Test(Description = "Part of regression of issue #121")]
+        [Category("Regressions")]
+        [Category("UnitTests")]
+        public void BwReg_00121()
+        {
+            var d0 = m.Reg32("d0", 0);
+            var d3 = m.Reg32("d3", 3);
+            var a5 = m.Reg32("a5", 5);
+            var v38 = m.Temp(PrimitiveType.Word16, "v38");
+            var v39 = m.Temp(PrimitiveType.Byte, "v39");
+            var v40 = m.Temp(PrimitiveType.Word16, "v40");
+            var VZN = m.Flags("VZN");
+            var ZN = m.Flags("ZN");
+            var C = m.Flags("C");
+            var V = m.Flags("V");
+            var CVZN = m.Flags("CVZN");
+            var CVZNX = m.Flags("CVZNX");
+            m.Assign(d0, d3);
+            m.Assign(CVZN, m.Cond(d0));
+            m.Assign(v38, m.And(m.Cast(PrimitiveType.Word16, d0), 0xF0));
+            m.Assign(d0, m.Dpb(d0, v38, 0));
+            m.Assign(ZN, m.Cond(v38));
+            m.Assign(C, false);
+            m.Assign(V, false);
+            m.Assign(v39, m.Shl(m.Cast(PrimitiveType.Byte, d0), 2));
+            m.Assign(d0, m.Dpb(d0, v39, 0));
+            m.Assign(CVZNX, m.Cond(v39));
+            m.Assign(v40, m.ISub(m.Cast(PrimitiveType.Word16, d0), 44));
+            m.Assign(CVZN, m.Cond(v40));
+            m.BranchIf(m.Test(ConditionCode.GT, VZN), "lDefault");
+            m.Assign(a5, m.LoadDw(m.IAdd(Address.Ptr32(0x0000C046), d0)));
+            var xfer = new RtlCall(a5, 4, RtlClass.Transfer);
+
+            var bw = new Backwalker(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            Assert.AreEqual("a5", bw.Index.Name);
+            bw.BackWalk(m.Block);
+            Assert.AreEqual("v40", bw.IndexExpression.ToString());
+        }
+    }
+}

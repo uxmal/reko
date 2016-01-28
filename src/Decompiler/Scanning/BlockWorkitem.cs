@@ -677,7 +677,9 @@ namespace Reko.Scanning
             var bwops = bw.BackWalk(blockCur);
             if (bwops == null || bwops.Count == 0)
                 return false;     //$REVIEW: warn?
-            var idIndex = blockCur.Procedure.Frame.EnsureRegister(bw.Index);
+            Identifier idIndex = bw.Index != null
+                ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
+                : null;
 
             VectorBuilder builder = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
             if (bw.VectorAddress == null)
