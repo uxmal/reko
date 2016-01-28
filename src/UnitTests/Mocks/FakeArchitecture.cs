@@ -127,6 +127,7 @@ namespace Reko.UnitTests.Mocks
             if (((uint)grf & 0x02) != 0) sb.Append('C');
             if (((uint)grf & 0x04) != 0) sb.Append('Z');
             if (((uint)grf & 0x10) != 0) sb.Append('O');
+            if (((uint)grf & 0x20) != 0) sb.Append('O');
             if (sb.Length == 0)
                 return null;
             return new FlagGroupStorage(flags, grf, sb.ToString(), PrimitiveType.Byte);
@@ -143,6 +144,9 @@ namespace Reko.UnitTests.Mocks
                 case 'C': grf |= 0x02; break;
                 case 'Z': grf |= 0x04; break;
                 case 'O': grf |= 0x10; break;
+                case 'V': grf |= 0x10; break;
+                case 'X': grf |= 0x20; break;
+
                 }
             }
             if (grf != 0)
