@@ -295,5 +295,25 @@ namespace Reko.UnitTests.Core.Serialization
                 project.Programs[0].Metadata.Types["USRTYPE2"].ToString()
             );
         }
+
+        [Test]
+        public void Prld_v2()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
+  <input>
+  </input>
+</project>";
+            var ldr = mr.Stub<ILoader>();
+            var platform = new TestPlatform();
+            Given_Binary(ldr, platform);
+            mr.ReplayAll();
+
+            var prld = new ProjectLoader(sc, ldr);
+            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+
+            Assert.AreEqual(1, project.Programs.Count);
+        }
     }
 }

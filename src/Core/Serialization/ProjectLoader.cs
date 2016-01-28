@@ -121,16 +121,27 @@ namespace Reko.Core.Serialization
                 XmlSerializer ser = SerializedLibrary.CreateSerializer(fileFormat.Item1, fileFormat.Item2);
                 if (ser.CanDeserialize(rdr))
                 {
-                    var method = this.GetType().GetMethod(
-                        "LoadProject", new Type[] { typeof(string), fileFormat.Item1 });
-                    return (Project)method.Invoke(
-                        this,
-                        new object[] { filename, ser.Deserialize(rdr) });
+                    var deser = new Deserializer(this, filename);
+                    return ((SerializedProject)ser.Deserialize(rdr)).Accept(deser);
                 }
             }
             return null;
         }
 
+        // Avoid reflection by using the visitor pattern.
+        class Deserializer : ISerializedProjectVisitor<Project>
+        {
+            private ProjectLoader outer;
+            private string filename;
+
+            public Deserializer(ProjectLoader outer, string filename)
+            {
+                this.outer = outer; this.filename = filename;
+            }
+            public Project VisitProject_v2(Project_v2 sProject) { return outer.LoadProject(sProject); }
+            public Project VisitProject_v3(Project_v3 sProject) { return outer.LoadProject(filename, sProject); }
+            public Project VisitProject_v4(Project_v4 sProject) { return outer.LoadProject(filename, sProject); }
+        }
 
         /// <summary>
         /// Loads a Project object from its serialized representation. First loads the

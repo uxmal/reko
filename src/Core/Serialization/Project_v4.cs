@@ -36,7 +36,7 @@ namespace Reko.Core.Serialization
     /// file format into a new file, bump the namespace identifier and the class name. You will
     /// also have to modify the ProjectSerializer to handle the new format.</remarks>
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Reko/v4")]
-    public class Project_v4
+    public class Project_v4 : SerializedProject
     {
         public const string FileExtension = ".dcproject";
 
@@ -55,5 +55,10 @@ namespace Reko.Core.Serialization
         [XmlElement("metadata", typeof(MetadataFile_v3))]
         [XmlElement("asm", typeof(AssemblerFile_v3))]
         public List<ProjectFile_v3> Inputs;
+
+        public override T Accept<T>(ISerializedProjectVisitor<T> visitor)
+        {
+            return visitor.VisitProject_v4(this);
+        }
     }
 }

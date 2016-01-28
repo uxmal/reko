@@ -317,6 +317,7 @@
     <Compile Include="Serialization\ArrayType_v1.cs" />
     <Compile Include="Serialization\Project_v4.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
+    <Compile Include="Serialization\SerializedProject.cs" />
     <Compile Include="Serialization\SerializedTemplate.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
     <Compile Include="Serialization\SerializedTypeReference.cs" />
