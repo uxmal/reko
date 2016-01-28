@@ -432,19 +432,14 @@ namespace Reko.Core.Serialization
         public MetadataFile LoadMetadataFile(string filename)
         {
             var platform = DeterminePlatform(filename);
-            LoadMetadataFile(platform, filename);
-            return new MetadataFile
-            {
-                Filename = filename,
-            };
-        }
-
-        private void LoadMetadataFile(IPlatform platform, string filename)
-        {
             foreach (var program in project.Programs)
             {
                 program.LoadMetadataFile(loader, filename);
             }
+            return new MetadataFile
+            {
+                Filename = filename,
+            };
         }
 
         private IPlatform DeterminePlatform(string filename)
