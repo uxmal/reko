@@ -1095,6 +1095,7 @@ namespace Reko.Analysis
                 var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
                 x.AddPhiOperandsCore(phi, false);
             }
+            incompletePhis.Clear();
         }
 
         public class SsaBlockState
@@ -1482,7 +1483,10 @@ namespace Reko.Analysis
                         return phi;
                     }
                     firstTime = false;
-                    same = op;
+                    if (op != phi.Identifier)
+                    {
+                        same = op;
+                    }
                 }
                 SsaIdentifier sid;
                 if (same == null)

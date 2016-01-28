@@ -1627,7 +1627,43 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-                @"@@@";
+@"r1_0: orig: r1
+    def:  r1_0 = PHI(r1, r1_3)
+    uses: branch r1_0 == 0x00000000 m3done
+          r1_3 = r1_0 + Mem0[r2:word32]
+Mem0:Global memory
+    def:  def Mem0
+r1_3: orig: r1
+    def:  r1_3 = r1_0 + Mem0[r2:word32]
+    uses: r1_0 = PHI(r1, r1_3)
+          use r1_3
+r1:r1
+    def:  def r1
+    uses: r1_0 = PHI(r1, r1_3)
+r2:r2
+    def:  def r2
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r1
+	def r2
+	def Mem0
+	// succ:  m0
+m0:
+	r1_0 = PHI(r1, r1_3)
+	branch r1_0 == 0x00000000 m3done
+	// succ:  m1notdone m3done
+m1notdone:
+	r1_3 = r1_0 + Mem0[r2:word32]
+	goto m0
+	// succ:  m0
+m3done:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use r1_3
+";
             #endregion
 
             RunTest_FrameAccesses(sExp, m =>
