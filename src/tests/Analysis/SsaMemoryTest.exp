@@ -42,11 +42,13 @@ si:si
           cx_12 = Mem11[ds:si:word16]
 cx_10: orig: cx
     def:  cx_10 = Mem8[ds:si:word16]
+    uses: cx_13 = PHI(cx_12, cx_10)
 Mem11: orig: Mem0
     def:  Mem11[ds:bx_5 + 0x0006:word16] = 0x0000
     uses: cx_12 = Mem11[ds:si:word16]
 cx_12: orig: cx
     def:  cx_12 = Mem11[ds:si:word16]
+    uses: cx_13 = PHI(cx_12, cx_10)
 cx_13: orig: cx
     def:  cx_13 = PHI(cx_12, cx_10)
     uses: Mem15[ds:0x012C:word16] = cx_13
