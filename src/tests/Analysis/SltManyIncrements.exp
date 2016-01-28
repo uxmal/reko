@@ -21,7 +21,6 @@ r0_4: orig: r0
           r0_12 = r0_4 + 0x00000001
           Mem10[0x33333331:word32] = Mem7[r0_4 + 0x00000001:byte]
           r0_9 = r0_4 + 0x00000002
-          r0_9 = r0_4 + 0x00000002
 r1_5: orig: r1
 r0_6: orig: r0
 Mem7: orig: Mem0

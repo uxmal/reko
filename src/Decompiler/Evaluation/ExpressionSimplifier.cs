@@ -202,8 +202,6 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 var binOperator = binExp.Operator;
-                ctx.RemoveIdentifierUse(idLeft);
-                ctx.UseExpression(left);
                 Constant c;
                 if (binLeft.Operator == binOperator)
                 {

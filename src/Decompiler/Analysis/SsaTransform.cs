@@ -950,6 +950,7 @@ namespace Reko.Analysis
             {
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
                 {
+                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
                     var idDst = NewDef(idFrame, store.Src, false);
                     return new Assignment(idDst, store.Src);
@@ -1018,6 +1019,7 @@ namespace Reko.Analysis
         {
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
+                ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
                 var idNew = NewUse(idFrame, stmCur, true);
                 return idNew;
@@ -1260,9 +1262,12 @@ namespace Reko.Analysis
                         {
                             // Generate a DPB so the previous modification "shines
                             // through".
+                            var sidPrevOld = sidPrev;
                             var dpb = new DepositBits(sidPrev.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
                             var ass = new AliasAssignment(sidPrev.OriginalIdentifier, dpb);
                             sidPrev = InsertAfterDefinition(sid.DefStatement, ass);
+                            sidPrevOld.Uses.Add(sidPrev.DefStatement);
+
                             var alias = new AliasState(sidPrev);
                             alias.Aliases.Add(id, sid);
                             bs.currentDef[id.Storage.Domain] = alias;
@@ -1356,6 +1361,7 @@ namespace Reko.Analysis
                     return alias.SsaId;
                 }
                 Expression e = null;
+                SsaIdentifier sidUse;
                 if (stgFrom.Covers(stgTo))
                 {
                     int offset = stgFrom.OffsetOf(stgTo);
@@ -1363,14 +1369,16 @@ namespace Reko.Analysis
                         e = new Slice(id.DataType, alias.SsaId.Identifier, (uint)offset);
                     else
                         e = new Cast(id.DataType, alias.SsaId.Identifier);
+                    sidUse = alias.SsaId;
                 }
                 else
                 {
-                    var sidTo = ReadVariable(blockstates[alias.SsaId.DefStatement.Block], false);
-                    e = new DepositBits(id, alias.SsaId.Identifier, (int)stgFrom.BitAddress);
+                    sidUse = ReadVariable(blockstates[alias.SsaId.DefStatement.Block], false);
+                    e = new DepositBits(sidUse.Identifier, alias.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(alias.SsaId.DefStatement, ass);
+                sidUse.Uses.Add(sidAlias.DefStatement);
                 alias.Aliases[id] = sidAlias;
                 return sidAlias;
             }
@@ -1391,9 +1399,10 @@ namespace Reko.Analysis
                 // Skip alias statements
                 while (i < b.Statements.Count - 1 && b.Statements[i+1].Instruction is AliasAssignment)
                     ++i;
-                stmBefore.Block.Statements.Insert(i + 1, stmBefore.LinearAddress, ass);
+                var stm = new Statement(stmBefore.LinearAddress, ass, stmBefore.Block);
+                stmBefore.Block.Statements.Insert(i + 1, stm);
 
-                var sidTo = ssaIds.Add(ass.Dst, this.stm, ass.Src, false);
+                var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                 ass.Dst = sidTo.Identifier;
                 return sidTo;
             }
@@ -1463,10 +1472,13 @@ namespace Reko.Analysis
             {
                 bool firstTime = true;
                 Identifier same = null;
-                foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
+                var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
+                foreach (Identifier op in phiFunc.Arguments)
                 {
                     if (!firstTime && (op != same && op != phi.Identifier))
                     {
+                        // A real phi; use all its arguments.
+                        UsePhiArguments(phi, phiFunc);
                         return phi;
                     }
                     firstTime = false;
@@ -1501,6 +1513,14 @@ namespace Reko.Analysis
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 ssaIds.Remove(phi);
                 return sid;
+            }
+
+            private void UsePhiArguments(SsaIdentifier phi, PhiFunction phiFunc)
+            {
+                foreach (Identifier id in phiFunc.Arguments)
+                {
+                    ssaIds[id].Uses.Add(phi.DefStatement);
+                }
             }
 
             private SsaIdentifier NewDefInstruction(Identifier id, Block b)

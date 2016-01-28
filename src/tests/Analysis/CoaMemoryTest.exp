@@ -23,7 +23,6 @@ si:si
     def:  def si
     uses: Mem10[ds:si + 0x04D4:word16] = si + 0x0002
           Mem10[ds:si + 0x04D4:word16] = si + 0x0002
-          Mem10[ds:si + 0x04D4:word16] = si + 0x0002
 bx_9: orig: bx
 Mem10: orig: Mem0
     def:  Mem10[ds:si + 0x04D4:word16] = si + 0x0002

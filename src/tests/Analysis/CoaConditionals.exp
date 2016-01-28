@@ -82,7 +82,6 @@ bp:bp
     uses: branch bp < 0x0010 l0C00_005F
           branch !OVERFLOW((bp - 0x0010) * 0x0002) l0C00_0068
           Mem63[ss:bp - 0x000A:byte] = 0x01
-          Mem63[ss:bp - 0x000A:byte] = 0x01
 bp_48: orig: bp
 SCZO_49: orig: SCZO
 Z_50: orig: Z

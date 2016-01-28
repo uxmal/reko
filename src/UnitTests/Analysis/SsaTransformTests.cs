@@ -43,7 +43,6 @@ namespace Reko.UnitTests.Analysis
     public class SsaTransformTests
     {
         private ProgramBuilder pb;
-        private ProgramDataFlow programFlow;
         private DataFlow2 programFlow2;
         private bool addUseInstructions;
 
@@ -51,7 +50,6 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.pb = new ProgramBuilder();
-            this.programFlow = new ProgramDataFlow();
             this.programFlow2 = new DataFlow2();
             this.addUseInstructions = false;
         }
@@ -62,11 +60,12 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
-            var ssa = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
-            ssa.AddUseInstructions = addUseInstructions;
-            ssa.Transform();
+            var sst = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
+            sst.AddUseInstructions = addUseInstructions;
+            sst.Transform();
 
             var writer = new StringWriter();
+            sst.SsaState.Write(writer);
             proc.Write(false, writer);
             var sActual = writer.ToString();
             if (sActual != sExp)
@@ -103,6 +102,7 @@ namespace Reko.UnitTests.Analysis
             sst.Transform();
 
             var writer = new StringWriter();
+            sst.SsaState.Write(writer);
             proc.Write(false, writer);
             var sActual = writer.ToString();
             if (sActual != sExp)
@@ -114,7 +114,17 @@ namespace Reko.UnitTests.Analysis
         public void SsaSimple()
         {
             var sExp =
-@"// ProcedureBuilder
+            #region Expected
+@"r1:r1
+    def:  def r1
+    uses: r1_2 = r1 + r2
+r2:r2
+    def:  def r2
+    uses: r1_2 = r1 + r2
+r1_2: orig: r1
+    def:  r1_2 = r1 + r2
+    uses: use r1_2
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -128,6 +138,8 @@ l1:
 ProcedureBuilder_exit:
 	use r1_2
 ";
+            #endregion
+
             addUseInstructions = true;
             RunTest(sExp, m =>
             {
@@ -141,7 +153,54 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaStackLocals()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp = @"fp:fp
+    def:  def fp
+    uses: r63_1 = fp
+          r63_2 = fp - 0x00000004
+          r63_5 = fp - 0x00000008
+r63_1: orig: r63
+    def:  r63_1 = fp
+r63_2: orig: r63
+    def:  r63_2 = fp - 0x00000004
+r1:r1
+    def:  def r1
+    uses: dwLoc04_12 = r1
+Mem4: orig: Mem0
+    def:  dwLoc04_12 = r1
+r63_5: orig: r63
+    def:  r63_5 = fp - 0x00000008
+    uses: use r63_5
+r2:r2
+    def:  def r2
+    uses: dwLoc08_13 = r2
+Mem7: orig: Mem0
+    def:  dwLoc08_13 = r2
+    uses: r1_8 = dwLoc04_12
+          r2_9 = dwLoc08_13
+r1_8: orig: r1
+    def:  r1_8 = dwLoc04_12
+    uses: r1_10 = r1_8 + r2_9
+r2_9: orig: r2
+    def:  r2_9 = dwLoc08_13
+    uses: r1_10 = r1_8 + r2_9
+          use r2_9
+r1_10: orig: r1
+    def:  r1_10 = r1_8 + r2_9
+    uses: Mem14[0x00010008:word32] = r1_10
+          use r1_10
+Mem11: orig: Mem0
+    def:  Mem14[0x00010008:word32] = r1_10
+dwLoc04_12: orig: dwLoc04
+    def:  dwLoc04_12 = r1
+    uses: r1_8 = dwLoc04_12
+          use dwLoc04_12
+dwLoc08_13: orig: dwLoc08
+    def:  dwLoc08_13 = r2
+    uses: r2_9 = dwLoc08_13
+          use dwLoc08_13
+Mem14: orig: Mem11
+    def:  Mem14[0x00010008:word32] = r1_10
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -190,7 +249,54 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaDiamond()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+    uses: r63_1 = fp
+          r63_2 = fp - 0x00000004
+          bp_5 = fp - 0x00000004
+          r63_13 = fp
+r63_1: orig: r63
+    def:  r63_1 = fp
+r63_2: orig: r63
+    def:  r63_2 = fp - 0x00000004
+bp:bp
+    def:  def bp
+    uses: dwLoc04_14 = bp
+Mem4: orig: Mem0
+    def:  dwLoc04_14 = bp
+    uses: CZS_6 = cond(wArg04 - 0x0003)
+          bp_11 = dwLoc04_14
+bp_5: orig: bp
+    def:  bp_5 = fp - 0x00000004
+CZS_6: orig: CZS
+    def:  CZS_6 = cond(wArg04 - 0x0003)
+    uses: branch Test(GE,CZS_6) ge3
+          use CZS_6
+r1_7: orig: r1
+    def:  r1_7 = 0x00000001
+    uses: r1_19 = PHI(r1_8, r1_7)
+r1_8: orig: r1
+    def:  r1_8 = 0x00000000
+    uses: r1_19 = PHI(r1_8, r1_7)
+bp_11: orig: bp
+    def:  bp_11 = dwLoc04_14
+    uses: use bp_11
+r63_13: orig: r63
+    def:  r63_13 = fp
+    uses: use r63_13
+dwLoc04_14: orig: dwLoc04
+    def:  dwLoc04_14 = bp
+    uses: bp_11 = dwLoc04_14
+          use dwLoc04_14
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: CZS_6 = cond(wArg04 - 0x0003)
+r1_19: orig: r1
+    def:  r1_19 = PHI(r1_8, r1_7)
+    uses: use r1_19
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -228,6 +334,8 @@ ProcedureBuilder_exit:
 	use r1_19
 	use r63_13
 ";
+            #endregion
+
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
@@ -257,9 +365,71 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void SsarDiamondFrame()
+        public void SsaDiamondFrame()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp = @"fp:fp
+    def:  def fp
+    uses: r63_1 = fp
+          r63_2 = fp - 0x00000004
+          bp_5 = fp - 0x00000004
+          r63_14 = fp
+r63_1: orig: r63
+    def:  r63_1 = fp
+r63_2: orig: r63
+    def:  r63_2 = fp - 0x00000004
+bp:bp
+    def:  def bp
+    uses: dwLoc04_15 = bp
+Mem4: orig: Mem0
+    def:  dwLoc04_15 = bp
+    uses: CZS_6 = wArg04 - 0x0003
+bp_5: orig: bp
+    def:  bp_5 = fp - 0x00000004
+CZS_6: orig: CZS
+    def:  CZS_6 = wArg04 - 0x0003
+    uses: branch Test(GE,CZS_6) ge3
+          use CZS_6
+Mem7: orig: Mem0
+    def:  wArg04_17 = -3
+    uses: Mem11 = PHI(Mem9, Mem7)
+r1_8: orig: r1
+    def:  r1_8 = 0x00000001
+    uses: r1_22 = PHI(r1, r1_8)
+Mem9: orig: Mem0
+    def:  wArg04_18 = 0x0003
+    uses: Mem11 = PHI(Mem9, Mem7)
+Mem11: orig: Mem0
+    def:  Mem11 = PHI(Mem9, Mem7)
+    uses: bp_12 = dwLoc04_15
+bp_12: orig: bp
+    def:  bp_12 = dwLoc04_15
+    uses: use bp_12
+r63_14: orig: r63
+    def:  r63_14 = fp
+    uses: use r63_14
+dwLoc04_15: orig: dwLoc04
+    def:  dwLoc04_15 = bp
+    uses: bp_12 = dwLoc04_15
+          use dwLoc04_15
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: CZS_6 = wArg04 - 0x0003
+wArg04_17: orig: wArg04
+    def:  wArg04_17 = -3
+    uses: wArg04_24 = PHI(wArg04_18, wArg04_17)
+wArg04_18: orig: wArg04
+    def:  wArg04_18 = 0x0003
+    uses: wArg04_24 = PHI(wArg04_18, wArg04_17)
+r1_22: orig: r1
+    def:  r1_22 = PHI(r1, r1_8)
+    uses: use r1_22
+r1:r1
+    def:  def r1
+    uses: r1_22 = PHI(r1, r1_8)
+wArg04_24: orig: wArg04
+    def:  wArg04_24 = PHI(wArg04_18, wArg04_17)
+    uses: use wArg04_24
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -344,7 +514,20 @@ ProcedureBuilder_exit:
             var procSubFlow = new ProcedureFlow2 { Trashed = { r1_ } };
             programFlow2.ProcedureFlows.Add(procSub, procSubFlow);
 
-            var sExp = @"// ProcedureBuilder
+            var sExp =
+            #region Expected
+@"r1_0: orig: r1
+    def:  r1_0 = 0x00000003
+r2_1: orig: r2
+    def:  r2_1 = 0x00000004
+    uses: use r2_1
+r1_2: orig: r1
+    def:  call Adder (retsize: 4;)	defs: r1_2
+    uses: Mem3[0x00012300:word32] = r1_2
+          use r1_2
+Mem3: orig: Mem0
+    def:  Mem3[0x00012300:word32] = r1_2
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -361,6 +544,8 @@ ProcedureBuilder_exit:
 	use r1_2
 	use r2_1
 ";
+            #endregion
+
             addUseInstructions = true;
             RunTest(sExp, m =>
             {
@@ -375,9 +560,77 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        public void SsarLocaldiamond()
+        public void SsaLocaldiamond()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+    uses: r63_1 = fp
+          r63_2 = fp - 0x00000004
+          bp_5 = fp - 0x00000004
+          r63_17 = fp
+r63_1: orig: r63
+    def:  r63_1 = fp
+r63_2: orig: r63
+    def:  r63_2 = fp - 0x00000004
+bp:bp
+    def:  def bp
+    uses: dwLoc04_18 = bp
+Mem4: orig: Mem0
+    def:  dwLoc04_18 = bp
+bp_5: orig: bp
+    def:  bp_5 = fp - 0x00000004
+Mem6: orig: Mem0
+    def:  dwLoc0C_19 = 0x00000000
+    uses: CZS_7 = wArg04 - 0x0003
+CZS_7: orig: CZS
+    def:  CZS_7 = wArg04 - 0x0003
+    uses: branch Test(GE,CZS_7) ge3
+          use CZS_7
+r1:r1
+    def:  def r1
+    uses: dwLoc0C_21 = r1
+          dwLoc0C_22 = r1
+Mem9: orig: Mem0
+    def:  dwLoc0C_21 = r1
+    uses: Mem12 = PHI(Mem10, Mem9)
+Mem10: orig: Mem0
+    def:  dwLoc0C_22 = r1
+    uses: Mem12 = PHI(Mem10, Mem9)
+Mem12: orig: Mem0
+    def:  Mem12 = PHI(Mem10, Mem9)
+    uses: r1_13 = dwLoc0C_23
+          bp_16 = dwLoc04_18
+r1_13: orig: r1
+    def:  r1_13 = dwLoc0C_23
+    uses: use r1_13
+bp_16: orig: bp
+    def:  bp_16 = dwLoc04_18
+    uses: use bp_16
+r63_17: orig: r63
+    def:  r63_17 = fp
+    uses: use r63_17
+dwLoc04_18: orig: dwLoc04
+    def:  dwLoc04_18 = bp
+    uses: bp_16 = dwLoc04_18
+          use dwLoc04_18
+dwLoc0C_19: orig: dwLoc0C
+    def:  dwLoc0C_19 = 0x00000000
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: CZS_7 = wArg04 - 0x0003
+dwLoc0C_21: orig: dwLoc0C
+    def:  dwLoc0C_21 = r1
+    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
+dwLoc0C_22: orig: dwLoc0C
+    def:  dwLoc0C_22 = r1
+    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
+dwLoc0C_23: orig: dwLoc0C
+    def:  dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
+    uses: r1_13 = dwLoc0C_23
+          use dwLoc0C_23
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -420,6 +673,8 @@ ProcedureBuilder_exit:
 	use r1_13
 	use r63_17
 ";
+            #endregion
+
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
@@ -453,7 +708,22 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaFlagRegisters()
         {
-            var sExp = @"// ProcedureBuilder
+
+            var sExp =
+            #region Expected
+@"esi:esi
+    def:  def esi
+    uses: SZ_1 = cond(esi & esi)
+          SZ_1 = cond(esi & esi)
+SZ_1: orig: SZ
+    def:  SZ_1 = cond(esi & esi)
+    uses: al_3 = Test(ULE,C_2 | SZ_1)
+C_2: orig: C
+    def:  C_2 = false
+    uses: al_3 = Test(ULE,C_2 | SZ_1)
+al_3: orig: al
+    def:  al_3 = Test(ULE,C_2 | SZ_1)
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -467,6 +737,8 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
+            #endregion
+
             RunTest(sExp, m =>
             {
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
@@ -485,7 +757,34 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaHellNode()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp =
+            #region Expected
+@"r1:r1
+    def:  def r1
+    uses: branch r1 true
+          call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+r2_1: orig: r2
+    def:  r2_1 = 0x00000010
+    uses: r2_4 = PHI(r2, r2_1)
+r1_3: orig: r1
+    def:  call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+    uses: use r1_3
+r2_4: orig: r2
+    def:  r2_4 = PHI(r2, r2_1)
+    uses: call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+r2:r2
+    def:  def r2
+    uses: r2_4 = PHI(r2, r2_1)
+r2_6: orig: r2
+    def:  call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+    uses: use r2_6
+r3_9: orig: r3
+    def:  call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+    uses: use r3_9
+r3:r3
+    def:  def r3
+    uses: call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -511,6 +810,8 @@ ProcedureBuilder_exit:
 	use r2_6
 	use r3_9
 ";
+            #endregion
+
             RunTest_FrameAccesses(sExp, m =>
             {
                 var r1 = m.Register("r1");
@@ -529,7 +830,76 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-               @"// ProcedureBuilder
+@"fp:fp
+    def:  def fp
+    uses: r63_1 = fp
+          r63_6 = fp - 0x00000004
+r63_1: orig: r63
+    def:  r63_1 = fp
+    uses: r63_20 = PHI(r63_13, r63_1)
+Mem0:Global memory
+    def:  def Mem0
+    uses: r4_3 = dwArg04
+          r4_5 = Mem0[r4_3 + 0x00000004:word32]
+r4_3: orig: r4
+    def:  r4_3 = dwArg04
+    uses: branch r4_3 == 0x00000000 m1Base
+          r4_5 = Mem0[r4_3 + 0x00000004:word32]
+r4_4: orig: r4
+    def:  r4_4 = 0x00000000
+    uses: r4_19 = PHI(r4_12, r4_4)
+r4_5: orig: r4
+    def:  r4_5 = Mem0[r4_3 + 0x00000004:word32]
+    uses: dwLoc04_15 = r4_5
+          call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+r63_6: orig: r63
+    def:  r63_6 = fp - 0x00000004
+    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+Mem7: orig: Mem0
+    def:  dwLoc04_15 = r4_5
+r63_8: orig: r63
+    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+    uses: r63_13 = r63_8 + 0x00000004
+r3:r3
+    def:  def r3
+    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+          r3_18 = PHI(r3_10, r3)
+r3_10: orig: r3
+    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+    uses: r3_18 = PHI(r3_10, r3)
+r4_11: orig: r4
+    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+    uses: r4_12 = r4_11 + 0x00000001
+r4_12: orig: r4
+    def:  r4_12 = r4_11 + 0x00000001
+    uses: r4_19 = PHI(r4_12, r4_4)
+r63_13: orig: r63
+    def:  r63_13 = r63_8 + 0x00000004
+    uses: r63_20 = PHI(r63_13, r63_1)
+dwArg04:Stack +0004
+    def:  def dwArg04
+    uses: r4_3 = dwArg04
+          call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+dwLoc04_15: orig: dwLoc04
+    def:  dwLoc04_15 = r4_5
+    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
+          dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
+dwLoc04_16: orig: dwLoc04
+    def:  dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
+    uses: use dwLoc04_16
+dwLoc04:Local -0004
+    def:  def dwLoc04
+    uses: dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
+r3_18: orig: r3
+    def:  r3_18 = PHI(r3_10, r3)
+    uses: use r3_18
+r4_19: orig: r4
+    def:  r4_19 = PHI(r4_12, r4_4)
+    uses: use r4_19
+r63_20: orig: r63
+    def:  r63_20 = PHI(r63_13, r63_1)
+    uses: use r63_20
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -603,7 +973,14 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaSimple_DefUse()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp =
+            #region Expected
+@"a_0: orig: a
+    def:  a_0 = 0x00000003
+    uses: b_1 = a_0
+b_1: orig: b
+    def:  b_1 = a_0
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -615,6 +992,8 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
+            #endregion
+
             RunTest(sExp, m =>
             {
                 var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
@@ -630,7 +1009,14 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaUseUndefined()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp =
+            #region Expected
+@"a:a
+    def:  def a
+    uses: Mem1[0x00123400:word32] = a
+Mem1: orig: Mem0
+    def:  Mem1[0x00123400:word32] = a
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -642,6 +1028,8 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
+            #endregion
+
             this.addUseInstructions = true;
             RunTest(sExp, m =>
             {
@@ -654,7 +1042,22 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaIfThen()
         {
-            var sExp = @"// ProcedureBuilder
+            
+            var sExp =
+            #region Expected
+                @"a:a
+    def:  def a
+    uses: branch a == 0x00000000 m_2
+b_1: orig: b
+    def:  b_1 = 0xFFFFFFFF
+    uses: b_2 = PHI(b, b_1)
+b_2: orig: b
+    def:  b_2 = PHI(b, b_1)
+    uses: return b_2
+b:b
+    def:  def b
+    uses: b_2 = PHI(b, b_1)
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -673,6 +1076,8 @@ m_2:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
+            #endregion
+
             RunTest(sExp, m =>
             {
                 var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
@@ -691,7 +1096,23 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaRegisterAlias()
         {
-            var sExp = @"// ProcedureBuilder
+            var sExp =
+            #region Expected
+@"eax:eax
+    def:  def eax
+    uses: eax_2 = Mem0[eax:word32]
+Mem0:Global memory
+    def:  def Mem0
+    uses: eax_2 = Mem0[eax:word32]
+eax_2: orig: eax
+    def:  eax_2 = Mem0[eax:word32]
+    uses: ah_3 = SLICE(eax_2, byte, 8) (alias)
+ah_3: orig: ah
+    def:  ah_3 = SLICE(eax_2, byte, 8) (alias)
+    uses: Mem4[0x00001234:byte] = ah_3
+Mem4: orig: Mem0
+    def:  Mem4[0x00001234:byte] = ah_3
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -706,6 +1127,8 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
+            #endregion
+
             RunTest(sExp, m =>
             {
                 var regEax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
@@ -723,7 +1146,27 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"// ProcedureBuilder
+@"Mem0:Global memory
+    def:  def Mem0
+    uses: ecx_1 = Mem0[0x00542300:word32]
+          branch Mem0[0x00010042:bool] mBranch2
+ecx_1: orig: ecx
+    def:  ecx_1 = Mem0[0x00542300:word32]
+    uses: ecx_4 = DPB(ecx_1, cl_3, 0) (alias)
+ecx_2: orig: ecx
+    def:  ecx_2 = 0x00000020
+    uses: ecx_5 = PHI(ecx_4, ecx_2)
+cl_3: orig: cl
+    def:  cl_3 = 0x2A
+ecx_4: orig: ecx
+    def:  ecx_4 = DPB(ecx_1, cl_3, 0) (alias)
+    uses: ecx_5 = PHI(ecx_4, ecx_2)
+ecx_5: orig: ecx
+    def:  ecx_5 = PHI(ecx_4, ecx_2)
+    uses: Mem6[0x00010232:word32] = ecx_5
+Mem6: orig: Mem0
+    def:  Mem6[0x00010232:word32] = ecx_5
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -774,7 +1217,22 @@ ProcedureBuilder_exit:
         public void SsaManyAssignments()
         {
             var sExp =
-            #region Expected@"// ProcedureBuilder
+            #region Expected@"Mem0:Global memory
+    def:  def Mem0
+    uses: eax_1 = Mem0[0x00543200:word32]
+          edx_2 = Mem0[0x00543208:word32]
+eax_1: orig: eax
+    def:  eax_1 = Mem0[0x00543200:word32]
+    uses: eax_3 = eax_1 + edx_2
+edx_2: orig: edx
+    def:  edx_2 = Mem0[0x00543208:word32]
+    uses: eax_3 = eax_1 + edx_2
+eax_3: orig: eax
+    def:  eax_3 = eax_1 + edx_2
+    uses: Mem4[0x00642300:word32] = eax_3
+Mem4: orig: Mem0
+    def:  Mem4[0x00642300:word32] = eax_3
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -808,7 +1266,27 @@ ProcedureBuilder_exit:
         public void SsaManyAssignmentsWithAliases()
         {
             var sExp =
-            #region Expected@"// ProcedureBuilder
+            #region Expected@"Mem0:Global memory
+    def:  def Mem0
+    uses: edx_1 = Mem0[0x00543200:word32]
+edx_1: orig: edx
+    def:  edx_1 = Mem0[0x00543200:word32]
+    uses: dl_2 = (byte) edx_1 (alias)
+dl_2: orig: dl
+    def:  dl_2 = (byte) edx_1 (alias)
+    uses: Mem3[0x00642300:byte] = dl_2
+Mem3: orig: Mem0
+    def:  Mem3[0x00642300:byte] = dl_2
+    uses: edx_4 = Mem3[0x00543208:word32]
+edx_4: orig: edx
+    def:  edx_4 = Mem3[0x00543208:word32]
+    uses: dl_5 = (byte) edx_4 (alias)
+dl_5: orig: dl
+    def:  dl_5 = (byte) edx_4 (alias)
+    uses: Mem6[0x00642308:byte] = dl_5
+Mem6: orig: Mem0
+    def:  Mem6[0x00642308:byte] = dl_5
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -844,8 +1322,18 @@ ProcedureBuilder_exit:
         public void SsaOutArgs()
         {
             var sExp =
-                #region Expected
-@"// ProcedureBuilder
+            #region Expected
+@"ebx:ebx
+    def:  def ebx
+    uses: C_2 = os_service(ebx, out ebx_1)
+ebx_1: orig: ebx
+    def:  C_2 = os_service(ebx, out ebx_1)
+    uses: Mem3[0x00123400:word32] = ebx_1
+C_2: orig: C
+    def:  C_2 = os_service(ebx, out ebx_1)
+Mem3: orig: Mem0
+    def:  Mem3[0x00123400:word32] = ebx_1
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -877,7 +1365,31 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-                @"// ProcedureBuilder
+@"es:es
+    def:  def es
+    uses: es_bx_3 = Mem0[es:bx:word32]
+bx:bx
+    def:  def bx
+    uses: es_bx_3 = Mem0[es:bx:word32]
+Mem0:Global memory
+    def:  def Mem0
+    uses: es_bx_3 = Mem0[es:bx:word32]
+          bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
+es_bx_3: orig: es_bx
+    def:  es_bx_3 = Mem0[es:bx:word32]
+    uses: es_4 = SLICE(es_bx_3, word16, 16) (alias)
+          bx_5 = (word16) es_bx_3 (alias)
+es_4: orig: es
+    def:  es_4 = SLICE(es_bx_3, word16, 16) (alias)
+    uses: bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
+          use es_4
+bx_5: orig: bx
+    def:  bx_5 = (word16) es_bx_3 (alias)
+    uses: bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
+bx_6: orig: bx
+    def:  bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
+    uses: use bx_6
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -915,7 +1427,24 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"// ProcedureBuilder
+@"eax:eax
+    def:  def eax
+    uses: eax_2 = Mem0[eax:word32]
+Mem0:Global memory
+    def:  def Mem0
+    uses: eax_2 = Mem0[eax:word32]
+eax_2: orig: eax
+    def:  eax_2 = Mem0[eax:word32]
+    uses: al_3 = (byte) eax_2 (alias)
+al_3: orig: al
+    def:  al_3 = (byte) eax_2 (alias)
+    uses: Mem4[0x00123100:byte] = al_3
+          Mem5[0x00123108:byte] = al_3
+Mem4: orig: Mem0
+    def:  Mem4[0x00123100:byte] = al_3
+Mem5: orig: Mem0
+    def:  Mem5[0x00123108:byte] = al_3
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -947,7 +1476,33 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-                @"// ProcedureBuilder
+@"eax_0: orig: eax
+    def:  eax_0 = 0x00000000
+    uses: eax_3 = PHI(eax_0, eax_5)
+ebx_1: orig: ebx
+    def:  ebx_1 = PHI(ebx, ebx_6)
+    uses: SCZ_2 = cond(ebx_1 - 0x00000000)
+          eax_5 = eax_3 + Mem4[ebx_1:word32]
+          ebx_6 = Mem4[ebx_1 + 0x00000004:word32]
+SCZ_2: orig: SCZ
+    def:  SCZ_2 = cond(ebx_1 - 0x00000000)
+    uses: branch Test(NE,SCZ_2) l2Body
+eax_3: orig: eax
+    def:  eax_3 = PHI(eax_0, eax_5)
+    uses: eax_5 = eax_3 + Mem4[ebx_1:word32]
+          return eax_3
+eax_5: orig: eax
+    def:  eax_5 = eax_3 + Mem4[ebx_1:word32]
+    uses: eax_3 = PHI(eax_0, eax_5)
+ebx_6: orig: ebx
+    def:  ebx_6 = Mem4[ebx_1 + 0x00000004:word32]
+    uses: ebx_1 = PHI(ebx, ebx_6)
+ebx:ebx
+    def:  def ebx
+    uses: ebx_1 = PHI(ebx, ebx_6)
+Mem0:Global memory
+    def:  def Mem0
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -1003,7 +1558,33 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"// ProcedureBuilder
+@"Mem0:Global memory
+    def:  def Mem0
+    uses: cx_1 = Mem0[0x1234:word16]
+cx_1: orig: cx
+    def:  cx_1 = Mem0[0x1234:word16]
+    uses: Mem6[0x00001236:word16] = cx_1
+Mem2: orig: Mem0
+    def:  Mem6[0x00001236:word16] = cx_1
+    uses: es_cx_3 = Mem2[0x00001238:word32]
+es_cx_3: orig: es_cx
+    def:  es_cx_3 = Mem2[0x00001238:word32]
+    uses: es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
+cl_4: orig: cl
+    def:  cl_4 = 0x2D
+    uses: use cl_4
+es_cx_5: orig: es_cx
+    def:  es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
+    uses: cx_7 = (word16) es_cx_5 (alias)
+Mem6: orig: Mem2
+    def:  Mem6[0x00001236:word16] = cx_1
+cx_7: orig: cx
+    def:  cx_7 = (word16) es_cx_5 (alias)
+    uses: cx_8 = DPB(cx_7, cl_4, 0) (alias)
+cx_8: orig: cx
+    def:  cx_8 = DPB(cx_7, cl_4, 0) (alias)
+    uses: use cx_8
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
@@ -1016,7 +1597,7 @@ m0:
 	cl_4 = 0x2D
 	es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
 	cx_7 = (word16) es_cx_5 (alias)
-	cx_8 = DPB(cx, cl_4, 0) (alias)
+	cx_8 = DPB(cx_7, cl_4, 0) (alias)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
