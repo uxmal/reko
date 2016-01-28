@@ -801,8 +801,6 @@ namespace Reko.Analysis
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
                 this.block = b;
-                Debug.Print("SsaTransform2: Processing {0}", block.Name);
-                block.Dump();
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;
@@ -1250,33 +1248,37 @@ namespace Reko.Analysis
             /// <returns></returns>
             public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                SsaIdentifier alias = sid;
+                SsaIdentifier sidPrev = sid;
                 if (performProbe)
                 {
                     // Did a previous SSA id modify the same storage as id?
-                    alias = ReadVariable(bs, performProbe);
-                    if (alias != null)
+                    sidPrev = ReadVariable(bs, performProbe);
+                    if (sidPrev != null)
                     {
                         // Was the previous modification larger than this modification?
-                        if (alias.Identifier.Storage.Exceeds(id.Storage))
+                        if (sidPrev.Identifier.Storage.Exceeds(id.Storage))
                         {
                             // Generate a DPB so the previous modification "shines
                             // through".
-                            var dpb = new DepositBits(alias.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
-                            var ass = new AliasAssignment(alias.OriginalIdentifier, dpb);
-                            alias = InsertAfterDefinition(sid.DefStatement, ass);
+                            var dpb = new DepositBits(sidPrev.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
+                            var ass = new AliasAssignment(sidPrev.OriginalIdentifier, dpb);
+                            sidPrev = InsertAfterDefinition(sid.DefStatement, ass);
+                            var alias = new AliasState(sidPrev);
+                            alias.Aliases.Add(id, sid);
+                            bs.currentDef[id.Storage.Domain] = alias;
+                            return sid.Identifier;
                         }
                         else
                         {
-                            alias = sid;
+                            sidPrev = sid;
                         }
                     }
                     else
                     {
-                        alias = sid;
+                        sidPrev = sid;
                     }
                 }
-                bs.currentDef[id.Storage.Domain] = new AliasState(alias);
+                bs.currentDef[id.Storage.Domain] = new AliasState(sidPrev);
                 return sid.Identifier;
             }
 

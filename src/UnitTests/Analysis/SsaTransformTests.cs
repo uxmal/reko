@@ -93,6 +93,8 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
+            sst.SsaState.DebugDump(true);
+
             var vp = new ValuePropagator(this.pb.Program.Architecture, sst.SsaState);
             vp.Transform();
 
@@ -999,7 +1001,29 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaAliasedSequence()
         {
-            var sExp = "@@@";
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  m0
+m0:
+	cx_1 = Mem0[0x1234:word16]
+	Mem6[0x00001236:word16] = cx_1
+	es_cx_3 = Mem2[0x00001238:word32]
+	cl_4 = 0x2D
+	es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
+	cx_7 = (word16) es_cx_5 (alias)
+	cx_8 = DPB(cx, cl_4, 0) (alias)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use cl_4
+	use cx_8
+";
+            #endregion
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -1013,6 +1037,31 @@ ProcedureBuilder_exit:
                 m.Store(m.Word32(0x1236), cx);
                 m.Assign(es_cx, m.LoadDw(m.Word32(0x1238)));
                 m.Assign(cl, m.Byte(45));
+                m.Return();
+            });
+        }
+
+        [Test(Description = "A variable carried around uselessly in a loop.")]
+        public void SsaLoopCarriedVariable()
+        {
+            var sExp =
+            #region Expected
+                @"@@@";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+
+                m.Label("m0");
+                m.BranchIf(m.Eq0(r1), "m3done");
+
+                m.Label("m1notdone");
+                m.Assign(r1, m.IAdd(r1, m.LoadDw(r2)));
+                m.Goto("m0");
+
+                m.Label("m3done");
                 m.Return();
             });
         }
