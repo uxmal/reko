@@ -692,6 +692,8 @@ namespace Reko.Typing
 
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
+            unary.Expression.Accept(this, unary.Expression.TypeVariable);
+            return false;
             throw new NotImplementedException();
         }
     }

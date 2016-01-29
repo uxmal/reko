@@ -323,7 +323,8 @@ namespace Reko.Typing
 
         public DataType VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            var dt = unary.Expression.Accept(this);
+            return RecordDataType(dt, unary);
         }
     }
 }

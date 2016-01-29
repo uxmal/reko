@@ -725,9 +725,10 @@ namespace Reko.Scanning
                     throw new NotImplementedException();
                 Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
-            program.ImageMap.AddItem(
+            program.ImageMap.AddItemWithSize(
                 bw.VectorAddress,
                 new ImageMapVectorTable(
+                    bw.VectorAddress,
                     vector.ToArray(),
                     builder.TableByteSize));
             return true;

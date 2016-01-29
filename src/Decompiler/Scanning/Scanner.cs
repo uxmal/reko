@@ -474,7 +474,10 @@ namespace Reko.Scanning
             Address addr;
             if (!program.Architecture.TryParseAddress(sp.Address, out addr))
                 return;
-            var proc = EnsureProcedure(addr, sp.Name);
+            Procedure proc;
+            if (program.Procedures.TryGetValue(addr, out proc))
+                return; // Already scanned. Do nothing.
+            proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
                 var sser = program.CreateProcedureSerializer();

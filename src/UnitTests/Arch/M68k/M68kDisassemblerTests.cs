@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.M68k
 
         private IEnumerator<M68kInstruction> CreateDasm(params ushort[] words)
         {
-            byte[] bytes = words.SelectMany(w => new byte[] { (byte) (w >> 8), (byte) w }).ToArray();
+            byte[] bytes = words.SelectMany(w => new byte[] { (byte)(w >> 8), (byte)w }).ToArray();
             return CreateDasm(bytes, 0x10000000);
         }
 
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_Lea()
         {
-            RunTest ("lea\t$0004(a7),a1", 0x43EF, 0x0004);
+            RunTest("lea\t$0004(a7),a1", 0x43EF, 0x0004);
         }
 
         [Test]
@@ -665,13 +665,19 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_address_mode()
         {
-            RunTest("move.l\t(-04,a2,d0*2),d2", 0x2432, 0x04fc); 
+            RunTest("move.l\t(-04,a2,d0*2),d2", 0x2432, 0x04fc);
         }
 
         [Test]
         public void M68kdis_movem()
         {
             RunTest("movem.w\t$0004000A,d0-d1", 0x4CB9, 0x0003, 0x0004, 0x000A);    // move.l\t(-04,a2,d0*2),d2",
+        }
+
+        [Test]
+        public void M68kdis_move_addr()
+        {
+            RunTest("move.l\td0,$00FF0F08", 0x23C0, 0x00FF, 0x0F08);    // move.l d0,(dword_FF0F08).l
         }
     }
 }
