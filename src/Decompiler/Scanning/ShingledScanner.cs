@@ -143,22 +143,15 @@ namespace Reko.Scanning
             var targetMap = program.ImageMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
             foreach (var seg in program.ImageMap.Segments.Values)
             {
-                uint ptrAlignment = 4;  //$TODO: platform dependent.
-                var addr = seg.Address;
-                for (uint offset = 0; offset <= seg.ContentSize - 4; offset += ptrAlignment, addr += ptrAlignment)
+                foreach (var pointer in GetPossiblePointers(seg))
                 {
-                    var pointer = program.Image.ReadLeUInt32(addr);     //$TODO: platform dep.
-                    if (program.Image.IsValidLinearAddress(pointer))
+                    ImageMapSegment segPointee;
+                    if (program.ImageMap.TryFindSegment(pointer, out segPointee))
                     {
-                        var addrPointee = program.ImageMap.MapLinearAddressToAddress(pointer);
-                        ImageMapSegment segPointee;
-                        if (program.ImageMap.TryFindSegment(addrPointee, out segPointee))
-                        {
-                            int segOffset = (int)(addrPointee - segPointee.Address);
-                            var hits = targetMap[segPointee][segOffset];
-                            if (hits < 255)    // Not saturated!
-                                targetMap[segPointee][segOffset] = (byte)(hits + 1);
-                        }
+                        int segOffset = (int)(pointer - segPointee.Address);
+                        var hits = targetMap[segPointee][segOffset];
+                        if (hits < 255)    // Not saturated!
+                            targetMap[segPointee][segOffset] = (byte)(hits + 1);
                     }
                 }
             }
