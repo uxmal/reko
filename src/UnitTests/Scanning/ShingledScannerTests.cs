@@ -143,12 +143,51 @@ namespace Reko.UnitTests.Scanning
                 0x55, 0x5B, 0xC3, 0x00,     // Actual code
                 0x04, 0x00, 0x01, 0x00);     // Pointer to code
             Given_Scanner();
-            var by = sh.ScanExecutableSegments();
-            var pointedTo = sh.GetPossiblePointerTargets(by);
+            var pointedTo = sh.GetPossiblePointerTargets();
             Assert.AreEqual(new byte[] {
                     0, 0, 0, 0,
                     1, 0, 0, 0,
                     0, 0, 0, 0,
+                },
+                pointedTo.Values.First());
+        }
+
+        [Test]
+        public void Shsc_FindPossibleMultiplePointersToCode()
+        {
+            Given_x86_Image(
+                0x90, 0x90, 0x90, 0x90,     // Padding
+                0x55, 0x5B, 0xC3, 0x00,     // Actual code
+                0x04, 0x00, 0x01, 0x00,     // Pointer to code
+                0x04, 0x00, 0x01, 0x00);    // Another pointer to code
+            Given_Scanner();
+            var by = sh.ScanExecutableSegments();
+            var pointedTo = sh.GetPossiblePointerTargets();
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0,
+                    2, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                },
+                pointedTo.Values.First());
+        }
+
+        [Test]
+        public void Shsc_FindPossiblePointersToEndOfSegment()
+        {
+            Given_x86_Image(
+                0x0F, 0x00, 0x01, 0x00,     // Pointer to last byte in segment
+                0x0F, 0x00, 0x01, 0x00,     // Pointer to last byte in segment
+                0x0F, 0x00, 0x01, 0x00,     // Pointer to last byte in segment
+                0xCC, 0xCC, 0xCC, 0xC3);    // Another pointer to code
+            Given_Scanner();
+            var by = sh.ScanExecutableSegments();
+            var pointedTo = sh.GetPossiblePointerTargets(by);
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 3,
                 },
                 pointedTo.Values.First());
         }

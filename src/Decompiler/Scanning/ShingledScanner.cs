@@ -138,7 +138,7 @@ namespace Reko.Scanning
             return r is RtlGoto || r is RtlCall;
         }
 
-        public Dictionary<ImageMapSegment, byte[]> GetPossiblePointerTargets(Dictionary<ImageMapSegment, byte[]> classification)
+        public Dictionary<ImageMapSegment, byte[]> GetPossiblePointerTargets()
         {
             var targetMap = program.ImageMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
             foreach (var seg in program.ImageMap.Segments.Values)
