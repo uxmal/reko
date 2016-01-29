@@ -37,11 +37,16 @@ namespace Reko.Scanning
 	/// Walks code backwards to find "dominating" comparisons against constants,
 	/// which may provide vector table limits.
 	/// </summary>
+    /// <remarks>
+    /// This is a godawful hack; a proper range analysis would be much
+    /// better. Have a spare few months?
+    /// </remarks>
 	public class Backwalker
 	{
         private IBackWalkHost host;
         private ExpressionSimplifier eval;
-        private bool tableIndirectionSeen = false;
+        private Identifier UsedAsFlag;
+
         private static TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
 
 		public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
@@ -208,6 +213,7 @@ namespace Reko.Scanning
                         IndexExpression = idCof;
                         Index = null;
                         UsedFlagIdentifier = null;
+                        UsedAsFlag = idCof;
                         return true;
                     }
                 }
@@ -222,7 +228,7 @@ namespace Reko.Scanning
                 var regDst = RegisterOf(ass.Dst);
                 if (memSrc != null && 
                     (regDst == Index || 
-                     (regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
+                     (Index != null && regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
                 {
                     // R = Mem[xxx]
                     var rIdx = Index;
@@ -270,6 +276,7 @@ namespace Reko.Scanning
                     Index = regSrc;
                     return true;
                 }
+                UsedAsFlag = null;
                 return true;
             }
 
@@ -279,8 +286,13 @@ namespace Reko.Scanning
                 var cond = bra.Condition as TestCondition;
                 if (cond != null)
                 {
-                    Operations.Add(new BackwalkBranch(cond.ConditionCode));
-                    UsedFlagIdentifier = (Identifier)cond.Expression;
+                    if (cond.ConditionCode == ConditionCode.UGE ||
+                        cond.ConditionCode == ConditionCode.UGT ||
+                        cond.ConditionCode == ConditionCode.GT)
+                    {
+                        Operations.Add(new BackwalkBranch(cond.ConditionCode));
+                        UsedFlagIdentifier = (Identifier)cond.Expression;
+                    }
                 }
                 return true;
             }
@@ -498,9 +510,19 @@ namespace Reko.Scanning
 			
             if (immSrc != null)
 			{
-				Operations.Add(new BackwalkOperation(
-					add ? BackwalkOperator.add : BackwalkOperator.sub,
-					immSrc.ToInt32()));
+                if (!add && UsedAsFlag == IndexExpression)
+                {
+                    Operations.Add(
+                        new BackwalkOperation(
+                            BackwalkOperator.cmp,
+                            immSrc.ToInt32()));
+                }
+                else
+                {
+                    Operations.Add(new BackwalkOperation(
+                        add ? BackwalkOperator.add : BackwalkOperator.sub,
+                        immSrc.ToInt32()));
+                }
 				return regIdx;
 			}
 			else

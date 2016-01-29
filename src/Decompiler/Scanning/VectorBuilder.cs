@@ -85,7 +85,9 @@ namespace Reko.Scanning
                 bw.VectorAddress, 
                 limit, 
                 permutation,
-                bw.Stride == 1 && bw.JumpSize > 1 ? bw.JumpSize : bw.Stride,
+                (bw.Stride == 1 || bw.Stride == 0) && bw.JumpSize > 1 
+                    ? bw.JumpSize 
+                    : bw.Stride,
                 state);
         }
 

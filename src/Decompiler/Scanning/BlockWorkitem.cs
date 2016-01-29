@@ -719,7 +719,7 @@ namespace Reko.Scanning
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
                 Expression swExp = idIndex;
-                if (idIndex.Name == "None")
+                if (idIndex == null || idIndex.Name == "None")
                     swExp = bw.IndexExpression;
                 if (swExp == null)
                     throw new NotImplementedException();

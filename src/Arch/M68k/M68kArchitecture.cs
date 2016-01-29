@@ -136,7 +136,7 @@ namespace Reko.Arch.M68k
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(rdr.ReadBeUInt32());
         }
 
         //$REVIEW: shouldn't this be flaggroup?

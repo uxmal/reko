@@ -26,7 +26,8 @@ using System.Text;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Describes the initial value, stride, and final value of an induction variable.
+	/// Describes the initial value, stride, and final value of an induction
+    /// variable.
 	/// </summary>
 	public class LinearInductionVariable
 	{

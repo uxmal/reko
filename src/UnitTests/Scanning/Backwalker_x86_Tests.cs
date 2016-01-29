@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Scanning
 	[TestFixture]
 	public class Backwalker_x86_Tests
 	{
-        ProcedureBuilder m;
+        private ProcedureBuilder m;
         private IProcessorArchitecture arch;
         private ProcessorState state;
         private ExpressionSimplifier expSimp;
@@ -204,8 +204,10 @@ namespace Reko.UnitTests.Scanning
             var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup(Registers.eflags,(uint)FlagM.CF, "C", PrimitiveType.Byte);
-            Assert.IsFalse(bw.BackwalkInstruction(
-                m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)))), "Encountering this comparison should terminate the backwalk");
+            Assert.IsFalse(
+                bw.BackwalkInstruction(
+                    m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)))),
+                "Encountering this comparison should terminate the backwalk");
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual("cmp 3", bw.Operations[0].ToString());
         }
@@ -389,9 +391,8 @@ namespace Reko.UnitTests.Scanning
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var dl = m.Frame.EnsureRegister(Registers.dl);
-            var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             
-            // cmp [ebp-66],1D                           
+            // cmp [ebp-66],1D
 
             m.Assign(SCZO, m.Cond(m.ISub(m.LoadDw(m.ISub(ebp, 0xC4)), 0x1D)));
             var block0 = m.CurrentBlock;
@@ -406,7 +407,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(eax, m.Cast(PrimitiveType.Word32, m.LoadB(m.IAdd(edx, 0x10000))));
             var block1 = m.CurrentBlock;
 
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd( eax, 0x12000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x12000)), RtlClass.Transfer), expSimp);
             var ret = bw.BackwalkInstructions(Registers.eax, block1);
             Assert.AreEqual("None", bw.Index.ToString());
             Assert.AreEqual("Mem0[ebp - 0x000000C4:word32]", bw.IndexExpression.ToString());
@@ -431,7 +432,7 @@ namespace Reko.UnitTests.Scanning
             result = bw.BackwalkInstruction(m.Block.Statements[1].Instruction);
             result = bw.BackwalkInstruction(m.Block.Statements[0].Instruction);
 
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
             Assert.AreEqual("None", bw.Index.ToString());
         }
 
@@ -453,7 +454,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bw.CanBackwalk());
             Assert.AreEqual("eax", bw.Index.Name);
             bw.BackWalk(m.Block);
-            Assert.AreEqual("None", bw.Index.Name);
+            Assert.IsNull(bw.Index);
         }
 
         [Test]

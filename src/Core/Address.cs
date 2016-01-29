@@ -178,7 +178,6 @@ namespace Reko.Core
 		/// <param name="s">The string representation of the Address</param>
 		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
 		/// <returns></returns>
-
         public static bool TryParse16(string s, out Address result)
         {
             if (s != null)
