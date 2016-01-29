@@ -41,6 +41,6 @@ namespace Reko.Core
         Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress);
         Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress);
 
-        TypeLibrary LoadMetadata(string fileName, IPlatform platform);
+        TypeLibrary LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib);
     }
 }

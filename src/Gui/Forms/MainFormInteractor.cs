@@ -321,8 +321,8 @@ namespace Reko.Gui.Forms
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archOption.Value));
 
-                var envOption = (ListOption) dlg.Platforms.SelectedValue;
-                var envName = (string)envOption.Value;
+                var envOption = (OperatingEnvironment) ((ListOption) dlg.Platforms.SelectedValue).Value;
+                var envName = envOption.Name;
 
                 Address addrBase;
                 var sAddr = dlg.AddressTextBox.Text.Trim();

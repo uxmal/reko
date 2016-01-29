@@ -240,7 +240,7 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
-    <Compile Include="GlobalDataItem_v2.cs" />
+    <Compile Include="Serialization\GlobalDataItem_v2.cs" />
     <Compile Include="IByteSource.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="ILoader.cs" />
@@ -315,7 +315,9 @@
     <Compile Include="Serialization\Project_v3.cs" />
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
+    <Compile Include="Serialization\Project_v4.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
+    <Compile Include="Serialization\SerializedProject.cs" />
     <Compile Include="Serialization\SerializedTemplate.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
     <Compile Include="Serialization\SerializedTypeReference.cs" />
@@ -619,6 +621,7 @@
     <Compile Include="TreeMatching\TreeMatcher.cs" />
     <Compile Include="TypedServiceProvider.cs" />
     <Compile Include="TypeLibraryDeserializer.cs" />
+    <Compile Include="TypeLibraryLoader.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>

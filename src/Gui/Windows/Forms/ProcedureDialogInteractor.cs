@@ -84,9 +84,9 @@ namespace Reko.Gui.Windows.Forms
             }
         }
 
-        public void ApplyChangesToProcedure(IPlatform platform, Procedure procedure)
+        public void ApplyChangesToProcedure(Program program, Procedure procedure)
         {
-            var ser = platform.CreateProcedureSerializer();
+            var ser = program.CreateProcedureSerializer();
             var sp = new SignatureParser(arch);
             sp.Parse(dlg.Signature.Text);
             Debug.Assert(sp.IsValid);

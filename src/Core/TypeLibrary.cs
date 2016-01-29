@@ -80,30 +80,6 @@ namespace Reko.Core
 			}
 		}
 
-        public static TypeLibrary Load(IPlatform platform, string fileName, IFileSystemService fsSvc, TypeLibrary dstLib)
-		{
-            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var libPath = Path.Combine(prefix, fileName);
-            if (!File.Exists(libPath))
-            {
-                libPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-            }
-			XmlSerializer ser = SerializedLibrary.CreateSerializer();
-			SerializedLibrary slib;
-			using (Stream stm = fsSvc.CreateFileStream(libPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-			{
-				slib = (SerializedLibrary) ser.Deserialize(stm);
-			}
-            return Load(platform, slib, dstLib);
-		}
-
-        public static TypeLibrary Load(IPlatform platform, SerializedLibrary slib, TypeLibrary dstLib)
-        {
-            var tlldr = new TypeLibraryDeserializer(platform, true, dstLib);
-            var tlib = tlldr.Load(slib);
-            return tlib;
-        }
-
 		public ProcedureSignature Lookup(string procedureName)
 		{
 			ProcedureSignature sig;

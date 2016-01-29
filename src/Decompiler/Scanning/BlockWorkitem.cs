@@ -677,7 +677,9 @@ namespace Reko.Scanning
             var bwops = bw.BackWalk(blockCur);
             if (bwops == null || bwops.Count == 0)
                 return false;     //$REVIEW: warn?
-            var idIndex = blockCur.Procedure.Frame.EnsureRegister(bw.Index);
+            Identifier idIndex = bw.Index != null
+                ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
+                : null;
 
             VectorBuilder builder = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
             if (bw.VectorAddress == null)
@@ -717,7 +719,7 @@ namespace Reko.Scanning
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
                 Expression swExp = idIndex;
-                if (idIndex.Name == "None")
+                if (idIndex == null || idIndex.Name == "None")
                     swExp = bw.IndexExpression;
                 if (swExp == null)
                     throw new NotImplementedException();

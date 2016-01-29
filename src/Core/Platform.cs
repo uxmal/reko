@@ -54,10 +54,8 @@ namespace Reko.Core
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
         IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
-        ProcedureSerializer CreateProcedureSerializer();
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
-        TypeLibraryDeserializer CreateTypeLibraryDeserializer();
-        SymbolTable CreateSymbolTable();
+        TypeLibrary CreateMetadata();
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -155,35 +153,10 @@ namespace Reko.Core
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
         }
 
-        /// <summary>
-        /// Creates a symbol table for this platform populated with the types 
-        /// defined by the platform.
-        /// </summary>
-        /// <returns>Prepopulated symbol table.
-        /// </returns>
-        public virtual SymbolTable CreateSymbolTable()
-        {
-            var namedTypes = new Dictionary<string, SerializedType>();
-            var platformTypedefs = GetTypedefs();
-            var dtSer = new DataTypeSerializer();
-            foreach (var typedef in platformTypedefs)
-            {
-                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
-            }
-            return new SymbolTable(this, namedTypes);
-        }
-
-        public ProcedureSerializer CreateProcedureSerializer()
+        public TypeLibrary CreateMetadata()
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            var typeLoader = new TypeLibraryDeserializer(this, true, Metadata);
-            return CreateProcedureSerializer(typeLoader, DefaultCallingConvention);
-        }
-
-        public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
-        {
-            EnsureTypeLibraries(PlatformIdentifier);
-            return new TypeLibraryDeserializer(this, true, Metadata.Clone());
+            return Metadata.Clone();
         }
 
         /// <summary>
@@ -224,12 +197,6 @@ namespace Reko.Core
         }
 
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
-
-        public IDictionary<string, DataType> GetTypedefs()
-        {
-            EnsureTypeLibraries(PlatformIdentifier);
-            return Metadata.Types;
-        }
 
         public abstract SystemService FindService(int vector, ProcessorState state);
 

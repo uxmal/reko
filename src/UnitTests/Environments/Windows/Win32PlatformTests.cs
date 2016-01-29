@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Environments.Windows
         private ITypeLibraryLoaderService tlSvc;
         private ServiceContainer sc;
         private Win32Platform win32;
+        private Program program;
         private IntelArchitecture arch;
         private ExternalProcedure extProc;
         private IConfigurationService dcSvc;
@@ -92,7 +93,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, IDictionary<string, DataType> types)
         {
-            Expect_TypeLibraryLoaderService_LoadLibrary(expected, new TypeLibrary(types, null));
+            Expect_TypeLibraryLoaderService_LoadLibrary(expected, new TypeLibrary(types, new Dictionary<string, ProcedureSignature>()));
         }
 
         private void Given_Configuration_With_Win32_Element()
@@ -120,6 +121,15 @@ namespace Reko.UnitTests.Environments.Windows
             win32 = new Win32Platform(sc, arch);
         }
 
+        private void Given_Program()
+        {
+            program = new Program
+            {
+                Architecture = win32.Architecture,
+                Platform = win32,
+            };
+        }
+
         private void Given_TypeLibraryLoaderService()
         {
             tlSvc = repository.StrictMock<ITypeLibraryLoaderService>();
@@ -137,11 +147,16 @@ namespace Reko.UnitTests.Environments.Windows
 
             var sig = win32.SignatureFromName(fnName);
 
-            Assert.AreEqual("void ()()\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
+            var sigExp =
+@"void ()()
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, sig.ToString());
         }
 
         [Test]
-        public void Win32_Deserialize_PredefinedTypes()
+        public void Win32_Deserialize_PlatformTypes()
         {
             var types = new Dictionary<string, DataType>()
             {
@@ -155,8 +170,9 @@ namespace Reko.UnitTests.Environments.Windows
             repository.ReplayAll();
 
             When_Creating_Win32_Platform();
+            Given_Program();
 
-            var ser = win32.CreateProcedureSerializer();
+            var ser = program.CreateProcedureSerializer();
             var sSig = new SerializedSignature
             {
                 Convention = "__cdecl",
@@ -169,10 +185,12 @@ namespace Reko.UnitTests.Environments.Windows
             };
             var sig = ser.Deserialize(sSig, win32.Architecture.CreateFrame());
 
-            Assert.AreEqual(
-                "Register TESTTYPE1 ()(Stack TESTTYPE2 a, Stack TESTTYPE3 b)\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
-                sig.ToString()
-            );
+            var sigExp =
+@"Register TESTTYPE1 ()(Stack TESTTYPE2 a, Stack TESTTYPE3 b)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, sig.ToString());
             Assert.AreEqual("byte", (sig.ReturnValue.DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int16", (sig.Parameters[0].DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int32", (sig.Parameters[1].DataType as TypeReference).Referent.ToString());

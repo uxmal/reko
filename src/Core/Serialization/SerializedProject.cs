@@ -18,29 +18,25 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Lib;
-using Reko.Core.Serialization;
-using System;
+ using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Serialization
 {
-    public class Project 
+    /// <summary>
+    /// Utility base class principally used for dispatching.
+    /// </summary>
+    public abstract class SerializedProject
     {
-        public Project()
-        {
-            Programs = new ObservableRangeCollection<Program>();
-            MetadataFiles = new ObservableRangeCollection<MetadataFile>();
-        }
+        public abstract T Accept<T>(ISerializedProjectVisitor<T> visitor);
+    }
 
-        public ObservableRangeCollection<Program> Programs { get; private set; }
-        public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
-
+    public interface ISerializedProjectVisitor<T>
+    {
+        T VisitProject_v2(Project_v2 sProject);
+        T VisitProject_v3(Project_v3 sProject);
+        T VisitProject_v4(Project_v4 sProject);
     }
 }

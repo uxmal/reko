@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,29 +18,28 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
-    public class Project 
+    public class TypeLibraryLoader : MetadataLoader
     {
-        public Project()
+        private Stream stream;
+
+        public TypeLibraryLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
         {
-            Programs = new ObservableRangeCollection<Program>();
-            MetadataFiles = new ObservableRangeCollection<MetadataFile>();
+            this.stream = new MemoryStream(bytes);
         }
 
-        public ObservableRangeCollection<Program> Programs { get; private set; }
-        public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
-
+        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
+        {
+            var ser = SerializedLibrary.CreateSerializer();
+            var slib = (SerializedLibrary) ser.Deserialize(stream);
+            var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
+            var tlib = tldser.Load(slib);
+            return tlib;
+        }
     }
 }
