@@ -165,6 +165,17 @@ namespace Reko.Scanning
             return targetMap;
         }
 
+        public IEnumerable<Address> GetPossiblePointers(ImageMapSegment seg)
+        {
+            const uint ptrAlignment = 4;
+            const uint ptrSize = 4;
+            var addr = seg.Address;
+            for (uint offset = 0; offset <= seg.ContentSize - ptrSize; offset += ptrAlignment, addr += ptrAlignment)
+            {
+                yield return Address.Ptr32(program.Image.ReadLeUInt32(addr));     //$TODO: platform dep.
+            }
+        }
+
         private void AddEdge(DiGraph<Address> g, Address from, Address to)
         {
             g.AddNode(from);
