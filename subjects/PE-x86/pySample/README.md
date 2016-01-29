@@ -1,8 +1,8 @@
 **pySample.dll**
 
-This is python module sample
+This is a Python module sample, contributed by @ptomin.
 
-##source code
+```C
 
     #include <python.h>
 
@@ -70,4 +70,4 @@ This is python module sample
     __declspec(dllexport) void initpySample() {
         Py_InitModule("pySample", methods);
     }
-
+```
