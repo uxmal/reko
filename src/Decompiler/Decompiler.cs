@@ -35,6 +35,7 @@ using System.Linq;
 using System.Xml;
 using Reko.Core.Assemblers;
 using System.Threading;
+using Reko.Core.Configuration;
 
 namespace Reko
 {
@@ -43,6 +44,7 @@ namespace Reko
         Project Project { get; }
 
         bool Load(string fileName);
+        Program LoadRawImage(string file, RawFileElement raw);
         Program LoadRawImage(string fileName, string arch, string platform, Address addrBase);
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr);
@@ -254,6 +256,16 @@ namespace Reko
             eventListener.ShowStatus("Loading raw bytes.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, arch, platform, addrBase);
+            Project = CreateDefaultProject(fileName, program);
+            eventListener.ShowStatus("Raw bytes loaded.");
+            return program;
+        }
+
+        public Program LoadRawImage(string fileName, RawFileElement raw)
+        {
+            eventListener.ShowStatus("Loading raw bytes.");
+            byte[] image = loader.LoadImageBytes(fileName, 0);
+            var program = loader.LoadRawImage(fileName, image, raw);
             Project = CreateDefaultProject(fileName, program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;

@@ -33,6 +33,7 @@ namespace Reko.Gui.Forms
         ITextBox AddressTextBox { get; }
         ITextBox FileName { get; }
         IServiceProvider Services { get; set; }
+        IComboBox RawFileTypes { get; }
         IComboBox Architectures { get; }
         IComboBox Platforms { get; }
         IButton BrowseButton { get; }

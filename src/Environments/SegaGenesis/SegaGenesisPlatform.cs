@@ -62,7 +62,7 @@ namespace Reko.Environments.SegaGenesis
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
