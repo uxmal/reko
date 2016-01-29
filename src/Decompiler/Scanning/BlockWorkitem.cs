@@ -725,12 +725,18 @@ namespace Reko.Scanning
                     throw new NotImplementedException();
                 Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
-            program.ImageMap.AddItemWithSize(
-                bw.VectorAddress,
-                new ImageMapVectorTable(
-                    bw.VectorAddress,
-                    vector.ToArray(),
-                    builder.TableByteSize));
+            var imgVector = new ImageMapVectorTable(
+                        bw.VectorAddress,
+                        vector.ToArray(),
+                        builder.TableByteSize);
+            if (builder.TableByteSize > 0)
+            {
+                program.ImageMap.AddItemWithSize(bw.VectorAddress, imgVector);
+            }
+            else
+            {
+                program.ImageMap.AddItem(bw.VectorAddress, imgVector);
+            }
             return true;
         }
 
