@@ -146,12 +146,7 @@ namespace Reko.Loading
             if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
             {
                 imgLoader.PreferredBaseAddress = baseAddr;
-                entryAddr = baseAddr;
-                if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
-                {
-                    if (!arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
-                        entryAddr = baseAddr;
-                }
+                entryAddr = GetRawBinaryEntryAddress( rawFile, image, arch, baseAddr);
                 var state = arch.CreateProcessorState();
                 imgLoader.EntryPoints.Add(new EntryPoint(
                     entryAddr,
@@ -159,6 +154,32 @@ namespace Reko.Loading
                     state));
             }
             return imgLoader;
+        }
+
+        private static Address GetRawBinaryEntryAddress(
+            RawFileElement rawFile,
+            byte[] image, 
+            IProcessorArchitecture arch, 
+            Address baseAddr)
+        {
+            if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
+            {
+                Address entryAddr;
+                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
+                {
+                    if (!string.IsNullOrEmpty(rawFile.EntryPoint.Follow))
+                    {
+                        var rdr = arch.CreateImageReader(new LoadedImage(baseAddr, image), entryAddr);
+                        return arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
+                    }
+                }
+                else
+                {
+                    return baseAddr;
+                }
+            }
+
+            return baseAddr;
         }
 
         /// <summary>
