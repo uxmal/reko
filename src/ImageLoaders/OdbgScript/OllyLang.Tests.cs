@@ -124,7 +124,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 Arg<int>.Is.Equal(3),
                 Arg<byte[]>.Is.NotNull)).Do(new Func<ulong,int,byte[],bool>((a, l, b) =>
             {
-                LoadedImage.WriteBytes(b, a - image.BaseAddress.ToLinear(), l,image.Bytes);
+                LoadedImage.WriteBytes(b, (long)a - (long)image.BaseAddress.ToLinear(), l,image.Bytes);
                 return true;
             }));
 

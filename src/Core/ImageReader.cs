@@ -35,8 +35,8 @@ namespace Reko.Core
     {
         private LoadedImage image;
         protected byte[] bytes;
-        private ulong offStart;
-        private ulong off;
+        private long offStart;
+        private long off;
         private Address addrStart;
 
         protected ImageReader(LoadedImage img, Address addr)
@@ -46,12 +46,12 @@ namespace Reko.Core
             if (addr == null)
                 throw new ArgumentNullException("addr");
             long o = addr - img.BaseAddress;
-            if (o < 0 || o >= img.Length)
+            if (o >= img.Length)
                 throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = addr;
-            this.off = offStart = (ulong)o;
+            this.off = offStart = o;
         }
 
         protected ImageReader(LoadedImage img, ulong off)
@@ -61,13 +61,13 @@ namespace Reko.Core
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = img.BaseAddress + off;
-            this.off = offStart = off;
+            this.off = offStart = (long) off;
         }
 
         protected ImageReader(byte[] img, ulong off)
         {
             this.bytes = img;
-            this.off = offStart = off;
+            this.off = offStart = (long)off;
         }
 
         public virtual ImageReader Clone()
@@ -80,7 +80,7 @@ namespace Reko.Core
             }
             else
             {
-                rdr = CreateNew(bytes, off);
+                rdr = CreateNew(bytes, (ulong)off);
             }
             return rdr;
         }
@@ -91,7 +91,7 @@ namespace Reko.Core
 
         public LeImageReader CreateLeReader()
         {
-            return new LeImageReader(bytes, off)
+            return new LeImageReader(bytes, (ulong)off)
             {
                 image = this.image,
                 addrStart = this.addrStart,
@@ -101,9 +101,9 @@ namespace Reko.Core
 
         public Address Address { get { return addrStart + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
-        public ulong Offset { get { return off; } set { off = value; } }
+        public long Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
-        public bool IsValidOffset(ulong offset) { return 0 <= offset && offset < (ulong)bytes.Length; }
+        public bool IsValidOffset(long offset) { return 0 <= offset && offset < bytes.Length; }
 
         public byte ReadByte()
         {
@@ -114,7 +114,7 @@ namespace Reko.Core
 
         public bool TryReadByte(out byte b)
         {
-            if (off >= (ulong)bytes.Length)
+            if (off >= bytes.Length || off < 0)
             {
                 b = 0;
                 return false;
@@ -243,11 +243,11 @@ namespace Reko.Core
         public short PeekLeInt16(uint offset) { return (short)LoadedImage.ReadLeUInt16(bytes, offset + (uint) off); }
         public short PeekBeInt16(uint offset) { return (short)LoadedImage.ReadBeUInt16(bytes, offset + (uint) off); }
 
-        public bool TryPeekByte(int offset, out byte value) { return LoadedImage.TryReadByte(bytes, (ulong)((long)offset + (long)off), out value); }
-        public bool TryPeekBeUInt16(int offset, out ushort value) { return LoadedImage.TryReadBeUInt16(bytes, (ulong)((long)offset + (long)off), out value); }
-        public bool TryPeekBeUInt32(int offset, out uint value) { return LoadedImage.TryReadBeUInt32(bytes, (ulong)((long)offset + (long)off), out value); }
+        public bool TryPeekByte(int offset, out byte value) { return LoadedImage.TryReadByte(bytes, offset + off, out value); }
+        public bool TryPeekBeUInt16(int offset, out ushort value) { return LoadedImage.TryReadBeUInt16(bytes, offset + off, out value); }
+        public bool TryPeekBeUInt32(int offset, out uint value) { return LoadedImage.TryReadBeUInt32(bytes, offset + off, out value); }
 
-        public bool TryPeekLeUInt32(int offset, out uint value) { return LoadedImage.TryReadLeUInt32(bytes, (ulong)((long)offset + (long)off), out value); }
+        public bool TryPeekLeUInt32(int offset, out uint value) { return LoadedImage.TryReadLeUInt32(bytes, offset + off, out value); }
 
         public abstract bool TryPeekUInt32(int offset, out uint value);
         
@@ -428,12 +428,12 @@ namespace Reko.Core
 
         public void Seek(int offset)
         {
-            off = (ulong)((long) off + offset);
+            off = off + offset;
         }
 
         public byte[] ReadToEnd()
         {
-            var ab = new byte[(ulong)this.Bytes.Length - Offset];
+            var ab = new byte[this.Bytes.Length - Offset];
             Array.Copy(Bytes, (int)Offset, ab, 0, ab.Length);
             return ab;
         }

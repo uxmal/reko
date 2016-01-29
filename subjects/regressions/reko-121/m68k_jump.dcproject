@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
   <arch>m68k</arch>
-  <platform>amigaOS</platform>
+  <platform>sega-genesis</platform>
   <input>
     <filename>m68k_jump.bin</filename>
     <disassembly>m68k_jump.asm</disassembly>
@@ -12,7 +12,10 @@
     <user>
       <address>0000C000</address>
       <processor name="m68k" />
-      <platform name="amigaOS" />
+      <platform name="sega-genesis" />
+      <procedure>
+        <address>0000C02A</address>
+      </procedure>
     </user>
   </input>
 </project>

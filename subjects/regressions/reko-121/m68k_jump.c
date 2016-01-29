@@ -4,138 +4,194 @@
 
 #include "m68k_jump.h"
 
-void fn0000C000(int32 d1, int32 * d4, int32 d5, Eq_5 * a0, int32 * a1, ui32 * a3)
+void fn0000C02A(word32 d1, word32 a0, word32 a1)
 {
 	Mem54[0x00FF0F08 + 0x00:word32] = Mem0[a0 + 0x00:word32];
-	*0x00FF0F04 = 0x00;
-	int32 * a6_145 = a1;
-	int32 d6_142 = 0x00;
-	int32 a4_119 = 0x00;
-	word32 d7_368 = 0xFF;
-	a0_157 = a0;
-l0000C3B4:
+	Mem57[0x00FF0F04 + 0x00:word32] = 0x00;
+	word32 a6_139 = a1;
+	word32 d6_155 = 0x00;
+	word32 a4_120 = 0x00;
+	a0_168 = a0;
 	while (true)
 	{
-		Eq_5 * a0_157;
-		if (*0x00FF0F04 - *0x00FF0F08 >= 0x00)
+		word32 a0_168;
+		if (Mem57[0x00FF0F04 + 0x00:word32] - Mem57[0x00FF0F08 + 0x00:word32] >= 0x00)
 			break;
-		ui32 d3_121 = DPB(a4_119, (&a0->dw0004)[a4_119 / 0x0C], 0);
-		a4_119 = a4_119 + 0x01;
-		ui32 d3_122 = d3_121 & 0xFF;
-		ci16 v31_129 = (word16) DPB(d3_121 & 0xFF, (byte) DPB(d3_121 & 0xFF, (word16) (d3_121 & 0xFF) & 0xF0, 0) >> 0x02, 0) - 44;
-		if (v31_129 <= 0x00)
-			switch (v31_129)
+		word32 d3_122 = DPB(a4_120, Mem57[a0 + 0x04 + a4_120:byte], 0);
+		a4_120 = a4_120 + 0x01;
+		word16 v31_130 = (word16) DPB(d3_122 & 0xFF, (byte) DPB(d3_122 & 0xFF, (word16) (d3_122 & 0xFF) & 0xF0, 0) >>u 0x02, 0) - 44;
+		if (v31_130 <= 0x00)
+			switch (v31_130)
 			{
 			case 0x00:
-				__btst(d4, 0xFF);
-				break;
-			case 0x01:
-				d6_142 = DPB(__swap(DPB(d6_142, a0_157->b0002, 0)), Mem57[a0_157 + 0x00:byte], 0);
-				*a6_145 = d6_142;
-				Mem147[0x00FF0F04 + 0x00:word32] = Mem144[0x00FF0F04 + 0x00:word32] + 0x04;
-				a6_145 = a6_145[0x01];
-				break;
-			case 0x02:
-				d4 = (DPB(d3_121 & 0xFF, (byte) (d3_121 & 0xFF) & 0x0F, 0) << 0x08 | DPB(a4_119, (&a0->dw0004)[a4_119 / 0x0C], 0) & 0xFF) + 0x02 << 0x02;
-				a0_157 = a6_145 - d4;
-				a4_119 = a4_119 + 0x01;
-				d6_142 = DPB(__swap(DPB(d6_142, a0_157->b0002, 0)), a0_157->b0001, 0);
-				goto l0000C0FC;
-			case 0x03:
-				d1 = DPB(d1, (byte) d1 | 0x4E, 0);
-				goto l0000C0FC;
-			case 0x04:
-				__btst(d4, 0xFF);
+				word32 d3_135 = (d3_122 & 0xFF & 0x0F) + 0x01;
 				while (true)
 				{
-					d3_122 = d3_122 - 0x01;
-					if (d3_122 == ~0x00)
+					d3_135 = d3_135 - 0x01;
+					if (d3_135 == ~0x00)
 						break;
-					d6_142 = DPB(__swap(DPB(d6_142, Mem57[a0 + 0x05 + a4_119:byte], 0)), Mem57[a0 + 0x07 + a4_119:byte], 0);
-					*a6_145 = d6_142;
-					Mem222[0x00FF0F04 + 0x00:word32] = Mem219[0x00FF0F04 + 0x00:word32] + 0x04;
-					a4_119 = a4_119 + 0x04;
-					a6_145 = a6_145[0x01];
+					Mem142[a6_139 + 0x00:word32] = d6_155;
+					Mem145[0x00FF0F04 + 0x00:word32] = Mem142[0x00FF0F04 + 0x00:word32] + 0x04;
+					a6_139 = a6_139 + 0x04;
+				}
+				break;
+			case 0x01:
+				word32 d6_150 = DPB(d6_155, 0x1111, 0) *u (word16) DPB(d3_122 & 0xFF, (byte) (d3_122 & 0xFF) & 0x0F, 0);
+				d6_155 = DPB(__swap(d6_150), (word16) DPB(d3_122 & 0xFF, (word16) d6_150, 0), 0);
+				Mem157[a6_139 + 0x00:word32] = d6_155;
+				Mem160[0x00FF0F04 + 0x00:word32] = Mem157[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
+				break;
+			case 0x02:
+				a0_168 = a6_139 - (DPB(d3_122 & 0xFF, (word16) DPB(d3_122 & 0xFF, (byte) (d3_122 & 0xFF) & 0x0F, 0) + 0x02, 0) << 0x02);
+				d6_155 = DPB(__swap(DPB(d6_155, Mem57[a0_168 + 0x02:byte], 0)), Mem57[a0_168 + 0x00:byte], 0);
+				Mem183[a6_139 + 0x00:word32] = d6_155;
+				Mem186[0x00FF0F04 + 0x00:word32] = Mem183[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
+				break;
+			case 0x03:
+				a0_168 = a6_139 - ((DPB(d3_122 & 0xFF, (byte) (d3_122 & 0xFF) & 0x0F, 0) << 0x08 | DPB(a4_120, Mem57[(a0 + 0x04) + a4_120:byte], 0) & 0xFF) + 0x02 << 0x02);
+				d6_155 = DPB(__swap(DPB(d6_155, Mem57[a0_168 + 0x02:byte], 0)), Mem57[a0_168 + 0x00:byte], 0);
+				Mem216[a6_139 + 0x00:word32] = d6_155;
+				Mem219[0x00FF0F04 + 0x00:word32] = Mem216[0x00FF0F04 + 0x00:word32] + 0x04;
+				a4_120 = a4_120 + 0x01;
+				a6_139 = a6_139 + 0x04;
+				break;
+			case 0x04:
+				word32 d3_221 = d3_122 & 0xFF & 0x0F;
+				word32 d3_223 = DPB(d3_221, (word16) d3_221 + 0x01, 0);
+				while (true)
+				{
+					d3_223 = d3_223 - 0x01;
+					if (d3_223 == ~0x00)
+						break;
+					d6_155 = DPB(__swap(DPB(d6_155, Mem57[a0 + 0x05 + a4_120:byte], 0)), Mem57[a0 + 0x07 + a4_120:byte], 0);
+					Mem246[a6_139 + 0x00:word32] = d6_155;
+					Mem249[0x00FF0F04 + 0x00:word32] = Mem246[0x00FF0F04 + 0x00:word32] + 0x04;
+					a4_120 = a4_120 + 0x04;
+					a6_139 = a6_139 + 0x04;
 				}
 				break;
 			case 0x05:
-				*a6_145 = d6_142;
-				Mem228[0x00FF0F04 + 0x00:word32] = Mem225[0x00FF0F04 + 0x00:word32] + 0x04;
-				a6_145 = a6_145[0x01];
+				word32 d5_252 = d3_122 & 0xFF & 0x0F;
+				word32 d4_253 = 0x0F;
+				a4_120 = a4_120 + 0x01;
+				word32 d3_258 = DPB(a4_120, Mem57[a0 + 0x04 + a4_120:byte], 0) & 0xFF;
+				d1 = 0x00;
+				while ((byte) d3_258 != 0x00)
+				{
+					if (!__btst(d3_258, 0x00))
+						d6_155 = d6_155 & ~d4_253 | d5_252;
+					d3_258 = DPB(d3_258, (byte) d3_258 >>u 0x01, 0);
+					d4_253 = d4_253 << 0x04;
+					d5_252 = d5_252 << 0x04;
+				}
+				Mem272[a6_139 + 0x00:word32] = d6_155;
+				Mem275[0x00FF0F04 + 0x00:word32] = Mem272[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
 				break;
 			case 0x06:
-				ui32 d3_231 = d3_121 & 0xFF & 0xFF;
-				d5 = 0x0F;
-				d4 = null;
+				word32 a3_296 = 0x00FF0F0C;
+				Mem298[a3_296 + 0x00:word32] = d3_122 & 0xFF & 0x0F;
+				word32 d3_302 = DPB(a4_120, Mem298[a0 + 0x04 + a4_120:byte], 0);
+				Mem310[a3_296 + 0x04:word32] = DPB(d1, (byte) DPB(d1, (byte) (d3_302 & 0xFF), 0) >>u 0x04, 0);
+				Mem315[a3_296 + 0x08:word32] = DPB(d3_302 & 0xFF, (byte) (d3_302 & 0xFF) & 0x0F, 0);
+				a4_120 = a4_120 + 0x02;
+				word32 d3_320 = DPB(a4_120 + 0x01, Mem315[a0 + 0x04 + (a4_120 + 0x01):byte], 0) & 0xFF;
+				word32 d5_321 = 0x0F;
+				word32 d4_322 = 0x00;
 				d1 = 0x00;
-				while ((byte) d3_231 != 0x00)
+				while ((byte) d3_320 != 0x00)
 				{
-					if (!__btst(d3_231, 0x00))
+					if (!__btst(d3_320, 0x00))
 					{
-						d6_142 = d6_142 & ~d5 | Mem57[a3 + DPB(d4, (word16) d4 << 0x02, 0):word32];
-						d4 = d4 + 0x01;
+						d6_155 = d6_155 & ~d5_321 | Mem315[a3_296 + DPB(d4_322, (word16) d4_322 << 0x02, 0):word32];
+						d4_322 = d4_322 + 0x01;
 					}
-					*a3 = *a3 << 0x04;
-					a0_157->dw0004 = a0_157->dw0004 << 0x04;
-					a0_157->dw0008 = a0_157->dw0008 << 0x04;
-					d3_231 = DPB(d3_231, (byte) d3_231 >> 0x01, 0);
-					d5 = d5 << 0x04;
+					Mem349[a3_296 + 0x00:word32] = Mem315[a3_296 + 0x00:word32] << 0x04;
+					Mem353[a0_168 + 0x04:word32] = Mem349[a0_168 + 0x04:word32] << 0x04;
+					Mem357[a0_168 + 0x08:word32] = Mem353[a0_168 + 0x08:word32] << 0x04;
+					d3_320 = DPB(d3_320, (byte) d3_320 >>u 0x01, 0);
+					d5_321 = d5_321 << 0x04;
 				}
-				*a6_145 = d6_142;
-				Mem250[0x00FF0F04 + 0x00:word32] = Mem247[0x00FF0F04 + 0x00:word32] + 0x04;
-				a6_145 = a6_145[0x01];
+				Mem336[a6_139 + 0x00:word32] = d6_155;
+				Mem339[0x00FF0F04 + 0x00:word32] = Mem336[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
 				break;
 			case 0x07:
-				ui32 d3_339 = DPB(a4_119, (&a0->dw0004)[a4_119 / 0x0C], 0);
-				a4_119 = a4_119 + 0x01;
-				d4 = DPB(d3_339 & 0xFF, (byte) (d3_339 & 0xFF) >> 0x04, 0);
-				d3_122 = DPB(d3_339 & 0xFF, (byte) (d3_339 & 0xFF) & 0x0F, 0);
-				d6_142 = 0x00;
-				goto l0000C22A;
+				d6_155 = d6_155 << 0x04 | (d3_122 & 0xFF) & 0x0F;
+				Mem373[a6_139 + 0x00:word32] = d6_155;
+				Mem376[0x00FF0F04 + 0x00:word32] = Mem373[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
+				break;
 			case 0x08:
-l0000C22A:
-				while (true)
-				{
-					d3_122 = d3_122 - 0x01;
-					if (d3_122 == 0x00)
-						break;
-					d6_142 = d6_142 | d5;
-					d5 = d5 << 0x04;
-					d4 = d4 << 0x04;
-				}
-				goto l0000C240;
+				d6_155 = d6_155 >>u 0x04 | __ror((d3_122 & 0xFF) & 0x0F, 0x04);
+				Mem383[a6_139 + 0x00:word32] = d6_155;
+				Mem386[0x00FF0F04 + 0x00:word32] = Mem383[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
+				break;
 			case 0x09:
-l0000C23E:
-				d4 = d4 << 0x04;
-				goto l0000C240;
-			case 0x0A:
-				do
-				{
-					d6_142 = d6_142 | d1;
-					d1 = d1 << 0x04;
-					d5 = d5 << 0x04;
-					d4 = d4 << 0x04;
-					d3_122 = d3_398 - 0x01;
-					ui32 d3_398 = d3_122;
-				} while (d3_398 != 0x00);
+				word32 d3_393 = DPB(a4_120, Mem57[a0 + 0x04 + a4_120:byte], 0);
+				word32 d5_389 = d3_122 & 0xFF & 0x0F;
+				a4_120 = a4_120 + 0x01;
+				word32 d4_397 = DPB(d3_393 & 0xFF, (byte) (d3_393 & 0xFF) >>u 0x04, 0);
+				word32 d3_400 = DPB(d3_393 & 0xFF, (byte) (d3_393 & 0xFF) & 0x0F, 0);
+				d6_155 = 0x00;
 				while (true)
 				{
-					d7_368 = d7_368 - 0x01;
-					if (d7_368 == 0x00)
+					d3_400 = d3_400 - 0x01;
+					if (d3_400 == 0x00)
 						break;
-					d6_142 = d6_142 | d5;
-					d5 = d5 << 0x04;
-					d4 = d4 << 0x04;
+					d6_155 = d6_155 | d5_389;
+					d5_389 = d5_389 << 0x04;
+					d4_397 = d4_397 << 0x04;
 				}
-				while (d4 != null)
+				while (d4_397 != 0x00)
 				{
-					d6_142 = d6_142 | d4;
-					d4 = d4 << 0x04;
+					d6_155 = d6_155 | d4_397;
+					d4_397 = d4_397 << 0x04;
 				}
-				*a6_145 = d6_142;
-				Mem387[0x00FF0F04 + 0x00:word32] = Mem384[0x00FF0F04 + 0x00:word32] + 0x04;
-				a6_145 = a6_145[0x01];
-				d7_368 = 0xFF;
+				Mem422[a6_139 + 0x00:word32] = d6_155;
+				Mem425[0x00FF0F04 + 0x00:word32] = Mem422[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
+				break;
+			case 0x0A:
+				word32 d3_439 = DPB(a4_120, Mem57[a0 + 0x04 + a4_120:byte], 0);
+				word32 d3_449 = DPB(a4_120 + 0x01, Mem57[a0 + 0x04 + (a4_120 + 0x01):byte], 0);
+				d1 = d3_122 & 0xFF & 0x0F;
+				word32 d5_443 = DPB(d3_439 & 0xFF, (byte) (d3_439 & 0xFF) >>u 0x04, 0);
+				word32 d4_445 = d3_439 & 0xFF & 0x0F;
+				a4_120 = a4_120 + 0x02;
+				word32 d3_453 = DPB(d3_449 & 0xFF, (byte) (d3_449 & 0xFF) >>u 0x04, 0);
+				word32 d7_455 = d3_449 & 0xFF & 0x0F;
+				d6_155 = 0x00;
+				while (true)
+				{
+					d3_453 = d3_453 - 0x01;
+					if (d3_453 == 0x00)
+						break;
+					d6_155 = d6_155 | d1;
+					d1 = d1 << 0x04;
+					d5_443 = d5_443 << 0x04;
+					d4_445 = d4_445 << 0x04;
+				}
+				while (true)
+				{
+					d7_455 = d7_455 - 0x01;
+					if (d7_455 == 0x00)
+						break;
+					d6_155 = d6_155 | d5_443;
+					d5_443 = d5_443 << 0x04;
+					d4_445 = d4_445 << 0x04;
+				}
+				while (d4_445 != 0x00)
+				{
+					d6_155 = d6_155 | d4_445;
+					d4_445 = d4_445 << 0x04;
+				}
+				Mem489[a6_139 + 0x00:word32] = d6_155;
+				Mem492[0x00FF0F04 + 0x00:word32] = Mem489[0x00FF0F04 + 0x00:word32] + 0x04;
+				a6_139 = a6_139 + 0x04;
 				break;
 			}
 	}

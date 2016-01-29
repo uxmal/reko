@@ -133,14 +133,15 @@ namespace Reko.Gui.Windows.Forms
                 Program program;
                 if (raw != null)
                 {
-                   program= Decompiler.LoadRawImage(file, raw);
-                } else
+                   program = Decompiler.LoadRawImage(file, raw);
+                }
+                else
                 {
                    program= Decompiler.LoadRawImage(file, arch, platform, addrBase);
                 }
                 program.User.Processor = arch;
                 program.User.Environment = platform;
-                program.User.LoadAddress = addrBase;
+                program.User.LoadAddress = program.Image.BaseAddress; ;
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanPrograms();
             });

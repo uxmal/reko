@@ -163,7 +163,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual bool TryReadBytes(ulong addr, ulong memlen, byte[] membuf)
         {
-            return Image.TryReadBytes(addr - Image.BaseAddress.ToLinear(), (int)memlen, membuf);
+            return Image.TryReadBytes((long)(addr - Image.BaseAddress.ToLinear()), (int)memlen, membuf);
         }
 
         public virtual object TE_GetProcessHandle()

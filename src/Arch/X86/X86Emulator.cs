@@ -542,7 +542,7 @@ namespace Reko.Arch.X86
         public void Push(ulong word)
         {
             var esp = Registers[X86.Registers.esp.Number] - 4;
-            var u = (uint)esp - img.BaseAddress.ToLinear();
+            var u = (long)(esp - img.BaseAddress.ToLinear());
             img.WriteLeUInt32(u, (uint) word);
             WriteRegister(X86.Registers.esp, (uint) esp);
         }

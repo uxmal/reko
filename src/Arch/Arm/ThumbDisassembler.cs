@@ -62,7 +62,7 @@ namespace Reko.Arch.Arm
             {
                 // Capstone doesn't actually use the imageReader, but apparently
                 // reko components peek at the reader, so we have to simulate motion.
-                rdr.Offset += (ulong)stream.Current.Bytes.Length;
+                rdr.Offset += stream.Current.Bytes.Length;
                 return new Arm32Instruction(stream.Current);
             }
             else
@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm
                 this.stream = dasm.DisassembleStream(
                     rdr.Bytes,
                     (int)rdr.Offset,
-                    (long)(rdr.Address.ToLinear() - rdr.Offset))
+                    (long)rdr.Address.ToLinear() - rdr.Offset)
                     .GetEnumerator();
                 return instr;
             }

@@ -90,6 +90,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 .IgnoreArguments()
                 .WhenCalled(m => { this.rawFileNames = ((IEnumerable)m.Arguments[0]).OfType<ListOption>().ToArray(); });
             dlg.Expect(d => d.RawFileTypes).Return(ddlRawFiles);
+            ddlRawFiles.Stub(d => d.TextChanged += null).IgnoreArguments();
         }
 
         private void Expect_ArchDatasourceSet()
