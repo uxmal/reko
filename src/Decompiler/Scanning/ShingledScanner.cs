@@ -48,6 +48,12 @@ namespace Reko.Scanning
 
         public IEnumerable<Address> Scan()
         {
+            Dictionary<ImageMapSegment, byte[]> map = ScanExecutableSegments();
+            return SpeculateCallDests(map);
+        }
+
+        public Dictionary<ImageMapSegment, byte[]> ScanExecutableSegments()
+        {
             var map = new Dictionary<ImageMapSegment, byte[]>();
             foreach (var segment in program.ImageMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0))
@@ -55,7 +61,8 @@ namespace Reko.Scanning
                 var y = ScanSegment(segment);
                 map.Add(segment, y);
             }
-            return SpeculateCallDests(map);
+
+            return map;
         }
 
         /// <summary>
@@ -131,6 +138,33 @@ namespace Reko.Scanning
             return r is RtlGoto || r is RtlCall;
         }
 
+        public Dictionary<ImageMapSegment, byte[]> GetPossiblePointerTargets(Dictionary<ImageMapSegment, byte[]> classification)
+        {
+            var targetMap = program.ImageMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
+            foreach (var seg in program.ImageMap.Segments.Values)
+            {
+                uint ptrAlignment = 4;  //$TODO: platform dependent.
+                var addr = seg.Address;
+                for (uint offset = 0; offset <= seg.ContentSize - 4; offset += ptrAlignment, addr += ptrAlignment)
+                {
+                    var pointer = program.Image.ReadLeUInt32(addr);     //$TODO: platform dep.
+                    if (program.Image.IsValidLinearAddress(pointer))
+                    {
+                        var addrPointee = program.ImageMap.MapLinearAddressToAddress(pointer);
+                        ImageMapSegment segPointee;
+                        if (program.ImageMap.TryFindSegment(addrPointee, out segPointee))
+                        {
+                            int segOffset = (int)(addrPointee - segPointee.Address);
+                            var hits = targetMap[segPointee][segOffset];
+                            if (hits < 255)    // Not saturated!
+                                targetMap[segPointee][segOffset] = (byte)(hits + 1);
+                        }
+                    }
+                }
+            }
+            return targetMap;
+        }
+
         private void AddEdge(DiGraph<Address> g, Address from, Address to)
         {
             g.AddNode(from);
@@ -187,6 +221,12 @@ namespace Reko.Scanning
             return q;
         }
 
+        /// <summary>
+        /// Find all addresses that appear to be the destination of a call 
+        /// instruction.
+        /// </summary>
+        /// <param name="map"></param>
+        /// <returns></returns>
         public IEnumerable<Address> GetCalledAddresses(Dictionary<ImageMapSegment, byte[]> map)
         { 
             foreach (var item in map)

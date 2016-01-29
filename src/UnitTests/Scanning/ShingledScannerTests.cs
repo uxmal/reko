@@ -44,14 +44,13 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             mr = new MockRepository();
-
         }
 
-        private void Given_Mips_Image(params uint [] words)
+        private void Given_Mips_Image(params uint[] words)
         {
             var image = new LoadedImage(
                 Address.Ptr32(0x10000),
-                words.Select(w => new []
+                words.Select(w => new[]
                 {
                     (byte) w,
                     (byte) (w >> 8),
@@ -134,6 +133,24 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
             var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, by);
+        }
+
+        [Test]
+        public void Shsc_FindPossiblePointersToCode()
+        {
+            Given_x86_Image(
+                0x90, 0x90, 0x90, 0x90,      // Padding
+                0x55, 0x5B, 0xC3, 0x00,     // Actual code
+                0x04, 0x00, 0x01, 0x00);     // Pointer to code
+            Given_Scanner();
+            var by = sh.ScanExecutableSegments();
+            var pointedTo = sh.GetPossiblePointerTargets(by);
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0,
+                    1, 0, 0, 0,
+                    0, 0, 0, 0,
+                },
+                pointedTo.Values.First());
         }
     }
 }
