@@ -1,0 +1,339 @@
+void fn0000C000(word32 d1, word32 d4, word32 d5, word32 a0, word32 a1, word32 a3)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a0 a1 a3 d1 d4 d5
+// LiveOut:
+// Trashed: CVZNX
+// Preserved: a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
+fn0000C000_entry:
+// DataOut: a0 a1 a3 d1 d4 d5
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+// LocalsOut: fp(32)
+
+l0000C000:
+	Mem54[0x00FF0F08:word32] = Mem0[a0:word32]
+	Mem57[0x00FF0F04:word32] = 0
+	word32 a6_145 = a1
+	word32 d6_142 = 0
+	word32 a4_119 = 0
+	word32 d7_368 = 0x000000FF
+	a0_157 = a0
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+// LocalsOut: fp(32)
+
+l0000C3B4:
+	word32 a0_157
+	branch Mem57[0x00FF0F04:word32] - Mem57[0x00FF0F08:word32] < 0x00000000 l0000C026
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C026:
+	word32 d3_121 = DPB(a4_119, Mem57[a0 + 0x00000004 + a4_119:byte], 0)
+	a4_119 = a4_119 + 0x00000001
+	word32 d3_122 = d3_121 & 0x000000FF
+	word16 v31_129 = (word16) DPB(d3_121 & 0x000000FF, (byte) DPB(d3_121 & 0x000000FF, (word16) (d3_121 & 0x000000FF) & 0x00F0, 0) >>u 0x02, 0) - 0x002C
+	branch v31_129 > 0x0000 l0000C3B4
+// DataOut: a0 a2 a3 a4 a6 d0 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32) v31(32)
+
+l0000C040:
+	switch (v31_129) { l0000C0A0 l0000C0B6 l0000C0D0 l0000C0FA l0000C136 l0000C16A l0000C1A0 l0000C218 l0000C22A l0000C23E l0000C27A }
+// DataOut: a0 a2 a3 a4 a6 d0 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C27A:
+	d6_142 = d6_142 | d1
+	d1 = d1 << 0x00000004
+	d5 = d5 << 0x00000004
+	d4 = d4 << 0x00000004
+	d3_122 = d3_398 - 0x00000001
+	word32 d3_398 = d3_122
+	branch d3_398 != 0x00000000 l0000C27A
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C28A:
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C292:
+	d7_368 = d7_368 - 0x00000001
+	branch d7_368 != 0x00000000 l0000C28C
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:<invalid> d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C28C:
+	d6_142 = d6_142 | d5
+	d5 = d5 << 0x00000004
+	d4 = d4 << 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:<invalid> d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C29A:
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:<invalid> d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C2A0:
+	branch d4 != 0x00000000 l0000C29C
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:<invalid> d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C29C:
+	d6_142 = d6_142 | d4
+	d4 = d4 << 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:<invalid> d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C2A4:
+	Mem384[a6_145:word32] = d6_142
+	Mem387[0x00FF0F04:word32] = Mem384[0x00FF0F04:word32] + 0x00000004
+	a6_145 = a6_145 + 0x00000004
+	d7_368 = 0x000000FF
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:<invalid> d3:<invalid> a5:<invalid> d1:<invalid> d5:<invalid> d4:<invalid> a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C218:
+	word32 d3_339 = DPB(a4_119, Mem57[a0 + 0x00000004 + a4_119:byte], 0)
+	a4_119 = a4_119 + 0x00000001
+	d4 = DPB(d3_339 & 0x000000FF, (byte) (d3_339 & 0x000000FF) >>u 0x04, 0)
+	d3_122 = DPB(d3_339 & 0x000000FF, (byte) (d3_339 & 0x000000FF) & 0x0F, 0)
+	d6_142 = 0
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C22A:
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C232:
+	d3_122 = d3_122 - 0x00000001
+	branch d3_122 != 0x00000000 l0000C22C
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> d5:<invalid> a0:<invalid> d1:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C22C:
+	d6_142 = d6_142 | d5
+	d5 = d5 << 0x00000004
+	d4 = d4 << 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> d5:<invalid> a0:<invalid> d1:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C23A:
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> d5:<invalid> a0:<invalid> d1:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C240:
+	branch d4 != 0x00000000 l0000C23C
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> d5:<invalid> a0:<invalid> d1:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C23C:
+	d6_142 = d6_142 | d4
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> d5:<invalid> a0:<invalid> d1:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C23E:
+	d4 = d4 << 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C244:
+	Mem306[a6_145:word32] = d6_142
+	Mem309[0x00FF0F04:word32] = Mem306[0x00FF0F04:word32] + 0x00000004
+	a6_145 = a6_145 + 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> d5:<invalid> a0:<invalid> d1:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C1A0:
+	word32 d3_231 = d3_121 & 0x000000FF & 0x000000FF
+	d5 = 15
+	d4 = 0
+	d1 = 0
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C1DE:
+	branch (byte) d3_231 != 0x00 l0000C1AC
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d5:<invalid> d4:<invalid> d1:0 a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C1AC:
+	branch __btst(d3_231, 0) l0000C1C0
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d5:<invalid> d4:<invalid> d1:0 a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C1B0:
+	d6_142 = d6_142 & ~d5 | Mem57[a3 + DPB(d4, (word16) d4 << 0x0002, 0):word32]
+	d4 = d4 + 0x00000001
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d5:<invalid> d4:<invalid> d1:0 a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C1C0:
+	Mem260[a3:word32] = Mem57[a3:word32] << 0x00000004
+	Mem264[a0_157 + 4:word32] = Mem260[a0_157 + 4:word32] << 0x00000004
+	Mem268[a0_157 + 8:word32] = Mem264[a0_157 + 8:word32] << 0x00000004
+	d3_231 = DPB(d3_231, (byte) d3_231 >>u 0x01, 0)
+	d5 = d5 << 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d5:<invalid> d4:<invalid> d1:0 a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C1E2:
+	Mem247[a6_145:word32] = d6_142
+	Mem250[0x00FF0F04:word32] = Mem247[0x00FF0F04:word32] + 0x00000004
+	a6_145 = a6_145 + 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d5:<invalid> d4:<invalid> d1:0 a0:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C16A:
+	Mem225[a6_145:word32] = d6_142
+	Mem228[0x00FF0F04:word32] = Mem225[0x00FF0F04:word32] + 0x00000004
+	a6_145 = a6_145 + 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C136:
+	__btst(d4, 0x000000FF)
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C138:
+	d3_122 = d3_122 - 0x00000001
+	branch d3_122 != 0xFFFFFFFF l0000C118
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C118:
+	d6_142 = DPB(__swap(DPB(d6_142, Mem57[a0 + 0x00000005 + a4_119:byte], 0)), Mem57[a0 + 0x00000007 + a4_119:byte], 0)
+	Mem219[a6_145:word32] = d6_142
+	Mem222[0x00FF0F04:word32] = Mem219[0x00FF0F04:word32] + 0x00000004
+	a4_119 = a4_119 + 0x00000004
+	a6_145 = a6_145 + 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d3 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C13C:
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0FA:
+	d1 = DPB(d1, (byte) d1 | 0x4E, 0)
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0D0:
+	d4 = (DPB(d3_121 & 0x000000FF, (byte) (d3_121 & 0x000000FF) & 0x0F, 0) << 0x00000008 | DPB(a4_119, Mem57[(a0 + 0x00000004) + a4_119:byte], 0) & 0x000000FF) + 0x00000002 << 0x00000002
+	a0_157 = a6_145 - d4
+	a4_119 = a4_119 + 0x00000001
+	d6_142 = DPB(__swap(DPB(d6_142, Mem57[a0_157 + 2:byte], 0)), Mem57[a0_157 + 1:byte], 0)
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0FC:
+	d6_142 = DPB(d6_142, Mem57[a0_157:byte], 0)
+	Mem162[a6_145:word32] = d6_142
+	Mem165[0x00FF0F04:word32] = Mem162[0x00FF0F04:word32] + 0x00000004
+	a6_145 = a6_145 + 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0B6:
+	d6_142 = DPB(__swap(DPB(d6_142, Mem57[a0_157 + 2:byte], 0)), Mem57[a0_157:byte], 0)
+	Mem144[a6_145:word32] = d6_142
+	Mem147[0x00FF0F04:word32] = Mem144[0x00FF0F04:word32] + 0x00000004
+	a6_145 = a6_145 + 0x00000004
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0A0:
+	__btst(d4, 0x000000FF)
+// DataOut: a0 a2 a3 a4 a6 d1 d4 d5 d6 d7
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C3C4:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000003C a2:a0 + 0x00000004 a6:<invalid> d0:<invalid> d6:<invalid> a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> d4:<invalid> a0:<invalid> d1:<invalid> d5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+
+fn0000C000_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp a2:a2 a6:a6 d0:d0 d6:d6 a4:a4 d2:d2 d7:d7 d1:d1 d3:d3 d4:d4 d5:d5 a0:a0 a1:a1 a3:a3 a5:a5 -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+
+
+
