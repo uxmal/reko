@@ -398,16 +398,16 @@ namespace Reko.UnitTests.Scanning
             var block0 = m.CurrentBlock;
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
 
-
             // mov edx,[ebp-66]
             // movzx eax,byte ptr [edx + 0x10000]
             // jmp [eax + 0x12000]
 
             m.Assign(edx, m.LoadDw(m.ISub(ebp, 0xC4)));
             m.Assign(eax, m.Cast(PrimitiveType.Word32, m.LoadB(m.IAdd(edx, 0x10000))));
-            var block1 = m.CurrentBlock;
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(eax, 0x12000)), RtlClass.Transfer);
 
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x12000)), RtlClass.Transfer), expSimp);
+            var block1 = m.CurrentBlock;
+            var bw = new Backwalker(host, xfer, expSimp);
             var ret = bw.BackwalkInstructions(Registers.eax, block1);
             Assert.AreEqual("None", bw.Index.ToString());
             Assert.AreEqual("Mem0[ebp - 0x000000C4:word32]", bw.IndexExpression.ToString());
@@ -454,7 +454,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bw.CanBackwalk());
             Assert.AreEqual("eax", bw.Index.Name);
             bw.BackWalk(m.Block);
-            Assert.IsNull(bw.Index);
+            Assert.AreEqual("None", bw.Index.ToString());
         }
 
         [Test]

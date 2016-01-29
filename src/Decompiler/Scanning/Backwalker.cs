@@ -243,7 +243,11 @@ namespace Reko.Scanning
 
                     var binEa = memSrc.EffectiveAddress as BinaryExpression;
                     if (binEa == null)
+                    {
+                        Index = RegisterStorage.None;
+                        IndexExpression = null;
                         return false;
+                    }
                     var memOffset = binEa.Right as Constant;
                     var scale = GetMultiplier(binEa.Left);
                     var baseReg = GetBaseRegister(binEa.Left);
@@ -268,7 +272,9 @@ namespace Reko.Scanning
                         Index = baseReg;
                         return true;
                     }
-                    return false;
+                    Index = RegisterStorage.None;
+                    IndexExpression = ass.Src;
+                    return true;
                 }
 
                 if (regSrc != null && regDst == Index)
