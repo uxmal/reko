@@ -46,29 +46,49 @@ namespace Reko.Core.Types
 		private const int Unk =    13;
         private const int Void =   14;
 
-		public DataTypeComparer()
-		{
-		}
+        private IDictionary<Tuple<DataType, DataType>, int> compareResult;
 
-		public int Compare(DataType x, DataType y)
-		{
-			return Compare(x, y, 0);
-		}
+        public DataTypeComparer()
+        {
+            this.compareResult = new Dictionary<Tuple<DataType, DataType>, int>();
+        }
 
-		/// <summary>
-		/// Implements a partial ordering on data types, where 
-		/// primitives &lt; pointers &lt; arrays &lt; structs &lt; unions
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <returns></returns>
-		public int Compare(DataType x, DataType y, int count)
-		{
-			if (count > 20)
-				throw new ApplicationException("Way too deep");     //$BUG: discover why datatypes recurse so deep.
-			int prioX = x.Accept(this);
+        /// <summary>
+        /// Implements a partial ordering on data types, where 
+        /// primitives &lt; pointers &lt; arrays &lt; structs &lt; unions
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public int Compare(DataType x, DataType y)
+        {
+            return Compare(x, y, 0);
+        }
+
+        public int Compare(DataType x, DataType y, int count)
+        {
+            var typePair = new Tuple<DataType, DataType>(x, y);
+
+            int d;
+
+            // avoid infinite recursion
+            if (compareResult.TryGetValue(typePair, out d))
+                return d;
+
+            compareResult[typePair] = 0;
+            d = CompareInternal(x, y, count);
+            compareResult[typePair] = d;
+
+            return d;
+        }
+
+        public int CompareInternal(DataType x, DataType y, int count)
+        {
+            if (count > 20)
+                throw new ApplicationException("Way too deep");     //$BUG: discover why datatypes recurse so deep.
+            int prioX = x.Accept(this);
 			int prioY = y.Accept(this);
 			int dPrio = prioX - prioY;
 			if (dPrio != 0)
