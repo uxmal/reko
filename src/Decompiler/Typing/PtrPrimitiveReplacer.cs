@@ -181,9 +181,9 @@ namespace Reko.Typing
 
         public override DataType VisitStructure(StructureType str)
         {
-            //if (visitedTypes.Contains(str))
-            //    return str;
-            //visitedTypes.Add(str);
+            if (visitedTypes.Contains(str))
+               return str;
+            visitedTypes.Add(str);
             return base.VisitStructure(str);
         }
 

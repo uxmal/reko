@@ -489,6 +489,7 @@
     <Compile Include="Typing\ExpressionTypeAscenderTests.cs" />
     <Compile Include="Typing\ExpressionNormalizerTests.cs" />
     <Compile Include="Typing\ExpressionTypeDescenderTests.cs" />
+    <Compile Include="Typing\Fragments.cs" />
     <Compile Include="Typing\GlobalVariablesMock.cs" />
     <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
     <Compile Include="Typing\PtrPrimitiveReplacerTests.cs" />
@@ -500,6 +501,7 @@
     <Compile Include="Typing\TraitMapping.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Typing\TypeCollectorTests.cs" />
     <Compile Include="Typing\TypedConstantRewriterTests.cs" />
     <Compile Include="Typing\TypedExpressionRewriterTests.cs" />
     <Compile Include="Typing\TypedMemoryExpressionRewriterTests.cs" />

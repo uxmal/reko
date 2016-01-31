@@ -123,6 +123,10 @@ namespace Reko.Typing
             {
                 dt = PrimitiveType.Create(Domain.UnsignedInt, dtLeft.Size);
             }
+            else if (binExp.Operator == Operator.Xor)
+            {
+                dt = PrimitiveType.Create(Domain.Integer, dtLeft.Size);
+            }
             else
                 throw NYI(binExp);
             binExp.TypeVariable.DataType = dt;
@@ -159,11 +163,16 @@ namespace Reko.Typing
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             if (ptRight.Domain == Domain.Pointer || dtRight is Pointer)
+            {
+                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
+                    return dtLeft;
+                // If a dtRight is a pointer and it's being subtracted from 
+                // something, then the result has to be a ptrdiff_t, i.e.
+                // integer.
+                if (ptLeft != null && (ptLeft.Domain & Domain.Pointer) != 0)
+                    return PrimitiveType.Create(Domain.Integer, dtLeft.Size);
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
-            if (ptLeft.IsIntegral)
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
-            if (ptRight.IsIntegral)
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+            }
             return dtLeft;
         }
 
@@ -180,11 +189,7 @@ namespace Reko.Typing
 
         public DataType VisitConstant(Constant c)
         {
-            if (c.TypeVariable.DataType == null)
-            {
-                c.TypeVariable.DataType = c.DataType;
-                c.TypeVariable.OriginalDataType = c.DataType;
-            }
+            RecordDataType(c.DataType, c);
             return c.TypeVariable.DataType;
         }
 
@@ -202,7 +207,9 @@ namespace Reko.Typing
 
         public DataType VisitDereference(Dereference deref)
         {
-            throw new NotImplementedException();
+            //$TODO: if deref.Expression is of pointer type, this
+            // should be the pointeee.
+            return deref.DataType;
         }
 
         public DataType VisitFieldAccess(FieldAccess acc)
@@ -233,7 +240,7 @@ namespace Reko.Typing
         public DataType VisitMemoryAccessCommon(Expression access, Expression ea)
         {
             var dtEa = ea.Accept(this);
-            var ptEa = dtEa as Pointer;
+            var ptEa = dtEa.ResolveAs<Pointer>();
             DataType dt;
             if (ptEa != null)
                 dt = ptEa.Pointee;

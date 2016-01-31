@@ -53,7 +53,20 @@ namespace Reko.Core.Types
 			return this;
 		}
 
-        public DataType DataType { get; set; }
+        public DataType DataType
+        {
+            get { return dt; }
+            set
+            {
+                dt = value;
+                if (dt != null)
+                {
+                    if (this.Name.EndsWith("_60")) //$DEBUG
+                        this.Name.ToCharArray();
+                }
+            }
+        }
+        private DataType dt;
 
 		public override bool IsComplex
 		{

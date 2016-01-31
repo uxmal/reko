@@ -111,7 +111,7 @@ namespace Reko.Scanning
         /// <param name="permutation">If not null, a permutation of the items in the table</param>
         /// <param name="stride">The size of the individual addresses in the table.</param>
         /// <param name="state">Current processor state.</param>
-        /// <returns></returns>
+        /// <returns>The target addresses reached by the vector</returns>
         public List<Address> BuildTable(Address addrTable, int limit, int[] permutation, int stride, ProcessorState state)
         {
             List<Address> vector = new List<Address>();
@@ -132,7 +132,7 @@ namespace Reko.Scanning
             else
             {
                 ImageReader rdr = scanner.CreateReader(addrTable);
-                int cItems = limit / (int)stride;
+                int cItems = limit / stride;
                 var image = program.Image;
                 var arch = program.Architecture;
                 for (int i = 0; i < cItems; ++i)

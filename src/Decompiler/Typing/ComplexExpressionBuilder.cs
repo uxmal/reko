@@ -22,6 +22,7 @@ using System;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Operators;
+using System.Diagnostics;
 
 namespace Reko.Typing
 {
@@ -245,7 +246,7 @@ namespace Reko.Typing
 
         public Expression VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref.Referent.Accept(this);
         }
 
         public Expression VisitTypeVariable(TypeVariable tv)
@@ -258,7 +259,8 @@ namespace Reko.Typing
             UnionAlternative alt = ut.FindAlternative(dtComplexOrig);
             if (alt == null)
             {
-                throw new TypeInferenceException("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);
+                Debug.Print("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
+                return expComplex;
             }
 
             dtComplex = alt.DataType;

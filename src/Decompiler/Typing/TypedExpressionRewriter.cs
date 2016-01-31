@@ -118,12 +118,16 @@ namespace Reko.Typing
                 }
                 else if (uSrc != null)
                 {
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                     //var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
                     //src = ceb.BuildComplex(false);
+                    src = new Cast(dtDst, src);
                 }
                 else
-                    throw new NotImplementedException(string.Format("{2} [{0}] = {3} [{1}] not supported.", dtDst, dtSrc, dst, src));
+                {
+                    Debug.Print("{2} [{0}] = {3} [{1}] not supported.", dtDst, dtSrc, dst, src);
+                    src = new Cast(dtDst, src);
+                }
             }
             var idDst = dst as Identifier;
             if (idDst != null)
