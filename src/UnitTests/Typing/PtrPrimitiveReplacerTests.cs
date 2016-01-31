@@ -109,7 +109,27 @@ namespace Reko.UnitTests.Typing
             RunTest(mock.BuildProgram(), "Typing/PprMemberPointers.txt");
         }
 
-		protected override void RunTest(Program prog, string outputFilename)
+        [Test]
+        public void PprRecursiveStructs()
+        {
+            StructureType s1 = new StructureType(null, 0, true);
+            StructureType s2 = new StructureType(null, 0, true);
+            s1.Fields.Add(0, new Pointer(s2, 4));
+            s2.Fields.Add(0, new Pointer(s1, 4));
+
+            var program = new Program();
+            var factory = new TypeFactory();
+            var store = new TypeStore();
+
+            var ppr = new PtrPrimitiveReplacer(factory, store, program);
+
+            var sExp = "(struct (0 (ptr (struct (0 (ptr (struct)) ptr0000))) ptr0000))";
+
+            Assert.AreEqual(sExp, ppr.Replace(s1).ToString());
+            Assert.AreEqual(sExp, ppr.Replace(s2).ToString());
+        }
+
+        protected override void RunTest(Program prog, string outputFilename)
 		{
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
