@@ -29,19 +29,24 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class StructureType : DataType
 	{
-		public StructureType() : this(null, 0)
+		public StructureType() : this(null, 0, false)
 		{
 		}
 
-        public StructureType(int size) : this(null, size)
+        public StructureType(int size) : this(null, size, false)
         {
         }
 
-		public StructureType(string name, int size) : base(name)
+		public StructureType(string name, int size) : this(name, size, false)
 		{
-			this.Fields = new StructureFieldCollection();
-			this.Size = size; 
 		}
+
+        public StructureType(string name, int size, bool userDefined) : base(name)
+        {
+            this.UserDefined = userDefined;
+            this.Fields = new StructureFieldCollection();
+            this.Size = size;
+        }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
@@ -51,6 +56,7 @@ namespace Reko.Core.Types
 		public override DataType Clone()
 		{
 			var s = new StructureType(Name, Size);
+            s.UserDefined = UserDefined;
 			s.IsSegment = IsSegment;
 			foreach (StructureField f in Fields)
 			{
@@ -59,7 +65,8 @@ namespace Reko.Core.Types
 			return s;
 		}
 
-		public StructureFieldCollection Fields { get; private set; }
+        public bool UserDefined { get; private set; }
+        public StructureFieldCollection Fields { get; private set; }
 		public override bool IsComplex  { get { return true; } }
 
 		/// <summary>

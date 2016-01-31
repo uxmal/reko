@@ -226,7 +226,7 @@ namespace Reko.Core
             StructureType str;
             if (!structures.TryGetValue(structure.Name, out str))
             {
-                str = new StructureType(structure.Name, structure.ByteSize);
+                str = new StructureType(structure.Name, structure.ByteSize, true);
                 structures.Add(structure.Name, str);
                 if (structure.Fields != null)
                 {
@@ -272,7 +272,7 @@ namespace Reko.Core
             UnionType union;
             if (sUnion.Name == null || !unions.TryGetValue(sUnion.Name, out union))
             {
-                union = new UnionType { Name = sUnion.Name };
+                union = new UnionType (sUnion.Name, null, true);
                 if (sUnion.Name != null)
                     unions.Add(sUnion.Name, union);
                 if (sUnion.Alternatives != null)

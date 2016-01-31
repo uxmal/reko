@@ -36,29 +36,32 @@ namespace Reko.Core.Types
 
 		private UnionAlternativeCollection alts = new UnionAlternativeCollection();
 
-		public UnionType() : base(null)
-		{
-			this.PreferredType = null;
-		}
+        public bool UserDefined { get; private set; }
 
-		public UnionType(string name, DataType preferredType) : base(name)
-		{
-			this.Name = name;
-			this.PreferredType = preferredType; 
-		}
+        public UnionType() : this(null, null, false)
+        {
+        }
 
-		public UnionType(string name, DataType preferredType, ICollection<DataType> alternatives) : base(name)
-		{
-			this.Name = name; this.PreferredType = preferredType; 
-			foreach (DataType dt in alternatives)
-			{
+        public UnionType(string name, DataType preferredType) : this(name, preferredType, false)
+        {
+        }
+
+		public UnionType(string name, DataType preferredType, ICollection<DataType> alternatives) : this(name, preferredType, false)
+        {
+            foreach (DataType dt in alternatives)
+            {
                 AddAlternative(dt);
-			}
-		}
+            }
+        }
 
-        public UnionType(string name, DataType preferredType, params DataType [] alternatives) : base(name)
+        public UnionType(string name, DataType preferredType, params DataType [] alternatives) : this(name, preferredType, false, alternatives)
+        {
+        }
+
+        public UnionType(string name, DataType preferredType, bool userDefined, params DataType[] alternatives) : base(name)
         {
             this.PreferredType = preferredType;
+            this.UserDefined = userDefined;
             foreach (DataType dt in alternatives)
             {
                 AddAlternative(dt);
@@ -86,7 +89,8 @@ namespace Reko.Core.Types
 		{
 			DataType pre = PreferredType != null ? PreferredType.Clone() : null;
 			UnionType u = new UnionType(Name, pre);
-			foreach (UnionAlternative a in this.Alternatives.Values)
+            u.UserDefined = UserDefined;
+            foreach (UnionAlternative a in this.Alternatives.Values)
 			{
                 u.Alternatives.Add(a.Clone());
 			}
