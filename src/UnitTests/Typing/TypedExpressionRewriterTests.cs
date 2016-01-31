@@ -84,6 +84,14 @@ namespace Reko.UnitTests.Typing
             }
         }
 
+        protected void RunStringTest(Action<ProcedureBuilder> pb, string expectedOutput)
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("test", pb);
+            pm.BuildProgram();
+            RunStringTest(pm.Program, expectedOutput);
+        }
+
         protected void RunStringTest(Program program, string expectedOutput)
         {
             var sw = new StringWriter();
@@ -93,7 +101,7 @@ namespace Reko.UnitTests.Typing
             SetupPreStages(program);
             aen.Transform(program);
             eqb.Build(program);
-#if !OLD
+#if OLD
             coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
             coll.CollectProgramTraits(program);
 #else
@@ -853,6 +861,47 @@ proc1_exit:
 ";
             #endregion
             RunStringTest(pm.BuildProgram(), sExp);
+        }
+
+        [Test]
+        public void TerStruct()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	eax = Mem0[0x00001200:word32]
+	Mem0[eax:word32] = eax
+	Mem0[eax + 0x00000004:word32] = eax
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	eax = globals->ptr1200
+	eax->ptr0000 = eax
+	eax->ptr0004 = eax
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                m.Assign(eax, m.LoadDw(m.Word32(0x1200)));
+                m.Store(eax, eax);
+                m.Store(m.IAdd(eax, 4), eax);
+            },sExp);
         }
     }
 }

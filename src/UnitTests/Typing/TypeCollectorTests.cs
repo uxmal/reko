@@ -31,12 +31,6 @@ namespace Reko.UnitTests.Typing
     [TestFixture]
     public class TypeCollectorTests : TypingTestBase
     {
-        [Test]
-        public void TycoMemStore()
-        {
-            RunTest(Fragments.MemStore, "Typing/TycoRegression_131.txt");
-        }
-
         protected override void RunTest(Program program, string outputFile)
         {
             FileUnitTester fut = null;
@@ -77,5 +71,13 @@ namespace Reko.UnitTests.Typing
             prog.TypeStore.Write(fut.TextWriter);
             fut.AssertFilesEqual();
         }
+
+        [Test]
+        public void TycoMemStore()
+        {
+            RunTest(Fragments.MemStore, "Typing/TycoMemStore.txt");
+        }
+
+    
     }
 }

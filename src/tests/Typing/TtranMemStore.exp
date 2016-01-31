@@ -4,6 +4,7 @@ void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
+	Mem0[0x00003120:word32] = 0x00000000
 	Mem1[0x00003120:word32] = Mem0[0x00003120:word32] + 0x00000001
 	return
 	// succ:  ProcedureBuilder_exit
@@ -16,28 +17,40 @@ Eq_1: (struct (3120 word32 dw3120))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (3120 T_3 t3120)))
-T_2: (in 0x00003120 : word32)
+  OrigDataType: (ptr (struct (3120 T_2 t3120)))
+T_2: (in 0x00000000 : word32)
   Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_3: (in 0x00003120 : word32)
+  Class: Eq_3
   DataType: (ptr word32)
-  OrigDataType: (ptr (struct (0 T_3 t0000)))
-T_3: (in Mem0[0x00003120:word32] : word32)
-  Class: Eq_3
+  OrigDataType: (ptr (struct (0 T_4 t0000)))
+T_4: (in Mem0[0x00003120:word32] : word32)
+  Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_4: (in 0x00000001 : word32)
-  Class: Eq_4
-  DataType: word32
-  OrigDataType: word32
-T_5: (in Mem0[0x00003120:word32] + 0x00000001 : word32)
-  Class: Eq_3
-  DataType: word32
-  OrigDataType: word32
-T_6: (in 0x00003120 : word32)
-  Class: Eq_6
+T_5: (in 0x00003120 : word32)
+  Class: Eq_5
   DataType: (ptr word32)
-  OrigDataType: (ptr (struct (0 T_7 t0000)))
-T_7: (in Mem1[0x00003120:word32] : word32)
-  Class: Eq_3
+  OrigDataType: (ptr (struct (0 T_6 t0000)))
+T_6: (in Mem0[0x00003120:word32] : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_7: (in 0x00000001 : word32)
+  Class: Eq_7
+  DataType: word32
+  OrigDataType: word32
+T_8: (in Mem0[0x00003120:word32] + 0x00000001 : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_9: (in 0x00003120 : word32)
+  Class: Eq_9
+  DataType: (ptr word32)
+  OrigDataType: (ptr (struct (0 T_10 t0000)))
+T_10: (in Mem1[0x00003120:word32] : word32)
+  Class: Eq_2
   DataType: word32
   OrigDataType: word32
