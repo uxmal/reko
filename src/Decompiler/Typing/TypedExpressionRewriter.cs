@@ -240,6 +240,11 @@ namespace Reko.Typing
             return exp.TypeVariable != null ? exp.TypeVariable.DataType : exp.DataType;
         }
 
+        public override Expression VisitAddress(Address addr)
+        {
+            return tcr.Rewrite(addr, dereferenced);
+        }
+
         public override Expression VisitConstant(Constant c)
         {
             return tcr.Rewrite(c, this.dereferenced);

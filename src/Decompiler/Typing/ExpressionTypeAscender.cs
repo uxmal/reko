@@ -179,6 +179,7 @@ namespace Reko.Typing
         public DataType VisitCast(Cast cast)
         {
             cast.Expression.Accept(this);
+            RecordDataType(cast.DataType, cast);
             return cast.DataType;
         }
 
