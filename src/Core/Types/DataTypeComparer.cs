@@ -133,10 +133,7 @@ namespace Reko.Core.Types
             TypeReference tr_y = y as TypeReference;
             if (tr_x != null && tr_y != null)
             {
-                var d = StringComparer.InvariantCulture.Compare(tr_x.Name, tr_y.Name);
-                if (d != 0)
-                    return d;
-                return Compare(tr_x.Referent, tr_y.Referent, ++count);
+                return StringComparer.InvariantCulture.Compare(tr_x.Name, tr_y.Name);
             }
 
 			EquivalenceClass ex = x as EquivalenceClass;

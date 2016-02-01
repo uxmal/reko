@@ -78,6 +78,8 @@ namespace Reko.Typing
 			UnionType uNew = new UnionType(u.Name, u.PreferredType);
 			foreach (UnionAlternative a in u.Alternatives.Values)
 			{
+                if (a.DataType.ResolveAs<UnionType>() == u)
+                    continue;       //$HACK gets rid of (union "foo" (int) (union "foo"))
 				unifier.UnifyIntoUnion(uNew, a.DataType);
 			}
 			return uNew;
@@ -389,9 +391,11 @@ namespace Reko.Typing
 			}
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);
-			if (utNew.Alternatives.Count != ut.Alternatives.Count)
+            var dt = utNew.Simplify();
+            utNew = dt as UnionType;
+            if (utNew == null || utNew.Alternatives.Count != ut.Alternatives.Count)
 				Changed = true;
-			return utNew.Simplify();
+            return dt;
 		}
 
         public DataType VisitUnknownType(UnknownType unk)

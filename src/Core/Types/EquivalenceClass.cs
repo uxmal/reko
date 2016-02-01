@@ -59,11 +59,6 @@ namespace Reko.Core.Types
             set
             {
                 dt = value;
-                if (dt != null)
-                {
-                    if (this.Name.EndsWith("_60")) //$DEBUG
-                        this.Name.ToCharArray();
-                }
             }
         }
         private DataType dt;

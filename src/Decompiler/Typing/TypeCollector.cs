@@ -118,9 +118,12 @@ namespace Reko.Typing
 
         public bool VisitDeclaration(Declaration decl)
         {
+            var dt = decl.Identifier.Accept(asc);
+            desc.MeetDataType(decl.Identifier, dt);
+            decl.Identifier.Accept(desc, decl.Identifier.TypeVariable);
             if (decl.Expression != null)
             {
-                var dt = decl.Expression.Accept(asc);
+                dt = decl.Expression.Accept(asc);
                 desc.MeetDataType(decl.Expression, dt);
                 decl.Expression.Accept(desc, decl.Expression.TypeVariable);
             }

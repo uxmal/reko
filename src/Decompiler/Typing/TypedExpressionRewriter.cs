@@ -32,11 +32,9 @@ namespace Reko.Typing
     /// <summary>
     /// Rewrites all the expressions in the program based on the type information provided.
     /// </summary>
-    public class TypedExpressionRewriter2 : InstructionTransformer
+    public class TypedExpressionRewriter : InstructionTransformer
     {
         private Program program;
-        private IPlatform platform;
-        private TypeStore store;
         private Identifier globals;
         private DataTypeComparer compTypes;
         private TypedConstantRewriter tcr;
@@ -45,11 +43,9 @@ namespace Reko.Typing
         private bool dereferenced;
         private Expression basePtr;
 
-        public TypedExpressionRewriter2(Program program)
+        public TypedExpressionRewriter(Program program)
         {
             this.program = program;
-            this.platform = program.Platform;
-            this.store = program.TypeStore;
             this.globals = program.Globals;
             this.compTypes = new DataTypeComparer();
             this.tcr = new TypedConstantRewriter(program);
@@ -235,7 +231,7 @@ namespace Reko.Typing
             else if (binOp == Operator.Shr)
                 binOp = Operator.Sar;
             binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
-            store.SetTypeVariableExpression(binExp.TypeVariable, binExp);
+            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable, binExp);
             return binExp;
         }
 
@@ -263,7 +259,7 @@ namespace Reko.Typing
             var head = Rewrite(seq.Head, false);
             var tail = Rewrite(seq.Tail, false);
             Constant c = seq.Tail as Constant;
-            var ptHead = DataTypeOf( head) as PrimitiveType;
+            var ptHead = DataTypeOf(head) as PrimitiveType;
             if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
             {
                 if (c != null)

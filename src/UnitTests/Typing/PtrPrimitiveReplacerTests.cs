@@ -35,6 +35,43 @@ namespace Reko.UnitTests.Typing
 	{
 		private TypeStore store;
 
+        protected override void RunTest(Program prog, string outputFilename)
+		{
+			TypeFactory factory = new TypeFactory();
+			store = new TypeStore();
+			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
+			eqb.Build(prog);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
+			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+			trco.CollectProgramTraits(prog);
+			dtb.BuildEquivalenceClassDataTypes();
+
+			store.CopyClassDataTypesToTypeVariables();
+			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
+			tvr.ReplaceTypeVariables();
+
+			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, prog);
+			ppr.ReplaceAll();
+
+			Verify(prog, outputFilename);
+		}
+
+		private void Verify(Program prog, string outputFilename)
+		{
+			using (FileUnitTester fut = new FileUnitTester(outputFilename))
+			{
+				if (prog != null)
+				{
+					foreach (Procedure proc in prog.Procedures.Values)
+					{
+						proc.Write(false, fut.TextWriter);
+						fut.TextWriter.WriteLine();
+					}
+				}
+				store.Write(fut.TextWriter);
+				fut.AssertFilesEqual();
+			}
+		}
 		[Test]
 		public void PprReplaceInts()
 		{
@@ -128,43 +165,5 @@ namespace Reko.UnitTests.Typing
             Assert.AreEqual(sExp, ppr.Replace(s1).ToString());
             Assert.AreEqual(sExp, ppr.Replace(s2).ToString());
         }
-
-        protected override void RunTest(Program prog, string outputFilename)
-		{
-			TypeFactory factory = new TypeFactory();
-			store = new TypeStore();
-			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			eqb.Build(prog);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
-			trco.CollectProgramTraits(prog);
-			dtb.BuildEquivalenceClassDataTypes();
-
-			store.CopyClassDataTypesToTypeVariables();
-			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
-			tvr.ReplaceTypeVariables();
-
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, prog);
-			ppr.ReplaceAll();
-
-			Verify(prog, outputFilename);
-		}
-
-		private void Verify(Program prog, string outputFilename)
-		{
-			using (FileUnitTester fut = new FileUnitTester(outputFilename))
-			{
-				if (prog != null)
-				{
-					foreach (Procedure proc in prog.Procedures.Values)
-					{
-						proc.Write(false, fut.TextWriter);
-						fut.TextWriter.WriteLine();
-					}
-				}
-				store.Write(fut.TextWriter);
-				fut.AssertFilesEqual();
-			}
-		}
 	}
 }
