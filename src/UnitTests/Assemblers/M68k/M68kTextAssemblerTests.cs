@@ -65,9 +65,9 @@ namespace Reko.UnitTests.Assemblers.M68k
                 Dumper dumper = new Dumper(prog.Architecture);
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
-                dumper.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
+                dumper.DumpData(prog.ImageMap, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
                 fut.TextWriter.WriteLine();
-                dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
+                dumper.DumpAssembler(prog.ImageMap, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
                 if (prog.ImportReferences.Count > 0)
                 {
                     var list = new SortedList<Address, ImportReference>(prog.ImportReferences);

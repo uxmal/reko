@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Scanning
             eventListener = mr.Stub<DecompilerEventListener>();
         }
 
-        protected MemoryArea CreateImage(Address addr, params uint[] opcodes)
+        protected MemoryArea CreateMemoryArea(Address addr, params uint[] opcodes)
         {
             byte[] bytes = new byte[0x20];
             var writer = new LeImageWriter(bytes);

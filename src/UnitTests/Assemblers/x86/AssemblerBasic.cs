@@ -92,9 +92,9 @@ namespace Reko.UnitTests.Assemblers.x86
 				Dumper dumper = new Dumper(program.Architecture);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
-				dumper.DumpData(program.Image, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
+				dumper.DumpData(program.ImageMap, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-				dumper.DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + (uint)program.Image.Length, fut.TextWriter);
+				dumper.DumpAssembler(program.ImageMap, program.Image.BaseAddress, program.Image.BaseAddress + (uint)program.Image.Length, fut.TextWriter);
 				if (program.ImportReferences.Count > 0)
 				{
 					foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -121,12 +121,12 @@ hello	proc
 		mov	bx,0x40
 hello	endp
 ");
-            MemoryArea img = program.Image;
+            var segment = program.ImageMap.Segments.Values.First();
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
 				var arch = new IntelArchitecture(ProcessorMode.Real);
 				var d = new Dumper(arch);
-				d.DumpData(img, img.BaseAddress, img.Bytes.Length, fut.TextWriter);
+				d.DumpData(program.ImageMap, segment.Address, segment.ContentSize, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -239,7 +239,7 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				Dumper dump = new Dumper(arch);
-				dump.DumpData(program.Image, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
+				dump.DumpData(program.ImageMap, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -371,11 +371,11 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dump = new Dumper(asm.Architecture);
-				dump.DumpData(program.Image, program.Image.BaseAddress, program.Image.Bytes.Length, fut.TextWriter);
+				dump.DumpData(program.ImageMap, program.Image.BaseAddress, program.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length, fut.TextWriter);
+				dump.DumpAssembler(program.ImageMap, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}	

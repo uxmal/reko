@@ -286,14 +286,15 @@ namespace Reko.Environments.MacOS
             }
         }
 
-        public void AddResourcesToImageMap(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
+        public void AddResourcesToImageMap(Address addrLoad, MemoryArea mem, ImageMap imageMap, List<EntryPoint> entryPoints)
         {
             foreach (ResourceType type in ResourceTypes)
             {
                 foreach (ResourceReference rsrc in type.References)
                 {
                     Address addrSegment = addrLoad + rsrc.DataOffset + rsrcDataOff;
-                    imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read, 0);
+                    var segment = imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read, 0);
+                    segment.MemoryArea = mem;
                     if (type.Name == "CODE")
                     {
                         if (rsrc.ResourceID == 0)

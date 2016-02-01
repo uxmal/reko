@@ -44,9 +44,18 @@ namespace Reko.Core
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
-			this.Name = name;
+            this.Name = name;
 			this.Access = access;
 		}
+
+        /// <summary>
+        /// The memory loaded into this segment.
+        /// </summary>
+        /// <remarks>
+        /// Imageloaders are responsible for providing the MemoryArea for each
+        /// segment being loaded.
+        /// </remarks>
+        public MemoryArea MemoryArea { get; set; }
 
 		public AccessMode Access { get; set; }
 

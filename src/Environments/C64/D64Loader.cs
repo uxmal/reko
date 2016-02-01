@@ -141,10 +141,11 @@ namespace Reko.Environments.C64
                 }
             }
             var arch = new Mos6502ProcessorArchitecture();
-            var image = new MemoryArea(Address.Ptr16(0), RawImage);
+            var mem = new MemoryArea(Address.Ptr16(0), RawImage);
+            var imageMap = new ImageMap(mem.BaseAddress);
+            imageMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return new Program {
-                Image = image,
-                ImageMap = image.CreateImageMap(),
+                ImageMap = imageMap,
                 Architecture = arch,
                 Platform = new DefaultPlatform(Services, arch)
             };

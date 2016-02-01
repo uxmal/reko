@@ -70,8 +70,8 @@ namespace Reko.ImageLoaders.BinHex
                 }
             }
 
-            var li = new MemoryArea(addrLoad, dataFork);
-            return new Program(li, li.CreateImageMap(), arch, platform);
+            var mem = new MemoryArea(addrLoad, dataFork);
+            return new Program(mem, mem.CreateImageMap(), arch, platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)
@@ -100,7 +100,7 @@ namespace Reko.ImageLoaders.BinHex
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, imageMap, entryPoints);
+                rsrcFork.AddResourcesToImageMap(addrLoad, program.Image, imageMap, entryPoints);
             }
             return new RelocationResults(entryPoints, relocations, new List<Address>());
         }

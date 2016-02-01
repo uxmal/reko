@@ -489,7 +489,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
+            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
+            prog.ImageMap = new ImageMap(mem.BaseAddress,
+                new ImageMapSegment("0C00", 300, AccessMode.ReadWriteExecute)
+                {
+                    MemoryArea = mem
+                });
             return prog; 
         }
 

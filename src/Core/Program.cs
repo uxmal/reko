@@ -140,9 +140,7 @@ namespace Reko.Core
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }
 
-        /// <summary>
-        /// The unpacked, relocated, in-memory image of the program to be decompiled.
-        /// </summary>
+        [Obsolete]
         public MemoryArea Image { get; set; }
 
         public ImageMap ImageMap { get; set; }

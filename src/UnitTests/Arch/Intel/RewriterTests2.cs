@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Arch.Intel
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
 			{
 				Dumper dump = new Dumper(program.Architecture);
-				dump.Dump(program, program.ImageMap, fut.TextWriter);
+				dump.Dump(program, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				program.CallGraph.Write(fut.TextWriter);
 

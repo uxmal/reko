@@ -138,13 +138,19 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void HSC_ARM32_Calls()
         {
-            var image = CreateImage(Address.Ptr32(0x1000),
+            var mem = CreateMemoryArea(Address.Ptr32(0x1000),
                 0xE1A0F00E,     // mov r15,r14 (return)
                 0xEBFFFFFD,
                 0xEBFFFFFC);
+            var imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageMapSegment(".text", AccessMode.ReadExecute)
+                {
+                    MemoryArea = mem
+                });
             prog = new Program
             {
-                Image = image,
+                ImageMap = imageMap,
                 Architecture = new Arm32ProcessorArchitecture(),
             };
             var host = mr.Stub<IRewriterHost>();

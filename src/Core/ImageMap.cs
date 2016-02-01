@@ -49,6 +49,19 @@ namespace Reko.Core
 			SetAddressSpan(addrBase, (uint) imageSize);
 		}
 
+        public ImageMap(Address addrBase, params ImageMapSegment [] segments)
+        {
+            if (addrBase == null)
+                throw new ArgumentNullException("addrBase");
+            this.addrBase = addrBase;
+            this.items = new Map<Address, ImageMapItem>(new ItemComparer());
+            this.segments = new Map<Address, ImageMapSegment>(new ItemComparer());
+            foreach (var seg in segments)
+            {
+                this.segments.Add(seg.Address, seg);
+            }
+        }
+
         /// <summary>
         /// Adds an image map item at the specified address. 
         /// </summary>
@@ -142,6 +155,8 @@ namespace Reko.Core
             MapChanged.Fire(this);
         }
 
+    
+
         private DataType ChopAfter(DataType type, int offset)
         {
             if (type == null)
@@ -176,8 +191,15 @@ namespace Reko.Core
             item.Size = (uint)delta;
         }
 
-		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
-		{
+        public ImageMapSegment AddSegment(MemoryArea mem, string segmentName, AccessMode readExecute)
+        {
+            var segment = AddSegment(mem.BaseAddress, segmentName, AccessMode.ReadExecute, (uint)mem.Bytes.Length);
+            segment.MemoryArea = mem;
+            return segment;
+        }
+
+        public ImageMapSegment AddSegment(Address addr, string segmentName,AccessMode access, uint contentSize)
+        { 
 			ImageMapSegment seg;
             if (!TryFindSegment(addr, out seg))
 			{
@@ -198,8 +220,8 @@ namespace Reko.Core
 				var segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
 				segNew.Size = (uint)(seg.Size - delta);
-				seg.Size = (uint) delta;
                 segNew.ContentSize = contentSize;
+				seg.Size = (uint) delta;
                 segments.Add(segNew.Address, segNew);
 
 				// And split any items in the segment.
@@ -245,7 +267,13 @@ namespace Reko.Core
             return segments.TryGetLowerBound(addr, out segment);
 		}
 
-		public bool IsReadOnlyAddress(Address addr)
+        public bool IsValidAddress(Address address)
+        {
+            ImageMapSegment seg;
+            return TryFindSegment(address, out seg);
+        }
+
+        public bool IsReadOnlyAddress(Address addr)
 		{
 			ImageMapSegment seg;
             return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Write) == 0);
