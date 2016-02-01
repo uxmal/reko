@@ -196,10 +196,11 @@ namespace Reko.UnitTests.Scanning
                 .Return(null);
             mr.ReplayAll();
 
+            var segment = prog.ImageMap.Segments.Values.First();
             var hsc = new HeuristicScanner(prog, host, eventListener);
             var proc = hsc.DisassembleProcedure(
-                prog.Image.BaseAddress,
-                prog.Image.BaseAddress + prog.Image.Length);
+                segment.MemoryArea.BaseAddress,
+                segment.MemoryArea.BaseAddress + segment.ContentSize);
             var sExp =
                 #region Expected
  @"l00010000:  // pred:
