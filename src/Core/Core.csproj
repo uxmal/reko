@@ -307,6 +307,7 @@
     <Compile Include="Serialization\DataTypeSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
     <Compile Include="Serialization\MemberPointer_v1.cs" />
+    <Compile Include="Serialization\MemoryMap_v1.cs" />
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
     <Compile Include="Serialization\ProjectPersister.cs" />

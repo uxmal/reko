@@ -18,17 +18,28 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Xml.Serialization;
 
-namespace Reko.ImageLoaders.OdbgScript
+[XmlRoot(ElementName ="memory", Namespace="http://schemata.jklnet.org/Reko/v4")]
+public class MemoryMap_v1 {
+    [XmlElement("segment")]
+    public MemorySegment_v1[] Segments; 
+}
+
+public partial class MemorySegment_v1
 {
-    public class MEMORY_BASIC_INFORMATION
-    {
-        public ulong BaseAddress;
-        public ulong RegionSize;
-        public ulong AllocationBase;
-    }
+    [XmlAttribute("name")]
+    public string Name;
+
+    [XmlAttribute("addr")]
+    public string Address;
+
+    [XmlAttribute("size")]
+    public string Size;
+
+    [XmlAttribute("attr")]
+    public string Attributes;
+
+    [XmlElement("description")]
+    public string Description;
 }
