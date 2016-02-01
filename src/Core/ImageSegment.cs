@@ -28,11 +28,11 @@ namespace Reko.Core
     ///  real and protected modes, and executable sections for flat processor modes.
 	/// </summary>
     [Designer("Reko.Gui.Design.ImageMapSegmentNodeDesigner,Reko.Gui")]
-	public class ImageMapSegment : ImageMapItem
+	public class ImageSegment : ImageMapItem        //$REVIEW: why inherit from ImageMapItem?
 	{
         private uint ctSize;
 
-		public ImageMapSegment(string name, AccessMode access) : base() 
+		public ImageSegment(string name, AccessMode access) : base() 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
@@ -40,7 +40,7 @@ namespace Reko.Core
 			this.Access = access;
 		}
 
-		public ImageMapSegment(string name, uint size, AccessMode access) : base(size) 
+		public ImageSegment(string name, uint size, AccessMode access) : base(size) 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
@@ -63,7 +63,7 @@ namespace Reko.Core
 
         public bool IsDiscardable { get; set; }
 
-        public ImageMapSegmentRenderer Designer { get; set; }
+        public ImageSegmentRenderer Designer { get; set; }
 
 		public string Name { get;set; }
 

@@ -45,12 +45,12 @@ namespace Reko.Core
         public void Dump(Program program, TextWriter stm)
         {
             var map = program.ImageMap;
-            ImageMapSegment segment = null;
+            ImageSegment segment = null;
             foreach (ImageMapItem i in map.Items.Values)
             {
                 if (!program.ImageMap.IsValidAddress(i.Address))
                     continue;
-                ImageMapSegment seg;
+                ImageSegment seg;
                 if (!map.TryFindSegment(i.Address, out seg))
                     continue;
                 if (seg != segment)
@@ -112,7 +112,7 @@ namespace Reko.Core
 		public void DumpData(ImageMap map, Address address, long cbBytes, TextWriter stm)
 		{
 			ulong cSkip = address.ToLinear() & 0x0F;
-            ImageMapSegment segment;
+            ImageSegment segment;
             if (!map.TryFindSegment(address, out segment))
                 return;
 			ImageReader rdr = arch.CreateImageReader(segment.MemoryArea, address);
@@ -154,7 +154,7 @@ namespace Reko.Core
 
         public void DumpAssembler(ImageMap map, Address addrStart, Address addrLast, TextWriter writer)
         {
-            ImageMapSegment segment;
+            ImageSegment segment;
             if (!map.TryFindSegment(addrStart, out segment))
                 return;
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(segment.MemoryArea, addrStart));

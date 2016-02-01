@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Scanning
                 0xEBFFFFFC);
             var imageMap = new ImageMap(
                 mem.BaseAddress,
-                new ImageMapSegment(".text", AccessMode.ReadExecute)
+                new ImageSegment(".text", AccessMode.ReadExecute)
                 {
                     MemoryArea = mem
                 });

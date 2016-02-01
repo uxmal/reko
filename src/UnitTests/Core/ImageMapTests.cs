@@ -47,9 +47,9 @@ namespace Reko.UnitTests.Core
 
 			// Verify
 
-			IEnumerator<KeyValuePair<Address,ImageMapSegment>> e = im.Segments.GetEnumerator();
+			IEnumerator<KeyValuePair<Address,ImageSegment>> e = im.Segments.GetEnumerator();
 			Assert.IsTrue(e.MoveNext());
-			ImageMapSegment seg = e.Current.Value;
+			ImageSegment seg = e.Current.Value;
 			Assert.AreEqual(2, seg.Size);
 
 			Assert.IsTrue(e.MoveNext());
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core
             return e.Current.Value;
 		}
 
-		private ImageMapSegment GetNextMapSegment(IEnumerator<KeyValuePair<Address, ImageMapSegment>> e)
+		private ImageSegment GetNextMapSegment(IEnumerator<KeyValuePair<Address, ImageSegment>> e)
 		{
 			Assert.IsTrue(e.MoveNext());
             return e.Current.Value;
@@ -87,9 +87,9 @@ namespace Reko.UnitTests.Core
 		{
 			ImageMap map = new ImageMap(Address.SegPtr(0x0B00, 0), 40000);
 			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 0);
-			IEnumerator<KeyValuePair<Address,ImageMapSegment>> e = map.Segments.GetEnumerator();
+			IEnumerator<KeyValuePair<Address,ImageSegment>> e = map.Segments.GetEnumerator();
 			GetNextMapSegment(e);
-			ImageMapSegment s = GetNextMapSegment(e);
+			ImageSegment s = GetNextMapSegment(e);
 			Assert.AreEqual("0C00", s.Name);
 			Assert.AreEqual(35904, s.Size);
 		}

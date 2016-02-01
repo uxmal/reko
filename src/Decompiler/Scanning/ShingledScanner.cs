@@ -48,7 +48,7 @@ namespace Reko.Scanning
 
         public IEnumerable<Address> Scan()
         {
-            var map = new Dictionary<ImageMapSegment, byte[]>();
+            var map = new Dictionary<ImageSegment, byte[]>();
             foreach (var segment in program.ImageMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0))
             {
@@ -65,7 +65,7 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public byte[] ScanSegment(ImageMapSegment segment)
+        public byte[] ScanSegment(ImageSegment segment)
         {
             var G = new DiGraph<Address>();
             G.AddNode(bad);
@@ -140,7 +140,7 @@ namespace Reko.Scanning
 
         private bool IsExecutable(Address address)
         {
-            ImageMapSegment seg;
+            ImageSegment seg;
             if (!program.ImageMap.TryFindSegment(address, out seg))
                 return false;
             return (seg.Access & AccessMode.Execute) != 0;
@@ -162,13 +162,13 @@ namespace Reko.Scanning
             return null;
         }
 
-        private MachineInstruction Dasm(ImageMapSegment segment, int a)
+        private MachineInstruction Dasm(ImageSegment segment, int a)
         {
             var dasm = program.CreateDisassembler(segment.Address + a);
             return dasm.FirstOrDefault();
         }
 
-        private RtlInstructionCluster DasmOld(ImageMapSegment segment, int a)
+        private RtlInstructionCluster DasmOld(ImageSegment segment, int a)
         {
             var rw = program.Architecture.CreateRewriter(
                 program.CreateImageReader(segment.Address + a),
@@ -178,7 +178,7 @@ namespace Reko.Scanning
             return rw.FirstOrDefault();
         }
 
-        public IEnumerable<Address> SpeculateCallDests(Dictionary<ImageMapSegment, byte[]> map)
+        public IEnumerable<Address> SpeculateCallDests(Dictionary<ImageSegment, byte[]> map)
         {
             var q = from addr in GetCalledAddresses(map)
                     group addr by addr into g
@@ -187,7 +187,7 @@ namespace Reko.Scanning
             return q;
         }
 
-        public IEnumerable<Address> GetCalledAddresses(Dictionary<ImageMapSegment, byte[]> map)
+        public IEnumerable<Address> GetCalledAddresses(Dictionary<ImageSegment, byte[]> map)
         { 
             foreach (var item in map)
             {

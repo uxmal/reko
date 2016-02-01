@@ -37,7 +37,7 @@ namespace Reko.Core
 
         private Address addrBase;
 		private Map<Address,ImageMapItem> items;
-        private Map<Address,ImageMapSegment> segments;
+        private Map<Address,ImageSegment> segments;
 
 		public ImageMap(Address addrBase, long imageSize)
 		{
@@ -45,17 +45,17 @@ namespace Reko.Core
                 throw new ArgumentNullException("addrBase");
             this.addrBase = addrBase;
             items = new Map<Address, ImageMapItem>(new ItemComparer());
-            segments = new Map<Address, ImageMapSegment>(new ItemComparer());
+            segments = new Map<Address, ImageSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, (uint) imageSize);
 		}
 
-        public ImageMap(Address addrBase, params ImageMapSegment [] segments)
+        public ImageMap(Address addrBase, params ImageSegment [] segments)
         {
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
             this.addrBase = addrBase;
             this.items = new Map<Address, ImageMapItem>(new ItemComparer());
-            this.segments = new Map<Address, ImageMapSegment>(new ItemComparer());
+            this.segments = new Map<Address, ImageSegment>(new ItemComparer());
             foreach (var seg in segments)
             {
                 this.segments.Add(seg.Address, seg);
@@ -191,19 +191,19 @@ namespace Reko.Core
             item.Size = (uint)delta;
         }
 
-        public ImageMapSegment AddSegment(MemoryArea mem, string segmentName, AccessMode readExecute)
+        public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode readExecute)
         {
             var segment = AddSegment(mem.BaseAddress, segmentName, AccessMode.ReadExecute, (uint)mem.Bytes.Length);
             segment.MemoryArea = mem;
             return segment;
         }
 
-        public ImageMapSegment AddSegment(Address addr, string segmentName,AccessMode access, uint contentSize)
+        public ImageSegment AddSegment(Address addr, string segmentName,AccessMode access, uint contentSize)
         { 
-			ImageMapSegment seg;
+			ImageSegment seg;
             if (!TryFindSegment(addr, out seg))
 			{
-				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
+				ImageSegment segNew = new ImageSegment(segmentName, access);
 				segNew.Address = addr;
 				segNew.Size = ~0U;
                 segNew.ContentSize = contentSize;
@@ -217,7 +217,7 @@ namespace Reko.Core
 			{
 				// Need to split the segment. //$REVIEW: or do we? x86 segments can overlap.
 
-				var segNew = new ImageMapSegment(segmentName, access);
+				var segNew = new ImageSegment(segmentName, access);
 				segNew.Address = addr;
 				segNew.Size = (uint)(seg.Size - delta);
                 segNew.ContentSize = contentSize;
@@ -262,26 +262,26 @@ namespace Reko.Core
 		/// </summary>
 		/// <param name="addr"></param>
 		/// <returns></returns>
-		public bool TryFindSegment(Address addr, out ImageMapSegment segment)
+		public bool TryFindSegment(Address addr, out ImageSegment segment)
 		{
             return segments.TryGetLowerBound(addr, out segment);
 		}
 
         public bool IsValidAddress(Address address)
         {
-            ImageMapSegment seg;
+            ImageSegment seg;
             return TryFindSegment(address, out seg);
         }
 
         public bool IsReadOnlyAddress(Address addr)
 		{
-			ImageMapSegment seg;
+			ImageSegment seg;
             return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Write) == 0);
 		}
 
 		public bool IsExecutableAddress(Address addr)
 		{
-			ImageMapSegment seg;
+			ImageSegment seg;
             return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Execute) != 0);
 		}
 
@@ -293,7 +293,7 @@ namespace Reko.Core
 		public Address MapLinearAddressToAddress(ulong linearAddress)
 		{
             //$REVIEW: slow; use binary search at least?
-            foreach (ImageMapSegment seg in segments.Values)
+            foreach (ImageSegment seg in segments.Values)
 			{
                 if (seg.IsInRange(linearAddress))
                 {
@@ -306,14 +306,14 @@ namespace Reko.Core
                 linearAddress));
 		}
 
-        public ImageMapSegmentRenderer Renderer { get; set; }
+        public ImageSegmentRenderer Renderer { get; set; }
 
 		public Map<Address, ImageMapItem> Items
 		{
 			get { return items; }
 		}
 
-        public Map<Address, ImageMapSegment> Segments
+        public Map<Address, ImageSegment> Segments
 		{
 			get { return segments; }
 		}

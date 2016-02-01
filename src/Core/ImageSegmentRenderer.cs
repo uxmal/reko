@@ -27,12 +27,12 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Base class for optional renderers for image map segments. It is used to render
+    /// Base class for optional renderers for image segments. It is used to render
     /// the contents of a loaded image segment differently from just dumping its contents
     /// as a bunch of bytes.
     /// </summary>
-    public abstract class ImageMapSegmentRenderer
+    public abstract class ImageSegmentRenderer
     {
-        public abstract void Render(ImageMapSegment segment, Program program, Formatter formatter);
+        public abstract void Render(ImageSegment segment, Program program, Formatter formatter);
     }
 }

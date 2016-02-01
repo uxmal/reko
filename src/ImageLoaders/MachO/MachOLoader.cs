@@ -323,7 +323,7 @@ namespace Reko.ImageLoaders.MachO
                 if ((protection & VM_PROT_EXECUTE) != 0)
                     am |= AccessMode.Execute;
 
-                var imageSection = new ImageMapSegment(
+                var imageSection = new ImageSegment(
                     string.Format("{0},{1}", segmentName, sectionName),
                     (uint)size,
                     am);        //imageSection.setData(!imageSection->isCode());

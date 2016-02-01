@@ -236,7 +236,7 @@ namespace Reko.Typing
             var addr = platform.MakeAddressFromConstant(c);
             if (addr == null)
                 return false;
-            ImageMapSegment seg;
+            ImageSegment seg;
             if (!program.ImageMap.TryFindSegment(addr, out seg))
                 return false;
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;

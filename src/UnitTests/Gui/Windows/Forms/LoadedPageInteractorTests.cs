@@ -45,8 +45,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IDecompilerService decSvc;
         private ServiceContainer sc;
         private MockRepository mr;
-        private ImageMapSegment mapSegment1;
-        private ImageMapSegment mapSegment2;
+        private ImageSegment mapSegment1;
+        private ImageSegment mapSegment2;
         private IDecompilerShellUiService uiSvc;
         private ILowLevelViewService memSvc;
 

@@ -553,7 +553,7 @@ namespace Reko.Gui.Windows.Controls
                 ulong laSegEnd = 0;
                 while (rc.Top < ctrl.Height && rdr.Address.ToLinear() < laEnd)
                 {
-                    ImageMapSegment seg;
+                    ImageSegment seg;
                     if (ctrl.ImageMap.TryFindSegment(ctrl.addrTopVisible, out seg))
                     {
                         if (rdr.Address.ToLinear() >= laSegEnd)

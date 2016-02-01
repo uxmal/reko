@@ -143,7 +143,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual bool TE_GetMemoryInfo(ulong addr, out MEMORY_BASIC_INFORMATION MemInfo)
         {
             ImageMap map = loader.ImageMap;
-            ImageMapSegment segment;
+            ImageSegment segment;
             if (map.TryFindSegment(Address.Ptr32((uint)addr), out segment))
             {
                 MemInfo = new MEMORY_BASIC_INFORMATION

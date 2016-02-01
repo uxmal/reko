@@ -491,7 +491,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
             prog.ImageMap = new ImageMap(mem.BaseAddress,
-                new ImageMapSegment("0C00", 300, AccessMode.ReadWriteExecute)
+                new ImageSegment("0C00", 300, AccessMode.ReadWriteExecute)
                 {
                     MemoryArea = mem
                 });

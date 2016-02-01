@@ -426,7 +426,7 @@ namespace Reko.ImageLoaders.Elf
             return cfgSvc.GetEnvironment(envName).Load(Services, arch);
         }
 
-        private ImageMapSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
+        private ImageSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
         {
             switch (shdr.sh_type)
             {
@@ -441,7 +441,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        private ImageMapSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
+        private ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
         {
             switch (shdr.sh_type)
             {
