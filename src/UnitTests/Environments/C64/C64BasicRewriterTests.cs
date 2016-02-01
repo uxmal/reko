@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Environments.C64
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             var addr = Address.Ptr16(10);
-            var image = new LoadedImage(addr, new byte[1]);
+            var image = new MemoryArea(addr, new byte[1]);
             return arch.CreateRewriter(
                 arch.CreateImageReader(image, addr),
                 arch.CreateProcessorState(),

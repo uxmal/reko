@@ -73,12 +73,12 @@ namespace Reko.Arch.M68k
             return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }

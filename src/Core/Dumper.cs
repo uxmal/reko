@@ -65,7 +65,7 @@ namespace Reko.Core
                         stm.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
                     }
 
-					//				Address addrLast = i.Address + i.Size;
+					// Address addrLast = i.Address + i.Size;
 					ImageMapBlock block = i as ImageMapBlock;
 					if (block != null)
 					{
@@ -74,7 +74,7 @@ namespace Reko.Core
 						{
 							stm.WriteLine(block.Address.GenerateName("fn","()"));
 						}
-						else																			 
+						else
 						{
 							stm.WriteLine(block.Address.GenerateName("l",":"));
 						}
@@ -104,19 +104,19 @@ namespace Reko.Core
 			}
 		}
 
-        public void DumpData(LoadedImage image, Address address, int cbBytes, TextWriter stm)
+        public void DumpData(MemoryArea image, Address address, int cbBytes, TextWriter stm)
         {
             if (cbBytes < 0)
                 throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
             DumpData(image, address, (uint)cbBytes, stm);
         }
 
-        public void DumpData(LoadedImage image, AddressRange range, TextWriter stm)
+        public void DumpData(MemoryArea image, AddressRange range, TextWriter stm)
         {
             DumpData(image, range.Begin, (long) (range.End - range.Begin), stm);
         }
 
-		public void DumpData(LoadedImage image, Address address, long cbBytes, TextWriter stm)
+		public void DumpData(MemoryArea image, Address address, long cbBytes, TextWriter stm)
 		{
 			ulong cSkip = address.ToLinear() & 0x0F;
 			ImageReader rdr = arch.CreateImageReader(image, address);
@@ -156,7 +156,7 @@ namespace Reko.Core
 			}
 		}
 
-        public void DumpAssembler(LoadedImage image, Address addrStart, Address addrLast, TextWriter writer)
+        public void DumpAssembler(MemoryArea image, Address addrStart, Address addrLast, TextWriter writer)
         {
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, addrStart));
             try
@@ -176,7 +176,7 @@ namespace Reko.Core
             }
         }
 
-        public bool DumpAssemblerLine(LoadedImage image, MachineInstruction instr, TextWriter writer)
+        public bool DumpAssemblerLine(MemoryArea image, MachineInstruction instr, TextWriter writer)
         {
             Address addrBegin = instr.Address;
             if (ShowAddresses)
@@ -194,7 +194,7 @@ namespace Reko.Core
             return true;
         }
 
-		public void WriteByteRange(LoadedImage image, Address begin, Address addrEnd, TextWriter writer)
+		public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, TextWriter writer)
 		{
 			ImageReader rdr = arch.CreateImageReader(image, begin);
 			while (rdr.Address < addrEnd)

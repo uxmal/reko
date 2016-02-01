@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private MockRepository mr;
         private IHost host;
         private OllyLang engine;
-        private LoadedImage image;
+        private MemoryArea image;
 
         [SetUp]
         public void Setup()
@@ -73,7 +73,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private void Given_Image(uint addr, params byte[] bytes)
         {
-            image = new LoadedImage(Address.Ptr32(addr), bytes);
+            image = new MemoryArea(Address.Ptr32(addr), bytes);
             host.Stub(h => h.Image).Return(image);
             host.Stub(h => h.TE_GetMemoryInfo(
                 Arg<ulong>.Is.Anything,
@@ -124,7 +124,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 Arg<int>.Is.Equal(3),
                 Arg<byte[]>.Is.NotNull)).Do(new Func<ulong,int,byte[],bool>((a, l, b) =>
             {
-                LoadedImage.WriteBytes(b, (long)a - (long)image.BaseAddress.ToLinear(), l,image.Bytes);
+                MemoryArea.WriteBytes(b, (long)a - (long)image.BaseAddress.ToLinear(), l,image.Bytes);
                 return true;
             }));
 

@@ -121,7 +121,7 @@ hello	proc
 		mov	bx,0x40
 hello	endp
 ");
-            LoadedImage img = program.Image;
+            MemoryArea img = program.Image;
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
 				var arch = new IntelArchitecture(ProcessorMode.Real);

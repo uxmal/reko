@@ -54,7 +54,7 @@ namespace Reko.Loading
         {
             if (addrLoad == null)
                 addrLoad = PreferredBaseAddress;
-            var image = new LoadedImage(addrLoad, imageBytes);
+            var image = new MemoryArea(addrLoad, imageBytes);
             return new Program(
                 image,
                 image.CreateImageMap(),

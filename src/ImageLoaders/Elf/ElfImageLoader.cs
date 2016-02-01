@@ -256,7 +256,7 @@ namespace Reko.ImageLoaders.Elf
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private Address addrPreferred;
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
         private Dictionary<Address, ImportReference> importReferences;
         private ulong m_uPltMin;
@@ -346,7 +346,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var bytes = new byte[addrMax - addrPreferred];
             var v_base = addrPreferred.ToLinear();
-            this.image = new LoadedImage(addrPreferred, bytes);
+            this.image = new MemoryArea(addrPreferred, bytes);
             this.imageMap = image.CreateImageMap();
 
             if (fileClass == ELFCLASS64)

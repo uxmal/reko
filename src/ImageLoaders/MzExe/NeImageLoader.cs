@@ -63,7 +63,7 @@ namespace Reko.ImageLoaders.MzExe
         const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
         const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
 
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
         private List<string> moduleNames;
         private NeSegment[] segments;
@@ -499,7 +499,7 @@ namespace Reko.ImageLoaders.MzExe
             this.segments = ReadSegmentTable(offset, cSeg);
             var segFirst = segments[0];
             var segLast = segments[segments.Length - 1];
-            this.image = new LoadedImage(
+            this.image = new MemoryArea(
                 PreferredBaseAddress,
                 new byte[segLast.LinearAddress + segLast.DataLength]);
             this.imageMap = image.CreateImageMap();
@@ -541,7 +541,7 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        bool LoadSegment(NeSegment seg, LoadedImage loadedImage, ImageMap imageMap)
+        bool LoadSegment(NeSegment seg, MemoryArea loadedImage, ImageMap imageMap)
         {
             Array.Copy(
                 RawImage,

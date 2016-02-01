@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Core.Output
     [TestFixture]
     public class GlobalDataWriterTests
     {
-        private LoadedImage image;
+        private MemoryArea image;
         private Program program;
         private ServiceContainer sc;
 
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Core.Output
 
         private ImageWriter Memory(uint address)
         {
-            image = new LoadedImage(Address.Ptr32(address), new byte[1024]);
+            image = new MemoryArea(Address.Ptr32(address), new byte[1024]);
             var mem = new LeImageWriter(image.Bytes);
             return mem;
         }

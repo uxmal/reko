@@ -39,10 +39,10 @@ namespace Reko.ImageLoaders.MzExe
         const uint RT_GROUP_ICON = 14;
         const uint RT_VERSION = 16;
 
-        private LoadedImage imgLoaded;
+        private MemoryArea imgLoaded;
         private uint rvaResources;
 
-        public PeResourceLoader(LoadedImage imgLoaded, uint rvaResources)
+        public PeResourceLoader(MemoryArea imgLoaded, uint rvaResources)
         {
             this.imgLoaded = imgLoaded;
             this.rvaResources = rvaResources;

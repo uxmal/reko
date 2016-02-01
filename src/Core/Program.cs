@@ -63,7 +63,7 @@ namespace Reko.Core
             this.User = new UserData();
         }
 
-        public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
+        public Program(MemoryArea image, ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
             this.Image = image;
             this.ImageMap = imageMap;
@@ -143,7 +143,7 @@ namespace Reko.Core
         /// <summary>
         /// The unpacked, relocated, in-memory image of the program to be decompiled.
         /// </summary>
-        public LoadedImage Image { get; set; }
+        public MemoryArea Image { get; set; }
 
         public ImageMap ImageMap { get; set; }
 

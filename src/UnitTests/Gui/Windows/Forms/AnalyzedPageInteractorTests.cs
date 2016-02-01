@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var bytes = new byte[4711];
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
             Program prog = new Program();
-            prog.Image = new LoadedImage(loadAddress, bytes);
+            prog.Image = new MemoryArea(loadAddress, bytes);
             prog.ImageMap = prog.Image.CreateImageMap();
             prog.Architecture = arch;
             prog.Platform = new DefaultPlatform(sc, arch);

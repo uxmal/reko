@@ -13,6 +13,10 @@
   The Motorola 68K processor provides a 24bit address bus on the Sega Genesis allowing contiguous addressing of up to 16MB.
 -->
 <memory xmlns="http://schemata.jklnet.org/Reko/v4">
+  
+    <!-- Ignoring these segments for now as they cause Reko 
+    to have severe difficulties -->
+  <!--
   <segment name=".text" addr="0" size="400000" attr="rx">
     <description> Cartridge Address Space</description>
   </segment>
@@ -28,20 +32,9 @@
   <segment name=".io" addr="A10000" size="20">
     <description>I/O Address Space</description>
   </segment>
-
+-->
   <!--
-        <tr>
-          <td > 0xA00000</td>
-          <td > 0xA0FFFF</td>
-          <td > 64KB</td>
-          <td > Z80 Address Space (see below)</td>
-        </tr>
-        <tr>
-          <td> 0xA10000</td>
-          <td> 0xA1001F</td>
-          <td> 32</td>
-          <td> I/O (see below)</td>
-        </tr>
+  Any volunteers to translate this?
         <tr>
           <td> 0xA10020</td>
           <td> 0xA10FFF</td>

@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             return new PowerPcRewriter(arch, ppcInstrs, frame, host);
         }
 
-        protected override LoadedImage RewriteCode(uint[] words)
+        protected override MemoryArea RewriteCode(uint[] words)
         {
             byte[] bytes = words.SelectMany(w => new byte[]
             {
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 (byte) (w >> 8),
                 (byte) w
             }).ToArray();
-            var image = new LoadedImage(LoadAddress, bytes);
+            var image = new MemoryArea(LoadAddress, bytes);
             ppcInstrs = new PowerPcDisassembler(arch, image.CreateBeReader(LoadAddress), PrimitiveType.Word32);
             return image;
         }

@@ -946,7 +946,7 @@ namespace Reko.Scanning
         private class BackwalkerHost : IBackWalkHost
         {
             private IScanner scanner;
-            private LoadedImage image;
+            private MemoryArea image;
             private IPlatform platform;
             private IProcessorArchitecture arch;
 

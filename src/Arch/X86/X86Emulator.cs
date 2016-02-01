@@ -43,7 +43,7 @@ namespace Reko.Arch.X86
         public const uint Omask = 1u << 11;
 
         private IntelArchitecture arch;
-        private LoadedImage img;
+        private MemoryArea img;
         private IPlatformEmulator envEmulator;
         private IEnumerator<X86Instruction> dasm;
         private bool running;
@@ -57,7 +57,7 @@ namespace Reko.Arch.X86
         private bool stepInto;
         private TWord stepOverAddress;
 
-        public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage, IPlatformEmulator envEmulator)
+        public X86Emulator(IntelArchitecture arch, MemoryArea loadedImage, IPlatformEmulator envEmulator)
         {
             this.arch = arch;
             this.img = loadedImage;

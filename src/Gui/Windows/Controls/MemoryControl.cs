@@ -51,7 +51,7 @@ namespace Reko.Gui.Windows.Controls
         private uint wordSize;
         private uint cbRow;
         private IProcessorArchitecture arch;
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
         private Address addrSelected;
         private Address addrAnchor;
@@ -369,7 +369,7 @@ namespace Reko.Gui.Windows.Controls
         }
 
         [Browsable(false)]
-        public LoadedImage ProgramImage
+        public MemoryArea ProgramImage
         {
             get { return image; }
             set

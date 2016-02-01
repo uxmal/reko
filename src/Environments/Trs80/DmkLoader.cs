@@ -63,7 +63,7 @@ namespace Reko.Environments.Trs80
             var bytes = tracks.SelectMany(t => t.Sectors)
                 .SelectMany(s => s.GetData())
                 .ToArray();
-            var image = new LoadedImage(addrLoad, bytes);
+            var image = new MemoryArea(addrLoad, bytes);
             return new Program
             {
                 Architecture = new Z80ProcessorArchitecture(),

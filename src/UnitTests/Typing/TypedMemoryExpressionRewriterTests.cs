@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-            var image = new LoadedImage(Address.Ptr32(0x00400000), new byte[1024]);
+            var image = new MemoryArea(Address.Ptr32(0x00400000), new byte[1024]);
             var arch = new FakeArchitecture();
             program = new Program
             {

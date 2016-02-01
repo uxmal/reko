@@ -78,7 +78,7 @@ namespace Reko.Assemblers.M68k
 
         public Program GetImage()
         {
-            var image = new LoadedImage(BaseAddress, Emitter.GetBytes());
+            var image = new MemoryArea(BaseAddress, Emitter.GetBytes());
             return new Program(
                 image,
                 image.CreateImageMap(),

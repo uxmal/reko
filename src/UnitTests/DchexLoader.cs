@@ -45,7 +45,7 @@ namespace Reko.UnitTests
                     break;
                 ProcessLine(line);
             }
-            var img = new LoadedImage(addrStart, memStm.ToArray());
+            var img = new MemoryArea(addrStart, memStm.ToArray());
             results = new Program(
                 img,
                 img.CreateImageMap(),

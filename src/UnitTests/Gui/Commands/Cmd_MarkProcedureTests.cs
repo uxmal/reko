@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Gui.Commands
         {
             this.sc = new ServiceContainer();
             this.mr = new MockRepository();
-            var image = new LoadedImage(Address.SegPtr(0x0C00, 0), new byte[100]);
+            var image = new MemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
             this.program = new Program
             {
                 Image = image,

@@ -112,7 +112,7 @@ namespace Reko.Core
 
         public ImageWriter WriteBeUInt32(uint offset, uint ui)
         {
-            LoadedImage.WriteBeUInt32(Bytes, offset, ui);
+            MemoryArea.WriteBeUInt32(Bytes, offset, ui);
             return this;
         }
 

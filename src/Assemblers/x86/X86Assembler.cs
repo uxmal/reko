@@ -87,7 +87,7 @@ namespace Reko.Assemblers.x86
         {
             var stm = new MemoryStream();
             LoadSegments(stm);
-            var image = new LoadedImage(addrBase, stm.ToArray());
+            var image = new MemoryArea(addrBase, stm.ToArray());
             RelocateSegmentReferences(image);
             return new Program(image, image.CreateImageMap(), arch, Platform);
         }
@@ -112,7 +112,7 @@ namespace Reko.Assemblers.x86
             }
         }
 
-        private void RelocateSegmentReferences(LoadedImage image)
+        private void RelocateSegmentReferences(MemoryArea image)
         {
             foreach (var seg in segments)
             {

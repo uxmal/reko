@@ -27,17 +27,14 @@ using System.IO;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Contains the bytes that are present in memory when a program is loaded.
+	/// Contains the bytes that are present in memory after a program is loaded.
 	/// </summary>
-    /// <remarks>
-    /// Currently, the loadedimage is a range of contiguous bytes, but it really
-    /// should be a sparse list of bytes for 64-bit address spaces.
-    /// </remarks>
-	public class LoadedImage
+    /// <remarks>Loading sparse images should load multiple memory areas.</remarks>
+	public class MemoryArea
 	{
 		private byte [] abImage;
 
-		public LoadedImage(Address addrBase, byte [] bytes)
+		public MemoryArea(Address addrBase, byte [] bytes)
 		{
 			this.BaseAddress = addrBase;
 			this.abImage = bytes;

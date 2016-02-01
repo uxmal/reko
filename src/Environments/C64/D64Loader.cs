@@ -141,7 +141,7 @@ namespace Reko.Environments.C64
                 }
             }
             var arch = new Mos6502ProcessorArchitecture();
-            var image = new LoadedImage(Address.Ptr16(0), RawImage);
+            var image = new MemoryArea(Address.Ptr16(0), RawImage);
             return new Program {
                 Image = image,
                 ImageMap = image.CreateImageMap(),
@@ -158,7 +158,7 @@ namespace Reko.Environments.C64
             case FileType.PRG:
                 return LoadPrg(imageBytes);
             case FileType.SEQ:
-                var image = new LoadedImage(addrPreferred, imageBytes);
+                var image = new MemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502ProcessorArchitecture();
                 return new Program(
                     image,
@@ -178,20 +178,20 @@ namespace Reko.Environments.C64
         private Program LoadPrg(byte[] imageBytes)
         {
             var stm = new MemoryStream();
-            ushort preferredAddress = LoadedImage.ReadLeUInt16(imageBytes, 0);
+            ushort preferredAddress = MemoryArea.ReadLeUInt16(imageBytes, 0);
             ushort alignedAddress = (ushort) (preferredAddress & ~0xF);
             int pad = preferredAddress - alignedAddress;
             while (pad-- > 0)
                 stm.WriteByte(0);
             stm.Write(imageBytes, 2, imageBytes.Length - 2);
             var loadedBytes = stm.ToArray();
-            var image = new LoadedImage(
+            var image = new MemoryArea(
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
             var prog = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
             var arch = new C64Basic(prog);
-            image = new LoadedImage(
+            image = new MemoryArea(
                 Address.Ptr16(prog.Keys[0]),
                 new byte[0xFFFF]);
             var program = new Program(

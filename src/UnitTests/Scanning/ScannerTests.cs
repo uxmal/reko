@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Program(Address address)
         {
-            var image = new LoadedImage(address, new byte[1]);
+            var image = new MemoryArea(address, new byte[1]);
             var imageMap = image.CreateImageMap();
             this.program = new Program
             {
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            var image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
+            var image = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             program = new Program(
                 image,
                 image.CreateImageMap(),
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Scanning
             this.program = prog;
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
-            prog.Image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
+            prog.Image = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             prog.ImageMap = prog.Image.CreateImageMap();
             return new TestScanner(prog, callSigs, importResolver, sc);
         }

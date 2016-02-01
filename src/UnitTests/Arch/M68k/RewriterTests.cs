@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.M68k
     {
         private M68kArchitecture arch = new M68kArchitecture();
         private Address addrBase = Address.Ptr32(0x00010000);
-        private LoadedImage image;
+        private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
         {
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.M68k
             {
                 writer.WriteBeUInt16(opcode);
             }
-            image = new LoadedImage(addrBase, bytes);
+            image = new MemoryArea(addrBase, bytes);
         }
 
         private void Rewrite(Action<M68kAssembler> build)

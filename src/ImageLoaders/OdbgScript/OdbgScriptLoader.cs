@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
             set { throw new NotImplementedException(); }
         }
 
-        public LoadedImage Image { get; private set; }
+        public MemoryArea Image { get; private set; }
         public ImageMap ImageMap { get; set; }
         public IntelArchitecture Architecture { get; set; }
 

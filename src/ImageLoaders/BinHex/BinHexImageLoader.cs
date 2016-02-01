@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.BinHex
     public class BinHexImageLoader : ImageLoader
     {
         private ResourceFork rsrcFork;
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
 
         public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
@@ -63,14 +63,14 @@ namespace Reko.ImageLoaders.BinHex
                     {
                         var image = selectedFile.GetBytes();
                         this.rsrcFork = new ResourceFork(image, arch);
-                        this.image = new LoadedImage(addrLoad, image);
+                        this.image = new MemoryArea(addrLoad, image);
                         this.imageMap = new ImageMap(addrLoad, image.Length);
                         return new Program(this.image, this.imageMap, arch, platform);
                     }
                 }
             }
 
-            var li = new LoadedImage(addrLoad, dataFork);
+            var li = new MemoryArea(addrLoad, dataFork);
             return new Program(li, li.CreateImageMap(), arch, platform);
         }
 

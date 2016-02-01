@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         Architecture = arch,
                         Platform = platform,
-                        Image = new LoadedImage(Address.SegPtr(0x1000, 0), new byte[100]),
+                        Image = new MemoryArea(Address.SegPtr(0x1000, 0), new byte[100]),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
                         User = new UserData
@@ -251,7 +251,7 @@ namespace Reko.UnitTests.Core.Serialization
             var program = new Program
             {
                 Architecture = arch,
-                Image = new LoadedImage(address, bytes)
+                Image = new MemoryArea(address, bytes)
             };
             loader.Stub(l => l.LoadImageBytes(
                 Arg<string>.Is.Equal(exeName),
@@ -265,7 +265,7 @@ namespace Reko.UnitTests.Core.Serialization
         private void Given_ExecutableProgram(string exeName, Address address)
         {
             var bytes = new byte[0x1000];
-            var image = new LoadedImage(address, bytes);
+            var image = new MemoryArea(address, bytes);
 
             var program = new Program
             {

@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program()
         {
             var addrBase = Address.Ptr32(0x10000);
-            var image = new LoadedImage(addrBase, new byte[100]);
+            var image = new MemoryArea(addrBase, new byte[100]);
             var map = image.CreateImageMap();
             var arch = mr.Stub<IProcessorArchitecture>();
             var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull)).Return(dasm);
             arch.Stub(a => a.InstructionBitSize).Return(8);
             arch.Stub(a => a.CreateImageReader(
-                Arg<LoadedImage>.Is.NotNull,
+                Arg<MemoryArea>.Is.NotNull,
                 Arg<Address>.Is.NotNull)).Return(image.CreateLeReader(addrBase));
             dasm.Stub(d => d.GetEnumerator()).Return(e);
             arch.Replay();
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
-            var image = new LoadedImage(Address.Ptr32(0x1000), new byte[300]);
+            var image = new MemoryArea(Address.Ptr32(0x1000), new byte[300]);
             mr.ReplayAll();
 
             interactor.SetSite(sc);

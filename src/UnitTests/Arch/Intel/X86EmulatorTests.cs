@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Intel
         private MockRepository mr;
         private IntelArchitecture arch;
         private X86Emulator emu;
-        private LoadedImage image;
+        private MemoryArea image;
         private Dictionary<Address, ImportReference> importReferences;
         private IPlatform platform;
         private ServiceContainer sc;

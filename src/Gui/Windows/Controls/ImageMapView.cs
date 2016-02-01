@@ -33,9 +33,9 @@ namespace Reko.Gui.Windows.Controls
         private int granularity;
 
         [Browsable(false)]
-        public LoadedImage Image { get { return image; } set { image = value; OnImageChanged(); } }
+        public MemoryArea Image { get { return image; } set { image = value; OnImageChanged(); } }
         public event EventHandler ImageChanged;
-        public LoadedImage image;
+        public MemoryArea image;
 
         [Browsable(false)]
         public ImageMap ImageMap {

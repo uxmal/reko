@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Typing
         private ProgramBuilder CreateProgramBuilder(uint linearAddress, int size)
         {
             return new ProgramBuilder(
-                new LoadedImage(Address.Ptr32(linearAddress), new byte[size]));
+                new MemoryArea(Address.Ptr32(linearAddress), new byte[size]));
         }
 
         private void DumpProgram(Program program, TextWriter tw)
@@ -414,7 +414,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerComparison()
         {
-            ProgramBuilder prog = new ProgramBuilder(new LoadedImage(Address.Ptr32(0x00100000), new byte[0x4000]));
+            ProgramBuilder prog = new ProgramBuilder(new MemoryArea(Address.Ptr32(0x00100000), new byte[0x4000]));
             prog.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");

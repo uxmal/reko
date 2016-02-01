@@ -64,7 +64,7 @@ namespace Reko.ImageLoaders.Hunk
             this.hunkFile = parse.Parse();
             BuildSegments();
             this.firstCodeHunk = parse.FindFirstCodeHunk();
-            var image = new LoadedImage(addrLoad, RelocateBytes(addrLoad));
+            var image = new MemoryArea(addrLoad, RelocateBytes(addrLoad));
 
             return new Program(
                 image,

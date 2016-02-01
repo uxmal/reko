@@ -34,10 +34,10 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64BasicReader : IEnumerable<C64BasicInstruction>
     {
-        private LoadedImage image;
+        private MemoryArea image;
         private ushort lineOffset;
 
-        public C64BasicReader(LoadedImage image, ushort lineOffset)
+        public C64BasicReader(MemoryArea image, ushort lineOffset)
         {
             this.image = image;
             this.lineOffset = lineOffset;

@@ -302,7 +302,7 @@ namespace Reko.Gui.Windows.Forms
         private void GenerateSimulatedProgram()
         {
             var row = Enumerable.Range(0, 0x100).Select(b => (byte)b).ToArray();
-            var image = new LoadedImage(
+            var image = new MemoryArea(
                     Address.Ptr32(0x0010000),
                     Enumerable.Repeat(
                         row,

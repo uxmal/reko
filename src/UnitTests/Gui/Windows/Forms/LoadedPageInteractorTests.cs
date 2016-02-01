@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             program = new Program();
             program.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            program.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[10000]);
+            program.Image = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.ImageMap = program.Image.CreateImageMap();
 
             program.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var decSvc = AddService<IDecompilerService>();
             var decompiler = mr.Stub<IDecompiler>();
             var prog = new Program();
-            prog.Image = new LoadedImage(Address.Ptr32(0x3000), new byte[10]);
+            prog.Image = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
             prog.ImageMap = prog.Image.CreateImageMap();
             var project = new Project { Programs = { prog } };
             decompiler.Stub(x => x.Project).Return(project);

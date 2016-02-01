@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Z80
         private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture();
         private Address baseAddr = Address.Ptr16(0x0100);
         private Z80ProcessorState state;
-        private LoadedImage image;
+        private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
         {
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Z80
 
         private void BuildTest(params byte[] bytes)
         {
-            image = new LoadedImage(baseAddr, bytes);
+            image = new MemoryArea(baseAddr, bytes);
         }
 
         [Test]

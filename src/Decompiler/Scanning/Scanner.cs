@@ -93,7 +93,7 @@ namespace Reko.Scanning
     {
         private Program program;
         private PriorityQueue<WorkItem> queue;
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
         private IImportResolver importResolver;
         private Map<Address, BlockRange> blocks;

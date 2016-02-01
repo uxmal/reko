@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
-                    Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes),
+                    Image = new MemoryArea(Address.SegPtr(0x0C00,0x0000), bytes),
                     Platform = mockFactory.CreatePlatform()
                 });
         }
@@ -357,7 +357,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Programs = { new Program
                 {
                     Filename="foo.exe" ,
-                    Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]),
+                    Image = new MemoryArea(Address.Ptr32(0x00010000), new byte[100]),
                     Platform = platform,
                     Architecture = platform.Architecture,
                 }
@@ -489,7 +489,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[300]);
+            prog.Image = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
             return prog; 
         }
 

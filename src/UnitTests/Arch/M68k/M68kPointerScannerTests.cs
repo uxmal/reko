@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.M68k
                 .Select(w => new byte[] { (byte) (w >> 8), (byte) w })
                 .SelectMany(ab => ab)
                 .ToArray();
-            return new BeImageReader(new LoadedImage(address, bytes), 0);
+            return new BeImageReader(new MemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

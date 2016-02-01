@@ -61,12 +61,12 @@ namespace Reko.Environments.C64
             }
         }
 
-        public override ImageReader CreateImageReader(LoadedImage img, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea img, Address addr)
         {
             return new LeImageReader(img, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage img, ulong off)
+        public override ImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             throw new NotImplementedException();
         }

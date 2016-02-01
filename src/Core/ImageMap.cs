@@ -216,13 +216,13 @@ namespace Reko.Core
 			items.Clear();
 			segments.Clear();
 
-			ImageMapSegment seg = new ImageMapSegment("Image base", size, AccessMode.ReadWrite);
-			seg.Address = addr;
-			segments.Add(addr, seg);
+			//ImageMapSegment seg = new ImageMapSegment("Image base", size, AccessMode.ReadWrite);
+			//seg.Address = addr;
+			//segments.Add(addr, seg);
 
-            ImageMapItem it = new ImageMapItem(size) { DataType = new UnknownType() };
-			it.Address = addr;
-			items.Add(addr, it);
+   //         ImageMapItem it = new ImageMapItem(size) { DataType = new UnknownType() };
+			//it.Address = addr;
+			//items.Add(addr, it);
 		}
 
 		public bool TryFindItem(Address addr, out ImageMapItem item)
@@ -274,7 +274,7 @@ namespace Reko.Core
                 }
 			}			
 			throw new ArgumentOutOfRangeException(
-                string.Format("Linear address {0:X8} exceeeds known address range.",
+                string.Format("Linear address {0:X8} is not in known segment.",
                 linearAddress));
 		}
 

@@ -63,7 +63,7 @@ namespace Reko.Gui.Forms
         {
             var mem = new MemoryControl();
             mem.Services = services;
-            mem.ProgramImage = new Reko.Core.LoadedImage(Address.Ptr32(0), resource.Bytes);
+            mem.ProgramImage = new Reko.Core.MemoryArea(Address.Ptr32(0), resource.Bytes);
             mem.ImageMap = mem.ProgramImage.CreateImageMap();
             mem.Architecture = program.Architecture;
             mem.Font = new Font("Lucida Console", 10F); //$TODO: use user preference

@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Gui
             var platform = mr.StrictMock<IPlatform>();
             var fileName = "foo\\bar\\baz.exe";
             var bytes = new byte[100];
-            var image = new LoadedImage(Address.Ptr32(0x1000), bytes);
+            var image = new MemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = image.CreateImageMap();
             var prog = new Program(image, imageMap, arch, platform);
             sc.AddService<DecompilerHost>(host);

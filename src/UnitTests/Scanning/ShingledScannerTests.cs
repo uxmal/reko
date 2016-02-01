@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Mips_Image(params uint [] words)
         {
-            var image = new LoadedImage(
+            var image = new MemoryArea(
                 Address.Ptr32(0x10000),
                 words.Select(w => new []
                 {
@@ -66,14 +66,14 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_x86_Image(params byte[] bytes)
         {
-            var image = new LoadedImage(
+            var image = new MemoryArea(
                 Address.Ptr32(0x10000),
                 bytes);
             var arch = new X86ArchitectureFlat32();
             CreateProgram(image, arch);
         }
 
-        private void CreateProgram(LoadedImage image, IProcessorArchitecture arch)
+        private void CreateProgram(MemoryArea image, IProcessorArchitecture arch)
         {
             var imageMap = image.CreateImageMap();
             var seg = imageMap.AddSegment(image.BaseAddress, ".text", AccessMode.ReadExecute, (uint)image.Bytes.Length);

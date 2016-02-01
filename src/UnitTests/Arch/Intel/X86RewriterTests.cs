@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Intel
     [TestFixture]
     partial class X86RewriterTests : Arch.RewriterTestBase
     {
-        private LoadedImage image;
+        private MemoryArea image;
         private IntelArchitecture arch;
         private IntelArchitecture arch16;
         private IntelArchitecture arch32;
@@ -198,14 +198,14 @@ namespace Reko.UnitTests.Arch.Intel
         private void Run32bitTest(params byte[] bytes)
         {
             arch = arch32;
-            image = new LoadedImage(baseAddr32, bytes);
+            image = new MemoryArea(baseAddr32, bytes);
             host = new RewriterHost(null);
         }
 
         private void Run64bitTest(params byte[] bytes)
         {
             arch = arch64;
-            image = new LoadedImage(baseAddr64, bytes);
+            image = new MemoryArea(baseAddr64, bytes);
             host = new RewriterHost(null);
         }
 

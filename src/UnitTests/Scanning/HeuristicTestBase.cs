@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Scanning
             eventListener = mr.Stub<DecompilerEventListener>();
         }
 
-        protected LoadedImage CreateImage(Address addr, params uint[] opcodes)
+        protected MemoryArea CreateImage(Address addr, params uint[] opcodes)
         {
             byte[] bytes = new byte[0x20];
             var writer = new LeImageWriter(bytes);
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Scanning
             {
                 writer.WriteLeUInt32(offset, opcodes[i]);
             }
-            return new LoadedImage(addr, bytes);
+            return new MemoryArea(addr, bytes);
         }
 
         protected void Given_RewriterHost()
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Scanning
         protected void Given_Image32(uint addr, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            var imag = new LoadedImage(Address.Ptr32(addr), bytes);
+            var imag = new MemoryArea(Address.Ptr32(addr), bytes);
             prog = new Program
             {
                 Image = imag,
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Scanning
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            var imag = new LoadedImage(Address.SegPtr(seg, offset), bytes);
+            var imag = new MemoryArea(Address.SegPtr(seg, offset), bytes);
             prog = new Program
             {
                 Image = imag,

@@ -38,7 +38,7 @@ namespace Reko.Typing
     {
         private IProcessorArchitecture arch;
         private StructureType globalStr;
-        private LoadedImage image;
+        private MemoryArea image;
         private HashSet<int> visited;
         private Stack<IEnumerator<WorkItem>> stack;
         private int gOffset;
@@ -50,7 +50,7 @@ namespace Reko.Typing
             public DataType DataType;
         }
 
-        public ConstantPointerTraversal(IProcessorArchitecture arch, StructureType globalStr, LoadedImage image)
+        public ConstantPointerTraversal(IProcessorArchitecture arch, StructureType globalStr, MemoryArea image)
         {
             this.arch = arch;
             this.globalStr =  globalStr;

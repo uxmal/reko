@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Image(params byte[] bytes)
         {
-            var image = new LoadedImage(Address.Ptr32(0x00400000), bytes);
+            var image = new MemoryArea(Address.Ptr32(0x00400000), bytes);
             arch.Stub(a => a.CreateImageReader(image, null))
                 .IgnoreArguments()
                 .Return(new LeImageReader(image, image.BaseAddress));

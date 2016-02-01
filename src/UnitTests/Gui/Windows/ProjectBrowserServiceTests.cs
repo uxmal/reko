@@ -371,7 +371,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_ProgramWithOneSegment()
         {
-            var image = new LoadedImage(Address.Ptr32(0x12340000), new byte[0x1000]);
+            var image = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
             var imageMap = image.CreateImageMap();
             imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute, 0);
             var arch = mr.StrictMock<ProcessorArchitecture>();
@@ -425,7 +425,7 @@ namespace Reko.UnitTests.Gui.Windows
             project.Programs.Add(new Program
             {
                 Filename = "bar.exe",
-                Image = new LoadedImage(Address.Ptr32(0x1231300), new byte[128])
+                Image = new MemoryArea(Address.Ptr32(0x1231300), new byte[128])
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +

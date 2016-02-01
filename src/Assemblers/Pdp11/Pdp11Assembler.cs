@@ -49,7 +49,7 @@ namespace Reko.Assemblers.Pdp11
 
         public Program GetImage()
         {
-            var image = new LoadedImage(BaseAddress, emitter.GetBytes());
+            var image = new MemoryArea(BaseAddress, emitter.GetBytes());
             return new Program(
                 image,
                 image.CreateImageMap(),

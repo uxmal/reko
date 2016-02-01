@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Mocks
             };
         }
 
-        public ProgramBuilder(LoadedImage loadedImage)
+        public ProgramBuilder(MemoryArea loadedImage)
         {
             Program = new Program
             {

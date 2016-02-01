@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Scanning
             arch.Stub(a => a.ReadCodeAddress(0, null, null)).IgnoreArguments()
                 .Do(new Func<int, ImageReader, ProcessorState, Address>(
                     (s, r, st) => Address.Ptr32(r.ReadLeUInt32())));
-            var image = new LoadedImage(Address.Ptr32(0x00010000), bytes);
+            var image = new MemoryArea(Address.Ptr32(0x00010000), bytes);
             this.program = new Program
             {
                 Architecture = arch,

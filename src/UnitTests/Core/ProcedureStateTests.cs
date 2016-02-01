@@ -109,12 +109,12 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public ImageReader CreateImageReader(LoadedImage image, Address addr)
+            public ImageReader CreateImageReader(MemoryArea image, Address addr)
             {
                 return new LeImageReader(image, addr);
             }
 
-            public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+            public ImageReader CreateImageReader(MemoryArea image, ulong offset)
             {
                 return new LeImageReader(image, offset);
             }

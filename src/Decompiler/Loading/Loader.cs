@@ -107,7 +107,7 @@ namespace Reko.Loading
         {
             var arch = cfgSvc.GetArchitecture(archName);
             var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
-            var loadedImage = new LoadedImage(addrLoad, image);
+            var loadedImage = new MemoryArea(addrLoad, image);
             var program = new Program(
                 loadedImage,
                 loadedImage.CreateImageMap(),
@@ -191,7 +191,7 @@ namespace Reko.Loading
                 {
                     if (!string.IsNullOrEmpty(rawFile.EntryPoint.Follow))
                     {
-                        var rdr = arch.CreateImageReader(new LoadedImage(baseAddr, image), entryAddr);
+                        var rdr = arch.CreateImageReader(new MemoryArea(baseAddr, image), entryAddr);
                         return arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
                     }
                 }

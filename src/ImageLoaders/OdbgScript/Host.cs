@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     public interface IHost
     {
-        LoadedImage Image { get; }
+        MemoryArea Image { get; }
         object TS_LOG_COMMAND { get; set; }
 
         ulong TE_AllocMemory(ulong size);
@@ -86,7 +86,7 @@ namespace Reko.ImageLoaders.OdbgScript
             this.loader = loader;
         }
 
-        public LoadedImage Image { get { return loader.Image; } }
+        public MemoryArea Image { get { return loader.Image; } }
 
         public virtual ulong TE_AllocMemory(ulong size)
         {

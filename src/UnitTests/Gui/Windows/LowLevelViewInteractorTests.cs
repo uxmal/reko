@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Gui.Windows
         private ServiceContainer sp;
         private Address addrBase;
         private LowLevelView control;
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
         private IUiPreferencesService uiPrefsSvc;
         private Program program;
@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
-                .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
             arch.Stub(a => a.CreateDisassembler(
                 Arg<ImageReader>.Is.NotNull)).Return(dasm);
             Address dummy;
@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program(byte[] bytes)
         {
             var addr = Address.Ptr32(0x1000);
-            var image = new LoadedImage(addr, bytes);
+            var image = new MemoryArea(addr, bytes);
             this.imageMap = image.CreateImageMap();
             this.program = new Program(image, imageMap, arch, new DefaultPlatform(null, arch));
         }
@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_Image(params byte[] bytes)
         {
-            image = new LoadedImage(addrBase, bytes);
+            image = new MemoryArea(addrBase, bytes);
             imageMap = image.CreateImageMap();
             program = new Program(image, imageMap, arch, null);
             interactor.Program = program;

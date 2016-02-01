@@ -41,7 +41,7 @@ namespace Reko.WindowsItp
         {
             if (chkShowData.Checked)
             {
-                var img = new LoadedImage(Address.Ptr32(0x00100000), new byte[2560]);
+                var img = new MemoryArea(Address.Ptr32(0x00100000), new byte[2560]);
                 var imgMap = new ImageMap(img.BaseAddress, img.Length);
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100000), new ImageMapBlock { Size = 30 });
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100100), new ImageMapBlock { Size = 300 });

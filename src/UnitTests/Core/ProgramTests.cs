@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core
         private void Given_Image(params byte[] bytes)
         {
             addrBase = Address.Ptr32(0x00010000);
-            program.Image = new LoadedImage(addrBase, bytes);
+            program.Image = new MemoryArea(addrBase, bytes);
             arch.Stub(a => a.CreateImageReader(program.Image, addrBase)).Return(new LeImageReader(program.Image, 0));
         }
 

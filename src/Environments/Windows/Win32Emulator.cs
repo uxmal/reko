@@ -39,10 +39,10 @@ namespace Reko.Environments.Windows
     {
         private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
-        private LoadedImage img;
+        private MemoryArea img;
         private IPlatform platform;
 
-        public Win32Emulator(LoadedImage img, IPlatform platform, Dictionary<Address, ImportReference> importReferences)
+        public Win32Emulator(MemoryArea img, IPlatform platform, Dictionary<Address, ImportReference> importReferences)
         {
             this.img = img;
             this.platform = platform;
@@ -178,7 +178,7 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        private string ReadMbString(LoadedImage img, TWord pstrLibName)
+        private string ReadMbString(MemoryArea img, TWord pstrLibName)
         {
             int iStart = (int)(pstrLibName - img.BaseAddress.ToLinear());
             int i = iStart;

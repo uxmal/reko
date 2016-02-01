@@ -122,13 +122,13 @@ namespace Reko.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, offset);

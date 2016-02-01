@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Typing
     public class ConstantPointerTraversalTests
     {
         private MockRepository mr;
-        private LoadedImage image;
+        private MemoryArea image;
         private Expression globals;
         private TypeVariable globals_t;
         private StructureType globalStruct;
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Typing
         {
             mr = new MockRepository();
             arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<LoadedImage, ulong, ImageReader>((i, o) => i.CreateLeReader(o)));
+            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<MemoryArea, ulong, ImageReader>((i, o) => i.CreateLeReader(o)));
             arch.Replay();
             globalStruct = new StructureType
             {
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Typing
 
         private ImageWriter Memory(uint address)
         {
-            image = new LoadedImage(Address.Ptr32(address), new byte[1024]);
+            image = new MemoryArea(Address.Ptr32(address), new byte[1024]);
             var mem = new LeImageWriter(image.Bytes);
             return mem;
         }

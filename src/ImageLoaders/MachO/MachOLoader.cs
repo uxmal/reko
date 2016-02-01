@@ -78,7 +78,7 @@ namespace Reko.ImageLoaders.MachO
             ldr = CreateParser();
             uint ncmds = ldr.ParseHeader(addrLoad);
             ldr.ParseLoadCommands(ncmds);
-            var image = new LoadedImage(addrLoad, RawImage);
+            var image = new MemoryArea(addrLoad, RawImage);
             return new Program {
                 Architecture = ldr.arch,
                 Image = image,
@@ -113,7 +113,7 @@ namespace Reko.ImageLoaders.MachO
         public Parser CreateParser()
         {
             uint magic;
-            if (!LoadedImage.TryReadBeUInt32(RawImage, 0, out magic))
+            if (!MemoryArea.TryReadBeUInt32(RawImage, 0, out magic))
                 throw new BadImageFormatException("Invalid Mach-O header.");
             switch (magic)
             {

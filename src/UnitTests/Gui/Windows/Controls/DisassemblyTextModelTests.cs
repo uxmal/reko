@@ -52,10 +52,10 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             };
         }
 
-        private LoadedImage Given_Image(int size)
+        private MemoryArea Given_Image(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
-            program.Image = new LoadedImage(Address.Ptr32(0x1000000), bytes);
+            program.Image = new MemoryArea(Address.Ptr32(0x1000000), bytes);
             program.ImageMap = new ImageMap(program.Image.BaseAddress, program.Image.Length);
             return program.Image;
         }
@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private void Given_Disassembler()
         {
             program.Architecture.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
             program.Architecture.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
                 .Return(instrs);
         }

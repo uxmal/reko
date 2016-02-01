@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.MzExe
         private IPlatform platform;
 
 		private byte [] abU;
-		private LoadedImage imgU;
+		private MemoryArea imgU;
         private ImageMap imageMap;
 		private ushort pklCs;
 		private ushort pklIp;
@@ -60,7 +60,7 @@ namespace Reko.ImageLoaders.MzExe
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}.", pkLiteHdrOffset));
-			uint cparUncompressed = LoadedImage.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
+			uint cparUncompressed = MemoryArea.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
 			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
@@ -74,7 +74,7 @@ namespace Reko.ImageLoaders.MzExe
 			if (exe.e_ovno != 0)
 				return false;
 
-			return LoadedImage.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
+			return MemoryArea.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
         public override Program Load(Address addrLoad)
@@ -207,7 +207,7 @@ l01C8:
 2DE9:01CB 83C310        ADD	BX,+10				// BX => unpackedBase + 0x100
 */
 			l01C8:
-			imgU = new LoadedImage(addrLoad, abU);
+			imgU = new MemoryArea(addrLoad, abU);
             imageMap = imgU.CreateImageMap();
 			return new Program(imgU, imageMap, arch, platform);
 		}

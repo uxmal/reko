@@ -535,7 +535,7 @@
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoadedImage.cs">
+    <Compile Include="MemoryArea.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PseudoProcedure.cs">

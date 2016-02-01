@@ -54,12 +54,12 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
