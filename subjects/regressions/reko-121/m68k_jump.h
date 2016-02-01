@@ -71,8 +71,8 @@ T_16: (in Mem57[0x00FF0F04 + 0x00000000:word32] : word32)
   OrigDataType: word32
 T_17: (in a6_139 : word32)
   Class: Eq_4
-  DataType: 
-  OrigDataType: 
+  DataType: word32
+  OrigDataType: word32
 T_18: (in d6_155 : word32)
   Class: Eq_18
   DataType: word32
@@ -243,8 +243,8 @@ T_59: (in v31_130 > 0x0000 : bool)
   OrigDataType: bool
 T_60: (in d3_135 : word32)
   Class: Eq_60
-  DataType: 
-  OrigDataType: 
+  DataType: word32
+  OrigDataType: word32
 T_61: (in d3_122 & 0x000000FF : word32)
   Class: Eq_61
   DataType: ui32
@@ -267,8 +267,8 @@ T_65: (in (d3_122 & 0x000000FF & 15) + 0x00000001 : word32)
   OrigDataType: word32
 T_66: (in d6_150 : word32)
   Class: Eq_66
-  DataType: 
-  OrigDataType: 
+  DataType: word32
+  OrigDataType: word32
 T_67: (in 0x1111 : word16)
   Class: Eq_67
   DataType: word16

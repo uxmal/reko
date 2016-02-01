@@ -331,7 +331,7 @@ namespace Reko.Gui.Forms
                     var archOption = (ListOption)dlg.Architectures.SelectedValue;
                     archName = (string)archOption.Value;
                     var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
-                    envName = envOption.Name;
+                    envName = envOption != null? envOption.Name : null;
                 }
 
                 arch = config.GetArchitecture(archName);
