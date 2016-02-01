@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.ComponentModel.Design;
+using System.Globalization;
 
 namespace Reko.Loading
 {
@@ -111,6 +112,7 @@ namespace Reko.Loading
                 loadedImage,
                 loadedImage.CreateImageMap(),
                 arch, platform);
+            ApplyPlatformMemoryMap(program);
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
@@ -122,6 +124,7 @@ namespace Reko.Loading
         {
             var imgLoader = CreateRawImageLoader(image, new NullImageLoader(Services, filename, image), raw);
             var program = imgLoader.Load(imgLoader.PreferredBaseAddress);
+            ApplyPlatformMemoryMap(program);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
             program.EntryPoints.AddRange(relocations.EntryPoints);
@@ -159,6 +162,7 @@ namespace Reko.Loading
             {
                 platform = new DefaultPlatform(Services, arch);
             }
+            //ApplyMemoryMap(platform, image
             imgLoader.Architecture = arch;
             imgLoader.Platform = platform;
             if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
@@ -337,6 +341,55 @@ namespace Reko.Loading
             {
                 program.InterceptedCalls.Add(item.Key, item.Value);
             }
+        }
+
+        private void ApplyPlatformMemoryMap(Program program)
+        {
+            if (program.Platform.MemoryMap == null ||
+                program.Platform.MemoryMap.Segments == null) 
+                return;
+            var diagSvc = Services.RequireService<IDiagnosticsService>();
+            foreach (var segment in program.Platform.MemoryMap.Segments)
+            {
+                Address addr;
+                if (!program.Architecture.TryParseAddress(segment.Address, out addr))
+                {
+                    diagSvc.Warn(
+                        string.Format(
+                            "Unable to parse address '{0}' in memory map segment {1}.",
+                            segment.Address,
+                            segment.Name));
+                    continue;
+                }
+                uint size;
+                if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out size))
+                {
+                    diagSvc.Warn(
+                        string.Format(
+                            "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
+                            segment.Size,
+                            segment.Name));
+                    continue;
+                }
+                program.ImageMap.AddSegment(addr, segment.Name, ConvertAccess(segment.Attributes), size);
+            }
+        }
+
+        private AccessMode ConvertAccess(string attributes)
+        {
+            var mode = AccessMode.Read;
+            if (attributes == null)
+                return mode;
+            foreach (var ch in attributes)
+            {
+                switch (ch)
+                {
+                case 'r': mode |= AccessMode.Read; break;
+                case 'w': mode |= AccessMode.Write; break;
+                case 'x': mode |= AccessMode.Execute; break;
+                }
+            }
+            return mode;
         }
     }
 }

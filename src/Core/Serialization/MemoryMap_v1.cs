@@ -18,12 +18,39 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using System;
+using System.IO;
 using System.Xml.Serialization;
 
 [XmlRoot(ElementName ="memory", Namespace="http://schemata.jklnet.org/Reko/v4")]
-public class MemoryMap_v1 {
+public class MemoryMap_v1
+{
     [XmlElement("segment")]
-    public MemorySegment_v1[] Segments; 
+    public MemorySegment_v1[] Segments;
+
+    public static MemoryMap_v1 LoadMemoryMapFromFile(IServiceProvider svc, string mmap)
+    {
+        var cfgSvc = svc.RequireService<IConfigurationService>();
+        var fsSvc = svc.RequireService<IFileSystemService>();
+        var diagSvc = svc.RequireService<IDiagnosticsService>();
+        try
+        {
+            var filePath = cfgSvc.GetInstallationRelativePath(mmap);
+            XmlSerializer ser = new XmlSerializer(typeof(MemoryMap_v1));
+            using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open))
+            {
+                return (MemoryMap_v1)ser.Deserialize(stm);
+            }
+        }
+        catch (Exception ex)
+        {
+            diagSvc.Error(ex, string.Format("Unable to open memory map file '{0}.", mmap));
+            return null;
+        }
+    }
 }
 
 public partial class MemorySegment_v1

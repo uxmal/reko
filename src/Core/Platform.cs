@@ -50,6 +50,7 @@ namespace Reko.Core
         string Name { get; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
+        MemoryMap_v1 MemoryMap { get; }
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
@@ -103,6 +104,7 @@ namespace Reko.Core
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; private set; }
         public string Name { get; set; }
+        public MemoryMap_v1 MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 

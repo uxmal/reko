@@ -162,6 +162,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\Xlib.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\linux-syscalls-i386.xml" />

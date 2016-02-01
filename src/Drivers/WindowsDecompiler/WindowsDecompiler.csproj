@@ -160,6 +160,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
