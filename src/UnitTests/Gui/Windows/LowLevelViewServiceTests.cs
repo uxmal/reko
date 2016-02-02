@@ -86,14 +86,10 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program()
         {
             var addrBase = Address.Ptr32(0x10000);
-            var image = new MemoryArea(addrBase, new byte[100]);
+            var mem = new MemoryArea(addrBase, new byte[100]);
             var map = new ImageMap(
-                    image.BaseAddress,
-                    new ImageSegment(
-                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = image
-                    });
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = mr.Stub<IProcessorArchitecture>();
             var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
             var e = mr.Stub<IEnumerator<MachineInstruction>>();
@@ -102,7 +98,7 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Stub(a => a.InstructionBitSize).Return(8);
             arch.Stub(a => a.CreateImageReader(
                 Arg<MemoryArea>.Is.NotNull,
-                Arg<Address>.Is.NotNull)).Return(image.CreateLeReader(addrBase));
+                Arg<Address>.Is.NotNull)).Return(mem.CreateLeReader(addrBase));
             dasm.Stub(d => d.GetEnumerator()).Return(e);
             arch.Replay();
             dasm.Replay();

@@ -429,10 +429,7 @@ namespace Reko.UnitTests.Gui.Windows
                 Filename = "bar.exe",
                 ImageMap = new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment(".text", (uint)mem.Length, AccessMode.ReadExecute)
-                    {
-                        MemoryArea = mem
-                    })
+                    new ImageSegment(".text", mem, AccessMode.ReadExecute))
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +

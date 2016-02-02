@@ -80,10 +80,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             {
                 ImageMap = new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment(".text", (uint)mem.Length, AccessMode.ReadExecute)
-                    {
-                        MemoryArea = mem
-                    }),
+                    new ImageSegment(".text", mem, AccessMode.ReadExecute)),
                 Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch),
             };

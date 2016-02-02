@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Gui.Windows
         private ServiceContainer sp;
         private Address addrBase;
         private LowLevelView control;
-        private MemoryArea image;
+        private MemoryArea mem;
         private ImageMap imageMap;
         private IUiPreferencesService uiPrefsSvc;
         private Program program;
@@ -170,15 +170,12 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program(byte[] bytes)
         {
             var addr = Address.Ptr32(0x1000);
-            var image = new MemoryArea(addr, bytes);
+            var mem = new MemoryArea(addr, bytes);
             this.program = new Program(
                 new ImageMap(
-                    image.BaseAddress,
+                    mem.BaseAddress,
                     new ImageSegment(
-                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = image
-                    }),
+                        "code", mem, AccessMode.ReadWriteExecute)),
                 arch, 
                 new DefaultPlatform(null, arch));
         }
@@ -223,14 +220,11 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_Image(params byte[] bytes)
         {
-            image = new MemoryArea(addrBase, bytes);
+            mem = new MemoryArea(addrBase, bytes);
             imageMap = new ImageMap(
-                    image.BaseAddress,
+                    mem.BaseAddress,
                     new ImageSegment(
-                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = image
-                    });
+                        "code", mem, AccessMode.ReadWriteExecute));
             program = new Program(imageMap, arch, null);
             interactor.Program = program;
         }

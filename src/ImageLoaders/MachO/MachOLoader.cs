@@ -324,6 +324,7 @@ namespace Reko.ImageLoaders.MachO
 
                 var imageSection = new ImageSegment(
                     string.Format("{0},{1}", segmentName, sectionName),
+                    null,
                     (uint)size,
                     am);        //imageSection.setData(!imageSection->isCode());
                 //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);

@@ -56,10 +56,7 @@ namespace Reko.UnitTests.Mocks
             {
                 ImageMap = new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment("code", (uint)mem.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = mem
-                    }),
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 Architecture = new FakeArchitecture()
             };
         }

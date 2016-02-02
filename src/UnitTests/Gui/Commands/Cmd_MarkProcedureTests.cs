@@ -50,10 +50,7 @@ namespace Reko.UnitTests.Gui.Commands
             {
                 ImageMap = new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment("0C00", (uint)mem.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = mem
-                    })
+                    new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute))
             };
         }
 

@@ -56,8 +56,9 @@ namespace Reko.UnitTests.Arch.Intel
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
             program = new Program
             {
-                ImageMap = new ImageMap(mem.BaseAddress,
-                    new ImageSegment(".text", 0x10000, AccessMode.ReadExecute) { MemoryArea = mem })
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(".text", mem, AccessMode.ReadExecute))
             };
             var procAddress = Address.Ptr32(0x10000000);
             instr = new X86Instruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)

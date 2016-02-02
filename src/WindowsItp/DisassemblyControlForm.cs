@@ -25,8 +25,9 @@ namespace Reko.WindowsItp
             var mem =   new MemoryArea(Address.Ptr32(0x00100000),
                 Enumerable.Range(0, 10000)
                 .Select(i => (byte)random.Next(256)).ToArray());
-            var imageMap = new ImageMap(mem.BaseAddress,
-                new ImageSegment(".text", AccessMode.ReadExecute) { MemoryArea = mem });
+            var imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment(".text", mem, AccessMode.ReadExecute));
             disassemblyControl1.Model = new DisassemblyTextModel(
                 new CoreProgram
                 {

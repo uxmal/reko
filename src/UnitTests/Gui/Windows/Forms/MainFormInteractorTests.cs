@@ -197,10 +197,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 {
                     ImageMap = new ImageMap(
                         mem.BaseAddress,
-                        new ImageSegment("0C00", (uint) mem.Length, AccessMode.ReadWriteExecute)
-                        {
-                            MemoryArea = mem
-                        }),
+                        new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute)),
                     Platform = mockFactory.CreatePlatform()
                 });
         }
@@ -366,9 +363,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                     Filename="foo.exe" ,
                     ImageMap = new ImageMap(
                         mem.BaseAddress,
-                        new ImageSegment(".text", 100, AccessMode.ReadExecute) {
-                            MemoryArea = mem
-                        }),
+                        new ImageSegment(".text", mem, AccessMode.ReadExecute)),
                     Platform = platform,
                     Architecture = platform.Architecture,
                 }
@@ -502,11 +497,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
-            prog.ImageMap = new ImageMap(mem.BaseAddress,
-                new ImageSegment("0C00", 300, AccessMode.ReadWriteExecute)
-                {
-                    MemoryArea = mem
-                });
+            prog.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
             return prog; 
         }
 

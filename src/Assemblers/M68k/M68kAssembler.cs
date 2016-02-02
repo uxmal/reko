@@ -82,10 +82,7 @@ namespace Reko.Assemblers.M68k
             return new Program(
                 new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment("code", (uint)mem.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea= mem
-                    }),
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch, 
                 new DefaultPlatform(null, arch));
         }

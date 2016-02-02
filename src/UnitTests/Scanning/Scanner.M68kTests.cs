@@ -65,15 +65,12 @@ namespace Reko.UnitTests.Scanning
         private void BuildTest32(Address addrBase, params byte[] bytes)
         {
             arch = new M68kArchitecture();
-            var image = new MemoryArea(addrBase, bytes);
+            var mem = new MemoryArea(addrBase, bytes);
             program = new Program(
                 new ImageMap(
-                    image.BaseAddress,
+                    mem.BaseAddress,
                     new ImageSegment(
-                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = image
-                    }),
+                        "code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(null, arch));
             RunTest(addrBase);

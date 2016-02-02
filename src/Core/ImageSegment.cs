@@ -32,21 +32,42 @@ namespace Reko.Core
 	{
         private uint ctSize;
 
-		public ImageSegment(string name, AccessMode access) : base() 
+		public ImageSegment(string name, Address addr, AccessMode access) : base() 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
 			this.Name = name;
+            this.Address = addr;
 			this.Access = access;
 		}
 
-		public ImageSegment(string name, uint size, AccessMode access) : base(size) 
+		public ImageSegment(string name, Address addr, uint size, AccessMode access) : base(size) 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
             this.Name = name;
+            this.Address = addr;
 			this.Access = access;
 		}
+
+        public ImageSegment(string name, Address addr, long size, AccessMode access) : base((uint)size)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name", "Segments must have names.");
+            this.Name = name;
+            this.Address = addr;
+            this.Access = access;
+        }
+
+        public ImageSegment(string name, MemoryArea mem, AccessMode access) : base((uint)mem.Length)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name", "Segments must have names.");
+            this.Name = name;
+            this.Address = mem.BaseAddress;
+            this.MemoryArea = mem;
+            this.Access = access;
+        }
 
         /// <summary>
         /// The memory loaded into this segment.

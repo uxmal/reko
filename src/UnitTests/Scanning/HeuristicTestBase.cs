@@ -79,10 +79,7 @@ namespace Reko.UnitTests.Scanning
             {
                 ImageMap = new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment("prôg", (uint)bytes.Length, AccessMode.ReadExecute)
-                    {
-                        MemoryArea = mem
-                    })
+                    new ImageSegment("prôg", mem, AccessMode.ReadExecute))
             };
             segment = prog.ImageMap.Segments.Values.First();
 
@@ -126,10 +123,7 @@ namespace Reko.UnitTests.Scanning
             {
                 ImageMap = new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment("prôg", (uint)bytes.Length, AccessMode.ReadExecute)
-                    {
-                        MemoryArea = mem
-                    })
+                    new ImageSegment("prôg", mem, AccessMode.ReadExecute))
             };
         }
 

@@ -87,16 +87,12 @@ namespace Reko.Assemblers.x86
         {
             var stm = new MemoryStream();
             LoadSegments(stm);
-            var image = new MemoryArea(addrBase, stm.ToArray());
-            RelocateSegmentReferences(image);
+            var mem = new MemoryArea(addrBase, stm.ToArray());
+            RelocateSegmentReferences(mem);
             return new Program(
                 new ImageMap(
-                    image.BaseAddress,
-                    new ImageSegment(
-                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = image
-                    }),
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 Platform);
         }

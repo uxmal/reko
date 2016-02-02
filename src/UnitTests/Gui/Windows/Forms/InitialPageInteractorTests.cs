@@ -67,11 +67,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = new ImageMap(
                 mem.BaseAddress,
-                new ImageSegment(
-                    "code", (uint)mem.Length, AccessMode.ReadWriteExecute)
-                {
-                    MemoryArea = mem
-                });
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<IPlatform>();
             program = new Program(imageMap, arch, platform);

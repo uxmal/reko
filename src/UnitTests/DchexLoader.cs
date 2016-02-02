@@ -49,14 +49,9 @@ namespace Reko.UnitTests
             results = new Program(
                 new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment(
-                        "code", (uint)mem.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = mem
-                    }),
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(Services, arch));
-
         }
 
         private IProcessorArchitecture GetArchitecture(string archName)

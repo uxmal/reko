@@ -53,10 +53,7 @@ namespace Reko.Assemblers.Pdp11
             return new Program(
                 new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment(".text", (uint)mem.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = mem
-                    }),
+                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(null, arch));
         }

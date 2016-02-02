@@ -206,12 +206,12 @@ namespace Reko.Core
             return segment;
         }
 
-        public ImageSegment AddSegment(Address addr, string segmentName,AccessMode access, uint contentSize)
+        public ImageSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
         { 
 			ImageSegment seg;
             if (!TryFindSegment(addr, out seg))
 			{
-				ImageSegment segNew = new ImageSegment(segmentName, access);
+				ImageSegment segNew = new ImageSegment(segmentName, addr, access);
 				segNew.Address = addr;
 				segNew.Size = ~0U;
                 segNew.ContentSize = contentSize;
@@ -225,7 +225,7 @@ namespace Reko.Core
 			{
 				// Need to split the segment. //$REVIEW: or do we? x86 segments can overlap.
 
-				var segNew = new ImageSegment(segmentName, access);
+				var segNew = new ImageSegment(segmentName, addr, access);
 				segNew.Address = addr;
 				segNew.Size = (uint)(seg.Size - delta);
                 segNew.ContentSize = contentSize;

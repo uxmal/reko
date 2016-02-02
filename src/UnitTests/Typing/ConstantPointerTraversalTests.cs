@@ -71,8 +71,7 @@ namespace Reko.UnitTests.Typing
             mem = new MemoryArea(Address.Ptr32(address), new byte[1024]);
             imageMap = new ImageMap(
                 mem.BaseAddress,
-                new ImageSegment(".data", (uint)mem.Length, AccessMode.ReadWrite)
-                    { MemoryArea = mem });
+                new ImageSegment(".data", mem, AccessMode.ReadWrite));
             var writer = new LeImageWriter(mem.Bytes);
             return writer;
         }

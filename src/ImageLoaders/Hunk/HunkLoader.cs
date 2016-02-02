@@ -69,10 +69,7 @@ namespace Reko.ImageLoaders.Hunk
                 new ImageMap(
                     mem.BaseAddress,
                     new ImageSegment(
-                        "code", (uint)mem.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = mem
-                    }),
+                        "code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 cfgSvc.GetEnvironment("amigaOS").Load(Services, arch));
         }

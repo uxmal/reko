@@ -43,14 +43,14 @@ namespace Reko.UnitTests.Arch.Intel
 		public void Setup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
-            var image = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
+            var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
 			var prog = new Program(
                 new ImageMap(
-                    image.BaseAddress,
+                    mem.BaseAddress,
                     new ImageSegment(
-                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                        "code", mem, AccessMode.ReadWriteExecute)
                     {
-                        MemoryArea = image
+                        MemoryArea = mem
                     }),
                 arch,
                 null);

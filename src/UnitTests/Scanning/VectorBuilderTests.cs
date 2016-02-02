@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Scanning
             {
                 Architecture = arch,
                 ImageMap = new ImageMap(mem.BaseAddress, 
-                new ImageSegment(".text", (uint)mem.Length, AccessMode.ReadExecute) { MemoryArea = mem }),
+                new ImageSegment(".text", mem, AccessMode.ReadExecute)),
             };
         }
 

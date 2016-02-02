@@ -22,13 +22,13 @@ using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
-using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Loading
 {
@@ -107,17 +107,11 @@ namespace Reko.Loading
         {
             var arch = cfgSvc.GetArchitecture(archName);
             var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
-            var loadedImage = new MemoryArea(addrLoad, image);
+            var mem = new MemoryArea(addrLoad, image);
             var program = new Program(
-                new ImageMap(
-                    loadedImage.BaseAddress,
-                    new ImageSegment("$$$", (uint)loadedImage.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = loadedImage
-                    }),
+                CreatePlatformMemoryMap(platform, addrLoad, image),
                 arch, 
                 platform);
-            ApplyPlatformMemoryMap(program);
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
@@ -129,7 +123,7 @@ namespace Reko.Loading
         {
             var imgLoader = CreateRawImageLoader(image, new NullImageLoader(Services, filename, image), raw);
             var program = imgLoader.Load(imgLoader.PreferredBaseAddress);
-            ApplyPlatformMemoryMap(program);
+            program.ImageMap = CreatePlatformMemoryMap(program.Platform, imgLoader.PreferredBaseAddress, image);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
             program.EntryPoints.AddRange(relocations.EntryPoints);
@@ -348,16 +342,17 @@ namespace Reko.Loading
             }
         }
 
-        private void ApplyPlatformMemoryMap(Program program)
+        private ImageMap CreatePlatformMemoryMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
         {
-            if (program.Platform.MemoryMap == null ||
-                program.Platform.MemoryMap.Segments == null) 
-                return;
+            if (platform.MemoryMap == null ||
+                platform.MemoryMap.Segments == null)
+                return new ImageMap(loadAddr);
             var diagSvc = Services.RequireService<IDiagnosticsService>();
-            foreach (var segment in program.Platform.MemoryMap.Segments)
+            var segments = new List<ImageSegment>();
+            foreach (var segment in platform.MemoryMap.Segments)
             {
                 Address addr;
-                if (!program.Architecture.TryParseAddress(segment.Address, out addr))
+                if (!platform.Architecture.TryParseAddress(segment.Address, out addr))
                 {
                     diagSvc.Warn(
                         string.Format(
@@ -376,8 +371,14 @@ namespace Reko.Loading
                             segment.Name));
                     continue;
                 }
-                program.ImageMap.AddSegment(addr, segment.Name, ConvertAccess(segment.Attributes), size);
+                segments.Add(new ImageSegment(segment.Name, addr, size, ConvertAccess(segment.Attributes)));
             }
+            var imageMap = new ImageMap(segments.Select(s => s.Address).Min());
+            foreach (var segment in segments)
+            {
+                imageMap.Segments.Add(segment.Address, segment);
+            }
+            return imageMap;
         }
 
         private AccessMode ConvertAccess(string attributes)

@@ -56,8 +56,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
             var mem = new MemoryArea(Address.Ptr32(0x1000000), bytes);
-            program.ImageMap = new ImageMap(mem.BaseAddress,
-                new ImageSegment(".text", AccessMode.ReadExecute) { MemoryArea = mem });
+            program.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment(".text", mem, AccessMode.ReadExecute));
             return mem;
         }
 

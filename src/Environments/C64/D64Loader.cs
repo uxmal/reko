@@ -164,7 +164,7 @@ namespace Reko.Environments.C64
                 return new Program(
                     new ImageMap(
                         mem.BaseAddress,
-                        new ImageSegment("c64", (uint)mem.Length, AccessMode.ReadWriteExecute)
+                        new ImageSegment("c64", mem.BaseAddress, mem.Length, AccessMode.ReadWriteExecute)
                         {
                             MemoryArea = mem,
                         }),
@@ -203,7 +203,7 @@ namespace Reko.Environments.C64
                 new ImageMap(
                     image.BaseAddress,
                     new ImageSegment(
-                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                        "code", image.BaseAddress, image.Length, AccessMode.ReadWriteExecute)
                     {
                         MemoryArea = image
                     }),

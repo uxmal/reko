@@ -157,10 +157,7 @@ namespace Reko.UnitTests.Scanning
             var mem = new MemoryArea(address, new byte[1]);
             var imageMap = new ImageMap(
                 mem.BaseAddress,
-                new ImageSegment("proggie", 1, AccessMode.ReadExecute)
-                {
-                    MemoryArea = mem
-                });
+                new ImageSegment("proggie", mem, AccessMode.ReadExecute));
 
             this.program = new Program
             {
@@ -189,7 +186,7 @@ namespace Reko.UnitTests.Scanning
             program = new Program
             {
                 ImageMap = new ImageMap(mem.BaseAddress,
-                    new ImageSegment("progseg", (uint)imageSize, AccessMode.ReadExecute) { MemoryArea = mem }),
+                    new ImageSegment("progseg", mem, AccessMode.ReadExecute)),
                 Architecture = arch,
                 Platform = new FakePlatform(null, arch)
             };
@@ -218,8 +215,7 @@ namespace Reko.UnitTests.Scanning
             this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             prog.ImageMap = new ImageMap(
                 mem.BaseAddress,
-                new ImageSegment("progseg", (uint)imageSize, AccessMode.ReadExecute)
-                { MemoryArea = mem });
+                new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
             return new TestScanner(prog, callSigs, importResolver, sc);
         }
 

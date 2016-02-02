@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Core.Output
     [TestFixture]
     public class GlobalDataWriterTests
     {
-        private MemoryArea image;
+        private MemoryArea mem;
         private Program program;
         private ServiceContainer sc;
 
@@ -49,8 +49,8 @@ namespace Reko.UnitTests.Core.Output
 
         private ImageWriter Memory(uint address)
         {
-            image = new MemoryArea(Address.Ptr32(address), new byte[1024]);
-            var mem = new LeImageWriter(image.Bytes);
+            this.mem = new MemoryArea(Address.Ptr32(address), new byte[1024]);
+            var mem = new LeImageWriter(this.mem.Bytes);
             return mem;
         }
 
@@ -59,12 +59,8 @@ namespace Reko.UnitTests.Core.Output
             var arch = new Mocks.FakeArchitecture();
             this.program = new Program(
                 new ImageMap(
-                    image.BaseAddress,
-                    new ImageSegment(
-                        "code", (uint) image.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = image
-                    }),
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(null, arch));
             var globalStruct = new StructureType();

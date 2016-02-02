@@ -75,8 +75,9 @@ namespace Reko.ImageLoaders.OdbgScript
         private void Given_Image(uint addr, params byte[] bytes)
         {
             mem = new MemoryArea(Address.Ptr32(addr), bytes);
-            imageMap = new ImageMap(mem.BaseAddress,
-                new ImageSegment(".text", (uint) bytes.Length, AccessMode.ReadExecute) { MemoryArea = mem });
+            imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment(".text", mem, AccessMode.ReadExecute));
             host.Stub(h => h.ImageMap).Return(imageMap);
             host.Stub(h => h.TE_GetMemoryInfo(
                 Arg<ulong>.Is.Anything,

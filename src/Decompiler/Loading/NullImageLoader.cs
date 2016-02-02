@@ -58,7 +58,7 @@ namespace Reko.Loading
             return new Program(
                 new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment("code", (uint)mem.Length, AccessMode.ReadWriteExecute)
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)
                     {
                         MemoryArea = mem
                     }),
