@@ -35,7 +35,6 @@ namespace Reko.Core
 	{
         public event EventHandler MapChanged;
 
-        private Address addrBase;
 		private Map<Address,ImageMapItem> items;
         private Map<Address,ImageSegment> segments;
 
@@ -43,7 +42,7 @@ namespace Reko.Core
 		{
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
-            this.addrBase = addrBase;
+            this.BaseAddress = addrBase;
             items = new Map<Address, ImageMapItem>(new ItemComparer());
             segments = new Map<Address, ImageSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, (uint) imageSize);
@@ -53,7 +52,7 @@ namespace Reko.Core
         {
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
-            this.addrBase = addrBase;
+            this.BaseAddress = addrBase;
             this.items = new Map<Address, ImageMapItem>(new ItemComparer());
             this.segments = new Map<Address, ImageSegment>(new ItemComparer());
             foreach (var seg in segments)
@@ -62,13 +61,20 @@ namespace Reko.Core
             }
         }
 
+        public Address BaseAddress { get; private set; }
+
+        public int GetExtent()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Adds an image map item at the specified address. 
         /// </summary>
         /// <param name="addr"></param>
         /// <param name="itemNew"></param>
         /// <returns></returns>
-		public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)
+        public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)
 		{
 			itemNew.Address = addr;
 			ImageMapItem item;
@@ -318,9 +324,10 @@ namespace Reko.Core
 			get { return segments; }
 		}
 
-		// class ItemComparer //////////////////////////////////////////////////
 
-		private class ItemComparer : IComparer<Address>
+        // class ItemComparer //////////////////////////////////////////////////
+
+        private class ItemComparer : IComparer<Address>
 		{
 			public virtual int Compare(Address a, Address b)
 			{

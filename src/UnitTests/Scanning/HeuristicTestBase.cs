@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Scanning
     public class HeuristicTestBase
     {
         protected Program prog;
+        protected ImageSegment segment;
         protected MockRepository mr;
         protected IRewriterHost host;
         protected DecompilerEventListener eventListener;
@@ -79,6 +80,8 @@ namespace Reko.UnitTests.Scanning
                 Image = imag,
                 ImageMap = imag.CreateImageMap(),
             };
+            segment = prog.ImageMap.Segments.Values.First();
+
         }
 
         private static byte[] HexStringToBytes(string sBytes)

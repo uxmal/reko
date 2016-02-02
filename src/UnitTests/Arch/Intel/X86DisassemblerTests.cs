@@ -130,7 +130,7 @@ foo:
 	jnz		foo
 ");
 
-            CreateDisassembler16(program.Image);
+            CreateDisassembler16(program.ImageMap.Segments.Values.First().MemoryArea);
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(5))
             {
@@ -159,7 +159,7 @@ foo:
                 "		mov	ax,[bx+4]\r\n" +
                 "		mov cx,cs:[si+4]\r\n");
 
-            CreateDisassembler16(program.Image);
+            CreateDisassembler16(program.ImageMap.Segments.Values.First().MemoryArea);
             X86Instruction[] instrs = dasm.Take(3).ToArray();
             Assert.AreEqual(Registers.ss, ((MemoryOperand)instrs[0].op2).DefaultSegment);
             Assert.AreEqual(Registers.ds, ((MemoryOperand)instrs[1].op2).DefaultSegment);
@@ -178,7 +178,7 @@ foo:
                 "rcr	word ptr [bp+4],4\r\n" +
                 "rcl	ax,1\r\n");
 
-            MemoryArea img = lr.Image;
+            MemoryArea img = lr.ImageMap.Segments.Values.First().MemoryArea;
             CreateDisassembler16(img.CreateLeReader(img.BaseAddress));
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(4))
@@ -229,7 +229,7 @@ movzx	ax,byte ptr [bp+04]
                 @"	.i386
 	mov ebx,[edi*2]
 ");
-            CreateDisassembler32(program.Image);
+            CreateDisassembler32(program.ImageMap.Segments.Values.First().MemoryArea);
             var instr = dasm.First();
             MemoryOperand mem = (MemoryOperand)instr.op2;
             Assert.AreEqual(2, mem.Scale);
@@ -248,7 +248,7 @@ movzx	ax,byte ptr [bp+04]
                 {
                     lr = asm.Assemble(Address.SegPtr(0xC32, 0), rdr);
                 }
-                CreateDisassembler16(lr.Image);
+                CreateDisassembler16(lr.ImageMap.Segments.Values.First().MemoryArea);
                 foreach (X86Instruction instr in dasm)
                 {
                     fut.TextWriter.WriteLine("{0}", instr.ToString());

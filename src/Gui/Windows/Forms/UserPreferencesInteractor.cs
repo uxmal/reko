@@ -283,7 +283,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
             dlg.DisassemblyControl.StyleClass = UiStyles.Disassembler;
             dlg.DisassemblyControl.Services = sc;
-            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program);
+            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program, program.ImageMap.Segments.Values.First().MemoryArea);
             dlg.CodeControl.Model = GenerateSimulatedHllCode();
         }
 
@@ -315,7 +315,6 @@ namespace Reko.Gui.Windows.Forms
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");
             this.program = new Program
             {
-                Image = image,
                 ImageMap = imageMap,
                 Architecture = arch,
             };

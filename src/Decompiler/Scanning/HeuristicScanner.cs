@@ -121,27 +121,27 @@ namespace Reko.Scanning
         /// been identified as code/data yet.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tuple<Address, Address>> FindUnscannedRanges()
+        public IEnumerable<Tuple<MemoryArea, Address, Address>> FindUnscannedRanges()
         {
 #if !NOT_USE_WHOLE_IMAGE
 
             return program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
-                .Select(de => Tuple.Create(de.Key, de.Key + de.Value.Size));
+                .Select(de => Tuple.Create(this.program.ImageMap.Segments[de.Key].MemoryArea, de.Key, de.Key + de.Value.Size));
 #else
             return program.ImageMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0)
-                .Select(s => Tuple.Create(s.Address, s.Address + s.ContentSize));
+                .Select(s => Tuple.Create(s.MemoryArea, s.Address, s.Address + s.ContentSize));
 #endif
         }
 
         /// <summary>
-        /// Looks for byte patterns that look like 
+        /// Looks for byte patterns that look like procedure entries.
         /// </summary>
         /// <param name="addrBegin"></param>
         /// <param name="addrEnd"></param>
         /// <returns></returns>
-        public IEnumerable<Address> FindPossibleProcedureEntries(Address addrBegin, Address addrEnd)
+        public IEnumerable<Address> FindPossibleProcedureEntries(MemoryArea mem, Address addrBegin, Address addrEnd)
         {
             var h = program.Platform.Heuristics;
             if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
@@ -149,23 +149,24 @@ namespace Reko.Scanning
 
             byte[] pattern = h.ProcedurePrologs[0].Bytes;
             var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
-            return search.GetMatchPositions(program.Image.Bytes)
-                .Select(i => program.Image.BaseAddress + i);
+            return search.GetMatchPositions(mem.Bytes)
+                .Select(i => mem.BaseAddress + i);
         }
 
         /// <summary>
-        /// Determines the locations of all instructions that perform a 
-        /// CALL / JSR / BL to a _known_ procedure address.
+        /// Determines the locations of all instructions in a segment
+        /// that perform a  CALL / JSR / BL to a _known_ procedure 
+        /// address.
         /// </summary>
         /// <param name="knownProcedureAddresses">A sequence of addresses
         /// that are known to be procedures.</param>
         /// <returns>A sequence of linear addresses where those call 
         /// instructions are.</returns>
-        public IEnumerable<Address> FindCallOpcodes(IEnumerable<Address> knownProcedureAddresses)
+        public IEnumerable<Address> FindCallOpcodes(MemoryArea mem, IEnumerable<Address> knownProcedureAddresses)
         {
             return program.Architecture.CreatePointerScanner(
                 program.ImageMap,
-                program.Architecture.CreateImageReader(program.Image, 0),
+                program.Architecture.CreateImageReader(mem, 0),
                 knownProcedureAddresses,
                 PointerScannerFlags.Calls);
         }
@@ -176,15 +177,15 @@ namespace Reko.Scanning
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Tuple<Address, Address>> FindPossibleFunctions(
-            IEnumerable<Tuple<Address, Address>> ranges)
+            IEnumerable<Tuple<MemoryArea, Address, Address>> ranges)
         {
             foreach (var range in ranges)
             {
-                var possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2)
+                var possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2, range.Item3)
                     .Concat(program.EntryPoints.Select(ep => ep.Address))
                     .ToSortedSet();
                 var e = possibleEntries.GetEnumerator();
-                Address aEnd = range.Item1;
+                Address aEnd = range.Item2;
                 if (e.MoveNext())
                 {
                     aEnd = e.Current;

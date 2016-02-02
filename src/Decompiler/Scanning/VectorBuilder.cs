@@ -124,8 +124,8 @@ namespace Reko.Scanning
                 {
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
-                    var entryAddr = (uint) (addrTable-program.Image.BaseAddress) + (uint)(permutation[i] * cbEntry);
-                    var addr = Address.Ptr32(program.Image.ReadLeUInt32(entryAddr));                     //$BUG: will fail on 64-bit arch.
+                    var entryAddr = addrTable + (uint)(permutation[i] * cbEntry);
+                    var addr = program.Architecture.ReadCodeAddress(0, program.CreateImageReader(entryAddr), state);
                     vector.Add(addr);    
                 }
             }
@@ -133,12 +133,12 @@ namespace Reko.Scanning
             {
                 ImageReader rdr = scanner.CreateReader(addrTable);
                 int cItems = limit / stride;
-                var image = program.Image;
+                var imageMap = program.ImageMap;
                 var arch = program.Architecture;
                 for (int i = 0; i < cItems; ++i)
                 {
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
-                    if (!image.IsValidAddress(entryAddr))
+                    if (!imageMap.IsValidAddress(entryAddr))
                     {
                         scanner.Warn(addrTable, "The call or jump table has invalid addresses; stopping.");
                         break;
@@ -213,7 +213,7 @@ namespace Reko.Scanning
 
         public bool IsValidAddress(Address addr)
         {
-            return program.Image.IsValidAddress(addr);
+            return program.ImageMap.IsValidAddress(addr);
         }
     }
 }

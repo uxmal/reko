@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             var hsc = new HeuristicScanner(prog, host, eventListener);
-            var addr = hsc.FindCallOpcodes(new Address[] {
+            var addr = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.Ptr32(0x1008)
             }).ToList();
 
@@ -87,10 +87,10 @@ namespace Reko.UnitTests.Scanning
             Given_RewriterHost();
             mr.ReplayAll();
 
-            Assert.AreEqual(18, prog.Image.Length);
+            Assert.AreEqual(18, segment.MemoryArea.Length);
 
             var hsc = new HeuristicScanner(prog, host, eventListener);
-            var linAddrs = hsc.FindCallOpcodes(new Address[]{
+            var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[]{
                 Address.Ptr32(0x1010),
                 Address.Ptr32(0x1011)}).ToList();
 
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             var hsc = new HeuristicScanner(prog, host, eventListener);
-            var linAddrs = hsc.FindCallOpcodes(new Address[] {
+            var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Scanning
 
             var hsc = new HeuristicScanner(prog, host, eventListener);
 
-            var linAddrs = hsc.FindCallOpcodes(new Address[] {
+            var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             var hsc = new HeuristicScanner(prog, host, eventListener);
-            var linAddrs = hsc.FindCallOpcodes(new Address[] {
+            var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.Ptr32(0x1000),
             }).ToList();
 

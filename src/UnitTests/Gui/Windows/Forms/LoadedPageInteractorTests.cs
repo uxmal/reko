@@ -59,8 +59,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             program = new Program();
             program.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            program.Image = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
-            program.ImageMap = program.Image.CreateImageMap();
+            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
+            program.ImageMap = new ImageMap(mem.BaseAddress,
+                new ImageSegment("0C00", 0x10000, AccessMode.ReadWriteExecute) { MemoryArea = mem });
 
             program.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
             program.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
@@ -146,7 +147,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var decSvc = AddService<IDecompilerService>();
             var decompiler = mr.Stub<IDecompiler>();
             var prog = new Program();
-            prog.Image = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
+            var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
+            program.ImageMap = new ImageMap(mem.BaseAddress,
+                new ImageSegment(".text", 0x10, AccessMode.ReadWriteExecute)
+                { MemoryArea = mem });
+
+
             prog.ImageMap = prog.Image.CreateImageMap();
             var project = new Project { Programs = { prog } };
             decompiler.Stub(x => x.Project).Return(project);

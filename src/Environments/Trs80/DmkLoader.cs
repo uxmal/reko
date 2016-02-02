@@ -67,7 +67,6 @@ namespace Reko.Environments.Trs80
             return new Program
             {
                 Architecture = new Z80ProcessorArchitecture(),
-                Image = image,
                 ImageMap = image.CreateImageMap(),
             };
         }

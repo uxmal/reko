@@ -694,7 +694,7 @@ namespace Reko.Scanning
                     return false;
                 // Can't determine the size of the table, but surely it has one entry?
                 var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                if (this.program.Image.IsValidAddress(addrEntry))
+                if (this.program.ImageMap.IsValidAddress(addrEntry))
                 {
                     vector.Add(addrEntry);
                     scanner.Warn(addrSwitch, "Can't determine size of jump vector; probing only one entry.");
@@ -756,7 +756,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    if (!program.Image.IsValidAddress(addr))
+                    if (!program.ImageMap.IsValidAddress(addr))
                         break;
                     BlockFromAddress(ric.Address, addr, blockCur.Procedure, state);
                 }
@@ -946,14 +946,14 @@ namespace Reko.Scanning
         private class BackwalkerHost : IBackWalkHost
         {
             private IScanner scanner;
-            private MemoryArea image;
+            private ImageMap imageMap;
             private IPlatform platform;
             private IProcessorArchitecture arch;
 
             public BackwalkerHost(BlockWorkitem item)
             {
                 this.scanner = item.scanner;
-                this.image = item.program.Image;
+                this.imageMap = item.program.ImageMap;
                 this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
             }
@@ -980,7 +980,7 @@ namespace Reko.Scanning
 
             public bool IsValidAddress(Address addr)
             {
-                return image.IsValidAddress(addr);
+                return imageMap.IsValidAddress(addr);
             }
 
             public Address MakeAddressFromConstant(Constant c)

@@ -290,13 +290,19 @@ namespace Reko.Core
        
         public ImageReader CreateImageReader(Address addr)
         {
-            return Architecture.CreateImageReader(Image, addr);
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
+            return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
 
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
         {
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateDisassembler(
-                Architecture.CreateImageReader(Image, addr));
+                Architecture.CreateImageReader(segment.MemoryArea, addr));
         }
 
         // Mutators /////////////////////////////////////////////////////////////////

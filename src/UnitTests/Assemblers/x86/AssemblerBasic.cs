@@ -110,11 +110,19 @@ namespace Reko.UnitTests.Assemblers.x86
 	[TestFixture]
 	public class AssemblerBasic : AssemblerBase
 	{
+        private MemoryArea mem;
+        private Program program;
+
+        private void AssembleFragment(string asmSrc)
+        {
+            program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
+            mem = program.ImageMap.Segments.Values.First().MemoryArea;
+        }
+
 		[Test]
 		public void AsFragment()
 		{
-			var program = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
+			 AssembleFragment(
 @"		.i86
 hello	proc
 		mov	ax,0x30
@@ -134,9 +142,7 @@ hello	endp
 		[Test]
 		public void AssembleLoopFragment()
 		{
-			var program = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
-
+			AssembleFragment(
 				@"		.i86
 hello	proc
 		xor		ax,ax
@@ -148,7 +154,7 @@ l:		add		ax,cx
 		ret
 hello	endp
 ");
-			Assert.IsTrue(Compare(program.Image.Bytes, new byte [] 
+			Assert.IsTrue(Compare(mem.Bytes, new byte [] 
 				{ 0x33, 0xC0, 0xB9, 0x0a, 0x00, 0x03, 0xC1, 0xE2, 0xFC, 0xC3 }));
 
 		}
@@ -156,8 +162,7 @@ hello	endp
 		[Test]
 		public void Extensions()
 		{
-			var program = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
+			AssembleFragment(
 				@"		.i86
 hello	proc
 		mov cl,0x3
@@ -167,7 +172,7 @@ hello	proc
 		ret
 hello   endp
 ");
-			Assert.IsTrue(Compare(program.Image.Bytes, new byte[]
+			Assert.IsTrue(Compare(mem.Bytes, new byte[]
 				{
 						0xB1, 0x03,
 					0x66, 0x0F, 0xB6, 0xC1,
@@ -176,11 +181,11 @@ hello   endp
 					0xC3,
 			}));
 		}
+
 		[Test]
 		public void Rotations()
 		{
-			var program = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
+			AssembleFragment(
 				@"	.i86
 foo		proc
 		rol	ax,cl
@@ -189,15 +194,14 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(program.Image.Bytes, new byte []
+			Assert.IsTrue(Compare(mem.Bytes, new byte []
 					{ 0xD3, 0xC0, 0xD0, 0x47, 0x02, 0xC1, 0x5E, 0x4, 0x4, 0xC3}));
 		}
 		
 		[Test]
 		public void Shifts()
 		{
-			var program = asm.AssembleFragment(
-				Address.SegPtr(0x0C00, 0),
+			AssembleFragment(
 				@"	.i86
 foo		proc
 		shl eax,cl
@@ -206,15 +210,14 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(program.Image.Bytes, new byte []
+			Assert.IsTrue(Compare(mem.Bytes, new byte []
 				{ 0x66, 0xD3, 0xE0, 0xD0, 0x6C, 0x03, 0xC1, 0x7C, 0x06, 0x04, 0xC3 }));
 		}
 
 		[Test]
 		public void StringInstruction()
 		{
-			var program = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
+			AssembleFragment(
 				@"	.i86
 foo		proc
 		mov	si,0x1234
@@ -224,7 +227,7 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(program.Image.Bytes, new byte []
+			Assert.IsTrue(Compare(mem.Bytes, new byte []
 				{ 0xBE, 0x34, 0x12, 0xBF, 0x41, 0x32, 0xB9, 0x32, 0x00, 0xF3, 0xA4, 0xC3 }));
 		}
 
@@ -247,32 +250,31 @@ foo		endp
         [Test]
         public void MovMemoryToSegmentRegister()
         {
-            var program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0),
-                "    mov es,[0x4080]\r\n");
-            Assert.IsTrue(Compare(program.Image.Bytes, new byte[] { 0x8E, 0x06, 0x80, 0x40 }));
+            AssembleFragment("mov es,[0x4080]\r\n");
+            Assert.IsTrue(Compare(mem.Bytes, new byte[] { 0x8E, 0x06, 0x80, 0x40 }));
         }
 
         [Test]
         public void XchgMem()
         {
-            var program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), "xchg word ptr [0x1234],bx\r\n");
-            Assert.IsTrue(Compare(program.Image.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
+            AssembleFragment("xchg word ptr [0x1234],bx\r\n");
+            Assert.IsTrue(Compare(mem.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
         }
 
         [Test]
         public void Fcompp()
         {
-            var program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0x0100), "fcompp\r\n");
-            Assert.AreEqual(new byte[] { 0xDE, 0xD9 }, program.Image.Bytes);
+            AssembleFragment("fcompp\r\n");
+            Assert.AreEqual(new byte[] { 0xDE, 0xD9 }, mem.Bytes);
         }
 
         [Test]
         public void AsJpo()
         {
-            var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0x0100),
+            AssembleFragment(
                 "jpo label\r\n" +
                 "label: xor ax,ax\r\n");
-            Assert.AreEqual(new byte[] { 0x7B, 0x00, 0x33, 0xC0 }, program.Image.Bytes); 
+            Assert.AreEqual(new byte[] { 0x7B, 0x00, 0x33, 0xC0 },  mem.Bytes); 
         }
 
 		[Test]
@@ -371,11 +373,12 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dump = new Dumper(asm.Architecture);
-				dump.DumpData(program.ImageMap, program.Image.BaseAddress, program.Image.Bytes.Length, fut.TextWriter);
+                var mem = program.ImageMap.Segments.Values.First().MemoryArea;
+				dump.DumpData(program.ImageMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.ImageMap, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length, fut.TextWriter);
+				dump.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.BaseAddress + mem.Bytes.Length, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}	

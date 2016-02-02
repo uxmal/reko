@@ -43,7 +43,7 @@ namespace Reko.Arch.X86
         public const uint Omask = 1u << 11;
 
         private IntelArchitecture arch;
-        private MemoryArea img;
+        private ImageMap map;
         private IPlatformEmulator envEmulator;
         private IEnumerator<X86Instruction> dasm;
         private bool running;
@@ -57,10 +57,10 @@ namespace Reko.Arch.X86
         private bool stepInto;
         private TWord stepOverAddress;
 
-        public X86Emulator(IntelArchitecture arch, MemoryArea loadedImage, IPlatformEmulator envEmulator)
+        public X86Emulator(IntelArchitecture arch, ImageMap imageMap, IPlatformEmulator envEmulator)
         {
             this.arch = arch;
-            this.img = loadedImage;
+            this.map = imageMap;
             this.Registers = new ulong[40];
             this.Valid = new bool[40];
             this.envEmulator = envEmulator;
@@ -75,7 +75,10 @@ namespace Reko.Arch.X86
             set
             {
                 ip = value;
-                var rdr = arch.CreateImageReader(img, value);
+                ImageSegment segment;
+                if (!map.TryFindSegment(ip, out segment))
+                    throw new AccessViolationException();
+                var rdr = arch.CreateImageReader(segment.MemoryArea, value);
                 dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
             }
         }
@@ -280,7 +283,11 @@ namespace Reko.Arch.X86
         {
             byte al = (byte) ReadRegister(X86.Registers.al);
             TWord edi = ReadRegister(X86.Registers.edi);
-            byte mem = (byte)(al - img.Bytes[edi - img.BaseAddress.ToLinear()]);
+            var addr = Address.Ptr32(edi);
+            ImageSegment seg;
+            if (!map.TryFindSegment(addr, out seg))
+                throw new AccessViolationException();
+            byte mem = (byte)(al - seg.MemoryArea.Bytes[edi - (uint)seg.MemoryArea.BaseAddress.ToLinear()]);
             WriteRegister(X86.Registers.edi, edi + 1);      //$BUG: Direction flag not respected
             Flags =
                 (mem == 0 ? Zmask : 0u);
@@ -442,8 +449,8 @@ namespace Reko.Arch.X86
                 byte b;
                 switch (op.Width.Size)
                 {
-                case 1: if (!img.TryReadByte(Address.Ptr32(ea), out b)) throw new IndexOutOfRangeException(); else  return b;
-                case 4: return img.ReadLeUInt32(Address.Ptr32(ea));
+                case 1: if (!TryReadByte(Address.Ptr32(ea), out b)) throw new IndexOutOfRangeException(); else  return b;
+                case 4: return ReadLeUInt32(Address.Ptr32(ea));
                 }
                 throw new NotImplementedException();
             }
@@ -483,8 +490,8 @@ namespace Reko.Arch.X86
                 var ea = GetEffectiveAddress(m);
                 switch (op.Width.Size)
                 {
-                case 1: img.WriteByte(Address.Ptr32(ea), (byte)w); return;
-                case 4: img.WriteLeUInt32(Address.Ptr32(ea), (UInt32)w); return;
+                case 1: WriteByte(Address.Ptr32(ea), (byte)w); return;
+                case 4: WriteLeUInt32(Address.Ptr32(ea), (UInt32)w); return;
                 }
                 throw new NotImplementedException();
             }
@@ -532,8 +539,8 @@ namespace Reko.Arch.X86
         public TWord Pop()
         {
             var esp = Registers[X86.Registers.esp.Number];
-            var u = (uint)esp - img.BaseAddress.ToUInt32();
-            var word = img.ReadLeUInt32(u);
+            var u = (uint)esp - map.BaseAddress.ToUInt32();
+            var word = ReadLeUInt32(u);
             esp += 4;
             WriteRegister(X86.Registers.esp, (uint)esp);
             return word;
@@ -542,8 +549,8 @@ namespace Reko.Arch.X86
         public void Push(ulong word)
         {
             var esp = Registers[X86.Registers.esp.Number] - 4;
-            var u = (long)(esp - img.BaseAddress.ToLinear());
-            img.WriteLeUInt32(u, (uint) word);
+            uint u = (uint)(esp - map.BaseAddress.ToLinear());
+            WriteLeUInt32(u, (uint) word);
             WriteRegister(X86.Registers.esp, (uint) esp);
         }
 
@@ -552,6 +559,74 @@ namespace Reko.Arch.X86
             var tmp = Read(op1);
             Write(op1, Read(op2));
             Write(op2, tmp);
+        }
+
+        private bool TryReadByte(Address ea, out byte b)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            ImageSegment segment;
+            if (!map.TryFindSegment(ea, out segment))
+                throw new AccessViolationException();
+            return segment.MemoryArea.TryReadByte(ea, out b);
+        }
+
+        private uint ReadLeUInt32(uint ea)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            var addr = Address.Ptr32(ea);
+            ImageSegment segment;
+            if (!map.TryFindSegment(addr, out segment))
+                throw new AccessViolationException();
+            return segment.MemoryArea.ReadLeUInt32(addr);
+        }
+
+        private uint ReadLeUInt32(Address ea)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            ImageSegment segment;
+            if (!map.TryFindSegment(ea, out segment))
+                throw new AccessViolationException();
+            return segment.MemoryArea.ReadLeUInt32(ea);
+        }
+
+        private void WriteLeUInt32(Address ea, uint value)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            ImageSegment segment;
+            if (!map.TryFindSegment(ea, out segment))
+                throw new AccessViolationException();
+            segment.MemoryArea.WriteLeUInt32(ea, value);
+        }
+
+        private void WriteLeUInt32(uint ea, uint value)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            var addr = Address.Ptr32(ea);
+            ImageSegment segment;
+            if (!map.TryFindSegment(addr, out segment))
+                throw new AccessViolationException();
+            segment.MemoryArea.WriteLeUInt32(addr, value);
+        }
+
+        private void WriteByte(Address ea, byte value)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            ImageSegment segment;
+            if (!map.TryFindSegment(ea, out segment))
+                throw new AccessViolationException();
+            segment.MemoryArea.WriteLeUInt32(ea, value);
         }
 
         public void SetBreakpoint(uint address, Action callback)

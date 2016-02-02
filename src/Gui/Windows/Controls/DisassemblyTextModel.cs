@@ -42,19 +42,25 @@ namespace Reko.Gui.Windows.Controls
     public class DisassemblyTextModel : TextViewModel
     {
         private Program program;
-        private Address position;
+        private MemoryArea mem;
+        private int position;
 
-        public DisassemblyTextModel(Program program)
+        public DisassemblyTextModel(Program program, MemoryArea mem)
         {
             if (program == null)
                 throw new ArgumentNullException("program");
             this.program = program;
-            this.position = program.Image.BaseAddress;
+            if (mem == null)
+                throw new ArgumentNullException("mem");
+            this.mem = mem;
+            this.StartPosition =  mem.BaseAddress;
+            this.position = 0;
+            var last = mem.Length;
         }
 
-        public object StartPosition { get { return program.Image.BaseAddress; } }
+        public object StartPosition { get; private set; }
         public object CurrentPosition { get { return position; } }
-        public object EndPosition { get { return program.ImageMap.MapLinearAddressToAddress((ulong)((long)program.Image.BaseAddress.ToLinear() + program.Image.Bytes.LongLength)); } }
+        public object EndPosition { get; private set; }
         public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
 
         public int ComparePositions(object a, object b)
@@ -67,7 +73,7 @@ namespace Reko.Gui.Windows.Controls
             var lines = new List<LineSpan>();
             if (program.Architecture != null)
             {
-                var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
+                var dasm = program.CreateDisassembler(mem.BaseAddress + Align(position)).GetEnumerator();
                 while (count != 0 && dasm.MoveNext())
                 {
                     var line = new List<TextSpan>();
@@ -80,19 +86,18 @@ namespace Reko.Gui.Windows.Controls
                     dfmt.NewLine();
                     lines.Add(new LineSpan(addr, line.ToArray()));
                     --count;
-                    position = addr + instr.Length;
+                    position += instr.Length;
                 }
 
             }
             return lines.ToArray();
         }
 
-        private Address Align(Address addr)
+        private int Align(int position)
         {
             uint byteAlign = (uint)program.Architecture.InstructionBitSize / 8u;
-            ulong linear = addr.ToLinear();
-            var rem = linear % byteAlign;
-            return addr - (int) rem;
+            var rem = position % byteAlign;
+            return position - (int) rem;
         }
 
         private string BuildBytes(MachineInstruction instr)
@@ -108,21 +113,17 @@ namespace Reko.Gui.Windows.Controls
 
         public void MoveToLine(object basePosition, int offset)
         {
-            var addr = (Address)basePosition;
-            var image = program.Image;
-            if (addr < image.BaseAddress)
-                addr = image.BaseAddress;
-            var addrEnd = program.ImageMap.MapLinearAddressToAddress(
-                image.BaseAddress.ToLinear() + (ulong)image.Length - 1);
-            if (addr > addrEnd)
-                addr = addrEnd;
+            var addr = (int)basePosition;
+            if (addr < 0)
+                addr = 0;
+            if (addr > mem.Length)
+                addr = (int) mem.Length;
             this.position = addr;
         }
 
         public Tuple<int, int> GetPositionAsFraction()
         {
-            var image = program.Image;
-            return Tuple.Create((int)(position - image.BaseAddress), (int)image.Length);
+            return Tuple.Create((int)position, (int)mem.Length);
         }
 
         public void SetPositionAsFraction(int numerator, int denominator)
@@ -131,14 +132,13 @@ namespace Reko.Gui.Windows.Controls
                 throw new ArgumentException("denominator");
             if (numerator < 0 || numerator > denominator)
                 throw new ArgumentException("numerator");
-            var image = program.Image;
-            long offset = Math.BigMul(numerator, (int)image.Length) / denominator;
+            long offset = Math.BigMul(numerator, (int)mem.Length) / denominator;
             if (offset < 0)
                 offset = 0;
-            else if (offset > image.Bytes.Length)
-                offset = image.Bytes.Length;
+            else if (offset > mem.Bytes.Length)
+                offset = mem.Bytes.Length;
 
-            this.position = program.ImageMap.MapLinearAddressToAddress(image.BaseAddress.ToLinear() + (uint) offset);
+            this.position = (int) offset;
         }
 
         /// <summary>

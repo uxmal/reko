@@ -188,8 +188,9 @@ namespace Reko.Typing
                     return np;
                 }
 
+                var addr = program.Platform.MakeAddressFromConstant(c);
                 // An invalid pointer -- often used as sentinels in code.
-                if (!program.Image.IsValidLinearAddress(c.ToUInt64()))
+                if (!program.ImageMap.IsValidAddress(addr))
                 {
                     //$TODO: probably should use a reinterpret_cast here.
                     var ce = new Cast(c.DataType, c);

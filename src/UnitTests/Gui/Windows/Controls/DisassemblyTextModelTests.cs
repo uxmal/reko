@@ -55,15 +55,16 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private MemoryArea Given_Image(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
-            program.Image = new MemoryArea(Address.Ptr32(0x1000000), bytes);
-            program.ImageMap = new ImageMap(program.Image.BaseAddress, program.Image.Length);
-            return program.Image;
+            var mem = new MemoryArea(Address.Ptr32(0x1000000), bytes);
+            program.ImageMap = new ImageMap(mem.BaseAddress,
+                new ImageSegment(".text", AccessMode.ReadExecute) { MemoryArea = mem });
+            return mem;
         }
 
         private void Given_Model()
         {
-            Given_Image(1000);
-            model = new DisassemblyTextModel(program);
+            var mem = Given_Image(1000);
+            model = new DisassemblyTextModel(program, mem);
         }
 
         [Test]

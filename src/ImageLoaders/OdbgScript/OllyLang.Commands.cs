@@ -1195,8 +1195,12 @@ string filename;
                 if (maxsize != 0 && (int)maxsize < memlen)
                     memlen = (int)maxsize;
 
+                var ea = Address.Ptr32((uint)addr);
+                ImageSegment segment;
+                if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                    throw new AccessViolationException();
                 byte[] membuf = new byte[memlen];
-                if (Host.Image.TryReadBytes(Address.Ptr32((uint)addr), memlen, membuf))
+                if (segment.MemoryArea.TryReadBytes(ea, memlen, membuf))
                 {
                     int bytecount = finddata.Length / 2;
 
@@ -3447,7 +3451,11 @@ string param;
                 Debugger.SetContextData(eContextData.UE_CSP, CSP + sizeof(rulong));
                 if (args.Length == 1)
                 {
-                    dw = Host.Image.ReadLeUInt32(Address.Ptr32((uint)CSP));
+                    var ea = Address.Ptr32((uint)CSP);
+                    ImageSegment segment;
+                    if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                        throw new AccessViolationException();
+                    dw = segment.MemoryArea.ReadLeUInt32(ea);
                     return SetRulong(args[0], dw);
                 }
                 return true;

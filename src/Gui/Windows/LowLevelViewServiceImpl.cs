@@ -49,7 +49,7 @@ namespace Reko.Gui.Windows
             mvi.Program = program;
             if (program != null)
             {
-                mvi.SelectedAddress = program.Image.BaseAddress;
+                mvi.SelectedAddress = program.ImageMap.BaseAddress;
             }
         }
 

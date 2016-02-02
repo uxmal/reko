@@ -22,19 +22,20 @@ namespace Reko.WindowsItp
         private void DisassemblyControlForm_Load(object sender, EventArgs e)
         {
             var random = new Random(0x4711);
-            var image =   new MemoryArea(Address.Ptr32(0x00100000),
+            var mem =   new MemoryArea(Address.Ptr32(0x00100000),
                 Enumerable.Range(0, 10000)
                 .Select(i => (byte)random.Next(256)).ToArray());
-            var imageMap = new ImageMap(image.BaseAddress, image.Bytes.Length);
+            var imageMap = new ImageMap(mem.BaseAddress,
+                new ImageSegment(".text", AccessMode.ReadExecute) { MemoryArea = mem });
             disassemblyControl1.Model = new DisassemblyTextModel(
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32();
                     Architecture = new Reko.Arch.PowerPC.PowerPcArchitecture32(),
-                    Image = image,
                     ImageMap = imageMap
-                });
-            disassemblyControl1.StartAddress = image.BaseAddress;
+                },
+                mem);
+            disassemblyControl1.StartAddress = mem.BaseAddress;
         }
     }
 }

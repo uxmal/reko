@@ -141,7 +141,7 @@ namespace Reko.Gui.Windows.Forms
                 }
                 program.User.Processor = arch;
                 program.User.Environment = platform;
-                program.User.LoadAddress = program.Image.BaseAddress; ;
+                program.User.LoadAddress = program.ImageMap.BaseAddress; ;
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanPrograms();
             });

@@ -60,13 +60,11 @@ namespace Reko.Gui.Windows
                 program = value;
                 if (value != null)
                 {
-                    control.MemoryView.ProgramImage = value.Image;
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
-                    control.DisassemblyView.Model = new DisassemblyTextModel(value);
-                    control.ImageMapView.Image = value.Image;
+                    control.DisassemblyView.Model = new DisassemblyTextModel(value, program.ImageMap.Segments.Values.First().MemoryArea);
                     control.ImageMapView.ImageMap = value.ImageMap;
-                    control.ImageMapView.Granularity = value.Image.Bytes.Length;
+                    control.ImageMapView.Granularity = value.ImageMap.GetExtent();
                 }
             }
         }
@@ -133,7 +131,7 @@ namespace Reko.Gui.Windows
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
         {
-            if (!program.Image.IsValidAddress(addrTo))
+            if (!program.ImageMap.IsValidAddress(addrTo))
                 return;
             navInteractor.RememberAddress(addrFrom);
             control.CurrentAddress = addrTo;        // ...and move to the new position.
@@ -368,10 +366,12 @@ namespace Reko.Gui.Windows
                 {
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits = 
-                        re.GetMatches(program.Image.Bytes, 0)
+                        //$BUG: wrong result
+                        program.ImageMap.Segments.Values
+                        .SelectMany(s => re.GetMatches(s.MemoryArea.Bytes, 0))
                         .Select(offset => new ProgramAddress(
                             program,
-                            program.Image.BaseAddress + offset));
+                            program.ImageMap.BaseAddress + offset));
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
             }

@@ -81,7 +81,6 @@ namespace Reko.ImageLoaders.MachO
             var image = new MemoryArea(addrLoad, RawImage);
             return new Program {
                 Architecture = ldr.arch,
-                Image = image,
                 ImageMap = image.CreateImageMap(),
                 Platform = new DefaultPlatform(Services, ldr.arch)
             };

@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.M68k
     {
         private M68kArchitecture arch = new M68kArchitecture();
         private Address addrBase = Address.Ptr32(0x00010000);
-        private MemoryArea image;
+        private MemoryArea mem;
 
         public override IProcessorArchitecture Architecture
         {
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.M68k
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return arch.CreateRewriter(image.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
+            return arch.CreateRewriter(mem.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
         }
 
         private void Rewrite(params ushort[] opcodes)
@@ -62,14 +62,14 @@ namespace Reko.UnitTests.Arch.M68k
             {
                 writer.WriteBeUInt16(opcode);
             }
-            image = new MemoryArea(addrBase, bytes);
+            mem = new MemoryArea(addrBase, bytes);
         }
 
         private void Rewrite(Action<M68kAssembler> build)
         {
             var asm = new M68kAssembler(arch, addrBase, new List<EntryPoint>());
             build(asm);
-            image = asm.GetImage().Image;
+            mem = asm.GetImage().ImageMap.Segments.Values.First().MemoryArea;
         }
 
         [Test]

@@ -76,7 +76,7 @@ namespace Reko.Core.Output
             try
             {
                 tw.WriteDeclaration(field.DataType, name);
-                if (program.Image.IsValidAddress(addr))
+                if (program.ImageMap.IsValidAddress(addr))
                 {
                     formatter.Write(" = ");
                     this.rdr = program.CreateImageReader(addr);

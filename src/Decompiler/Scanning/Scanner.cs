@@ -93,7 +93,6 @@ namespace Reko.Scanning
     {
         private Program program;
         private PriorityQueue<WorkItem> queue;
-        private MemoryArea image;
         private ImageMap imageMap;
         private IImportResolver importResolver;
         private Map<Address, BlockRange> blocks;
@@ -119,7 +118,6 @@ namespace Reko.Scanning
             IServiceProvider services)
         {
             this.program = program;
-            this.image = program.Image;
             this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
             this.callSigs = callSigs;
@@ -168,7 +166,8 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            blocks.Add(addr, new BlockRange(b, addr.ToLinear(), image.BaseAddress.ToLinear() + (uint)image.Bytes.Length));
+            var lastMem = imageMap.Segments.Values.Last().MemoryArea;
+            blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
 
@@ -215,7 +214,7 @@ namespace Reko.Scanning
 
         public ImageReader CreateReader(Address addr)
         {
-            return program.Architecture.CreateImageReader(image, addr);
+            return program.CreateImageReader(addr);
         }
 
         /// <summary>
@@ -570,7 +569,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
-            if (!image.IsValidAddress(addrImportThunk))
+            if (!imageMap.IsValidAddress(addrImportThunk))
                 return null;
             var rdr= program.CreateImageReader(addrImportThunk);
             uint uDest;
