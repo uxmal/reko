@@ -148,12 +148,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var decompiler = mr.Stub<IDecompiler>();
             var prog = new Program();
             var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
-            program.ImageMap = new ImageMap(mem.BaseAddress,
+            prog.ImageMap = new ImageMap(mem.BaseAddress,
                 new ImageSegment(".text", 0x10, AccessMode.ReadWriteExecute)
                 { MemoryArea = mem });
-
-
-            prog.ImageMap = prog.Image.CreateImageMap();
             var project = new Project { Programs = { prog } };
             decompiler.Stub(x => x.Project).Return(project);
             decSvc.Stub(x => x.Decompiler).Return(decompiler);

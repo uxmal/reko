@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Gui.Windows
             Given_Architecture();
             Given_Program(new byte[] { 0x4, 0x3, 0x2, 0x1 });
             interactor.Stub(i => i.GetSelectedAddressRange())
-                .Return(new AddressRange(program.Image.BaseAddress, program.Image.BaseAddress));
+                .Return(new AddressRange(program.ImageMap.BaseAddress, program.ImageMap.BaseAddress));
             mr.ReplayAll();
 
             When_ShowControl();

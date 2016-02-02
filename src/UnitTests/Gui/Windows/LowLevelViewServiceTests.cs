@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             interactor.SetSite(sc);
             interactor.CreateControl();
-            svc.ShowMemoryAtAddress(program, program.Image.BaseAddress);
+            svc.ShowMemoryAtAddress(program, program.ImageMap.BaseAddress);
 
             mr.VerifyAll();
         }

@@ -28,9 +28,9 @@ namespace Reko.Gui.Windows.Controls
             xLastMouseUp = CxScroll;
         }
 
-        public int Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(offset); OnGranularityChanged(); } }
+        public long Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(offset); OnGranularityChanged(); } }
         public event EventHandler GranularityChanged;
-        private int granularity;
+        private long granularity;
 
         [Browsable(false)]
         public MemoryArea Image { get { return image; } set { image = value; OnImageChanged(); } }
@@ -57,9 +57,9 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
 
-        public int Offset { get { return offset; } set { BoundOffset(value); OnOffsetChanged(); } }
+        public long Offset { get { return offset; } set { BoundOffset(value); OnOffsetChanged(); } }
         public event EventHandler OffsetChanged;
-        private int offset;
+        private long offset;
 
         private Brush brCode;
         private Brush brBack;
@@ -121,7 +121,7 @@ namespace Reko.Gui.Windows.Controls
 
         private void RenderBody(Graphics g, Rectangle rcBody)
         {
-            int cbOffset = offset;
+            long cbOffset = offset;
             Brush brOld = brBack;
             Rectangle rcPaint = rcBody;
             rcPaint.Width = 0;
@@ -145,7 +145,7 @@ namespace Reko.Gui.Windows.Controls
             //g.DrawRectangle(Pens.Red, rcBody);
         }
 
-        private Brush GetColorForOffset(int cbOffset)
+        private Brush GetColorForOffset(long cbOffset)
         {
             ImageMapItem item;
             if (imageMap == null ||image == null)
@@ -175,18 +175,18 @@ namespace Reko.Gui.Windows.Controls
             return rc;
         }
 
-        private void BoundGranularity(int value)
+        private void BoundGranularity(long value)
         {
-            granularity = Math.Max(1, value);
+            granularity = Math.Max(1L, value);
             if (image != null)
             {
                 granularity = Math.Min(
                     granularity,
-                    (int)Math.Ceiling((double)image.Bytes.Length / (double)Width));
+                    (long)Math.Ceiling((double)image.Bytes.Length / (double)Width));
             }
         }
 
-        private void BoundOffset(int value)
+        private void BoundOffset(long value)
         {
             offset = value;
             if (image != null)

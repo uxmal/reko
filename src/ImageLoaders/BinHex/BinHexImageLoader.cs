@@ -36,6 +36,7 @@ namespace Reko.ImageLoaders.BinHex
         private ResourceFork rsrcFork;
         private MemoryArea image;
         private ImageMap imageMap;
+        private MemoryArea mem;
 
         public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
         {
@@ -70,7 +71,7 @@ namespace Reko.ImageLoaders.BinHex
                 }
             }
 
-            var mem = new MemoryArea(addrLoad, dataFork);
+            this.mem = new MemoryArea(addrLoad, dataFork);
             return new Program(new ImageMap(image.BaseAddress, image.Length), arch, platform);
         }
 
@@ -100,7 +101,7 @@ namespace Reko.ImageLoaders.BinHex
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, program.Image, imageMap, entryPoints);
+                rsrcFork.AddResourcesToImageMap(addrLoad, mem, imageMap, entryPoints);
             }
             return new RelocationResults(entryPoints, relocations, new List<Address>());
         }

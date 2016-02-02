@@ -77,6 +77,20 @@ namespace Reko.Core
         /// </summary>
 		public IProcessorArchitecture Architecture { get; set; }
 
+        public IPlatform Platform { get; set; }
+
+        public ImageMap ImageMap { get; set; }
+
+        public TypeLibrary Metadata
+        {
+            get
+            {
+                if (metadata == null)
+                    metadata = Platform.CreateMetadata();
+                return metadata;
+            }
+        }
+
         /// <summary>
         /// The callgraph expresses the relationships between the callers (statements and procedures)
         /// and their callees (procedures).
@@ -137,21 +151,6 @@ namespace Reko.Core
             globalFields = TypeFactory.CreateStructureType("Globals", 0);
             var ptrGlobals = TypeFactory.CreatePointer(globalFields, Platform.PointerType.Size);
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
-        }
-
-        [Obsolete]
-        public MemoryArea Image { get; set; }
-
-        public ImageMap ImageMap { get; set; }
-
-        public IPlatform Platform { get; set; }
-
-        public TypeLibrary Metadata {
-            get {
-                if (metadata == null)
-                    metadata = Platform.CreateMetadata();
-                return metadata;
-            }
         }
 
         public void LoadMetadataFile(ILoader loader, string filename)

@@ -45,11 +45,15 @@ namespace Reko.UnitTests.Gui.Commands
         {
             this.sc = new ServiceContainer();
             this.mr = new MockRepository();
-            var image = new MemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
+            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
             this.program = new Program
             {
-                Image = image,
-                ImageMap = image.CreateImageMap()
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("0C00", (uint)mem.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = mem
+                    })
             };
         }
 

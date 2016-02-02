@@ -422,10 +422,17 @@ namespace Reko.UnitTests.Gui.Windows
 
             pbs.Load(project);
 
+            var mem = new MemoryArea(Address.Ptr32(0x1231300), new byte[128]);
+            
             project.Programs.Add(new Program
             {
                 Filename = "bar.exe",
-                Image = new MemoryArea(Address.Ptr32(0x1231300), new byte[128])
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(".text", (uint)mem.Length, AccessMode.ReadExecute)
+                    {
+                        MemoryArea = mem
+                    })
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +

@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core
@@ -63,9 +64,10 @@ namespace Reko.Core
 
         public Address BaseAddress { get; private set; }
 
-        public int GetExtent()
+        public long GetExtent()
         {
-            throw new NotImplementedException();
+            var lastMem = segments.Values.Last().MemoryArea;
+            return (lastMem.BaseAddress - BaseAddress) + lastMem.Length;
         }
 
         /// <summary>

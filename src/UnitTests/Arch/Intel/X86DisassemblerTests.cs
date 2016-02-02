@@ -206,7 +206,7 @@ foo		proc
 		movsx	ebx,bx
 		movzx	ax,byte ptr [bp+04]
 ");
-            CreateDisassembler16(program.Image);
+            CreateDisassembler16(program.ImageMap.Segments.Values.First().MemoryArea);
             StringBuilder sb = new StringBuilder();
             foreach (var ii in dasm.Take(4))
             {

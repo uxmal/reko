@@ -92,16 +92,20 @@ namespace Reko.UnitTests.Assemblers.x86
 				Dumper dumper = new Dumper(program.Architecture);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
-				dumper.DumpData(program.ImageMap, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
-				fut.TextWriter.WriteLine();
-				dumper.DumpAssembler(program.ImageMap, program.Image.BaseAddress, program.Image.BaseAddress + (uint)program.Image.Length, fut.TextWriter);
-				if (program.ImportReferences.Count > 0)
-				{
-					foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
-					{
-						fut.TextWriter.WriteLine("{0:X8}: {1}", de.Key, de.Value);
-					}
-				}
+                foreach (var segment in program.ImageMap.Segments.Values)
+                {
+                    var mem = segment.MemoryArea;
+                    dumper.DumpData(program.ImageMap, mem.BaseAddress, mem.Length, fut.TextWriter);
+                    fut.TextWriter.WriteLine();
+                    dumper.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.BaseAddress + (uint)mem.Length, fut.TextWriter);
+                    if (program.ImportReferences.Count > 0)
+                    {
+                        foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
+                        {
+                            fut.TextWriter.WriteLine("{0:X8}: {1}", de.Key, de.Value);
+                        }
+                    }
+                }
 				fut.AssertFilesEqual();
 			}
 		}
@@ -242,7 +246,8 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				Dumper dump = new Dumper(arch);
-				dump.DumpData(program.ImageMap, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
+                var mem = program.ImageMap.Segments.Values.First().MemoryArea;
+				dump.DumpData(program.ImageMap, mem.BaseAddress, mem.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -348,9 +353,10 @@ foo		endp
         {
             Address addr = Address.SegPtr(0x0C00, 0);
             var program = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
+            var mem = program.ImageMap.Segments.Values.First().MemoryArea;
             var dasm = new X86Disassembler(
                 ProcessorMode.Real,
-                program.Image.CreateLeReader(addr),
+                mem.CreateLeReader(addr),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);

@@ -61,7 +61,7 @@ namespace Reko.Gui.Windows.Controls
         public object StartPosition { get; private set; }
         public object CurrentPosition { get { return position; } }
         public object EndPosition { get; private set; }
-        public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
+        public int LineCount { get { return GetPositionEstimate(mem.Bytes.Length); } }
 
         public int ComparePositions(object a, object b)
         {

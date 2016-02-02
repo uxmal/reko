@@ -50,12 +50,16 @@ namespace Reko.UnitTests.Mocks
             };
         }
 
-        public ProgramBuilder(MemoryArea loadedImage)
+        public ProgramBuilder(MemoryArea mem)
         {
             Program = new Program
             {
-                Image = loadedImage,
-                ImageMap = loadedImage.CreateImageMap(),
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", (uint)mem.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = mem
+                    }),
                 Architecture = new FakeArchitecture()
             };
         }
