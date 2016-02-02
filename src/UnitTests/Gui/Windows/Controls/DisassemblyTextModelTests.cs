@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             {
                 instrs.Add(new TestInstruction
                 {
-                    Address = program.Image.BaseAddress + i,
+                    Address = program.ImageMap.BaseAddress + i,
                     Length = c % 5
                 });
             }

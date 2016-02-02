@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Scanning
         private IImportResolver importResolver;
         private IDictionary<Address, ProcedureSignature> callSigs;
         private ServiceContainer sc;
+        private MemoryArea mem;
 
         public class TestScanner : Scanner
         {
@@ -103,14 +104,9 @@ namespace Reko.UnitTests.Scanning
             var addr = Address.SegPtr(0x0C00, 0);
             var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<EntryPoint>());
             test(m);
-            var lr = m.GetImage();
-            program = new Program(
-                lr.Image,
-                lr.ImageMap,
-                lr.Architecture,
-                lr.Platform);
-            scan = CreateScanner(program);
-            EntryPoint ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
+            this.program = m.GetImage();
+            this.scan = this.CreateScanner(this.program);
+            EntryPoint ep = new EntryPoint(addr, this.program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
         }
 
@@ -158,12 +154,17 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Program(Address address)
         {
-            var image = new MemoryArea(address, new byte[1]);
-            var imageMap = image.CreateImageMap();
+            var mem = new MemoryArea(address, new byte[1]);
+            var imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("proggie", 1, AccessMode.ReadExecute)
+                {
+                    MemoryArea = mem
+                });
+
             this.program = new Program
             {
                 Architecture = arch,
-                Image = image,
                 ImageMap = imageMap,
                 Platform = new FakePlatform(null, arch)
             };
@@ -184,12 +185,14 @@ namespace Reko.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            var image = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
-            program = new Program(
-                image,
-                image.CreateImageMap(),
-                arch,
-                new FakePlatform(null, arch));
+            mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            program = new Program
+            {
+                ImageMap = new ImageMap(mem.BaseAddress,
+                    new ImageSegment("progseg", (uint)imageSize, AccessMode.ReadExecute) { MemoryArea = mem }),
+                Architecture = arch,
+                Platform = new FakePlatform(null, arch)
+            };
             return new TestScanner(
                 program,
                 callSigs,
@@ -212,8 +215,11 @@ namespace Reko.UnitTests.Scanning
             this.program = prog;
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
-            prog.Image = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
-            prog.ImageMap = prog.Image.CreateImageMap();
+            this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            prog.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("progseg", (uint)imageSize, AccessMode.ReadExecute)
+                { MemoryArea = mem });
             return new TestScanner(prog, callSigs, importResolver, sc);
         }
 
@@ -298,10 +304,7 @@ namespace Reko.UnitTests.Scanning
             m.Jmp("foo");
             m.Endp("baz");
 
-            var lr = m.GetImage();
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
-            prog.Architecture = lr.Architecture;
+            prog = m.GetImage();
             prog.Platform = new FakePlatform(null, arch);
             var proj = new Project { Programs = { prog } };
             var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), sc);
@@ -584,7 +587,7 @@ fn00001200_exit:
             var scanner = CreateScanner(0x1000, 0x2000);
             var addrEmulated = Address.Ptr32(0x5000);
             var addrThunk = Address.Ptr32(0x1800);
-            program.Image.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
+            mem.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
             program.InterceptedCalls.Add(addrEmulated, new ExternalProcedure("Foo", null));
             var ep = scanner.GetInterceptedCall(addrThunk);
             Assert.AreEqual("Foo", ep.Name);

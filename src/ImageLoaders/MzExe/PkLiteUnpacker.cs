@@ -208,8 +208,7 @@ l01C8:
 */
 			l01C8:
 			imgU = new MemoryArea(addrLoad, abU);
-            imageMap = imgU.CreateImageMap();
-			return new Program(imgU, imageMap, arch, platform);
+			return new Program(new ImageMap(imgU.BaseAddress, imgU.Length), arch, platform);
 		}
 
 		public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)

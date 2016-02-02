@@ -277,7 +277,6 @@ namespace Reko.Gui.Windows.Forms
 
             GenerateSimulatedProgram();
             dlg.MemoryControl.Services = sc;
-            dlg.MemoryControl.ProgramImage = program.Image;
             dlg.MemoryControl.ImageMap = program.ImageMap;
             dlg.MemoryControl.Architecture = program.Architecture;
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);

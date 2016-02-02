@@ -74,11 +74,15 @@ namespace Reko.UnitTests.Scanning
         protected void Given_Image32(uint addr, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            var imag = new MemoryArea(Address.Ptr32(addr), bytes);
+            mem = new MemoryArea(Address.Ptr32(addr), bytes);
             prog = new Program
             {
-                Image = imag,
-                ImageMap = imag.CreateImageMap(),
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("prôg", (uint)bytes.Length, AccessMode.ReadExecute)
+                    {
+                        MemoryArea = mem
+                    })
             };
             segment = prog.ImageMap.Segments.Values.First();
 
@@ -117,11 +121,15 @@ namespace Reko.UnitTests.Scanning
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            var imag = new MemoryArea(Address.SegPtr(seg, offset), bytes);
+            mem = new MemoryArea(Address.SegPtr(seg, offset), bytes);
             prog = new Program
             {
-                Image = imag,
-                ImageMap = imag.CreateImageMap()
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("prôg", (uint)bytes.Length, AccessMode.ReadExecute)
+                    {
+                        MemoryArea = mem
+                    })
             };
         }
 
@@ -138,7 +146,7 @@ namespace Reko.UnitTests.Scanning
                 sb.AppendLine();
                 var lastAddr = hblock.GetEndAddress();
                 var dasm = prog.Architecture.CreateDisassembler(
-                    prog.Architecture.CreateImageReader(prog.Image, hblock.Address));
+                    prog.Architecture.CreateImageReader(mem, hblock.Address));
                 foreach (var instr in dasm.TakeWhile(i => i.Address < lastAddr))
                 {
                     sb.AppendFormat("    {0}", instr);
@@ -160,5 +168,6 @@ namespace Reko.UnitTests.Scanning
             "eb 07 " +
             "0a 05 a1 00 00 74 " +
             "01 89 ec 5d c3 90";
+        private MemoryArea mem;
     }
 }

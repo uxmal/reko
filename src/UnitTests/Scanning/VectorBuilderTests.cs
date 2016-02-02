@@ -35,6 +35,7 @@ namespace Reko.UnitTests.Scanning
     {
         private MockRepository mr;
         private Program program;
+        private MemoryArea mem;
 
         [SetUp]
         public void Setup()
@@ -48,12 +49,12 @@ namespace Reko.UnitTests.Scanning
             arch.Stub(a => a.ReadCodeAddress(0, null, null)).IgnoreArguments()
                 .Do(new Func<int, ImageReader, ProcessorState, Address>(
                     (s, r, st) => Address.Ptr32(r.ReadLeUInt32())));
-            var image = new MemoryArea(Address.Ptr32(0x00010000), bytes);
+            mem = new MemoryArea(Address.Ptr32(0x00010000), bytes);
             this.program = new Program
             {
                 Architecture = arch,
-                Image = image,
-                ImageMap = image.CreateImageMap(),
+                ImageMap = new ImageMap(mem.BaseAddress, 
+                new ImageSegment(".text", (uint)mem.Length, AccessMode.ReadExecute) { MemoryArea = mem }),
             };
         }
 
@@ -69,14 +70,14 @@ namespace Reko.UnitTests.Scanning
                 0xC3, 0xC3, 0xC3, 0xCC,
             });
             var scanner = mr.Stub<IScanner>();
-            scanner.Stub(s => s.CreateReader(program.Image.BaseAddress))
-                .Return(program.Image.CreateLeReader(0));
+            scanner.Stub(s => s.CreateReader(program.ImageMap.BaseAddress))
+                .Return(mem.CreateLeReader(0));
             var state = mr.Stub<ProcessorState>();
         
             mr.ReplayAll();
 
             var vb = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
-            var vector = vb.BuildTable(program.Image.BaseAddress, 12, null, 4, state);
+            var vector = vb.BuildTable(program.ImageMap.BaseAddress, 12, null, 4, state);
             Assert.AreEqual(3, vector.Count);
         }
     }

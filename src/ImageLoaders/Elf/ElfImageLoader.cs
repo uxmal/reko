@@ -400,7 +400,6 @@ namespace Reko.ImageLoaders.Elf
                 imageMap.DumpSections();
             }
             var program = new Program(
-                this.image,
                 this.imageMap,
                 this.arch,
                 this.platform);

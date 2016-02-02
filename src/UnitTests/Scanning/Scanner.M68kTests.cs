@@ -67,8 +67,13 @@ namespace Reko.UnitTests.Scanning
             arch = new M68kArchitecture();
             var image = new MemoryArea(addrBase, bytes);
             program = new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    }),
                 arch,
                 new DefaultPlatform(null, arch));
             RunTest(addrBase);
@@ -84,7 +89,6 @@ namespace Reko.UnitTests.Scanning
             program = new Program
             {
                 Architecture = arch,
-                Image = lr.Image,
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };

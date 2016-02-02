@@ -386,7 +386,7 @@ namespace Reko.Gui.Windows
         private string SelectionToHex(AddressRange addr)
         {
             var sb = new StringBuilder();
-            var rdr = program.Architecture.CreateImageReader(program.Image, addr.Begin);
+            var rdr = program.CreateImageReader(addr.Begin);
             var sep = "";
             while (rdr.Address <= addr.End)
             {

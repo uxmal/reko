@@ -84,8 +84,14 @@ namespace Reko.UnitTests.Gui
             var fileName = "foo\\bar\\baz.exe";
             var bytes = new byte[100];
             var image = new MemoryArea(Address.Ptr32(0x1000), bytes);
-            var imageMap = image.CreateImageMap();
-            var prog = new Program(image, imageMap, arch, platform);
+            var imageMap = new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    });
+            var prog = new Program(imageMap, arch, platform);
             sc.AddService<DecompilerHost>(host);
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(fileName, bytes, null)).Return(prog);

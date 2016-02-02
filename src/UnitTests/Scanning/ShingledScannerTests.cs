@@ -73,14 +73,13 @@ namespace Reko.UnitTests.Scanning
             CreateProgram(image, arch);
         }
 
-        private void CreateProgram(MemoryArea image, IProcessorArchitecture arch)
+        private void CreateProgram(MemoryArea mem, IProcessorArchitecture arch)
         {
-            var imageMap = image.CreateImageMap();
-            var seg = imageMap.AddSegment(image.BaseAddress, ".text", AccessMode.ReadExecute, (uint)image.Bytes.Length);
+            var imageMap = new ImageMap(mem.BaseAddress);
+            var seg = imageMap.AddSegment(mem.BaseAddress, ".text", AccessMode.ReadExecute, (uint)mem.Bytes.Length);
             seg.Access = AccessMode.ReadExecute;
             var platform = new DefaultPlatform(null, arch);
             program = new Program(
-                image,
                 imageMap,
                 arch,
                 platform);

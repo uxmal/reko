@@ -58,8 +58,13 @@ namespace Reko.UnitTests.Core.Output
         {
             var arch = new Mocks.FakeArchitecture();
             this.program = new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint) image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    }),
                 arch,
                 new DefaultPlatform(null, arch));
             var globalStruct = new StructureType();

@@ -18,19 +18,19 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
-using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Environments.Msdos;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.ComponentModel.Design;
-using Reko.Core.Services;
+using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -67,11 +67,12 @@ namespace Reko.UnitTests.Scanning
             asmProg(asm);
 
             var lr = asm.GetImage();
-            program = new Program(
-                lr.Image,
-                lr.ImageMap,
-                arch,
-                platform);
+            program = new Program
+            {
+                ImageMap = lr.ImageMap,
+                Architecture = arch,
+                Platform = platform
+            };
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Scanning
 
         private void DumpProgram(Scanner scanner)
         {
-            var dasm = arch.CreateDisassembler(program.Image.CreateLeReader(0));
+            var dasm = arch.CreateDisassembler(program.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
             foreach (var instr in dasm)
             {
                 Console.Out.WriteLine("{0} {1}", instr.Address, instr);

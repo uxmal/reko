@@ -45,8 +45,13 @@ namespace Reko.UnitTests.Arch.Intel
 			arch = new IntelArchitecture(ProcessorMode.Real);
             var image = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
 			var prog = new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    }),
                 arch,
                 null);
 			var procAddress = Address.Ptr32(0x10000000);

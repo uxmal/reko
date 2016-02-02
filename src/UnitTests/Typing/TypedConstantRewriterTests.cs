@@ -38,17 +38,21 @@ namespace Reko.UnitTests.Typing
 		private TypedConstantRewriter tcr;
 		private Identifier globals;
         private Program program;
+        private MemoryArea mem;
 
         [SetUp]
 		public void Setup()
 		{
-            var image = new MemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
+            mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
             var arch = new FakeArchitecture();
             this.program = new Program
             {
-                Image = image,
                 Architecture = arch,
-                ImageMap = image.CreateImageMap(),
+                ImageMap = new ImageMap(mem.BaseAddress,  
+                    new ImageSegment(".text", (uint)mem.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = mem
+                    }),
                 Platform = new DefaultPlatform(null, arch),
             };
             store = program.TypeStore;
@@ -131,7 +135,7 @@ namespace Reko.UnitTests.Typing
 
         private void Given_String(string str, uint addr)
         {
-            var w = new LeImageWriter(program.Image.Bytes, addr - (uint)program.Image.BaseAddress.ToLinear());
+            var w = new LeImageWriter(mem.Bytes, addr - (uint)mem.BaseAddress.ToLinear());
             w.WriteString(str, Encoding.ASCII);
         }
 

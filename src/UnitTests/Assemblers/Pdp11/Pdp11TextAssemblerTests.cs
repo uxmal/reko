@@ -162,7 +162,7 @@ sav:    .word 777";
         jsr pc,delay
 delay:  .word
 ");
-            AssertWords(ldr.Image.Bytes, 0x09DF, 0x0104, 0x0000);
+            AssertWords(mem.Bytes, 0x09DF, 0x0104, 0x0000);
         }
 
         [Test]

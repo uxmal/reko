@@ -63,9 +63,8 @@ namespace Reko.Core
             this.User = new UserData();
         }
 
-        public Program(MemoryArea image, ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
+        public Program(ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
-            this.Image = image;
             this.ImageMap = imageMap;
             this.Architecture = arch;
             this.Platform = platform;
@@ -343,7 +342,7 @@ namespace Reko.Core
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.
-                var rdr = this.Architecture.CreateImageReader(this.Image, addr);
+                var rdr = this.CreateImageReader(addr);
                 while (rdr.IsValid)
                 {
                     var ch = rdr.ReadChar(strDt.ElementType);

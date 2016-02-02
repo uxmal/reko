@@ -159,11 +159,15 @@ namespace Reko.Environments.C64
             case FileType.PRG:
                 return LoadPrg(imageBytes);
             case FileType.SEQ:
-                var image = new MemoryArea(addrPreferred, imageBytes);
+                var mem = new MemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502ProcessorArchitecture();
                 return new Program(
-                    image,
-                    image.CreateImageMap(),
+                    new ImageMap(
+                        mem.BaseAddress,
+                        new ImageSegment("c64", (uint)mem.Length, AccessMode.ReadWriteExecute)
+                        {
+                            MemoryArea = mem,
+                        }),
                     arch,
                     new DefaultPlatform(Services, arch));
             default:
@@ -196,8 +200,13 @@ namespace Reko.Environments.C64
                 Address.Ptr16(prog.Keys[0]),
                 new byte[0xFFFF]);
             var program = new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    }),
                 arch,
                 new C64Platform(Services, null));
             program.EntryPoints.Add(new EntryPoint(image.BaseAddress, arch.CreateProcessorState()));

@@ -193,7 +193,7 @@ namespace Reko.ImageLoaders.MzExe
         public override Program Load(Address addrLoad)
 		{
 			Unpack(RawImage, addrLoad);
-            return new Program(imgLoaded, imageMap, arch, platform);
+            return new Program(imageMap, arch, platform);
 		}
 
 		public override Address PreferredBaseAddress

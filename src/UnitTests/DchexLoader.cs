@@ -45,10 +45,15 @@ namespace Reko.UnitTests
                     break;
                 ProcessLine(line);
             }
-            var img = new MemoryArea(addrStart, memStm.ToArray());
+            var mem = new MemoryArea(addrStart, memStm.ToArray());
             results = new Program(
-                img,
-                img.CreateImageMap(),
+                new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)mem.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = mem
+                    }),
                 arch,
                 new DefaultPlatform(Services, arch));
 

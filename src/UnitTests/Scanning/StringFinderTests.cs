@@ -46,15 +46,19 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Image(params byte[] bytes)
         {
-            var image = new MemoryArea(Address.Ptr32(0x00400000), bytes);
-            arch.Stub(a => a.CreateImageReader(image, null))
+            var mem = new MemoryArea(Address.Ptr32(0x00400000), bytes);
+            arch.Stub(a => a.CreateImageReader(mem, null))
                 .IgnoreArguments()
-                .Return(new LeImageReader(image, image.BaseAddress));
+                .Return(new LeImageReader(mem, mem.BaseAddress));
             this.program = new Program
             {
-                Image = image,
-                ImageMap = image.CreateImageMap(),
-                Architecture = arch
+                Architecture = arch,
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(".text", (uint) mem.Length, AccessMode.ReadExecute)
+                    {
+                        MemoryArea = mem,
+                    }),
             };
         }
 

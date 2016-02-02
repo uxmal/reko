@@ -87,7 +87,13 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var addrBase = Address.Ptr32(0x10000);
             var image = new MemoryArea(addrBase, new byte[100]);
-            var map = image.CreateImageMap();
+            var map = new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    });
             var arch = mr.Stub<IProcessorArchitecture>();
             var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
             var e = mr.Stub<IEnumerator<MachineInstruction>>();
@@ -101,7 +107,7 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Replay();
             dasm.Replay();
             e.Replay();
-            this.program = new Program(image, map, arch, null);
+            this.program = new Program(map, arch, null);
         }
 
         private T AddStubService<T>(IServiceContainer sc)

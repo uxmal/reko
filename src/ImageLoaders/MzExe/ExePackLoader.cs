@@ -137,7 +137,7 @@ namespace Reko.ImageLoaders.MzExe
                 }
             } while ((op & 1) == 0);
             imageMap = imgU.CreateImageMap();
-            return new Program(imgU, imageMap, new X86ArchitectureReal(), platform);
+            return new Program(new ImageMap(imgU.BaseAddress, imgU.Length), new X86ArchitectureReal(), platform);
         }
 
         public override Address PreferredBaseAddress

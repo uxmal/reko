@@ -391,7 +391,6 @@ namespace Reko.ImageLoaders.MzExe
             var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
 
             var program = new Program(
-                this.image,
                 this.imageMap,
                 arch,
                 platform);

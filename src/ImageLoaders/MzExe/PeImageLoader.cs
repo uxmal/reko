@@ -194,7 +194,7 @@ namespace Reko.ImageLoaders.MzExe
                 ImageMap = imgLoaded.CreateImageMap();
             }
             imgLoaded.BaseAddress = addrLoad;
-            this.program = new Program(imgLoaded, ImageMap, arch, platform);
+            this.program = new Program(ImageMap, arch, platform);
             this.importReferences = program.ImportReferences;
 
             var rsrcLoader = new PeResourceLoader(this.imgLoaded, rvaResources);

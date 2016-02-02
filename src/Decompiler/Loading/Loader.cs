@@ -109,9 +109,14 @@ namespace Reko.Loading
             var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
             var loadedImage = new MemoryArea(addrLoad, image);
             var program = new Program(
-                loadedImage,
-                loadedImage.CreateImageMap(),
-                arch, platform);
+                new ImageMap(
+                    loadedImage.BaseAddress,
+                    new ImageSegment("$$$", (uint)loadedImage.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = loadedImage
+                    }),
+                arch, 
+                platform);
             ApplyPlatformMemoryMap(program);
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;

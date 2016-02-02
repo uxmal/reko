@@ -371,13 +371,13 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_ProgramWithOneSegment()
         {
-            var image = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
-            var imageMap = image.CreateImageMap();
+            var mem = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
+            var imageMap = mem.CreateImageMap();
             imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute, 0);
             var arch = mr.StrictMock<ProcessorArchitecture>();
             arch.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch);
-            this.program = new Program(image, imageMap, arch, platform);
+            this.program = new Program(imageMap, arch, platform);
             this.program.Name = "foo.exe";
             this.program.Filename = @"c:\test\foo.exe";
             project.Programs.Add(program);

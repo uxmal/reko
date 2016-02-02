@@ -44,9 +44,15 @@ namespace Reko.UnitTests.Gui
             mr = new MockRepository();
             sc = new ServiceContainer();
             var image = new MemoryArea(Address.SegPtr(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
-            var imageMap = image.CreateImageMap();
+            var imageMap = new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    });
             var arch = new Mocks.FakeArchitecture();
-            this.program = new Program(image, imageMap, arch, new DefaultPlatform(sc, arch));
+            this.program = new Program(imageMap, arch, new DefaultPlatform(sc, arch));
         }
 
         [Test]

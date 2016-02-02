@@ -18,16 +18,14 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Reko.Environments.Msdos;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Assemblers.x86
 {
@@ -43,11 +41,16 @@ namespace Reko.UnitTests.Assemblers.x86
             m = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal()), Address.SegPtr(0x100, 0x0100), new List<EntryPoint>());
         }
 
+        private byte[] GetBytes(X86Assembler m)
+        {
+            return m.GetImage().ImageMap.Segments.Values.First().MemoryArea.Bytes;
+        }
+
         [Test]
         public void MovRegReg()
         {
             m.Mov(Reg(Registers.ax), Reg(Registers.bx));
-            AssertEqualBytes("8BC3", m.GetImage().Image.Bytes);
+            AssertEqualBytes("8BC3", GetBytes(m));
         }
 
         private ParsedOperand Reg(RegisterStorage reg)
@@ -59,14 +62,14 @@ namespace Reko.UnitTests.Assemblers.x86
         public void MovRegConst()
         {
             m.Mov(Reg(Registers.ax), 0x300);
-            AssertEqualBytes("B80003", m.GetImage().Image.Bytes);
+            AssertEqualBytes("B80003", GetBytes(m));
         }
 
         [Test]
         public void MovMemReg()
         {
             m.Mov(m.BytePtr(0x0300), 0x12);
-            AssertEqualBytes("C606000312", m.GetImage().Image.Bytes);
+            AssertEqualBytes("C606000312", GetBytes(m));
         }
 
         [Test]
@@ -79,7 +82,7 @@ namespace Reko.UnitTests.Assemblers.x86
             m.Segment("DATA");
             m.Dd(4);
 
-            var bytes = m.GetImage().Image.Bytes;
+            var bytes = GetBytes(m);
             Assert.AreEqual(0x10 + 4, bytes.Length);        // len(CODE) + alignment padding + len(DATA)
         }
     }

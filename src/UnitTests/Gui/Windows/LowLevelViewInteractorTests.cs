@@ -171,8 +171,16 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var addr = Address.Ptr32(0x1000);
             var image = new MemoryArea(addr, bytes);
-            this.imageMap = image.CreateImageMap();
-            this.program = new Program(image, imageMap, arch, new DefaultPlatform(null, arch));
+            this.program = new Program(
+                new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    }),
+                arch, 
+                new DefaultPlatform(null, arch));
         }
 
         [Test]
@@ -216,8 +224,14 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Image(params byte[] bytes)
         {
             image = new MemoryArea(addrBase, bytes);
-            imageMap = image.CreateImageMap();
-            program = new Program(image, imageMap, arch, null);
+            imageMap = new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", (uint)image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    });
+            program = new Program(imageMap, arch, null);
             interactor.Program = program;
         }
 

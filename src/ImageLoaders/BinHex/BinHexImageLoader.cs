@@ -65,13 +65,13 @@ namespace Reko.ImageLoaders.BinHex
                         this.rsrcFork = new ResourceFork(image, arch);
                         this.image = new MemoryArea(addrLoad, image);
                         this.imageMap = new ImageMap(addrLoad, image.Length);
-                        return new Program(this.image, this.imageMap, arch, platform);
+                        return new Program(this.imageMap, arch, platform);
                     }
                 }
             }
 
             var mem = new MemoryArea(addrLoad, dataFork);
-            return new Program(mem, mem.CreateImageMap(), arch, platform);
+            return new Program(new ImageMap(image.BaseAddress, image.Length), arch, platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)

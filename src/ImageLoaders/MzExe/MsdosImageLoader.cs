@@ -61,8 +61,8 @@ namespace Reko.ImageLoaders.MzExe
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new MemoryArea(addrLoad, bytes);
-            imgLoadedMap = imgLoaded.CreateImageMap();
-            return new Program(imgLoaded, imgLoadedMap, arch, platform);
+            imgLoadedMap = new ImageMap(addrLoad);
+            return new Program(imgLoadedMap, arch, platform);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
