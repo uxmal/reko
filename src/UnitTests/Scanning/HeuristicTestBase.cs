@@ -82,7 +82,6 @@ namespace Reko.UnitTests.Scanning
                     new ImageSegment("prôg", mem, AccessMode.ReadExecute))
             };
             segment = prog.ImageMap.Segments.Values.First();
-
         }
 
         private static byte[] HexStringToBytes(string sBytes)

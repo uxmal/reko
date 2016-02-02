@@ -548,9 +548,8 @@ namespace Reko.Arch.X86
 
         public void Push(ulong word)
         {
-            var esp = Registers[X86.Registers.esp.Number] - 4;
-            uint u = (uint)(esp - map.BaseAddress.ToLinear());
-            WriteLeUInt32(u, (uint) word);
+            var esp = (uint)Registers[X86.Registers.esp.Number] - 4;
+            WriteLeUInt32(Address.Ptr32(esp), (uint) word);
             WriteRegister(X86.Registers.esp, (uint) esp);
         }
 

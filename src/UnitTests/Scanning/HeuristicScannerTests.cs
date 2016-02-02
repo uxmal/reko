@@ -142,9 +142,10 @@ namespace Reko.UnitTests.Scanning
                 0xE1A0F00E,     // mov r15,r14 (return)
                 0xEBFFFFFD,
                 0xEBFFFFFC);
+            this.segment = new ImageSegment(".text", mem, AccessMode.ReadExecute);
             var imageMap = new ImageMap(
                 mem.BaseAddress,
-                new ImageSegment(".text", mem, AccessMode.ReadExecute));
+                segment);
             prog = new Program
             {
                 ImageMap = imageMap,

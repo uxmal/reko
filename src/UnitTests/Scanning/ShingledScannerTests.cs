@@ -44,7 +44,6 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             mr = new MockRepository();
-
         }
 
         private void Given_Mips_Image(params uint [] words)
@@ -77,6 +76,7 @@ namespace Reko.UnitTests.Scanning
         {
             var imageMap = new ImageMap(mem.BaseAddress);
             var seg = imageMap.AddSegment(mem.BaseAddress, ".text", AccessMode.ReadExecute, (uint)mem.Bytes.Length);
+            seg.MemoryArea = mem;
             seg.Access = AccessMode.ReadExecute;
             var platform = new DefaultPlatform(null, arch);
             program = new Program(
