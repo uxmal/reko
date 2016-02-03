@@ -189,9 +189,10 @@ namespace Reko.ImageLoaders.MzExe
         {
             if (sections > 0)
             {
+                ImageMap = new ImageMap(addrLoad);
                 sectionMap = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionMap);
-                ImageMap = imgLoaded.CreateImageMap();
+                AddSectionsToImageMap(addrLoad, ImageMap);
             }
             imgLoaded.BaseAddress = addrLoad;
             this.program = new Program(ImageMap, arch, platform);
@@ -415,7 +416,6 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-            AddSectionsToImageMap(addrLoad, ImageMap);
             var relocations = imgLoaded.Relocations;
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
@@ -431,7 +431,7 @@ namespace Reko.ImageLoaders.MzExe
             return new RelocationResults(entryPoints, relocations, functions);
 		}
 
-        private void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
+        public void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
         {
             foreach (Section s in sectionMap.Values)
             {

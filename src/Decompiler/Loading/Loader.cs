@@ -376,7 +376,7 @@ namespace Reko.Loading
             var imageMap = new ImageMap(segments.Select(s => s.Address).Min());
             foreach (var segment in segments)
             {
-                imageMap.Segments.Add(segment.Address, segment);
+                imageMap.AddSegment(segment);
             }
             return imageMap;
         }

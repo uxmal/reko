@@ -58,7 +58,7 @@ namespace Reko.Core
             this.segments = new Map<Address, ImageSegment>(new ItemComparer());
             foreach (var seg in segments)
             {
-                this.segments.Add(seg.Address, seg);
+                this.AddSegment(seg);
             }
         }
 
@@ -201,40 +201,45 @@ namespace Reko.Core
 
         public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode readExecute)
         {
-            var segment = AddSegment(mem.BaseAddress, segmentName, AccessMode.ReadExecute, (uint)mem.Bytes.Length);
-            segment.MemoryArea = mem;
+            var segment =
+                new ImageSegment(
+                    segmentName,
+                    mem,
+                    AccessMode.ReadExecute);
+            AddSegment(segment);
             return segment;
         }
 
+
         public ImageSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
-        { 
-			ImageSegment seg;
-            if (!TryFindSegment(addr, out seg))
+        {
+            return AddSegment(new ImageSegment(segmentName, addr, contentSize, access));
+        }
+
+        public ImageSegment AddSegment(ImageSegment segNew)
+        {
+            ImageSegment seg;
+            if (!TryFindSegment(segNew.Address, out seg))
 			{
-				ImageSegment segNew = new ImageSegment(segmentName, addr, access);
-				segNew.Address = addr;
-				segNew.Size = ~0U;
-                segNew.ContentSize = contentSize;
 				segments.Add(segNew.Address, segNew);
+                AddItem(segNew.Address, new ImageMapItem(segNew.Size) { DataType = new UnknownType() } );
                 MapChanged.Fire(this);
                 return segNew;
 			}
-			long delta = addr - seg.Address;
+			long delta = segNew.Address - seg.Address;
 			Debug.Assert(delta >= 0);
 			if (delta > 0)
 			{
 				// Need to split the segment. //$REVIEW: or do we? x86 segments can overlap.
 
-				var segNew = new ImageSegment(segmentName, addr, access);
-				segNew.Address = addr;
-				segNew.Size = (uint)(seg.Size - delta);
-                segNew.ContentSize = contentSize;
+				var segSplit = new ImageSegment(segNew.Name, segNew.Address, segNew.Access);
+				segSplit.Size = (uint)(seg.Size - delta);
 				seg.Size = (uint) delta;
                 segments.Add(segNew.Address, segNew);
 
-				// And split any items in the segment.
+				// And split any items in the segment
 
-				AddItem(addr, new ImageMapItem());
+				AddItem(segNew.Address, new ImageMapItem());
                 MapChanged.Fire(this);
                 return segNew;
 			}
@@ -272,7 +277,9 @@ namespace Reko.Core
 		/// <returns></returns>
 		public bool TryFindSegment(Address addr, out ImageSegment segment)
 		{
-            return segments.TryGetLowerBound(addr, out segment);
+            if (!segments.TryGetLowerBound(addr, out segment))
+                return false;
+            return segment.IsInRange(addr);
 		}
 
         public bool IsValidAddress(Address address)
@@ -352,7 +359,6 @@ namespace Reko.Core
             foreach (var item in Segments)
             {
                 Debug.Print("Key: {0}, Value: name:{1,-18} size: {2:X8}, Access: {3}", item.Key, item.Value.Name,  item.Value.Size, item.Value.Access);
-
             }
         }
     }

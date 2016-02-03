@@ -46,6 +46,7 @@ namespace Reko.Core
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
             this.Name = name;
+            this.Size = size;
             this.Address = addr;
 			this.Access = access;
 		}
@@ -55,6 +56,7 @@ namespace Reko.Core
             if (name == null)
                 throw new ArgumentNullException("name", "Segments must have names.");
             this.Name = name;
+            this.Size = (uint) size;
             this.Address = addr;
             this.Access = access;
         }
@@ -64,6 +66,7 @@ namespace Reko.Core
             if (name == null)
                 throw new ArgumentNullException("name", "Segments must have names.");
             this.Name = name;
+            this.ContentSize = (uint) mem.Length;
             this.Address = mem.BaseAddress;
             this.MemoryArea = mem;
             this.Access = access;

@@ -414,12 +414,12 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerComparison()
         {
-            ProgramBuilder prog = new ProgramBuilder(new MemoryArea(Address.Ptr32(0x00100000), new byte[0x4000]));
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
                 Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
-                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00100028)));
+                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00001028)));
             });
             RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
         }

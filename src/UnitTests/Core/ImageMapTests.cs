@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Core
 {
@@ -37,34 +38,47 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void ImageMapCreation()
+		public void Im_Creation()
 		{
 			ImageMap im = new ImageMap(addrBase, img.Length);
 
-			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite, 0);
-			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite, 0);
-			im.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite, 0);
+			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite, 10);
+			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite, 10);
+			im.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite, 10);
 
 			// Verify
 
-			IEnumerator<KeyValuePair<Address,ImageSegment>> e = im.Segments.GetEnumerator();
-			Assert.IsTrue(e.MoveNext());
-			ImageSegment seg = e.Current.Value;
+			var e = im.Segments.Values.ToArray();
+			ImageSegment seg = e[0];
+            Assert.AreEqual(Address.SegPtr(0x8000, 0), seg.Address);
 			Assert.AreEqual(2, seg.Size);
 
-			Assert.IsTrue(e.MoveNext());
-            seg = e.Current.Value;
+            seg = e[1];
 			Assert.AreEqual(1, seg.Size);
 			
-			Assert.IsTrue(e.MoveNext());
-			seg = e.Current.Value;
+            seg = e[2];
 			Assert.AreEqual(1, seg.Size);
 
-			Assert.IsTrue(!e.MoveNext());
+            Assert.IsTrue(e.Length == 3);
 		}
 
+        [Test(Description = "Newly created segments should be covered by an item that covers the memory area.")]
+        public void Im_CreateCoveringItem()
+        {
+            var map = new ImageMap(Address.Ptr32(0x01000));
+            map.AddSegment(
+                new MemoryArea(Address.Ptr32(0x01010), new byte[0x10]),
+                ".text",
+                AccessMode.ReadExecute);
+
+            Assert.AreEqual(1, map.Items.Count);
+            var item = map.Items.Values.First();
+            Assert.AreEqual(Address.Ptr32(0x1010), item.Address);
+            Assert.AreEqual(16, item.Size);
+        }
+
 		[Test]
-		public void ImageMapOverlaps()
+		public void Im_Overlaps()
 		{
 			ImageMap im = new ImageMap(Address.SegPtr(0x8000, 0), 40);
 			im.AddSegment(Address.SegPtr(0x8000, 10), "", AccessMode.ReadWrite, 0);
@@ -83,19 +97,18 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void AddNamedSegment()
+		public void Im_AddNamedSegment()
 		{
 			ImageMap map = new ImageMap(Address.SegPtr(0x0B00, 0), 40000);
-			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 0);
+			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 6000);
 			IEnumerator<KeyValuePair<Address,ImageSegment>> e = map.Segments.GetEnumerator();
-			GetNextMapSegment(e);
 			ImageSegment s = GetNextMapSegment(e);
 			Assert.AreEqual("0C00", s.Name);
-			Assert.AreEqual(35904, s.Size);
+			Assert.AreEqual(6000, s.Size);
 		}
 
         [Test]
-        public void CreateTypedItem_EmptyMap()
+        public void Im_CreateTypedItem_EmptyMap()
         {
             var map = new ImageMap(addrBase, 0x0100);
             Assert.AreEqual(1, map.Items.Count);
@@ -105,9 +118,11 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void CreateItem_MiddleOfEmptyRange()
+        public void Im_CreateItem_MiddleOfEmptyRange()
         {
-            var map = new ImageMap(addrBase, 0x0100);
+            var mem = new MemoryArea(addrBase, new byte[0x100]);
+            var map = new ImageMap(addrBase,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             map.AddItemWithSize(
                 addrBase + 0x10,
                 new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 10) });
@@ -120,7 +135,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void ImageMap_CreateItem_AtExistingRange()
+        public void Im_CreateItem_AtExistingRange()
         {
             var map = new ImageMap(addrBase, 0x0100);
             map.AddItemWithSize(
@@ -135,7 +150,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void ImageMap_FireChangeEvent()
+        public void Im_FireChangeEvent()
         {
             var map = new ImageMap(addrBase, 0x100);
             var mapChangedFired = false;

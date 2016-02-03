@@ -436,7 +436,7 @@ namespace Reko.UnitTests.Gui.Windows
                 "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"ProgramDesigner\">" +
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
-                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node text=\".text\" tip=\".text&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegmentNodeDesigner\" />" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                  "</node>" +
                  "</root>");

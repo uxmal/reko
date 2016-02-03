@@ -43,7 +43,7 @@ namespace Reko.Gui.Windows.Controls
     {
         private Program program;
         private MemoryArea mem;
-        private int position;
+        private Address position;
 
         public DisassemblyTextModel(Program program, MemoryArea mem)
         {
@@ -53,8 +53,8 @@ namespace Reko.Gui.Windows.Controls
             if (mem == null)
                 throw new ArgumentNullException("mem");
             this.mem = mem;
-            this.StartPosition =  mem.BaseAddress;
-            this.position = 0;
+            this.StartPosition = mem.BaseAddress;
+            this.position = mem.BaseAddress;
             var last = mem.Length;
         }
 
@@ -73,7 +73,7 @@ namespace Reko.Gui.Windows.Controls
             var lines = new List<LineSpan>();
             if (program.Architecture != null)
             {
-                var dasm = program.CreateDisassembler(mem.BaseAddress + Align(position)).GetEnumerator();
+                var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
                 while (count != 0 && dasm.MoveNext())
                 {
                     var line = new List<TextSpan>();
@@ -88,16 +88,16 @@ namespace Reko.Gui.Windows.Controls
                     --count;
                     position += instr.Length;
                 }
-
             }
             return lines.ToArray();
         }
 
-        private int Align(int position)
+        private Address Align(Address addr)
         {
             uint byteAlign = (uint)program.Architecture.InstructionBitSize / 8u;
-            var rem = position % byteAlign;
-            return position - (int) rem;
+            ulong linear = addr.ToLinear();
+            var rem = linear % byteAlign;
+            return addr - (int)rem;
         }
 
         private string BuildBytes(MachineInstruction instr)
@@ -113,17 +113,18 @@ namespace Reko.Gui.Windows.Controls
 
         public void MoveToLine(object basePosition, int offset)
         {
-            var addr = (int)basePosition;
-            if (addr < 0)
-                addr = 0;
-            if (addr > mem.Length)
-                addr = (int) mem.Length;
+            var addr = (Address)basePosition;
+            if (addr < mem.BaseAddress)
+                addr = mem.BaseAddress;
+            var addrEnd = mem.BaseAddress + (mem.Length - 1);
+            if (addr > addrEnd)
+                addr = addrEnd;
             this.position = addr;
         }
 
         public Tuple<int, int> GetPositionAsFraction()
         {
-            return Tuple.Create((int)position, (int)mem.Length);
+            return Tuple.Create((int)(position - mem.BaseAddress), (int)mem.Length);
         }
 
         public void SetPositionAsFraction(int numerator, int denominator)
@@ -138,7 +139,7 @@ namespace Reko.Gui.Windows.Controls
             else if (offset > mem.Bytes.Length)
                 offset = mem.Bytes.Length;
 
-            this.position = (int) offset;
+            this.position = program.ImageMap.MapLinearAddressToAddress(mem.BaseAddress.ToLinear() + (uint)offset);
         }
 
         /// <summary>

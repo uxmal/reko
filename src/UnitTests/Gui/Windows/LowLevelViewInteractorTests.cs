@@ -171,11 +171,12 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var addr = Address.Ptr32(0x1000);
             var mem = new MemoryArea(addr, bytes);
-            this.program = new Program(
-                new ImageMap(
+            this.imageMap = new ImageMap(
                     mem.BaseAddress,
                     new ImageSegment(
-                        "code", mem, AccessMode.ReadWriteExecute)),
+                        "code", mem, AccessMode.ReadWriteExecute));
+            this.program = new Program(
+                imageMap,
                 arch, 
                 new DefaultPlatform(null, arch));
         }
