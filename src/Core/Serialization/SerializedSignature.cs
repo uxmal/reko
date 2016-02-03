@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -73,10 +74,7 @@ namespace Reko.Core.Serialization
             sb.Append(",(");
             if (Arguments != null)
             {
-                foreach (var arg in Arguments)
-                {
-                    sb.Append(arg.ToString());
-                }
+                sb.Append(string.Join(",", Arguments.Select(a => a.ToString())));
             }
             sb.Append(")");
             return sb.ToString();

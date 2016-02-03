@@ -82,6 +82,9 @@ namespace Reko.UiPrototype.WinForms
         public override int GetSize() { return Size; }
     }
 
+    /// <summary>
+    /// A compound type consists of subcomponents.
+    /// </summary>
     public abstract class CompoundType : DataType
     {
     }

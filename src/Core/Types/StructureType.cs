@@ -27,7 +27,7 @@ namespace Reko.Core.Types
 	/// <summary>
 	/// Represents a memory structure type, consisting of several Fields.
 	/// </summary>
-	public class StructureType : DataType
+	public class StructureType : CompositeType
 	{
 		public StructureType() : this(null, 0, false)
 		{
