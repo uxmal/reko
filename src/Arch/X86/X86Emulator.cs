@@ -625,7 +625,7 @@ namespace Reko.Arch.X86
             ImageSegment segment;
             if (!map.TryFindSegment(ea, out segment))
                 throw new AccessViolationException();
-            segment.MemoryArea.WriteLeUInt32(ea, value);
+            segment.MemoryArea.WriteByte(ea, value);
         }
 
         public void SetBreakpoint(uint address, Action callback)

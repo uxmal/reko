@@ -548,7 +548,7 @@ namespace Reko.UnitTests.Typing
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
                 m.Declare(ax, m.Fn(rand));
-                m.Store(m.Word16(0x300), ax);
+                m.Store(m.Word16(0x1300), ax);
                 m.Return();
             });
             RunTest(pm, "Typing/TerDeclaration.txt");

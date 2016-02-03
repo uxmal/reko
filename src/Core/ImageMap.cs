@@ -199,13 +199,12 @@ namespace Reko.Core
             item.Size = (uint)delta;
         }
 
-        public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode readExecute)
+        public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)
         {
-            var segment =
-                new ImageSegment(
+            var segment = new ImageSegment(
                     segmentName,
                     mem,
-                    AccessMode.ReadExecute);
+                    mode);
             AddSegment(segment);
             return segment;
         }

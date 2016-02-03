@@ -195,7 +195,7 @@ namespace Reko.Scanning
                         aEnd = e.Current;
                         yield return Tuple.Create(aStart, aEnd);
                     }
-                    yield return Tuple.Create(aEnd, range.Item2);
+                    yield return Tuple.Create(aEnd, range.Item3);
                 }
             }
         }

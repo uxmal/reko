@@ -118,11 +118,12 @@ namespace Reko.UnitTests.Scanning
         {
             var bytes = HexStringToBytes(sBytes);
             mem = new MemoryArea(Address.SegPtr(seg, offset), bytes);
+            segment = new ImageSegment("prôg", mem, AccessMode.ReadExecute);
             prog = new Program
             {
                 ImageMap = new ImageMap(
                     mem.BaseAddress,
-                    new ImageSegment("prôg", mem, AccessMode.ReadExecute))
+                    segment)
             };
         }
 

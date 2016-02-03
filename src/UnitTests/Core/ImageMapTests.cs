@@ -51,13 +51,13 @@ namespace Reko.UnitTests.Core
 			var e = im.Segments.Values.ToArray();
 			ImageSegment seg = e[0];
             Assert.AreEqual(Address.SegPtr(0x8000, 0), seg.Address);
-			Assert.AreEqual(2, seg.Size);
+			Assert.AreEqual(10, seg.Size);
 
             seg = e[1];
 			Assert.AreEqual(1, seg.Size);
 			
             seg = e[2];
-			Assert.AreEqual(1, seg.Size);
+			Assert.AreEqual(10, seg.Size);
 
             Assert.IsTrue(e.Length == 3);
 		}
@@ -108,16 +108,6 @@ namespace Reko.UnitTests.Core
 		}
 
         [Test]
-        public void Im_CreateTypedItem_EmptyMap()
-        {
-            var map = new ImageMap(addrBase, 0x0100);
-            Assert.AreEqual(1, map.Items.Count);
-            ImageMapItem item;
-            Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
-            Assert.AreEqual(0x100, item.Size);
-        }
-
-        [Test]
         public void Im_CreateItem_MiddleOfEmptyRange()
         {
             var mem = new MemoryArea(addrBase, new byte[0x100]);
@@ -138,6 +128,7 @@ namespace Reko.UnitTests.Core
         public void Im_CreateItem_AtExistingRange()
         {
             var map = new ImageMap(addrBase, 0x0100);
+            map.AddSegment(addrBase, "8000", AccessMode.ReadWrite, 0x100);
             map.AddItemWithSize(
                 addrBase,
                 new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 0x10) });
