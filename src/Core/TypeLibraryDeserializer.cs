@@ -217,8 +217,7 @@ namespace Reko.Core
 
         public DataType VisitSignature(SerializedSignature signature)
         {
-            //$BUGBUG: what we want is to unify FunctionType and ProcedureSignature....
-            return new Pointer(new CodeType(), platform.PointerType.Size);
+            return new FunctionType(signature);
         }
 
         public DataType VisitStructure(SerializedStructType structure)
