@@ -76,7 +76,7 @@ namespace Reko.Core
 		{
 			if (name == null)
 			{
-				name = addr.GenerateName("fn", "");
+				name = addr.GenerateName("fn", "");     //$TODO: should be a user option, move out of here.
 			}
 			return new Procedure(name, f);
 		}

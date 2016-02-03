@@ -478,7 +478,7 @@ namespace Reko.ImageLoaders.MzExe
                     ReturnValue = Arg(null, "INT")
                 };
             }
-            return new EntryPoint(addrEp, name, ssig);
+            return new EntryPoint(addrEp, name, arch.CreateProcessorState(), ssig);
         }
 
         private void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
