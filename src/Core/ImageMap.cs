@@ -332,7 +332,6 @@ namespace Reko.Core
 			get { return segments; }
 		}
 
-
         // class ItemComparer //////////////////////////////////////////////////
 
         private class ItemComparer : IComparer<Address>

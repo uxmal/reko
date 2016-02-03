@@ -29,15 +29,17 @@ using System.Xml;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Summarizes the effects of calling a procedure, as seen by the caller. Procedure signatures
-	/// may be shared by several procedures.
+	/// Summarizes the effects of calling a procedure, as seen by the caller.
+    /// Procedure signatures may be shared by several procedures.
 	/// </summary>
 	/// <remarks>
-	/// Calling a procedure affects a few things: the registers, the stack depth, and in the case of the Intel x86
-	/// architecture the FPU stack depth. These effects are summarized by the signature.
+	/// Calling a procedure affects a few things: the registers, the stack 
+    /// depth, and in the case of the Intel x86 architecture the FPU stack 
+    /// depth. These effects are summarized by the signature.
     /// <para>
-    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move these into processor-specific subclasses.
-    /// Also, some architectures -- like the FORTH language -- have multiple stacks.
+    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move
+    /// these into processor-specific subclasses. Also, some architectures 
+    /// -- like the FORTH language -- have multiple stacks.
     /// </para>
 	/// </remarks>
     public class ProcedureSignature

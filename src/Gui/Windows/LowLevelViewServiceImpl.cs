@@ -21,6 +21,7 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Gui.Windows
@@ -49,7 +50,10 @@ namespace Reko.Gui.Windows
             mvi.Program = program;
             if (program != null)
             {
-                mvi.SelectedAddress = program.ImageMap.BaseAddress;
+                mvi.SelectedAddress = program.ImageMap.Segments.Values
+                    .Where(s => s.MemoryArea != null)
+                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
+                    .First();
             }
         }
 

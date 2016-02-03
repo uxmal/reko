@@ -445,6 +445,7 @@ namespace Reko.ImageLoaders.MzExe
                     acc |= AccessMode.Execute;
                 }
                 var seg = imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc, s.VirtualSize);
+                seg.MemoryArea = imgLoaded;
                 seg.IsDiscardable = s.IsDiscardable;
             }
         }
