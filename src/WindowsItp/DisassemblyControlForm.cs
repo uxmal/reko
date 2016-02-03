@@ -25,9 +25,8 @@ namespace Reko.WindowsItp
             var mem =   new MemoryArea(Address.Ptr32(0x00100000),
                 Enumerable.Range(0, 10000)
                 .Select(i => (byte)random.Next(256)).ToArray());
-            var imageMap = new ImageMap(
-                mem.BaseAddress,
-                new ImageSegment(".text", mem, AccessMode.ReadExecute));
+            var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
+            var imageMap = new ImageMap(mem.BaseAddress, seg);
             disassemblyControl1.Model = new DisassemblyTextModel(
                 new CoreProgram
                 {
@@ -35,7 +34,7 @@ namespace Reko.WindowsItp
                     Architecture = new Reko.Arch.PowerPC.PowerPcArchitecture32(),
                     ImageMap = imageMap
                 },
-                mem);
+                seg);
             disassemblyControl1.StartAddress = mem.BaseAddress;
         }
     }

@@ -52,20 +52,19 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             };
         }
 
-        private MemoryArea Given_Image(int size)
+        private ImageSegment Given_Image(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
             var mem = new MemoryArea(Address.Ptr32(0x1000000), bytes);
-            program.ImageMap = new ImageMap(
-                mem.BaseAddress,
-                new ImageSegment(".text", mem, AccessMode.ReadExecute));
-            return mem;
+            var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
+            program.ImageMap = new ImageMap(mem.BaseAddress, seg);
+            return seg;
         }
 
         private void Given_Model()
         {
-            var mem = Given_Image(1000);
-            model = new DisassemblyTextModel(program, mem);
+            var seg = Given_Image(1000);
+            model = new DisassemblyTextModel(program, seg);
         }
 
         [Test]

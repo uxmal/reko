@@ -123,7 +123,12 @@ namespace Reko.Typing
             {
                 dt = PrimitiveType.Create(Domain.UnsignedInt, dtLeft.Size);
             }
-            else if (binExp.Operator == Operator.Xor)
+            else if (binExp.Operator == Operator.Sar)
+            {
+                dt = PrimitiveType.Create(Domain.SignedInt, dtLeft.Size);
+            }
+            else if (binExp.Operator == Operator.Xor ||
+                     binExp.Operator == Operator.Shl)
             {
                 dt = PrimitiveType.Create(Domain.Integer, dtLeft.Size);
             }

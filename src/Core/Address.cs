@@ -73,6 +73,22 @@ namespace Reko.Core
             return new ProtectedSegmentedAddress(seg, (ushort)off);
         }
 
+        public static Address Max(Address a, Address b)
+        {
+            if (a.ToLinear() >= b.ToLinear())
+                return a;
+            else
+                return b;
+        }
+
+        public static Address Min(Address a, Address b)
+        {
+            if (a.ToLinear() <= b.ToLinear())
+                return a;
+            else
+                return b;
+        }
+
         public static Address FromConstant(Constant value)
         {
             switch (value.DataType.BitSize)

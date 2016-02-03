@@ -282,7 +282,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
             dlg.DisassemblyControl.StyleClass = UiStyles.Disassembler;
             dlg.DisassemblyControl.Services = sc;
-            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program, program.ImageMap.Segments.Values.First().MemoryArea);
+            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program, program.ImageMap.Segments.Values.First());
             dlg.CodeControl.Model = GenerateSimulatedHllCode();
         }
 

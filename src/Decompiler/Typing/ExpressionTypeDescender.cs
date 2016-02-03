@@ -267,6 +267,12 @@ namespace Reko.Typing
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
             }
+            else if (binExp.Operator == Operator.Sar)
+            {
+                var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.SignedInt | Domain.Character);
+                MeetDataType(eLeft, dt);
+                dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
+            }
             else
                 throw new NotImplementedException(string.Format("Unhandled binary operator {0} in expression {1}.", binExp.Operator, binExp));
             eLeft.Accept(this, eLeft.TypeVariable);

@@ -45,16 +45,18 @@ namespace Reko.Gui.Windows.Controls
         private MemoryArea mem;
         private Address position;
 
-        public DisassemblyTextModel(Program program, MemoryArea mem)
+        public DisassemblyTextModel(Program program, ImageSegment segment)
         {
             if (program == null)
                 throw new ArgumentNullException("program");
             this.program = program;
             if (mem == null)
                 throw new ArgumentNullException("mem");
-            this.mem = mem;
-            this.StartPosition = mem.BaseAddress;
-            this.position = mem.BaseAddress;
+            this.mem = segment.MemoryArea;
+            var addrStart = Address.Max(segment.Address, mem.BaseAddress);
+            this.StartPosition = addrStart;
+            this.position = addrStart;
+            this.EndPosition = Address.Min(segment.Address + segment.Size, mem.BaseAddress + mem.Length);
             var last = mem.Length;
         }
 

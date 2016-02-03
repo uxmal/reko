@@ -256,7 +256,7 @@ namespace Reko.ImageLoaders.Elf
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private Address addrPreferred;
-        private MemoryArea image;
+        private MemoryArea mem;
         private ImageMap imageMap;
         private Dictionary<Address, ImportReference> importReferences;
         private ulong m_uPltMin;
@@ -346,8 +346,8 @@ namespace Reko.ImageLoaders.Elf
         {
             var bytes = new byte[addrMax - addrPreferred];
             var v_base = addrPreferred.ToLinear();
-            this.image = new MemoryArea(addrPreferred, bytes);
-            this.imageMap = image.CreateImageMap();
+            this.mem = new MemoryArea(addrPreferred, bytes);
+            this.imageMap = mem.CreateImageMap();
 
             if (fileClass == ELFCLASS64)
             {
@@ -370,6 +370,7 @@ namespace Reko.ImageLoaders.Elf
                         GetSectionName(segment.sh_name),
                         mode,
                         (uint)segment.sh_size);
+                    seg.MemoryArea = mem;
                     seg.Designer = CreateRenderer64(segment);
                 }
             }
@@ -395,6 +396,7 @@ namespace Reko.ImageLoaders.Elf
                         GetSectionName(segment.sh_name),
                         mode, 
                         segment.sh_size);
+                    seg.MemoryArea = mem;
                     seg.Designer = CreateRenderer(segment);
                 }
                 imageMap.DumpSections();
@@ -709,7 +711,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            if (image == null)
+            if (mem == null)
                 throw new InvalidOperationException(); // No file loaded
             var entryPoints = new List<EntryPoint>();
             var relocations = new RelocationDictionary();
@@ -763,7 +765,7 @@ namespace Reko.ImageLoaders.Elf
                     // The Header64.e_entry field actually points to a 
                     // "function descriptor" consisiting of two 32-bit 
                     // pointers.
-                    var rdr = CreateReader(Header64.e_entry - image.BaseAddress.ToLinear());
+                    var rdr = CreateReader(Header64.e_entry - mem.BaseAddress.ToLinear());
                     uint uAddr;
                     if (rdr.TryReadUInt32(out uAddr))
                         addr = Address.Ptr32(uAddr);
@@ -870,7 +872,7 @@ namespace Reko.ImageLoaders.Elf
                                     // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
                                     // in the symbol table
                                     uint nameOffset = sym.st_name;
-                                    string pName = ReadAsciiString(image.Bytes, pStrSection + nameOffset);
+                                    string pName = ReadAsciiString(mem.Bytes, pStrSection + nameOffset);
                                     // this is too slow, I'm just going to assume it is 0
                                     //S = GetAddressByName(pName);
                                     //if (S == (e_type == E_REL ? 0x8000000 : 0)) {
