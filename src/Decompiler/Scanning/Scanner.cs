@@ -254,11 +254,10 @@ namespace Reko.Scanning
 
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
         {
-            return new PromoteBlockWorkItem
+            return new PromoteBlockWorkItem(addrStart)
             {
                 Scanner = this,
                 Program = program,
-                Address = addrStart,
                 Block = block,
                 ProcNew = procNew,
             };
@@ -274,8 +273,7 @@ namespace Reko.Scanning
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
         }
 
-        public void EnqueueUserProcedure(Procedure_v1 sp)
-        {
+        public void EnqueueUserProcedure(Procedure_v1 sp) {
             Address addr;
             if (!program.Architecture.TryParseAddress(sp.Address, out addr))
                 return;
@@ -721,6 +719,18 @@ namespace Reko.Scanning
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
+                try
+                {
+                    workitem.Process();
+                }
+                catch (AddressCorrelatedException aex)
+                {
+                    Error(aex.Address, aex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Error(workitem.Address, ex.Message);
+                }
                 if (cancelSvc != null && cancelSvc.IsCancellationRequested)
                     break;
             }

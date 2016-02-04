@@ -63,7 +63,7 @@ namespace Reko.Scanning
             IScanner scanner,
             Program program,
             ProcessorState state,
-            Address addr)
+            Address addr) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
@@ -81,25 +81,8 @@ namespace Reko.Scanning
         /// calls to procedures that terminate the thread of executationresult in the 
         /// termination of processing.
         /// </summary>
+        /// 
         public override void Process()
-        {
-            try
-            {
-                ProcessInternal();
-            }
-            catch (AddressCorrelatedException aex)
-            {
-                scanner.Error(aex.Address, aex.Message);
-            }
-            catch (Exception ex)
-            {
-                if (ric == null)
-                    throw;
-                scanner.Error(ric.Address, ex.Message);
-            }
-        }
-
-        public void ProcessInternal()
         {
             state.ErrorListener = (message) => { scanner.Warn(ric.Address, message); };
             blockCur = scanner.FindContainingBlock(addrStart);

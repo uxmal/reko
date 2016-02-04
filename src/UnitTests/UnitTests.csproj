@@ -447,6 +447,7 @@
     <Compile Include="Scanning\Dfa\AutomatonTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
+    <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />
     <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\HeuristicTestBase.cs" />
