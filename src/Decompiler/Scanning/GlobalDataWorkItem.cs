@@ -24,10 +24,9 @@ using Reko.Core.Serialization;
 using System;
 using System.Diagnostics;
 
-
 namespace Reko.Scanning
 {
-    class GlobalDataWorkItem : WorkItem, IDataTypeVisitor<bool>
+    public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor<bool>
     {
         private IScanner scanner;
         private Program program;
@@ -62,8 +61,11 @@ namespace Reko.Scanning
 
         public bool VisitArray(ArrayType at)
         {
-            Debug.Assert(at.Length != 0, "Expected sizes of arrays to have been determined by now");
-
+            if (at.Length == 0)
+            {
+                scanner.Warn(addr, "User-specified arrays must have a non-zero size.");
+                return false;
+            }
             for (int i = 0; i < at.Length; ++i)
             {
                 at.ElementType.Accept(this);
@@ -133,9 +135,9 @@ namespace Reko.Scanning
         {
             for (int i = 0; i < str.Fields.Count; ++i)
             {
+                //$BUG: should be paying attention to StructureField.Offset here.
                 str.Fields[i].DataType.Accept(this);
             }
-
             return false;
         }
 

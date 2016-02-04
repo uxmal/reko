@@ -33,10 +33,10 @@ namespace Reko.Core.Types
 		public DataType ReturnType;
 		public DataType [] ArgumentTypes;
 		public string [] ArgumentNames;
-
+        //$REVIEW: unify ProcedureSignature and FunctionType.
         public SerializedSignature Signature { get; private set; }
 
-		public FunctionType(
+        public FunctionType(
 			string name,
 			DataType returnType,
 			DataType [] argumentTypes,

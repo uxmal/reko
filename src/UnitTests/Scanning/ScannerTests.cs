@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -50,6 +51,7 @@ namespace Reko.UnitTests.Scanning
         private IImportResolver importResolver;
         private IDictionary<Address, ProcedureSignature> callSigs;
         private ServiceContainer sc;
+        private Project project;
 
         public class TestScanner : Scanner
         {
@@ -176,6 +178,12 @@ namespace Reko.UnitTests.Scanning
             };
         }
 
+        private void Given_Project()
+        {
+            Assert.IsNotNull(program, "You must first call Given_Program or set the 'program' field.");
+            this.project = new Project { Programs = { program } };
+        }
+
         private void Given_Trace( RtlTrace trace)
         {
             fakeArch.Test_AddTrace(trace);
@@ -281,7 +289,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Scanner_CallGraphTree()
         {
-            Program prog = new Program();
+            program = new Program();
             var addr = Address.SegPtr(0xC00, 0);
             var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<EntryPoint>());
             m.i86();
@@ -306,17 +314,17 @@ namespace Reko.UnitTests.Scanning
             m.Endp("baz");
 
             var lr = m.GetImage();
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
-            prog.Architecture = lr.Architecture;
-            prog.Platform = new FakePlatform(null, arch);
-            var proj = new Project { Programs = { prog } };
-            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), sc);
-            EntryPoint ep = new EntryPoint(addr, prog.Architecture.CreateProcessorState());
+            program.Image = lr.Image;
+            program.ImageMap = lr.ImageMap;
+            program.Architecture = lr.Architecture;
+            program.Platform = new FakePlatform(null, arch);
+            Given_Project();
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), sc);
+            EntryPoint ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 
-            Assert.AreEqual(4, prog.Procedures.Count);
+            Assert.AreEqual(4, program.Procedures.Count);
         }
 
         [Test]
@@ -696,7 +704,7 @@ fn00001200_exit:
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             };
             Given_Program(Address.Ptr32(0x43210000), bytes);
-            var project = new Project { Programs = { program } };
+            Given_Project();
 
             var sc = new Scanner(
                 this.program,
@@ -726,6 +734,46 @@ fn00001200_exit:
 ";
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString());
+        }
+
+        [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]
+        [Ignore("@ptomin: see if you can get this to work.")]
+        public void Scanner_GlobalData_StructWithPadding()
+        {
+            var bytes = new byte[]
+            {
+                0x03, 0x00,             // Type field (halfword)
+                0x00, 0x00,             // ...alignment padding
+
+                0x08, 0x0, 0x21, 0x43,  // pointer to function
+
+                0xC3,                   // function code.
+            };
+            Given_Program(Address.Ptr32(0x43210000), bytes);
+            Given_Project();
+
+            var ft = new FunctionType(new SerializedSignature
+            {
+                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Real, 4), null, false),
+            });
+            var str = new StructureType();
+            str.Fields.AddRange(new StructureField[]
+            {
+                new StructureField(0, PrimitiveType.Word16, "typeField"),
+                // two-byte gap here.
+                new StructureField(4, new Pointer(ft, 4), "pfn")
+            });
+
+            var scanner = new Scanner(
+                this.program,
+                null,
+                new ImportResolver(project),
+                this.sc);
+            scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str);
+            scanner.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count, "Scanner should have detected the pointer to function correctly.");
+            Assert.AreEqual(Address.Ptr32(0x43210017), program.Procedures.Keys.First());
         }
     }
 }
