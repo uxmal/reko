@@ -44,6 +44,7 @@ namespace Reko.Environments.Windows
         private List<string> namesSeen;
         private List<string> templateNamesSeen;
         private List<Argument_v1> compoundArgs;
+        private bool isInstanceMethod;
 
         public MsMangledNameParser(string str)
         {
@@ -293,6 +294,7 @@ namespace Reko.Environments.Windows
         public SerializedSignature ParseInstanceMethod(string modifier)
         {
             this.Modifier = modifier;
+            this.isInstanceMethod = true;
             ParseThisStorageClass();
             return ParseFunctionTypeCode();
         }
@@ -307,6 +309,7 @@ namespace Reko.Environments.Windows
             return new SerializedSignature
             {
                 Convention = convention,
+                IsInstanceMethod = this.isInstanceMethod,
                 EnclosingType = null,
                 Arguments = args,
                 ReturnValue = new Argument_v1 { Type = retType != null ? retType : new VoidType_v1() }
@@ -331,6 +334,7 @@ namespace Reko.Environments.Windows
 
         public SerializedSignature ParseStaticMethod(string modifier)
         {
+            this.isInstanceMethod = false;
             return ParseFunctionTypeCode();
         }
 
@@ -386,6 +390,7 @@ namespace Reko.Environments.Windows
                 Convention = convention,
                 Arguments = args,
                 EnclosingType = new SerializedStructType { Name = Scope, ForceStructure = true },
+                IsInstanceMethod = isInstanceMethod,
                 ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }
             };
         }

@@ -106,6 +106,7 @@ namespace Reko.Arch.X86
             }
             FpuStackOffset = fpuDelta;
             var sig = new ProcedureSignature(ret, args.ToArray());
+            sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;
         }

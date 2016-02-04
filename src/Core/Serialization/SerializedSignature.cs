@@ -44,9 +44,13 @@ namespace Reko.Core.Serialization
 		public Argument_v1 ReturnValue;
 
 		[XmlAttribute("convention")]
-		public string Convention;		
+		public string Convention;
 
-		[XmlAttribute("stackDelta")]
+        [XmlAttribute("isInstance")]
+        [DefaultValue(false)]
+        public bool IsInstanceMethod;
+
+        [XmlAttribute("stackDelta")]
 		[DefaultValue(0)]
 		public int StackDelta;
 

@@ -1,5 +1,4 @@
-int32 get(struct A {
-	} * this, int32 dwArg00)
+int32 get(int32 dwArg00)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ecx
