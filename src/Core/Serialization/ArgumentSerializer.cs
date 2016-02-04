@@ -51,11 +51,22 @@ namespace Reko.Core.Serialization
 
 		public Identifier Deserialize(Register_v1 reg)
 		{
-			var idArg = frame.EnsureRegister(arch.GetRegister(reg.Name.Trim()));
-			if (argCur.OutParameter)
-			{
+            var regStorage = arch.GetRegister(reg.Name.Trim());
+            DataType dt;
+            if (this.argCur.Type != null)
+                dt = this.argCur.Type.Accept(procSer.TypeLoader);
+            else
+                dt = regStorage.DataType;
+            if (dt is VoidType)
+                return null;
+            var idArg = procSer.CreateId(
+                argCur.Name ?? regStorage.Name,
+                dt,
+                regStorage);
+            if (argCur.OutParameter)
+            {
                 idArg = frame.EnsureOutArgument(idArg, arch.FramePointerType);
-			}
+            }
             return idArg;
 		}
 

@@ -78,13 +78,12 @@ namespace Reko.Environments.Windows
                 catch (Exception ex)
                 {
                     Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
-                    pmnp.ToString();
                     return null;
                 }
                 var sproc = field.Type as SerializedSignature;
                 if (sproc != null)
                 {
-                    var sser = platform.CreateProcedureSerializer(loader, "__cdecl");
+                    var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
                     return sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?   
                 }
             }

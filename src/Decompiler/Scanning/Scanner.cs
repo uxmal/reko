@@ -452,6 +452,10 @@ namespace Reko.Scanning
                     var sser = program.CreateProcedureSerializer();
                     proc.Signature = sser.Deserialize(ep.Signature, proc.Frame);
                 }
+                else if (ep.Name != null)
+                {
+                    proc.Signature = program.Platform.SignatureFromName(ep.Name);
+                }
 
                 //if (sp.Characteristics != null)
                 //{

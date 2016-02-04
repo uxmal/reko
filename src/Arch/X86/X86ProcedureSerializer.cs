@@ -76,6 +76,11 @@ namespace Reko.Arch.X86
 
             FpuStackOffset = 0;
             var args = new List<Identifier>();
+            if (ss.EnclosingType != null)
+            {
+                var arg = DeserializeImplicitThisArgument(ss);
+                args.Add(arg);
+            }
             if (ss.Arguments != null)
             {
                 if (ss.Convention == "pascal")
@@ -105,6 +110,23 @@ namespace Reko.Arch.X86
             return sig;
         }
 
+        private Identifier DeserializeImplicitThisArgument(SerializedSignature ss)
+        {
+            var sArg = new Argument_v1
+            {
+                Type = new PointerType_v1(new SerializedTypeReference(ss.EnclosingType)),
+                Name = "this",
+            };
+            if (ss.Convention == "__thiscall")
+            {
+                sArg.Kind = new Register_v1("ecx");
+            }
+            else
+                sArg.Kind = new StackVariable_v1();
+            var arg = argser.Deserialize(sArg);
+            return arg;
+        }
+
         /// <summary>
         /// Deserializes an argument.
         /// </summary>
@@ -127,12 +149,8 @@ namespace Reko.Arch.X86
             case "__cdecl":
             case "__stdcall":
             case "pascal":
-                return argser.Deserialize(arg, new StackVariable_v1 { });
             case "__thiscall":
-                if (idx == 0)
-                    return argser.Deserialize(arg, new Register_v1("ecx"));
-                else
-                    return argser.Deserialize(arg, new StackVariable_v1());
+                return argser.Deserialize(arg, new StackVariable_v1 { });
             }
             throw new NotSupportedException(string.Format("Unsupported calling convention '{0}'.", convention));
         }

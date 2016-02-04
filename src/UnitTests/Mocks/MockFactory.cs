@@ -53,18 +53,84 @@ namespace Reko.UnitTests.Mocks
         /// <returns></returns>
         public ISerializedTypeVisitor<DataType> CreateDeserializer()
         {
-            var deserializer = mr.Stub<ISerializedTypeVisitor<DataType>>();
-            deserializer.Stub(d => d.VisitPrimitive(null))
-                .IgnoreArguments()
-                .Do(new Func<PrimitiveType_v1, PrimitiveType>(
-                    p => PrimitiveType.Create(p.Domain, p.ByteSize)));
-            deserializer.Stub(d => d.VisitTypeReference(null))
-                .IgnoreArguments()
-                .Do(new Func<SerializedTypeReference, TypeReference>(
-                    t => new TypeReference(t.TypeName, null)));
-
-            return deserializer;
+            return new IndependentDeserializer();
         }
+
+        #region IndependentDeserializer
+        public class IndependentDeserializer : ISerializedTypeVisitor<DataType>
+        {
+
+            public DataType VisitArray(ArrayType_v1 array)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitCode(CodeType_v1 code)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitEnum(SerializedEnumType serializedEnumType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitMemberPointer(MemberPointer_v1 memptr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitPointer(PointerType_v1 pointer)
+            {
+                return new Pointer(pointer.DataType.Accept(this), 4);
+            }
+
+            public DataType VisitPrimitive(PrimitiveType_v1 primitive)
+            {
+                return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
+            }
+
+            public DataType VisitSignature(SerializedSignature signature)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitString(StringType_v2 str)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitStructure(SerializedStructType structure)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitTemplate(SerializedTemplate serializedTemplate)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitTypedef(SerializedTypedef typedef)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitTypeReference(SerializedTypeReference typeReference)
+            {
+                return new TypeReference(typeReference.TypeName, null);
+            }
+
+            public DataType VisitUnion(UnionType_v1 union)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitVoidType(VoidType_v1 serializedVoidType)
+            {
+                throw new NotImplementedException();
+            }
+        }
+        #endregion
 
         public IPlatform CreatePlatform()
         {

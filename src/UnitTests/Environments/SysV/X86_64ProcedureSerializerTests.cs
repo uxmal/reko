@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register int test(Register word128 xmm0)", sig.ToString("test"));
+            Assert.AreEqual("Register int test(Register double xmm0)", sig.ToString("test"));
         }
 
         private SerializedType Type(string typeName)

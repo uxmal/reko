@@ -77,7 +77,7 @@ namespace Reko.Arch.PowerPC
         {
             Identifier arg;
             if (sArg.Kind != null)
-                return sArg.Kind.Accept(argser);
+                return argser.Deserialize(sArg);
 
             var dtArg = sArg.Type.Accept(TypeLoader);
             var prim = dtArg as PrimitiveType;
