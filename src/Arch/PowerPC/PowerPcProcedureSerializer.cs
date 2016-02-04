@@ -48,7 +48,7 @@ namespace Reko.Arch.PowerPC
         {
             if (ss == null)
                 return null;
-            var argser = new ArgumentSerializer(this, Architecture, frame, ss.Convention);
+            var argser = new ArgumentSerializer(this, Architecture, frame, 0);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)

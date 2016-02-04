@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Environments.Windows
             var svc = mod.ServicesByVector[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
-                "void ()(Stack word32 arg4, Stack word32 arg0)\r\n// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word32 dwArg04, Stack word32 dwArg00)\r\n// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 svc.Signature.ToString());
         }
 
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Environments.Windows
                 "void ()()\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 mod.ServicesByVector[3].Signature.ToString());
             Assert.AreEqual(
-                "void ()(Stack word16 arg4, Stack word16 arg2, Stack word16 arg0)\r\n// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word16 wArg04, Stack word16 wArg02, Stack word16 wArg00)\r\n// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 mod.ServicesByVector[4].Signature.ToString());
         }
 

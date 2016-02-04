@@ -516,8 +516,22 @@ namespace Reko.Scanning
             queue = oldQueue;
 
             // Add <stackpointer> := fp explicitly to the starting block.
-            proc.EntryBlock.Succ[0].Statements.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
+            EstablishFrame(addr, proc, sp);
             return proc;
+        }
+
+        /// <summary>
+        /// Inject statements into the starting block that establish the frame,
+        /// and if the procedure has been given a valid signature already,
+        /// copy the input arguments into their local counterparts.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="proc"></param>
+        /// <param name="sp"></param>
+        public void EstablishFrame(Address addr, Procedure proc, Identifier sp)
+        {
+            var stmts = proc.EntryBlock.Succ[0].Statements;
+            stmts.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
         }
 
         public Block FindContainingBlock(Address address)

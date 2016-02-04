@@ -63,7 +63,7 @@ namespace Reko.Arch.X86
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentSerializer(this, Architecture, frame, ss.Convention);
+            this.argser = new ArgumentSerializer(this, Architecture, frame, 0);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 

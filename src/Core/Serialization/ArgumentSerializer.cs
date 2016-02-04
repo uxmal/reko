@@ -31,15 +31,15 @@ namespace Reko.Core.Serialization
 		private IProcessorArchitecture arch;
 		private Frame frame;
 		private Argument_v1 argCur;
-        private string convention;
+        private int retAddressOnStack;
 
-		public ArgumentSerializer(ProcedureSerializer procSer, IProcessorArchitecture arch, Frame frame, string callingConvention)
+        public ArgumentSerializer(ProcedureSerializer procSer, IProcessorArchitecture arch, Frame frame, int retAddressOnStack)
 		{
 			this.procSer = procSer;
 			this.arch = arch;
 			this.frame = frame;
-            this.convention = callingConvention;
-		}
+            this.retAddressOnStack = retAddressOnStack;
+        }
         
 		public string ArgumentName(string argName, string argName2)
 		{
@@ -83,8 +83,13 @@ namespace Reko.Core.Serialization
             {
                 return null;
             }
-			var idArg = procSer.CreateId(
-				argCur.Name ?? "arg" + procSer.StackOffset, 
+            var name = frame.FormatStackAccessName(
+                dt,
+                "Arg",
+                procSer.StackOffset + retAddressOnStack,
+                argCur.Name);
+            var idArg = procSer.CreateId(
+                name,
 				dt,
 				new StackArgumentStorage(procSer.StackOffset, dt));
             procSer.StackOffset += dt.Size;

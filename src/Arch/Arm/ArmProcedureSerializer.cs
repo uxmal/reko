@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    class ArmProcedureSerializer : ProcedureSerializer
+    public class ArmProcedureSerializer : ProcedureSerializer
     {
         private int gr;
 
@@ -38,11 +38,11 @@ namespace Reko.Arch.Arm
         {
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Core.Frame frame)
+        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
-            var argser = new ArgumentSerializer(this, Architecture, frame, ss.Convention);
+            var argser = new ArgumentSerializer(this, Architecture, frame, 0);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)

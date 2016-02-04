@@ -51,17 +51,17 @@ namespace Reko.UnitTests.Core.Serialization
                 arch,
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
                 "stdapi");
-            argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame(), null);
+            argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame(), 4);
         }
 
         [Test]
-        public void SargSerializeNullArgument()
+        public void ArgSer_SerializeNullArgument()
         {
             Assert.IsNull(argser.Serialize(null));
         }
 
         [Test]
-        public void SargSerializeRegister()
+        public void ArgSer_SerializeRegister()
         {
             var arg = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
             Argument_v1 sarg = argser.Serialize(arg);
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void SargSerializeFlag()
+        public void ArgSer_SerializeFlag()
         {
             var arg = new Identifier(
                 "SZ",
@@ -132,6 +132,20 @@ namespace Reko.UnitTests.Core.Serialization
                 Type = new PointerType_v1 { DataType = new PrimitiveType_v1 { ByteSize = 1, Domain = Domain.Character } }
             };
             var id = argser.Deserialize(arg);
+            Assert.AreEqual("eax", id.Name);
+            Assert.AreEqual("(ptr char)", id.DataType.ToString());
+        }
+
+        [Test]
+        public void ArgSer_DeserializeStackVariable()
+        {
+            var arg = new Argument_v1
+            {
+                Kind = new StackVariable_v1(),
+                Type = new PointerType_v1 { DataType = new PrimitiveType_v1 { ByteSize = 1, Domain = Domain.Character } }
+            };
+            var id = argser.Deserialize(arg);
+            Assert.AreEqual("ptrArg04", id.Name);
             Assert.AreEqual("(ptr char)", id.DataType.ToString());
         }
     }
