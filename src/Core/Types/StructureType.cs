@@ -58,6 +58,7 @@ namespace Reko.Core.Types
 			var s = new StructureType(Name, Size);
             s.UserDefined = UserDefined;
 			s.IsSegment = IsSegment;
+            s.ForceStructure = ForceStructure;
 			foreach (StructureField f in Fields)
 			{
 				s.Fields.Add(f.Clone());

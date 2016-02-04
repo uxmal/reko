@@ -6,6 +6,8 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
 	globals_t (in globals : (ptr (struct "Globals")))
+Eq_3: (struct "A" (0 word32 dw0000))
+	T_3 (in this : (ptr Eq_3))
 Eq_9: BOOL
 	T_9 (in eax : Eq_9)
 	T_13 (in 0x00000001 : word32)
@@ -24,9 +26,9 @@ T_2: (in eax : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32
-T_3: (in this : (ptr word32))
+T_3: (in this : (ptr Eq_3))
   Class: Eq_3
-  DataType: (ptr word32)
+  DataType: (ptr Eq_3)
   OrigDataType: (ptr (struct "A"))
 T_4: (in dwArg00 : int32)
   Class: Eq_4
@@ -44,7 +46,7 @@ T_7: (in Mem0[this + 0x00000000:word32] : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in *this + dwArg00 : word32)
+T_8: (in this->dw0000 + dwArg00 : word32)
   Class: Eq_2
   DataType: int32
   OrigDataType: word32
@@ -71,6 +73,10 @@ T_13: (in 0x00000001 : word32)
 */
 typedef struct Eq_1 {
 } Eq_1;
+
+typedef struct A {
+	word32 dw0000;	// 0
+} Eq_3;
 
 typedef BOOL Eq_9;
 

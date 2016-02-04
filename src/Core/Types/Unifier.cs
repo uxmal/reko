@@ -517,7 +517,7 @@ namespace Reko.Core.Types
 				mem.Fields.Add(fa);
 				while (ea.MoveNext())
 				{
-					StructureField f = (StructureField) ea.Current;
+					StructureField f = ea.Current;
 					mem.Fields.Add(f.Clone());
 				}
 			}
@@ -526,10 +526,11 @@ namespace Reko.Core.Types
 				mem.Fields.Add(fb);
 				while (eb.MoveNext())
 				{
-					StructureField f = (StructureField) eb.Current;
+					StructureField f = eb.Current;
 					mem.Fields.Add(f.Clone());
 				}
 			}
+            mem.ForceStructure = a.ForceStructure | b.ForceStructure;
 			return mem;
 		}
 
