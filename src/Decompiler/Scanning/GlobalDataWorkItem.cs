@@ -64,11 +64,6 @@ namespace Reko.Scanning
             return false;
         }
 
-        public bool VisitClass(ClassType ct)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool VisitCode(CodeType c)
         {
             throw new NotImplementedException();

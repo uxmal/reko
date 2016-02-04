@@ -273,7 +273,8 @@ namespace Reko.Scanning
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
         }
 
-        public void EnqueueUserProcedure(Procedure_v1 sp) {
+        public void EnqueueUserProcedure(Procedure_v1 sp)
+        {
             Address addr;
             if (!program.Architecture.TryParseAddress(sp.Address, out addr))
                 return;
@@ -490,27 +491,6 @@ namespace Reko.Scanning
             program.Procedures.Add(addr, proc);
             program.CallGraph.AddProcedure(proc);
             return proc;
-        }
-
-        public void EnqueueUserProcedure(Procedure_v1 sp)
-        {
-            Address addr;
-            if (!program.Architecture.TryParseAddress(sp.Address, out addr))
-                return;
-            Procedure proc;
-            if (program.Procedures.TryGetValue(addr, out proc))
-                return; // Already scanned. Do nothing.
-            proc = EnsureProcedure(addr, sp.Name);
-            if (sp.Signature != null)
-            {
-                var sser = program.CreateProcedureSerializer();
-                proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
-            }
-            if (sp.Characteristics != null)
-            {
-                proc.Characteristics = sp.Characteristics;
-            }
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
         }
 
         public void EnqueueUserGlobalData(Address addr, DataType dt)
