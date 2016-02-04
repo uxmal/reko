@@ -1,0 +1,18 @@
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : ptr32)
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in a : INT)
+  Class: Eq_2
+  DataType: INT
+  OrigDataType: INT
+T_3: (in b : INT)
+  Class: Eq_2
+  DataType: INT
+  OrigDataType: INT
+T_4: (in a + b : INT)
+  Class: Eq_2
+  DataType: INT
+  OrigDataType: INT
