@@ -205,7 +205,7 @@ namespace Reko.Environments.Windows
             get { return "stdapi"; }
         }
 
-        public override ProcedureSignature SignatureFromName(string fnName)
+        public override ExternalProcedure SignatureFromName(string fnName)
         {
             EnsureTypeLibraries(PlatformIdentifier); 
             return SignatureGuesser.SignatureFromName(

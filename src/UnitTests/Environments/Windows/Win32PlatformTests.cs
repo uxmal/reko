@@ -145,14 +145,14 @@ namespace Reko.UnitTests.Environments.Windows
             var fnName = "_foo@4";
             When_Creating_Win32_Platform();
 
-            var sig = win32.SignatureFromName(fnName);
+            var ep = win32.SignatureFromName(fnName);
 
             var sigExp =
 @"void ()()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 ";
 
-            Assert.AreEqual(sigExp, sig.ToString());
+            Assert.AreEqual(sigExp, ep.Signature.ToString());
         }
 
         [Test]

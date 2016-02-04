@@ -454,7 +454,9 @@ namespace Reko.Scanning
                 }
                 else if (ep.Name != null)
                 {
-                    proc.Signature = program.Platform.SignatureFromName(ep.Name);
+                    var exp = program.Platform.SignatureFromName(ep.Name);
+                    proc.Name = exp.Name;
+                    proc.Signature = exp.Signature;
                 }
 
                 //if (sp.Characteristics != null)

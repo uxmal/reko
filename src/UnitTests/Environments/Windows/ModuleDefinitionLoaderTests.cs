@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Environments.Windows
             var lib = dfl.Load(platform, new TypeLibrary());
             Assert.IsTrue(lib.Modules.ContainsKey("FOO.DLL"));
             var svc = lib.Modules["FOO.DLL"].ServicesByName["_Foo@4"];
-            Assert.AreEqual("_Foo@4", svc.Name);
+            Assert.AreEqual("Foo", svc.Name);
             Assert.IsFalse(svc.Signature.ParametersValid, "We don't know the arguments");
             Assert.AreEqual(8, svc.Signature.StackDelta, "StackDelta includes the return address, which stdapi calls pop.");
         }
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Environments.Windows
                 " _Foo@4 @ 4" + nl);
             var lib = dfl.Load(platform, new TypeLibrary());
             var svc = lib.Modules["FOO.DLL"].ServicesByName["_Foo@4"];
-            Assert.AreEqual("_Foo@4", svc.Name);
+            Assert.AreEqual("Foo", svc.Name);
             Assert.AreEqual(4, svc.SyscallInfo.Vector);
         }
 
