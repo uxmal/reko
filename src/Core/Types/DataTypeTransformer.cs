@@ -34,6 +34,11 @@ namespace Reko.Core.Types
 			return at;
 		}
 
+        public virtual DataType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual DataType VisitCode(CodeType c)
         {
             return c;

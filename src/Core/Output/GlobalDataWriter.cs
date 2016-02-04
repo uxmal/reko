@@ -120,6 +120,11 @@ namespace Reko.Core.Output
             return codeFormatter;
         }
 
+        public CodeFormatter VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public CodeFormatter VisitCode(CodeType c)
         {
             throw new NotImplementedException();

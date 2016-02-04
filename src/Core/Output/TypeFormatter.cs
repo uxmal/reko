@@ -125,6 +125,11 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        public Formatter VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public Formatter VisitCode(CodeType c)
         {
             if (mode == Mode.Writing)

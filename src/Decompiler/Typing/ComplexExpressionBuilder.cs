@@ -113,6 +113,11 @@ namespace Reko.Typing
             return dtComplex.Accept(this);
         }
 
+        public Expression VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitCode(CodeType c)
         {
             return expComplex;

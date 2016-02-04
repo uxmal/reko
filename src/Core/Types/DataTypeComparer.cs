@@ -289,6 +289,11 @@ namespace Reko.Core.Types
 			return Array;
 		}
 
+        public int VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitCode(CodeType c)
         {
             return Code;

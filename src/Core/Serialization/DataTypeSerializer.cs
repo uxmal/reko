@@ -36,11 +36,17 @@ namespace Reko.Core.Serialization
             var et = at.ElementType.Accept(this);
             return new ArrayType_v1 { ElementType = et, Length = at.Length };
         }
-         
+
+        public SerializedType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public SerializedType VisitCode(CodeType c)
         {
             return new CodeType_v1();
         }
+
 
         public SerializedType VisitEnum(EnumType e)
         {
