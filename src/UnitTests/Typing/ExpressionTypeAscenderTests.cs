@@ -132,5 +132,14 @@ namespace Reko.UnitTests.Typing
                     Id("ds", PrimitiveType.SegmentSelector),
                     Constant.Word16(0x123)));
         }
+
+        [Test(Description = "Duplicate occurrences of same TypeReference should resolve to same TypeVariable")]
+        public void ExaTypeReference()
+        {
+            var a = Id("a", new TypeReference("INT", PrimitiveType.Int32));
+            var b = Id("b", new TypeReference("INT", PrimitiveType.Int32));
+            RunTest(
+                m.IAdd(a, b));
+        }
     }
 }

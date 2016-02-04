@@ -101,5 +101,15 @@ namespace Reko.UnitTests.Typing
             eqb.EnsureSignatureTypeVariables(sig);
             Assert.IsNotNull(sig.Parameters[0].TypeVariable);
         }
+
+        [Test(Description = "Expressions referring to type references should map to the same TypeVariable.")]
+        public void EqbTypeReference()
+        {
+            var a = new Identifier("a", new TypeReference("INT", PrimitiveType.Int32), new TemporaryStorage("a", 43, PrimitiveType.Int32));
+            var b = new Identifier("b", new TypeReference("INT", PrimitiveType.Int32), new TemporaryStorage("b", 44, PrimitiveType.Int32));
+            a.Accept(eqb);
+            b.Accept(eqb);
+            Assert.AreSame(a.TypeVariable.Class, b.TypeVariable.Class);
+        }
 	}
 }
