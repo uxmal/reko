@@ -628,5 +628,5 @@ fn00001200_exit:
             var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
             Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
         }
-   }
+    }
 }
