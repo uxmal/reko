@@ -114,19 +114,26 @@ namespace Reko.Core
             Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
             if (delta > 0)
             {
-                int afterOffset = (int) (delta + itemNew.Size);
-                var itemAfter = new ImageMapItem
+                uint originalsize = item.Size;
+                int afterOffset = (int)(delta + itemNew.Size);
+                ImageMapItem itemAfter = null;
+                if (item.Size > afterOffset)
                 {
-                    Address = addr + itemNew.Size,
-                    Size = (uint) (item.Size - afterOffset),
-                    DataType = ChopBefore(item.DataType, afterOffset),
-                };
-
+                    itemAfter = new ImageMapItem
+                    {
+                        Address = addr + itemNew.Size,
+                        Size = (uint)(item.Size - afterOffset),
+                        DataType = ChopBefore(item.DataType, afterOffset),
+                    };
+                }
                 item.Size = (uint) delta;
                 item.DataType = ChopAfter(item.DataType, (int)delta);      // Shrink the existing mofo.
 
                 items.Add(addr, itemNew);
-                items.Add(itemAfter.Address, itemAfter);
+                if (itemAfter != null)
+                {
+                    items.Add(itemAfter.Address, itemAfter);
+                }
             }
             else
             {
@@ -137,7 +144,10 @@ namespace Reko.Core
                 item.Size -= itemNew.Size;
 
                 items.Add(addr, itemNew);
-                items.Add(item.Address, item);
+                if (item.Size > 0)
+                {
+                    items.Add(item.Address, item);
+                }
             }
             MapChanged.Fire(this);
         }
