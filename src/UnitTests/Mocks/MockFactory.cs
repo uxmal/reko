@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Mocks
 
             public DataType VisitStructure(SerializedStructType structure)
             {
-                throw new NotImplementedException();
+                return new StructureType(structure.Name, 0);
             }
 
             public DataType VisitTemplate(SerializedTemplate serializedTemplate)

@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var ssig = new SerializedSignature
             {
-                EnclosingType = "CHandle",
+                EnclosingType = new SerializedStructType { Name = "CHandle" },
                 Convention = "__thiscall",
                 Arguments = new Argument_v1[] {
                     new Argument_v1 
@@ -305,7 +305,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var ssig = new SerializedSignature
             {
-                EnclosingType = "CWindow",
+                EnclosingType = new SerializedStructType { Name="CWindow" },
                 Convention = "__thiscall",
                 Arguments = new Argument_v1[]
                 {
@@ -326,7 +326,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void ()(Register (ptr CWindow) this, Stack int32 XX, Stack int16 arg1)
+@"void ()(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString());

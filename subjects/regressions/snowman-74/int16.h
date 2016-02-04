@@ -6,17 +6,6 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (union "Eq_2" (int32 u0) (A u1))
-	T_2 (in eax : Eq_2)
-	T_8 (in Mem0[this + 0x00000000:word32] + dwArg00 : word32)
-Eq_3: (union "Eq_3" (A u0) (Eq_7 u1))
-	T_3 (in this : (ptr Eq_3))
-Eq_4: (union "Eq_4" (int32 u0) (A u1))
-	T_4 (in dwArg00 : Eq_4)
-Eq_6: A
-	T_6 (in this + 0x00000000 : word32)
-Eq_7: A
-	T_7 (in Mem0[this + 0x00000000:word32] : word32)
 Eq_9: BOOL
 	T_9 (in eax : Eq_9)
 	T_13 (in 0x00000001 : word32)
@@ -31,34 +20,34 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))
-T_2: (in eax : Eq_2)
+T_2: (in eax : int32)
   Class: Eq_2
-  DataType: Eq_2
+  DataType: int32
   OrigDataType: int32
-T_3: (in this : (ptr Eq_3))
+T_3: (in this : (ptr word32))
   Class: Eq_3
-  DataType: (ptr Eq_3)
-  OrigDataType: (ptr (struct (0 (union (A u0) (T_7 u1)) u0000)))
-T_4: (in dwArg00 : Eq_4)
+  DataType: (ptr word32)
+  OrigDataType: (ptr (struct "A"))
+T_4: (in dwArg00 : int32)
   Class: Eq_4
-  DataType: Eq_4
-  OrigDataType: (union (int32 u0) (A u1))
+  DataType: int32
+  OrigDataType: int32
 T_5: (in 0x00000000 : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
 T_6: (in this + 0x00000000 : word32)
   Class: Eq_6
-  DataType: (ptr Eq_6)
-  OrigDataType: (ptr A)
+  DataType: ptr32
+  OrigDataType: ptr32
 T_7: (in Mem0[this + 0x00000000:word32] : word32)
   Class: Eq_7
-  DataType: Eq_7
-  OrigDataType: A
-T_8: (in Mem0[this + 0x00000000:word32] + dwArg00 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_8: (in *this + dwArg00 : word32)
   Class: Eq_2
-  DataType: Eq_2
-  OrigDataType: A
+  DataType: int32
+  OrigDataType: word32
 T_9: (in eax : Eq_9)
   Class: Eq_9
   DataType: Eq_9
@@ -82,25 +71,6 @@ T_13: (in 0x00000001 : word32)
 */
 typedef struct Eq_1 {
 } Eq_1;
-
-typedef union Eq_2 {
-	int32 u0;
-	 A u1;
-} Eq_2;
-
-typedef union Eq_3 {
-	 A u0;
-	Eq_7 u1;
-} Eq_3;
-
-typedef union Eq_4 {
-	int32 u0;
-	 A u1;
-} Eq_4;
-
-typedef A Eq_6;
-
-typedef A Eq_7;
 
 typedef BOOL Eq_9;
 

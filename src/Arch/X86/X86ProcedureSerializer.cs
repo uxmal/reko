@@ -114,7 +114,7 @@ namespace Reko.Arch.X86
         {
             var sArg = new Argument_v1
             {
-                Type = new PointerType_v1(new SerializedTypeReference(ss.EnclosingType)),
+                Type = new PointerType_v1(ss.EnclosingType),
                 Name = "this",
             };
             if (ss.Convention == "__thiscall")

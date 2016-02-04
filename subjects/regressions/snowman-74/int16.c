@@ -4,9 +4,9 @@
 
 #include "int16.h"
 
-Eq_2 A::get(Eq_3 * this, Eq_4 dwArg00)
+int32 A::get(word32 * this, int32 dwArg00)
 {
-	return Mem0[this + 0x00:word32] + dwArg00;
+	return *this + dwArg00;
 }
 
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)

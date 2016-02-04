@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -135,8 +136,10 @@ namespace Reko.Core
         {
             if (EnclosingType == null)
                 return Name;
-            else
-                return string.Format("{0}::{1}", EnclosingType, Name);
+            var str = EnclosingType as SerializedStructType;
+            if (str != null)
+                return string.Format("{0}::{1}", str.Name, Name);
+            return Name;
         }
 
         /// <summary>

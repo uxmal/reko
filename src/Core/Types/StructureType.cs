@@ -29,7 +29,7 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class StructureType : CompositeType
 	{
-		public StructureType() : this(null, 0, false)
+        public StructureType() : this(null, 0, false)
 		{
 		}
 
@@ -69,11 +69,16 @@ namespace Reko.Core.Types
         public StructureFieldCollection Fields { get; private set; }
 		public override bool IsComplex  { get { return true; } }
 
-		/// <summary>
-		/// If true, the structure is an Intel-style segment. In particular, segments must never be converted to 
-		/// primitive types.
-		/// </summary>
-		public bool IsSegment { get ; set; }
+        /// <summary>
+        /// If true, then this structure can never be simplfied by Simplify().
+        /// </summary>
+        public bool ForceStructure { get; set; }
+        
+        /// <summary>
+        /// If true, the structure is an Intel-style segment. In particular, segments must never be converted to 
+        /// primitive types.
+        /// </summary>
+        public bool IsSegment { get ; set; }
         public bool IsEmpty { get { return Size == 0 && Fields.Count == 0; } }
 
         /// <summary>
@@ -101,7 +106,7 @@ namespace Reko.Core.Types
 
         public DataType Simplify()
         {
-            if (Fields.Count == 1 && !IsSegment)
+            if (Fields.Count == 1 && !IsSegment && !ForceStructure)
             {
                 StructureField f = Fields[0];
                 if (f.Offset == 0 && (Size == 0 || Size == f.DataType.Size))

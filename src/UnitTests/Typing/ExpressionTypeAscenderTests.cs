@@ -141,5 +141,13 @@ namespace Reko.UnitTests.Typing
             RunTest(
                 m.IAdd(a, b));
         }
+
+        [Test(Description = "Resilve LPSTRs and the like to their underlying rep")]
+        public void ExaTypeReferenceToPointer()
+        {
+            var psz = Id("psz", new TypeReference("LPSTR", new Pointer(PrimitiveType.Char, 4)));
+            RunTest(
+                m.LoadB(m.IAdd(psz, Constant.Word32(0))));
+        }
     }
 }

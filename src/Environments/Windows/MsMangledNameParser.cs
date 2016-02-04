@@ -307,7 +307,7 @@ namespace Reko.Environments.Windows
             return new SerializedSignature
             {
                 Convention = convention,
-                EnclosingType = Scope,
+                EnclosingType = null,
                 Arguments = args,
                 ReturnValue = new Argument_v1 { Type = retType != null ? retType : new VoidType_v1() }
             };
@@ -385,7 +385,7 @@ namespace Reko.Environments.Windows
             {
                 Convention = convention,
                 Arguments = args,
-                EnclosingType = Scope,
+                EnclosingType = new SerializedStructType { Name = Scope, ForceStructure = true },
                 ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }
             };
         }

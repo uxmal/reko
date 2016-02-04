@@ -226,6 +226,7 @@ namespace Reko.Core
             if (!structures.TryGetValue(structure.Name, out str))
             {
                 str = new StructureType(structure.Name, structure.ByteSize, true);
+                str.ForceStructure = structure.ForceStructure;
                 structures.Add(structure.Name, str);
                 if (structure.Fields != null)
                 {

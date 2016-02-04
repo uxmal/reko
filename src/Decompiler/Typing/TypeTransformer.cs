@@ -374,6 +374,7 @@ namespace Reko.Typing
         {
             return typeref;
         }
+
         public DataType VisitTypeVariable(TypeVariable tv)
         {
             return tv;

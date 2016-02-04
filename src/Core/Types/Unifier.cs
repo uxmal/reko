@@ -125,7 +125,7 @@ namespace Reko.Core.Types
             {
                 return true;
             }
-			return false;
+			return a is UnknownType || b is UnknownType;
 		}
 
 		public bool AreCompatible(StructureType a, StructureType b)
@@ -260,12 +260,16 @@ namespace Reko.Core.Types
             if (trA != null)
             {
                 if (AreCompatible(trA.Referent, b))
-                    return a;
+                {
+                    return new TypeReference(trA.Name, UnifyInternal(trA.Referent, b));
+                }
             }
             if (trB != null)
             {
                 if (AreCompatible(a, trB.Referent))
-                    return b;
+                {
+                    return new TypeReference(trB.Name, UnifyInternal(trB.Referent, a));
+                }
             }
 
 			EquivalenceClass eqA = a as EquivalenceClass;

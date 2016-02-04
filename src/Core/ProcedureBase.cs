@@ -56,7 +56,7 @@ namespace Reko.Core
         /// </summary>
         //$TODO: all the infrastructure for class loading remains to be
         // implemented; for now we just store the class name.
-        public string EnclosingType { get; set; }
+        public SerializedType EnclosingType { get; set; }
 
         public override string ToString()
         {

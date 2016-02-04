@@ -38,7 +38,7 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("type")]
-        public string EnclosingType;
+        public SerializedType EnclosingType;
 
 		[XmlElement("return")]
 		public Argument_v1 ReturnValue;
@@ -66,7 +66,7 @@ namespace Reko.Core.Serialization
         {
             var sb = new StringBuilder();
             sb.Append("fn(");
-            if (!string.IsNullOrEmpty(this.EnclosingType))
+            if (this.EnclosingType != null)
                 sb.AppendFormat("{0},", EnclosingType);
             if (!string.IsNullOrEmpty(Convention))
                 sb.AppendFormat("{0},", Convention);

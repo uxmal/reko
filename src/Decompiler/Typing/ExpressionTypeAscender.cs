@@ -137,11 +137,11 @@ namespace Reko.Typing
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
         {
             var ptLeft = dtLeft as PrimitiveType;
-            var ptRight = dtRight as PrimitiveType;
+            var ptRight = dtRight.ResolveAs<PrimitiveType>();
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer ||
                 dtLeft is Pointer)
             {
-                if (ptRight.IsIntegral)
+                if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
             if (ptLeft != null && ptLeft.IsIntegral)
