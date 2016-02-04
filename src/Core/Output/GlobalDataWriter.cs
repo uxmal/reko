@@ -72,7 +72,7 @@ namespace Reko.Core.Output
         private void WriteGlobalVariable(StructureField field)
         {
             var name = string.Format("g_{0:X}", field.Name);
-            var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; offsets should be as wide as the platform permits.
+            var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; field.Offsets should be as wide as the platform permits.
             try
             {
                 tw.WriteDeclaration(field.DataType, name);
@@ -188,7 +188,7 @@ namespace Reko.Core.Output
                 if (field == null)
                 {
                     // We've discovered a global variable! Create it!
-                    //$REVIEW: what about colissions and the usual merge crap?
+                    //$REVIEW: what about collisions and the usual merge crap?
                     globals.Fields.Add(offset, ptr.Pointee);
                     // add field to queue.
                     field = globals.Fields.AtOffset(offset);
