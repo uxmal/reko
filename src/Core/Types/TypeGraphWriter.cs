@@ -80,11 +80,14 @@ namespace Reko.Core.Types
             writer.Write(" (");
 
             string separator = "";
-            for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+            if (ft.ArgumentTypes != null)
             {
-                writer.Write(separator);
-                separator = ", ";
-                ft.ArgumentTypes[i].Accept(this);
+                for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+                {
+                    writer.Write(separator);
+                    separator = ", ";
+                    ft.ArgumentTypes[i].Accept(this);
+                }
             }
             writer.Write("))");
             return writer;

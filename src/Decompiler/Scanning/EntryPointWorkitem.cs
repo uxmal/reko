@@ -31,7 +31,7 @@ namespace Reko.Scanning
         private Program program;
         private EntryPoint ep;
 
-        public EntryPointWorkitem(IScanner scanner, Program program, EntryPoint ep)
+        public EntryPointWorkitem(IScanner scanner, Program program, EntryPoint ep) : base(ep.Address)
         {
             this.scanner = scanner;
             this.program = program;

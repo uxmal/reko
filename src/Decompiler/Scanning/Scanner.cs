@@ -254,11 +254,10 @@ namespace Reko.Scanning
 
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
         {
-            return new PromoteBlockWorkItem
+            return new PromoteBlockWorkItem(addrStart)
             {
                 Scanner = this,
                 Program = program,
-                Address = addrStart,
                 Block = block,
                 ProcNew = procNew,
             };
@@ -272,6 +271,26 @@ namespace Reko.Scanning
         public void EnqueueProcedure(Address addr)
         {
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
+        }
+
+        public void EnqueueUserProcedure(Procedure_v1 sp) {
+            Address addr;
+            if (!program.Architecture.TryParseAddress(sp.Address, out addr))
+                return;
+            Procedure proc;
+            if (program.Procedures.TryGetValue(addr, out proc))
+                return; // Already scanned. Do nothing.
+            proc = EnsureProcedure(addr, sp.Name);
+            if (sp.Signature != null)
+            {
+                var sser = program.CreateProcedureSerializer();
+                proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
+            }
+            if (sp.Characteristics != null)
+            {
+                proc.Characteristics = sp.Characteristics;
+            }
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
@@ -665,6 +684,18 @@ namespace Reko.Scanning
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
+                try
+                {
+                    workitem.Process();
+                }
+                catch (AddressCorrelatedException aex)
+                {
+                    Error(aex.Address, aex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Error(workitem.Address, ex.Message);
+                }
                 if (cancelSvc != null && cancelSvc.IsCancellationRequested)
                     break;
             }

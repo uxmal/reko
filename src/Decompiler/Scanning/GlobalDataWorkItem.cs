@@ -26,60 +26,55 @@ using System.Diagnostics;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// The purpose of this class is to discover interesting global variables. In particular,
+    /// we want to discover pointers to procedures in global data.
+    /// </summary>
     public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor<bool>
     {
         private IScanner scanner;
         private Program program;
-        private Address addr;
         private DataType dt;
         private ImageReader rdr;
 
-        public GlobalDataWorkItem(IScanner scanner, Program program, Address addr, DataType dt)
+        public GlobalDataWorkItem(IScanner scanner, Program program, Address addr, DataType dt) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
-            this.addr = addr;
             this.dt = dt;
             this.rdr = program.CreateImageReader(addr);
         }
 
         public override void Process()
         {
-            try
-            {
-                dt.Accept(this);
-            }
-            catch (AddressCorrelatedException aex)
-            {
-                scanner.Error(aex.Address, aex.Message);
-            }
-            catch (Exception ex)
-            {
-                scanner.Error(addr, ex.Message);
-            }
+            dt.Accept(this);
         }
 
         public bool VisitArray(ArrayType at)
         {
             if (at.Length == 0)
             {
-                scanner.Warn(addr, "User-specified arrays must have a non-zero size.");
+                scanner.Warn(Address, "User-specified arrays must have a non-zero size.");
                 return false;
             }
             for (int i = 0; i < at.Length; ++i)
             {
                 at.ElementType.Accept(this);
             }
-
             return false;
         }
 
-        public bool VisitEnum(EnumType e)
+        public bool VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
         public bool VisitCode(CodeType c)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
@@ -158,12 +153,12 @@ namespace Reko.Scanning
 
         public bool VisitUnknownType(UnknownType ut)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VisitVoidType(VoidType voidType)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }
