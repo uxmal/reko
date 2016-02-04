@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
 using System;
 using System.IO;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace Reko.Core.Types
 		public DataType ReturnType;
 		public DataType [] ArgumentTypes;
 		public string [] ArgumentNames;
+
+        public SerializedSignature Signature { get; private set; }
 
 		public FunctionType(
 			string name,
@@ -58,6 +61,11 @@ namespace Reko.Core.Types
             this.ArgumentNames = sig.Parameters.Select(a => a.Name).ToArray();
         }
 
+        public FunctionType(SerializedSignature signature) : base()
+        {
+            this.Signature = signature;
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitFunctionType(this);
@@ -74,7 +82,9 @@ namespace Reko.Core.Types
 				if (ArgumentNames != null)
 					names[i] = ArgumentNames[i];
 			}
-			return new FunctionType(Name, ret, types, names);
+            var ft = new FunctionType(Name, ret, types, names);
+            ft.Signature = Signature;
+            return ft;
 		}
 
 		public override int Size

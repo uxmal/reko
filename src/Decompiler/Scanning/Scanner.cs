@@ -52,6 +52,7 @@ namespace Reko.Scanning
         void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
+        void EnqueueUserGlobalData(Address addr, DataType dt);
 
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
@@ -105,10 +106,13 @@ namespace Reko.Scanning
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
 
+        private HashSet<Address> scannedGlobalData = new HashSet<Address>();
+
         private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
         
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
+        private const int PriorityGlobalData = 7;
         private const int PriorityVector = 4;
         private const int PriorityBlockPromote = 3;
 
@@ -488,6 +492,14 @@ namespace Reko.Scanning
                 proc.Characteristics = sp.Characteristics;
             }
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
+        }
+
+        public void EnqueueUserGlobalData(Address addr, DataType dt)
+        {
+            if (scannedGlobalData.Contains(addr))
+                return;
+            scannedGlobalData.Add(addr);
+            queue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, program, addr, dt));
         }
 
         public Block FindContainingBlock(Address address)
