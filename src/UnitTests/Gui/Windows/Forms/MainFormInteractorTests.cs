@@ -42,6 +42,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
+    [Category("UserInterface")]
 	public class MainFormInteractorTests
 	{
         private MockRepository mr;

@@ -35,6 +35,13 @@ namespace Reko.Scanning
 
     public abstract class WorkItem
     {
+        protected WorkItem(Address addr)
+        {
+            this.Address = addr;
+        }
+
+        public Address Address { get; private set; }
+
         public abstract void Process();
     }
 }

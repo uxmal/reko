@@ -398,6 +398,13 @@ namespace Reko
             {
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program);
+                foreach (var global in program.User.Globals)
+                {
+                    var addr = global.Key;
+                    var tlDeser = program.CreateTypeLibraryDeserializer();
+                    var dt = global.Value.DataType.Accept(tlDeser);
+                    scanner.EnqueueUserGlobalData(addr, dt);
+                }
                 foreach (EntryPoint ep in program.EntryPoints)
                 {
                     scanner.EnqueueEntryPoint(ep);

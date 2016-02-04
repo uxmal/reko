@@ -286,6 +286,11 @@ namespace Reko.Typing
             return arr;
         }
 
+        public DataType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public DataType VisitCode(CodeType c)
         {
             return c;
@@ -369,6 +374,7 @@ namespace Reko.Typing
         {
             return typeref;
         }
+
         public DataType VisitTypeVariable(TypeVariable tv)
         {
             return tv;

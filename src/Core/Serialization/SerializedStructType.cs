@@ -33,12 +33,17 @@ namespace Reko.Core.Serialization
         [DefaultValue(0)]
 		public int ByteSize;
 
-		public SerializedStructType()
+        [XmlAttribute("force")]
+        [DefaultValue(false)]
+        public bool ForceStructure { get; set; }
+
+        public SerializedStructType()
 		{
 		}
 
 		[XmlElement("field", typeof (StructField_v1))]
 		public StructField_v1[]  Fields;
+
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {

@@ -222,7 +222,6 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_7
 	use r63_9
-	use wArg04
 ";
             RunTest(sExp, m =>
             {
@@ -296,7 +295,6 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_7
 	use r63_9
-	use wArg04_16
 ";
             RunTest(sExp, m =>
             {
@@ -415,7 +413,6 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_8
 	use r63_10
-	use wArg04
 ";
             RunTest(sExp, m =>
             {

@@ -28,6 +28,7 @@ namespace Reko.Core.Types
     public interface IDataTypeVisitor<T>
     {
         T VisitArray(ArrayType at);
+        T VisitClass(ClassType ct);
         T VisitCode(CodeType c);
         T VisitEnum(EnumType e);
         T VisitEquivalenceClass(EquivalenceClass eq);

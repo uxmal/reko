@@ -95,11 +95,12 @@ namespace Reko.Environments.Windows
                 PeekAndDiscard(TokenType.PRIVATE);
                 PeekAndDiscard(TokenType.DATA);
 
+                var ep = ParseSignature(entryName, deserializer);
                 var svc = new SystemService
                 {
                     ModuleName = moduleName,
-                    Name = entryName,
-                    Signature = ParseSignature(entryName, deserializer),
+                    Name = ep != null ? ep.Name : entryName,
+                    Signature = ep != null ? ep.Signature : null,
                 };
                 Debug.Print("Loaded {0} @ {1}", entryName, ordinal);
                 if (ordinal != -1)
@@ -123,7 +124,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        private ProcedureSignature ParseSignature(string entryName, TypeLibraryDeserializer loader)
+        private ExternalProcedure ParseSignature(string entryName, TypeLibraryDeserializer loader)
         {
             return SignatureGuesser.SignatureFromName(entryName, loader, platform);
         }

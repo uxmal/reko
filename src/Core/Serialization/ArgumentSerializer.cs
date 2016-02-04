@@ -31,15 +31,15 @@ namespace Reko.Core.Serialization
 		private IProcessorArchitecture arch;
 		private Frame frame;
 		private Argument_v1 argCur;
-        private string convention;
+        private int retAddressOnStack;
 
-		public ArgumentSerializer(ProcedureSerializer procSer, IProcessorArchitecture arch, Frame frame, string callingConvention)
+        public ArgumentSerializer(ProcedureSerializer procSer, IProcessorArchitecture arch, Frame frame, int retAddressOnStack)
 		{
 			this.procSer = procSer;
 			this.arch = arch;
 			this.frame = frame;
-            this.convention = callingConvention;
-		}
+            this.retAddressOnStack = retAddressOnStack;
+        }
         
 		public string ArgumentName(string argName, string argName2)
 		{
@@ -51,11 +51,22 @@ namespace Reko.Core.Serialization
 
 		public Identifier Deserialize(Register_v1 reg)
 		{
-			var idArg = frame.EnsureRegister(arch.GetRegister(reg.Name.Trim()));
-			if (argCur.OutParameter)
-			{
+            var regStorage = arch.GetRegister(reg.Name.Trim());
+            DataType dt;
+            if (this.argCur.Type != null)
+                dt = this.argCur.Type.Accept(procSer.TypeLoader);
+            else
+                dt = regStorage.DataType;
+            if (dt is VoidType)
+                return null;
+            var idArg = procSer.CreateId(
+                argCur.Name ?? regStorage.Name,
+                dt,
+                regStorage);
+            if (argCur.OutParameter)
+            {
                 idArg = frame.EnsureOutArgument(idArg, arch.FramePointerType);
-			}
+            }
             return idArg;
 		}
 
@@ -72,8 +83,13 @@ namespace Reko.Core.Serialization
             {
                 return null;
             }
-			var idArg = procSer.CreateId(
-				argCur.Name ?? "arg" + procSer.StackOffset, 
+            var name = frame.FormatStackAccessName(
+                dt,
+                "Arg",
+                procSer.StackOffset + retAddressOnStack,
+                argCur.Name);
+            var idArg = procSer.CreateId(
+                name,
 				dt,
 				new StackArgumentStorage(procSer.StackOffset, dt));
             procSer.StackOffset += dt.Size;

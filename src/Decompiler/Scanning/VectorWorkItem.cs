@@ -23,7 +23,7 @@ namespace Reko.Scanning
         private bool isCallTable;
 
         public VectorWorkItem(IScanner scanner, Program program, ImageMapVectorTable table, bool isCallTable, Procedure proc)
-            : base()
+            : base(table.Address)
         {
             this.scanner = scanner;
             this.program = program;

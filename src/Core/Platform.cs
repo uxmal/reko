@@ -76,7 +76,7 @@ namespace Reko.Core
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
         Dictionary<string, object> SaveUserOptions();
-        ProcedureSignature SignatureFromName(string importName);
+        ExternalProcedure SignatureFromName(string importName);
     }
 
     /// <summary>
@@ -261,7 +261,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="fnName"></param>
         /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
-        public virtual ProcedureSignature SignatureFromName(string fnName)
+        public virtual ExternalProcedure SignatureFromName(string fnName)
         {
             return null;
         }
