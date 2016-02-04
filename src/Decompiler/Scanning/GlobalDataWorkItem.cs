@@ -69,7 +69,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public bool VisitEnum(EnumType e)
+        public bool VisitCode(CodeType c)
         {
             throw new NotImplementedException();
         }
