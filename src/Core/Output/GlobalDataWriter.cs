@@ -225,12 +225,15 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
 
+            var structOffset = rdr.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
             {
                 fmt.Indent();
+                rdr.Offset = structOffset + str.Fields[i].Offset;
                 str.Fields[i].DataType.Accept(this);
                 fmt.Terminate(",");
             }
+            rdr.Offset = structOffset + str.GetInferredSize();
 
             fmt.Indentation -= fmt.TabSize;
             fmt.Indent();

@@ -737,7 +737,6 @@ fn00001200_exit:
         }
 
         [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]
-        [Ignore("@ptomin: see if you can get this to work.")]
         public void Scanner_GlobalData_StructWithPadding()
         {
             var bytes = new byte[]
@@ -773,7 +772,7 @@ fn00001200_exit:
             scanner.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count, "Scanner should have detected the pointer to function correctly.");
-            Assert.AreEqual(Address.Ptr32(0x43210017), program.Procedures.Keys.First());
+            Assert.AreEqual(Address.Ptr32(0x43210008), program.Procedures.Keys.First());
         }
     }
 }
