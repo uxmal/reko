@@ -85,7 +85,10 @@ namespace Reko.Environments.Windows
                 {
                     var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
                     var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                    return new ExternalProcedure(field.Name, sig); 
+                    return new ExternalProcedure(field.Name, sig)
+                    {
+                        EnclosingType = sproc.EnclosingType
+                    };
                 }
             }
             return null;

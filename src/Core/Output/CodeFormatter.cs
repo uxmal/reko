@@ -787,7 +787,7 @@ namespace Reko.Core.Output
 
 		public void Write(Procedure proc)
 		{
-			proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, writer, this, new TypeFormatter(writer, true));
+			proc.Signature.Emit(proc.QualifiedName(), ProcedureSignature.EmitFlags.None, writer, this, new TypeFormatter(writer, true));
 			writer.WriteLine();
 			writer.Write("{");
             writer.WriteLine();

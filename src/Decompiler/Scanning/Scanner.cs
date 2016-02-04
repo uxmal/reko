@@ -457,6 +457,7 @@ namespace Reko.Scanning
                     var exp = program.Platform.SignatureFromName(ep.Name);
                     proc.Name = exp.Name;
                     proc.Signature = exp.Signature;
+                    proc.EnclosingType = exp.EnclosingType;
                 }
 
                 //if (sp.Characteristics != null)
