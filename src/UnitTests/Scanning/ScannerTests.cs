@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Scanning
             {
                 m => { m.Return(4, 0); }
             });
-            Given_Program(Address.Ptr32(0x12314));
+            Given_Program(Address.Ptr32(0x12314), new byte[1]);
             var project = new Project { Programs = { program } };
 
             var sc = new Scanner(
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Scanning
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     Address.Ptr32(0x12314),
-                    arch.CreateProcessorState()));
+                    program.Architecture.CreateProcessorState()));
             sc.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count);
@@ -156,16 +156,23 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(program.CallGraph.EntryPoints.Contains(program.Procedures.Values[0]));
         }
 
-        private void Given_Program(Address address)
+        private void Given_Program(Address address, byte[] bytes)
         {
-            var image = new LoadedImage(address, new byte[1]);
+            var image = new LoadedImage(address, bytes);
             var imageMap = image.CreateImageMap();
+            var arch = new X86ArchitectureFlat32();
+            var platform = new FakePlatform(null, arch);
             this.program = new Program
             {
                 Architecture = arch,
                 Image = image,
                 ImageMap = imageMap,
-                Platform = new FakePlatform(null, arch)
+                Platform = platform
+            };
+            platform.Test_CreateProcedureSerializer = (t, d) =>
+            {
+                var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
+                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
             };
         }
 
@@ -612,6 +619,113 @@ fn00001200_exit:
 
             var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
             Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
+        }
+
+        [Test]
+        public void Scanner_GlobalData()
+        {
+            var bytes = new byte[] {
+                0x48, 0x00, 0x21, 0x43, 0x00, 0x00, 0x00, 0x01, 0x53, 0x00, 0x21, 0x43,
+                0x28, 0x00, 0x21, 0x43, 0x00, 0x00, 0x00, 0x02, 0x63, 0x00, 0x21, 0x43,
+                0x38, 0x00, 0x21, 0x43, 0x00, 0x00, 0x00, 0x03, 0x73, 0x00, 0x21, 0x43,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            };
+            Given_Program(Address.Ptr32(0x43210000), bytes);
+            var project = new Project { Programs = { program } };
+
+            var sc = new Scanner(
+                this.program,
+                null,
+                new ImportResolver(project),
+                this.sc
+            );
+
+            var sSig1 = new SerializedSignature()
+            {
+                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Integer, 4), null, false),
+            };
+            var sSig2 = new SerializedSignature()
+            {
+                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Character, 1), null, false),
+            };
+            var ft1 = new FunctionType(sSig1);
+            var ft2 = new FunctionType(sSig2);
+            var str = new StructureType();
+            var fields = new StructureField[] {
+                new StructureField(0, new Pointer(ft1, 4), "A"),
+                new StructureField(4, PrimitiveType.Int32, "B"),
+                new StructureField(8, new Pointer(ft2, 4), "C"),
+            };
+            str.Fields.AddRange(fields);
+            var elementType = new TypeReference("test", str);
+            var arrayType = new ArrayType(elementType, 3);
+
+            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), arrayType);
+            sc.ScanImage();
+
+            var sExpSig1 =
+@"Register ui32 ()()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            var sExpSig2 =
+@"Register char ()()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(6, program.Procedures.Count);
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210028)].Signature.ToString());
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210038)].Signature.ToString());
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210048)].Signature.ToString());
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString());
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString());
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString());
+        }
+
+        [Test]
+        public void Scanner_GlobalDataRecursiveStructs()
+        {
+            var bytes = new byte[] {
+                0x17, 0x00, 0x21, 0x43, 0x00, 0x00, 0x21, 0x43,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            };
+            Given_Program(Address.Ptr32(0x43210000), bytes);
+            var project = new Project { Programs = { program } };
+
+            var sc = new Scanner(
+                this.program,
+                null,
+                new ImportResolver(project),
+                this.sc
+            );
+
+            var sSig = new SerializedSignature()
+            {
+                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Real, 4), null, false),
+            };
+            var ft = new FunctionType(sSig);
+            var str = new StructureType();
+            var fields = new StructureField[] {
+                new StructureField(0, new Pointer(ft,  4), "func"),
+                new StructureField(4, new Pointer(str, 4), "next"),
+            };
+            str.Fields.AddRange(fields);
+
+            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str);
+            sc.ScanImage();
+
+            var sExpSig =
+@"Register real32 ()()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString());
         }
     }
 }
