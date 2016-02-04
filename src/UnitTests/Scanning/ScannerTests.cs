@@ -316,10 +316,6 @@ namespace Reko.UnitTests.Scanning
 
             program = m.GetImage();
             program.Platform = new FakePlatform(null, arch);
-            program.Image = lr.Image;
-            program.ImageMap = lr.ImageMap;
-            program.Architecture = lr.Architecture;
-            program.Platform = new FakePlatform(null, arch);
             Given_Project();
 
             var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), sc);
