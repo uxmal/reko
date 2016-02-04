@@ -133,11 +133,13 @@ namespace Reko.Scanning
 
         public bool VisitStructure(StructureType str)
         {
+            var structOffset = rdr.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
             {
-                //$BUG: should be paying attention to StructureField.Offset here.
+                rdr.Offset = structOffset + str.Fields[i].Offset;
                 str.Fields[i].DataType.Accept(this);
             }
+            rdr.Offset = structOffset + str.GetInferredSize();
             return false;
         }
 
