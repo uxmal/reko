@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Evaluation
@@ -31,6 +32,8 @@ namespace Reko.Evaluation
 
 		public bool Match(Slice slice)
 		{
+            if (!(slice.DataType is PrimitiveType))//$TODO: remove this once varargs processing is complete.
+                return false;
 			this.slice = slice;
 			this.c = slice.Expression as Constant;
             return c != null && c != Constant.Invalid;
