@@ -515,7 +515,7 @@ namespace Reko.ImageLoaders.Hunk
             var size = num_longs * 4;
             if (num_longs < 2)
             {
-                f.Offset += (ulong)size;
+                f.Offset += size;
                 return;
             }
             var offset = (uint) this.read_long();

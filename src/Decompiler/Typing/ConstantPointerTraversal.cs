@@ -105,6 +105,11 @@ namespace Reko.Typing
             }
         }
 
+        public IEnumerable<WorkItem> VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<WorkItem> VisitCode(CodeType c)
         {
             throw new NotImplementedException();

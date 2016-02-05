@@ -42,6 +42,11 @@ namespace Reko.Core.Types
 			this.number = n;
 		}
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitTypeVariable(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitTypeVariable(this);
@@ -61,7 +66,8 @@ namespace Reko.Core.Types
 		/// Inferred DataType corresponding to type variable when equivalence class 
 		/// is taken into consideration.
 		/// </summary>
-		public DataType DataType { get; set; }
+		public DataType DataType { get { return dt; } set { dt = value; if (number == 68) number.ToString(); } } //$DEBUG
+        private DataType dt;
 
 		public int Number
 		{

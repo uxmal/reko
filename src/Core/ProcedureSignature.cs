@@ -23,7 +23,9 @@ using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace Reko.Core
@@ -94,6 +96,12 @@ namespace Reko.Core
             get { return Parameters != null || ReturnValue != null; }
         }
 
+        /// <summary>
+        /// True if this is an instance method of the EnclosingType.
+        /// </summary>
+        public bool IsInstanceMetod { get; set; }
+
+
         #region Output methods
         public void Emit(string fnName, EmitFlags f, TextWriter writer)
         {
@@ -134,11 +142,14 @@ namespace Reko.Core
             var sep = "";
             if (Parameters != null)
             {
-                for (int i = 0; i < Parameters.Length; ++i)
+                IEnumerable<Identifier> parms = this.IsInstanceMetod
+                    ? Parameters.Skip(1)
+                    : Parameters;
+                foreach (var p in parms)
                 {
                     fmt.Write(sep);
                     sep = ", ";
-                    w.WriteFormalArgument(Parameters[i], emitStorage, t);
+                    w.WriteFormalArgument(p, emitStorage, t);
                 }
             }
             fmt.Write(")");

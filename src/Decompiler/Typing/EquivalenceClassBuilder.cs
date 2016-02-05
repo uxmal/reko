@@ -37,6 +37,7 @@ namespace Reko.Typing
 		private TypeStore store;
 		private ProcedureSignature signature;
         private Dictionary<ushort, TypeVariable> segTypevars;
+        private Dictionary<string, EquivalenceClass> typeReferenceClasses;
 
 		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store)
 		{
@@ -44,6 +45,7 @@ namespace Reko.Typing
 			this.store = store;
 			this.signature = null;
             this.segTypevars = new Dictionary<ushort, TypeVariable>();
+            this.typeReferenceClasses = new Dictionary<string, EquivalenceClass>();
 		}
 
 		public void Build(Program program)
@@ -80,7 +82,21 @@ namespace Reko.Typing
 
         public TypeVariable EnsureTypeVariable(Expression e)
 		{
-			return store.EnsureExpressionTypeVariable(factory, e);
+            var tv = store.EnsureExpressionTypeVariable(factory, e);
+            var typeref = e.DataType.ResolveAs<TypeReference>();
+            EquivalenceClass eq;
+            if (typeref != null)
+            {
+                if (this.typeReferenceClasses.TryGetValue(typeref.Name, out eq))
+                {
+                    store.MergeClasses(tv, eq.Representative);
+                }
+                else
+                {
+                    this.typeReferenceClasses.Add(typeref.Name, tv.Class);
+                }
+            }
+            return tv;
 		}
 
 		public override void VisitApplication(Application appl)

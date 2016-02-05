@@ -240,6 +240,7 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
+    <Compile Include="Serialization\ArgumentDeserializer.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
     <Compile Include="IByteSource.cs" />
     <Compile Include="ICodeLocation.cs" />
@@ -625,7 +626,9 @@
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\ClassType.cs" />
     <Compile Include="Types\CodeType.cs" />
+    <Compile Include="Types\CompositeType.cs" />
     <Compile Include="Types\DataType.cs">
       <SubType>Code</SubType>
     </Compile>

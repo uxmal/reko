@@ -291,5 +291,47 @@ struct a {
             string sExp = "testDataType * var";
             Assert.AreEqual(sExp, sw.ToString());
         }
+
+        [Test]
+        public void TyfoClass_Simple()
+        {
+            var ct = new ClassType();
+            ct.Name = "TestClass";
+            ct.Fields.Add(new ClassField
+            {
+                Protection = ClassProtection.Private,
+                Offset = 4,
+                Name = "m_n0004",
+                DataType = PrimitiveType.Int32
+            });
+            ct.Fields.Add(new ClassField
+            {
+                Protection = ClassProtection.Private,
+                Offset = 8,
+                Name = "m_ptr0008",
+                DataType = new Pointer(ct, 4),
+            });
+
+            ct.Methods.Add(new ClassMethod
+            {
+                Protection = ClassProtection.Public,
+                Attribute = ClassMemberAttribute.Virtual,
+                Procedure = new Procedure("do_something", null),
+                Name = "do_something",
+            });
+            tyfo.Write(ct, null);
+
+            var sExp =
+            #region Expected
+@"class TestClass {
+public:
+	do_something();
+private:
+	int32 m_n0004;	// 4
+	 TestClass * m_ptr0008;	// 8
+}";
+            #endregion
+            Assert.AreEqual(sExp, sw.ToString());
+        }
     }
 }

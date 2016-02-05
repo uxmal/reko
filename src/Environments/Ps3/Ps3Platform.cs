@@ -143,7 +143,7 @@ namespace Reko.Environments.Ps3
             // Read the function pointer from the function descriptor.
 
             offset = (int)aFuncDesc - (int)rdr.Address.ToUInt32();
-            rdr.Offset = (ulong) (((long)rdr.Offset) + offset);
+            rdr.Offset = rdr.Offset + offset;
             var aFn = rdr.ReadUInt32();
             return null;
         }

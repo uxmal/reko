@@ -202,10 +202,10 @@ namespace Reko.Environments.Windows
 
         public override string DefaultCallingConvention
         {
-            get { return "stdapi"; }
+            get { return "__cdecl"; }
         }
 
-        public override ProcedureSignature SignatureFromName(string fnName)
+        public override ExternalProcedure SignatureFromName(string fnName)
         {
             EnsureTypeLibraries(PlatformIdentifier); 
             return SignatureGuesser.SignatureFromName(

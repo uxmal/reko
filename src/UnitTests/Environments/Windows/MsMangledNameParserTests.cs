@@ -467,5 +467,13 @@ namespace Reko.UnitTests.Environments.Windows
                 "__cdecl public: void CLASS_DESCRIPTOR::CLASS_DESCRIPTOR()",
                 "??0CLASS_DESCRIPTOR@@QEAA@XZ");
         }
+
+        [Test]
+        public void PMNP_regression10()
+        {
+            RunTest(
+                "__thiscall private: char A::get(int, int)",
+                "?get@A@@AAEEHH@Z");
+        }
     }
 }

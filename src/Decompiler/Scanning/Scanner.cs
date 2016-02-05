@@ -52,6 +52,7 @@ namespace Reko.Scanning
         void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
+        void EnqueueUserGlobalData(Address addr, DataType dt);
 
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
@@ -105,10 +106,13 @@ namespace Reko.Scanning
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
 
+        private HashSet<Address> scannedGlobalData = new HashSet<Address>();
+
         private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
         
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
+        private const int PriorityGlobalData = 7;
         private const int PriorityVector = 4;
         private const int PriorityBlockPromote = 3;
 
@@ -250,11 +254,10 @@ namespace Reko.Scanning
 
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
         {
-            return new PromoteBlockWorkItem
+            return new PromoteBlockWorkItem(addrStart)
             {
                 Scanner = this,
                 Program = program,
-                Address = addrStart,
                 Block = block,
                 ProcNew = procNew,
             };
@@ -268,6 +271,26 @@ namespace Reko.Scanning
         public void EnqueueProcedure(Address addr)
         {
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
+        }
+
+        public void EnqueueUserProcedure(Procedure_v1 sp) {
+            Address addr;
+            if (!program.Architecture.TryParseAddress(sp.Address, out addr))
+                return;
+            Procedure proc;
+            if (program.Procedures.TryGetValue(addr, out proc))
+                return; // Already scanned. Do nothing.
+            proc = EnsureProcedure(addr, sp.Name);
+            if (sp.Signature != null)
+            {
+                var sser = program.CreateProcedureSerializer();
+                proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
+            }
+            if (sp.Characteristics != null)
+            {
+                proc.Characteristics = sp.Characteristics;
+            }
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
@@ -416,6 +439,55 @@ namespace Reko.Scanning
             }
         }
 
+        public void ScanEntryPoint(Program program, EntryPoint ep)
+        {
+            try
+            {
+                Address addr = ep.Address;
+                Procedure proc;
+                if (program.Procedures.TryGetValue(addr, out proc))
+                    return; // Already scanned. Do nothing.
+
+                proc = EnsureProcedure(addr, ep.Name);
+                if (ep.Signature != null)
+                {
+                    var sser = program.CreateProcedureSerializer();
+                    proc.Signature = sser.Deserialize(ep.Signature, proc.Frame);
+                }
+                else if (ep.Name != null)
+                {
+                    var exp = program.Platform.SignatureFromName(ep.Name);
+                    if (exp != null)
+                    {
+                        proc.Name = exp.Name;
+                        proc.Signature = exp.Signature;
+                        proc.EnclosingType = exp.EnclosingType;
+                    }
+                    else
+                    {
+                        proc.Name = ep.Name;
+                    }
+                }
+
+                //if (sp.Characteristics != null)
+                //{
+                //    proc.Characteristics = sp.Characteristics;
+                //}
+
+                var pb = ScanProcedure(ep.Address, ep.Name, ep.ProcessorState);
+                proc = pb as Procedure;
+                if (proc != null)
+                {
+                    program.CallGraph.AddEntryPoint(proc);
+                }
+            }
+            catch (AddressCorrelatedException aex)
+            {
+                Error(aex.Address, aex.Message);
+            }
+        }
+
+
         /// <summary>
         /// Performs a scan of the blocks that constitute a procedure named <paramref name="procedureName"/>
         /// </summary>
@@ -454,37 +526,30 @@ namespace Reko.Scanning
             queue = oldQueue;
 
             // Add <stackpointer> := fp explicitly to the starting block.
-            proc.EntryBlock.Succ[0].Statements.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
+            EstablishFrame(addr, proc, sp);
             return proc;
         }
 
-        private Procedure EnsureProcedure(Address addr, string procedureName)
+        /// <summary>
+        /// Inject statements into the starting block that establish the frame,
+        /// and if the procedure has been given a valid signature already,
+        /// copy the input arguments into their local counterparts.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="proc"></param>
+        /// <param name="sp"></param>
+        public void EstablishFrame(Address addr, Procedure proc, Identifier sp)
         {
-            Procedure proc;
-            if (program.Procedures.TryGetValue(addr, out proc))
-                return proc;
-            proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
-            program.Procedures.Add(addr, proc);
-            program.CallGraph.AddProcedure(proc);
-            return proc;
+            var stmts = proc.EntryBlock.Succ[0].Statements;
+            stmts.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
         }
 
-        public void EnqueueUserProcedure(Procedure_v1 sp)
+        public void EnqueueUserGlobalData(Address addr, DataType dt)
         {
-            Address addr;
-            if (!program.Architecture.TryParseAddress(sp.Address, out addr))
+            if (scannedGlobalData.Contains(addr))
                 return;
-            var proc = EnsureProcedure(addr, sp.Name);
-            if (sp.Signature != null)
-            {
-                var sser = program.CreateProcedureSerializer();
-                proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
-            }
-            if (sp.Characteristics != null)
-            {
-                proc.Characteristics = sp.Characteristics;
-            }
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
+            scannedGlobalData.Add(addr);
+            queue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, program, addr, dt));
         }
 
         public Block FindContainingBlock(Address address)
@@ -644,12 +709,35 @@ namespace Reko.Scanning
             }
         }
 
+        private Procedure EnsureProcedure(Address addr, string procedureName)
+        {
+            Procedure proc;
+            if (program.Procedures.TryGetValue(addr, out proc))
+                return proc;
+            proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
+            program.Procedures.Add(addr, proc);
+            program.CallGraph.AddProcedure(proc);
+            return proc;
+        }
+
         private void ProcessQueue()
         {
             while (queue.Count > 0)
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
+                try
+                {
+                    workitem.Process();
+                }
+                catch (AddressCorrelatedException aex)
+                {
+                    Error(aex.Address, aex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Error(workitem.Address, ex.Message);
+                }
                 if (cancelSvc != null && cancelSvc.IsCancellationRequested)
                     break;
             }

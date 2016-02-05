@@ -42,6 +42,11 @@ namespace Reko.Core.Types
 			this.byteSize = byteSize;
 		}
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitMemberPointer(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitMemberPointer(this);

@@ -115,6 +115,11 @@ namespace Reko.Typing
 			throw new ArgumentException("Constants cannot have array values yet.");
 		}
 
+        public Expression VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitCode(CodeType c)
         {
             throw new NotImplementedException();

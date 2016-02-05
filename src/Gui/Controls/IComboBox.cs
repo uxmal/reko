@@ -31,6 +31,7 @@ namespace Reko.Gui.Controls
         event EventHandler TextChanged;
 
         object DataSource { get; set; }
+        bool Enabled { get; set; }
         IList Items { get; }
         int SelectedIndex { get; set; }
         object SelectedValue { get; set; }

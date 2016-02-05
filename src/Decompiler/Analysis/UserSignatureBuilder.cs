@@ -45,25 +45,34 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// For each user-supplied signature, locate a scanned procedure
-        /// and apply the signature to it.
+        /// For each procedure, either use a user-supplied signature, 
+        /// or the predefined one.
         /// </summary>
         public void BuildSignatures()
         {
-            foreach (var de in program.User.Procedures)
+            foreach (var de in program.Procedures)
             {
-                Procedure proc;
-                if (!program.Procedures.TryGetValue(de.Key, out proc))
-                    continue;
-                var sProc = DeserializeSignature(de.Value, proc);
-                if (sProc == null)
-                    continue;
-                var ser = program.CreateProcedureSerializer();
-                var sig = ser.Deserialize(sProc.Signature, proc.Frame);
-                if (sig != null)
+                var proc = de.Value;
+                Procedure_v1 userProc;
+                if (program.User.Procedures.TryGetValue(de.Key, out userProc))
                 {
-                    proc.Name = sProc.Name;
-                    ApplySignatureToProcedure(de.Key, sig, proc);
+                    var sProc = DeserializeSignature(userProc, proc);
+                    if (sProc != null)
+                    {
+                        var ser = program.CreateProcedureSerializer();
+                        var sig = ser.Deserialize(sProc.Signature, proc.Frame);
+                        if (sig != null)
+                        {
+                            proc.Name = sProc.Name;
+                            ApplySignatureToProcedure(de.Key, sig, proc);
+                            continue;
+                        }
+                    }
+                }
+
+                if (proc.Signature.ParametersValid)
+                {
+                    ApplySignatureToProcedure(de.Key, proc.Signature, proc);
                 }
             }
         }
@@ -84,6 +93,7 @@ namespace Reko.Analysis
             int i = 0;
             var stmts = proc.EntryBlock.Succ[0].Statements;
             var linAddr = addr.ToLinear();
+            var m = new ExpressionEmitter();
             foreach (var param in sig.Parameters)
             {
                 var starg = param.Storage as StackArgumentStorage;
@@ -93,6 +103,10 @@ namespace Reko.Analysis
                         starg.StackOffset + sig.ReturnAddressOnStack,
                         param.DataType,
                         param.Name);
+                    var fp = proc.Frame.FramePointer;
+                    stmts.Insert(i, linAddr, new Store(
+                        m.Load(param.DataType, m.IAdd(fp, sig.ReturnAddressOnStack + starg.StackOffset)),
+                        param));
                 }
                 else
                 {
@@ -108,8 +122,8 @@ namespace Reko.Analysis
                     // entry block that moves the parameter value into the 
                     // register.
                     stmts.Insert(i, linAddr, NewMethod(param, paramId));
-                    ++i;
                 }
+                ++i;
             }
         }
 

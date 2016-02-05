@@ -63,7 +63,7 @@ namespace Reko.Scanning
             IScanner scanner,
             Program program,
             ProcessorState state,
-            Address addr)
+            Address addr) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
@@ -81,25 +81,8 @@ namespace Reko.Scanning
         /// calls to procedures that terminate the thread of executationresult in the 
         /// termination of processing.
         /// </summary>
+        /// 
         public override void Process()
-        {
-            try
-            {
-                ProcessInternal();
-            }
-            catch (AddressCorrelatedException aex)
-            {
-                scanner.Error(aex.Address, aex.Message);
-            }
-            catch (Exception ex)
-            {
-                if (ric == null)
-                    throw;
-                scanner.Error(ric.Address, ex.Message);
-            }
-        }
-
-        public void ProcessInternal()
         {
             state.ErrorListener = (message) => { scanner.Warn(ric.Address, message); };
             blockCur = scanner.FindContainingBlock(addrStart);
@@ -725,11 +708,18 @@ namespace Reko.Scanning
                     throw new NotImplementedException();
                 Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
-            program.ImageMap.AddItem(
-                bw.VectorAddress,
-                new ImageMapVectorTable(
-                    vector.ToArray(),
-                    builder.TableByteSize));
+            var imgVector = new ImageMapVectorTable(
+                        bw.VectorAddress,
+                        vector.ToArray(),
+                        builder.TableByteSize);
+            if (builder.TableByteSize > 0)
+            {
+                program.ImageMap.AddItemWithSize(bw.VectorAddress, imgVector);
+            }
+            else
+            {
+                program.ImageMap.AddItem(bw.VectorAddress, imgVector);
+            }
             return true;
         }
 

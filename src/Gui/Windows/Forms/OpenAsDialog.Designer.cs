@@ -39,12 +39,14 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ddlRawFileTypes = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 13);
+            this.label1.Location = new System.Drawing.Point(8, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 0;
@@ -57,13 +59,13 @@
             this.textBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.textBox1.Location = new System.Drawing.Point(8, 29);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(303, 20);
+            this.textBox1.Size = new System.Drawing.Size(352, 20);
             this.textBox1.TabIndex = 1;
             // 
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(317, 28);
+            this.btnBrowse.Location = new System.Drawing.Point(366, 28);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(24, 23);
             this.btnBrowse.TabIndex = 2;
@@ -73,7 +75,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 108);
+            this.label2.Location = new System.Drawing.Point(8, 145);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(117, 13);
             this.label2.TabIndex = 3;
@@ -82,7 +84,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 60);
+            this.label3.Location = new System.Drawing.Point(8, 97);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(118, 13);
             this.label3.TabIndex = 6;
@@ -94,9 +96,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ddlEnvironments.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlEnvironments.FormattingEnabled = true;
-            this.ddlEnvironments.Location = new System.Drawing.Point(8, 76);
+            this.ddlEnvironments.Location = new System.Drawing.Point(8, 113);
             this.ddlEnvironments.Name = "ddlEnvironments";
-            this.ddlEnvironments.Size = new System.Drawing.Size(333, 21);
+            this.ddlEnvironments.Size = new System.Drawing.Size(382, 21);
             this.ddlEnvironments.TabIndex = 3;
             // 
             // ddlArchitectures
@@ -105,16 +107,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ddlArchitectures.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlArchitectures.FormattingEnabled = true;
-            this.ddlArchitectures.Location = new System.Drawing.Point(8, 124);
+            this.ddlArchitectures.Location = new System.Drawing.Point(8, 161);
             this.ddlArchitectures.Name = "ddlArchitectures";
-            this.ddlArchitectures.Size = new System.Drawing.Size(333, 21);
+            this.ddlArchitectures.Size = new System.Drawing.Size(382, 21);
             this.ddlArchitectures.TabIndex = 5;
             // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(185, 234);
+            this.btnOk.Location = new System.Drawing.Point(234, 296);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 7;
@@ -125,7 +127,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(266, 234);
+            this.btnCancel.Location = new System.Drawing.Point(315, 296);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 8;
@@ -135,7 +137,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 153);
+            this.label4.Location = new System.Drawing.Point(8, 190);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 13);
             this.label4.TabIndex = 9;
@@ -143,10 +145,28 @@
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(8, 169);
+            this.txtAddress.Location = new System.Drawing.Point(8, 206);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(166, 20);
             this.txtAddress.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 56);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(71, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Raw file &type:";
+            // 
+            // ddlRawFileTypes
+            // 
+            this.ddlRawFileTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlRawFileTypes.FormattingEnabled = true;
+            this.ddlRawFileTypes.Location = new System.Drawing.Point(8, 73);
+            this.ddlRawFileTypes.Name = "ddlRawFileTypes";
+            this.ddlRawFileTypes.Size = new System.Drawing.Size(382, 21);
+            this.ddlRawFileTypes.TabIndex = 12;
             // 
             // OpenAsDialog
             // 
@@ -154,7 +174,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(353, 268);
+            this.ClientSize = new System.Drawing.Size(402, 330);
+            this.Controls.Add(this.ddlRawFileTypes);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.txtAddress);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCancel);
@@ -192,5 +214,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtAddress;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox ddlRawFileTypes;
     }
 }

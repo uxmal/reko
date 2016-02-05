@@ -348,7 +348,7 @@ namespace Reko.ImageLoaders.MzExe
         string ReadByteLengthString(ImageReader rdr, int offset)
         {
             var clone = rdr.Clone();
-            clone.Offset = (ulong)((long)clone.Offset + offset);
+            clone.Offset = clone.Offset + offset;
             var len = clone.ReadByte();
             var abStr = clone.ReadBytes(len);
             return Encoding.ASCII.GetString(abStr);

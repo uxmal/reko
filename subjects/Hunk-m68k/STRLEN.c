@@ -6,13 +6,13 @@
 
 void fn00001000(int32 d0, byte * a0)
 {
-	Eq_4 * a6_8 = *0x00000004;
+	Eq_4 * a6_8 = *(Eq_4 * *) 0x04;
 	int32 d2_3 = d0;
 	byte * a2_241 = a0;
-	Eq_11 * a4_6 = 0x000093BE;
+	Eq_11 * a4_6 = (Eq_11 *) 37822;
 	if (a6_8->w0014 - 0x24 < 0x00)
 	{
-		word32 * a0_495 = 0x000013C8;
+		word32 * a0_495 = &globals->dw13C8;
 		word32 d0_498 = 0x0C;
 		do
 		{
@@ -24,7 +24,7 @@ void fn00001000(int32 d0, byte * a0)
 	a4_6->ptrFFFF800A = fp;
 	a4_6->ptrFFFF800E = a6_8;
 	Eq_27 * d0_19 = FindTask(0x00);
-	Eq_33 * d0_110 = OpenLibrary(0x000012BC, 0x00);
+	Eq_33 * d0_110 = OpenLibrary(0x12BC, 0x00);
 	if (d0_110 != null)
 	{
 		int32 d4_450;
@@ -62,7 +62,7 @@ void fn00001000(int32 d0, byte * a0)
 			Eq_68 * d0_130 = d0_19->ptr00AC;
 			d0_130->dw0000 = d0_105 + 0x11;
 			d0_130->dw000C = d4_121 - 0x01;
-			Mem146[d0_130 + 0x08:word32] = d0_130 + 0x0010 + d0_103;
+			d0_130->ptr0008 = (byte *) (&d0_130->ptr0010 + d0_103 / 0x0028);
 			Mem148[0x00:word32] = 0x00;
 			Eq_68 * d0_149 = d0_19->ptr00AC;
 			if (d0_149 == null)
@@ -97,22 +97,23 @@ l000011F8:
 			ui32 d0_198 = ((ui32[]) 0x0010)[d0_149];
 			ptr32 a0_205 = (d0_198 << 0x02) + 0x01;
 			int32 d0_206 = (int32) null[d0_198].b0000;
-			Mem207[a0_205 + d0_206:byte] = 0x00;
+			a0_205 + d0_206 = (byte *) 0x00;
 			d0_130->ptr0010 = a0_205;
 			ui32 d0_213 = ((ui32[]) 0x0010)[d0_206];
 			byte * a1_216 = d0_130->ptr0008;
 			ptr32 a0_221 = (d0_213 << 0x02) + 0x01;
 			int32 d0_222 = (int32) null[d0_213].b0000;
-			Mem223[a0_221 + d0_222:byte] = 0x00;
+			a0_221 + d0_222 = (byte *) 0x00;
 			d0_130->ptr0010 = a0_221;
 			byte * * a6_226 = d0_130->ptr0010 + 0x01;
 			int32 d3_227 = 0x01;
 			Eq_237 * a0_229 = a0 + d2_3;
 			do
-				a0_229 = a0_229 - (Eq_246 *) 0x01;
+				a0_229 = a0_229 - (Eq_243 *) 0x01;
 			while (d2_3 != ~0x00);
-			Mem235[a0_229 + 0x01:byte] = 0x00;
-			word32 d2_234 = d2_3 - 0x01;
+			a0_229[0x01] = (struct Eq_237 {	// size: 1 1
+				byte b0001;	// 1
+			}) 0x00;
 			do
 			{
 l000010E6:
@@ -121,15 +122,15 @@ l000010E6:
 				d1_109 = DPB(d1_109, v37_250, 0);
 				if (v37_250 == 0x00)
 					goto l00001148;
-			} while ((byte) d1_109 - 0x20 == 0x00 || (byte) d1_109 - 0x09 == 0x00);
+			} while (v37_250 == 0x20 || v37_250 == 0x09);
 			if (d3_227 - d0_130->dw000C != 0x00)
 			{
-				Mem306[a6_226 + 0x00:word32] = a1_216;
+				*a6_226 = (byte * *) a1_216;
 				a6_226 = a6_226;
 				d3_227 = DPB(d3_227, (word16) d3_227 + 0x01, 0);
-				if ((byte) d1_109 - 0x22 != 0x00)
+				if (v37_250 != 0x22)
 				{
-					*a1_216 = (byte) d1_109;
+					*a1_216 = v37_250;
 					a1_216 = a1_216 + 0x01;
 					while (true)
 					{
@@ -138,9 +139,9 @@ l000010E6:
 						d1_109 = DPB(d1_109, v45_332, 0);
 						if (v45_332 == 0x00)
 							break;
-						if ((byte) d1_109 - 0x20 == 0x00)
+						if (v45_332 == 0x20)
 							goto l00001116;
-						*a1_216 = (byte) d1_109;
+						*a1_216 = v45_332;
 						a1_216 = a1_216 + 0x01;
 					}
 				}
@@ -152,21 +153,21 @@ l000010E6:
 						d1_109 = DPB(d1_109, v70_348, 0);
 						if (v70_348 == 0x00)
 							break;
-						if ((byte) d1_109 - 0x22 == 0x00)
+						if (v70_348 == 0x22)
 						{
 l00001116:
 							*a1_216 = 0x00;
 							a1_216 = a1_216 + 0x01;
 							goto l000010E6;
 						}
-						if ((byte) d1_109 - 0x2A == 0x00)
+						if (v70_348 == 0x2A)
 						{
-							d1_109 = DPB(d1_109, *a2_241, 0);
-							d2_234 = DPB(d2_234, (byte) DPB(d2_234, (byte) d1_109, 0) & 223, 0);
+							byte v73_367 = *a2_241;
 							a2_241 = a2_241 + 0x01;
-							if ((byte) d2_234 - 0x4E == 0x00)
+							d1_109 = DPB(d1_109, v73_367, 0);
+							if ((v73_367 & 223) == 0x4E)
 								d1_109 = 0x0A;
-							else if ((byte) d2_234 - 0x45 == 0x00)
+							else if ((v73_367 & 223) == 0x45)
 								d1_109 = 0x001B;
 						}
 						*a1_216 = (byte) d1_109;
@@ -241,7 +242,7 @@ void fn00001278(word32 dwArg04)
 
 void fn0000127C(int32 d2)
 {
-	Eq_541 * a4_0 = 0x000093BE;
+	Eq_510 * a4_0 = (Eq_510 *) 37822;
 	Eq_33 * * a7_3 = a4_0->ptrFFFF800A;
 	Eq_33 * v7_8 = *(a7_3 - 0x04);
 	Eq_33 * v5_5 = *(a7_3 - 0x08);
@@ -256,7 +257,7 @@ void fn0000127C(int32 d2)
 
 void fn000012D0(word32 dwArg04)
 {
-	Eq_585 * a3_11 = 0x00001404;
+	Eq_554 * a3_11 = (Eq_554 *) 0x1404;
 	if (0x1404 != 0x00)
 	{
 		int32 d2_39 = 0x01;
@@ -270,16 +271,16 @@ void fn000012D0(word32 dwArg04)
 			{
 				int32 d0_55 = d2_49 << 0x02;
 				code * a2_57 = a3_11[d0_55];
-				ERROR: EQ_619.DataType is Null a7_59;
-				ERROR: EQ_620.DataType is Null a2_61;
+				word32 a7_59;
+				word32 a2_61;
 				word32 d2_62;
-				ERROR: EQ_622.DataType is Null d0_63;
-				ERROR: EQ_623.DataType is Null CVZN_64;
-				ERROR: EQ_624.DataType is Null Z_65;
-				ERROR: EQ_625.DataType is Null ZN_66;
-				ERROR: EQ_626.DataType is Null C_67;
-				ERROR: EQ_627.DataType is Null V_68;
-				ERROR: EQ_628.DataType is Null CVZNX_69;
+				word32 d0_63;
+				byte CVZN_64;
+				byte Z_65;
+				byte ZN_66;
+				byte C_67;
+				byte V_68;
+				byte CVZNX_69;
 				a2_57();
 				d2_49 = d2_62 - 0x01;
 			} while (d2_62 != 0x01);
@@ -290,25 +291,25 @@ void fn000012D0(word32 dwArg04)
 
 void fn0000131C(word32 dwArg04)
 {
-	if (*0x000013F8 == 0x00)
+	if (*(word32 *) 5112 == 0x00)
 	{
-		Eq_640 * a3_28 = *0x0000140C;
-		*0x000013F8 = 0x01;
+		Eq_609 * a3_28 = *(Eq_609 * *) 0x140C;
+		*(int32 *) 5112 = 0x01;
 		if (a3_28 != null)
 			do
 			{
 				code * a2_50 = a3_28->ptr0004;
-				ERROR: EQ_660.DataType is Null a7_51;
-				Eq_640 * * a3_52;
-				ERROR: EQ_662.DataType is Null a2_53;
-				ERROR: EQ_663.DataType is Null ZN_54;
-				ERROR: EQ_664.DataType is Null C_55;
-				ERROR: EQ_665.DataType is Null V_56;
-				ERROR: EQ_666.DataType is Null Z_57;
-				ERROR: EQ_667.DataType is Null d0_58;
-				ERROR: EQ_668.DataType is Null CVZN_59;
+				word32 a7_51;
+				Eq_609 * * a3_52;
+				word32 a2_53;
+				byte ZN_54;
+				byte C_55;
+				byte V_56;
+				byte Z_57;
+				word32 d0_58;
+				byte CVZN_59;
 				a2_50();
-				a3_28 = Mem31[a3_52 + 0x00:word32];
+				a3_28 = (Eq_609 *) *a3_52;
 			} while (a3_28 != null);
 		fn000012D0(dwArg04);
 	}
@@ -317,18 +318,18 @@ void fn0000131C(word32 dwArg04)
 
 void fn00001354(int32 dwArg04, Eq_68 * dwArg08)
 {
-	code * * a3_45 = 0x00001400;
+	code * * a3_45 = (code * *) 0x1400;
 	if (5116 != 0x00 && *a3_45 != null)
 		do
 		{
-			ERROR: EQ_690.DataType is Null a7_52;
-			ERROR: EQ_691.DataType is Null a2_54;
-			ERROR: EQ_692.DataType is Null d0_55;
-			ERROR: EQ_693.DataType is Null CVZN_56;
-			ERROR: EQ_694.DataType is Null Z_57;
-			ERROR: EQ_695.DataType is Null ZN_58;
-			ERROR: EQ_696.DataType is Null C_59;
-			ERROR: EQ_697.DataType is Null V_60;
+			word32 a7_52;
+			word32 a2_54;
+			word32 d0_55;
+			byte CVZN_56;
+			byte Z_57;
+			byte ZN_58;
+			byte C_59;
+			byte V_60;
 			(*a3_45)();
 		} while (*a3_45 != null);
 	fn0000131C(fn00001390());
@@ -337,7 +338,7 @@ void fn00001354(int32 dwArg04, Eq_68 * dwArg08)
 
 word32 fn00001390()
 {
-	return fn000013AC(0x000013A4);
+	return fn000013AC(0x13A4);
 }
 
 int32 fn000013AC(ptr32 dwArg04)

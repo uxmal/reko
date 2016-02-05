@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register int test(Register word64 f1)", sig.ToString("test"));
+            Assert.AreEqual("Register int test(Register double f1)", sig.ToString("test"));
         }
 
         private SerializedType Type(string typeName)

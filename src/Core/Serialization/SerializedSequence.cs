@@ -43,11 +43,9 @@ namespace Reko.Core.Serialization
 			Registers[1] = new Register_v1(seq.Tail.Name);
 		}
 
-		public override Identifier Accept(ArgumentSerializer sser)
+		public override Identifier Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);
 		}
-
 	}
-
 }

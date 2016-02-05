@@ -50,7 +50,12 @@ namespace Reko.Typing
 			}
 		}
 
-		public DataType VisitStructure(StructureType str)
+        public DataType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitStructure(StructureType str)
 		{
 			if (str.Name == null && eq != null)
 				str.Name = eq.Name;

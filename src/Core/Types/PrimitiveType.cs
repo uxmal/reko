@@ -71,6 +71,11 @@ namespace Reko.Core.Types
 			this.Name = name;
 		}
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitPrimitive(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitPrimitive(this);

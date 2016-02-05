@@ -143,7 +143,7 @@ namespace Reko.Environments.Windows
                 return null;
         }
 
-        public override ProcedureSignature SignatureFromName(string fnName)
+        public override ExternalProcedure SignatureFromName(string fnName)
         {
             return SignatureGuesser.SignatureFromName(
                 fnName,

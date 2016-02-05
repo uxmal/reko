@@ -117,6 +117,18 @@ namespace Reko.Loading
             return program;
         }
 
+
+        public Program LoadRawImage(string filename, byte[] image, RawFileElement raw)
+        {
+            var imgLoader = CreateRawImageLoader(image, new NullImageLoader(Services, filename, image), raw);
+            var program = imgLoader.Load(imgLoader.PreferredBaseAddress);
+            program.Name = Path.GetFileName(filename);
+            var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
+            program.EntryPoints.AddRange(relocations.EntryPoints);
+            program.FunctionHints.AddRange(relocations.Functions);
+            return program;
+        }
+
         public ImageLoader CreateDefaultImageLoader(string filename, byte[] image)
         {
             var imgLoader = new NullImageLoader(Services, filename, image);
@@ -128,6 +140,12 @@ namespace Reko.Loading
                     "The format of the file is unknown.");
                 return imgLoader;
             }
+
+            return CreateRawImageLoader(image, imgLoader, rawFile);
+        }
+
+        private ImageLoader CreateRawImageLoader(byte[] image, NullImageLoader imgLoader, RawFileElement rawFile)
+        {
             var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
             var env = cfgSvc.GetEnvironment(rawFile.Environment);
             IPlatform platform;
@@ -146,12 +164,7 @@ namespace Reko.Loading
             if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
             {
                 imgLoader.PreferredBaseAddress = baseAddr;
-                entryAddr = baseAddr;
-                if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
-                {
-                    if (!arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
-                        entryAddr = baseAddr;
-                }
+                entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
                 var state = arch.CreateProcessorState();
                 imgLoader.EntryPoints.Add(new EntryPoint(
                     entryAddr,
@@ -159,6 +172,32 @@ namespace Reko.Loading
                     state));
             }
             return imgLoader;
+        }
+
+        public static Address GetRawBinaryEntryAddress(
+            RawFileElement rawFile,
+            byte[] image, 
+            IProcessorArchitecture arch, 
+            Address baseAddr)
+        {
+            if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
+            {
+                Address entryAddr;
+                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
+                {
+                    if (!string.IsNullOrEmpty(rawFile.EntryPoint.Follow))
+                    {
+                        var rdr = arch.CreateImageReader(new LoadedImage(baseAddr, image), entryAddr);
+                        return arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
+                    }
+                }
+                else
+                {
+                    return baseAddr;
+                }
+            }
+
+            return baseAddr;
         }
 
         /// <summary>

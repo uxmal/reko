@@ -53,7 +53,7 @@ namespace Reko.Typing
         private TypeVariableReplacer tvr;
 		private TypeTransformer trans;
 		private ComplexTypeNamer ctn;
-		private TypedExpressionRewriter2 ter;
+		private TypedExpressionRewriter ter;
 
 		public TypeAnalyzer(DecompilerEventListener eventListener)
 		{
@@ -85,7 +85,7 @@ namespace Reko.Typing
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,program, eventListener);
             ctn = new ComplexTypeNamer();
-            ter = new TypedExpressionRewriter2(program);
+            ter = new TypedExpressionRewriter(program);
 
             // RestrictProcedures(program, 0, 1, true); // Re-enable this for debugging
             eventListener.ShowStatus("Gathering primitive datatypes from instructions.");

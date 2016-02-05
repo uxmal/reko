@@ -35,6 +35,7 @@ using Rhino.Mocks;
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
+    [Category("UnitTests")]
     public class X86ProcedureSerializerTests
     {
         private MockRepository mr;
@@ -53,6 +54,17 @@ namespace Reko.UnitTests.Arch.Intel
             platform = new Win32Platform(null, arch);
         }
 
+        private void Verify(SerializedSignature ssig, string outputFilename)
+        {
+            using (FileUnitTester fut = new FileUnitTester(outputFilename))
+            {
+                XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
+                x.Formatting = Formatting.Indented;
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(ssig.GetType());
+                ser.Serialize(x, ssig);
+                fut.AssertFilesEqual();
+            }
+        }
         private void Given_ProcedureSerializer(string cConvention)
         {
             this.deserializer = mockFactory.CreateDeserializer();
@@ -194,16 +206,17 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void ProcSer_Deserialize_thiscall()
+        public void X86ProcSer_Deserialize_thiscall()
         {
             var ssig = new SerializedSignature
             {
+                EnclosingType = new SerializedStructType { Name = "CHandle" },
                 Convention = "__thiscall",
                 Arguments = new Argument_v1[] {
                     new Argument_v1 
                     {
-                        Type = new SerializedTypeReference("int"),
-                        Name = "this"
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
+                        Name = "foo"
                     }
                 }
             };
@@ -212,7 +225,9 @@ namespace Reko.UnitTests.Arch.Intel
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("ecx", sig.Parameters[0].ToString());
+            Assert.AreEqual(2, sig.Parameters.Length);
+            Assert.AreEqual("this", sig.Parameters[0].ToString());
+            Assert.AreEqual("ecx", sig.Parameters[0].Storage.ToString());
         }
 
         [Test]
@@ -285,16 +300,36 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(0, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
         }
 
-        private void Verify(SerializedSignature ssig, string outputFilename)
+        [Test]
+        public void X86ProcSer_Load_thiscall()
         {
-            using (FileUnitTester fut = new FileUnitTester(outputFilename))
+            var ssig = new SerializedSignature
             {
-                XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
-                x.Formatting = Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(ssig.GetType());
-                ser.Serialize(x, ssig);
-                fut.AssertFilesEqual();
-            }
+                EnclosingType = new SerializedStructType { Name="CWindow" },
+                Convention = "__thiscall",
+                Arguments = new Argument_v1[]
+                {
+                    new Argument_v1
+                    {
+                        Name = "XX",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize= 4 },
+                    },
+                    new Argument_v1
+                    {
+                        Name = "arg1",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize= 2 },
+                    },
+                }
+            };
+            Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            var sExp =
+@"void ()(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, sig.ToString());
         }
     }
 }

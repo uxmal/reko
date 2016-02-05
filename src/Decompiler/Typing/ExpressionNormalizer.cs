@@ -30,8 +30,8 @@ namespace Reko.Typing
 	/// <summary>
 	/// Transform certain expressions to equivalents, to simplify type inference.
 	/// Locates array expressions and converts them to array access expressions. 
-	/// This simplifies work for later stages of the type inference, when we want to identify
-	/// array accesses quickly.
+	/// This simplifies work for later stages of the type inference, when we want
+    /// to identify array accesses quickly.
 	/// </summary>
 	public class ExpressionNormalizer : InstructionTransformer
 	{

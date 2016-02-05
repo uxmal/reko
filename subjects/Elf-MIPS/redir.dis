@@ -7,11 +7,6 @@ void fn00400230(word32 ra, word32 dwArg00)
 // Preserved:
 // Stack args: Stack +0000(32)
 // Terminates process
-l00400284:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
 fn00400230_exit:
 // DataOut:
 // DataOut (flags): 
@@ -24,6 +19,18 @@ fn00400230_entry:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00400230:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
+l00400230_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
+l00400230_ds_f:
 // DataOut: ra
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -55,9 +62,27 @@ l00400238:
 	call r25_18 (retsize: 0; depth: 24)
 		uses: dwLoc08_17,r2_16,r25_18,r28_5,r4_8,r5_9,r6_12,r7_14,ra_6,sp_15
 		defs: r2_26,r25_27,r28_20,r4_22,r5_23,r6_24,r7_25,ra_21,sp_19
+	word32 r25_42 = Mem0[0x0FC00690:word32]
+	word32 sp_43
+	word32 r28_44
+	word32 ra_45
+	word32 r4_46
+	word32 r5_47
+	word32 r6_48
+	word32 r7_49
+	word32 r2_50
+	word32 r25_51
+	call r25_42 (retsize: 0; depth: 24)
+		uses: dwLoc08_41,r2_40,r25_42,r28_31,r4_33,r5_34,r6_37,r7_38,ra_32,sp_39
+		defs: r2_50,r25_51,r28_44,r4_46,r5_47,r6_48,r7_49,ra_45,sp_43
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00400284:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r28:0x0FC08628 ra:0x00000000 r4:<invalid> r5:fp + 4 r6:<invalid> r7:<invalid> r2:<invalid> r25:<invalid> -8(fp):<invalid>
 
 
 

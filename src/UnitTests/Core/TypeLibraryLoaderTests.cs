@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(0, lib.Types.Count);
             Assert.AreEqual(1, lib.Signatures.Count);
             var sExp =
-@"Register size_t ()(Stack (ptr char) arg0)
+@"Register size_t ()(Stack (ptr char) ptrArg00)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, lib.Signatures["strlen"].ToString()

@@ -496,7 +496,8 @@ namespace Reko.Analysis
                     .Select(u => u.Expression)
                     .ToHashSet();
                 block.Statements.AddRange(rename.Values
-                    .Where(id => !existing.Contains(id))
+                    .Where(id => !existing.Contains(id) &&
+                                 !(id.Storage is StackArgumentStorage))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
                     .Select(id => new Statement(0, new UseInstruction(id), block)));
             }
