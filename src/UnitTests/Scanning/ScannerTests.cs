@@ -628,5 +628,20 @@ fn00001200_exit:
             var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
             Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
         }
+
+        [Test(Description = "EntryPoints with no discernible type should not crash")]
+        public void Scanner_Regression_1()
+        {
+            var scanner = CreateScanner(0x1000, 0x2000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => { m.Return(0, 0); }
+            });
+
+            scanner.ScanEntryPoint(program, new EntryPoint(Address.Ptr32(0x1000), "test", arch.CreateProcessorState()));
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("test", program.Procedures[Address.Ptr32(0x1000)].Name);
+        }
     }
 }

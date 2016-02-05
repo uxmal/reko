@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,41 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitFunctionType(FunctionType ft)
         {
-            throw new NotImplementedException();
+            Argument_v1 ret = null;
+            if (ft.ReturnType != null)
+            {
+                ret = SerializeArgument(null, null, ft.ReturnType);
+            }
+            Argument_v1[] parms;
+            if (ft.ArgumentTypes != null)
+            {
+                parms = new Argument_v1[ft.ArgumentTypes.Length];
+                for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+                {
+                    var type = ft.ArgumentTypes[i].Accept(this);
+                    parms[i] = SerializeArgument(ft.ArgumentNames[i], null, ft.ArgumentTypes[i]);
+                }
+            }
+            else
+            {
+                parms = new Argument_v1[0];
+            }
+            return new SerializedSignature
+            {
+                Arguments = parms,
+                ReturnValue = ret
+            };
+        }
+
+        private Argument_v1 SerializeArgument(string name, Storage stg, DataType dt)
+        {
+            return new Argument_v1
+            {
+                Name = name,
+                //    Kind = arg.Storage.Serialize(),
+                OutParameter = stg is OutArgumentStorage,
+                Type = dt.Accept(this)
+            };
         }
 
         public SerializedType VisitPrimitive(PrimitiveType pt)
