@@ -34,6 +34,11 @@ namespace Reko.Core.Types
 			this.Length = length;
 		}
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitArray(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitArray(this);

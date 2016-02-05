@@ -42,6 +42,11 @@ namespace Reko.Core.Types
 			this.number = n;
 		}
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitTypeVariable(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitTypeVariable(this);
