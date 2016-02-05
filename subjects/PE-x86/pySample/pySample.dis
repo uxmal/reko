@@ -1,42 +1,207 @@
+PyObject * fn10001000(PyObject * ptrArg00, PyObject * ptrArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: esp
+// Stack args: Stack +0000(32)
+fn10001000_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0000(32)
+
+l10001000:
+	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002144, SLICE(0x10002144, <unknown>, 32))
+	branch eax_19 != 0x00000000 l10001027
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32)
+
+l10001027:
+	return Py_BuildValue(0x1000214C, SLICE(0x1000214C, <unknown>, 32))
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg00 8(fp):ptrArg04
+
+l10001023:
+	return eax_19
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg00 8(fp):ptrArg04
+
+fn10001000_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp edx:ptrArg04 eax:<invalid> ecx:<invalid> -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg00 8(fp):ptrArg04
+
+
+
+PyObject * fn10001050(PyObject * ptrArg00, PyObject * ptrArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: esp
+// Stack args: Stack +0000(32)
+fn10001050_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0000(32)
+
+l10001050:
+	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002150, SLICE(0x10002150, <unknown>, 32))
+	branch eax_19 != 0x00000000 l10001078
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32)
+
+l10001078:
+	return Py_BuildValue(0x1000214C, SLICE(0x1000214C, <unknown>, 32))
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+
+l10001074:
+	return eax_19
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+
+fn10001050_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002150 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg00 8(fp):ptrArg04
+
+
+
+PyObject * fn100010A0(PyObject * ptrArg00, PyObject * ptrArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: esp
+// Stack args: Stack +0000(32)
+fn100010A0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0000(32)
+
+l100010A0:
+	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002158, SLICE(0x10002158, <unknown>, 32))
+	branch eax_19 != 0x00000000 l100010C8
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32)
+
+l100010C8:
+	return Py_BuildValue(0x1000214C, SLICE(0x1000214C, <unknown>, 32))
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+
+l100010C4:
+	return eax_19
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+
+fn100010A0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp edx:<invalid> eax:<invalid> ecx:fp - 0x00000008 Sequence edx:eax:<invalid> -24(fp):ptrArg04 -20(fp):0x10002158 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg00 8(fp):ptrArg04
+
+
+
+PyObject * fn100010F0(PyObject * ptrArg00, PyObject * ptrArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: esp
+// Stack args: Stack +0000(32)
+fn100010F0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(0) Stack +0000(32)
+
+l100010F0:
+	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002160, SLICE(0x10002160, <unknown>, 32))
+	branch eax_19 != 0x00000000 l10001118
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0004(0)
+
+l10001118:
+	Mem42[fp - 0x00000014:word32] = 0x10002168
+	return Py_BuildValue(0x10002160, (void) (rLoc08 / rLoc04))
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+
+l10001114:
+	return eax_19
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+
+fn100010F0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):<invalid> -16(fp):<invalid> -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+
+
+
 PyObject * py_unused(PyObject * self, PyObject * args)
-// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: esp
-// Stack args: Stack +0000(0) Stack +0008(32)
+// Stack args: Stack +0000(32)
 py_unused_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(0) Stack +0008(32)
+// LocalsOut: fp(32) Stack +0000(32)
 
 l10001140:
-	word32 eax_9 = PyArg_ParseTuple(args, 0x1000216C, tArg00)
-	branch eax_9 != 0x00000000 l10001158
+	word32 eax_12 = PyArg_ParseTuple(args, 0x1000216C, tArg00)
+	branch eax_12 != 0x00000000 l10001158
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 
 l10001158:
-	word32 eax_17 = _Py_NoneStruct
-	Mem20[eax_17:word32] = Mem0[eax_17:word32] + 0x00000001
-	return _Py_NoneStruct
+	word32 eax_20 = Py_NoneStruct
+	Mem23[eax_20:word32] = Mem0[eax_20:word32] + 0x00000001
+	return Py_NoneStruct
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:<invalid> -8(fp):<invalid> -4(fp):0x1000216C
+// SymbolicIn: esp:fp eax:<invalid> -8(fp):args -4(fp):0x1000216C 4(fp):self 8(fp):args
 
 l10001157:
-	return eax_9
+	return eax_12
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:<invalid> -8(fp):<invalid> -4(fp):0x1000216C
+// SymbolicIn: esp:fp eax:<invalid> -8(fp):args -4(fp):0x1000216C 4(fp):self 8(fp):args
 
 py_unused_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:<invalid> -8(fp):<invalid> -4(fp):0x1000216C
+// SymbolicIn: esp:fp eax:<invalid> -8(fp):args -4(fp):0x1000216C 4(fp):self 8(fp):args
 
 
 
@@ -110,7 +275,7 @@ l100011FC:
 // LocalsOut: fp(32)
 
 l10001202:
-	word32 ecx_34 = Mem0[_adjust_fdiv:word32]
+	word32 ecx_34 = Mem0[adjust_fdiv:word32]
 	Mem44[0x100033A4:word32] = ecx_34
 	branch dwArg08 != 0x00000001 l100012E8
 // DataOut: eax ebp esp fs
@@ -171,7 +336,7 @@ l10001326:
 	word32 esi_293
 	word32 edi_294
 	selector fs_295
-	call _decode_pointer (retsize: 4; depth: 24)
+	call decode_pointer (retsize: 4; depth: 24)
 		uses: C_260,dwLoc04_6,dwLoc08_37,dwLoc0C_40,dwLoc10_43,dwLoc14,dwLoc18,dwLoc20,eax_261,ebp_7,ebx,ecx_34,edi_283,esi_249,esp_281,fs,SCZO_262,SZO_258,Z_263
 		defs: C_288,eax_285,ebp_286,ebx_292,ecx_291,edi_294,esi_293,esp_284,fs_295,SCZO_289,SZO_287,Z_290
 	word32 esp_302 = fp + 0xFFFFFFEC
@@ -195,13 +360,13 @@ l1000133B:
 	word32 edi_333
 	selector fs_334
 	word32 ebx_331
-	call _decode_pointer (retsize: 4; depth: 28)
+	call decode_pointer (retsize: 4; depth: 28)
 		uses: C_300,dwLoc04_6,dwLoc08_37,dwLoc0C_40,dwLoc10_43,dwLoc14,dwLoc18,dwLoc20,eax_285,ebp_286,ebx_297,ecx_301,edi_294,esi_293,esp_321,fs_295,SCZO_289,SZO_298,Z_299
 		defs: C_327,eax_324,ebp_325,ebx_331,ecx_330,edi_333,esi_332,esp_323,fs_334,SCZO_328,SZO_326,Z_329
 	word32 edi_338 = eax_324
 // DataOut: eax ebx edi fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFEC eax:<invalid> ebp:0x00000000 ecx:0x00000001 edi:_decode_pointer esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp + 0xFFFFFFEC eax:<invalid> ebp:0x00000000 ecx:0x00000001 edi:decode_pointer esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l10001350:
@@ -254,7 +419,7 @@ l10001357:
 	word32 esi_365
 	word32 edi_366
 	selector fs_367
-	call _encoded_null (retsize: 4; depth: 28)
+	call encoded_null (retsize: 4; depth: 28)
 		uses: C_351,dwLoc04_6,dwLoc08_37,dwLoc0C_40,dwLoc10_43,dwLoc14,dwLoc18,dwLoc20,eax_342,ebp_347,ebx_346,ecx_354,edi_349,esi_345,esp_355,fs_339,SCZO_350,SZO_343,Z_341
 		defs: C_360,eax_357,ebp_358,ebx_364,ecx_363,edi_366,esi_365,esp_356,fs_367,SCZO_361,SZO_359,Z_362
 	Mem369[0x100033B0:word32] = eax_357
@@ -288,7 +453,7 @@ l1000131C:
 	word32 esi_275
 	word32 edi_276
 	selector fs_277
-	call _amsg_exit (retsize: 4; depth: 24)
+	call amsg_exit (retsize: 4; depth: 24)
 		uses: C_260,dwLoc04_6,dwLoc08_37,dwLoc0C_40,dwLoc10_43,dwLoc14,dwLoc18,dwLoc20,eax_261,ebp_7,ebx,ecx_34,edi_248,esi_249,esp_264,fs,SCZO_262,SZO_258,Z_263
 		defs: C_270,eax_267,ebp_268,ebx_274,ecx_273,edi_276,esi_275,esp_266,fs_277,SCZO_271,SZO_269,Z_272
 // DataOut: esp fs
@@ -368,7 +533,7 @@ l1000126D:
 	word32 esi_198
 	word32 edi_199
 	selector fs_200
-	call _initterm_e (retsize: 4; depth: 28)
+	call initterm_e (retsize: 4; depth: 28)
 		uses: C_99,dwLoc04_6,dwLoc08_37,dwLoc0C_40,dwLoc10_43,dwLoc14_82,dwLoc18_187,eax_96,ebp_95,ebx_80,ecx_34,edi_102,esi_83,esp_186,fs,SCZO_94,SZO_97,Z_98
 		defs: C_193,eax_190,ebp_191,ebx_197,ecx_196,edi_199,esi_198,esp_189,fs_200,SCZO_194,SZO_192,Z_195
 	branch eax_190 == 0x00000000 l10001293
@@ -388,7 +553,7 @@ l10001293:
 	byte Z_222
 	word32 ecx_223
 	selector fs_227
-	call _initterm (retsize: 4; depth: 32)
+	call initterm (retsize: 4; depth: 32)
 		uses: C_204,dwLoc04_6,dwLoc08_37,dwLoc0C_40,dwLoc10_43,dwLoc14_82,dwLoc18_187,eax_190,ebp_191,ebx_197,ecx_207,edi_199,esi_198,esp_214,fs_200,SCZO_194,SZO_202,Z_203
 		defs: C_220,eax_217,ebp_218,ebx_224,ecx_223,edi_226,esi_225,esp_216,fs_227,SCZO_221,SZO_219,Z_222
 	Mem232[0x100033A8:word32] = 0x00000002
@@ -413,7 +578,7 @@ l10001264:
 	byte Z_177
 	word32 ecx_178
 	selector fs_182
-	call _amsg_exit (retsize: 4; depth: 24)
+	call amsg_exit (retsize: 4; depth: 24)
 		uses: C_99,dwLoc04_6,dwLoc08_37,dwLoc0C_40,dwLoc10_43,dwLoc14_82,dwLoc18_86,eax_96,ebp_95,ebx_80,ecx_34,edi_102,esi_83,esp_169,fs,SCZO_94,SZO_97,Z_98
 		defs: C_175,eax_172,ebp_173,ebx_179,ecx_178,edi_181,esi_180,esp_171,fs_182,SCZO_176,SZO_174,Z_177
 	esp_112 = fp + 0xFFFFFFE8
@@ -505,11 +670,11 @@ fn100011E9_exit:
 
 
 
-void fn10001388(word32 ecx, word32 edx, word32 ebx, word32 esi, word32 edi)
+word32 fn10001388(word32 ecx, word32 edx, word32 ebx, word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebx ecx edi edx esi fs
-// LiveOut: esp
+// LiveOut: eax esp
 // Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
 // Preserved:
 fn10001388_entry:
@@ -744,14 +909,15 @@ l1000147A:
 	Mem35[ebp_10 - 0x00000004:word32] = Mem23[ebp_10 - 0x00000004:word32] & 0x00000000
 	Mem38[ebp_10 - 0x00000004:word32] = 0xFFFFFFFE
 	fn10001493()
+	word32 eax_39 = Mem38[ebp_10 - 0x0000001C:word32]
 	fn1000182D(ebp_10, 0x00000010, dwArg00, dwArg04, dwArg08, dwArg0C)
-	return
-// DataOut: esp
+	return eax_39
+// DataOut: eax esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> edi:<invalid> esi:<invalid> ebx:<invalid> eax:<invalid> ecx:<invalid> ebp:<invalid> edx:<invalid> cl:<invalid> -20(fp):<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):0x100021E8 -4(fp):0x00000010
 
 fn10001388_exit:
-// DataOut: esp
+// DataOut: eax esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> edi:<invalid> esi:<invalid> ebx:<invalid> eax:<invalid> ecx:<invalid> ebp:<invalid> edx:<invalid> cl:<invalid> -20(fp):<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):0x100021E8 -4(fp):0x00000010
 
@@ -783,22 +949,22 @@ fn10001493_exit:
 
 
 
-void fn1000149E(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08, word32 dwArg0C)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+// stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebx edi esi fs
 // LiveOut:
 // Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
 // Preserved: esp
-// Stack args: Stack +0008(32) Stack +000C(32)
-fn1000149E_entry:
+// Stack args: Stack +0000(32)
+DllMain_entry:
 // DataOut: ebx edi esi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0008(32) Stack +000C(32)
+// LocalsOut: fp(32) Stack +0000(32)
 
 l1000149E:
-	branch dwArg08 != 0x00000001 l100014AA
+	branch dwReason != 0x00000001 l100014AA
 // DataOut: ebx edi esi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -808,20 +974,19 @@ l100014A5:
 	fn10001864()
 // DataOut: ebx edi esi fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp
+// SymbolicIn: esp:fp 4(fp):hModule 8(fp):dwReason 12(fp):lpReserved
 // LocalsOut: fp(32) Stack +0008(32) Stack +000C(32)
 
 l100014AA:
-	fn10001388(dwArg0C, dwArg08, ebx, esi, edi)
-	return
+	return fn10001388(lpReserved, dwReason, ebx, esi, edi)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:<invalid>
+// SymbolicIn: esp:fp eax:<invalid> 4(fp):hModule 8(fp):dwReason 12(fp):lpReserved
 
-fn1000149E_exit:
+DllMain_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ecx:<invalid> edx:<invalid> edi:<invalid> esi:<invalid> ebx:<invalid> eax:<invalid> ebp:<invalid> cl:<invalid> -4(fp):<invalid>
+// SymbolicIn: esp:<invalid> ecx:<invalid> edx:<invalid> edi:<invalid> esi:<invalid> ebx:<invalid> eax:<invalid> ebp:<invalid> cl:<invalid> -4(fp):<invalid> 4(fp):hModule 8(fp):dwReason 12(fp):lpReserved
 
 
 
