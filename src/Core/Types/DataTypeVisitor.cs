@@ -44,4 +44,24 @@ namespace Reko.Core.Types
         T VisitUnknownType(UnknownType ut);
         T VisitVoidType(VoidType voidType);
     }
+
+    public interface IDataTypeVisitor
+    {
+        void VisitArray(ArrayType at);
+        void VisitClass(ClassType ct);
+        void VisitCode(CodeType c);
+        void VisitEnum(EnumType e);
+        void VisitEquivalenceClass(EquivalenceClass eq);
+        void VisitFunctionType(FunctionType ft);
+        void VisitPrimitive(PrimitiveType pt);
+        void VisitMemberPointer(MemberPointer memptr);
+        void VisitPointer(Pointer ptr);
+        void VisitString(StringType str);
+        void VisitStructure(StructureType str);
+        void VisitTypeReference(TypeReference typeref);
+        void VisitTypeVariable(TypeVariable tv);
+        void VisitUnion(UnionType ut);
+        void VisitUnknownType(UnknownType ut);
+        void VisitVoidType(VoidType voidType);
+    }
 }

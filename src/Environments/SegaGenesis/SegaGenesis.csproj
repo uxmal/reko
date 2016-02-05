@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RomLoader.cs" />
     <Compile Include="SegaGenesisPlatform.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -68,6 +68,11 @@ namespace Reko.Core.Types
             }
         }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitUnion(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitUnion(this);

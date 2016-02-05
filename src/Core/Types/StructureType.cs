@@ -48,6 +48,11 @@ namespace Reko.Core.Types
             this.Size = size;
         }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitStructure(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitStructure(this);

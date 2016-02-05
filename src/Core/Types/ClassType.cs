@@ -47,6 +47,11 @@ namespace Reko.Core.Types
         public List<ClassBase> Bases { get; private set; }
         public override int Size { get; set; }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitClass(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitClass(this);

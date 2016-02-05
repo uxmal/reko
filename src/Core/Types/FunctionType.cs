@@ -66,6 +66,11 @@ namespace Reko.Core.Types
             this.Signature = signature;
         }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitFunctionType(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitFunctionType(this);

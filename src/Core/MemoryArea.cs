@@ -438,9 +438,19 @@ namespace Reko.Core
             return true;
         }
 
+        public static Constant ReadBeDouble(byte[] abImage, long off)
+        {
+            return Constant.DoubleFromBitpattern(ReadBeInt64(abImage, off));
+        }
+
         public static Constant ReadLeDouble(byte[] abImage, long off)
         {
             return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, off));
+        }
+
+        public static Constant ReadBeFloat(byte[] abImage, long off)
+        {
+            return Constant.FloatFromBitpattern(ReadBeInt32(abImage, off));
         }
 
         public static Constant ReadLeFloat(byte[] abImage, long off)
@@ -517,6 +527,16 @@ namespace Reko.Core
             }
         }
 
+
+        public Constant ReadBeDouble(long off) { return ReadBeDouble(abImage, off); }
+        public Constant ReadBeFloat(long off) { return ReadBeFloat(abImage, off); }
+        public long ReadBeInt64(uint off) { return ReadBeInt64(this.abImage, off); }
+        public ulong ReadBeUint64(uint off) { return ReadBeUInt64(this.abImage, off); }
+        public int ReadBeInt32(uint off) { return ReadBeInt32(this.abImage, off); }
+        public uint ReadBeUInt32(uint off) { return ReadBeUInt32(this.abImage, off); }
+        public short ReadBeInt16(uint off) { return ReadBeInt16(this.abImage, off); }
+        public ushort ReadBeUInt16(uint off) { return ReadBeUInt16(this.abImage, off); }
+
         public Constant ReadLeDouble(long off) { return ReadLeDouble(abImage, off); }
         public Constant ReadLeFloat(long off) { return ReadLeFloat(abImage, off); }
 		public long ReadLeInt64(uint off) {  return ReadLeInt64(this.abImage, off); }
@@ -525,6 +545,7 @@ namespace Reko.Core
         public uint ReadLeUInt32(uint off) { return ReadLeUInt32(this.abImage, off); }
         public short ReadLeInt16(uint off) { return ReadLeInt16(this.abImage, off); }
         public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.abImage, off); }
+
         public bool TryReadByte(long off, out byte b) { return TryReadByte(this.abImage, off, out b); }
 
         public Constant ReadLeDouble(Address addr) { return ReadLeDouble(abImage, ToOffset(addr)); }

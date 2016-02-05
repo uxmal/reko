@@ -481,6 +481,11 @@ namespace Reko.Core.Expressions
                 throw new NotImplementedException();
             }
 
+            public override void Accept(IDataTypeVisitor v)
+            {
+                throw new NotImplementedException();
+            }
+
             public override DataType Clone()
             {
                 throw new NotImplementedException();

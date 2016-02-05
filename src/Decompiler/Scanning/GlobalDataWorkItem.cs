@@ -30,7 +30,7 @@ namespace Reko.Scanning
     /// The purpose of this class is to discover interesting global variables. In particular,
     /// we want to discover pointers to procedures in global data.
     /// </summary>
-    public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor<bool>
+    public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor
     {
         private IScanner scanner;
         private Program program;
@@ -50,41 +50,40 @@ namespace Reko.Scanning
             dt.Accept(this);
         }
 
-        public bool VisitArray(ArrayType at)
+        public void VisitArray(ArrayType at)
         {
             if (at.Length == 0)
             {
                 scanner.Warn(Address, "User-specified arrays must have a non-zero size.");
-                return false;
+                return;
             }
             for (int i = 0; i < at.Length; ++i)
             {
                 at.ElementType.Accept(this);
             }
-            return false;
         }
 
-        public bool VisitClass(ClassType ct)
+        public void VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCode(CodeType c)
+        public void VisitCode(CodeType c)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitEnum(EnumType e)
+        public void VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitEquivalenceClass(EquivalenceClass eq)
+        public void VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitFunctionType(FunctionType ft)
+        public void VisitFunctionType(FunctionType ft)
         {
             var addr = rdr.Address;
             var up = new Procedure_v1
@@ -93,40 +92,35 @@ namespace Reko.Scanning
                 Signature = ft.Signature
             };
             scanner.EnqueueUserProcedure(up);
-
-            return false;
         }
 
-        public bool VisitPrimitive(PrimitiveType pt)
+        public void VisitPrimitive(PrimitiveType pt)
         {
             rdr.Read(pt);
-            return false;
         }
 
-        public bool VisitMemberPointer(MemberPointer memptr)
+        public void VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPointer(Pointer ptr)
+        public void VisitPointer(Pointer ptr)
         {
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
             var addr = Address.FromConstant(c);
 
             if (!program.ImageMap.IsValidAddress(addr))
-                return false;
+                return;
 
             scanner.EnqueueUserGlobalData(addr, ptr.Pointee);
-
-            return false;
         }
 
-        public bool VisitString(StringType str)
+        public void VisitString(StringType str)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitStructure(StructureType str)
+        public void VisitStructure(StructureType str)
         {
             var structOffset = rdr.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
@@ -135,32 +129,29 @@ namespace Reko.Scanning
                 str.Fields[i].DataType.Accept(this);
             }
             rdr.Offset = structOffset + str.GetInferredSize();
-            return false;
         }
 
-        public bool VisitTypeReference(TypeReference typeref)
+        public void VisitTypeReference(TypeReference typeref)
         {
-            return typeref.Referent.Accept(this);
+            typeref.Referent.Accept(this);
         }
 
-        public bool VisitTypeVariable(TypeVariable tv)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitUnion(UnionType ut)
+        public void VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnknownType(UnknownType ut)
+        public void VisitUnion(UnionType ut)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
-        public bool VisitVoidType(VoidType voidType)
+        public void VisitUnknownType(UnknownType ut)
         {
-            return false;
+        }
+
+        public void VisitVoidType(VoidType voidType)
+        {
         }
     }
 }
