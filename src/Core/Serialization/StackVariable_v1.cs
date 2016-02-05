@@ -28,7 +28,7 @@ namespace Reko.Core.Serialization
 	{
 		public StackVariable_v1() {}
 
-		public override Identifier Accept(ArgumentSerializer sser)
+		public override Identifier Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);
 		}

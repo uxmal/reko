@@ -48,7 +48,7 @@ namespace Reko.Arch.PowerPC
         {
             if (ss == null)
                 return null;
-            var argser = new ArgumentSerializer(this, Architecture, frame, 0);
+            var argser = new ArgumentDeserializer(this, Architecture, frame, 0);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)
@@ -73,7 +73,7 @@ namespace Reko.Arch.PowerPC
             return sig;
         }
 
-        private Identifier DeserializeArgument(ArgumentSerializer argser, Argument_v1 sArg)
+        private Identifier DeserializeArgument(ArgumentDeserializer argser, Argument_v1 sArg)
         {
             Identifier arg;
             if (sArg.Kind != null)

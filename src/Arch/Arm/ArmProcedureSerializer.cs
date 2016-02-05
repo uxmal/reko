@@ -42,7 +42,7 @@ namespace Reko.Arch.Arm
         {
             if (ss == null)
                 return null;
-            var argser = new ArgumentSerializer(this, Architecture, frame, 0);
+            var argser = new ArgumentDeserializer(this, Architecture, frame, 0);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)
@@ -71,11 +71,11 @@ namespace Reko.Arch.Arm
             return A32Registers.r0;
         }
 
-        private Identifier DeserializeArgument(ArgumentSerializer argser, Argument_v1 sArg)
+        private Identifier DeserializeArgument(ArgumentDeserializer argser, Argument_v1 sArg)
         {
             Identifier arg;
             if (sArg.Kind != null)
-                return sArg.Kind.Accept(argser);
+                return sArg.Kind.Deserialize(argser);
 
             var dtArg = sArg.Type.Accept(TypeLoader);
             var prim = dtArg as PrimitiveType;
