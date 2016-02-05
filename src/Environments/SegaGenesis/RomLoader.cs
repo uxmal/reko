@@ -61,7 +61,7 @@ namespace Reko.Environments.SegaGenesis
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             // Get the Reset address from offset $0004 of the interrupt vector.
-            var addrReset = Address.Ptr32(program.Image.ReadLeUInt32(4));
+            var addrReset = Address.Ptr32(program.Image.ReadBeUInt32(4));
             var eps = new List<EntryPoint>();
             if (program.Image.IsValidAddress(addrReset))
             {
