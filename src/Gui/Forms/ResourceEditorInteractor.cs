@@ -61,13 +61,16 @@ namespace Reko.Gui.Forms
 
         Control DumpBytes()
         {
-            var mem = new MemoryControl();
-            mem.Services = services;
-            mem.ProgramImage = new Reko.Core.MemoryArea(Address.Ptr32(0), resource.Bytes);
-            mem.ImageMap = mem.ProgramImage.CreateImageMap();
-            mem.Architecture = program.Architecture;
-            mem.Font = new Font("Lucida Console", 10F); //$TODO: use user preference
-            return mem;
+            var mem = new Reko.Core.MemoryArea(Address.Ptr32(0), resource.Bytes);
+
+            var memCtrl = new MemoryControl();
+            memCtrl.Services = services;
+            memCtrl.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("resource", mem, AccessMode.Read));
+            memCtrl.Architecture = program.Architecture;
+            memCtrl.Font = new Font("Lucida Console", 10F); //$TODO: use user preference
+            return memCtrl;
         }
 
         public void SetSite(IServiceProvider sp)

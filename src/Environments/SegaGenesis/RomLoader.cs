@@ -43,7 +43,7 @@ namespace Reko.Environments.SegaGenesis
         {
             if (RawImage.Length <= 0x200)
                 throw new BadImageFormatException("The file is too small for a Sega Genesis ROM image.");
-            var image = new LoadedImage(addrLoad, RawImage);
+            var mem = new MemoryArea(addrLoad, RawImage);
             var cfgService = Services.RequireService<IConfigurationService>();
             var arch = cfgService.GetArchitecture("m68k");
             var env = cfgService.GetEnvironment("sega-genesis");
@@ -51,8 +51,7 @@ namespace Reko.Environments.SegaGenesis
 
             return new Program
             {
-                Image = image,
-                ImageMap = image.CreateImageMap(),
+                ImageMap = mem.CreateImageMap(),
                 Architecture = arch,
                 Platform = platform,
             };
@@ -61,9 +60,9 @@ namespace Reko.Environments.SegaGenesis
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             // Get the Reset address from offset $0004 of the interrupt vector.
-            var addrReset = Address.Ptr32(program.Image.ReadBeUInt32(4));
+            var addrReset = Address.Ptr32(MemoryArea.ReadBeUInt32(RawImage, 4));
             var eps = new List<EntryPoint>();
-            if (program.Image.IsValidAddress(addrReset))
+            if (program.ImageMap.IsValidAddress(addrReset))
             {
                 eps.Add(new EntryPoint(addrReset, "Reset", program.Architecture.CreateProcessorState()));
             }
