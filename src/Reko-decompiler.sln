@@ -201,6 +201,8 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "WixInstalle
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller-2012", "WixInstaller\WixInstaller-2012.wixproj", "{00575BB6-C683-4A83-89D6-EE445EF463A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegaGenesis", "Environments\SegaGenesis\SegaGenesis.csproj", "{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -1419,6 +1421,36 @@ Global
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|Win32.Build.0 = Release|x86
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|x86.ActiveCfg = Release|x86
 		{00575BB6-C683-4A83-89D6-EE445EF463A3}.TravisRelease|x86.Build.0 = Release|x86
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|.NET.Build.0 = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|Win32.Build.0 = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Debug|x86.Build.0 = Debug|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|.NET.ActiveCfg = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|.NET.Build.0 = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|Win32.ActiveCfg = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|Win32.Build.0 = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|x86.ActiveCfg = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.Release|x86.Build.0 = Release|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|.NET.ActiveCfg = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|.NET.Build.0 = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|Any CPU.ActiveCfg = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|Any CPU.Build.0 = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|Mixed Platforms.ActiveCfg = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|Mixed Platforms.Build.0 = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|Win32.ActiveCfg = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|Win32.Build.0 = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|x86.ActiveCfg = TravisRelease|Any CPU
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}.TravisRelease|x86.Build.0 = TravisRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1470,6 +1502,7 @@ Global
 		{0D35C524-CA16-4C68-80CD-538897144B47} = {583D1273-7630-480B-9020-D16B3A15D15D}
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30} = {2426E4D6-D2C7-4F06-B54C-5CFEA0804F02}
 		{00575BB6-C683-4A83-89D6-EE445EF463A3} = {2426E4D6-D2C7-4F06-B54C-5CFEA0804F02}
+		{46D47AC5-DEC2-44E6-942A-F1D9B77BB514} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\MonoDecompiler\MonoDecompiler.csproj
