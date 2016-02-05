@@ -108,6 +108,7 @@
     <Compile Include="Core\CLanguage\LookAheadLexerTests.cs" />
     <Compile Include="Core\CLanguage\NamedDataTypeExtractorTests.cs" />
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
+    <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />
@@ -308,7 +309,6 @@
     <Compile Include="Core\ProgramTests.cs" />
     <Compile Include="Core\RegisterTests.cs" />
     <Compile Include="Core\RelocationDictionaryTests.cs" />
-    <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureCharacteristicsTests.cs" />
     <Compile Include="Core\Serialization\ArgumentTests.cs" />
     <Compile Include="Core\Serialization\SerializedCallTests.cs" />
