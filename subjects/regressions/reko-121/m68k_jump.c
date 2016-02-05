@@ -19,7 +19,7 @@ void fn0000C02A(int32 d1, Eq_3 * a0, Eq_4 * a1)
 			break;
 		ui32 d3_122 = DPB(a4_120, (&a0->dw0004)[a4_120 / 0x0C], 0);
 		a4_120 = a4_120 + 0x01;
-		ci16 v31_130 = (word16) DPB(d3_122 & 0xFF, (byte) DPB(d3_122 & 0xFF, (word16) (d3_122 & 0xFF) & 0xF0, 0) >> 0x02, 0) - 44;
+		ci16 v31_130 = (word16) DPB(d3_122 & 0xFF, (byte) ((word16) (d3_122 & 0xFF) & 0xF0) >> 0x02, 0) - 44;
 		if (v31_130 <= 0x00)
 			switch (v31_130)
 			{
@@ -37,7 +37,7 @@ void fn0000C02A(int32 d1, Eq_3 * a0, Eq_4 * a1)
 				break;
 			case 0x01:
 				uint32 d6_150 = DPB(d6_155, 0x1111, 0) * (word16) DPB(d3_122 & 0xFF, (byte) (d3_122 & 0xFF) & 0x0F, 0);
-				d6_155 = DPB(__swap(d6_150), (word16) DPB(d3_122 & 0xFF, (word16) d6_150, 0), 0);
+				d6_155 = DPB(__swap(d6_150), (word16) d6_150, 0);
 				*a6_139 = (Eq_4 *) d6_155;
 				*(word32 *) 0x00FF0F04 = *(word32 *) 0x00FF0F04 + 0x04;
 				a6_139 = a6_139;
@@ -91,10 +91,10 @@ void fn0000C02A(int32 d1, Eq_3 * a0, Eq_4 * a1)
 				a6_139 = a6_139;
 				break;
 			case 0x06:
-				Eq_207 * a3_296 = (Eq_207 *) 0x00FF0F0C;
+				Eq_202 * a3_296 = (Eq_202 *) 0x00FF0F0C;
 				a3_296->dw0000 = d3_122 & 0xFF & 0x0F;
 				ui32 d3_302 = DPB(a4_120, (&a0->dw0004)[a4_120 / 0x0C], 0);
-				a3_296->dw0004 = DPB(d1, (byte) DPB(d1, (byte) (d3_302 & 0xFF), 0) >> 0x04, 0);
+				a3_296->dw0004 = DPB(d1, (byte) (d3_302 & 0xFF) >> 0x04, 0);
 				a3_296->dw0008 = DPB(d3_302 & 0xFF, (byte) (d3_302 & 0xFF) & 0x0F, 0);
 				a4_120 = a4_120 + 0x02;
 				ui32 d3_320 = DPB(a4_120 + 0x01, (&a0->dw0004)[(a4_120 + 0x01) / 0x0C], 0) & 0xFF;

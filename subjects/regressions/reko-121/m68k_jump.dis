@@ -34,7 +34,7 @@ l0000C3DE:
 l0000C050:
 	word32 d3_122 = DPB(a4_120, Mem57[a0 + 0x00000004 + a4_120:byte], 0)
 	a4_120 = a4_120 + 0x00000001
-	word16 v31_130 = (word16) DPB(d3_122 & 0x000000FF, (byte) DPB(d3_122 & 0x000000FF, (word16) (d3_122 & 0x000000FF) & 0x00F0, 0) >>u 0x02, 0) - 0x002C
+	word16 v31_130 = (word16) DPB(d3_122 & 0x000000FF, (byte) ((word16) (d3_122 & 0x000000FF) & 0x00F0) >>u 0x02, 0) - 0x002C
 	branch v31_130 > 0x0000 l0000C3DE
 // DataOut: a0 a2 a4 a6 d0 d1 d3 d6
 // DataOut (flags): 
@@ -217,7 +217,7 @@ l0000C1A0:
 	word32 a3_296 = 0x00FF0F0C
 	Mem298[a3_296:word32] = d3_122 & 0x000000FF & 15
 	word32 d3_302 = DPB(a4_120, Mem298[a0 + 0x00000004 + a4_120:byte], 0)
-	Mem310[a3_296 + 4:word32] = DPB(d1, (byte) DPB(d1, (byte) (d3_302 & 0x000000FF), 0) >>u 0x04, 0)
+	Mem310[a3_296 + 4:word32] = DPB(d1, (byte) (d3_302 & 0x000000FF) >>u 0x04, 0)
 	Mem315[a3_296 + 8:word32] = DPB(d3_302 & 0x000000FF, (byte) (d3_302 & 0x000000FF) & 0x0F, 0)
 	a4_120 = a4_120 + 0x00000002
 	word32 d3_320 = DPB(a4_120 + 0x00000001, Mem315[a0 + 0x00000004 + (a4_120 + 0x00000001):byte], 0) & 0x000000FF
@@ -379,7 +379,7 @@ l0000C0D0:
 
 l0000C0B6:
 	word32 d6_150 = DPB(d6_155, 0x1111, 0) *u (word16) DPB(d3_122 & 0x000000FF, (byte) (d3_122 & 0x000000FF) & 0x0F, 0)
-	d6_155 = DPB(__swap(d6_150), (word16) DPB(d3_122 & 0x000000FF, (word16) d6_150, 0), 0)
+	d6_155 = DPB(__swap(d6_150), (word16) d6_150, 0)
 	Mem157[a6_139:word32] = d6_155
 	Mem160[0x00FF0F04:word32] = Mem157[0x00FF0F04:word32] + 0x00000004
 	a6_139 = a6_139 + 0x00000004
