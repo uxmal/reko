@@ -48,14 +48,14 @@ namespace Reko.UnitTests.Core.Output
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
         }
 
-        private ImageWriter Memory(uint address)
+        private ImageWriter Given_Memory(uint address)
         {
             image = new LoadedImage(Address.Ptr32(address), new byte[1024]);
             var mem = new LeImageWriter(image.Bytes);
             return mem;
         }
 
-        private void CreateProcedure(uint address, string name)
+        private void Given_ProcedureAtAddress(uint address, string name)
         {
             program.Procedures.Add(
                 Address.Ptr32(address),
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Core.Output
             );
         }
 
-        private void Globals(params StructureField[] fields)
+        private void Given_Globals(params StructureField[] fields)
         {
             var arch = new Mocks.FakeArchitecture();
             this.program = new Program(
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Core.Output
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-        private StructureField Field(int offset, DataType dt)
+        private StructureField Given_Field(int offset, DataType dt)
         {
             return new StructureField(offset, dt);
         }
@@ -102,9 +102,9 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void GdwInt32()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt32(0xFFFFFFFF);
-            Globals(
+            Given_Globals(
                 new StructureField(0x1000, PrimitiveType.Int32));
 
             RunTest("int32 g_dw1000 = -1;\r\n");
@@ -113,10 +113,10 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void GdwReal32()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt32(0x3F800000); // 1.0F
-            Globals(
-                Field(0x1000, PrimitiveType.Real32));
+            Given_Globals(
+                Given_Field(0x1000, PrimitiveType.Real32));
 
             RunTest("real32 g_r1000 = 1F;\r\n");
         }
@@ -124,12 +124,12 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void GdwTwoFields()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt32(0xC0800000)  // -4.0F
                 .WriteLeUInt32(0x48);       // 'H'
-            Globals(
-                Field(0x1000, PrimitiveType.Real32),
-                Field(0x1004, PrimitiveType.Char));
+            Given_Globals(
+                Given_Field(0x1000, PrimitiveType.Real32),
+                Given_Field(0x1004, PrimitiveType.Char));
 
             RunTest(
 @"real32 g_r1000 = -4F;
@@ -140,12 +140,12 @@ char g_b1004 = 'H';
         [Test]
         public void GdwFixedArray()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt32(1)
                 .WriteLeUInt32(10)
                 .WriteLeUInt32(100);
-            Globals(
-                Field(0x1000, new ArrayType(PrimitiveType.UInt32, 3)));
+            Given_Globals(
+                Given_Field(0x1000, new ArrayType(PrimitiveType.UInt32, 3)));
             RunTest(
 @"uint32 g_a1000[3] = 
 {
@@ -159,13 +159,13 @@ char g_b1004 = 'H';
         [Test]
         public void GdwPointer()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt32(0x1008)
                 .WriteLeUInt32(0)
                 .WriteLeUInt32(1234);
-            Globals(
-                Field(0x1000, new Pointer(PrimitiveType.Int32, 4)),
-                Field(0x1008, PrimitiveType.Int32));
+            Given_Globals(
+                Given_Field(0x1000, new Pointer(PrimitiveType.Int32, 4)),
+                Given_Field(0x1008, PrimitiveType.Int32));
 
             RunTest(
 @"int32 * g_ptr1000 = &g_dw1008;
@@ -176,7 +176,7 @@ int32 g_dw1008 = 1234;
         [Test]
         public void GdwStructure()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt16(4)
                 .WriteLeUInt16(unchecked((ushort)-104));
             var eqStr = new EquivalenceClass(new TypeVariable(2));
@@ -189,8 +189,8 @@ int32 g_dw1008 = 1234;
                 }
             };
             eqStr.DataType = str;
-            Globals(
-                Field(0x1000, eqStr));
+            Given_Globals(
+                Given_Field(0x1000, eqStr));
             RunTest(
 @"Eq_2 g_t1000 = 
 {
@@ -203,7 +203,7 @@ int32 g_dw1008 = 1234;
         [Test]
         public void GdwVisitLinkedList()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt32(1)
                 .WriteLeUInt32(0x1008)
                 .WriteLeUInt32(2)
@@ -219,10 +219,10 @@ int32 g_dw1008 = 1234;
                 }
             };
             eqLink.DataType = link;
-            Globals(
-                Field(0x1000, eqLink),
-                Field(0x1008, eqLink),
-                Field(0x1010, new Pointer(eqLink, 4)));
+            Given_Globals(
+                Given_Field(0x1000, eqLink),
+                Given_Field(0x1008, eqLink),
+                Given_Field(0x1010, new Pointer(eqLink, 4)));
             RunTest(
 @"Eq_2 g_t1000 = 
 {
@@ -241,11 +241,11 @@ Eq_2 * g_ptr1010 = &g_t1000;
         [Test]
         public void GdwNullTerminatedString()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteString("Hello, world!", Encoding.UTF8)
                 .WriteByte(0);
-            Globals(
-                Field(0x1000, StringType.NullTerminated(PrimitiveType.Char)));
+            Given_Globals(
+                Given_Field(0x1000, StringType.NullTerminated(PrimitiveType.Char)));
             RunTest(
 @"char g_str1000[] = ""Hello, world!"";
 ");
@@ -254,15 +254,15 @@ Eq_2 * g_ptr1010 = &g_t1000;
         [Test]
         public void GdwArrayStrings()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteString("Low", Encoding.UTF8)
                 .WriteBytes(0, 5)
                 .WriteString("High", Encoding.UTF8)
                 .WriteBytes(0, 4)
                 .WriteString("Medium", Encoding.UTF8)
                 .WriteBytes(0, 2);
-            Globals(
-                Field(0x1000, new ArrayType(
+            Given_Globals(
+                Given_Field(0x1000, new ArrayType(
                     new StringType(
                         PrimitiveType.Char,
                         null,
@@ -282,12 +282,12 @@ Eq_2 * g_ptr1010 = &g_t1000;
         [Test]
         public void GdwDiscoverNewStruct()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                 .WriteLeUInt32(0x1004)      // points to the two fields below.
                 .WriteLeInt32(1)
                 .WriteLeInt32(2);
-            Globals(
-                Field(0x1000, new Pointer(new StructureType("test", 0)
+            Given_Globals(
+                Given_Field(0x1000, new Pointer(new StructureType("test", 0)
                 {
                     Fields =
                     {
@@ -309,12 +309,12 @@ struct test g_t1004 =
         [Test]
         public void GdwTypeReference()
         {
-            Memory(0x1000)
+            Given_Memory(0x1000)
                .WriteLeInt32(1)
                .WriteLeInt32(2)
                .WriteLeUInt32(0x2000);
-            Globals(
-                Field(0x1000, new TypeReference("refTest", new StructureType("_test", 0)
+            Given_Globals(
+                Given_Field(0x1000, new TypeReference("refTest", new StructureType("_test", 0)
                 {
                     Fields =
                     {
@@ -323,7 +323,7 @@ struct test g_t1004 =
                         { 8, new Pointer(new FunctionType(new SerializedSignature()), 4) }
                     }
                 })));
-            CreateProcedure(0x2000, "funcTest");
+            Given_ProcedureAtAddress(0x2000, "funcTest");
             RunTest(
 @" refTest g_t1000 = 
 {
