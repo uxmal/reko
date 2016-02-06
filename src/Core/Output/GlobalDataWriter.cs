@@ -177,6 +177,14 @@ namespace Reko.Core.Output
         public CodeFormatter VisitPointer(Pointer ptr)
         {
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
+            var addr = Address.FromConstant(c);
+            // Check if it is pointer to function
+            Procedure proc;
+            if (program.Procedures.TryGetValue(addr, out proc))
+            {
+                codeFormatter.InnerFormatter.Write(proc.Name);
+                return codeFormatter;
+            }
             int offset = c.ToInt32();
             if (offset == 0)
             {
@@ -248,9 +256,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitTypeReference(TypeReference typeref)
         {
-            var fmt = codeFormatter.InnerFormatter;
-            fmt.WriteType(typeref.Name, typeref);
-            return codeFormatter;
+            return typeref.Referent.Accept(this);
         }
 
         public CodeFormatter VisitTypeVariable(TypeVariable tv)
