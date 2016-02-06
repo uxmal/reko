@@ -49,6 +49,8 @@ namespace Reko.Environments.SegaGenesis
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
+            var imageMap = image.CreateImageMap();
+            imageMap.Segments.Values.First().Access = AccessMode.ReadWriteExecute;
             return new Program
             {
                 Image = image,

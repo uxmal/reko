@@ -72,6 +72,15 @@ namespace Reko.UnitTests.Scanning
             CreateProgram(image, arch);
         }
 
+        private void Given_x86_64_Image(params byte[] bytes)
+        {
+            var image = new LoadedImage(
+                Address.Ptr64(0x0100000000000000),
+                bytes);
+            var arch = new X86ArchitectureFlat64();
+            CreateProgram(image, arch);
+        }
+
         private void CreateProgram(LoadedImage image, IProcessorArchitecture arch)
         {
             var imageMap = image.CreateImageMap();
@@ -182,12 +191,32 @@ namespace Reko.UnitTests.Scanning
                 0xCC, 0xCC, 0xCC, 0xC3);    // Another pointer to code
             Given_Scanner();
             var by = sh.ScanExecutableSegments();
-            var pointedTo = sh.GetPossiblePointerTargets(by);
+            var pointedTo = sh.GetPossiblePointerTargets();
             Assert.AreEqual(new byte[] {
                     0, 0, 0, 0,
                     0, 0, 0, 0,
                     0, 0, 0, 0,
                     0, 0, 0, 3,
+                },
+                pointedTo.Values.First());
+        }
+
+        [Test]
+        public void Shsc_x86_64_FindPossiblePointersToEndOfSegment()
+        {
+            Given_x86_64_Image(
+                0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,     // Pointer to last byte in segment
+                0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,    // Pointer to last byte in segment
+                0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,     // Pointer to last byte in segment
+                0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xC3);    // Return at the end
+            Given_Scanner();
+            var by = sh.ScanExecutableSegments();
+            var pointedTo = sh.GetPossiblePointerTargets();
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 3,
                 },
                 pointedTo.Values.First());
         }

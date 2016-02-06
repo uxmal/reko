@@ -162,6 +162,14 @@ namespace Reko.Core
             return c;
         }
 
+        public bool TryReadLe(PrimitiveType dataType, out Constant c)
+        {
+            bool ret = image.TryReadLe(off, dataType, out c);
+            if (ret)
+                off += (uint)dataType.Size;
+            return ret;
+        }
+
         /// <summary>
         /// Reads a chunk of bytes and interprets it in Big-Endian mode.
         /// </summary>
@@ -172,6 +180,14 @@ namespace Reko.Core
             Constant c = image.ReadBe(off, type);
             off += (uint)type.Size;
             return c;
+        }
+
+        public bool TryReadBe(PrimitiveType dataType, out Constant c)
+        {
+            bool ret = image.TryReadBe(off, dataType, out c);
+            if (ret)
+                off += (uint)dataType.Size;
+            return ret;
         }
 
         public long ReadLeSigned(PrimitiveType w)
@@ -381,6 +397,7 @@ namespace Reko.Core
         public abstract ulong ReadUInt64(uint offset);
 
         public abstract Constant Read(PrimitiveType dataType);
+        public abstract bool TryRead(PrimitiveType dataType, out Constant c);
 
         public char ReadChar(DataType charType)
         {
@@ -487,6 +504,8 @@ namespace Reko.Core
         public override ulong ReadUInt64(uint offset) { return PeekLeUInt64(offset); }
 
         public override Constant Read(PrimitiveType dataType) { return ReadLe(dataType); }
+        public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadLe(dataType, out c); }
+
     }
 
     /// <summary>
@@ -529,5 +548,6 @@ namespace Reko.Core
         public override ulong ReadUInt64(uint offset) { return PeekBeUInt64(offset); }
 
         public override Constant Read(PrimitiveType dataType) { return ReadBe(dataType); }
+        public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadBe(dataType, out c); }
     }
 }
