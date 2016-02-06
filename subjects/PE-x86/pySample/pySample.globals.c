@@ -17,7 +17,13 @@ char g_str10002174[] = "pySample";
 ui32 g_dw10003000 = 0xBB40E64E;
 word32 g_dw10003004 = 0x44BF19B1;
 Eq_146 g_t10003008 = ;
-Eq_108 g_t10003010 = PyMethodDef;
+Eq_108 g_t10003010 = 
+	{
+		&g_b10002140,
+		fn10001000,
+		1,
+		&g_b1000212C,
+	};
 int32 g_dw10003070 = 0;
 word32 g_dw100033A4 = 0x00000000;
 word32 g_dw100033A8 = 0x00000000;
@@ -25,4 +31,6 @@ Eq_163 g_t100033AC = ;
 Eq_146 g_t100033B0 = ;
 Eq_146 g_t100033B4 = ;
  <anonymous> * g_ptr100033B8 = null;
+char g_b10002140 = 's';
+char g_b1000212C = 's';
 
