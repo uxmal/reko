@@ -182,7 +182,7 @@ namespace Reko.Core.Output
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
             {
-                codeFormatter.InnerFormatter.Write(proc.Name);
+                codeFormatter.InnerFormatter.WriteHyperlink(proc.Name, proc);
                 return codeFormatter;
             }
             int offset = c.ToInt32();
