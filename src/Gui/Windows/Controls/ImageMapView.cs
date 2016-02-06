@@ -17,15 +17,25 @@ namespace Reko.Gui.Windows.Controls
         private const float ZoomOutFactor = 1.25F;
         private const float ZoomInFactor = 4.0F / 5.0F;
         private const int CySelection = 3;
-        private const int CxScroll = 16;
+        private const int CxScroll = 16;            // horizontal space for scrollers
+        private const int CxSegmentBorder = 1;      // border between segments.
         private const int CyScroll = 16;
         private const int ScrollStep = 8;
+        private readonly List<SegmentLayout> segLayouts;
 
         public ImageMapView()
         {
             InitializeComponent();
             scrollTimer.Tick += scrollTimer_Tick;
             xLastMouseUp = CxScroll;
+            segLayouts = new List<SegmentLayout>();
+        }
+
+        public class SegmentLayout
+        {
+            public ImageSegment Segment;
+            public long X;
+            public long Width;
         }
 
         public long Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(offset); OnGranularityChanged(); } }
@@ -121,28 +131,53 @@ namespace Reko.Gui.Windows.Controls
 
         private void RenderBody(Graphics g, Rectangle rcBody)
         {
-            long cbOffset = offset;
-            Brush brOld = brBack;
             Rectangle rcPaint = rcBody;
             rcPaint.Width = 0;
             Brush brNew = null;
-            for (int x = rcBody.X; x < rcBody.Right; ++x, cbOffset += granularity)
+            foreach (var sl in this.segLayouts)
             {
-                brNew = GetColorForOffset(cbOffset);
-                if (brNew != brOld)
+                Brush brOld = brBack;
+                var segOffset = sl.Segment.Address.ToLinear() - image.BaseAddress.ToLinear();
+                if ((ulong)offset <= segOffset + sl.Segment.Size && segOffset < (ulong)(offset + rcBody.Width * granularity))
                 {
-                    rcPaint.Width = x - rcPaint.X;
-                    g.FillRectangle(brOld, rcPaint);
-                    brOld = brNew;
-                    rcPaint.X = x;
+                    long cbOffset = offset;
+                    var cxOffset = (int)(cbOffset / granularity) + rcBody.Left;
+                    var cxEnd = cxOffset + (int)sl.Width / granularity;
+                    for (int x = cxOffset; x < cxEnd; ++x, cbOffset += granularity)
+                    {
+                        brNew = GetColorForOffset(cbOffset);
+                        if (brNew != brOld)
+                        {
+                            rcPaint.Width = x - rcPaint.X;
+                            g.FillRectangle(brOld, rcPaint);
+                            brOld = brNew;
+                            rcPaint.X = x;
+                        }
+                    }
+                    if (brNew != null)
+                    {
+                        rcPaint.Width = (int) cxEnd - rcPaint.X;
+                        g.FillRectangle(brNew, rcPaint);
+                    }
+
                 }
             }
-            if (brNew != null)
-            {
-                rcPaint.Width = rcBody.Right - rcPaint.X;
-                g.FillRectangle(brNew, rcPaint);
-            }
-            //g.DrawRectangle(Pens.Red, rcBody);
+            //for (int x = rcBody.X; x < rcBody.Right; ++x, cbOffset += granularity)
+            //{
+            //    brNew = GetColorForOffset(cbOffset);
+            //    if (brNew != brOld)
+            //    {
+            //        rcPaint.Width = x - rcPaint.X;
+            //        g.FillRectangle(brOld, rcPaint);
+            //        brOld = brNew;
+            //        rcPaint.X = x;
+            //    }
+            //}
+            //if (brNew != null)
+            //{
+            //    rcPaint.Width = rcBody.Right - rcPaint.X;
+            //    g.FillRectangle(brNew, rcPaint);
+            //}
         }
 
         private Brush GetColorForOffset(long cbOffset)
@@ -168,10 +203,22 @@ namespace Reko.Gui.Windows.Controls
 
         private Rectangle CalculateLayout()
         {
+            this.segLayouts.Clear();
+            if (imageMap != null && image != null && granularity > 0)
+            {
+                long x = 0;
+                long cx = 0;
+                foreach (var segment in imageMap.Segments.Values)
+                {
+                    cx = (segment.Size + granularity - 1) / granularity;
+                    segLayouts.Add(new SegmentLayout { Segment = segment, X = x, Width = cx });
+                    x += cx + CxSegmentBorder;
+                }
+            }
             var rc = new Rectangle(
                 CxScroll, 0,
-                Width-2 * CxScroll,
-                Height-CySelection);
+                Width - 2 * CxScroll,
+                Height - CySelection);
             return rc;
         }
 
@@ -303,24 +350,28 @@ namespace Reko.Gui.Windows.Controls
         protected override void OnSizeChanged(EventArgs e)
         {
             BoundGranularity(granularity);
+            CalculateLayout();
             Invalidate();
             base.OnSizeChanged(e);
         }
 
         protected virtual void OnGranularityChanged()
         {
+            CalculateLayout();
             Invalidate();
             GranularityChanged.Fire(this);
         }
 
         protected virtual void OnImageChanged()
         {
+            CalculateLayout();
             Invalidate();
             ImageChanged.Fire(this);
         }
 
         protected virtual void OnImageMapChanged()
         {
+            CalculateLayout();
             Invalidate();
             ImageMapChanged.Fire(this);
         }
@@ -352,7 +403,8 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
-        void imageMap_MapChanged( object sender, EventArgs e ) {
+        void imageMap_MapChanged(object sender, EventArgs e)
+        {
             if (InvokeRequired)
                 Invoke(new Action(Invalidate));
             else
