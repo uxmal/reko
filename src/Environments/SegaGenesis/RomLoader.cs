@@ -49,8 +49,9 @@ namespace Reko.Environments.SegaGenesis
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
-            var imageMap = image.CreateImageMap();
-            imageMap.Segments.Values.First().Access = AccessMode.ReadWriteExecute;
+            //$TODO: load from config!
+            var imageMap = new ImageMap(Address.Ptr32(0),
+                new ImageSegment("code", mem, AccessMode.ReadExecute));
             return new Program
             {
                 ImageMap = mem.CreateImageMap(),

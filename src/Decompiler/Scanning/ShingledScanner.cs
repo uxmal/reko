@@ -67,7 +67,7 @@ namespace Reko.Scanning
 
         public Dictionary<ImageSegment, byte[]> ScanExecutableSegments()
         {
-            var map = new Dictionary<ImageMapSegment, byte[]>();
+            var map = new Dictionary<ImageSegment, byte[]>();
             foreach (var segment in program.ImageMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0))
             {
@@ -185,14 +185,14 @@ namespace Reko.Scanning
         /// </summary>
         /// <remarks>Tallies saturate at 255, since they're stored as bytes.</remarks>
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
-        public Dictionary<ImageMapSegment, byte[]> GetPossiblePointerTargets()
+        public Dictionary<ImageSegment, byte[]> GetPossiblePointerTargets()
         {
             var targetMap = program.ImageMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
             foreach (var seg in program.ImageMap.Segments.Values)
             {
                 foreach (var pointer in GetPossiblePointers(seg))
                 {
-                    ImageMapSegment segPointee;
+                    ImageSegment segPointee;
                     if (program.ImageMap.TryFindSegment(pointer, out segPointee) &&
                         segPointee.IsInRange(pointer))
                     {
@@ -211,7 +211,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="seg"></param>
         /// <returns></returns>
-        public IEnumerable<Address> GetPossiblePointers(ImageMapSegment seg)
+        public IEnumerable<Address> GetPossiblePointers(ImageSegment seg)
         {
             uint ptrSize = (uint)program.Platform.PointerType.Size;
             var rdr = program.CreateImageReader(seg.Address);
@@ -263,7 +263,7 @@ namespace Reko.Scanning
             return dasm.FirstOrDefault();
         }
 
-        public IEnumerable<Address> SpeculateCallDests(IDictionary<ImageMapSegment, byte[]> map)
+        public IEnumerable<Address> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
         {
             var addrs = from addr in this.possibleCallDestinationTallies
                     orderby addr.Value descending

@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_x86_64_Image(params byte[] bytes)
         {
-            var image = new LoadedImage(
+            var image = new MemoryArea(
                 Address.Ptr64(0x0100000000000000),
                 bytes);
             var arch = new X86ArchitectureFlat64();

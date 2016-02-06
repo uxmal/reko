@@ -46,7 +46,6 @@ namespace Reko.WindowsItp
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100000), new ImageMapBlock { Size = 30 });
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100100), new ImageMapBlock { Size = 300 });
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100500), new ImageMapBlock { Size = 600 });
-                memoryControl1.ProgramImage = img;
                 memoryControl1.Architecture = new X86ArchitectureFlat32();
 
                 imageMapView1.Image = img;
@@ -54,9 +53,7 @@ namespace Reko.WindowsItp
             }
             else
             {
-                memoryControl1.ProgramImage = null;
                 memoryControl1.Architecture = null;
-
             }
         }
     }
