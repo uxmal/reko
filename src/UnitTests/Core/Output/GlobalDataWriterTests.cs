@@ -20,6 +20,7 @@
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Output;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.IO;
@@ -169,7 +170,7 @@ int32 g_dw1008 = 1234;
         {
             Memory(0x1000)
                 .WriteLeUInt16(4)
-                .WriteLeUInt16(unchecked((ushort) -104));
+                .WriteLeUInt16(unchecked((ushort)-104));
             var eqStr = new EquivalenceClass(new TypeVariable(2));
             var str = new StructureType
             {
@@ -257,7 +258,8 @@ Eq_2 * g_ptr1010 = &g_t1000;
                     new StringType(
                         PrimitiveType.Char,
                         null,
-                        0) { Length = 8 },
+                        0)
+                    { Length = 8 },
                     3)));
             RunTest(
 @"char g_a1000[3][8] = 
@@ -294,6 +296,34 @@ struct test g_t1004 =
 };
 ");
 
+        }
+
+        [Test]
+        public void GdwTypeReference()
+        {
+            Memory(0x1000)
+               .WriteLeInt32(1)
+               .WriteLeInt32(2)
+               .WriteLeUInt32(0x2000);
+            Globals(
+                Field(0x1000, new TypeReference("refTest", new StructureType("_test", 0)
+                {
+                    Fields =
+                    {
+                        { 0, PrimitiveType.Int32 },
+                        { 4, PrimitiveType.Int32 },
+                        { 8, new Pointer(new FunctionType(new SerializedSignature()), 4) }
+                    }
+                })));
+            program.Procedures.Add(Address.Ptr32(0x2000), new Procedure("funcTest", program.Architecture.CreateFrame()));
+            RunTest(
+@" refTest g_t1000 = 
+{
+    1,
+    2,
+    funcTest,
+};
+");
         }
     }
 }
