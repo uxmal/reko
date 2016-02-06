@@ -705,8 +705,17 @@ namespace Reko.Scanning
                 if (idIndex == null || idIndex.Name == "None")
                     swExp = bw.IndexExpression;
                 if (swExp == null)
-                    throw new NotImplementedException();
-                Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
+                {
+                    scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
+                    Emit(new ReturnInstruction());
+                    blockSource.Procedure.ControlGraph.AddEdge(
+                        blockSource, 
+                        blockSource.Procedure.ExitBlock);
+                }
+                else
+                {
+                    Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
+                }
             }
             var imgVector = new ImageMapVectorTable(
                         bw.VectorAddress,

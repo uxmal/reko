@@ -48,22 +48,32 @@ namespace Reko.Scanning
             this.possibleCallDestinationTallies = new Dictionary<Address,int>();
         }
 
+        /// <summary>
+        /// Performs a shingle scan of the executable segments,
+        /// returning a list of addresses to probable functions.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Address> Scan()
         {
-            Dictionary<ImageMapSegment, byte[]> map = ScanExecutableSegments();
-            return SpeculateCallDests(map);
+            try {
+                Dictionary<ImageMapSegment, byte[]> map = ScanExecutableSegments();
+                return SpeculateCallDests(map);
+            }
+            catch
+            {
+                return new Address[0];
+            }
         }
 
         public Dictionary<ImageMapSegment, byte[]> ScanExecutableSegments()
         {
             var map = new Dictionary<ImageMapSegment, byte[]>();
             foreach (var segment in program.ImageMap.Segments.Values
-                .Where(s => (s.Access & AccessMode.Execute) != 0 || true )) //$DEBUG
+                .Where(s => (s.Access & AccessMode.Execute) != 0))
             {
                 var y = ScanSegment(segment);
                 map.Add(segment, y);
             }
-
             return map;
         }
 
@@ -78,7 +88,7 @@ namespace Reko.Scanning
         {
             var G = new DiGraph<Address>();
             G.AddNode(bad);
-            var y = new byte[segment.ContentSize];
+            var y = new byte[segment.Size];
             var step = program.Architecture.InstructionBitSize / 8;
             bool inDelaySlot = false;
             for (var a = 0; a < y.Length; a += step)
