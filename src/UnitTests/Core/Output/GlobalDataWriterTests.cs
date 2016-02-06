@@ -55,6 +55,14 @@ namespace Reko.UnitTests.Core.Output
             return mem;
         }
 
+        private void CreateProcedure(uint address, string name)
+        {
+            program.Procedures.Add(
+                Address.Ptr32(address),
+                new Procedure(name, program.Architecture.CreateFrame())
+            );
+        }
+
         private void Globals(params StructureField[] fields)
         {
             var arch = new Mocks.FakeArchitecture();
@@ -315,7 +323,7 @@ struct test g_t1004 =
                         { 8, new Pointer(new FunctionType(new SerializedSignature()), 4) }
                     }
                 })));
-            program.Procedures.Add(Address.Ptr32(0x2000), new Procedure("funcTest", program.Architecture.CreateFrame()));
+            CreateProcedure(0x2000, "funcTest");
             RunTest(
 @" refTest g_t1000 = 
 {
