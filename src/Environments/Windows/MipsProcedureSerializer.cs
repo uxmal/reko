@@ -32,7 +32,7 @@ namespace Reko.Environments.Windows
     /// </summary>
     public class MipsProcedureSerializer : ProcedureSerializer
     {
-        private ArgumentSerializer argser;
+        private ArgumentDeserializer argDeser;
         private int ir;
         private int fr;
         private static string[] iregs = { "r4", "r5", "r6", "r7" };
@@ -56,14 +56,14 @@ namespace Reko.Environments.Windows
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentSerializer(this, Architecture, frame, 0);
+            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
             FpuStackOffset = 0;
             if (ss.ReturnValue != null)
             {
-                ret = argser.DeserializeReturnValue(ss.ReturnValue);
+                ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
                 fpuDelta += FpuStackOffset;
             }
 
@@ -90,7 +90,7 @@ namespace Reko.Environments.Windows
         {
             if (sArg.Kind != null)
             {
-                return argser.Deserialize(sArg, sArg.Kind);
+                return argDeser.Deserialize(sArg, sArg.Kind);
             }
             Identifier arg;
             var dtArg = sArg.Type.Accept(TypeLoader);
@@ -99,11 +99,11 @@ namespace Reko.Environments.Windows
             {
                 if (this.fr >= fregs.Length)
                 {
-                    arg = argser.Deserialize(sArg, new StackVariable_v1());
+                    arg = argDeser.Deserialize(sArg, new StackVariable_v1());
                 }
                 else
                 {
-                    arg = argser.Deserialize(sArg, new Register_v1 { Name= fregs[fr] });
+                    arg = argDeser.Deserialize(sArg, new Register_v1 { Name= fregs[fr] });
                 }
                 ++this.fr;
                 return arg;
@@ -112,11 +112,11 @@ namespace Reko.Environments.Windows
             {
                 if (this.ir >= iregs.Length)
                 {
-                    arg = argser.Deserialize(sArg, new StackVariable_v1());
+                    arg = argDeser.Deserialize(sArg, new StackVariable_v1());
                 }
                 else
                 {
-                    arg = argser.Deserialize(sArg, new Register_v1 { Name = iregs[ir] });
+                    arg = argDeser.Deserialize(sArg, new Register_v1 { Name = iregs[ir] });
                 }
                 ++this.ir;
                 arg.DataType = dtArg;
@@ -125,7 +125,7 @@ namespace Reko.Environments.Windows
             int regsNeeded = (dtArg.Size + 7) / 8;
             if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
             {
-                return argser.Deserialize(sArg, new StackVariable_v1());
+                return argDeser.Deserialize(sArg, new StackVariable_v1());
             }
             throw new NotImplementedException();
         }

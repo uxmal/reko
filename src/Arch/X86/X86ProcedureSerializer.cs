@@ -40,7 +40,7 @@ namespace Reko.Arch.X86
     /// </remarks>
     public class X86ProcedureSerializer : ProcedureSerializer
     {
-        private ArgumentSerializer argser;
+        private ArgumentDeserializer argDeser;
 
         public X86ProcedureSerializer(IntelArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
@@ -63,14 +63,14 @@ namespace Reko.Arch.X86
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentSerializer(this, Architecture, frame, 0);
+            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
             FpuStackOffset = 0;
             if (ss.ReturnValue != null)
             {
-                ret = argser.DeserializeReturnValue(ss.ReturnValue);
+                ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
                 fpuDelta += FpuStackOffset;
             }
 
@@ -124,7 +124,7 @@ namespace Reko.Arch.X86
             }
             else
                 sArg.Kind = new StackVariable_v1();
-            var arg = argser.Deserialize(sArg);
+            var arg = argDeser.Deserialize(sArg);
             return arg;
         }
 
@@ -139,10 +139,10 @@ namespace Reko.Arch.X86
         {
             if (arg.Kind != null)
             {
-                return argser.Deserialize(arg, arg.Kind);
+                return argDeser.Deserialize(arg, arg.Kind);
             }
             if (convention == null)
-                return argser.Deserialize(arg, new StackVariable_v1());
+                return argDeser.Deserialize(arg, new StackVariable_v1());
             switch (convention)
             {
             case "":
@@ -151,7 +151,7 @@ namespace Reko.Arch.X86
             case "__stdcall":
             case "pascal":
             case "__thiscall":
-                return argser.Deserialize(arg, new StackVariable_v1 { });
+                return argDeser.Deserialize(arg, new StackVariable_v1 { });
             }
             throw new NotSupportedException(string.Format("Unsupported calling convention '{0}'.", convention));
         }

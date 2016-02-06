@@ -46,11 +46,11 @@ namespace Reko.UnitTests.Scanning
             mr = new MockRepository();
         }
 
-        private void Given_Mips_Image(params uint [] words)
+        private void Given_Mips_Image(params uint[] words)
         {
             var image = new MemoryArea(
                 Address.Ptr32(0x10000),
-                words.Select(w => new []
+                words.Select(w => new[]
                 {
                     (byte) w,
                     (byte) (w >> 8),
@@ -69,6 +69,15 @@ namespace Reko.UnitTests.Scanning
                 Address.Ptr32(0x10000),
                 bytes);
             var arch = new X86ArchitectureFlat32();
+            CreateProgram(image, arch);
+        }
+
+        private void Given_x86_64_Image(params byte[] bytes)
+        {
+            var image = new LoadedImage(
+                Address.Ptr64(0x0100000000000000),
+                bytes);
+            var arch = new X86ArchitectureFlat64();
             CreateProgram(image, arch);
         }
 
@@ -133,6 +142,83 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
             var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, by);
+        }
+
+        [Test]
+        public void Shsc_FindPossiblePointersToCode()
+        {
+            Given_x86_Image(
+                0x90, 0x90, 0x90, 0x90,      // Padding
+                0x55, 0x5B, 0xC3, 0x00,     // Actual code
+                0x04, 0x00, 0x01, 0x00);     // Pointer to code
+            Given_Scanner();
+            var pointedTo = sh.GetPossiblePointerTargets();
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0,
+                    1, 0, 0, 0,
+                    0, 0, 0, 0,
+                },
+                pointedTo.Values.First());
+        }
+
+        [Test]
+        public void Shsc_FindPossibleMultiplePointersToCode()
+        {
+            Given_x86_Image(
+                0x90, 0x90, 0x90, 0x90,     // Padding
+                0x55, 0x5B, 0xC3, 0x00,     // Actual code
+                0x04, 0x00, 0x01, 0x00,     // Pointer to code
+                0x04, 0x00, 0x01, 0x00);    // Another pointer to code
+            Given_Scanner();
+            var by = sh.ScanExecutableSegments();
+            var pointedTo = sh.GetPossiblePointerTargets();
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0,
+                    2, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                },
+                pointedTo.Values.First());
+        }
+
+        [Test]
+        public void Shsc_FindPossiblePointersToEndOfSegment()
+        {
+            Given_x86_Image(
+                0x0F, 0x00, 0x01, 0x00,     // Pointer to last byte in segment
+                0x0F, 0x00, 0x01, 0x00,     // Pointer to last byte in segment
+                0x0F, 0x00, 0x01, 0x00,     // Pointer to last byte in segment
+                0xCC, 0xCC, 0xCC, 0xC3);    // Another pointer to code
+            Given_Scanner();
+            var by = sh.ScanExecutableSegments();
+            var pointedTo = sh.GetPossiblePointerTargets();
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 3,
+                },
+                pointedTo.Values.First());
+        }
+
+        [Test]
+        public void Shsc_x86_64_FindPossiblePointersToEndOfSegment()
+        {
+            Given_x86_64_Image(
+                0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,     // Pointer to last byte in segment
+                0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,    // Pointer to last byte in segment
+                0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,     // Pointer to last byte in segment
+                0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xC3);    // Return at the end
+            Given_Scanner();
+            var by = sh.ScanExecutableSegments();
+            var pointedTo = sh.GetPossiblePointerTargets();
+            Assert.AreEqual(new byte[] {
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 3,
+                },
+                pointedTo.Values.First());
         }
     }
 }

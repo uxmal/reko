@@ -475,5 +475,13 @@ namespace Reko.UnitTests.Environments.Windows
                 "__thiscall private: char A::get(int, int)",
                 "?get@A@@AAEEHH@Z");
         }
+
+        [Test]
+        public void PMNP_regression11()
+        {
+            RunTest(
+                "__stdcall void CopyElements(COleVariant *, COleVariant *, int)",
+                "??$CopyElements@VCOleVariant@@@@YGXPAVCOleVariant@@PBV0@H@Z");
+        }
     }
 }

@@ -36,6 +36,7 @@ namespace Reko.Environments.Windows
     /// Microsoft doesn't document the mangling format, but reverse engineering has been done, resulting in:
     /// http://www.kegel.com/mangle.html
     /// http://www.agner.org/optimize/calling_conventions.pdf
+    /// https://github.com/wine-mirror/wine/dlls/msvcrt/undname.c
     /// </remarks>
     public class MsMangledNameParser
     {
@@ -389,7 +390,9 @@ namespace Reko.Environments.Windows
             {
                 Convention = convention,
                 Arguments = args,
-                EnclosingType = new SerializedStructType { Name = Scope, ForceStructure = true },
+                EnclosingType = !string.IsNullOrEmpty(Scope)
+                    ? new SerializedStructType { Name = Scope, ForceStructure = true }
+                    : null,
                 IsInstanceMethod = isInstanceMethod,
                 ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }
             };

@@ -27,10 +27,10 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.X86
 {
-	/// <summary>
-	/// Models an X86 instruction.
-	/// </summary>
-	public class X86Instruction : MachineInstruction
+    /// <summary>
+    /// Models an X86 instruction.
+    /// </summary>
+    public class X86Instruction : MachineInstruction
 	{
         private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
         private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;

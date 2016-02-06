@@ -229,7 +229,8 @@ namespace Reko.Typing
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.FAdd ||
-                binExp.Operator == Operator.FMul)
+                    binExp.Operator == Operator.FMul ||
+                    binExp.Operator == Operator.FDiv)
             {
                 var dt = PrimitiveType.Create(Domain.Real, tv.DataType.Size);
                 MeetDataType(eLeft, dt);

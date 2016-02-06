@@ -36,6 +36,7 @@ using System.Xml;
 using Reko.Core.Assemblers;
 using System.Threading;
 using Reko.Core.Configuration;
+using System.Diagnostics;
 
 namespace Reko
 {
@@ -417,25 +418,33 @@ namespace Reko
                 {
                     scanner.EnqueueProcedure(addr);
                 }
-                if (false || //$DEBUG
-                    program.User.Heuristics.Contains("shingle"))
-                {
-                    eventListener.ShowStatus("Shingle scanning");
-                    var sh = new ShingledScanner(program, (IRewriterHost) scanner);
-                    var procs = sh.Scan();
-                    foreach (var addr in procs)
-                    {
-                        scanner.EnqueueProcedure(addr);
-                    }
-                }
-
                 scanner.ScanImage();
 
                 if (false || //$DEBUG
                     program.User.Heuristics.Contains("HeuristicScanning"))
                 {
-                    eventListener.ShowStatus("Finding machine code using heuristics.");
-                    scanner.ScanImageHeuristically();
+                    //eventListener.ShowStatus("Finding machine code using heuristics.");
+                    //scanner.ScanImageHeuristically();
+                }
+                if (false || //$DEBUG
+                    program.User.Heuristics.Contains("shingle"))
+                {
+                    eventListener.ShowStatus("Shingle scanning");
+                    var sh = new ShingledScanner(program, (IRewriterHost)scanner);
+                    var watch = new Stopwatch();
+                    watch.Start();
+                    var procs = sh.Scan();
+                    var pprocs = procs.ToList();
+                    watch.Stop();
+                    Debug.Print(
+                        "Elapsed time: {0} msec for {1} procs",
+                        watch.ElapsedMilliseconds,
+                        pprocs.Count);
+
+                    foreach (var addr in procs)
+                    {
+                        scanner.ScanProcedure(addr, null, program.Architecture.CreateProcessorState());
+                    }
                 }
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
             }

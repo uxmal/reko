@@ -157,33 +157,60 @@ namespace Reko.Core
             return ReadLe(abImage, imageOffset, type);
         }
 
+        public Constant ReadBe(long imageOffset, PrimitiveType type)
+        {
+            Constant c = Relocations[(uint)imageOffset];
+            if (c != null && c.DataType.Size == type.Size)
+                return c;
+            return ReadBe(abImage, imageOffset, type);
+        }
+
+        public bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
+        {
+            c = Relocations[(uint)imageOffset];
+            if (c != null && c.DataType.Size == type.Size)
+                return true;
+            if (type.Size + imageOffset > abImage.Length)
+                return false;
+            c = ReadLe(abImage, imageOffset, type);
+            return true;
+        }
+
+        public bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
+        {
+            c = Relocations[(uint)imageOffset];
+            if (c != null && c.DataType.Size == type.Size)
+                return true;
+            if (type.Size + imageOffset > abImage.Length)
+                return false;
+            c = ReadBe(abImage, imageOffset, type);
+            return true;
+        }
+
         public static Constant ReadLe(byte[] abImage, long imageOffset, PrimitiveType type)
         {
             if (type.Domain == Domain.Real)
             {
                 switch (type.Size)
                 {
-                case 4:return Constant.FloatFromBitpattern(ReadLeInt32(abImage, imageOffset));
+                case 4: return Constant.FloatFromBitpattern(ReadLeInt32(abImage, imageOffset));
                 case 8: return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, imageOffset));
                 default: throw new InvalidOperationException(string.Format("Real type {0} not supported.", type));
                 }
             }
-            
-			switch (type.Size)
-			{
-			case 1: return Constant.Create(type, abImage[imageOffset]);
+
+            switch (type.Size)
+            {
+            case 1: return Constant.Create(type, abImage[imageOffset]);
             case 2: return Constant.Create(type, ReadLeUInt16(abImage, imageOffset));
             case 4: return Constant.Create(type, ReadLeUInt32(abImage, imageOffset));
             case 8: return Constant.Create(type, ReadLeUInt64(abImage, imageOffset));
-			}
-			throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
-		}
+            }
+            throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
+        }
 
-        public Constant ReadBe(long imageOffset, PrimitiveType type)
+        public static Constant ReadBe(byte[] abImage, long imageOffset, PrimitiveType type)
         {
-            Constant c = Relocations[(uint)imageOffset];
-            if (c != null && c.DataType.Size == type.Size)
-                return c;
             if (type.Domain == Domain.Real)
             {
                 switch (type.Size)
