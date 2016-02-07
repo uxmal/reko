@@ -55,6 +55,8 @@ namespace Reko.Gui.Windows.Controls
         private ImageMap imageMap;
         private Address addrSelected;
         private Address addrAnchor;
+        private Address addrMin;
+        private Address addrMax;
 
         private int cRows;              // total number of rows.
         private int yTopRow;            // index of topmost visible row
@@ -368,22 +370,20 @@ namespace Reko.Gui.Windows.Controls
             UpdateScroll();
         }
 
-        private MemoryArea ProgramImage
+        private void ChangeMemoryArea(ImageSegment seg)
         {
-            get { return mem; }
-            set
+            mem = seg.MemoryArea;
+            if (mem != null)
             {
-                mem = value;
-                if (mem != null)
-                {
-                    TopAddress = mem.BaseAddress;
-                    UpdateScroll();
-                }
-                else
-                {
-                    UpdateScroll();
-                    Invalidate();
-                }
+                this.addrMin = Address.Max(mem.BaseAddress, seg.Address);
+                this.addrMax = Address.Min(mem.BaseAddress + mem.Length, seg.Address + seg.Size);
+                TopAddress = addrMin;
+                UpdateScroll();
+            }
+            else
+            {
+                UpdateScroll();
+                Invalidate();
             }
         }
 
@@ -423,10 +423,10 @@ namespace Reko.Gui.Windows.Controls
             {
                 addrSelected = value;
                 addrAnchor = value;
-                var mem = GetMemoryAreaFromAddress(value);
-                if (mem != this.mem)
+                var seg = GetSegmentFromAddress(value);
+                if (seg != null)
                 {
-                    ProgramImage = mem;
+                    ChangeMemoryArea(seg);
                 }
                 if (IsVisible(value) || IsVisible(addrSelected))
                     Invalidate();
@@ -448,38 +448,14 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
-        public void ShowAddress(Address addr)
-        {
-            if (this.mem == null || addr < this.mem.BaseAddress)
-                return;
-
-            uint cbOffset = (uint)(addr - this.mem.BaseAddress);
-            if (cbOffset < 0)
-                return;
-
-            var mem = GetMemoryAreaFromAddress(addr);
-            if (mem != this.mem)
-            {
-                ProgramImage = mem;
-            }
-
-            if (!IsVisible(addr))
-            {
-                TopAddress = RoundToNearestRow(addr);
-                yTopRow = (int)(cbOffset / cbRow);
-                vscroller.Value = yTopRow;
-                Invalidate();
-            }
-        }
-
-        private MemoryArea GetMemoryAreaFromAddress(Address addr)
+        private ImageSegment GetSegmentFromAddress(Address addr)
         {
             ImageSegment seg;
             if (ImageMap == null)
                 return null;
             if (!ImageMap.TryFindSegment(addr, out seg))
                 return null;
-            return seg.MemoryArea;
+            return seg;
         }
 
         private void UpdateScroll()
@@ -491,7 +467,7 @@ namespace Reko.Gui.Windows.Controls
             }
 
             vscroller.Enabled = true;
-            cRows = (mem.Bytes.Length + (int)cbRow - 1) / (int)cbRow;
+            cRows = (int) (((addrMax - addrMin) + cbRow - 1) / (int)cbRow);
             int nChunks = (int)(cbRow / wordSize);      // number of chunks per line.
 
             vscroller.Minimum = 0;
@@ -499,7 +475,7 @@ namespace Reko.Gui.Windows.Controls
             cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
             vscroller.LargeChange = cyPage;
             vscroller.Maximum = cRows;
-            int newValue = (int)((addrTopVisible.ToLinear() - mem.BaseAddress.ToLinear()) / cbRow);
+            int newValue = (int)((addrTopVisible.ToLinear() - this.addrMin.ToLinear()) / cbRow);
             vscroller.Value = Math.Max(Math.Min(newValue, vscroller.Maximum), vscroller.Minimum);
         }
 
@@ -524,10 +500,8 @@ namespace Reko.Gui.Windows.Controls
 
         private void vscroller_Scroll(object sender, ScrollEventArgs e)
         {
-            if (e.Type == ScrollEventType.ThumbTrack)
-                return;
             Address newTopAddress = imageMap.MapLinearAddressToAddress(
-                mem.BaseAddress.ToLinear() + (uint)e.NewValue * cbRow);
+                addrMin.ToLinear() + (uint)e.NewValue * cbRow);
             if (mem.IsValidAddress(newTopAddress))
             {
                 TopAddress = newTopAddress;
@@ -562,10 +536,10 @@ namespace Reko.Gui.Windows.Controls
                     return null;
                 // Enumerate all segments visible on screen.
 
-                ulong laEnd = ctrl.ProgramImage.BaseAddress.ToLinear() + (uint)ctrl.mem.Bytes.Length;
+                ulong laEnd = ctrl.addrMax.ToLinear();
                 if (ctrl.addrTopVisible.ToLinear() >= laEnd)
                     return null;
-                ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, ctrl.addrTopVisible);
+                ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;
                 Size cell = ctrl.CellSize;
                 rc.Height = cell.Height;
@@ -579,7 +553,7 @@ namespace Reko.Gui.Windows.Controls
                         if (rdr.Address.ToLinear() >= laSegEnd)
                         {
                             laSegEnd = seg.Address.ToLinear() + seg.Size;
-                            rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, seg.Address + (rdr.Address - seg.Address));
+                            rdr = ctrl.arch.CreateImageReader(ctrl.mem, seg.Address + (rdr.Address - seg.Address));
                         }
                     }
                     Address addr = PaintLine(g, rc, rdr, ptAddr, render);
