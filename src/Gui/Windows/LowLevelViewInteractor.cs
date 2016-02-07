@@ -62,7 +62,10 @@ namespace Reko.Gui.Windows
                 {
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
-                    control.DisassemblyView.Model = new DisassemblyTextModel(value, program.ImageMap.Segments.Values.First());
+                    control.DisassemblyView.Program = value;
+                    var seg = program.ImageMap.Segments.Values.First();
+                    control.DisassemblyView.Program = value;
+                    control.DisassemblyView.Model = new DisassemblyTextModel(value, seg);
                     control.ImageMapView.ImageMap = value.ImageMap;
                     control.ImageMapView.Granularity = value.ImageMap.GetExtent();
                 }
