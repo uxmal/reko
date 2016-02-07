@@ -180,9 +180,14 @@ namespace Reko.UnitTests.Mocks
 
             loader = mr.Stub<ILoader>();
 
+            var program = CreateProgram();
+            var image = new LoadedImage(Address.Ptr32(0x10000000), new byte[1000]);
+            program.Image = image;
+            program.ImageMap = image.CreateImageMap();
+
             loader.Stub(
                 l => l.LoadExecutable(null, null, null)
-            ).IgnoreArguments().Return(CreateProgram());
+            ).IgnoreArguments().Return(program);
 
             loader.Stub(
                 l => l.LoadImageBytes(null, 0)

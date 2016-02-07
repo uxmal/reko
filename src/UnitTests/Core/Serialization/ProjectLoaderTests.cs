@@ -315,5 +315,39 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.AreEqual(1, project.Programs.Count);
         }
+
+        [Test]
+        public void Prld_LoadGlobalUserData()
+        {
+            var sproject =
+    @"<?xml version=""1.0"" encoding=""utf-8""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+  <input>
+    <user>
+      <global>
+        <Address>10000010</Address>
+        <arr length=""10"">
+          <type>refType</type>
+        </arr>
+        <Name>testVar</Name>
+      </global>
+    </user>
+  </input>
+</project>";
+            var ldr = mockFactory.CreateLoader();
+
+            var prld = new ProjectLoader(sc, ldr);
+            var project = prld.LoadProject(
+                @"c:\foo\global_user.proj",
+                new MemoryStream(Encoding.UTF8.GetBytes(sproject))
+            );
+
+            Assert.AreEqual(1, project.Programs.Count);
+            Assert.AreEqual(1, project.Programs[0].User.Globals.Count);
+            var globalVariable = project.Programs[0].User.Globals.Values[0];
+            Assert.AreEqual("10000010", globalVariable.Address);
+            Assert.AreEqual("testVar", globalVariable.Name);
+            Assert.AreEqual("arr(refType,10)", globalVariable.DataType.ToString());
+        }
     }
 }
