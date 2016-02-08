@@ -33,12 +33,6 @@ namespace Reko.Core
             this.stream = new MemoryStream(bytes);
         }
 
-        [Obsolete]
-        public override TypeLibrary Load(IPlatform platform)
-        {
-            return Load(platform, new TypeLibrary());
-        }
-
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var ser = SerializedLibrary.CreateSerializer();

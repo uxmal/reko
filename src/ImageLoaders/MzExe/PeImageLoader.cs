@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.Text;
 using Reko.Core.Configuration;
 using Reko.Core.Types;
+using Reko.Core.Serialization;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -414,22 +415,71 @@ namespace Reko.ImageLoaders.MzExe
 
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
-		{
+        {
             AddSectionsToImageMap(addrLoad, ImageMap);
             var relocations = imgLoaded.Relocations;
-			Section relocSection;
+            Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
-			{
-				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.ToLinear(), relocations);
-			}
+            {
+                ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint)addrLoad.ToLinear(), relocations);
+            }
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
-            var entryPoints = new List<EntryPoint> { new EntryPoint(addrEp, arch.CreateProcessorState()) };
+            var entryPoints = new List<EntryPoint> {
+                CreateMainEntryPoint(
+                    (this.fileFlags & ImageFileDll)!=0,
+                    addrEp,
+                    platform)
+            };
             var functions = ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable);
             AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
-			ReadImportDescriptors(addrLoad);
+            ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
             return new RelocationResults(entryPoints, relocations, functions);
-		}
+        }
+
+        public EntryPoint CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
+        {
+            string name = null;
+            SerializedSignature ssig = null;
+            Func<string, string, Argument_v1> Arg =
+                (n, t) => new Argument_v1
+                {
+                    Name = n,
+                    Type = new SerializedTypeReference { TypeName = t }
+                };
+            if (isDll)
+            {
+                name = "DllMain";   //$TODO: ensure users can override this name
+                ssig = new SerializedSignature
+                {
+                    Convention = "stdapi",
+                    Arguments = new Argument_v1[]
+                    {
+                        Arg("hModule", "HANDLE"),
+                        Arg("dwReason", "DWORD"),
+                        Arg("lpReserved", "LPVOID")
+                    },
+                    ReturnValue = Arg(null, "BOOL")
+                };
+            }
+            else
+            {
+                name = "WinMain";
+                ssig = new SerializedSignature
+                {
+                    Convention = "stdapi",
+                    Arguments = new Argument_v1[]
+                    {
+                        Arg("hInstance",     "HINSTANCE"),
+                        Arg("hPrevInstance", "HINSTANCE"),
+                        Arg("lpCmdLine",     "LPSTR"),
+                        Arg("nCmdShow",      "INT"),
+                    },
+                    ReturnValue = Arg(null, "INT")
+                };
+            }
+            return new EntryPoint(addrEp, name, arch.CreateProcessorState(), ssig);
+        }
 
         private void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
         {

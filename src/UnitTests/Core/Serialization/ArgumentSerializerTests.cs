@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,105 +22,68 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Environments.Msdos;
 using System;
-using System.ComponentModel.Design;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Reko.UnitTests.Core.Serialization
 {
-	[TestFixture]
-	public class ArgumentSerializerTests
-	{
-		private IntelArchitecture arch;
-		private ProcedureSerializer sigser;
-		private ArgumentSerializer argser;
-        private MsdosPlatform platform;
+    [TestFixture]
+    public class ArgumentSerializerTests
+    {
+        private ArgumentSerializer argser;
 
-		[SetUp]
-		public void Setup()
-		{
-            var sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-			arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(sc, arch);
-			sigser = new X86ProcedureSerializer(
-                arch, 
-                new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
-                "stdapi");
-            argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame(), null);
-		}
+        [SetUp]
+        public void Setup()
+        {
+            argser = new ArgumentSerializer(null, null, null, 0);
+        }
 
         [Test]
-        public void SargSerializeNullArgument()
+        public void ArgSer_SerializeNullArgument()
         {
             Assert.IsNull(argser.Serialize(null));
         }
 
         [Test]
-        public void SargSerializeRegister()
+        public void ArgSer_SerializeRegister()
         {
             var arg = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
             Argument_v1 sarg = argser.Serialize(arg);
             Assert.AreEqual("ax", sarg.Name);
-            Register_v1 sreg = (Register_v1) sarg.Kind;
+            Register_v1 sreg = (Register_v1)sarg.Kind;
             Assert.IsNotNull(sreg);
             Assert.AreEqual("ax", sreg.Name);
         }
 
         [Test]
-        public void SargSerializeFlag()
+        public void ArgSer_SerializeFlag()
         {
             var arg = new Identifier(
-                "SZ", 
-                PrimitiveType.Byte, 
+                "SZ",
+                PrimitiveType.Byte,
                 new FlagGroupStorage(
                     Registers.eflags, 3, "SZ", PrimitiveType.Byte));
             Argument_v1 sarg = argser.Serialize(arg);
             Assert.AreEqual("SZ", sarg.Name);
-            FlagGroup_v1 sflag = (FlagGroup_v1) sarg.Kind;
+            FlagGroup_v1 sflag = (FlagGroup_v1)sarg.Kind;
             Assert.AreEqual("SZ", sflag.Name);
         }
-
-		[Test]
-		public void ArgSer_DeserializeRegister()
-		{
-			Register_v1 reg = new Register_v1("eax");
-            Argument_v1 arg = new Argument_v1
-            {
-                Name = "eax",
-                Kind = reg,
-            };
-            Identifier id = argser.Deserialize(arg);
-			Assert.AreEqual("eax", id.Name);
-			Assert.AreEqual(32, id.DataType.BitSize);
-		}
 
         [Test]
         public void ArgSer_SerializeOutArgument()
         {
-            Identifier id = new Identifier("qOut",  PrimitiveType.Word32,
+            Identifier id = new Identifier("qOut", PrimitiveType.Word32,
                 new OutArgumentStorage(new Identifier("q", PrimitiveType.Word32, new RegisterStorage("q", 4, 0, PrimitiveType.Word32))));
             Argument_v1 arg = argser.Serialize(id);
             Assert.AreEqual("qOut", arg.Name);
             Assert.IsTrue(arg.OutParameter);
-            Register_v1 sr = (Register_v1) arg.Kind;
+            Register_v1 sr = (Register_v1)arg.Kind;
             Assert.AreEqual("q", sr.Name);
         }
 
-        [Test]
-        public void ArgSer_DerserializeReturnRegisterWithType()
-        {
-            var arg = new Argument_v1
-            {
-                Kind = new Register_v1("eax"),
-                Type = new PointerType_v1 { DataType = new PrimitiveType_v1 { ByteSize = 1, Domain = Domain.Character } }
-            };
-            var id = argser.DeserializeReturnValue(arg);
-            Assert.AreEqual("(ptr char)", id.DataType.ToString());
-        }
-	}
+    }
 }

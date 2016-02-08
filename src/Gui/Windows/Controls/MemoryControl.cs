@@ -543,7 +543,7 @@ namespace Reko.Gui.Windows.Controls
                 // Enumerate all segments visible on screen.
 
                 ulong laEnd = ctrl.ProgramImage.BaseAddress.ToLinear() + (uint)ctrl.image.Bytes.Length;
-                if (ctrl.addrTopVisible.ToLinear() >= laEnd || !ctrl.image.IsValidAddress(ctrl.addrTopVisible))
+                if (ctrl.addrTopVisible.ToLinear() >= laEnd)
                     return null;
                 ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;
@@ -554,12 +554,13 @@ namespace Reko.Gui.Windows.Controls
                 while (rc.Top < ctrl.Height && rdr.Address.ToLinear() < laEnd)
                 {
                     ImageMapSegment seg;
-                    if (!ctrl.ImageMap.TryFindSegment(ctrl.addrTopVisible, out seg))
-                        return null;
-                    if (rdr.Address.ToLinear() >= laSegEnd)
+                    if (ctrl.ImageMap.TryFindSegment(ctrl.addrTopVisible, out seg))
                     {
-                        laSegEnd = seg.Address.ToLinear() + seg.Size;
-                        rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, seg.Address + (rdr.Address - seg.Address));
+                        if (rdr.Address.ToLinear() >= laSegEnd)
+                        {
+                            laSegEnd = seg.Address.ToLinear() + seg.Size;
+                            rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, seg.Address + (rdr.Address - seg.Address));
+                        }
                     }
                     Address addr = PaintLine(g, rc, rdr, ptAddr, render);
                     if (addr != null)
@@ -625,9 +626,11 @@ namespace Reko.Gui.Windows.Controls
                     ulong linear = addr.ToLinear();
 
                     ImageMapItem item;
-                    if (!ctrl.ImageMap.TryFindItem(addr, out item))
-                        break;
-                    ulong cbIn = (linear - item.Address.ToLinear());            // # of bytes 'inside' the block we are.
+                    ulong cbIn = 0;
+                    if (ctrl.ImageMap.TryFindItem(addr, out item))
+                    {
+                        cbIn = (linear - item.Address.ToLinear());            // # of bytes 'inside' the block we are.
+                    }
                     uint cbToDraw = 16; // item.Size - cbIn;
 
                     // See if the chunk goes off the edge of the line. If so, clip it.
@@ -651,8 +654,9 @@ namespace Reko.Gui.Windows.Controls
                         }
                         else
                         {
-                            s = "??";
+                            s = "  ";
                             sbCode.Append(' ');
+                            rdr.Offset += 1;
                         }
 
                         cx = cellSize.Width * 3;
@@ -667,7 +671,10 @@ namespace Reko.Gui.Windows.Controls
 
                         var theme = GetBrushTheme(item, isSelected);
                         g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
-                        if (!isSelected && theme.StartMarker != null && addrByte.ToLinear() == item.Address.ToLinear())
+                        if (!isSelected &&
+                            theme.StartMarker != null && 
+                            item != null &&
+                            addrByte.ToLinear() == item.Address.ToLinear())
                         {
                             var pts = new Point[]
                             {
@@ -699,6 +706,8 @@ namespace Reko.Gui.Windows.Controls
 
             private BrushTheme GetBrushTheme(ImageMapItem item, bool selected)
             {
+                if (item == null)
+                    return defaultTheme;
                 if (selected)
                     return selectTheme;
                 if (item is ImageMapBlock)

@@ -426,22 +426,6 @@ namespace Reko.ImageLoaders.Elf
             return cfgSvc.GetEnvironment(envName).Load(Services, arch);
         }
 
-        public IEnumerable<TypeLibrary> LoadTypeLibraries()
-        {
-            var dcSvc = Services.GetService<IConfigurationService>();
-            if (dcSvc == null)
-                return new TypeLibrary[0];
-            var env = dcSvc.GetEnvironment("elf-neutral");
-            if (env == null)
-                return new TypeLibrary[0];
-            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-            return ((IEnumerable)env.TypeLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Where(tl => tl.Architecture == "ppc32")
-                    .Select(tl => tlSvc.LoadLibrary(platform, tl.Name))
-                    .Where(tl => tl != null);
-        }
-
         private ImageMapSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
         {
             switch (shdr.sh_type)

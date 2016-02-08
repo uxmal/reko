@@ -107,5 +107,12 @@ namespace Reko.Core.Configuration
             get { return (string)this["Addr"]; }
             set { this["Addr"] = value; }
         }
+
+        [ConfigurationProperty("Follow", IsRequired = false)]
+        public string Follow
+        {
+            get { return (string)this["Follow"]; }
+            set { this["Follow"] = value; }
+        }
     }
 }

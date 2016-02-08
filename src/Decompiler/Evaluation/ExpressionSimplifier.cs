@@ -289,6 +289,28 @@ namespace Reko.Evaluation
                     return Constant.Create(cast.DataType, c.ToUInt64());
                 }
             }
+            Identifier id;
+            DepositBits dpb;
+            if (exp.As(out id) && ctx.GetDefiningExpression(id).As(out dpb) && dpb.BitPosition == 0)
+            {
+                // If we are casting the result of a DPB, and the deposited part is >= 
+                // the size of the cast, then use deposited part directly.
+                int sizeDiff = dpb.InsertedBits.DataType.Size - cast.DataType.Size;
+                if (sizeDiff >= 0)
+                {
+                    ctx.RemoveIdentifierUse(id);
+                    ctx.UseExpression(dpb.InsertedBits);
+                    Changed = true;
+                    if (sizeDiff > 0)
+                    {
+                        return new Cast(cast.DataType, dpb.InsertedBits);
+                    }
+                    else
+                    {
+                        return dpb.InsertedBits;
+                    }
+                }
+            }
             return new Cast(cast.DataType, exp);
         }
 

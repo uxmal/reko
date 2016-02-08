@@ -38,10 +38,11 @@ namespace Reko.Core.Serialization
     public class ProjectLoader : ProjectPersister
     {
         public event EventHandler<ProgramEventArgs> ProgramLoaded;
-        public event EventHandler<TypeLibraryEventArgs> TypeLibraryLoaded;
 
         private ILoader loader;
         private Project project;
+        private IProcessorArchitecture arch;
+        private IPlatform platform;
 
         public ProjectLoader(IServiceProvider services, ILoader loader)
             : this(services, loader, new Project())
@@ -100,21 +101,74 @@ namespace Reko.Core.Serialization
             }
         }
 
+        private static readonly Tuple<Type, string>[] supportedProjectFileFormats =
+        {
+            Tuple.Create(typeof(Project_v4), SerializedLibrary.Namespace_v4),
+            Tuple.Create(typeof(Project_v3), SerializedLibrary.Namespace_v3),
+            Tuple.Create(typeof(Project_v2), SerializedLibrary.Namespace_v2),
+        };
+
         /// <summary>
         /// Loads a .dcproject from a stream.
         /// </summary>
         /// <param name="stm"></param>
-        /// <returns></returns>
+        /// <returns>The Project if the file format was recognized, otherwise null.</returns>
         public Project LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
-            if (ser.CanDeserialize(rdr))
-                return LoadProject(filename,(Project_v3) ser.Deserialize(rdr));
-            ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
-            if (ser.CanDeserialize(rdr))
-                return LoadProject((Project_v2) ser.Deserialize(rdr));
+            foreach (var fileFormat in supportedProjectFileFormats)
+            {
+                XmlSerializer ser = SerializedLibrary.CreateSerializer(fileFormat.Item1, fileFormat.Item2);
+                if (ser.CanDeserialize(rdr))
+                {
+                    var deser = new Deserializer(this, filename);
+                    return ((SerializedProject)ser.Deserialize(rdr)).Accept(deser);
+                }
+            }
             return null;
+        }
+
+        // Avoid reflection by using the visitor pattern.
+        class Deserializer : ISerializedProjectVisitor<Project>
+        {
+            private ProjectLoader outer;
+            private string filename;
+
+            public Deserializer(ProjectLoader outer, string filename)
+            {
+                this.outer = outer; this.filename = filename;
+            }
+            public Project VisitProject_v2(Project_v2 sProject) { return outer.LoadProject(sProject); }
+            public Project VisitProject_v3(Project_v3 sProject) { return outer.LoadProject(filename, sProject); }
+            public Project VisitProject_v4(Project_v4 sProject) { return outer.LoadProject(filename, sProject); }
+        }
+
+        /// <summary>
+        /// Loads a Project object from its serialized representation. First loads the
+        /// common architecture and platform then metadata, and finally any programs.
+        /// </summary>
+        /// <param name="sp"></param>
+        /// <returns></returns>
+        public Project LoadProject(string filename, Project_v4 sp)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
+            if (arch == null)
+                throw new ApplicationException(
+                    string.Format("Unknown architecture '{0}' in project file.",
+                        sp.ArchitectureName ?? "(null)"));
+            var env = cfgSvc.GetEnvironment(sp.PlatformName);
+            if (env == null)
+                throw new ApplicationException(
+                    string.Format("Unknown operating environment '{0}' in project file.",
+                        sp.PlatformName ?? "(null)"));
+            this.platform = env.Load(Services, arch);
+            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
+            var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
+            var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
+            project.Programs.AddRange(programs);
+            project.MetadataFiles.AddRange(typelibs);
+            return this.project;
         }
 
         /// <summary>
@@ -125,8 +179,8 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project LoadProject(string filename, Project_v3 sp)
         {
-            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
             var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
+            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
             var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
             project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
@@ -152,12 +206,17 @@ namespace Reko.Core.Serialization
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v3 sInput)
         {
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
-            var address = LoadAddress(sInput.User);
+            var sUser = sInput.User;
+            var address = LoadAddress(sUser);
             Program program;
-            if (sInput.User.Processor != null && sInput.User.PlatformOptions.Name != null)
+            if (sUser.Processor != null && 
+                (sUser.PlatformOptions == null ||
+                sUser.PlatformOptions.Name != null))
             {
-                var arch = sInput.User.Processor.Name;
-                var platform = sInput.User.PlatformOptions.Name;
+                var arch = sUser.Processor.Name;
+                var platform = sUser.PlatformOptions != null
+                    ? sUser.PlatformOptions.Name
+                    : null;
                 program = loader.LoadRawImage(sInput.Filename, bytes, arch, platform, address);
             }
             else
@@ -172,7 +231,7 @@ namespace Reko.Core.Serialization
             program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
             program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
             program.EnsureFilenames(program.Filename);
-            LoadUserData(sInput.User, program, program.User);
+            LoadUserData(sUser, program, program.User);
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }
@@ -237,7 +296,7 @@ namespace Reko.Core.Serialization
             }
             foreach (var kv in user.Globals)
             {
-                var tlDeser = program.Platform.CreateTypeLibraryDeserializer();
+                var tlDeser = program.CreateTypeLibraryDeserializer();
                 var dt = kv.Value.DataType.Accept(tlDeser);
                 var item = new ImageMapItem((uint)dt.Size)
                 {
@@ -340,7 +399,7 @@ namespace Reko.Core.Serialization
             }
             foreach (var kv in user.Globals)
             {
-                var tlDeser = program.Platform.CreateTypeLibraryDeserializer();
+                var tlDeser = program.CreateTypeLibraryDeserializer();
                 var dt = kv.Value.DataType.Accept(tlDeser);
                 var item = new ImageMapItem((uint)dt.Size)
                 {
@@ -378,17 +437,24 @@ namespace Reko.Core.Serialization
         public MetadataFile LoadMetadataFile(string filename)
         {
             var platform = DeterminePlatform(filename);
-            var typeLib = loader.LoadMetadata(filename, platform);
-            TypeLibraryLoaded.Fire(this, new TypeLibraryEventArgs(typeLib));
+            foreach (var program in project.Programs)
+            {
+                program.LoadMetadataFile(loader, filename);
+            }
             return new MetadataFile
             {
                 Filename = filename,
-                TypeLibrary = typeLib
             };
         }
 
         private IPlatform DeterminePlatform(string filename)
         {
+            // If a platform was defined for the whole project use that.
+            if (this.platform != null)
+                return this.platform;
+
+            // Otherwise try to guess the platform or ask the user.
+            // (this code will soon go away).
             var platformsInUse = project.Programs.Select(p => p.Platform).Distinct().ToArray();
             if (platformsInUse.Length == 1 && platformsInUse[0] != null)
                 return platformsInUse[0];

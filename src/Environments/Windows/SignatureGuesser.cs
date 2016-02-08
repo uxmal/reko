@@ -37,7 +37,7 @@ namespace Reko.Environments.Windows
         /// <param name="loader"></param>
         /// <param name="arch"></param>
         /// <returns></returns>
-        public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryDeserializer loader, IPlatform platform)
+        public static ExternalProcedure SignatureFromName(string fnName, TypeLibraryDeserializer loader, IPlatform platform)
         {
             int argBytes;
             if (fnName[0] == '_')
@@ -78,43 +78,46 @@ namespace Reko.Environments.Windows
                 catch (Exception ex)
                 {
                     Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
-                    pmnp.ToString();
                     return null;
                 }
                 var sproc = field.Type as SerializedSignature;
                 if (sproc != null)
                 {
-                    var sser = platform.CreateProcedureSerializer(loader, "__cdecl");
-                    return sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?   
+                    var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
+                    var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
+                    return new ExternalProcedure(field.Name, sig)
+                    {
+                        EnclosingType = sproc.EnclosingType
+                    };
                 }
             }
             return null;
         }
 
-        private static ProcedureSignature CdeclSignature(string name, IProcessorArchitecture arch)
+        private static ExternalProcedure CdeclSignature(string name, IProcessorArchitecture arch)
         {
-            return new ProcedureSignature()
+            return new ExternalProcedure(name, new ProcedureSignature
             {
                 ReturnAddressOnStack = arch.PointerType.Size,
-            };
+            });
         }
 
-        private static ProcedureSignature StdcallSignature(string name, int argBytes, IProcessorArchitecture arch)
+        private static ExternalProcedure StdcallSignature(string name, int argBytes, IProcessorArchitecture arch)
         {
-            return new ProcedureSignature()
+            return new ExternalProcedure(name, new ProcedureSignature
             {
                 ReturnAddressOnStack = arch.PointerType.Size,
                 StackDelta = argBytes + arch.PointerType.Size,
-            };
+            });
         }
 
-        private static ProcedureSignature FastcallSignature(string name, int argBytes, IProcessorArchitecture arch)
+        private static ExternalProcedure FastcallSignature(string name, int argBytes, IProcessorArchitecture arch)
         {
-            return new ProcedureSignature
+            return new ExternalProcedure(name, new ProcedureSignature
             {
                 ReturnAddressOnStack = arch.PointerType.Size,
                 StackDelta = argBytes - 2 * arch.PointerType.Size, // ecx, edx
-            };
+            });
         }
     }
 }

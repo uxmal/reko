@@ -39,7 +39,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Data type of this expression.
         /// </summary>
-        public DataType DataType { get { return dt; } set { if (value == null) throw new ArgumentNullException(); dt = value; } } 
+        public DataType DataType { get { return dt; } set { if (value == null) throw new ArgumentNullException(); dt = value; } }
         private DataType dt;
 
         /// <summary>
@@ -58,14 +58,8 @@ namespace Reko.Core.Expressions
         // Visitor methods that must be implemented by concrete derived classes.
         public abstract void Accept(IExpressionVisitor visitor);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
-        public abstract T Accept<T,C>(ExpressionVisitor<T, C> visitor, C context);
+        public abstract T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context);
         public abstract Expression CloneExpression();
-        
-        public bool As<T>(out T value) where T : Expression
-        {
-            value = this as T;
-            return value != null;
-        }
 
         /// <summary>
         /// Applies logical (not-bitwise) negation to the expression.
@@ -82,6 +76,15 @@ namespace Reko.Core.Expressions
             var fmt = new CodeFormatter(new TextFormatter(sw));
             fmt.WriteExpression(this);
             return sw.ToString();
+        }
+    }
+
+    public static class ExpressionEx
+    {
+        public static bool As<T>(this Expression self, out T value) where T : Expression
+        {
+            value = self as T;
+            return value != null;
         }
     }
 }

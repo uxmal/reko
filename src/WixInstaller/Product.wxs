@@ -103,6 +103,7 @@
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" />
         <File Source="$(var.Ps3.TargetPath)" />
         <File Source="$(var.RiscOS.TargetPath)" />
+        <File Source="$(var.SegaGenesis.TargetPath)" />
         <File Source="$(var.SysV.TargetPath)" />
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />

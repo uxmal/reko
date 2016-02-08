@@ -35,6 +35,7 @@ using System.Linq;
 using System.Xml;
 using Reko.Core.Assemblers;
 using System.Threading;
+using Reko.Core.Configuration;
 
 namespace Reko
 {
@@ -43,6 +44,7 @@ namespace Reko
         Project Project { get; }
 
         bool Load(string fileName);
+        Program LoadRawImage(string file, RawFileElement raw);
         Program LoadRawImage(string fileName, string arch, string platform, Address addrBase);
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr);
@@ -259,6 +261,16 @@ namespace Reko
             return program;
         }
 
+        public Program LoadRawImage(string fileName, RawFileElement raw)
+        {
+            eventListener.ShowStatus("Loading raw bytes.");
+            byte[] image = loader.LoadImageBytes(fileName, 0);
+            var program = loader.LoadRawImage(fileName, image, raw);
+            Project = CreateDefaultProject(fileName, program);
+            eventListener.ShowStatus("Raw bytes loaded.");
+            return program;
+        }
+
         protected Project CreateDefaultProject(string fileName, Program program)
         {
             program.Filename = fileName;
@@ -386,6 +398,13 @@ namespace Reko
             {
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program);
+                foreach (var global in program.User.Globals)
+                {
+                    var addr = global.Key;
+                    var tlDeser = program.CreateTypeLibraryDeserializer();
+                    var dt = global.Value.DataType.Accept(tlDeser);
+                    scanner.EnqueueUserGlobalData(addr, dt);
+                }
                 foreach (EntryPoint ep in program.EntryPoints)
                 {
                     scanner.EnqueueEntryPoint(ep);
@@ -437,7 +456,7 @@ namespace Reko
                 .Select(sc =>
                 {
                 //$BUG: need access to platform.Metadata.
-                    var sser = program.Platform.CreateProcedureSerializer();
+                    var sser = program.CreateProcedureSerializer();
                     Address addr;
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
                     {

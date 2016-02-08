@@ -814,15 +814,15 @@ ProcedureBuilder_exit:
 
             RunTest_FrameAccesses(sExp, m =>
             {
-                var r1 = m.Register("r1");
-                var r2 = m.Register("r2");
-                var r3 = m.Register("r3");
-                m.BranchIf(r1, "true");
-                m.Assign(r2, m.Int32(16));
-                m.Label("true");
-                m.Call(r3, 4);
-                m.Return();
-            });
+            var r1 = m.Register("r1");
+            var r2 = m.Register("r2");
+            var r3 = m.Register("r3");
+            m.BranchIf(r1, "true");
+            m.Assign(r2, m.Int32(16));
+            m.Label("true");
+            m.Call(r3, 4);
+            m.Return();
+                        });
         }
 
         [Test(Description = "Self-recursive functions that pass parameters on stack should work.")]
@@ -1358,7 +1358,7 @@ ProcedureBuilder_exit:
                 m.Store(m.Word32(0x123400), ebx);
                 m.Return();
             });
-        }
+    }
 
         [Test]
         public void SsaSequence()

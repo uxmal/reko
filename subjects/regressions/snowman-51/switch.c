@@ -20,8 +20,8 @@ char * get(uint32 n)
 		}
 }
 
-void fn10071080()
+BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
-	return;
+	return 0x01;
 }
 

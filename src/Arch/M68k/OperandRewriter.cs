@@ -112,9 +112,7 @@ namespace Reko.Arch.M68k
             var indidx = operand as IndirectIndexedOperand;
             if (indidx != null)
             {
-                Expression ea = frame.EnsureRegister(indidx.ARegister);
-                if (indidx.Imm8 != 0)
-                    ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+                Expression ea = RewriteIndirectBaseRegister(indidx, addrInstr);
                 Expression ix = frame.EnsureRegister(indidx.XRegister);
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
@@ -143,6 +141,19 @@ namespace Reko.Arch.M68k
                 return m.Load(DataWidth, ea);
             }
             throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.GetType().Name);
+        }
+
+        private Expression RewriteIndirectBaseRegister(IndirectIndexedOperand indidx, Address addrInstr)
+        {
+            if (indidx.ARegister == Registers.pc)
+            {
+                // pc-relative instruction.
+                return addrInstr + (2 + indidx.Imm8);
+            }
+            Expression ea = frame.EnsureRegister(indidx.ARegister);
+            if (indidx.Imm8 != 0)
+                ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+            return ea;
         }
 
         Expression Combine(Expression e, RegisterStorage reg)

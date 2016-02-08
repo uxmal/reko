@@ -51,17 +51,12 @@ namespace Reko.UnitTests.Analysis
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
             this.platform = mockFactory.CreatePlatform();
-
-            this.program = new Program
-            {
-                Architecture = platform.Architecture,
-                Platform = platform,
-            };
+            this.program = mockFactory.CreateProgram();
         }
 
         private void Given_UserSignature(uint address, string str)
         {
-            program.User.Procedures.Add(Address.Ptr32(address), new Reko.Core.Serialization.Procedure_v1
+            program.User.Procedures.Add(Address.Ptr32(address), new Procedure_v1
             {
                  CSignature = str
             });
@@ -69,14 +64,16 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_Procedure(uint address)
         {
-            this.proc = Procedure.Create(Address.Ptr32(address), new Frame(PrimitiveType.Pointer32));
+            var m = new ProcedureBuilder("fnTest");
+            m.Return();
+            this.proc = m.Procedure;
+            this.program.Procedures[Address.Ptr32(address)] = this.proc;
         }
 
         [Test(Description = "Empty user signature should't affect procedure signature")]
         public void Usb_EmptyUserSignature()
         {
             Given_Procedure(0x1000);
-            mr.ReplayAll();
 
             var oldSig = proc.Signature;
             var usb = new UserSignatureBuilder(program);
@@ -88,7 +85,6 @@ namespace Reko.UnitTests.Analysis
         public void Usb_ParseFunctionDeclaration()
         {
             Given_Procedure(0x1000);
-            mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
             var sProc = usb.ParseFunctionDeclaration("int foo(char *)", proc.Frame);
@@ -99,22 +95,99 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void Usb_ParseFunctionDeclaration_PredefinedTypes()
+        public void Usb_ParseFunctionDeclaration_PlatfromTypes()
         {
-            var types = new Dictionary<string, SerializedType>()
+            var platformTypes = new Dictionary<string, DataType>()
             {
-                { "BYTE", new PrimitiveType_v1 { ByteSize=1, Domain=PrimitiveType.Byte.Domain } },
+                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
             };
-            mockFactory.Given_NamedTypes(types);
+            mockFactory.Given_PlatformTypes(platformTypes);
             Given_Procedure(0x1000);
-            mr.ReplayAll();
 
             var usb = new UserSignatureBuilder(program);
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)", proc.Frame);
 
             Assert.AreEqual(
-                "fn(arg(BYTE),(arg(a,BYTE)arg(b,BYTE))",
+                "fn(arg(BYTE),(arg(a,BYTE),arg(b,BYTE))",
                 sProc.Signature.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseFunctionDeclaration_UserDefinedTypes()
+        {
+            var platformTypes = new Dictionary<string, DataType>()
+            {
+                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
+            };
+            var userDefinedTypes1 = new Dictionary<string, DataType>()
+            {
+                { "USRDEF1", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
+            };
+            var userDefinedTypes2 = new Dictionary<string, DataType>()
+            {
+                { "USRDEF2", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
+            };
+            mockFactory.Given_PlatformTypes(platformTypes);
+            Given_Procedure(0x1000);
+
+            var usb = new UserSignatureBuilder(program);
+
+            //should accept user defined type USRDEF1
+            mockFactory.Given_UserDefinedMetafile("mod1", userDefinedTypes1, null, null);
+
+            var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)", proc.Frame);
+
+            Assert.AreEqual(
+                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,BYTE))",
+                sProc.Signature.ToString());
+
+            //should not accept undefined type USRDEF2
+            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
+
+            Assert.AreEqual(null, sProc);
+
+            //define USRDEF2 so parser should accept it
+            mockFactory.Given_UserDefinedMetafile("mod2", userDefinedTypes2, null, null);
+
+            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
+
+            Assert.AreEqual(
+                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,USRDEF2))",
+                sProc.Signature.ToString());
+        }
+
+        [Test]
+        public void Usb_BuildSignatures_UserDefinedTypes()
+        {
+            var platformTypes = new Dictionary<string, DataType>()
+            {
+                { "PLATFORMDEF", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
+            };
+            var userDefinedTypes = new Dictionary<string, DataType>()
+            {
+                { "USRDEF", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
+            };
+            mockFactory.Given_PlatformTypes(platformTypes);
+            mockFactory.Given_UserDefinedMetafile("mod", userDefinedTypes, null, null);
+            Given_Procedure(0x1000);
+            Given_UserSignature(0x01000, "int test(PLATFORMDEF a, USRDEF b)");
+
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures();
+
+            var sigExp =
+@"Register int32 ()(Stack PLATFORMDEF a, Stack USRDEF b)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, proc.Signature.ToString());
+
+            Assert.AreEqual(2, proc.Signature.Parameters.Length);
+            Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());
+            Assert.AreEqual("a", proc.Signature.Parameters[0].Name);
+            Assert.AreEqual("byte", (proc.Signature.Parameters[0].DataType as TypeReference).Referent.ToString());
+            Assert.AreEqual("b", proc.Signature.Parameters[1].Name);
+            Assert.AreEqual("int16", (proc.Signature.Parameters[1].DataType as TypeReference).Referent.ToString());
         }
 
         [Test(Description ="Verifies that the user can override register names.")]

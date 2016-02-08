@@ -35,11 +35,14 @@ namespace Reko.Scanning
 {
     public class PromoteBlockWorkItem : WorkItem
     {
-        public Address Address;
         public Block Block;
         public Procedure ProcNew;
         public IScanner Scanner;
         public Program Program;
+
+        public PromoteBlockWorkItem(Address addr) : base(addr)
+        {
+        }
 
         public override void Process()
         {

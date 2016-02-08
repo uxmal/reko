@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -36,13 +37,20 @@ namespace Reko.Core.Serialization
         {
         }
 
+        [XmlElement("type")]
+        public SerializedType EnclosingType;
+
 		[XmlElement("return")]
 		public Argument_v1 ReturnValue;
 
 		[XmlAttribute("convention")]
-		public string Convention;		
+		public string Convention;
 
-		[XmlAttribute("stackDelta")]
+        [XmlAttribute("isInstance")]
+        [DefaultValue(false)]
+        public bool IsInstanceMethod;
+
+        [XmlAttribute("stackDelta")]
 		[DefaultValue(0)]
 		public int StackDelta;
 
@@ -62,6 +70,8 @@ namespace Reko.Core.Serialization
         {
             var sb = new StringBuilder();
             sb.Append("fn(");
+            if (this.EnclosingType != null)
+                sb.AppendFormat("{0},", EnclosingType);
             if (!string.IsNullOrEmpty(Convention))
                 sb.AppendFormat("{0},", Convention);
             if (ReturnValue != null)
@@ -73,10 +83,7 @@ namespace Reko.Core.Serialization
             sb.Append(",(");
             if (Arguments != null)
             {
-                foreach (var arg in Arguments)
-                {
-                    sb.Append(arg.ToString());
-                }
+                sb.Append(string.Join(",", Arguments.Select(a => a.ToString())));
             }
             sb.Append(")");
             return sb.ToString();

@@ -56,12 +56,13 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
+            Debug.Print("SsaTest: {0}", new StackFrame(3).GetMethod().Name);
             var flow = new ProgramDataFlow(prog);
             var eventListener = new FakeDecompilerEventListener();
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
-            Dump(prog.CallGraph);
+            //Dump(prog.CallGraph);
             var rl = RegisterLiveness.Compute(prog, flow, eventListener);
             GlobalCallRewriter.Rewrite(prog, flow);
 

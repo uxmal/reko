@@ -225,9 +225,8 @@ void test(int32 a, int32 b)
 test_entry:
 	// succ:  l1
 l1:
-	word32 r1_4 = a + b
-	Mem8[0x00010008:word32] = r1_4
-	word32 r2_3 = b
+	word32 r1_7 = a + b
+	Mem8[0x00010008:word32] = r1_7
 	return
 	// succ:  test_exit
 test_exit:

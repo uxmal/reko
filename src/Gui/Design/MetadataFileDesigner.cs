@@ -34,18 +34,12 @@ namespace Reko.Gui.Design
         {
             base.Initialize(obj);
             var mf = (MetadataFile)obj;
-            if (mf.TypeLibrary != null)
-                Host.AddComponents(
-                    obj,
-                    mf.TypeLibrary.Modules
-                        .OrderBy(de => de.Key)
-                        .SelectMany(de => de.Value.ServicesByName.Values));
             SetTreeNodeProperties(mf);
         }
 
         public void SetTreeNodeProperties(MetadataFile mf)
         {
-            TreeNode.Text = Path.GetFileName(mf.ModuleName);
+            TreeNode.Text = Path.GetFileName(mf.Filename);
             TreeNode.ImageName = "typelib.ico";
         }
     }

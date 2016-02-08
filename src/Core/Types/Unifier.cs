@@ -125,7 +125,7 @@ namespace Reko.Core.Types
             {
                 return true;
             }
-			return false;
+			return a is UnknownType || b is UnknownType;
 		}
 
 		public bool AreCompatible(StructureType a, StructureType b)
@@ -260,12 +260,16 @@ namespace Reko.Core.Types
             if (trA != null)
             {
                 if (AreCompatible(trA.Referent, b))
-                    return a;
+                {
+                    return new TypeReference(trA.Name, UnifyInternal(trA.Referent, b));
+                }
             }
             if (trB != null)
             {
                 if (AreCompatible(a, trB.Referent))
-                    return b;
+                {
+                    return new TypeReference(trB.Name, UnifyInternal(trB.Referent, a));
+                }
             }
 
 			EquivalenceClass eqA = a as EquivalenceClass;
@@ -513,7 +517,7 @@ namespace Reko.Core.Types
 				mem.Fields.Add(fa);
 				while (ea.MoveNext())
 				{
-					StructureField f = (StructureField) ea.Current;
+					StructureField f = ea.Current;
 					mem.Fields.Add(f.Clone());
 				}
 			}
@@ -522,10 +526,11 @@ namespace Reko.Core.Types
 				mem.Fields.Add(fb);
 				while (eb.MoveNext())
 				{
-					StructureField f = (StructureField) eb.Current;
+					StructureField f = eb.Current;
 					mem.Fields.Add(f.Clone());
 				}
 			}
+            mem.ForceStructure = a.ForceStructure | b.ForceStructure;
 			return mem;
 		}
 

@@ -262,14 +262,14 @@ namespace Reko.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void Cvp_Accept_Declaration_PredefinedTypes()
+        public void Cvp_Accept_Declaration_PlatformTypes()
         {
-            var types = new Dictionary<string, SerializedType>()
+            var types = new Dictionary<string, DataType>()
             {
-                { "BYTE", new PrimitiveType_v1 { ByteSize = 1, Domain = PrimitiveType.Byte.Domain } },
+                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
             };
             Given_Program();
-            mockFactory.Given_NamedTypes(types);
+            mockFactory.Given_PlatformTypes(types);
             Given_StubProcedure();
             mr.ReplayAll();
 

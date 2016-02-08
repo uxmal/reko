@@ -131,9 +131,9 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void Save_v3()
+        public void Save_v4()
         {
-            var sp = new Project_v3
+            var sp = new Project_v4
             {
                 Inputs = {
                     new DecompilerInput_v3 {

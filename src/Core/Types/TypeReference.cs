@@ -47,6 +47,11 @@ namespace Reko.Core.Types
             set { ThrowBadSize(); }
         }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitTypeReference(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitTypeReference(this);

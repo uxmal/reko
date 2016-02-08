@@ -1039,5 +1039,23 @@ namespace Reko.UnitTests.Arch.M68k
                "0|L--|00010000(8): 1 instructions",
                "1|L--|a6 = Mem0[Mem0[0x00017FEC:word32] + a6:word32]");
         }
+
+        [Test]
+        public void M68krw_PcRelative()
+        {
+            Rewrite(0x2A7B, 0x0804);
+            AssertCode(
+               "0|L--|00010000(4): 1 instructions",
+               "1|L--|a5 = Mem0[0x00010006 + d0:word32]");
+        }
+
+        [Test]
+        public void M68krw_JmpIndirect()
+        {
+            Rewrite(0x4ED5);
+            AssertCode(
+                 "0|T--|00010000(2): 1 instructions",
+                 "1|T--|goto a5");
+        }
     }
 }

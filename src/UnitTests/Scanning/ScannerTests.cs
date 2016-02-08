@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -50,6 +51,7 @@ namespace Reko.UnitTests.Scanning
         private IImportResolver importResolver;
         private IDictionary<Address, ProcedureSignature> callSigs;
         private ServiceContainer sc;
+        private Project project;
 
         public class TestScanner : Scanner
         {
@@ -137,7 +139,7 @@ namespace Reko.UnitTests.Scanning
             {
                 m => { m.Return(4, 0); }
             });
-            Given_Program(Address.Ptr32(0x12314));
+            Given_Program(Address.Ptr32(0x12314), new byte[1]);
             var project = new Project { Programs = { program } };
 
             var sc = new Scanner(
@@ -148,7 +150,7 @@ namespace Reko.UnitTests.Scanning
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     Address.Ptr32(0x12314),
-                    arch.CreateProcessorState()));
+                    program.Architecture.CreateProcessorState()));
             sc.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count);
@@ -156,17 +158,30 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(program.CallGraph.EntryPoints.Contains(program.Procedures.Values[0]));
         }
 
-        private void Given_Program(Address address)
+        private void Given_Program(Address address, byte[] bytes)
         {
-            var image = new LoadedImage(address, new byte[1]);
+            var image = new LoadedImage(address, bytes);
             var imageMap = image.CreateImageMap();
+            var arch = new X86ArchitectureFlat32();
+            var platform = new FakePlatform(null, arch);
             this.program = new Program
             {
                 Architecture = arch,
                 Image = image,
                 ImageMap = imageMap,
-                Platform = new FakePlatform(null, arch)
+                Platform = platform
             };
+            platform.Test_CreateProcedureSerializer = (t, d) =>
+            {
+                var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
+                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
+            };
+        }
+
+        private void Given_Project()
+        {
+            Assert.IsNotNull(program, "You must first call Given_Program or set the 'program' field.");
+            this.project = new Project { Programs = { program } };
         }
 
         private void Given_Trace( RtlTrace trace)
@@ -274,7 +289,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Scanner_CallGraphTree()
         {
-            Program prog = new Program();
+            program = new Program();
             var addr = Address.SegPtr(0xC00, 0);
             var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<EntryPoint>());
             m.i86();
@@ -299,17 +314,17 @@ namespace Reko.UnitTests.Scanning
             m.Endp("baz");
 
             var lr = m.GetImage();
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
-            prog.Architecture = lr.Architecture;
-            prog.Platform = new FakePlatform(null, arch);
-            var proj = new Project { Programs = { prog } };
-            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), sc);
-            EntryPoint ep = new EntryPoint(addr, prog.Architecture.CreateProcessorState());
+            program.Image = lr.Image;
+            program.ImageMap = lr.ImageMap;
+            program.Architecture = lr.Architecture;
+            program.Platform = new FakePlatform(null, arch);
+            Given_Project();
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), sc);
+            EntryPoint ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 
-            Assert.AreEqual(4, prog.Procedures.Count);
+            Assert.AreEqual(4, program.Procedures.Count);
         }
 
         [Test]
@@ -612,6 +627,21 @@ fn00001200_exit:
 
             var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
             Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
+        }
+
+        [Test(Description = "EntryPoints with no discernible type should not crash")]
+        public void Scanner_Regression_1()
+        {
+            var scanner = CreateScanner(0x1000, 0x2000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => { m.Return(0, 0); }
+            });
+
+            scanner.ScanEntryPoint(program, new EntryPoint(Address.Ptr32(0x1000), "test", arch.CreateProcessorState()));
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("test", program.Procedures[Address.Ptr32(0x1000)].Name);
         }
     }
 }

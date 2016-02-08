@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Arch.X86;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Core.CLanguage;
@@ -35,11 +36,15 @@ namespace Reko.UnitTests.Mocks
     {
         private MockRepository mr;
         private IPlatform platform;
-        private SymbolTable symbolTable;
+        private TypeLibrary platformMetadata;
+        private ILoader loader;
+        private ICollection<Program> programs;
 
         public MockFactory(MockRepository mr)
         {
             this.mr = mr;
+            this.platformMetadata = new TypeLibrary();
+            this.programs = new List<Program>();
         }
 
         /// <summary>
@@ -48,23 +53,93 @@ namespace Reko.UnitTests.Mocks
         /// <returns></returns>
         public ISerializedTypeVisitor<DataType> CreateDeserializer()
         {
-            var deserializer = mr.Stub<ISerializedTypeVisitor<DataType>>();
-            deserializer.Stub(d => d.VisitPrimitive(null))
-                .IgnoreArguments()
-                .Do(new Func<PrimitiveType_v1, PrimitiveType>(
-                    p => PrimitiveType.Create(p.Domain, p.ByteSize)));
-            deserializer.Stub(d => d.VisitTypeReference(null))
-                .IgnoreArguments()
-                .Do(new Func<SerializedTypeReference, TypeReference>(
-                    t => new TypeReference(t.TypeName, null)));
-
-            return deserializer;
+            return new IndependentDeserializer();
         }
+
+        #region IndependentDeserializer
+        public class IndependentDeserializer : ISerializedTypeVisitor<DataType>
+        {
+
+            public DataType VisitArray(ArrayType_v1 array)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitCode(CodeType_v1 code)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitEnum(SerializedEnumType serializedEnumType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitMemberPointer(MemberPointer_v1 memptr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitPointer(PointerType_v1 pointer)
+            {
+                return new Pointer(pointer.DataType.Accept(this), 4);
+            }
+
+            public DataType VisitPrimitive(PrimitiveType_v1 primitive)
+            {
+                return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
+            }
+
+            public DataType VisitSignature(SerializedSignature signature)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitString(StringType_v2 str)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitStructure(SerializedStructType structure)
+            {
+                return new StructureType(structure.Name, 0);
+            }
+
+            public DataType VisitTemplate(SerializedTemplate serializedTemplate)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitTypedef(SerializedTypedef typedef)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitTypeReference(SerializedTypeReference typeReference)
+            {
+                return new TypeReference(typeReference.TypeName, null);
+            }
+
+            public DataType VisitUnion(UnionType_v1 union)
+            {
+                throw new NotImplementedException();
+            }
+
+            public DataType VisitVoidType(VoidType_v1 serializedVoidType)
+            {
+                throw new NotImplementedException();
+            }
+        }
+        #endregion
 
         public IPlatform CreatePlatform()
         {
+            if (platform != null)
+                return platform;
+
             platform = mr.Stub<IPlatform>();
 
+            platform.Stub(p => p.Name).Return("TestPlatform");
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Return(2);
@@ -75,24 +150,117 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
-            this.symbolTable = new SymbolTable(platform);
-            platform.Stub(p => p.CreateSymbolTable()).Do(new Func<SymbolTable>(() => this.symbolTable));
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var ser = mr.Stub<ProcedureSerializer>(arch, null, "cdecl");
-            platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(ser);
-            ser.Stub(s => s.Deserialize(
-                Arg<SerializedSignature>.Is.NotNull,
-                Arg<Frame>.Is.NotNull)).Return(new ProcedureSignature());
-            platform.Stub(p => p.CreateTypeLibraryDeserializer()).Return(
-                new TypeLibraryDeserializer(platform, true, new TypeLibrary())
-            );
+            platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata.Clone()));
+            var arch = new X86ArchitectureFlat32();
+            platform.Stub(p => p.Architecture).Return(arch);
+            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
 
+            platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Do(
+                new Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer>((tlDeser, dc) =>
+                    new X86ProcedureSerializer(arch, tlDeser, dc)
+                )
+            );
+            platform.Stub(p => p.SaveUserOptions()).Return(null);
+
+            platform.Replay();
             return platform;
         }
 
-        public void Given_NamedTypes(Dictionary<string, SerializedType> types)
+        public void Given_PlatformTypes(Dictionary<string, DataType> types)
         {
-            this.symbolTable = new SymbolTable(platform, types);
+            this.platformMetadata = new TypeLibrary(
+                types, new Dictionary<string, ProcedureSignature>()
+            );
+        }
+
+        public ILoader CreateLoader()
+        {
+            if (loader != null)
+                return loader;
+
+            loader = mr.Stub<ILoader>();
+
+            var program = CreateProgram();
+            var image = new LoadedImage(Address.Ptr32(0x10000000), new byte[1000]);
+            program.Image = image;
+            program.ImageMap = image.CreateImageMap();
+
+            loader.Stub(
+                l => l.LoadExecutable(null, null, null)
+            ).IgnoreArguments().Return(program);
+
+            loader.Stub(
+                l => l.LoadImageBytes(null, 0)
+            ).IgnoreArguments().Return(new byte[1000]);
+
+            loader.Replay();
+
+            return loader;
+        }
+
+        public void CreateLoadMetadataStub(
+            string metafileName, IPlatform platform, TypeLibrary loaderMetadata
+        )
+        {
+            loader.Stub(l => l.LoadMetadata(
+                Arg<string>.Is.Equal(metafileName),
+                Arg<IPlatform>.Is.Equal(platform),
+                Arg<TypeLibrary>.Is.NotNull
+            )).Do(new Func<string, IPlatform, TypeLibrary, TypeLibrary>((f, p, tl) =>
+                {
+                    foreach (var module in loaderMetadata.Modules)
+                        tl.Modules.Add(module);
+
+                    foreach(var sig in loaderMetadata.Signatures)
+                        tl.Signatures.Add(sig);
+
+                    foreach (var type in loaderMetadata.Types)
+                        tl.Types.Add(type);
+
+                    return tl;
+                }
+            ));
+
+            loader.Replay();
+        }
+
+        public Program CreateProgram()
+        {
+            var platform = CreatePlatform();
+
+            var program = new Program {
+                Architecture = platform.Architecture,
+                Platform = platform,
+            };
+
+            programs.Add(program);
+
+            return program;
+        }
+
+        public void Given_UserDefinedMetafile(
+            string moduleName, Dictionary<string, DataType> types,
+            Dictionary<string, ProcedureSignature> signatures,
+            ModuleDescriptor module)
+        {
+            if (types == null)
+                types = new Dictionary<string, DataType>();
+            if (signatures == null)
+                signatures = new Dictionary<string, ProcedureSignature>();
+            var loaderMetadata = new TypeLibrary(types, signatures);
+            if (module != null)
+                loaderMetadata.Modules.Add(moduleName, module);
+
+            var loader = CreateLoader();
+
+            var metafileName = moduleName+".xml";
+
+            CreateLoadMetadataStub(metafileName, platform, loaderMetadata);
+
+            foreach(var program in programs)
+            {
+                program.LoadMetadataFile(loader, metafileName);
+            }
         }
     }
 }

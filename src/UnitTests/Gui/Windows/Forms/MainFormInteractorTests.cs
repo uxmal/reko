@@ -42,9 +42,11 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
+    [Category("UserInterface")]
 	public class MainFormInteractorTests
 	{
         private MockRepository mr;
+        private MockFactory mockFactory;
         private IMainForm form;
 		private TestMainFormInteractor interactor;
         private Program program;
@@ -72,6 +74,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 		public void Setup()
 		{
             mr = new MockRepository();
+            mockFactory = new MockFactory(mr);
             services = new ServiceContainer();
             configSvc = mr.Stub<IConfigurationService>();
             services.AddService<IConfigurationService>(configSvc);
@@ -193,7 +196,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 .Return(new Program
                 {
                     Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes),
-                    Platform = new DefaultPlatform(null, null)
+                    Platform = mockFactory.CreatePlatform()
                 });
         }
 
@@ -223,7 +226,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v4"">
+  <arch>x86-protected-32</arch>
+  <platform>TestPlatform</platform>
   <input>
     <filename>foo.exe</filename>
     <user>
@@ -347,13 +352,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             this.decompiler = mr.StrictMock<IDecompiler>();
             // Having a compiler presupposes having a project.
+            var platform = mockFactory.CreatePlatform();
             var project = new Project
             {
-                Programs = { new Program 
-                { 
+                Programs = { new Program
+                {
                     Filename="foo.exe" ,
                     Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]),
-                    Platform = new DefaultPlatform(null, null)
+                    Platform = platform,
+                    Architecture = platform.Architecture,
                 }
                 }
             };
@@ -433,7 +440,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_DecompilerInstance();
             loader.Expect(d => d.LoadMetadata(
                 Arg<string>.Is.Equal("foo.def"),
-                Arg<IPlatform>.Is.NotNull))
+                Arg<IPlatform>.Is.NotNull, Arg<TypeLibrary>.Is.NotNull))
                     .Return(new TypeLibrary());
             services.AddService(typeof(IDecompilerService), dcSvc);
             uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.def");

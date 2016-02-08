@@ -46,6 +46,11 @@ namespace Reko.Core.Types
         public override int Size { get; set; }
         public SortedList<long, string> Members { get; private set; }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitEnum(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitEnum(this);

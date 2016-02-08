@@ -275,6 +275,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureReal()
             : base(ProcessorMode.Real)
         {
+            this.Name = "x86-real-16";
         }
     }
 
@@ -283,6 +284,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureProtected16()
             : base(ProcessorMode.ProtectedSegmented)
         {
+            this.Name = "x86-protected-16";
         }
     }
 
@@ -291,6 +293,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureFlat32()
             : base(ProcessorMode.Protected32)
         {
+            this.Name = "x86-protected-32";
         }
     }
 
@@ -299,6 +302,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureFlat64()
             : base(ProcessorMode.Protected64)
         {
+            this.Name = "x86-protected-64";
         }
     }
 }

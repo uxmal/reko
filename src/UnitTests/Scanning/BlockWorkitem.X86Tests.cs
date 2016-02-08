@@ -355,7 +355,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x003A))).Return(block123A);
             });
 
-            wi.ProcessInternal();
+            wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
@@ -473,7 +473,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<int>.Is.Equal(4),
                     Arg<Address>.Is.Anything));
             });
-            wi.ProcessInternal();
+            wi.Process();
 
             mr.VerifyAll();
             var sExp =

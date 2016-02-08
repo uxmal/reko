@@ -443,6 +443,11 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
+        public int VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitCode(CodeType c)
         {
             writer.Write("new CodeType()", c.Size);
