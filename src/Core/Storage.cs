@@ -151,8 +151,9 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// This class represents groups of bits stored in flag registers. Typically, these are the
-    /// Carry, Zero, Overflow etc flags that are set after ALU operations.
+    /// This class represents groups of bits stored in flag registers. 
+    /// Typically, these are the Carry, Zero, Overflow etc flags that are set
+    /// after ALU operations.
     /// </summary>
 	public class FlagGroupStorage : Storage
     {
@@ -247,6 +248,9 @@ namespace Reko.Core
         }
     }
 
+    /// <summary>
+    /// Used to model locations in the x87 FPU stack.
+    /// </summary>
     public class FpuStackStorage : Storage
     {
         public FpuStackStorage(int depth, DataType dataType) : base("FpuStack")
@@ -917,4 +921,3 @@ namespace Reko.Core
         }
     }
 }
-

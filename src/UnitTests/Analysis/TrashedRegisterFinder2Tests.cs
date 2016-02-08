@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Analysis
             var proc = mkProc();
             progBuilder.ResolveUnresolved();
 
-            var ssa = new SsaTransform(pf, proc, proc.CreateBlockDominatorGraph());
+            var ssa = new SsaTransform2(arch, proc, new DataFlow2());
             var vp = new ValuePropagator(arch, ssa.SsaState);
             vp.Transform();
 
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Analysis
                 pf,
                 new[] { ssa },
                 NullDecompilerEventListener.Instance);
-            var flow = trf.Compute(ssa);
+            var flow = trf.Compute(ssa.SsaState);
             var sw = new StringWriter();
             sw.Write("Preserved: ");
             sw.WriteLine(string.Join(",", flow.Preserved.OrderBy(p => p.ToString())));

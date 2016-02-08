@@ -40,10 +40,10 @@ namespace Reko.Analysis
     {
         private IProcessorArchitecture arch;
         private ProgramDataFlow progFlow;
-        private SsaTransform sst;
+        private SsaState ssa;
         private DecompilerEventListener decompilerEventListener;
         private ProcedureFlow2 flow;
-        private ISet<SsaTransform> sccGroup;
+        private ISet<SsaTransform2> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
         private ExpressionValueComparer cmp;
         private HashSet<PhiAssignment> activePhis;
@@ -59,27 +59,27 @@ namespace Reko.Analysis
         public TrashedRegisterFinder2(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
-            IEnumerable<SsaTransform> sccGroup,
+            IEnumerable<SsaTransform2> sccGroup,
             DecompilerEventListener listener)
         {
             this.arch = arch;
             this.progFlow = flow;
             this.sccGroup = sccGroup.ToHashSet();
-            this.assumedPreserved = sccGroup.ToDictionary(k => k.Procedure, v => new HashSet<Storage>());
+            this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
             this.cmp = new ExpressionValueComparer();
         }
 
-        public ProcedureFlow2 Compute(SsaTransform sst)
+        public ProcedureFlow2 Compute(SsaState ssa)
         {
-            this.sst = sst;
+            this.ssa = ssa;
             this.flow = new ProcedureFlow2();
-            this.progFlow.ProcedureFlows2.Add(sst.Procedure, flow);
+            this.progFlow.ProcedureFlows2.Add(ssa.Procedure, flow);
             this.activePhis = new HashSet<PhiAssignment>();
-            foreach (var sid in sst.Procedure.ExitBlock.Statements
+            foreach (var sid in ssa.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
-                .Select(u => sst.SsaState.Identifiers[(Identifier) u.Expression]))
+                .Select(u => ssa.Identifiers[(Identifier) u.Expression]))
             {
                 CategorizeIdentifier(sid);
             }
@@ -95,7 +95,7 @@ namespace Reko.Analysis
             {
                 if (id == sid.OriginalIdentifier
                     ||
-                    id == sst.Procedure.Frame.FramePointer)
+                    id == ssa.Procedure.Frame.FramePointer)
                 {
                     flow.Preserved.Add(sid.OriginalIdentifier.Storage);
                     return;
@@ -121,7 +121,7 @@ namespace Reko.Analysis
             var sidOrig = sid;
             var defInstr = sid.DefStatement.Instruction;
             if (defInstr is DefInstruction &&
-                sid.DefStatement.Block == sst.Procedure.EntryBlock)
+                sid.DefStatement.Block == ssa.Procedure.EntryBlock)
             {
                 // Reaching definition was a DefInstruction;
                 return sid.Identifier;
@@ -144,7 +144,7 @@ namespace Reko.Analysis
                 activePhis.Add(phi);
                 foreach (var id in phi.Src.Arguments.OfType<Identifier>())
                 {
-                    var c = GetReachingExpression(sst.SsaState.Identifiers[id], activePhis);
+                    var c = GetReachingExpression(ssa.Identifiers[id], activePhis);
                     if (value == null)
                     {
                         value = c;
@@ -180,7 +180,7 @@ namespace Reko.Analysis
             Identifier idCopy;
             if (ass.Src.As(out idCopy))
             {
-                sid = sst.SsaState.Identifiers[idCopy];
+                sid = ssa.Identifiers[idCopy];
                 return GetReachingExpression(sid, activePhis);
             }
             return Constant.Invalid;
@@ -198,7 +198,7 @@ namespace Reko.Analysis
 
             // Call trashes this identifier. If it's not in our SCC group we
             // know it to be trashed for sure.
-            if (!sccGroup.Any(s => s.Procedure == callee.Procedure))
+            if (!sccGroup.Any(s => s.SsaState.Procedure == callee.Procedure))
             {
                 return Constant.Invalid;
             }
@@ -206,7 +206,7 @@ namespace Reko.Analysis
             // Are we already assuming that sid is preserved? If so, continue.
             HashSet<Storage> preserved;
             var stg = sid.Identifier.Storage;
-            if (this.assumedPreserved.TryGetValue(sst.Procedure, out preserved) &&
+            if (this.assumedPreserved.TryGetValue(ssa.Procedure, out preserved) &&
                 preserved.Contains(sid.Identifier.Storage))
             {
                 var sidBeforeCall = GetIdentifierFor(stg, call.Uses);
@@ -237,7 +237,7 @@ namespace Reko.Analysis
                 if (!use.Expression.As(out id))
                     continue;
                 if (id.Storage == stg)
-                    return sst.SsaState.Identifiers[id];
+                    return ssa.Identifiers[id];
             }
             return null;
         }

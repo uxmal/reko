@@ -214,20 +214,19 @@ namespace Reko.Analysis
         {
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation where possible.
-            var ssas = procs.Select(p => ConvertToSsa(p));
+            var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
 
             // At this point, the computation of ProcedureFlow is be possible.
-            var tid = new TrashedRegisterFinder2(program.Architecture, flow, ssas, this.eventListener);
-            foreach (var ssa in ssas)
+            var tid = new TrashedRegisterFinder2(program.Architecture, flow, ssts, this.eventListener);
+            foreach (var sst in ssts)
             {
-                tid.Compute(ssa);
+                tid.Compute(sst.SsaState);
             }
 
-            foreach (var ssa in ssas)
+            foreach (var ssa in ssts)
             {
                 // Procedures should be untangled from each other. Now process each one separately.
-
-                var proc = ssa.Procedure;
+                var proc = ssa.SsaState.Procedure;
                 DeadCode.Eliminate(proc, ssa.SsaState);
 
                 // Build expressions. A definition with a single use can be subsumed
@@ -261,18 +260,19 @@ namespace Reko.Analysis
             }
         }
 
-        public SsaTransform ConvertToSsa(Procedure proc)
+        public SsaTransform2 ConvertToSsa(Procedure proc)
         {
-            Aliases alias = new Aliases(proc, program.Architecture, flow);
-            alias.Transform();
+            //Aliases alias = new Aliases(proc, program.Architecture, flow);
+            //alias.Transform();
 
             // Transform the procedure to SSA state. When encountering 'call' instructions,
             // they can be to functions already visited. If so, they have a "ProcedureFlow" 
             // associated with them. If they have not been visited, or are computed destinations
             // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
             // which case the the SSA treats the call as a "hell node".
-            var doms = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(flow, proc, doms);
+            //var doms = proc.CreateBlockDominatorGraph();
+            var sst = new SsaTransform2(program.Architecture, proc, new DataFlow2());
+            sst.Transform();
             var ssa = sst.SsaState;
 
             // Propagate condition codes and registers. At the end, the hope is that 
