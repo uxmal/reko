@@ -38,13 +38,21 @@ namespace Reko.Gui.Windows.Controls
             public long Width;
         }
 
+        /*
+         *  n = number of segments
+         *  c = constant width
+         *  b = per-segment constant width
+         *  cb[i] = per-segment size in bytes
+         *  Width = c + sum(b + cb[i] * scale)
+         *  Width - c - n * b = scale * sum(cb[i])
+         *  scale = ceil((width - c - n * b) / sum(cb[i]))
+         */
         public long Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(offset); OnGranularityChanged(); } }
         public event EventHandler GranularityChanged;
         private long granularity;
 
         [Browsable(false)]
-        public MemoryArea Image { get { return image; } set { image = value; OnImageChanged(); } }
-        public event EventHandler ImageChanged;
+        private MemoryArea Image { get { return image; } set { image = value; OnImageChanged(); } }
         public MemoryArea image;
 
         [Browsable(false)]
@@ -54,6 +62,10 @@ namespace Reko.Gui.Windows.Controls
                 if (imageMap != null)
                     imageMap.MapChanged -= imageMap_MapChanged;
                 imageMap = value; 
+                if (imageMap == null)
+                {
+                    this.cbTotal = 0L;
+                }
                 if (imageMap != null)
                     imageMap.MapChanged += imageMap_MapChanged;
                 OnImageMapChanged(); 
@@ -77,6 +89,7 @@ namespace Reko.Gui.Windows.Controls
 
         private ScrollButton scrollButton;      // If we're scrolling the scrollbuttons.
         private int xLastMouseUp;
+        private long cbTotal;
 
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -107,7 +120,7 @@ namespace Reko.Gui.Windows.Controls
 
         private void RenderScrollControls(Graphics g, Rectangle rcBody)
         {
-            var baseState = image != null && image.Bytes.Length > granularity * Width 
+            var baseState = imageMap != null && cbTotal > granularity * Width 
                 ? ButtonState.Flat
                 : ButtonState.Flat | ButtonState.Inactive;
             ControlPaint.DrawScrollButton(g,
@@ -125,10 +138,6 @@ namespace Reko.Gui.Windows.Controls
                 (scrollButton == ScrollButton.Left ? ButtonState.Pushed : ButtonState.Normal) | baseState);
         }
 
-        private void RenderRightcontrol(Graphics g, Rectangle rcBody)
-        {
-        }
-
         private void RenderBody(Graphics g, Rectangle rcBody)
         {
             Rectangle rcPaint = rcBody;
@@ -137,7 +146,7 @@ namespace Reko.Gui.Windows.Controls
             foreach (var sl in this.segLayouts)
             {
                 Brush brOld = brBack;
-                var segOffset = sl.Segment.Address.ToLinear() - image.BaseAddress.ToLinear();
+                var segOffset = sl.Segment.Address.ToLinear() - imageMap.BaseAddress.ToLinear();
                 if ((ulong)offset <= segOffset + sl.Segment.Size && segOffset < (ulong)(offset + rcBody.Width * granularity))
                 {
                     long cbOffset = offset;
@@ -366,7 +375,6 @@ namespace Reko.Gui.Windows.Controls
         {
             CalculateLayout();
             Invalidate();
-            ImageChanged.Fire(this);
         }
 
         protected virtual void OnImageMapChanged()
@@ -408,7 +416,7 @@ namespace Reko.Gui.Windows.Controls
             if (InvokeRequired)
                 Invoke(new Action(Invalidate));
             else
-            Invalidate();
+                Invalidate();
         }
     }
 }

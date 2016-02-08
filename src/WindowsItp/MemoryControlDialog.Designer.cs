@@ -68,7 +68,6 @@
             this.imageMapView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.imageMapView1.Granularity = 0;
-            this.imageMapView1.Image = null;
             this.imageMapView1.ImageMap = null;
             this.imageMapView1.Location = new System.Drawing.Point(0, 33);
             this.imageMapView1.Name = "imageMapView1";
