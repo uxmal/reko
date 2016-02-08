@@ -85,9 +85,11 @@ namespace Reko.Core
             return new LeImageReader(this, offset);
         }
 
+        [Obsolete]
         public ImageMap CreateImageMap()
         {
-            return new ImageMap(BaseAddress, this.Length);
+            return new ImageMap(BaseAddress,
+                new ImageSegment("", this, AccessMode.ReadWriteExecute));
         }
 
 		/// <summary>

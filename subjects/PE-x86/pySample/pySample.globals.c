@@ -4,20 +4,33 @@
 
 #include "pySample.h"
 
-Eq_123 g_t0004;
+Eq_146 g_t0004;
  <anonymous> * g_ptr10002098 = null;
  <anonymous> * g_ptr100020CC = null;
+char g_b1000212C = 's';
+char g_b10002140 = 's';
+char g_str10002144[] = "ii:sum";
+char g_str1000214C[] = "i";
+char g_str10002150[] = "ii:dif";
+char g_str10002158[] = "ii:div";
+char g_str10002160[] = "ff:fdiv";
 char g_str1000216C[] = ":unused";
 char g_str10002174[] = "pySample";
 ui32 g_dw10003000 = 0xBB40E64E;
 word32 g_dw10003004 = 0x44BF19B1;
-ui32 g_dw10003008 = 0xFFFFFFFF;
-Eq_33 g_t10003010 = PyMethodDef;
+Eq_146 g_t10003008 = ;
+Eq_108 g_t10003010 = 
+	{
+		&g_b10002140,
+		fn10001000,
+		1,
+		&g_b1000212C,
+	};
 int32 g_dw10003070 = 0;
 word32 g_dw100033A4 = 0x00000000;
 word32 g_dw100033A8 = 0x00000000;
-Eq_88 g_t100033AC = ;
-Eq_71 g_t100033B0 = ;
-Eq_71 g_t100033B4 = ;
+Eq_163 g_t100033AC = ;
+Eq_146 g_t100033B0 = ;
+Eq_146 g_t100033B4 = ;
  <anonymous> * g_ptr100033B8 = null;
 
