@@ -35,24 +35,15 @@ namespace Reko.Gui.Windows.Controls
         {
             public ImageSegment Segment;
             public long X;
-            public long Width;
+            public long CxWidth;
         }
 
-        /*
-         *  n = number of segments
-         *  c = constant width
-         *  b = per-segment constant width
-         *  cb[i] = per-segment size in bytes
-         *  Width = c + sum(b + cb[i] * scale)
-         *  Width - c - n * b = scale * sum(cb[i])
-         *  scale = ceil((width - c - n * b) / sum(cb[i]))
-         */
         public long Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(offset); OnGranularityChanged(); } }
         public event EventHandler GranularityChanged;
         private long granularity;
 
         [Browsable(false)]
-        private MemoryArea Image { get { return image; } set { image = value; OnImageChanged(); } }
+        private MemoryArea Image { get { return image; } set { image = value; } }
         public MemoryArea image;
 
         [Browsable(false)]
@@ -146,15 +137,15 @@ namespace Reko.Gui.Windows.Controls
             foreach (var sl in this.segLayouts)
             {
                 Brush brOld = brBack;
-                var segOffset = sl.Segment.Address.ToLinear() - imageMap.BaseAddress.ToLinear();
-                if ((ulong)offset <= segOffset + sl.Segment.Size && segOffset < (ulong)(offset + rcBody.Width * granularity))
+                var segOffset = sl.Segment.Address.ToLinear() - sl.Segment.MemoryArea.BaseAddress.ToLinear();
+                if ((ulong)offset <= segOffset + sl.Segment.ContentSize && segOffset < (ulong)(offset + rcBody.Width * granularity))
                 {
                     long cbOffset = offset;
                     var cxOffset = (int)(cbOffset / granularity) + rcBody.Left;
-                    var cxEnd = cxOffset + (int)sl.Width / granularity;
+                    var cxEnd = cxOffset + sl.CxWidth;
                     for (int x = cxOffset; x < cxEnd; ++x, cbOffset += granularity)
                     {
-                        brNew = GetColorForOffset(cbOffset);
+                        brNew = GetColorForOffset(sl.Segment, cbOffset);
                         if (brNew != brOld)
                         {
                             rcPaint.Width = x - rcPaint.X;
@@ -168,34 +159,17 @@ namespace Reko.Gui.Windows.Controls
                         rcPaint.Width = (int) cxEnd - rcPaint.X;
                         g.FillRectangle(brNew, rcPaint);
                     }
-
                 }
             }
-            //for (int x = rcBody.X; x < rcBody.Right; ++x, cbOffset += granularity)
-            //{
-            //    brNew = GetColorForOffset(cbOffset);
-            //    if (brNew != brOld)
-            //    {
-            //        rcPaint.Width = x - rcPaint.X;
-            //        g.FillRectangle(brOld, rcPaint);
-            //        brOld = brNew;
-            //        rcPaint.X = x;
-            //    }
-            //}
-            //if (brNew != null)
-            //{
-            //    rcPaint.Width = rcBody.Right - rcPaint.X;
-            //    g.FillRectangle(brNew, rcPaint);
-            //}
         }
 
-        private Brush GetColorForOffset(long cbOffset)
+        private Brush GetColorForOffset(ImageSegment seg, long cbOffset)
         {
             ImageMapItem item;
-            if (imageMap == null ||image == null)
+            if (seg == null)
                 return brBack;
-            var lin = (image.BaseAddress + cbOffset).ToLinear();
-            if (!image.IsValidLinearAddress(lin))
+            var lin = seg.Address.ToLinear() + (uint) cbOffset;
+            if (!seg.IsInRange(lin)) 
                 return brBack;
             var address = imageMap.MapLinearAddressToAddress(lin);
             if (!imageMap.TryFindItem(address, out item))
@@ -213,14 +187,14 @@ namespace Reko.Gui.Windows.Controls
         private Rectangle CalculateLayout()
         {
             this.segLayouts.Clear();
-            if (imageMap != null && image != null && granularity > 0)
+            if (imageMap != null && granularity > 0)
             {
                 long x = 0;
                 long cx = 0;
                 foreach (var segment in imageMap.Segments.Values)
                 {
                     cx = (segment.Size + granularity - 1) / granularity;
-                    segLayouts.Add(new SegmentLayout { Segment = segment, X = x, Width = cx });
+                    segLayouts.Add(new SegmentLayout { Segment = segment, X = x, CxWidth = cx });
                     x += cx + CxSegmentBorder;
                 }
             }
@@ -231,15 +205,40 @@ namespace Reko.Gui.Windows.Controls
             return rc;
         }
 
+        long AddressableExtent(ImageSegment seg)
+        {
+            var addrMin = Address.Max(seg.Address, seg.MemoryArea.BaseAddress);
+            var addrMax = Address.Min(seg.Address + seg.ContentSize, seg.MemoryArea.BaseAddress + seg.MemoryArea.Length);
+            return addrMax - addrMin;
+        }
+
         private void BoundGranularity(long value)
         {
             granularity = Math.Max(1L, value);
-            if (image != null)
+            if (ImageMap == null)
             {
-                granularity = Math.Min(
-                    granularity,
-                    (long)Math.Ceiling((double)image.Bytes.Length / (double)Width));
+                return;
             }
+
+            int cxAvailable = ClientSize.Width - 2 * CxScroll;
+            int cxConstant = 0;             // pixels always needed
+            int cxConstantPerSegment = CxSegmentBorder; // constant pixel overhead per segment
+            int cSeg = ImageMap.Segments.Count;
+            long cbTotal = ImageMap.Segments.Values
+                .Sum(s => AddressableExtent(s));
+            granularity = (long)Math.Ceiling(
+               cbTotal /
+               (double)(cxAvailable - cxConstant - cxConstantPerSegment * cSeg));
+
+            /*
+             *  n = number of segments
+             *  c = constant width
+             *  b = per-segment constant width
+             *  cb[i] = per-segment size in bytes
+             *  Width = c + sum(b + cb[i] / scale)
+             *  Width - c - n * b =  sum(cb[i]) / scale
+             *  scale = ceil((width - c - n * b) / sum(cb[i]))
+             */
         }
 
         private void BoundOffset(long value)
@@ -321,6 +320,7 @@ namespace Reko.Gui.Windows.Controls
         {
             if (image == null || imageMap == null)
                 return null;
+
             return  imageMap.MapLinearAddressToAddress( image.BaseAddress.ToLinear() + (ulong)((x - CxScroll) * granularity + offset));
         }
 
@@ -371,15 +371,9 @@ namespace Reko.Gui.Windows.Controls
             GranularityChanged.Fire(this);
         }
 
-        protected virtual void OnImageChanged()
-        {
-            CalculateLayout();
-            Invalidate();
-        }
-
         protected virtual void OnImageMapChanged()
         {
-            CalculateLayout();
+            BoundGranularity(granularity);
             Invalidate();
             ImageMapChanged.Fire(this);
         }
