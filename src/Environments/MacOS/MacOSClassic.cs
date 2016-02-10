@@ -60,7 +60,7 @@ namespace Reko.Environments.MacOS
             foreach (var module in this.Metadata.Modules.Values)
             {
                 SystemService svc;
-                if (module.ServicesByVector.TryGetValue(vector & 0xFFFF, out svc));
+                if (module.ServicesByVector.TryGetValue(vector & 0xFFFF, out svc))
                     return svc;
             }
             return null;

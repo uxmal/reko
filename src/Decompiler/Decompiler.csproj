@@ -117,6 +117,7 @@
     <Compile Include="Analysis\ConditionCodeEliminator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\ConstDivisionImplementedByMultiplication.cs" />
     <Compile Include="Analysis\CriticalInstruction.cs">
       <SubType>Code</SubType>
     </Compile>

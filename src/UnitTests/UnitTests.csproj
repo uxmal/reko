@@ -120,7 +120,6 @@
     <Compile Include="Environments\Windows\Win32MipsPlatformTests.cs" />
     <Compile Include="Environments\Windows\Win32PlatformTests.cs" />
     <Compile Include="Environments\Windows\WineSpecFileLoaderTests.cs" />
-    <Compile Include="Evaluation\ConstDivisionImplementedByMultiplication.cs" />
     <Compile Include="Evaluation\ConstDivisionImplementedByMultiplicationTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
