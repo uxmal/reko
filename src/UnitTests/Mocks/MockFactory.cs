@@ -181,9 +181,10 @@ namespace Reko.UnitTests.Mocks
             loader = mr.Stub<ILoader>();
 
             var program = CreateProgram();
-            var image = new LoadedImage(Address.Ptr32(0x10000000), new byte[1000]);
-            program.Image = image;
-            program.ImageMap = image.CreateImageMap();
+            var mem = new MemoryArea(Address.Ptr32(0x10000000), new byte[1000]);
+            program.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment(".text", mem.BaseAddress, AccessMode.ReadExecute));
 
             loader.Stub(
                 l => l.LoadExecutable(null, null, null)

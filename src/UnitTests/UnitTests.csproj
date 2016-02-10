@@ -223,6 +223,7 @@
     <Compile Include="Fragments\StaggeredArrayFragment.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Commands\Cmd_MarkProcedureTests.cs" />
+    <Compile Include="Gui\Commands\Cmd_WhatPointsHereTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
     <Compile Include="Gui\Windows\Controls\ImageMapViewTests.cs" />
