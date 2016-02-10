@@ -43,16 +43,24 @@ namespace Reko.Gui.Commands
             var resultSvc = Services.RequireService<ISearchResultService>();
             var arch = program.Architecture;
             var rdr = program.CreateImageReader(program.ImageMap.BaseAddress);
-            var addrControl = program.Platform.CreatePointerScanner(
-                program.ImageMap,
-                rdr,
-                addresses,
-                PointerScannerFlags.All);
+            var progAddresses = program.ImageMap.Segments.Values
+                .SelectMany(s => GetPointersInSegment(s));
             resultSvc.ShowSearchResults(
                 new AddressSearchResult(
-                    Services, 
-                    addrControl.Select(lin => new ProgramAddress(program, lin)),
+                    Services,
+                    progAddresses,
                     AddressSearchDetails.Code));
+        }
+
+        private IEnumerable<ProgramAddress> GetPointersInSegment(ImageSegment s)
+        {
+            var rdr = s.CreateImageReader(program.Platform);
+            return program.Platform.CreatePointerScanner(
+                    program.ImageMap,
+                    rdr,
+                    addresses,
+                    PointerScannerFlags.All)
+                    .Select(a => new ProgramAddress(program, a));
         }
     }
 }

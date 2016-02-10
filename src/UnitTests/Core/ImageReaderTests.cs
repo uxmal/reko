@@ -53,5 +53,17 @@ namespace Reko.UnitTests.Core
             StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar);
             Assert.AreEqual("Foo", str.ToString());
         }
+
+        [Test(Description = "Tests a bounded image")]
+        public void ImrBounded_ReadByte()
+        {
+            // The memarea is 2 bytes...
+            var mem = new MemoryArea(Address.Ptr32(0x1213), new byte[] { 0x12, 0x34 });
+            // ...but we wish to limit it to 1 byte
+            var rdr = new LeImageReader(mem, mem.BaseAddress, mem.BaseAddress + 1);
+            Assert.IsTrue(rdr.IsValid);
+            Assert.AreEqual((byte)0x12, rdr.ReadByte());
+            Assert.IsFalse(rdr.IsValid, "Should have respected the limit.");
+        }
     }
 }

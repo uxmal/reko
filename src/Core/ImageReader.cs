@@ -36,6 +36,7 @@ namespace Reko.Core
         private MemoryArea image;
         protected byte[] bytes;
         private long offStart;
+        private long offEnd;
         private long off;
         private Address addrStart;
 
@@ -48,10 +49,28 @@ namespace Reko.Core
             long o = addr - img.BaseAddress;
             if (o >= img.Length)
                 throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");
+            this.offStart = o;
+            this.offEnd = o + img.Bytes.Length;
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = addr;
-            this.off = offStart = o;
+        }
+
+        protected ImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
+        {
+            if (img == null)
+                throw new ArgumentNullException("img");
+            if (addrBegin == null)
+                throw new ArgumentNullException("addrBegin");
+            if (addrEnd == null)
+                throw new ArgumentNullException("addrBegin");
+            this.offStart = addrBegin - img.BaseAddress;
+            // Prevent walking off the end of the bytes.
+            this.offEnd = Math.Min(addrEnd - img.BaseAddress, img.Bytes.Length);
+            this.off = this.offStart;
+            this.image = img;
+            this.bytes = img.Bytes;
+            this.addrStart = addrBegin;
         }
 
         protected ImageReader(MemoryArea img, ulong off)
@@ -67,7 +86,9 @@ namespace Reko.Core
         protected ImageReader(byte[] img, ulong off)
         {
             this.bytes = img;
-            this.off = offStart = (long)off;
+            this.offStart =(long) off;
+            this.offEnd = img.Length;
+            this.off = offStart;
         }
 
         public virtual ImageReader Clone()
@@ -96,6 +117,7 @@ namespace Reko.Core
                 image = this.image,
                 addrStart = this.addrStart,
                 offStart = this.offStart,
+                offEnd = this.offEnd,
             };
         }
 
@@ -103,7 +125,7 @@ namespace Reko.Core
         public byte[] Bytes { get { return bytes; } }
         public long Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
-        public bool IsValidOffset(long offset) { return 0 <= offset && offset < bytes.Length; }
+        public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }
 
         public byte ReadByte()
         {
@@ -114,7 +136,7 @@ namespace Reko.Core
 
         public bool TryReadByte(out byte b)
         {
-            if (off >= bytes.Length || off < 0)
+            if (!IsValidOffset(off))
             {
                 b = 0;
                 return false;
@@ -450,7 +472,7 @@ namespace Reko.Core
 
         public byte[] ReadToEnd()
         {
-            var ab = new byte[this.Bytes.Length - Offset];
+            var ab = new byte[this.offEnd - Offset];
             Array.Copy(Bytes, (int)Offset, ab, 0, ab.Length);
             return ab;
         }
@@ -459,8 +481,6 @@ namespace Reko.Core
         {
             throw new NotImplementedException();
         }
-
-  
     }
 
     /// <summary>
@@ -471,6 +491,7 @@ namespace Reko.Core
         public LeImageReader(byte[] bytes, ulong offset=0) : base(bytes, offset) { }
         public LeImageReader(MemoryArea image, ulong offset) : base(image, offset) { }
         public LeImageReader(MemoryArea image, Address addr) : base(image, addr) { }
+        public LeImageReader(MemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
 
         public override ImageReader CreateNew(byte[] bytes, ulong offset)
         {
@@ -516,6 +537,7 @@ namespace Reko.Core
         public BeImageReader(byte[] bytes, ulong offset) : base(bytes, offset) { }
         public BeImageReader(MemoryArea image, ulong offset) : base(image, offset) { }
         public BeImageReader(MemoryArea image, Address addr) : base(image, addr) { }
+        public BeImageReader(MemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
 
         public override ImageReader CreateNew(byte[] bytes, ulong offset)
         {

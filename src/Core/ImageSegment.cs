@@ -91,6 +91,16 @@ namespace Reko.Core
 
 		public string Name { get;set; }
 
+        /// <summary>
+        /// Creates an image reader that scans all available memory in the segment.
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <returns></returns>
+        public ImageReader CreateImageReader(IPlatform platform)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
 		{
 			return string.Format("Segment {0} at {1}, {2} / {3} bytes", Name, Address.ToString(), ContentSize, Size);
