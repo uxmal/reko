@@ -55,6 +55,11 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
+            public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            {
+                throw new NotImplementedException();
+            }
+
             public override ImageReader CreateImageReader(MemoryArea img, Address addr)
             {
                 throw new NotImplementedException();

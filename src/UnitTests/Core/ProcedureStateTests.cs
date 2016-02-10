@@ -114,6 +114,11 @@ namespace Reko.UnitTests.Core
                 return new LeImageReader(image, addr);
             }
 
+            public ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            {
+                return new LeImageReader(image, addrBegin, addrEnd);
+            }
+
             public ImageReader CreateImageReader(MemoryArea image, ulong offset)
             {
                 return new LeImageReader(image, offset);

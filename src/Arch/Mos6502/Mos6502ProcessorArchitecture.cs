@@ -54,6 +54,11 @@ namespace Reko.Arch.Mos6502
             return new LeImageReader(image, addr);
         }
 
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
         public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);

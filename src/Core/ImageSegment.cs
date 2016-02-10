@@ -98,6 +98,9 @@ namespace Reko.Core
         /// <returns></returns>
         public ImageReader CreateImageReader(IPlatform platform)
         {
+            var addrBegin = Address.Max(this.Address, this.MemoryArea.BaseAddress);
+            var addrEnd = Address.Min(this.Address + this.Size, this.MemoryArea.BaseAddress + this.MemoryArea.Length);
+            return platform.Architecture.CreateImageReader(this.MemoryArea, addrBegin, addrEnd);
             throw new NotImplementedException();
         }
 

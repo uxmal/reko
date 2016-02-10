@@ -84,6 +84,15 @@ namespace Reko.Core
         ImageReader CreateImageReader(MemoryArea img, Address addr);
 
         /// <summary>
+        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the
+        /// processor, limited to the specified address range.
+        /// </summary>
+        /// <param name="img">Program image to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <returns>An imagereader of the appropriate endianness</returns>
+        ImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
+
+        /// <summary>
         /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
         /// </summary>
         /// <param name="img">Program image to read</param>
@@ -171,6 +180,7 @@ namespace Reko.Core
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
         public abstract ImageReader CreateImageReader(MemoryArea img, Address addr);
+        public abstract ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
         public abstract ImageReader CreateImageReader(MemoryArea img, ulong off);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();

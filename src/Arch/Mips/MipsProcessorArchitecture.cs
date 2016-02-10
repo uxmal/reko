@@ -143,6 +143,11 @@ namespace Reko.Arch.Mips
         {
             return new BeImageReader(image, offset);
         }
+
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new BeImageReader(image, addrBegin, addrEnd);
+        }
     }
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
@@ -155,6 +160,11 @@ namespace Reko.Arch.Mips
         public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
         }
     }
 }

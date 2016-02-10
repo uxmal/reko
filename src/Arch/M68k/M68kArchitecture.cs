@@ -78,6 +78,11 @@ namespace Reko.Arch.M68k
             return new BeImageReader(image, addr);
         }
 
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new BeImageReader(image, addrBegin, addrEnd);
+        }
+
         public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new BeImageReader(image, offset);
