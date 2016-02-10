@@ -59,7 +59,7 @@ namespace Reko.Gui.Windows
 
         public void ShowMemoryAtAddress(Program program, Address addr)
         {
-            if (mvi.Program != program)
+            if (mvi == null || mvi.Program != program)
             {
                 ViewImage(program);
             }

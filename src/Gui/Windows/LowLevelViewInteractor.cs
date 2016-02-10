@@ -467,7 +467,7 @@ namespace Reko.Gui.Windows
         private void DisassemblyControl_Navigate(object sender, EditorNavigationArgs e)
         {
             var addr = e.Destination as Address;
-            if (e == null)
+            if (addr == null)
                 return;
             UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }
