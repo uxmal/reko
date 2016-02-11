@@ -55,13 +55,6 @@ namespace Reko.Gui.Windows.Controls
             public long CxWidth;
         }
 
-        public class ControlLayout
-        {
-            public Rectangle rcBody;
-            public List<SegmentLayout> segLayouts;
-            public int cxExtent;
-        }
-
         public long Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(cxOffset); OnGranularityChanged(); } }
         public event EventHandler GranularityChanged;
         private long granularity;
@@ -73,10 +66,6 @@ namespace Reko.Gui.Windows.Controls
                 if (imageMap != null)
                     imageMap.MapChanged -= imageMap_MapChanged;
                 imageMap = value; 
-                if (imageMap == null)
-                {
-                    this.cbTotal = 0L;
-                }
                 if (imageMap != null)
                     imageMap.MapChanged += imageMap_MapChanged;
                 OnImageMapChanged(); 
@@ -94,166 +83,19 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler OffsetChanged;
         private long cxOffset;
 
-        private Brush brCode;
-        private Brush brBack;
-        private Brush brData;
-
         private ScrollButton scrollButton;      // If we're scrolling the scrollbuttons.
         private int xLastMouseUp;
-        private long cbTotal;
-        private ControlLayout layout;
+        private Painter painter;
 
         protected override void OnPaint(PaintEventArgs pe)
         {
-            this.brBack = new SolidBrush(BackColor);
-            this.brCode = new SolidBrush(Color.Pink);
-            this.brData = new SolidBrush(Color.LightBlue);
-            try
-            {
-                this.layout = CalculateLayout();
-                RenderSelectionBar(pe.Graphics);
-                RenderScrollControls(pe.Graphics);
-                RenderBody(pe.Graphics, this.layout);
-            }
-            finally
-            {
-                brData.Dispose();
-                brCode.Dispose();
-                brBack.Dispose();
-            }
+            this.painter = CalculateLayout();
+            painter.Paint(pe.Graphics, this);
         }
-
-        private void RenderSelectionBar(Graphics g)
+ 
+        public Painter CalculateLayout()
         {
-            Brush br = new SolidBrush(Focused ? Color.FromArgb(0xFF, 0xFF, 0x30) : Color.FromArgb(0x80, 0x80, 0x30));
-            g.FillRectangle(br, new Rectangle(0, 1 + Height - CySelection, Width, CySelection - 1));
-            br.Dispose();
-        }
-
-        private void RenderScrollControls(Graphics g)
-        {
-            var baseState = imageMap != null && cbTotal > granularity * Width 
-                ? ButtonState.Flat
-                : ButtonState.Flat | ButtonState.Inactive;
-            ControlPaint.DrawScrollButton(g,
-                0, (Height - CyScroll) / 2, 
-                CxScroll, 
-                CyScroll, 
-                ScrollButton.Left,
-                (scrollButton == ScrollButton.Left ? ButtonState.Pushed : ButtonState.Normal) | baseState); 
-            ControlPaint.DrawScrollButton(g,
-                Width - CxScroll,
-                (Height - CyScroll) / 2, 
-                CxScroll, 
-                CyScroll,
-                ScrollButton.Right, 
-                (scrollButton == ScrollButton.Left ? ButtonState.Pushed : ButtonState.Normal) | baseState);
-        }
-
-        private void RenderBody(Graphics g, ControlLayout layout)
-        {
-            Font fontSeg = new Font("Arial", 7);
-            Rectangle rcPaint = layout.rcBody;
-            rcPaint.Width = 0;
-            Brush brNew = null;
-            foreach (var sl in layout.segLayouts)
-            {
-                if (sl.X - cxOffset < layout.rcBody.Width && sl.X + sl.CxWidth - cxOffset >= 0)
-                {
-                    int xMin = (int)Math.Max(sl.X - cxOffset, 0);
-                    int xMax = (int)Math.Min(sl.X + sl.CxWidth - cxOffset, layout.rcBody.Width);
-                    long cbOffset = (xMin - (sl.X - cxOffset)) * granularity;
-                    rcPaint.X = xMin + CxScroll;
-                    Brush brOld = null;
-                    for (int x = xMin; x < xMax; ++x, cbOffset += granularity)
-                    {
-                        brNew = GetColorForOffset(sl.Segment, cbOffset);
-                        if (brNew != brOld)
-                        {
-                            if (brOld != null)
-                            {
-                                rcPaint.Width = x + CxScroll - rcPaint.X;
-                                g.FillRectangle(brOld, rcPaint);
-                                Debug.Print("Paint: {0} {1}", rcPaint, brOld);
-                                brOld = brNew;
-                                rcPaint.X = x + CxScroll;
-                            }
-                            else
-                            {
-                                brOld = brBack;
-                            }
-                        }
-                    }
-                    if (brNew != null)
-                    {
-                        rcPaint.Width = xMax + CxScroll - rcPaint.X;
-                        g.FillRectangle(brNew, rcPaint);
-                    }
-
-                    RenderSegmentName(g, sl, xMin, xMax, fontSeg, layout);
-                    RenderSegmentSeparator(g, CxScroll + sl.X + sl.CxWidth - cxOffset, layout);
-                }
-            }
-            fontSeg.Dispose();
-        }
-
-        private void RenderSegmentName(Graphics g, SegmentLayout sl, int xMin, int xMax, Font font, ControlLayout layout)
-        {
-            var size = g.MeasureString(sl.Segment.Name, font);
-            var rcText = new RectangleF(CxScroll + xMin + 1, layout.rcBody.Bottom - 2 - (int)size.Height, size.Width, size.Height);
-            g.DrawString(sl.Segment.Name, font, SystemBrushes.ControlText, rcText);
-        }
-
-        private void RenderSegmentSeparator(Graphics g, long x, ControlLayout layout)
-        {
-            var rc = new Rectangle((int)x, layout.rcBody.Top, CxSegmentBorder, layout.rcBody.Height);
-            g.FillRectangle(Brushes.Black, rc);
-            Debug.Print("Separator: {0}", rc);
-        }
-
-
-        private Brush GetColorForOffset(ImageSegment seg, long cbOffset)
-        {
-            ImageMapItem item;
-            var lin = seg.Address.ToLinear() + (uint) cbOffset;
-            if (!seg.IsInRange(lin)) 
-                return brBack;
-            var address = imageMap.MapLinearAddressToAddress(lin);
-            if (!imageMap.TryFindItem(address, out item))
-                return brBack;
-            if (item is ImageMapVectorTable)
-                return brData;
-            if (item.DataType is UnknownType)
-                return brBack;
-            if (item is ImageMapBlock)
-                return brCode;
-            else
-                return brData;
-        }
-
-        public ControlLayout CalculateLayout()
-        {
-            var segLayouts = new List<SegmentLayout>();
-            long x = 0;
-            long cx = 0;
-            if (imageMap != null && granularity > 0)
-            {
-                foreach (var segment in imageMap.Segments.Values)
-                {
-                    cx = (segment.Size + granularity - 1) / granularity;
-                    segLayouts.Add(new SegmentLayout { Segment = segment, X = x, CxWidth = cx });
-                    x += cx + CxSegmentBorder;
-                }
-            }
-            return new ControlLayout
-            {
-                rcBody = new Rectangle(
-                    CxScroll, 0,
-                    Width - 2 * CxScroll,
-                    Height - CySelection),
-                segLayouts = segLayouts,
-                cxExtent = (int) x,
-            };
+            return new Painter(this);
         }
 
         long AddressableExtent(ImageSegment seg)
@@ -286,10 +128,10 @@ namespace Reko.Gui.Windows.Controls
         private void BoundOffset(long value)
         {
             cxOffset = value;
-            if (layout != null)
+            if (painter != null)
             {
                 var lastSeg = imageMap.Segments.Values.Last();
-                cxOffset = Math.Min(cxOffset, layout.cxExtent);
+                cxOffset = Math.Min(cxOffset, painter.cxExtent);
             }
             cxOffset = Math.Max(0, cxOffset);
         }
@@ -363,11 +205,11 @@ namespace Reko.Gui.Windows.Controls
 
         private Address MapClientPositionToAddress(int x)
         {
-            if (imageMap == null || layout == null)
+            if (imageMap == null || painter == null)
                 return null;
 
             x -= (CxScroll + (int) cxOffset);          // bias past the scroller button.
-            foreach (var sl in layout.segLayouts)
+            foreach (var sl in painter.segLayouts)
             {
                 if (sl.X <= x && x < sl.X + sl.CxWidth)
                 {
