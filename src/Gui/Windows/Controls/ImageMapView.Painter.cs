@@ -38,7 +38,6 @@ namespace Reko.Gui.Windows.Controls
             public Rectangle rcClient;
             public Rectangle rcBody;
             public List<SegmentLayout> segLayouts;
-            public int cxExtent;
             private long granularity;
             private Brush brCode;
             private Brush brBack;
@@ -71,8 +70,10 @@ namespace Reko.Gui.Windows.Controls
                     CxScroll, 0,
                     rcClient.Width - 2 * CxScroll,
                     rcClient.Height - CySelection);
-                cxExtent = (int)x;
+                Extent = (int)x;
             }
+
+            public int Extent { get; private set; }
 
             public void Paint(Graphics g, ImageMapView mapView)
             {
@@ -104,6 +105,8 @@ namespace Reko.Gui.Windows.Controls
                 {
                     if (sl.X - cxOffset < rcBody.Width && sl.X + sl.CxWidth - cxOffset >= 0)
                     {
+                        Debug.Print("---- Segment {0} ----", sl.Segment.Name);
+
                         int xMin = (int)Math.Max(sl.X - cxOffset, 0);
                         int xMax = (int)Math.Min(sl.X + sl.CxWidth - cxOffset, rcBody.Width);
                         long cbOffset = (xMin - (sl.X - cxOffset)) * granularity;
@@ -124,7 +127,7 @@ namespace Reko.Gui.Windows.Controls
                                 }
                                 else
                                 {
-                                    brOld = brBack;
+                                    brOld = brNew;
                                 }
                             }
                         }

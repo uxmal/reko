@@ -131,7 +131,7 @@ namespace Reko.Gui.Windows.Controls
             if (painter != null)
             {
                 var lastSeg = imageMap.Segments.Values.Last();
-                cxOffset = Math.Min(cxOffset, painter.cxExtent);
+                cxOffset = Math.Min(cxOffset, painter.Extent);
             }
             cxOffset = Math.Max(0, cxOffset);
         }
