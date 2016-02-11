@@ -117,6 +117,22 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Determine whether <paramref name="instr"/> is a match for 
+        /// the pattern that is a constant division
+        /// </summary>
+        /// <remarks>
+        /// The pattern is:
+        /// <code>
+        /// hi:lo = r * const
+        /// hi = slice(hi:lo) (alias)
+        /// hi = hi >> shift  (optional)
+        /// </code>
+        /// This transformation must be carried out before value propagation
+        /// pushes the shift inside other operations.
+        /// </remarks>
+        /// <param name="instr"></param>
+        /// <returns></returns>
         public bool Match(Instruction instr)
         {
             Assignment ass;
@@ -144,7 +160,6 @@ namespace Reko.Analysis
 
             // There may be a subsequent SAR / SHR to increase 
             // the divisor.
-
 
             var idSlice = idDst;
             Constant rShift = null;

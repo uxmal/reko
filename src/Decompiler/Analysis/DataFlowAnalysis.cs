@@ -84,15 +84,16 @@ namespace Reko.Analysis
 
                     var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
                     cce.Transform();
+                    //var cd = new ConstDivisionImplementedByMultiplication(ssa);
+                    //cd.Transform();
+
                     DeadCode.Eliminate(proc, ssa);
 
                     var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
-                    //var cd = new ConstDivisionImplementedByMultiplication(ssa);
-                    //cd.Transform();
-
+              
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 
