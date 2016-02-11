@@ -517,7 +517,7 @@ namespace Reko.Gui.Windows.Controls
         {
             this.cursorPos = new TextPointer
             {
-                Line = model.StartPosition,
+                Line = model.CurrentPosition,
                 Span = 0,
                 Character = 0
             };

@@ -42,7 +42,6 @@ namespace Reko.Gui.Commands
         {
             var resultSvc = Services.RequireService<ISearchResultService>();
             var arch = program.Architecture;
-            var rdr = program.CreateImageReader(program.ImageMap.BaseAddress);
             var progAddresses = program.ImageMap.Segments.Values
                 .SelectMany(s => GetPointersInSegment(s));
             resultSvc.ShowSearchResults(
@@ -54,7 +53,7 @@ namespace Reko.Gui.Commands
 
         private IEnumerable<ProgramAddress> GetPointersInSegment(ImageSegment s)
         {
-            var rdr = s.CreateImageReader(program.Platform);
+            var rdr = s.CreateImageReader(program.Architecture);
             return program.Platform.CreatePointerScanner(
                     program.ImageMap,
                     rdr,

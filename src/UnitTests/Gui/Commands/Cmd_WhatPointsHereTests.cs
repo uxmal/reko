@@ -68,26 +68,30 @@ namespace Reko.UnitTests.Gui.Commands
         {
             imageMap.AddSegment(new ImageSegment(name, address, AccessMode.ReadWriteExecute)
             {
-                Size = size
+                Size = size, 
+                MemoryArea = mem,
             });
         }
+
+        private void Given_Pointers(Address[] addresses)
+        {
+            platform.Stub(s => s.CreatePointerScanner(null, null, null, PointerScannerFlags.All))
+                .IgnoreArguments()
+                .Return(addresses);
+        }
+
 
         [Test(Description = "Test when a segment doesn't cover the program image")]
         public void Cmdwph_SmallSegment()
         {
             Given_Segment(".text", Address.Ptr32(0x00401000), 0x0800);
+            Given_Pointers(new[] { Address.Ptr32(0x00401800), Address.Ptr32(0x00401804) });
             mr.ReplayAll();
 
             var cmd = new Cmd_ViewWhatPointsHere(sc, program, new[] { Address.Ptr32(0x00401400) });
             cmd.DoIt();
 
             mr.VerifyAll();
-        }
-
-        [Test(Description = "Test two segments that don't cover the program image")]
-        public void Cmdwph_TwoSegments()
-        {
-            Assert.Fail();
         }
     }
 }

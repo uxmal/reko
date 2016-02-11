@@ -50,7 +50,8 @@ namespace Reko.Core
             if (o >= img.Length)
                 throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");
             this.offStart = o;
-            this.offEnd = o + img.Bytes.Length;
+            this.offEnd = img.Bytes.Length;
+            this.off = offStart;
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = addr;
@@ -80,7 +81,9 @@ namespace Reko.Core
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = img.BaseAddress + off;
-            this.off = offStart = (long) off;
+            this.offStart = (long) off;
+            this.offEnd = img.Bytes.Length;
+            this.off = offStart;
         }
 
         protected ImageReader(byte[] img, ulong off)

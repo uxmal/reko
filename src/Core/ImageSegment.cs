@@ -25,7 +25,7 @@ namespace Reko.Core
 {
 	/// <summary>
 	/// Represent a segment of memory, corresponding to an 16-bit segment for x86
-    ///  real and protected modes, and executable sections for flat processor modes.
+    /// real and protected modes, and executable sections for flat processor modes.
 	/// </summary>
     [Designer("Reko.Gui.Design.ImageMapSegmentNodeDesigner,Reko.Gui")]
 	public class ImageSegment : ImageMapItem        //$REVIEW: why inherit from ImageMapItem?
@@ -96,12 +96,11 @@ namespace Reko.Core
         /// </summary>
         /// <param name="platform"></param>
         /// <returns></returns>
-        public ImageReader CreateImageReader(IPlatform platform)
+        public ImageReader CreateImageReader(IProcessorArchitecture arch)
         {
             var addrBegin = Address.Max(this.Address, this.MemoryArea.BaseAddress);
             var addrEnd = Address.Min(this.Address + this.Size, this.MemoryArea.BaseAddress + this.MemoryArea.Length);
-            return platform.Architecture.CreateImageReader(this.MemoryArea, addrBegin, addrEnd);
-            throw new NotImplementedException();
+            return arch.CreateImageReader(this.MemoryArea, addrBegin, addrEnd);
         }
 
         public override string ToString()
