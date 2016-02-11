@@ -1,9 +1,28 @@
-﻿using Reko.Core;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2016 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -133,26 +152,36 @@ namespace Reko.Gui.Windows.Controls
 
         private void RenderBody(Graphics g, ControlLayout layout)
         {
+            Font fontSeg = new Font("Arial", 7);
             Rectangle rcPaint = layout.rcBody;
             rcPaint.Width = 0;
             Brush brNew = null;
             foreach (var sl in layout.segLayouts)
             {
-                Brush brOld = brBack;
                 if (sl.X - cxOffset < layout.rcBody.Width && sl.X + sl.CxWidth - cxOffset >= 0)
                 {
                     int xMin = (int)Math.Max(sl.X - cxOffset, 0);
                     int xMax = (int)Math.Min(sl.X + sl.CxWidth - cxOffset, layout.rcBody.Width);
                     long cbOffset = (xMin - (sl.X - cxOffset)) * granularity;
+                    rcPaint.X = xMin + CxScroll;
+                    Brush brOld = null;
                     for (int x = xMin; x < xMax; ++x, cbOffset += granularity)
                     {
                         brNew = GetColorForOffset(sl.Segment, cbOffset);
                         if (brNew != brOld)
                         {
-                            rcPaint.Width = x + CxScroll - rcPaint.X;
-                            g.FillRectangle(brOld, rcPaint);
-                            brOld = brNew;
-                            rcPaint.X = x + CxScroll;
+                            if (brOld != null)
+                            {
+                                rcPaint.Width = x + CxScroll - rcPaint.X;
+                                g.FillRectangle(brOld, rcPaint);
+                                Debug.Print("Paint: {0} {1}", rcPaint, brOld);
+                                brOld = brNew;
+                                rcPaint.X = x + CxScroll;
+                            }
+                            else
+                            {
+                                brOld = brBack;
+                            }
                         }
                     }
                     if (brNew != null)
@@ -160,9 +189,28 @@ namespace Reko.Gui.Windows.Controls
                         rcPaint.Width = xMax + CxScroll - rcPaint.X;
                         g.FillRectangle(brNew, rcPaint);
                     }
+
+                    RenderSegmentName(g, sl, xMin, xMax, fontSeg, layout);
+                    RenderSegmentSeparator(g, CxScroll + sl.X + sl.CxWidth - cxOffset, layout);
                 }
             }
+            fontSeg.Dispose();
         }
+
+        private void RenderSegmentName(Graphics g, SegmentLayout sl, int xMin, int xMax, Font font, ControlLayout layout)
+        {
+            var size = g.MeasureString(sl.Segment.Name, font);
+            var rcText = new RectangleF(CxScroll + xMin + 1, layout.rcBody.Bottom - 2 - (int)size.Height, size.Width, size.Height);
+            g.DrawString(sl.Segment.Name, font, SystemBrushes.ControlText, rcText);
+        }
+
+        private void RenderSegmentSeparator(Graphics g, long x, ControlLayout layout)
+        {
+            var rc = new Rectangle((int)x, layout.rcBody.Top, CxSegmentBorder, layout.rcBody.Height);
+            g.FillRectangle(Brushes.Black, rc);
+            Debug.Print("Separator: {0}", rc);
+        }
+
 
         private Brush GetColorForOffset(ImageSegment seg, long cbOffset)
         {
