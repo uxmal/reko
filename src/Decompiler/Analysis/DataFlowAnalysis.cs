@@ -90,6 +90,9 @@ namespace Reko.Analysis
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
+                    //var cd = new ConstDivisionImplementedByMultiplication(ssa);
+                    //cd.Transform();
+
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 
@@ -190,7 +193,6 @@ namespace Reko.Analysis
             eventListener.ShowStatus("Rewriting calls.");
 			GlobalCallRewriter.Rewrite(program, flow);
 		}
-
 
         // EXPERIMENTAL - consult uxmal before using
         /// <summary>

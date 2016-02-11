@@ -53,10 +53,23 @@ namespace Reko.Analysis
         private Expression dividend;
         private SsaState ssa;
         private Rational bestRational;
+        private Identifier idOrig;
+        private object stmCur;
 
         public ConstDivisionImplementedByMultiplication(SsaState ssa)
         {
             this.ssa = ssa;
+        }
+
+        public void Transform()
+        {
+            foreach (var stm in ssa.Procedure.Statements)
+            {
+                if (Match(stm.Instruction))
+                {
+                    stm.Instruction = TransformInstruction();
+                }
+            }
         }
 
         /// <summary>
@@ -104,21 +117,27 @@ namespace Reko.Analysis
             }
         }
 
-        public bool Match(Assignment ass)
+        public bool Match(Instruction instr)
         {
-            // Look for hi:lo = a * C
-            var dst = ass.Dst.Storage as SequenceStorage;
-            if (dst == null)
-                return false;
-            this.idDst = dst.Tail;
-
+            Assignment ass;
+            SequenceStorage dst;
             BinaryExpression bin;
             Constant cRight;
-            if (!ass.Src.As(out bin) ||
+
+            // Look for hi:lo = a * C
+            if (!instr.As(out ass) ||
+                !ass.Dst.Storage.As(out dst) ||
+                !ass.Src.As(out bin) ||
                 !(bin.Operator is IMulOperator) ||
-                !bin.Right.As(out cRight))
+                !bin.Right.As(out cRight) ||
+                ass.Dst.DataType.Size <= bin.Left.DataType.Size)
+            {
                 return false;
-            if (ass.Dst.DataType.Size <= bin.Left.DataType.Size)
+            }
+
+            this.idOrig = ass.Dst;
+            this.idDst = FindAlias(ass.Dst, dst.Head);
+            if (idDst == null)
                 return false;
 
             var best = FindBestRational(cRight.ToUInt32());
@@ -126,7 +145,8 @@ namespace Reko.Analysis
             // There may be a subsequent SAR / SHR to increase 
             // the divisor.
 
-            var idSlice = FindSliceUse(ass.Dst);
+
+            var idSlice = idDst;
             Constant rShift = null;
             if (idSlice != null)
             {
@@ -140,6 +160,16 @@ namespace Reko.Analysis
 
             this.dividend = bin.Left;
             return true;
+        }
+
+        private Identifier FindAlias(Identifier id, Identifier idHead)
+        {
+            return (ssa.Identifiers[id].Uses
+                .Select(u => u.Instruction)
+                .OfType<AliasAssignment>()
+                .Where(a => a.Dst.Storage == idHead.Storage)
+                .Select(a => a.Dst)
+                .FirstOrDefault());
         }
 
         private Constant FindShiftUse(Identifier idSlice)
@@ -178,7 +208,7 @@ namespace Reko.Analysis
                 .FirstOrDefault();
         }
 
-        public Assignment Transform()
+        public Assignment TransformInstruction()
         {
             var eNum = dividend;
             if (bestRational.Numerator != 1)
@@ -189,14 +219,18 @@ namespace Reko.Analysis
                     eNum,
                     Constant.Int32(bestRational.Numerator));
             }
-            return new Assignment(
+            var sidOrig = ssa.Identifiers[idOrig];
+            var sidDst = ssa.Identifiers[idDst];
+            sidOrig.Uses.Remove(sidDst.DefStatement);
+            var oldUses = sidDst.Uses.ToList();
+            sidDst.DefStatement.Instruction = new Assignment(
                 idDst,
                 new BinaryExpression(
                     Operator.SDiv,
                     eNum.DataType,
                     eNum,
                     Constant.Int32(bestRational.Denominator)));
-
+            return sidDst.DefStatement.Instruction as Assignment;
         }
     }
 }
