@@ -23,6 +23,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Environments.Windows;
 using Reko.Gui;
+using Reko.Gui.Windows.Controls;
 using Reko.Gui.Windows.Forms;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
@@ -218,6 +219,15 @@ namespace Reko.WindowsItp
         private void codeViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dlg = new CodeViewerFrame();
+            dlg.ShowDialog();
+        }
+
+        private void byteMapViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dlg = new ByteMapDialog();
+            var ctrl = new ByteMapView();
+            dlg.Controls.Add(ctrl);
+            ctrl.Dock = DockStyle.Fill;
             dlg.ShowDialog();
         }
     }
