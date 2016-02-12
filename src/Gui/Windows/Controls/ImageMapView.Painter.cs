@@ -152,6 +152,20 @@ namespace Reko.Gui.Windows.Controls
                 g.DrawString(sl.Segment.Name, font, SystemBrushes.ControlText, rcText);
             }
 
+            /// <summary>
+            /// Returns the layout of the segment that contains the given
+            /// address <paramref name="addr"/>. A missing address yields
+            /// a null value.
+            /// </summary>
+            /// <param name="addr"></param>
+            /// <returns></returns>
+            public SegmentLayout GetSegment(Address addr)
+            {
+                if (addr == null)
+                    return null;
+                return segLayouts.FirstOrDefault(s => s.Segment.IsInRange(addr));
+            }
+
             private void RenderSegmentSeparator(Graphics g, long x)
             {
                 var rc = new Rectangle((int)x, rcBody.Top, CxSegmentBorder, rcBody.Height);

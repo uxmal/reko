@@ -43,6 +43,7 @@ namespace Reko.Gui.Commands
             var resultSvc = Services.RequireService<ISearchResultService>();
             var arch = program.Architecture;
             var progAddresses = program.ImageMap.Segments.Values
+                .Where(s => s.MemoryArea != null)
                 .SelectMany(s => GetPointersInSegment(s));
             resultSvc.ShowSearchResults(
                 new AddressSearchResult(

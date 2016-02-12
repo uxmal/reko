@@ -117,8 +117,7 @@ namespace Reko.Gui.Windows.Controls
             int cxConstant = 0;             // pixels always needed
             int cxConstantPerSegment = CxSegmentBorder; // constant pixel overhead per segment
             int cSeg = ImageMap.Segments.Count;
-            long cbTotal = ImageMap.Segments.Values
-                .Sum(s => s.Size);
+            long cbTotal = ImageMap.Segments.Values.Sum(s => s.Size);
             granularity = (long)Math.Ceiling(
                cbTotal /
                (double)(cxAvailable - cxConstant - cxConstantPerSegment * cSeg));
@@ -130,18 +129,36 @@ namespace Reko.Gui.Windows.Controls
             cxOffset = value;
             if (painter != null)
             {
-                var lastSeg = imageMap.Segments.Values.Last();
                 cxOffset = Math.Min(cxOffset, painter.Extent);
             }
             cxOffset = Math.Max(0, cxOffset);
         }
 
+        /// <summary>
+        /// Zoom in or out by a factor of <paramref name="factor"/>. Try to 
+        /// keep the last selected position visible in the same position if
+        /// at all position.
+        /// </summary>
+        /// <param name="factor"></param>
         private void Zoom(float factor)
         {
+            if (imageMap == null)
+                return;
+            var addr = MapClientPositionToAddress(xLastMouseUp);
             var oldGranularity = Granularity;
-            var newGranularity = (int)Math.Ceiling(Granularity * factor);
-            cxOffset = cxOffset + (oldGranularity - newGranularity) * (xLastMouseUp - CxScroll);
-            Granularity = newGranularity;
+            var newGranularity = (long)Math.Ceiling(Granularity * factor);
+            BoundGranularity(newGranularity);
+
+            // We want addr to appear in the same position as it did last time, if possible.
+            this.painter = CalculateLayout();
+            var iSeg = painter.GetSegment(addr);
+            if (iSeg == null)
+                return;
+
+            long cxInsideSeg = (addr - iSeg.Segment.Address) / granularity;
+            cxOffset = iSeg.X + cxInsideSeg - (xLastMouseUp - CxScroll);
+            BoundOffset(cxOffset);
+            Invalidate();
         }
 
         private void StartScrolling(ScrollButton button)
@@ -212,7 +229,7 @@ namespace Reko.Gui.Windows.Controls
             if (imageMap == null || painter == null)
                 return null;
 
-            x -= (CxScroll + (int) cxOffset);          // bias past the scroller button.
+            x -= (CxScroll - (int) cxOffset);          // bias past the scroller button.
             foreach (var sl in painter.segLayouts)
             {
                 if (sl.X <= x && x < sl.X + sl.CxWidth)
