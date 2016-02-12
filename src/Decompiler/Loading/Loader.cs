@@ -346,10 +346,16 @@ namespace Reko.Loading
         private ImageMap CreatePlatformMemoryMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
         {
             var imageMap = platform.CreateAbsoluteMemoryMap();
-            if (imageMap == null)
+            if (imageMap != null)
+            {
                 return imageMap;
-            else 
-                return new ImageMap(loadAddr);
+            }
+            else
+            {
+                var mem = new MemoryArea(loadAddr, rawBytes);
+                return new ImageMap(loadAddr,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
+            }
         }
     }
 }

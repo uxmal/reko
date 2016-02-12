@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--
-  Sega Geneisis memory map, obtained from http://www.db-elec.com/home/technical-info/Genesis/memory-map 
+  Sega Genesis memory map, obtained from http://www.db-elec.com/home/technical-info/Genesis/memory-map 
   with the assistance of lab313ru
 
   The Sega Genesis is technically split up into 3 distinct memory spaces: 68K,

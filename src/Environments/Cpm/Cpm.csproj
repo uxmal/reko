@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cpm_bdos_services.xml" />
+    <Content Include="cpm_map.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

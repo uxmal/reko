@@ -151,6 +151,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Cpm\cpm_bdos_services.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Msdos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\ntoskrnl.xml" />
