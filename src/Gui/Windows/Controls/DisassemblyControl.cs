@@ -93,8 +93,9 @@ namespace Reko.Gui.Windows.Controls
                 }
                 else
                 {
+                    var addr = topAddress;
                     Model = new DisassemblyTextModel(program, segment);
-                    Model.MoveToLine(topAddress, 0);
+                    Model.MoveToLine(addr, 0);
                 }
             }
             RecomputeLayout();
