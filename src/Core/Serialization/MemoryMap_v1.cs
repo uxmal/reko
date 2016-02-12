@@ -22,34 +22,89 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
 using System;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
+/// <summary>
+/// Describes the absolute memory layout of a particular platform.
+/// </summary>
 [XmlRoot(ElementName ="memory", Namespace="http://schemata.jklnet.org/Reko/v4")]
 public class MemoryMap_v1
 {
     [XmlElement("segment")]
     public MemorySegment_v1[] Segments;
 
-    public static MemoryMap_v1 LoadMemoryMapFromFile(IServiceProvider svc, string mmap)
+    /// <summary>
+    /// Loads an image map from a file containing the XML description of the
+    /// segments inside.
+    /// <param name="svc"></param>
+    /// <param name="mmapFileName"></param>
+    /// <param name="platform"></param>
+    /// <returns></returns>
+    public static MemoryMap_v1 LoadMemoryMapFromFile(IServiceProvider svc, string mmapFileName, IPlatform platform)
     {
         var cfgSvc = svc.RequireService<IConfigurationService>();
         var fsSvc = svc.RequireService<IFileSystemService>();
         var diagSvc = svc.RequireService<IDiagnosticsService>();
         try
         {
-            var filePath = cfgSvc.GetInstallationRelativePath(mmap);
+            var filePath = cfgSvc.GetInstallationRelativePath(mmapFileName);
             XmlSerializer ser = new XmlSerializer(typeof(MemoryMap_v1));
             using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open))
             {
-                return (MemoryMap_v1)ser.Deserialize(stm);
+                var mmap = (MemoryMap_v1)ser.Deserialize(stm);
+                return mmap;
             }
         }
         catch (Exception ex)
         {
-            diagSvc.Error(ex, string.Format("Unable to open memory map file '{0}.", mmap));
+            diagSvc.Error(ex, string.Format("Unable to open memory map file '{0}.", mmapFileName));
             return null;
         }
+    }
+
+    public static ImageSegment LoadSegment(MemorySegment_v1 segment, IPlatform platform, IDiagnosticsService diagSvc)
+    {
+        Address addr;
+        if (!platform.TryParseAddress(segment.Address, out addr))
+        {
+            diagSvc.Warn(
+                string.Format(
+                    "Unable to parse address '{0}' in memory map segment {1}.",
+                    segment.Address,
+                    segment.Name));
+            return null;
+        }
+        uint size;
+        if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out size))
+        {
+            diagSvc.Warn(
+                string.Format(
+                    "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
+                    segment.Size,
+                    segment.Name));
+            return null;
+        }
+        return new ImageSegment(segment.Name, addr, size, ConvertAccess(segment.Attributes));
+    }
+
+    public static AccessMode ConvertAccess(string attributes)
+    {
+        var mode = AccessMode.Read;
+        if (attributes == null)
+            return mode;
+        foreach (var ch in attributes)
+        {
+            switch (ch)
+            {
+            case 'r': mode |= AccessMode.Read; break;
+            case 'w': mode |= AccessMode.Write; break;
+            case 'x': mode |= AccessMode.Execute; break;
+            }
+        }
+        return mode;
     }
 }
 

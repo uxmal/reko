@@ -87,7 +87,9 @@ namespace Reko.Gui.Windows.Controls
             else
             {
                 ImageSegment segment;
-                if (!program.ImageMap.TryFindSegment(topAddress, out segment))
+                if (!program.ImageMap.TryFindSegment(topAddress, out segment) ||
+                    segment.MemoryArea == null)
+
                 {
                     Model = new EmptyEditorModel();
                 }

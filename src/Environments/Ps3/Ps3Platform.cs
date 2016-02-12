@@ -37,6 +37,13 @@ namespace Reko.Environments.Ps3
     /// <summary>
     /// Platform support for Sony Playstation 3 (PS3).
     /// </summary>
+    /// <remarks>
+    /// A particularity of this platform is that even though the PowerPC 
+    /// processor is a 64-bit CPU, all pointers are by convention 32-bit.
+    /// This means that special care has to be taken to make sure no
+    /// 64-bit pointers or addresses are introduced into the 
+    /// decompilation process.
+    /// </remarks>
     public class Ps3Platform : Platform
     {
         public Ps3Platform(IServiceProvider services, IProcessorArchitecture arch)
@@ -164,5 +171,9 @@ namespace Reko.Environments.Ps3
             return Address.Ptr32((uint)uAddr);
         }
 
+        public override bool TryParseAddress(string sAddress, out Address addr)
+        {
+            return Address.TryParse32(sAddress, out addr);
+        }
     }
 }

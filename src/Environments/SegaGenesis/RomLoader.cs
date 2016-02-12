@@ -49,15 +49,20 @@ namespace Reko.Environments.SegaGenesis
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
-            //$TODO: load from config!
-            var imageMap = new ImageMap(Address.Ptr32(0),
-                new ImageSegment("code", mem, AccessMode.ReadExecute));
-            return new Program
-            {
-                ImageMap = mem.CreateImageMap(),
-                Architecture = arch,
-                Platform = platform,
-            };
+            var imageMap = CreateImageMap(mem, platform);
+
+            return new Program(imageMap, arch, platform);
+        }
+
+        private ImageMap CreateImageMap(MemoryArea mem, IPlatform platform)
+        {
+            var imageMap = platform.CreateAbsoluteMemoryMap();
+            var romSegment = imageMap.Segments.Values.First(s => s.Name == ".text");
+            romSegment.ContentSize = (uint)mem.Length;
+            romSegment.MemoryArea = mem;
+            var ramSegment = imageMap.Segments.Values.First(s => s.Name == ".data");
+            ramSegment.MemoryArea = new MemoryArea(ramSegment.Address, new byte[ramSegment.Size]);
+            return imageMap;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

@@ -44,19 +44,20 @@ namespace Reko.Core
         IProcessorArchitecture Architecture { get; }
         string DefaultCallingConvention { get; }
         Encoding DefaultTextEncoding { get; }
-        string Description { get; }
+        string Description { get; set; }
         PrimitiveType FramePointerType { get; }
         PlatformHeuristics Heuristics { get; }
+        MemoryMap_v1 MemoryMap { get; set; }
         string Name { get; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
-        MemoryMap_v1 MemoryMap { get; }
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
         IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
+        ImageMap CreateAbsoluteMemoryMap();
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -75,6 +76,7 @@ namespace Reko.Core
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
+        bool TryParseAddress(string sAddress, out Address addr);
         Dictionary<string, object> SaveUserOptions();
         ExternalProcedure SignatureFromName(string importName);
     }
@@ -83,13 +85,13 @@ namespace Reko.Core
     /// Implementation of functionality common to most platforms.
     /// </summary>
     [Designer("Reko.Gui.Design.PlatformDesigner,Reko.Gui")]
-	public abstract class Platform : IPlatform
-	{ 
+    public abstract class Platform : IPlatform
+    {
         /// <summary>
         /// Initializes a Platform instance
         /// </summary>
         /// <param name="arch"></param>
-        protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId) 
+        protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId)
         {
             this.Services = services;
             this.Architecture = arch;
@@ -170,6 +172,26 @@ namespace Reko.Core
         public abstract ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
 
         /// <summary>
+        /// Creates an empty imagemap based on the absolute memory map. It is 
+        /// the caller's responsibility to fill in the MemoryArea properties
+        /// of each resulting ImageSegment.
+        /// </summary>
+        /// <returns></returns>
+        public ImageMap CreateAbsoluteMemoryMap()
+        {
+            if (this.MemoryMap == null ||
+                  this.MemoryMap.Segments == null)
+                return null;
+            var diagSvc = Services.RequireService<IDiagnosticsService>();
+            var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
+                .Where(s => s != null)
+                .ToSortedList(s => s.Address);
+            return new ImageMap(
+                segs.Values.First().Address,
+                segs.Values.ToArray());
+        }
+
+        /// <summary>
         /// Utility function for subclasses that loads all type libraries and characteristics libraries 
         /// </summary>
         /// <param name="envName"></param>
@@ -240,6 +262,11 @@ namespace Reko.Core
         public virtual Address MakeAddressFromLinear(ulong uAddr)
         {
             return Address.Create(Architecture.PointerType, uAddr);
+        }
+
+        public virtual bool TryParseAddress(string sAddress, out Address addr)
+        {
+            return Architecture.TryParseAddress(sAddress, out addr);
         }
 
         public abstract ExternalProcedure LookupProcedureByName(string moduleName, string procName);

@@ -166,6 +166,10 @@ namespace Reko.Gui.Windows.Controls
                 Offset += ScrollStep *Granularity;
                 StartScrolling(ScrollButton.Right);
             }
+            else
+            {
+                // remember anchorDown, and if moved > 3 pixels, s
+            }
             base.OnMouseDown(e);
         }
 

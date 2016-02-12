@@ -96,10 +96,9 @@ namespace Reko.Core.Configuration
                     string.Format("Unable to load {0} environment.", Description));
             var platform = (Platform) Activator.CreateInstance(type, services, arch);
             platform.Name = this.Name;
-            var mmap = MemoryMapFile;
-            if (!string.IsNullOrEmpty(mmap))
+            if (!string.IsNullOrEmpty(MemoryMapFile))
             {
-                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, mmap);
+                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile, platform);
             }
             platform.Description = this.Description;
             return platform;

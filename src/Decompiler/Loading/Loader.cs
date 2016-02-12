@@ -108,6 +108,7 @@ namespace Reko.Loading
             var arch = cfgSvc.GetArchitecture(archName);
             var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
             var mem = new MemoryArea(addrLoad, image);
+            var imageMap = CreatePlatformMemoryMap(platform, addrLoad, image);
             var program = new Program(
                 CreatePlatformMemoryMap(platform, addrLoad, image),
                 arch, 
@@ -344,58 +345,11 @@ namespace Reko.Loading
 
         private ImageMap CreatePlatformMemoryMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
         {
-            if (platform.MemoryMap == null ||
-                platform.MemoryMap.Segments == null)
+            var imageMap = platform.CreateAbsoluteMemoryMap();
+            if (imageMap == null)
+                return imageMap;
+            else 
                 return new ImageMap(loadAddr);
-            var diagSvc = Services.RequireService<IDiagnosticsService>();
-            var segments = new List<ImageSegment>();
-            foreach (var segment in platform.MemoryMap.Segments)
-            {
-                Address addr;
-                if (!platform.Architecture.TryParseAddress(segment.Address, out addr))
-                {
-                    diagSvc.Warn(
-                        string.Format(
-                            "Unable to parse address '{0}' in memory map segment {1}.",
-                            segment.Address,
-                            segment.Name));
-                    continue;
-                }
-                uint size;
-                if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out size))
-                {
-                    diagSvc.Warn(
-                        string.Format(
-                            "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
-                            segment.Size,
-                            segment.Name));
-                    continue;
-                }
-                segments.Add(new ImageSegment(segment.Name, addr, size, ConvertAccess(segment.Attributes)));
-            }
-            var imageMap = new ImageMap(segments.Select(s => s.Address).Min());
-            foreach (var segment in segments)
-            {
-                imageMap.AddSegment(segment);
-            }
-            return imageMap;
-        }
-
-        private AccessMode ConvertAccess(string attributes)
-        {
-            var mode = AccessMode.Read;
-            if (attributes == null)
-                return mode;
-            foreach (var ch in attributes)
-            {
-                switch (ch)
-                {
-                case 'r': mode |= AccessMode.Read; break;
-                case 'w': mode |= AccessMode.Write; break;
-                case 'x': mode |= AccessMode.Execute; break;
-                }
-            }
-            return mode;
         }
     }
 }

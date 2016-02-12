@@ -113,6 +113,7 @@
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />
     <Compile Include="Core\Services\FileSystemServiceTests.cs" />
+    <Compile Include="Environments\SegaGenesis\RomLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
@@ -599,6 +600,10 @@
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
       <Name>Msdos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\SegaGenesis\SegaGenesis.csproj">
+      <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>
+      <Name>SegaGenesis</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\SysV\SysV.csproj">
       <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>

@@ -113,7 +113,7 @@ namespace Reko.Core
 		{
 			ulong cSkip = address.ToLinear() & 0x0F;
             ImageSegment segment;
-            if (!map.TryFindSegment(address, out segment))
+            if (!map.TryFindSegment(address, out segment) || segment.MemoryArea == null)
                 return;
 			ImageReader rdr = arch.CreateImageReader(segment.MemoryArea, address);
 			while (cbBytes > 0)
