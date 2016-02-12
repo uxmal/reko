@@ -64,6 +64,15 @@ namespace Reko.Core
 		public abstract void Write(TextWriter writer);
     }
 
+    public static class StorageEx
+    {
+        public static bool As<T>(this Storage self, out T t) where T : Storage
+        {
+            t = self as T;
+            return t != null;
+        }
+    }
+
     public enum StorageDomain
     {
         None = -1,
