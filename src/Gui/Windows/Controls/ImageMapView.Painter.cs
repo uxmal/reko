@@ -100,12 +100,12 @@ namespace Reko.Gui.Windows.Controls
                 Rectangle rcPaint = rcBody;
                 rcPaint.Width = 0;
                 Brush brNew = null;
-                Debug.Print("== RenderBody ==");
+                //Debug.Print("== RenderBody ==");
                 foreach (var sl in segLayouts)
                 {
                     if (sl.X - cxOffset < rcBody.Width && sl.X + sl.CxWidth - cxOffset >= 0)
                     {
-                        Debug.Print("---- Segment {0} ----", sl.Segment.Name);
+                        //Debug.Print("---- Segment {0} ----", sl.Segment.Name);
 
                         int xMin = (int)Math.Max(sl.X - cxOffset, 0);
                         int xMax = (int)Math.Min(sl.X + sl.CxWidth - cxOffset, rcBody.Width);
@@ -121,7 +121,7 @@ namespace Reko.Gui.Windows.Controls
                                 {
                                     rcPaint.Width = x + CxScroll - rcPaint.X;
                                     g.FillRectangle(brOld, rcPaint);
-                                    Debug.Print("Paint: {0} {1}", rcPaint, brOld);
+                                    //Debug.Print("Paint: {0} {1}", rcPaint, brOld);
                                     brOld = brNew;
                                     rcPaint.X = x + CxScroll;
                                 }
@@ -142,7 +142,7 @@ namespace Reko.Gui.Windows.Controls
                     }
                 }
                 fontSeg.Dispose();
-                Debug.Print("== RenderBody ==");
+                //Debug.Print("== RenderBody ==");
             }
 
             private void RenderSegmentName(Graphics g, SegmentLayout sl, int xMin, int xMax, Font font)

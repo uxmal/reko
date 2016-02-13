@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class PeImageLoader : ImageLoader
 	{
         private const ushort MACHINE_i386 = (ushort)0x014C;
-        private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
+        private const ushort MACHINE_x86_64 = (ushort) 0x8664u;
         private const ushort MACHINE_ARMNT = (ushort)0x01C4;
         private const ushort MACHINE_R4000 = (ushort)0x0166;
         private const short ImageFileRelocationsStripped = 0x0001;
@@ -48,7 +48,7 @@ namespace Reko.ImageLoaders.MzExe
         private const short ImageFileDll = 0x2000;
 
         private IProcessorArchitecture arch;
-        private Win32Platform platform;
+        private IPlatform platform;
         private SizeSpecificLoader innerLoader;
         private Program program;
 
@@ -142,7 +142,7 @@ namespace Reko.ImageLoaders.MzExe
             return cfgSvc.GetArchitecture(arch);
 		}
 
-        public Win32Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
+        public IPlatform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
         {
             string env;
             switch (peMachineType)
@@ -153,7 +153,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000: env = "winMips"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
-            return (Win32Platform) Services.RequireService<IConfigurationService>()
+            return Services.RequireService<IConfigurationService>()
                 .GetEnvironment(env)
                 .Load(Services, this.arch);
         }

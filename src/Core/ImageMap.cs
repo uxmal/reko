@@ -173,8 +173,6 @@ namespace Reko.Core
             MapChanged.Fire(this);
         }
 
-    
-
         private DataType ChopAfter(DataType type, int offset)
         {
             if (type == null)
