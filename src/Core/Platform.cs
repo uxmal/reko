@@ -211,7 +211,7 @@ namespace Reko.Core
                     .OfType<ITypeLibraryElement>())
                 {
                     Debug.Print("Loading {0}", tl.Name);
-                    Metadata = tlSvc.LoadLibrary(this, cfgSvc.GetInstallationRelativePath(tl.Name), Metadata);
+                    Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()

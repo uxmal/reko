@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Environments.SysV
                         }
                     }
                 });
-            tlSvc.Stub(t => t.LoadLibrary(null, null, null))
+            tlSvc.Stub(t => t.LoadMetadataIntoLibrary(null, null, null))
                 .IgnoreArguments()
                 .Return(new TypeLibrary
                 {

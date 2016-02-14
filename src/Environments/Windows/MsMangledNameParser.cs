@@ -237,6 +237,10 @@ namespace Reko.Environments.Windows
                     Type = ParseDataTypeCode(compoundArgs),
                     Name = basicName
                 };
+            case '6':   // Compiler-generated static
+                //$TODO: deal with const/volatile modifier
+                ParseStorageClass();
+                break;
             case 'A': sig = ParseInstanceMethod("private"); break;
             case 'B': sig = ParseInstanceMethod("private far"); break;
             case 'C': sig = ParseStaticMethod("private static"); break;
@@ -260,7 +264,7 @@ namespace Reko.Environments.Windows
 
             case 'Y': sig = ParseGlobalFunction(""); break;
             case 'Z': sig = ParseGlobalFunction("far"); break;
-            default: throw new NotImplementedException();
+            default: throw new NotImplementedException(string.Format("Character '{0}' not supported", str[i-1]));
                
             }
             return new StructField_v1
