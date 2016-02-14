@@ -232,6 +232,7 @@ namespace Reko.Environments.Windows
             case '0':
             case '1':
             case '2':
+            case '3':
                 return new StructField_v1
                 {
                     Type = ParseDataTypeCode(compoundArgs),

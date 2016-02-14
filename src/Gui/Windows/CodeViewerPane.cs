@@ -96,10 +96,11 @@ namespace Reko.Gui.Windows
         private void EnableControls()
         {
             Core.Serialization.ProcedureBase_v1 sProc;
-            if (!TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
+            var procText = codeView.ProcedureDeclaration.Text;
+            if (!HasParens(procText) || !TryParseSignature(procText, out sProc))
             {
                 // If parser failed, perhaps it's simply a valid name? 
-                if (!IsValidCIdentifier(codeView.ProcedureDeclaration.Text))
+                if (!IsValidCIdentifier(procText))
                 {
                     // Not valid name either, die.
                     codeView.ProcedureDeclaration.ForeColor = Color.Red;
@@ -107,6 +108,11 @@ namespace Reko.Gui.Windows
                 }
             }
             codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
+        }
+
+        private bool HasParens(string s)
+        {
+            return s.Contains("(");
         }
 
         private StyleStack GetStyleStack()

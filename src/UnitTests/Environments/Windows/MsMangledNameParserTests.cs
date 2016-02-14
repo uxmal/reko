@@ -500,7 +500,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression13()
         {
             RunTest(
-                "std::exception::`vftable'",
+                "nothrow_t std::nothrow",
                 "?nothrow@std@@3Unothrow_t@1@B");
         }
        
