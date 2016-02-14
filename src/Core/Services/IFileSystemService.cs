@@ -33,7 +33,9 @@ namespace Reko.Core.Services
         Stream CreateFileStream(string filename, FileMode mode);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
+        bool FileExists(string filePath);
         string MakeRelativePath(string fromPath, string toPath);
+        byte[] ReadAllBytes(string filePath);
     }
 
     public class FileSystemServiceImpl : IFileSystemService
@@ -65,6 +67,11 @@ namespace Reko.Core.Services
             return new FileStream(filename, mode, access, share);
         }
 
+        public bool FileExists(string filePath)
+        {
+            return File.Exists(filePath);
+        }
+
         public string MakeRelativePath(string fromPath, string toPath)
         {
             int iLastDir = -1;
@@ -90,5 +97,11 @@ namespace Reko.Core.Services
             sb.Append(toPath.Substring(iLastDir));
             return sb.ToString();
         }
+
+        public byte[] ReadAllBytes(string filePath)
+        {
+            return File.ReadAllBytes(filePath);
+        }
+        
     }
 }

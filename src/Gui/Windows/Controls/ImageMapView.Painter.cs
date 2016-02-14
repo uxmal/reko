@@ -170,7 +170,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 var rc = new Rectangle((int)x, rcBody.Top, CxSegmentBorder, rcBody.Height);
                 g.FillRectangle(Brushes.Black, rc);
-                Debug.Print("Separator: {0}", rc);
+                //Debug.Print("Separator: {0}", rc);
             }
 
             private void RenderSelectionBar(Graphics g, bool focused)

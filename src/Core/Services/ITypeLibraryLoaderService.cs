@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,7 @@ namespace Reko.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
+        TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryElement tlElement, TypeLibrary libDst);
         TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary libDst);
 
         string InstalledFileLocation(string name);
@@ -48,13 +50,43 @@ namespace Reko.Core.Services
         {
             this.services = services;
         }
-        
-        //$REFACTOR: needs a better name.
+
+        public TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryElement tlElement, TypeLibrary libDst)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var diagSvc = services.RequireService<IDiagnosticsService>();
+            try
+            {
+                string libFileName = InstalledFileLocation(tlElement.Name);
+                if (!fsSvc.FileExists(libFileName))
+                    return libDst;
+
+                byte[] bytes = fsSvc.ReadAllBytes(libFileName);
+                MetadataLoader loader = CreateLoader(tlElement, libFileName, bytes);
+                if (loader == null)
+                    return libDst;
+                //var tlldr = new TypeLibraryLoader(services, libFileName, bytes);
+                var lib = loader.Load(platform, libDst);
+                return lib;
+            }
+            catch (Exception ex)
+            {
+                diagSvc.Error(ex, string.Format("Unable to load metadata file {0}.", tlElement.Name));
+                return libDst;
+            }
+        }
+
+        public MetadataLoader CreateLoader(TypeLibraryElement tlElement, string filename, byte[] bytes)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Obsolete("Use LoadMetadataIntoLibrary instead")]
         public TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary dstLib)
         {
             try
             {
-                string libFileName = ImportFileLocation(name);
+                string libFileName = InstalledFileLocation(name);
                 if (!File.Exists(libFileName))
                     return dstLib;
 
