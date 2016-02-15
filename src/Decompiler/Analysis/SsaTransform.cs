@@ -41,8 +41,9 @@ namespace Reko.Analysis
 	{
         private ProgramDataFlow programFlow;
 		private Procedure proc;
+        private IImportResolver importResolver;
 
-		private const byte BitDefined = 1;
+        private const byte BitDefined = 1;
 		private const byte BitDeadIn = 2;
 		private const byte BitHasPhi = 4;
         private Dictionary<Expression, byte>[] AOrig;
@@ -52,10 +53,11 @@ namespace Reko.Analysis
 		/// </summary>
 		/// <param name="proc"></param>
 		/// <param name="gr"></param>
-		public SsaTransform(ProgramDataFlow programFlow, Procedure proc, DominatorGraph<Block> gr)
+		public SsaTransform(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph<Block> gr)
 		{
             this.programFlow = programFlow;
 			this.proc = proc;
+            this.importResolver = importResolver;
             this.SsaState = new SsaState(proc, gr);
             this.AOrig = CreateA();
 
@@ -376,6 +378,7 @@ namespace Reko.Analysis
 			private Dictionary<Identifier, Identifier> rename;		// most recently used name for var x.
 			private Statement stmCur; 
 			private Procedure proc;
+            private IImportResolver importResolver;
             private HashSet<Expression> existingDefs;
 
 			/// <summary>
@@ -391,6 +394,7 @@ namespace Reko.Analysis
                 this.renameFrameAccess = ssaXform.RenameFrameAccesses;
                 this.addUseInstructions = ssaXform.AddUseInstructions;
                 this.proc = ssaXform.proc;
+                this.importResolver = ssaXform.importResolver;
 				this.rename = new Dictionary<Identifier, Identifier>();
 				this.stmCur = null;
                 this.existingDefs = proc.EntryBlock.Statements
@@ -603,6 +607,7 @@ namespace Reko.Analysis
                         return ci;
                     }
                 }
+
                 RenameAllRegisterIdentifiers(ci);
                 return ci;
             }
@@ -684,25 +689,36 @@ namespace Reko.Analysis
                     var idNew = NewUse(idFrame, stmCur);
                     return idNew;
                 }
+                var e = access.EffectiveAddress.Accept(this);
                 BinaryExpression bin;
                 Identifier id;
-                Constant c;
-                if (access.EffectiveAddress.As(out bin) &&
-                    bin.Left.As(out id) && 
-                    bin.Right.As(out c))
+                Constant c = null;
+                if (e.As(out bin) &&
+                    bin.Left.As(out id) &&
+                    bin.Right.As(out c) &&
+                    rename.ContainsKey(id))
                 {
                     var sid = ssa.Identifiers[rename[id]];
                     var cOther = sid.DefExpression as Constant;
                     if (cOther != null)
                     {
                         c = bin.Operator.ApplyConstants(cOther, c);
-                        access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
-                        access.EffectiveAddress = c;
-                        return access;
                     }
+                } else
+                {
+                    c = e as Constant;
                 }
 
-                return base.VisitMemoryAccess(access);
+                if (c != null)
+                {
+                    access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
+                    access.EffectiveAddress = c;
+                    e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
+                    if (e != null)
+                        access.EffectiveAddress = e;
+                    return access;
+                }
+                return e;
             }
 
             public override Expression VisitSegmentedAccess(SegmentedAccess access)

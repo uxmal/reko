@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Expressions;
+using Reko.Core.Services;
 
 namespace Reko.Core
 {
@@ -29,6 +31,7 @@ namespace Reko.Core
     {
         ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
+        ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c);
     }
 
     /// <summary>
@@ -39,12 +42,16 @@ namespace Reko.Core
     public class ImportResolver : IImportResolver
     {
         private Project project;
+        private Program program;
+        private DecompilerEventListener eventListener;
 
-        public ImportResolver(Project project)
+        public ImportResolver(Project project, Program program, DecompilerEventListener eventListener)
         {
             if (project == null)
                 throw new ArgumentNullException("project");
             this.project = project;
+            this.program = program;
+            this.eventListener = eventListener;
         }
 
         public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
@@ -90,6 +97,21 @@ namespace Reko.Core
             }
 
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
+        }
+
+        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        {
+            var addrInstruction = program.ImageMap.MapLinearAddressToAddress(stm.LinearAddress);
+            var addrImportThunk = program.Platform.MakeAddressFromConstant(c);
+            ImportReference impref;
+            if (!program.ImportReferences.TryGetValue(addrImportThunk, out impref))
+                return null;
+
+            var extProc = impref.ResolveImportedProcedure(
+                this,
+                program.Platform,
+                new AddressContext(program, addrInstruction, this.eventListener));
+            return new ProcedureConstant(program.Platform.PointerType, extProc);
         }
     }
 }

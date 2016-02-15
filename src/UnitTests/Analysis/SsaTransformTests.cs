@@ -59,9 +59,25 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
             var dg = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+            var project = new Project
+            {
+                Programs = { this.pb.Program }
+            };
+            var importResolver = new ImportResolver(
+                project,
+                this.pb.Program,
+                new FakeDecompilerEventListener());
+            this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
+            this.pb.Program.ImageMap = new ImageMap(
+                Address.Ptr32(0x0000),
+                new ImageSegment(
+                    ".text",
+                    Address.Ptr32(0), 
+                    0x40000,
+                    AccessMode.ReadWriteExecute));
 
             // Perform the initial transformation
-            var ssa = new SsaTransform(programFlow, proc, dg);
+            var ssa = new SsaTransform(programFlow, proc, importResolver, dg);
 
             // Propagate values and simplify the results.
             // We hope the the sequence

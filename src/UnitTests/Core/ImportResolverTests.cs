@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core
 
             mockFactory.Given_UserDefinedMetafile("foo", null, null, module);
 
-            var impres = new ImportResolver(proj);
+            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", "bar@4", platform);
             Assert.AreEqual("bar", ep.Name);
         }
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Core
 
             mockFactory.Given_UserDefinedMetafile("foo", null, null, module);
 
-            var impres = new ImportResolver(proj);
+            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", 9, platform);
             Assert.AreEqual("bar", ep.Name);
         }
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Core
 
             mockFactory.Given_UserDefinedMetafile("foo", null, sigs, null);
 
-            var impres = new ImportResolver(proj);
+            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", "bar", platform);
             Assert.AreEqual("bar", ep.Name);
 

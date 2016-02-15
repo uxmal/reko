@@ -20,16 +20,17 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Serialization;        // May need this for Win64 support.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using TWord = System.UInt32;
+using Reko.Core.Expressions;
 
 namespace Reko.Environments.Windows
 {
-    using Reko.Core.Serialization;        // May need this for Win64 support.
-    using System.Diagnostics;
-    using TWord = System.UInt32;
 
     /// <summary>
     /// Emulates the Win32 operating environment. In particular, intercepts calls to GetProcAddress
@@ -238,6 +239,11 @@ namespace Reko.Environments.Windows
                 return false;
             ((SimulatedProc)epProc).Emulator(emu);
             return true;
+        }
+
+        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        {
+            throw new NotImplementedException();
         }
 
         public class SimulatedProc : ExternalProcedure

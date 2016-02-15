@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Analysis
                     m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
                     m.Return();
                 });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
@@ -103,7 +103,7 @@ test_exit:
                 m.Store(m.Word32(0x010008), r1);
                 m.Return();
             });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
@@ -159,7 +159,7 @@ test_exit:
                 m.Return();
             });
 
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
@@ -180,7 +180,7 @@ test_exit:
         public void Dfa2_FactorialReg()
         {
             var program = Factorial.BuildSample();
-            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp =
             @"@@@";
@@ -217,7 +217,7 @@ test_exit:
             };
 
             program.Platform = platform;
-            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 4

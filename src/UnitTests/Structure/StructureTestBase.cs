@@ -100,11 +100,12 @@ namespace Reko.UnitTests.Structure
 
         private Program RewriteProgram()
         {
+            DecompilerEventListener eventListener = new FakeDecompilerEventListener();
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                new ImportResolver(project ,program, eventListener),
                 sc);
             foreach (EntryPoint ep in program.EntryPoints)
             {
@@ -112,8 +113,8 @@ namespace Reko.UnitTests.Structure
             }
             scan.ScanImage();
 
-            DecompilerEventListener eventListener = new FakeDecompilerEventListener();
-            DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
+            var importResolver = new ImportResolver(project, program, eventListener);
+            DataFlowAnalysis da = new DataFlowAnalysis(program, importResolver, eventListener);
             da.AnalyzeProgram();
 
             return program;

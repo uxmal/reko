@@ -73,8 +73,15 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = mkProc();
             progBuilder.ResolveUnresolved();
-
-            var ssa = new SsaTransform(pf, proc, proc.CreateBlockDominatorGraph());
+            var project = new Project
+            {
+                Programs = { this.progBuilder.Program }
+            };
+            var importResolver = new ImportResolver(
+                project,
+                project.Programs[0],
+                new FakeDecompilerEventListener());
+            var ssa = new SsaTransform(pf, proc, importResolver, proc.CreateBlockDominatorGraph());
             var vp = new ValuePropagator(arch, ssa.SsaState.Identifiers, proc);
             vp.Transform();
 
@@ -234,7 +241,7 @@ Constants: cl:0x00
         [Test(Description="Tests propagation between caller and callee.")]
         public void TrfSubroutine_WithRegisterParameters()
         {
-            var sExp1 = String.Join(Environment.NewLine,new []{"Preserved: r2","Trashed: r1",""});
+            var sExp1 = string.Join(Environment.NewLine,new []{"Preserved: r2","Trashed: r1",""});
 
             // Subroutine does a small calculation in registers
             RunTest(sExp1, "Addition", m =>
@@ -245,7 +252,7 @@ Constants: cl:0x00
                 m.Return();
             });
 
-            var sExp2 = String.Join(Environment.NewLine,new []{"Preserved: ","Trashed: Global memory,r1,r2",""});
+            var sExp2 = string.Join(Environment.NewLine,new []{"Preserved: ","Trashed: Global memory,r1,r2",""});
 
             RunTest(sExp2, m =>
             {

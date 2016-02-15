@@ -154,6 +154,11 @@ namespace Reko.UnitTests.Scanning
             {
                 throw new NotImplementedException();
             }
+
+            public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)

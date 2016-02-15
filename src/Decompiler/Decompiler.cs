@@ -120,10 +120,12 @@ namespace Reko
 		///</summary>
         public virtual void AnalyzeDataFlow()
         {
+            var eventListener = services.RequireService<DecompilerEventListener>();
             foreach (var program in project.Programs)
             {
                 eventListener.ShowStatus("Performing interprocedural analysis.");
-                var dfa = new DataFlowAnalysis(program, eventListener);
+                var ir = new ImportResolver(project, program, eventListener);
+                var dfa = new DataFlowAnalysis(program, ir, eventListener);
                 dfa.UntangleProcedures();
 
                 dfa.BuildExpressionTrees();
@@ -484,7 +486,7 @@ namespace Reko
             return new Scanner(
                 program, 
                 LoadCallSignatures(program, program.User.Calls.Values),
-                new ImportResolver(project),
+                new ImportResolver(project, program, eventListener),
                 services);
         }
 

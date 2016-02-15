@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
 		{
-			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

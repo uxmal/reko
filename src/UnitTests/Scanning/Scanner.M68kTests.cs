@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Scanning
             scanner = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 sc);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
             scanner.ScanImage();

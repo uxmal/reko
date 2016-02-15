@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, gr);
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr);
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr);
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -473,7 +473,7 @@ namespace Reko.UnitTests.Analysis
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
 			SsaState ssa = sst.SsaState;
 
 			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
@@ -491,7 +491,7 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
             var ssa = sst.SsaState;
 
             var vp = new ValuePropagator(arch, ssa.Identifiers, proc);

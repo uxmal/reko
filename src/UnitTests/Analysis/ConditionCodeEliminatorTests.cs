@@ -77,7 +77,8 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
         {
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            IImportResolver importResolver = null;
+            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
             dfa.UntangleProcedures();
             foreach (Procedure proc in prog.Procedures.Values)
             {
@@ -86,7 +87,7 @@ namespace Reko.UnitTests.Analysis
 
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
-                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
+                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
                 SsaState ssa = sst.SsaState;
 
                 proc.Dump(true);

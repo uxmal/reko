@@ -59,7 +59,8 @@ namespace Reko.UnitTests.Scanning
         private void BuildTest(Address addrBase, IPlatform platform , Action<X86Assembler> asmProg)
         {
             var sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var entryPoints = new List<EntryPoint>();
@@ -77,7 +78,7 @@ namespace Reko.UnitTests.Scanning
             scanner = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                new ImportResolver(project, program, eventListener),
                 sc);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
             scanner.ScanImage();

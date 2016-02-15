@@ -53,6 +53,7 @@ namespace Reko.UnitTests.Scanning
         private ServiceContainer sc;
         private Project project;
         private MemoryArea mem;
+        private DecompilerEventListener eventListener;
 
         public class TestScanner : Scanner
         {
@@ -80,12 +81,13 @@ namespace Reko.UnitTests.Scanning
             fakeArch = new FakeArchitecture();
             importResolver = mr.StrictMock<IImportResolver>();
             callSigs = new Dictionary<Address, ProcedureSignature>();
+            this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
             this.sc = new ServiceContainer();
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
@@ -141,7 +143,7 @@ namespace Reko.UnitTests.Scanning
             var sc = new Scanner(
                 this.program,
                 null,
-                new ImportResolver(project),
+                new ImportResolver(project, program, eventListener),
                 this.sc);
             sc.EnqueueEntryPoint(
                 new EntryPoint(
@@ -318,7 +320,11 @@ namespace Reko.UnitTests.Scanning
             program.Platform = new FakePlatform(null, arch);
             Given_Project();
 
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), sc);
+            var scan = new Scanner(
+                program, 
+                new Dictionary<Address, ProcedureSignature>(), 
+                new ImportResolver(project, program, eventListener),
+                sc);
             var ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
