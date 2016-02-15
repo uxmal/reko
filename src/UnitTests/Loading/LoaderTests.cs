@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Loading
             Program prog = ldr.LoadExecutable("", testImage, null);
 
             Assert.AreEqual("WarningDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
-            Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
+            Assert.AreEqual(0, prog.ImageMap.BaseAddress.Offset);
             Assert.IsNull(prog.Architecture);
             Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
             mr.VerifyAll();
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Loading
             Program prog = ldr.LoadExecutable("", testImage, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
-            Assert.AreEqual("0C00:0100", prog.Image.BaseAddress.ToString());
+            Assert.AreEqual("0C00:0100", prog.ImageMap.BaseAddress.ToString());
             Assert.AreSame(x86arch, prog.Architecture);
             Assert.AreSame(msdosPlatform, prog.Platform);
             mr.VerifyAll();

@@ -43,27 +43,34 @@ namespace Reko.Environments.SegaGenesis
         {
             if (RawImage.Length <= 0x200)
                 throw new BadImageFormatException("The file is too small for a Sega Genesis ROM image.");
-            var image = new LoadedImage(addrLoad, RawImage);
+            var mem = new MemoryArea(addrLoad, RawImage);
             var cfgService = Services.RequireService<IConfigurationService>();
             var arch = cfgService.GetArchitecture("m68k");
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
-            return new Program
-            {
-                Image = image,
-                ImageMap = image.CreateImageMap(),
-                Architecture = arch,
-                Platform = platform,
-            };
+            var imageMap = CreateImageMap(mem, platform);
+
+            return new Program(imageMap, arch, platform);
+        }
+
+        private ImageMap CreateImageMap(MemoryArea mem, IPlatform platform)
+        {
+            var imageMap = platform.CreateAbsoluteMemoryMap();
+            var romSegment = imageMap.Segments.Values.First(s => s.Name == ".text");
+            romSegment.ContentSize = (uint)mem.Length;
+            romSegment.MemoryArea = mem;
+            var ramSegment = imageMap.Segments.Values.First(s => s.Name == ".data");
+            ramSegment.MemoryArea = new MemoryArea(ramSegment.Address, new byte[ramSegment.Size]);
+            return imageMap;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             // Get the Reset address from offset $0004 of the interrupt vector.
-            var addrReset = Address.Ptr32(program.Image.ReadBeUInt32(4));
+            var addrReset = Address.Ptr32(MemoryArea.ReadBeUInt32(RawImage, 4));
             var eps = new List<EntryPoint>();
-            if (program.Image.IsValidAddress(addrReset))
+            if (program.ImageMap.IsValidAddress(addrReset))
             {
                 eps.Add(new EntryPoint(addrReset, "Reset", program.Architecture.CreateProcessorState()));
             }

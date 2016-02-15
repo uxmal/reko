@@ -217,7 +217,8 @@ done:
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
-			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            IImportResolver importResolver = null;
+			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

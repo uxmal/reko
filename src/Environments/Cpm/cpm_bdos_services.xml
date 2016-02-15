@@ -809,8 +809,7 @@ href="fcb.html">FCB</a> drive byte set, to distinguish it from a
           written and the file is made consistent, but it remains open.
         </p>
 
-        <!-- CCP/M and extended locks -->
-<!--
+        <!== CCP/M and extended locks -==->
         <p>
           If A=0FFh, CP/M 3 returns a <a href="errors3.html">
             hardware
@@ -1804,8 +1803,8 @@ href="#37">37 (selective disc reset)</a> is called; in practice,
           </i>
         </p>
 
-        <!-- CCP/M-86 and interface attributes -->
-  <!--
+        <!== CCP/M-86 and interface attributes ==>
+  
         <p>
           This function locks the number of records specified by function
           <a href="#44">44</a>, starting at the record number at FCB+21h. The
@@ -2994,7 +2993,7 @@ href="errors3.html">hardware error</a> code.
 
         <pre>
           Bit   Meaning if set
-          ----------------------------------------
+          ====================
           7     Passwords enabled
           6     Stamp on access
           5     Stamp on update
@@ -3028,7 +3027,7 @@ href="errors3.html">hardware error</a> code.
 
         <pre>
           Bit   Meaning if set
-          ----------------------------------------
+          ==========================
           7     Passwords enabled
           6     Stamp on access
           5     Stamp on update
@@ -3102,7 +3101,7 @@ href="#104">the date and time calls</a>. The password mode is
 
         <pre>
           Bit   Meaning if set
-          ----------------------------------------
+          ====================================
           7     Reading requires password
           6     Writing requires password
           5     Deletion requires password

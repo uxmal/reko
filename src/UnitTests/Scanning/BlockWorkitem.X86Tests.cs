@@ -154,6 +154,11 @@ namespace Reko.UnitTests.Scanning
             {
                 throw new NotImplementedException();
             }
+
+            public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
@@ -185,11 +190,14 @@ namespace Reko.UnitTests.Scanning
 }
                 }
               });
-            var rw = arch.CreateRewriter(lr.Image.CreateLeReader(addr), this.state, proc.Frame, host);
+            var rw = arch.CreateRewriter(
+                lr.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
+                this.state, 
+                proc.Frame,
+                host);
             var prog = new Program
             {
                 Architecture = arch,
-                Image = lr.Image,
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };

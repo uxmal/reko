@@ -18,27 +18,27 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using NUnit.Framework;
+using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
-using Reko.Core.Services;
-using Reko.Environments.Msdos;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     partial class X86RewriterTests : Arch.RewriterTestBase
     {
-        private LoadedImage image;
+        private MemoryArea image;
         private IntelArchitecture arch;
         private IntelArchitecture arch16;
         private IntelArchitecture arch32;
@@ -185,27 +185,27 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var m = Create16bitAssembler();
             fn(m);
-            image = m.GetImage().Image;
+            image = m.GetImage().ImageMap.Segments.Values.First().MemoryArea;
         }
 
         private void Run32bitTest(Action<X86Assembler> fn)
         {
             var m = Create32bitAssembler();
             fn(m);
-            image = m.GetImage().Image;
+            image = m.GetImage().ImageMap.Segments.Values.First().MemoryArea;
         }
 
         private void Run32bitTest(params byte[] bytes)
         {
             arch = arch32;
-            image = new LoadedImage(baseAddr32, bytes);
+            image = new MemoryArea(baseAddr32, bytes);
             host = new RewriterHost(null);
         }
 
         private void Run64bitTest(params byte[] bytes)
         {
             arch = arch64;
-            image = new LoadedImage(baseAddr64, bytes);
+            image = new MemoryArea(baseAddr64, bytes);
             host = new RewriterHost(null);
         }
 
@@ -224,7 +224,12 @@ namespace Reko.UnitTests.Arch.Intel
         private X86Rewriter CreateRewriter32(X86Assembler m)
         {
             state = new X86State(arch32);
-            return new X86Rewriter(arch32, host, state, m.GetImage().Image.CreateLeReader(0), new Frame(arch32.WordWidth));
+            return new X86Rewriter(
+                arch32, 
+                host, 
+                state, 
+                m.GetImage().ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
+                new Frame(arch32.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(byte [] bytes)

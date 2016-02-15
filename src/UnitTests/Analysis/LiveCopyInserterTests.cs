@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -156,8 +157,8 @@ namespace Reko.UnitTests.Analysis
 
 		protected void RunTest(string sourceFile, string outputFile)
 		{
-			Program prog = RewriteFile(sourceFile);
-			Build(prog.Procedures.Values[0], prog.Architecture);
+			Program program = RewriteFile(sourceFile);
+			Build(program.Procedures.Values[0], program.Architecture);
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
@@ -171,10 +172,12 @@ namespace Reko.UnitTests.Analysis
 		{
             var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
-			Aliases alias = new Aliases(proc, arch);
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+            Aliases alias = new Aliases(proc, arch);
 			alias.Transform();
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
 			SsaState ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 

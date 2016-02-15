@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, gr);
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr);
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
@@ -206,7 +206,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr);
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Analysis
             m.Return();
             m.Label("test");
             m.Return();
-            var sst = new SsaTransform2(m.Architecture, m.Procedure, new DataFlow2());
+            var sst = new SsaTransform2(m.Architecture, m.Procedure, null, new DataFlow2());
             sst.Transform();
 
             var vp = new ValuePropagator(arch, sst.SsaState);
@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(y, x);
             m.Assign(z, m.IAdd(y, 2));
             m.Assign(w, y);
-            var sst = new SsaTransform2(m.Architecture, m.Procedure, new DataFlow2());
+            var sst = new SsaTransform2(m.Architecture, m.Procedure, null, new DataFlow2());
             sst.Transform();
             ssaIds = sst.SsaState.Identifiers;
             var stms = m.Procedure.EntryBlock.Succ[0].Statements;
@@ -476,8 +476,10 @@ namespace Reko.UnitTests.Analysis
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
-			SsaState ssa = sst.SsaState;
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr);
+			var ssa = sst.SsaState;
 
             ssa.DebugDump(true);
 
@@ -496,10 +498,10 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
             var ssa = sst.SsaState;
 
-            var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+            var vp = new ValuePropagator(arch, ssa);
             vp.Transform();
             return ssa;
         }

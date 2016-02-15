@@ -27,17 +27,14 @@ using System.IO;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Contains the bytes that are present in memory when a program is loaded.
+	/// Contains the bytes that are present in memory after a program is loaded.
 	/// </summary>
-    /// <remarks>
-    /// Currently, the loadedimage is a range of contiguous bytes, but it really
-    /// should be a sparse list of bytes for 64-bit address spaces.
-    /// </remarks>
-	public class LoadedImage
+    /// <remarks>Loading sparse images should load multiple memory areas.</remarks>
+	public class MemoryArea
 	{
 		private byte [] abImage;
 
-		public LoadedImage(Address addrBase, byte [] bytes)
+		public MemoryArea(Address addrBase, byte [] bytes)
 		{
 			this.BaseAddress = addrBase;
 			this.abImage = bytes;
@@ -88,9 +85,11 @@ namespace Reko.Core
             return new LeImageReader(this, offset);
         }
 
+        [Obsolete]
         public ImageMap CreateImageMap()
         {
-            return new ImageMap(BaseAddress, this.Length);
+            return new ImageMap(BaseAddress,
+                new ImageSegment("", this, AccessMode.ReadWriteExecute));
         }
 
 		/// <summary>
@@ -160,33 +159,60 @@ namespace Reko.Core
             return ReadLe(abImage, imageOffset, type);
         }
 
+        public Constant ReadBe(long imageOffset, PrimitiveType type)
+        {
+            Constant c = Relocations[(uint)imageOffset];
+            if (c != null && c.DataType.Size == type.Size)
+                return c;
+            return ReadBe(abImage, imageOffset, type);
+        }
+
+        public bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
+        {
+            c = Relocations[(uint)imageOffset];
+            if (c != null && c.DataType.Size == type.Size)
+                return true;
+            if (type.Size + imageOffset > abImage.Length)
+                return false;
+            c = ReadLe(abImage, imageOffset, type);
+            return true;
+        }
+
+        public bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
+        {
+            c = Relocations[(uint)imageOffset];
+            if (c != null && c.DataType.Size == type.Size)
+                return true;
+            if (type.Size + imageOffset > abImage.Length)
+                return false;
+            c = ReadBe(abImage, imageOffset, type);
+            return true;
+        }
+
         public static Constant ReadLe(byte[] abImage, long imageOffset, PrimitiveType type)
         {
             if (type.Domain == Domain.Real)
             {
                 switch (type.Size)
                 {
-                case 4:return Constant.FloatFromBitpattern(ReadLeInt32(abImage, imageOffset));
+                case 4: return Constant.FloatFromBitpattern(ReadLeInt32(abImage, imageOffset));
                 case 8: return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, imageOffset));
                 default: throw new InvalidOperationException(string.Format("Real type {0} not supported.", type));
                 }
             }
-            
-			switch (type.Size)
-			{
-			case 1: return Constant.Create(type, abImage[imageOffset]);
+
+            switch (type.Size)
+            {
+            case 1: return Constant.Create(type, abImage[imageOffset]);
             case 2: return Constant.Create(type, ReadLeUInt16(abImage, imageOffset));
             case 4: return Constant.Create(type, ReadLeUInt32(abImage, imageOffset));
             case 8: return Constant.Create(type, ReadLeUInt64(abImage, imageOffset));
-			}
-			throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
-		}
+            }
+            throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
+        }
 
-        public Constant ReadBe(long imageOffset, PrimitiveType type)
+        public static Constant ReadBe(byte[] abImage, long imageOffset, PrimitiveType type)
         {
-            Constant c = Relocations[(uint)imageOffset];
-            if (c != null && c.DataType.Size == type.Size)
-                return c;
             if (type.Domain == Domain.Real)
             {
                 switch (type.Size)
@@ -451,12 +477,12 @@ namespace Reko.Core
             return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, off));
         }
 
-        public static Constant ReadLeFloat(byte[] abImage, long off)
+        public static Constant ReadBeFloat(byte[] abImage, long off)
         {
             return Constant.FloatFromBitpattern(ReadBeInt32(abImage, off));
         }
 
-        public static Constant ReadBeFloat(byte[] abImage, long off)
+        public static Constant ReadLeFloat(byte[] abImage, long off)
         {
             return Constant.FloatFromBitpattern(ReadLeInt32(abImage, off));
         }
@@ -530,14 +556,6 @@ namespace Reko.Core
             }
         }
 
-        public Constant ReadLeDouble(long off) { return ReadLeDouble(abImage, off); }
-        public Constant ReadLeFloat(long off) { return ReadLeFloat(abImage, off); }
-		public long ReadLeInt64(uint off) {  return ReadLeInt64(this.abImage, off); }
-		public ulong ReadLeUint64(uint off) { return ReadLeUInt64(this.abImage, off); }
-        public int ReadLeInt32(uint off) { return ReadLeInt32(this.abImage, off); }
-        public uint ReadLeUInt32(uint off) { return ReadLeUInt32(this.abImage, off); }
-        public short ReadLeInt16(uint off) { return ReadLeInt16(this.abImage, off); }
-        public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.abImage, off); }
 
         public Constant ReadBeDouble(long off) { return ReadBeDouble(abImage, off); }
         public Constant ReadBeFloat(long off) { return ReadBeFloat(abImage, off); }
@@ -547,6 +565,15 @@ namespace Reko.Core
         public uint ReadBeUInt32(uint off) { return ReadBeUInt32(this.abImage, off); }
         public short ReadBeInt16(uint off) { return ReadBeInt16(this.abImage, off); }
         public ushort ReadBeUInt16(uint off) { return ReadBeUInt16(this.abImage, off); }
+
+        public Constant ReadLeDouble(long off) { return ReadLeDouble(abImage, off); }
+        public Constant ReadLeFloat(long off) { return ReadLeFloat(abImage, off); }
+		public long ReadLeInt64(uint off) {  return ReadLeInt64(this.abImage, off); }
+		public ulong ReadLeUint64(uint off) { return ReadLeUInt64(this.abImage, off); }
+        public int ReadLeInt32(uint off) { return ReadLeInt32(this.abImage, off); }
+        public uint ReadLeUInt32(uint off) { return ReadLeUInt32(this.abImage, off); }
+        public short ReadLeInt16(uint off) { return ReadLeInt16(this.abImage, off); }
+        public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.abImage, off); }
 
         public bool TryReadByte(long off, out byte b) { return TryReadByte(this.abImage, off, out b); }
 

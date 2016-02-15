@@ -247,7 +247,7 @@
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="ILoader.cs" />
     <Compile Include="ImageHeader.cs" />
-    <Compile Include="ImageMapSegmentRenderer.cs" />
+    <Compile Include="ImageSegmentRenderer.cs" />
     <Compile Include="ImportReference.cs" />
     <Compile Include="ImportResolver.cs" />
     <Compile Include="AddressContext.cs" />
@@ -310,6 +310,7 @@
     <Compile Include="Serialization\DataTypeSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
     <Compile Include="Serialization\MemberPointer_v1.cs" />
+    <Compile Include="Serialization\MemoryMap_v1.cs" />
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
     <Compile Include="Serialization\ProjectPersister.cs" />
@@ -411,7 +412,7 @@
     <Compile Include="ImageMapBlock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ImageMapSegment.cs">
+    <Compile Include="ImageSegment.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageMapVectorTable.cs">
@@ -537,7 +538,7 @@
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoadedImage.cs">
+    <Compile Include="MemoryArea.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PseudoProcedure.cs">

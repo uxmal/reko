@@ -222,7 +222,6 @@ ax:ax
           SZO_13 = cond(ax - 0x0001)
           branch ax != 0x0001 l0C00_001B
           ax_16 = ax - 0x0002
-          ax_16 = ax - 0x0002
           SZO_17 = cond(ax - 0x0002)
           branch ax != 0x0002 l0C00_0022
 ax_3: orig: ax

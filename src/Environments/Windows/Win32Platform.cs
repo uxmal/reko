@@ -38,14 +38,15 @@ namespace Reko.Environments.Windows
 	{
 		private SystemService int3svc;
         private SystemService int29svc;
+        private Dictionary<int, SystemService> services;
 
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
 
-            //$TODO: we need a Win32Base platform, possibly with a Windows base platform, and make this
-            // x86-specific.
-		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
-		{
+        //$TODO: we need a Win32Base platform, possibly with a Windows base platform, and make this
+        // x86-specific.
+        public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
+        {
             //$REVIEW: should be loaded from configuration file.
             Heuristics.ProcedurePrologs = new BytePattern[] {
                 new BytePattern
@@ -54,32 +55,41 @@ namespace Reko.Environments.Windows
                     Mask =  new byte[]{ 0xFF, 0xFF, 0xFF }
                 }
             };
-            int3svc = new SystemService
-            {
-                SyscallInfo = new SyscallInfo
-                {
-                    Vector = 3,
-                    RegisterValues = new RegValue[0],
-                },
-                Name = "int3",
-                Signature = new ProcedureSignature(null, new Identifier[0]),
-                Characteristics = new ProcedureCharacteristics(),
-            };
             var frame = arch.CreateFrame();
-            int29svc = new SystemService
+            this.services = new Dictionary<int, SystemService>
             {
-                SyscallInfo = new SyscallInfo
                 {
-                    Vector = 0x29,
-                    RegisterValues = new RegValue[0]
+                    3,
+                    new SystemService
+                    {
+                        SyscallInfo = new SyscallInfo
+                        {
+                            Vector = 3,
+                            RegisterValues = new RegValue[0],
+                        },
+                        Name = "int3",
+                        Signature = new ProcedureSignature(null, new Identifier[0]),
+                        Characteristics = new ProcedureCharacteristics(),
+                    }
                 },
-                Name = "__fastfail",
-                Signature = new ProcedureSignature(
-                    null,
-                    frame.EnsureRegister(Registers.ecx)), //$bug what about win64?
-                Characteristics = new ProcedureCharacteristics
                 {
-                    Terminates = true
+                    0x29,
+                    new SystemService
+                    {
+                        SyscallInfo = new SyscallInfo
+                        {
+                            Vector = 0x29,
+                            RegisterValues = new RegValue[0]
+                        },
+                        Name = "__fastfail",
+                        Signature = new ProcedureSignature(
+                            null,
+                            frame.EnsureRegister(Registers.ecx)), //$bug what about win64?
+                        Characteristics = new ProcedureCharacteristics
+                        {
+                            Terminates = true
+                        }
+                    }
                 }
             };
         }
@@ -197,7 +207,10 @@ namespace Reko.Environments.Windows
 
 		public override SystemService FindService(int vector, ProcessorState state)
 		{
-			throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
+            SystemService svc;
+            if (!services.TryGetValue(vector, out svc))
+                throw new NotImplementedException("INT service {0} is not supported by Windows.");
+            return svc;
 		}
 
         public override string DefaultCallingConvention

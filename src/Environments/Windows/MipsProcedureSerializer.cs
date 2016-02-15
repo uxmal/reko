@@ -122,10 +122,24 @@ namespace Reko.Environments.Windows
                 arg.DataType = dtArg;
                 return arg;
             }
-            int regsNeeded = (dtArg.Size + 7) / 8;
+            int regsNeeded = (dtArg.Size + 3) / 4;
             if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
             {
                 return argDeser.Deserialize(sArg, new StackVariable_v1());
+            }
+            if (regsNeeded == 2)
+            {
+                arg = argDeser.Deserialize(sArg, new SerializedSequence
+                {
+                    Registers = new[]
+                    {
+                        new Register_v1 { Name = iregs[ir] },
+                        new Register_v1 { Name = iregs[ir+1] },
+                    }
+                });
+                ir += 2;
+                arg.DataType = dtArg;
+                return arg;
             }
             throw new NotImplementedException();
         }
@@ -135,16 +149,9 @@ namespace Reko.Environments.Windows
             var dtArg = sArg.Type.Accept(TypeLoader) as PrimitiveType;
             if (dtArg != null && dtArg.Domain == Domain.Real)
             {
-                var xmm0 = Architecture.GetRegister("xmm0");
+                var f0 = Architecture.GetRegister("f0");
                 if (bitSize <= 64)
-                    return xmm0;
-                if (bitSize <= 128)
-                {
-                    var xmm1 = Architecture.GetRegister("xmm1");
-                    return new SequenceStorage(
-                        new Identifier(xmm1.Name, xmm1.DataType, xmm1),
-                        new Identifier(xmm0.Name, xmm0.DataType, xmm0));
-                }
+                    return f0;
                 throw new NotImplementedException();
             }
             var v0 = Architecture.GetRegister("r2");

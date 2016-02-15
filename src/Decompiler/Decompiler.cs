@@ -36,6 +36,7 @@ using System.Xml;
 using Reko.Core.Assemblers;
 using System.Threading;
 using Reko.Core.Configuration;
+using System.Diagnostics;
 
 namespace Reko
 {
@@ -119,10 +120,12 @@ namespace Reko
 		///</summary>
         public virtual void AnalyzeDataFlow()
         {
+            var eventListener = services.RequireService<DecompilerEventListener>();
             foreach (var program in project.Programs)
             {
                 eventListener.ShowStatus("Performing interprocedural analysis.");
-                var dfa = new DataFlowAnalysis(program, eventListener);
+                var ir = new ImportResolver(project, program, eventListener);
+                var dfa = new DataFlowAnalysis(program, ir, eventListener);
                 dfa.UntangleProcedures();
 
                 dfa.BuildExpressionTrees();
@@ -136,7 +139,7 @@ namespace Reko
             if (wr == null || program.Architecture == null)
                 return;
             Dumper dump = new Dumper(program.Architecture);
-            dump.Dump(program, program.ImageMap, wr);
+            dump.Dump(program, wr);
         }
 
         private void EmitProgram(Program program, DataFlowAnalysis dfa, TextWriter output)
@@ -417,25 +420,33 @@ namespace Reko
                 {
                     scanner.EnqueueProcedure(addr);
                 }
-                if (false || //$DEBUG
-                    program.User.Heuristics.Contains("shingle"))
-                {
-                    eventListener.ShowStatus("Shingle scanning");
-                    var sh = new ShingledScanner(program, (IRewriterHost) scanner);
-                    var procs = sh.Scan();
-                    foreach (var addr in procs)
-                    {
-                        scanner.EnqueueProcedure(addr);
-                    }
-                }
-
                 scanner.ScanImage();
 
                 if (false || //$DEBUG
                     program.User.Heuristics.Contains("HeuristicScanning"))
                 {
-                    eventListener.ShowStatus("Finding machine code using heuristics.");
-                    scanner.ScanImageHeuristically();
+                    //eventListener.ShowStatus("Finding machine code using heuristics.");
+                    //scanner.ScanImageHeuristically();
+                }
+                if (false || //$DEBUG
+                    program.User.Heuristics.Contains("shingle"))
+                {
+                    eventListener.ShowStatus("Shingle scanning");
+                    var sh = new ShingledScanner(program, (IRewriterHost)scanner);
+                    var watch = new Stopwatch();
+                    watch.Start();
+                    var procs = sh.Scan();
+                    var pprocs = procs.ToList();
+                    watch.Stop();
+                    Debug.Print(
+                        "Elapsed time: {0} msec for {1} procs",
+                        watch.ElapsedMilliseconds,
+                        pprocs.Count);
+
+                    foreach (var addr in procs)
+                    {
+                        scanner.ScanProcedure(addr, null, program.Architecture.CreateProcessorState());
+                    }
                 }
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
             }
@@ -475,7 +486,7 @@ namespace Reko
             return new Scanner(
                 program, 
                 LoadCallSignatures(program, program.User.Calls.Values),
-                new ImportResolver(project),
+                new ImportResolver(project, program, eventListener),
                 services);
         }
 

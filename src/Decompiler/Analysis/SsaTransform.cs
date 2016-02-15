@@ -32,69 +32,71 @@ using System.Text;
 
 namespace Reko.Analysis
 {
-    /// <summary>
-    /// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
-    /// </summary>
+	/// <summary>
+	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
+	/// </summary>
     /// <remarks>
     /// This class implements the SSA algorithm from Appel's "Modern compiler 
     /// implementatation in [language of your choice]."
     /// </remarks>
-    public class SsaTransform
-    {
+	public class SsaTransform
+	{
         private ProgramDataFlow programFlow;
-        private Procedure proc;
+		private Procedure proc;
+        private IImportResolver importResolver;
 
-        private const byte BitDefined = 1;
-        private const byte BitDeadIn = 2;
-        private const byte BitHasPhi = 4;
+		private const byte BitDefined = 1;
+		private const byte BitDeadIn = 2;
+		private const byte BitHasPhi = 4;
         private Dictionary<Expression, byte>[] AOrig;
 
-        /// <summary>
-        /// Constructs an SsaTransform, and in the process generates the SsaState for the procedure <paramref>proc</paramref>.
-        /// </summary>
-        /// <param name="proc"></param>
-        /// <param name="gr"></param>
-        public SsaTransform(ProgramDataFlow programFlow, Procedure proc, DominatorGraph<Block> gr)
-        {
+		/// <summary>
+		/// Constructs an SsaTransform, and in the process generates the SsaState for the procedure <paramref>proc</paramref>.
+		/// </summary>
+		/// <param name="proc"></param>
+		/// <param name="gr"></param>
+		public SsaTransform(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph<Block> gr)
+		{
             this.programFlow = programFlow;
-            this.proc = proc;
+			this.proc = proc;
+            this.importResolver = importResolver;
             this.SsaState = new SsaState(proc, gr);
             this.AOrig = CreateA();
 
-            Transform();
-        }
+			Transform();
+		}
 
         public SsaState SsaState { get; private set; }
         public bool RenameFrameAccesses { get; set; }
         public bool AddUseInstructions { get; set; }
         public Procedure Procedure { get { return proc; } }
 
-        /// <summary>
-        /// Creates a phi statement with slots for each predecessor block, then
-        /// inserts the phi statement as the first statement of the block.
-        /// </summary>
-        /// <param name="b">Block into which the phi statement is inserted</param>
-        /// <param name="v">Destination variable for the phi assignment</param>
-        /// <returns>The inserted phi Assignment</returns>
-        private Instruction InsertPhiStatement(Block b, Identifier v)
-        {
-            var stm = new Statement(
+		/// <summary>
+		/// Creates a phi statement with slots for each predecessor block, then
+		/// inserts the phi statement as the first statement of the block.
+		/// </summary>
+		/// <param name="b">Block into which the phi statement is inserted</param>
+		/// <param name="v">Destination variable for the phi assignment</param>
+		/// <returns>The inserted phi Assignment</returns>
+		private Instruction InsertPhiStatement(Block b, Identifier v)
+		{
+			var stm = new Statement(
                 0,
-                new PhiAssignment(v, b.Pred.Count),
-                b);
-            b.Statements.Insert(0, stm);
-            return stm.Instruction;
-        }
+				new PhiAssignment(v, b.Pred.Count),
+				b);
+			b.Statements.Insert(0, stm);
+			return stm.Instruction;
+		}
 
-        private IEnumerable<Identifier> LocateAllDefinedVariables(Dictionary<Expression, byte>[] defOrig)
-        {
-            var ldv = new LocateDefinedVariables(this, defOrig);
-            foreach (Block n in SsaState.DomGraph.ReversePostOrder.Keys)
-            {
-                ldv.LocateDefs(n);
-            }
+		private IEnumerable<Identifier> LocateAllDefinedVariables(Dictionary<Expression, byte>[] defOrig)
+		{
+			var ldv = new LocateDefinedVariables(this, defOrig);
+			foreach (Block n in SsaState.DomGraph.ReversePostOrder.Keys)
+			{
+				ldv.LocateDefs(n);
+			}
             return ldv.Definitions;
-        }
+		}
 
         /// <summary>
         /// Temporary variables are never live-in, so we avoid getting phi
@@ -102,7 +104,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="def"></param>
 		private void MarkTemporariesDeadIn(Dictionary<Expression, byte>[] def)
-        {
+		{
             foreach (var block in proc.ControlGraph.Blocks)
             {
                 int iBlock = SsaState.RpoNumber(block);
@@ -114,27 +116,27 @@ namespace Reko.Analysis
                     def[iBlock][id] = (byte)(bits | BitDeadIn);
                 }
             }
-        }
+		}
 
-        private void PlacePhiFunctions()
-        {
-            var defVars = LocateAllDefinedVariables(AOrig);
-            MarkTemporariesDeadIn(AOrig);
+		private void PlacePhiFunctions()
+		{
+			var defVars = LocateAllDefinedVariables(AOrig);
+			MarkTemporariesDeadIn(AOrig);
 
-            // For each defined variable in block n, collect the places where it is defined
+			// For each defined variable in block n, collect the places where it is defined
 
-            foreach (var a in defVars)
-            {
-                // Create a worklist W of all the blocks that define a.
+			foreach (var a in defVars)
+			{
+				// Create a worklist W of all the blocks that define a.
 
-                var W = new WorkList<Block>();
-                foreach (Block b in SsaState.DomGraph.ReversePostOrder.Keys)
-                {
+				var W = new WorkList<Block>();
+                foreach (Block b in SsaState.DomGraph.ReversePostOrder.Keys) 
+				{
                     byte bits;
                     AOrig[SsaState.RpoNumber(b)].TryGetValue(a, out bits);
-                    if ((bits & BitDefined) != 0)
-                        W.Add(b);
-                }
+					if ((bits & BitDefined) != 0)
+						W.Add(b);
+				}
                 Block n;
                 while (W.GetWorkItem(out n))
                 {
@@ -158,8 +160,8 @@ namespace Reko.Analysis
                         }
                     }
                 }
-            }
-        }
+			}
+		}
 
         private Dictionary<Expression, byte>[] CreateA()
         {
@@ -186,7 +188,7 @@ namespace Reko.Analysis
         private static bool IsFrameAccess(Procedure proc, Expression e)
         {
             if (e == proc.Frame.FramePointer)
-                return true;
+            return true;
             var bin = e as BinaryExpression;
             if (bin == null)
                 return false;
@@ -196,47 +198,47 @@ namespace Reko.Analysis
         }
 
         public SsaState Transform()
-        {
-            PlacePhiFunctions();
-            var rn = new VariableRenamer(this);
-            rn.RenameBlock(proc.EntryBlock);
+		{
+			PlacePhiFunctions();
+			var rn = new VariableRenamer(this);
+			rn.RenameBlock(proc.EntryBlock);
             return SsaState;
-        }
+		}
 
-        /// <summary>
-        /// Locates the variables defined in this block by examining
+		/// <summary>
+		/// Locates the variables defined in this block by examining
         /// each statement to find variables in L-value positions.
-        /// In addition, the set deadIn for each block is calculated.
-        /// These are all the variables that are known to be dead on
-        /// entry to the function. Dead variables won't need phi code!
-        /// </summary>
-        private class LocateDefinedVariables : InstructionVisitorBase
-        {
+		/// In addition, the set deadIn for each block is calculated.
+		/// These are all the variables that are known to be dead on
+		/// entry to the function. Dead variables won't need phi code!
+		/// </summary>
+		private class LocateDefinedVariables : InstructionVisitorBase
+		{
             private ProgramDataFlow programFlow;
             private Procedure proc;
-            private Block block;
+			private Block block;
             private bool frameVariables;
             private Dictionary<Expression, byte>[] defVars; // variables defined by a statement.
-            private Statement stmCur;
+			private Statement stmCur;
             private SsaState ssa;
             private List<Identifier> definitions;
             private HashSet<Identifier> inDefinitions;
 
-            public LocateDefinedVariables(SsaTransform ssaXform, Dictionary<Expression, byte>[] defOrig)
-            {
+			public LocateDefinedVariables(SsaTransform ssaXform, Dictionary<Expression, byte>[] defOrig)
+			{
                 this.programFlow = ssaXform.programFlow;
-                this.proc = ssaXform.proc;
+				this.proc = ssaXform.proc;
                 this.ssa = ssaXform.SsaState;
                 this.frameVariables = ssaXform.RenameFrameAccesses;
                 this.defVars = defOrig;
                 this.definitions = new List<Identifier>();
                 this.inDefinitions = new HashSet<Identifier>();
-            }
+			}
 
             public IEnumerable<Identifier> Definitions { get { return definitions; } }
 
-            private void MarkDefined(Identifier eDef)
-            {
+			private void MarkDefined(Identifier eDef)
+			{
                 SsaIdentifier sid;
                 var idDef = eDef as Identifier;
                 if (idDef != null && ssa.Identifiers.TryGetValue(idDef, out sid))
@@ -254,33 +256,33 @@ namespace Reko.Analysis
                     inDefinitions.Add(eDef);
                     definitions.Add(eDef);
                 }
-            }
+			}
 
-            public void LocateDefs(Block b)
-            {
-                this.block = b;
-                for (int i = block.Statements.Count - 1; i >= 0; --i)
-                {
-                    stmCur = block.Statements[i];
-                    stmCur.Instruction.Accept(this);
-                }
-            }
+			public void LocateDefs(Block b)
+			{
+				this.block = b;
+				for (int i = block.Statements.Count - 1; i >= 0; --i)
+				{
+					stmCur = block.Statements[i];
+					stmCur.Instruction.Accept(this);
+				}
+			}
 
-            public override void VisitAssignment(Assignment ass)
-            {
-                Identifier id = ass.Dst;
-                MarkDefined(id);
-                ass.Src.Accept(this);
-            }
+			public override void VisitAssignment(Assignment ass)
+			{
+				Identifier id = ass.Dst;
+				MarkDefined(id);
+				ass.Src.Accept(this);
+			}
 
-            public override void VisitStore(Store store)
-            {
+			public override void VisitStore(Store store)
+			{
                 var access = (MemoryAccess)store.Dst;
                 var iBlock = ssa.RpoNumber(block);
                 byte grf;
                 defVars[iBlock].TryGetValue(access.MemoryId, out grf);
-                grf = (byte)((grf & ~BitDeadIn) | BitDefined);
-                defVars[iBlock][access.MemoryId] = grf;
+				grf = (byte)((grf & ~BitDeadIn) | BitDefined);
+				defVars[iBlock][access.MemoryId] = grf;
 
                 if (this.frameVariables && IsFrameAccess(proc, access.EffectiveAddress))
                 {
@@ -291,26 +293,26 @@ namespace Reko.Analysis
                 {
                     store.Dst.Accept(this);
                 }
-                store.Src.Accept(this);
-            }
+				store.Src.Accept(this);
+			}
 
-            public override void VisitApplication(Application app)
-            {
-                app.Procedure.Accept(this);
-                for (int i = app.Arguments.Length - 1; i >= 0; --i)
-                {
+			public override void VisitApplication(Application app)
+			{
+				app.Procedure.Accept(this);
+				for (int i = app.Arguments.Length - 1; i >= 0; --i)
+				{
                     app.Arguments[i].Accept(this);
-                }
-            }
+				}
+			}
 
-            /// <summary>
-            /// Unresolved calls can be "hell nodes". A hell node is an indirect calls or indirect
+			/// <summary>
+			/// Unresolved calls can be "hell nodes". A hell node is an indirect calls or indirect
             /// jump that prior passes of the decompiler have been unable to resolve.
-            /// </summary>
-            /// <param name="ci"></param>
-            /// <returns></returns>
-            public override void VisitCallInstruction(CallInstruction ci)
-            {
+			/// </summary>
+			/// <param name="ci"></param>
+			/// <returns></returns>
+			public override void VisitCallInstruction(CallInstruction ci)
+			{
                 Procedure callee = GetUserProcedure(ci);
                 ProcedureFlow2 flow;
                 if (callee != null && programFlow.ProcedureFlows2.TryGetValue(callee, out flow))
@@ -336,7 +338,7 @@ namespace Reko.Analysis
                         }
                     }
                 }
-            }
+			}
 
             private Procedure GetUserProcedure(CallInstruction ci)
             {
@@ -346,19 +348,19 @@ namespace Reko.Analysis
                 return pc.Procedure as Procedure;
             }
 
-            /// <summary>
-            /// Any uses of the identifier <paramref>id</paramref> 
-            /// make it liveIn, and therefore no longer deadIn.
-            /// </summary>
-            /// <param name="id"></param>
-            /// <returns></returns>
-            public override void VisitIdentifier(Identifier id)
-            {
+			/// <summary>
+			/// Any uses of the identifier <paramref>id</paramref> 
+			/// make it liveIn, and therefore no longer deadIn.
+			/// </summary>
+			/// <param name="id"></param>
+			/// <returns></returns>
+			public override void VisitIdentifier(Identifier id)
+			{
                 var dict = defVars[ssa.RpoNumber(block)];
                 byte bits;
                 dict.TryGetValue(id, out bits);
                 dict[id] = (byte)(bits & unchecked((byte)~BitDeadIn));
-            }
+			}
 
             public override void VisitOutArgument(OutArgument outArg)
             {
@@ -370,38 +372,40 @@ namespace Reko.Analysis
             }
         }
 
-        public class VariableRenamer : InstructionTransformer
-        {
+		public class VariableRenamer : InstructionTransformer
+		{
             private ProgramDataFlow programFlow;
             private SsaState ssa;
             private bool renameFrameAccess;
             private bool addUseInstructions;
             private Dictionary<Identifier, Identifier> rename;      // most recently used name for var x.
-            private Statement stmCur;
-            private Procedure proc;
+			private Statement stmCur; 
+			private Procedure proc;
+            private IImportResolver importResolver;
             private HashSet<Expression> existingDefs;
 
-            /// <summary>
-            /// Walks the dominator tree, renaming the different definitions of variables
-            /// (including phi-functions). 
-            /// </summary>
-            /// <param name="ssa">SSA identifiers</param>
-            /// <param name="p">procedure to rename</param>
-            public VariableRenamer(SsaTransform ssaXform)
-            {
+			/// <summary>
+			/// Walks the dominator tree, renaming the different definitions of variables
+			/// (including phi-functions). 
+			/// </summary>
+			/// <param name="ssa">SSA identifiers</param>
+			/// <param name="p">procedure to rename</param>
+			public VariableRenamer(SsaTransform ssaXform)
+			{
                 this.programFlow = ssaXform.programFlow;
-                this.ssa = ssaXform.SsaState;
+				this.ssa = ssaXform.SsaState;
                 this.renameFrameAccess = ssaXform.RenameFrameAccesses;
                 this.addUseInstructions = ssaXform.AddUseInstructions;
                 this.proc = ssaXform.proc;
-                this.rename = new Dictionary<Identifier, Identifier>();
-                this.stmCur = null;
+                this.importResolver = ssaXform.importResolver;
+				this.rename = new Dictionary<Identifier, Identifier>();
+				this.stmCur = null;
                 this.existingDefs = proc.EntryBlock.Statements
                     .Select(s => s.Instruction as DefInstruction)
                     .Where(d => d != null)
                     .Select(d => d.Expression)
                     .ToHashSet();
-            }
+			}
 
             /// <summary>
             /// Variables that are used before defining are "predefined" by adding a 
@@ -428,60 +432,60 @@ namespace Reko.Analysis
                 }
             }
 
-            /// <summary>
-            /// Renames all variables in a block to use their SSA names
-            /// </summary>
-            /// <param name="n">Block to rename</param>
-            public void RenameBlock(Block n)
-            {
-                var wasonentry = new Dictionary<Identifier, Identifier>(rename);
+			/// <summary>
+			/// Renames all variables in a block to use their SSA names
+			/// </summary>
+			/// <param name="n">Block to rename</param>
+			public void RenameBlock(Block n)
+			{
+				var wasonentry = new Dictionary<Identifier, Identifier>(rename);
 
-                // Rename variables in all blocks except the starting block which
-                // only contains dummy 'def' variables.
+				// Rename variables in all blocks except the starting block which
+				// only contains dummy 'def' variables.
 
-                if (n != n.Procedure.EntryBlock)
-                {
-                    foreach (Statement stm in n.Statements)
-                    {
-                        stmCur = stm;
-                        stmCur.Instruction = stmCur.Instruction.Accept(this);
-                    }
+				if (n != n.Procedure.EntryBlock)
+				{
+					foreach (Statement stm in n.Statements)
+					{
+						stmCur = stm;
+						stmCur.Instruction = stmCur.Instruction.Accept(this);
+					}
                     if (n == n.Procedure.ExitBlock && this.addUseInstructions)
                         AddUseInstructions(n);
-                }
+				}
 
-                // Rename arguments to phi functions in successor blocks.
+				// Rename arguments to phi functions in successor blocks.
 
                 bool[] visited = new bool[proc.ControlGraph.Blocks.Count];
-                foreach (Block y in n.Succ)
-                {
-                    for (int j = 0; j < y.Pred.Count; ++j)
-                    {
-                        if (y.Pred[j] == n && !visited[ssa.RpoNumber(y)])
-                        {
-                            visited[ssa.RpoNumber(y)] = true;
+				foreach (Block y in n.Succ)
+				{
+					for (int j = 0; j < y.Pred.Count; ++j)
+					{
+						if (y.Pred[j] == n && !visited[ssa.RpoNumber(y)])
+						{
+							visited[ssa.RpoNumber(y)] = true;
 
-                            // For each phi function in y...
+							// For each phi function in y...
 
-                            foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))
-                            {
-                                stmCur = stm;
+							foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))
+							{
+								stmCur = stm;
                                 PhiAssignment phi = (PhiAssignment)stmCur.Instruction;
-                                PhiFunction p = phi.Src;
-                                // replace 'n's slot with the renamed name of the variable.
-                                p.Arguments[j] =
-                                    NewUse((Identifier)p.Arguments[j], stm);
-                            }
-                        }
-                    }
-                }
-                foreach (Block c in ssa.DomGraph.ReversePostOrder.Keys)
-                {
-                    if (c != proc.EntryBlock && ssa.DomGraph.ImmediateDominator(c) == n)
-                        RenameBlock(c);
-                }
-                rename = wasonentry;
-            }
+								PhiFunction p = phi.Src;
+								// replace 'n's slot with the renamed name of the variable.
+								p.Arguments[j] = 
+									NewUse((Identifier)p.Arguments[j], stm);
+							}
+						}
+					}
+				}
+				foreach (Block c in ssa.DomGraph.ReversePostOrder.Keys)
+				{
+					if (c != proc.EntryBlock && ssa.DomGraph.ImmediateDominator(c) == n)
+						RenameBlock(c);
+				}
+				rename = wasonentry;
+			}
 
             /// <summary>
             /// Adds a UseInstruction for each SsaIdentifier.
@@ -513,7 +517,7 @@ namespace Reko.Analysis
                 {
                     var idLocal = proc.Frame.EnsureIdentifier(idDef);
                     if (!existing.Contains(idLocal))
-                    {
+                    { 
                         ci.Definitions.Add(new DefInstruction(idLocal));
                     }
                 }
@@ -534,7 +538,7 @@ namespace Reko.Analysis
             /// out parameter of a function call.</param>
             /// <returns>The identifier of the new SSA identifier</returns>
 			private Identifier NewDef(Identifier idOld, Expression exprDef, bool isSideEffect)
-            {
+			{
                 SsaIdentifier sidOld;
                 if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out sidOld))
                 {
@@ -544,13 +548,13 @@ namespace Reko.Analysis
                         return sidOld.Identifier;
                     }
                 }
-                var sid = ssa.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
-                rename[idOld] = sid.Identifier;
-                return sid.Identifier;
-            }
+				var sid = ssa.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
+				rename[idOld] = sid.Identifier;
+				return sid.Identifier;
+			}
 
-            private Identifier NewUse(Identifier idOld, Statement stm)
-            {
+			private Identifier NewUse(Identifier idOld, Statement stm)
+			{
                 SsaIdentifier sid;
                 if (ssa.Identifiers.TryGetValue(idOld, out sid))
                 {
@@ -569,32 +573,33 @@ namespace Reko.Analysis
                     // renamed version of the identifier.
                     sid = ssa.Identifiers[idNew];
                 }
-                sid.Uses.Add(stm);
-                return sid.Identifier;
-            }
+				sid.Uses.Add(stm);
+				return sid.Identifier;
+			}
 
-            public override Instruction TransformAssignment(Assignment ass)
-            {
-                ass.Src = ass.Src.Accept(this);
-                Identifier id = ass.Dst;
-                ass.Dst = NewDef(id, ass.Src, false);
-                return ass;
-            }
+			public override Instruction TransformAssignment(Assignment ass)
+			{
+				ass.Src = ass.Src.Accept(this);
+				Identifier id = ass.Dst;
+				ass.Dst = NewDef(id, ass.Src, false);
+				return ass;
+			}
 
-            public override Instruction TransformPhiAssignment(PhiAssignment phi)
-            {
-                // Only rename the defined variable in phi-functions.
+			public override Instruction TransformPhiAssignment(PhiAssignment phi)
+			{
+				// Only rename the defined variable in phi-functions.
                 // The arguments of the phi-function will be renamed 
                 // elsewhere.
 
-                Identifier id = phi.Dst;
+				Identifier id = phi.Dst;
                 phi.Dst = NewDef(id, phi.Src, false);
-                return phi;
-            }
+				return phi;
+			}
 
-            public override Instruction TransformCallInstruction(CallInstruction ci)
+			public override Instruction TransformCallInstruction(CallInstruction ci)
             {
                 ci.Callee = ci.Callee.Accept(this);
+
                 ProcedureConstant pc;
                 if (ci.Callee.As(out pc))
                 {
@@ -606,6 +611,7 @@ namespace Reko.Analysis
                         return ci;
                     }
                 }
+
                 RenameAllRegisterIdentifiers(ci);
                 return ci;
             }
@@ -645,9 +651,9 @@ namespace Reko.Analysis
             }
 
             public override Expression VisitApplication(Application appl)
-            {
-                for (int i = 0; i < appl.Arguments.Length; ++i)
-                {
+			{
+				for (int i = 0; i < appl.Arguments.Length; ++i)
+				{
                     UnaryExpression unary = appl.Arguments[i] as UnaryExpression;
                     if (unary != null && unary.Operator == Operator.AddrOf)
                     {
@@ -659,9 +665,9 @@ namespace Reko.Analysis
                         }
                     }
                     appl.Arguments[i] = appl.Arguments[i].Accept(this);
-                }
-                return appl;
-            }
+				}
+				return appl;
+			}
 
             public override Expression VisitOutArgument(OutArgument outArg)
             {
@@ -669,15 +675,15 @@ namespace Reko.Analysis
                 Expression exp;
                 if (id != null)
                     exp = NewDef(id, outArg, true);
-                else
+                else 
                     exp = outArg.Expression.Accept(this);
                 return new OutArgument(outArg.DataType, exp);
             }
 
-            public override Expression VisitIdentifier(Identifier id)
-            {
-                return NewUse(id, stmCur);
-            }
+			public override Expression VisitIdentifier(Identifier id)
+			{
+                    return NewUse(id, stmCur);
+			}
 
             public override Expression VisitMemoryAccess(MemoryAccess access)
             {
@@ -687,7 +693,37 @@ namespace Reko.Analysis
                     var idNew = NewUse(idFrame, stmCur);
                     return idNew;
                 }
-                return base.VisitMemoryAccess(access);
+                var ea = access.EffectiveAddress.Accept(this);
+                BinaryExpression bin;
+                Identifier id;
+                Constant c = null;
+                if (ea.As(out bin) &&
+                    bin.Left.As(out id) &&
+                    bin.Right.As(out c) &&
+                    rename.ContainsKey(id))
+                {
+                    var sid = ssa.Identifiers[rename[id]];
+                    var cOther = sid.DefExpression as Constant;
+                    if (cOther != null)
+                    {
+                        c = bin.Operator.ApplyConstants(cOther, c);
+                    }
+                }
+                else
+                {
+                    c = ea as Constant;
+                }
+
+                if (c != null)
+                {
+                    access.EffectiveAddress = c;
+                    var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
+                    if (e != null)
+                        return e;
+                }
+                access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
+                access.EffectiveAddress = ea;
+                return access;
             }
 
             public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -701,13 +737,13 @@ namespace Reko.Analysis
                 return base.VisitSegmentedAccess(access);
             }
 
-            public override Instruction TransformStore(Store store)
-            {
-                store.Src = store.Src.Accept(this);
+			public override Instruction TransformStore(Store store)
+			{
+				store.Src = store.Src.Accept(this);
 
-                var acc = store.Dst as MemoryAccess;
-                if (acc != null)
-                {
+				var acc = store.Dst as MemoryAccess;
+				if (acc != null)
+				{
                     if (this.renameFrameAccess && IsFrameAccess(proc, acc.EffectiveAddress))
                     {
                         var idFrame = EnsureStackVariable(proc, acc.EffectiveAddress, acc.DataType);
@@ -715,23 +751,23 @@ namespace Reko.Analysis
                         return new Assignment(idDst, store.Src);
                     }
                     acc.MemoryId = (MemoryIdentifier)NewDef(acc.MemoryId, store.Src, false);
-                    SegmentedAccess sa = acc as SegmentedAccess;
-                    if (sa != null)
-                        sa.BasePointer = sa.BasePointer.Accept(this);
-                    acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
-                }
-                else
-                {
-                    store.Dst = store.Dst.Accept(this);
-                }
-                return store;
-            }
+					SegmentedAccess sa = acc as SegmentedAccess;
+					if (sa != null)
+						sa.BasePointer = sa.BasePointer.Accept(this);
+					acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
+				}
+				else
+				{
+					store.Dst = store.Dst.Accept(this);
+				}
+				return store;
+			}
 
-            public override Expression VisitUnaryExpression(UnaryExpression unary)
-            {
-                unary.Expression = unary.Expression.Accept(this);
-                return unary;
-            }
+			public override Expression VisitUnaryExpression(UnaryExpression unary)
+			{
+				unary.Expression = unary.Expression.Accept(this);
+				return unary;
+			}
 
             public override Instruction TransformUseInstruction(UseInstruction u)
             {
@@ -739,7 +775,7 @@ namespace Reko.Analysis
                     u.OutArgument = UsedBeforeDefined(u.OutArgument).Identifier;
                 return base.TransformUseInstruction(u);
             }
-        }
+		}
     }
 
     /// <summary>
@@ -761,6 +797,7 @@ namespace Reko.Analysis
     {
         private IProcessorArchitecture arch;
         private DataFlow2 programFlow;
+        private IImportResolver importResolver;
         private Block block;
         private Statement stmCur;
         private Dictionary<Block, SsaBlockState> blockstates;
@@ -768,10 +805,11 @@ namespace Reko.Analysis
         private TransformerFactory factory;
         public readonly HashSet<SsaIdentifier> incompletePhis;
 
-        public SsaTransform2(IProcessorArchitecture arch, Procedure proc, DataFlow2 programFlow)
+        public SsaTransform2(IProcessorArchitecture arch, Procedure proc, IImportResolver importResolver, DataFlow2 programFlow)
         {
             this.arch = arch;
             this.programFlow = programFlow;
+            this.importResolver = importResolver;
             this.ssa = new SsaState(proc, null);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
             this.factory = new TransformerFactory(this);
@@ -1399,7 +1437,7 @@ namespace Reko.Analysis
                 var b = stmBefore.Block;
                 int i = b.Statements.IndexOf(stmBefore);
                 // Skip alias statements
-                while (i < b.Statements.Count - 1 && b.Statements[i+1].Instruction is AliasAssignment)
+                while (i < b.Statements.Count - 1 && b.Statements[i + 1].Instruction is AliasAssignment)
                     ++i;
                 var stm = new Statement(stmBefore.LinearAddress, ass, stmBefore.Block);
                 stmBefore.Block.Statements.Insert(i + 1, stm);
@@ -1437,8 +1475,8 @@ namespace Reko.Analysis
                     // Haven't visited some of the predecessors yet,
                     // so we can't backwalk... yet. 
                     ((PhiAssignment)phi.DefStatement.Instruction).Src =
-                        new PhiFunction(phi.Identifier.DataType, new Expression[preds.Count]);
-                     outer.incompletePhis.Add(phi);
+                                new PhiFunction(phi.Identifier.DataType, new Expression[preds.Count]);
+                    outer.incompletePhis.Add(phi);
                     return phi;
                 }
                 return AddPhiOperandsCore(phi, aliasProbe);
@@ -1459,7 +1497,7 @@ namespace Reko.Analysis
                 if (aliasProbe && sids.Any(s => s == null))
                     return null;
                 ((PhiAssignment)phi.DefStatement.Instruction).Src =
-                    new PhiFunction(
+                new PhiFunction(
                         phi.Identifier.DataType,
                         sids.Select(s => s.Identifier).ToArray());
                 return TryRemoveTrivial(phi, aliasProbe);
@@ -1547,7 +1585,7 @@ namespace Reko.Analysis
 
         public class SsaRegisterTransformer : SsaIdentifierTransformer
         {
-            public SsaRegisterTransformer(Identifier id, Statement stm, SsaTransform2 outer) 
+            public SsaRegisterTransformer(Identifier id, Statement stm, SsaTransform2 outer)
                 : base(id, stm, outer)
             {
             }

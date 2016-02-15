@@ -23,6 +23,7 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,6 +38,7 @@ namespace Reko.UnitTests.Analysis
     {
         private DataFlow2 dataFlow;
         private Program program;
+        private IImportResolver importResolver;
 
         private void AssertProgram(string sExp, IEnumerable<Procedure> procs)
         {
@@ -72,6 +74,8 @@ namespace Reko.UnitTests.Analysis
 
         public void RunTest(IEnumerable<Procedure> procs)
         {
+            importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var flow = new ProgramDataFlow(program);
             var scc = new Dictionary<Procedure, SsaState>();
             foreach (var proc in procs)
@@ -85,7 +89,7 @@ namespace Reko.UnitTests.Analysis
                 // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
-                var sst = new SsaTransform(flow, proc, doms);
+                var sst = new SsaTransform(flow, proc, importResolver, doms);
                 sst.AddUseInstructions = true;
                 sst.Transform();
                 var ssa = sst.SsaState;

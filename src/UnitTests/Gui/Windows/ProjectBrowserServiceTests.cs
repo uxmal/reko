@@ -371,13 +371,13 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_ProgramWithOneSegment()
         {
-            var image = new LoadedImage(Address.Ptr32(0x12340000), new byte[0x1000]);
-            var imageMap = image.CreateImageMap();
-            imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute, 0);
+            var mem = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
+            var imageMap = new ImageMap(Address.Ptr32(0x12300000));
+            imageMap.AddSegment(mem, ".text", AccessMode.ReadExecute);
             var arch = mr.StrictMock<ProcessorArchitecture>();
             arch.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch);
-            this.program = new Program(image, imageMap, arch, platform);
+            this.program = new Program(imageMap, arch, platform);
             this.program.Name = "foo.exe";
             this.program.Filename = @"c:\test\foo.exe";
             project.Programs.Add(program);
@@ -399,13 +399,13 @@ namespace Reko.UnitTests.Gui.Windows
                 "<root>" +
                 "<node " +
                     "text=\"foo.exe\" " +
-                    "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
+                    "tip=\"c:\\test\\foo.exe" + cr + "12300000\" " +
                     "tag=\"ProgramDesigner\">" +
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node " + 
-                        "text=\"Image base\" " +
-                        "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
+                        "text=\".text\" " +
+                        "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
                         "tag=\"ImageMapSegmentNodeDesigner\" />" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                 "</node>" +
@@ -422,17 +422,21 @@ namespace Reko.UnitTests.Gui.Windows
 
             pbs.Load(project);
 
+            var mem = new MemoryArea(Address.Ptr32(0x1231300), new byte[128]);
+            
             project.Programs.Add(new Program
             {
                 Filename = "bar.exe",
-                Image = new LoadedImage(Address.Ptr32(0x1231300), new byte[128])
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(".text", mem, AccessMode.ReadExecute))
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
-                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"ProgramDesigner\">" +
+                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12300000\" tag=\"ProgramDesigner\">" +
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
-                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node text=\".text\" tip=\".text&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;r-x\" tag=\"ImageMapSegmentNodeDesigner\" />" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                  "</node>" +
                  "</root>");
@@ -472,13 +476,13 @@ namespace Reko.UnitTests.Gui.Windows
                 "<root>" +
                 "<node " +
                     "text=\"foo.exe\" " +
-                    "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
+                    "tip=\"c:\\test\\foo.exe" + cr + "12300000\" " +
                     "tag=\"ProgramDesigner\">" +
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
                     "<node " +
-                        "text=\"Image base\" " +
-                        "tip=\"Image base" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
+                        "text=\".text\" " +
+                        "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
                         "tag=\"ImageMapSegmentNodeDesigner\">" +
                         "<node " +
                             "text=\"MyFoo\" " +

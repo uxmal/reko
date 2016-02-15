@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using Reko.Loading;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -51,9 +52,10 @@ namespace Reko.UnitTests.Typing
 		{
             var sc = new ServiceContainer();
             var config = new FakeDecompilerConfiguration();
+            var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IConfigurationService>(config);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
@@ -61,17 +63,18 @@ namespace Reko.UnitTests.Typing
                 new X86TextAssembler(sc, new IntelArchitecture(ProcessorMode.Real)),
                 addrBase);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
-            var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
+            var ep = new EntryPoint(program.ImageMap.BaseAddress, program.Architecture.CreateProcessorState());
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                new ImportResolver(project, program, eventListener),
                 sc);
 			scan.EnqueueEntryPoint(ep);
 			scan.ScanImage();
 
-			var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            var importResolver = new ImportResolver(project, program, eventListener);
+            var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
 			dfa.AnalyzeProgram();
             return program;
 		}
@@ -80,20 +83,21 @@ namespace Reko.UnitTests.Typing
         {
             var svc = new ServiceContainer();
             var cfg = new FakeDecompilerConfiguration();
+            var eventListener = new FakeDecompilerEventListener();
             svc.AddService<IConfigurationService>(cfg);
-            svc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            svc.AddService<DecompilerEventListener>(eventListener);
             svc.AddService<DecompilerHost>(new FakeDecompilerHost());
             ILoader ldr = new Loader(svc);
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
-            var img = imgLoader.Load(null);
-            var program = new Program(img.Image, img.Image.CreateImageMap(), img.Architecture, img.Platform);
+            var program = imgLoader.Load(null);
             var project = new Project { Programs = { program } };
-            var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), svc);
+            var ep = new EntryPoint(program.ImageMap.BaseAddress, program.Architecture.CreateProcessorState());
+            var importResolver = new ImportResolver(project, program, eventListener);
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), importResolver, svc);
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 
-            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             RunTest(program, outputFile);
         }
@@ -110,11 +114,12 @@ namespace Reko.UnitTests.Typing
         
         protected void RunTest(ProgramBuilder mock, string outputFile)
         {
-            Program prog = mock.BuildProgram();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            Program program = mock.BuildProgram();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.DumpProgram();
             dfa.BuildExpressionTrees();
-            RunTest(prog, outputFile);
+            RunTest(program, outputFile);
         }
 
         protected void RunTest(Action<ProcedureBuilder> pg, string outputFile)

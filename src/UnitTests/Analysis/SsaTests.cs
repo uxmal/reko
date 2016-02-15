@@ -31,6 +31,7 @@ using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -43,7 +44,8 @@ namespace Reko.UnitTests.Analysis
 	public class SsaTests : AnalysisTestBase
 	{
 		private SsaState ssa;
-
+        private IImportResolver importResolver;
+        
         private Identifier EnsureRegister16(ProcedureBuilder m, string name)
         {
             return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word16));
@@ -54,9 +56,11 @@ namespace Reko.UnitTests.Analysis
             return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word32));
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
             Debug.Print("SsaTest: {0}", new StackFrame(3).GetMethod().Name);
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var flow = new ProgramDataFlow(prog);
             var eventListener = new FakeDecompilerEventListener();
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
@@ -69,7 +73,7 @@ namespace Reko.UnitTests.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 #if NEW_SSA2
-                var sst = new SsaTransform2(prog.Architecture, proc, flow.ToDataFlow2());
+                var sst = new SsaTransform2(prog.Architecture, proc, importResolver, flow.ToDataFlow2());
                 sst.AddUseInstructions = true;
                 sst.Transform();
 #else
@@ -215,7 +219,7 @@ namespace Reko.UnitTests.Analysis
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var proc = m.Procedure;
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph());
             ssa = sst.SsaState;
             using (var fut = new FileUnitTester(outfile))
             {

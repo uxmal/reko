@@ -551,12 +551,12 @@ namespace Reko.Assemblers.M68k
             return Assemble(baseAddress, rdr);
         }
 
-        public LoadedImage GetImage()
+        public MemoryArea GetImage()
         {
-            return new LoadedImage(addrBase, emitter.GetBytes());
+            return new MemoryArea(addrBase, emitter.GetBytes());
         }
 
-        public LoadedImage Image
+        public MemoryArea Image
         {
             get { return GetImage(); }
         }

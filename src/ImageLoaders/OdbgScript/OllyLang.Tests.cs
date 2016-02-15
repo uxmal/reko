@@ -37,7 +37,8 @@ namespace Reko.ImageLoaders.OdbgScript
         private MockRepository mr;
         private IHost host;
         private OllyLang engine;
-        private LoadedImage image;
+        private MemoryArea mem;
+        private ImageMap imageMap;
 
         [SetUp]
         public void Setup()
@@ -73,15 +74,18 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private void Given_Image(uint addr, params byte[] bytes)
         {
-            image = new LoadedImage(Address.Ptr32(addr), bytes);
-            host.Stub(h => h.Image).Return(image);
+            mem = new MemoryArea(Address.Ptr32(addr), bytes);
+            imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment(".text", mem, AccessMode.ReadExecute));
+            host.Stub(h => h.ImageMap).Return(imageMap);
             host.Stub(h => h.TE_GetMemoryInfo(
                 Arg<ulong>.Is.Anything,
                 out Arg<MEMORY_BASIC_INFORMATION>.Out(new MEMORY_BASIC_INFORMATION
                 {
-                    BaseAddress = image.BaseAddress.ToLinear(),
-                    RegionSize = (uint)image.Length,
-                    AllocationBase = image.BaseAddress.ToLinear()
+                    BaseAddress = mem.BaseAddress.ToLinear(),
+                    RegionSize = (uint)mem.Length,
+                    AllocationBase = mem.BaseAddress.ToLinear()
                 }).Dummy)).Return(true);
         }
 
@@ -124,7 +128,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 Arg<int>.Is.Equal(3),
                 Arg<byte[]>.Is.NotNull)).Do(new Func<ulong,int,byte[],bool>((a, l, b) =>
             {
-                LoadedImage.WriteBytes(b, (long)a - (long)image.BaseAddress.ToLinear(), l,image.Bytes);
+                MemoryArea.WriteBytes(b, (long)a - (long)mem.BaseAddress.ToLinear(), l,mem.Bytes);
                 return true;
             }));
 
@@ -139,7 +143,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             engine.Run();
 
-            Assert.AreEqual("***---#", Encoding.ASCII.GetString(image.Bytes));
+            Assert.AreEqual("***---#", Encoding.ASCII.GetString(mem.Bytes));
         }
         
         [Test]

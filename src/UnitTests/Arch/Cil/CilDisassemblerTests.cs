@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Cil
     {
         private void RunTest(string sExp, params byte[] bytes)
         {
-            var image = new LoadedImage(Address.Ptr32(0x0100000), bytes);
+            var image = new MemoryArea(Address.Ptr32(0x0100000), bytes);
             var dasm = new CilDisassembler(image.CreateLeReader(0)).GetEnumerator();
             Assert.IsTrue(dasm.MoveNext());
             var instr = dasm.Current;

@@ -43,11 +43,13 @@ namespace Reko.Analysis
 	{
 		private Program program;
 		private DecompilerEventListener eventListener;
+        private IImportResolver importResolver;
 		private ProgramDataFlow flow;
 
-        public DataFlowAnalysis(Program program, DecompilerEventListener eventListener)
+        public DataFlowAnalysis(Program program, IImportResolver importResolver, DecompilerEventListener eventListener)
 		{
 			this.program = program;
+            this.importResolver = importResolver;
             this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(program);
 		}
@@ -80,17 +82,21 @@ namespace Reko.Analysis
                     alias.Transform();
 
                     var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                    var sst = new SsaTransform(flow, proc, doms);
+                    var sst = new SsaTransform(flow, proc, importResolver, doms);
                     var ssa = sst.SsaState;
 
                     var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
                     cce.Transform();
+                    //var cd = new ConstDivisionImplementedByMultiplication(ssa);
+                    //cd.Transform();
+
                     DeadCode.Eliminate(proc, ssa);
 
                     var vp = new ValuePropagator(program.Architecture, ssa);
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
+              
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 
@@ -192,7 +198,6 @@ namespace Reko.Analysis
 			GlobalCallRewriter.Rewrite(program, flow);
 		}
 
-
         // EXPERIMENTAL - consult uxmal before using
         /// <summary>
         /// Analyizes the procedures of a program by finding all strongly 
@@ -243,7 +248,7 @@ namespace Reko.Analysis
                 liv.Find();
 
                 foreach (var de in liv.Contexts)
-                {
+            {
                     var str = new StrengthReduction(ssa.SsaState, de.Key, de.Value);
                     str.ClassifyUses();
                     str.ModifyUses();
@@ -264,14 +269,13 @@ namespace Reko.Analysis
         {
             //Aliases alias = new Aliases(proc, program.Architecture, flow);
             //alias.Transform();
-
+                
             // Transform the procedure to SSA state. When encountering 'call' instructions,
             // they can be to functions already visited. If so, they have a "ProcedureFlow" 
             // associated with them. If they have not been visited, or are computed destinations
             // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
             // which case the the SSA treats the call as a "hell node".
-            //var doms = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform2(program.Architecture, proc, new DataFlow2());
+            var sst = new SsaTransform2(program.Architecture, proc, importResolver, new DataFlow2());
             sst.Transform();
             var ssa = sst.SsaState;
 
@@ -284,16 +288,16 @@ namespace Reko.Analysis
             var vp = new ValuePropagator(program.Architecture, ssa);
             vp.Transform();
 
-            // Now compute SSA for the stack-based variables as well. That is:
-            // mem[fp - 30] becomes wLoc30, while 
-            // mem[fp + 30] becomes wArg30.
-            // This allows us to compute the dataflow of this procedure.
-            sst.RenameFrameAccesses = true;
-            sst.AddUseInstructions = true;
-            sst.Transform();
+                // Now compute SSA for the stack-based variables as well. That is:
+                // mem[fp - 30] becomes wLoc30, while 
+                // mem[fp + 30] becomes wArg30.
+                // This allows us to compute the dataflow of this procedure.
+                sst.RenameFrameAccesses = true;
+                sst.AddUseInstructions = true;
+                sst.Transform();
 
-            // Propagate those newly discovered identifiers.
-            vp.Transform();
+                // Propagate those newly discovered identifiers.
+                vp.Transform();
 
             return sst;
         }

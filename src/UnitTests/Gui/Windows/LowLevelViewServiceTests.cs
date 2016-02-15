@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             interactor.SetSite(sc);
             interactor.CreateControl();
-            svc.ShowMemoryAtAddress(program, program.Image.BaseAddress);
+            svc.ShowMemoryAtAddress(program, program.ImageMap.BaseAddress);
 
             mr.VerifyAll();
         }
@@ -86,8 +86,10 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program()
         {
             var addrBase = Address.Ptr32(0x10000);
-            var image = new LoadedImage(addrBase, new byte[100]);
-            var map = image.CreateImageMap();
+            var mem = new MemoryArea(addrBase, new byte[100]);
+            var map = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = mr.Stub<IProcessorArchitecture>();
             var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
             var e = mr.Stub<IEnumerator<MachineInstruction>>();
@@ -95,13 +97,13 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull)).Return(dasm);
             arch.Stub(a => a.InstructionBitSize).Return(8);
             arch.Stub(a => a.CreateImageReader(
-                Arg<LoadedImage>.Is.NotNull,
-                Arg<Address>.Is.NotNull)).Return(image.CreateLeReader(addrBase));
+                Arg<MemoryArea>.Is.NotNull,
+                Arg<Address>.Is.NotNull)).Return(mem.CreateLeReader(addrBase));
             dasm.Stub(d => d.GetEnumerator()).Return(e);
             arch.Replay();
             dasm.Replay();
             e.Replay();
-            this.program = new Program(image, map, arch, null);
+            this.program = new Program(map, arch, null);
         }
 
         private T AddStubService<T>(IServiceContainer sc)
@@ -130,7 +132,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
-            var image = new LoadedImage(Address.Ptr32(0x1000), new byte[300]);
+            var image = new MemoryArea(Address.Ptr32(0x1000), new byte[300]);
             mr.ReplayAll();
 
             interactor.SetSite(sc);

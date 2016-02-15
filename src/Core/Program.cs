@@ -63,9 +63,8 @@ namespace Reko.Core
             this.User = new UserData();
         }
 
-        public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
+        public Program(ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
-            this.Image = image;
             this.ImageMap = imageMap;
             this.Architecture = arch;
             this.Platform = platform;
@@ -77,6 +76,20 @@ namespace Reko.Core
         /// The processor architecture to use for decompilation
         /// </summary>
 		public IProcessorArchitecture Architecture { get; set; }
+
+        public IPlatform Platform { get; set; }
+
+        public ImageMap ImageMap { get; set; }
+
+        public TypeLibrary Metadata
+        {
+            get
+            {
+                if (metadata == null)
+                    metadata = Platform.CreateMetadata();
+                return metadata;
+            }
+        }
 
         /// <summary>
         /// The callgraph expresses the relationships between the callers (statements and procedures)
@@ -138,23 +151,6 @@ namespace Reko.Core
             globalFields = TypeFactory.CreateStructureType("Globals", 0);
             var ptrGlobals = TypeFactory.CreatePointer(globalFields, Platform.PointerType.Size);
             globals = new Identifier("globals", ptrGlobals, MemoryStorage.Instance);
-        }
-
-        /// <summary>
-        /// The unpacked, relocated, in-memory image of the program to be decompiled.
-        /// </summary>
-        public LoadedImage Image { get; set; }
-
-        public ImageMap ImageMap { get; set; }
-
-        public IPlatform Platform { get; set; }
-
-        public TypeLibrary Metadata {
-            get {
-                if (metadata == null)
-                    metadata = Platform.CreateMetadata();
-                return metadata;
-            }
         }
 
         public void LoadMetadataFile(ILoader loader, string filename)
@@ -292,13 +288,19 @@ namespace Reko.Core
        
         public ImageReader CreateImageReader(Address addr)
         {
-            return Architecture.CreateImageReader(Image, addr);
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
+            return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
 
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
         {
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateDisassembler(
-                Architecture.CreateImageReader(Image, addr));
+                Architecture.CreateImageReader(segment.MemoryArea, addr));
         }
 
         // Mutators /////////////////////////////////////////////////////////////////
@@ -339,7 +341,7 @@ namespace Reko.Core
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.
-                var rdr = this.Architecture.CreateImageReader(this.Image, addr);
+                var rdr = this.CreateImageReader(addr);
                 while (rdr.IsValid)
                 {
                     var ch = rdr.ReadChar(strDt.ElementType);

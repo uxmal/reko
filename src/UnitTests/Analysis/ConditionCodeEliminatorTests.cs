@@ -29,6 +29,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -77,7 +78,8 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
         {
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
             dfa.UntangleProcedures();
             foreach (Procedure proc in prog.Procedures.Values)
             {
@@ -86,7 +88,7 @@ namespace Reko.UnitTests.Analysis
 
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
-                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
+                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
                 SsaState ssa = sst.SsaState;
 
                 proc.Dump(true);
@@ -349,15 +351,6 @@ done:
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
 
-        
-        [Test]
-        [Ignore("TODO: what happens when a function returns carry when SCZO is aliased to the return value?")]
-        public void CceReturnCarry()
-        {
-            throw new NotImplementedException();
-        }
-
-
         [Test]
 		public void SignedIntComparisonFromConditionCode()
 		{
@@ -408,7 +401,6 @@ done:
         }
 
         [Test]
-        [Ignore]
         public void CceShrRcrPattern()
         {
             var p = new ProgramBuilder(new FakeArchitecture());

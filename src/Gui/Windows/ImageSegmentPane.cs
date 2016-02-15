@@ -62,7 +62,7 @@ namespace Reko.Gui.Windows
         {
         }
 
-        public void DisplaySegment(ImageMapSegment segment, Program program)
+        public void DisplaySegment(ImageSegment segment, Program program)
         {
             try
             {

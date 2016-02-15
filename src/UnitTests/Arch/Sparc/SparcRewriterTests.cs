@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 (byte) (w >> 8),
                 (byte) w
             }).ToArray();
-            var image = new LoadedImage(LoadAddress, bytes);
+            var image = new MemoryArea(LoadAddress, bytes);
             e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 

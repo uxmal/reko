@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class RelSegmentRenderer : ImageMapSegmentRenderer
+    public class RelSegmentRenderer : ImageSegmentRenderer
     {
         private ElfImageLoader loader;
         private Elf32_SHdr shdr;
@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.Elf
             this.shdr = shdr;
         }
 
-        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             var entries = shdr.sh_size / shdr.sh_entsize;
             var symtab = (int)shdr.sh_link;

@@ -46,10 +46,10 @@ namespace Reko.Environments.MacOS
             this.image = bytes;
             this.arch = arch;
 
-            rsrcDataOff = LoadedImage.ReadBeUInt32(bytes, 0);
-            rsrcMapOff = LoadedImage.ReadBeUInt32(bytes, 4);
-            dataSize = LoadedImage.ReadBeUInt32(bytes, 8);
-            mapSize = LoadedImage.ReadBeUInt32(bytes, 0x0C);
+            rsrcDataOff = MemoryArea.ReadBeUInt32(bytes, 0);
+            rsrcMapOff = MemoryArea.ReadBeUInt32(bytes, 4);
+            dataSize = MemoryArea.ReadBeUInt32(bytes, 8);
+            mapSize = MemoryArea.ReadBeUInt32(bytes, 0x0C);
 
             rsrcTypes = new ResourceTypeCollection(image, rsrcMapOff, mapSize);
         }
@@ -109,9 +109,9 @@ namespace Reko.Environments.MacOS
             public ResourceTypeCollection(byte [] bytes, uint offset, uint size)
             {
                 this.bytes = bytes;
-                rsrcTypeListOff = offset + LoadedImage.ReadBeUInt16(bytes, offset + 0x18) + 2u;
-                rsrcNameListOff = offset + LoadedImage.ReadBeUInt16(bytes, offset + 0x1A);
-                crsrcTypes = LoadedImage.ReadBeUInt16(bytes, offset + 0x1C) + 1;
+                rsrcTypeListOff = offset + MemoryArea.ReadBeUInt16(bytes, offset + 0x18) + 2u;
+                rsrcNameListOff = offset + MemoryArea.ReadBeUInt16(bytes, offset + 0x1A);
+                crsrcTypes = MemoryArea.ReadBeUInt16(bytes, offset + 0x1C) + 1;
             }
 
             #region ICollection<ResourceType> Members
@@ -161,8 +161,8 @@ namespace Reko.Environments.MacOS
                 for (int i = 0; i < crsrcTypes; ++i)
                 {
                     string rsrcTypeName = Encoding.ASCII.GetString(bytes, (int)offset, 4);
-                    int crsrc = LoadedImage.ReadBeUInt16(bytes, offset + 4) + 1;
-                    uint rsrcReferenceListOffset = rsrcTypeListOff + LoadedImage.ReadBeUInt16(bytes, offset + 6) - 2;
+                    int crsrc = MemoryArea.ReadBeUInt16(bytes, offset + 4) + 1;
+                    uint rsrcReferenceListOffset = rsrcTypeListOff + MemoryArea.ReadBeUInt16(bytes, offset + 6) - 2;
                     yield return new ResourceType(bytes, rsrcTypeName, rsrcReferenceListOffset, rsrcNameListOff, crsrc);
                     offset += 8;
                 }
@@ -241,9 +241,9 @@ namespace Reko.Environments.MacOS
                 var offset = this.offset;
                 for (int i = 0; i < count; ++i)
                 {
-                    ushort rsrcID = LoadedImage.ReadBeUInt16(bytes, offset);
-                    string name = ReadName(LoadedImage.ReadBeUInt16(bytes, offset + 2));
-                    uint dataOff = LoadedImage.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
+                    ushort rsrcID = MemoryArea.ReadBeUInt16(bytes, offset);
+                    string name = ReadName(MemoryArea.ReadBeUInt16(bytes, offset + 2));
+                    uint dataOff = MemoryArea.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
                     yield return new ResourceReference(rsrcID, name, dataOff);
 
                     offset += 0x0C;
@@ -286,14 +286,15 @@ namespace Reko.Environments.MacOS
             }
         }
 
-        public void AddResourcesToImageMap(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
+        public void AddResourcesToImageMap(Address addrLoad, MemoryArea mem, ImageMap imageMap, List<EntryPoint> entryPoints)
         {
             foreach (ResourceType type in ResourceTypes)
             {
                 foreach (ResourceReference rsrc in type.References)
                 {
                     Address addrSegment = addrLoad + rsrc.DataOffset + rsrcDataOff;
-                    imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read, 0);
+                    var segment = imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read, 0);
+                    segment.MemoryArea = mem;
                     if (type.Name == "CODE")
                     {
                         if (rsrc.ResourceID == 0)

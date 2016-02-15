@@ -52,6 +52,8 @@ namespace Reko.UnitTests.Scanning
         private IDictionary<Address, ProcedureSignature> callSigs;
         private ServiceContainer sc;
         private Project project;
+        private MemoryArea mem;
+        private DecompilerEventListener eventListener;
 
         public class TestScanner : Scanner
         {
@@ -79,12 +81,13 @@ namespace Reko.UnitTests.Scanning
             fakeArch = new FakeArchitecture();
             importResolver = mr.StrictMock<IImportResolver>();
             callSigs = new Dictionary<Address, ProcedureSignature>();
+            this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
             this.sc = new ServiceContainer();
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
@@ -105,14 +108,9 @@ namespace Reko.UnitTests.Scanning
             var addr = Address.SegPtr(0x0C00, 0);
             var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<EntryPoint>());
             test(m);
-            var lr = m.GetImage();
-            program = new Program(
-                lr.Image,
-                lr.ImageMap,
-                lr.Architecture,
-                lr.Platform);
-            scan = CreateScanner(program);
-            EntryPoint ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
+            this.program = m.GetImage();
+            this.scan = this.CreateScanner(this.program);
+            EntryPoint ep = new EntryPoint(addr, this.program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
         }
 
@@ -145,7 +143,7 @@ namespace Reko.UnitTests.Scanning
             var sc = new Scanner(
                 this.program,
                 null,
-                new ImportResolver(project),
+                new ImportResolver(project, program, eventListener),
                 this.sc);
             sc.EnqueueEntryPoint(
                 new EntryPoint(
@@ -160,14 +158,15 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Program(Address address, byte[] bytes)
         {
-            var image = new LoadedImage(address, bytes);
-            var imageMap = image.CreateImageMap();
+            var mem = new MemoryArea(address, bytes);
+            var imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("proggie", mem, AccessMode.ReadExecute));
             var arch = new X86ArchitectureFlat32();
             var platform = new FakePlatform(null, arch);
             this.program = new Program
             {
                 Architecture = arch,
-                Image = image,
                 ImageMap = imageMap,
                 Platform = platform
             };
@@ -199,12 +198,14 @@ namespace Reko.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            var image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
-            program = new Program(
-                image,
-                image.CreateImageMap(),
-                arch,
-                new FakePlatform(null, arch));
+            mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            program = new Program
+            {
+                ImageMap = new ImageMap(mem.BaseAddress,
+                    new ImageSegment("progseg", mem, AccessMode.ReadExecute)),
+                Architecture = arch,
+                Platform = new FakePlatform(null, arch)
+            };
             return new TestScanner(
                 program,
                 callSigs,
@@ -227,8 +228,10 @@ namespace Reko.UnitTests.Scanning
             this.program = prog;
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
-            prog.Image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
-            prog.ImageMap = prog.Image.CreateImageMap();
+            this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            prog.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
             return new TestScanner(prog, callSigs, importResolver, sc);
         }
 
@@ -313,14 +316,16 @@ namespace Reko.UnitTests.Scanning
             m.Jmp("foo");
             m.Endp("baz");
 
-            var lr = m.GetImage();
-            program.Image = lr.Image;
-            program.ImageMap = lr.ImageMap;
-            program.Architecture = lr.Architecture;
+            program = m.GetImage();
             program.Platform = new FakePlatform(null, arch);
             Given_Project();
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), sc);
-            EntryPoint ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
+
+            var scan = new Scanner(
+                program, 
+                new Dictionary<Address, ProcedureSignature>(), 
+                new ImportResolver(project, program, eventListener),
+                sc);
+            var ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 
@@ -599,7 +604,7 @@ fn00001200_exit:
             var scanner = CreateScanner(0x1000, 0x2000);
             var addrEmulated = Address.Ptr32(0x5000);
             var addrThunk = Address.Ptr32(0x1800);
-            program.Image.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
+            mem.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
             program.InterceptedCalls.Add(addrEmulated, new ExternalProcedure("Foo", null));
             var ep = scanner.GetInterceptedCall(addrThunk);
             Assert.AreEqual("Foo", ep.Name);

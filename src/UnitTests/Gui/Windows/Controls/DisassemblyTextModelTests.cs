@@ -52,18 +52,19 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             };
         }
 
-        private LoadedImage Given_Image(int size)
+        private ImageSegment Given_Image(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
-            program.Image = new LoadedImage(Address.Ptr32(0x1000000), bytes);
-            program.ImageMap = new ImageMap(program.Image.BaseAddress, program.Image.Length);
-            return program.Image;
+            var mem = new MemoryArea(Address.Ptr32(0x1000000), bytes);
+            var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
+            program.ImageMap = new ImageMap(mem.BaseAddress, seg);
+            return seg;
         }
 
         private void Given_Model()
         {
-            Given_Image(1000);
-            model = new DisassemblyTextModel(program);
+            var seg = Given_Image(1000);
+            model = new DisassemblyTextModel(program, seg);
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private void Given_Disassembler()
         {
             program.Architecture.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
             program.Architecture.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
                 .Return(instrs);
         }
@@ -180,7 +181,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             {
                 instrs.Add(new TestInstruction
                 {
-                    Address = program.Image.BaseAddress + i,
+                    Address = program.ImageMap.BaseAddress + i,
                     Length = c % 5
                 });
             }

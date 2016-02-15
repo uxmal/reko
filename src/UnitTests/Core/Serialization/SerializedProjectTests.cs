@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         Architecture = arch,
                         Platform = platform,
-                        Image = new LoadedImage(Address.SegPtr(0x1000, 0), new byte[100]),
+                        ImageMap = new ImageMap(Address.SegPtr(0x1000, 0)), //, new byte[100]),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
                         User = new UserData
@@ -251,7 +251,12 @@ namespace Reko.UnitTests.Core.Serialization
             var program = new Program
             {
                 Architecture = arch,
-                Image = new LoadedImage(address, bytes)
+                ImageMap = new ImageMap(
+                    address,
+                    new ImageSegment(
+                        ".text", 
+                        new MemoryArea(address, bytes),
+                        AccessMode.ReadWriteExecute))
             };
             loader.Stub(l => l.LoadImageBytes(
                 Arg<string>.Is.Equal(exeName),
@@ -265,14 +270,14 @@ namespace Reko.UnitTests.Core.Serialization
         private void Given_ExecutableProgram(string exeName, Address address)
         {
             var bytes = new byte[0x1000];
-            var image = new LoadedImage(address, bytes);
+            var mem = new MemoryArea(address, bytes);
 
             var program = new Program
             {
                 Architecture = arch,
                 Platform = mockFactory.CreatePlatform(),
-                Image = image,
-                ImageMap = image.CreateImageMap(),
+                ImageMap = new ImageMap(address, 
+                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute))
             };
             loader.Stub(l => l.LoadImageBytes(
                 Arg<string>.Is.Equal(exeName),

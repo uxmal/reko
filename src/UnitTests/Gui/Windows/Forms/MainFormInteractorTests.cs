@@ -188,14 +188,17 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_Loader()
         {
-            loader = mr.StrictMock<ILoader>();
             var bytes = new byte[1000];
+            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0x0000), bytes);
+            loader = mr.StrictMock<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments()
                 .Return(bytes);
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
-                    Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes),
+                    ImageMap = new ImageMap(
+                        mem.BaseAddress,
+                        new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute)),
                     Platform = mockFactory.CreatePlatform()
                 });
         }
@@ -353,17 +356,21 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.decompiler = mr.StrictMock<IDecompiler>();
             // Having a compiler presupposes having a project.
             var platform = mockFactory.CreatePlatform();
+            var mem = new MemoryArea(Address.Ptr32(0x00010000), new byte[100]);
             var project = new Project
             {
                 Programs = { new Program
                 {
                     Filename="foo.exe" ,
-                    Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]),
+                    ImageMap = new ImageMap(
+                        mem.BaseAddress,
+                        new ImageSegment(".text", mem, AccessMode.ReadExecute)),
                     Platform = platform,
                     Architecture = platform.Architecture,
                 }
                 }
             };
+            
             dcSvc.Stub(d => d.Decompiler).Return(decompiler);
             decompiler.Stub(d => d.Project).Return(project);
             decompiler.Stub(d => d.Load(Arg<string>.Is.NotNull)).Return(false);
@@ -490,7 +497,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[300]);
+            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
+            prog.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
             return prog; 
         }
 

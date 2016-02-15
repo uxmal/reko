@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -43,6 +44,7 @@ namespace Reko.UnitTests.Analysis
     public class SsaTransformTests
     {
         private ProgramBuilder pb;
+        private Dictionary<Address, ImportReference> importReferences;
         private DataFlow2 programFlow2;
         private bool addUseInstructions;
 
@@ -50,6 +52,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.pb = new ProgramBuilder();
+            this.importReferences = new Dictionary<Address, ImportReference>();
             this.programFlow2 = new DataFlow2();
             this.addUseInstructions = false;
         }
@@ -59,8 +62,25 @@ namespace Reko.UnitTests.Analysis
             var pb = new ProcedureBuilder(this.pb.Program.Architecture);
             builder(pb);
             var proc = pb.Procedure;
+            var dg = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+            var project = new Project
+            {
+                Programs = { this.pb.Program }
+            };
+            var importResolver = new ImportResolver(
+                project,
+                this.pb.Program,
+                new FakeDecompilerEventListener());
+            this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
+            this.pb.Program.ImageMap = new ImageMap(
+                Address.Ptr32(0x0000),
+                new ImageSegment(
+                    ".text",
+                    Address.Ptr32(0), 
+                    0x40000,
+                    AccessMode.ReadWriteExecute));
 
-            var sst = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
+            var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow2);
             sst.AddUseInstructions = addUseInstructions;
             sst.Transform();
 
@@ -78,9 +98,11 @@ namespace Reko.UnitTests.Analysis
             var pb = new ProcedureBuilder(this.pb.Program.Architecture);
             builder(pb);
             var proc = pb.Procedure;
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
 
             // Perform initial transformation.
-            var sst = new SsaTransform2(this.pb.Program.Architecture, proc, programFlow2);
+            var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow2);
             sst.AddUseInstructions = false;
             sst.Transform();
 
@@ -1457,8 +1479,8 @@ l1:
 	Mem4[0x00123100:byte] = al_3
 	Mem5[0x00123108:byte] = al_3
 ProcedureBuilder_exit:
-";          
-                #endregion
+";
+            #endregion
 
             RunTest(sExp, m =>
             {
@@ -1468,6 +1490,43 @@ ProcedureBuilder_exit:
                 m.Assign(eax, m.LoadDw(eax));
                 m.Store(m.Word32(0x123100), al);            // store the low-order byte
                 m.Store(m.Word32(0x123108), al);            // ...twice.
+            });
+        }
+
+        [Test(Description ="Emulates calling an imported API Win32 on MIPS")]
+        public void Ssa_ConstantPropagation()
+        {
+            var sExp =
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	r13_0 = 0x00030000
+	r12_2 = Mem0[0x00031234:word32]
+	call r12_2 (retsize: 0;)
+		uses: r12_2,r13_0
+		defs: r12_4,r13_3
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use Mem0
+	use r12_4
+	use r13_3
+";
+            var addr = Address.Ptr32(0x00031234);
+            importReferences.Add(addr, new NamedImportReference(
+                addr, "COREDLL.DLL", "fnFoo"));
+            RunTest(sExp, m =>
+            {
+                var r13 = m.Reg32("r13", 13);
+                var r12 = m.Reg32("r12", 12);
+                m.Assign(r13, 0x00030000);
+                m.Assign(r12, m.LoadDw(m.IAdd(r13, 0x1234)));
+                m.Call(r12, 0);
+                m.Return();
             });
         }
 

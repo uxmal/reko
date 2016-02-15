@@ -31,14 +31,14 @@ namespace Reko.UnitTests.Arch
 {
     public abstract class RewriterTestBase : ArchTestBase
     {
-        private LoadedImage instructions;
+        private MemoryArea instructions;
 
         public void Rewrite(params uint [] words)
         {
             instructions = RewriteCode(words);
         }
 
-        protected virtual LoadedImage RewriteCode(uint [] words)
+        protected virtual MemoryArea RewriteCode(uint [] words)
         {
             Assert.Fail();
             return null;

@@ -22,12 +22,13 @@ using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
-using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.ComponentModel.Design;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Loading
 {
@@ -106,11 +107,12 @@ namespace Reko.Loading
         {
             var arch = cfgSvc.GetArchitecture(archName);
             var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
-            var loadedImage = new LoadedImage(addrLoad, image);
+            var mem = new MemoryArea(addrLoad, image);
+            var imageMap = CreatePlatformMemoryMap(platform, addrLoad, image);
             var program = new Program(
-                loadedImage,
-                loadedImage.CreateImageMap(),
-                arch, platform);
+                CreatePlatformMemoryMap(platform, addrLoad, image),
+                arch, 
+                platform);
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
@@ -122,6 +124,7 @@ namespace Reko.Loading
         {
             var imgLoader = CreateRawImageLoader(image, new NullImageLoader(Services, filename, image), raw);
             var program = imgLoader.Load(imgLoader.PreferredBaseAddress);
+            program.ImageMap = CreatePlatformMemoryMap(program.Platform, imgLoader.PreferredBaseAddress, image);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
             program.EntryPoints.AddRange(relocations.EntryPoints);
@@ -159,6 +162,7 @@ namespace Reko.Loading
             {
                 platform = new DefaultPlatform(Services, arch);
             }
+            //ApplyMemoryMap(platform, image
             imgLoader.Architecture = arch;
             imgLoader.Platform = platform;
             if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
@@ -187,7 +191,7 @@ namespace Reko.Loading
                 {
                     if (!string.IsNullOrEmpty(rawFile.EntryPoint.Follow))
                     {
-                        var rdr = arch.CreateImageReader(new LoadedImage(baseAddr, image), entryAddr);
+                        var rdr = arch.CreateImageReader(new MemoryArea(baseAddr, image), entryAddr);
                         return arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
                     }
                 }
@@ -336,6 +340,21 @@ namespace Reko.Loading
             foreach (var item in interceptedCalls)
             {
                 program.InterceptedCalls.Add(item.Key, item.Value);
+            }
+        }
+
+        private ImageMap CreatePlatformMemoryMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
+        {
+            var imageMap = platform.CreateAbsoluteMemoryMap();
+            if (imageMap != null)
+            {
+                return imageMap;
+            }
+            else
+            {
+                var mem = new MemoryArea(loadAddr, rawBytes);
+                return new ImageMap(loadAddr,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             }
         }
     }

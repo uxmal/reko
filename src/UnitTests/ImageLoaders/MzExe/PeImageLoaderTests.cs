@@ -110,8 +110,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeInt32(0);         // characteristics
 
             // Increment the section count in the optional header.
-            short sections = LoadedImage.ReadLeInt16(fileImage, RvaPeHdr + 6);
-            LoadedImage.WriteLeInt16(fileImage, RvaPeHdr + 6, (short)(sections + 1));
+            short sections = MemoryArea.ReadLeInt16(fileImage, RvaPeHdr + 6);
+            MemoryArea.WriteLeInt16(fileImage, RvaPeHdr + 6, (short)(sections + 1));
         }
 
         private void Given_DelayLoadDirectories(params DelayLoadDirectoryEntry [] delayLoadDirectory)
@@ -466,7 +466,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010202E)].ToString());
             Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00102032)].ToString());
             var sExp =
-@"00100000 2000 ImageMapItem <unknown>
+@"00101000 1000 ImageMapItem <unknown>
 00102000 0004 ImageMapItem word32
 00102004 0004 ImageMapItem word32
 00102008 0004 ImageMapItem word32

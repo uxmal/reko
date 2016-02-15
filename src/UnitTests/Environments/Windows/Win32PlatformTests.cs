@@ -77,23 +77,33 @@ namespace Reko.UnitTests.Environments.Windows
             repository.VerifyAll();
         }
 
-        private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, TypeLibrary dstLib)
+        private void Expect_TypeLibraryLoaderService_LoadLibrary(ITypeLibraryElement expected, TypeLibrary dstLib)
         {
-            tlSvc.Expect(t => t.LoadLibrary(
+            tlSvc.Expect(t => t.LoadMetadataIntoLibrary(
                 Arg<IPlatform>.Is.NotNull,
-                Arg<string>.Is.Equal(expected),
+                Arg<ITypeLibraryElement>.Matches(a => a.Name == expected.Name),
                 Arg<TypeLibrary>.Is.NotNull))
                 .Return(dstLib);
         }
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected)
         {
-            Expect_TypeLibraryLoaderService_LoadLibrary(expected, new TypeLibrary());
+            Expect_TypeLibraryLoaderService_LoadLibrary(
+                new TypeLibraryElement
+                {
+                    Name = expected
+                },
+                new TypeLibrary());
         }
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, IDictionary<string, DataType> types)
         {
-            Expect_TypeLibraryLoaderService_LoadLibrary(expected, new TypeLibrary(types, new Dictionary<string, ProcedureSignature>()));
+            Expect_TypeLibraryLoaderService_LoadLibrary(
+                new TypeLibraryElement
+                {
+                    Name = expected,
+                },
+                new TypeLibrary(types, new Dictionary<string, ProcedureSignature>()));
         }
 
         private void Given_Configuration_With_Win32_Element()

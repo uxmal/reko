@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private ImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new LeImageReader(new LoadedImage(address, bytes), 0);
+            return new LeImageReader(new MemoryArea(address, bytes), 0);
         }
 
         [Test]

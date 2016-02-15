@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.M68k
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)
         {
             Address addr = Address.Ptr32(address);
-            LoadedImage img = new LoadedImage(addr, bytes);
+            MemoryArea img = new MemoryArea(addr, bytes);
             return M68kDisassembler.Create68020(img.CreateBeReader(addr)).GetEnumerator();
         }
 

@@ -81,6 +81,8 @@ namespace Reko.UnitTests.Structure
 
         protected Program RewriteX86RealFragment(string asmFragment, Address addrBase)
         {
+            sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
@@ -88,9 +90,10 @@ namespace Reko.UnitTests.Structure
             return RewriteProgram();
         }
 
-
         protected Program RewriteX86_32Fragment(string asmFragment, Address addrBase)
         {
+            sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
@@ -100,11 +103,13 @@ namespace Reko.UnitTests.Structure
 
         private Program RewriteProgram()
         {
-            var project = new Project { Programs = { program } };
+            var eventListener = new FakeDecompilerEventListener();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                importResolver,
                 sc);
             foreach (EntryPoint ep in program.EntryPoints)
             {
@@ -112,9 +117,8 @@ namespace Reko.UnitTests.Structure
             }
             scan.ScanImage();
 
-            DecompilerEventListener eventListener = new FakeDecompilerEventListener();
-            DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
-            da.AnalyzeProgram();
+            var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
+            dfa.AnalyzeProgram();
 
             return program;
         }

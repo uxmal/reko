@@ -18,21 +18,39 @@
  */
 #endregion
 
-using Reko.Core.Output;
+using NUnit.Framework;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Core
+namespace Reko.UnitTests.Gui.Windows.Controls
 {
-    /// <summary>
-    /// Base class for optional renderers for image map segments. It is used to render
-    /// the contents of a loaded image segment differently from just dumping its contents
-    /// as a bunch of bytes.
-    /// </summary>
-    public abstract class ImageMapSegmentRenderer
+    [TestFixture]
+    [Category("UserInterface")]
+    public class ImageMapViewTests
     {
-        public abstract void Render(ImageMapSegment segment, Program program, Formatter formatter);
+        ImageMapView ctrl;
+        Form form;
+
+        [SetUp]
+        public void Setup()
+        {
+            ctrl = new ImageMapView();
+            form = new Form();
+            form.Controls.Add(ctrl);
+            ctrl.Dock = DockStyle.Top;
+            form.Show();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            form.Dispose();
+            form = null;
+            ctrl = null;
+        }
     }
 }

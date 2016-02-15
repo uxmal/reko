@@ -30,11 +30,11 @@ namespace Reko.Core.Configuration
         string Name { get; }
         string Description { get; }
         string TypeName { get; }
+        string MemoryMapFile { get; }
         TypeLibraryElementCollection TypeLibraries { get; }
         TypeLibraryElementCollection CharacteristicsLibraries { get; set; }
 
         IPlatform Load(IServiceProvider services, IProcessorArchitecture arch);
-
     }
 
     public class OperatingEnvironmentElement : ConfigurationElement, OperatingEnvironment
@@ -65,6 +65,13 @@ namespace Reko.Core.Configuration
             set { this["Type"] = value; }
         }
 
+        [ConfigurationProperty("MemoryMap", IsRequired = false)]
+        public string MemoryMapFile
+        {
+            get { return (string)this["MemoryMap"]; }
+            set { this["MemoryMap"] = value; }
+        }
+
         [ConfigurationProperty("TypeLibraries", IsDefaultCollection = false, IsRequired = false)]
         [ConfigurationCollection(typeof(TypeLibraryElement))]
         public TypeLibraryElementCollection TypeLibraries
@@ -89,6 +96,10 @@ namespace Reko.Core.Configuration
                     string.Format("Unable to load {0} environment.", Description));
             var platform = (Platform) Activator.CreateInstance(type, services, arch);
             platform.Name = this.Name;
+            if (!string.IsNullOrEmpty(MemoryMapFile))
+            {
+                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile, platform);
+            }
             platform.Description = this.Description;
             return platform;
         }

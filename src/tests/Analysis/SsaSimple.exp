@@ -18,6 +18,7 @@ ax_4: orig: ax
 ax_5: orig: ax
     def:  ax_5 = ax_4 | ax_4
     uses: SZO_6 = cond(ax_5)
+          ax_12 = PHI(ax_5, ax_8)
 SZO_6: orig: SZO
     def:  SZO_6 = cond(ax_5)
     uses: branch Test(NE,SZO_6) l0C00_000C
@@ -27,6 +28,7 @@ C_7: orig: C
     uses: use C_7
 ax_8: orig: ax
     def:  ax_8 = 0xFFFF
+    uses: ax_12 = PHI(ax_5, ax_8)
 sp_10: orig: sp
     def:  sp_10 = fp
     uses: use sp_10

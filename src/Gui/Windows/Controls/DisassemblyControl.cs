@@ -46,7 +46,13 @@ namespace Reko.Gui.Windows.Controls
             SetStyle(ControlStyles.UserPaint, true);
             StartAddressChanged += DisassemblyControl_StateChange;
             TopAddressChanged += DisassemblyControl_StateChange;
+            ProgramChanged += DisassemblyControl_StateChange;
         }
+
+        [Browsable(false)]
+        public Program Program { get { return program; } set { program = value; ProgramChanged.Fire(this); } }
+        public event EventHandler ProgramChanged;
+        private Program program;
 
         [Browsable(false)]
         public Address StartAddress { get { return startAddress; } set { startAddress = value; StartAddressChanged.Fire(this); } }
@@ -74,11 +80,40 @@ namespace Reko.Gui.Windows.Controls
 
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
-            Model.MoveToLine(topAddress, 0);
+            if (program == null || topAddress == null)
+            {
+                Model = new EmptyEditorModel();
+            }
+            else
+            {
+                ImageSegment segment;
+                if (!program.ImageMap.TryFindSegment(topAddress, out segment) ||
+                    segment.MemoryArea == null)
+
+                {
+                    Model = new EmptyEditorModel();
+                }
+                else
+                {
+                    var addr = topAddress;
+                    Model = new DisassemblyTextModel(program, segment);
+                    Model.MoveToLine(addr, 0);
+                }
+            }
             RecomputeLayout();
             base.UpdateScrollbar();
             Invalidate();
         }
+
+        /*
+          n = number of segments
+          c = constant width
+          b = per-segment constant width
+          cb[i] = per-segment size in bytes
+          Width = c + sum(b + cb[i] * scale)
+          Width - c - n * b = scale * sum(cb[i])
+          scale = ceil((width - c - n * b) / sum(cb[i]))
+        */
 
         protected override void OnScroll()
         {

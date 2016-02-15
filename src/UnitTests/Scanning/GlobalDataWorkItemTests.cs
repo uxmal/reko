@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Scanning
             this.platform = mr.StrictMock<IPlatform>();
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
-                .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
             platform.Stub(p => p.Architecture).Return(arch);
             scanner.Stub(s => s.Error(null, null))
                 .IgnoreArguments()
@@ -58,12 +58,11 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Program(Address address, byte[] bytes)
         {
-            var image = new LoadedImage(address, bytes);
-            var imageMap = image.CreateImageMap();
+            var mem = new MemoryArea(address, bytes);
+            var imageMap = new ImageMap(address, new ImageSegment(".text", mem, AccessMode.ReadExecute));
             this.program = new Program
             {
                 Architecture = arch,
-                Image = image,
                 ImageMap = imageMap,
                 Platform = platform
             };
@@ -116,7 +115,7 @@ namespace Reko.UnitTests.Scanning
             Expect_ScannerGlobalData(0x43210073, ft2);
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.Image.BaseAddress, arrayType);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, arrayType);
             gdwi.Process();
 
             mr.VerifyAll();
@@ -156,7 +155,7 @@ namespace Reko.UnitTests.Scanning
 
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.Image.BaseAddress, str);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str);
             gdwi.Process();
 
             mr.VerifyAll();
@@ -191,7 +190,7 @@ namespace Reko.UnitTests.Scanning
             Expect_ScannerGlobalData(0x43210008, str);
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.Image.BaseAddress, str);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str);
             gdwi.Process();
 
             mr.VerifyAll();
@@ -209,7 +208,7 @@ namespace Reko.UnitTests.Scanning
                 Arg<Procedure_v1>.Matches(up => up.Address == "12340000")));
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.Image.BaseAddress, ft);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, ft);
             gdwi.Process();
 
             mr.VerifyAll();

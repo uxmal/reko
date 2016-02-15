@@ -36,6 +36,7 @@ namespace Reko.Environments.Windows
     /// Microsoft doesn't document the mangling format, but reverse engineering has been done, resulting in:
     /// http://www.kegel.com/mangle.html
     /// http://www.agner.org/optimize/calling_conventions.pdf
+    /// https://github.com/wine-mirror/wine/dlls/msvcrt/undname.c
     /// </remarks>
     public class MsMangledNameParser
     {
@@ -231,11 +232,16 @@ namespace Reko.Environments.Windows
             case '0':
             case '1':
             case '2':
+            case '3':
                 return new StructField_v1
                 {
                     Type = ParseDataTypeCode(compoundArgs),
                     Name = basicName
                 };
+            case '6':   // Compiler-generated static
+                //$TODO: deal with const/volatile modifier
+                ParseStorageClass();
+                break;
             case 'A': sig = ParseInstanceMethod("private"); break;
             case 'B': sig = ParseInstanceMethod("private far"); break;
             case 'C': sig = ParseStaticMethod("private static"); break;
@@ -259,7 +265,7 @@ namespace Reko.Environments.Windows
 
             case 'Y': sig = ParseGlobalFunction(""); break;
             case 'Z': sig = ParseGlobalFunction("far"); break;
-            default: throw new NotImplementedException();
+            default: throw new NotImplementedException(string.Format("Character '{0}' not supported", str[i-1]));
                
             }
             return new StructField_v1
@@ -389,7 +395,9 @@ namespace Reko.Environments.Windows
             {
                 Convention = convention,
                 Arguments = args,
-                EnclosingType = new SerializedStructType { Name = Scope, ForceStructure = true },
+                EnclosingType = !string.IsNullOrEmpty(Scope)
+                    ? new SerializedStructType { Name = Scope, ForceStructure = true }
+                    : null,
                 IsInstanceMethod = isInstanceMethod,
                 ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }
             };

@@ -20,16 +20,17 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Serialization;        // May need this for Win64 support.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using TWord = System.UInt32;
+using Reko.Core.Expressions;
 
 namespace Reko.Environments.Windows
 {
-    using Reko.Core.Serialization;        // May need this for Win64 support.
-    using System.Diagnostics;
-    using TWord = System.UInt32;
 
     /// <summary>
     /// Emulates the Win32 operating environment. In particular, intercepts calls to GetProcAddress
@@ -39,12 +40,12 @@ namespace Reko.Environments.Windows
     {
         private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
-        private LoadedImage img;
+        private ImageMap map;
         private IPlatform platform;
 
-        public Win32Emulator(LoadedImage img, IPlatform platform, Dictionary<Address, ImportReference> importReferences)
+        public Win32Emulator(ImageMap map, IPlatform platform, Dictionary<Address, ImportReference> importReferences)
         {
-            this.img = img;
+            this.map = map;
             this.platform = platform;
             this.uPseudoFn = 0xDEAD0000u;   // unlikely to be a real pointer to a function
             this.InterceptedCalls = new Dictionary<uint, ExternalProcedure>();
@@ -103,7 +104,7 @@ namespace Reko.Environments.Windows
             foreach (var imp in importReferences)
             {
                 uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null, null)).uFakedAddress;
-                img.WriteLeUInt32(imp.Key, pseudoPfn);
+                WriteLeUInt32(imp.Key, pseudoPfn);
             }
         }
 
@@ -123,8 +124,8 @@ namespace Reko.Environments.Windows
             // M[Esp] is return address.
             // M[Esp + 4] is pointer to DLL name.
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
-            uint pstrLibName = img.ReadLeUInt32(esp + 4u - img.BaseAddress.ToUInt32());
-            string szLibName = ReadMbString(img, pstrLibName);
+            uint pstrLibName = ReadLeUInt32(esp + 4u);
+            string szLibName = ReadMbString(pstrLibName);
             Module module = EnsureModule(szLibName);
             emulator.WriteRegister(Registers.eax, module.Handle);
 
@@ -138,11 +139,11 @@ namespace Reko.Environments.Windows
             // M[esp + 4] is hmodule
             // M[esp + 4] is pointer to function name
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
-            uint hmodule = img.ReadLeUInt32(esp + 4u - img.BaseAddress.ToUInt32());
-            uint pstrFnName = img.ReadLeUInt32(esp + 8u - img.BaseAddress.ToUInt32());
+            uint hmodule = ReadLeUInt32(esp + 4u);
+            uint pstrFnName = ReadLeUInt32(esp + 8u);
             if ((pstrFnName & 0xFFFF0000) != 0)
             {
-                string importName = ReadMbString(img, pstrFnName);
+                string importName = ReadMbString(pstrFnName);
                 var module = modules.Values.First(m => m.Handle == hmodule);
                 SimulatedProc fn = EnsureProc(module, importName, NYI);
                 emulator.WriteRegister(Registers.eax, fn.uFakedAddress);
@@ -163,10 +164,10 @@ namespace Reko.Environments.Windows
         void VirtualProtect(IProcessorEmulator emulator)
         {
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
-            uint arg1 = img.ReadLeUInt32(esp + 4u -  img.BaseAddress.ToUInt32());
-            uint arg2 = img.ReadLeUInt32(esp + 8u -  img.BaseAddress.ToUInt32());
-            uint arg3 = img.ReadLeUInt32(esp + 12u - img.BaseAddress.ToUInt32());
-            uint arg4 = img.ReadLeUInt32(esp + 16u - img.BaseAddress.ToUInt32());
+            uint arg1 = ReadLeUInt32(esp + 4u );
+            uint arg2 = ReadLeUInt32(esp + 8u );
+            uint arg3 = ReadLeUInt32(esp + 12u);
+            uint arg4 = ReadLeUInt32(esp + 16u);
             Debug.Print("VirtualProtect({0:X8},{1:X8},{2:X8},{3:X8})", arg1, arg2, arg3, arg4);
 
             emulator.WriteRegister(Registers.eax, 1u);
@@ -178,14 +179,57 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        private string ReadMbString(LoadedImage img, TWord pstrLibName)
+        private uint ReadLeUInt32(uint ea)
         {
-            int iStart = (int)(pstrLibName - img.BaseAddress.ToLinear());
-            int i = iStart;
-            for (i = iStart; img.Bytes[i] != 0; ++i)
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            var addr = Address.Ptr32(ea);
+            ImageSegment segment;
+            if (!map.TryFindSegment(addr, out segment))
+                throw new AccessViolationException();
+            return segment.MemoryArea.ReadLeUInt32(addr);
+        }
+
+        private void WriteLeUInt32(uint ea, uint value)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            var addr = Address.Ptr32(ea);
+            ImageSegment segment;
+            if (!map.TryFindSegment(addr, out segment))
+                throw new AccessViolationException();
+            segment.MemoryArea.WriteLeUInt32(addr, value);
+        }
+
+        private void WriteLeUInt32(Address ea, uint value)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            ImageSegment segment;
+            if (!map.TryFindSegment(ea, out segment))
+                throw new AccessViolationException();
+            segment.MemoryArea.WriteLeUInt32(ea, value);
+        }
+
+        private string ReadMbString(TWord pstrLibName)
+        {
+            var addr = Address.Ptr32(pstrLibName);
+            ImageSegment segment;
+            if (!map.TryFindSegment(addr, out segment))
+                throw new AccessViolationException();
+            var rdr = segment.MemoryArea.CreateLeReader(addr);
+            var ab = new List<byte>();
+            for (;;)
             {
+                byte b = rdr.ReadByte();
+                if (b == 0)
+                    break;
+                ab.Add(b);
             }
-            return Encoding.ASCII.GetString(img.Bytes, iStart, i - iStart);
+            return Encoding.ASCII.GetString(ab.ToArray());
         }
 
         public bool InterceptCall(IProcessorEmulator emu, TWord l)
@@ -195,6 +239,11 @@ namespace Reko.Environments.Windows
                 return false;
             ((SimulatedProc)epProc).Emulator(emu);
             return true;
+        }
+
+        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        {
+            throw new NotImplementedException();
         }
 
         public class SimulatedProc : ExternalProcedure

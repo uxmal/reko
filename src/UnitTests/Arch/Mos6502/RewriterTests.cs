@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Mos6502
     class RewriterTests : RewriterTestBase
     {
         private Mos6502ProcessorArchitecture arch = new Mos6502ProcessorArchitecture();
-        private LoadedImage image;
+        private MemoryArea image;
         private Address addrBase = Address.Ptr16(0x0200);
 
         public override IProcessorArchitecture Architecture
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch.Mos6502
 
         private void BuildTest(params byte[] bytes)
         {
-            image = new LoadedImage(addrBase, bytes);
+            image = new MemoryArea(addrBase, bytes);
         }
 
         [Test]

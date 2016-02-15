@@ -45,13 +45,13 @@ namespace Reko.UnitTests
                     break;
                 ProcessLine(line);
             }
-            var img = new LoadedImage(addrStart, memStm.ToArray());
+            var mem = new MemoryArea(addrStart, memStm.ToArray());
             results = new Program(
-                img,
-                img.CreateImageMap(),
+                new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(Services, arch));
-
         }
 
         private IProcessorArchitecture GetArchitecture(string archName)

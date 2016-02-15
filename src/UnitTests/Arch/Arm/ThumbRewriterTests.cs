@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         private ThumbProcessorArchitecture arch;
         private ArmProcessorState state;
-        private LoadedImage image;
+        private MemoryArea image;
         private Address baseAddress = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.Arm
             var bytes = words
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), })
                 .ToArray();
-            image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
+            image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
         }
 
         private class FakeRewriterHost : IRewriterHost
@@ -5752,7 +5752,7 @@ namespace Reko.UnitTests.Arch.Arm
 					(byte) (s >> 8)
 				})
                 .ToArray();
-            var image = new LoadedImage(Address.Ptr32(0x00401000), code);
+            var image = new MemoryArea(Address.Ptr32(0x00401000), code);
             var rw = new ThumbRewriter(arch, image.CreateLeReader(0), new ArmProcessorState(arch), arch.CreateFrame(), new FakeRewriterHost());
             {
                 foreach (var rtc in rw)

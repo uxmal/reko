@@ -87,7 +87,7 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         private static bool IsXmlFile(byte[] image)
         {
-            if (LoadedImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
+            if (MemoryArea.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
                 return true;
             return false;
         }

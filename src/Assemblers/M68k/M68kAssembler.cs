@@ -78,10 +78,11 @@ namespace Reko.Assemblers.M68k
 
         public Program GetImage()
         {
-            var image = new LoadedImage(BaseAddress, Emitter.GetBytes());
+            var mem = new MemoryArea(BaseAddress, Emitter.GetBytes());
             return new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch, 
                 new DefaultPlatform(null, arch));
         }

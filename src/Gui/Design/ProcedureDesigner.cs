@@ -142,8 +142,7 @@ namespace Reko.Gui.Design
             if (resultSvc == null)
                 return;
             var arch = program.Architecture;
-            var image = program.Image;
-            var rdr = program.Architecture.CreateImageReader(program.Image, 0);
+            var rdr = program.CreateImageReader(program.ImageMap.BaseAddress);
             var addrControl = arch.CreatePointerScanner(
                 program.ImageMap,
                 rdr,

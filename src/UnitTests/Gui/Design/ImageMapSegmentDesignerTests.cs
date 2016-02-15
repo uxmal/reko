@@ -35,16 +35,16 @@ namespace Reko.UnitTests.Gui.Design
     public class ImageMapSegmentDesignerTests
     {
         private MockRepository mr;
-        private ImageMapSegment seg1;
-        private ImageMapSegment seg2;
+        private ImageSegment seg1;
+        private ImageSegment seg2;
         private ImageMap map;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
-            seg1 = new ImageMapSegment("seg1", AccessMode.Execute) { Address = Address.Ptr32(0x01000) };
-            seg2 = new ImageMapSegment("seg2", AccessMode.Execute) { Address = Address.Ptr32(0x02000) };
+            seg1 = new ImageSegment("seg1", Address.Ptr32(0x01000), AccessMode.Execute);
+            seg2 = new ImageSegment("seg2", Address.Ptr32(0x02000), AccessMode.Execute);
             map = new ImageMap(seg1.Address, 0x4000);
         }
 

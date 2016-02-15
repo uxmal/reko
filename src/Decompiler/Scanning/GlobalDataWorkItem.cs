@@ -109,7 +109,7 @@ namespace Reko.Scanning
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
             var addr = Address.FromConstant(c);
 
-            if (!program.Image.IsValidAddress(addr))
+            if (!program.ImageMap.IsValidAddress(addr))
                 return;
 
             scanner.EnqueueUserGlobalData(addr, ptr.Pointee);

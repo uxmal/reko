@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Sega Genesis memory map, obtained from http://www.db-elec.com/home/technical-info/Genesis/memory-map 
+  with the assistance of lab313ru
+
+  The Sega Genesis is technically split up into 3 distinct memory spaces: 68K,
+  Z80, and VDP. In reality, the Z80 memory space is mapped into the 68K memory
+  space and the VDP memory is hidden behind a few data and control registers 
+  also mapped in the 68k memory space.
+  
+  
+  ==68K Memory Map==
+  The Motorola 68K processor provides a 24bit address bus on the Sega Genesis allowing contiguous addressing of up to 16MB.
+-->
+<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+  
+  <segment name=".text" addr="0" size="400000" attr="rx">
+    <description> Cartridge Address Space</description>
+  </segment>
+  <segment name="reserved_1" addr="400000" size="400000">
+    <description>Reserved - used by Sega CD (Backup RAM) and 32x</description>
+  </segment>
+  <segment name="reserved_2" addr="800000" size="200000">
+    <description>Reserved - used by 32x</description>
+  </segment>
+  <segment name="z80reserved" addr="A00000" size="10000">
+    <description>Z80 Address Space</description>
+  </segment>
+  <segment name=".io" addr="A10000" size="20">
+    <description>I/O Address Space</description>
+  </segment>
+  <!--
+  Any volunteers to translate this?
+        <tr>
+          <td> 0xA10020</td>
+          <td> 0xA10FFF</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xA11000</td>
+          <td> 0xA11001</td>
+          <td> </td>
+          <td> Memory Mode Register</td>
+        </tr>
+        <tr>
+          <td> 0xA11002</td>
+          <td> 0xA110FF</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xA11100</td>
+          <td> 0xA11101</td>
+          <td> </td>
+          <td> Z80 Bus Request</td>
+        </tr>
+        <tr>
+          <td> 0xA11102</td>
+          <td> 0xA111FF</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xA11200</td>
+          <td> 0xA11201</td>
+          <td> </td>
+          <td> Z80 Reset</td>
+        </tr>
+        <tr>
+          <td> 0xA11202</td>
+          <td> 0xA12FFF</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xA13000</td>
+          <td> 0xA130FF</td>
+          <td> </td>
+          <td>
+            <a href="http://www.db-elec.com/home/technical-info/Genesis/sram-mapping-and-carts-larger-than-32mbit">#TIME range</a> - accesses here strobe #TIME signal - used for RAM/bank switching on carts
+          </td>
+        </tr>
+        <tr>
+          <td> 0xA13100</td>
+          <td> 0xA13FFF</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xA14000</td>
+          <td> 0xA14003</td>
+          <td> </td>
+          <td>
+            <a href="http://segaretro.org/TradeMark_Security_System">TMSS Register</a>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xA14004</td>
+          <td> 0xBFFFFF</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xC00000</td>
+          <td> 0xC00003</td>
+          <td> 2</td>
+          <td> VDP Data</td>
+        </tr>
+        <tr>
+          <td> 0xC00004</td>
+          <td> 0xC00007</td>
+          <td> 2</td>
+          <td> VDP Control</td>
+        </tr>
+        <tr>
+          <td> 0xC00008</td>
+          <td> 0xC00009</td>
+          <td> </td>
+          <td> VDP HV Counter</td>
+        </tr>
+        <tr>
+          <td> 0xC0000A</td>
+          <td> 0xC00010</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        <tr>
+          <td> 0xC00011</td>
+          <td> 0xC00011</td>
+          <td> </td>
+          <td> PSG</td>
+        </tr>
+        <tr>
+          <td> 0xC00012</td>
+          <td> 0xDFFFFF</td>
+          <td> </td>
+          <td>
+            <i>Reserved</i>
+          </td>
+        </tr>
+        -->
+  <segment name=".data" addr="E00000" size="200000" attr="rwx">
+    <description>RAM - mirrored across range, most games access it at 0xFF0000 -&gt; 0xFFFFFF</description>
+  </segment>
+
+  <!--
+I/O @ 0xA10000
+  <table border="1" bordercolor="#888" cellspacing="0" >
+    <tbody>
+      <tr>
+        <td >
+          <b> Start Address</b>
+        </td>
+        <td >
+          <b> End Address</b>
+        </td>
+        <td >
+          <b> Description</b>
+        </td>
+      </tr>
+      <tr>
+        <td > 0xA10000</td>
+        <td > 0xA10001</td>
+        <td > Version Register</td>
+      </tr>
+      <tr>
+        <td > 0xA10002</td>
+        <td > 0xA10003</td>
+        <td > Controller 1 Data</td>
+      </tr>
+      <tr>
+        <td > 0xA10004</td>
+        <td > 0xA10005</td>
+        <td > Controller 2 Data</td>
+      </tr>
+      <tr>
+        <td > 0xA10006</td>
+        <td > 0xA10007</td>
+        <td > Expansion Port Data</td>
+      </tr>
+      <tr>
+        <td > 0xA10008</td>
+        <td > 0xA10009</td>
+        <td > Controller 1 Control</td>
+      </tr>
+      <tr>
+        <td > 0xA1000A</td>
+        <td > 0xA1000B</td>
+        <td > Controller 2 Control</td>
+      </tr>
+      <tr>
+        <td> 0xA1000C</td>
+        <td> 0xA1000D</td>
+        <td> Expansion Port Control</td>
+      </tr>
+      <tr>
+        <td> 0xA1000E</td>
+        <td> 0xA1000F</td>
+        <td> Controller 1 Serial Transmit</td>
+      </tr>
+      <tr>
+        <td> 0xA10010</td>
+        <td> 0xA10011</td>
+        <td> Controller 1 Serial Receive</td>
+      </tr>
+      <tr>
+        <td> 0xA10012</td>
+        <td> 0xA10013</td>
+        <td> Controller 1 Serial Control</td>
+      </tr>
+      <tr>
+        <td> 0xA10014</td>
+        <td> 0xA10015</td>
+        <td> Controller 2 Serial Transmit</td>
+      </tr>
+      <tr>
+        <td> 0xA10016</td>
+        <td> 0xA10017</td>
+        <td> Controller 2 Serial Receive</td>
+      </tr>
+      <tr>
+        <td> 0xA10018</td>
+        <td> 0xA10019</td>
+        <td> Controller 2 Serial Control</td>
+      </tr>
+      <tr>
+        <td> 0xA1001A</td>
+        <td> 0xA1001B</td>
+        <td> Expansion Port Serial Transmit</td>
+      </tr>
+      <tr>
+        <td> 0xA1001C</td>
+        <td> 0xA1001D</td>
+        <td> Expansion Port Serial Receive</td>
+      </tr>
+      <tr>
+        <td> 0xA1001E</td>
+        <td> 0xA1001F</td>
+        <td> Expansion Port Serial Control</td>
+      </tr>
+    </tbody>
+  </table>
+  <a name="TOC-Z80-Memory-Map"></a>Z80 Memory Map
+
+  <div>The Zilog Z80 processor provides a 16bit address bus on the Sega Genesis allowing contiguous addressing of up to 64KB.</div>
+  <table border="1" >
+    <tbody>
+      <tr>
+        <td >
+          <b> Start Address</b>
+        </td>
+        <td >
+          <b> End Address</b>
+        </td>
+        <td >
+          <b> Size*</b>
+        </td>
+        <td >
+          <b> Description</b>
+        </td>
+      </tr>
+      <tr>
+        <td > 0x0000</td>
+        <td > 0x1FFF</td>
+        <td > 8KB</td>
+        <td > RAM</td>
+      </tr>
+      <tr>
+        <td > 0x2000</td>
+        <td > 0x3FFF</td>
+        <td > 8KB</td>
+        <td > RAM (mirror)</td>
+      </tr>
+      <tr>
+        <td > 0x4000</td>
+        <td > 0x5FFF</td>
+        <td > 4B</td>
+        <td >
+          <a href="http://www.smspower.org/maxim/Documents/YM2612">YM2612</a>
+        </td>
+      </tr>
+      <tr>
+        <td > 0x6000</td>
+        <td > 0x60FF</td>
+        <td > 1B</td>
+        <td > Bank (0x8000) Address Register, shift in the 9bit address through D0 one bit at a time :( </td>
+      </tr>
+      <tr>
+        <td> 0x6100</td>
+        <td> 0x7EFF</td>
+        <td> 7680B</td>
+        <td> Unused</td>
+      </tr>
+      <tr>
+        <td> 0x7F00</td>
+        <td> 0x7FFF</td>
+        <td> 32</td>
+        <td> VDP - only valid from 0x7F00 -&gt; 0x7F1F, others crash the system</td>
+      </tr>
+      <tr>
+        <td> 0x7F11</td>
+        <td> 0x7F11</td>
+        <td> 1</td>
+        <td> PSG - this is where most PSG accesses are made by the Z80</td>
+      </tr>
+      <tr>
+        <td> 0x8000</td>
+        <td> 0xFFFF</td>
+        <td> 32KB</td>
+        <td>
+          Bank Area (32KB of 68k ROM visible here, accesses here steal cycles from the 68k)<br />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  Backup RAM Cart Memory Map
+  The Backup RAM Cart does not pull the #CART_IN signal low, this allows the SEGA CD BIOS to load.
+  <table >
+
+    <tbody>
+      <tr>
+        <td >
+          <b>Start Address</b>
+        </td>
+        <td >
+          <b> End Address</b>
+        </td>
+        <td >
+          <b> Description</b>
+        </td>
+      </tr>
+      <tr>
+        <td > 0x400000</td>
+        <td > 0x4FFFFF</td>
+        <td >
+          Cart ID (see below) - <i>mirrored across range</i>
+        </td>
+      </tr>
+      <tr>
+        <td > 0x600000</td>
+        <td > 0x6FFFFF</td>
+        <td > Static RAM, only lower byte (D7-D0) is used</td>
+      </tr>
+      <tr>
+        <td > 0x700000</td>
+        <td > 0x7FFFFF</td>
+        <td >
+          Write Protect Latch, D0 = 1 writing is disabled, D0 = 0 writing is enabled - <i>mirrored across range</i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>Cart ID is a 3 bit register which tells the Genesis / Megadrive what size the Backup RAM Cart is. The official size was 2045 blocks. The supported sizes are as follows:</div>
+  <table>
+    <tbody>
+      <tr>
+        <td >
+          <b>Cart ID Value</b>
+        </td>
+        <td >
+          <b> Size (Kbit)</b>
+        </td>
+        <td >
+          <b> Size (KB)</b>
+        </td>
+        <td >
+          <b> Blocks</b>
+        </td>
+      </tr>
+      <tr>
+        <td > 0x00</td>
+        <td > 64 Kbit</td>
+        <td > 8 KB</td>
+        <td > 125</td>
+      </tr>
+      <tr>
+        <td > 0x01</td>
+        <td > 128 Kbit</td>
+        <td > 16 KB</td>
+        <td > 253</td>
+      </tr>
+      <tr>
+        <td > 0x02</td>
+        <td > 256 Kbit</td>
+        <td > 32 KB</td>
+        <td > 509</td>
+      </tr>
+      <tr>
+        <td > 0x03</td>
+        <td > 512 Kbit</td>
+        <td > 64 KB</td>
+        <td > 1021</td>
+      </tr>
+      <tr>
+        <td > 0x04</td>
+        <td > 1024 Kbit</td>
+        <td > 128 KB</td>
+        <td > 2045</td>
+      </tr>
+      <tr>
+        <td > 0x05</td>
+        <td > 2048 Kbit</td>
+        <td > 256 KB</td>
+        <td > 4093</td>
+      </tr>
+      <tr>
+        <td > 0x06</td>
+        <td > 4096 Kbit</td>
+        <td > 512 KB</td>
+        <td >
+          8189<br />
+        </td>
+      </tr>
+    </tbody>
+  </table> -->
+
+</memory>

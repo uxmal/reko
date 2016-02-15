@@ -38,7 +38,7 @@ namespace Reko.Typing
     {
         private IProcessorArchitecture arch;
         private StructureType globalStr;
-        private LoadedImage image;
+        private ImageMap imageMap;
         private HashSet<int> visited;
         private Stack<IEnumerator<WorkItem>> stack;
         private int gOffset;
@@ -50,11 +50,11 @@ namespace Reko.Typing
             public DataType DataType;
         }
 
-        public ConstantPointerTraversal(IProcessorArchitecture arch, StructureType globalStr, LoadedImage image)
+        public ConstantPointerTraversal(IProcessorArchitecture arch, StructureType globalStr, ImageMap imageMap)
         {
             this.arch = arch;
             this.globalStr =  globalStr;
-            this.image = image;
+            this.imageMap = imageMap;
             this.Discoveries = new List<StructureField>();
         }
 
@@ -63,7 +63,7 @@ namespace Reko.Typing
             this.arch = program.Architecture;
             var ptr = (Pointer) program.Globals.TypeVariable.DataType;
             this.globalStr = (StructureType)((EquivalenceClass) ptr.Pointee).DataType;
-            this.image = program.Image;
+            this.imageMap = program.ImageMap;
             this.Discoveries = new List<StructureField>();
         }
 
@@ -143,13 +143,16 @@ namespace Reko.Typing
         public IEnumerable<WorkItem> VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
-            var rdr = arch.CreateImageReader(image, (ulong) gOffset - image.BaseAddress.ToLinear());
+            ImageSegment segment;
+            if (!imageMap.TryFindSegment(imageMap.MapLinearAddressToAddress((ulong) gOffset), out segment))
+                return null;
+            var rdr = arch.CreateImageReader(segment.MemoryArea,  (ulong) gOffset - segment.MemoryArea.BaseAddress.ToLinear());
             if (!rdr.IsValid)
                 return null;
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
             int offset = c.ToInt32();
             Debug.Print("  pointer value: {0:X}", offset);
-            if (visited.Contains(offset) || !image.IsValidLinearAddress((uint) offset))
+            if (visited.Contains(offset) || !segment.MemoryArea.IsValidLinearAddress((uint) offset))
                 return Enumerable.Empty<WorkItem>();
 
             // We've successfully traversed a pointer to a valid destination!
