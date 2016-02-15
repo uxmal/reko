@@ -25,6 +25,7 @@ using Reko.UnitTests.Mocks;
 using System;
 using System.IO;
 using Reko.Core.Expressions;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -51,13 +52,15 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+            var dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
 				SsaState ssa = sst.SsaState;
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)

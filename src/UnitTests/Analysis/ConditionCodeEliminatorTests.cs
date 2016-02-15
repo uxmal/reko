@@ -29,6 +29,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -77,7 +78,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
         {
-            IImportResolver importResolver = null;
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
             DataFlowAnalysis dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
             dfa.UntangleProcedures();
             foreach (Procedure proc in prog.Procedures.Values)
@@ -349,15 +350,6 @@ done:
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
-
-        
-        [Test]
-        [Ignore("TODO: what happens when a function returns carry when SCZO is aliased to the return value?")]
-        public void CceReturnCarry()
-        {
-            throw new NotImplementedException();
-        }
-
 
         [Test]
 		public void SignedIntComparisonFromConditionCode()

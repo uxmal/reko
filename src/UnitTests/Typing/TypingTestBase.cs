@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using Reko.Loading;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -114,7 +115,8 @@ namespace Reko.UnitTests.Typing
         protected void RunTest(ProgramBuilder mock, string outputFile)
         {
             Program program = mock.BuildProgram();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.DumpProgram();
             dfa.BuildExpressionTrees();
             RunTest(program, outputFile);

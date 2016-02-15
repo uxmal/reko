@@ -596,6 +596,7 @@ namespace Reko.Analysis
 			public override Instruction TransformCallInstruction(CallInstruction ci)
             {
                 ci.Callee = ci.Callee.Accept(this);
+
                 ProcedureConstant pc;
                 if (ci.Callee.As(out pc))
                 {
@@ -689,11 +690,11 @@ namespace Reko.Analysis
                     var idNew = NewUse(idFrame, stmCur);
                     return idNew;
                 }
-                var e = access.EffectiveAddress.Accept(this);
+                var ea = access.EffectiveAddress.Accept(this);
                 BinaryExpression bin;
                 Identifier id;
                 Constant c = null;
-                if (e.As(out bin) &&
+                if (ea.As(out bin) &&
                     bin.Left.As(out id) &&
                     bin.Right.As(out c) &&
                     rename.ContainsKey(id))
@@ -704,21 +705,22 @@ namespace Reko.Analysis
                     {
                         c = bin.Operator.ApplyConstants(cOther, c);
                     }
-                } else
+                }
+                else
                 {
-                    c = e as Constant;
+                    c = ea as Constant;
                 }
 
                 if (c != null)
                 {
-                    access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
                     access.EffectiveAddress = c;
-                    e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
+                    var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
                     if (e != null)
-                        access.EffectiveAddress = e;
-                    return access;
+                        return e;
                 }
-                return e;
+                access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
+                access.EffectiveAddress = ea;
+                return access;
             }
 
             public override Expression VisitSegmentedAccess(SegmentedAccess access)

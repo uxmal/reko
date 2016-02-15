@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
+using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -216,8 +217,10 @@ test_exit:
                 return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
             };
 
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             program.Platform = platform;
-            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 4

@@ -282,8 +282,9 @@ ret
         [Test]
         public void StrReg00001()
         {
-            var program = RewriteX86_32Fragment(Fragments.Regressions.Reg00001.Text,
-    Address.Ptr32(0x00100000));
+            var program = RewriteX86_32Fragment(
+                Fragments.Regressions.Reg00001.Text,
+                Address.Ptr32(0x00100000));
             var sExp =
 @"void fn00100000()
 {

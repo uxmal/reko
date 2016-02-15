@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -77,10 +78,8 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.progBuilder.Program }
             };
-            var importResolver = new ImportResolver(
-                project,
-                project.Programs[0],
-                new FakeDecompilerEventListener());
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var ssa = new SsaTransform(pf, proc, importResolver, proc.CreateBlockDominatorGraph());
             var vp = new ValuePropagator(arch, ssa.SsaState.Identifiers, proc);
             vp.Transform();

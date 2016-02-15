@@ -77,7 +77,5 @@ namespace Reko.UnitTests.Typing
         {
             RunTest(Fragments.MemStore, "Typing/TycoMemStore.txt");
         }
-
-    
     }
 }

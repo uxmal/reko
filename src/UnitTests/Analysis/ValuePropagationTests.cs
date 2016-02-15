@@ -473,8 +473,10 @@ namespace Reko.UnitTests.Analysis
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
-			SsaState ssa = sst.SsaState;
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr);
+			var ssa = sst.SsaState;
 
 			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
 			vp.Transform();
