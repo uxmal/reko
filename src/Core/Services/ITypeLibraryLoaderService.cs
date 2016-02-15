@@ -67,7 +67,6 @@ namespace Reko.Core.Services
                 MetadataLoader loader = CreateLoader(tlElement, libFileName, bytes);
                 if (loader == null)
                     return libDst;
-                //var tlldr = new TypeLibraryLoader(services, libFileName, bytes);
                 var lib = loader.Load(platform, libDst);
                 return lib;
             }
@@ -97,7 +96,6 @@ namespace Reko.Core.Services
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {
                     loaderType = Type.GetType(ldrElement.TypeName, false);
-
                 }
                 if (loaderType == null)
                 {

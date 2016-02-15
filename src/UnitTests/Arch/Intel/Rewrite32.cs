@@ -67,6 +67,7 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
             services.Stub(s => s.GetService(typeof(CancellationTokenSource))).Return(null);
             services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(new FileSystemServiceImpl());
+            services.Stub(s => s.GetService(typeof(IDiagnosticsService))).Return(new FakeDiagnosticsService());
             services.Replay();
             configSvc.Replay();
             arch = new IntelArchitecture(ProcessorMode.Protected32);

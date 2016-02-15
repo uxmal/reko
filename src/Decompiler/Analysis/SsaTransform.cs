@@ -673,7 +673,7 @@ namespace Reko.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-                    return NewUse(id, stmCur);
+                return NewUse(id, stmCur);
 			}
 
             public override Expression VisitMemoryAccess(MemoryAccess access)
@@ -684,6 +684,24 @@ namespace Reko.Analysis
                     var idNew = NewUse(idFrame, stmCur);
                     return idNew;
                 }
+                BinaryExpression bin;
+                Identifier id;
+                Constant c;
+                if (access.EffectiveAddress.As(out bin) &&
+                    bin.Left.As(out id) && 
+                    bin.Right.As(out c))
+                {
+                    var sid = ssa.Identifiers[rename[id]];
+                    var cOther = sid.DefExpression as Constant;
+                    if (cOther != null)
+                    {
+                        c = bin.Operator.ApplyConstants(cOther, c);
+                        access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
+                        access.EffectiveAddress = c;
+                        return access;
+                    }
+                }
+
                 return base.VisitMemoryAccess(access);
             }
 
