@@ -497,7 +497,7 @@ namespace Reko.Analysis
 			if (sig != null && sig.ParametersValid)		
 			{
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
-                var ab = new ApplicationBuilder(
+                var ab = new FrameApplicationBuilder(
                     program.Architecture, 
                     Procedure.Frame, 
                     ci.CallSite,

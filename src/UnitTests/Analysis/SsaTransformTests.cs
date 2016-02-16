@@ -47,6 +47,7 @@ namespace Reko.UnitTests.Analysis
         private Dictionary<Address, ImportReference> importReferences;
         private DataFlow2 programFlow2;
         private bool addUseInstructions;
+        private IImportResolver importResolver;
 
         [SetUp]
         public void Setup()
@@ -55,6 +56,7 @@ namespace Reko.UnitTests.Analysis
             this.importReferences = new Dictionary<Address, ImportReference>();
             this.programFlow2 = new DataFlow2();
             this.addUseInstructions = false;
+            this.importResolver = MockRepository.GenerateStub<IImportResolver>();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -67,10 +69,6 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.pb.Program }
             };
-            var importResolver = new ImportResolver(
-                project,
-                this.pb.Program,
-                new FakeDecompilerEventListener());
             this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
             this.pb.Program.ImageMap = new ImageMap(
                 Address.Ptr32(0x0000),
@@ -79,6 +77,7 @@ namespace Reko.UnitTests.Analysis
                     Address.Ptr32(0), 
                     0x40000,
                     AccessMode.ReadWriteExecute));
+            this.importResolver.Replay();
 
             var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow2);
             sst.AddUseInstructions = addUseInstructions;
@@ -1493,32 +1492,58 @@ ProcedureBuilder_exit:
             });
         }
 
+        private Identifier Reg(int n)
+        {
+            string name = string.Format("r{0}", n);
+            return new Identifier(
+                name,
+                PrimitiveType.Word32,
+                new RegisterStorage(name, n, 0, PrimitiveType.Word32));
+        }
+
         [Test(Description ="Emulates calling an imported API Win32 on MIPS")]
         public void Ssa_ConstantPropagation()
         {
+            // 0x00031234
+            //this.importReferences
             var sExp =
-@"// ProcedureBuilder
+@"r13_0: orig: r13
+    def:  r13_0 = 0x00030000
+r12_1: orig: r12
+    def:  r12_1 = ImportedFunc
+    uses: r14_2 = ImportedFunc(r6)
+r14_2: orig: r14
+    def:  r14_2 = ImportedFunc(r6)
+r6:r6
+    def:  def r6
+    uses: r14_2 = ImportedFunc(r6)
+// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
-	def Mem0
+	def r6
 	// succ:  l1
 l1:
 	r13_0 = 0x00030000
-	r12_2 = Mem0[0x00031234:word32]
-	call r12_2 (retsize: 0;)
-		uses: r12_2,r13_0
-		defs: r12_4,r13_3
+	r12_1 = ImportedFunc
+	r14_2 = ImportedFunc(r6)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use Mem0
-	use r12_4
-	use r13_3
 ";
             var addr = Address.Ptr32(0x00031234);
             importReferences.Add(addr, new NamedImportReference(
                 addr, "COREDLL.DLL", "fnFoo"));
+            importResolver.Stub(i => i.ResolveToImportedProcedureConstant(
+                Arg<Statement>.Is.Anything,
+                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00031234)))
+                .Return(new ProcedureConstant(
+                    PrimitiveType.Pointer32,
+                    new ExternalProcedure(
+                        "ImportedFunc",
+                        new ProcedureSignature(
+                            Reg(14), Reg(6)))));
+
             RunTest(sExp, m =>
             {
                 var r13 = m.Reg32("r13", 13);

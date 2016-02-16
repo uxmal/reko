@@ -152,7 +152,7 @@ namespace Reko.Scanning
 
         private ApplicationBuilder CreateApplicationBuilder(Expression callee, ProcedureSignature sig, CallSite site)
         {
-            var ab = new ApplicationBuilder(
+            var ab = new FrameApplicationBuilder(
                 arch,
                 frame,
                 site,

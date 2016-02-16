@@ -86,7 +86,7 @@ namespace Reko.Core
             if (sigCallee == null || !sigCallee.ParametersValid)
                 return false;
 
-            var ab = new ApplicationBuilder(Program.Architecture, proc.Frame, call.CallSite, fn, sigCallee, true);
+            var ab = new FrameApplicationBuilder(Program.Architecture, proc.Frame, call.CallSite, fn, sigCallee, true);
 			stm.Instruction = ab.CreateInstruction();
             return true;
 		}

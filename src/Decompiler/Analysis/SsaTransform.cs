@@ -512,7 +512,7 @@ namespace Reko.Analysis
             private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
             {
                 var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier).ToHashSet();
-                var ab = new ApplicationBuilder(null, proc.Frame, null, null, null, true);
+                var ab = new FrameApplicationBuilder(null, proc.Frame, null, null, null, true);
                 foreach (var idDef in flow.Trashed)
                 {
                     var idLocal = proc.Frame.EnsureIdentifier(idDef);
@@ -906,11 +906,17 @@ namespace Reko.Analysis
         /// <returns></returns>
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
-            Procedure callee = GetUserProcedure(ci);
-            ProcedureFlow2 flow;
-            if (callee != null && programFlow.ProcedureFlows.TryGetValue(callee, out flow))
+            ci.Callee = ci.Callee.Accept(this);
+            ProcedureBase callee = GetCalleeProcedure(ci);
+            if (callee.Signature != null && callee.Signature.ParametersValid)
             {
-                GenerateUseDefsForKnownCallee(ci, callee, flow);
+                return BoundProcedureCall(ci.Callee.DataType, callee, ci.CallSite);
+            }
+            var proc = callee as Procedure;
+            ProcedureFlow2 flow;
+            if (proc != null && programFlow.ProcedureFlows.TryGetValue(proc, out flow))
+            {
+                GenerateUseDefsForKnownCallee(ci, proc, flow);
             }
             else
             {
@@ -919,9 +925,20 @@ namespace Reko.Analysis
             return ci;
         }
 
+        private Instruction BoundProcedureCall(DataType dt, ProcedureBase eCallee, CallSite site)
+        {
+            var pc = new ProcedureConstant(dt, eCallee);
+            var ab = new SsaApplicationBuilder(
+                this,
+                site,
+                pc,
+                eCallee.Signature);
+            return ab.CreateInstruction();
+        }
+
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 flow)
         {
-            var ab = new ApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
+            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
             foreach (var use in callee.EntryBlock.Statements
                 .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
             {
@@ -968,12 +985,19 @@ namespace Reko.Analysis
             }
         }
 
-        private Procedure GetUserProcedure(CallInstruction ci)
+        private ProcedureBase GetCalleeProcedure(CallInstruction ci)
         {
-            var pc = ci.Callee as ProcedureConstant;
-            if (pc == null)
+            Identifier id;
+            ProcedureConstant pc;
+            if (ci.Callee.As(out id))
+            {
+                pc = ssa.Identifiers[id].DefExpression as ProcedureConstant;
+            }
+            else if (!ci.Callee.As(out pc))
+            {
                 return null;
-            return pc.Procedure as Procedure;
+            }
+            return pc.Procedure;
         }
 
         public override Instruction TransformDefInstruction(DefInstruction def)
@@ -1028,7 +1052,7 @@ namespace Reko.Analysis
             return new OutArgument(outArg.DataType, exp);
         }
 
-        private Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
+        public Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
         {
             SsaIdentifier sidOld;
             if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out sidOld))
@@ -1063,12 +1087,39 @@ namespace Reko.Analysis
                 var idNew = NewUse(idFrame, stmCur, true);
                 return idNew;
             }
+
+            var ea = access.EffectiveAddress.Accept(this);
+            BinaryExpression bin;
+            Identifier id;
+            Constant c = null;
+            if (ea.As(out bin) &&
+                bin.Left.As(out id) &&
+                bin.Right.As(out c))
+            {
+                var sid = ssa.Identifiers[id];
+                var cOther = sid.DefExpression as Constant;
+                if (cOther != null)
+                {
+                    c = bin.Operator.ApplyConstants(cOther, c);
+                    sid.Uses.Remove(stmCur);
+                }
+            }
             else
             {
-                access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
-                return access;
+                c = ea as Constant;
             }
+
+            if (c != null)
+            {
+                access.EffectiveAddress = c;
+                var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
+                if (e != null)
+                    return e;
+                ea = c;
+            }
+            access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
+            access.EffectiveAddress = ea;
+            return access;
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -1780,6 +1831,36 @@ namespace Reko.Analysis
                 ss = outer.factory.Create(seq.Tail, stm);
                 ss.WriteVariable(bs, sid, performProbe);
                 return sid.Identifier;
+            }
+        }
+
+        public class SsaApplicationBuilder : ApplicationBuilder
+        {
+            private SsaTransform2 sst;
+
+            public SsaApplicationBuilder(
+                SsaTransform2 sst,
+                CallSite site,
+                Expression callee,
+                ProcedureSignature sigCallee)
+                : base(site, callee, sigCallee)
+            {
+                this.sst = sst;
+            }
+
+            public override Expression Bind(Identifier id)
+            {
+                return sst.VisitIdentifier(id);
+            }
+
+            public override Identifier BindReturnValue(Identifier id)
+            {
+                return sst.NewDef(id, callee, false);
+            }
+
+            public override OutArgument BindOutArg(Identifier id)
+            {
+                throw new NotImplementedException();
             }
         }
     }

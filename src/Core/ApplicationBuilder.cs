@@ -41,41 +41,30 @@ namespace Reko.Core
     ///   If more registers are returned, they all become out registers and the function
     ///    is declared void, unless flags are returned.
     /// </remarks>
-    public class ApplicationBuilder : StorageVisitor<Expression>
+    public abstract class ApplicationBuilder 
 	{
-        private IProcessorArchitecture arch;
-        private Frame frame;
-        private CallSite site;
-        private Expression callee;
-        private ProcedureSignature sigCallee;
-        private bool ensureVariables;
+        protected CallSite site;
+        protected Expression callee;
+        protected ProcedureSignature sigCallee;
 
         /// <summary>
-        /// Creates an application builder.
+        /// Creates an application builder that creates references
+        /// to the identifiers in the frame.
         /// </summary>
-        /// <param name="arch">The processor architecture to use.</param>
-        /// <param name="frame">The Frame of the calling procedure.</param>
         /// <param name="site">The call site of the calling instruction.</param>
         /// <param name="callee">The procedure being called.</param>
         /// <param name="sigCallee">The signature of the procedure being called.</param>
-        /// <param name="ensureVariables">If true, creates variables in the <paramref name="frame"/> if needed.</param>
         public ApplicationBuilder(
-            IProcessorArchitecture arch, 
-            Frame frame,
             CallSite site,
             Expression callee,
-            ProcedureSignature sigCallee,
-            bool ensureVariables)
+            ProcedureSignature sigCallee)
         {
-            this.arch = arch;
             this.site = site;
-            this.frame = frame;
             this.callee = callee;
             this.sigCallee = sigCallee;
-            this.ensureVariables = ensureVariables;
         }
 
-        public virtual List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
+        public virtual List<Expression> BindArguments(ProcedureSignature sigCallee)
         {
             if (sigCallee == null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
@@ -84,35 +73,23 @@ namespace Reko.Core
             for (int i = 0; i < sigCallee.Parameters.Length; ++i)
             {
                 var formalArg = sigCallee.Parameters[i];
-                var actualArg = formalArg.Storage.Accept(this);
                 if (formalArg.Storage is OutArgumentStorage)
                 {
-                    actuals.Add(new OutArgument(frame.FramePointer.DataType, actualArg));
+                    var outArg = BindOutArg(formalArg);
+                    actuals.Add(outArg);
                 }
                 else
                 {
+                    var actualArg = Bind(formalArg);
                     actuals.Add(actualArg);
                 }
             }
             return actuals;
         }
 
-        public Identifier BindReturnValue()
-        {
-            Identifier idOut = null;
-            if (sigCallee.ReturnValue != null)
-            {
-                idOut = (Identifier) Bind(sigCallee.ReturnValue);
-            }
-            return idOut;
-        }
-
-		public Expression Bind(Identifier id)
-		{
-            if (id == null)
-                return null;
-            return id.Storage.Accept(this);
-		}
+        public abstract OutArgument BindOutArg(Identifier id);
+        public abstract Identifier BindReturnValue(Identifier id);
+        public abstract Expression Bind(Identifier id);
 
         /// <summary>
         /// Creates an instruction:
@@ -125,11 +102,11 @@ namespace Reko.Core
         /// <returns></returns>
         public Instruction CreateInstruction()
         {
-            var idOut = BindReturnValue();
+            var idOut = BindReturnValue(sigCallee.ReturnValue);
             var dtOut = sigCallee.ReturnValue != null
                 ? sigCallee.ReturnValue.DataType
                 : VoidType.Instance;
-            var actuals = BindArguments(frame, sigCallee);
+            var actuals = BindArguments(sigCallee);
             Expression appl = new Application(
                 callee,
                 dtOut,
@@ -148,70 +125,5 @@ namespace Reko.Core
                 return new Assignment(idOut, appl);
 			}
         }
-
-        #region StorageVisitor<Expression> Members
-
-        public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
-        {
-            return frame.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
-        }
-
-        public Expression VisitFlagRegister(FlagRegister freg)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Expression VisitFpuStackStorage(FpuStackStorage fpu)
-        {
-            return frame.EnsureFpuStackVariable(fpu.FpuStackOffset - site.FpuStackDepthBefore, fpu.DataType);
-        }
-
-        public Expression VisitMemoryStorage(MemoryStorage global)
-        {
-            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", global.GetType().FullName));
-        }
-
-        public Expression VisitStackLocalStorage(StackLocalStorage local)
-        {
-            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", local.GetType().FullName));
-        }
-
-        public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
-        {
-            return arg.OriginalIdentifier.Storage.Accept(this);
-        }
-
-        public Expression VisitRegisterStorage(RegisterStorage reg)
-        {
-			return frame.EnsureRegister(reg);
-        }
-
-        public Expression VisitSequenceStorage(SequenceStorage seq)
-        {
-            var h = seq.Head.Storage.Accept(this);
-            var t = seq.Tail.Storage.Accept(this);
-            var idHead = h as Identifier;
-            var idTail = t as Identifier;
-            if (idHead != null && idTail != null)
-                return frame.EnsureSequence(idHead, idTail, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
-            throw new NotImplementedException("Handle case when stack parameter is passed.");
-        }
-
-        public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
-        {
-            if (ensureVariables)
-                return frame.EnsureStackVariable(
-                    stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
-                    stack.DataType);
-            else 
-                return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
-        }
-
-        public Expression VisitTemporaryStorage(TemporaryStorage temp)
-        {
-            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", temp.GetType().FullName));
-        }
-
-        #endregion
     }
 }

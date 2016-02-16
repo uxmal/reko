@@ -13,7 +13,7 @@ namespace Reko.Core
     /// be the format string. If this string is fed with a constant integer, we walk the memory at that address
     /// to see if we can use the format string.
     /// </summary>
-    public class PrintfApplicationBuilder : ApplicationBuilder
+    public class PrintfApplicationBuilder : FrameApplicationBuilder
     {
         public PrintfApplicationBuilder(
             IProcessorArchitecture arch, Frame frame, CallSite site, Expression callee, ProcedureSignature sigCallee, bool ensureVariables) :
@@ -22,7 +22,7 @@ namespace Reko.Core
 
         }
 
-        public override List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
+        public override List<Expression> BindArguments(ProcedureSignature sigCallee)
         {
             var actuals = new List<Expression>();
             int i;

@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Core
 
 			var cs = new CallSite(f.ReturnAddressSize + 2 * 4, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig, true);
+			var ab = new FrameApplicationBuilder(arch, f, cs, fn, sig, true);
             Instruction instr = ab.CreateInstruction(); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{
@@ -158,8 +158,8 @@ namespace Reko.UnitTests.Core
 			    new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
 			
 			var cs = new CallSite(stack, 0);
-			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig, true);
+			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
+			var ab = new FrameApplicationBuilder(arch, f, cs, fn, sig, true);
             Instruction instr = ab.CreateInstruction();
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
 			{
