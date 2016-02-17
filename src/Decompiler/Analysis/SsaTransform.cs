@@ -908,12 +908,13 @@ namespace Reko.Analysis
         {
             ci.Callee = ci.Callee.Accept(this);
             ProcedureBase callee = GetCalleeProcedure(ci);
-            if (callee.Signature != null && callee.Signature.ParametersValid)
+            if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
             {
-                return BoundProcedureCall(ci.Callee.DataType, callee, ci.CallSite);
+                var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci.CallSite);
+                return ab.CreateInstruction();
             }
-            var proc = callee as Procedure;
             ProcedureFlow2 flow;
+            var proc = callee as Procedure;
             if (proc != null && programFlow.ProcedureFlows.TryGetValue(proc, out flow))
             {
                 GenerateUseDefsForKnownCallee(ci, proc, flow);
@@ -925,7 +926,7 @@ namespace Reko.Analysis
             return ci;
         }
 
-        private Instruction BoundProcedureCall(DataType dt, ProcedureBase eCallee, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(DataType dt, ProcedureBase eCallee, CallSite site)
         {
             var pc = new ProcedureConstant(dt, eCallee);
             var ab = new SsaApplicationBuilder(
@@ -933,7 +934,7 @@ namespace Reko.Analysis
                 site,
                 pc,
                 eCallee.Signature);
-            return ab.CreateInstruction();
+            return ab;
         }
 
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 flow)
@@ -992,6 +993,8 @@ namespace Reko.Analysis
             if (ci.Callee.As(out id))
             {
                 pc = ssa.Identifiers[id].DefExpression as ProcedureConstant;
+                if (pc == null)
+                    return null;
             }
             else if (!ci.Callee.As(out pc))
             {
@@ -1032,6 +1035,27 @@ namespace Reko.Analysis
                 store.Dst = store.Dst.Accept(this);
             }
             return store;
+        }
+
+        public override Expression VisitApplication(Application appl)
+        {
+            for (int i = 0; i < appl.Arguments.Length; ++i)
+            {
+                var  outArg = appl.Arguments[i] as OutArgument;
+                if (outArg != null)
+                {
+                    var id = outArg.Expression as Identifier;
+                    if (id != null)
+                    {
+                        appl.Arguments[i] = new OutArgument(
+                            outArg.DataType,
+                            NewDef(id, appl, true));
+                        continue;
+                    }
+                }
+                appl.Arguments[i] = appl.Arguments[i].Accept(this);
+            }
+            return appl;
         }
 
         public override Expression VisitIdentifier(Identifier id)
@@ -1102,6 +1126,9 @@ namespace Reko.Analysis
                 {
                     c = bin.Operator.ApplyConstants(cOther, c);
                     sid.Uses.Remove(stmCur);
+                } else
+                {
+                    c = null;
                 }
             }
             else
@@ -1117,7 +1144,7 @@ namespace Reko.Analysis
                     return e;
                 ea = c;
             }
-            access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
+            UpdateMemoryIdentifier(access, false);
             access.EffectiveAddress = ea;
             return access;
         }
@@ -1443,8 +1470,8 @@ namespace Reko.Analysis
             /// <returns></returns>
             protected SsaIdentifier MaybeGenerateAliasStatement(AliasState alias, bool aliasProbe)
             {
-                var stgFrom = alias.SsaId.Identifier.Storage;
                 Debug.Assert(!(id.Storage is FlagGroupStorage), "Should never be called on a flag group");
+                var stgFrom = alias.SsaId.Identifier.Storage;
                 var stgTo = id.Storage;
                 if (stgFrom == stgTo ||
                     (aliasProbe && stgFrom.Exceeds(stgTo)))
@@ -1464,7 +1491,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    sidUse = ReadVariable(blockstates[alias.SsaId.DefStatement.Block], false);
+                    sidUse = ReadVariableRecursive(blockstates[alias.SsaId.DefStatement.Block], false);
                     e = new DepositBits(sidUse.Identifier, alias.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);

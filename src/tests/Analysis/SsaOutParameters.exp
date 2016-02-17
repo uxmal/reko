@@ -1,5 +1,6 @@
 r4_0: orig: r4
     def:  Mem1[0x00000400:word32] = foo(out r4_0)
+    uses: use r4_0
 Mem1: orig: Mem0
     def:  Mem1[0x00000400:word32] = foo(out r4_0)
 // foo
@@ -12,4 +13,5 @@ l1:
 	return
 	// succ:  foo_exit
 foo_exit:
+	use r4_0
 

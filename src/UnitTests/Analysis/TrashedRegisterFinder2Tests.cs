@@ -255,7 +255,7 @@ Constants: cl:0x00
                 m.Return();
             });
 
-            var sExp2 = String.Join(Environment.NewLine, new[] { "Preserved: ", "Trashed: Global memory,r1,r2", "" });
+            var sExp2 = string.Join(Environment.NewLine, new[] { "Preserved: ", "Trashed: Global memory,r1,r2", "" });
 
             RunTest(sExp2, m =>
             {

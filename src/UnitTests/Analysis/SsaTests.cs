@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void SsaOutParamters()
         {
-            ProcedureBuilder m = new ProcedureBuilder("foo");
+            var m = new ProcedureBuilder("foo");
             Identifier r4 = m.Register(4);
             m.Store(m.Int32(0x400), m.Fn("foo", m.Out(PrimitiveType.Pointer32, r4)));
             m.Return();

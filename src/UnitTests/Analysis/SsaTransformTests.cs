@@ -174,7 +174,8 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaStackLocals()
         {
-            var sExp = @"fp:fp
+            var sExp = 
+@"fp:fp
     def:  def fp
     uses: r63_1 = fp
           r63_2 = fp - 0x00000004
@@ -783,35 +784,36 @@ ProcedureBuilder_exit:
 @"r1:r1
     def:  def r1
     uses: branch r1 true
-          call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+          call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
 r2_1: orig: r2
     def:  r2_1 = 0x00000010
-    uses: r2_4 = PHI(r2, r2_1)
-r1_3: orig: r1
-    def:  call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
-    uses: use r1_3
-r2_4: orig: r2
-    def:  r2_4 = PHI(r2, r2_1)
-    uses: call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
-r2:r2
-    def:  def r2
-    uses: r2_4 = PHI(r2, r2_1)
-r2_6: orig: r2
-    def:  call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
-    uses: use r2_6
-r3_9: orig: r3
-    def:  call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
-    uses: use r3_9
+    uses: r2_6 = PHI(r2, r2_1)
+r1_5: orig: r1
+    def:  call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
+    uses: use r1_5
 r3:r3
     def:  def r3
-    uses: call r3 (retsize: 4;)	uses: r1,r2_4,r3	defs: r1_3,r2_6,r3_9
+    uses: call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
+          call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
+r2_6: orig: r2
+    def:  r2_6 = PHI(r2, r2_1)
+    uses: call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
+r2:r2
+    def:  def r2
+    uses: r2_6 = PHI(r2, r2_1)
+r2_8: orig: r2
+    def:  call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
+    uses: use r2_8
+r3_9: orig: r3
+    def:  call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
+    uses: use r3_9
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	def r1
-	def r2
 	def r3
+	def r2
 	// succ:  l1
 l1:
 	branch r1 true
@@ -820,15 +822,15 @@ l2:
 	r2_1 = 0x00000010
 	// succ:  true
 true:
-	r2_4 = PHI(r2, r2_1)
+	r2_6 = PHI(r2, r2_1)
 	call r3 (retsize: 4;)
-		uses: r1,r2_4,r3
-		defs: r1_3,r2_6,r3_9
+		uses: r1,r2_6,r3
+		defs: r1_5,r2_8,r3_9
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_3
-	use r2_6
+	use r1_5
+	use r2_8
 	use r3_9
 ";
             #endregion
@@ -1566,20 +1568,20 @@ ProcedureBuilder_exit:
 ebx_1: orig: ebx
     def:  ebx_1 = PHI(ebx, ebx_6)
     uses: SCZ_2 = cond(ebx_1 - 0x00000000)
-          eax_5 = eax_3 + Mem4[ebx_1:word32]
-          ebx_6 = Mem4[ebx_1 + 0x00000004:word32]
+          eax_5 = eax_3 + Mem0[ebx_1:word32]
+          ebx_6 = Mem0[0x00000004:word32]
 SCZ_2: orig: SCZ
     def:  SCZ_2 = cond(ebx_1 - 0x00000000)
     uses: branch Test(NE,SCZ_2) l2Body
 eax_3: orig: eax
     def:  eax_3 = PHI(eax_0, eax_5)
-    uses: eax_5 = eax_3 + Mem4[ebx_1:word32]
+    uses: eax_5 = eax_3 + Mem0[ebx_1:word32]
           return eax_3
 eax_5: orig: eax
-    def:  eax_5 = eax_3 + Mem4[ebx_1:word32]
+    def:  eax_5 = eax_3 + Mem0[ebx_1:word32]
     uses: eax_3 = PHI(eax_0, eax_5)
 ebx_6: orig: ebx
-    def:  ebx_6 = Mem4[ebx_1 + 0x00000004:word32]
+    def:  ebx_6 = Mem0[0x00000004:word32]
     uses: ebx_1 = PHI(ebx, ebx_6)
 ebx:ebx
     def:  def ebx
@@ -1598,8 +1600,8 @@ l1:
 	goto l3Head
 	// succ:  l3Head
 l2Body:
-	eax_5 = eax_3 + Mem4[ebx_1:word32]
-	ebx_6 = Mem4[ebx_1 + 0x00000004:word32]
+	eax_5 = eax_3 + Mem0[ebx_1:word32]
+	ebx_6 = Mem0[0x00000004:word32]
 	// succ:  l3Head
 l3Head:
 	eax_3 = PHI(eax_0, eax_5)
@@ -1765,6 +1767,89 @@ ProcedureBuilder_exit:
                 m.Label("m3done");
                 m.Return();
             });
+        }
+
+        [Test()]
+        public void SsaAlias2()
+        {
+            var sExp = 
+@"si:si
+    def:  def si
+    uses: bl_2 = Mem0[si:byte]
+Mem0:Global memory
+    def:  def Mem0
+    uses: bl_2 = Mem0[si:byte]
+bl_2: orig: bl
+    def:  bl_2 = Mem0[si:byte]
+    uses: SCZO_3 = cond(bl_2 - 0x02)
+SCZO_3: orig: SCZO
+    def:  SCZO_3 = cond(bl_2 - 0x02)
+    uses: branch Test(UGT,SCZO_3) m2
+bh_4: orig: bh
+    def:  bh_4 = 0x00
+bx:bx
+    def:  def bx
+    uses: bx_6 = DPB(bx, bl_2, 0) (alias)
+bx_6: orig: bx
+    def:  bx_6 = DPB(bx, bl_2, 0) (alias)
+    uses: bx_7 = DPB(bx_6, bh_4, 8) (alias)
+          bx_8 = bx_7 + bx_6
+bx_7: orig: bx
+    def:  bx_7 = DPB(bx_6, bh_4, 8) (alias)
+    uses: bx_8 = bx_7 + bx_6
+bx_8: orig: bx
+    def:  bx_8 = bx_7 + bx_6
+    uses: Mem9[bx_8:word16] = 0x0000
+Mem9: orig: Mem0
+    def:  Mem9[bx_8:word16] = 0x0000
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def si
+	def Mem0
+	def bx
+	// succ:  m0
+m0:
+	bl_2 = Mem0[si:byte]
+	bx_6 = DPB(bx, bl_2, 0) (alias)
+	SCZO_3 = cond(bl_2 - 0x02)
+	branch Test(UGT,SCZO_3) m2
+	// succ:  m1 m2
+m1:
+	bh_4 = 0x00
+	bx_7 = DPB(bx_6, bh_4, 8) (alias)
+	bx_8 = bx_7 + bx_7
+	Mem9[bx_8:word16] = 0x0000
+	// succ:  m2
+m2:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            RunTest(sExp, m =>
+            {
+                var bl = m.Reg8("bl", 3, 0);
+                var bh = m.Reg8("bh", 3, 8);
+                var bx = m.Reg16("bx", 3);
+                var si = m.Reg16("si", 6);
+                var SCZO = m.Flags("SCZO");
+
+                m.Label("m0");
+                m.Assign(bl, m.LoadB(si));
+                m.Assign(SCZO, m.Cond(m.ISub(bl, 2)));
+                m.BranchIf(m.Test(ConditionCode.UGT, SCZO), "m2");
+
+                m.Label("m1");
+                m.Assign(bh, 0);
+                m.Assign(bx, m.IAdd(bx, bx));
+                m.Store(bx, m.Word16(0));
+
+                m.Label("m2");
+                m.Return();
+            });
+
+
         }
     }
 }
