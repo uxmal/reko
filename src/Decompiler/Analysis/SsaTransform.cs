@@ -863,7 +863,7 @@ namespace Reko.Analysis
         /// the identifiers should be removed.</remarks>
         private void AddUsesToExitBlock()
         {
-            //$TODO: sequences and flag groups need to be grouped on exit
+            //$TODO: flag groups need to be grouped on exit
             // We don't do them yet.
             var block = ssa.Procedure.ExitBlock;
             var existing = block.Statements

@@ -113,8 +113,6 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            sst.SsaState.DebugDump(true);
-
             var vp = new ValuePropagator(this.pb.Program.Architecture, sst.SsaState);
             vp.Transform();
 
@@ -208,20 +206,16 @@ r2_9: orig: r2
           use r2_9
 r1_10: orig: r1
     def:  r1_10 = r1_8 + r2_9
-    uses: Mem14[0x00010008:word32] = r1_10
+    uses: Mem11[0x00010008:word32] = r1_10
           use r1_10
 Mem11: orig: Mem0
-    def:  Mem14[0x00010008:word32] = r1_10
+    def:  Mem11[0x00010008:word32] = r1_10
 dwLoc04_12: orig: dwLoc04
     def:  dwLoc04_12 = r1
     uses: r1_8 = dwLoc04_12
-          use dwLoc04_12
 dwLoc08_13: orig: dwLoc08
     def:  dwLoc08_13 = r2
     uses: r2_9 = dwLoc08_13
-          use dwLoc08_13
-Mem14: orig: Mem11
-    def:  Mem14[0x00010008:word32] = r1_10
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -239,12 +233,10 @@ l1:
 	r1_8 = dwLoc04_12
 	r2_9 = dwLoc08_13
 	r1_10 = r1_8 + r2_9
-	Mem14[0x00010008:word32] = r1_10
+	Mem11[0x00010008:word32] = r1_10
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use dwLoc04_12
-	use dwLoc08_13
 	use r1_10
 	use r2_9
 	use r63_5
@@ -295,13 +287,12 @@ bp_5: orig: bp
 CZS_6: orig: CZS
     def:  CZS_6 = cond(wArg04 - 0x0003)
     uses: branch Test(GE,CZS_6) ge3
-          use CZS_6
 r1_7: orig: r1
     def:  r1_7 = 0x00000001
-    uses: r1_19 = PHI(r1_8, r1_7)
+    uses: r1_17 = PHI(r1_8, r1_7)
 r1_8: orig: r1
     def:  r1_8 = 0x00000000
-    uses: r1_19 = PHI(r1_8, r1_7)
+    uses: r1_17 = PHI(r1_8, r1_7)
 bp_11: orig: bp
     def:  bp_11 = dwLoc04_14
     uses: use bp_11
@@ -311,13 +302,12 @@ r63_13: orig: r63
 dwLoc04_14: orig: dwLoc04
     def:  dwLoc04_14 = bp
     uses: bp_11 = dwLoc04_14
-          use dwLoc04_14
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_6 = cond(wArg04 - 0x0003)
-r1_19: orig: r1
-    def:  r1_19 = PHI(r1_8, r1_7)
-    uses: use r1_19
+r1_17: orig: r1
+    def:  r1_17 = PHI(r1_8, r1_7)
+    uses: use r1_17
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -328,7 +318,7 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_19 = PHI(r1_8, r1_7)
+	r1_17 = PHI(r1_8, r1_7)
 	bp_11 = dwLoc04_14
 	r63_13 = fp
 	return
@@ -351,9 +341,7 @@ l2:
 	// succ:  done
 ProcedureBuilder_exit:
 	use bp_11
-	use CZS_6
-	use dwLoc04_14
-	use r1_19
+	use r1_17
 	use r63_13
 ";
             #endregion
@@ -361,7 +349,7 @@ ProcedureBuilder_exit:
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var bp = m.Frame.CreateTemporary("bp", sp.DataType);
+                var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
@@ -410,13 +398,12 @@ bp_5: orig: bp
 CZS_6: orig: CZS
     def:  CZS_6 = wArg04 - 0x0003
     uses: branch Test(GE,CZS_6) ge3
-          use CZS_6
 Mem7: orig: Mem0
     def:  wArg04_17 = -3
     uses: Mem11 = PHI(Mem9, Mem7)
 r1_8: orig: r1
     def:  r1_8 = 0x00000001
-    uses: r1_22 = PHI(r1, r1_8)
+    uses: r1_20 = PHI(r1, r1_8)
 Mem9: orig: Mem0
     def:  wArg04_18 = 0x0003
     uses: Mem11 = PHI(Mem9, Mem7)
@@ -425,32 +412,25 @@ Mem11: orig: Mem0
     uses: bp_12 = dwLoc04_15
 bp_12: orig: bp
     def:  bp_12 = dwLoc04_15
-    uses: use bp_12
 r63_14: orig: r63
     def:  r63_14 = fp
     uses: use r63_14
 dwLoc04_15: orig: dwLoc04
     def:  dwLoc04_15 = bp
     uses: bp_12 = dwLoc04_15
-          use dwLoc04_15
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_6 = wArg04 - 0x0003
 wArg04_17: orig: wArg04
     def:  wArg04_17 = -3
-    uses: wArg04_24 = PHI(wArg04_18, wArg04_17)
 wArg04_18: orig: wArg04
     def:  wArg04_18 = 0x0003
-    uses: wArg04_24 = PHI(wArg04_18, wArg04_17)
-r1_22: orig: r1
-    def:  r1_22 = PHI(r1, r1_8)
-    uses: use r1_22
+r1_20: orig: r1
+    def:  r1_20 = PHI(r1, r1_8)
+    uses: use r1_20
 r1:r1
     def:  def r1
-    uses: r1_22 = PHI(r1, r1_8)
-wArg04_24: orig: wArg04
-    def:  wArg04_24 = PHI(wArg04_18, wArg04_17)
-    uses: use wArg04_24
+    uses: r1_20 = PHI(r1, r1_8)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -462,8 +442,7 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	wArg04_24 = PHI(wArg04_18, wArg04_17)
-	r1_22 = PHI(r1, r1_8)
+	r1_20 = PHI(r1, r1_8)
 	Mem11 = PHI(Mem9, Mem7)
 	bp_12 = dwLoc04_15
 	r63_14 = fp
@@ -487,13 +466,10 @@ l2:
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_12
-	use CZS_6
-	use dwLoc04_15
-	use r1_22
+	use r1_20
 	use r63_14
-	use wArg04_24
 ";
+
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
@@ -609,7 +585,6 @@ Mem6: orig: Mem0
 CZS_7: orig: CZS
     def:  CZS_7 = wArg04 - 0x0003
     uses: branch Test(GE,CZS_7) ge3
-          use CZS_7
 r1:r1
     def:  def r1
     uses: dwLoc0C_21 = r1
@@ -629,14 +604,12 @@ r1_13: orig: r1
     uses: use r1_13
 bp_16: orig: bp
     def:  bp_16 = dwLoc04_18
-    uses: use bp_16
 r63_17: orig: r63
     def:  r63_17 = fp
     uses: use r63_17
 dwLoc04_18: orig: dwLoc04
     def:  dwLoc04_18 = bp
     uses: bp_16 = dwLoc04_18
-          use dwLoc04_18
 dwLoc0C_19: orig: dwLoc0C
     def:  dwLoc0C_19 = 0x00000000
 wArg04:Stack +0004
@@ -651,7 +624,6 @@ dwLoc0C_22: orig: dwLoc0C
 dwLoc0C_23: orig: dwLoc0C
     def:  dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
     uses: r1_13 = dwLoc0C_23
-          use dwLoc0C_23
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -688,10 +660,6 @@ l2:
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_16
-	use CZS_7
-	use dwLoc04_18
-	use dwLoc0C_23
 	use r1_13
 	use r63_17
 ";
@@ -859,7 +827,7 @@ ProcedureBuilder_exit:
           r63_6 = fp - 0x00000004
 r63_1: orig: r63
     def:  r63_1 = fp
-    uses: r63_20 = PHI(r63_13, r63_1)
+    uses: r63_18 = PHI(r63_13, r63_1)
 Mem0:Global memory
     def:  def Mem0
     uses: r4_3 = dwArg04
@@ -870,7 +838,7 @@ r4_3: orig: r4
           r4_5 = Mem0[r4_3 + 0x00000004:word32]
 r4_4: orig: r4
     def:  r4_4 = 0x00000000
-    uses: r4_19 = PHI(r4_12, r4_4)
+    uses: r4_17 = PHI(r4_12, r4_4)
 r4_5: orig: r4
     def:  r4_5 = Mem0[r4_3 + 0x00000004:word32]
     uses: dwLoc04_15 = r4_5
@@ -886,19 +854,19 @@ r63_8: orig: r63
 r3:r3
     def:  def r3
     uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-          r3_18 = PHI(r3_10, r3)
+          r3_16 = PHI(r3_10, r3)
 r3_10: orig: r3
     def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-    uses: r3_18 = PHI(r3_10, r3)
+    uses: r3_16 = PHI(r3_10, r3)
 r4_11: orig: r4
     def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
     uses: r4_12 = r4_11 + 0x00000001
 r4_12: orig: r4
     def:  r4_12 = r4_11 + 0x00000001
-    uses: r4_19 = PHI(r4_12, r4_4)
+    uses: r4_17 = PHI(r4_12, r4_4)
 r63_13: orig: r63
     def:  r63_13 = r63_8 + 0x00000004
-    uses: r63_20 = PHI(r63_13, r63_1)
+    uses: r63_18 = PHI(r63_13, r63_1)
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: r4_3 = dwArg04
@@ -906,22 +874,15 @@ dwArg04:Stack +0004
 dwLoc04_15: orig: dwLoc04
     def:  dwLoc04_15 = r4_5
     uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-          dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
-dwLoc04_16: orig: dwLoc04
-    def:  dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
-    uses: use dwLoc04_16
-dwLoc04:Local -0004
-    def:  def dwLoc04
-    uses: dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
-r3_18: orig: r3
-    def:  r3_18 = PHI(r3_10, r3)
-    uses: use r3_18
-r4_19: orig: r4
-    def:  r4_19 = PHI(r4_12, r4_4)
-    uses: use r4_19
-r63_20: orig: r63
-    def:  r63_20 = PHI(r63_13, r63_1)
-    uses: use r63_20
+r3_16: orig: r3
+    def:  r3_16 = PHI(r3_10, r3)
+    uses: use r3_16
+r4_17: orig: r4
+    def:  r4_17 = PHI(r4_12, r4_4)
+    uses: use r4_17
+r63_18: orig: r63
+    def:  r63_18 = PHI(r63_13, r63_1)
+    uses: use r63_18
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -930,7 +891,6 @@ ProcedureBuilder_entry:
 	def Mem0
 	def r3
 	def dwArg04
-	def dwLoc04
 	// succ:  l1
 l1:
 	r63_1 = fp
@@ -952,17 +912,15 @@ m1Base:
 	r4_4 = 0x00000000
 	// succ:  m2Done
 m2Done:
-	r63_20 = PHI(r63_13, r63_1)
-	r4_19 = PHI(r4_12, r4_4)
-	r3_18 = PHI(r3_10, r3)
-	dwLoc04_16 = PHI(dwLoc04_15, dwLoc04)
+	r63_18 = PHI(r63_13, r63_1)
+	r4_17 = PHI(r4_12, r4_4)
+	r3_16 = PHI(r3_10, r3)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use dwLoc04_16
-	use r3_18
-	use r4_19
-	use r63_20
+	use r3_16
+	use r4_17
+	use r63_18
 ";
             #endregion
 
@@ -1661,12 +1619,12 @@ cl_4: orig: cl
     def:  cl_4 = 0x2D
 es_cx_5: orig: es_cx
     def:  es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
-    uses: cx_7 = (word16) es_cx_5 (alias)
+    uses: cx_6 = (word16) es_cx_5 (alias)
 cx_6: orig: cx
     def:  cx_6 = (word16) es_cx_5 (alias)
-    uses: cx_8 = DPB(cx_7, cl_4, 0) (alias)
+    uses: use cx_6
 es_7: orig: es
-    def:   es_7 = SLICE(es_cx_3, word16, 16) (alias)
+    def:  es_7 = SLICE(es_cx_3, word16, 16) (alias)
     uses: use es_7
 // ProcedureBuilder
 // Return size: 0
@@ -1681,12 +1639,12 @@ m0:
 	es_7 = SLICE(es_cx_3, word16, 16) (alias)
 	cl_4 = 0x2D
 	es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
-	cx_6 = (word16) es_cx_6 (alias)
+	cx_6 = (word16) es_cx_5 (alias)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use cl_4
-	use cx_8
+	use cx_6
+	use es_7
 ";
             #endregion
 
