@@ -1569,7 +1569,7 @@ ebx_1: orig: ebx
     def:  ebx_1 = PHI(ebx, ebx_6)
     uses: SCZ_2 = cond(ebx_1 - 0x00000000)
           eax_5 = eax_3 + Mem0[ebx_1:word32]
-          ebx_6 = Mem0[0x00000004:word32]
+          ebx_6 = Mem0[ebx_1 + 0x00000004:word32]
 SCZ_2: orig: SCZ
     def:  SCZ_2 = cond(ebx_1 - 0x00000000)
     uses: branch Test(NE,SCZ_2) l2Body
@@ -1581,7 +1581,7 @@ eax_5: orig: eax
     def:  eax_5 = eax_3 + Mem0[ebx_1:word32]
     uses: eax_3 = PHI(eax_0, eax_5)
 ebx_6: orig: ebx
-    def:  ebx_6 = Mem0[0x00000004:word32]
+    def:  ebx_6 = Mem0[ebx_1 + 0x00000004:word32]
     uses: ebx_1 = PHI(ebx, ebx_6)
 ebx:ebx
     def:  def ebx
@@ -1601,7 +1601,7 @@ l1:
 	// succ:  l3Head
 l2Body:
 	eax_5 = eax_3 + Mem0[ebx_1:word32]
-	ebx_6 = Mem0[0x00000004:word32]
+	ebx_6 = Mem0[ebx_1 + 0x00000004:word32]
 	// succ:  l3Head
 l3Head:
 	eax_3 = PHI(eax_0, eax_5)
@@ -1649,9 +1649,9 @@ ProcedureBuilder_exit:
     uses: cx_1 = Mem0[0x1234:word16]
 cx_1: orig: cx
     def:  cx_1 = Mem0[0x1234:word16]
-    uses: Mem6[0x00001236:word16] = cx_1
+    uses: Mem2[0x00001236:word16] = cx_1
 Mem2: orig: Mem0
-    def:  Mem6[0x00001236:word16] = cx_1
+    def:  Mem2[0x00001236:word16] = cx_1
     uses: es_cx_3 = Mem2[0x00001238:word32]
 es_cx_3: orig: es_cx
     def:  es_cx_3 = Mem2[0x00001238:word32]
@@ -1662,8 +1662,6 @@ cl_4: orig: cl
 es_cx_5: orig: es_cx
     def:  es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
     uses: cx_7 = (word16) es_cx_5 (alias)
-Mem6: orig: Mem2
-    def:  Mem6[0x00001236:word16] = cx_1
 cx_7: orig: cx
     def:  cx_7 = (word16) es_cx_5 (alias)
     uses: cx_8 = DPB(cx_7, cl_4, 0) (alias)
@@ -1678,7 +1676,7 @@ ProcedureBuilder_entry:
 	// succ:  m0
 m0:
 	cx_1 = Mem0[0x1234:word16]
-	Mem6[0x00001236:word16] = cx_1
+	Mem2[0x00001236:word16] = cx_1
 	es_cx_3 = Mem2[0x00001238:word32]
 	cl_4 = 0x2D
 	es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
@@ -1772,7 +1770,7 @@ ProcedureBuilder_exit:
         [Test()]
         public void SsaAlias2()
         {
-            var sExp = 
+            var sExp =
 @"si:si
     def:  def si
     uses: bl_2 = Mem0[si:byte]
@@ -1793,12 +1791,12 @@ bx:bx
 bx_6: orig: bx
     def:  bx_6 = DPB(bx, bl_2, 0) (alias)
     uses: bx_7 = DPB(bx_6, bh_4, 8) (alias)
-          bx_8 = bx_7 + bx_6
 bx_7: orig: bx
     def:  bx_7 = DPB(bx_6, bh_4, 8) (alias)
-    uses: bx_8 = bx_7 + bx_6
+    uses: bx_8 = bx_7 + bx_7
+          bx_8 = bx_7 + bx_7
 bx_8: orig: bx
-    def:  bx_8 = bx_7 + bx_6
+    def:  bx_8 = bx_7 + bx_7
     uses: Mem9[bx_8:word16] = 0x0000
 Mem9: orig: Mem0
     def:  Mem9[bx_8:word16] = 0x0000

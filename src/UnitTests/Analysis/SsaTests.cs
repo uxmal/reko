@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SsaAddSubCarries()
 		{
-			RunFileTest("Fragments/addsubcarries.asm", "Analysis/SsaAddSubCarries.txt");			
+			RunFileTest("Fragments/addsubcarries.asm", "Analysis/SsaAddSubCarries.txt");
 		}
 
 		[Test]

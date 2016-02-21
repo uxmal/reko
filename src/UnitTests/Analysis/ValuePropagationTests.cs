@@ -277,7 +277,9 @@ namespace Reko.UnitTests.Analysis
             m.Return();
             m.Label("test");
             m.Return();
-            var sst = new SsaTransform2(m.Architecture, m.Procedure, null, new DataFlow2());
+            var importResolver = mr.Stub<IImportResolver>();
+            importResolver.Replay();
+            var sst = new SsaTransform2(m.Architecture, m.Procedure, importResolver, new DataFlow2());
             sst.Transform();
 
             var vp = new ValuePropagator(arch, sst.SsaState);
@@ -298,7 +300,11 @@ namespace Reko.UnitTests.Analysis
             m.Assign(y, x);
             m.Assign(z, m.IAdd(y, 2));
             m.Assign(w, y);
-            var sst = new SsaTransform2(m.Architecture, m.Procedure, null, new DataFlow2());
+
+            var importResolver = mr.Stub<IImportResolver>();
+            importResolver.Replay();
+
+            var sst = new SsaTransform2(m.Architecture, m.Procedure, importResolver, new DataFlow2());
             sst.Transform();
             ssaIds = sst.SsaState.Identifiers;
             var stms = m.Procedure.EntryBlock.Succ[0].Statements;

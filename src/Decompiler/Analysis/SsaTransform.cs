@@ -1027,7 +1027,8 @@ namespace Reko.Analysis
                     if (sa != null)
                         sa.BasePointer = sa.BasePointer.Accept(this);
                     acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
-                    UpdateMemoryIdentifier(acc, true);
+                    if (!this.RenameFrameAccesses)
+                        UpdateMemoryIdentifier(acc, true);
                 }
             }
             else
@@ -1249,12 +1250,24 @@ namespace Reko.Analysis
         {
             public readonly SsaIdentifier SsaId;        // The id that actually was modified.
             public readonly IDictionary<Identifier, SsaIdentifier> Aliases;     // Other ids that were affected by this stm.
-
             public AliasState(SsaIdentifier ssaId)
             {
                 this.SsaId = ssaId;
                 this.Aliases = new Dictionary<Identifier, SsaIdentifier>();
             }
+
+#if DEBUG
+            public override string ToString()
+            {
+                var sb = new StringBuilder();
+                sb.AppendFormat("Alias: {0}", SsaId.Identifier.Name);
+                if (Aliases.Count > 0)
+                {
+                    sb.AppendFormat(" = {0}", string.Join(", ", Aliases.Values.OrderBy(v => v.Identifier.Name)));
+                }
+                return sb.ToString();
+            }
+#endif
         }
 
         public class TransformerFactory : StorageVisitor<SsaIdentifierTransformer>
@@ -1350,7 +1363,6 @@ namespace Reko.Analysis
                 return sid.Identifier;
             }
 
-
             public virtual Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
             {
                 return WriteVariable(bs, sid, true);
@@ -1360,19 +1372,17 @@ namespace Reko.Analysis
             /// Registers the fact that identifier <paramref name="id"/> is
             /// modified in the block <paramref name="b" />. 
             /// </summary>
-            /// <param name="id">The identifier before being SSA transformed</param>
-            /// <param name="b">The block in which the identifier was changed</param>
+            /// <param name="bs">The block in which the identifier was changed</param>
             /// <param name="sid">The identifier after being SSA transformed.</param>
             /// <param name="performProbe">if true, looks "backwards" to see
             ///   if <paramref name="id"/> overlaps with another identifier</param>
             /// <returns></returns>
             public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                SsaIdentifier sidPrev = sid;
                 if (performProbe)
                 {
                     // Did a previous SSA id modify the same storage as id?
-                    sidPrev = ReadVariable(bs, performProbe);
+                    SsaIdentifier sidPrev = ReadVariable(bs, performProbe);
                     if (sidPrev != null)
                     {
                         // Was the previous modification larger than this modification?
@@ -1391,17 +1401,10 @@ namespace Reko.Analysis
                             bs.currentDef[id.Storage.Domain] = alias;
                             return sid.Identifier;
                         }
-                        else
-                        {
-                            sidPrev = sid;
-                        }
-                    }
-                    else
-                    {
-                        sidPrev = sid;
                     }
                 }
-                bs.currentDef[id.Storage.Domain] = new AliasState(sidPrev);
+                if (!(sid.DefStatement.Instruction is AliasAssignment))
+                    bs.currentDef[id.Storage.Domain] = new AliasState(sid);
                 return sid.Identifier;
             }
 
@@ -1852,7 +1855,6 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                bs.currentDef[id.Storage.Domain] = new AliasState(sid);
                 var ss = outer.factory.Create(seq.Head, stm);
                 ss.WriteVariable(bs, sid, performProbe);
                 ss = outer.factory.Create(seq.Tail, stm);
