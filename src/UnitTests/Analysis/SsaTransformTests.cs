@@ -1656,18 +1656,18 @@ Mem2: orig: Mem0
 es_cx_3: orig: es_cx
     def:  es_cx_3 = Mem2[0x00001238:word32]
     uses: es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
+          es_7 = SLICE(es_cx_3, word16, 16) (alias)
 cl_4: orig: cl
     def:  cl_4 = 0x2D
-    uses: use cl_4
 es_cx_5: orig: es_cx
     def:  es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
     uses: cx_7 = (word16) es_cx_5 (alias)
-cx_7: orig: cx
-    def:  cx_7 = (word16) es_cx_5 (alias)
+cx_6: orig: cx
+    def:  cx_6 = (word16) es_cx_5 (alias)
     uses: cx_8 = DPB(cx_7, cl_4, 0) (alias)
-cx_8: orig: cx
-    def:  cx_8 = DPB(cx_7, cl_4, 0) (alias)
-    uses: use cx_8
+es_7: orig: es
+    def:   es_7 = SLICE(es_cx_3, word16, 16) (alias)
+    uses: use es_7
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1678,10 +1678,10 @@ m0:
 	cx_1 = Mem0[0x1234:word16]
 	Mem2[0x00001236:word16] = cx_1
 	es_cx_3 = Mem2[0x00001238:word32]
+	es_7 = SLICE(es_cx_3, word16, 16) (alias)
 	cl_4 = 0x2D
 	es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
-	cx_7 = (word16) es_cx_5 (alias)
-	cx_8 = DPB(cx_7, cl_4, 0) (alias)
+	cx_6 = (word16) es_cx_6 (alias)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

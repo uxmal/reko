@@ -874,19 +874,62 @@ namespace Reko.Analysis
             var reachingIds = ssa.Identifiers
                 .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               !(sid.Identifier.Storage is MemoryStorage) &&
-                              !(sid.Identifier.Storage is SequenceStorage) &&
                               !existing.Contains(sid.Identifier))
-                .Select(sid => sid.OriginalIdentifier)
+                .Select(sid => sid.OriginalIdentifier);
+            reachingIds = SeparateSequences(reachingIds);
+            var sortedIds = ResolveOverlaps(reachingIds)
                 .Distinct()
                 .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
 
-            var stms = reachingIds.Select(id => new Statement(0, new UseInstruction(id), block)).ToList();
+            var stms = sortedIds.Select(id => new Statement(0, new UseInstruction(id), block)).ToList();
             block.Statements.AddRange(stms);
             stms.ForEach(u =>
             {
                 var use = (UseInstruction)u.Instruction;
                 use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
+        }
+
+        public static IEnumerable<Identifier> SeparateSequences(IEnumerable<Identifier> ids)
+        {
+            foreach (var id in ids)
+            {
+                var seq = id.Storage as SequenceStorage;
+                if (seq != null)
+                {
+                    yield return seq.Head;
+                    yield return seq.Tail;
+                }
+                else
+                {
+                    yield return id;
+                }
+            }
+        }
+
+        public static IEnumerable<Identifier> ResolveOverlaps(IEnumerable<Identifier> ids)
+        {
+            var registerBag = new Dictionary<StorageDomain, HashSet<Identifier>>();
+            foreach (var id in ids)
+            {
+                if (id.Storage is RegisterStorage)
+                {
+                    var dom = id.Storage.Domain;
+                    HashSet<Identifier> aliases;
+                    if (registerBag.TryGetValue(dom, out aliases))
+                    {
+                        aliases.RemoveWhere(a => id.Storage.Covers(a.Storage));
+                        if (!aliases.Any(a => a.Storage.Covers(id.Storage)))
+                            aliases.Add(id);
+                    }
+                    else
+                    {
+                        aliases = new HashSet<Identifier> { id };
+                        registerBag.Add(dom, aliases);
+                    }
+                }
+            }
+            return registerBag.Values.SelectMany(s => s);
         }
 
         public override Instruction TransformAssignment(Assignment a)
