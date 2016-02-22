@@ -46,8 +46,8 @@ namespace Reko.UnitTests.Core
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, ep);
             var arch = new FakeArchitecture();
             var frame = arch.CreateFrame();
-			var ab = new ApplicationBuilder(new FakeArchitecture(), frame, new CallSite(0, 0), fn, ep.Signature, false);
-            var instr = ab.CreateInstruction();
+			var ab = new ApplicationBuilder(new FakeArchitecture(), frame, new CallSite(0, 0), fn, false);
+            var instr = ab.CreateInstruction(ep.Signature, ep.Characteristics);
 			Assert.AreEqual("ax = foo(bx, cl)", instr.ToString());
 		}
 	}

@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Serialization;
 
 namespace Reko.Core
 {
@@ -43,12 +44,12 @@ namespace Reko.Core
     /// </remarks>
     public class ApplicationBuilder : StorageVisitor<Expression>
 	{
-        private IProcessorArchitecture arch;
-        private Frame frame;
-        private CallSite site;
-        private Expression callee;
-        private ProcedureSignature sigCallee;
-        private bool ensureVariables;
+        protected IProcessorArchitecture arch;
+        protected Frame frame;
+        protected CallSite site;
+        protected Expression callee;
+        protected ProcedureSignature sigCallee;
+        protected bool ensureVariables;
 
         /// <summary>
         /// Creates an application builder.
@@ -64,18 +65,16 @@ namespace Reko.Core
             Frame frame,
             CallSite site,
             Expression callee,
-            ProcedureSignature sigCallee,
             bool ensureVariables)
         {
             this.arch = arch;
             this.site = site;
             this.frame = frame;
             this.callee = callee;
-            this.sigCallee = sigCallee;
             this.ensureVariables = ensureVariables;
         }
 
-        public virtual List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
+        public virtual List<Expression> BindArguments(ProcedureSignature sigCallee)
         {
             if (sigCallee == null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
@@ -123,13 +122,23 @@ namespace Reko.Core
         /// type 'void'
         /// </summary>
         /// <returns></returns>
-        public Instruction CreateInstruction()
+        public Instruction CreateInstruction(
+            ProcedureSignature sigCallee,
+            ProcedureCharacteristics characteristics)
         {
+            this.sigCallee = sigCallee;
+
             var idOut = BindReturnValue();
-            var dtOut = sigCallee.ReturnValue != null
-                ? sigCallee.ReturnValue.DataType
-                : VoidType.Instance;
-            var actuals = BindArguments(frame, sigCallee);
+            DataType dtOut;
+            if (sigCallee.ReturnValue != null)
+            {
+                dtOut = sigCallee.ReturnValue.DataType;
+            }
+            else
+            {
+                dtOut = VoidType.Instance;
+            }
+            var actuals = BindArguments(sigCallee);
             Expression appl = new Application(
                 callee,
                 dtOut,

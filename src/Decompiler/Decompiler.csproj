@@ -145,6 +145,7 @@
     <Compile Include="Analysis\GrfDefinitionFinder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\PrintfApplicationBuilder.cs" />
     <Compile Include="Analysis\ProcedureFlow2.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />

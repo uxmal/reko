@@ -502,7 +502,6 @@ namespace Reko.Analysis
                     Procedure.Frame, 
                     ci.CallSite,
                     new ProcedureConstant(program.Platform.PointerType, procCallee), 
-                    sig, 
                     false);
 				if (sig.ReturnValue != null)
 				{
