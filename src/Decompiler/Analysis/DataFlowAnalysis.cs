@@ -248,7 +248,7 @@ namespace Reko.Analysis
                 liv.Find();
 
                 foreach (var de in liv.Contexts)
-            {
+                {
                     var str = new StrengthReduction(ssa.SsaState, de.Key, de.Value);
                     str.ClassifyUses();
                     str.ModifyUses();
@@ -267,9 +267,6 @@ namespace Reko.Analysis
 
         public SsaTransform2 ConvertToSsa(Procedure proc)
         {
-            //Aliases alias = new Aliases(proc, program.Architecture, flow);
-            //alias.Transform();
-                
             // Transform the procedure to SSA state. When encountering 'call' instructions,
             // they can be to functions already visited. If so, they have a "ProcedureFlow" 
             // associated with them. If they have not been visited, or are computed destinations

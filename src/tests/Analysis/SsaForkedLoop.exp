@@ -23,8 +23,6 @@ SCZO_7: orig: SCZO
     def:  SCZO_7 = cond(ax_5 - bx)
     uses: branch Test(LT,SCZO_7) l0C00_0005
           use SCZO_7
-          use SCZO_7
-          use SCZO_7
 Mem0:Global memory
     def:  def Mem0
 si:si
@@ -111,8 +109,6 @@ l0C00_001D:
 fn0C00_0000_exit:
 	use ax_5
 	use SCZO_7
-	use SCZO_7
 	use si_11
 	use sp_1
-	use SCZO_7
 

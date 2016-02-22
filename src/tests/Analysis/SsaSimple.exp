@@ -22,10 +22,10 @@ ax_5: orig: ax
 SZO_6: orig: SZO
     def:  SZO_6 = cond(ax_5)
     uses: branch Test(NE,SZO_6) l0C00_000C
-          use SZO_6
+          use C_7 | SZO_6
 C_7: orig: C
     def:  C_7 = false
-    uses: use C_7
+    uses: use C_7 | SZO_6
 ax_8: orig: ax
     def:  ax_8 = 0xFFFF
     uses: ax_12 = PHI(ax_5, ax_8)
@@ -62,7 +62,6 @@ l0C00_000C:
 fn0C00_0000_exit:
 	use ax_12
 	use bp_2
-	use C_7
+	use C_7 | SZO_6
 	use sp_10
-	use SZO_6
 

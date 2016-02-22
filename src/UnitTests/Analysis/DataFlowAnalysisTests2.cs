@@ -177,18 +177,6 @@ test_exit:
         }
 
         [Test]
-        [Ignore()]
-        public void Dfa2_FactorialReg()
-        {
-            var program = Factorial.BuildSample();
-            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
-            var sExp =
-            @"@@@";
-            AssertProgram(sExp, program);
-        }
-
-        [Test]
         public void Dfa2_UserDefinedStackArgs()
         {
             var arch = new X86ArchitectureFlat32();
@@ -230,6 +218,7 @@ test_entry:
 l1:
 	word32 r1_7 = a + b
 	Mem8[0x00010008:word32] = r1_7
+	word32 r2_6 = b
 	return
 	// succ:  test_exit
 test_exit:

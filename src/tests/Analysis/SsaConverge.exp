@@ -11,16 +11,31 @@ SCZO_3: orig: SCZO
     def:  SCZO_3 = cond(bx - 0x0000)
     uses: branch Test(EQ,SCZO_3) l0C00_0013
           branch Test(GT,SCZO_3) l0C00_000D
+          S_13 = PHI(SCZO_3, SZO_5, SCZO_3)
+          S_13 = PHI(SCZO_3, SZO_5, SCZO_3)
+          C_14 = PHI(SCZO_3, C_6, SCZO_3)
+          C_14 = PHI(SCZO_3, C_6, SCZO_3)
+          Z_15 = PHI(SCZO_3, SZO_5, SCZO_3)
+          Z_15 = PHI(SCZO_3, SZO_5, SCZO_3)
+          O_16 = PHI(SCZO_3, SZO_5, SCZO_3)
+          O_16 = PHI(SCZO_3, SZO_5, SCZO_3)
 ax_4: orig: ax
     def:  ax_4 = 0x0000
+    uses: ax_9 = PHI(ax_8, ax_4, ax_7)
 SZO_5: orig: SZO
     def:  SZO_5 = cond(0x0000)
+    uses: S_13 = PHI(SCZO_3, SZO_5, SCZO_3)
+          Z_15 = PHI(SCZO_3, SZO_5, SCZO_3)
+          O_16 = PHI(SCZO_3, SZO_5, SCZO_3)
 C_6: orig: C
     def:  C_6 = false
+    uses: C_14 = PHI(SCZO_3, C_6, SCZO_3)
 ax_7: orig: ax
     def:  ax_7 = 0x0001
+    uses: ax_9 = PHI(ax_8, ax_4, ax_7)
 ax_8: orig: ax
     def:  ax_8 = 0xFFFF
+    uses: ax_9 = PHI(ax_8, ax_4, ax_7)
 ax_9: orig: ax
     def:  ax_9 = PHI(ax_8, ax_4, ax_7)
     uses: Mem12[ds:0x0100:word16] = ax_9
@@ -30,22 +45,18 @@ Mem12: orig: Mem0
 ds:ds
     def:  def ds
     uses: Mem12[ds:0x0100:word16] = ax_9
-C_13: orig: C
-    def:  C_13 = PHI(SCZO_3, C_6, SCZO_3)
-    uses: use C_13
-          use C_13 | SCZO_14 | SCZO_15 | SCZO_16
-SCZO_14: orig: SCZO
-    def:  SCZO_14 = PHI(SCZO_3, SZO_5, SCZO_3)
-    uses: use C_13 | SCZO_14 | SCZO_15 | SCZO_16
-          use SCZO_14 | SCZO_15 | SCZO_16
-SCZO_15: orig: SCZO
-    def:  SCZO_15 = PHI(SCZO_3, SZO_5, SCZO_3)
-    uses: use C_13 | SCZO_14 | SCZO_15 | SCZO_16
-          use SCZO_14 | SCZO_15 | SCZO_16
-SCZO_16: orig: SCZO
-    def:  SCZO_16 = PHI(SCZO_3, SZO_5, SCZO_3)
-    uses: use C_13 | SCZO_14 | SCZO_15 | SCZO_16
-          use SCZO_14 | SCZO_15 | SCZO_16
+S_13: orig: S
+    def:  S_13 = PHI(SCZO_3, SZO_5, SCZO_3)
+    uses: use C_14 | O_16 | S_13 | Z_15
+C_14: orig: C
+    def:  C_14 = PHI(SCZO_3, C_6, SCZO_3)
+    uses: use C_14 | O_16 | S_13 | Z_15
+Z_15: orig: Z
+    def:  Z_15 = PHI(SCZO_3, SZO_5, SCZO_3)
+    uses: use C_14 | O_16 | S_13 | Z_15
+O_16: orig: O
+    def:  O_16 = PHI(SCZO_3, SZO_5, SCZO_3)
+    uses: use C_14 | O_16 | S_13 | Z_15
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
@@ -76,16 +87,16 @@ l0C00_0013:
 	C_6 = false
 	// succ:  l0C00_0015
 l0C00_0015:
-	SCZO_16 = PHI(SCZO_3, SZO_5, SCZO_3)
-	C_13 = PHI(SCZO_3, C_6, SCZO_3)
+	O_16 = PHI(SCZO_3, SZO_5, SCZO_3)
+	Z_15 = PHI(SCZO_3, SZO_5, SCZO_3)
+	C_14 = PHI(SCZO_3, C_6, SCZO_3)
+	S_13 = PHI(SCZO_3, SZO_5, SCZO_3)
 	ax_9 = PHI(ax_8, ax_4, ax_7)
 	Mem12[ds:0x0100:word16] = ax_9
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use ax_9
-	use C_13
-	use C_13 | SCZO_14 | SCZO_15 | SCZO_16
+	use C_14 | O_16 | S_13 | Z_15
 	use sp_1
-	use SCZO_14 | SCZO_15 | SCZO_16
 

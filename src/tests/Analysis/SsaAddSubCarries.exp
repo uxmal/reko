@@ -3,22 +3,23 @@ fp:fp
     uses: sp_1 = fp
 sp_1: orig: sp
     def:  sp_1 = fp
+    uses: use sp_1
 ds:ds
     def:  def ds
     uses: ax_4 = Mem0[ds:0x0200:word16]
           dx_5 = Mem0[ds:0x0202:word16]
           cx_6 = Mem0[ds:0x0204:word16]
           bx_7 = Mem0[ds:0x0206:word16]
-          Mem13[ds:0x0208:word16] = ax_8
-          Mem14[ds:0x020A:word16] = dx_11
-          ax_15 = Mem14[ds:0x0210:word16]
-          dx_16 = Mem14[ds:0x0212:word16]
-          es_cx_17 = Mem14[ds:0x0214:segptr32]
-          Mem24[ds:0x0218:word16] = ax_21
-          Mem27[ds:0x021A:word16] = dx_25
-          cl_31 = Mem27[ds:0x0220:byte]
-          cl_36 = Mem27[ds:0x0221:byte]
-          Mem46[ds:0x0222:word16] = ax_42
+          Mem12[ds:0x0208:word16] = ax_8
+          Mem13[ds:0x020A:word16] = dx_10
+          ax_14 = Mem13[ds:0x0210:word16]
+          dx_15 = Mem13[ds:0x0212:word16]
+          es_cx_16 = Mem13[ds:0x0214:segptr32]
+          Mem22[ds:0x0218:word16] = ax_20
+          Mem25[ds:0x021A:word16] = dx_23
+          cl_29 = Mem25[ds:0x0220:byte]
+          cl_34 = Mem25[ds:0x0221:byte]
+          Mem39[ds:0x0222:word16] = ax_37
 Mem0:Global memory
     def:  def Mem0
     uses: ax_4 = Mem0[ds:0x0200:word16]
@@ -30,133 +31,121 @@ ax_4: orig: ax
     uses: ax_8 = ax_4 + cx_6
 dx_5: orig: dx
     def:  dx_5 = Mem0[ds:0x0202:word16]
-    uses: dx_11 = dx_5 + bx_7 + C_10
+    uses: dx_10 = dx_5 + bx_7 + SCZO_9
 cx_6: orig: cx
     def:  cx_6 = Mem0[ds:0x0204:word16]
     uses: ax_8 = ax_4 + cx_6
 bx_7: orig: bx
     def:  bx_7 = Mem0[ds:0x0206:word16]
-    uses: dx_11 = dx_5 + bx_7 + C_10
+    uses: dx_10 = dx_5 + bx_7 + SCZO_9
 ax_8: orig: ax
     def:  ax_8 = ax_4 + cx_6
     uses: SCZO_9 = cond(ax_8)
-          Mem13[ds:0x0208:word16] = ax_8
+          Mem12[ds:0x0208:word16] = ax_8
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_8)
-    uses: C_10 = SCZO_9 (alias)
-C_10: orig: C
-    def:  C_10 = SCZO_9 (alias)
-    uses: dx_11 = dx_5 + bx_7 + C_10
-dx_11: orig: dx
-    def:  dx_11 = dx_5 + bx_7 + C_10
-    uses: SCZO_12 = cond(dx_11)
-          Mem14[ds:0x020A:word16] = dx_11
-SCZO_12: orig: SCZO
-    def:  SCZO_12 = cond(dx_11)
+    uses: dx_10 = dx_5 + bx_7 + SCZO_9
+dx_10: orig: dx
+    def:  dx_10 = dx_5 + bx_7 + SCZO_9
+    uses: SCZO_11 = cond(dx_10)
+          Mem13[ds:0x020A:word16] = dx_10
+SCZO_11: orig: SCZO
+    def:  SCZO_11 = cond(dx_10)
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0208:word16] = ax_8
 Mem13: orig: Mem0
-    def:  Mem13[ds:0x0208:word16] = ax_8
-Mem14: orig: Mem0
-    def:  Mem14[ds:0x020A:word16] = dx_11
-    uses: ax_15 = Mem14[ds:0x0210:word16]
-          dx_16 = Mem14[ds:0x0212:word16]
-          es_cx_17 = Mem14[ds:0x0214:segptr32]
-ax_15: orig: ax
-    def:  ax_15 = Mem14[ds:0x0210:word16]
-    uses: ax_21 = ax_15 - cx_18
-dx_16: orig: dx
-    def:  dx_16 = Mem14[ds:0x0212:word16]
-    uses: dx_25 = dx_16 - bx_20 - C_23
-es_cx_17: orig: es_cx
-    def:  es_cx_17 = Mem14[ds:0x0214:segptr32]
-    uses: cx_18 = (word16) es_cx_17 (alias)
-          es_19 = SLICE(es_cx_17, selector, 16) (alias)
-          es_cx_38 = DPB(es_cx_17, cl_36, 0) (alias)
-cx_18: orig: cx
-    def:  cx_18 = (word16) es_cx_17 (alias)
-    uses: ax_21 = ax_15 - cx_18
-          cx_37 = DPB(cx_18, cl_36, 0) (alias)
-es_19: orig: es
-    def:  es_19 = SLICE(es_cx_17, selector, 16) (alias)
-    uses: bx_20 = es_19
-bx_20: orig: bx
-    def:  bx_20 = es_19
-    uses: dx_25 = dx_16 - bx_20 - C_23
-ax_21: orig: ax
-    def:  ax_21 = ax_15 - cx_18
-    uses: SCZO_22 = cond(ax_21)
-          Mem24[ds:0x0218:word16] = ax_21
-SCZO_22: orig: SCZO
-    def:  SCZO_22 = cond(ax_21)
-    uses: C_23 = SCZO_22 (alias)
-C_23: orig: C
-    def:  C_23 = SCZO_22 (alias)
-    uses: dx_25 = dx_16 - bx_20 - C_23
-Mem24: orig: Mem0
-    def:  Mem24[ds:0x0218:word16] = ax_21
-dx_25: orig: dx
-    def:  dx_25 = dx_16 - bx_20 - C_23
-    uses: SCZO_26 = cond(dx_25)
-          Mem27[ds:0x021A:word16] = dx_25
-SCZO_26: orig: SCZO
-    def:  SCZO_26 = cond(dx_25)
-Mem27: orig: Mem0
-    def:  Mem27[ds:0x021A:word16] = dx_25
-    uses: cl_31 = Mem27[ds:0x0220:byte]
-          cl_36 = Mem27[ds:0x0221:byte]
-ax_28: orig: ax
-    def:  ax_28 = 0x0000
-SZO_29: orig: SZO
-    def:  SZO_29 = cond(0x0000)
-C_30: orig: C
-    def:  C_30 = false
-cl_31: orig: cl
-    def:  cl_31 = Mem27[ds:0x0220:byte]
-    uses: SCZO_32 = cond(cl_31 - 0x30)
-SCZO_32: orig: SCZO
-    def:  SCZO_32 = cond(cl_31 - 0x30)
-    uses: C_33 = SCZO_32 (alias)
-C_33: orig: C
-    def:  C_33 = SCZO_32 (alias)
-    uses: ax_34 = 0x0000 + C_33
-ax_34: orig: ax
-    def:  ax_34 = 0x0000 + C_33
-    uses: SCZO_35 = cond(ax_34)
-          ax_42 = ax_34 + ax_34 + C_41
-          ax_42 = ax_34 + ax_34 + C_41
+    def:  Mem13[ds:0x020A:word16] = dx_10
+    uses: ax_14 = Mem13[ds:0x0210:word16]
+          dx_15 = Mem13[ds:0x0212:word16]
+          es_cx_16 = Mem13[ds:0x0214:segptr32]
+ax_14: orig: ax
+    def:  ax_14 = Mem13[ds:0x0210:word16]
+    uses: ax_20 = ax_14 - cx_19
+dx_15: orig: dx
+    def:  dx_15 = Mem13[ds:0x0212:word16]
+    uses: dx_23 = dx_15 - bx_18 - SCZO_21
+es_cx_16: orig: es_cx
+    def:  es_cx_16 = Mem13[ds:0x0214:segptr32]
+    uses: es_17 = SLICE(es_cx_16, selector, 16) (alias)
+          cx_19 = (word16) es_cx_16 (alias)
+          es_cx_30 = DPB(es_cx_16, cl_29, 0) (alias)
+es_17: orig: es
+    def:  es_17 = SLICE(es_cx_16, selector, 16) (alias)
+    uses: bx_18 = es_17
+          use es_17
+bx_18: orig: bx
+    def:  bx_18 = es_17
+    uses: dx_23 = dx_15 - bx_18 - SCZO_21
+          use bx_18
+cx_19: orig: cx
+    def:  cx_19 = (word16) es_cx_16 (alias)
+    uses: ax_20 = ax_14 - cx_19
+ax_20: orig: ax
+    def:  ax_20 = ax_14 - cx_19
+    uses: SCZO_21 = cond(ax_20)
+          Mem22[ds:0x0218:word16] = ax_20
+SCZO_21: orig: SCZO
+    def:  SCZO_21 = cond(ax_20)
+    uses: dx_23 = dx_15 - bx_18 - SCZO_21
+Mem22: orig: Mem0
+    def:  Mem22[ds:0x0218:word16] = ax_20
+dx_23: orig: dx
+    def:  dx_23 = dx_15 - bx_18 - SCZO_21
+    uses: SCZO_24 = cond(dx_23)
+          Mem25[ds:0x021A:word16] = dx_23
+          use dx_23
+SCZO_24: orig: SCZO
+    def:  SCZO_24 = cond(dx_23)
+Mem25: orig: Mem0
+    def:  Mem25[ds:0x021A:word16] = dx_23
+    uses: cl_29 = Mem25[ds:0x0220:byte]
+          cl_34 = Mem25[ds:0x0221:byte]
+ax_26: orig: ax
+    def:  ax_26 = 0x0000
+SZO_27: orig: SZO
+    def:  SZO_27 = cond(0x0000)
+C_28: orig: C
+    def:  C_28 = false
+cl_29: orig: cl
+    def:  cl_29 = Mem25[ds:0x0220:byte]
+    uses: SCZO_31 = cond(cl_29 - 0x30)
+es_cx_30: orig: es_cx
+    def:  es_cx_30 = DPB(es_cx_16, cl_29, 0) (alias)
+SCZO_31: orig: SCZO
+    def:  SCZO_31 = cond(cl_29 - 0x30)
+    uses: ax_32 = 0x0000 + SCZO_31
+ax_32: orig: ax
+    def:  ax_32 = 0x0000 + SCZO_31
+    uses: SCZO_33 = cond(ax_32)
+          ax_37 = ax_32 + ax_32 + C_36
+          ax_37 = ax_32 + ax_32 + C_36
+SCZO_33: orig: SCZO
+    def:  SCZO_33 = cond(ax_32)
+cl_34: orig: cl
+    def:  cl_34 = Mem25[ds:0x0221:byte]
+    uses: SCZO_35 = cond(cl_34 - 0x3A)
 SCZO_35: orig: SCZO
-    def:  SCZO_35 = cond(ax_34)
-cl_36: orig: cl
-    def:  cl_36 = Mem27[ds:0x0221:byte]
-    uses: cx_37 = DPB(cx_18, cl_36, 0) (alias)
-          es_cx_38 = DPB(es_cx_17, cl_36, 0) (alias)
-          SCZO_39 = cond(cl_36 - 0x3A)
-cx_37: orig: cx
-    def:  cx_37 = DPB(cx_18, cl_36, 0) (alias)
-es_cx_38: orig: es_cx
-    def:  es_cx_38 = DPB(es_cx_17, cl_36, 0) (alias)
-SCZO_39: orig: SCZO
-    def:  SCZO_39 = cond(cl_36 - 0x3A)
-    uses: C_40 = SCZO_39 (alias)
-C_40: orig: C
-    def:  C_40 = SCZO_39 (alias)
-    uses: C_41 = !C_40
-C_41: orig: C
-    def:  C_41 = !C_40
-    uses: ax_42 = ax_34 + ax_34 + C_41
-ax_42: orig: ax
-    def:  ax_42 = ax_34 + ax_34 + C_41
-    uses: SCZO_43 = cond(ax_42)
-          Mem46[ds:0x0222:word16] = ax_42
-SCZO_43: orig: SCZO
-    def:  SCZO_43 = cond(ax_42)
-    uses: SZO_44 = SCZO_43 (alias)
-          C_45 = SCZO_43 (alias)
-SZO_44: orig: SZO
-    def:  SZO_44 = SCZO_43 (alias)
-C_45: orig: C
-    def:  C_45 = SCZO_43 (alias)
-Mem46: orig: Mem0
-    def:  Mem46[ds:0x0222:word16] = ax_42
+    def:  SCZO_35 = cond(cl_34 - 0x3A)
+    uses: C_36 = !SCZO_35
+C_36: orig: C
+    def:  C_36 = !SCZO_35
+    uses: ax_37 = ax_32 + ax_32 + C_36
+ax_37: orig: ax
+    def:  ax_37 = ax_32 + ax_32 + C_36
+    uses: SCZO_38 = cond(ax_37)
+          Mem39[ds:0x0222:word16] = ax_37
+          use ax_37
+SCZO_38: orig: SCZO
+    def:  SCZO_38 = cond(ax_37)
+    uses: use SCZO_38
+Mem39: orig: Mem0
+    def:  Mem39[ds:0x0222:word16] = ax_37
+cx:cx
+    def:  def cx
+    uses: cx_41 = DPB(cx, cl_34, 0) (alias)
+cx_41: orig: cx
+    def:  cx_41 = DPB(cx, cl_34, 0) (alias)
+    uses: use cx_41
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -164,6 +153,7 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
+	def cx
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_1 = fp
@@ -173,44 +163,45 @@ l0C00_0000:
 	bx_7 = Mem0[ds:0x0206:word16]
 	ax_8 = ax_4 + cx_6
 	SCZO_9 = cond(ax_8)
-	C_10 = SCZO_9 (alias)
-	dx_11 = dx_5 + bx_7 + C_10
-	SCZO_12 = cond(dx_11)
-	Mem13[ds:0x0208:word16] = ax_8
-	Mem14[ds:0x020A:word16] = dx_11
-	ax_15 = Mem14[ds:0x0210:word16]
-	dx_16 = Mem14[ds:0x0212:word16]
-	es_cx_17 = Mem14[ds:0x0214:segptr32]
-	cx_18 = (word16) es_cx_17 (alias)
-	es_19 = SLICE(es_cx_17, selector, 16) (alias)
-	bx_20 = es_19
-	ax_21 = ax_15 - cx_18
-	SCZO_22 = cond(ax_21)
-	C_23 = SCZO_22 (alias)
-	Mem24[ds:0x0218:word16] = ax_21
-	dx_25 = dx_16 - bx_20 - C_23
-	SCZO_26 = cond(dx_25)
-	Mem27[ds:0x021A:word16] = dx_25
-	ax_28 = 0x0000
-	SZO_29 = cond(0x0000)
-	C_30 = false
-	cl_31 = Mem27[ds:0x0220:byte]
-	SCZO_32 = cond(cl_31 - 0x30)
-	C_33 = SCZO_32 (alias)
-	ax_34 = 0x0000 + C_33
-	SCZO_35 = cond(ax_34)
-	cl_36 = Mem27[ds:0x0221:byte]
-	cx_37 = DPB(cx_18, cl_36, 0) (alias)
-	es_cx_38 = DPB(es_cx_17, cl_36, 0) (alias)
-	SCZO_39 = cond(cl_36 - 0x3A)
-	C_40 = SCZO_39 (alias)
-	C_41 = !C_40
-	ax_42 = ax_34 + ax_34 + C_41
-	SCZO_43 = cond(ax_42)
-	SZO_44 = SCZO_43 (alias)
-	C_45 = SCZO_43 (alias)
-	Mem46[ds:0x0222:word16] = ax_42
+	dx_10 = dx_5 + bx_7 + SCZO_9
+	SCZO_11 = cond(dx_10)
+	Mem12[ds:0x0208:word16] = ax_8
+	Mem13[ds:0x020A:word16] = dx_10
+	ax_14 = Mem13[ds:0x0210:word16]
+	dx_15 = Mem13[ds:0x0212:word16]
+	es_cx_16 = Mem13[ds:0x0214:segptr32]
+	es_17 = SLICE(es_cx_16, selector, 16) (alias)
+	cx_19 = (word16) es_cx_16 (alias)
+	bx_18 = es_17
+	ax_20 = ax_14 - cx_19
+	SCZO_21 = cond(ax_20)
+	Mem22[ds:0x0218:word16] = ax_20
+	dx_23 = dx_15 - bx_18 - SCZO_21
+	SCZO_24 = cond(dx_23)
+	Mem25[ds:0x021A:word16] = dx_23
+	ax_26 = 0x0000
+	SZO_27 = cond(0x0000)
+	C_28 = false
+	cl_29 = Mem25[ds:0x0220:byte]
+	es_cx_30 = DPB(es_cx_16, cl_29, 0) (alias)
+	SCZO_31 = cond(cl_29 - 0x30)
+	ax_32 = 0x0000 + SCZO_31
+	SCZO_33 = cond(ax_32)
+	cl_34 = Mem25[ds:0x0221:byte]
+	cx_41 = DPB(cx, cl_34, 0) (alias)
+	SCZO_35 = cond(cl_34 - 0x3A)
+	C_36 = !SCZO_35
+	ax_37 = ax_32 + ax_32 + C_36
+	SCZO_38 = cond(ax_37)
+	Mem39[ds:0x0222:word16] = ax_37
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
+	use ax_37
+	use bx_18
+	use cx_41
+	use dx_23
+	use es_17
+	use SCZO_38
+	use sp_1
 

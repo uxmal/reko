@@ -85,22 +85,23 @@ namespace Reko.UnitTests.Analysis
             };
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var ssa = new SsaTransform2(arch, proc, importResolver, new DataFlow2());
-            var vp = new ValuePropagator(arch, ssa.SsaState);
+            var sst = new SsaTransform2(arch, proc, importResolver, new DataFlow2());
+            sst.Transform();
+            var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();
 
-            ssa.RenameFrameAccesses = true;
-            ssa.AddUseInstructions = true;
-            ssa.Transform();
+            sst.RenameFrameAccesses = true;
+            sst.AddUseInstructions = true;
+            sst.Transform();
 
             vp.Transform();
 
             var trf = new TrashedRegisterFinder2(
                 arch, 
                 pf,
-                new[] { ssa },
+                new[] { sst },
                 NullDecompilerEventListener.Instance);
-            var flow = trf.Compute(ssa.SsaState);
+            var flow = trf.Compute(sst.SsaState);
             var sw = new StringWriter();
             sw.Write("Preserved: ");
             sw.WriteLine(string.Join(",", flow.Preserved.OrderBy(p => p.ToString())));
@@ -146,8 +147,8 @@ Constants: r1:0x0000002A
         public void TrfStackPreserved()
         {
             var sExp =
-@"Preserved: fp,r1,r63
-Trashed: Global memory,Local -0004
+@"Preserved: r1,r63
+Trashed: 
 ";
             RunTest(sExp, m =>
             {
@@ -170,9 +171,9 @@ Trashed: Global memory,Local -0004
         public void TrfConstants()
         {
             var sExp =
-@"Preserved: fp,r63
-Trashed: ds,Local -0002
-Constants: ds:0x0C00,Local -0002:0x0C00
+@"Preserved: r63
+Trashed: ds
+Constants: ds:0x0C00
 ";
 
             RunTest(sExp, m =>
@@ -189,11 +190,10 @@ Constants: ds:0x0C00,Local -0002:0x0C00
         }
 
         [Test(Description = "Constant in one branch, not constant in the other")]
-        [Ignore("Use the new SSA transform to handle register aliasing.")]
         public void TrfConstNonConst()
         {
             var sExp =
-@"Preserved: ax
+@"Preserved: 
 Trashed: cl,cx
 ";
             RunTest(sExp, m =>
@@ -244,7 +244,9 @@ Constants: cl:0x00
         [Test(Description="Tests propagation between caller and callee.")]
         public void TrfSubroutine_WithRegisterParameters()
         {
-            var sExp1 = Expect("Preserved: r2", "Trashed: r1", "");
+            var sExp1 = Expect(
+                "Preserved: ",
+                "Trashed: r1", "");
 
             // Subroutine does a small calculation in registers
             RunTest(sExp1, "Addition", m =>
@@ -255,7 +257,10 @@ Constants: cl:0x00
                 m.Return();
             });
 
-            var sExp2 = string.Join(Environment.NewLine, new[] { "Preserved: ", "Trashed: Global memory,r1,r2", "" });
+            var sExp2 = Expect(
+                "Preserved: ",
+                "Trashed: r1,r2",
+                "");
 
             RunTest(sExp2, m =>
             {
@@ -272,7 +277,10 @@ Constants: cl:0x00
         [Test(Description = "Tests detection of trashed variables in the presence of recursion")]
         public void TrfRecursion()
         {
-            var sExp1 = Expect("Preserved: r2", "Trashed: Local -0004,r1", "");
+            var sExp1 = Expect(
+                "Preserved: r2",
+                "Trashed: r1",
+                "");
             RunTest(sExp1, "fact", m =>
             {
                 var fp = m.Frame.FramePointer;

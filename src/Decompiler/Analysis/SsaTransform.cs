@@ -840,9 +840,11 @@ namespace Reko.Analysis
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
                 this.block = b;
+                //Debug.Print("*** {0}:", b.Name);
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;
+                    //Debug.Print("***  {0}", s.Instruction);
                     s.Instruction = s.Instruction.Accept(this);
                 }
                 blockstates[b].Visited = true;
@@ -874,9 +876,11 @@ namespace Reko.Analysis
             var reachingIds = ssa.Identifiers
                 .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               !(sid.Identifier.Storage is MemoryStorage) &&
+                              !(sid.Identifier.Storage is StackStorage) &&
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier);
             reachingIds = SeparateSequences(reachingIds);
+            reachingIds = GroupFlags(reachingIds);
             var sortedIds = ResolveOverlaps(reachingIds)
                 .Distinct()
                 .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
@@ -910,6 +914,7 @@ namespace Reko.Analysis
         public static IEnumerable<Identifier> ResolveOverlaps(IEnumerable<Identifier> ids)
         {
             var registerBag = new Dictionary<StorageDomain, HashSet<Identifier>>();
+            var others = new List<Identifier>();
             foreach (var id in ids)
             {
                 if (id.Storage is RegisterStorage)
@@ -928,8 +933,40 @@ namespace Reko.Analysis
                         registerBag.Add(dom, aliases);
                     }
                 }
+                else
+                {
+                    others.Add(id);
+                }
             }
-            return registerBag.Values.SelectMany(s => s);
+            return registerBag.Values.SelectMany(s => s).Concat(others);
+        }
+
+        public IEnumerable<Identifier> GroupFlags(IEnumerable<Identifier> ids)
+        {
+            var flags = new Dictionary<FlagRegister, uint>();
+            var others = new List<Identifier>();
+            foreach (var id in ids)
+            {
+                var grf = id.Storage as FlagGroupStorage;
+                if (grf != null)
+                {
+                    uint u;
+                    if (flags.TryGetValue(grf.FlagRegister, out u))
+                    {
+                        flags[grf.FlagRegister] = u | grf.FlagGroupBits;
+                    }
+                    else
+                    {
+                        flags.Add(grf.FlagRegister, grf.FlagGroupBits);
+                    }
+                }
+                else
+                {
+                    others.Add(id);
+                }
+            }
+            return flags.Select(de => ssa.Procedure.Frame.EnsureFlagGroup(arch.GetFlagGroup(de.Value)))
+                .Concat(others);
         }
 
         public override Instruction TransformAssignment(Assignment a)
@@ -1265,6 +1302,7 @@ namespace Reko.Analysis
             public readonly Dictionary<StorageDomain, AliasState> currentDef;
             public readonly Dictionary<uint, SsaIdentifier> currentFlagDef;
             public readonly Dictionary<int, SsaIdentifier> currentStackDef;
+            public readonly Dictionary<int, SsaIdentifier> currentFpuDef;
             public bool Visited;
 
             public SsaBlockState(Block block)
@@ -1274,6 +1312,7 @@ namespace Reko.Analysis
                 this.currentDef = new Dictionary<StorageDomain, AliasState>();
                 this.currentFlagDef = new Dictionary<uint, SsaIdentifier>();
                 this.currentStackDef = new Dictionary<int, SsaIdentifier>();
+                this.currentFpuDef = new Dictionary<int, SsaIdentifier>();
             }
 
 #if DEBUG
@@ -1343,7 +1382,7 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
             {
-                throw new NotImplementedException();
+                return new FpuStackTransformer(id, fpu, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global)
@@ -1384,7 +1423,7 @@ namespace Reko.Analysis
 
         public abstract class SsaIdentifierTransformer
         {
-            protected readonly Identifier id;
+            protected Identifier id;
             protected readonly Statement stm;
             protected readonly SsaTransform2 outer;
             protected readonly SsaIdentifierCollection ssaIds;
@@ -1756,6 +1795,7 @@ namespace Reko.Analysis
                 foreach (uint flagBitMask in flagGroup.GetFlagBitMasks())
                 {
                     this.flagMask = flagBitMask;
+                    this.id = outer.ssa.Procedure.Frame.EnsureFlagGroup(outer.arch.GetFlagGroup(flagMask));
                     var sid = ReadVariable(bs, false);
                     ids[sid.Identifier] = sid;
                 }
@@ -1903,6 +1943,29 @@ namespace Reko.Analysis
                 ss = outer.factory.Create(seq.Tail, stm);
                 ss.WriteVariable(bs, sid, performProbe);
                 return sid.Identifier;
+            }
+        }
+
+        public class FpuStackTransformer : SsaIdentifierTransformer
+        {
+            private FpuStackStorage fpu;
+
+            public FpuStackTransformer(Identifier id, FpuStackStorage fpu, Statement stm, SsaTransform2 outer) : base(id, stm, outer)
+            {
+                this.fpu = fpu;
+            }
+
+            public override Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
+            {
+                bs.currentFpuDef[fpu.FpuStackOffset] = sid;
+                return base.NewDef(bs, sid);
+            }
+
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool aliasProbe)
+            {
+                SsaIdentifier sid;
+                bs.currentFpuDef.TryGetValue(fpu.FpuStackOffset, out sid);
+                return sid;
             }
         }
 

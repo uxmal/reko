@@ -287,12 +287,13 @@ bp_5: orig: bp
 CZS_6: orig: CZS
     def:  CZS_6 = cond(wArg04 - 0x0003)
     uses: branch Test(GE,CZS_6) ge3
+          use CZS_6
 r1_7: orig: r1
     def:  r1_7 = 0x00000001
-    uses: r1_17 = PHI(r1_8, r1_7)
+    uses: r1_19 = PHI(r1_8, r1_7)
 r1_8: orig: r1
     def:  r1_8 = 0x00000000
-    uses: r1_17 = PHI(r1_8, r1_7)
+    uses: r1_19 = PHI(r1_8, r1_7)
 bp_11: orig: bp
     def:  bp_11 = dwLoc04_14
     uses: use bp_11
@@ -305,9 +306,9 @@ dwLoc04_14: orig: dwLoc04
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_6 = cond(wArg04 - 0x0003)
-r1_17: orig: r1
-    def:  r1_17 = PHI(r1_8, r1_7)
-    uses: use r1_17
+r1_19: orig: r1
+    def:  r1_19 = PHI(r1_8, r1_7)
+    uses: use r1_19
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -318,7 +319,7 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_17 = PHI(r1_8, r1_7)
+	r1_19 = PHI(r1_8, r1_7)
 	bp_11 = dwLoc04_14
 	r63_13 = fp
 	return
@@ -341,7 +342,8 @@ l2:
 	// succ:  done
 ProcedureBuilder_exit:
 	use bp_11
-	use r1_17
+	use CZS_6
+	use r1_19
 	use r63_13
 ";
             #endregion
@@ -398,12 +400,13 @@ bp_5: orig: bp
 CZS_6: orig: CZS
     def:  CZS_6 = wArg04 - 0x0003
     uses: branch Test(GE,CZS_6) ge3
+          use CZS_6
 Mem7: orig: Mem0
     def:  wArg04_17 = -3
     uses: Mem11 = PHI(Mem9, Mem7)
 r1_8: orig: r1
     def:  r1_8 = 0x00000001
-    uses: r1_20 = PHI(r1, r1_8)
+    uses: r1_22 = PHI(r1, r1_8)
 Mem9: orig: Mem0
     def:  wArg04_18 = 0x0003
     uses: Mem11 = PHI(Mem9, Mem7)
@@ -412,6 +415,7 @@ Mem11: orig: Mem0
     uses: bp_12 = dwLoc04_15
 bp_12: orig: bp
     def:  bp_12 = dwLoc04_15
+    uses: use bp_12
 r63_14: orig: r63
     def:  r63_14 = fp
     uses: use r63_14
@@ -425,12 +429,12 @@ wArg04_17: orig: wArg04
     def:  wArg04_17 = -3
 wArg04_18: orig: wArg04
     def:  wArg04_18 = 0x0003
-r1_20: orig: r1
-    def:  r1_20 = PHI(r1, r1_8)
-    uses: use r1_20
+r1_22: orig: r1
+    def:  r1_22 = PHI(r1, r1_8)
+    uses: use r1_22
 r1:r1
     def:  def r1
-    uses: r1_20 = PHI(r1, r1_8)
+    uses: r1_22 = PHI(r1, r1_8)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -442,7 +446,7 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_20 = PHI(r1, r1_8)
+	r1_22 = PHI(r1, r1_8)
 	Mem11 = PHI(Mem9, Mem7)
 	bp_12 = dwLoc04_15
 	r63_14 = fp
@@ -466,7 +470,9 @@ l2:
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use r1_20
+	use bp_12
+	use CZS_6
+	use r1_22
 	use r63_14
 ";
 
@@ -585,6 +591,7 @@ Mem6: orig: Mem0
 CZS_7: orig: CZS
     def:  CZS_7 = wArg04 - 0x0003
     uses: branch Test(GE,CZS_7) ge3
+          use CZS_7
 r1:r1
     def:  def r1
     uses: dwLoc0C_21 = r1
@@ -604,6 +611,7 @@ r1_13: orig: r1
     uses: use r1_13
 bp_16: orig: bp
     def:  bp_16 = dwLoc04_18
+    uses: use bp_16
 r63_17: orig: r63
     def:  r63_17 = fp
     uses: use r63_17
@@ -660,6 +668,8 @@ l2:
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
+	use bp_16
+	use CZS_7
 	use r1_13
 	use r63_17
 ";
@@ -1806,6 +1816,48 @@ ProcedureBuilder_exit:
             });
 
 
+        }
+
+        [Test]
+        public void SsaFlags()
+        {
+            var sExp =
+            #region Expected
+                @"r1:r1
+    def:  def r1
+    uses: SZ_1 = cond(r1)
+SZ_1: orig: SZ
+    def:  SZ_1 = cond(r1)
+    uses: use C_2 | SZ_1
+C_2: orig: C
+    def:  C_2 = false
+    uses: use C_2 | SZ_1
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r1
+	// succ:  m0
+m0:
+	SZ_1 = cond(r1)
+	C_2 = false
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use C_2 | SZ_1
+";
+            #endregion
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var SZ = m.Flags("SZ");
+                var C = m.Flags("C");
+                var r1 = m.Reg32("r1", 1);
+
+                m.Label("m0");
+                m.Assign(SZ, m.Cond(r1));
+                m.Assign(C, Constant.Bool(false));
+                m.Return();
+            });
         }
     }
 }

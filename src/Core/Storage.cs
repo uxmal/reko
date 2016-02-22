@@ -295,6 +295,11 @@ namespace Reko.Core
             return FpuStackOffset == fss.FpuStackOffset;
         }
 
+        public override bool Exceeds(Storage that)
+        {
+            return false;
+        }
+
         public override int GetHashCode()
         {
             return GetType().GetHashCode() ^ FpuStackOffset.GetHashCode();
@@ -305,9 +310,11 @@ namespace Reko.Core
             return -1;
         }
 
-        public override bool OverlapsWith(Storage that)
+        public override bool OverlapsWith(Storage sThat)
         {
-            throw new NotImplementedException();
+            var that = sThat as FpuStackStorage;
+            return that != null &&
+                this.FpuStackOffset == that.FpuStackOffset;
         }
 
         public override void Write(TextWriter writer)

@@ -52,8 +52,7 @@ dx_14: orig: dx
           use dx_14
 SCZO_15: orig: SCZO
     def:  SCZO_15 = cond(dx_14)
-    uses: use SCZO_15
-          use SCZO_15 | SZO_21
+    uses: use SCZO_15 | SZO_21
 cx_16: orig: cx
     def:  cx_16 = PHI(cx_5, cx_17, cx_18)
     uses: cx_17 = cx_16 - 0x0001
@@ -78,7 +77,6 @@ SZO_21: orig: SZO
     def:  SZO_21 = cond(di_20)
     uses: branch Test(NE,SZO_21) l0C00_0008
           use SCZO_15 | SZO_21
-          use SZO_21
 Mem22: orig: Mem0
     def:  Mem22[ds:0x0300:word16] = dx_14
 ds:ds
@@ -128,12 +126,10 @@ l0C00_0013:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use ax_10
-	use SCZO_15
 	use cx_18
 	use di_20
 	use dx_14
 	use SCZO_15 | SZO_21
 	use si_12
 	use sp_1
-	use SZO_21
 
