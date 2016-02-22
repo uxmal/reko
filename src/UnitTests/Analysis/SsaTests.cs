@@ -58,10 +58,22 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
 		{
-            Debug.Print("SsaTest: {0}", new StackFrame(3).GetMethod().Name);
+            var flow = new ProgramDataFlow(prog);
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var flow = new ProgramDataFlow(prog);
+#if NEW_SSA2
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                var sst = new SsaTransform2(prog.Architecture, proc, importResolver, flow.ToDataFlow2());
+                sst.AddUseInstructions = true;
+                sst.Transform();
+                Debug.Print("SsaTest: {0}", new StackFrame(3).GetMethod().Name);
+                ssa = sst.SsaState;
+                ssa.Write(writer);
+                proc.Write(false, true, writer);
+                writer.WriteLine();
+            }
+#else
             var eventListener = new FakeDecompilerEventListener();
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
             trf.Compute();
@@ -72,21 +84,16 @@ namespace Reko.UnitTests.Analysis
 
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-#if NEW_SSA2
-                var sst = new SsaTransform2(prog.Architecture, proc, importResolver, flow.ToDataFlow2());
-                sst.AddUseInstructions = true;
-                sst.Transform();
-#else
                 Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(flow, proc, gr);
-#endif
                 ssa = sst.SsaState;
 				ssa.Write(writer);
 				proc.Write(false, true, writer);
 				writer.WriteLine();
 			}
+#endif
 		}
 
         private void Dump(CallGraph cg)

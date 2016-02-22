@@ -867,7 +867,7 @@ namespace Reko.Analysis
         {
             //$TODO: flag groups need to be grouped on exit
             // We don't do them yet.
-            var block = ssa.Procedure.ExitBlock;
+            this.block = ssa.Procedure.ExitBlock;
             var existing = block.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
@@ -1480,13 +1480,17 @@ namespace Reko.Analysis
 
                             var alias = new AliasState(sidPrev);
                             alias.Aliases.Add(id, sid);
+                            //Debug.Print("--- {0}: {1}", bs.Block.Name, sid.Identifier.Name);
                             bs.currentDef[id.Storage.Domain] = alias;
                             return sid.Identifier;
                         }
                     }
                 }
                 if (!(sid.DefStatement.Instruction is AliasAssignment))
+                {
+                    //Debug.Print("--- {0}: {1}", bs.Block.Name, sid.Identifier.Name);
                     bs.currentDef[id.Storage.Domain] = new AliasState(sid);
+                }
                 return sid.Identifier;
             }
 

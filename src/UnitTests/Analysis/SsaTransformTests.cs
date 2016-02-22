@@ -1859,5 +1859,42 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsaBranchesLoops()
+        {
+            var sExp =
+            #region Expected
+                "@@@";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r3 = m.Reg8("r3", 3);
+
+                m.Label("m0");
+                m.BranchIf(m.Eq0(m.LoadB(r1)), "m2endloop");
+
+                m.Label("m1");
+                m.BranchIf(m.Eq(m.LoadB(r1), r3), "m2endloop");
+
+                m.Label("m1a");
+                m.Assign(r1, m.IAdd(r1, 1));
+                m.Goto("m0");
+
+                m.Label("m2endloop");
+                m.BranchIf(m.Eq0(m.LoadB(r1)), "m4");
+
+                m.Label("m3");
+                m.Assign(r2, 0);
+                m.Return();
+
+                m.Label("m4");
+                m.Assign(r2, r1);
+                m.Return();
+            });
+        }
     }
 }
