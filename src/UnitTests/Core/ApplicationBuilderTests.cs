@@ -118,5 +118,20 @@ namespace Reko.UnitTests.Core
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
         }
+
+        [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
+        public void AppBld_NoVariadic_Characteristics()
+        {
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
+            var ab = new ApplicationBuilder(
+                arch, 
+                caller.Frame,
+                new CallSite(4, 0), 
+                new ProcedureConstant(PrimitiveType.Pointer32, callee), true);
+            var sig = ProcedureSignature.Action(new Identifier("...", new UnknownType(), new StackArgumentStorage(0, null)));
+            var instr = ab.CreateInstruction(sig, null);
+            Assert.AreEqual("callee()", instr.ToString());
+        }
 	}
 }

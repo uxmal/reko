@@ -20,6 +20,7 @@
 
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace Reko.Core
 
         }
 
-        public override List<Expression> BindArguments(ProcedureSignature sigCallee)
+        public override List<Expression> BindArguments(ProcedureSignature sigCallee, ProcedureCharacteristics chr)
         {
             var actuals = new List<Expression>();
             int i;
