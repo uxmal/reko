@@ -40,6 +40,7 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler ModelChanged;
         public event EventHandler<EditorNavigationArgs> Navigate;
         public event EventHandler SelectionChanged; // Fired whenever the selection changes.
+        public event EventHandler VScrollValueChanged;
 
         private StringFormat stringFormat;
         private SortedList<float, LayoutLine> visibleLines;
@@ -603,6 +604,7 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         protected virtual void OnScroll()
         {
+            VScrollValueChanged.Fire(this);
         }
 
         protected void RecomputeLayout()
@@ -670,6 +672,14 @@ namespace Reko.Gui.Windows.Controls
             this.ignoreScroll = true;
             vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
             this.ignoreScroll = false;
+        }
+
+        public void SetPositionAsFraction(int numer, int denom)
+        {
+            Model.SetPositionAsFraction(numer, denom);
+            RecomputeLayout();
+            UpdateScrollbar();
+            Invalidate();
         }
     }
 

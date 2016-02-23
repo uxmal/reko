@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Reko.Gui.Windows
 {
@@ -39,10 +40,23 @@ namespace Reko.Gui.Windows
         {
             if (proc == null)
                 return;
+#if OLD
             var pane = new CodeViewerPane();
             var frame = ShowWindow("codeViewerWindow", proc.Name, proc, pane);
             pane.FrameWindow = frame;
             pane.DisplayProcedure(program, proc);
+#else
+            var pane = new CombinedCodeViewerPane();
+            var frame = ShowWindow("combinedCodeViewerWindow", program.Name, program, pane);
+            pane.Program = program;
+            if (program != null)
+            {
+                pane.SelectedAddress = program.ImageMap.Segments.Values
+                    .Where(s => s.MemoryArea != null)
+                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
+                    .First();
+            }
+#endif
         }
 
         public void DisplayDataType(Program program, DataType dt)

@@ -196,6 +196,7 @@
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CodeViewerPane.cs" />
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
+    <Compile Include="Windows\CombinedCodeViewerPane.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
     <Compile Include="Windows\Controls\MixedCodeDataControl.cs">
       <SubType>Component</SubType>
@@ -250,6 +251,12 @@
     <Compile Include="Windows\Controls\NestedTextModel.cs" />
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Controls\CombinedCodeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Controls\CombinedCodeView.Designer.cs">
+      <DependentUpon>CombinedCodeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />
@@ -497,6 +504,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Controls\CodeView.resx">
       <DependentUpon>CodeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Controls\CombinedCodeView.resx">
+      <DependentUpon>CombinedCodeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Controls\DirtyManager.resx">
       <DependentUpon>DirtyManager.cs</DependentUpon>

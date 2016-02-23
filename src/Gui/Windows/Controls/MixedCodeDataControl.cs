@@ -51,10 +51,12 @@ namespace Reko.Gui.Windows.Controls
             if (program != null)
             {
                 Model = new MixedCodeDataModel(program);
+                addrTop = (Address)Model.CurrentPosition;
             }
             else
             {
                 Model = new EmptyEditorModel();
+                addrTop = null;
             }
         }
 
@@ -63,8 +65,16 @@ namespace Reko.Gui.Windows.Controls
             if (program != null)
             {
                 Model.MoveToLine(addrTop, 0);
+                RecomputeLayout();
+                UpdateScrollbar();
                 Invalidate();
             }
+        }
+
+        protected override void OnScroll()
+        {
+            addrTop = (Address)Model.CurrentPosition;
+            base.OnScroll();
         }
     }
 }
