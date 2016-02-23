@@ -360,7 +360,7 @@ ProcedureBuilder_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
-                m.Assign(cr, m.Cond( m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3)));
+                m.Assign(cr, m.Cond(m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3)));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Assign(r1, 0);
@@ -815,15 +815,15 @@ ProcedureBuilder_exit:
 
             RunTest_FrameAccesses(sExp, m =>
             {
-            var r1 = m.Register("r1");
-            var r2 = m.Register("r2");
-            var r3 = m.Register("r3");
-            m.BranchIf(r1, "true");
-            m.Assign(r2, m.Int32(16));
-            m.Label("true");
-            m.Call(r3, 4);
-            m.Return();
-                        });
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var r3 = m.Register("r3");
+                m.BranchIf(r1, "true");
+                m.Assign(r2, m.Int32(16));
+                m.Label("true");
+                m.Call(r3, 4);
+                m.Return();
+            });
         }
 
         [Test(Description = "Self-recursive functions that pass parameters on stack should work.")]
@@ -1033,7 +1033,7 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaIfThen()
         {
-            
+
             var sExp =
             #region Expected
                 @"a:a
@@ -1092,6 +1092,7 @@ ProcedureBuilder_exit:
 @"eax:eax
     def:  def eax
     uses: eax_2 = Mem0[eax:word32]
+          eax_5 = DPB(eax, ah_3, 8) (alias)
 Mem0:Global memory
     def:  def Mem0
     uses: eax_2 = Mem0[eax:word32]
@@ -1101,8 +1102,12 @@ eax_2: orig: eax
 ah_3: orig: ah
     def:  ah_3 = SLICE(eax_2, byte, 8) (alias)
     uses: Mem4[0x00001234:byte] = ah_3
+          use ah_3
 Mem4: orig: Mem0
     def:  Mem4[0x00001234:byte] = ah_3
+eax_5: orig: eax
+    def:  eax_5 = DPB(eax, ah_3, 8) (alias)
+    uses: use eax_5
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1113,10 +1118,13 @@ ProcedureBuilder_entry:
 l1:
 	eax_2 = Mem0[eax:word32]
 	ah_3 = SLICE(eax_2, byte, 8) (alias)
+	eax_5 = DPB(eax, ah_3, 8) (alias)
 	Mem4[0x00001234:byte] = ah_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
+	use ah_3
+	use eax_5
 ";
             #endregion
 
@@ -1349,7 +1357,7 @@ ProcedureBuilder_exit:
                 m.Store(m.Word32(0x123400), ebx);
                 m.Return();
             });
-    }
+        }
 
         [Test]
         public void SsaSequence()
@@ -1408,7 +1416,7 @@ ProcedureBuilder_exit:
                 var es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.SegPtr32);
 
                 m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
-                m.Assign(bx, m.SegMem(PrimitiveType.Word32, es, m.IAdd(bx,16)));
+                m.Assign(bx, m.SegMem(PrimitiveType.Word32, es, m.IAdd(bx, 16)));
                 m.Return();
             });
         }
@@ -1731,6 +1739,108 @@ ProcedureBuilder_exit:
                 m.Goto("m0");
 
                 m.Label("m3done");
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void SsaAliasedRegisters()
+        {
+            var sExp =
+            #region Expected
+@"Mem0:Global memory
+    def:  def Mem0
+    uses: bl_1 = Mem0[0x1234:word16]
+bl_1: orig: bl
+    def:  bl_1 = Mem0[0x1234:word16]
+bh_2: orig: bh
+    def:  bh_2 = 0x00
+bx:bx
+    def:  def bx
+    uses: bx_4 = DPB(bx, bl_1, 0) (alias)
+          bx_10 = DPB(bx, bl_9, 0) (alias)
+bx_4: orig: bx
+    def:  bx_4 = DPB(bx, bl_1, 0) (alias)
+    uses: bx_5 = DPB(bx_4, 0x00, 8) (alias)
+          bh_8 = SLICE(bx_4, byte, 8) (alias)
+          bl_9 = (byte) bx_4 (alias)
+bx_5: orig: bx
+    def:  bx_5 = DPB(bx_4, 0x00, 8) (alias)
+    uses: Mem7[0x1236:word16] = bx_5
+Mem6: orig: Mem0
+    def:  Mem7[0x1236:word16] = bx_5
+Mem7: orig: Mem6
+    def:  Mem7[0x1236:word16] = bx_5
+bh_8: orig: bh
+    def:  bh_8 = SLICE(bx_4, byte, 8) (alias)
+    uses: use bh_8
+bl_9: orig: bl
+    def:  bl_9 = (byte) bx_4 (alias)
+    uses: use bl_9
+bx_10: orig: bx
+    def:  bx_10 = DPB(bx, bl_9, 0) (alias)
+    uses: use bx_10
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	def bx
+	// succ:  m0
+m0:
+	bl_1 = Mem0[0x1234:word16]
+	bx_4 = DPB(bx, bl_1, 0) (alias)
+	bh_8 = SLICE(bx_4, byte, 8) (alias)
+	bl_9 = (byte) bx_4 (alias)
+	bx_10 = DPB(bx, bl_9, 0) (alias)
+	// succ:  m1
+m1:
+	bh_2 = 0x00
+	bx_5 = DPB(bx_4, 0x00, 8) (alias)
+	Mem7[0x1236:word16] = bx_5
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use bh_8
+	use bl_9
+	use bx_10
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+                var bh = m.Frame.EnsureRegister(new RegisterStorage("bh", 3, 8, PrimitiveType.Byte));
+                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
+
+                m.Label("m0");
+                m.Assign(bl, m.LoadW(m.Word16(0x1234)));
+                m.Label("m1");
+                m.Assign(bh, 0);
+                m.Store(m.Word16(0x1236), bx);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void SsaAliasedRegistersWithPhi()
+        {
+            var sExp = "@@@";
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+                var bh = m.Frame.EnsureRegister(new RegisterStorage("bh", 3, 8, PrimitiveType.Byte));
+                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
+
+                m.Label("m0");
+                m.Assign(bl, m.LoadW(m.Word16(0x1234)));
+                m.BranchIf(m.Gt(bl, 3), "m2");
+
+                m.Label("m1");
+                m.Assign(bh, 0);
+                m.Store(m.Word16(0x1236), bx);
+
+                m.Label("m2");
                 m.Return();
             });
         }

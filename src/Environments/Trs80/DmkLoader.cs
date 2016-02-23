@@ -63,11 +63,13 @@ namespace Reko.Environments.Trs80
             var bytes = tracks.SelectMany(t => t.Sectors)
                 .SelectMany(s => s.GetData())
                 .ToArray();
-            var image = new MemoryArea(addrLoad, bytes);
+            var mem = new MemoryArea(addrLoad, bytes);
             return new Program
             {
                 Architecture = new Z80ProcessorArchitecture(),
-                ImageMap = image.CreateImageMap(),
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute))
             };
         }
 
