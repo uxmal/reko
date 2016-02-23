@@ -133,8 +133,8 @@ namespace Reko.UnitTests.Core
 
 			var cs = new CallSite(f.ReturnAddressSize + 2 * 4, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
-			var ab = new FrameApplicationBuilder(arch, f, cs, fn, sig, true);
-            Instruction instr = ab.CreateInstruction(); 
+			var ab = new FrameApplicationBuilder(arch, f, cs, fn, true);
+            Instruction instr = ab.CreateInstruction(sig, null); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{
 				f.Write(fut.TextWriter);
@@ -159,8 +159,8 @@ namespace Reko.UnitTests.Core
 			
 			var cs = new CallSite(stack, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
-			var ab = new FrameApplicationBuilder(arch, f, cs, fn, sig, true);
-            Instruction instr = ab.CreateInstruction();
+			var ab = new FrameApplicationBuilder(arch, f, cs, fn, true);
+            Instruction instr = ab.CreateInstruction(sig, null);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
 			{
 				f.Write(fut.TextWriter);

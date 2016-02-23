@@ -498,11 +498,10 @@ namespace Reko.Analysis
 			{
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
                 var ab = new FrameApplicationBuilder(
-                    program.Architecture, 
-                    Procedure.Frame, 
+                    program.Architecture,
+                    Procedure.Frame,
                     ci.CallSite,
-                    new ProcedureConstant(program.Platform.PointerType, procCallee), 
-                    sig, 
+                    new ProcedureConstant(program.Platform.PointerType, procCallee),
                     false);
 				if (sig.ReturnValue != null)
 				{

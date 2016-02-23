@@ -81,13 +81,13 @@ namespace Reko.Core
             if (callee == null)
                 return false;          //$REVIEW: what happens with indirect calls?
 			var procCallee = callee.Procedure;
-			var sigCallee = GetProcedureSignature(procCallee);
+            var sigCallee = procCallee.Signature;
 			var fn = new ProcedureConstant(Program.Platform.PointerType, procCallee);
             if (sigCallee == null || !sigCallee.ParametersValid)
                 return false;
 
-            var ab = new FrameApplicationBuilder(Program.Architecture, proc.Frame, call.CallSite, fn, sigCallee, true);
-			stm.Instruction = ab.CreateInstruction();
+            var ab = new FrameApplicationBuilder(Program.Architecture, proc.Frame, call.CallSite, fn, true);
+			stm.Instruction = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
             return true;
 		}
 

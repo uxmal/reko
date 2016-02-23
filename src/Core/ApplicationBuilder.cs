@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Serialization;
 
 namespace Reko.Core
 {
@@ -54,17 +55,57 @@ namespace Reko.Core
         /// <param name="site">The call site of the calling instruction.</param>
         /// <param name="callee">The procedure being called.</param>
         /// <param name="sigCallee">The signature of the procedure being called.</param>
-        public ApplicationBuilder(
-            CallSite site,
-            Expression callee,
-            ProcedureSignature sigCallee)
+        public ApplicationBuilder(CallSite site, Expression callee)
         {
             this.site = site;
             this.callee = callee;
-            this.sigCallee = sigCallee;
         }
 
-        public virtual List<Expression> BindArguments(ProcedureSignature sigCallee)
+        /// <summary>
+        /// Creates an instruction:
+        ///     a = foo(b)
+        /// or 
+        ///     foo(b)
+        ///  depending on whether the signature returns a value or is of
+        /// type 'void'
+        /// </summary>
+        /// <returns></returns>
+        public Instruction CreateInstruction(
+            ProcedureSignature sigCallee,
+            ProcedureCharacteristics chr)
+        {
+            var idOut = BindReturnValue(sigCallee.ReturnValue);
+            var dtOut = sigCallee.ReturnValue != null
+                ? sigCallee.ReturnValue.DataType
+                : VoidType.Instance;
+            var actuals = BindArguments(sigCallee, chr);
+            Expression appl = new Application(
+                callee,
+                dtOut,
+                actuals.ToArray());
+
+            if (idOut == null)
+            {
+                return new SideEffect(appl);
+            }
+            else
+            {
+                if (idOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
+                {
+                    appl = new DepositBits(idOut, appl, 0);
+                }
+                return new Assignment(idOut, appl);
+            }
+        }
+
+        /// <summary>
+        /// Bind the formal parameters of the signature to actual arguments in
+        /// the frame of the calling procedure.
+        /// </summary>
+        /// <param name="sigCallee"></param>
+        /// <param name="chr"></param>
+        /// <returns></returns>
+        public virtual List<Expression> BindArguments(ProcedureSignature sigCallee, ProcedureCharacteristics chr)
         {
             if (sigCallee == null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
@@ -73,6 +114,10 @@ namespace Reko.Core
             for (int i = 0; i < sigCallee.Parameters.Length; ++i)
             {
                 var formalArg = sigCallee.Parameters[i];
+                if (formalArg.Name == "...")
+                {
+                    return BindVariadicArguments(sigCallee, chr, actuals);
+                }
                 if (formalArg.Storage is OutArgumentStorage)
                 {
                     var outArg = BindOutArg(formalArg);
@@ -85,45 +130,19 @@ namespace Reko.Core
                 }
             }
             return actuals;
+            }
+
+        public List<Expression> BindVariadicArguments(ProcedureSignature sig, ProcedureCharacteristics chr, List<Expression> actuals)
+        {
+            if (chr == null)
+            return actuals;
+            throw new NotImplementedException();
         }
 
         public abstract OutArgument BindOutArg(Identifier id);
         public abstract Identifier BindReturnValue(Identifier id);
         public abstract Expression Bind(Identifier id);
 
-        /// <summary>
-        /// Creates an instruction:
-        ///     a = foo(b)
-        /// or 
-        ///     foo(b)
-        ///  depending on whether the signature returns a value or is of
-        /// type 'void'
-        /// </summary>
-        /// <returns></returns>
-        public Instruction CreateInstruction()
-        {
-            var idOut = BindReturnValue(sigCallee.ReturnValue);
-            var dtOut = sigCallee.ReturnValue != null
-                ? sigCallee.ReturnValue.DataType
-                : VoidType.Instance;
-            var actuals = BindArguments(sigCallee);
-            Expression appl = new Application(
-                callee,
-                dtOut,
-                actuals.ToArray());
 
-			if (idOut == null)
-			{
-                return new SideEffect(appl);
-			}
-			else
-			{
-                if (idOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
-                {
-                    appl = new DepositBits(idOut, appl, 0);
-                }
-                return new Assignment(idOut, appl);
-			}
-        }
     }
 }

@@ -49,15 +49,12 @@ namespace Reko.Core
             Frame frame,
             CallSite site,
             Expression callee,
-            ProcedureSignature sigCallee,
-            bool ensureVariables) :
-            base(site, callee, sigCallee)
+            bool ensureVariables) : base(site, callee)
         {
             this.arch = arch;
             this.site = site;
             this.frame = frame;
             this.callee = callee;
-            this.sigCallee = sigCallee;
             this.ensureVariables = ensureVariables;
         }
 

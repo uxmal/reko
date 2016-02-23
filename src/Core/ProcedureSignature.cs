@@ -51,6 +51,16 @@ namespace Reko.Core
             this.FpuStackArgumentMax = -1;
         }
 
+        public static ProcedureSignature Func(Identifier returnId, params Identifier[] formals)
+        {
+            return new ProcedureSignature(returnId, formals);
+        }
+
+        public static ProcedureSignature Action(params Identifier[] formals)
+        {
+            return new ProcedureSignature(null, formals);
+        }
+
         public ProcedureSignature(Identifier returnId, params Identifier[] formalArguments)
             : this()
         {

@@ -1,5 +1,6 @@
 ﻿using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,13 @@ namespace Reko.Core
     public class PrintfApplicationBuilder : FrameApplicationBuilder
     {
         public PrintfApplicationBuilder(
-            IProcessorArchitecture arch, Frame frame, CallSite site, Expression callee, ProcedureSignature sigCallee, bool ensureVariables) :
-                    base(arch, frame, site, callee, sigCallee, ensureVariables)
+            IProcessorArchitecture arch, Frame frame, CallSite site, Expression callee, bool ensureVariables) :
+                    base(arch, frame, site, callee, ensureVariables)
         {
 
         }
 
-        public override List<Expression> BindArguments(ProcedureSignature sigCallee)
+        public override List<Expression> BindArguments(ProcedureSignature sigCallee, ProcedureCharacteristics chr)
         {
             var actuals = new List<Expression>();
             int i;

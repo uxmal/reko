@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Core
 		[Test]
         public void AppBld_BindReturnValue()
 		{
-            ab  = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), sig, false);
+            ab  = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), false);
 			var r = ab.Bind(ret);
 			Assert.AreEqual("eax", r.ToString());
 		}
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Core
 		[Test]
         public void AppBld_BindOutParameter()
 		{
-            ab = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), sig, false);
+            ab = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), false);
             var o = ab.Bind(regOut);
 			Assert.AreEqual("edx", o.ToString());
 		}
@@ -75,8 +75,8 @@ namespace Reko.UnitTests.Core
         public void AppBld_BuildApplication()
 		{
 			Assert.IsTrue(sig.Parameters[3].Storage is OutArgumentStorage);
-            ab = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), sig, false);
-            var instr = ab.CreateInstruction();
+            ab = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), false);
+            var instr = ab.CreateInstruction(sig, null);
 			Assert.AreEqual("eax = foo(Mem0[esp + 4:word32], Mem0[esp + 8:word16], Mem0[esp + 12:byte], out edx)", instr.ToString());
 		}
 
@@ -98,8 +98,8 @@ namespace Reko.UnitTests.Core
             {
                 StackDepthOnEntry = 6
             };
-            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), callee.Signature, true); 
-            var instr = ab.CreateInstruction();
+            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), true); 
+            var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }
 
@@ -113,10 +113,26 @@ namespace Reko.UnitTests.Core
                 callee.Frame,
                 new CallSite(4, 0), 
                 new Identifier("foo", PrimitiveType.Pointer32, null),
-                new ProcedureSignature(new Identifier("bRet", PrimitiveType.Byte, Registers.eax)),
                 true);
-            var instr = ab.CreateInstruction();
+            var sig = new ProcedureSignature(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
+            var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
+        }
+
+        [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
+        public void AppBld_NoVariadic_Characteristics()
+        {
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
+            var ab = new FrameApplicationBuilder(
+                arch, 
+                caller.Frame,
+                new CallSite(4, 0), 
+                new ProcedureConstant(PrimitiveType.Pointer32, callee),
+                true);
+            var sig = ProcedureSignature.Action(new Identifier("...", new UnknownType(), new StackArgumentStorage(0, null)));
+            var instr = ab.CreateInstruction(sig, null);
+            Assert.AreEqual("callee()", instr.ToString());
         }
 	}
 }

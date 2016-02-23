@@ -144,20 +144,19 @@ namespace Reko.Scanning
             return block.Statements.Count > 0;
         }
 
-        private Instruction BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
+        private Instruction BuildApplication(Expression fn, ProcedureSignature sig, ProcedureCharacteristics c, CallSite site)
         {
-            var ab = CreateApplicationBuilder(fn, sig, site);
-            return ab.CreateInstruction();
+            var ab = CreateApplicationBuilder(fn, site);
+            return ab.CreateInstruction(sig, c);
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(Expression callee, ProcedureSignature sig, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(Expression callee, CallSite site)
         {
             var ab = new FrameApplicationBuilder(
                 arch,
                 frame,
                 site,
                 callee,
-                sig, 
                 false);
             return ab;
         }
@@ -401,7 +400,7 @@ namespace Reko.Scanning
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
-                EmitCall(pcCallee, sig, site);
+                EmitCall(pcCallee, callee.Signature, callee.Characteristics, site);
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
@@ -415,13 +414,13 @@ namespace Reko.Scanning
             {
                 sig = procCallee.Procedure.Signature;
                 chr = procCallee.Procedure.Characteristics;
-                EmitCall(procCallee, sig, site);
+                EmitCall(procCallee, sig, chr, site);
                 return OnAfterCall(sig, chr);
             }
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
-                EmitCall(call.Target, sig, site);
+                EmitCall(call.Target, sig, null, site);
                 return OnAfterCall(sig, chr);  //$TODO: make characteristics available
             }
 
@@ -434,7 +433,7 @@ namespace Reko.Scanning
                     var e = CreateProcedureConstant(ppp);
                     sig = ppp.Signature;
                     chr = ppp.Characteristics;
-                    EmitCall(e, sig, site);
+                    EmitCall(e, sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
             }
@@ -444,8 +443,7 @@ namespace Reko.Scanning
             {
                 sig = imp.Signature;
                 chr = imp.Characteristics;
-                EmitCall(CreateProcedureConstant(imp), sig, site);
-                //Emit(BuildApplication(CreateProcedureConstant(imp), sig, site));
+                EmitCall(CreateProcedureConstant(imp), sig, chr, site);
                 return OnAfterCall(sig, chr);
             }
 
@@ -463,11 +461,11 @@ namespace Reko.Scanning
             return OnAfterCall(sig, chr);
         }
 
-        private void EmitCall(Expression callee, ProcedureSignature sig, CallSite site)
+        private void EmitCall(Expression callee, ProcedureSignature sig, ProcedureCharacteristics chr, CallSite site)
         {
             if (sig != null && sig.ParametersValid)
             {
-                Emit(BuildApplication(callee, sig, site));
+                Emit(BuildApplication(callee, sig, chr, site));
             }
             else
             {
@@ -600,7 +598,7 @@ namespace Reko.Scanning
             if (svc.Signature != null)
             {
                 var site = state.OnBeforeCall(stackReg, svc.Signature.ReturnAddressOnStack);
-                Emit(BuildApplication(fn, ep.Signature, site));
+                Emit(BuildApplication(fn, ep.Signature, ep.Characteristics, site));
                 if (svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
@@ -629,7 +627,7 @@ namespace Reko.Scanning
         {
             if (impProc.Signature == null)
                 throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
-            var ab = CreateApplicationBuilder(new ProcedureConstant(program.Platform.PointerType, impProc), impProc.Signature, site);
+            var ab = CreateApplicationBuilder(new ProcedureConstant(program.Platform.PointerType, impProc), site);
             if (impProc.Signature.Parameters.Length != 1)
                 throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.Parameters.Length));
             var target = ab.Bind(impProc.Signature.Parameters[0]);
@@ -643,7 +641,7 @@ namespace Reko.Scanning
             }
             else
             {
-                Emit(ab.CreateInstruction());
+                Emit(ab.CreateInstruction(impProc.Signature, impProc.Characteristics));
             }
             return true;
         }

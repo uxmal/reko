@@ -45,7 +45,7 @@ namespace Reko.Analysis
 		private Procedure proc;
         private IImportResolver importResolver;
 
-		private const byte BitDefined = 1;
+        private const byte BitDefined = 1;
 		private const byte BitDeadIn = 2;
 		private const byte BitHasPhi = 4;
         private Dictionary<Expression, byte>[] AOrig;
@@ -512,7 +512,7 @@ namespace Reko.Analysis
             private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
             {
                 var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier).ToHashSet();
-                var ab = new FrameApplicationBuilder(null, proc.Frame, null, null, null, true);
+                var ab = new FrameApplicationBuilder(null, proc.Frame, null, null, true);
                 foreach (var idDef in flow.Trashed)
                 {
                     var idLocal = proc.Frame.EnsureIdentifier(idDef);
@@ -682,7 +682,7 @@ namespace Reko.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-                    return NewUse(id, stmCur);
+                return NewUse(id, stmCur);
 			}
 
             public override Expression VisitMemoryAccess(MemoryAccess access)
@@ -778,10 +778,10 @@ namespace Reko.Analysis
 		}
     }
 
-    /// <summary>
-    /// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment
+	/// <summary>
+	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment
     /// form.
-    /// </summary>
+	/// </summary>
     /// <remarks>
     /// EXPERIMENTAL - consult uxmal before using
     /// 
@@ -793,7 +793,7 @@ namespace Reko.Analysis
     /// expected that when it is fully implemented, it will take over from 
     /// SsaTransform above.
     /// </remarks>
-    public class SsaTransform2 : InstructionTransformer
+    public class SsaTransform2 : InstructionTransformer 
     {
         private IProcessorArchitecture arch;
         private DataFlow2 programFlow;
@@ -909,7 +909,7 @@ namespace Reko.Analysis
                     yield return id;
                 }
             }
-        }
+                }
 
         public static IEnumerable<Identifier> ResolveOverlaps(IEnumerable<Identifier> ids)
         {
@@ -926,12 +926,12 @@ namespace Reko.Analysis
                         aliases.RemoveWhere(a => id.Storage.Covers(a.Storage));
                         if (!aliases.Any(a => a.Storage.Covers(id.Storage)))
                             aliases.Add(id);
-                    }
+            }
                     else
                     {
                         aliases = new HashSet<Identifier> { id };
                         registerBag.Add(dom, aliases);
-                    }
+        }
                 }
                 else
                 {
@@ -991,7 +991,7 @@ namespace Reko.Analysis
             if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
             {
                 var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci.CallSite);
-                return ab.CreateInstruction();
+                return ab.CreateInstruction(callee.Signature, callee.Characteristics);
             }
             ProcedureFlow2 flow;
             var proc = callee as Procedure;
@@ -1009,17 +1009,13 @@ namespace Reko.Analysis
         private ApplicationBuilder CreateApplicationBuilder(DataType dt, ProcedureBase eCallee, CallSite site)
         {
             var pc = new ProcedureConstant(dt, eCallee);
-            var ab = new SsaApplicationBuilder(
-                this,
-                site,
-                pc,
-                eCallee.Signature);
+            var ab = new SsaApplicationBuilder(this, site, pc);
             return ab;
         }
 
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 flow)
         {
-            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, null, true);
+            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, true);
             foreach (var use in callee.EntryBlock.Statements
                 .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
             {
@@ -1210,7 +1206,7 @@ namespace Reko.Analysis
                 } else
                 {
                     c = null;
-                }
+        }
             }
             else
             {
@@ -1218,7 +1214,7 @@ namespace Reko.Analysis
             }
 
             if (c != null)
-            {
+        { 
                 access.EffectiveAddress = c;
                 var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
                 if (e != null)
@@ -1231,7 +1227,7 @@ namespace Reko.Analysis
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
-        {
+            {
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
@@ -1368,10 +1364,10 @@ namespace Reko.Analysis
                 this.id = id;
                 this.stm = stm;
                 return id.Storage.Accept(this);
-            }
+        }
 
             public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
-            {
+        {
                 return new SsaFlagTransformer(id, grf, stm, transform);
             }
 
@@ -1518,38 +1514,38 @@ namespace Reko.Analysis
 
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
             {
-                SsaIdentifier val;
-                if (false)  // !sealedBlocks.Contains(b))
-                {
-                    // Incomplete CFG
-                    //val = newPhi(id, b);
-                    //incompletePhis[b][id.Storage] = val;
-                }
+            SsaIdentifier val;
+            if (false)  // !sealedBlocks.Contains(b))
+            {
+                // Incomplete CFG
+                //val = newPhi(id, b);
+                //incompletePhis[b][id.Storage] = val;
+            }
                 else if (bs.Block.Pred.Count == 0)
-                {
-                    // Undef'ined or unreachable parameter; assume it's a def.
+            {
+                // Undef'ined or unreachable parameter; assume it's a def.
                     if (!aliasProbe)
                         val = NewDefInstruction(id, bs.Block);
                     else
                         val = null;
-                }
+            }
                 else if (bs.Block.Pred.Count == 1)
-                {
+            {
                     val = ReadVariable(blockstates[bs.Block.Pred[0]], aliasProbe);
-                }
-                else
-                {
-                    // Break potential cycles with operandless phi
+            }
+            else
+            {
+                // Break potential cycles with operandless phi
                     val = NewPhi(id, bs.Block);
                     WriteVariable(bs, val, false);
                     val = AddPhiOperands(val, aliasProbe);
-                }
+            }
                 if (val != null && !aliasProbe)
                     WriteVariable(bs, val, false);
-                return val;
-            }
+            return val;
+        }
 
-            /// <summary>
+        /// <summary>
             /// If <paramref name="idTo"/> is smaller than <paramref name="sidFrom" />, then
             /// it doesn't cover it completely. Therefore, we must generate a SLICE / cast 
             /// statement.
@@ -1615,33 +1611,33 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-            /// Creates a phi statement with no slots for the predecessor blocks, then
-            /// inserts the phi statement as the first statement of the block.
-            /// </summary>
-            /// <param name="b">Block into which the phi statement is inserted</param>
-            /// <param name="v">Destination variable for the phi assignment</param>
-            /// <returns>The inserted phi Assignment</returns>
+        /// Creates a phi statement with no slots for the predecessor blocks, then
+        /// inserts the phi statement as the first statement of the block.
+        /// </summary>
+        /// <param name="b">Block into which the phi statement is inserted</param>
+        /// <param name="v">Destination variable for the phi assignment</param>
+        /// <returns>The inserted phi Assignment</returns>
             private SsaIdentifier NewPhi(Identifier id, Block b)
-            {
-                var phiAss = new PhiAssignment(id, 0);
-                var stm = new Statement(0, phiAss, b);
-                b.Statements.Insert(0, stm);
+        {
+            var phiAss = new PhiAssignment(id, 0);
+            var stm = new Statement(0, phiAss, b);
+            b.Statements.Insert(0, stm);
 
                 var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
-                phiAss.Dst = sid.Identifier;
-                return sid;
-            }
+            phiAss.Dst = sid.Identifier;
+            return sid;
+        }
 
             private SsaIdentifier AddPhiOperands(SsaIdentifier phi, bool aliasProbe)
-            {
-                // Determine operands from predecessors.
+        {
+            // Determine operands from predecessors.
                 var preds = phi.DefStatement.Block.Pred;
 
                 if (preds.Any(p => !blockstates[p].Visited))
                 {
                     // Haven't visited some of the predecessors yet,
                     // so we can't backwalk... yet. 
-                    ((PhiAssignment)phi.DefStatement.Instruction).Src =
+            ((PhiAssignment)phi.DefStatement.Instruction).Src =
                                 new PhiFunction(phi.Identifier.DataType, new Expression[preds.Count]);
                     outer.incompletePhis.Add(phi);
                     return phi;
@@ -1668,62 +1664,62 @@ namespace Reko.Analysis
                         phi.Identifier.DataType,
                         sids.Select(s => s.Identifier).ToArray());
                 return TryRemoveTrivial(phi, aliasProbe);
-            }
+        }
 
-            /// <summary>
-            /// If the phi function is trivial, remove it.
-            /// </summary>
-            /// <param name="phi"></param>
-            /// <returns></returns>
+        /// <summary>
+        /// If the phi function is trivial, remove it.
+        /// </summary>
+        /// <param name="phi"></param>
+        /// <returns></returns>
             private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
-            {
+        {
                 bool firstTime = true;
-                Identifier same = null;
+            Identifier same = null;
                 var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
                 foreach (Identifier op in phiFunc.Arguments)
-                {
+            {
                     if (!firstTime && (op != same && op != phi.Identifier))
-                    {
+                {
                         // A real phi; use all its arguments.
                         UsePhiArguments(phi, phiFunc);
                         return phi;
-                    }
+                }
                     firstTime = false;
                     if (op != phi.Identifier)
-                    {
+                {
                         same = op;
-                    }
                 }
-                SsaIdentifier sid;
-                if (same == null)
-                {
-                    // Undef'ined or unreachable parameter; assume it's a def.
+            }
+            SsaIdentifier sid;
+            if (same == null)
+            {
+                // Undef'ined or unreachable parameter; assume it's a def.
                     sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
-                }
-                else
-                {
+            }
+            else
+            {
                     sid = ssaIds[same];
-                }
+            }
 
-                // Remember all users except for phi
-                var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
+            // Remember all users except for phi
+            var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
 
-                // Reroute all uses of phi to use same. Remove phi.
+            // Reroute all uses of phi to use same. Remove phi.
                 ReplaceBy(phi, same);
 
-                // Remove all phi uses which may have become trivial now.
-                foreach (var use in users)
+            // Remove all phi uses which may have become trivial now.
+            foreach (var use in users)
+            {
+                var phiAss = use.Instruction as PhiAssignment;
+                if (phiAss != null)
                 {
-                    var phiAss = use.Instruction as PhiAssignment;
-                    if (phiAss != null)
-                    {
                         TryRemoveTrivial(ssaIds[phiAss.Dst], aliasProbe);
-                    }
                 }
+            }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 ssaIds.Remove(phi);
-                return sid;
-            }
+            return sid;
+        }
 
             private void UsePhiArguments(SsaIdentifier phi, PhiFunction phiFunc)
             {
@@ -1734,12 +1730,12 @@ namespace Reko.Analysis
             }
 
             private SsaIdentifier NewDefInstruction(Identifier id, Block b)
-            {
+        {
                 var sid = ssaIds.Add(id, null, null, false);
-                sid.DefStatement = new Statement(0, new DefInstruction(id), b);
-                b.Statements.Add(sid.DefStatement);
-                return sid;
-            }
+            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+            b.Statements.Add(sid.DefStatement);
+            return sid;
+        }
 
             private void ReplaceBy(SsaIdentifier sidOld, Identifier idNew)
             {
@@ -1955,12 +1951,12 @@ namespace Reko.Analysis
             private FpuStackStorage fpu;
 
             public FpuStackTransformer(Identifier id, FpuStackStorage fpu, Statement stm, SsaTransform2 outer) : base(id, stm, outer)
-            {
+        {
                 this.fpu = fpu;
-            }
+        }
 
             public override Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
-            {
+        {
                 bs.currentFpuDef[fpu.FpuStackOffset] = sid;
                 return base.NewDef(bs, sid);
             }
@@ -1971,7 +1967,7 @@ namespace Reko.Analysis
                 bs.currentFpuDef.TryGetValue(fpu.FpuStackOffset, out sid);
                 return sid;
             }
-        }
+            }
 
         public class SsaApplicationBuilder : ApplicationBuilder
         {
@@ -1980,9 +1976,8 @@ namespace Reko.Analysis
             public SsaApplicationBuilder(
                 SsaTransform2 sst,
                 CallSite site,
-                Expression callee,
-                ProcedureSignature sigCallee)
-                : base(site, callee, sigCallee)
+                Expression callee)
+                : base(site, callee)
             {
                 this.sst = sst;
             }
