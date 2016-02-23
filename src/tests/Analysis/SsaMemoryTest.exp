@@ -56,8 +56,8 @@ cx_13: orig: cx
 Mem15: orig: Mem0
     def:  Mem15[ds:0x012C:word16] = cx_13
 // fn0C00_0000
-// Return size: 0
-void fn0C00_0000(word16 bx, word16 si, selector ds)
+// Return size: 2
+void fn0C00_0000()
 fn0C00_0000_entry:
 	def fp
 	def ds

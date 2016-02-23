@@ -44,7 +44,6 @@ namespace Reko.UnitTests.Analysis
 	public class SsaTests : AnalysisTestBase
 	{
 		private SsaState ssa;
-        private IImportResolver importResolver;
         
         private Identifier EnsureRegister16(ProcedureBuilder m, string name)
         {

@@ -1683,12 +1683,12 @@ ProcedureBuilder_exit:
     def:  r1_0 = PHI(r1, r1_3)
     uses: branch r1_0 == 0x00000000 m3done
           r1_3 = r1_0 + Mem0[r2:word32]
+          use r1_0
 Mem0:Global memory
     def:  def Mem0
 r1_3: orig: r1
     def:  r1_3 = r1_0 + Mem0[r2:word32]
     uses: r1_0 = PHI(r1, r1_3)
-          use r1_3
 r1:r1
     def:  def r1
     uses: r1_0 = PHI(r1, r1_3)
@@ -1714,7 +1714,7 @@ m3done:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_3
+	use r1_0
 ";
             #endregion
 
@@ -1856,43 +1856,6 @@ ProcedureBuilder_exit:
                 m.Label("m0");
                 m.Assign(SZ, m.Cond(r1));
                 m.Assign(C, Constant.Bool(false));
-                m.Return();
-            });
-        }
-
-        [Test]
-        public void SsaBranchesLoops()
-        {
-            var sExp =
-            #region Expected
-                "@@@";
-            #endregion
-
-            RunTest_FrameAccesses(sExp, m =>
-            {
-                var r1 = m.Reg32("r1", 1);
-                var r2 = m.Reg32("r2", 2);
-                var r3 = m.Reg8("r3", 3);
-
-                m.Label("m0");
-                m.BranchIf(m.Eq0(m.LoadB(r1)), "m2endloop");
-
-                m.Label("m1");
-                m.BranchIf(m.Eq(m.LoadB(r1), r3), "m2endloop");
-
-                m.Label("m1a");
-                m.Assign(r1, m.IAdd(r1, 1));
-                m.Goto("m0");
-
-                m.Label("m2endloop");
-                m.BranchIf(m.Eq0(m.LoadB(r1)), "m4");
-
-                m.Label("m3");
-                m.Assign(r2, 0);
-                m.Return();
-
-                m.Label("m4");
-                m.Assign(r2, r1);
                 m.Return();
             });
         }
