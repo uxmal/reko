@@ -123,14 +123,16 @@ namespace Reko.Gui.Windows.Controls
             return sb.ToString();
         }
 
-        public void MoveToLine(object basePosition, int offset)
+        public int MoveToLine(object basePosition, int offset)
         {
-            var addr = (Address)basePosition;
+            var addrInitial = (Address)basePosition;
+            var addr = addrInitial;
             if (addr < addrStart)
                 addr = addrStart;
             if (addr >= addrEnd)
                 addr = addrEnd-1;
             this.position = addr;
+            return (int)(addr - addrInitial);
         }
 
         public Tuple<int, int> GetPositionAsFraction()
