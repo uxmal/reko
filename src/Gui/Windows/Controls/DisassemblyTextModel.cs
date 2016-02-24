@@ -87,21 +87,26 @@ namespace Reko.Gui.Windows.Controls
                     var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
                     {
-                        var line = new List<TextSpan>();
                         var instr = dasm.Current;
-                        addr = instr.Address;
-                        line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
-                        line.Add(new InstructionTextSpan(instr, BuildBytes(instr), "dasm-bytes"));
-                        var dfmt = new DisassemblyFormatter(program, instr, line);
-                        instr.Render(dfmt);
-                        dfmt.NewLine();
-                        lines.Add(new LineSpan(addr, line.ToArray()));
+                        lines.Add(RenderAsmLine(program, instr));
                         --count;
                         position += instr.Length;
                     }
                 }
             }
             return lines.ToArray();
+        }
+
+        public static LineSpan RenderAsmLine(Program program, MachineInstruction instr)
+        {
+            var line = new List<TextSpan>();
+            var addr = instr.Address;
+            line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
+            line.Add(new InstructionTextSpan(instr, BuildBytes(program, instr), "dasm-bytes"));
+            var dfmt = new DisassemblyFormatter(program, instr, line);
+            instr.Render(dfmt);
+            dfmt.NewLine();
+            return new LineSpan(addr, line.ToArray());
         }
 
         private Address Align(Address addr)
@@ -112,7 +117,7 @@ namespace Reko.Gui.Windows.Controls
             return addr - (int)rem;
         }
 
-        private string BuildBytes(MachineInstruction instr)
+        private  static string BuildBytes(Program program, MachineInstruction instr)
         {
             var sb = new StringBuilder();
             var rdr = program.CreateImageReader(instr.Address);

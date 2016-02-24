@@ -91,6 +91,8 @@ namespace Reko.Core
 
 		public string Name { get;set; }
 
+        public Address EndAddress { get { return Address + ContentSize; } }
+
         /// <summary>
         /// Creates an image reader that scans all available memory in the segment.
         /// </summary>
