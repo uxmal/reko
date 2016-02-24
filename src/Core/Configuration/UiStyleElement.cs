@@ -34,6 +34,7 @@ namespace Reko.Core.Configuration
         string BackColor { get; }
         string Cursor { get; }
         string Width { get; }
+        string TextAlign { get; }
     }
 
     public class UiStyleElement : ConfigurationElement, UiStyle
@@ -79,6 +80,13 @@ namespace Reko.Core.Configuration
         {
             get { return (string)this["Width"]; }
             set { this["Width"] = value; }
+        }
+
+        [ConfigurationProperty("TextAlign", IsRequired = false)]
+        public string TextAlign
+        {
+            get { return (string)this["TextAlign"]; }
+            set { this["TextAlign"] = value; }
         }
     }
 }

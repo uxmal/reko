@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private ImageMap imageMap;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -57,6 +58,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                     Instr(0x41000),
                     Instr(0x41002)
                 });
+        }
+
+        private void Given_Program()
+        {
+            this.program = new Program(imageMap, arch, platform);
         }
 
         private FakeInstruction Instr(uint addr)
@@ -90,10 +96,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
-
-            Given_CodeBlock(memText.BaseAddress, 4);
-
+            Given_Program();
+            Given_CodeBlock(memText.BaseAddress, 2);
             mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
