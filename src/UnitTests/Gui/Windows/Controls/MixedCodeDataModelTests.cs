@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             {
                 Address = addr,
                 DataType = new CodeType(),
-                Size = (uint) size,
+                Size = (uint)size,
             });
         }
 
@@ -122,4 +122,5 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var lines = mcdm.GetLineSpans(2);
             Assert.AreEqual(2, lines.Length);
         }
+    }
 }

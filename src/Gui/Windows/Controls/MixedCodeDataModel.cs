@@ -109,9 +109,10 @@ namespace Reko.Gui.Windows.Controls
                     }
                     if (dasm.MoveNext())
                     {
-                        var tuple = DisassemblyTextModel.RenderAsmLine(program, dasm);
-                        currentPosition = tuple.Item1;
-                        spans.Add(tuple.Item2);
+                        var instr = dasm.Current;
+                        var line = DisassemblyTextModel.RenderAsmLine(program, instr);
+                        currentPosition = instr.Address + instr.Length;
+                        spans.Add(line);
                         --count;
                     }
                 }
