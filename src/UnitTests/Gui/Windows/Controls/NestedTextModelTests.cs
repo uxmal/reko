@@ -75,5 +75,22 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             spans = ntm.GetLineSpans(1);
             Assert.AreEqual("fnord", spans[0].TextSpans[0].GetText());
         }
+
+        [Test]
+        public void Ntm_MoveAcrossBoundary()
+        {
+            var ntm = new NestedTextModel
+            {
+                Nodes =
+                {
+                    CreateNode("hello"),
+                    CreateNode("world", "control", "fnord"),
+                }
+            };
+            int delta = ntm.MoveToLine(ntm.CurrentPosition, 2);
+            Assert.AreEqual(2, delta);
+            var spans = ntm.GetLineSpans(1);
+            Assert.AreEqual("control", spans[0].TextSpans[0].GetText());
+        }
     }
 }
