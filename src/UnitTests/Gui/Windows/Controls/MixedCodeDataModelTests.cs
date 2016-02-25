@@ -149,5 +149,25 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var lines = mcdm.GetLineSpans(2);
             Assert.AreEqual(2, lines.Length);
         }
+
+        [Test]
+        public void Mcdm_FindInstructionIndex()
+        {
+            var instrs = new MachineInstruction[]
+            {
+                new FakeInstruction(Operation.Add) { Address = Address.Ptr32(0x1000), Length = 2 },
+                new FakeInstruction(Operation.Add) { Address = Address.Ptr32(0x1002), Length = 2 },
+            };
+            Func<uint, int> Idx = u =>
+                MixedCodeDataModel.FindIndexOfInstructionAddress(
+                    instrs,
+                    Address.Ptr32(u));
+            Assert.AreEqual(-1, Idx(0x0FFF));
+            Assert.AreEqual(0, Idx(0x1000));
+            Assert.AreEqual(0, Idx(0x1001));
+            Assert.AreEqual(1, Idx(0x1002));
+            Assert.AreEqual(1, Idx(0x1003));
+            Assert.AreEqual(-1, Idx(0x1004));
+        }
     }
 }

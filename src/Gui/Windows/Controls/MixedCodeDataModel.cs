@@ -109,6 +109,16 @@ namespace Reko.Gui.Windows.Controls
             return diff.CompareTo(0);
         }
 
+        //$PERF: could benefit from a binary search, but basic blocks
+        // are so small it may not make a difference.
+        public static int FindIndexOfInstructionAddress(MachineInstruction[] instrs, Address addr)
+        {
+            var ul = addr.ToLinear();
+            return Array.FindIndex(
+                instrs,
+                i => i.Contains(addr));
+        }
+
         public  abstract class Spanifyer
         {
             public abstract Tuple<Address, LineSpan> GenerateSpan();
@@ -123,7 +133,7 @@ namespace Reko.Gui.Windows.Controls
             public AsmSpanifyer(Program program, MachineInstruction[] instrs, Address addr)
             {
                 this.instrs = instrs;
-                this.offset = Array.FindLastIndex(instrs, i => i.Address >= addr);
+                this.offset = FindIndexOfInstructionAddress(instrs, addr);
                 this.program = program;
             }
 
