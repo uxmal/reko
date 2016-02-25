@@ -100,6 +100,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_CodeBlock(memText.BaseAddress, 2);
             mr.ReplayAll();
 
+            this.imageMap.Dump();
             var mcdm = new MixedCodeDataModel(program);
             var lines = mcdm.GetLineSpans(2);
             Assert.AreEqual(2, lines.Length);
@@ -107,6 +108,28 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
         [Test]
         public void Mcdm_AddDasmAndMemory()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute),
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+            var lines = mcdm.GetLineSpans(2);
+            Assert.AreEqual(2, lines.Length);
+        }
+
+        [Test]
+        public void Mcdm_Move()
         {
             var addrBase = Address.Ptr32(0x40000);
 

@@ -117,7 +117,7 @@ namespace Reko.Gui.Windows.Controls
             return addr - (int)rem;
         }
 
-        private  static string BuildBytes(Program program, MachineInstruction instr)
+        private static string BuildBytes(Program program, MachineInstruction instr)
         {
             var sb = new StringBuilder();
             var rdr = program.CreateImageReader(instr.Address);
