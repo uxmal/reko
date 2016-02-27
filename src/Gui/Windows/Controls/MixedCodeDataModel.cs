@@ -18,13 +18,14 @@
  */
 #endregion
 
- using Reko.Core;
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Reko.Gui.Windows.Controls
 {
@@ -83,6 +84,23 @@ namespace Reko.Gui.Windows.Controls
             return sum;
         }
 
+        /// <summary>
+        /// Count the number of lines a memory area subtends.
+        /// </summary>
+        /// <remarks>
+        /// We align mempry spans on 16-byte boundaries (//$REVIEW for now,
+        /// this should be user-adjustable) so if we have a memory span 
+        /// straddling such a boundary, we have to account for it. E.g. the
+        /// span [01FC-0201] should be rendered:
+        /// <code>
+        /// 01FC                                    0C 0D 0F             ....
+        /// 0200 00 01                                       ..
+        /// </code>
+        /// and therefore requires 2 lines even though the number of bytes is
+        /// less than 16.
+        /// </remarks>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private int CountMemoryLines(ImageMapItem item)
         {
             var linStart = item.Address.ToLinear();
@@ -90,6 +108,11 @@ namespace Reko.Gui.Windows.Controls
             linStart = Align(linStart, 16);
             linEnd = Align(linEnd + (16 - 1), 16);
             return (int)(linEnd - linStart) / 16;
+        }
+
+        private int CountDisassembledLines(ImageMapBlock bi)
+        {
+            return instructions[bi].Length;
         }
 
         private static ulong Align(ulong ul, uint alignment)
@@ -104,6 +127,10 @@ namespace Reko.Gui.Windows.Controls
             return addr - (int)(lin - linAl);
         }
 
+        /// <summary>
+        /// Preemptively collect the machine code instructions
+        /// in all image map blocks.
+        /// </summary>
         private void CollectInstructions()
         {
             this.instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
@@ -121,79 +148,11 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
-        private int CountDisassembledLines(ImageMapBlock bi)
-        {
-            return instructions[bi].Length;
-        }
-
         public int ComparePositions(object a, object b)
         {
             var diff = (Address)a - (Address)b;
             return diff.CompareTo(0);
         }
-
-        //$PERF: could benefit from a binary search, but basic blocks
-        // are so small it may not make a difference.
-        public static int FindIndexOfInstructionAddress(MachineInstruction[] instrs, Address addr)
-        {
-            var ul = addr.ToLinear();
-            return Array.FindIndex(
-                instrs,
-                i => i.Contains(addr));
-        }
-
-
-
-        /// <summary>
-        /// An segment of memory
-        /// </summary>
-        public class MemoryTextSpan : TextSpan
-        {
-            private string text;
-
-            public MemoryTextSpan(string text, string style)
-            {
-                this.text = text;
-                base.Style = style;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-
-            public override SizeF GetSize(string text, Font font, Graphics g)
-            {
-                SizeF sz = base.GetSize(text, font, g);
-                return sz;
-            }
-        }
-
-        /// <summary>
-        /// An inert text span is not clickable nor has a context menu.
-        /// </summary>
-        public class InertTextSpan : TextSpan
-        {
-            private string text;
-
-            public InertTextSpan(string text, string style)
-            {
-                this.text = text;
-                base.Style = style;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-
-            public override SizeF GetSize(string text, Font font, Graphics g)
-            {
-                SizeF sz = base.GetSize(text, font, g);
-                return sz;
-            }
-        }
-
 
         public Tuple<int, int> GetPositionAsFraction()
         {
@@ -230,9 +189,38 @@ namespace Reko.Gui.Windows.Controls
             currentPosition = (Address)position;
             if (offset == 0)
                 return 0;
+            int moved = 0;
             if (offset > 0)
             {
+                ImageSegment seg;
+                ImageMapItem item;
+                program.ImageMap.TryFindSegment(currentPosition, out seg);
+                program.ImageMap.TryFindItem(currentPosition, out item);
+                while (offset > 0 && seg != null && item != null)
+                {
+                    var bi = item as ImageMapBlock;
+                    if (bi != null)
+                    {
+                        var instrs = instructions[bi];
+                        int i = FindIndexOfInstructionAddress(instrs, currentPosition);
+                        Debug.Assert(i >= 0, "TryFindItem said this item contains the address.");
+                        int iNew = i + offset;
+                        if (iNew < instrs.Length)
+                        {
+                            moved += offset;
+                            currentPosition = instrs[iNew].Address;
+                            return moved;
+                        }
+                        // Fell off the end.
+                        moved += instrs.Length - i;
+                        offset -= instrs.Length - i;
+                        currentPosition = item.Address + item.Size;
+                    } else
+                    {
 
+                    }
+
+                }
             }
             throw new NotImplementedException();
         }

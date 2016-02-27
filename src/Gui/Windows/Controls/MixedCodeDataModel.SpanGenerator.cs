@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -201,9 +202,69 @@ namespace Reko.Gui.Windows.Controls
                 this.addr = addrEnd;
                 return Tuple.Create(
                     addrEnd,
-                    new LineSpan(line.ToArray()));
+                    new LineSpan(addr, line.ToArray()));
+            }
+        }
+
+        //$PERF: could benefit from a binary search, but basic blocks
+        // are so small it may not make a difference.
+        public static int FindIndexOfInstructionAddress(MachineInstruction[] instrs, Address addr)
+        {
+            var ul = addr.ToLinear();
+            return Array.FindIndex(
+                instrs,
+                i => i.Contains(addr));
+        }
+
+        /// <summary>
+        /// An segment of memory
+        /// </summary>
+        public class MemoryTextSpan : TextSpan
+        {
+            private string text;
+
+            public MemoryTextSpan(string text, string style)
+            {
+                this.text = text;
+                base.Style = style;
             }
 
+            public override string GetText()
+            {
+                return text;
+            }
+
+            public override SizeF GetSize(string text, Font font, Graphics g)
+            {
+                SizeF sz = base.GetSize(text, font, g);
+                return sz;
+            }
         }
+
+        /// <summary>
+        /// An inert text span is not clickable nor has a context menu.
+        /// </summary>
+        public class InertTextSpan : TextSpan
+        {
+            private string text;
+
+            public InertTextSpan(string text, string style)
+            {
+                this.text = text;
+                base.Style = style;
+            }
+
+            public override string GetText()
+            {
+                return text;
+            }
+
+            public override SizeF GetSize(string text, Font font, Graphics g)
+            {
+                SizeF sz = base.GetSize(text, font, g);
+                return sz;
+            }
+        }
+
     }
 }
