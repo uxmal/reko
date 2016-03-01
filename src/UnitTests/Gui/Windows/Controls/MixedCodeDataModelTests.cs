@@ -169,5 +169,34 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Assert.AreEqual(1, Idx(0x1003));
             Assert.AreEqual(-1, Idx(0x1004));
         }
+
+        [Test]
+        public void Mcdm_MoveForward()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute),
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+            // Advance 1 line into another piece of code.
+            int delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
+            Assert.AreEqual(1, delta);
+            // move another line of code and then into data.
+            delta = mcdm.MoveToLine(mcdm.CurrentPosition, 2);
+            Assert.AreEqual(2, delta);
+            // Another line of data
+            delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
+            Assert.AreEqual(1, delta);
+        }
     }
 }

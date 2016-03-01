@@ -34,6 +34,8 @@ namespace Reko.Gui.Windows.Controls
     /// </summary>
     public partial class MixedCodeDataModel : TextViewModel
     {
+        const int BytesPerLine = 16;
+
         private Program program;
         private Address currentPosition;
         private Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
@@ -192,37 +194,82 @@ namespace Reko.Gui.Windows.Controls
             int moved = 0;
             if (offset > 0)
             {
-                ImageSegment seg;
                 ImageMapItem item;
-                program.ImageMap.TryFindSegment(currentPosition, out seg);
-                program.ImageMap.TryFindItem(currentPosition, out item);
-                while (offset > 0 && seg != null && item != null)
+                if (!program.ImageMap.TryFindItem(currentPosition, out item))
+                    return moved;
+                int iItem = program.ImageMap.Items.IndexOfKey(item.Address);
+                for (;;)
                 {
-                    var bi = item as ImageMapBlock;
-                    if (bi != null)
+                    if (item != null)
                     {
-                        var instrs = instructions[bi];
-                        int i = FindIndexOfInstructionAddress(instrs, currentPosition);
-                        Debug.Assert(i >= 0, "TryFindItem said this item contains the address.");
-                        int iNew = i + offset;
-                        if (iNew < instrs.Length)
+                        var bi = item as ImageMapBlock;
+                        if (bi != null)
                         {
-                            moved += offset;
-                            currentPosition = instrs[iNew].Address;
+                            var instrs = instructions[bi];
+                            int i = FindIndexOfInstructionAddress(instrs, currentPosition);
+                            Debug.Assert(i >= 0, "TryFindItem said this item contains the address.");
+                            int iNew = i + offset;
+                            if (iNew < instrs.Length)
+                            {
+                                moved += offset;
+                                currentPosition = instrs[iNew].Address;
+                                return moved;
+                            }
+                            // Fell off the end.
+                            moved += instrs.Length - i;
+                            offset -= instrs.Length - i;
+                        }
+                        else
+                        {
+                            // Determine current line # within memory block
+
+                            int i = FindIndexOfMemoryAddress(item, currentPosition);
+                            int iEnd = FindIndexOfMemoryAddress(item, item.Address + item.Size);
+                            Debug.Assert(i >= 0, "Should have been inside item");
+                            int iNew = i + offset;
+                            if (iNew < iEnd)
+                            {
+                                moved += offset;
+                                currentPosition = GetAddressOfLine(item, iNew);
+                                return moved;
+                            }
+                            // Fall of the end
+                            moved += iEnd - i;
+                            offset -= iEnd - i;
+                        }
+                        iItem += 1;
+                        if (iItem < program.ImageMap.Items.Count)
+                        {
+                            item = program.ImageMap.Items.Values[iItem];
+                            currentPosition = item.Address;
+                        }
+                        else
+                        {
+                            item = null;
+                            currentPosition = (Address)this.EndPosition;
                             return moved;
                         }
-                        // Fell off the end.
-                        moved += instrs.Length - i;
-                        offset -= instrs.Length - i;
-                        currentPosition = item.Address + item.Size;
-                    } else
-                    {
-
                     }
-
                 }
+                throw new NotImplementedException();
             }
             throw new NotImplementedException();
+        }
+
+        private Address GetAddressOfLine(ImageMapItem item, int i)
+        {
+            if (i == 0)
+                return item.Address;
+            else
+                return Align(item.Address + i * BytesPerLine, BytesPerLine);
+        }
+
+
+        private int FindIndexOfMemoryAddress(ImageMapItem item, Address addr)
+        {
+            var addrStart = Align(item.Address, BytesPerLine);
+            long idx = (addr - addrStart) / BytesPerLine;
+            return (int) idx;
         }
 
         public void SetPositionAsFraction(int numer, int denom)

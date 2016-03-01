@@ -142,15 +142,15 @@ namespace Reko.Gui.Windows.Controls
                 var line = new List<TextSpan>();
                 line.Add(new AddressSpan(addr.ToString(), addr, "link"));
 
-                var addrStart = Align(addr, 16);
-                var addrEnd = Address.Min(addrStart + 16, addr + item.Size);
+                var addrStart = Align(addr, BytesPerLine);
+                var addrEnd = Address.Min(addrStart + BytesPerLine, addr + item.Size);
 
                 var linStart = addrStart.ToLinear();
                 var linEnd = addrEnd.ToLinear();
                 var lin = linStart;
                 var cbFiller = addr.ToLinear() - linStart;
                 var cbBytes = linEnd - addr.ToLinear();
-                var cbPadding = 16 - (cbFiller + cbBytes);
+                var cbPadding = BytesPerLine - (cbFiller + cbBytes);
 
                 var sb = new StringBuilder();
                 var sbCode = new StringBuilder();
