@@ -297,13 +297,20 @@ namespace Reko.Gui.Windows.Controls
 
         public void SetPositionAsFraction(int numer, int denom)
         {
+#if SIMPLE
+            long total = LineCount;
+            long iPos = (numer * total) / denom;
+
+            MoveToLine(StartPosition, (int)iPos);
+#else
             if (denom <= 0)
                 throw new ArgumentOutOfRangeException("denom", "Denominator must be larger than 0.");
             if (numer <= 0)
             {
                 currentPosition = (Address)StartPosition;
                 return;
-            } else if (numer >= denom)
+            }
+            else if (numer >= denom)
             {
                 currentPosition = (Address)EndPosition;
                 return;
@@ -335,7 +342,8 @@ namespace Reko.Gui.Windows.Controls
                 }
                 curLine += size;
             }
-            currentPosition = (Address) EndPosition;
+            currentPosition = (Address)EndPosition;
+#endif
         }
     }
 }
