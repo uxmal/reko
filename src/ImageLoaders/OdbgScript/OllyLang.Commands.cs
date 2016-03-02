@@ -3124,8 +3124,8 @@ string filename;
                         dw = Helper.resize(dw, Math.Min((int)maxsize, reg.size));
                         if (reg.size < sizeof(rulong))
                         {
-                            rulong oldval, newval;
-                            oldval = Debugger.GetContextData(reg.id);
+                            //rulong oldval, newval;
+                            rulong oldval = Debugger.GetContextData(reg.id);
                             throw new NotImplementedException("oldval &= ~(((1 << (reg.size * 8)) - 1) << (reg.offset * 8));");
                             //newval = resize(dw, reg.size) << (reg.offset * 8);
                             //dw = oldval | newval;
@@ -3547,19 +3547,16 @@ string param;
         //        : rbp STRICT
         private bool DoRBP(string[] args)
         {
-            bool strict = false;
             if (args.Length >= 0 && args.Length <= 1)
             {
                 if (args.Length == 1)
                 {
-                    if (Helper.toupper(args[0]) != "STRICT")
+                    if (args[0].ToUpperInvariant() != "STRICT")
                         return false;
-                    strict = true;
                 }
 
                 return true;
             }
-            return false;
             /*
             t_table* bpt = 0;
             t_bpoint* bpoint = 0;
@@ -3569,9 +3566,10 @@ string param;
             CreateOperands ( args, ops, 1 );
 	
             variables["$RESULT"] = Var.Create(0);
-
-            if ( saved_bp )
+            */
+            if ( saved_bp != 0)
             {
+                /*
                 bpt = ( t_table * ) Plugingetvalue ( VAL_BREAKPOINTS );
                 if ( bpt != null )
                 {
@@ -3594,10 +3592,11 @@ string param;
 
                     Broadcast ( WM_USER_CHALL, 0, 0 );
                 }
-
+                */
             }
 
             //Hardware Bps
+            /*
             for ( n=0; n < 4; n++ ) {
                 if (hwbp_t[n].addr) {
                     Sethardwarebreakpoint ( hwbp_t[n].addr, hwbp_t[n].size, hwbp_t[n].type );
@@ -3606,6 +3605,7 @@ string param;
             }
             variables["$RESULT_1"] = ( DWORD ) i;
             */
+            return false;
         }
 
 

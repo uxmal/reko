@@ -27,7 +27,8 @@ namespace Reko.Core
     /// Represents a table of jumps or calls. Initially, it is empty.
     /// item, but further analysis may grow this size.
     /// </summary>
-    [Obsolete("Deprecate this in favor of just storing the datatype in the DataType property")]
+    //$REVIEW: is this class ever used for a purpose?
+    //[Obsolete("Deprecate this in favor of just storing the datatype in the DataType property")]
     public class ImageMapVectorTable : ImageMapItem
     {
         public ImageMapVectorTable(Address addr, Address[] vector, int size)

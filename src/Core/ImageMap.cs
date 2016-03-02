@@ -93,19 +93,28 @@ namespace Reko.Core
                 Debug.Assert(delta >= 0, "TryFindItem is supposed to find a block whose address is <= the supplied address");
                 if (delta > 0)
                 {
-                    // Need to split the item.
+                    if (delta < item.Size)
+                    {
+                        // Need to split the item.
 
-                    itemNew.Size = (uint) (item.Size - delta);
-                    item.Size = (uint) delta;
-                    items.Add(itemNew.Address, itemNew);
-                    MapChanged.Fire(this);
-                    return itemNew;
+                        itemNew.Size = (uint)(item.Size - delta);
+                        item.Size = (uint)delta;
+                        items.Add(itemNew.Address, itemNew);
+                        MapChanged.Fire(this);
+                        return itemNew;
+                    }
+                    else
+                    {
+                        items.Add(itemNew.Address, itemNew);
+                        MapChanged.Fire(this);
+                        return itemNew;
+                    }
                 }
                 else
                 {
-                    if (itemNew.Size > 0)
+                    if (itemNew.Size > 0 && itemNew.Size != item.Size)
                     {
-                        Debug.Assert(item.Size > itemNew.Size);
+                        Debug.Assert(item.Size >= itemNew.Size);
                         item.Size -= itemNew.Size;
                         item.Address += itemNew.Size;
                         items[itemNew.Address] = itemNew;
@@ -381,9 +390,10 @@ namespace Reko.Core
 		public ImageMapItem(uint size)
 		{
 			this.Size = size;
-		}
+            DataType = new UnknownType();
+        }
 
-		public ImageMapItem()
+        public ImageMapItem()
 		{
             DataType = new UnknownType();
 		}

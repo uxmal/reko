@@ -69,7 +69,7 @@ namespace Reko.Arch.M68k
                 OpRec handler = g_instruction_table[instruction];
                 instr = handler.opcode_handler(this);
             }
-            catch (Exception ex)
+            catch
             {
                 instr = new M68kInstruction
                 {

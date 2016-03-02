@@ -27,6 +27,7 @@ using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -187,6 +188,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             mr.ReplayAll();
 
+            imageMap.Dump();
+
             var mcdm = new MixedCodeDataModel(program);
             // Advance 1 line into another piece of code.
             int delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
@@ -194,9 +197,15 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // move another line of code and then into data.
             delta = mcdm.MoveToLine(mcdm.CurrentPosition, 2);
             Assert.AreEqual(2, delta);
+            Assert.AreEqual("00042010", mcdm.CurrentPosition.ToString());
             // Another line of data
             delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
+            Assert.AreEqual("00042020", mcdm.CurrentPosition.ToString());
             Assert.AreEqual(1, delta);
+            // Pegged at end
+            delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
+            Assert.AreEqual("00042020", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual(0, delta);
         }
 
         [Test]
@@ -232,6 +241,33 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 */
 
             Assert.AreEqual("00040FF0", curPos.ToString());
+        }
+
+        [Test]
+        public void Mcdm_MoveFraction()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute),
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+            Debug.Print("LineCount: {0}", mcdm.LineCount);
+            mcdm.SetPositionAsFraction(0, 1);
+            Assert.AreSame(mcdm.StartPosition, mcdm.CurrentPosition);
+            mcdm.SetPositionAsFraction(2, 1);
+            Assert.AreSame(mcdm.EndPosition, mcdm.CurrentPosition);
+            mcdm.SetPositionAsFraction(1, 2);
+            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
         }
     }
 }

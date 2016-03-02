@@ -143,8 +143,7 @@ namespace Reko.Gui.Windows.Controls
                 line.Add(new AddressSpan(addr.ToString(), addr, "link"));
 
                 var addrStart = Align(addr, BytesPerLine);
-                var addrEnd = Address.Min(addrStart + BytesPerLine, addr + item.Size);
-
+                var addrEnd = Address.Min(addrStart + BytesPerLine, item.Address + item.Size);
                 var linStart = addrStart.ToLinear();
                 var linEnd = addrEnd.ToLinear();
                 var lin = linStart;

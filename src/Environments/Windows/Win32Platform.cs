@@ -36,8 +36,6 @@ namespace Reko.Environments.Windows
 {
 	public class Win32Platform : Platform
 	{
-		private SystemService int3svc;
-        private SystemService int29svc;
         private Dictionary<int, SystemService> services;
 
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
