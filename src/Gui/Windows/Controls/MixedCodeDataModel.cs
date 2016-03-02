@@ -297,14 +297,14 @@ namespace Reko.Gui.Windows.Controls
 
         public void SetPositionAsFraction(int numer, int denom)
         {
+            if (denom <= 0)
+                throw new ArgumentOutOfRangeException("denom", "Denominator must be larger than 0.");
 #if SIMPLE
             long total = LineCount;
             long iPos = (numer * total) / denom;
 
             MoveToLine(StartPosition, (int)iPos);
 #else
-            if (denom <= 0)
-                throw new ArgumentOutOfRangeException("denom", "Denominator must be larger than 0.");
             if (numer <= 0)
             {
                 currentPosition = (Address)StartPosition;
