@@ -196,6 +196,9 @@
     <Compile Include="Windows\CodeViewerPane.cs" />
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
+    <Compile Include="Windows\Controls\MixedCodeDataControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Controls\MixedCodeDataModel.cs" />
     <Compile Include="Windows\Controls\CodeView.cs">
       <SubType>UserControl</SubType>
