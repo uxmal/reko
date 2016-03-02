@@ -53,11 +53,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 .Do(new Func<MemoryArea, Address, ImageReader>((m, a) => new LeImageReader(m, a)));
             this.arch.Stub(a => a.CreateDisassembler(null))
                 .IgnoreArguments()
-                .Return(new MachineInstruction[]
+                .Do(new Func<ImageReader, IEnumerable<MachineInstruction>>((rdr) => new MachineInstruction[]
                 {
-                    Instr(0x41000),
-                    Instr(0x41002)
-                });
+                    Instr(rdr.Address.ToUInt32()),
+                    Instr(rdr.Address.ToUInt32()+2)
+                }));
         }
 
         private void Given_Program()
@@ -197,6 +197,41 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // Another line of data
             delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
             Assert.AreEqual(1, delta);
+        }
+
+        [Test]
+        public void Mcdm_MoveToLastLineOfItem()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x40FD5), new byte[64]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute),
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(Address.Ptr32(0x40FF9), 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+
+            int delta = mcdm.MoveToLine(mcdm.CurrentPosition, 2);
+            var curPos = (Address)mcdm.CurrentPosition;
+
+/*
+            ***************start position**************************
+            0x40FD5                FF FF FF FF FF FF FF FF FF FF FF
+            0x40FE0 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            *********curent position after moving******************
+            0x40FF0 FF FF FF FF FF FF FF FF FF
+            0x40FF9 add r2,r2
+            0x40FFA add r2,r2
+*/
+
+            Assert.AreEqual("00040FF0", curPos.ToString());
         }
     }
 }
