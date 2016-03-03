@@ -161,7 +161,9 @@ namespace Reko.Gui.Forms
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
             var codeViewSvc = new CodeViewerServiceImpl(sc);
-            sc.AddService(typeof(ICodeViewerService), codeViewSvc);
+            sc.AddService<ICodeViewerService>(codeViewSvc);
+            var mixedSvc = new MixedCodeDataViewService(sc);
+            sc.AddService<IMixedCodeDataViewService>(mixedSvc);
             var segmentViewSvc = new ImageSegmentServiceImpl(sc);
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 
@@ -171,12 +173,12 @@ namespace Reko.Gui.Forms
             sc.AddService(typeof(DecompilerEventListener), del);
 
             loader = svcFactory.CreateLoader();
-            sc.AddService(typeof(ILoader), loader);
+            sc.AddService<ILoader>(loader);
 
             var abSvc = svcFactory.CreateArchiveBrowserService();
-            sc.AddService(typeof(IArchiveBrowserService), abSvc);
+            sc.AddService<IArchiveBrowserService>(abSvc);
 
-            sc.AddService(typeof(ILowLevelViewService), svcFactory.CreateMemoryViewService());
+            sc.AddService<ILowLevelViewService>(svcFactory.CreateMemoryViewService());
             sc.AddService<IDisassemblyViewService>(svcFactory.CreateDisassemblyViewService());
 
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();

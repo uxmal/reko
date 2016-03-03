@@ -118,6 +118,7 @@
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
+    <Compile Include="IMixedCodeDataViewService.cs" />
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -251,6 +252,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\LabelWrapper.cs" />
+    <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />
+    <Compile Include="Windows\MixedCodeDataViewService.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
     <Compile Include="Windows\StyleStack.cs" />
     <Compile Include="Windows\Controls\TextBuffer.cs" />
