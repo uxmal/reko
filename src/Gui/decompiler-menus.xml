@@ -92,8 +92,9 @@
   <cmd id="ViewDisassembly" cmdSet="Reko" container="GrpLowLevel">_Disassembly</cmd>
   <cmd id="OpenLink" cmdSet="Reko" container="OpenLink">_Open</cmd>
   <cmd id="OpenLinkInNewWindow" cmdSet="Reko" container="OpenLinkInNewWindow">Open in ne_w window</cmd>
-  
+
   <cmd id="ViewGoToAddress" cmdSet="Reko" container="GrpViewScanned">_Go to Address...</cmd>
+  <cmd id="ViewMixedView" cmdSet="Reko" container="GrpViewScanned">View in _mixed mode</cmd>
   <cmd id="ViewFindAllProcedures" cmdSet="Reko" container="GrpViewScanned">Find all _procedures</cmd>
 	<cmd id="ViewShowAllFragments" cmdSet="Reko" container="GrpViewScanned">Show _all fragments</cmd>
 	<cmd id="ViewShowUnscanned" cmdSet="Reko" container="GrpViewScanned">Show _unscanned fragments</cmd>
@@ -172,6 +173,7 @@
 
   <placement item="EditProperties" container="GrpBrowser" />
   <placement item="ViewGoToAddress" container="GrpBrowserProc"/>
+  <placement item="ViewMixedView" container="GrpBrowserProc"/>
   <placement item="ViewFindWhatPointsHere" container="GrpBrowserProc" />
   <placement item="ActionEditSignature" container="GrpBrowserProc"/>
   <placement item="ActionAssumeRegisterValues" container="GrpBrowserProc" />

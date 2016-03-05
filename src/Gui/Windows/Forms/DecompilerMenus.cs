@@ -185,6 +185,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Reko), CmdIds.ViewGoToAddress);
             slViewGoToAddress.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewGoToAddress);
+            CommandMenuItem slViewMixedView = new CommandMenuItem("View in _mixed mode", new Guid(CmdSets.Reko), CmdIds.ViewMixedView);
+            slViewMixedView.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewMixedView);
             CommandMenuItem slViewFindAllProcedures = new CommandMenuItem("Find all _procedures", new Guid(CmdSets.Reko), CmdIds.ViewFindAllProcedures);
             slViewFindAllProcedures.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindAllProcedures);
@@ -317,6 +320,7 @@ namespace Reko.Gui.Windows.Forms
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			slGrpBrowser.Add(0, slEditProperties);
 			slGrpBrowserProc.Add(0, slViewGoToAddress);
+			slGrpBrowserProc.Add(0, slViewMixedView);
 			slGrpBrowserProc.Add(0, slViewFindWhatPointsHere);
 			slGrpBrowserProc.Add(0, slActionEditSignature);
 			slGrpBrowserProc.Add(0, slActionAssumeRegisterValues);
