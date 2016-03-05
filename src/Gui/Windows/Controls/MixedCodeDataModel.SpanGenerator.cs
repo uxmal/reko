@@ -140,7 +140,7 @@ namespace Reko.Gui.Windows.Controls
             public override Tuple<Address, LineSpan> GenerateSpan()
             {
                 var line = new List<TextSpan>();
-                line.Add(new AddressSpan(addr.ToString(), addr, "link"));
+                line.Add(new AddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow));
 
                 var addrStart = Align(addr, BytesPerLine);
                 var addrEnd = Address.Min(addrStart + BytesPerLine, item.Address + item.Size);
@@ -158,7 +158,7 @@ namespace Reko.Gui.Windows.Controls
 
                 if (cbFiller > 0)
                 {
-                    line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbFiller), ""));
+                    line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbFiller), UiStyles.MemoryWindow));
                 }
 
                 var rdr = program.CreateImageReader(addr);
@@ -178,13 +178,13 @@ namespace Reko.Gui.Windows.Controls
                         break;
                     }
                 }
-                line.Add(new MemoryTextSpan(sb.ToString(), ""));
+                line.Add(new MemoryTextSpan(sb.ToString(), UiStyles.MemoryWindow));
 
                 // Do any padding after.
 
                 if (cbPadding > 0)
                 {
-                    line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbPadding), ""));
+                    line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbPadding), UiStyles.MemoryWindow));
                 }
 
                 // Now do the final bytes.
@@ -196,7 +196,7 @@ namespace Reko.Gui.Windows.Controls
                     sbCode.Append(Char.IsControl(ch) ? '.' : ch);
                 }
                 sbCode.Append(' ', (int)cbPadding);
-                line.Add(new MemoryTextSpan(sbCode.ToString(), ""));
+                line.Add(new MemoryTextSpan(sbCode.ToString(), UiStyles.MemoryWindow));
 
                 this.addr = addrEnd;
                 return Tuple.Create(
