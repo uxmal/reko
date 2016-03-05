@@ -33,7 +33,10 @@ namespace Reko.Gui.Windows.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             if (Services == null)
+            {
+                Debug.Print("TextView.OnPaint: Services property must be set");
                 return;
+            }
             GetStyleStack().PushStyle(StyleClass);
             var painter = new Painter(this, e.Graphics, styleStack);
             painter.Paint();

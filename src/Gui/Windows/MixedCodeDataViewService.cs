@@ -50,6 +50,7 @@ namespace Reko.Gui.Windows
                 pane = (MixedCodeDataViewInteractor)frame.Pane;
             }
             frame.Show();
+            pane.Program = pa.Program;
             pane.TopAddress = pa.Address;
         }
     }

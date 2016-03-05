@@ -42,6 +42,10 @@ namespace Reko.Gui.Windows.Controls
         private Program program;
         public event EventHandler ProgramChanged;
 
+        public Address TopAddress { get { return addrTop; } set { addrTop = value; OnTopAddressChanged(); } }
+        private Address addrTop;
+
+
         private void OnProgramChanged()
         {
             if (program != null)
@@ -51,6 +55,15 @@ namespace Reko.Gui.Windows.Controls
             else
             {
                 Model = new EmptyEditorModel();
+            }
+        }
+
+        private void OnTopAddressChanged()
+        {
+            if (program != null)
+            {
+                Model.MoveToLine(addrTop, 0);
+                Invalidate();
             }
         }
     }

@@ -7,8 +7,6 @@
 Eq_146 g_t0004;
  <anonymous> * g_ptr10002098 = null;
  <anonymous> * g_ptr100020CC = null;
-char g_b1000212C = 's';
-char g_b10002140 = 's';
 char g_str10002144[] = "ii:sum";
 char g_str1000214C[] = "i";
 char g_str10002150[] = "ii:dif";
@@ -33,4 +31,6 @@ Eq_163 g_t100033AC = ;
 Eq_146 g_t100033B0 = ;
 Eq_146 g_t100033B4 = ;
  <anonymous> * g_ptr100033B8 = null;
+char g_b10002140 = 's';
+char g_b1000212C = 's';
 

@@ -34,7 +34,10 @@ namespace Reko.Gui.Windows
         {
         }
 
-        public Address TopAddress { get { return addrTop; } set { addrTop = value; } }
+        public Program Program { get { return program; } set { program = value; OnProgramChanged(); } }
+        private Program program;
+
+        public Address TopAddress { get { return addrTop; } set { addrTop = value; OnTopAddressChanged(); } }
         private Address addrTop;
 
         public void Close()
@@ -46,12 +49,31 @@ namespace Reko.Gui.Windows
         public Control CreateControl()
         {
             this.ctrl = new MixedCodeDataControl();
+            this.ctrl.Services = services;
             return ctrl;
         }
 
-        public void SetSite(IServiceProvider sp)
+        public void SetSite(IServiceProvider services)
         {
-            this.services = sp;
+            this.services = services;
+            if (this.ctrl != null)
+            {
+                this.ctrl.Services = this.services;
+            }
+        }
+
+        private void OnProgramChanged()
+        {
+            if (ctrl == null)
+                return;
+            ctrl.Program = Program;
+        }
+
+        private void OnTopAddressChanged()
+        {
+            if (ctrl == null)
+                return;
+            ctrl.TopAddress = TopAddress;
         }
     }
 }
