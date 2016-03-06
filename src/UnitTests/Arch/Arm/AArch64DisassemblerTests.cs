@@ -29,6 +29,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
+    [Category("Capstone")]
     public class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
         private IProcessorArchitecture arch = new AArch64();

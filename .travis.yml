@@ -5,6 +5,7 @@ install:
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
 script:
+  - cp ./src/Environments/Msdos/realmodeintservices.xml ./src/UnitTests/bin/TravisRelease/realmodeintservices.xml".
   - xbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
 
 
