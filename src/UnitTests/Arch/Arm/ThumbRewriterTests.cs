@@ -32,6 +32,7 @@ using Reko.Core.Expressions;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
+    [Category("Capstone")]
     public class ThumbRewriterTests : RewriterTestBase
     {
         private ThumbProcessorArchitecture arch;

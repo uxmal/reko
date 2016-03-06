@@ -14,6 +14,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
+    [Category("UserInterface")]
     public class DecompilerShellUiTests
     {
         Form form;

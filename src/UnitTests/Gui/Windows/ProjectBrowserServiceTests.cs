@@ -43,6 +43,7 @@ using System.Drawing;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
+    [NUnit.Framework.Category("UserInterface")]
     public class ProjectBrowserServiceTests
     {
         private readonly string cr = Environment.NewLine == "\r\n"

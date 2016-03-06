@@ -28,7 +28,8 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Controls
 {
 	[TestFixture]
-	public class MemoryControlTests
+    [Category("UserInterface")]
+    public class MemoryControlTests
 	{
         private Form form;
 		private byte [] bytes;

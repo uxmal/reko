@@ -31,6 +31,8 @@ namespace Reko.UnitTests.Gui.Windows
     [TestFixture]
     public class TextSpanFormatterTests
     {
+        private readonly string nl = Environment.NewLine;
+
         private string Flatten(TextSpanFormatter tsf)
         {
             var model = tsf.GetModel();
@@ -71,7 +73,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var tsf = new TextSpanFormatter();
             tsf.Write("hello");
-            Assert.AreEqual("hello\r\n", Flatten(tsf));
+            Assert.AreEqual("hello"+ nl, Flatten(tsf));
         }
 
         [Test]
@@ -80,7 +82,7 @@ namespace Reko.UnitTests.Gui.Windows
             var tsf = new TextSpanFormatter();
             tsf.Write("go to ");
             tsf.WriteHyperlink("Hell", "Aitch-ee-double-hockeysticks");
-            Assert.AreEqual("go to _Hell_\r\n", Flatten(tsf));
+            Assert.AreEqual("go to _Hell_" + nl, Flatten(tsf));
         }
     }
 }

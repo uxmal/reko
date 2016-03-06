@@ -37,8 +37,9 @@ using Reko.Core.Lib;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
+    [Category("UserInterface")]
 	public class InitialPageInteractorTests
-	{
+    {
         private MockRepository mr;
         private IMainForm form;
 		private TestInitialPageInteractor i;

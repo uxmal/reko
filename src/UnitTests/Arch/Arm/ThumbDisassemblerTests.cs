@@ -31,6 +31,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
+    [Category("Capstone")]
     public class ThumbDisassemblerTests : ArmTestBase
     {
         protected override IProcessorArchitecture CreateArchitecture()
