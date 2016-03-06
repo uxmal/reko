@@ -66,7 +66,19 @@ namespace Reko.Gui.Windows.Controls
 
         public int ComparePositions(object a, object b)
         {
-            throw new NotImplementedException();
+            Location aLoc = (Location)a;
+            Location bLoc = (Location)b;
+            int cmp = aLoc.iModel.CompareTo(bLoc.iModel);
+            if (cmp == 0)
+            {
+                return Nodes[aLoc.iModel].Model.ComparePositions(
+                    aLoc.InnerLocation,
+                    bLoc.InnerLocation);
+            }
+            else
+            {
+                return cmp;
+            }
         }
 
         public LineSpan[] GetLineSpans(int count)
@@ -78,7 +90,9 @@ namespace Reko.Gui.Windows.Controls
                 var model = Nodes[i].Model;
                 var sub = model.GetLineSpans(count);
                 count = count - sub.Length;
-                spans.AddRange(sub);
+                spans.AddRange(sub.Select(ls => new LineSpan(
+                    new Location(i, ls.Position),
+                    ls.TextSpans)));
                 position = new Location(i, model.CurrentPosition);
             }
             return spans.ToArray();
