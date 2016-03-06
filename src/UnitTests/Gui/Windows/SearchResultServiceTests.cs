@@ -61,7 +61,8 @@ namespace Reko.UnitTests.Gui.Windows
         [TearDown]
         public void TearDown()
         {
-            form.Dispose();
+            if (form != null)
+                form.Dispose();
         }
 
         [Test]

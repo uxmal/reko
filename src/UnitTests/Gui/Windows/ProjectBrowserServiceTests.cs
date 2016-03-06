@@ -49,6 +49,8 @@ namespace Reko.UnitTests.Gui.Windows
         private readonly string cr = Environment.NewLine == "\r\n"
                 ? "&#xD;&#xA;"
                 : "&#xA;";
+        private readonly char sep = Path.DirectorySeparatorChar;
+
         private MockRepository mr;
         private ServiceContainer sc;
         private FakeTreeView fakeTree;
@@ -434,10 +436,10 @@ namespace Reko.UnitTests.Gui.Windows
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
-                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12300000\" tag=\"ProgramDesigner\">" +
+                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe" + cr + "12300000\" tag=\"ProgramDesigner\">" +
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
-                    "<node text=\".text\" tip=\".text&#xD;&#xA;Address: 12340000&#xD;&#xA;Size: 1000&#xD;&#xA;r-x\" tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node text=\".text\" tip=\".text" + cr + "Address: 12340000&#xD;&#xA;Size: 1000" + cr + "r-x\" tag=\"ImageMapSegmentNodeDesigner\" />" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                  "</node>" +
                  "</root>");
@@ -516,7 +518,6 @@ namespace Reko.UnitTests.Gui.Windows
             mr.VerifyAll();
         }
 
-        
         public class TestDesigner : TreeNodeDesigner
         {
         }
@@ -563,7 +564,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             project.MetadataFiles.Add(new MetadataFile
             {
-                Filename = "..\\foo.tlb"
+                Filename = ".." + sep + "foo.tlb"
             });
 
             Assert.AreEqual(1, mockTree.Nodes.Count);
