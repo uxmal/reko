@@ -92,5 +92,42 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var spans = ntm.GetLineSpans(1);
             Assert.AreEqual("control", spans[0].TextSpans[0].GetText());
         }
+
+        [Test]
+        public void Ntm_SetPositionAsFraction()
+        {
+            var ntm = new NestedTextModel
+            {
+                Nodes =
+                {
+                    CreateNode("hello", "buy"),
+                    CreateNode("world", "control", "fnord"),
+                }
+            };
+
+            ntm.SetPositionAsFraction(1, 5);
+            var spans = ntm.GetLineSpans(1);
+            Assert.AreEqual("buy", spans[0].TextSpans[0].GetText());
+
+            ntm.SetPositionAsFraction(0, 5);
+            spans = ntm.GetLineSpans(1);
+            Assert.AreEqual("hello", spans[0].TextSpans[0].GetText());
+
+            ntm.SetPositionAsFraction(3, 5);
+            spans = ntm.GetLineSpans(1);
+            Assert.AreEqual("control", spans[0].TextSpans[0].GetText());
+
+            ntm.SetPositionAsFraction(2, 5);
+            spans = ntm.GetLineSpans(1);
+            Assert.AreEqual("world", spans[0].TextSpans[0].GetText());
+
+            ntm.SetPositionAsFraction(4, 5);
+            spans = ntm.GetLineSpans(1);
+            Assert.AreEqual("fnord", spans[0].TextSpans[0].GetText());
+
+            ntm.SetPositionAsFraction(5, 5);
+            spans = ntm.GetLineSpans(1);
+            Assert.AreEqual(0, spans.Length);
+        }
     }
 }
