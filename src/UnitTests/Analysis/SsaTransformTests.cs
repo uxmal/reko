@@ -1092,22 +1092,18 @@ ProcedureBuilder_exit:
 @"eax:eax
     def:  def eax
     uses: eax_2 = Mem0[eax:word32]
-          eax_5 = DPB(eax, ah_3, 8) (alias)
 Mem0:Global memory
     def:  def Mem0
     uses: eax_2 = Mem0[eax:word32]
 eax_2: orig: eax
     def:  eax_2 = Mem0[eax:word32]
     uses: ah_3 = SLICE(eax_2, byte, 8) (alias)
+          use eax_2
 ah_3: orig: ah
     def:  ah_3 = SLICE(eax_2, byte, 8) (alias)
     uses: Mem4[0x00001234:byte] = ah_3
-          use ah_3
 Mem4: orig: Mem0
     def:  Mem4[0x00001234:byte] = ah_3
-eax_5: orig: eax
-    def:  eax_5 = DPB(eax, ah_3, 8) (alias)
-    uses: use eax_5
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1118,17 +1114,15 @@ ProcedureBuilder_entry:
 l1:
 	eax_2 = Mem0[eax:word32]
 	ah_3 = SLICE(eax_2, byte, 8) (alias)
-	eax_5 = DPB(eax, ah_3, 8) (alias)
 	Mem4[0x00001234:byte] = ah_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use ah_3
-	use eax_5
+	use eax_2
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTest_FrameAccesses(sExp, m =>
             {
                 var regEax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
                 var regAh = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
@@ -1758,28 +1752,15 @@ bh_2: orig: bh
 bx:bx
     def:  def bx
     uses: bx_4 = DPB(bx, bl_1, 0) (alias)
-          bx_10 = DPB(bx, bl_9, 0) (alias)
 bx_4: orig: bx
     def:  bx_4 = DPB(bx, bl_1, 0) (alias)
     uses: bx_5 = DPB(bx_4, 0x00, 8) (alias)
-          bh_8 = SLICE(bx_4, byte, 8) (alias)
-          bl_9 = (byte) bx_4 (alias)
 bx_5: orig: bx
     def:  bx_5 = DPB(bx_4, 0x00, 8) (alias)
-    uses: Mem7[0x1236:word16] = bx_5
+    uses: Mem6[0x1236:word16] = bx_5
+          use bx_5
 Mem6: orig: Mem0
-    def:  Mem7[0x1236:word16] = bx_5
-Mem7: orig: Mem6
-    def:  Mem7[0x1236:word16] = bx_5
-bh_8: orig: bh
-    def:  bh_8 = SLICE(bx_4, byte, 8) (alias)
-    uses: use bh_8
-bl_9: orig: bl
-    def:  bl_9 = (byte) bx_4 (alias)
-    uses: use bl_9
-bx_10: orig: bx
-    def:  bx_10 = DPB(bx, bl_9, 0) (alias)
-    uses: use bx_10
+    def:  Mem6[0x1236:word16] = bx_5
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1790,20 +1771,15 @@ ProcedureBuilder_entry:
 m0:
 	bl_1 = Mem0[0x1234:word16]
 	bx_4 = DPB(bx, bl_1, 0) (alias)
-	bh_8 = SLICE(bx_4, byte, 8) (alias)
-	bl_9 = (byte) bx_4 (alias)
-	bx_10 = DPB(bx, bl_9, 0) (alias)
 	// succ:  m1
 m1:
 	bh_2 = 0x00
 	bx_5 = DPB(bx_4, 0x00, 8) (alias)
-	Mem7[0x1236:word16] = bx_5
+	Mem6[0x1236:word16] = bx_5
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use bh_8
-	use bl_9
-	use bx_10
+	use bx_5
 ";
             #endregion
 
@@ -1825,7 +1801,58 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaAliasedRegistersWithPhi()
         {
-            var sExp = "@@@";
+            var sExp =
+            #region Expected
+@"Mem0:Global memory
+    def:  def Mem0
+    uses: bl_1 = Mem0[0x1234:word16]
+bl_1: orig: bl
+    def:  bl_1 = Mem0[0x1234:word16]
+    uses: branch bl_1 > 0x00000003 m2
+bh_2: orig: bh
+    def:  bh_2 = 0x00
+bx:bx
+    def:  def bx
+    uses: bx_4 = DPB(bx, bl_1, 0) (alias)
+          bx_7 = PHI(bx, bx_5)
+bx_4: orig: bx
+    def:  bx_4 = DPB(bx, bl_1, 0) (alias)
+    uses: bx_5 = DPB(bx_4, 0x00, 8) (alias)
+bx_5: orig: bx
+    def:  bx_5 = DPB(bx_4, 0x00, 8) (alias)
+    uses: Mem6[0x1236:word16] = bx_5
+          bx_7 = PHI(bx, bx_5)
+Mem6: orig: Mem0
+    def:  Mem6[0x1236:word16] = bx_5
+bx_7: orig: bx
+    def:  bx_7 = PHI(bx, bx_5)
+    uses: use bx_7
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	def bx
+	// succ:  m0
+m0:
+	bl_1 = Mem0[0x1234:word16]
+	bx_4 = DPB(bx, bl_1, 0) (alias)
+	branch bl_1 > 0x00000003 m2
+	// succ:  m1 m2
+m1:
+	bh_2 = 0x00
+	bx_5 = DPB(bx_4, 0x00, 8) (alias)
+	Mem6[0x1236:word16] = bx_5
+	// succ:  m2
+m2:
+	bx_7 = PHI(bx, bx_5)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use bx_7
+";
+            #endregion
+
             RunTest_FrameAccesses(sExp, m =>
             {
                 var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));

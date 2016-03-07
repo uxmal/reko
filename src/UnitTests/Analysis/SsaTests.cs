@@ -120,18 +120,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void SsaReg00004()
-		{
-			RunFileTest32("Fragments/regressions/r00004.asm", "Analysis/SsaReg00004.txt");
-		}
-
-		[Test]
-		public void SsaReg00005()
-		{
-			RunFileTest("Fragments/regressions/r00005.asm", "Analysis/SsaReg00005.txt");
-		}
-
-		[Test]
 		public void SsaAddSubCarries()
 		{
 			RunFileTest("Fragments/addsubcarries.asm", "Analysis/SsaAddSubCarries.txt");
