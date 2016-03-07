@@ -18,39 +18,18 @@
  */
 #endregion
 
-using NUnit.Framework;
-using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
-namespace Reko.UnitTests.Gui.Windows.Controls
+namespace Reko.UnitTests
 {
-    [TestFixture]
-    [Category(Categories.UserInterface)]
-    public class ImageMapViewTests
+    public static class Categories
     {
-        ImageMapView ctrl;
-        Form form;
-
-        [SetUp]
-        public void Setup()
-        {
-            ctrl = new ImageMapView();
-            form = new Form();
-            form.Controls.Add(ctrl);
-            ctrl.Dock = DockStyle.Top;
-            form.Show();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            form.Dispose();
-            form = null;
-            ctrl = null;
-        }
+        public const string Capstone = "Capstone";
+        public const string Regressions = "Regressions";
+        public const string UnitTests = "UnitTests";
+        public const string UserInterface = "UserInterface";
     }
 }

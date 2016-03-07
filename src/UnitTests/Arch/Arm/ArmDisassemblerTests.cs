@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Arch.Arm
     }
 
     [TestFixture]
-    [Category("Capstone")]
+    [Category(Categories.Capstone)]
     public class ArmDisassemblerTests : ArmTestBase
     {
         protected override IProcessorArchitecture CreateArchitecture()

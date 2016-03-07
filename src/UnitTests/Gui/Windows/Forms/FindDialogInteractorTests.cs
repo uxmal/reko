@@ -26,7 +26,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
-    [Category("UserInterface")]
+    [Category(Categories.UserInterface)]
     public class FindDialogInteractorTests
     {
         [SetUp]

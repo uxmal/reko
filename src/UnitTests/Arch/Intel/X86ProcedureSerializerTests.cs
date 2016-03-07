@@ -35,7 +35,7 @@ using Rhino.Mocks;
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
-    [Category("UnitTests")]
+    [Category(Categories.UnitTests)]
     public class X86ProcedureSerializerTests
     {
         private MockRepository mr;

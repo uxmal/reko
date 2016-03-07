@@ -141,8 +141,8 @@ namespace Reko.UnitTests.Scanning
 
 
         [Test(Description = "Part of regression of issue #121")]
-        [Category("Regressions")]
-        [Category("UnitTests")]
+        [Category(Categories.Regressions)]
+        [Category(Categories.UnitTests)]
         public void BwReg_00121()
         {
             var d0 = m.Reg32("d0", 0);

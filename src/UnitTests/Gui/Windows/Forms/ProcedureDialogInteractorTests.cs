@@ -30,7 +30,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
-    [Category("UserInterface")]
+    [Category(Categories.UserInterface)]
     public class ProcedureDialogInteractorTests
     {
         private TestProcedureDialogInteractor interactor;

@@ -35,7 +35,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
-    [Category("UserInterface")]
+    [Category(Categories.UserInterface)]
     public class LowLevelViewInteractorTests
     {
         private LowLevelViewInteractor interactor;

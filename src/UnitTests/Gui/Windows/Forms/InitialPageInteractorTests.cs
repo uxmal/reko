@@ -33,7 +33,7 @@ using System.ComponentModel.Design;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
-    [Category("UserInterface")]
+    [Category(Categories.UserInterface)]
 	public class InitialPageInteractorTests
     {
         private MockRepository mr;
