@@ -129,5 +129,57 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             spans = ntm.GetLineSpans(1);
             Assert.AreEqual(0, spans.Length);
         }
+
+        [Test]
+        public void Ntm_GetLineSpans()
+        {
+            var ntm = new NestedTextModel
+            {
+                Nodes =
+                {
+                    CreateNode("hello", "buy"),
+                    CreateNode("world", "control", "fnord"),
+                }
+            };
+
+            ntm.MoveToLine(ntm.StartPosition, 1);
+            var spans = ntm.GetLineSpans(5);
+            Assert.AreEqual(4, spans.Length);
+            Assert.AreEqual("buy", spans[0].TextSpans[0].GetText());
+            Assert.AreEqual("world", spans[1].TextSpans[0].GetText());
+            Assert.AreEqual("control", spans[2].TextSpans[0].GetText());
+            Assert.AreEqual("fnord", spans[3].TextSpans[0].GetText());
+
+            ntm.MoveToLine(ntm.StartPosition, 0);
+            spans = ntm.GetLineSpans(5);
+            Assert.AreEqual(5, spans.Length);
+            Assert.AreEqual("hello", spans[0].TextSpans[0].GetText());
+            Assert.AreEqual("buy", spans[1].TextSpans[0].GetText());
+            Assert.AreEqual("world", spans[2].TextSpans[0].GetText());
+            Assert.AreEqual("control", spans[3].TextSpans[0].GetText());
+            Assert.AreEqual("fnord", spans[4].TextSpans[0].GetText());
+
+            ntm.MoveToLine(ntm.StartPosition, 3);
+            spans = ntm.GetLineSpans(5);
+            Assert.AreEqual(2, spans.Length);
+            Assert.AreEqual("control", spans[0].TextSpans[0].GetText());
+            Assert.AreEqual("fnord", spans[1].TextSpans[0].GetText());
+
+            ntm.MoveToLine(ntm.StartPosition, 2);
+            spans = ntm.GetLineSpans(5);
+            Assert.AreEqual(3, spans.Length);
+            Assert.AreEqual("world", spans[0].TextSpans[0].GetText());
+            Assert.AreEqual("control", spans[1].TextSpans[0].GetText());
+            Assert.AreEqual("fnord", spans[2].TextSpans[0].GetText());
+
+            ntm.MoveToLine(ntm.StartPosition, 4);
+            spans = ntm.GetLineSpans(5);
+            Assert.AreEqual(1, spans.Length);
+            Assert.AreEqual("fnord", spans[0].TextSpans[0].GetText());
+
+            ntm.SetPositionAsFraction(5, 5);
+            spans = ntm.GetLineSpans(5);
+            Assert.AreEqual(0, spans.Length);
+        }
     }
 }
