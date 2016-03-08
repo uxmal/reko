@@ -147,12 +147,13 @@ namespace Reko.Gui.Windows.Controls
             for (int i = 0; i < Nodes.Count; ++i)
             {
                 var node = Nodes[i];
-                if (total < node.cLines)
+                if (iPos < node.cLines)
                 {
-                    node.Model.SetPositionAsFraction((int)total, node.cLines);
+                    node.Model.SetPositionAsFraction((int)iPos, node.cLines);
                     this.position = new Location(i, node.Model.CurrentPosition);
                     return;
                 }
+                iPos -= node.cLines;
             }
             var model = Nodes[Nodes.Count - 1].Model;
             model.SetPositionAsFraction(1, 1);
