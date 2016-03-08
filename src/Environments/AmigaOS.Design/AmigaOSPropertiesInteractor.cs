@@ -41,7 +41,7 @@ namespace Reko.Environments.AmigaOS.Design
 
         public Control CreateControl()
         {
-            Control = new AmigaOSProperties();
+            Control = new AmigaOSProperties(this);
             return Control;
         }
 
@@ -59,5 +59,14 @@ namespace Reko.Environments.AmigaOS.Design
             }
         }
 
+        internal List<int> getAvailableKickstarts()
+        {
+            return AmigaOSPlatform.MapKickstartToListOfLibraries.Keys.ToList();
+        }
+
+        internal List<string> GetLibrariesForKickstart(int v)
+        {
+            return platform.GetLibrarySetForKickstartVersion(v);
+        }
     }
 }
