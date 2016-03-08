@@ -103,6 +103,8 @@
   <cmd id="ViewAsCode" cmdSet="Reko" container="GrpAddressSearchView">View as _code</cmd>
   <cmd id="ViewAsStrings" cmdSet="Reko" container="GrpAddressSearchView">View as _strings</cmd>
   <cmd id="ViewAsData" cmdSet="Reko" container="GrpAddressSearchView">View as _data</cmd>
+  <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeView">View control _graph</cmd>
+  <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeView">View _code</cmd>
   
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />

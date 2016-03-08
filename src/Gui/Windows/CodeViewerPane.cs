@@ -33,6 +33,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Reko.Core.Types;
+using Microsoft.Msagl.GraphViewerGdi;
 
 namespace Reko.Gui.Windows
 {
@@ -44,6 +45,7 @@ namespace Reko.Gui.Windows
     public class CodeViewerPane : IWindowPane, ICommandTarget
     {
         private CodeView codeView;
+        private GViewer gViewer;
         private IServiceProvider services;
         private Program program;
         private Procedure proc;
@@ -58,6 +60,7 @@ namespace Reko.Gui.Windows
         }
 
         public TextView TextView { get { return codeView.TextView; } }
+        public GViewer GraphView { get { return gViewer; } }
         public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
         public IWindowFrame FrameWindow { get; set; }
 
@@ -87,6 +90,9 @@ namespace Reko.Gui.Windows
 
             this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
 
+            this.gViewer = new GViewer();
+            this.codeView.Dock = DockStyle.Fill;
+            this.gViewer.Visible = false;
             this.navInteractor = new NavigationInteractor<Procedure>();
             this.navInteractor.Attach(codeView);
             this.TextView.Navigate += textView_Navigate;
@@ -127,6 +133,16 @@ namespace Reko.Gui.Windows
                         ? MenuStatus.Visible
                         : MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
+                case CmdIds.ViewCfgGraph:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
+                        : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
+                    return true;
                 }
             }
             return false;
@@ -140,6 +156,12 @@ namespace Reko.Gui.Windows
                 {
                 case CmdIds.EditCopy:
                     Copy();
+                    return true;
+                case CmdIds.ViewCfgGraph:
+                    ViewGraph();
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    ViewCode();
                     return true;
                 }
             }
@@ -161,6 +183,21 @@ namespace Reko.Gui.Windows
             {
                 Clipboard.SetText(codeView.ProcedureDeclaration.SelectedText);
             }
+        }
+
+        public void ViewGraph()
+        {
+            gViewer.Graph = CfgGraphGenerator.Generate(proc);
+            gViewer.ToolBarIsVisible = false;
+            gViewer.Visible = true;
+            gViewer.BringToFront();
+        }
+
+        public void ViewCode()
+        {
+            gViewer.Graph = null;
+            gViewer.Visible = false;
+            codeView.BringToFront();
         }
 
         private bool IsValidCIdentifier(string id)

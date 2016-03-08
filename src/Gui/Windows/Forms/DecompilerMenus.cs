@@ -212,6 +212,12 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slViewAsData = new CommandMenuItem("View as _data", new Guid(CmdSets.Reko), CmdIds.ViewAsData);
             slViewAsData.IsDynamic = false;
             slGrpAddressSearchView.Add(0, slViewAsData);
+            CommandMenuItem slViewCfgGraph = new CommandMenuItem("View control _graph", new Guid(CmdSets.Reko), CmdIds.ViewCfgGraph);
+            slViewCfgGraph.IsDynamic = false;
+            slGrpCodeView.Add(0, slViewCfgGraph);
+            CommandMenuItem slViewCfgCode = new CommandMenuItem("View _code", new Guid(CmdSets.Reko), CmdIds.ViewCfgCode);
+            slViewCfgCode.IsDynamic = false;
+            slGrpCodeView.Add(0, slViewCfgCode);
             CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Reko), CmdIds.ActionRestartDecompilation);
             slActionRestartDecompilation.IsDynamic = false;
             slActionRestartDecompilation.ImageIndex = 2;
