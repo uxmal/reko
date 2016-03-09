@@ -39,6 +39,7 @@ namespace Reko.Analysis
     /// This class implements the SSA algorithm from Appel's "Modern compiler 
     /// implementatation in [language of your choice]."
     /// </remarks>
+    [Obsolete("", false)]
 	public class SsaTransform
 	{
         private ProgramDataFlow programFlow;
@@ -1203,10 +1204,11 @@ namespace Reko.Analysis
                 {
                     c = bin.Operator.ApplyConstants(cOther, c);
                     sid.Uses.Remove(stmCur);
-                } else
+                }
+                else
                 {
                     c = null;
-        }
+                }
             }
             else
             {
@@ -1214,7 +1216,7 @@ namespace Reko.Analysis
             }
 
             if (c != null)
-        { 
+            {
                 access.EffectiveAddress = c;
                 var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
                 if (e != null)
@@ -1364,10 +1366,10 @@ namespace Reko.Analysis
                 this.id = id;
                 this.stm = stm;
                 return id.Storage.Accept(this);
-        }
+            }
 
             public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
-        {
+            {
                 return new SsaFlagTransformer(id, grf, stm, transform);
             }
 
@@ -1514,38 +1516,38 @@ namespace Reko.Analysis
 
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool aliasProbe)
             {
-            SsaIdentifier val;
-            if (false)  // !sealedBlocks.Contains(b))
-            {
-                // Incomplete CFG
-                //val = newPhi(id, b);
-                //incompletePhis[b][id.Storage] = val;
-            }
+                SsaIdentifier val;
+                if (false)  // !sealedBlocks.Contains(b))
+                {
+                    // Incomplete CFG
+                    //val = newPhi(id, b);
+                    //incompletePhis[b][id.Storage] = val;
+                }
                 else if (bs.Block.Pred.Count == 0)
-            {
-                // Undef'ined or unreachable parameter; assume it's a def.
+                {
+                    // Undef'ined or unreachable parameter; assume it's a def.
                     if (!aliasProbe)
                         val = NewDefInstruction(id, bs.Block);
                     else
                         val = null;
-            }
+                }
                 else if (bs.Block.Pred.Count == 1)
-            {
+                {
                     val = ReadVariable(blockstates[bs.Block.Pred[0]], aliasProbe);
-            }
-            else
-            {
-                // Break potential cycles with operandless phi
+                }
+                else
+                {
+                    // Break potential cycles with operandless phi
                     val = NewPhi(id, bs.Block);
                     WriteVariable(bs, val, false);
                     val = AddPhiOperands(val, aliasProbe);
-            }
+                }
                 if (val != null && !aliasProbe)
                     WriteVariable(bs, val, false);
-            return val;
-        }
+                return val;
+            }
 
-        /// <summary>
+            /// <summary>
             /// If <paramref name="idTo"/> is smaller than <paramref name="sidFrom" />, then
             /// it doesn't cover it completely. Therefore, we must generate a SLICE / cast 
             /// statement.
@@ -1611,33 +1613,33 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-        /// Creates a phi statement with no slots for the predecessor blocks, then
-        /// inserts the phi statement as the first statement of the block.
-        /// </summary>
-        /// <param name="b">Block into which the phi statement is inserted</param>
-        /// <param name="v">Destination variable for the phi assignment</param>
-        /// <returns>The inserted phi Assignment</returns>
+            /// Creates a phi statement with no slots for the predecessor blocks, then
+            /// inserts the phi statement as the first statement of the block.
+            /// </summary>
+            /// <param name="b">Block into which the phi statement is inserted</param>
+            /// <param name="v">Destination variable for the phi assignment</param>
+            /// <returns>The inserted phi Assignment</returns>
             private SsaIdentifier NewPhi(Identifier id, Block b)
-        {
-            var phiAss = new PhiAssignment(id, 0);
-            var stm = new Statement(0, phiAss, b);
-            b.Statements.Insert(0, stm);
+            {
+                var phiAss = new PhiAssignment(id, 0);
+                var stm = new Statement(0, phiAss, b);
+                b.Statements.Insert(0, stm);
 
                 var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
-            phiAss.Dst = sid.Identifier;
-            return sid;
-        }
+                phiAss.Dst = sid.Identifier;
+                return sid;
+            }
 
             private SsaIdentifier AddPhiOperands(SsaIdentifier phi, bool aliasProbe)
-        {
-            // Determine operands from predecessors.
+            {
+                // Determine operands from predecessors.
                 var preds = phi.DefStatement.Block.Pred;
 
                 if (preds.Any(p => !blockstates[p].Visited))
                 {
                     // Haven't visited some of the predecessors yet,
                     // so we can't backwalk... yet. 
-            ((PhiAssignment)phi.DefStatement.Instruction).Src =
+                    ((PhiAssignment)phi.DefStatement.Instruction).Src =
                                 new PhiFunction(phi.Identifier.DataType, new Expression[preds.Count]);
                     outer.incompletePhis.Add(phi);
                     return phi;
@@ -1671,7 +1673,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="phi"></param>
         /// <returns></returns>
-            private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
+        private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
         {
                 bool firstTime = true;
             Identifier same = null;
@@ -1951,12 +1953,12 @@ namespace Reko.Analysis
             private FpuStackStorage fpu;
 
             public FpuStackTransformer(Identifier id, FpuStackStorage fpu, Statement stm, SsaTransform2 outer) : base(id, stm, outer)
-        {
+            {
                 this.fpu = fpu;
-        }
+            }
 
             public override Identifier NewDef(SsaBlockState bs, SsaIdentifier sid)
-        {
+            {
                 bs.currentFpuDef[fpu.FpuStackOffset] = sid;
                 return base.NewDef(bs, sid);
             }
@@ -1967,7 +1969,7 @@ namespace Reko.Analysis
                 bs.currentFpuDef.TryGetValue(fpu.FpuStackOffset, out sid);
                 return sid;
             }
-            }
+        }
 
         public class SsaApplicationBuilder : ApplicationBuilder
         {

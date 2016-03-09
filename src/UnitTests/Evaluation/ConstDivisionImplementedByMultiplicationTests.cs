@@ -44,14 +44,18 @@ namespace Reko.UnitTests.Evaluation
             var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
 
             var ass = m.Assign(r2_r1, m.SMul(r1, c));
-            m.Emit(new AliasAssignment(r2, m.Slice(PrimitiveType.Word32, r2_r1, 32)));
             if (shift != 0)
                 m.Assign(r2, m.Sar(r2, shift));
 
             var proc = m.Procedure;
-            var ssa = new SsaTransform(null, proc, null, proc.CreateBlockDominatorGraph()).Transform();
-            var ctx = new SsaEvaluationContext(null, ssa.Identifiers);
-            var rule = new ConstDivisionImplementedByMultiplication(ssa);
+            var flow = new DataFlow2();
+            var sst = new SsaTransform2(m.Architecture, proc, null, flow);
+            sst.Transform();
+
+            proc.Dump(true);
+
+            var ctx = new SsaEvaluationContext(m.Architecture, sst.SsaState.Identifiers);
+            var rule = new ConstDivisionImplementedByMultiplication(sst.SsaState);
             ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
             Assert.IsTrue(rule.Match(ass));
             ass = rule.TransformInstruction();

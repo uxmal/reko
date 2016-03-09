@@ -95,6 +95,24 @@ namespace Reko.UnitTests.Analysis
 #endif
 		}
 
+        private void RunUnitTest(ProcedureBuilder m, string outfile)
+        {
+            var flow = new DataFlow2();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+
+            var proc = m.Procedure;
+            var sst = new SsaTransform2(m.Architecture, proc, importResolver, flow);
+            sst.Transform();
+            ssa = sst.SsaState;
+            using (var fut = new FileUnitTester(outfile))
+            {
+                ssa.Write(fut.TextWriter);
+                proc.Write(false, fut.TextWriter);
+                fut.AssertFilesEqual();
+            }
+        }
+
         private void Dump(CallGraph cg)
         {
             var sw = new StringWriter();
@@ -209,20 +227,5 @@ namespace Reko.UnitTests.Analysis
 
             RunUnitTest(m, "Analysis/SsaCallIndirect.txt");
         }
-
-        private void RunUnitTest(ProcedureBuilder m, string outfile)
-        {
-            var proc = m.Procedure;
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph());
-            ssa = sst.SsaState;
-            using (var fut = new FileUnitTester(outfile))
-            {
-                ssa.Write(fut.TextWriter);
-                proc.Write(false, fut.TextWriter);
-                fut.AssertFilesEqual();
-            }
-        }
-
-
 	}
 }

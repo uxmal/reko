@@ -105,6 +105,8 @@ namespace Reko.UnitTests.Analysis
             sst.AddUseInstructions = false;
             sst.Transform();
 
+            proc.Dump(true);
+
             // Propagate values and simplify the results.
             // We hope the the sequence
             //   esp = fp - 4
@@ -1994,6 +1996,32 @@ ProcedureBuilder_exit:
                 m.Assign(SZ, m.Cond(r1));
                 m.Assign(C, Constant.Bool(false));
                 m.Return();
+            });
+        }
+
+        [Test]
+        public void SsaDefineSequence()
+        {
+            var sExp =
+            #region Expected
+                @"@@@";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var c = Constant.Int32(0x55555555);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
+
+                m.Assign(r2_r1, m.SMul(r1, c));
+                m.Store(m.Word32(0x0040000), r2);
+                m.Return();
+
+                var proc = m.Procedure;
+                var flow = new DataFlow2();
+                var sst = new SsaTransform2(m.Architecture, proc, null, flow);
+                sst.Transform();
             });
         }
     }
