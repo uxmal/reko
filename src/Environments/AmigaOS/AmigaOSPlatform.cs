@@ -63,12 +63,6 @@ namespace Reko.Environments.AmigaOS
             }
         }; //$TODO: Load available kickstart -> libraries mappings from disk ?
 
-        public static Dictionary<int, List<String>> MapKickstartToListOfLibraries {
-            get {
-                return mapKickstartToListOfLibraries;
-            }
-        }
-
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "amigaOS")
         {
@@ -81,6 +75,14 @@ namespace Reko.Environments.AmigaOS
                         ExpressionMatcher.AnyConstant("offset")),
                     4,
                     RtlClass.Transfer));
+        }
+
+        public static Dictionary<int, List<String>> MapKickstartToListOfLibraries
+        {
+            get
+            {
+                return mapKickstartToListOfLibraries;
+            }
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

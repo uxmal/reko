@@ -73,7 +73,6 @@
             this.cmbKickstartVersions.Name = "cmbKickstartVersions";
             this.cmbKickstartVersions.Size = new System.Drawing.Size(182, 21);
             this.cmbKickstartVersions.TabIndex = 3;
-            this.cmbKickstartVersions.SelectedIndexChanged += new System.EventHandler(this.onSelectedItemChanged);
             // 
             // lblUsedLibraries
             // 

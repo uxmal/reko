@@ -29,6 +29,7 @@ namespace Reko.Gui.Controls
     public interface IComboBox
     {
         event EventHandler TextChanged;
+        event EventHandler SelectedIndexChanged;
 
         object DataSource { get; set; }
         bool Enabled { get; set; }

@@ -35,6 +35,12 @@ namespace Reko.Gui.Windows
             add { this.ddl.TextChanged += value; } 
             remove { this.ddl.TextChanged -= value; }
         }
+        
+        public event EventHandler SelectedIndexChanged
+        {
+            add { this.ddl.SelectedIndexChanged += value; }
+            remove { this.ddl.SelectedIndexChanged -= value; }
+        }
 
         private ComboBox ddl;
 
