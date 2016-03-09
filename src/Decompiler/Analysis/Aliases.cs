@@ -333,8 +333,9 @@ namespace Reko.Analysis
 
         public Storage VisitFlagRegister(FlagRegister freg)
         {
-            throw new NotImplementedException();
+            return null;
         }
+
         public Storage VisitTemporaryStorage(TemporaryStorage temp)
         {
             return null;
