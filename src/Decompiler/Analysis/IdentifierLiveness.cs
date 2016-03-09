@@ -179,7 +179,7 @@ namespace Reko.Analysis
 
         public Storage VisitFlagRegister(FlagRegister freg)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
 		public Storage VisitFlagGroupStorage(FlagGroupStorage grf)

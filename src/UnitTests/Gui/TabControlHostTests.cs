@@ -31,6 +31,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class TabControlHostTests
     {
         private TabControl tabCtrl;

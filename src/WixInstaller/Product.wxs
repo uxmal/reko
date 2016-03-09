@@ -149,6 +149,10 @@
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.Proxy.dll" />
+        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.dll" />
+        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.Drawing.dll" />
+        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll" />
+        
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" />
         <File Source="$(var.SolutionDir)..\external\wine\gdi.exe16.spec" />

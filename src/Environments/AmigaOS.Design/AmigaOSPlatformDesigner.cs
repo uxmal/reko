@@ -28,6 +28,10 @@ using System.Text;
 
 namespace Reko.Environments.AmigaOS.Design
 {
+    /// <summary>
+    /// TreeNode designer that plugs into the project browser and which opens a 
+    /// tabbed document window to show the AmigaOS properties window pane.
+    /// </summary>
     public class AmigaOSPlatformDesigner : PlatformDesigner
     {
         public override void Initialize(object obj)

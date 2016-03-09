@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.Serialization
 		[Test]
 		public void StWriteStruct()
 		{
-            SerializedStructType str = new SerializedStructType
+            StructType_v1 str = new StructType_v1
             {
                 Fields = new StructField_v1[] {
                     new StructField_v1(0, null, new PrimitiveType_v1(Domain.UnsignedInt, 4)),
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Core.Serialization
 		[Test]
 		public void StReadStruct()
 		{
-			SerializedStructType str = new SerializedStructType
+			StructType_v1 str = new StructType_v1
             {
 			    ByteSize = 32,
 			    Fields = new StructField_v1 []
@@ -80,8 +80,8 @@ namespace Reko.UnitTests.Core.Serialization
                 "<field offset=\"4\"><prim domain=\"Real\" size=\"8\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>",
                 s.Substring(b, e-b));
 			StringReader rdr = new StringReader(s);
-            XmlSerializer deser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedStructType));
-			SerializedStructType destr = (SerializedStructType) deser.Deserialize(rdr);
+            XmlSerializer deser = SerializedLibrary.CreateSerializer_v1(typeof(StructType_v1));
+			StructType_v1 destr = (StructType_v1) deser.Deserialize(rdr);
 		}
 
 		[Test]

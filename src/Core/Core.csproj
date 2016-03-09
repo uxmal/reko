@@ -593,7 +593,7 @@
     <Compile Include="Serialization\StackVariable_v1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedStructType.cs">
+    <Compile Include="Serialization\StructType_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedType.cs">

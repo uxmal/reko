@@ -64,14 +64,14 @@ namespace Reko.UnitTests.Analysis
 		/// Test that self-recursive functions are handled correctly.
 		/// </summary>
 		[Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void RlFactorialReg()
 		{
 			RunFileTest("Fragments/factorial_reg.asm", "Analysis/RlFactorialReg.txt");
 		}
 
 		[Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void RlFactorial()
 		{
 			RunFileTest("Fragments/factorial.asm", "Analysis/RlFactorial.txt");
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void RlReg00010()
         {
             RunFileTest("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
@@ -196,28 +196,28 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Ignore("scanning-development")]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void RlReg00015()
         {
             RunFileTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
         }
 
         [Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void RlPushPop()
         {
             RunFileTest("Fragments/pushpop.asm", "Analysis/RlPushPop.txt");
         }
 
         [Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void RlChainTest()
         {
             RunFileTest("Fragments/multiple/chaincalls.asm", "Analysis/RlChainTest.txt");
         }
 
         [Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void RlSliceReturn()
         {
             RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/RlSliceReturn.txt");

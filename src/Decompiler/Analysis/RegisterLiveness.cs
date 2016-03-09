@@ -891,7 +891,7 @@ namespace Reko.Analysis
 
             public bool VisitFlagRegister(FlagRegister freg)
             {
-                throw new NotImplementedException();
+                return liveState.LiveStorages.ContainsKey(freg);
             }
 
             public bool VisitSequenceStorage(SequenceStorage seq)

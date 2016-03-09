@@ -35,7 +35,7 @@ using Rhino.Mocks;
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
-    [Category("UnitTests")]
+    [Category(Categories.UnitTests)]
     public class X86ProcedureSerializerTests
     {
         private MockRepository mr;
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var ssig = new SerializedSignature
             {
-                EnclosingType = new SerializedStructType { Name = "CHandle" },
+                EnclosingType = new StructType_v1 { Name = "CHandle" },
                 Convention = "__thiscall",
                 Arguments = new Argument_v1[] {
                     new Argument_v1 
@@ -305,7 +305,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var ssig = new SerializedSignature
             {
-                EnclosingType = new SerializedStructType { Name="CWindow" },
+                EnclosingType = new StructType_v1 { Name="CWindow" },
                 Convention = "__thiscall",
                 Arguments = new Argument_v1[]
                 {

@@ -418,7 +418,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void BwTempRegister()
         {
             var v1 = m.Frame.CreateTemporary(PrimitiveType.Word32);
@@ -437,7 +437,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void BwUnresolveableIndirect()
         {
             var eax = m.Reg32("eax", 0);
@@ -458,7 +458,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        [Category("Regressions")]
+        [Category(Categories.Regressions)]
         public void BwReg00018()
         {
             RunFileTestx86_32("Fragments/regressions/r00018.asm", "Scanning/BwReg00018.txt");

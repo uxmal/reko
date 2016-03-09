@@ -396,7 +396,7 @@ namespace Reko.Environments.Windows
                 Convention = convention,
                 Arguments = args,
                 EnclosingType = !string.IsNullOrEmpty(Scope)
-                    ? new SerializedStructType { Name = Scope, ForceStructure = true }
+                    ? new StructType_v1 { Name = Scope, ForceStructure = true }
                     : null,
                 IsInstanceMethod = isInstanceMethod,
                 ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }

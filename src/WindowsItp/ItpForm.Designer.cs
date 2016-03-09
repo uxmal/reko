@@ -36,6 +36,7 @@
             this.treeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disassemblyControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.codeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +46,7 @@
             this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ollyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.codeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.byteMapViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,7 +71,8 @@
             this.treeViewToolStripMenuItem,
             this.disassemblyControlToolStripMenuItem,
             this.textViewToolStripMenuItem,
-            this.codeViewToolStripMenuItem});
+            this.codeViewToolStripMenuItem,
+            this.byteMapViewToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.controlsToolStripMenuItem.Text = "&Controls";
@@ -117,6 +119,13 @@
             this.textViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.textViewToolStripMenuItem.Text = "Te&xt View";
             this.textViewToolStripMenuItem.Click += new System.EventHandler(this.textViewToolStripMenuItem_Click);
+            // 
+            // codeViewToolStripMenuItem
+            // 
+            this.codeViewToolStripMenuItem.Name = "codeViewToolStripMenuItem";
+            this.codeViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.codeViewToolStripMenuItem.Text = "&Code View";
+            this.codeViewToolStripMenuItem.Click += new System.EventHandler(this.codeViewToolStripMenuItem_Click);
             // 
             // dialogsToolStripMenuItem
             // 
@@ -188,12 +197,12 @@
             this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
             this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
             // 
-            // codeViewToolStripMenuItem
+            // byteMapViewToolStripMenuItem
             // 
-            this.codeViewToolStripMenuItem.Name = "codeViewToolStripMenuItem";
-            this.codeViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.codeViewToolStripMenuItem.Text = "&Code View";
-            this.codeViewToolStripMenuItem.Click += new System.EventHandler(this.codeViewToolStripMenuItem_Click);
+            this.byteMapViewToolStripMenuItem.Name = "byteMapViewToolStripMenuItem";
+            this.byteMapViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.byteMapViewToolStripMenuItem.Text = "&Byte Map View";
+            this.byteMapViewToolStripMenuItem.Click += new System.EventHandler(this.byteMapViewToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -231,6 +240,7 @@
         private System.Windows.Forms.ToolStripMenuItem assumeRegistesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem codeViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem byteMapViewToolStripMenuItem;
     }
 }
 

@@ -19,15 +19,11 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Gui.Controls;
 using Reko.Gui.Windows.Controls;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -68,6 +64,7 @@ namespace Reko.Gui.Windows
                     control.DisassemblyView.Model = new DisassemblyTextModel(value, seg);
                     control.ImageMapView.ImageMap = value.ImageMap;
                     control.ImageMapView.Granularity = value.ImageMap.GetExtent();
+                    control.ByteMapView.ImageMap = value.ImageMap;
                 }
             }
         }

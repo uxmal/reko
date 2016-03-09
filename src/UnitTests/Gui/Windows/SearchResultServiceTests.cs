@@ -31,6 +31,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class SearchResultServiceTests
     {
         private MockRepository mr;
@@ -60,7 +61,8 @@ namespace Reko.UnitTests.Gui.Windows
         [TearDown]
         public void TearDown()
         {
-            form.Dispose();
+            if (form != null)
+                form.Dispose();
         }
 
         [Test]

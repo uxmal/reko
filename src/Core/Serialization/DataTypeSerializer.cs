@@ -131,7 +131,7 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitStructure(StructureType str)
         {
-            var sStr = new SerializedStructType
+            var sStr = new StructType_v1
             {
                 Name = str.Name,
                 ByteSize = str.Size

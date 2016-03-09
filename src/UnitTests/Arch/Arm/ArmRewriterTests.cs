@@ -31,7 +31,8 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
-    class ArmRewriterTests : RewriterTestBase
+    [Category(Categories.Capstone)]
+    public class ArmRewriterTests : RewriterTestBase
     {
         private Arm32ProcessorArchitecture arch = new Arm32ProcessorArchitecture();
         private MemoryArea image;

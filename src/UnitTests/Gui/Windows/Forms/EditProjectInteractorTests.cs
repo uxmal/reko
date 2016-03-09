@@ -32,6 +32,7 @@ using System.Text;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class EditProjectInteractorTests
     {
         private EditProjectDialog dlg;

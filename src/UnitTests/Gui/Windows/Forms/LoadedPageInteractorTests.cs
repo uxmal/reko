@@ -37,6 +37,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class LoadedPageInteractorTests
     {
         private IMainForm form;
