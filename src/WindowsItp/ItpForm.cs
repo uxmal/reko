@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Arch.X86;
+using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Environments.Windows;
@@ -32,6 +33,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Reko.WindowsItp
@@ -224,11 +226,29 @@ namespace Reko.WindowsItp
 
         private void byteMapViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            byte[] buf = GenerateImageData();
+            var mem = new MemoryArea(Address.Ptr32(0x0040000), buf);
             var dlg = new ByteMapDialog();
             var ctrl = new ByteMapView();
             dlg.Controls.Add(ctrl);
             ctrl.Dock = DockStyle.Fill;
+            ctrl.ImageMap = new ImageMap(Address.Ptr32(0x0040000),
+                new ImageSegment("foo", mem, AccessMode.ReadWriteExecute));
             dlg.ShowDialog();
+        }
+
+        private byte[] GenerateImageData()
+        {
+#if RANDOM
+            var rnd = new Random();
+            var buf = new byte[0x4000];
+            rnd.NextBytes(buf);
+            return buf;
+#else
+            return Enumerable.Range(0, 4000)
+                .Select(n => (byte)n)
+                .ToArray();
+#endif
         }
     }
 }

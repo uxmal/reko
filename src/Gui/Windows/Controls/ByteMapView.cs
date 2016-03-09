@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Reko.Core;
 
 namespace Reko.Gui.Windows.Controls
 {
@@ -14,11 +15,14 @@ namespace Reko.Gui.Windows.Controls
     {
         Graphics g;
 
-        int x = 30;
-        int y = 10;
+        int x = 65;
+        int y = 65;
         int x_old, y_old;
         int x_new, y_new;
         const int ScaleFactor = 8;
+        private LeImageReader rdr;
+
+        public ImageMap ImageMap { get; set; }
 
         void msg(string ss)
         {
@@ -29,6 +33,7 @@ namespace Reko.Gui.Windows.Controls
         {
             x_old = 0;
             y_old = 0;
+            this.rdr = ImageMap.Segments.First().Value.MemoryArea.CreateLeReader(0);
             spacefill(1, 1, x, y);
         }
 
@@ -43,15 +48,19 @@ namespace Reko.Gui.Windows.Controls
             y_new = y0;
             if ((x_old > 0) && (x_new > 0))
             {
-                //if (dir == "m")
-                //    g.DrawLine(Pens.Red, ScaleFactor * x_old, ScaleFactor * y_old, ScaleFactor * x_new, ScaleFactor * y_new);
-                //else
-                //    g.DrawLine(Pens.Blue, ScaleFactor * x_old, ScaleFactor * y_old, ScaleFactor * x_new, ScaleFactor * y_new);
+#if DEBUGGING_CODE
 
                 g.FillRectangle(Brushes.Blue, ScaleFactor * x_old, ScaleFactor * y_old, ScaleFactor / 2, ScaleFactor / 2);
                 g.DrawLine(Pens.Blue, ScaleFactor * x_old+ScaleFactor/4, ScaleFactor * y_old + ScaleFactor / 4, 
                     ScaleFactor * x_new + ScaleFactor / 4, ScaleFactor * y_new + ScaleFactor / 4);
-
+#else
+                byte b;
+                if (!rdr.TryReadByte(out b))
+                    b = 0xFF;
+                var br = new SolidBrush(Color.FromArgb(b, b, b));
+                g.FillRectangle(br, ScaleFactor * x_old, ScaleFactor * y_old, ScaleFactor, ScaleFactor);
+                br.Dispose();
+#endif
             }
             else
             {
