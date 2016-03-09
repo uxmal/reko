@@ -27,23 +27,21 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-	public class SerializedStructType : SerializedTaggedType
+	public class StructType_v1 : SerializedTaggedType
 	{
 		[XmlAttribute("size")]
         [DefaultValue(0)]
 		public int ByteSize;
 
         [XmlAttribute("force")]
-        [DefaultValue(false)]
-        public bool ForceStructure { get; set; }
+        public bool ForceStructure;
 
-        public SerializedStructType()
+        public StructType_v1()
 		{
 		}
 
 		[XmlElement("field", typeof (StructField_v1))]
 		public StructField_v1[]  Fields;
-
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
@@ -58,13 +56,10 @@ namespace Reko.Core.Serialization
                 sb.AppendFormat("{0}, ", Name);
             if (ByteSize > 0)
                 sb.AppendFormat("{0}, ", ByteSize);
-            if (Fields != null)
-            {
-                foreach (StructField_v1 f in Fields)
-                {
-                    sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null ? f.Name : "?", f.Type);
-                }
-            }
+			foreach (StructField_v1 f in Fields)
+			{
+				sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null?f.Name: "?", f.Type);
+			}
 			sb.Append(")");
 			return sb.ToString();
 		}

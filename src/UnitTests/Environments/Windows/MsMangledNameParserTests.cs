@@ -172,7 +172,7 @@ namespace Reko.UnitTests.Environments.Windows
                 throw new NotImplementedException();
             }
 
-            public StringBuilder VisitStructure(SerializedStructType structure)
+            public StringBuilder VisitStructure(StructType_v1 structure)
             {
                 throw new NotImplementedException();
             }

@@ -18,9 +18,12 @@
  */
 #endregion
 
+using Microsoft.Msagl.GraphViewerGdi;
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Output;
+using Reko.Core.Types;
 using Reko.Gui.Windows.Controls;
 using Reko.Gui.Windows.Forms;
 using System;
@@ -32,8 +35,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Reko.Core.Types;
-using Reko.Analysis;
+
 
 namespace Reko.Gui.Windows
 {
@@ -45,6 +47,7 @@ namespace Reko.Gui.Windows
     public class CodeViewerPane : IWindowPane, ICommandTarget
     {
         private CodeView codeView;
+        private GViewer gViewer;
         private IServiceProvider services;
         private Program program;
         private Procedure proc;
@@ -58,6 +61,7 @@ namespace Reko.Gui.Windows
         }
 
         public TextView TextView { get { return codeView.TextView; } }
+        public GViewer GraphView { get { return gViewer; } }
         public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
         public IWindowFrame FrameWindow { get; set; }
 
@@ -72,7 +76,7 @@ namespace Reko.Gui.Windows
 
         public Control CreateControl()
         {
-            var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
 
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
@@ -84,14 +88,22 @@ namespace Reko.Gui.Windows
             this.TextView.BackColor = SystemColors.Window;
             this.TextView.Services = services;
             this.TextView.StyleClass = UiStyles.CodeWindow;
+            this.TextView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
-            this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
+            this.gViewer = new GViewer();
+            this.gViewer.Dock = DockStyle.Fill;
+            this.gViewer.Visible = false;
+            this.gViewer.PanButtonPressed = true;
+            this.gViewer.ToolBarIsVisible = true;
+            this.gViewer.KeyDown += GViewer_KeyDown;
+            this.gViewer.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.navInteractor = new NavigationInteractor<Procedure>();
             this.navInteractor.Attach(codeView);
             this.TextView.Navigate += textView_Navigate;
             return this.codeView;
         }
+
 
         private void EnableControls()
         {
@@ -133,6 +145,16 @@ namespace Reko.Gui.Windows
                         ? MenuStatus.Visible
                         : MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
+                case CmdIds.ViewCfgGraph:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
+                        : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
+                    return true;
                 }
             }
             return false;
@@ -146,6 +168,12 @@ namespace Reko.Gui.Windows
                 {
                 case CmdIds.EditCopy:
                     Copy();
+                    return true;
+                case CmdIds.ViewCfgGraph:
+                    ViewGraph();
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    ViewCode();
                     return true;
                 }
             }
@@ -169,6 +197,23 @@ namespace Reko.Gui.Windows
             }
         }
 
+        public void ViewGraph()
+        {
+            gViewer.Parent = codeView.Parent;
+            gViewer.Graph = CfgGraphGenerator.Generate(proc);
+            codeView.Visible = false;
+            gViewer.Visible = true;
+            gViewer.BringToFront();
+        }
+
+        public void ViewCode()
+        {
+            gViewer.Graph = null;
+            gViewer.Visible = false;
+            codeView.Visible = true;
+            codeView.BringToFront();
+        }
+
         private bool IsValidCIdentifier(string id)
         {
             return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
@@ -176,7 +221,7 @@ namespace Reko.Gui.Windows
 
         private bool TryParseSignature(string txtSignature, out Core.Serialization.ProcedureBase_v1 sProc)
         {
-            sProc = null;
+                sProc = null;
             if (program == null || program.Platform == null)
             {
                 return false;
@@ -347,9 +392,25 @@ namespace Reko.Gui.Windows
         {
             TextView.Invoke(new Action(() =>
             {
-                SetTextView(proc);
-                FrameWindow.Title = proc.Name;
+            SetTextView(proc);
+            FrameWindow.Title = proc.Name;
             }));
+        }
+
+
+        private void GViewer_KeyDown(object sender, KeyEventArgs e)
+        {
+            Debug.Print("{0} {1:X} {2}", e.KeyCode, e.KeyValue, e.KeyData);
+            if (e.KeyCode == Keys.Add || e.KeyCode == Keys.Oemplus)
+            {
+                gViewer.ZoomF *= 1.2;
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Subtract || e.KeyCode == Keys.OemMinus)
+            {
+                gViewer.ZoomF /= 1.2;
+                e.Handled = true;
+            }
         }
     }
 }

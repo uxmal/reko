@@ -48,14 +48,7 @@ namespace Reko.Gui.Windows
 #else
             var pane = new CombinedCodeViewerPane();
             var frame = ShowWindow("combinedCodeViewerWindow", program.Name, program, pane);
-            pane.Program = program;
-            if (program != null)
-            {
-                pane.SelectedAddress = program.ImageMap.Segments.Values
-                    .Where(s => s.MemoryArea != null)
-                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
-                    .First();
-            }
+            pane.DisplayProcedure(program, proc);
 #endif
         }
 

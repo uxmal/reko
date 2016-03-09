@@ -136,7 +136,7 @@ namespace Reko.Core
         {
             if (EnclosingType == null)
                 return Name;
-            var str = EnclosingType as SerializedStructType;
+            var str = EnclosingType as StructType_v1;
             if (str != null)
                 return string.Format("{0}::{1}", str.Name, Name);
             return Name;

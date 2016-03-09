@@ -39,6 +39,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class CodeViewerPaneTests
     {
         private string nl = Environment.NewLine;

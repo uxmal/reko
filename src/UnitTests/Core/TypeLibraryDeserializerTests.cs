@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Core
 
             var typelib = new TypeLibrary();
             var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
-            new SerializedStructType
+            new StructType_v1
             {
                 Name = "localeinfo_struct",
                 Fields = new StructField_v1[]
@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Core
             new SerializedTypedef
             {
                 Name = "_locale_tstruct",
-                DataType = new SerializedStructType
+                DataType = new StructType_v1
                 {
                     Name = "localeinfo_struct",
                 }
@@ -220,12 +220,12 @@ namespace Reko.UnitTests.Core
             new SerializedTypedef
             {
                 Name = "_locale_tstruct",
-                DataType = new SerializedStructType
+                DataType = new StructType_v1
                 {
                     Name = "localeinfo_struct",
                 }
             }.Accept(tlldr);
-            new SerializedStructType
+            new StructType_v1
             {
                 Name = "localeinfo_struct",
                 Fields = new StructField_v1[]

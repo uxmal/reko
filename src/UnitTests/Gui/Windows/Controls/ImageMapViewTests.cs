@@ -29,7 +29,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Controls
 {
     [TestFixture]
-    [Category("UserInterface")]
+    [Category(Categories.UserInterface)]
     public class ImageMapViewTests
     {
         ImageMapView ctrl;

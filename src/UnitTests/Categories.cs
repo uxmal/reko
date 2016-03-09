@@ -19,23 +19,17 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.UnitTests
 {
-    public interface IComboBox
+    public static class Categories
     {
-        event EventHandler TextChanged;
-        event EventHandler SelectedIndexChanged;
-
-        object DataSource { get; set; }
-        bool Enabled { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedValue { get; set; }
-        string Text { get; set; }
+        public const string Capstone = "Capstone";
+        public const string Regressions = "Regressions";
+        public const string UnitTests = "UnitTests";
+        public const string UserInterface = "UserInterface";
     }
 }

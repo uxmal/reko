@@ -85,7 +85,22 @@ namespace Reko.UnitTests.Environments.AmigaOS
             Assert.AreEqual("d0", svc.Signature.Parameters[1].Storage.ToString());
             mr.VerifyAll();
         }
+        [Test]
+        public void AOS_LibrarySelection() 
+        {
+            mr.ReplayAll();
+            When_Create_Platform();
+            var libs_v0 = platform.GetLibrarySetForKickstartVersion(0);
+            var libs_v33 = platform.GetLibrarySetForKickstartVersion(33);
+            var libs_v34 = platform.GetLibrarySetForKickstartVersion(34);
+            var libs_v999 = platform.GetLibrarySetForKickstartVersion(999);
 
+            Assert.AreEqual(0, libs_v0.Count);
+            Assert.IsTrue (libs_v33.Contains ("exec_v33"));
+            Assert.IsTrue (libs_v34.Contains ("exec_v34"));
+            Assert.IsTrue (libs_v999.Contains ("exec_v34")); //TODO: should select version from highest availalbe kickstart version
+            mr.VerifyAll();
+        }
         private void Given_Func(string fileContents)
         {
             var stm = new MemoryStream(Encoding.ASCII.GetBytes(fileContents));

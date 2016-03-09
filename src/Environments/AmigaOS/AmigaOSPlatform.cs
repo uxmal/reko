@@ -44,7 +44,24 @@ namespace Reko.Environments.AmigaOS
     public class AmigaOSPlatform : Platform
     {
         private RtlInstructionMatcher a6Pattern;
-        private Dictionary<int, SystemService> funcs;
+        private Dictionary<int, SystemService> funcs; //$TODO: This should take a type of base pointer the reference is from ?
+        private static Dictionary<int, List<String>> mapKickstartToListOfLibraries = new Dictionary<int, List<String>>
+        {
+            {
+                33, new List<String>
+                {
+                    "exec_v33",
+                    "dos_v33"
+                }
+            },
+            {
+                34, new List<String>
+                {
+                    "exec_v34",
+                    "dos_v34"
+                }
+            }
+        }; //$TODO: Load available kickstart -> libraries mappings from disk ?
 
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "amigaOS")
@@ -58,6 +75,14 @@ namespace Reko.Environments.AmigaOS
                         ExpressionMatcher.AnyConstant("offset")),
                     4,
                     RtlClass.Transfer));
+        }
+
+        public static Dictionary<int, List<String>> MapKickstartToListOfLibraries
+        {
+            get
+            {
+                return mapKickstartToListOfLibraries;
+            }
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
@@ -89,7 +114,57 @@ namespace Reko.Environments.AmigaOS
             SystemService svc;
             return funcs.TryGetValue(offset, out svc) ? svc : null;
         }
+        private String GetLibraryBaseName(String name_with_version) 
+        {
+            int idx_of_version_str = name_with_version.IndexOf("_v");
+            if (-1 == idx_of_version_str) // no version, assuming the base name of library is same as name_with_version
+                return name_with_version;
+            return name_with_version.Substring(0, idx_of_version_str);
+        }
+        /// <summary>
+        /// Gets the list of libraries for given kickstart version.
+        /// </summary>
+        /// <returns>The library list for kickstart version.</returns>
+        /// <remarks> This will always try to build maximum list of libraries, using older versions where possible </remarks>
+        /// <param name="ver">Kickstart version</param>
+        public List<String> GetLibrarySetForKickstartVersion(int ver)
+        {
+            //$TODO: needs cleanup ?
+            var result_list = new List<String>();
+            var selected_librarties = new Dictionary<String,String>();
 
+            var keys = mapKickstartToListOfLibraries.Keys.ToList();
+            keys.Sort ();
+
+            int idx_version_to_select = keys.BinarySearch(ver);
+            if (idx_version_to_select<0) 
+            {
+                int next_larger_idx = ~idx_version_to_select;
+                // if ver > highest available - use highest available
+                if (next_larger_idx == keys.Count)
+                    idx_version_to_select =  keys.Count - 1;
+                // if ver < lowest available - return empty list
+                else if (next_larger_idx == 0)
+                    return result_list;
+            }
+            for (int ver_idx = idx_version_to_select; ver_idx >= 0; --ver_idx) 
+            {
+                int try_version = keys.ElementAt(ver_idx);
+                foreach(String lib in mapKickstartToListOfLibraries[try_version]) 
+                {
+                    String base_libname = GetLibraryBaseName(lib);
+                    if (selected_librarties.ContainsKey(base_libname))
+                        continue;
+                    selected_librarties.Add(base_libname, lib);
+                }
+            }
+            return selected_librarties.Values.ToList();
+        }
+        public void SetKickstartVersion(int v)
+        {
+            List<String> lib_list = GetLibrarySetForKickstartVersion (v);
+
+        }
         public override string DefaultCallingConvention
         {
             get { return ""; }

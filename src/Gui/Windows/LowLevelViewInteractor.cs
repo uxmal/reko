@@ -19,15 +19,11 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Gui.Controls;
 using Reko.Gui.Windows.Controls;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;

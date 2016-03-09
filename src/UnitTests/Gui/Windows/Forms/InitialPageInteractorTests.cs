@@ -22,23 +22,20 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.Loading;
 using Reko.UnitTests.Mocks;
-using Reko.Gui.Controls;
-using Reko.Gui.Windows;
 using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
+    [Category(Categories.UserInterface)]
 	public class InitialPageInteractorTests
-	{
+    {
         private MockRepository mr;
         private IMainForm form;
 		private TestInitialPageInteractor i;

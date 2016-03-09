@@ -27,42 +27,42 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.Msagl.GraphViewerGdi;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 
 namespace Reko.Gui.Windows
 {
-    public class CombinedCodeViewerPane : IWindowPane
+    public class CombinedCodeViewerPane : IWindowPane, ICommandTarget
     {
         private IServiceProvider services;
         private Program program;
+        private Procedure proc;
         private CombinedCodeView combinedCodeView;
         private NavigationInteractor<Address> navInteractor;
 
         private Map<Address, int> nodes;
         private NestedTextModel nestedTextModel;
+        private GViewer gViewer;
 
-        public Program Program
+        public void DisplayProcedure(Program program, Procedure proc)
         {
-            get { return program; }
-            set
+            this.program = program;
+            this.proc = proc;
+            if (program != null)
             {
-                program = value;
-                if (value != null)
-                {
-                    ProgramChanged();
-                }
+                SelectedAddress = program.ImageMap.Segments.Values
+                    .Where(s => s.MemoryArea != null)
+                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
+                    .First();
             }
+            ProgramChanged();
         }
 
         public virtual Address SelectedAddress
         {
-            get
-            {
-                return combinedCodeView.CurrentAddress;
-            }
-            set
-            {
-                combinedCodeView.CurrentAddress = value;
-            }
+            get { return combinedCodeView.CurrentAddress; }
+            set { combinedCodeView.CurrentAddress = value; }
         }
 
         private void ProgramChanged()
@@ -117,6 +117,8 @@ namespace Reko.Gui.Windows
 
         public Control CreateControl()
         {
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+
             this.combinedCodeView = new CombinedCodeView();
             this.combinedCodeView.Dock = DockStyle.Fill;
 
@@ -127,6 +129,15 @@ namespace Reko.Gui.Windows
 
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
+            this.combinedCodeView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
+
+            this.gViewer = new GViewer();
+            this.gViewer.Dock = DockStyle.Fill;
+            this.gViewer.Visible = false;
+            this.gViewer.PanButtonPressed = true;
+            this.gViewer.ToolBarIsVisible = true;
+            this.gViewer.KeyDown += GViewer_KeyDown;
+            this.gViewer.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
@@ -145,6 +156,90 @@ namespace Reko.Gui.Windows
                 combinedCodeView.Dispose();
             combinedCodeView = null;
         }
+
+
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    //status.Status = combinedCodeView.Selection.IsEmpty
+                    //    ? MenuStatus.Visible
+                    //    : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewCfgGraph:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
+                        : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Execute(CommandID cmdId)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:
+                    Copy();
+                    return true;
+                case CmdIds.ViewCfgGraph:
+                    ViewGraph();
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    ViewCode();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void Copy()
+        {
+            if (this.proc == null)
+                return;
+            if (combinedCodeView.Focused)
+            {
+                //$TODO: @ptomin -- how to select text in the combined code viewer pane?
+                //var ms = new MemoryStream();
+                //this.codeView.TextView.Selection.Save(ms, System.Windows.Forms.DataFormats.UnicodeText);
+                //Debug.Print(Encoding.Unicode.GetString(ms.ToArray()));
+                //Clipboard.SetData(DataFormats.UnicodeText, ms);
+            }
+            else if (false) // combinedCodeView.ProcedureDeclaration.Focused)
+            {
+                //Clipboard.SetText(combinedCodeView.ProcedureDeclaration.SelectedText);
+            }
+        }
+
+        public void ViewGraph()
+        {
+            gViewer.Parent = combinedCodeView.Parent;
+            gViewer.Graph = CfgGraphGenerator.Generate(proc);
+            combinedCodeView.Visible = false;
+            gViewer.Visible = true;
+            gViewer.BringToFront();
+        }
+
+        public void ViewCode()
+        {
+            gViewer.Graph = null;
+            gViewer.Visible = false;
+            combinedCodeView.Visible = true;
+            combinedCodeView.BringToFront();
+        }
+
 
         void CombinedCodeView_CurrentAddressChanged(object sender, EventArgs e)
         {
@@ -188,6 +283,21 @@ namespace Reko.Gui.Windows
                 return;
 
             combinedCodeView.MixedCodeDataView.TopAddress = addr;
+        }
+
+        private void GViewer_KeyDown(object sender, KeyEventArgs e)
+        {
+            Debug.Print("{0} {1:X} {2}", e.KeyCode, e.KeyValue, e.KeyData);
+            if (e.KeyCode == Keys.Add || e.KeyCode == Keys.Oemplus)
+            {
+                gViewer.ZoomF *= 1.2;
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Subtract || e.KeyCode == Keys.OemMinus)
+            {
+                gViewer.ZoomF /= 1.2;
+                e.Handled = true;
+            }
         }
     }
 }

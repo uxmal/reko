@@ -33,7 +33,7 @@ namespace Reko.Core.Serialization
         T VisitMemberPointer(MemberPointer_v1 memptr);
         T VisitArray(ArrayType_v1 array);
         T VisitSignature(SerializedSignature signature);
-        T VisitStructure(SerializedStructType structure);
+        T VisitStructure(StructType_v1 structure);
         T VisitTypedef(SerializedTypedef typedef);
         T VisitTypeReference(SerializedTypeReference typeReference);
         T VisitUnion(UnionType_v1 union);

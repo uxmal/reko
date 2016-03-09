@@ -31,7 +31,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblKickstart = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbKickstartVersions = new System.Windows.Forms.ComboBox();
+            this.lblUsedLibraries = new System.Windows.Forms.Label();
+            this.lstLoadedLibs = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // label1
@@ -63,19 +66,46 @@
             this.lblKickstart.TabIndex = 2;
             this.lblKickstart.Text = "Select &Kickstart version";
             // 
-            // comboBox1
+            // cmbKickstartVersions
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(148, 75);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(182, 21);
-            this.comboBox1.TabIndex = 3;
+            this.cmbKickstartVersions.FormattingEnabled = true;
+            this.cmbKickstartVersions.Location = new System.Drawing.Point(148, 75);
+            this.cmbKickstartVersions.Name = "cmbKickstartVersions";
+            this.cmbKickstartVersions.Size = new System.Drawing.Size(182, 21);
+            this.cmbKickstartVersions.TabIndex = 3;
+            // 
+            // lblUsedLibraries
+            // 
+            this.lblUsedLibraries.AutoSize = true;
+            this.lblUsedLibraries.Location = new System.Drawing.Point(337, 58);
+            this.lblUsedLibraries.Name = "lblUsedLibraries";
+            this.lblUsedLibraries.Size = new System.Drawing.Size(47, 13);
+            this.lblUsedLibraries.TabIndex = 4;
+            this.lblUsedLibraries.Text = "Will use:";
+            // 
+            // lstLoadedLibs
+            // 
+            this.lstLoadedLibs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.lstLoadedLibs.Location = new System.Drawing.Point(337, 75);
+            this.lstLoadedLibs.Name = "lstLoadedLibs";
+            this.lstLoadedLibs.Size = new System.Drawing.Size(187, 161);
+            this.lstLoadedLibs.TabIndex = 5;
+            this.lstLoadedLibs.UseCompatibleStateImageBehavior = false;
+            this.lstLoadedLibs.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Library";
+            this.columnHeader1.Width = 144;
             // 
             // AmigaOSProperties
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.lstLoadedLibs);
+            this.Controls.Add(this.lblUsedLibraries);
+            this.Controls.Add(this.cmbKickstartVersions);
             this.Controls.Add(this.lblKickstart);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -91,6 +121,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblKickstart;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbKickstartVersions;
+        private System.Windows.Forms.Label lblUsedLibraries;
+        private System.Windows.Forms.ListView lstLoadedLibs;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
