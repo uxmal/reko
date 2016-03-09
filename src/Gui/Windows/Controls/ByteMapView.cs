@@ -40,6 +40,7 @@ namespace Reko.Gui.Windows.Controls
 
             this.rdr = ImageMap.Segments.Values
                 .Select(seg => seg.MemoryArea)
+                .Where(mem => mem != null)
                 .OrderBy(mem => mem.BaseAddress)
                 .Distinct()
                 .SelectMany(mem => mem.Bytes).GetEnumerator();
