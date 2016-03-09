@@ -1,10 +1,10 @@
-fn0C00_0000 SCZO ax cx dx al cl dl ah ch dh
+fn0C00_0000 SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 const ax:<invalid> cx:0x0064 dx:<invalid>
     fn0C00_0000_entry sp:fp
     l0C00_0000 sp:fp
     fn0C00_0000_exit ax:<invalid> cx:0x0064 dx:<invalid> sp:fp
 
-fn0C00_000F SCZO ax dx al dl ah dh
+fn0C00_000F SCZO ah al ax dh dl dx eax edx rax rdx
 const ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid>
     fn0C00_000F_entry sp:fp
     l0C00_000F sp:fp

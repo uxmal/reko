@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,11 @@ namespace Reko.Gui.Design
 {
     public class ImageMapSegmentNodeDesigner : TreeNodeDesigner
     {
-        private ImageMapSegment segment;
+        private ImageSegment segment;
 
         public override void Initialize(object obj)
         {
-            this.segment = (ImageMapSegment) obj;
+            this.segment = (ImageSegment) obj;
             base.TreeNode.Text = segment.Name;
             base.TreeNode.ImageName = GetImageName();
             base.TreeNode.ToolTipText = GetTooltip();

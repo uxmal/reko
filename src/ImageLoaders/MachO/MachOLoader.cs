@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,16 +78,15 @@ namespace Reko.ImageLoaders.MachO
             ldr = CreateParser();
             uint ncmds = ldr.ParseHeader(addrLoad);
             ldr.ParseLoadCommands(ncmds);
-            var image = new LoadedImage(addrLoad, RawImage);
+            var image = new MemoryArea(addrLoad, RawImage);
             return new Program {
                 Architecture = ldr.arch,
-                Image = image,
                 ImageMap = image.CreateImageMap(),
                 Platform = new DefaultPlatform(Services, ldr.arch)
             };
         }
 
-        class mach_header_32
+        public class mach_header_32
         {
             public uint magic;
             public uint cputype;
@@ -98,7 +97,7 @@ namespace Reko.ImageLoaders.MachO
             public uint flags;
         }
 
-        class mach_header_64
+        public class mach_header_64
         {
             public uint magic;
             public uint cputype;
@@ -113,7 +112,7 @@ namespace Reko.ImageLoaders.MachO
         public Parser CreateParser()
         {
             uint magic;
-            if (!LoadedImage.TryReadBeUInt32(RawImage, 0, out magic))
+            if (!MemoryArea.TryReadBeUInt32(RawImage, 0, out magic))
                 throw new BadImageFormatException("Invalid Mach-O header.");
             switch (magic)
             {
@@ -323,8 +322,9 @@ namespace Reko.ImageLoaders.MachO
                 if ((protection & VM_PROT_EXECUTE) != 0)
                     am |= AccessMode.Execute;
 
-                var imageSection = new ImageMapSegment(
+                var imageSection = new ImageSegment(
                     string.Format("{0},{1}", segmentName, sectionName),
+                    null,
                     (uint)size,
                     am);        //imageSection.setData(!imageSection->isCode());
                 //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);

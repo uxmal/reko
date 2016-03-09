@@ -1,8 +1,8 @@
 Register word32 fn10000000(Stack word32 dwArg04)
 // MayUse: 
 // LiveOut: eax
-// Trashed: SCZO eax ax al ah
-// Preserved: esp esi edi
+// Trashed: SCZO ah al ax eax rax
+// Preserved: edi esi esp
 // Stack args: Stack +0004(32)
 // fn10000000
 // Return size: 0

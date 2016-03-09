@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using BitSet = Reko.Core.Lib.BitSet;
+using System.Linq;
 using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
 using Frame = Reko.Core.Frame;
@@ -30,10 +30,8 @@ using PrimtiveType = Reko.Core.Types.PrimitiveType;
 using Procedure = Reko.Core.Procedure;
 using Program = Reko.Core.Program;
 using RegisterStorage = Reko.Core.RegisterStorage;
-using ReturnInstruction = Reko.Core.Code.ReturnInstruction;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage= Reko.Core.StackArgumentStorage;
-using Statement = Reko.Core.Statement;
 using UseInstruction = Reko.Core.Code.UseInstruction;
 
 namespace Reko.Analysis
@@ -98,7 +96,7 @@ namespace Reko.Analysis
 		private void AdjustLiveOut(ProcedureFlow flow)
 		{
 			flow.grfLiveOut &= flow.grfTrashed;
-			flow.LiveOut &= flow.TrashedRegisters;
+			flow.LiveOut.IntersectWith(flow.TrashedRegisters);
 		}
 
 		public static void Rewrite(Program program, ProgramDataFlow summaries)
@@ -121,7 +119,8 @@ namespace Reko.Analysis
 		}
 
 		/// <summary>
-		/// Creates a signature for this procedure, and ensures that all registers accessed by the procedure are in the procedure
+		/// Creates a signature for this procedure, and ensures that all 
+        /// registers accessed by the procedure are in the procedure
 		/// Frame.
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
@@ -129,20 +128,21 @@ namespace Reko.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-			SignatureBuilder sb = new SignatureBuilder(proc, Program.Architecture);
-			Frame frame = proc.Frame;
+			var sb = new SignatureBuilder(proc, Program.Architecture);
+			var frame = proc.Frame;
 			if (flow.grfLiveOut != 0)
 			{
 				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);
 			}
 
             var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
-            BitSet mayUse = flow.MayUse - implicitRegs;
-			foreach (int r in mayUse)
+            var mayUse = new HashSet<RegisterStorage>(flow.MayUse);
+            mayUse.ExceptWith(implicitRegs);
+			foreach (var reg in mayUse.OrderBy(r => r.Number))
 			{
-				if (!IsSubRegisterOfRegisters(r, mayUse))
+				if (!IsSubRegisterOfRegisters(reg, mayUse))
 				{
-					sb.AddRegisterArgument(r);
+					sb.AddRegisterArgument(reg);
 				}
 			}
 
@@ -156,12 +156,13 @@ namespace Reko.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-            BitSet liveOut = flow.LiveOut - implicitRegs;
-			foreach (int r in liveOut)
+            var liveOut = new HashSet<RegisterStorage>(flow.LiveOut);
+            liveOut.ExceptWith(implicitRegs);
+			foreach (var r in liveOut.OrderBy(r => r.Number))
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
-					sb.AddArgument(frame.EnsureRegister(Program.Architecture.GetRegister(r)), true);
+					sb.AddArgument(frame.EnsureRegister(r), true);
 				}
 			}
 
@@ -221,14 +222,11 @@ namespace Reko.Analysis
 		/// <param name="r"></param>
 		/// <param name="regs"></param>
 		/// <returns></returns>
-		private bool IsSubRegisterOfRegisters(int r, BitSet regs)
+		private bool IsSubRegisterOfRegisters(RegisterStorage rr, HashSet<RegisterStorage> regs)
 		{
-            var rr = Program.Architecture.GetRegister(r);
-            if (rr == null)
-                return false;
-			foreach (int r2 in regs)
+			foreach (var r2 in regs)
 			{
-				if (rr.IsSubRegisterOf(Program.Architecture.GetRegister(r2)))
+				if (rr.IsSubRegisterOf(r2))
 					return true;
 			}
 			return false;

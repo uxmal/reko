@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Mocks
 			registers = new RegisterStorage[RegisterCount];
 			for (int i = 0; i < registers.Length; ++i)
 			{
-				registers[i] = new MockMachineRegister("r" + i, i, PrimitiveType.Word32);
+				registers[i] = new RegisterStorage("r" + i, i, 0, PrimitiveType.Word32);
 			}
 		}
 
@@ -105,12 +105,17 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -127,6 +132,7 @@ namespace Reko.UnitTests.Mocks
             if (((uint)grf & 0x02) != 0) sb.Append('C');
             if (((uint)grf & 0x04) != 0) sb.Append('Z');
             if (((uint)grf & 0x10) != 0) sb.Append('O');
+            if (((uint)grf & 0x20) != 0) sb.Append('O');
             if (sb.Length == 0)
                 return null;
             return new FlagGroupStorage(flags, grf, sb.ToString(), PrimitiveType.Byte);
@@ -143,6 +149,9 @@ namespace Reko.UnitTests.Mocks
                 case 'C': grf |= 0x02; break;
                 case 'Z': grf |= 0x04; break;
                 case 'O': grf |= 0x10; break;
+                case 'V': grf |= 0x10; break;
+                case 'X': grf |= 0x20; break;
+
                 }
             }
             if (grf != 0)
@@ -167,6 +176,14 @@ namespace Reko.UnitTests.Mocks
             }
             return null;
 		}
+
+        public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (offset == 0 && width == (int)reg.BitSize)
+                return reg;
+            else
+                return null;
+        }
 
         public RegisterStorage[] GetRegisters()
         {
@@ -204,11 +221,6 @@ namespace Reko.UnitTests.Mocks
 		public ProcessorState CreateProcessorState()
 		{
 			return new FakeProcessorState(this);
-		}
-
-		public BitSet CreateRegisterBitset()
-		{
-			return new BitSet(RegisterCount);
 		}
 
 		public string GrfToString(uint grf)
@@ -258,24 +270,33 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public RegisterStorage GetPart(RegisterStorage reg, DataType width)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
+        {
+            yield return reg;
+        }
+
+        public RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
+        {
+            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            return mask != 0 ? reg : null;
+        }
+
+        public void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
+        {
+            ids.Remove(reg);
+        }
+
         #endregion
     }
 
 	public class MockMachineRegister : RegisterStorage
 	{
-		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, dt) { }
-
-        public override RegisterStorage GetSubregister(int offset, int size)
-		{
-			return this;
-		}
-
-		public override RegisterStorage GetWidestSubregister(BitSet bits)
-		{
-			return (bits[Number])
-				? this
-				: null;
-		}
+		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, 0, dt) { }
 	}
 
 	public class FakeProcessorState : ProcessorState

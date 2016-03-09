@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,8 @@ using System.Collections.Generic;
 namespace Reko.UnitTests.Mocks
 {
 	/// <summary>
-	/// Supports building a intermediate code program directly without having to first generate machine code and scanning it.
+	/// Supports building a intermediate code program directly without having
+    /// to first generate machine code and scanning it.
 	/// </summary>
 	public class ProgramBuilder
 	{
@@ -48,40 +50,81 @@ namespace Reko.UnitTests.Mocks
             };
         }
 
-        public ProgramBuilder(LoadedImage loadedImage)
+        public ProgramBuilder(MemoryArea mem)
         {
             Program = new Program
             {
-                Image = loadedImage,
-                ImageMap = loadedImage.CreateImageMap(),
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 Architecture = new FakeArchitecture()
             };
         }
 
 		public Program Program { get; set; }
 
-        public void Add(Procedure proc)
+        public void Add(Procedure proc, Procedure_v1 userProc = null)
         {
             ++procCount;
-            Program.Procedures[Address.Ptr32(procCount * 0x1000u)] = proc;
+            var addr = Address.Ptr32(procCount * 0x1000u);
+            Program.Procedures[addr] = proc;
             Program.CallGraph.AddProcedure(proc);
-            nameToProcedure[proc.Name] = proc;
+            nameToProcedure[GuessName(userProc, proc)] = proc;
+            if (userProc != null)
+            {
+                Program.User.Procedures[addr] = userProc;
+            }
+        }
+
+        private string GuessName(Procedure_v1 userProc, Procedure proc = null)
+        {
+            if (userProc != null)
+            {
+                if (!string.IsNullOrEmpty(userProc.Name))
+                    return userProc.Name;
+                if (!string.IsNullOrEmpty(userProc.CSignature))
+                {
+                    int i = userProc.CSignature.IndexOf('(');
+                    if (i > 0)
+                    {
+                        var name = userProc.CSignature.Remove(i);
+                        do
+                        {
+                            --i;
+                        } while (i > 0 && (char.IsLetterOrDigit(name[i]) || name[i] == '_'));
+                        return name.Substring(i + 1);
+                    }
+                }
+            }
+            if (proc != null)
+            {
+                return proc.Name;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void Add(ProcedureBuilder mock)
         {
             mock.ProgramMock = this;
-            Add(mock.Procedure);
+            Add(mock.Procedure, null);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
         }
 
         public Procedure Add(string procName, Action<ProcedureBuilder> testCodeBuilder)
         {
-            var mock = new ProcedureBuilder(Program.Architecture, procName, null);
+            return Add(new Procedure_v1 { Name = procName }, testCodeBuilder);
+        }
+
+        public Procedure Add(Procedure_v1 userProc,  Action<ProcedureBuilder> testCodeBuilder)
+        {
+            var mock = new ProcedureBuilder(Program.Architecture, GuessName(userProc), null);
             mock.ProgramMock = this;
             mock.LinearAddress = (uint)((procCount + 1) * 0x1000);
             testCodeBuilder(mock);
-            Add(mock.Procedure);
+            Add(mock.Procedure, userProc);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
             return mock.Procedure;
         }
@@ -108,7 +151,7 @@ namespace Reko.UnitTests.Mocks
 
         public Program BuildProgram()
         {
-            return BuildProgram(new FakeArchitecture());
+            return BuildProgram(Program.Architecture);
         }
 
 		public Program BuildProgram(IProcessorArchitecture arch)
@@ -116,9 +159,9 @@ namespace Reko.UnitTests.Mocks
             Program.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
-            Program.ImageMap = new ImageMap(Address.Ptr32(0x1000), Program.Procedures.Count * 0x1000);
-            var seg = Program.ImageMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute, 0);
-            seg.Size = (uint)(Program.Procedures.Count * 0x1000);
+            if (Program.ImageMap == null)
+                Program.ImageMap = new ImageMap(Address.Ptr16(0x1000));
+            var seg = Program.ImageMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute, (uint) Program.Procedures.Count * 0x1000);
             Program.Platform = new DefaultPlatform(null, arch);
 			return Program;
 		}

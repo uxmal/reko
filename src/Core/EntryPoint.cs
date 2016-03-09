@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 
@@ -29,19 +30,27 @@ namespace Reko.Core
 		{
 		}
 
-		public EntryPoint(Address addr, string name, ProcessorState state)
+        public EntryPoint(Address addr, string name, SerializedSignature ssig) : this(addr, name, null, ssig)
+        {
+        }
+
+		public EntryPoint(
+            Address addr,
+            string name,
+            ProcessorState state, 
+            SerializedSignature sig = null)
 		{
             if (addr == null)
                 throw new ArgumentNullException("addr");
-            if (state == null)
-				throw new ArgumentNullException("state");
 			this.Address = addr;
 			this.Name = name;
 			this.ProcessorState = state;
+            this.Signature = sig;
 		}
 
 		public Address Address { get; private set; }
 		public string Name { get; private set; }
 		public ProcessorState ProcessorState { get; private set; }
-	}
+        public SerializedSignature Signature { get; private set; }
+    }
 }

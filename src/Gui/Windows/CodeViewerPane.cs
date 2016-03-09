@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,12 @@
  */
 #endregion
 
+using Microsoft.Msagl.GraphViewerGdi;
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Output;
+using Reko.Core.Types;
 using Reko.Gui.Windows.Controls;
 using Reko.Gui.Windows.Forms;
 using System;
@@ -32,7 +35,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Reko.Core.Types;
+
 
 namespace Reko.Gui.Windows
 {
@@ -44,6 +47,7 @@ namespace Reko.Gui.Windows
     public class CodeViewerPane : IWindowPane, ICommandTarget
     {
         private CodeView codeView;
+        private GViewer gViewer;
         private IServiceProvider services;
         private Program program;
         private Procedure proc;
@@ -54,10 +58,10 @@ namespace Reko.Gui.Windows
 
         public CodeViewerPane()
         {
-
         }
 
         public TextView TextView { get { return codeView.TextView; } }
+        public GViewer GraphView { get { return gViewer; } }
         public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
         public IWindowFrame FrameWindow { get; set; }
 
@@ -73,6 +77,7 @@ namespace Reko.Gui.Windows
         public Control CreateControl()
         {
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
 
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
@@ -84,8 +89,15 @@ namespace Reko.Gui.Windows
             this.TextView.BackColor = SystemColors.Window;
             this.TextView.Services = services;
             this.TextView.StyleClass = UiStyles.CodeWindow;
+            this.TextView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
-            this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
+            this.gViewer = new GViewer();
+            this.gViewer.Dock = DockStyle.Fill;
+            this.gViewer.Visible = false;
+            this.gViewer.PanButtonPressed = true;
+            this.gViewer.ToolBarIsVisible = true;
+            this.gViewer.KeyDown += GViewer_KeyDown;
+            this.gViewer.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.navInteractor = new NavigationInteractor<Procedure>();
             this.navInteractor.Attach(codeView);
@@ -93,13 +105,15 @@ namespace Reko.Gui.Windows
             return this.codeView;
         }
 
+
         private void EnableControls()
         {
-            Core.Serialization.Procedure_v1 sProc;
-            if (!TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
+            Core.Serialization.ProcedureBase_v1 sProc;
+            var procText = codeView.ProcedureDeclaration.Text;
+            if (!HasParens(procText) || !TryParseSignature(procText, out sProc))
             {
                 // If parser failed, perhaps it's simply a valid name? 
-                if (!IsValidCIdentifier(codeView.ProcedureDeclaration.Text))
+                if (!IsValidCIdentifier(procText))
                 {
                     // Not valid name either, die.
                     codeView.ProcedureDeclaration.ForeColor = Color.Red;
@@ -107,6 +121,11 @@ namespace Reko.Gui.Windows
                 }
             }
             codeView.ProcedureDeclaration.ForeColor = SystemColors.ControlText;
+        }
+
+        private bool HasParens(string s)
+        {
+            return s.Contains("(");
         }
 
         private StyleStack GetStyleStack()
@@ -127,6 +146,16 @@ namespace Reko.Gui.Windows
                         ? MenuStatus.Visible
                         : MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
+                case CmdIds.ViewCfgGraph:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
+                        : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
+                    return true;
                 }
             }
             return false;
@@ -140,6 +169,12 @@ namespace Reko.Gui.Windows
                 {
                 case CmdIds.EditCopy:
                     Copy();
+                    return true;
+                case CmdIds.ViewCfgGraph:
+                    ViewGraph();
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    ViewCode();
                     return true;
                 }
             }
@@ -163,36 +198,40 @@ namespace Reko.Gui.Windows
             }
         }
 
+        public void ViewGraph()
+        {
+            gViewer.Parent = codeView.Parent;
+            gViewer.Graph = CfgGraphGenerator.Generate(proc);
+            codeView.Visible = false;
+            gViewer.Visible = true;
+            gViewer.BringToFront();
+        }
+
+        public void ViewCode()
+        {
+            gViewer.Graph = null;
+            gViewer.Visible = false;
+            codeView.Visible = true;
+            codeView.BringToFront();
+        }
+
         private bool IsValidCIdentifier(string id)
         {
             return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
         }
 
-        private bool TryParseSignature(string txtSignature, out Core.Serialization.Procedure_v1 sProc)
+        private bool TryParseSignature(string txtSignature, out Core.Serialization.ProcedureBase_v1 sProc)
         {
-            // save the user a keystroke.
-            txtSignature = txtSignature + ";";
-            var lexer = new Core.CLanguage.CLexer(new StringReader(txtSignature));
-            var cstate = new Core.CLanguage.ParserState();
-            var cParser = new CParser(cstate, lexer);
-            try
-            {
-                var decl = cParser.Parse_Decl();
                 sProc = null;
-                if (decl == null)
-                    return false;
-                var syms = new SymbolTable();
-                syms.AddDeclaration(decl);
-                if (syms.Procedures.Count != 1)
-                    return false;
-                sProc = (Core.Serialization.Procedure_v1) syms.Procedures[0];
-                return true;
-            }
-            catch
+            if (program == null || program.Platform == null)
             {
-                sProc = null;
                 return false;
             }
+
+            // Attempt to parse the signature.
+            var usb = new UserSignatureBuilder(program);
+            sProc = usb.ParseFunctionDeclaration(txtSignature, this.proc.Frame);
+            return sProc != null;
         }
 
         public void SetSite(IServiceProvider sp)
@@ -224,7 +263,7 @@ namespace Reko.Gui.Windows
             this.program = program;
             this.proc = proc;
             SetTextView(proc);
-            SetDeclaration(proc);
+            this.codeView.ProcedureDeclaration.Text = this.GetProcedureDeclarationText();
             this.proc.NameChanged += Procedure_NameChanged;
 
             // Navigate 
@@ -244,31 +283,59 @@ namespace Reko.Gui.Windows
             SetDeclaration(dt);
         }
 
+        private void ModifyProcedure()
+        {
+            //$REVIEW: slow, but we don't have to add an `Address` property to 
+            // procedure. Adding an Address property has big repercussions in 
+            // teh code base.
+            var iAddr = this.program.Procedures.IndexOfValue(proc);
+            if (iAddr < 0)
+                return;
+            var addr = this.program.Procedures.Keys[iAddr];
+            var declText = codeView.ProcedureDeclaration.Text.Trim();
+            Core.Serialization.ProcedureBase_v1 sProc;
+            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
+            {
+                var up = program.EnsureUserProcedure(addr, sProc.Name);
+                up.CSignature = codeView.ProcedureDeclaration.Text;
+                proc.Name = sProc.Name;
+            }
+            else
+            {
+                if (IsValidCIdentifier(declText) &&
+                    proc.Name != declText)
+                {
+                    var up = program.EnsureUserProcedure(addr, proc.Name);
+                    proc.Name = declText;
+                }
+            }
+        }
+
         /// <summary>
         /// If the user has provided us with a declaration, use that. Otherwise
         /// just show a function name.
         /// </summary>
         /// <param name="proc"></param>
-        private void SetDeclaration(Procedure proc)
+        private string GetProcedureDeclarationText()
         {
+            if (proc == null)
+                return "";
             int i = program.Procedures.IndexOfValue(proc);
             if (i >= 0)
             {
                 Reko.Core.Serialization.Procedure_v1 uProc;
                 if (program.User.Procedures.TryGetValue(program.Procedures.Keys[i], out uProc))
                 {
-                    this.codeView.ProcedureDeclaration.Text = uProc.CSignature;
-                    return;
+                    return uProc.CSignature;
                 }
             }
-            this.codeView.ProcedureDeclaration.Text = proc.Name;
+            return proc.Name;
         }
 
         private void SetDeclaration(DataType dt)
         {
             codeView.ProcedureDeclaration.Text = "";
         }
-
 
         private void SetTextView(Procedure proc)
         {
@@ -313,33 +380,6 @@ namespace Reko.Gui.Windows
             }
         }
 
-        private void ModifyProcedure()
-        {
-            //$REVIEW: slow, but we don't have to add an `Address` property to procedure.
-            // It has big repercussions in teh code base.
-            var iAddr = this.program.Procedures.IndexOfValue(proc);
-            if (iAddr < 0)
-                return;
-            var addr = this.program.Procedures.Keys[iAddr];
-            var declText = codeView.ProcedureDeclaration.Text.Trim();
-            Core.Serialization.Procedure_v1 sProc;
-            if (TryParseSignature(codeView.ProcedureDeclaration.Text, out sProc))
-            {
-                var up = program.EnsureUserProcedure(addr, sProc.Name);
-                up.CSignature = codeView.ProcedureDeclaration.Text;
-                proc.Name = sProc.Name;
-            }
-            else
-            {
-                if (IsValidCIdentifier(declText) &&
-                    proc.Name != declText)
-                {
-                    var up = program.EnsureUserProcedure(addr, proc.Name);
-                    proc.Name = declText;
-                }
-            }
-        }
-
         private void ProcedureDeclaration_TextChanged(object sender, EventArgs e)
         {
             if (ignoreEvents)
@@ -351,8 +391,27 @@ namespace Reko.Gui.Windows
 
         private void Procedure_NameChanged(object sender, EventArgs e)
         {
+            TextView.Invoke(new Action(() =>
+            {
             SetTextView(proc);
             FrameWindow.Title = proc.Name;
+            }));
+        }
+
+
+        private void GViewer_KeyDown(object sender, KeyEventArgs e)
+        {
+            Debug.Print("{0} {1:X} {2}", e.KeyCode, e.KeyValue, e.KeyData);
+            if (e.KeyCode == Keys.Add || e.KeyCode == Keys.Oemplus)
+            {
+                gViewer.ZoomF *= 1.2;
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Subtract || e.KeyCode == Keys.OemMinus)
+            {
+                gViewer.ZoomF /= 1.2;
+                e.Handled = true;
+            }
         }
     }
 }

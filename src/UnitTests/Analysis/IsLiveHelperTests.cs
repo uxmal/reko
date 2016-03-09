@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Types;
-using System;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -41,14 +41,13 @@ namespace Reko.UnitTests.Analysis
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
 			f = arch.CreateFrame();
             liveness = new IdentifierLiveness(arch);
-			isLiveHelper = new RegisterLiveness.IsLiveHelper();
+			isLiveHelper = new RegisterLiveness.IsLiveHelper(arch);
 		}
 
 		[Test]
 		public void IsRegisterLive()
 		{
-			liveness.BitSet = new Reko.Core.Lib.BitSet(64);
-			liveness.BitSet[Registers.ecx.Number] = true;
+            liveness.Identifiers = new HashSet<RegisterStorage> { Registers.ecx };
 			var eax = f.EnsureRegister(Registers.eax);
 			var ecx = f.EnsureRegister(Registers.ecx);
 			Assert.IsTrue(isLiveHelper.IsLive(ecx, liveness), "ECX should be live");

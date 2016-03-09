@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -149,8 +150,8 @@ namespace Reko.UnitTests.Analysis
         public void SsaCallIndirect()
         {
             var m = new ProcedureBuilder("SsaCallIndirect");
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
             m.Assign(r1, m.LoadDw(r2));
             m.Call(r1, 4);
             m.Return();
@@ -161,7 +162,7 @@ namespace Reko.UnitTests.Analysis
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var proc = m.Procedure;
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph());
             ssa = sst.SsaState;
             using (var fut = new FileUnitTester(outfile))
             {
@@ -173,18 +174,20 @@ namespace Reko.UnitTests.Analysis
 
         private Identifier EnsureRegister16(ProcedureBuilder m, string name)
         {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, PrimitiveType.Word16));
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word16));
         }
 
         private Identifier EnsureRegister32(ProcedureBuilder m, string name)
         {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, PrimitiveType.Word32));
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word32));
         }
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
             var flow = new ProgramDataFlow(prog);
             var eventListener = new FakeDecompilerEventListener();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
@@ -197,7 +200,7 @@ namespace Reko.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(flow, proc, gr);
+				SsaTransform sst = new SsaTransform(flow, proc, importResolver, gr);
 				ssa = sst.SsaState;
 				ssa.Write(writer);
 				proc.Write(false, true, writer);

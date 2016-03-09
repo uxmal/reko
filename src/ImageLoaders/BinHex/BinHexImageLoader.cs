@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,9 @@ namespace Reko.ImageLoaders.BinHex
     public class BinHexImageLoader : ImageLoader
     {
         private ResourceFork rsrcFork;
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
+        private MemoryArea mem;
 
         public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
         {
@@ -63,15 +64,15 @@ namespace Reko.ImageLoaders.BinHex
                     {
                         var image = selectedFile.GetBytes();
                         this.rsrcFork = new ResourceFork(image, arch);
-                        this.image = new LoadedImage(addrLoad, image);
+                        this.image = new MemoryArea(addrLoad, image);
                         this.imageMap = new ImageMap(addrLoad, image.Length);
-                        return new Program(this.image, this.imageMap, arch, platform);
+                        return new Program(this.imageMap, arch, platform);
                     }
                 }
             }
 
-            var li = new LoadedImage(addrLoad, dataFork);
-            return new Program(li, li.CreateImageMap(), arch, platform);
+            this.mem = new MemoryArea(addrLoad, dataFork);
+            return new Program(new ImageMap(image.BaseAddress, image.Length), arch, platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)
@@ -100,7 +101,7 @@ namespace Reko.ImageLoaders.BinHex
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, imageMap, entryPoints);
+                rsrcFork.AddResourcesToImageMap(addrLoad, mem, imageMap, entryPoints);
             }
             return new RelocationResults(entryPoints, relocations, new List<Address>());
         }

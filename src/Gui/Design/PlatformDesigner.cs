@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Gui.Design
 
         private void SetTreeNodeProperties()
         {
-            TreeNode.Text = ((Platform)this.Component).Description;
+            TreeNode.Text = ((IPlatform)this.Component).Description;
             TreeNode.ImageName = "Platform.ico";
             TreeNode.ToolTipText = null;
         }

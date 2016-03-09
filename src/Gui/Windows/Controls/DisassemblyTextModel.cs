@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,20 +42,31 @@ namespace Reko.Gui.Windows.Controls
     public class DisassemblyTextModel : TextViewModel
     {
         private Program program;
+        private MemoryArea mem;
+        private Address addrStart;
+        private Address addrEnd;
         private Address position;
 
-        public DisassemblyTextModel(Program program)
+        public DisassemblyTextModel(Program program, ImageSegment segment)
         {
             if (program == null)
                 throw new ArgumentNullException("program");
             this.program = program;
-            this.position = program.Image.BaseAddress;
+            if (segment == null)
+                throw new ArgumentNullException("segment");
+            if (segment.MemoryArea == null)
+                throw new ArgumentException("segment", "ImageSegment must have a valid memory area.");
+            this.mem = segment.MemoryArea;
+
+            this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
+            this.position = addrStart;
+            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.BaseAddress + mem.Length);
         }
 
-        public object StartPosition { get { return program.Image.BaseAddress; } }
+        public object StartPosition { get { return addrStart; } }
         public object CurrentPosition { get { return position; } }
-        public object EndPosition { get { return program.ImageMap.MapLinearAddressToAddress((ulong)((long)program.Image.BaseAddress.ToLinear() + program.Image.Bytes.LongLength)); } }
-        public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
+        public object EndPosition { get { return addrEnd; } }
+        public int LineCount { get { return GetPositionEstimate(addrEnd - addrStart); } }
 
         public int ComparePositions(object a, object b)
         {
@@ -67,22 +78,28 @@ namespace Reko.Gui.Windows.Controls
             var lines = new List<LineSpan>();
             if (program.Architecture != null)
             {
-                var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
-                while (count != 0 && dasm.MoveNext())
+                var addr = Align(position);
+                ImageSegment seg;
+                if (program.ImageMap.TryFindSegment(addr, out seg) &&
+                    seg.MemoryArea != null &&
+                    seg.MemoryArea.IsValidAddress(addr))
                 {
-                    var line = new List<TextSpan>();
-                    var instr = dasm.Current;
-                    var addr = instr.Address;
-                    line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
-                    line.Add(new InstructionTextSpan(instr, BuildBytes(instr), "dasm-bytes"));
-                    var dfmt = new DisassemblyFormatter(program, instr, line);
-                    instr.Render(dfmt);
-                    dfmt.NewLine();
-                    lines.Add(new LineSpan(addr, line.ToArray()));
-                    --count;
-                    position = addr + instr.Length;
+                    var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
+                    while (count != 0 && dasm.MoveNext())
+                    {
+                        var line = new List<TextSpan>();
+                        var instr = dasm.Current;
+                        addr = instr.Address;
+                        line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
+                        line.Add(new InstructionTextSpan(instr, BuildBytes(instr), "dasm-bytes"));
+                        var dfmt = new DisassemblyFormatter(program, instr, line);
+                        instr.Render(dfmt);
+                        dfmt.NewLine();
+                        lines.Add(new LineSpan(addr, line.ToArray()));
+                        --count;
+                        position += instr.Length;
+                    }
                 }
-
             }
             return lines.ToArray();
         }
@@ -92,7 +109,7 @@ namespace Reko.Gui.Windows.Controls
             uint byteAlign = (uint)program.Architecture.InstructionBitSize / 8u;
             ulong linear = addr.ToLinear();
             var rem = linear % byteAlign;
-            return addr - (int) rem;
+            return addr - (int)rem;
         }
 
         private string BuildBytes(MachineInstruction instr)
@@ -109,20 +126,16 @@ namespace Reko.Gui.Windows.Controls
         public void MoveToLine(object basePosition, int offset)
         {
             var addr = (Address)basePosition;
-            var image = program.Image;
-            if (addr < image.BaseAddress)
-                addr = image.BaseAddress;
-            var addrEnd = program.ImageMap.MapLinearAddressToAddress(
-                image.BaseAddress.ToLinear() + (ulong)image.Length - 1);
-            if (addr > addrEnd)
-                addr = addrEnd;
+            if (addr < addrStart)
+                addr = addrStart;
+            if (addr >= addrEnd)
+                addr = addrEnd-1;
             this.position = addr;
         }
 
         public Tuple<int, int> GetPositionAsFraction()
         {
-            var image = program.Image;
-            return Tuple.Create((int)(position - image.BaseAddress), (int)image.Length);
+            return Tuple.Create((int)(position - addrStart), (int)mem.Length);
         }
 
         public void SetPositionAsFraction(int numerator, int denominator)
@@ -131,14 +144,13 @@ namespace Reko.Gui.Windows.Controls
                 throw new ArgumentException("denominator");
             if (numerator < 0 || numerator > denominator)
                 throw new ArgumentException("numerator");
-            var image = program.Image;
-            long offset = Math.BigMul(numerator, (int)image.Length) / denominator;
+            long offset = Math.BigMul(numerator, (int)mem.Length) / denominator;
             if (offset < 0)
                 offset = 0;
-            else if (offset > image.Bytes.Length)
-                offset = image.Bytes.Length;
+            else if (offset > mem.Bytes.Length)
+                offset = mem.Bytes.Length;
 
-            this.position = program.ImageMap.MapLinearAddressToAddress(image.BaseAddress.ToLinear() + (uint) offset);
+            this.position = program.ImageMap.MapLinearAddressToAddress(addrStart.ToLinear() + (uint)offset);
         }
 
         /// <summary>
@@ -146,12 +158,12 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         /// <param name="byteOffset"></param>
         /// <returns></returns>
-        private int GetPositionEstimate(int byteOffset)
+        private int GetPositionEstimate(long byteOffset)
         {
             int bitSize = program.Architecture != null
                 ? program.Architecture.InstructionBitSize
                 : 8;
-            return 8 * byteOffset / bitSize;
+            return (int)(8 * byteOffset / bitSize);
         }
 
         /// <summary>

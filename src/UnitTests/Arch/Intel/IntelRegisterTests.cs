@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,274 +41,137 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void GetSubregisterOfAx()
+		public void X86r_GetSubregisterOfAx()
 		{
-			Assert.AreSame(Registers.al, Registers.ax.GetSubregister(0, 8));
+			Assert.AreSame(Registers.al, arch.GetSubregister(Registers.ax, 0, 8));
 		}
 
 		[Test]
-		public void GetSubregisterOfEsi()
+		public void X86r_GetSubregisterOfEsi()
 		{
-			Assert.AreSame(Registers.esi, Registers.esi.GetSubregister(0, 32));
+			Assert.AreSame(Registers.esi, arch.GetSubregister(Registers.esi, 0, 32));
 		}
 
 		[Test]
-		public void GetSubregisterOfEdx()
+		public void X86r_GetSubregisterOfEdx()
 		{
-			Assert.AreSame(Registers.edx, Registers.edx.GetSubregister(0, 32));
+			Assert.AreSame(Registers.edx, arch.GetSubregister(Registers.edx, 0, 32));
 		}
 
 		[Test]
-		public void GetSubregisterOfAh()
+		public void X86r_GetSubregisterOfAh()
 		{
-			Assert.AreSame(Registers.ah, Registers.ah.GetSubregister(8, 8));
+			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.ah, 0, 8));
 		}
 
 		[Test]
-		public void GetSubregisterOfEax()
+		public void X86r_GetSubregisterOfEax()
 		{
-			Assert.AreSame(Registers.ah, Registers.eax.GetSubregister(8, 8));
+			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.eax, 8, 8));
 		}
 
 		[Test]
-		public void GetPartEsi()
+		public void X86r_GetPartEsi()
 		{
-			Assert.AreSame(Registers.si, Registers.esi.GetPart(PrimitiveType.Word16));
+            Assert.AreSame(Registers.si, arch.GetSubregister(Registers.esi, 0, 16));
 		}
 
 		[Test]
-		public void AliasOffset32Acc()
+		public void X86r_BitOffset32Acc()
 		{
-			Assert.AreEqual(0, Registers.eax.AliasOffset);
+			Assert.AreEqual(0, Registers.eax.BitAddress);
 		}
 
 		[Test]
-		public void AliasOffsetHiByte()
+		public void X86r_BitOffsetHiByte()
 		{
-			Assert.AreEqual(8, Registers.ch.AliasOffset);
+			Assert.AreEqual(8, Registers.ch.BitAddress);
 		}
 
 		[Test]
-		public void IsAluRegister()
+		public void X86r_RegisterPartsByteCount()
 		{
-			Assert.IsTrue(Registers.gs.IsAluRegister);
-			Assert.IsFalse(Registers.Z.IsAluRegister);
+            Assert.AreEqual(Registers.al, arch.GetSubregister(Registers.eax, 0, 8));
+            Assert.AreEqual(Registers.bx, arch.GetSubregister(Registers.ebx, 0, 16));
+            Assert.AreEqual(Registers.ecx, arch.GetSubregister(Registers.ecx, 0, 32));
+            Assert.AreEqual(Registers.sil, arch.GetSubregister(Registers.esi, 0, 8));
 		}
 
 		[Test]
-		public void RegisterPartsByteCount()
+		public void X86r_WidestSubregisterEcx()
 		{
-			Assert.AreEqual(Registers.al, Registers.eax.GetPart(PrimitiveType.Byte));
-			Assert.AreEqual(Registers.bx, Registers.ebx.GetPart(PrimitiveType.Word16));
-			Assert.AreEqual(Registers.ecx, Registers.ecx.GetPart(PrimitiveType.Word32));
-			Assert.AreEqual(null, Registers.esi.GetPart(PrimitiveType.Byte));
+            var bits = new HashSet<RegisterStorage>();
+			Assert.IsNull(arch.GetWidestSubregister(Registers.ecx, bits));
+            bits.Add(Registers.cl);
+			Assert.AreSame(Registers.cl, arch.GetWidestSubregister(Registers.ecx, bits));
+            bits.Clear();
+			bits.Add(Registers.ch);
+			Assert.AreSame(Registers.ch, arch.GetWidestSubregister(Registers.ecx, bits));
+            bits.Add(Registers.cx);
+			Assert.AreSame(Registers.cx, arch.GetWidestSubregister(Registers.ecx, bits));
+			bits.Add(Registers.ecx);
+			Assert.AreSame(Registers.ecx, arch.GetWidestSubregister(Registers.ecx, bits));
 		}
 
 		[Test]
-		public void WidestSubregisterEcx()
+		public void X86r_WidestSubregisterChClTogether()
 		{
-			BitSet bits = new BitSet(64);
-			Assert.IsNull(Registers.ecx.GetWidestSubregister(bits));
-			bits[Registers.cl.Number] = true;
-			Assert.AreSame(Registers.cl, Registers.ecx.GetWidestSubregister(bits));
-			bits.SetAll(false);
-			bits[Registers.ch.Number] = true;
-			Assert.AreSame(Registers.ch, Registers.ecx.GetWidestSubregister(bits));
-			bits[Registers.cx.Number] = true;
-			Assert.AreSame(Registers.cx, Registers.ecx.GetWidestSubregister(bits));
-			bits[Registers.ecx.Number] = true;
-			Assert.AreSame(Registers.ecx, Registers.ecx.GetWidestSubregister(bits));
+            var bits = new HashSet<RegisterStorage>();
+            bits.Add(Registers.cl);
+            bits.Add(Registers.ch);
+			Assert.AreSame(Registers.cx, arch.GetWidestSubregister(Registers.ecx, bits));
 		}
 
 		[Test]
-		public void WidestSubregisterChClTogether()
+		public void X86r_WidestSubregisterEsi()
 		{
-			BitSet bits = new BitSet(64);
-			bits[Registers.cl.Number] = true;
-			bits[Registers.ch.Number] = true;
-			Assert.AreSame(Registers.cx, Registers.ecx.GetWidestSubregister(bits));
-
+            var bits = new HashSet<RegisterStorage>();
+            Assert.IsNull(arch.GetWidestSubregister(Registers.esi, bits));
+			bits.Add(Registers.si);
+			Assert.AreSame(Registers.si, arch.GetWidestSubregister(Registers.esi, bits));
+			bits.Add(Registers.esi);
+			Assert.AreSame(Registers.esi, arch.GetWidestSubregister(Registers.esi, bits));
 		}
 
 		[Test]
-		public void WidestSubregisterEsi()
+		public void X86r_WidestSubregisterDx()
 		{
-			BitSet bits = new BitSet(64);
-			Assert.IsNull(Registers.esi.GetWidestSubregister(bits));
-			bits[Registers.si.Number] = true;
-			Assert.AreSame(Registers.si, Registers.esi.GetWidestSubregister(bits));
-			bits[Registers.esi.Number] = true;
-			Assert.AreSame(Registers.esi, Registers.esi.GetWidestSubregister(bits));
+            var bits = new HashSet<RegisterStorage>();
+			Assert.IsNull(arch.GetWidestSubregister(Registers.dx, bits));
+            bits.Add(Registers.dl);
+			Assert.AreSame(Registers.dl, arch.GetWidestSubregister(Registers.dx, bits));
+            bits.Clear();
+			bits.Add(Registers.dh);
+			Assert.AreSame(Registers.dh, arch.GetWidestSubregister(Registers.dx, bits));
+			bits.Add(Registers.dx);
+			Assert.AreSame(Registers.dx, arch.GetWidestSubregister(Registers.dx, bits));
+			bits.Add(Registers.edx);
+			Assert.AreSame(Registers.dx, arch.GetWidestSubregister(Registers.dx, bits));
 		}
 
 		[Test]
-		public void WidestSubregisterDx()
+		public void X86r_WidestSubregisterSp()
 		{
-			BitSet bits = new BitSet(64);
-			Assert.IsNull(Registers.dx.GetWidestSubregister(bits));
-			bits[Registers.dl.Number] = true;
-			Assert.AreSame(Registers.dl, Registers.dx.GetWidestSubregister(bits));
-			bits.SetAll(false);
-			bits[Registers.dh.Number] = true;
-			Assert.AreSame(Registers.dh, Registers.dx.GetWidestSubregister(bits));
-			bits[Registers.dx.Number] = true;
-			Assert.AreSame(Registers.dx, Registers.dx.GetWidestSubregister(bits));
-			bits[Registers.edx.Number] = true;
-			Assert.AreSame(Registers.dx, Registers.dx.GetWidestSubregister(bits));
+            var bits = new HashSet<RegisterStorage>();
+			Assert.IsNull(arch.GetWidestSubregister(Registers.sp, bits));
+			bits.Add(Registers.sp);
+			Assert.AreSame(Registers.sp, arch.GetWidestSubregister(Registers.sp, bits));
+			bits.Add(Registers.esp);
+			Assert.AreSame(Registers.sp, arch.GetWidestSubregister(Registers.sp, bits));
 		}
 
 		[Test]
-		public void WidestSubregisterSp()
+		public void X86r_WidestSubregisterBh()
 		{
-			BitSet bits = new BitSet(64);
-			Assert.IsNull(Registers.sp.GetWidestSubregister(bits));
-			bits[Registers.sp.Number] = true;
-			Assert.AreSame(Registers.sp, Registers.sp.GetWidestSubregister(bits));
-			bits[Registers.esp.Number] = true;
-			Assert.AreSame(Registers.sp, Registers.sp.GetWidestSubregister(bits));
+            var bits = new HashSet<RegisterStorage>();
+            Assert.IsNull(arch.GetWidestSubregister(Registers.bh, bits));
+			bits.Add(Registers.bh);
+			Assert.AreSame(Registers.bh, arch.GetWidestSubregister(Registers.bh, bits));
+			bits.Add(Registers.bx);
+			Assert.AreSame(Registers.bh, arch.GetWidestSubregister(Registers.bh, bits));
+			bits.Add(Registers.ebx);
+			Assert.AreSame(Registers.bh, arch.GetWidestSubregister(Registers.bh, bits));
 		}
-
-		[Test]
-		public void WidestSubregisterBh()
-		{
-			BitSet bits = new BitSet(64);
-			Assert.IsNull(Registers.bh.GetWidestSubregister(bits));
-			bits[Registers.bh.Number] = true;
-			Assert.AreSame(Registers.bh, Registers.bh.GetWidestSubregister(bits));
-			bits[Registers.bx.Number] = true;
-			Assert.AreSame(Registers.bh, Registers.bh.GetWidestSubregister(bits));
-			bits[Registers.ebx.Number] = true;
-			Assert.AreSame(Registers.bh, Registers.bh.GetWidestSubregister(bits));
-		}
-
-		[Test]
-		public void SetAxAliasesTrue()
-		{
-			BitSet bits = arch.CreateRegisterBitset();
-			Registers.ax.SetAliases(bits, true);
-			Assert.IsTrue(bits[Registers.ax.Number], "Expected ax set");
-			Assert.IsTrue(bits[Registers.ah.Number], "Expected ah set");
-			Assert.IsTrue(bits[Registers.al.Number], "Expected al set");
-		}
-
-		[Test]
-		public void SetAhAliasesFalse()
-		{
-			BitSet bits = arch.CreateRegisterBitset();
-			bits.SetAll(true);
-			Registers.ah.SetAliases(bits, false);
-			Assert.IsFalse(bits[Registers.ax.Number], "Expected ax not set");
-			Assert.IsFalse(bits[Registers.ah.Number], "Expected ah not set");
-			Assert.IsTrue(bits[Registers.al.Number], "Expected al set");
-			Assert.IsTrue(bits[Registers.eax.Number], "Expected eax set");
-		}
-
-		[Test]
-		public void SetAhRegisterFileValue()
-		{
-			ulong [] regFile = new ulong[32];
-			bool [] valid = new bool[32];
-			Registers.ah.SetRegisterFileValues(regFile, 0x3A, valid);
-			Assert.AreEqual(0x3A00, regFile[Registers.ax.Number]);
-			Assert.AreEqual(0x3A, regFile[Registers.ah.Number]);
-			Assert.AreEqual(0x3A00, regFile[Registers.eax.Number]);
-			Assert.IsFalse(valid[Registers.ax.Number]);
-			Assert.IsTrue(valid[Registers.ah.Number]);
-		}
-
-		[Test]
-		public void SetAhThenAl()
-		{
-			ulong [] regFile = new ulong[32];
-			bool [] valid = new bool[32];
-			Registers.ah.SetRegisterFileValues(regFile, 0x12, valid);
-			Registers.al.SetRegisterFileValues(regFile, 0x34, valid);
-			Assert.AreEqual(0x1234, regFile[Registers.ax.Number]);
-			Assert.AreEqual(0x12, regFile[Registers.ah.Number]);
-			Assert.IsTrue(valid[Registers.ax.Number]);
-			Assert.IsTrue(valid[Registers.al.Number]);
-		}
-
-		[Test]
-		public void SetBp()
-		{
-			ulong [] regFile = new ulong[32];
-			bool [] valid = new bool[32];
-			Registers.bp.SetRegisterFileValues(regFile, 0x1234, valid);
-			Assert.AreEqual(0x1234, regFile[Registers.bp.Number]);
-			Assert.AreEqual(0x1234, regFile[Registers.ebp.Number]);
-			Assert.IsFalse(valid[Registers.ebp.Number]);
-			Assert.IsTrue(valid[Registers.bp.Number]);
-		}
-
-		[Test]
-		public void SetCx()
-		{
-			ulong [] regFile = new ulong[32];
-			bool [] valid = new bool[32];
-			Registers.cx.SetRegisterFileValues(regFile, 0x1234, valid);
-			Assert.AreEqual(0x1234, regFile[Registers.cx.Number]);
-			Assert.AreEqual(0x34, regFile[Registers.cl.Number]);
-			Assert.AreEqual(0x12, regFile[Registers.ch.Number]);
-			Assert.IsTrue(valid[Registers.cx.Number]);
-			Assert.IsTrue(valid[Registers.cl.Number]);
-			Assert.IsTrue(valid[Registers.ch.Number]);
-		}
-
-		[Test]
-		public void SetEsi()
-		{
-			ulong [] regFile = new ulong[32];
-			bool [] valid = new bool[32];
-			Registers.esi.SetRegisterFileValues(regFile, 0x12345678, valid);
-			Assert.AreEqual(0x12345678, regFile[Registers.esi.Number]);
-			Assert.AreEqual(0x5678, regFile[Registers.si.Number]);
-			Assert.IsTrue(valid[Registers.esi.Number]);
-			Assert.IsTrue(valid[Registers.si.Number]);
-		}
-
-		[Test]
-		public void SetEdx()
-		{
-			ulong [] regFile = new ulong[32];
-			bool [] valid = new bool[32];
-			Registers.edx.SetRegisterFileValues(regFile, 0x12345678, valid);
-			Assert.AreEqual(0x12345678, regFile[Registers.edx.Number]);
-			Assert.AreEqual(0x5678, regFile[Registers.dx.Number]);
-			Assert.AreEqual(0x78, regFile[Registers.dl.Number]);
-			Assert.AreEqual(0x56, regFile[Registers.dh.Number]);
-			Assert.IsTrue(valid[Registers.edx.Number]);
-			Assert.IsTrue(valid[Registers.dx.Number]);
-			Assert.IsTrue(valid[Registers.dl.Number]);
-			Assert.IsTrue(valid[Registers.dh.Number]);
-		}
-
-        [Test]
-        public void X86reg_SetCxSymbolic_Invalid()
-        {
-            var ctx = new Dictionary<Storage, Expression> {
-                { Registers.cl, Constant.Byte(0) }
-            };
-            Registers.cx.SetRegisterStateValues(Constant.Invalid, false, ctx);
-            Assert.IsTrue(ctx[Registers.cx] == Constant.Invalid);
-            Assert.IsTrue(ctx[Registers.cl] == Constant.Invalid);
-            Assert.IsTrue(ctx[Registers.ch] == Constant.Invalid);
-            Assert.IsTrue(ctx[Registers.ecx] == Constant.Invalid);
-        }
-
-
-        [Test]
-        public void X86reg_SetDhSymbolic_Invalid()
-        {
-            var ctx = new Dictionary<Storage, Expression> {
-                { Registers.dl, Constant.Byte(3) }
-            };
-            Registers.dh.SetRegisterStateValues(Constant.Invalid, false, ctx);
-            Assert.IsTrue(ctx[Registers.dh] == Constant.Invalid);
-            Assert.IsTrue(ctx[Registers.dx] == Constant.Invalid);
-            Assert.IsTrue(ctx[Registers.edx] == Constant.Invalid);
-            Assert.AreEqual("0x03", ctx[Registers.dl].ToString());
-        }
 
         [Test]
         public void X86reg_GetSliceAh()

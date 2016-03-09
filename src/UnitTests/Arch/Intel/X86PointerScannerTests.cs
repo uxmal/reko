@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Text;
-using BitSet = Reko.Core.Lib.BitSet;
 
 namespace Reko.UnitTests.Arch.Intel
 {
@@ -40,7 +39,7 @@ namespace Reko.UnitTests.Arch.Intel
     {
         private LeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new LeImageReader(new LoadedImage(address, bytes), 0);
+            return new LeImageReader(new MemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

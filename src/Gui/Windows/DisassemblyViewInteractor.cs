@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,15 +60,18 @@ namespace Reko.Gui.Windows
                     var dumper = new Dumper(arch);
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
-                    var image = program.Image;
-                    var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
-                    while (dasm.MoveNext())
+                    ImageSegment segment;
+                    if (program.ImageMap.TryFindSegment(StartAddress, out segment))
                     {
-                        var instr = dasm.Current;
-                        if (lines <= 0)
-                            break;
-                        dumper.DumpAssemblerLine(image, instr, writer);
-                        --lines;
+                        var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
+                        while (dasm.MoveNext())
+                        {
+                            var instr = dasm.Current;
+                            if (lines <= 0)
+                                break;
+                            dumper.DumpAssemblerLine(segment.MemoryArea, instr, writer);
+                            --lines;
+                        }
                     }
                     txtDisassembly.Text = writer.ToString();
                 }
@@ -110,7 +113,7 @@ namespace Reko.Gui.Windows
             return
                 program != null &&
                 program.Architecture != null &&
-                program.Image != null &&
+                program.ImageMap != null &&
                 StartAddress != null;
         }
 

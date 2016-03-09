@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,7 +169,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
         public void DfaReg00010()
 		{
 			RunFileTest("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
@@ -218,7 +217,8 @@ done:
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
-			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            IImportResolver importResolver = null;
+			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

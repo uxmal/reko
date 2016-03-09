@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core.Output
 {
@@ -124,6 +125,90 @@ namespace Reko.Core.Output
             }
             return writer;
 		}
+
+        public Formatter VisitClass(ClassType ct)
+        {
+            var n = this.name;
+            if (mode == Mode.Writing)
+            {
+                object v;
+                if (visited.TryGetValue(ct, out v) && (v == Defined || v == Declared))
+                {
+                    writer.WriteHyperlink(ct.Name, ct);
+                }
+                else if (v != Declared)
+                {
+                    visited[ct] = Declared;
+                    ScanFields(ct);
+                    ScanMethods(ct);
+                    writer.WriteKeyword("class");
+                    writer.Write(" ");
+                    writer.WriteHyperlink(ct.Name, ct);
+                    OpenBrace(ct.Size > 0 ? string.Format("size: {0} {0:X}", ct.Size) : null);
+
+                    WriteClassMembers(ct, ClassProtection.Public, "public");
+                    WriteClassMembers(ct, ClassProtection.Protected, "protected");
+                    WriteClassMembers(ct, ClassProtection.Private, "private");
+                    
+                    CloseBrace();
+                    visited[ct] = Defined;
+                }
+
+                name = n;
+                WriteName(true);
+            }
+            else
+            {
+                if (!visited.ContainsKey(ct))
+                {
+                    visited[ct] = Declared;
+                    writer.WriteKeyword("class");
+                    writer.Write(" ");
+                    writer.WriteHyperlink(ct.Name, ct);
+                    writer.Write(";");
+                    writer.WriteLine();
+                }
+            }
+            return writer;
+        }
+
+        private void WriteClassMembers(ClassType ct, ClassProtection protection, string sectionName)
+        { 
+            var methods = ct.Methods.Where(m => m.Protection == protection)
+                .OrderBy(m => m.Offset).ThenBy(m => m.Name)
+                .ToList();
+            var fields = ct.Fields.Where(f => f.Protection == protection)
+                .OrderBy(m => m.Offset)
+                .ToList();
+            if (methods.Count == 0 && fields.Count == 0)
+                return;
+            writer.Indentation -= writer.TabSize;
+            BeginLine();
+            writer.WriteKeyword(sectionName);
+            writer.WriteLine(":");
+            writer.Indentation += writer.TabSize;
+
+            foreach (var m in methods)
+            {
+                //$TODO: finish this.
+                BeginLine();
+                writer.Write(m.Name);
+                writer.Write("()");
+                EndLine(";");
+            }
+            if (methods.Count > 0 && fields.Count > 0)
+            {
+                // separate methods from fields.
+                writer.WriteLine();
+            }
+            foreach (var f in fields)
+            {
+                BeginLine();
+                var trf = new TypeReferenceFormatter(writer, true);
+                trf.WriteDeclaration(f.DataType, f.Name);
+                EndLine(";", string.Format("{0:X}", f.Offset));
+            }
+        }
 
         public Formatter VisitCode(CodeType c)
         {
@@ -265,6 +350,29 @@ namespace Reko.Core.Output
 			mode = m;
 		}
 
+        public void ScanFields(ClassType ct)
+        {
+            Mode m = mode;
+            mode = Mode.Scanning;
+            foreach (var f in ct.Fields)
+            {
+                f.DataType.Accept(this);
+            }
+            mode = m;
+        }
+
+        public void ScanMethods(ClassType ct)
+        {
+            Mode m = mode;
+            mode = Mode.Scanning;
+            foreach (var method in ct.Methods)
+            {
+                //$TODO: it would be greate if FunctionType were a parent
+                // of ProcedureSignature.
+            }
+            mode = m;
+        }
+
 		public Formatter VisitMemberPointer(MemberPointer memptr)
 		{
 			Pointer p = memptr.BasePointer as Pointer;
@@ -387,8 +495,7 @@ namespace Reko.Core.Output
 			foreach (DataType dt in datatypes)
 			{
 				Write(dt, null);
-				writer.Write(";");
-                writer.WriteLine();
+				EndLine(";");
 				writer.WriteLine();
 			}
 		}

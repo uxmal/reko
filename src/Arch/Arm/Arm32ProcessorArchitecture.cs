@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,12 +52,17 @@ namespace Reko.Arch.Arm
             return new Arm32Disassembler(this, imageReader);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -70,11 +75,6 @@ namespace Reko.Arch.Arm
         public override ProcessorState CreateProcessorState()
         {
             return new ArmProcessorState(this);
-        }
-
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet(16);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -118,6 +118,11 @@ namespace Reko.Arch.Arm
         public override RegisterStorage[] GetRegisters()
         {
             return A32Registers.GpRegs.ToArray();
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
         }
 
         public override Address MakeAddressFromConstant(Constant c)

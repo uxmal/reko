@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Typing
 
         private static Identifier Id(string name, DataType dt)
         {
-            return new Identifier(name, dt, TemporaryStorage.None);
+            return new Identifier(name, dt, RegisterStorage.None);
         }
 
         private void Verify(string outputFileName)
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Typing
 
         private void RunTest(Expression e)
         {
-            var globals = new Identifier("globals", PrimitiveType.Pointer32, TemporaryStorage.None);
+            var globals = new Identifier("globals", PrimitiveType.Pointer32, RegisterStorage.None);
             store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store);
             e.Accept(eq);
@@ -131,6 +131,23 @@ namespace Reko.UnitTests.Typing
                     PrimitiveType.Byte,
                     Id("ds", PrimitiveType.SegmentSelector),
                     Constant.Word16(0x123)));
+        }
+
+        [Test(Description = "Duplicate occurrences of same TypeReference should resolve to same TypeVariable")]
+        public void ExaTypeReference()
+        {
+            var a = Id("a", new TypeReference("INT", PrimitiveType.Int32));
+            var b = Id("b", new TypeReference("INT", PrimitiveType.Int32));
+            RunTest(
+                m.IAdd(a, b));
+        }
+
+        [Test(Description = "Resilve LPSTRs and the like to their underlying rep")]
+        public void ExaTypeReferenceToPointer()
+        {
+            var psz = Id("psz", new TypeReference("LPSTR", new Pointer(PrimitiveType.Char, 4)));
+            RunTest(
+                m.LoadB(m.IAdd(psz, Constant.Word32(0))));
         }
     }
 }

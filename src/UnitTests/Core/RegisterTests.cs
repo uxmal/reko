@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void Create()
 		{
-			RegisterStorage reg = new RegisterStorage("eax", 0, PrimitiveType.Word32);
+			RegisterStorage reg = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
 			Assert.AreEqual("eax", reg.Name);
 			Assert.AreEqual(0, reg.Number);
 			Assert.AreEqual("word32", reg.DataType.ToString());

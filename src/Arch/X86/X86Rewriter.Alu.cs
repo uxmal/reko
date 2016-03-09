@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -376,7 +376,7 @@ namespace Reko.Arch.X86
 
         private void RewriteEnter()
         {
-            var bp = orw.AluRegister(Registers.ebp.GetPart(instrCur.dataWidth));
+            var bp = orw.AluRegister(arch.GetPart(Registers.ebp, instrCur.dataWidth));
             RewritePush(instrCur.dataWidth, bp);
             var sp = StackPointer();
             emitter.Assign(bp, sp);
@@ -550,7 +550,7 @@ namespace Reko.Arch.X86
         private void RewriteLeave()
         {
             var sp = orw.AluRegister(arch.StackRegister);
-            var bp = orw.AluRegister(Registers.ebp.GetPart(arch.StackRegister.DataType));
+            var bp = orw.AluRegister(arch.GetPart(Registers.ebp, arch.StackRegister.DataType));
             emitter.Assign(sp, bp);
             emitter.Assign(bp, orw.StackAccess(sp, bp.DataType));
             emitter.Assign(sp, emitter.IAdd(sp, bp.DataType.Size));
@@ -623,7 +623,7 @@ namespace Reko.Arch.X86
             RewritePush(dasm.Current.dataWidth, SrcOp(dasm.Current.op1));
         }
 
-        private void RewritePush(IntelRegister reg)
+        private void RewritePush(RegisterStorage reg)
         {
             RewritePush(instrCur.dataWidth, orw.AluRegister(reg));
         }
@@ -701,7 +701,7 @@ namespace Reko.Arch.X86
             emitter.Assign(sp, emitter.IAdd(sp, width.Size));
         }
 
-        private void EmitPop(IntelRegister reg)
+        private void EmitPop(RegisterStorage reg)
         {
             RewritePop(orw.AluRegister(reg), instrCur.dataWidth);
         }

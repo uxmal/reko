@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ namespace Reko.CmdLine
                 throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
 
             object sEnv;
-            Platform platform;
+            IPlatform platform;
             if (pArgs.TryGetValue("--env", out sEnv))
             {
                 var opEnv = config.GetEnvironment((string)sEnv);

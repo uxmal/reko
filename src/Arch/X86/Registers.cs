@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,97 +33,97 @@ namespace Reko.Arch.X86
     /// </summary>
     public static class Registers
     {
-        public static readonly Intel32AccRegister eax;
-        public static readonly Intel32AccRegister ecx;
-        public static readonly Intel32AccRegister edx;
-        public static readonly Intel32AccRegister ebx;
-        public static readonly Intel32Register esp;
-        public static readonly Intel32Register ebp;
-        public static readonly Intel32Register esi;
-        public static readonly Intel32Register edi;
-        public static readonly Intel16AccRegister ax;
-        public static readonly Intel16AccRegister cx;
-        public static readonly Intel16AccRegister dx;
-        public static readonly Intel16AccRegister bx;
-        public static readonly Intel16Register sp;
-        public static readonly Intel16Register bp;
-        public static readonly Intel16Register si;
-        public static readonly Intel16Register di;
-        public static readonly IntelLoByteRegister al;
-        public static readonly IntelLoByteRegister cl;
-        public static readonly IntelLoByteRegister dl;
-        public static readonly IntelLoByteRegister bl;
-        public static readonly IntelHiByteRegister ah;
-        public static readonly IntelHiByteRegister ch;
-        public static readonly IntelHiByteRegister dh;
-        public static readonly IntelHiByteRegister bh;
-        public static readonly SegmentRegister es;
-        public static readonly SegmentRegister cs;
-        public static readonly SegmentRegister ss;
-        public static readonly SegmentRegister ds;
-        public static readonly SegmentRegister fs;
-        public static readonly SegmentRegister gs;
+        public static readonly RegisterStorage eax;
+        public static readonly RegisterStorage ecx;
+        public static readonly RegisterStorage edx;
+        public static readonly RegisterStorage ebx;
+        public static readonly RegisterStorage esp;
+        public static readonly RegisterStorage ebp;
+        public static readonly RegisterStorage esi;
+        public static readonly RegisterStorage edi;
+        public static readonly RegisterStorage ax;
+        public static readonly RegisterStorage cx;
+        public static readonly RegisterStorage dx;
+        public static readonly RegisterStorage bx;
+        public static readonly RegisterStorage sp;
+        public static readonly RegisterStorage bp;
+        public static readonly RegisterStorage si;
+        public static readonly RegisterStorage di;
+        public static readonly RegisterStorage al;
+        public static readonly RegisterStorage cl;
+        public static readonly RegisterStorage dl;
+        public static readonly RegisterStorage bl;
+        public static readonly RegisterStorage ah;
+        public static readonly RegisterStorage ch;
+        public static readonly RegisterStorage dh;
+        public static readonly RegisterStorage bh;
+        public static readonly RegisterStorage es;
+        public static readonly RegisterStorage cs;
+        public static readonly RegisterStorage ss;
+        public static readonly RegisterStorage ds;
+        public static readonly RegisterStorage fs;
+        public static readonly RegisterStorage gs;
 
-        public static readonly FlagRegister S;
-        public static readonly FlagRegister C;
-        public static readonly FlagRegister Z;
-        public static readonly FlagRegister D;
-        public static readonly FlagRegister O;
-        public static readonly FlagRegister P;
+        public static readonly RegisterStorage S;
+        public static readonly RegisterStorage C;
+        public static readonly RegisterStorage Z;
+        public static readonly RegisterStorage D;
+        public static readonly RegisterStorage O;
+        public static readonly RegisterStorage P;
 
         public static readonly Reko.Core.FlagRegister eflags;
 
         public static readonly RegisterStorage FPUF;
         public static readonly RegisterStorage FPST;    // virtual register; the x87 FPU stack pointer.
 
-        public static readonly Intel64AccRegister rax;
-        public static readonly Intel64AccRegister rcx;
-        public static readonly Intel64AccRegister rdx;
-        public static readonly Intel64AccRegister rbx;
-        public static readonly Intel64Register rsp;
-        public static readonly Intel64Register rbp;
-        public static readonly Intel64Register rsi;
-        public static readonly Intel64Register rdi;
+        public static readonly RegisterStorage rax;
+        public static readonly RegisterStorage rcx;
+        public static readonly RegisterStorage rdx;
+        public static readonly RegisterStorage rbx;
+        public static readonly RegisterStorage rsp;
+        public static readonly RegisterStorage rbp;
+        public static readonly RegisterStorage rsi;
+        public static readonly RegisterStorage rdi;
 
-        public static readonly Intel64Register r8;
-        public static readonly Intel64Register r9;
-        public static readonly Intel64Register r10;
-        public static readonly Intel64Register r11;
-        public static readonly Intel64Register r12;
-        public static readonly Intel64Register r13;
-        public static readonly Intel64Register r14;
-        public static readonly Intel64Register r15;
+        public static readonly RegisterStorage r8;
+        public static readonly RegisterStorage r9;
+        public static readonly RegisterStorage r10;
+        public static readonly RegisterStorage r11;
+        public static readonly RegisterStorage r12;
+        public static readonly RegisterStorage r13;
+        public static readonly RegisterStorage r14;
+        public static readonly RegisterStorage r15;
 
-        public static readonly Intel64Register r8d;
-        public static readonly Intel64Register r9d;
-        public static readonly Intel64Register r10d;
-        public static readonly Intel64Register r11d;
-        public static readonly Intel64Register r12d;
-        public static readonly Intel64Register r13d;
-        public static readonly Intel64Register r14d;
-        public static readonly Intel64Register r15d;
+        public static readonly RegisterStorage r8d;
+        public static readonly RegisterStorage r9d;
+        public static readonly RegisterStorage r10d;
+        public static readonly RegisterStorage r11d;
+        public static readonly RegisterStorage r12d;
+        public static readonly RegisterStorage r13d;
+        public static readonly RegisterStorage r14d;
+        public static readonly RegisterStorage r15d;
 
-        public static readonly Intel32Register r8w;
-        public static readonly Intel32Register r9w;
-        public static readonly Intel32Register r10w;
-        public static readonly Intel32Register r11w;
-        public static readonly Intel32Register r12w;
-        public static readonly Intel32Register r13w;
-        public static readonly Intel32Register r14w;
-        public static readonly Intel32Register r15w;
+        public static readonly RegisterStorage r8w;
+        public static readonly RegisterStorage r9w;
+        public static readonly RegisterStorage r10w;
+        public static readonly RegisterStorage r11w;
+        public static readonly RegisterStorage r12w;
+        public static readonly RegisterStorage r13w;
+        public static readonly RegisterStorage r14w;
+        public static readonly RegisterStorage r15w;
 
-        public static readonly IntelLoByteRegister spl;
-        public static readonly IntelLoByteRegister bpl;
-        public static readonly IntelLoByteRegister sil;
-        public static readonly IntelLoByteRegister dil;
-        public static readonly IntelLoByteRegister r8b;
-        public static readonly IntelLoByteRegister r9b;
-        public static readonly IntelLoByteRegister r10b;
-        public static readonly IntelLoByteRegister r11b;
-        public static readonly IntelLoByteRegister r12b;
-        public static readonly IntelLoByteRegister r13b;
-        public static readonly IntelLoByteRegister r14b;
-        public static readonly IntelLoByteRegister r15b;
+        public static readonly RegisterStorage spl;
+        public static readonly RegisterStorage bpl;
+        public static readonly RegisterStorage sil;
+        public static readonly RegisterStorage dil;
+        public static readonly RegisterStorage r8b;
+        public static readonly RegisterStorage r9b;
+        public static readonly RegisterStorage r10b;
+        public static readonly RegisterStorage r11b;
+        public static readonly RegisterStorage r12b;
+        public static readonly RegisterStorage r13b;
+        public static readonly RegisterStorage r14b;
+        public static readonly RegisterStorage r15b;
 
         public static readonly RegisterStorage xmm0;
         public static readonly RegisterStorage xmm1;
@@ -161,132 +161,134 @@ namespace Reko.Arch.X86
 
         public static readonly RegisterStorage rip;
 
+        internal static readonly Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters;
+
         internal static readonly RegisterStorage[] All;
 
         static Registers()
         {
-            eax = new Intel32AccRegister("eax", 0, 8, 16, 20);
-            ecx = new Intel32AccRegister("ecx", 1, 9, 17, 21);
-            edx = new Intel32AccRegister("edx", 2, 10, 18, 22);
-            ebx = new Intel32AccRegister("ebx", 3, 11, 19, 23);
-            esp = new Intel32Register("esp", 4, 12, -1, -1);
-            ebp = new Intel32Register("ebp", 5, 13, -1, -1);
-            esi = new Intel32Register("esi", 6, 14, -1, -1);
-            edi = new Intel32Register("edi", 7, 15, -1, -1);
-            ax = new Intel16AccRegister("ax", 8, 0, 16, 20);
-            cx = new Intel16AccRegister("cx", 9, 1, 17, 21);
-            dx = new Intel16AccRegister("dx", 10, 2, 18, 22);
-            bx = new Intel16AccRegister("bx", 11, 3, 19, 23);
-            sp = new Intel16Register("sp", 12, 4, -1, -1);
-            bp = new Intel16Register("bp", 13, 5, -1, -1);
-            si = new Intel16Register("si", 14, 6, -1, -1);
-            di = new Intel16Register("di", 15, 7, -1, -1);
-            al = new IntelLoByteRegister("al", 16, 0, 8, 16, 20);
-            cl = new IntelLoByteRegister("cl", 17, 1, 9, 17, 21);
-            dl = new IntelLoByteRegister("dl", 18, 2, 10, 18, 22);
-            bl = new IntelLoByteRegister("bl", 19, 3, 11, 19, 23);
-            ah = new IntelHiByteRegister("ah", 20, 0, 8, 16, 20);
-            ch = new IntelHiByteRegister("ch", 21, 1, 9, 17, 21);
-            dh = new IntelHiByteRegister("dh", 22, 2, 10, 18, 22);
-            bh = new IntelHiByteRegister("bh", 23, 3, 11, 19, 23);
-            es = new SegmentRegister("es", 24);
-            cs = new SegmentRegister("cs", 25);
-            ss = new SegmentRegister("ss", 26);
-            ds = new SegmentRegister("ds", 27);
-            fs = new SegmentRegister("fs", 28);
-            gs = new SegmentRegister("gs", 29);
-            S = new FlagRegister("S", 32);
-            C = new FlagRegister("C", 33);
-            Z = new FlagRegister("Z", 34);
-            D = new FlagRegister("D", 35);
-            O = new FlagRegister("O", 36);
-            P = new FlagRegister("P", 37);
+            eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
+            ecx = new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32);
+            edx = new RegisterStorage("edx", 2, 0, PrimitiveType.Word32);
+            ebx = new RegisterStorage("ebx", 3, 0, PrimitiveType.Word32);
+            esp = new RegisterStorage("esp", 4, 0, PrimitiveType.Word32);
+            ebp = new RegisterStorage("ebp", 5, 0, PrimitiveType.Word32);
+            esi = new RegisterStorage("esi", 6, 0, PrimitiveType.Word32);
+            edi = new RegisterStorage("edi", 7, 0, PrimitiveType.Word32);
+            ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
+            cx = new RegisterStorage("cx", 1, 0, PrimitiveType.Word16);
+            dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
+            bx = new RegisterStorage("bx", 3, 0, PrimitiveType.Word16);
+            sp = new RegisterStorage("sp", 4, 0, PrimitiveType.Word16);
+            bp = new RegisterStorage("bp", 5, 0, PrimitiveType.Word16);
+            si = new RegisterStorage("si", 6, 0, PrimitiveType.Word16);
+            di = new RegisterStorage("di", 7, 0, PrimitiveType.Word16);
+            al = new RegisterStorage("al", 0, 0, PrimitiveType.Byte);
+            cl = new RegisterStorage("cl", 1, 0, PrimitiveType.Byte);
+            dl = new RegisterStorage("dl", 2, 0, PrimitiveType.Byte);
+            bl = new RegisterStorage("bl", 3, 0, PrimitiveType.Byte);
+            ah = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
+            ch = new RegisterStorage("ch", 1, 8, PrimitiveType.Byte);
+            dh = new RegisterStorage("dh", 2, 8, PrimitiveType.Byte);
+            bh = new RegisterStorage("bh", 3, 8, PrimitiveType.Byte);
+            es = SegmentRegister("es", 24);
+            cs = SegmentRegister("cs", 25);
+            ss = SegmentRegister("ss", 26);
+            ds = SegmentRegister("ds", 27);
+            fs = SegmentRegister("fs", 28);
+            gs = SegmentRegister("gs", 29);
+            S = FlagRegister("S", 32);
+            C = FlagRegister("C", 33);
+            Z = FlagRegister("Z", 34);
+            D = FlagRegister("D", 35);
+            O = FlagRegister("O", 36);
+            P = FlagRegister("P", 37);
             eflags = new Core.FlagRegister("eflags", PrimitiveType.Word32);
-            FPUF = new RegisterStorage("FPUF", 38, PrimitiveType.Byte);
-            FPST = new RegisterStorage("FPST", 38, PrimitiveType.Byte); 
+            FPUF = new RegisterStorage("FPUF", 38, 0, PrimitiveType.Byte);
+            FPST = new RegisterStorage("FPST", 38, 0, PrimitiveType.Byte); 
 
-            rax = new Intel64AccRegister("rax", 0, 0, 8, 16, 20);
-            rcx = new Intel64AccRegister("rcx", 1, 1, 9, 17, 21);
-            rdx = new Intel64AccRegister("rdx", 2, 2, 10, 18, 22);
-            rbx = new Intel64AccRegister("rbx", 3, 3, 11, 19, 23);
-            rsp = new Intel64Register("rsp", 4, 12, -1, -1);
-            rbp = new Intel64Register("rbp",  5, 13, -1, -1);
-            rsi = new Intel64Register("rsi",  6, 14, -1, -1);
-            rdi = new Intel64Register("rdi",  7, 15, -1, -1);
-            r8 = new Intel64Register("r8",  8, 12, -1, -1);
-            r9 = new Intel64Register("r9", 9, 13, -1, -1);
-            r10 = new Intel64Register("r10", 10, 14, -1, -1);
-            r11 = new Intel64Register("r11", 11, 15, -1, -1);
-            r12 = new Intel64Register("r12", 12, 15, -1, -1);
-            r13 = new Intel64Register("r13", 13, 15, -1, -1);
-            r14 = new Intel64Register("r14", 14, 15, -1, -1);
-            r15 = new Intel64Register("r15", 15, 15, -1, -1);
-            r8d = new Intel64Register("r8d", 8, 12, -1, -1);
-            r9d = new Intel64Register("r9d", 9, 13, -1, -1);
-            r10d = new Intel64Register("r10d", 10, 14, -1, -1);
-            r11d = new Intel64Register("r11d", 11, 15, -1, -1);
-            r12d = new Intel64Register("r12d", 12, 15, -1, -1);
-            r13d = new Intel64Register("r13d", 13, 15, -1, -1);
-            r14d = new Intel64Register("r14d", 14, 15, -1, -1);
-            r15d = new Intel64Register("r15d", 15, 15, -1, -1);
-            r8w = new Intel32Register("r8w", 8, 12, -1, -1);
-            r9w = new Intel32Register("r9w", 9, 13, -1, -1);
-            r10w = new Intel32Register("r10w", 10, 14, -1, -1);
-            r11w = new Intel32Register("r11w", 11, 15, -1, -1);
-            r12w = new Intel32Register("r12w", 12, 15, -1, -1);
-            r13w = new Intel32Register("r13w", 13, 15, -1, -1);
-            r14w = new Intel32Register("r14w", 14, 15, -1, -1);
-            r15w = new Intel32Register("r15w", 15, 15, -1, -1);
+            rax = new RegisterStorage("rax", 0, 0, PrimitiveType.Word64);
+            rcx = new RegisterStorage("rcx", 1, 0, PrimitiveType.Word64);
+            rdx = new RegisterStorage("rdx", 2, 0, PrimitiveType.Word64);
+            rbx = new RegisterStorage("rbx", 3, 0, PrimitiveType.Word64);
+            rsp = new RegisterStorage("rsp", 4, 0, PrimitiveType.Word64);
+            rbp = new RegisterStorage("rbp", 5, 0, PrimitiveType.Word64);
+            rsi = new RegisterStorage("rsi", 6, 0, PrimitiveType.Word64);
+            rdi = new RegisterStorage("rdi", 7, 0, PrimitiveType.Word64);
+            r8 = new RegisterStorage("r8",   8, 0, PrimitiveType.Word64);
+            r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word64);
+            r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word64);
+            r11 = new RegisterStorage("r11", 11, 0, PrimitiveType.Word64);
+            r12 = new RegisterStorage("r12", 12, 0, PrimitiveType.Word64);
+            r13 = new RegisterStorage("r13", 13, 0, PrimitiveType.Word64);
+            r14 = new RegisterStorage("r14", 14, 0, PrimitiveType.Word64);
+            r15 = new RegisterStorage("r15", 15, 0, PrimitiveType.Word64);
+            r8d = new RegisterStorage("r8d", 8, 0, PrimitiveType.Word32);
+            r9d = new RegisterStorage("r9d", 9, 0, PrimitiveType.Word32);
+            r10d = new RegisterStorage("r10d", 10, 0, PrimitiveType.Word32);
+            r11d = new RegisterStorage("r11d", 11, 0, PrimitiveType.Word32);
+            r12d = new RegisterStorage("r12d", 12, 0, PrimitiveType.Word32);
+            r13d = new RegisterStorage("r13d", 13, 0, PrimitiveType.Word32);
+            r14d = new RegisterStorage("r14d", 14, 0, PrimitiveType.Word32);
+            r15d = new RegisterStorage("r15d", 15, 0, PrimitiveType.Word32);
+            r8w = new RegisterStorage("r8w", 8, 0, PrimitiveType.Word16);
+            r9w = new RegisterStorage("r9w", 9, 0, PrimitiveType.Word16);
+            r10w = new RegisterStorage("r10w", 10, 0, PrimitiveType.Word16);
+            r11w = new RegisterStorage("r11w", 11, 0, PrimitiveType.Word16);
+            r12w = new RegisterStorage("r12w", 12, 0, PrimitiveType.Word16);
+            r13w = new RegisterStorage("r13w", 13, 0, PrimitiveType.Word16);
+            r14w = new RegisterStorage("r14w", 14, 0, PrimitiveType.Word16);
+            r15w = new RegisterStorage("r15w", 15, 0, PrimitiveType.Word16);
 
-            spl = new IntelLoByteRegister("spl", 8, 4, 12, -1, -1);
-            bpl = new IntelLoByteRegister("bpl", 9, 5, 13, -1, -1);
-            sil = new IntelLoByteRegister("sil", 8, 6, 14, -1, -1);
-            dil = new IntelLoByteRegister("dil", 9, 7, 15, -1, -1);
+            spl = new RegisterStorage("spl", 4, 0, PrimitiveType.Byte);
+            bpl = new RegisterStorage("bpl", 5, 0, PrimitiveType.Byte);
+            sil = new RegisterStorage("sil", 6, 0, PrimitiveType.Byte);
+            dil = new RegisterStorage("dil", 7, 0, PrimitiveType.Byte);
 
-            r8b = new IntelLoByteRegister("r8b", 8, 12, -1, -1, -1);
-            r9b = new IntelLoByteRegister("r9b", 9, 13, -1, -1, -1);
-            r10b = new IntelLoByteRegister("r10b", 10, 14, -1, -1, -1);
-            r11b = new IntelLoByteRegister("r11b", 11, 15, -1, -1, -1);
-            r12b = new IntelLoByteRegister("r12b", 12, 15, -1, -1, -1);
-            r13b = new IntelLoByteRegister("r13b", 13, 15, -1, -1, -1);
-            r14b = new IntelLoByteRegister("r14b", 14, 15, -1, -1, -1);
-            r15b = new IntelLoByteRegister("r15b", 15, 15, -1, -1, -1);
+            r8b = new RegisterStorage("r8b",    8, 0, PrimitiveType.Byte);
+            r9b = new RegisterStorage("r9b",    9, 0, PrimitiveType.Byte);
+            r10b = new RegisterStorage("r10b", 10, 0, PrimitiveType.Byte);
+            r11b = new RegisterStorage("r11b", 11, 0, PrimitiveType.Byte);
+            r12b = new RegisterStorage("r12b", 12, 0, PrimitiveType.Byte);
+            r13b = new RegisterStorage("r13b", 13, 0, PrimitiveType.Byte);
+            r14b = new RegisterStorage("r14b", 14, 0, PrimitiveType.Byte);
+            r15b = new RegisterStorage("r15b", 15, 0, PrimitiveType.Byte);
 
-            mm0 = new  RegisterStorage("mm0", 0, PrimitiveType.Word64);
-            mm1 = new  RegisterStorage("mm1", 1, PrimitiveType.Word64);
-            mm2 = new  RegisterStorage("mm2", 2, PrimitiveType.Word64);
-            mm3 = new  RegisterStorage("mm3", 3, PrimitiveType.Word64);
-            mm4 = new  RegisterStorage("mm4", 4, PrimitiveType.Word64);
-            mm5 = new  RegisterStorage("mm5", 5, PrimitiveType.Word64);
-            mm6 = new  RegisterStorage("mm6", 6, PrimitiveType.Word64);
-            mm7 = new  RegisterStorage("mm7", 7, PrimitiveType.Word64);
-            mm8 = new  RegisterStorage("mm8", 8, PrimitiveType.Word64);
-            mm9 = new  RegisterStorage("mm9", 9, PrimitiveType.Word64);
-            mm10 = new RegisterStorage("mm10", 10, PrimitiveType.Word64);
-            mm11 = new RegisterStorage("mm11", 11, PrimitiveType.Word64);
-            mm12 = new RegisterStorage("mm12", 12, PrimitiveType.Word64);
-            mm13 = new RegisterStorage("mm13", 13, PrimitiveType.Word64);
-            mm14 = new RegisterStorage("mm14", 14, PrimitiveType.Word64);
-            mm15 = new RegisterStorage("mm15", 15, PrimitiveType.Word64);
+            mm0 = new  RegisterStorage("mm0", 40, 0, PrimitiveType.Word64);
+            mm1 = new  RegisterStorage("mm1", 41, 0, PrimitiveType.Word64);
+            mm2 = new  RegisterStorage("mm2", 42, 0, PrimitiveType.Word64);
+            mm3 = new  RegisterStorage("mm3", 43, 0, PrimitiveType.Word64);
+            mm4 = new  RegisterStorage("mm4", 44, 0, PrimitiveType.Word64);
+            mm5 = new  RegisterStorage("mm5", 45, 0, PrimitiveType.Word64);
+            mm6 = new  RegisterStorage("mm6", 46, 0, PrimitiveType.Word64);
+            mm7 = new  RegisterStorage("mm7", 47, 0, PrimitiveType.Word64);
+            mm8 = new  RegisterStorage("mm8", 48, 0, PrimitiveType.Word64);
+            mm9 = new  RegisterStorage("mm9", 49, 0, PrimitiveType.Word64);
+            mm10 = new RegisterStorage("mm10", 50, 0, PrimitiveType.Word64);
+            mm11 = new RegisterStorage("mm11", 51, 0, PrimitiveType.Word64);
+            mm12 = new RegisterStorage("mm12", 52, 0, PrimitiveType.Word64);
+            mm13 = new RegisterStorage("mm13", 53, 0, PrimitiveType.Word64);
+            mm14 = new RegisterStorage("mm14", 54, 0, PrimitiveType.Word64);
+            mm15 = new RegisterStorage("mm15", 55, 0, PrimitiveType.Word64);
                        
-            xmm0 = new RegisterStorage("xmm0", 0, PrimitiveType.Word128);
-            xmm1 = new RegisterStorage("xmm1", 1, PrimitiveType.Word128);
-            xmm2 = new RegisterStorage("xmm2", 2, PrimitiveType.Word128);
-            xmm3 = new RegisterStorage("xmm3", 3, PrimitiveType.Word128);
-            xmm4 = new RegisterStorage("xmm4", 4, PrimitiveType.Word128);
-            xmm5 = new RegisterStorage("xmm5", 5, PrimitiveType.Word128);
-            xmm6 = new RegisterStorage("xmm6", 6, PrimitiveType.Word128);
-            xmm7 = new RegisterStorage("xmm7", 7, PrimitiveType.Word128);
-            xmm8 = new RegisterStorage("xmm8", 8, PrimitiveType.Word128);
-            xmm9 = new RegisterStorage("xmm9", 9, PrimitiveType.Word128);
-            xmm10 = new RegisterStorage("xmm10", 10, PrimitiveType.Word128);
-            xmm11 = new RegisterStorage("xmm11", 11, PrimitiveType.Word128);
-            xmm12 = new RegisterStorage("xmm12", 12, PrimitiveType.Word128);
-            xmm13 = new RegisterStorage("xmm13", 13, PrimitiveType.Word128);
-            xmm14 = new RegisterStorage("xmm14", 14, PrimitiveType.Word128);
-            xmm15 = new RegisterStorage("xmm15", 15, PrimitiveType.Word128);
+            xmm0 = new RegisterStorage("xmm0", 60, 0, PrimitiveType.Word128);
+            xmm1 = new RegisterStorage("xmm1", 61, 0, PrimitiveType.Word128);
+            xmm2 = new RegisterStorage("xmm2", 62, 0, PrimitiveType.Word128);
+            xmm3 = new RegisterStorage("xmm3", 63, 0, PrimitiveType.Word128);
+            xmm4 = new RegisterStorage("xmm4", 64, 0, PrimitiveType.Word128);
+            xmm5 = new RegisterStorage("xmm5", 65, 0, PrimitiveType.Word128);
+            xmm6 = new RegisterStorage("xmm6", 66, 0, PrimitiveType.Word128);
+            xmm7 = new RegisterStorage("xmm7", 67, 0, PrimitiveType.Word128);
+            xmm8 = new RegisterStorage("xmm8", 68, 0, PrimitiveType.Word128);
+            xmm9 = new RegisterStorage("xmm9", 69, 0, PrimitiveType.Word128);
+            xmm10 = new RegisterStorage("xmm10", 70, 0, PrimitiveType.Word128);
+            xmm11 = new RegisterStorage("xmm11", 71, 0, PrimitiveType.Word128);
+            xmm12 = new RegisterStorage("xmm12", 72, 0, PrimitiveType.Word128);
+            xmm13 = new RegisterStorage("xmm13", 73, 0, PrimitiveType.Word128);
+            xmm14 = new RegisterStorage("xmm14", 74, 0, PrimitiveType.Word128);
+            xmm15 = new RegisterStorage("xmm15", 75, 0, PrimitiveType.Word128);
 
-            rip = new RegisterStorage("rip", 23, PrimitiveType.Pointer64);
+            rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Pointer64);
 
             All = new RegisterStorage[] {
 				eax,
@@ -420,6 +422,416 @@ namespace Reko.Arch.X86
                  xmm14,
                  xmm15,
 			};
+
+            SubRegisters = new Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>>
+            {
+                {
+                    rax,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, al },
+                        { 0x0808, ah },
+                        { 0x0010, ax },
+                        { 0x0020, eax },
+                    }
+                },
+                {
+                    rcx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, cl },
+                        { 0x0808, ch },
+                        { 0x0010, cx },
+                        { 0x0020, ecx },
+                    }
+                },
+                {
+                    rdx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, dl },
+                        { 0x0808, dh },
+                        { 0x0010, dx },
+                        { 0x0020, edx },
+                    }
+                },
+                {
+                    rbx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, bl },
+                        { 0x0808, bh },
+                        { 0x0010, bx },
+                        { 0x0020, ebx },
+                    }
+                },
+                {
+                    rsp,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, spl },
+                        { 0x0010, sp },
+                        { 0x0020, esp },
+                    }
+                },
+                {
+                    rbp,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, bpl },
+                        { 0x0010, bp },
+                        { 0x0020, ebp },
+                    }
+                },
+                {
+                    rsi,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, sil },
+                        { 0x0010, si },
+                        { 0x0020, esi },
+                    }
+                },
+                {
+                    rdi,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, dil },
+                        { 0x0010, di },
+                        { 0x0020, edi },
+                    }
+                },
+                {
+                    r8,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r8b },
+                        { 0x0010, r8w },
+                        { 0x0020, r8d },
+                    }
+                },
+                {
+                    r9,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r9b },
+                        { 0x0010, r9w },
+                        { 0x0020, r9d },
+                    }
+                },
+                {
+                    r10,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r10b },
+                        { 0x0010, r10w },
+                        { 0x0020, r10d },
+                    }
+                },
+                {
+                    r11,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r11b },
+                        { 0x0010, r11w },
+                        { 0x0020, r11d },
+                    }
+                },
+                {
+                    r12,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r12b },
+                        { 0x0010, r12w },
+                        { 0x0020, r12d },
+                    }
+                },
+                {
+                    r13,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r13b },
+                        { 0x0010, r13w },
+                        { 0x0020, r13d },
+                    }
+                },
+                {
+                    r14,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r14b },
+                        { 0x0010, r14w },
+                        { 0x0020, r14d },
+                    }
+                },
+                {
+                    r15,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r15b },
+                        { 0x0010, r15w },
+                        { 0x0020, r15d },
+                    }
+                },
+                {
+                    eax,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, al },
+                        { 0x0808, ah },
+                        { 0x0010, ax },
+                    }
+                },
+                {
+                    ecx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, cl },
+                        { 0x0808, ch },
+                        { 0x0010, cx },
+                    }
+                },
+                {
+                    edx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, dl },
+                        { 0x0808, dh },
+                        { 0x0010, dx },
+                    }
+                },
+                {
+                    ebx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, bl },
+                        { 0x0808, bh },
+                        { 0x0010, bx },
+                    }
+                },
+                {
+                    esp,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, spl },
+                        { 0x0010, sp },
+                    }
+                },
+                {
+                    ebp,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, bpl },
+                        { 0x0010, bp },
+                    }
+                },
+                {
+                    esi,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, sil },
+                        { 0x0010, si },
+                    }
+                },
+                {
+                    edi,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, dil },
+                        { 0x0010, di },
+                    }
+                },
+                {
+                    r8d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r8b },
+                        { 0x0010, r8w },
+                    }
+                },
+                {
+                    r9d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r9b },
+                        { 0x0010, r9w },
+                    }
+                },
+                {
+                    r10d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r10b },
+                        { 0x0010, r10w },
+                    }
+                },
+                {
+                    r11d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r11b },
+                        { 0x0010, r11w },
+                    }
+                },
+                {
+                    r12d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r12b },
+                        { 0x0010, r12w },
+                    }
+                },
+                {
+                    r13d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r13b },
+                        { 0x0010, r13w },
+                    }
+                },
+                {
+                    r14d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r14b },
+                        { 0x0010, r14w },
+                    }
+                },
+                {
+                    r15d,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r15b },
+                        { 0x0010, r15w },
+                    }
+                },
+                {
+                    ax,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, al },
+                        { 0x0808, ah },
+                    }
+                },
+                {
+                    cx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, cl },
+                        { 0x0808, ch },
+                    }
+                },
+                {
+                    dx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, dl },
+                        { 0x0808, dh },
+                    }
+                },
+                {
+                    bx,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, bl },
+                        { 0x0808, bh },
+                    }
+                },
+                {
+                    sp,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, spl },
+                    }
+                },
+                {
+                    bp,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, bpl },
+                    }
+                },
+                {
+                    si,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, sil },
+                    }
+                },
+                {
+                    di,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, dil },
+                    }
+                },
+                {
+                    r8w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r8b },
+                    }
+                },
+                {
+                    r9w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r9b },
+                    }
+                },
+                {
+                    r10w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r10b },
+                    }
+                },
+                {
+                    r11w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r11b },
+                    }
+                },
+                {
+                    r12w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r12b },
+                    }
+                },
+                {
+                    r13w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r13b },
+                    }
+                },
+                {
+                    r14w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r14b },
+                    }
+                },
+                {
+                    r15w,
+                    new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x0008, r15b },
+                    }
+                },
+            };
+        }
+
+        private static  RegisterStorage FlagRegister(string name, int grf)
+        {
+            return new RegisterStorage(name, grf, 0, PrimitiveType.Bool);
+        }
+
+        private static RegisterStorage SegmentRegister(string name, int reg)
+        {
+            return new RegisterStorage(name, reg, 0, PrimitiveType.SegmentSelector);
         }
 
         public static RegisterStorage GetRegister(int i)

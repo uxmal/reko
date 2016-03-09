@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
+    [Category(Categories.Capstone)]
     public class ThumbDisassemblerTests : ArmTestBase
     {
         protected override IProcessorArchitecture CreateArchitecture()
@@ -40,7 +41,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected MachineInstruction Disassemble16(params ushort[] instrs)
         {
-            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
+            var image = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             foreach (var instr in instrs)
             {

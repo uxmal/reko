@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -252,6 +252,8 @@ namespace Reko.Analysis
                 return false;
             if (id.Storage is MemoryStorage)
                 return false;
+            if (id.Storage is TemporaryStorage)
+                return false;
             throw new NotImplementedException(id.Storage.GetType().Name);
         }
 
@@ -394,7 +396,7 @@ namespace Reko.Analysis
 
         public bool VisitTemporaryStorage(TemporaryStorage temp, bool defining)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

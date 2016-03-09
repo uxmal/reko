@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,12 +48,17 @@ namespace Reko.Arch.Arm
             return new ThumbDisassembler(imageReader);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage img, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea img, Address addr)
         {
             return new LeImageReader(img, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage img, ulong off)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             throw new NotImplementedException();
         }
@@ -71,11 +76,6 @@ namespace Reko.Arch.Arm
         public override ProcessorState CreateProcessorState()
         {
             return new ArmProcessorState(this);
-        }
-
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet(0x30);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -96,6 +96,11 @@ namespace Reko.Arch.Arm
         public override RegisterStorage[] GetRegisters()
         {
             return A32Registers.GpRegs.ToArray();
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotSupportedException();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

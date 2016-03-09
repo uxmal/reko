@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ namespace Reko.Arch.X86
             return instrCur;
         }
 
-        private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
+        private RegisterStorage RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
             return GpRegFromBits((bits & 7) | ((rexPrefix & 8)), dataWidth);
         }
@@ -143,7 +143,7 @@ namespace Reko.Arch.X86
             return fnReg((bits & 7) | ((rexPrefix & 1) << 3), dataWidth);
         }
 
-        private IntelRegister GpRegFromBits(int bits, PrimitiveType dataWidth)
+        private RegisterStorage GpRegFromBits(int bits, PrimitiveType dataWidth)
 		{
             int bitSize = dataWidth.BitSize;
 			switch (bitSize)
@@ -155,10 +155,10 @@ namespace Reko.Arch.X86
 				case 1: return Registers.cl;
 				case 2: return Registers.dl;
 				case 3: return Registers.bl;
-				case 4: return rexPrefix != 0 ? Registers.spl : (IntelRegister) Registers.ah;
-                case 5: return rexPrefix != 0 ? Registers.bpl : (IntelRegister) Registers.ch;
-                case 6: return rexPrefix != 0 ? Registers.sil : (IntelRegister) Registers.dh;
-                case 7: return rexPrefix != 0 ? Registers.dil : (IntelRegister) Registers.bh;
+				case 4: return rexPrefix != 0 ? Registers.spl : Registers.ah;
+                case 5: return rexPrefix != 0 ? Registers.bpl : Registers.ch;
+                case 6: return rexPrefix != 0 ? Registers.sil : Registers.dh;
+                case 7: return rexPrefix != 0 ? Registers.dil : Registers.bh;
                 case 8: return Registers.r8b;
                 case 9: return Registers.r9b;
                 case 10: return Registers.r10b;
@@ -260,7 +260,7 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-		public static IntelRegister SegFromBits(int bits)
+		public static RegisterStorage SegFromBits(int bits)
 		{
 			switch (bits&0x7)
 			{
@@ -861,7 +861,7 @@ namespace Reko.Arch.X86
             }
         }
 
-		private static IntelRegister [] s_ma16Base = 
+		private static RegisterStorage [] s_ma16Base = 
 		{
 			Registers.bx,
 			Registers.bx,

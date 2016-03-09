@@ -2,7 +2,7 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax cx bx di al cl bl ah ch bh es
+	Trashed:   SCZO ah al ax bh bl bx ch cl cx di dil eax ebx ecx edi es rax rbx rcx rdi
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
@@ -21,7 +21,7 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp cx:<invalid> bx:<invalid> di:<invalid> al:0x00 cl:0x00 ah:<invalid> es:<invalid>
+// SymbolicIn: sp:fp cx:<invalid> es:<invalid> di:<invalid> al:0x00 ah:<invalid> bx:<invalid> cl:0x00
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -30,7 +30,7 @@ fn0C00_0000_exit:
 	LiveOut:   bx ds
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax cx bx di al cl bl ah ch bh es
+	Trashed:   SCZO ah al ax bh bl bx ch cl cx di dil eax ebx ecx edi es rax rbx rcx rdi
 	Preserved: sp
 // fn0C00_000C
 void fn0C00_000C()
@@ -49,13 +49,13 @@ l0C00_000C:
 	al = 0x00
 	SZO = cond(0x00)
 	C = false
-// DataOut: cx di al es ds
+// DataOut: al cx di ds es
 // DataOut (flags): Z
 
 // SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
 l0C00_0019:
 	branch cx == 0x0000 l0C00_001B
-// DataOut: cx di al es ds
+// DataOut: al cx di ds es
 // DataOut (flags): Z
 
 // SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
@@ -64,13 +64,13 @@ l0C00_0019_1:
 	di = di + 0x0001
 	cx = cx - 0x0001
 	branch Test(NE,Z) l0C00_0019
-// DataOut: cx di al es ds
+// DataOut: al cx di ds es
 // DataOut (flags): Z
 
 // SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
 l0C00_001B:
 	branch Test(EQ,Z) l0C00_002D
-// DataOut: di al ds
+// DataOut: al di ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00

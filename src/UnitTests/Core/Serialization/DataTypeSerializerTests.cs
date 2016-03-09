@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,16 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var pt = new ArrayType(new Pointer(new CodeType(), 4), 3).Accept(new DataTypeSerializer());
             Assert.AreEqual("arr(ptr(code),3)", pt.ToString());
+        }
+
+        [Test]
+        public void DTS_issue_113()
+        {
+            // This recursive structure shoudn't blow up the stack.
+            var str = new StructureType("foo", 0);
+            str.Fields.Add(0, new Pointer(str, 4), "bar");
+            var sStr = str.Accept(new DataTypeSerializer());
+            Assert.AreEqual("struct(foo, (0, bar, ptr(struct(foo, ))))", sStr.ToString());
         }
     }
 }

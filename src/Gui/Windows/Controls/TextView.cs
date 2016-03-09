@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -517,7 +517,7 @@ namespace Reko.Gui.Windows.Controls
         {
             this.cursorPos = new TextPointer
             {
-                Line = model.StartPosition,
+                Line = model.CurrentPosition,
                 Span = 0,
                 Character = 0
             };

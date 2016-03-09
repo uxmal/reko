@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Analysis
             var proc = p.Add("main", (m) =>
             {
                 var szo = m.Frame.EnsureFlagGroup(Registers.eflags, 0x7, "SZO", PrimitiveType.Byte);
-                var ebx = m.Frame.EnsureRegister(new RegisterStorage("ebx", 0, PrimitiveType.Word32));
+                var ebx = m.Frame.EnsureRegister(new RegisterStorage("ebx", 3, 0, PrimitiveType.Word32));
                 var v4 = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
                 m.Assign(v4, m.IAdd(m.LoadW(ebx), 1));
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Analysis
             var p = new ProgramBuilder();
             var proc = p.Add("main", (m) =>
             {
-                var r1 = m.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Word32));
+                var r1 = m.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
 
                 m.Assign(r1, m.Word32(0x42));
                 m.SideEffect(m.Fn("foo", r1));

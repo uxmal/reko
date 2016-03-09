@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.M68k
     {
         private M68kArchitecture arch = new M68kArchitecture();
         private Address addrBase = Address.Ptr32(0x00010000);
-        private LoadedImage image;
+        private MemoryArea mem;
 
         public override IProcessorArchitecture Architecture
         {
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.M68k
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return arch.CreateRewriter(image.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
+            return arch.CreateRewriter(mem.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
         }
 
         private void Rewrite(params ushort[] opcodes)
@@ -62,14 +62,14 @@ namespace Reko.UnitTests.Arch.M68k
             {
                 writer.WriteBeUInt16(opcode);
             }
-            image = new LoadedImage(addrBase, bytes);
+            mem = new MemoryArea(addrBase, bytes);
         }
 
         private void Rewrite(Action<M68kAssembler> build)
         {
             var asm = new M68kAssembler(arch, addrBase, new List<EntryPoint>());
             build(asm);
-            image = asm.GetImage().Image;
+            mem = asm.GetImage().ImageMap.Segments.Values.First().MemoryArea;
         }
 
         [Test]
@@ -1038,6 +1038,24 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                "0|L--|00010000(8): 1 instructions",
                "1|L--|a6 = Mem0[Mem0[0x00017FEC:word32] + a6:word32]");
+        }
+
+        [Test]
+        public void M68krw_PcRelative()
+        {
+            Rewrite(0x2A7B, 0x0804);
+            AssertCode(
+               "0|L--|00010000(4): 1 instructions",
+               "1|L--|a5 = Mem0[0x00010006 + d0:word32]");
+        }
+
+        [Test]
+        public void M68krw_JmpIndirect()
+        {
+            Rewrite(0x4ED5);
+            AssertCode(
+                 "0|T--|00010000(2): 1 instructions",
+                 "1|T--|goto a5");
         }
     }
 }

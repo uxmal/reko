@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Analysis
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			var eventListener = new FakeDecompilerEventListener();
-			var dfa = new DataFlowAnalysis(prog, eventListener);
+			var dfa = new DataFlowAnalysis(prog, null, eventListener);
 			var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
 			trf.RewriteBasicBlocks();
@@ -64,13 +64,15 @@ namespace Reko.UnitTests.Analysis
 		/// Test that self-recursive functions are handled correctly.
 		/// </summary>
 		[Test]
-		public void RlFactorialReg()
+        [Category(Categories.UnitTests)]
+        public void RlFactorialReg()
 		{
 			RunFileTest("Fragments/factorial_reg.asm", "Analysis/RlFactorialReg.txt");
 		}
 
 		[Test]
-		public void RlFactorial()
+        [Category(Categories.UnitTests)]
+        public void RlFactorial()
 		{
 			RunFileTest("Fragments/factorial.asm", "Analysis/RlFactorial.txt");
 		}
@@ -186,6 +188,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void RlReg00010()
         {
             RunFileTest("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
@@ -193,15 +196,37 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Ignore("scanning-development")]
+        [Category(Categories.UnitTests)]
         public void RlReg00015()
         {
             RunFileTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void RlPushPop()
         {
             RunFileTest("Fragments/pushpop.asm", "Analysis/RlPushPop.txt");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void RlChainTest()
+        {
+            RunFileTest("Fragments/multiple/chaincalls.asm", "Analysis/RlChainTest.txt");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void RlSliceReturn()
+        {
+            RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/RlSliceReturn.txt");
+        }
+
+        [Test]
+        public void RlRecurseWithPushes()
+        {
+            RunFileTest("Fragments/multiple/recurse_with_pushes.asm", "Analysis/RlRecurseWithPushes.txt");
         }
     }
 }

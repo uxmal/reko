@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,10 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_X86ProcedureSerializer()
         {
-            sser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "stdapi");
+            sser = new X86ProcedureSerializer(
+                arch, 
+                new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
+                "stdapi");
         }
 
 		[Test]

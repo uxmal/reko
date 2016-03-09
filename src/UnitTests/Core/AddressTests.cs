@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.UnitTests.Core
     public class AddressTests
     {
         [Test]
-        [Category("UnitTests")]
+        [Category(Categories.UnitTests)]
         public void Addr_ToString()
         {
             Address addr = Address.SegPtr(0xC00, 0x1234);
@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test(Description="Found this in a regression.")]
-        [Category("Regressions")]
+        [Category(Categories.Regressions)]
         public void Addr_Ge()
         {
             Assert.IsTrue(Address.Ptr32(4001) >= Address.Ptr32(4000));

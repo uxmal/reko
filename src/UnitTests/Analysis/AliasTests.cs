@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
         {
-            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
             var eventListener = new FakeDecompilerEventListener();
             var trf = new TrashedRegisterFinder(program, program.Procedures.Values, dfa.ProgramDataFlow, eventListener);
             trf.Compute();
@@ -182,8 +182,8 @@ ProcedureBuilder_exit:
                 var scz = m.Frame.EnsureFlagGroup(Registers.eflags, 7, "SZ", PrimitiveType.Byte);
                 var cz = m.Frame.EnsureFlagGroup(Registers.eflags, 3, "CZ", PrimitiveType.Byte);
                 var c = m.Frame.EnsureFlagGroup(Registers.eflags, 1, "C", PrimitiveType.Bool);
-                var al = m.Reg8("al");
-                var esi = m.Reg32("esi");
+                var al = m.Reg8("al", 0);
+                var esi = m.Reg32("esi", 6);
                 m.Assign(scz, m.Cond(m.And(esi, esi)));
                 m.Assign(c, Constant.False());
                 m.Emit(new AliasAssignment(cz, c));

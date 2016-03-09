@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,22 +142,15 @@ namespace Reko.Core.Types
 
         public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
         {
-            try
-            {
-                EquivalenceClass class1 = tv1.Class;
-                EquivalenceClass class2 = tv2.Class;
-                usedClasses.Remove(class1.Number);
-                usedClasses.Remove(class2.Number);
-                EquivalenceClass merged = EquivalenceClass.Merge(class1, class2);
-                usedClasses.Add(merged.Number, merged);
-                tv1.Class = merged;
-                tv2.Class = merged;
-                return merged;
-            } catch
-            {
-                Console.WriteLine("cRASHed while merging {0} and {1}", tv1, tv2);
-                throw;
-            }
+            EquivalenceClass class1 = tv1.Class;
+            EquivalenceClass class2 = tv2.Class;
+            usedClasses.Remove(class1.Number);
+            usedClasses.Remove(class2.Number);
+            EquivalenceClass merged = EquivalenceClass.Merge(class1, class2);
+            usedClasses.Add(merged.Number, merged);
+            tv1.Class = merged;
+            tv2.Class = merged;
+            return merged;
         }
 
         /// <summary>

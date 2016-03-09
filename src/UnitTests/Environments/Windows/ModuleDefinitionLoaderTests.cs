@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,8 +53,8 @@ namespace Reko.UnitTests.Environments.Windows
         public void DFL_CommentLine()
         {
             CreateDefFileLoader("c:\\bar\\foo.def", "; hello\r\n");
-            TypeLibrary lib = dfl.Load(platform);
-            Assert.AreEqual(2, lib.Types.Count);
+            TypeLibrary lib = dfl.Load(platform, new TypeLibrary());
+            Assert.AreEqual(0, lib.Types.Count);
             Assert.AreEqual(0, lib.Signatures.Count);
         }
 
@@ -65,10 +65,10 @@ namespace Reko.UnitTests.Environments.Windows
                 "c:\\bar\\foo.def",
                 "EXPORTS" + nl +
                 " _Foo@4 @4" + nl);
-            var lib = dfl.Load(platform);
-            var svc = lib.ServicesByName["_Foo@4"];
-            Assert.AreEqual("_Foo@4", svc.Name);
-            Assert.AreEqual("FOO.DLL", lib.ModuleName);
+            var lib = dfl.Load(platform, new TypeLibrary());
+            Assert.IsTrue(lib.Modules.ContainsKey("FOO.DLL"));
+            var svc = lib.Modules["FOO.DLL"].ServicesByName["_Foo@4"];
+            Assert.AreEqual("Foo", svc.Name);
             Assert.IsFalse(svc.Signature.ParametersValid, "We don't know the arguments");
             Assert.AreEqual(8, svc.Signature.StackDelta, "StackDelta includes the return address, which stdapi calls pop.");
         }
@@ -80,9 +80,9 @@ namespace Reko.UnitTests.Environments.Windows
                 "c:\\bar\\foo.def",
                 "EXPORTS" + nl +
                 " _Foo@4 @ 4" + nl);
-            var lib = dfl.Load(platform);
-            var svc = lib.ServicesByName["_Foo@4"];
-            Assert.AreEqual("_Foo@4", svc.Name);
+            var lib = dfl.Load(platform, new TypeLibrary());
+            var svc = lib.Modules["FOO.DLL"].ServicesByName["_Foo@4"];
+            Assert.AreEqual("Foo", svc.Name);
             Assert.AreEqual(4, svc.SyscallInfo.Vector);
         }
 
@@ -91,9 +91,11 @@ namespace Reko.UnitTests.Environments.Windows
         {
             CreateDefFileLoader(
                 "c:\\bar\\foo.def",
-                " LIBRARY foo" + nl);
-            var lib = dfl.Load(platform);
-            Assert.AreEqual("foo", lib.ModuleName);
+                " LIBRARY bar" + nl +
+                "EXPORTS" + nl +
+                " _foo@12 @ 1" + nl);
+            var lib = dfl.Load(platform, new TypeLibrary());
+            Assert.IsTrue(lib.Modules.ContainsKey("bar"));
         }
     }
 }

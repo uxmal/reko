@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,8 +50,10 @@ namespace Reko.UnitTests.Core
         private void Given_Image(params byte[] bytes)
         {
             addrBase = Address.Ptr32(0x00010000);
-            program.Image = new LoadedImage(addrBase, bytes);
-            arch.Stub(a => a.CreateImageReader(program.Image, addrBase)).Return(new LeImageReader(program.Image, 0));
+            var mem = new MemoryArea(addrBase, bytes);
+            program.ImageMap = new ImageMap(addrBase);
+            program.ImageMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
+            arch.Stub(a => a.CreateImageReader(mem, addrBase)).Return(new LeImageReader(mem, 0));
         }
 
 		[Test]

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@ namespace Reko.Core
 
         public ImageWriter WriteBeUInt32(uint offset, uint ui)
         {
-            LoadedImage.WriteBeUInt32(Bytes, offset, ui);
+            MemoryArea.WriteBeUInt32(Bytes, offset, ui);
             return this;
         }
 

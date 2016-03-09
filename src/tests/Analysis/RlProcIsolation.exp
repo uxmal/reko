@@ -2,8 +2,8 @@
 	LiveOut:  
 	MayUseIn:  di ds
 	BypassIn: 
-	Trashed:   SCZO ax al ah
-	Preserved: sp di
+	Trashed:   SCZO ah al ax eax rax
+	Preserved: di sp
 // fn0C00_0000
 void fn0C00_0000()
 // SymbolicIn: sp:fp
@@ -68,7 +68,7 @@ fn0C00_000F_exit:
 	LiveOut:   ax ds
 	MayUseIn:  ax
 	BypassIn: 
-	Trashed:   SCZO ax di al ah
+	Trashed:   SCZO ah al ax di dil eax edi rax rdi
 	Preserved: sp
 // fn0C00_0014
 void fn0C00_0014()

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,8 +64,8 @@ namespace Reko.UnitTests.Scanning
             var b = new ProgramBuilder();
             b.Add("bob", m =>
             {
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 m.Label("bob_1");
                 m.Assign(r1, 0);
                 // Fall through should be promoted to call/return pair.
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Scanning
 
             b.Add("ext", m =>
             {
-                var r1 = m.Reg32("r1");
+                var r1 = m.Reg32("r1", 1);
                 m.Label("ext_1");
                 m.Assign(r1, 4);
                 m.Goto("Real_entry");
@@ -97,8 +97,8 @@ namespace Reko.UnitTests.Scanning
             var b = new ProgramBuilder();
             b.Add("bob", m =>
             {
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 m.Label("bob_1");
                 m.Assign(r1, 0);
                 m.Label("Real_entry");
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Scanning
 
             b.Add("ext", m =>
             {
-                var r1 = m.Reg32("r1");
+                var r1 = m.Reg32("r1", 1);
                 m.Label("ext_1");
                 m.Assign(r1, 4);
                 m.Goto("Real_entry");

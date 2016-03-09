@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             {
                 writer.WriteLeUInt16(word);
             }
-            var image = new LoadedImage(Address.Ptr16(0x200), bytes);
+            var image = new MemoryArea(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var arch = new Pdp11Architecture();
             var dasm = new Pdp11Disassembler(rdr, arch);

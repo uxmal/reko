@@ -1,14 +1,14 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  es ds
+	MayUseIn:  ds es
 	BypassIn: 
-	Trashed:   SCZO ax si di al ah
+	Trashed:   SCZO ah al ax di dil eax edi esi rax rdi rsi si sil
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: es ds
+// DataOut: ds es
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
@@ -21,22 +21,22 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp si:0x1234 ax:<invalid> di:<invalid>
+// SymbolicIn: sp:fp si:0x1234 di:<invalid> ax:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
 
 // fn0C00_000B /////////////////////
 	LiveOut:   ax ds
-	MayUseIn:  si es ds
+	MayUseIn:  ds es si
 	BypassIn: 
-	Trashed:   SCZO ax di al ah
-	Preserved: sp si
+	Trashed:   SCZO ah al ax di dil eax edi rax rdi
+	Preserved: si sp
 // fn0C00_000B
 void fn0C00_000B()
 // SymbolicIn: sp:fp
 fn0C00_000B_entry:
-// DataOut: si es ds
+// DataOut: ds es si
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
@@ -64,16 +64,16 @@ fn0C00_000B_exit:
 // DataOut (flags): 
 
 // fn0C00_0026 /////////////////////
-	LiveOut:   ax es ds
-	MayUseIn:  si ds
+	LiveOut:   ax ds es
+	MayUseIn:  ds si
 	BypassIn: 
-	Trashed:   ax al ah
-	Preserved: sp si
+	Trashed:   ah al ax eax rax
+	Preserved: si sp
 // fn0C00_0026
 void fn0C00_0026()
 // SymbolicIn: sp:fp
 fn0C00_0026_entry:
-// DataOut: si es ds
+// DataOut: ds es si
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
@@ -88,25 +88,25 @@ l0C00_0026:
 	si = wLoc02
 	sp = fp
 	return
-// DataOut: ax es ds
+// DataOut: ax ds es
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp ax:si + 0x0004 si:si -2(fp):si
 fn0C00_0026_exit:
-// DataOut: ax es ds
+// DataOut: ax ds es
 // DataOut (flags): 
 
 // fn0C00_0035 /////////////////////
-	LiveOut:   si ds
-	MayUseIn:  si di es ds
+	LiveOut:   ds si
+	MayUseIn:  di ds es si
 	BypassIn: 
-	Trashed:   SCZO ax di al ah
+	Trashed:   SCZO ah al ax di dil eax edi rax rdi
 	Preserved: sp
 // fn0C00_0035
 void fn0C00_0035()
 // SymbolicIn: sp:fp
 fn0C00_0035_entry:
-// DataOut: si di es ds
+// DataOut: di ds es si
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
@@ -129,11 +129,11 @@ l0C00_0035:
 	Mem0[es:di:word16] = ax
 	di = di + 0x0002
 	return
-// DataOut: si ds
+// DataOut: ds si
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp ax:di di:<invalid> -2(fp):di
 fn0C00_0035_exit:
-// DataOut: si ds
+// DataOut: ds si
 // DataOut (flags): 
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +33,9 @@ namespace Reko.ImageLoaders.MzExe
 	public class MsdosImageLoader : ImageLoader
 	{
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 		private ExeImageLoader exe;
-		private LoadedImage imgLoaded;
+		private MemoryArea imgLoaded;
         private ImageMap imgLoadedMap;
 
 		public MsdosImageLoader(IServiceProvider services, string filename, ExeImageLoader exe) : base(services, filename, exe.RawImage)
@@ -60,9 +60,9 @@ namespace Reko.ImageLoaders.MzExe
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
-            imgLoaded = new LoadedImage(addrLoad, bytes);
-            imgLoadedMap = imgLoaded.CreateImageMap();
-            return new Program(imgLoaded, imgLoadedMap, arch, platform);
+            imgLoaded = new MemoryArea(addrLoad, bytes);
+            imgLoadedMap = new ImageMap(addrLoad);
+            return new Program(imgLoadedMap, arch, platform);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

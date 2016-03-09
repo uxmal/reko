@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,9 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ElfHeaderRenderer : ImageMapSegmentRenderer
+    public class ElfHeaderRenderer : ImageSegmentRenderer
     {
-        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             throw new NotImplementedException();
         }

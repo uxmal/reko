@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,21 +36,6 @@ namespace Reko.Core.Serialization
         public string Termination;
 
         public SerializedType CharType;
-
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            var ch = CharType.BuildDataType(factory);
-
-            if (Termination == null)
-                throw new NotImplementedException();
-            switch (Termination[0])
-            {
-            case 'z':
-                return StringType.NullTerminated(ch);
-            default:
-                throw new NotImplementedException();
-            }
-        }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {

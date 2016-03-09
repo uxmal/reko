@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.Gui.Windows
             pane = new ImageSegmentPane();
         }
 
-        public void DisplayImageSegment(ImageMapSegment segment, Program program)
+        public void DisplayImageSegment(ImageSegment segment, Program program)
         {
             if (segment == null)
                 return;

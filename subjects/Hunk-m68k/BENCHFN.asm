@@ -1,4 +1,4 @@
-;;; Segment Image base (00001000)
+;;; Segment code (00001000)
 
 fn00001000()
 	bra	$0000100A

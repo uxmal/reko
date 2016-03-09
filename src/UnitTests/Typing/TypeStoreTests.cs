@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +23,26 @@ using Reko.Core;
 using Reko.Typing;
 using NUnit.Framework;
 using System;
-
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypeStoreTests
 	{
-		[Test]
+        private TypeFactory factory;
+        private TypeStore store;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.store = new TypeStore();
+            this.factory = new TypeFactory();
+        }
+
+        [Test]
 		public void TystCopyClassToTypes()
 		{
-			TypeStore store = new TypeStore();
-			TypeFactory factory = new TypeFactory();
-
 			TypeVariable tv1 = store.CreateTypeVariable(factory);
             TypeVariable tv2 = store.CreateTypeVariable(factory);
 			Assert.IsNotNull(tv1.Class, "Expected store.EnsureTypeVariable to create an equivalence class");
@@ -50,5 +57,5 @@ namespace Reko.UnitTests.Typing
 				Assert.IsNotNull(tv.DataType);
 			}
 		}
-	}
+    }
 }

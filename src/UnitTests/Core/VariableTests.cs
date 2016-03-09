@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void CreateOutArgumentRegister()
 		{
-			RegisterStorage mr = new RegisterStorage("r1", 1, PrimitiveType.Word32);
+			RegisterStorage mr = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
 			Identifier oarg = new Identifier("r1Out", PrimitiveType.Word32, new OutArgumentStorage(
 				new Identifier(mr.Name, PrimitiveType.Word32, mr)));
 			StringWriter w = new StringWriter();
@@ -74,8 +74,6 @@ namespace Reko.UnitTests.Core
 //			Assert.AreNotSame(argOff, arg_alias);
 			Assert.AreEqual(16, arg_alias.Storage.OffsetOf(argSeg.Storage));
 		}
-
-
 	}
 
 	[TestFixture]

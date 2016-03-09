@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,13 +45,13 @@ namespace Reko.UnitTests.Analysis
 
 		private void PerformTest(FileUnitTester fut)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, proc.CreateBlockDominatorGraph());
 				SsaState ssa = sst.SsaState;
 
 				proc.Write(false, fut.TextWriter);

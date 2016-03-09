@@ -1,9 +1,9 @@
 char * get(uint32 n)
-// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO eax ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: esp
 // Stack args: Stack +0000(32)
 get_entry:
@@ -25,13 +25,7 @@ l10071029:
 // SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
 
 l1007100A:
-	switch (n + 0x00000001) { l10071011 l10071017 l1007101D l10071023 }
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
-
-l10071023:
-	return 0x10072008
+	switch (n + 0x00000001) { l10071011 l10071017 l1007101D }
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
@@ -61,28 +55,28 @@ get_exit:
 
 
 
-void fn10071080()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+// stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
-// Trashed: eax ax al ah
+// Trashed: ah al ax eax rax
 // Preserved: esp
-fn10071080_entry:
+DllMain_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 
 l10071080:
-	return
+	return 0x00000001
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 
-fn10071080_exit:
+DllMain_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:0x00000001
+// SymbolicIn: esp:fp eax:0x00000001 4(fp):hModule 8(fp):dwReason 12(fp):lpReserved
 
 
 

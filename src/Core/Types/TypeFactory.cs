@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,13 +50,11 @@ namespace Reko.Core.Types
 
 		private int AllocateTypeVariable()
 		{
-            if (typeVars == 11 || typeVars == 3) typeVars.ToString();    //$DEBUG
 			return ++typeVars;
 		}
 
 		public ArrayType CreateArrayType(DataType elType, int length)
 		{
-            if (elType is ArrayType) elType.ToString(); //$DEBUG
 			return new ArrayType(elType, length);
 		}
 

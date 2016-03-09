@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@ using Reko.Core.Serialization;
 using Reko.Environments.SysV;
 using Reko.Core.Types;
 using Reko.UnitTests.Core.Serialization;
+using Reko.UnitTests.Mocks;
+using Rhino.Mocks;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
@@ -35,20 +37,26 @@ namespace Reko.UnitTests.Arch.PowerPC
     [TestFixture]
     public class PowerPcProcedureSerializerTests
     {
+        private MockRepository mr;
+        private MockFactory mockFactory;
         private PowerPcArchitecture arch;
         private PowerPcProcedureSerializer ser;
         private SysVPlatform platform;
+        private ISerializedTypeVisitor<DataType> deserializer;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
+            mockFactory = new MockFactory(mr);
             arch = new PowerPcArchitecture32();
             platform = new SysVPlatform(null, arch);
         }
 
         private void Given_ProcedureSerializer()
         {
-            this.ser = new PowerPcProcedureSerializer(arch, new TypeLibraryLoader(platform, true), "");
+            this.deserializer = mockFactory.CreateDeserializer();
+            this.ser = new PowerPcProcedureSerializer(arch, deserializer, "");
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)
@@ -67,6 +75,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcPs_Serialize()
         {
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             ProcedureSignature sig = new ProcedureSignature(
                 new Identifier("qax", PrimitiveType.Word32, arch.Registers[3]),
                 new Identifier[] {
@@ -84,6 +94,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcPs_SsigSerializeAxBxCl()
         {
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             var ssig = ser.Serialize(SerializedSignatureTests.MkSigAxBxCl());
             Verify(ssig, "Core/SsigSerializeAxBxCl.txt");
         }
@@ -94,6 +106,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
             Assert.AreEqual("00012345", sproc.Address);
@@ -113,6 +127,8 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);
         }
@@ -129,8 +145,10 @@ namespace Reko.UnitTests.Arch.PowerPC
                 }
             };
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register int test(Register word64 f1)", sig.ToString("test"));
+            Assert.AreEqual("Register int test(Register double f1)", sig.ToString("test"));
         }
 
         private SerializedType Type(string typeName)
@@ -168,6 +186,8 @@ namespace Reko.UnitTests.Arch.PowerPC
                 }
             };
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("f1", sig.ReturnValue.Storage.ToString());
         }
@@ -187,6 +207,8 @@ namespace Reko.UnitTests.Arch.PowerPC
                 }
             };
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(0, sig.StackDelta);
         }
@@ -210,6 +232,8 @@ namespace Reko.UnitTests.Arch.PowerPC
                 }
             };
             Given_ProcedureSerializer();
+            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var arg = sig.Parameters[1].Storage;
             Assert.AreEqual("Sequence r5:r6", arg.ToString());

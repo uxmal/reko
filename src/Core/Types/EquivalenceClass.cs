@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,11 @@ namespace Reko.Core.Types
             types.Add(rep);
         }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitEquivalenceClass(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitEquivalenceClass(this);
@@ -53,7 +58,15 @@ namespace Reko.Core.Types
 			return this;
 		}
 
-        public DataType DataType { get; set; }
+        public DataType DataType
+        {
+            get { return dt; }
+            set
+            {
+                dt = value;
+            }
+        }
+        private DataType dt;
 
 		public override bool IsComplex
 		{

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Pdp11
     class RewriterTests : RewriterTestBase
     {
         private Pdp11Architecture arch = new Pdp11Architecture();
-        private LoadedImage image;
+        private MemoryArea image;
         private Address addrBase = Address.Ptr16(0x0200);
 
         public override IProcessorArchitecture Architecture
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.Pdp11
                 .SelectMany(
                     w => new byte[] { (byte) w, (byte) (w >> 8) })
                 .ToArray();
-            image = new LoadedImage(LoadAddress, bytes);
+            image = new MemoryArea(LoadAddress, bytes);
         }
 
         [Test]

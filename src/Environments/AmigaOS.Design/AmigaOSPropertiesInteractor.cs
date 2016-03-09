@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,18 +36,35 @@ namespace Reko.Environments.AmigaOS.Design
             this.platform = platform;
         }
 
-        public Control Control { get; private set; }
+        public AmigaOSProperties Control { get; private set; }
         public IServiceProvider Services { get; private set; }
-
-        public Control CreateControl()
-        {
-            Control = new AmigaOSProperties();
-            return Control;
-        }
 
         public void SetSite(IServiceProvider sp)
         {
             this.Services = sp;
+        }
+
+        /// <summary>
+        /// Creates the user interface control and connects all event handlers.
+        /// </summary>
+        /// <returns></returns>
+        public Control CreateControl()
+        {
+            Control = new AmigaOSProperties();
+            this.Control.KickstartVersionList.DataSource =
+                AmigaOSPlatform.MapKickstartToListOfLibraries
+                .Select(kv => new ListOption
+                {
+                    Text = string.Format("Kickstart {0}", kv.Key),
+                    Value = kv.Value
+                })
+                .ToList();
+            this.Control.KickstartVersionList.SelectedIndex = 0;
+            PopulateLoadedLibraryList();
+
+            this.Control.KickstartVersionList.SelectedIndexChanged += KickstartVersionList_SelectedIndexChanged;
+
+            return Control;
         }
 
         public void Close()
@@ -59,5 +76,23 @@ namespace Reko.Environments.AmigaOS.Design
             }
         }
 
+        private void KickstartVersionList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PopulateLoadedLibraryList();
+        }
+
+        private void PopulateLoadedLibraryList()
+        {
+            var listOption = (ListOption)Control.KickstartVersionList.SelectedValue;
+            if (listOption != null)
+            {
+                var libList = (List<string>)listOption.Value;
+                Control.LoadedLibraryList.Items.Clear();
+                foreach (string lib in libList)
+                {
+                    Control.LoadedLibraryList.Items.Add(lib); //$TODO: mark available library definition files ?
+                }
+            }
+        }
     }
 }

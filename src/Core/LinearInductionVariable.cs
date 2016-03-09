@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,8 @@ using System.Text;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Describes the initial value, stride, and final value of an induction variable.
+	/// Describes the initial value, stride, and final value of an induction
+    /// variable.
 	/// </summary>
 	public class LinearInductionVariable
 	{

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,11 @@ namespace Reko.Core.Types
 			at.ElementType = at.ElementType.Accept(this);
 			return at;
 		}
+
+        public virtual DataType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual DataType VisitCode(CodeType c)
         {
@@ -70,6 +75,9 @@ namespace Reko.Core.Types
 
         public virtual DataType VisitStructure(StructureType str)
 		{
+            // Do not transform user-defined types
+            if (str.UserDefined)
+                return str;
 			foreach (StructureField field in str.Fields)
 			{
 				field.DataType = field.DataType.Accept(this);
@@ -107,7 +115,10 @@ namespace Reko.Core.Types
 
         public virtual DataType VisitUnion(UnionType ut)
 		{
-			foreach (UnionAlternative a in ut.Alternatives.Values)
+            // Do not transform user-defined types
+            if (ut.UserDefined)
+                return ut;
+            foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
 				a.DataType = a.DataType.Accept(this);
 			}

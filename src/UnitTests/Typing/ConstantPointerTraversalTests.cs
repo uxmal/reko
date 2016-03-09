@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,19 +34,20 @@ namespace Reko.UnitTests.Typing
     public class ConstantPointerTraversalTests
     {
         private MockRepository mr;
-        private LoadedImage image;
+        private MemoryArea mem;
         private Expression globals;
         private TypeVariable globals_t;
         private StructureType globalStruct;
         private EquivalenceClass eqLink;
         private IProcessorArchitecture arch;
+        private ImageMap imageMap;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
             arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<LoadedImage, ulong, ImageReader>((i, o) => i.CreateLeReader(o)));
+            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<MemoryArea, ulong, ImageReader>((i, o) => i.CreateLeReader(o)));
             arch.Replay();
             globalStruct = new StructureType
             {
@@ -67,9 +68,12 @@ namespace Reko.UnitTests.Typing
 
         private ImageWriter Memory(uint address)
         {
-            image = new LoadedImage(Address.Ptr32(address), new byte[1024]);
-            var mem = new LeImageWriter(image.Bytes);
-            return mem;
+            mem = new MemoryArea(Address.Ptr32(address), new byte[1024]);
+            imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment(".data", mem, AccessMode.ReadWrite));
+            var writer = new LeImageWriter(mem.Bytes);
+            return writer;
         }
 
         private void Root(uint address, DataType dt)
@@ -90,7 +94,7 @@ namespace Reko.UnitTests.Typing
 
             Root(0x10000000, eqLink);
 
-            var cpt = new ConstantPointerTraversal(arch, globalStruct, image);
+            var cpt = new ConstantPointerTraversal(arch, globalStruct, imageMap);
             cpt.Traverse();
             Assert.AreEqual(2, cpt.Discoveries.Count);
             Assert.AreEqual("10000008: t10000008: Eq_2", cpt.Discoveries[0].ToString());
@@ -110,7 +114,7 @@ namespace Reko.UnitTests.Typing
                 .WriteLeUInt32('c')
                 .WriteLeUInt32('d');
             Root(0x01000, new ArrayType(new Pointer(PrimitiveType.Char, 4), 4));
-            var cpt = new ConstantPointerTraversal(arch, globalStruct, image);
+            var cpt = new ConstantPointerTraversal(arch, globalStruct, imageMap);
             cpt.Traverse();
 
             Assert.AreEqual(4, cpt.Discoveries.Count);
@@ -128,7 +132,7 @@ namespace Reko.UnitTests.Typing
                 .WriteLeUInt32(0x1000)
                 .WriteLeUInt32(42);
             Root(0x1000, eqLink);
-            var cpt = new ConstantPointerTraversal(arch, globalStruct, image);
+            var cpt = new ConstantPointerTraversal(arch, globalStruct, imageMap);
             cpt.Traverse();
 
             Assert.AreEqual(0, cpt.Discoveries.Count);
@@ -161,7 +165,7 @@ namespace Reko.UnitTests.Typing
                 .WriteLeUInt32(0x00000000)      // 24: no left node
                 .WriteLeUInt32(0x00000000);     // 28: no right node
             Root(0x10008, eqTreeNode);
-            var cpt = new ConstantPointerTraversal(arch, globalStruct, image);
+            var cpt = new ConstantPointerTraversal(arch, globalStruct, imageMap);
             cpt.Traverse();
 
             Assert.AreEqual(2, cpt.Discoveries.Count);

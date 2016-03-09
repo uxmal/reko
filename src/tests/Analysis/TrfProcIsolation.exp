@@ -1,4 +1,4 @@
-fn0C00_0000 SCZO ax al ah
+fn0C00_0000 SCZO ah al ax eax rax
 const ax:<invalid>
     fn0C00_0000_entry sp:fp
     l0C00_0000 sp:fp
@@ -10,7 +10,7 @@ fn0C00_000F
     l0C00_000F sp:fp
     fn0C00_000F_exit sp:fp
 
-fn0C00_0014 SCZO ax di al ah
+fn0C00_0014 SCZO ah al ax di dil eax edi rax rdi
 const ax:<invalid> di:0x0000
     fn0C00_0014_entry sp:fp
     l0C00_0014 sp:fp

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,26 +57,24 @@ namespace Reko.Arch.Z80
             return new Z80ProcessorState(this);
         }
 
-        public override Constant GetRegister(RegisterStorage r)
+        public override Constant GetRegister(RegisterStorage reg)
         {
-            Z80Register reg = r as Z80Register;
-            if (reg != null && isValid[reg.FileSlot])
-                return Constant.Create(reg.DataType, registerFile[reg.FileSlot]);
+            if (reg != null && isValid[(int)reg.Domain])
+                return Constant.Create(reg.DataType, registerFile[(int)reg.Domain]);
             else
                 return Constant.Invalid;
         }
 
-        public override void SetRegister(RegisterStorage r, Constant v)
+        public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            Z80Register reg = r as Z80Register;
             if (reg != null && v != null && v.IsValid)
             {
-                isValid[reg.FileSlot] = true;
-                registerFile[reg.FileSlot] = v.ToByte();
+                isValid[(int)reg.Domain] = true;
+                registerFile[(int)reg.Domain] = v.ToByte();
             }
             else
             {
-                isValid[reg.FileSlot] = false;
+                isValid[(int)reg.Domain] = false;
             }
         }
 

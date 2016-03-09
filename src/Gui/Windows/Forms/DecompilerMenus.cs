@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -212,6 +212,12 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slViewAsData = new CommandMenuItem("View as _data", new Guid(CmdSets.Reko), CmdIds.ViewAsData);
             slViewAsData.IsDynamic = false;
             slGrpAddressSearchView.Add(0, slViewAsData);
+            CommandMenuItem slViewCfgCode = new CommandMenuItem("View _code", new Guid(CmdSets.Reko), CmdIds.ViewCfgCode);
+            slViewCfgCode.IsDynamic = false;
+            slGrpCodeView.Add(1, slViewCfgCode);
+            CommandMenuItem slViewCfgGraph = new CommandMenuItem("View control _graph", new Guid(CmdSets.Reko), CmdIds.ViewCfgGraph);
+            slViewCfgGraph.IsDynamic = false;
+            slGrpCodeView.Add(2, slViewCfgGraph);
             CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Reko), CmdIds.ActionRestartDecompilation);
             slActionRestartDecompilation.IsDynamic = false;
             slActionRestartDecompilation.ImageIndex = 2;

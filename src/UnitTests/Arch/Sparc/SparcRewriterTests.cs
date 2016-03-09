@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 (byte) (w >> 8),
                 (byte) w
             }).ToArray();
-            var image = new LoadedImage(LoadAddress, bytes);
+            var image = new MemoryArea(LoadAddress, bytes);
             e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 

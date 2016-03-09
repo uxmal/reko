@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,12 +35,12 @@ namespace Reko.Typing
     /// </summary>
     public class ExpressionTypeAscender : ExpressionVisitor<DataType>
     {
-        private Platform platform;
+        private IPlatform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
 
-        public ExpressionTypeAscender(Platform platform, TypeStore store, TypeFactory factory)
+        public ExpressionTypeAscender(IPlatform platform, TypeStore store, TypeFactory factory)
         {
             this.platform = platform;
             this.store = store;
@@ -123,6 +123,15 @@ namespace Reko.Typing
             {
                 dt = PrimitiveType.Create(Domain.UnsignedInt, dtLeft.Size);
             }
+            else if (binExp.Operator == Operator.Sar)
+            {
+                dt = PrimitiveType.Create(Domain.SignedInt, dtLeft.Size);
+            }
+            else if (binExp.Operator == Operator.Xor ||
+                     binExp.Operator == Operator.Shl)
+            {
+                dt = PrimitiveType.Create(Domain.Integer, dtLeft.Size);
+            }
             else
                 throw NYI(binExp);
             binExp.TypeVariable.DataType = dt;
@@ -133,11 +142,11 @@ namespace Reko.Typing
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
         {
             var ptLeft = dtLeft as PrimitiveType;
-            var ptRight = dtRight as PrimitiveType;
+            var ptRight = dtRight.ResolveAs<PrimitiveType>();
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer ||
                 dtLeft is Pointer)
             {
-                if (ptRight.IsIntegral)
+                if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
             if (ptLeft != null && ptLeft.IsIntegral)
@@ -153,19 +162,29 @@ namespace Reko.Typing
             var ptLeft = dtLeft as PrimitiveType;
             var ptRight = dtRight as PrimitiveType;
             if (ptLeft.Domain == Domain.Pointer || dtLeft is Pointer)
+            {
+                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
+                    return dtLeft;
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+            }
             if (ptRight.Domain == Domain.Pointer || dtRight is Pointer)
+            {
+                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
+                    return dtLeft;
+                // If a dtRight is a pointer and it's being subtracted from 
+                // something, then the result has to be a ptrdiff_t, i.e.
+                // integer.
+                if (ptLeft != null && (ptLeft.Domain & Domain.Pointer) != 0)
+                    return PrimitiveType.Create(Domain.Integer, dtLeft.Size);
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
-            if (ptLeft.IsIntegral)
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
-            if (ptRight.IsIntegral)
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+            }
             return dtLeft;
         }
 
         public DataType VisitCast(Cast cast)
         {
             cast.Expression.Accept(this);
+            RecordDataType(cast.DataType, cast);
             return cast.DataType;
         }
 
@@ -176,22 +195,27 @@ namespace Reko.Typing
 
         public DataType VisitConstant(Constant c)
         {
-            if (c.TypeVariable.DataType == null)
-            {
-                c.TypeVariable.DataType = c.DataType;
-                c.TypeVariable.OriginalDataType = c.DataType;
-            }
+            RecordDataType(c.DataType, c);
             return c.TypeVariable.DataType;
         }
 
         public DataType VisitDepositBits(DepositBits d)
         {
-            throw new NotImplementedException();
+            var dtSource = d.Source.Accept(this);
+            var dtBits = d.InsertedBits.Accept(this);
+            if (d.TypeVariable.DataType == null)
+            {
+                d.TypeVariable.DataType = dtSource;
+                d.TypeVariable.OriginalDataType = dtSource;
+            }
+            return d.TypeVariable.DataType;
         }
 
         public DataType VisitDereference(Dereference deref)
         {
-            throw new NotImplementedException();
+            //$TODO: if deref.Expression is of pointer type, this
+            // should be the pointeee.
+            return deref.DataType;
         }
 
         public DataType VisitFieldAccess(FieldAccess acc)
@@ -222,7 +246,7 @@ namespace Reko.Typing
         public DataType VisitMemoryAccessCommon(Expression access, Expression ea)
         {
             var dtEa = ea.Accept(this);
-            var ptEa = dtEa as Pointer;
+            var ptEa = dtEa.ResolveAs<Pointer>();
             DataType dt;
             if (ptEa != null)
                 dt = ptEa.Pointee;
@@ -312,7 +336,8 @@ namespace Reko.Typing
 
         public DataType VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            var dt = unary.Expression.Accept(this);
+            return RecordDataType(dt, unary);
         }
     }
 }

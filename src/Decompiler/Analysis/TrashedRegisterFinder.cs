@@ -1,6 +1,6 @@
  #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,9 +80,9 @@ namespace Reko.Analysis
             foreach (Procedure proc in procedures)
             {
                 var pf = flow[proc];
-                foreach (int r in pf.TrashedRegisters)
+                foreach (var reg in pf.TrashedRegisters.ToList())
                 {
-                    program.Architecture.GetRegister(r).SetAliases(pf.TrashedRegisters, true);
+                    pf.TrashedRegisters.UnionWith(program.Architecture.GetAliases(reg));
                 }
             }
         }
@@ -146,7 +146,6 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         private void SetInitialValueOfStackPointer(Procedure proc)
         {
-            Debug.Print("SetInitialValueSP: {0}", proc.Name);
             flow[proc.EntryBlock].SymbolicIn.SetValue(
                 proc.Frame.EnsureRegister(program.Architecture.StackRegister),
                 proc.Frame.FramePointer);

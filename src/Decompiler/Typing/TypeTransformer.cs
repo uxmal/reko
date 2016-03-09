@@ -1,6 +1,6 @@
  #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,6 +78,8 @@ namespace Reko.Typing
 			UnionType uNew = new UnionType(u.Name, u.PreferredType);
 			foreach (UnionAlternative a in u.Alternatives.Values)
 			{
+                if (a.DataType.ResolveAs<UnionType>() == u)
+                    continue;       //$HACK gets rid of (union "foo" (int) (union "foo"))
 				unifier.UnifyIntoUnion(uNew, a.DataType);
 			}
 			return uNew;
@@ -284,6 +286,11 @@ namespace Reko.Typing
             return arr;
         }
 
+        public DataType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public DataType VisitCode(CodeType c)
         {
             return c;
@@ -367,6 +374,7 @@ namespace Reko.Typing
         {
             return typeref;
         }
+
         public DataType VisitTypeVariable(TypeVariable tv)
         {
             return tv;
@@ -389,9 +397,11 @@ namespace Reko.Typing
 			}
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);
-			if (utNew.Alternatives.Count != ut.Alternatives.Count)
+            var dt = utNew.Simplify();
+            utNew = dt as UnionType;
+            if (utNew == null || utNew.Alternatives.Count != ut.Alternatives.Count)
 				Changed = true;
-			return utNew.Simplify();
+            return dt;
 		}
 
         public DataType VisitUnknownType(UnknownType unk)

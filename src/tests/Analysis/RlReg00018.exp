@@ -1,0 +1,64 @@
+// fn10000000 /////////////////////
+	LiveOut:  
+	MayUseIn:  eax ebp esi
+	BypassIn: 
+	Trashed:   SCZO ecx cx cl ch
+	Preserved: esp
+// fn10000000
+void fn10000000()
+// SymbolicIn: esp:fp
+fn10000000_entry:
+// DataOut: eax ebp esi
+// DataOut (flags): 
+// LocalsOut: fp(32)
+
+// SymbolicIn: esp:fp
+l10000000:
+	esp = fp
+	ecx = Mem0[esi + 0x0000006C:word32]
+	SZO = cond(ecx & ecx)
+	C = false
+	branch Test(NE,Z) l10000012
+// DataOut: eax ebp esi
+// DataOut (flags): 
+// LocalsOut: fp(32)
+
+// SymbolicIn: esp:fp ecx:<invalid>
+l10000007:
+	SZO = cond(ebp & ebp)
+	C = false
+	branch Test(EQ,Z) l10000021
+// DataOut: eax esi
+// DataOut (flags): 
+// LocalsOut: fp(32)
+
+// SymbolicIn: esp:fp ecx:<invalid>
+l1000000B:
+	SCZO = cond(eax - 0x0000029A)
+	branch Test(EQ,Z) l10000021
+// DataOut: esi
+// DataOut (flags): 
+// LocalsOut: fp(32)
+
+// SymbolicIn: esp:fp ecx:<invalid>
+l10000012:
+	eax = Mem0[esi + 0x0000007C:word32]
+	esp = fp - 0x00000004
+	dwLoc04 = ebp
+	ecx = eax + eax * 0x00000002
+	esp = fp - 0x00000008
+	dwLoc08 = esi
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: esp:fp ecx:<invalid>
+l10000021:
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: esp:fp ecx:<invalid>
+fn10000000_exit:
+// DataOut:
+// DataOut (flags): 
+

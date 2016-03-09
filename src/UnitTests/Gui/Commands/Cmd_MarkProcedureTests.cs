@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,11 +45,12 @@ namespace Reko.UnitTests.Gui.Commands
         {
             this.sc = new ServiceContainer();
             this.mr = new MockRepository();
-            var image = new LoadedImage(Address.SegPtr(0x0C00, 0), new byte[100]);
+            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
             this.program = new Program
             {
-                Image = image,
-                ImageMap = image.CreateImageMap()
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute))
             };
         }
 

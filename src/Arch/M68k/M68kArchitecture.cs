@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,23 +67,23 @@ namespace Reko.Arch.M68k
             return new M68kState(this);
         }
 
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet((int)Registers.Max);
-        }
-
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new BeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
@@ -141,16 +141,16 @@ namespace Reko.Arch.M68k
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(rdr.ReadBeUInt32());
         }
 
-
+        //$REVIEW: shouldn't this be flaggroup?
         private static RegisterStorage[] flagRegisters = {
-            new RegisterStorage("C", 0, PrimitiveType.Bool),
-            new RegisterStorage("V", 0, PrimitiveType.Bool),
-            new RegisterStorage("Z", 0, PrimitiveType.Bool),
-            new RegisterStorage("N", 0, PrimitiveType.Bool),
-            new RegisterStorage("X", 0, PrimitiveType.Bool),
+            new RegisterStorage("C", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("V", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("Z", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("N", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("X", 0, 0, PrimitiveType.Bool),
         };
 
         public override string GrfToString(uint grf)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,10 +49,11 @@ namespace Reko.Assemblers.Pdp11
 
         public Program GetImage()
         {
-            var image = new LoadedImage(BaseAddress, emitter.GetBytes());
+            var mem = new MemoryArea(BaseAddress, emitter.GetBytes());
             return new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(null, arch));
         }

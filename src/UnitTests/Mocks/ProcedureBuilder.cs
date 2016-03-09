@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -312,19 +312,26 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public Identifier Reg32(string name)
+        [Obsolete]
+        public Identifier Reg32(string name) { return Reg32(name, 1); }
+
+        public Identifier Reg32(string name, int number)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word32));
+            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word32));
         }
 
-        public Identifier Reg16(string name)
+        [Obsolete]
+        public Identifier Reg16(string name) { return Reg16(name, 1); }
+        public Identifier Reg16(string name, int number)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word16));
+            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word16));
         }
 
-        public Identifier Reg8(string name)
+        [Obsolete]
+        public Identifier Reg8(string name) { return Reg8(name, 1); }
+        public Identifier Reg8(string name, int number)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Byte));
+            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Byte));
         }
     }
 }

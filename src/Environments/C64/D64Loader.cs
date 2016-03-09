@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -141,10 +141,11 @@ namespace Reko.Environments.C64
                 }
             }
             var arch = new Mos6502ProcessorArchitecture();
-            var image = new LoadedImage(Address.Ptr16(0), RawImage);
+            var mem = new MemoryArea(Address.Ptr16(0), RawImage);
+            var imageMap = new ImageMap(mem.BaseAddress);
+            imageMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return new Program {
-                Image = image,
-                ImageMap = image.CreateImageMap(),
+                ImageMap = imageMap,
                 Architecture = arch,
                 Platform = new DefaultPlatform(Services, arch)
             };
@@ -158,11 +159,15 @@ namespace Reko.Environments.C64
             case FileType.PRG:
                 return LoadPrg(imageBytes);
             case FileType.SEQ:
-                var image = new LoadedImage(addrPreferred, imageBytes);
+                var mem = new MemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502ProcessorArchitecture();
                 return new Program(
-                    image,
-                    image.CreateImageMap(),
+                    new ImageMap(
+                        mem.BaseAddress,
+                        new ImageSegment("c64", mem.BaseAddress, mem.Length, AccessMode.ReadWriteExecute)
+                        {
+                            MemoryArea = mem,
+                        }),
                     arch,
                     new DefaultPlatform(Services, arch));
             default:
@@ -178,25 +183,30 @@ namespace Reko.Environments.C64
         private Program LoadPrg(byte[] imageBytes)
         {
             var stm = new MemoryStream();
-            ushort preferredAddress = LoadedImage.ReadLeUInt16(imageBytes, 0);
+            ushort preferredAddress = MemoryArea.ReadLeUInt16(imageBytes, 0);
             ushort alignedAddress = (ushort) (preferredAddress & ~0xF);
             int pad = preferredAddress - alignedAddress;
             while (pad-- > 0)
                 stm.WriteByte(0);
             stm.Write(imageBytes, 2, imageBytes.Length - 2);
             var loadedBytes = stm.ToArray();
-            var image = new LoadedImage(
+            var image = new MemoryArea(
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
             var prog = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
             var arch = new C64Basic(prog);
-            image = new LoadedImage(
+            image = new MemoryArea(
                 Address.Ptr16(prog.Keys[0]),
                 new byte[0xFFFF]);
             var program = new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    image.BaseAddress,
+                    new ImageSegment(
+                        "code", image.BaseAddress, image.Length, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = image
+                    }),
                 arch,
                 new C64Platform(Services, null));
             program.EntryPoints.Add(new EntryPoint(image.BaseAddress, arch.CreateProcessorState()));

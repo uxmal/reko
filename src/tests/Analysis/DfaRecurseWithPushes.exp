@@ -18,7 +18,7 @@ fn0C00_0000_exit:
 
 // void fn0C00_0007(Register word16 si, Register word16 di, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  si di ds
+// MayUse:  di ds si
 // LiveOut:
 // Trashed:
 // Preserved:

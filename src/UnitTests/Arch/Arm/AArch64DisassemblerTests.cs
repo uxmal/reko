@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
+    [Category(Categories.Capstone)]
     public class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
         private IProcessorArchitecture arch = new AArch64();

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,10 +40,10 @@ namespace Reko.Gui.Design
         private bool isEntryPoint;
 
         public ProcedureDesigner(
-            Program program, 
-            Procedure procedure, 
-            Procedure_v1 userProc, 
-            Address address, 
+            Program program,
+            Procedure procedure,
+            Procedure_v1 userProc,
+            Address address,
             bool isEntryPoint)
         {
             base.Component = procedure;
@@ -76,7 +76,7 @@ namespace Reko.Gui.Design
             TreeNode.Text = name;
             TreeNode.ToolTipText = Address.ToString();
             TreeNode.ImageName = userProc != null
-                ? (isEntryPoint ? "UserEntryProcedure.ico" : "Userproc.ico") 
+                ? (isEntryPoint ? "UserEntryProcedure.ico" : "Userproc.ico")
                 : (isEntryPoint ? "EntryProcedure.ico" : "Procedure.ico");
         }
 
@@ -142,12 +142,11 @@ namespace Reko.Gui.Design
             if (resultSvc == null)
                 return;
             var arch = program.Architecture;
-            var image = program.Image;
-            var rdr = program.Architecture.CreateImageReader(program.Image, 0);
+            var rdr = program.CreateImageReader(program.ImageMap.BaseAddress);
             var addrControl = arch.CreatePointerScanner(
                 program.ImageMap,
                 rdr,
-                new Address[]  { 
+                new Address[]  {
                     this.Address,
                 },
                 PointerScannerFlags.All);
@@ -226,6 +225,18 @@ namespace Reko.Gui.Design
         }
 
         void procedure_NameChanged(object sender, EventArgs e)
+        {
+            if (TreeNode != null)
+            {
+                TreeNode.Invoke(OnNameChanged);
+            }
+            else
+            {
+                OnNameChanged();
+            }
+        }
+
+        private void OnNameChanged()
         {
             userProc = program.EnsureUserProcedure(Address, procedure.Name);
             userProc.Name = procedure.Name;

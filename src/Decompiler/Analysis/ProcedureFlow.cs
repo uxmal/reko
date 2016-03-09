@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,23 +38,23 @@ namespace Reko.Analysis
 	{
 		private Procedure proc;
 
-		public BitSet PreservedRegisters;			// Registers explicitly preserved by the procedure.
+		public HashSet<RegisterStorage> PreservedRegisters;			// Registers explicitly preserved by the procedure.
 		public uint grfPreserved;
 
 		public uint grfTrashed;
-		public BitSet TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
+		public HashSet<RegisterStorage> TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
         public Dictionary<Storage, Constant> ConstantRegisters; // If present, indicates a register always has a constant value leaving the procedure.
 
-		public BitSet ByPass;
+		public HashSet<RegisterStorage> ByPass { get; set; }
 		public uint grfByPass;
-		public BitSet MayUse;
+		public HashSet<RegisterStorage> MayUse;
 		public uint grfMayUse;
-		public BitSet Summary;
+		public HashSet<RegisterStorage> Summary;
 		public uint grfSummary;
 
 		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
 
-		public BitSet LiveOut;
+		public HashSet<RegisterStorage> LiveOut;
 		public uint grfLiveOut;
 
 		public ProcedureSignature Signature;
@@ -67,13 +67,13 @@ namespace Reko.Analysis
         {
             this.proc = proc;
 
-            PreservedRegisters = arch.CreateRegisterBitset();
-            TrashedRegisters = arch.CreateRegisterBitset();
+            PreservedRegisters = new HashSet<RegisterStorage>();
+            TrashedRegisters = new HashSet<RegisterStorage>();
             ConstantRegisters = new Dictionary<Storage, Constant>();
 
-            ByPass = arch.CreateRegisterBitset();
-            MayUse = arch.CreateRegisterBitset();
-            LiveOut = arch.CreateRegisterBitset();
+            ByPass = new HashSet<RegisterStorage>();
+            MayUse = new HashSet<RegisterStorage>();
+            LiveOut = new HashSet<RegisterStorage>();
 
             StackArguments = new Hashtable();
         }
@@ -132,7 +132,7 @@ namespace Reko.Analysis
 			RegisterStorage reg = id.Storage as RegisterStorage;
 			if (reg != null)
 			{
-				return LiveOut[reg.Number];
+                return LiveOut.Contains(reg);
 			}
 			return false;
 		}

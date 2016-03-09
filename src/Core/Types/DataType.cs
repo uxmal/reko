@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ namespace Reko.Core.Types
         public virtual string Name { get; set; }
         public virtual string Prefix { get { return "t"; } }            // Prefix to use when auto-generating field names.
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
+        public abstract void Accept(IDataTypeVisitor v);
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
         public abstract DataType Clone();
         //public abstract int GetInferredSize();                  // Computes the size of an item.

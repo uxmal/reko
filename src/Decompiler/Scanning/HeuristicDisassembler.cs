@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,8 +91,6 @@ namespace Reko.Scanning
                     // Fresh instruction
                     AddNode(current);
                     current.Instructions.Add(instr);
-                    if (instr.Address.ToString().EndsWith("1082")) //$DEBUG
-                        instr.ToString();
                     blockMap.Add(instr.Address, current);
                     var op0 = instr.GetOperand(0);
                     var addrOp= op0 as AddressOperand;
@@ -113,7 +111,7 @@ namespace Reko.Scanning
                         }
                         return current;
                     case InstructionClass.Transfer | InstructionClass.Conditional:
-                        if (addrOp != null && program.Image.IsValidAddress(addrOp.Address))
+                        if (addrOp != null && program.ImageMap.IsValidAddress(addrOp.Address))
                         {
                             block = Disassemble(addrOp.Address);
                             Debug.Assert(proc.Cfg.Nodes.Contains(block));

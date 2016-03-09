@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,10 +34,10 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64BasicReader : IEnumerable<C64BasicInstruction>
     {
-        private LoadedImage image;
+        private MemoryArea image;
         private ushort lineOffset;
 
-        public C64BasicReader(LoadedImage image, ushort lineOffset)
+        public C64BasicReader(MemoryArea image, ushort lineOffset)
         {
             this.image = image;
             this.lineOffset = lineOffset;

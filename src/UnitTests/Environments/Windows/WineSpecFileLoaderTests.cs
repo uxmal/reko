@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Core;
 using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
@@ -45,9 +46,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             CreateWineSpecFileLoader("foo.spec",
                 " # comment");
-            var lib = wsfl.Load(platform);
-            Assert.AreEqual(0, lib.ServicesByVector.Count);
-            Assert.AreEqual(0, lib.ServicesByName.Count);
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            Assert.AreEqual(0, lib.Modules.Count);
         }
 
         [Test]
@@ -55,13 +55,14 @@ namespace Reko.UnitTests.Environments.Windows
         {
             CreateWineSpecFileLoader("foo.spec",
                 " 624 pascal SetFastQueue(long long) SetFastQueue16\n");
-            var lib = wsfl.Load(platform);
-            Assert.AreEqual(1, lib.ServicesByVector.Count);
-            Assert.AreEqual(0, lib.ServicesByName.Count);
-            var svc = lib.ServicesByVector[624];
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["FOO.DLL"];
+            Assert.AreEqual(1, mod.ServicesByVector.Count);
+            Assert.AreEqual(0, mod.ServicesByName.Count);
+            var svc = mod.ServicesByVector[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
-                "void ()(Stack word32 arg4, Stack word32 arg0)\r\n// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word32 dwArg04, Stack word32 dwArg00)\r\n// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
                 svc.Signature.ToString());
         }
 
@@ -72,17 +73,18 @@ namespace Reko.UnitTests.Environments.Windows
                 " 2   pascal -ret16 ExitKernel() ExitKernel16\n" +
                 "3    pascal GetVersion() GetVersion16\n" +
                 "4   pascal -ret16 LocalInit(word word word) LocalInit16\n");
-            var lib = wsfl.Load(platform);
-            Assert.AreEqual(3, lib.ServicesByVector.Count);
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["FOO.DLL"];
+            Assert.AreEqual(3, mod.ServicesByVector.Count);
             Assert.AreEqual(
                 "void ()()\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
-                lib.ServicesByVector[2].Signature.ToString());
+                mod.ServicesByVector[2].Signature.ToString());
             Assert.AreEqual(
                 "void ()()\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
-                lib.ServicesByVector[3].Signature.ToString());
+                mod.ServicesByVector[3].Signature.ToString());
             Assert.AreEqual(
-                "void ()(Stack word16 arg4, Stack word16 arg2, Stack word16 arg0)\r\n// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
-                lib.ServicesByVector[4].Signature.ToString());
+                "void ()(Stack word16 wArg04, Stack word16 wArg02, Stack word16 wArg00)\r\n// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                mod.ServicesByVector[4].Signature.ToString());
         }
 
         [Test(Description ="Ignore lines starting with '@'")]
@@ -90,8 +92,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             CreateWineSpecFileLoader("foo.spec",
                 " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()\r\n");
-            var lib = wsfl.Load(platform);
-            Assert.AreEqual(0, lib.ServicesByVector.Count);
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            Assert.AreEqual(0, lib.Modules.Count);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,21 +23,25 @@ using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace Reko.Core
 {
 	/// <summary>
-	/// Summarizes the effects of calling a procedure, as seen by the caller. Procedure signatures
-	/// may be shared by several procedures.
+	/// Summarizes the effects of calling a procedure, as seen by the caller.
+    /// Procedure signatures may be shared by several procedures.
 	/// </summary>
 	/// <remarks>
-	/// Calling a procedure affects a few things: the registers, the stack depth, and in the case of the Intel x86
-	/// architecture the FPU stack depth. These effects are summarized by the signature.
+	/// Calling a procedure affects a few things: the registers, the stack 
+    /// depth, and in the case of the Intel x86 architecture the FPU stack 
+    /// depth. These effects are summarized by the signature.
     /// <para>
-    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move these into processor-specific subclasses.
-    /// Also, some architectures -- like the FORTH language -- have multiple stacks.
+    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move
+    /// these into processor-specific subclasses. Also, some architectures 
+    /// -- like the FORTH language -- have multiple stacks.
     /// </para>
 	/// </remarks>
     public class ProcedureSignature
@@ -94,6 +98,12 @@ namespace Reko.Core
             get { return Parameters != null || ReturnValue != null; }
         }
 
+        /// <summary>
+        /// True if this is an instance method of the EnclosingType.
+        /// </summary>
+        public bool IsInstanceMetod { get; set; }
+
+
         #region Output methods
         public void Emit(string fnName, EmitFlags f, TextWriter writer)
         {
@@ -134,11 +144,14 @@ namespace Reko.Core
             var sep = "";
             if (Parameters != null)
             {
-                for (int i = 0; i < Parameters.Length; ++i)
+                IEnumerable<Identifier> parms = this.IsInstanceMetod
+                    ? Parameters.Skip(1)
+                    : Parameters;
+                foreach (var p in parms)
                 {
                     fmt.Write(sep);
                     sep = ", ";
-                    w.WriteFormalArgument(Parameters[i], emitStorage, t);
+                    w.WriteFormalArgument(p, emitStorage, t);
                 }
             }
             fmt.Write(")");

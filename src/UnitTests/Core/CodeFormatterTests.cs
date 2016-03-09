@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -198,9 +198,9 @@ namespace Reko.UnitTests.Core
         [Test]
         public void CfSegmentedAccess()
         {
-            var es = new Identifier("es", PrimitiveType.SegmentSelector, TemporaryStorage.None);
-            var ds = new Identifier("ds", PrimitiveType.SegmentSelector, TemporaryStorage.None);
-            var bx = new Identifier("bx", PrimitiveType.SegmentSelector, TemporaryStorage.None);
+            var es = new Identifier("es", PrimitiveType.SegmentSelector, RegisterStorage.None);
+            var ds = new Identifier("ds", PrimitiveType.SegmentSelector, RegisterStorage.None);
+            var bx = new Identifier("bx", PrimitiveType.SegmentSelector, RegisterStorage.None);
             var e =  new MemberPointerSelector(
                 PrimitiveType.Word16,
                 m.Deref(es),
@@ -215,9 +215,9 @@ namespace Reko.UnitTests.Core
         [Test]
         public void CfAssocSub()
         {
-            var a = new Identifier("a", PrimitiveType.Int32, TemporaryStorage.None);
-            var b = new Identifier("b", PrimitiveType.Int32, TemporaryStorage.None);
-            var c = new Identifier("c", PrimitiveType.Int32, TemporaryStorage.None);
+            var a = new Identifier("a", PrimitiveType.Int32, RegisterStorage.None);
+            var b = new Identifier("b", PrimitiveType.Int32, RegisterStorage.None);
+            var c = new Identifier("c", PrimitiveType.Int32, RegisterStorage.None);
             var e = m.ISub(a, m.ISub(b, c));
             e.Accept(cf);
             Assert.AreEqual("a - (b - c)", sw.ToString());
@@ -226,9 +226,9 @@ namespace Reko.UnitTests.Core
         [Test]
         public void CfMpsAccess()
         {
-            var a = new Identifier("a", PrimitiveType.Int32, TemporaryStorage.None);
-            var b = new Identifier("b", PrimitiveType.Int32, TemporaryStorage.None);
-            var c = new Identifier("c", PrimitiveType.Int32, TemporaryStorage.None);
+            var a = new Identifier("a", PrimitiveType.Int32, RegisterStorage.None);
+            var b = new Identifier("b", PrimitiveType.Int32, RegisterStorage.None);
+            var c = new Identifier("c", PrimitiveType.Int32, RegisterStorage.None);
             var e = m.Array(
                 PrimitiveType.Byte,
                 m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), new StructureField(4, PrimitiveType.Pointer32, "a0004")),

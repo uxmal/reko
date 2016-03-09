@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ namespace Reko.Core.Machine
             return renderer.ToString();
         }
 
-        public string ToString(Platform platform)
+        public string ToString(IPlatform platform)
         {
             var renderer = new StringRenderer(platform);
             this.Render(renderer);

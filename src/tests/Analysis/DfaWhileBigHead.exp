@@ -1,8 +1,8 @@
 // void fn0C00_0000(Register word16 si, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  si ds
+// MayUse:  ds si
 // LiveOut:
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0

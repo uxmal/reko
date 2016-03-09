@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,8 @@ namespace Reko.UnitTests.Core
             };
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
             var platform = new SysVPlatform(null, arch);
-            var lib = TypeLibrary.Load(platform, slib);
+            var tldser = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var lib = tldser.Load(slib);
             Assert.AreEqual(PrimitiveType.Int32, lib.LookupType("int"));
         }
 	}

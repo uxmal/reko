@@ -1,14 +1,14 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  eax si es ds
+	MayUseIn:  ds eax es si
 	BypassIn: 
-	Trashed:   SCZO eax ax cx si di al cl ah ch
+	Trashed:   SCZO ah al ax ch cl cx di dil eax ecx edi esi rax rcx rdi rsi si sil
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: eax si es ds
+// DataOut: ds eax es si
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
@@ -33,22 +33,22 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp eax:<invalid> si:si + 0x0036 ax:<invalid> cx:<invalid> di:<invalid> al:0x00
+// SymbolicIn: sp:fp eax:<invalid> si:si + 0x0036 ax:<invalid> cx:<invalid> al:0x00 di:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
 
 // fn0C00_0026 /////////////////////
 	LiveOut:  
-	MayUseIn:  es ds
+	MayUseIn:  ds es
 	BypassIn: 
-	Trashed:   SCZO ax cx di al cl ch
+	Trashed:   SCZO al ax ch cl cx di dil eax ecx edi rax rcx rdi
 	Preserved: sp
 // fn0C00_0026
 void fn0C00_0026()
 // SymbolicIn: sp:fp
 fn0C00_0026_entry:
-// DataOut: es ds
+// DataOut: ds es
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
@@ -57,13 +57,13 @@ l0C00_0026:
 	cx = Mem0[ds:0x0400:word16]
 	al = 0x00
 	di = Mem0[ds:0x0402:word16]
-// DataOut: cx di es ds
+// DataOut: cx di ds es
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
 l0C00_0030:
 	branch cx == 0x0000 l0C00_0032
-// DataOut: cx di es ds
+// DataOut: cx di ds es
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
@@ -72,7 +72,7 @@ l0C00_0030_1:
 	di = di + 0x0001
 	cx = cx - 0x0001
 	branch Test(NE,Z) l0C00_0030
-// DataOut: cx di es ds
+// DataOut: cx di ds es
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>

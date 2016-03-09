@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Analysis
         {
             var bflow = new BlockFlow(
                 block,
-                program.Architecture.CreateRegisterBitset(),
+                new HashSet<RegisterStorage>(),
                 new SymbolicEvaluationContext(
                     program.Architecture,
                     frame));
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Analysis
             var callee = new Procedure("Callee", program.Architecture.CreateFrame());
             var stm = m.Call(callee, 4);
             var pf = new ProcedureFlow(callee, program.Architecture);
-            pf.TrashedRegisters[Registers.ebx.Number] = true;
+            pf.TrashedRegisters.Add(Registers.ebx);
             flow[callee] = pf;
 
             trf = CreateTrashedRegisterFinder();
@@ -410,7 +410,7 @@ namespace Reko.UnitTests.Analysis
             trf = CreateTrashedRegisterFinder(program);
             trf.Compute();
             ProcedureFlow pf = flow[proc];
-            Assert.AreEqual(" esp ebp", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
+            Assert.AreEqual(" ebp esp", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
         }
 
         [Test]
@@ -467,13 +467,13 @@ namespace Reko.UnitTests.Analysis
             });
 
             RunTest(p,
-@"main ebx bx bl bh
+@"main bh bl bx ebx rbx
 const ebx:0x01231313
     main_entry esp:fp
     l1 esp:fp
     main_exit eax:eax ebx:0x01231313 esp:fp
 
-TrashEaxEbx eax ebx ax bx al bl ah bh
+TrashEaxEbx ah al ax bh bl bx eax ebx rax rbx
 const eax:<invalid> ebx:0x01231313
     TrashEaxEbx_entry esp:fp
     l1 esp:fp
@@ -517,7 +517,7 @@ const eax:<invalid> ebx:0x01231313
             });
 
             var sExp =
-@"main SCZO eax ax al ah
+@"main SCZO ah al ax eax rax
 const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp
@@ -566,7 +566,7 @@ const eax:<invalid>
             });
 
             var sExp =
-@"main eax ax al ah
+@"main ah al ax eax rax
 const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp
@@ -602,6 +602,7 @@ const ax:0x0000 cx:<invalid>
 ";
             RunTest(p, sExp);
         }
+
         [Test]
         public void TrfFactorial()
         {
@@ -609,7 +610,6 @@ const ax:0x0000 cx:<invalid>
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TrfReg00005()
         {
             RunFileTest("Fragments/regressions/r00005.asm", "Analysis/TrfReg00005.txt");
@@ -647,7 +647,7 @@ const ax:0x0000 cx:<invalid>
         {
             frame = new Frame(PrimitiveType.Pointer32);
             ctx = new SymbolicEvaluationContext(arch, frame);
-            blockflow = new BlockFlow(null, arch.CreateRegisterBitset(), ctx);
+            blockflow = new BlockFlow(null, new HashSet<RegisterStorage>(), ctx);
             trf.EnsureEvaluationContext(blockflow);
         }
     }

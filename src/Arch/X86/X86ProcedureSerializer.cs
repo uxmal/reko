@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.Arch.X86
     /// </remarks>
     public class X86ProcedureSerializer : ProcedureSerializer
     {
-        private ArgumentSerializer argser;
+        private ArgumentDeserializer argDeser;
 
         public X86ProcedureSerializer(IntelArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
@@ -63,19 +63,24 @@ namespace Reko.Arch.X86
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentSerializer(this, Architecture, frame, ss.Convention);
+            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
             FpuStackOffset = 0;
             if (ss.ReturnValue != null)
             {
-                ret = argser.DeserializeReturnValue(ss.ReturnValue);
+                ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
                 fpuDelta += FpuStackOffset;
             }
 
             FpuStackOffset = 0;
             var args = new List<Identifier>();
+            if (ss.EnclosingType != null)
+            {
+                var arg = DeserializeImplicitThisArgument(ss);
+                args.Add(arg);
+            }
             if (ss.Arguments != null)
             {
                 if (ss.Convention == "pascal")
@@ -101,8 +106,26 @@ namespace Reko.Arch.X86
             }
             FpuStackOffset = fpuDelta;
             var sig = new ProcedureSignature(ret, args.ToArray());
+            sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;
+        }
+
+        private Identifier DeserializeImplicitThisArgument(SerializedSignature ss)
+        {
+            var sArg = new Argument_v1
+            {
+                Type = new PointerType_v1(ss.EnclosingType),
+                Name = "this",
+            };
+            if (ss.Convention == "__thiscall")
+            {
+                sArg.Kind = new Register_v1("ecx");
+            }
+            else
+                sArg.Kind = new StackVariable_v1();
+            var arg = argDeser.Deserialize(sArg);
+            return arg;
         }
 
         /// <summary>
@@ -116,10 +139,10 @@ namespace Reko.Arch.X86
         {
             if (arg.Kind != null)
             {
-                return argser.Deserialize(arg, arg.Kind);
+                return argDeser.Deserialize(arg, arg.Kind);
             }
             if (convention == null)
-                return argser.Deserialize(arg, new StackVariable_v1());
+                return argDeser.Deserialize(arg, new StackVariable_v1());
             switch (convention)
             {
             case "":
@@ -127,18 +150,16 @@ namespace Reko.Arch.X86
             case "__cdecl":
             case "__stdcall":
             case "pascal":
-                return argser.Deserialize(arg, new StackVariable_v1 { });
             case "__thiscall":
-                if (idx == 0)
-                    return argser.Deserialize(arg, new Register_v1("ecx"));
-                else
-                    return argser.Deserialize(arg, new StackVariable_v1());
+                return argDeser.Deserialize(arg, new StackVariable_v1 { });
             }
             throw new NotSupportedException(string.Format("Unsupported calling convention '{0}'.", convention));
         }
 
         public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
+            if (bitSize == 0)
+                bitSize = Architecture.WordWidth.BitSize;
             switch (bitSize)
             {
             case 32: 
@@ -153,7 +174,8 @@ namespace Reko.Arch.X86
                         new Identifier("eax", PrimitiveType.Word16, Architecture.GetRegister("eax")));
                 break;
             }
-            return Architecture.GetRegister("rax").GetSubregister(0, bitSize);
+            var reg = Architecture.GetRegister("rax");
+            return Architecture.GetSubregister(reg, 0, bitSize);
         }
     }
 }

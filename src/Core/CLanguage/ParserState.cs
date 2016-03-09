@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,14 @@ namespace Reko.Core.CLanguage
             alignments.Push(8);
             Typedefs.Add("size_t");
             Typedefs.Add("va_list");
+        }
+
+        public ParserState(IEnumerable<string> knownNames) : this()
+        {
+            foreach (var name in knownNames)
+            {
+                Typedefs.Add(name);
+            }
         }
 
         public HashSet<string> Typedefs { get; private set; }

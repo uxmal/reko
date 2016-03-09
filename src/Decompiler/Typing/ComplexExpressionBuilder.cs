@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using System;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Operators;
+using System.Diagnostics;
 
 namespace Reko.Typing
 {
@@ -110,6 +111,11 @@ namespace Reko.Typing
             index = null;       // we've consumed the index.
             offset = r;
             return dtComplex.Accept(this);
+        }
+
+        public Expression VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
         }
 
         public Expression VisitCode(CodeType c)
@@ -245,7 +251,7 @@ namespace Reko.Typing
 
         public Expression VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref.Referent.Accept(this);
         }
 
         public Expression VisitTypeVariable(TypeVariable tv)
@@ -258,7 +264,8 @@ namespace Reko.Typing
             UnionAlternative alt = ut.FindAlternative(dtComplexOrig);
             if (alt == null)
             {
-                throw new TypeInferenceException("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);
+                Debug.Print("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
+                return expComplex;
             }
 
             dtComplex = alt.DataType;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,11 +52,11 @@ namespace Reko.Analysis
 		private SsaIdentifier sidGrf;
         private HashSet<SsaIdentifier> aliases;     // aliases of sidGrf
         private Statement useStm;
-        private Platform platform;
+        private IPlatform platform;
 
 		private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
 
-		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, Platform arch)
+		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, IPlatform arch)
 		{
 			this.ssaIds = ssaIds;
             this.platform = arch;

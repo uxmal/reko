@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,9 +74,9 @@ namespace Reko.Arch.X86
             return frame.EnsureRegister(reg);
         }
 
-        public Identifier AluRegister(IntelRegister reg, PrimitiveType vt)
+        public Identifier AluRegister(RegisterStorage reg, PrimitiveType vt)
         {
-            return frame.EnsureRegister(reg.GetPart(vt));
+            return frame.EnsureRegister(arch.GetPart(reg, vt));
         }
 
         public Constant CreateConstant(ImmediateOperand imm, PrimitiveType dataWidth)

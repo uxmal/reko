@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
@@ -37,10 +38,10 @@ using System.Text;
 namespace Reko.Environments.Windows
 {
     // https://msdn.microsoft.com/en-us/library/ms881468.aspx
-    public class Win32MipsPlatform : Win32Platform
+    public class Win32MipsPlatform : Platform
     {
         public Win32MipsPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
-            base(services, arch)
+            base(services, arch, "winMips")
         {
         }
 
@@ -49,26 +50,24 @@ namespace Reko.Environments.Windows
             get { return ""; }
         }
 
-        public override string PlatformIdentifier {  get { return "winMips";  } }
-        
-        public override Address AdjustProcedureAddress(Address addr)
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return addr;
-        }
-
-        public override BitSet CreateImplicitArgumentRegisters()
-        {
-            var bitset = base.Architecture.CreateRegisterBitset();
             var gp = Architecture.GetRegister("r28");
             var sp = Architecture.GetRegister("sp");
-            bitset[gp.Number] = true;
-            bitset[sp.Number] = true;
-            return bitset;
+            return new HashSet<RegisterStorage>
+            {
+                gp, sp
+            };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
+        }
+
+        public override SystemService FindService(int vector, ProcessorState state)
+        {
+            throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
         }
 
         private readonly RtlInstructionMatcher[] trampPattern = new RtlInstructionMatcher[] {
@@ -130,43 +129,36 @@ namespace Reko.Environments.Windows
             return host.GetInterceptedCall(addrTarget);
         }
 
-        protected override void EnsureTypeLibraries(string envName)
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
-            if (TypeLibs != null)
-                return;
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var env = cfgSvc.GetEnvironment(envName);
-            TypeLibs =
-                (from tl in env.TypeLibraries.OfType<ITypeLibraryElement>()
-                 join ldr in cfgSvc.GetImageLoaders().OfType<LoaderElement>() on tl.Loader equals ldr.Label
-                 where !string.IsNullOrEmpty(tl.Loader)
-                 select LoadTypelibrary(cfgSvc, tl, ldr))
-                .ToArray();
-        }
-
-        private TypeLibrary LoadTypelibrary(IConfigurationService cfgSvc, ITypeLibraryElement tl, LoaderElement ldr)
-        {
-            var type = Type.GetType(ldr.TypeName, true);
-            var filename = cfgSvc.GetInstallationRelativePath(tl.Name);
-            var bytes = File.ReadAllBytes(filename);
-            var loader = (MetadataLoader)Activator.CreateInstance(type, Services, filename, bytes);
-            return loader.Load(this);
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            foreach (var tl in TypeLibs.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
+            ModuleDescriptor mod;
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+                return null;
+            SystemService svc;
+            if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
             {
-                SystemService svc;
-                if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
-                {
-                    if (svc.Signature != null)
-                        svc.Signature.ReturnAddressOnStack = 0; //$HACK: should be done when signatures are created.
-                    return new ExternalProcedure(svc.Name, svc.Signature);
-                }
+                return new ExternalProcedure(svc.Name, svc.Signature);
             }
-            return null;
+            else
+                return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

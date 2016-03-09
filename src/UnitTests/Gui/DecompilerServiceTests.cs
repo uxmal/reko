@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,12 +80,14 @@ namespace Reko.UnitTests.Gui
             var loader = mr.StrictMock<ILoader>();
             var host = mr.StrictMock<DecompilerHost>();
             var arch = mr.StrictMock<IProcessorArchitecture>();
-            var platform = mr.StrictMock<Platform>(sc, arch);
+            var platform = mr.StrictMock<IPlatform>();
             var fileName = "foo\\bar\\baz.exe";
             var bytes = new byte[100];
-            var image = new LoadedImage(Address.Ptr32(0x1000), bytes);
-            var imageMap = image.CreateImageMap();
-            var prog = new Program(image, imageMap, arch, platform);
+            var mem = new MemoryArea(Address.Ptr32(0x1000), bytes);
+            var imageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
+            var prog = new Program(imageMap, arch, platform);
             sc.AddService<DecompilerHost>(host);
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(fileName, bytes, null)).Return(prog);

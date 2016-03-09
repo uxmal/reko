@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,6 +193,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void DtbFnPointerMock()
         {
+            //$TODO: find out where pfn_0 is comingfrom.
             ProgramBuilder mock = new ProgramBuilder();
             mock.Add(new FnPointerFragment());
             RunTest(mock, "Typing/DtbFnPointerMock.txt");
@@ -421,6 +422,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore("Re-enable when new SSA is in place")]
         public void DtbReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");

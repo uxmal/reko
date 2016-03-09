@@ -107,6 +107,7 @@
     <Compile Include="Analysis\Aliases.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\AliasState.cs" />
     <Compile Include="Analysis\BlockFlow.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -116,6 +117,7 @@
     <Compile Include="Analysis\ConditionCodeEliminator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\ConstDivisionImplementedByMultiplication.cs" />
     <Compile Include="Analysis\CriticalInstruction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -268,6 +270,7 @@
     <Compile Include="Scanning\Dfa\State.cs" />
     <Compile Include="Scanning\Dfa\TreeNode.cs" />
     <Compile Include="Scanning\Dfa\Automaton.cs" />
+    <Compile Include="Scanning\GlobalDataWorkItem.cs" />
     <Compile Include="Scanning\HeuristicBlock.cs" />
     <Compile Include="Scanning\HeuristicDisassembler.cs" />
     <Compile Include="Scanning\HeuristicProcedure.cs" />

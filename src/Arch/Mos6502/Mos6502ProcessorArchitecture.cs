@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,12 +49,17 @@ namespace Reko.Arch.Mos6502
             return new Disassembler(imageReader.Clone());
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -67,11 +72,6 @@ namespace Reko.Arch.Mos6502
         public override ProcessorState CreateProcessorState()
         {
             return new Mos6502ProcessorState(this);
-        }
-
-        public override BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -100,6 +100,11 @@ namespace Reko.Arch.Mos6502
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
             throw new NotImplementedException();
         }
@@ -143,19 +148,19 @@ namespace Reko.Arch.Mos6502
 
     public  static class Registers
     {
-        public static readonly RegisterStorage a = new RegisterStorage("a", 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage x = new RegisterStorage("x", 1, PrimitiveType.Byte);
-        public static readonly RegisterStorage y = new RegisterStorage("y", 2, PrimitiveType.Byte);
-        public static readonly RegisterStorage s = new RegisterStorage("s", 3, PrimitiveType.Byte);
+        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage x = new RegisterStorage("x", 1, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage y = new RegisterStorage("y", 2, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage s = new RegisterStorage("s", 3, 0, PrimitiveType.Byte);
 
         public static readonly FlagRegister p = new FlagRegister("p", PrimitiveType.Byte);
 
-        public static readonly RegisterStorage N = new RegisterStorage("N", 4, PrimitiveType.Byte);
-        public static readonly RegisterStorage V = new RegisterStorage("V", 5, PrimitiveType.Byte);
-        public static readonly RegisterStorage C = new RegisterStorage("C", 6, PrimitiveType.Byte);
-        public static readonly RegisterStorage Z = new RegisterStorage("Z", 7, PrimitiveType.Byte);
-        public static readonly RegisterStorage I = new RegisterStorage("I", 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage D = new RegisterStorage("D", 9, PrimitiveType.Byte);
+        public static readonly RegisterStorage N = new RegisterStorage("N", 4, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage V = new RegisterStorage("V", 5, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage C = new RegisterStorage("C", 6, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage Z = new RegisterStorage("Z", 7, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage I = new RegisterStorage("I", 8, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage D = new RegisterStorage("D", 9, 0, PrimitiveType.Byte);
         
         internal static RegisterStorage[] All;
 

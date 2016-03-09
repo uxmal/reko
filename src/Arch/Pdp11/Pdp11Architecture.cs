@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,19 +33,19 @@ namespace Reko.Arch.Pdp11
 {
     public class Registers
     {
-        public static RegisterStorage r0 = new RegisterStorage("r0", 0, PrimitiveType.Word16);
-        public static RegisterStorage r1 = new RegisterStorage("r1", 1, PrimitiveType.Word16);
-        public static RegisterStorage r2 = new RegisterStorage("r2", 2, PrimitiveType.Word16);
-        public static RegisterStorage r3 = new RegisterStorage("r3", 3, PrimitiveType.Word16);
-        public static RegisterStorage r4 = new RegisterStorage("r4", 4, PrimitiveType.Word16);
-        public static RegisterStorage r5 = new RegisterStorage("r5", 5, PrimitiveType.Word16);
-        public static RegisterStorage sp = new RegisterStorage("sp", 6, PrimitiveType.Word16);
-        public static RegisterStorage pc = new RegisterStorage("pc", 7, PrimitiveType.Word16);
+        public static RegisterStorage r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word16);
+        public static RegisterStorage r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word16);
+        public static RegisterStorage r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word16);
+        public static RegisterStorage r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word16);
+        public static RegisterStorage r4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word16);
+        public static RegisterStorage r5 = new RegisterStorage("r5", 5, 0, PrimitiveType.Word16);
+        public static RegisterStorage sp = new RegisterStorage("sp", 6, 0, PrimitiveType.Word16);
+        public static RegisterStorage pc = new RegisterStorage("pc", 7, 0, PrimitiveType.Word16);
 
-        public static RegisterStorage N = new RegisterStorage("N", 8, PrimitiveType.Bool);
-        public static RegisterStorage Z = new RegisterStorage("Z", 9, PrimitiveType.Bool);
-        public static RegisterStorage V = new RegisterStorage("V", 10, PrimitiveType.Bool);
-        public static RegisterStorage C = new RegisterStorage("C", 11, PrimitiveType.Bool);
+        public static RegisterStorage N = new RegisterStorage("N", 8, 0, PrimitiveType.Bool);
+        public static RegisterStorage Z = new RegisterStorage("Z", 9, 0, PrimitiveType.Bool);
+        public static RegisterStorage V = new RegisterStorage("V", 10, 0, PrimitiveType.Bool);
+        public static RegisterStorage C = new RegisterStorage("C", 11, 0, PrimitiveType.Bool);
 
         public static FlagRegister psw = new FlagRegister("psw", PrimitiveType.Word16);
     }
@@ -92,12 +92,17 @@ namespace Reko.Arch.Pdp11
             return new Pdp11Disassembler(rdr, this);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -110,11 +115,6 @@ namespace Reko.Arch.Pdp11
         public override ProcessorState CreateProcessorState()
         {
             return new Pdp11ProcessorState(this);
-        }
-
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet(16);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -156,6 +156,11 @@ namespace Reko.Arch.Pdp11
                 }
             }
             return false;
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)

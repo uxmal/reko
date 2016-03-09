@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ namespace Reko.Core.Serialization
             SerializedSignature ssig = new SerializedSignature();
             if (!sig.ParametersValid)
                 return ssig;
-            ArgumentSerializer argSer = new ArgumentSerializer(this, Architecture, null, null);
+            ArgumentSerializer argSer = new ArgumentSerializer(this, Architecture, null, 0);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
             ssig.Arguments = new Argument_v1[sig.Parameters.Length];
             for (int i = 0; i < sig.Parameters.Length; ++i)

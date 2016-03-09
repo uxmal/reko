@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,9 +58,9 @@ namespace Reko.Core
 			AddArgument(proc.Frame.EnsureFpuStackVariable(x, id.DataType), false);
 		}
 
-		public void AddRegisterArgument(int r)
+		public void AddRegisterArgument(RegisterStorage reg)
 		{
-			AddArgument(proc.Frame.EnsureRegister(arch.GetRegister(r)), false);
+			AddArgument(proc.Frame.EnsureRegister(reg), false);
 		}
 
 		public void AddArgument(Identifier idOrig, bool isOut)

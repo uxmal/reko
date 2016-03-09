@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,8 +66,8 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
         {
-            var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             var eventListener = new FakeDecompilerEventListener();
+            var dfa = new DataFlowAnalysis(prog, null, eventListener);
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
@@ -86,10 +86,10 @@ namespace Reko.UnitTests.Analysis
         {
             m = new ProcedureBuilder(arch);
             frame = m.Frame;
-            ax = frame.EnsureRegister(new RegisterStorage("ax", 0, PrimitiveType.Word16));
-            bx = frame.EnsureRegister(new RegisterStorage("bx", 3, PrimitiveType.Word16));
-            cx = frame.EnsureRegister(new RegisterStorage("cx", 1, PrimitiveType.Word16));
-            dx = frame.EnsureRegister(new RegisterStorage("dx", 2, PrimitiveType.Word16));
+            ax = frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+            bx = frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+            cx = frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
+            dx = frame.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
             flags = new FlagRegister("flags", PrimitiveType.Word16);
             SCZ = frame.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
             CF = frame.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);

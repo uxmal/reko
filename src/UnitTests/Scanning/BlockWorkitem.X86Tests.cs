@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Services;
@@ -42,12 +43,12 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class BlockWorkItem_X86Tests
     {
+        private MockRepository mr;
         private IntelArchitecture arch;
         private Procedure proc;
         private Block block;
         private IScanner scanner;
         private RewriterHost host;
-        private MockRepository repository;
         private ProcessorState state;
         private BlockWorkitem wi;
         private Program lr;
@@ -57,9 +58,17 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var env = mr.Stub<OperatingEnvironment>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            env.Stub(c => c.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
         }
 
         private void BuildTest32(Action<X86Assembler> m)
@@ -120,7 +129,7 @@ namespace Reko.UnitTests.Scanning
                     return null;
             }
 
-            public ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform)
+            public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
             {
                 ProcedureSignature sig;
                 if (signatures.TryGetValue(importName, out sig))
@@ -129,7 +138,7 @@ namespace Reko.UnitTests.Scanning
                     return null;
             }
 
-            public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform)
+            public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
             {
                 throw new NotImplementedException();
             }
@@ -145,16 +154,21 @@ namespace Reko.UnitTests.Scanning
             {
                 throw new NotImplementedException();
             }
+
+            public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<X86Assembler> m)
+        private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
             this.arch = new IntelArchitecture(ProcessorMode.Protected32);
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<EntryPoint>());
-            scanner = repository.StrictMock<IScanner>();
+            scanner = mr.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();
             host = new RewriterHost(asm.ImportReferences,
@@ -163,7 +177,7 @@ namespace Reko.UnitTests.Scanning
                 {
                     "GetDC", 
                     new ProcedureSignature(
-                        new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, PrimitiveType.Word32)),
+                        new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
                         new Identifier("arg", 
                             new TypeReference(
                                 "HWND",
@@ -176,15 +190,18 @@ namespace Reko.UnitTests.Scanning
 }
                 }
               });
-            var rw = arch.CreateRewriter(lr.Image.CreateLeReader(addr), this.state, proc.Frame, host);
+            var rw = arch.CreateRewriter(
+                lr.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
+                this.state, 
+                proc.Frame,
+                host);
             var prog = new Program
             {
                 Architecture = arch,
-                Image = lr.Image,
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };
-            using (repository.Record())
+            using (mr.Record())
             {
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(rw);
@@ -193,7 +210,7 @@ namespace Reko.UnitTests.Scanning
         }
 
 
-        private Identifier Reg(IntelRegister r)
+        private Identifier Reg(RegisterStorage r)
         {
             return new Identifier(r.Name, r.DataType, r);
         }
@@ -346,7 +363,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x003A))).Return(block123A);
             });
 
-            wi.ProcessInternal();
+            wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
@@ -464,9 +481,9 @@ namespace Reko.UnitTests.Scanning
                     Arg<int>.Is.Equal(4),
                     Arg<Address>.Is.Anything));
             });
-            wi.ProcessInternal();
+            wi.Process();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
             var sExp =
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +

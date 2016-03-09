@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,10 @@
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using BitSet = Reko.Core.Lib.BitSet;
 
 namespace Reko.Core
 {
@@ -51,12 +48,6 @@ namespace Reko.Core
         /// </summary>
         /// <returns></returns>
 		ProcessorState CreateProcessorState();
-
-        /// <summary>
-        /// Creates a BitSet large enough to fit all the registers.
-        /// </summary>
-        /// <returns></returns>
-		BitSet CreateRegisterBitset();
 
         /// <summary>
         /// Returns a stream of machine-independent instructions, which it generates by successively disassembling
@@ -90,7 +81,16 @@ namespace Reko.Core
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(LoadedImage img, Address addr);
+        ImageReader CreateImageReader(MemoryArea img, Address addr);
+
+        /// <summary>
+        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the
+        /// processor, limited to the specified address range.
+        /// </summary>
+        /// <param name="img">Program image to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <returns>An imagereader of the appropriate endianness</returns>
+        ImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
 
         /// <summary>
         /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
@@ -98,7 +98,7 @@ namespace Reko.Core
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(LoadedImage img, ulong off);
+        ImageReader CreateImageReader(MemoryArea img, ulong off);
 
         /// <summary>
         /// Creates a comparer that compares instructions for equality. Normalization means
@@ -108,8 +108,21 @@ namespace Reko.Core
         /// <returns></returns>
         IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
 
-		RegisterStorage GetRegister(int i);			        // Returns register corresponding to number i.
-		RegisterStorage GetRegister(string name);	        // Returns register whose name is 'name'
+        IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
+        RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
+        RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
+        RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
+
+        /// <summary>
+        /// Find the widest subregister that covers the register reg.
+        /// </summary>
+        /// <param name="reg"></param>
+        /// <param name="bits"></param>
+        /// <returns></returns>
+        RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
+
+        RegisterStorage GetPart(RegisterStorage reg, DataType width);
         RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
@@ -166,18 +179,48 @@ namespace Reko.Core
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public abstract ImageReader CreateImageReader(LoadedImage img, Address addr);
-        public abstract ImageReader CreateImageReader(LoadedImage img, ulong off);
+        public abstract ImageReader CreateImageReader(MemoryArea img, Address addr);
+        public abstract ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
+        public abstract ImageReader CreateImageReader(MemoryArea img, ulong off);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
-        public abstract BitSet CreateRegisterBitset();
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
 
+        public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
+
+        /// <summary>
+        /// Get the improper subregister of <paramref name="reg"/> that starts
+        /// at offset <paramref name="offset"/> and is of size 
+        /// <paramref name="width"/>.
+        /// </summary>
+        /// <remarks>
+        /// Most architectures not have subregisters, and will use this 
+        /// default implementation. This method is overridden for 
+        /// architectures like x86 and Z80, where subregisters (ah al etc)
+        /// do exist.
+        /// </remarks>
+        /// <param name="reg"></param>
+        /// <param name="offset"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
+        public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            return (offset == 0 && reg.BitSize == (ulong)width) ? reg : null;
+        }
+
+        public virtual RegisterStorage GetPart(RegisterStorage reg, DataType dt)
+        {
+            return GetSubregister(reg, 0, dt.BitSize);
+        }
+
+        public virtual RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
+        public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
+
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
         public abstract FlagGroupStorage GetFlagGroup(uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);

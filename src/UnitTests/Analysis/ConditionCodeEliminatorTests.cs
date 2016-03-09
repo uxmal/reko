@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -61,7 +62,7 @@ namespace Reko.UnitTests.Analysis
 
         private Identifier Reg32(string name)
         {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
+            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Word32);
             var id = new Identifier(name, PrimitiveType.Word32, mr);
             return ssaIds.Add(id, null, null, false).Identifier;
         }
@@ -77,7 +78,8 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
         {
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
             dfa.UntangleProcedures();
             foreach (Procedure proc in prog.Procedures.Values)
             {
@@ -86,7 +88,7 @@ namespace Reko.UnitTests.Analysis
 
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
-                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
+                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
                 SsaState ssa = sst.SsaState;
 
                 proc.Dump(true);
@@ -348,15 +350,6 @@ done:
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
-
-        
-        [Test]
-        [Ignore("TODO: what happens when a function returns carry when SCZO is aliased to the return value?")]
-        public void CceReturnCarry()
-        {
-            throw new NotImplementedException();
-        }
-
 
         [Test]
 		public void SignedIntComparisonFromConditionCode()

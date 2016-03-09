@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,7 +182,7 @@ namespace Reko.Typing
         public override DataType VisitStructure(StructureType str)
         {
             //if (visitedTypes.Contains(str))
-            //    return str;
+            //   return str;
             //visitedTypes.Add(str);
             return base.VisitStructure(str);
         }

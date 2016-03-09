@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.Core
         {
         }
 
-        public abstract TypeLibrary Load(Platform platform);
+        public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
     }
 
     public class NullMetadataLoader : MetadataLoader
@@ -45,9 +45,9 @@ namespace Reko.Core
         {
         }
 
-        public override TypeLibrary Load(Platform platform)
+        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
-            return new TypeLibrary();
+            return dstLib;
         }
     }
 }

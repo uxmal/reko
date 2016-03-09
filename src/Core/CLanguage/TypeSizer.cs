@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,6 +64,7 @@ namespace Reko.Core.CLanguage
         {
             return 4;       //$BUGBUG: architecture dependent
         }
+
         public int VisitArray(ArrayType_v1 array)
         {
             return Align(array.ElementType.Accept(this)) * array.Length;
@@ -84,7 +85,7 @@ namespace Reko.Core.CLanguage
             throw new NotImplementedException();
         }
 
-        public int VisitStructure(SerializedStructType structure)
+        public int VisitStructure(StructType_v1 structure)
         {
             var size = 0;
             if (structure.Fields == null)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,24 +20,30 @@
 
 using NUnit.Framework;
 using Reko.Core.CLanguage;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Tools.C2Xml.UnitTests
+namespace Reko.Core.CLanguage.UnitTests
 {
     [TestFixture]
     public class EnumEvaluatorTests
     {
+        private MockRepository mr;
         private EnumEvaluator enev;
         private Dictionary<string, int> constants;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Replay();
             constants = new Dictionary<string, int>();
-            enev = new EnumEvaluator(new CConstantEvaluator(constants));
+            enev = new EnumEvaluator(new CConstantEvaluator(platform, constants));
         }
 
         [Test]

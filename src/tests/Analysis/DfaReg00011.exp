@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO ax bx al bl ah bh es
+// Trashed: SCZO ah al ax bh bl bx eax ebx es rax rbx
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -19,7 +19,7 @@ fn0C00_0000_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO ax bx al bl ah bh es
+// Trashed: SCZO ah al ax bh bl bx eax ebx es rax rbx
 // Preserved: sp
 // fn0C00_0004
 // Return size: 0

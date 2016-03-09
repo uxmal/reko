@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +30,14 @@ namespace Reko.Core
     [Obsolete("Deprecate this in favor of just storing the datatype in the DataType property")]
     public class ImageMapVectorTable : ImageMapItem
     {
-        public ImageMapVectorTable(bool isCallTable, Address[] vector, int size)
+        public ImageMapVectorTable(Address addr, Address[] vector, int size)
         {
-            this.IsCallTable = isCallTable;
+            this.Address = addr;
             this.Addresses = new List<Address>(vector);
+            this.Size = (uint) size;
         }
 
         public Address TableAddress { get; private set; }
         public List<Address> Addresses { get; private set; }
-        public bool IsCallTable { get; private set;}
     }
 }

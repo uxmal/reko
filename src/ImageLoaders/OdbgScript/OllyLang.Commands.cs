@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1195,8 +1195,12 @@ string filename;
                 if (maxsize != 0 && (int)maxsize < memlen)
                     memlen = (int)maxsize;
 
+                var ea = Address.Ptr32((uint)addr);
+                ImageSegment segment;
+                if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                    throw new AccessViolationException();
                 byte[] membuf = new byte[memlen];
-                if (Host.Image.TryReadBytes(Address.Ptr32((uint)addr), memlen, membuf))
+                if (segment.MemoryArea.TryReadBytes(ea, memlen, membuf))
                 {
                     int bytecount = finddata.Length / 2;
 
@@ -1965,8 +1969,8 @@ rulong addr;
                     errorstr = "Second operand bad";
                     return false;
                 }
-                */
                 return true;
+                */
             }
             return false;
         }
@@ -2889,14 +2893,13 @@ string filename;
                 errorstr = "Unsupported command!";
                 return false;
 
-                if (Remote.LoadLibrary(Host.TE_GetProcessHandle(), str, false))
-                {
+                /*
+
                     // $RESULT EAX!!!
                     resumeDebuggee = true;
                     return true;
                 }
 
-                /*
                 ulong fnload;
 
                 SaveRegisters(true);
@@ -3118,7 +3121,7 @@ string filename;
                     {
                         if (maxsize == 0)
                             maxsize = reg.size;
-                        dw = Helper.resize(dw, Math.Min((int)maxsize, (int)reg.size));
+                        dw = Helper.resize(dw, Math.Min((int)maxsize, reg.size));
                         if (reg.size < sizeof(rulong))
                         {
                             rulong oldval, newval;
@@ -3448,7 +3451,11 @@ string param;
                 Debugger.SetContextData(eContextData.UE_CSP, CSP + sizeof(rulong));
                 if (args.Length == 1)
                 {
-                    dw = Host.Image.ReadLeUInt32(Address.Ptr32((uint)CSP));
+                    var ea = Address.Ptr32((uint)CSP);
+                    ImageSegment segment;
+                    if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                        throw new AccessViolationException();
+                    dw = segment.MemoryArea.ReadLeUInt32(ea);
                     return SetRulong(args[0], dw);
                 }
                 return true;
@@ -4186,9 +4193,9 @@ rulong dw1, dw2;
                 }
                 Settracecondition(buffer, 0, 0, 0, 0, 0);
                 Sendshortcut(PM_MAIN, 0, WM_KEYDOWN, 1, 0, VK_F12); 
-                */
                 //back_to_debugloop = true;
                 return true;
+                */
             }
             return false;
         }

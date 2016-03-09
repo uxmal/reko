@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,18 +42,25 @@ namespace Reko.Gui.Commands
         {
             var resultSvc = Services.RequireService<ISearchResultService>();
             var arch = program.Architecture;
-            var image = program.Image;
-            var rdr = program.Architecture.CreateImageReader(program.Image, 0);
-            var addrControl = program.Platform.CreatePointerScanner(
-                program.ImageMap,
-                rdr,
-                addresses,
-                PointerScannerFlags.All);
+            var progAddresses = program.ImageMap.Segments.Values
+                .Where(s => s.MemoryArea != null)
+                .SelectMany(s => GetPointersInSegment(s));
             resultSvc.ShowSearchResults(
                 new AddressSearchResult(
-                    Services, 
-                    addrControl.Select(lin => new ProgramAddress(program, lin)),
+                    Services,
+                    progAddresses,
                     AddressSearchDetails.Code));
+        }
+
+        private IEnumerable<ProgramAddress> GetPointersInSegment(ImageSegment s)
+        {
+            var rdr = s.CreateImageReader(program.Architecture);
+            return program.Platform.CreatePointerScanner(
+                    program.ImageMap,
+                    rdr,
+                    addresses,
+                    PointerScannerFlags.All)
+                    .Select(a => new ProgramAddress(program, a));
         }
     }
 }

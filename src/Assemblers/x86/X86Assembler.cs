@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.Assemblers.x86
         private Dictionary<string, AssembledSegment> mpNameToSegment;
         private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
 
-        public X86Assembler(IServiceProvider services, Platform platform, Address addrBase, List<EntryPoint> entryPoints)
+        public X86Assembler(IServiceProvider services, IPlatform platform, Address addrBase, List<EntryPoint> entryPoints)
         {
             this.services = services;
             this.arch = platform.Architecture;
@@ -76,7 +76,7 @@ namespace Reko.Assemblers.x86
             SetDefaultWordWidth(defaultWordSize);
         }
 
-        public Platform Platform { get; set; }
+        public IPlatform Platform { get; set; }
 
         public Dictionary<Address, ImportReference> ImportReferences
         {
@@ -87,9 +87,14 @@ namespace Reko.Assemblers.x86
         {
             var stm = new MemoryStream();
             LoadSegments(stm);
-            var image = new LoadedImage(addrBase, stm.ToArray());
-            RelocateSegmentReferences(image);
-            return new Program(image, image.CreateImageMap(), arch, Platform);
+            var mem = new MemoryArea(addrBase, stm.ToArray());
+            RelocateSegmentReferences(mem);
+            return new Program(
+                new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
+                arch,
+                Platform);
         }
 
         private void LoadSegments(MemoryStream stm)
@@ -112,7 +117,7 @@ namespace Reko.Assemblers.x86
             }
         }
 
-        private void RelocateSegmentReferences(LoadedImage image)
+        private void RelocateSegmentReferences(MemoryArea image)
         {
             foreach (var seg in segments)
             {
@@ -468,11 +473,11 @@ namespace Reko.Assemblers.x86
             if (regOpDst != null)	//$BUG: what about segment registers?
             {
                 byte reg = RegisterEncoding(regOpDst.Register);
-                if (regOpDst.Register is SegmentRegister)
+                if (IsSegmentRegister(regOpDst.Register))
                 {
                     if (regOpSrc != null)
                     {
-                        if (regOpSrc.Register is SegmentRegister)
+                        if (IsSegmentRegister(regOpSrc.Register ))
                             Error("Cannot assign between two segment registers");
                         if (ops[1].Operand.Width != PrimitiveType.Word16)
                             Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
@@ -489,9 +494,9 @@ namespace Reko.Assemblers.x86
                     }
                 }
 
-                if (regOpSrc != null && regOpSrc.Register is SegmentRegister)
+                if (regOpSrc != null && IsSegmentRegister(regOpSrc.Register))
                 {
-                    if (regOpDst.Register is SegmentRegister)
+                    if (IsSegmentRegister(regOpDst.Register))
                         Error("Cannot assign between two segment registers");
                     if (ops[0].Operand.Width != PrimitiveType.Word16)
                         Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
@@ -540,7 +545,7 @@ namespace Reko.Assemblers.x86
             regOpSrc = ops[1].Operand as RegisterOperand;
             if (regOpSrc != null)
             {
-                if (regOpSrc.Register is SegmentRegister)
+                if (IsSegmentRegister(regOpSrc.Register))
                 {
                     EmitOpcode(0x8C, PrimitiveType.Word16);
                 }
@@ -559,6 +564,17 @@ namespace Reko.Assemblers.x86
                 emitter.EmitLeImmediate(immOpSrc.Value, dataWidth);
             }
         }
+
+        public static bool IsSegmentRegister(RegisterStorage seg)
+        {
+            return seg.Domain == Registers.cs.Domain ||
+                   seg.Domain == Registers.ds.Domain ||
+                   seg.Domain == Registers.es.Domain ||
+                   seg.Domain == Registers.fs.Domain ||
+                   seg.Domain == Registers.gs.Domain ||
+                   seg.Domain == Registers.ss.Domain;
+        }
+
         internal void ProcessMovx(int opcode, ParsedOperand[] ops)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(ops[1]);
@@ -609,8 +625,8 @@ namespace Reko.Assemblers.x86
             RegisterOperand regOp = op.Operand as RegisterOperand;
             if (regOp != null)
             {
-                IntelRegister rrr = (IntelRegister) regOp.Register;
-                if (rrr.IsBaseRegister)
+                var rrr = regOp.Register;
+                if (IsBaseRegister(rrr))
                 {
                     EmitOpcode(0x50 | (fPop ? 8 : 0) | RegisterEncoding(regOp.Register), dataWidth);
                 }
@@ -634,6 +650,12 @@ namespace Reko.Assemblers.x86
 
             EmitOpcode(fPop ? 0x8F : 0xFF, dataWidth);
             EmitModRM(fPop ? 0 : 6, op);
+        }
+
+        private bool IsBaseRegister(RegisterStorage reg)
+        {
+            var r = (int)reg.Domain;
+            return (int)Registers.eax.Domain <= r && r <= (int)Registers.edi.Domain;
         }
 
         internal void ProcessSetCc(byte bits, ParsedOperand op)
@@ -1000,14 +1022,9 @@ namespace Reko.Assemblers.x86
             }
         }
 
-        public static byte RegisterEncoding(byte b)
-        {
-            return registerEncodings[b];
-        }
-
         public static byte RegisterEncoding(RegisterStorage reg)
         {
-            return registerEncodings[reg.Number];
+            return registerEncodings[reg];
         }
 
         public static Constant IntegralConstant(int i, PrimitiveType width)
@@ -1042,41 +1059,42 @@ namespace Reko.Assemblers.x86
             Error(args.Message);
         }
 
-        private static readonly byte[] registerEncodings = 
+        private static readonly Dictionary<RegisterStorage, byte> registerEncodings = 
+            new Dictionary<RegisterStorage, byte>
 		{
-			0x00, // eax
-			0x01, // ecx
-			0x02, // edx
-			0x03, // ebx
-			0x04, // esp
-			0x05, // ebp
-			0x06, // esi
-			0x07, // edi
+			{ Registers.eax, 0x00 },
+			{ Registers.ecx, 0x01 },
+			{ Registers.edx, 0x02 },
+			{ Registers.ebx, 0x03 },
+			{ Registers.esp, 0x04 },
+			{ Registers.ebp, 0x05 },
+			{ Registers.esi, 0x06 },
+			{ Registers.edi, 0x07 },
 
-			0x00, // ax
-			0x01, // cx
-			0x02, // dx
-			0x03, // bx
-			0x04, // sp
-			0x05, // bp
-			0x06, // si
-			0x07, // di
+			{ Registers.ax, 0x00 },
+			{ Registers.cx, 0x01 },
+			{ Registers.dx, 0x02 },
+			{ Registers.bx, 0x03 },
+			{ Registers.sp, 0x04 },
+			{ Registers.bp, 0x05 },
+			{ Registers.si, 0x06 },
+			{ Registers.di, 0x07 },
 
-			0x00, // al
-			0x01, // cl
-			0x02, // dl
-			0x03, // bl
-			0x04, // ah
-			0x05, // ch
-			0x06, // dh
-			0x07, // bh
+			{ Registers.al, 0x00 },
+			{ Registers.cl, 0x01 },
+			{ Registers.dl, 0x02 },
+			{ Registers.bl, 0x03 },
+			{ Registers.ah, 0x04 },
+			{ Registers.ch, 0x05 },
+			{ Registers.dh, 0x06 },
+			{ Registers.bh, 0x07 },
 
-			0x00, // es
-			0x01, // cs
-			0x02, // ss
-			0x03, // ds
-			0x04, // fs
-			0x05, // gs
+			{ Registers.es, 0x00 },
+			{ Registers.cs, 0x01 },
+			{ Registers.ss, 0x02 },
+			{ Registers.ds, 0x03 },
+			{ Registers.fs, 0x04 },
+			{ Registers.gs, 0x05 },
 		};
         private Encoding textEncoding;
 
@@ -1298,7 +1316,7 @@ namespace Reko.Assemblers.x86
             ProcessBinop(0x02, op1, op2);
         }
 
-        public void Add(IntelRegister reg, int constant)
+        public void Add(RegisterStorage reg, int constant)
         {
             ProcessBinop(
                 0x00,
@@ -2036,7 +2054,7 @@ namespace Reko.Assemblers.x86
             return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
         }
 
-        public ParsedOperand MemW(SegmentRegister seg, RegisterStorage @base, int offset)
+        public ParsedOperand MemW(RegisterStorage seg, RegisterStorage @base, int offset)
         {
             var mem = new MemoryOperand(PrimitiveType.Word16);
             mem.Base = @base;
@@ -2076,7 +2094,7 @@ namespace Reko.Assemblers.x86
             return Mem(PrimitiveType.Byte, null, @base, null, 1, offset);
         }
 
-        public ParsedOperand MemW(SegmentRegister seg, RegisterStorage @base, string offset)
+        public ParsedOperand MemW(RegisterStorage seg, RegisterStorage @base, string offset)
         {
             return Mem(PrimitiveType.Word16, seg, @base, null, 1, offset);
         }
@@ -2103,7 +2121,7 @@ namespace Reko.Assemblers.x86
 
         private ParsedOperand Mem(
             PrimitiveType width, 
-            SegmentRegister seg, 
+            RegisterStorage seg, 
             RegisterStorage @base,  
             RegisterStorage index, 
             int scale, 

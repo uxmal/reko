@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,11 +50,6 @@ namespace Reko.Core.Serialization
             this.Size = size;
             this.Domain = domain;
             this.Name = p;
-        }
-
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            return factory.CreateEnum(Size, Domain, Name, Values);
         }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)

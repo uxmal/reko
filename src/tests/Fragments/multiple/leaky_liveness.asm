@@ -1,3 +1,8 @@
+;;; leaky_liveness.asm
+;;;
+;;; Illustrates a procedure (`dequeue`) that leaks
+;;; ax as live-out, in additional the carry flag (CF)
+
 .i86
 
 main proc
@@ -8,6 +13,8 @@ main proc
 done:
 	ret
 	endp
+
+;;; This procedure has no live-in parameters.
 	
 dequeue proc
 	mov si,[0x100]

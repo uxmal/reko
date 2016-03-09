@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Loading
         private IConfigurationService cfgSvc;
         private List<SignatureFileElement> signatureFiles;
         private IProcessorArchitecture x86arch;
-        private Platform msdosPlatform;
+        private IPlatform msdosPlatform;
         private byte[] testImage;
 
         [SetUp]
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Loading
             Program prog = ldr.LoadExecutable("", testImage, null);
 
             Assert.AreEqual("WarningDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
-            Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
+            Assert.AreEqual(0, prog.ImageMap.BaseAddress.Offset);
             Assert.IsNull(prog.Architecture);
             Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
             mr.VerifyAll();
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Loading
             Program prog = ldr.LoadExecutable("", testImage, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
-            Assert.AreEqual("0C00:0100", prog.Image.BaseAddress.ToString());
+            Assert.AreEqual("0C00:0100", prog.ImageMap.BaseAddress.ToString());
             Assert.AreSame(x86arch, prog.Architecture);
             Assert.AreSame(msdosPlatform, prog.Platform);
             mr.VerifyAll();
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Loading
         {
             this.x86arch = mr.Stub<IProcessorArchitecture>();
             var env = mr.Stub<OperatingEnvironment>();
-            this.msdosPlatform = mr.Stub<Platform>(sc, x86arch);
+            this.msdosPlatform = mr.Stub<IPlatform>();
             var state = mr.Stub<ProcessorState>();
             var rawFile = new RawFileElementImpl
             {

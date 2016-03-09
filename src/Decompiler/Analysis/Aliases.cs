@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ namespace Reko.Analysis
 			}
 		}
 
-		/// We've encountered a variable that is defined. We must generate an
+		// We've encountered a variable that is defined. We must generate an
 		// alias statement for all aliased variables.
 		private void Def(Identifier idar)
 		{
@@ -277,11 +277,11 @@ namespace Reko.Analysis
     public class AliasDeadVariableMarker : StorageVisitor<Storage>
     {
         private Identifier idCur;
-        private BitSet liveRegs;
+        private HashSet<RegisterStorage> liveRegs;
         private uint liveGrf;
         private HashSet<Identifier> liveVars;
 
-        public AliasDeadVariableMarker(BitSet regs, uint grfLive)
+        public AliasDeadVariableMarker(HashSet<RegisterStorage> regs, uint grfLive)
         {
             this.liveRegs = regs;
             this.liveGrf = grfLive;
@@ -357,7 +357,7 @@ namespace Reko.Analysis
 
         public Storage VisitRegisterStorage(RegisterStorage reg)
         {
-            if (liveRegs[reg.Number])
+            if (liveRegs.Contains(reg))
                 liveVars.Add(idCur);
             else 
                 liveVars.Remove(idCur);

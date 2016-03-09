@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,14 @@ namespace Reko.Scanning
 {
     public class PromoteBlockWorkItem : WorkItem
     {
-        public Address Address;
         public Block Block;
         public Procedure ProcNew;
         public IScanner Scanner;
         public Program Program;
+
+        public PromoteBlockWorkItem(Address addr) : base(addr)
+        {
+        }
 
         public override void Process()
         {

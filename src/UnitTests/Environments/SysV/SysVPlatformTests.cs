@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,8 @@ namespace Reko.UnitTests.Environments.SysV
             var cfgSvc = mr.Stub<IConfigurationService>();
             sc.AddService<IConfigurationService>(cfgSvc);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            cfgSvc.Stub(c => c.GetInstallationRelativePath("libc.xml"))
+                .Return("libc.xml");
             cfgSvc.Stub(c => c.GetEnvironment(null))
                 .IgnoreArguments()
                 .Return(new OperatingEnvironmentElement
@@ -79,7 +81,7 @@ namespace Reko.UnitTests.Environments.SysV
                         }
                     }
                 });
-            tlSvc.Stub(t => t.LoadLibrary(null, null))
+            tlSvc.Stub(t => t.LoadMetadataIntoLibrary(null, null, null))
                 .IgnoreArguments()
                 .Return(new TypeLibrary
                 {

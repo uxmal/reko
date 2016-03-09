@@ -40,22 +40,22 @@ fn0C00_0037_exit:
 // Equivalence classes ////////////
 Eq_1: (ptr (struct))
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (ptr (fn T_10 (T_7, T_8, T_9)))
-	T_2 (in fn0C00_0010 : ptr32)
-	T_3 (in signature of fn0C00_0010 : void)
-Eq_4: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
-	T_4 (in ds : selector)
-	T_7 (in ds : selector)
+Eq_2: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
+	T_2 (in ds : selector)
+	T_5 (in ds : selector)
 	T_13 (in ds : selector)
-Eq_5: word16
-	T_5 (in wArg02 : word16)
-	T_8 (in 0x0300 : word16)
+Eq_3: (ptr (fn T_10 (T_2, T_8, T_9)))
+	T_3 (in fn0C00_0010 : ptr32)
+	T_4 (in signature of fn0C00_0010 : void)
 Eq_6: word16
-	T_6 (in wArg04 : word16)
+	T_6 (in wArg02 : word16)
+	T_8 (in 0x0300 : word16)
+Eq_7: word16
+	T_7 (in wArg04 : word16)
 	T_9 (in 0x0320 : word16)
 Eq_10: void
 	T_10 (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
-Eq_11: (ptr (fn T_14 (T_7)))
+Eq_11: (ptr (fn T_14 (T_2)))
 	T_11 (in fn0C00_0037 : ptr32)
 	T_12 (in signature of fn0C00_0037 : void)
 Eq_14: void
@@ -63,7 +63,7 @@ Eq_14: void
 Eq_15: real64
 	T_15 (in rLoc1_10 : real64)
 	T_19 (in Mem0[ds:wArg02 + 0x0000:real64] : real64)
-Eq_16: (memptr T_4 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
+Eq_16: (memptr T_5 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
 	T_16 (in wArg02 : word16)
 Eq_17: word16
 	T_17 (in 0x0000 : word16)
@@ -94,7 +94,7 @@ Eq_31: real64
 Eq_32: real64
 	T_32 (in rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 + rLoc2_15 * rLoc2_15 : real64)
 	T_36 (in Mem20[ds:wArg04 + 0x0000:real64] : real64)
-Eq_33: (memptr T_4 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
+Eq_33: (memptr T_5 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
 	T_33 (in wArg04 : word16)
 Eq_34: word16
 	T_34 (in 0x0000 : word16)
@@ -130,36 +130,36 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct))
   OrigDataType: (ptr (struct))
-T_2: (in fn0C00_0010 : ptr32)
+T_2: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr (fn T_10 (T_7, T_8, T_9)))
-  OrigDataType: (ptr (fn T_10 (T_7, T_8, T_9)))
-T_3: (in signature of fn0C00_0010 : void)
-  Class: Eq_2
-  DataType: (ptr (fn T_10 (T_7, T_8, T_9)))
-  OrigDataType: 
-T_4: (in ds : selector)
-  Class: Eq_4
   DataType: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
   OrigDataType: (ptr (segment))
-T_5: (in wArg02 : word16)
-  Class: Eq_5
-  DataType: word16
-  OrigDataType: word16
-T_6: (in wArg04 : word16)
+T_3: (in fn0C00_0010 : ptr32)
+  Class: Eq_3
+  DataType: (ptr (fn T_10 (T_2, T_8, T_9)))
+  OrigDataType: (ptr (fn T_10 (T_2, T_8, T_9)))
+T_4: (in signature of fn0C00_0010 : void)
+  Class: Eq_3
+  DataType: (ptr (fn T_10 (T_2, T_8, T_9)))
+  OrigDataType: 
+T_5: (in ds : selector)
+  Class: Eq_2
+  DataType: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
+  OrigDataType: (ptr (segment))
+T_6: (in wArg02 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
-  OrigDataType: (ptr (segment))
+T_7: (in wArg04 : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
 T_8: (in 0x0300 : word16)
-  Class: Eq_5
+  Class: Eq_6
   DataType: word16
   OrigDataType: word16
 T_9: (in 0x0320 : word16)
-  Class: Eq_6
+  Class: Eq_7
   DataType: word16
   OrigDataType: word16
 T_10: (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
@@ -168,14 +168,14 @@ T_10: (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
   OrigDataType: void
 T_11: (in fn0C00_0037 : ptr32)
   Class: Eq_11
-  DataType: (ptr (fn T_14 (T_7)))
-  OrigDataType: (ptr (fn T_14 (T_7)))
+  DataType: (ptr (fn T_14 (T_2)))
+  OrigDataType: (ptr (fn T_14 (T_2)))
 T_12: (in signature of fn0C00_0037 : void)
   Class: Eq_11
-  DataType: (ptr (fn T_14 (T_7)))
+  DataType: (ptr (fn T_14 (T_2)))
   OrigDataType: 
 T_13: (in ds : selector)
-  Class: Eq_4
+  Class: Eq_2
   DataType: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
   OrigDataType: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
 T_14: (in fn0C00_0037(ds) : void)
@@ -188,8 +188,8 @@ T_15: (in rLoc1_10 : real64)
   OrigDataType: real64
 T_16: (in wArg02 : word16)
   Class: Eq_16
-  DataType: (memptr T_4 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
-  OrigDataType: (memptr T_4 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
+  DataType: (memptr T_5 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
+  OrigDataType: (memptr T_5 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
 T_17: (in 0x0000 : word16)
   Class: Eq_17
   DataType: word16
@@ -256,8 +256,8 @@ T_32: (in rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 + rLoc2_15 * rLoc2_15 : real
   OrigDataType: real64
 T_33: (in wArg04 : word16)
   Class: Eq_33
-  DataType: (memptr T_4 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
-  OrigDataType: (memptr T_4 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
+  DataType: (memptr T_5 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
+  OrigDataType: (memptr T_5 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
 T_34: (in 0x0000 : word16)
   Class: Eq_34
   DataType: word16

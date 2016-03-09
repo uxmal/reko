@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.Core
             this.ModuleName = moduleName;
         }
   
-        public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, Platform platform, AddressContext ctx);
+        public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
     }
 
     public class NamedImportReference : ImportReference
@@ -52,24 +52,19 @@ namespace Reko.Core
 
         public override ExternalProcedure ResolveImportedProcedure(
             IImportResolver resolver, 
-            Platform platform, 
+            IPlatform platform, 
             AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
             if (ep != null)
                 return ep;
             // Can we guess at the signature?
-            var sig = platform.SignatureFromName(ImportName);
-            if (sig != null)
-            {
-                ep = new ExternalProcedure(ImportName, sig);   //$BUGBUG: mangled name!
-            }
-            else
-            {
-                ctx.Warn("Unable to resolve imported reference {0}.", this);
-                return new ExternalProcedure(this.ToString(), null);
-            }
-            return ep;
+            ep = platform.SignatureFromName(ImportName);
+            if (ep != null)
+                return ep;
+            
+            ctx.Warn("Unable to resolve imported reference {0}.", this);
+            return new ExternalProcedure(this.ToString(), null);
         }
 
         public override string ToString()
@@ -91,7 +86,7 @@ namespace Reko.Core
             this.Ordinal = ordinal;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform, AddressContext ctx)
+        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, IPlatform platform, AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, Ordinal, platform);
             if (ep != null)

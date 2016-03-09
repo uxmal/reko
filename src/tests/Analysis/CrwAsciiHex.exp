@@ -1,7 +1,7 @@
 void fn0C00_0000(Register byte al, Register selector ds)
 // MayUse:  al ds
 // LiveOut:
-// Trashed: SCZO ax al
+// Trashed: SCZO al ax eax rax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -30,7 +30,7 @@ fn0C00_0000_exit:
 FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // MayUse:  al
 // LiveOut: C al
-// Trashed: SCZO ax al
+// Trashed: SCZO al ax eax rax
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0

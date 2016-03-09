@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,12 +49,17 @@ namespace Reko.Arch.Z80
             return new Z80Disassembler(imageReader);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -70,11 +75,6 @@ namespace Reko.Arch.Z80
         }
 
         public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
@@ -102,6 +102,40 @@ namespace Reko.Arch.Z80
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (offset == 0 && reg.BitSize == (ulong)width)
+                return reg;
+            Dictionary<uint, RegisterStorage> dict;
+            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
+                return null;
+            RegisterStorage subReg;
+            if (!dict.TryGetValue((uint)(offset + width * 16), out subReg))
+                return null;
+            return subReg;
+        }
+
+        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
+        {
+            ulong mask = regs.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            Dictionary<uint, RegisterStorage> subregs;
+            if ((mask & reg.BitMask) == reg.BitMask)
+                return reg;
+            RegisterStorage rMax = null;
+            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
+            {
+                foreach (var subreg in subregs.Values)
+                {
+                    if ((subreg.BitMask & mask) == subreg.BitMask &&
+                        (rMax == null || subreg.BitSize > rMax.BitSize))
+                    {
+                        rMax = subreg;
+                    }
+                }
+            }
+            return rMax;
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
@@ -146,70 +180,36 @@ namespace Reko.Arch.Z80
         }
     }
 
-    public abstract class Z80Register : RegisterStorage
-    {
-        public readonly int FileSlot;
-        
-        public Z80Register(string name, int id, int fileSlot, PrimitiveType dataType) :
-            base(name, id, dataType)
-        {
-            this.FileSlot = fileSlot;
-        }
-    }
-
-    public class LowByteRegister : Z80Register
-    {
-        public LowByteRegister(string name, int id, int fileSlot) :
-            base(name, id, fileSlot,PrimitiveType.Byte)
-        {
-        }
-    }
-
-    public class HighByteRegister : Z80Register
-    {
-        public HighByteRegister(string name, int id, int fileSlot) :
-            base(name, id, fileSlot, PrimitiveType.Byte)
-        {
-        }
-    }
-
-    public class WordRegister : Z80Register
-    {
-        public WordRegister(string name, int id, int fileSlot) : 
-            base(name, id, fileSlot, PrimitiveType.Word16)
-        {
-        }
-    }
-
     public static class Registers
     {
-        public static readonly Z80Register b = new HighByteRegister("b", 0, 1);
-        public static readonly Z80Register c = new LowByteRegister("c", 1, 1);
-        public static readonly Z80Register d = new HighByteRegister("d", 2, 2);
-        public static readonly Z80Register e = new LowByteRegister("e", 3, 2);
-        public static readonly Z80Register h = new HighByteRegister("h", 4, 3);
-        public static readonly Z80Register l = new LowByteRegister("l", 5, 3);
-        public static readonly Z80Register a = new LowByteRegister("a", 7, 0);
+        public static readonly RegisterStorage b = new RegisterStorage("b", 1, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage c = new RegisterStorage("c", 1, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage d = new RegisterStorage("d", 2, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage e = new RegisterStorage("e", 2, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage h = new RegisterStorage("h", 3, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 0, PrimitiveType.Byte);
 
-        public static readonly Z80Register bc = new WordRegister("bc", 8,  1);
-        public static readonly Z80Register de = new WordRegister("de", 9,  2);
-        public static readonly Z80Register hl = new WordRegister("hl", 10, 3);
-        public static readonly Z80Register sp = new WordRegister("sp", 11, 4);
-        public static readonly Z80Register ix = new WordRegister("ix", 12, 5);
-        public static readonly Z80Register iy = new WordRegister("iy", 13, 6);
-        public static readonly Z80Register af = new WordRegister("af", 14, 0);
+        public static readonly RegisterStorage bc = new RegisterStorage("bc", 1, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage de = new RegisterStorage("de", 2, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage hl = new RegisterStorage("hl", 3, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage sp = new RegisterStorage("sp", 4, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage ix = new RegisterStorage("ix", 5, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage iy = new RegisterStorage("iy", 6, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage af = new RegisterStorage("af", 0, 0, PrimitiveType.Word16);
 
         public static readonly FlagRegister f = new FlagRegister("f", PrimitiveType.Byte);
 
-        public static readonly RegisterStorage i = new LowByteRegister("i", 16, 7);
-        public static readonly RegisterStorage r = new LowByteRegister("r", 17, 8);
+        public static readonly RegisterStorage i = new RegisterStorage("i", 8, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage r = new RegisterStorage("r", 9, 0, PrimitiveType.Byte);
 
-        public static readonly RegisterStorage S = new RegisterStorage("S", 20, PrimitiveType.Bool);
-        public static readonly RegisterStorage Z = new RegisterStorage("Z", 21, PrimitiveType.Bool);
-        public static readonly RegisterStorage P = new RegisterStorage("P", 22, PrimitiveType.Bool);
-        public static readonly RegisterStorage C = new RegisterStorage("C", 23, PrimitiveType.Bool);
+        public static readonly RegisterStorage S = new RegisterStorage("S", 20, 0, PrimitiveType.Bool);
+        public static readonly RegisterStorage Z = new RegisterStorage("Z", 21, 0, PrimitiveType.Bool);
+        public static readonly RegisterStorage P = new RegisterStorage("P", 22, 0, PrimitiveType.Bool);
+        public static readonly RegisterStorage C = new RegisterStorage("C", 23, 0, PrimitiveType.Bool);
 
         internal static RegisterStorage[] All;
+        internal static Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters;
 
         static Registers()
         {
@@ -242,6 +242,33 @@ namespace Reko.Arch.Z80
              Z ,
              P ,
              C ,
+            };
+
+            SubRegisters = new Dictionary<
+                RegisterStorage, 
+                Dictionary<uint, RegisterStorage>>
+            {
+                {
+                    bc, new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x08, Registers.c },
+                        { 0x88, Registers.b },
+                    }
+                },
+                {
+                    de, new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x08, Registers.e },
+                        { 0x88, Registers.d },
+                    }
+                },
+                {
+                    hl, new Dictionary<uint, RegisterStorage>
+                    {
+                        { 0x08, Registers.l },
+                        { 0x88, Registers.h },
+                    }
+                }
             };
         }
 

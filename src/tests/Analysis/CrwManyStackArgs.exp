@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -37,8 +37,8 @@ fn0C00_0000_exit:
 Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 // MayUse: 
 // LiveOut: ax
-// Trashed: SCZO ax al ah
-// Preserved: sp bp
+// Trashed: SCZO ah al ax eax rax
+// Preserved: bp sp
 // Stack args: Stack +0002(16) Stack +0004(16) Stack +0006(16)
 // fn0C00_0011
 // Return size: 0

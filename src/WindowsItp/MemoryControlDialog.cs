@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,22 +41,18 @@ namespace Reko.WindowsItp
         {
             if (chkShowData.Checked)
             {
-                var img = new LoadedImage(Address.Ptr32(0x00100000), new byte[2560]);
+                var img = new MemoryArea(Address.Ptr32(0x00100000), new byte[2560]);
                 var imgMap = new ImageMap(img.BaseAddress, img.Length);
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100000), new ImageMapBlock { Size = 30 });
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100100), new ImageMapBlock { Size = 300 });
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100500), new ImageMapBlock { Size = 600 });
-                memoryControl1.ProgramImage = img;
                 memoryControl1.Architecture = new X86ArchitectureFlat32();
 
-                imageMapView1.Image = img;
                 imageMapView1.ImageMap = imgMap;
             }
             else
             {
-                memoryControl1.ProgramImage = null;
                 memoryControl1.Architecture = null;
-
             }
         }
     }

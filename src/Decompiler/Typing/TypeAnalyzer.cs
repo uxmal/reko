@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.Typing
         private TypeVariableReplacer tvr;
 		private TypeTransformer trans;
 		private ComplexTypeNamer ctn;
-		private TypedExpressionRewriter2 ter;
+		private TypedExpressionRewriter ter;
 
 		public TypeAnalyzer(DecompilerEventListener eventListener)
 		{
@@ -85,7 +85,7 @@ namespace Reko.Typing
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,program, eventListener);
             ctn = new ComplexTypeNamer();
-            ter = new TypedExpressionRewriter2(program);
+            ter = new TypedExpressionRewriter(program);
 
             // RestrictProcedures(program, 0, 1, true); // Re-enable this for debugging
             eventListener.ShowStatus("Gathering primitive datatypes from instructions.");
@@ -99,6 +99,7 @@ namespace Reko.Typing
 #else
             eventListener.ShowStatus("Collecting data types");
             tyco.CollectTypes();
+            store.BuildEquivalenceClassDataTypes(factory);
 #endif
             //dpa.FollowConstantPointers(prog);
             tvr.ReplaceTypeVariables();

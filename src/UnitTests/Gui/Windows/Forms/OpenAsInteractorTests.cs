@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IOpenAsDialog dlg;
         private ListOption[] archNames;
         private ListOption[] platformNames;
+        private ListOption[] rawFileNames;
         private IConfigurationService dcSvc;
+        private IComboBox ddlRawFiles;
         private IComboBox ddlPlatform;
         private IComboBox ddlArchitecture;
         private ServiceContainer sc;
@@ -58,8 +60,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void OaiLoad()
         {
             Given_Dialog();
+            Given_RawFiles();
             Given_Platforms();
             Given_Architectures();
+            Expect_RawFilesDatasourceSet();
             Expect_PlatformDataSourceSet();
             Expect_ArchDatasourceSet();
             mr.ReplayAll();
@@ -72,9 +76,21 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
+            Assert.AreEqual("(Unknown)", rawFileNames[0].Text);
+            Assert.IsNull(rawFileNames[0].Value);
             Assert.AreEqual("(None)", platformNames[0].Text);
             Assert.AreEqual("0", dlg.AddressTextBox.Text);
             mr.VerifyAll();
+        }
+
+        private void Expect_RawFilesDatasourceSet()
+        {
+            ddlRawFiles= mr.StrictMock<IComboBox>();
+            ddlRawFiles.Expect(d => d.DataSource = null)
+                .IgnoreArguments()
+                .WhenCalled(m => { this.rawFileNames = ((IEnumerable)m.Arguments[0]).OfType<ListOption>().ToArray(); });
+            dlg.Expect(d => d.RawFileTypes).Return(ddlRawFiles);
+            ddlRawFiles.Stub(d => d.TextChanged += null).IgnoreArguments();
         }
 
         private void Expect_ArchDatasourceSet()
@@ -134,13 +150,23 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Stub(d => d.GetEnvironments()).Return(new List<OperatingEnvironment> { env1 });
         }
 
+        private void Given_RawFiles()
+        {
+            var raw1 = mr.Stub<RawFileElement>();
+            raw1.Name = "RawFile1";
+            raw1.Description = "First kind of raw file";
+
+            dcSvc.Stub(d => d.GetRawFiles()).Return(new List<RawFileElement> { raw1 });
+        }
 
         [Test]
         public void Oai_OkPressed_ReturnSelectedThings()
         {
             Given_Dialog();
+            Given_RawFiles();
             Given_Platforms();
             Given_Architectures();
+            Expect_RawFilesDatasourceSet();
             Expect_PlatformDataSourceSet();
             Expect_ArchDatasourceSet();
             mr.ReplayAll();
@@ -167,8 +193,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Oai_NoFileSelected_OkDisabled()
         {
             Given_Dialog();
+            Given_RawFiles();
             Given_Platforms();
             Given_Architectures();
+            Expect_RawFilesDatasourceSet();
             Expect_PlatformDataSourceSet();
             Expect_ArchDatasourceSet();
             mr.ReplayAll();
@@ -182,13 +210,14 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-
         [Test]
         public void Oai_AddressSelected_OkDisabled()
         {
             Given_Dialog();
+            Given_RawFiles();
             Given_Platforms();
             Given_Architectures();
+            Expect_RawFilesDatasourceSet();
             Expect_PlatformDataSourceSet();
             Expect_ArchDatasourceSet();
             mr.ReplayAll();

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sourceFilename, string outFilename)
         {
-            RunTest16(sourceFilename, outFilename, Address.SegPtr(0xC00, 0));
+            RunTestMsdos(sourceFilename, outFilename, Address.SegPtr(0xC00, 0));
         }
 
         private void RunTest(ProcedureBuilder mock, string outFilename)
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Structure
             }
         }
 
-        private void RunTest16(string sourceFilename, string outFilename, Address addrBase)
+        private void RunTestMsdos(string sourceFilename, string outFilename, Address addrBase)
         {
             using (FileUnitTester fut = new FileUnitTester(outFilename))
             {
@@ -282,8 +282,9 @@ ret
         [Test]
         public void StrReg00001()
         {
-            var program = RewriteX86_32Fragment(Fragments.Regressions.Reg00001.Text,
-    Address.Ptr32(0x00100000));
+            var program = RewriteX86_32Fragment(
+                Fragments.Regressions.Reg00001.Text,
+                Address.Ptr32(0x00100000));
             var sExp =
 @"void fn00100000()
 {

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.UnitTests.Gui.Windows
 	public class MruListTests
 	{
 		[Test]
-		public void Add()
+		public void Mru_Add()
 		{
 			MruList m = new MruList(2);
             m.Use("Hiz");

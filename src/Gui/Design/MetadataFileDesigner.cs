@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +34,12 @@ namespace Reko.Gui.Design
         {
             base.Initialize(obj);
             var mf = (MetadataFile)obj;
-            if (mf.TypeLibrary != null)
-                Host.AddComponents(obj, mf.TypeLibrary.ServicesByName.Values);
             SetTreeNodeProperties(mf);
         }
 
         public void SetTreeNodeProperties(MetadataFile mf)
         {
-            TreeNode.Text = Path.GetFileName(mf.ModuleName);
+            TreeNode.Text = Path.GetFileName(mf.Filename);
             TreeNode.ImageName = "typelib.ico";
         }
     }

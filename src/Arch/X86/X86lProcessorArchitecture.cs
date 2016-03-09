@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +19,15 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.Serialization;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-//using System.Reflection;
 using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
-
-using BitSet = Reko.Core.Lib.BitSet;
-using Reko.Core.Lib;
 
 namespace Reko.Arch.X86
 {
@@ -94,12 +85,17 @@ namespace Reko.Arch.X86
             return mode.CreateDisassembler(imageReader);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -109,14 +105,30 @@ namespace Reko.Arch.X86
             return new X86InstructionComparer(norm);
         }
 
-		public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
+        {
+            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            Dictionary<uint, RegisterStorage> subregs;
+            if ((mask & reg.BitMask) == reg.BitMask)
+                return reg;
+                RegisterStorage rMax = null;
+            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
+            {
+                foreach (var subreg in subregs.Values)
+                {
+                    if ((subreg.BitMask & mask) == subreg.BitMask &&
+                        (rMax == null || subreg.BitSize > rMax.BitSize))
+                    {
+                        rMax = subreg;
+                    }
+                }
+            }
+            return rMax;
+        }
+
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
 		{
             return CreateDisassemblerImpl(imageReader);
-		}
-
-        public override BitSet CreateRegisterBitset()
-		{
-			return new BitSet((int) Registers.Max);
 		}
 
 		public override ProcessorState CreateProcessorState()
@@ -129,9 +141,9 @@ namespace Reko.Arch.X86
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            return mode.CreateInstructionScanner(map, rdr, knownLinAddresses, flags);
+            return mode.CreateInstructionScanner(map, rdr, knownAddresses, flags);
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -199,9 +211,39 @@ namespace Reko.Arch.X86
 			return r;
 		}
 
+        public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
+        {
+            return Registers.All.Where(r => r != null && r.OverlapsWith(reg));
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (offset == 0 && reg.BitSize == (ulong) width)
+                return reg;
+            Dictionary<uint, RegisterStorage> dict;
+            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
+                return null;
+            RegisterStorage subReg;
+            if (!dict.TryGetValue((uint)(offset * 256 + width), out subReg))
+                return null;
+            return subReg;
+        }
+
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.All.Where(a => a != null).ToArray();
+        }
+
+        public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
+        {
+            foreach (var rAlias in GetAliases(reg))
+            {
+                ids.Remove(rAlias);
+                if (reg.BitAddress > 0 && rAlias.BitSize == 16)
+                {
+                    ids.Add(GetSubregister(rAlias, 0, 8));
+                }
+            }
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
@@ -238,6 +280,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureReal()
             : base(ProcessorMode.Real)
         {
+            this.Name = "x86-real-16";
         }
     }
 
@@ -246,6 +289,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureProtected16()
             : base(ProcessorMode.ProtectedSegmented)
         {
+            this.Name = "x86-protected-16";
         }
     }
 
@@ -254,6 +298,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureFlat32()
             : base(ProcessorMode.Protected32)
         {
+            this.Name = "x86-protected-32";
         }
     }
 
@@ -262,6 +307,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureFlat64()
             : base(ProcessorMode.Protected64)
         {
+            this.Name = "x86-protected-64";
         }
     }
 }

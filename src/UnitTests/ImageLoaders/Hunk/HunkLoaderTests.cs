@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
             cfgSvc.Stub(c => c.GetArchitecture("m68k")).Return(new M68kArchitecture());
             opEnv.Stub(o => o.Load(null, null))
                 .IgnoreArguments()
-                .Do(new Func<IServiceProvider, IProcessorArchitecture, Platform>((sp, arch) =>
+                .Do(new Func<IServiceProvider, IProcessorArchitecture, IPlatform>((sp, arch) =>
                 new AmigaOSPlatform(sp, arch)));
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc);

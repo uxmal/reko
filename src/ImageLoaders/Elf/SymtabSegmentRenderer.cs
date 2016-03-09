@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class SymtabSegmentRenderer32 : ImageMapSegmentRenderer
+    public class SymtabSegmentRenderer32 : ImageSegmentRenderer
     {
         private ElfImageLoader loader;
         private Elf32_SHdr shdr;
@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.Elf
             this.shdr = shdr;
         }
 
-        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             var entries = shdr.sh_size / shdr.sh_entsize;
             var symtab = (int)shdr.sh_link;
@@ -72,7 +72,7 @@ namespace Reko.ImageLoaders.Elf
 
     }
 
-    public class SymtabSegmentRenderer64 : ImageMapSegmentRenderer
+    public class SymtabSegmentRenderer64 : ImageSegmentRenderer
     {
         private ElfImageLoader loader;
         private Elf64_SHdr shdr;
@@ -83,7 +83,7 @@ namespace Reko.ImageLoaders.Elf
             this.shdr = shdr;
         }
 
-        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             var entries = (int)shdr.sh_size / (int) shdr.sh_entsize;
             var symtab = (int) shdr.sh_link;

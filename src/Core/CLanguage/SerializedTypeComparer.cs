@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ namespace Reko.Core.CLanguage
             var arr = obj as ArrayType_v1;
             if (arr != null)
                 return hash ^ GetHashCode(arr.ElementType);
-            var str = obj as SerializedStructType;
+            var str = obj as StructType_v1;
             if (str != null)
                 return hash ^ (str.Name != null ? str.Name.GetHashCode() : 0);
             var uni = obj as UnionType_v1;
@@ -115,9 +115,9 @@ namespace Reko.Core.CLanguage
             throw new NotImplementedException();
         }
 
-        public bool VisitStructure(SerializedStructType sX)
+        public bool VisitStructure(StructType_v1 sX)
         {
-            var sY = (SerializedStructType) y;
+            var sY = (StructType_v1) y;
             return sX.Name == sY.Name && sX.Name != null;
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BitSet = Reko.Core.Lib.BitSet;
 using Expression = Reko.Core.Expressions.Expression;
 using IProcessorArchitecture = Reko.Core.IProcessorArchitecture;
 using SortedList = System.Collections.SortedList;
@@ -43,7 +43,7 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, BitSet regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, HashSet<RegisterStorage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			if (grfFlags != 0)
@@ -53,7 +53,7 @@ namespace Reko.Analysis
 			EmitRegistersCore(arch, regs, sb);
 		}
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, BitSet regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<RegisterStorage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			EmitRegistersCore(arch, regs, sb);
@@ -68,23 +68,13 @@ namespace Reko.Analysis
             }
         }
         
-		private static void EmitRegistersCore(IProcessorArchitecture arch, BitSet regs, TextWriter sb)
+		private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<RegisterStorage> regs, TextWriter sb)
 		{
-			if (regs != null && !regs.IsEmpty)
-			{
-				for (int i = 0; i < regs.Count; ++i)
-				{
-					if (regs[i])
-					{
-						var r = arch.GetRegister(i);
-						if (r != null && r.IsAluRegister)
-						{
-							sb.Write(" ");
-							sb.Write(r.Name);
-						}
-					}
-				}
-			}
+            foreach (var reg in regs.OrderBy(r => r.Name))
+            {
+                sb.Write(" ");
+                sb.Write(reg.Name);
+            }
 		}
 
         public void EmitFlagGroup(IProcessorArchitecture arch, string caption, uint grfFlags, TextWriter sb)
@@ -93,7 +83,7 @@ namespace Reko.Analysis
             sb.Write(" {0}", arch.GrfToString(grfFlags));
         }
 
-		public string EmitRegisters(IProcessorArchitecture arch, string caption, BitSet regs)
+		public string EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<RegisterStorage> regs)
 		{
 			StringWriter sw = new StringWriter();
 			EmitRegisters(arch, caption, regs, sw);

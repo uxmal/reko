@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.Arch.PowerPC
         {
             if (ss == null)
                 return null;
-            var argser = new ArgumentSerializer(this, Architecture, frame, ss.Convention);
+            var argser = new ArgumentDeserializer(this, Architecture, frame, 0);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)
@@ -73,11 +73,11 @@ namespace Reko.Arch.PowerPC
             return sig;
         }
 
-        private Identifier DeserializeArgument(ArgumentSerializer argser, Argument_v1 sArg)
+        private Identifier DeserializeArgument(ArgumentDeserializer argser, Argument_v1 sArg)
         {
             Identifier arg;
             if (sArg.Kind != null)
-                return sArg.Kind.Accept(argser);
+                return argser.Deserialize(sArg);
 
             var dtArg = sArg.Type.Accept(TypeLoader);
             var prim = dtArg as PrimitiveType;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.X86
 {
-	/// <summary>
-	/// Models an X86 instruction.
-	/// </summary>
-	public class X86Instruction : MachineInstruction
+    /// <summary>
+    /// Models an X86 instruction.
+    /// </summary>
+    public class X86Instruction : MachineInstruction
 	{
         private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
         private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;

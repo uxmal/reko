@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ namespace Reko.Analysis
         Procedure proc;
         ProcedureFlow pf;
         SymbolicEvaluationContext ctx;
-        private BitSet trashed;
-        private BitSet preserved;
+        private HashSet<RegisterStorage> trashed;
+        private HashSet<RegisterStorage> preserved;
         private ExpressionValueComparer cmp;
 
         public TrashedRegisterSummarizer(IProcessorArchitecture arch, Procedure proc, ProcedureFlow pf, SymbolicEvaluationContext ctx)
@@ -47,8 +47,8 @@ namespace Reko.Analysis
             this.arch = arch;
             this.proc = proc;
             this.pf = pf;
-            trashed = arch.CreateRegisterBitset();
-            preserved = arch.CreateRegisterBitset();
+            trashed = new HashSet<RegisterStorage>();
+            preserved = new HashSet<RegisterStorage>();
             this.ctx = ctx;
             this.cmp = new ExpressionValueComparer();
         }
@@ -56,12 +56,13 @@ namespace Reko.Analysis
         public bool PropagateToProcedureSummary()
         {
             bool changed = false;
+            int oldCount;
             if (pf.TerminatesProcess)
             {
-                if (!pf.TrashedRegisters.IsEmpty)
+                if (pf.TrashedRegisters.Count > 0)
                 {
                     changed = true;
-                    pf.TrashedRegisters.SetAll(false);
+                    pf.TrashedRegisters.Clear();
                 }
                 if (pf.grfTrashed != 0)
                 {
@@ -122,14 +123,16 @@ namespace Reko.Analysis
                 }
             }
 
-            if (!(trashed & ~pf.TrashedRegisters).IsEmpty)
+            oldCount = pf.TrashedRegisters.Count;
+            pf.TrashedRegisters.UnionWith(trashed);
+            if (pf.TrashedRegisters.Count != oldCount)
             {
-                pf.TrashedRegisters |= trashed;
                 changed = true;
             }
-            if (!(preserved & ~pf.PreservedRegisters).IsEmpty)
+            oldCount = pf.PreservedRegisters.Count;
+            pf.PreservedRegisters.UnionWith(preserved);
+            if (pf.PreservedRegisters.Count != oldCount)
             {
-                pf.PreservedRegisters |= preserved;
                 changed = true;
             }
             uint grfNew = pf.grfTrashed | ctx.TrashedFlags;
@@ -162,7 +165,7 @@ namespace Reko.Analysis
             var reg = s as RegisterStorage;
             if (reg != null)
             {
-                preserved[reg.Number] = true;
+                preserved.Add(reg);
                 return;
             }
         }
@@ -172,7 +175,7 @@ namespace Reko.Analysis
             var reg = s as RegisterStorage;
             if (reg != null)
             {
-                trashed[reg.Number] = true;
+                trashed.Add(reg);
                 return;
             }
             var seq = s as SequenceStorage;

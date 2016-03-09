@@ -2,7 +2,7 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax al
+	Trashed:   SCZO al ax eax rax
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()

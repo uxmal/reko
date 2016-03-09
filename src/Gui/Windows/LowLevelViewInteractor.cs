@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,11 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Gui.Controls;
 using Reko.Gui.Windows.Controls;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -60,13 +56,14 @@ namespace Reko.Gui.Windows
                 program = value;
                 if (value != null)
                 {
-                    control.MemoryView.ProgramImage = value.Image;
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
-                    control.DisassemblyView.Model = new DisassemblyTextModel(value);
-                    control.ImageMapView.Image = value.Image;
+                    control.DisassemblyView.Program = value;
+                    var seg = program.ImageMap.Segments.Values.First();
+                    control.DisassemblyView.Program = value;
+                    control.DisassemblyView.Model = new DisassemblyTextModel(value, seg);
                     control.ImageMapView.ImageMap = value.ImageMap;
-                    control.ImageMapView.Granularity = value.Image.Bytes.Length;
+                    control.ImageMapView.Granularity = value.ImageMap.GetExtent();
                 }
             }
         }
@@ -133,7 +130,7 @@ namespace Reko.Gui.Windows
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
         {
-            if (!program.Image.IsValidAddress(addrTo))
+            if (!program.ImageMap.IsValidAddress(addrTo))
                 return;
             navInteractor.RememberAddress(addrFrom);
             control.CurrentAddress = addrTo;        // ...and move to the new position.
@@ -205,7 +202,7 @@ namespace Reko.Gui.Windows
                 {
                     switch (cmdId.ID)
                     {
-                    case CmdIds.EditAnnotation: return EditDasmAnnotation(); break;
+                    case CmdIds.EditAnnotation: return EditDasmAnnotation();
                     }
                 }
             }
@@ -282,7 +279,7 @@ namespace Reko.Gui.Windows
                  var decompiler = services.GetService<IDecompilerService>().Decompiler;
                  var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
                 var sb = new StringWriter();
-                dumper.DumpData(control.MemoryView.ProgramImage, range, sb);
+                dumper.DumpData(control.MemoryView.ImageMap, range, sb);
                 Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
             }
             return true;
@@ -368,10 +365,12 @@ namespace Reko.Gui.Windows
                 {
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits = 
-                        re.GetMatches(program.Image.Bytes, 0)
+                        //$BUG: wrong result
+                        program.ImageMap.Segments.Values
+                        .SelectMany(s => re.GetMatches(s.MemoryArea.Bytes, 0))
                         .Select(offset => new ProgramAddress(
                             program,
-                            program.Image.BaseAddress + offset));
+                            program.ImageMap.BaseAddress + offset));
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
             }
@@ -386,7 +385,7 @@ namespace Reko.Gui.Windows
         private string SelectionToHex(AddressRange addr)
         {
             var sb = new StringBuilder();
-            var rdr = program.Architecture.CreateImageReader(program.Image, addr.Begin);
+            var rdr = program.CreateImageReader(addr.Begin);
             var sep = "";
             while (rdr.Address <= addr.End)
             {
@@ -464,7 +463,7 @@ namespace Reko.Gui.Windows
         private void DisassemblyControl_Navigate(object sender, EditorNavigationArgs e)
         {
             var addr = e.Destination as Address;
-            if (e == null)
+            if (addr == null)
                 return;
             UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }

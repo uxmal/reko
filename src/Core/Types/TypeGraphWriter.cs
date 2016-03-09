@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core.Types
 {
     /// <summary>
     /// Generates a more compact and easily parsed string version
-    /// of a datatype. For final output use TypeFormatte
+    /// of a datatype. For final output, use TypeFormatter
     /// </summary>
     public class TypeGraphWriter : IDataTypeVisitor<Formatter>
     {
@@ -51,6 +51,11 @@ namespace Reko.Core.Types
             }
             writer.Write(")");
             return writer;
+        }
+
+        public Formatter VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
         }
 
         public Formatter VisitCode(CodeType c)
@@ -80,11 +85,14 @@ namespace Reko.Core.Types
             writer.Write(" (");
 
             string separator = "";
-            for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+            if (ft.ArgumentTypes != null)
             {
-                writer.Write(separator);
-                separator = ", ";
-                ft.ArgumentTypes[i].Accept(this);
+                for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+                {
+                    writer.Write(separator);
+                    separator = ", ";
+                    ft.ArgumentTypes[i].Accept(this);
+                }
             }
             writer.Write("))");
             return writer;

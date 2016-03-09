@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,6 @@ namespace Reko.Core.Serialization
         {
         }
 
-        public abstract DataType BuildDataType(TypeFactory factory);
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
 
         /// <summary>
@@ -91,7 +90,7 @@ namespace Reko.Core.Serialization
                     new XmlElementAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlElementAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},
-                    new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
+                    new XmlElementAttribute("struct", typeof(StructType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
                     new XmlElementAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},
@@ -113,7 +112,7 @@ namespace Reko.Core.Serialization
                     new XmlArrayItemAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},
-                    new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("struct", typeof(StructType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},

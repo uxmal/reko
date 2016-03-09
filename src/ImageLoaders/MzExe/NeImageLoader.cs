@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ namespace Reko.ImageLoaders.MzExe
         const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
         const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
 
-        private LoadedImage image;
+        private MemoryArea image;
         private ImageMap imageMap;
         private List<string> moduleNames;
         private NeSegment[] segments;
@@ -348,7 +348,7 @@ namespace Reko.ImageLoaders.MzExe
         string ReadByteLengthString(ImageReader rdr, int offset)
         {
             var clone = rdr.Clone();
-            clone.Offset = (ulong)((long)clone.Offset + offset);
+            clone.Offset = clone.Offset + offset;
             var len = clone.ReadByte();
             var abStr = clone.ReadBytes(len);
             return Encoding.ASCII.GetString(abStr);
@@ -391,7 +391,6 @@ namespace Reko.ImageLoaders.MzExe
             var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
 
             var program = new Program(
-                this.image,
                 this.imageMap,
                 arch,
                 platform);
@@ -499,7 +498,7 @@ namespace Reko.ImageLoaders.MzExe
             this.segments = ReadSegmentTable(offset, cSeg);
             var segFirst = segments[0];
             var segLast = segments[segments.Length - 1];
-            this.image = new LoadedImage(
+            this.image = new MemoryArea(
                 PreferredBaseAddress,
                 new byte[segLast.LinearAddress + segLast.DataLength]);
             this.imageMap = image.CreateImageMap();
@@ -541,7 +540,7 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        bool LoadSegment(NeSegment seg, LoadedImage loadedImage, ImageMap imageMap)
+        bool LoadSegment(NeSegment seg, MemoryArea loadedImage, ImageMap imageMap)
         {
             Array.Copy(
                 RawImage,

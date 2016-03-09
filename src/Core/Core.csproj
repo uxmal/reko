@@ -163,6 +163,7 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="CharacteristicsLibrary.cs" />
+    <Compile Include="CLanguage\CBasicType.cs" />
     <Compile Include="CLanguage\CConstantEvaluator.cs" />
     <Compile Include="CLanguage\CDirectiveLexer.cs" />
     <Compile Include="CLanguage\CExpressionVisitor.cs" />
@@ -239,12 +240,14 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
-    <Compile Include="GlobalDataItem_v2.cs" />
+    <Compile Include="Rational.cs" />
+    <Compile Include="Serialization\ArgumentDeserializer.cs" />
+    <Compile Include="Serialization\GlobalDataItem_v2.cs" />
     <Compile Include="IByteSource.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="ILoader.cs" />
     <Compile Include="ImageHeader.cs" />
-    <Compile Include="ImageMapSegmentRenderer.cs" />
+    <Compile Include="ImageSegmentRenderer.cs" />
     <Compile Include="ImportReference.cs" />
     <Compile Include="ImportResolver.cs" />
     <Compile Include="AddressContext.cs" />
@@ -255,10 +258,13 @@
     <Compile Include="Lib\DiGraph.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
     <Compile Include="Lib\Trie.cs" />
+    <Compile Include="Lib\UndirectedGraph.cs" />
+    <Compile Include="Lib\UndirectedGraphImpl.cs" />
     <Compile Include="Machine\InstructionClass.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="Machine\InstructionComparer.cs" />
     <Compile Include="MetadataLoader.cs" />
+    <Compile Include="ModuleDescriptor.cs" />
     <Compile Include="Operators\CommaOperator.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
     <Compile Include="Output\GlobalDataWriter.cs" />
@@ -300,9 +306,10 @@
     <Compile Include="Rtl\RtlTransfer.cs" />
     <Compile Include="Serialization\CharacteristicsLibrary_v1.cs" />
     <Compile Include="Serialization\Code_v1.cs" />
-    <Compile Include="Serialization\DataTypeNameSerializer.cs" />
+    <Compile Include="Serialization\DataTypeSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
     <Compile Include="Serialization\MemberPointer_v1.cs" />
+    <Compile Include="Serialization\MemoryMap_v1.cs" />
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
     <Compile Include="Serialization\ProjectPersister.cs" />
@@ -311,7 +318,9 @@
     <Compile Include="Serialization\Project_v3.cs" />
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
+    <Compile Include="Serialization\Project_v4.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
+    <Compile Include="Serialization\SerializedProject.cs" />
     <Compile Include="Serialization\SerializedTemplate.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
     <Compile Include="Serialization\SerializedTypeReference.cs" />
@@ -402,7 +411,7 @@
     <Compile Include="ImageMapBlock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ImageMapSegment.cs">
+    <Compile Include="ImageSegment.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageMapVectorTable.cs">
@@ -416,9 +425,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IRewriterHost.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\BitSet.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Lib\DfsIterator.cs">
@@ -531,7 +537,7 @@
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoadedImage.cs">
+    <Compile Include="MemoryArea.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PseudoProcedure.cs">
@@ -585,7 +591,7 @@
     <Compile Include="Serialization\StackVariable_v1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedStructType.cs">
+    <Compile Include="Serialization\StructType_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedType.cs">
@@ -617,11 +623,14 @@
     </Compile>
     <Compile Include="TreeMatching\TreeMatcher.cs" />
     <Compile Include="TypedServiceProvider.cs" />
+    <Compile Include="TypeLibraryDeserializer.cs" />
     <Compile Include="TypeLibraryLoader.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\ClassType.cs" />
     <Compile Include="Types\CodeType.cs" />
+    <Compile Include="Types\CompositeType.cs" />
     <Compile Include="Types\DataType.cs">
       <SubType>Code</SubType>
     </Compile>

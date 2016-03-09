@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -439,6 +439,11 @@ namespace Reko.Core.Output
         #region IDataTypeVisitor Members
 
         public int VisitArray(ArrayType at)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,8 +86,8 @@ namespace Reko.UnitTests.Evaluation
 
 		private SsaIdentifierCollection BuildSsaIdentifiers()
 		{
-			var mrFoo = new RegisterStorage("foo", 1, PrimitiveType.Word32);
-			var mrBar = new RegisterStorage("bar", 2, PrimitiveType.Word32);
+			var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
+			var mrBar = new RegisterStorage("bar", 2, 1, PrimitiveType.Word32);
 			foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
 			bar = new Identifier(mrBar.Name, mrBar.DataType, mrBar);
 

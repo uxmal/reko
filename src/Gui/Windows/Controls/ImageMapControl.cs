@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Gui.Windows.Controls
 	public class ImageMapControl : Control
 	{
 		private ImageMap map;
-		private ImageMapSegment segSelected;
+		private ImageSegment segSelected;
 
 		public event EventHandler SelectedItemChanged;
 
@@ -57,7 +57,7 @@ namespace Reko.Gui.Windows.Controls
 			if (map == null)
 				return;
 
-			ImageMapSegment [] segs = ExtractSegments();
+			ImageSegment [] segs = ExtractSegments();
 			uint imageSize = ImageSize(segs);
 			
 			Matrix m = new Matrix();
@@ -66,7 +66,7 @@ namespace Reko.Gui.Windows.Controls
 
 			Rectangle rc = ClientRectangle;
 			ulong start = segs[0].Address.ToLinear();
-			foreach (ImageMapSegment seg in segs)
+			foreach (ImageSegment seg in segs)
 			{
 				rc.Y = (int) (seg.Address.ToLinear() - start);
 				rc.Height = (int) seg.Size;
@@ -75,20 +75,20 @@ namespace Reko.Gui.Windows.Controls
 			}
 		}
 
-		private void PaintSegment(ImageMapSegment seg, Graphics g, Rectangle rc)
+		private void PaintSegment(ImageSegment seg, Graphics g, Rectangle rc)
 		{
 			g.FillRectangle(Brushes.White, rc);
 			g.DrawRectangle(seg == segSelected ? Pens.Red : Pens.Black, rc);
 		}
 
-		private ImageMapSegment [] ExtractSegments()
+		private ImageSegment [] ExtractSegments()
 		{
-			ImageMapSegment [] segs = new ImageMapSegment[map.Segments.Count];
+			ImageSegment [] segs = new ImageSegment[map.Segments.Count];
             map.Segments.Values.CopyTo(segs, 0);
             return segs;
 		}
 
-		private uint ImageSize(ImageMapSegment [] segs)
+		private uint ImageSize(ImageSegment [] segs)
 		{
 			Address addrStart = segs[0].Address;
 			Address addrEnd = segs[segs.Length - 1].Address;
@@ -98,10 +98,10 @@ namespace Reko.Gui.Windows.Controls
 		protected override void OnMouseDown(MouseEventArgs me)
 		{
 			base.OnMouseDown(me);
-			ImageMapSegment [] mapSegments = ExtractSegments();
+			ImageSegment [] mapSegments = ExtractSegments();
 			float scaleFactor = (float) Height / (float) ImageSize(mapSegments);
 			ulong start = mapSegments[0].Address.ToLinear();
-			foreach (ImageMapSegment seg in mapSegments)
+			foreach (ImageSegment seg in mapSegments)
 			{
 				float y = scaleFactor * (seg.Address.ToLinear() - start);
 				float dy = scaleFactor * seg.Size;
@@ -121,7 +121,7 @@ namespace Reko.Gui.Windows.Controls
 			}
 		}
 
-		public ImageMapSegment SelectedSegment
+		public ImageSegment SelectedSegment
 		{
 			get { return segSelected; }
 			set 

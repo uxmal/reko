@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Mos6502
     {
         private MachineInstruction RunTest(params byte[] bytes)
         {
-            var image = new LoadedImage(Address.Ptr32(0x200), bytes);
+            var image = new MemoryArea(Address.Ptr32(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Disassembler(rdr);
             return dasm.First();

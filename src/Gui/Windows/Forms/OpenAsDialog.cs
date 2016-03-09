@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ namespace Reko.Gui.Windows.Forms
             InitializeComponent();
 
             AddressTextBox = new TextBoxWrapper(txtAddress);
+            RawFileTypes = new ComboBoxWrapper(ddlRawFileTypes);
             Architectures = new ComboBoxWrapper(ddlArchitectures);
             Platforms = new ComboBoxWrapper(ddlEnvironments);
             FileName = new TextBoxWrapper(textBox1);
@@ -52,6 +53,7 @@ namespace Reko.Gui.Windows.Forms
         public ITextBox FileName { get; private set; }
 
         public ITextBox AddressTextBox { get; private set; }
+        public IComboBox RawFileTypes { get; private set; }
         public IComboBox Architectures { get; private set; }
         public IComboBox Platforms { get; private set; }
         public IButton BrowseButton { get; private set; }

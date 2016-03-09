@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 (rb << 11) |
                 (xo << 1) |
                 rc;
-            LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
+            MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
             img.WriteBeUInt32(0, w);
             return Disassemble(img);
         }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,9 +131,9 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void Save_v3()
+        public void Save_v4()
         {
-            var sp = new Project_v3
+            var sp = new Project_v4
             {
                 Inputs = {
                     new DecompilerInput_v3 {

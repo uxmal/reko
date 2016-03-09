@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -175,8 +175,8 @@ namespace Reko.WindowsItp
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.Load(addr);
             var rr = peLdr.Relocate(program, addr);
-            var win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
+            var win32 = new Win32Emulator(program.ImageMap, program.Platform, program.ImportReferences);
+            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.ImageMap, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
             emu.WriteRegister(Registers.esp, (uint) peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);

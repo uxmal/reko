@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,8 @@ namespace Reko.Environments.Windows
         private Lexer lexer;
         private Token bufferedTok;
         private string filename;
-        private Platform platform;
+        private IPlatform platform;
+        private string moduleName;
 
         public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
         {
@@ -47,17 +48,18 @@ namespace Reko.Environments.Windows
             this.bufferedTok = null;
         }
 
-        public override TypeLibrary Load(Platform platform)
+        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             this.platform = platform;
-            var loader = new TypeLibraryLoader(platform, true);
-            loader.SetModuleName(DefaultModuleName(filename));
+            var loader = new TypeLibraryDeserializer(platform, true, dstLib);
+            this.moduleName = DefaultModuleName(filename);
+            loader.SetModuleName(moduleName);
             for (;;)
             {
                 var tok = Get();
                 switch (tok.Type)
                 {
-                case TokenType.EOF: return loader.BuildLibrary();
+                case TokenType.EOF: return dstLib;
                 case TokenType.EXPORTS: ParseExports(loader); break;
                 case TokenType.LIBRARY: ParseLibrary(loader); break;
                 default: throw new NotImplementedException(
@@ -74,7 +76,7 @@ namespace Reko.Environments.Windows
             return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
         }
 
-        private void ParseExports(TypeLibraryLoader lib)
+        private void ParseExports(TypeLibraryDeserializer deserializer)
         {
             while (Peek().Type == TokenType.Id)
             {
@@ -93,26 +95,28 @@ namespace Reko.Environments.Windows
                 PeekAndDiscard(TokenType.PRIVATE);
                 PeekAndDiscard(TokenType.DATA);
 
+                var ep = ParseSignature(entryName, deserializer);
                 var svc = new SystemService
                 {
-                    Name = entryName,
-                    Signature = ParseSignature(entryName, lib),
+                    ModuleName = moduleName,
+                    Name = ep != null ? ep.Name : entryName,
+                    Signature = ep != null ? ep.Signature : null,
                 };
                 Debug.Print("Loaded {0} @ {1}", entryName, ordinal);
                 if (ordinal != -1)
                 {
                     svc.SyscallInfo = new SyscallInfo { Vector = ordinal };
-                    lib.LoadService(ordinal, svc);
+                    deserializer.LoadService(ordinal, svc);
                 }
-                lib.LoadService(entryName, svc);
+                deserializer.LoadService(entryName, svc);
             }
         }
 
-        private void ParseLibrary(TypeLibraryLoader lib)
+        private void ParseLibrary(TypeLibraryDeserializer lib)
         {
             if (Peek().Type == TokenType.Id)
             {
-                lib.SetModuleName(Get().Text);
+                moduleName = Get().Text;
             }
             if (PeekAndDiscard(TokenType.BASE))
             {
@@ -120,7 +124,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        private ProcedureSignature ParseSignature(string entryName, TypeLibraryLoader loader)
+        private ExternalProcedure ParseSignature(string entryName, TypeLibraryDeserializer loader)
         {
             return SignatureGuesser.SignatureFromName(entryName, loader, platform);
         }

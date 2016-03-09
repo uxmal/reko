@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -244,9 +244,8 @@ namespace Reko.Evaluation
         /// <param name="pf"></param>
         public void UpdateRegistersTrashedByProcedure(ProcedureFlow pf)
         {
-            foreach (int r in pf.TrashedRegisters)
+            foreach (var reg in pf.TrashedRegisters)
             {
-                var reg = arch.GetRegister(r);
                 Constant c;
                 if (!pf.ConstantRegisters.TryGetValue(reg, out c))
                 {

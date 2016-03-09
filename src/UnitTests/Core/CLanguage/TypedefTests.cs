@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-#if DEBUG
-namespace Reko.Tools.C2Xml.UnitTests
+namespace Reko.Core.CLanguage.UnitTests
 {
     [TestFixture]
     public class TypedefTests
@@ -52,4 +51,3 @@ namespace Reko.Tools.C2Xml.UnitTests
         }
     }
 }
-#endif

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Sparc
     {
         private static SparcInstruction DisassembleWord(byte[] a)
         {
-            LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), a);
+            MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), a);
             return Disassemble(img);
         }
 
@@ -42,11 +42,11 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             var bytes = new byte[4];
             new BeImageWriter(bytes).WriteBeUInt32(0, instr);
-            var img = new LoadedImage(Address.Ptr32(0x00100000), bytes);
+            var img = new MemoryArea(Address.Ptr32(0x00100000), bytes);
             return Disassemble(img);
         }
 
-        private static SparcInstruction Disassemble(LoadedImage img)
+        private static SparcInstruction Disassemble(MemoryArea img)
         {
             var arch = new SparcArchitecture(PrimitiveType.Word32);
             var dasm = new SparcDisassembler(arch, img.CreateBeReader(0U));

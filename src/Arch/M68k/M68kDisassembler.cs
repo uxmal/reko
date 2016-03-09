@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,6 @@ namespace Reko.Arch.M68k
             }
             catch (Exception ex)
             {
-                Debug.Print("*** Exception when diassembling {0:X4} at address {1}: {2}", instruction, addr, ex.Message);
                 instr = new M68kInstruction
                 {
                     Address = addr,
@@ -389,7 +388,7 @@ namespace Reko.Arch.M68k
 
         private RegisterOperand get_ctrl_reg(string regName, int number)
         {
-            return new RegisterOperand(new RegisterStorage(regName, number, PrimitiveType.Word16));
+            return new RegisterOperand(new RegisterStorage(regName, number, 0, PrimitiveType.Word16));
         }
 
         private DoubleRegisterOperand get_double_data_reg(uint d1, uint d2)
@@ -985,24 +984,25 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_bfextu(M68kDisassembler dasm)
         {
-            uint extension;
-            string offset; ;
-            string width; ;
+            return new M68kInstruction { code = Opcode.illegal };
+            //uint extension;
+            //string offset; ;
+            //string width; ;
 
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            //dasm.LIMIT_CPU_TYPES(M68020_PLUS);
 
-            extension = dasm.read_imm_16();
+            //extension = dasm.read_imm_16();
 
-            if (BIT_B(extension))
-                offset = string.Format("D{0}", (extension >> 6) & 7);
-            else
-                offset = string.Format("{0}", (extension >> 6) & 31);
-            if (BIT_5(extension))
-                width = string.Format("D{0}", extension & 7);
-            else
-                width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfextu  D{0},{1} {{{2}:{3}}}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            //if (BIT_B(extension))
+            //    offset = string.Format("D{0}", (extension >> 6) & 7);
+            //else
+            //    offset = string.Format("{0}", (extension >> 6) & 31);
+            //if (BIT_5(extension))
+            //    width = string.Format("D{0}", extension & 7);
+            //else
+            //    width = string.Format("{0}", g_5bit_data_table[extension & 31]);
+            //dasm.g_dasm_str = string.Format("bfextu  D{0},{1} {{{2}:{3}}}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            //throw new NotImplementedException();
         }
 
         private static M68kInstruction d68020_bfffo(M68kDisassembler dasm)
@@ -1382,21 +1382,22 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.g_dasm_str = string.Format("%dgen    %s; (2-3)", (dasm.instruction >> 9) & 7, dasm.get_imm_str_u32());
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cprestore(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            if (((dasm.instruction >> 9) & 7) == 1)
-            {
-                dasm.g_dasm_str = string.Format("frestore {0}", dasm.get_ea_mode_str_8(dasm.instruction));
-            }
-            else
-            {
-                dasm.g_dasm_str = string.Format("%drestore %s; (2-3)", (dasm.instruction >> 9) & 7, dasm.get_ea_mode_str_8(dasm.instruction));
-            }
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
+            //if (((dasm.instruction >> 9) & 7) == 1)
+            //{
+            //    dasm.g_dasm_str = string.Format("frestore {0}", dasm.get_ea_mode_str_8(dasm.instruction));
+            //}
+            //else
+            //{
+            //    dasm.g_dasm_str = string.Format("%drestore %s; (2-3)", (dasm.instruction >> 9) & 7, dasm.get_ea_mode_str_8(dasm.instruction));
+            //}
+            //throw new NotImplementedException();
         }
 
         private static M68kInstruction d68020_cpsave(M68kDisassembler dasm)

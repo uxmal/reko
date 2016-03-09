@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            sp = new RegisterStorage("sp", 42, PrimitiveType.Pointer32);
+            sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Pointer32);
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 
@@ -94,11 +94,6 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Reko.Core.Lib.BitSet CreateRegisterBitset()
-            {
-                throw new NotImplementedException();
-            }
-
             public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
             {
                 throw new NotImplementedException();
@@ -114,12 +109,17 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public ImageReader CreateImageReader(LoadedImage image, Address addr)
+            public ImageReader CreateImageReader(MemoryArea image, Address addr)
             {
                 return new LeImageReader(image, addr);
             }
 
-            public ImageReader CreateImageReader(LoadedImage image, ulong offset)
+            public ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            {
+                return new LeImageReader(image, addrBegin, addrEnd);
+            }
+
+            public ImageReader CreateImageReader(MemoryArea image, ulong offset)
             {
                 return new LeImageReader(image, offset);
             }
@@ -215,6 +215,31 @@ namespace Reko.UnitTests.Core
             }
 
             public Address MakeSegmentedAddress(Constant seg, Constant offset)
+            {
+                throw new NotImplementedException();
+            }
+
+            public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+            {
+                throw new NotImplementedException();
+            }
+
+            public RegisterStorage GetPart(RegisterStorage reg, DataType width)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
+            {
+                throw new NotImplementedException();
+            }
+
+            public RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
             {
                 throw new NotImplementedException();
             }

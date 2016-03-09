@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Gui.Windows
@@ -49,13 +50,19 @@ namespace Reko.Gui.Windows
             mvi.Program = program;
             if (program != null)
             {
-                mvi.SelectedAddress = program.Image.BaseAddress;
+                mvi.SelectedAddress = program.ImageMap.Segments.Values
+                    .Where(s => s.MemoryArea != null)
+                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
+                    .First();
             }
         }
 
         public void ShowMemoryAtAddress(Program program, Address addr)
         {
-            ViewImage(program);
+            if (mvi == null || mvi.Program != program)
+            {
+                ViewImage(program);
+            }
             mvi.SelectedAddress = addr;
         }
 

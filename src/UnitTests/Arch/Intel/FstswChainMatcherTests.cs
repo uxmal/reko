@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Program lr = asm.GetImage();
             var dasm = arch.CreateDisassembler(
-                lr.Image.CreateLeReader(0));
+                lr.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
             instrs = new List<X86Instruction>();
             return new FstswChainMatcher(dasm.Cast<X86Instruction>().ToArray(), orw);
         }

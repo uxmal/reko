@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,12 @@ namespace Reko.Core.CLanguage
 {
     public class CConstantEvaluator : CExpressionVisitor<object>
     {
+        private IPlatform platform;
         private Dictionary<string, int> constants;
 
-        public CConstantEvaluator(Dictionary<string, int> constants)
+        public CConstantEvaluator(IPlatform platform, Dictionary<string, int> constants)
         {
+            this.platform = platform;
             this.constants = constants;
         }
     
@@ -118,7 +120,7 @@ namespace Reko.Core.CLanguage
 
         public object VisitSizeof(SizeofExpression sizeOf)
         {
-            return 4;       //$BUGBUG:
+            return platform.GetByteSizeFromCBasicType(CBasicType.Int);
         }
     }
 }

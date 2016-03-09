@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,9 @@ using System;
 namespace Reko.Typing
 {
     /// <summary>
-    /// Performs a type analysis of the program.
+    /// Collects the data types of all the expressions of the program.
     /// </summary>
-    public class TypeCollector : InstructionVisitor<bool>
+    public class TypeCollector : InstructionVisitor
     {
         private TypeFactory factory;
         private TypeStore store;
@@ -84,7 +84,7 @@ namespace Reko.Typing
             }
         }
 
-        public bool VisitAssignment(Assignment ass)
+        public void VisitAssignment(Assignment ass)
         {
             var dtSrc = ass.Src.Accept(asc);
             desc.MeetDataType(ass.Src, dtSrc);
@@ -94,18 +94,16 @@ namespace Reko.Typing
             desc.MeetDataType(ass.Dst, dtDst);
             desc.MeetDataType(ass.Dst, dtSrc);
             ass.Dst.Accept(desc, ass.Dst.TypeVariable);
-            return false;
         }
 
-        public bool VisitBranch(Branch branch)
+        public void VisitBranch(Branch branch)
         {
             var dt = branch.Condition.Accept(asc);
             desc.MeetDataType(branch.Condition, PrimitiveType.Bool);
             branch.Condition.Accept(desc, branch.Condition.TypeVariable);
-            return false;
         }
 
-        public bool VisitCallInstruction(CallInstruction call)
+        public void VisitCallInstruction(CallInstruction call)
         {
             call.Callee.Accept(asc);
             desc.MeetDataType(
@@ -113,36 +111,38 @@ namespace Reko.Typing
                           new Pointer(
                               new CodeType(),
                               program.Platform.PointerType.Size));
-            return call.Callee.Accept(desc, call.Callee.TypeVariable);
+            call.Callee.Accept(desc, call.Callee.TypeVariable);
         }
 
-        public bool VisitDeclaration(Declaration decl)
+        public void VisitDeclaration(Declaration decl)
         {
+            var dt = decl.Identifier.Accept(asc);
+            desc.MeetDataType(decl.Identifier, dt);
+            decl.Identifier.Accept(desc, decl.Identifier.TypeVariable);
             if (decl.Expression != null)
             {
-                var dt = decl.Expression.Accept(asc);
+                dt = decl.Expression.Accept(asc);
                 desc.MeetDataType(decl.Expression, dt);
                 decl.Expression.Accept(desc, decl.Expression.TypeVariable);
             }
-            return false;
         }
 
-        public bool VisitDefInstruction(DefInstruction def)
+        public void VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitGotoInstruction(GotoInstruction gotoInstruction)
+        public void VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPhiAssignment(PhiAssignment phi)
+        public void VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitReturnInstruction(ReturnInstruction ret)
+        public void VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression != null)
             {
@@ -150,18 +150,16 @@ namespace Reko.Typing
                 desc.MeetDataType(ret.Expression, dt);
                 ret.Expression.Accept(desc, ret.Expression.TypeVariable);
             }
-            return false;
         }
 
-        public bool VisitSideEffect(SideEffect side)
+        public void VisitSideEffect(SideEffect side)
         {
             var dt = side.Expression.Accept(asc);
             desc.MeetDataType(side.Expression, dt);
             side.Expression.Accept(desc, side.Expression.TypeVariable);
-            return false;
         }
 
-        public bool VisitStore(Store store)
+        public void VisitStore(Store store)
         {
             var dt = store.Src.Accept(asc);
             desc.MeetDataType(store.Src, dt);
@@ -170,23 +168,20 @@ namespace Reko.Typing
             dt = store.Dst.Accept(asc);
             desc.MeetDataType(store.Dst, dt);
             store.Dst.Accept(desc, store.Dst.TypeVariable);
-            return false;
         }
 
-        public bool VisitSwitchInstruction(SwitchInstruction si)
+        public void VisitSwitchInstruction(SwitchInstruction si)
         {
             var dt = si.Expression.Accept(asc);
             desc.MeetDataType(si.Expression, dt);
             si.Expression.Accept(desc, si.Expression.TypeVariable);
-            return false;
         }
 
-        public bool VisitUseInstruction(UseInstruction use)
+        public void VisitUseInstruction(UseInstruction use)
         {
             var dt = use.Expression.Accept(asc);
             desc.MeetDataType(use.Expression, dt);
             use.Expression.Accept(desc, use.Expression.TypeVariable);
-            return false;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     {
         private BeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new BeImageReader(new LoadedImage(address, bytes), 0);
+            return new BeImageReader(new MemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

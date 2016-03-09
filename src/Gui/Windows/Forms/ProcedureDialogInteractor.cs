@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,9 +84,9 @@ namespace Reko.Gui.Windows.Forms
             }
         }
 
-        public void ApplyChangesToProcedure(Platform platform, Procedure procedure)
+        public void ApplyChangesToProcedure(Program program, Procedure procedure)
         {
-            var ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");          //BUG:Where does convetion come from? Platform?
+            var ser = program.CreateProcedureSerializer();
             var sp = new SignatureParser(arch);
             sp.Parse(dlg.Signature.Text);
             Debug.Assert(sp.IsValid);

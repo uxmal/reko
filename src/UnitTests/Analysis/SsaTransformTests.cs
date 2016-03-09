@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,12 +43,14 @@ namespace Reko.UnitTests.Analysis
     {
         private ProgramBuilder pb;
         private ProgramDataFlow programFlow;
+        private Dictionary<Address, ImportReference> importReferences;
 
         [SetUp]
         public void Setup()
         {
             this.pb = new ProgramBuilder();
             this.programFlow = new ProgramDataFlow();
+            this.importReferences = new Dictionary<Address, ImportReference>();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -57,9 +59,25 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
             var dg = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+            var project = new Project
+            {
+                Programs = { this.pb.Program }
+            };
+            var importResolver = new ImportResolver(
+                project,
+                this.pb.Program,
+                new FakeDecompilerEventListener());
+            this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
+            this.pb.Program.ImageMap = new ImageMap(
+                Address.Ptr32(0x0000),
+                new ImageSegment(
+                    ".text",
+                    Address.Ptr32(0), 
+                    0x40000,
+                    AccessMode.ReadWriteExecute));
 
             // Perform the initial transformation
-            var ssa = new SsaTransform(programFlow, proc, dg);
+            var ssa = new SsaTransform(programFlow, proc, importResolver, dg);
 
             // Propagate values and simplify the results.
             // We hope the the sequence
@@ -90,6 +108,8 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
+            var alias = new Aliases(proc, this.pb.Program.Architecture);
+            alias.Transform();
             var ssa = new SsaTransform2();
             ssa.Transform(proc);
 
@@ -164,8 +184,8 @@ ProcedureBuilder_exit:
             RunTest(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);
@@ -220,14 +240,13 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_7
 	use r63_9
-	use wArg04
 ";
             RunTest(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
@@ -294,14 +313,13 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_7
 	use r63_9
-	use wArg04_16
 ";
             RunTest(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
@@ -347,7 +365,6 @@ l1:
 	r1_0 = 0x00000003
 	r2_1 = 0x00000004
 	call Adder (retsize: 4;)
-		uses: r1_0,r2_1
 		defs: r1_2
 	Mem3[0x00012300:word32] = r1_2
 	return
@@ -414,14 +431,13 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_8
 	use r63_10
-	use wArg04
 ";
             RunTest(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
@@ -475,8 +491,8 @@ ProcedureBuilder_exit:
                 var scz = m.Frame.EnsureFlagGroup(flags, 7, "SZ", PrimitiveType.Byte);
                 var cz = m.Frame.EnsureFlagGroup(flags, 3, "CZ", PrimitiveType.Byte);
                 var c = m.Frame.EnsureFlagGroup(flags, 1, "C", PrimitiveType.Bool);
-                var al = m.Reg8("al");
-                var esi = m.Reg32("esi");
+                var al = m.Reg8("al", 0);
+                var esi = m.Reg32("esi", 6);
                 m.Assign(scz, m.Cond(m.And(esi, esi)));
                 m.Assign(c, Constant.False());
                 m.Emit(new AliasAssignment(cz, c));
@@ -485,9 +501,8 @@ ProcedureBuilder_exit:
             });
         }
 
-
         [Test]
-       public void SsaHellNode()
+        public void SsaHellNode()
         {
             var sExp = @"// ProcedureBuilder
 // Return size: 0
@@ -501,17 +516,18 @@ l1:
 	branch r1 true
 	// succ:  l2 true
 l2:
-	r2_2 = 0x00000010
+	r2_5 = 0x00000010
 	// succ:  true
 true:
 	call r3 (retsize: 4;)
 		uses: r1,r2,r3
+		defs: r1_2,r2_3,r3_4
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1
-	use r2
-	use r3
+	use r1_2
+	use r2_3
+	use r3_4
 ";
             RunTest(sExp, m =>
             {
@@ -543,8 +559,8 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var regA = new RegStorage("a", 0, PrimitiveType.Word32, 0);
-                var regB = new RegStorage("b", 1, PrimitiveType.Word32, 0);
+                var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
+                var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
                 var a = m.Frame.EnsureRegister(regA);
                 var b = m.Frame.EnsureRegister(regB);
                 m.Assign(a, 3);
@@ -571,7 +587,7 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var a = m.Reg32("a");
+                var a = m.Reg32("a", 0);
                 m.Store(m.Word32(0x123400), a);
                 m.Return();
             });
@@ -601,8 +617,8 @@ ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var regA = new RegStorage("a", 0, PrimitiveType.Word32, 0);
-                var regB = new RegStorage("b", 1, PrimitiveType.Word32, 0);
+                var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
+                var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
                 var a = m.Frame.EnsureRegister(regA);
                 var b = m.Frame.EnsureRegister(regB);
                 m.BranchIf(m.Eq0(a), "m_2");
@@ -615,7 +631,6 @@ ProcedureBuilder_exit:
 
 
         [Test]
-        [Ignore]
         public void Ssa2_RegisterAlias()
         {
             var sExp = @"// ProcedureBuilder
@@ -627,16 +642,16 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	eax_2 = Mem0[eax:word32]
-    vx_3 = DPB(vx_x, eax_2, 0)
-	Mem0[0x00001234:word32] = eax_2
+	ah_3 = SLICE(eax_2, byte, 8)
+	Mem0[0x00001234:byte] = ah_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
             RunTest2(sExp, m =>
             {
-                var regEax = new RegStorage("eax", 0, PrimitiveType.Word32, 0);
-                var regAh = new RegStorage("ah", 0, PrimitiveType.Byte, 8);
+                var regEax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
+                var regAh = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
                 var eax = m.Frame.EnsureRegister(regEax);
                 var ah = m.Frame.EnsureRegister(regAh);
                 m.Assign(eax, m.LoadDw(eax));
@@ -645,16 +660,41 @@ ProcedureBuilder_exit:
             });
         }
 
-
-        public class RegStorage : RegisterStorage
+        [Test(Description ="Emulates calling an imported API Win32 on MIPS")]
+        public void Ssa_ConstantPropagation()
         {
-            public RegStorage(string name, int regNumber, PrimitiveType size, uint bitOffset)
-                : base(name, regNumber, size)
+            var sExp =
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	r13_0 = 0x00030000
+	r12_2 = Mem0[0x00031234:word32]
+	call r12_2 (retsize: 0;)
+		uses: r12_2,r13_0
+		defs: r12_4,r13_3
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use Mem0
+	use r12_4
+	use r13_3
+";
+            var addr = Address.Ptr32(0x00031234);
+            importReferences.Add(addr, new NamedImportReference(
+                addr, "COREDLL.DLL", "fnFoo"));
+            RunTest(sExp, m =>
             {
-                this.BitAddress = bitOffset;
-            }
-
-            public override ulong BitSize {  get { return (uint) base.DataType.BitSize;  } }
+                var r13 = m.Reg32("r13", 13);
+                var r12 = m.Reg32("r12", 12);
+                m.Assign(r13, 0x00030000);
+                m.Assign(r12, m.LoadDw(m.IAdd(r13, 0x1234)));
+                m.Call(r12, 0);
+                m.Return();
+            });
         }
     }
 

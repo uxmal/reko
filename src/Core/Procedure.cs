@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -76,7 +77,7 @@ namespace Reko.Core
 		{
 			if (name == null)
 			{
-				name = addr.GenerateName("fn", "");
+				name = addr.GenerateName("fn", "");     //$TODO: should be a user option, move out of here.
 			}
 			return new Procedure(name, f);
 		}
@@ -128,6 +129,20 @@ namespace Reko.Core
         }
 
         /// <summary>
+        /// If the procedure is a member of a class, write the class name first.
+        /// </summary>
+        /// <returns></returns>
+        public string QualifiedName()
+        {
+            if (EnclosingType == null)
+                return Name;
+            var str = EnclosingType as StructType_v1;
+            if (str != null)
+                return string.Format("{0}::{1}", str.Name, Name);
+            return Name;
+        }
+
+        /// <summary>
         /// Writes the blocks sorted by address ascending.
         /// </summary>
         /// <param name="emitFrame"></param>
@@ -139,11 +154,11 @@ namespace Reko.Core
 
 		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
         {
-			writer.WriteLine("// {0}", Name);
+			writer.WriteLine("// {0}", QualifiedName());
             writer.WriteLine("// Return size: {0}", this.Signature.ReturnAddressOnStack);
 			if (emitFrame)
 				Frame.Write(writer);
-            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new TextFormatter(writer));
+            Signature.Emit(QualifiedName(), ProcedureSignature.EmitFlags.None, new TextFormatter(writer));
 			writer.WriteLine();
             var formatter = new CodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();

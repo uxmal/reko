@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,22 +58,22 @@ namespace Reko.Arch.PowerPC
             FramePointerType = PointerType;
             InstructionBitSize = 32;
 
-            this.lr = new RegisterStorage("lr", 0x68,   wordWidth);
-            this.ctr = new RegisterStorage("ctr", 0x6A, wordWidth);
-            this.xer = new RegisterStorage("xer", 0x6B, wordWidth);
-            this.fpscr = new RegisterStorage("fpscr", 0x6C, wordWidth);
+            this.lr = new RegisterStorage("lr", 0x68, 0, wordWidth);
+            this.ctr = new RegisterStorage("ctr", 0x6A, 0, wordWidth);
+            this.xer = new RegisterStorage("xer", 0x6B, 0, wordWidth);
+            this.fpscr = new RegisterStorage("fpscr", 0x6C, 0, wordWidth);
 
             this.cr = new FlagRegister("cr", wordWidth);
 
             regs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("r" + n, n, wordWidth))
+                    .Select(n => new RegisterStorage("r" + n, n, 0, wordWidth))
                 .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("f" + n, n + 0x20, PrimitiveType.Word64)))
+                    .Select(n => new RegisterStorage("f" + n, n + 0x20, 0, PrimitiveType.Word64)))
                 .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("v" + n, n + 0x40, PrimitiveType.Word128)))
+                    .Select(n => new RegisterStorage("v" + n, n + 0x40, 0, PrimitiveType.Word128)))
                 .Concat(Enumerable.Range(0, 8)
-                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, PrimitiveType.Byte)))
+                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, 0, PrimitiveType.Byte)))
                 .Concat(new[] { lr, ctr, xer })
                 .ToList());
 
@@ -122,13 +122,19 @@ namespace Reko.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            //$TODO: PowerPC is bi-endian.
+            return new BeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, offset);
@@ -209,11 +215,6 @@ namespace Reko.Arch.PowerPC
         public override ProcessorState CreateProcessorState()
         {
             return new PowerPcState(this);
-        }
-
-        public override BitSet CreateRegisterBitset()
-        {
-            return new BitSet(0x80);
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -300,6 +301,11 @@ namespace Reko.Arch.PowerPC
                 .Select(u => Address.Ptr32(u));
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
@@ -323,6 +329,11 @@ namespace Reko.Arch.PowerPC
                 .ToHashSet();
             return new PowerPcPointerScanner64(rdr, knownLinAddresses, flags)
                 .Select(u => Address.Ptr64(u));
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
         }
 
         public override Address MakeAddressFromConstant(Constant c)

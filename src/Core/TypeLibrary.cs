@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -49,16 +50,21 @@ namespace Reko.Core
         {
             this.Types = types;
             this.Signatures = procedures;
-            this.ServicesByName = new Dictionary<string, SystemService>();
-            this.ServicesByVector = new Dictionary<int, SystemService>();
+            this.Modules = new Dictionary<string, ModuleDescriptor>();
         }
 
-        public string Filename { get; set; }
-        public string ModuleName { get; set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
-        public IDictionary<string, SystemService> ServicesByName { get; private set; }
-        public IDictionary<int, SystemService> ServicesByVector { get; private set; }
+        public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
+
+        public TypeLibrary Clone()
+        {
+            var clone = new TypeLibrary();
+            clone.Types = new Dictionary<string, DataType>(this.Types);
+            clone.Signatures = new Dictionary<string, ProcedureSignature>(this.Signatures);
+            clone.Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase);
+            return clone;
+        }
 
 		public void Write(TextWriter writer)
 		{
@@ -73,30 +79,6 @@ namespace Reko.Core
 				writer.WriteLine();
 			}
 		}
-
-		public static TypeLibrary Load(Platform platform, string fileName, IFileSystemService fsSvc)
-		{
-            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var libPath = Path.Combine(prefix, fileName);
-            if (!File.Exists(libPath))
-            {
-                libPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-            }
-			XmlSerializer ser = SerializedLibrary.CreateSerializer();
-			SerializedLibrary slib;
-			using (Stream stm = fsSvc.CreateFileStream(libPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-			{
-				slib = (SerializedLibrary) ser.Deserialize(stm);
-			}
-            return Load(platform, slib);
-		}
-
-        public static TypeLibrary Load(Platform platform, SerializedLibrary slib)
-        {
-            var tlldr = new TypeLibraryLoader(platform, true);
-            var tlib = tlldr.Load(slib);
-            return tlib;
-        }
 
 		public ProcedureSignature Lookup(string procedureName)
 		{

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Typing
     [TestFixture]
     public class TypedExpressionRewriterTests : TypingTestBase
     {
-        private TypedExpressionRewriter2 ter;
+        private TypedExpressionRewriter ter;
         private ExpressionNormalizer aen;
         private EquivalenceClassBuilder eqb;
         private TraitCollector coll;
@@ -66,8 +66,7 @@ namespace Reko.UnitTests.Typing
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
-                program.TypeStore.Dump();   //$DEBUG
-                ter = new TypedExpressionRewriter2(program);
+                ter = new TypedExpressionRewriter(program);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -85,6 +84,14 @@ namespace Reko.UnitTests.Typing
             }
         }
 
+        protected void RunStringTest(Action<ProcedureBuilder> pb, string expectedOutput)
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("test", pb);
+            pm.BuildProgram();
+            RunStringTest(pm.Program, expectedOutput);
+        }
+
         protected void RunStringTest(Program program, string expectedOutput)
         {
             var sw = new StringWriter();
@@ -94,7 +101,7 @@ namespace Reko.UnitTests.Typing
             SetupPreStages(program);
             aen.Transform(program);
             eqb.Build(program);
-#if !OLD
+#if OLD
             coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
             coll.CollectProgramTraits(program);
 #else
@@ -107,7 +114,7 @@ namespace Reko.UnitTests.Typing
             ctn.RenameAllTypes(program.TypeStore);
             program.TypeStore.Dump();
 
-            var ter = new TypedExpressionRewriter2(program);
+            var ter = new TypedExpressionRewriter(program);
             try
             {
                 ter.RewriteProgram(program);
@@ -134,7 +141,7 @@ namespace Reko.UnitTests.Typing
         private ProgramBuilder CreateProgramBuilder(uint linearAddress, int size)
         {
             return new ProgramBuilder(
-                new LoadedImage(Address.Ptr32(linearAddress), new byte[size]));
+                new MemoryArea(Address.Ptr32(linearAddress), new byte[size]));
         }
 
         private void DumpProgram(Program program, TextWriter tw)
@@ -194,7 +201,7 @@ namespace Reko.UnitTests.Typing
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
 
-            ter = new TypedExpressionRewriter2(program);
+            ter = new TypedExpressionRewriter(program);
             cmp = cmp.Accept(ter);
             Assert.AreEqual("v0->dw0004", cmp.ToString());
         }
@@ -247,7 +254,7 @@ namespace Reko.UnitTests.Typing
             tvI.DataType = u;
             tvX.DataType = u;
             ctn.RenameAllTypes(prog.TypeStore);
-            var ter = new TypedExpressionRewriter2(prog);
+            var ter = new TypedExpressionRewriter(prog);
             Instruction instr = ter.TransformAssignment(ass);
             Assert.AreEqual("x.u0 = 3F", instr.ToString());
         }
@@ -407,12 +414,12 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerComparison()
         {
-            ProgramBuilder prog = new ProgramBuilder(new LoadedImage(Address.Ptr32(0x00100000), new byte[0x4000]));
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
                 Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
-                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00100028)));
+                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00001028)));
             });
             RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
         }
@@ -534,14 +541,14 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder pm = new ProgramBuilder();
             pm.Add("proc1", m =>
             {
-                var ax = m.Reg16("ax");
+                var ax = m.Reg16("ax", 0);
                 var rand = new ExternalProcedure(
                     "rand",
                     new ProcedureSignature(
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
                 m.Declare(ax, m.Fn(rand));
-                m.Store(m.Word16(0x300), ax);
+                m.Store(m.Word16(0x1300), ax);
                 m.Return();
             });
             RunTest(pm, "Typing/TerDeclaration.txt");
@@ -553,10 +560,10 @@ namespace Reko.UnitTests.Typing
             var pm = CreateProgramBuilder(0x00001000, 0x1000);
             pm.Add("proc1", m =>
                 {
-                    var ebp = m.Reg32("ebp");
-                    var esp = m.Reg32("esp");
-                    var ecx = m.Reg32("ecx");
-                    var eax = m.Reg32("eax");
+                    var ebp = m.Reg32("ebp", 4);
+                    var esp = m.Reg32("esp", 5);
+                    var ecx = m.Reg32("ecx", 1);
+                    var eax = m.Reg32("eax", 0);
 
                     m.Assign(ebp, m.ISub(m.Frame.FramePointer, 4));
                     m.Assign(eax, m.LoadDw(m.IAdd(ebp, 0x0C)));
@@ -569,15 +576,14 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
- //       [Ignore("FIXME")]
         public void TerArray()
         {
             var pm = CreateProgramBuilder(0x00F000, 0x2000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
-                var ecx = m.Reg32("ecx");
-                var eax_2 = m.Reg32("eax_2");
+                var eax = m.Reg32("eax", 0);
+                var ecx = m.Reg32("ecx", 1);
+                var eax_2 = m.Reg32("eax_2", 0);
 
                 // eax_2 = (int32) ecx[eax];
                 m.Assign(
@@ -600,7 +606,7 @@ namespace Reko.UnitTests.Typing
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
+                var eax = m.Reg32("eax", 0);
                 m.Store(m.Word32(0x01000), eax);
             });
             var sExp =
@@ -636,7 +642,7 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
+                var eax = m.Reg32("eax", 0);
                 m.Store(m.Word32(0x01000), m.LoadW(eax));
             });
             var sExp =
@@ -672,7 +678,7 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax = m.Reg32("eax");
+                var eax = m.Reg32("eax", 0);
                 m.Declare(eax, null);
                 m.Store(m.Word32(0x01000), m.LoadW(eax));
                 m.Store(m.Word32(0x01002), m.LoadW(m.IAdd(eax, 2)));
@@ -714,9 +720,9 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var eax1 = m.Reg32("eax1");
-                var eax2 = m.Reg32("eax2");
-                var eax3 = m.Reg32("eax3");
+                var eax1 = m.Reg32("eax1", 0);
+                var eax2 = m.Reg32("eax2", 0);
+                var eax3 = m.Reg32("eax3", 0);
                 m.Declare(eax1, null);
                 m.Assign(eax2, m.LoadDw(eax1));
                 m.Assign(eax3, m.LoadDw(eax2));
@@ -761,7 +767,7 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var r1 = m.Reg32("r1");
+                var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, null);
                 m.Assign(r1, m.LoadDw(r1));
                 m.Store(m.Word32(0x01004), m.Load(
@@ -808,8 +814,8 @@ proc1_exit:
             var pm = CreateProgramBuilder(0x1000, 0x1000);
             pm.Add("proc1", m =>
             {
-                var r1 = m.Reg32("r1");
-                var r2 = m.Reg32("r2");
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
                 m.Declare(r1, null);
                 m.Declare(r2, null);
                 m.Assign(r1, m.LoadDw(r1));
@@ -854,6 +860,77 @@ proc1_exit:
 ";
             #endregion
             RunStringTest(pm.BuildProgram(), sExp);
+        }
+
+        [Test]
+        public void TerStruct()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	eax = Mem0[0x00001200:word32]
+	Mem0[eax:word32] = eax
+	Mem0[eax + 0x00000004:word32] = eax
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	eax = globals->ptr1200
+	eax->ptr0000 = eax
+	eax->ptr0004 = eax
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                m.Assign(eax, m.LoadDw(m.Word32(0x1200)));
+                m.Store(eax, eax);
+                m.Store(m.IAdd(eax, 4), eax);
+            },sExp);
+        }
+
+        [Test]
+        public void TerDeclaration2()
+        {
+            var sExp = @"// Before ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	word32 foo = 0x00000001
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	word32 foo = 0x00000001
+test_exit:
+
+";
+            RunStringTest(m =>
+            {
+                m.Declare(PrimitiveType.Word32, "foo", m.Word32(1));
+            }, sExp);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,37 +18,42 @@
  */
 #endregion
 
-using Reko;
 using Reko.Analysis;
-using Reko.Assemblers.x86;
 using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using Reko.Core;
-using Reko.Core.Serialization;
+using Reko.Core.Configuration;
 using Reko.Core.Services;
+using Reko.Environments.Msdos;
 using Reko.Loading;
 using Reko.Scanning;
-using Reko.Structure;
 using Reko.UnitTests.Mocks;
-using System;
+using Rhino.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Reko.Environments.Msdos;
-using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Structure
 {
-	public class StructureTestBase
+    public class StructureTestBase
 	{
 		protected Program program;
         private ServiceContainer sc;
 
         protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
+            var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
+            var env = MockRepository.GenerateStub<OperatingEnvironment>();
+            var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            cfgSvc.Stub(c => c.GetSignatureFiles()).Return(new List<SignatureFileElement>());
+            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
             sc = new ServiceContainer();
-            sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
+            sc.AddService<IConfigurationService>(cfgSvc);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureReal();
 
@@ -76,6 +81,8 @@ namespace Reko.UnitTests.Structure
 
         protected Program RewriteX86RealFragment(string asmFragment, Address addrBase)
         {
+            sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
@@ -83,9 +90,10 @@ namespace Reko.UnitTests.Structure
             return RewriteProgram();
         }
 
-
         protected Program RewriteX86_32Fragment(string asmFragment, Address addrBase)
         {
+            sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
@@ -95,11 +103,13 @@ namespace Reko.UnitTests.Structure
 
         private Program RewriteProgram()
         {
-            var project = new Project { Programs = { program } };
+            var eventListener = new FakeDecompilerEventListener();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                importResolver,
                 sc);
             foreach (EntryPoint ep in program.EntryPoints)
             {
@@ -107,9 +117,8 @@ namespace Reko.UnitTests.Structure
             }
             scan.ScanImage();
 
-            DecompilerEventListener eventListener = new FakeDecompilerEventListener();
-            DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
-            da.AnalyzeProgram();
+            var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
+            dfa.AnalyzeProgram();
 
             return program;
         }

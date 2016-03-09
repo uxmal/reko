@@ -1,0 +1,109 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	Preserved: sp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	sp = fp
+	dx = 0x001E
+	call fn0C00_000B (retsize: 2; depth: 2)
+	Mem0[ds:0x012C:word16] = ax
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// fn0C00_000B /////////////////////
+	LiveOut:   ax ds
+	MayUseIn:  dx
+	BypassIn: 
+	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	Preserved: sp
+// fn0C00_000B
+void fn0C00_000B()
+// SymbolicIn: sp:fp
+fn0C00_000B_entry:
+// DataOut: ds dx
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_000B:
+	sp = fp
+	call fn0C00_000F (retsize: 2; depth: 2)
+	return
+// DataOut: ax ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp ax:<invalid> dx:<invalid>
+fn0C00_000B_exit:
+// DataOut: ax ds
+// DataOut (flags): 
+
+// fn0C00_000F /////////////////////
+	LiveOut:   ax ds
+	MayUseIn:  dx
+	BypassIn: 
+	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	Preserved: si sp
+// fn0C00_000F
+void fn0C00_000F()
+// SymbolicIn: sp:fp
+fn0C00_000F_entry:
+// DataOut: ds dx
+// DataOut (flags): 
+// LocalsOut: fp(16)
+
+// SymbolicIn: sp:fp
+l0C00_000F:
+	sp = fp
+	sp = fp - 0x0002
+	wLoc02 = si
+	si = 0x0000
+	SZO = cond(0x0000)
+	C = false
+// DataOut: ds dx si
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp - 0x0002 si:<invalid> dx:<invalid> -2(fp):si
+l0C00_0015:
+	si = si + dx
+	SCZO = cond(si)
+	dx = dx - 0x0001
+	SZO = cond(dx)
+// DataOut: ds dx si
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp - 0x0002 si:<invalid> dx:<invalid> -2(fp):si
+l0C00_0018:
+	SCZO = cond(dx - 0x0000)
+	branch Test(GE,SO) l0C00_0015
+// DataOut: ds dx si
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp - 0x0002 si:<invalid> dx:<invalid> -2(fp):si
+l0C00_001D:
+	ax = si
+	si = wLoc02
+	sp = fp
+	return
+// DataOut: ax ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp si:si ax:<invalid> dx:<invalid> -2(fp):si
+fn0C00_000F_exit:
+// DataOut: ax ds
+// DataOut (flags): 
+

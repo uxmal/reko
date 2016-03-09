@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -73,8 +74,13 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = mkProc();
             progBuilder.ResolveUnresolved();
-
-            var ssa = new SsaTransform(pf, proc, proc.CreateBlockDominatorGraph());
+            var project = new Project
+            {
+                Programs = { this.progBuilder.Program }
+            };
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+            var ssa = new SsaTransform(pf, proc, importResolver, proc.CreateBlockDominatorGraph());
             var vp = new ValuePropagator(arch, ssa.SsaState.Identifiers, proc);
             vp.Transform();
 
@@ -169,7 +175,7 @@ Constants: ds:0x0C00,Local -0002:0x0C00
             RunTest(sExp, m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var ds = m.Reg16("ds");
+                var ds = m.Reg16("ds", 10);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x0C00));
@@ -188,9 +194,9 @@ Trashed: cl,cx
 ";
             RunTest(sExp, m =>
             {
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, PrimitiveType.Word16));
-                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 9, PrimitiveType.Byte));
-                var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, PrimitiveType.Byte));
+                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 9, 0, PrimitiveType.Byte));
+                var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Byte));
                 m.BranchIf(m.Eq0(ax), "zero");
 
                 m.Assign(cl, 0);
@@ -214,9 +220,9 @@ Constants: cl:0x00
 ";
             RunTest(sExp, m =>
             {
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, PrimitiveType.Word16));
-                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 9, PrimitiveType.Byte));
-                var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, PrimitiveType.Byte));
+                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 9, 0, PrimitiveType.Byte));
+                var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Byte));
                 m.BranchIf(m.Eq0(ax), "zero");
                 m.Assign(cl, 0);
                 m.Assign(cx, m.Dpb(cx, cl, 0));
@@ -234,7 +240,7 @@ Constants: cl:0x00
         [Test(Description="Tests propagation between caller and callee.")]
         public void TrfSubroutine_WithRegisterParameters()
         {
-            var sExp1 = String.Join(Environment.NewLine,new []{"Preserved: r2","Trashed: r1",""});
+            var sExp1 = string.Join(Environment.NewLine,new []{"Preserved: r2","Trashed: r1",""});
 
             // Subroutine does a small calculation in registers
             RunTest(sExp1, "Addition", m =>
@@ -245,7 +251,7 @@ Constants: cl:0x00
                 m.Return();
             });
 
-            var sExp2 = String.Join(Environment.NewLine,new []{"Preserved: ","Trashed: Global memory,r1,r2",""});
+            var sExp2 = string.Join(Environment.NewLine,new []{"Preserved: ","Trashed: Global memory,r1,r2",""});
 
             RunTest(sExp2, m =>
             {

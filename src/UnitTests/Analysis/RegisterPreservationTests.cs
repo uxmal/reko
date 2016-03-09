@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,6 +38,7 @@ namespace Reko.UnitTests.Analysis
     {
         private DataFlow2 dataFlow;
         private Program program;
+        private IImportResolver importResolver;
 
         private void AssertProgram(string sExp, IEnumerable<Procedure> procs)
         {
@@ -72,6 +74,8 @@ namespace Reko.UnitTests.Analysis
 
         public void RunTest(IEnumerable<Procedure> procs)
         {
+            importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var flow = new ProgramDataFlow(program);
             var scc = new Dictionary<Procedure, SsaState>();
             foreach (var proc in procs)
@@ -85,7 +89,7 @@ namespace Reko.UnitTests.Analysis
                 // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
-                var sst = new SsaTransform(flow, proc, doms);
+                var sst = new SsaTransform(flow, proc, importResolver, doms);
                 sst.AddUseInstructions = true;
                 sst.Transform();
                 var ssa = sst.SsaState;
@@ -363,7 +367,52 @@ test:
 
             var sExp =
             #region Expected
-                "@@@";
+@"// fact
+// Return size: 0
+void fact()
+fact_entry:
+	def fp
+	def r1
+	def r3
+	// succ:  l1
+l1:
+	r63_1 = fp
+	r2_3 = r1
+	r1_4 = 0x00000001
+	cc_5 = cond(r2_3 - r1_4)
+	branch Test(LE,cc_5) m_done
+	// succ:  l2 m_done
+l2:
+	r63_12 = r63_1 - 0x00000004
+	Mem13[r63_12:word32] = r2_3
+	r1_14 = r2_3 - r1_4
+	call fact (retsize: 0;)
+		uses: cc_5,r1_14,r2_3,r3,r63_12
+		defs: cc_19,r1_16,r2_17,r3_18,r63_15
+	r2_20 = Mem13[r63_15:word32]
+	r63_21 = r63_15 + 0x00000004
+	r1_22 = r1_16 * r2_20
+	// succ:  m_done
+m_done:
+	cc_7 = PHI(cc_5, cc_19)
+	r3_8 = PHI(r3, r3_18)
+	r2_9 = PHI(r2_3, r2_20)
+	r63_10 = PHI(r63_1, r63_21)
+	r1_11 = PHI(r1_4, r1_22)
+	return
+	// succ:  fact_exit
+fact_exit:
+	use cc_7
+	use fp
+	use r1_11
+	use r2_9
+	use r3_8
+	use r63_10
+
+fact:
+    Preserved: fp
+    Trashed:   Flags r1 r2 r3 r63
+";
             #endregion
             AssertProgram(sExp, program.Procedures.Values.Take(1));
         }

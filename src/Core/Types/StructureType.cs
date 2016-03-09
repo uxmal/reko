@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,21 +27,31 @@ namespace Reko.Core.Types
 	/// <summary>
 	/// Represents a memory structure type, consisting of several Fields.
 	/// </summary>
-	public class StructureType : DataType
+	public class StructureType : CompositeType
 	{
-		public StructureType() : this(null, 0)
+        public StructureType() : this(null, 0, false)
 		{
 		}
 
-        public StructureType(int size) : this(null, size)
+        public StructureType(int size) : this(null, size, false)
         {
         }
 
-		public StructureType(string name, int size) : base(name)
+		public StructureType(string name, int size) : this(name, size, false)
 		{
-			this.Fields = new StructureFieldCollection();
-			this.Size = size; 
 		}
+
+        public StructureType(string name, int size, bool userDefined) : base(name)
+        {
+            this.UserDefined = userDefined;
+            this.Fields = new StructureFieldCollection();
+            this.Size = size;
+        }
+
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitStructure(this);
+        }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
@@ -51,7 +61,9 @@ namespace Reko.Core.Types
 		public override DataType Clone()
 		{
 			var s = new StructureType(Name, Size);
+            s.UserDefined = UserDefined;
 			s.IsSegment = IsSegment;
+            s.ForceStructure = ForceStructure;
 			foreach (StructureField f in Fields)
 			{
 				s.Fields.Add(f.Clone());
@@ -59,14 +71,20 @@ namespace Reko.Core.Types
 			return s;
 		}
 
-		public StructureFieldCollection Fields { get; private set; }
+        public bool UserDefined { get; private set; }
+        public StructureFieldCollection Fields { get; private set; }
 		public override bool IsComplex  { get { return true; } }
 
-		/// <summary>
-		/// If true, the structure is an Intel-style segment. In particular, segments must never be converted to 
-		/// primitive types.
-		/// </summary>
-		public bool IsSegment { get ; set; }
+        /// <summary>
+        /// If true, then this structure can never be simplfied by Simplify().
+        /// </summary>
+        public bool ForceStructure { get; set; }
+        
+        /// <summary>
+        /// If true, the structure is an Intel-style segment. In particular, segments must never be converted to 
+        /// primitive types.
+        /// </summary>
+        public bool IsSegment { get ; set; }
         public bool IsEmpty { get { return Size == 0 && Fields.Count == 0; } }
 
         /// <summary>
@@ -94,7 +112,7 @@ namespace Reko.Core.Types
 
         public DataType Simplify()
         {
-            if (Fields.Count == 1 && !IsSegment)
+            if (Fields.Count == 1 && !IsSegment && !ForceStructure)
             {
                 StructureField f = Fields[0];
                 if (f.Offset == 0 && (Size == 0 || Size == f.DataType.Size))

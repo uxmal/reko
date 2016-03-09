@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,12 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
+using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 
@@ -33,20 +35,31 @@ namespace Reko.UnitTests.Arch.Intel
 	[TestFixture]
 	public class MsDosPlatformTests
 	{
+        private MockRepository mr;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            var env = mr.Stub<OperatingEnvironment>();
+            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
         }
 
 		[Test]
 		public void MspRealModeServices()
 		{
+            mr.ReplayAll();
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-			Platform platform = new MsdosPlatform(sc, arch);
+			IPlatform platform = new MsdosPlatform(sc, arch);
 
 			var state = arch.CreateProcessorState();
 			state.SetRegister(Registers.ah, Constant.Byte(0x3E));

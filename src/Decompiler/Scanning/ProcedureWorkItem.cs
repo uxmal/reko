@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Scanning
         private Address addr;
         private string name;
 
-        public ProcedureWorkItem(IScanner scanner, Program program, Address addr, string name)
+        public ProcedureWorkItem(IScanner scanner, Program program, Address addr, string name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;

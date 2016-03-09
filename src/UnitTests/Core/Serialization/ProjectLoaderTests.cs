@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections;
@@ -40,12 +41,14 @@ namespace Reko.UnitTests.Core.Serialization
     public class ProjectLoaderTests
     {
         private MockRepository mr;
+        private MockFactory mockFactory;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
+            this.mockFactory = new MockFactory(mr);
             this.sc = new ServiceContainer();
         }
 
@@ -55,9 +58,9 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             var oracle = mr.StrictMock<IOracleService>();
             var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<Platform>(this.sc, arch);
+            var platform = mockFactory.CreatePlatform();
             var typeLib = new TypeLibrary();
-            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<Platform>.Is.Equal(platform))).Return(typeLib);
+            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Equal(platform), Arg<TypeLibrary>.Is.NotNull)).Return(typeLib);
             oracle.Expect(o => o.QueryPlatform(Arg<string>.Is.NotNull)).Return(platform);
             sc.AddService<IOracleService>(oracle);
             mr.ReplayAll();
@@ -80,10 +83,10 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             var oracle = mr.StrictMock<IOracleService>();
             var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<Platform>(this.sc, arch);
+            var platform = mockFactory.CreatePlatform();
             var typelibrary = new TypeLibrary();
             Given_Binary(ldr, platform);
-            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<Platform>.Is.Same(platform))).Return(typelibrary);
+            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Same(platform), Arg<TypeLibrary>.Is.NotNull)).Return(typelibrary);
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
@@ -101,7 +104,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.VerifyAll();
         }
 
-        private void Given_Binary(ILoader ldr, Platform platform)
+        private void Given_Binary(ILoader ldr, IPlatform platform)
         {
             ldr.Stub(l => l.LoadImageBytes(
                 Arg<string>.Is.Anything,
@@ -231,6 +234,120 @@ namespace Reko.UnitTests.Core.Serialization
             var prld = new ProjectLoader(sc, ldr);
             var project = prld.LoadProject(@"c:/users/bob/projects/foo.project", sProject);
             Assert.AreEqual(@"c:\users\bob\projects\foo.exe", project.Programs[0].Filename);
+        }
+
+        [Test]
+        public void Prld_LoadUserDefinedMetadata()
+        {
+            var sProject = new Project_v3
+            {
+                Inputs =
+                {
+                    new DecompilerInput_v3
+                    {
+                        Filename = "foo.exe",
+                    },
+                    new MetadataFile_v3 {
+                        Filename = "meta1.xml",
+                    },
+                    new MetadataFile_v3 {
+                        Filename = "meta2.xml",
+                    },
+                }
+            };
+
+            var types1 = new Dictionary<string, DataType>()
+            {
+                {"USRTYPE1", PrimitiveType.Word16}
+            };
+            var types2 = new Dictionary<string, DataType>()
+            {
+                {"USRTYPE2", PrimitiveType.Word32}
+            };
+
+            var ldr = mockFactory.CreateLoader();
+            var platform = mockFactory.CreatePlatform();
+
+            mockFactory.CreateLoadMetadataStub(
+                @"c:\meta1.xml",
+                platform,
+                new TypeLibrary(
+                    types1, new Dictionary<string, ProcedureSignature>()
+                )
+            );
+            mockFactory.CreateLoadMetadataStub(
+                @"c:\meta2.xml",
+                platform,
+                new TypeLibrary(
+                    types2, new Dictionary<string, ProcedureSignature>()
+                )
+            );
+
+            var prld = new ProjectLoader(sc, ldr);
+            var project = prld.LoadProject(@"c:\foo.project", sProject);
+            Assert.AreEqual(2, project.Programs[0].Metadata.Types.Count);
+            Assert.AreEqual(
+                "word16",
+                project.Programs[0].Metadata.Types["USRTYPE1"].ToString()
+            );
+            Assert.AreEqual(
+                "word32",
+                project.Programs[0].Metadata.Types["USRTYPE2"].ToString()
+            );
+        }
+
+        [Test]
+        public void Prld_v2()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
+  <input>
+  </input>
+</project>";
+            var ldr = mr.Stub<ILoader>();
+            var platform = new TestPlatform();
+            Given_Binary(ldr, platform);
+            mr.ReplayAll();
+
+            var prld = new ProjectLoader(sc, ldr);
+            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+
+            Assert.AreEqual(1, project.Programs.Count);
+        }
+
+        [Test]
+        public void Prld_LoadGlobalUserData()
+        {
+            var sproject =
+    @"<?xml version=""1.0"" encoding=""utf-8""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+  <input>
+    <user>
+      <global>
+        <Address>10000010</Address>
+        <arr length=""10"">
+          <type>refType</type>
+        </arr>
+        <Name>testVar</Name>
+      </global>
+    </user>
+  </input>
+</project>";
+            var ldr = mockFactory.CreateLoader();
+
+            var prld = new ProjectLoader(sc, ldr);
+            var project = prld.LoadProject(
+                @"c:\foo\global_user.proj",
+                new MemoryStream(Encoding.UTF8.GetBytes(sproject))
+            );
+
+            Assert.AreEqual(1, project.Programs.Count);
+            Assert.AreEqual(1, project.Programs[0].User.Globals.Count);
+            var globalVariable = project.Programs[0].User.Globals.Values[0];
+            Assert.AreEqual("10000010", globalVariable.Address);
+            Assert.AreEqual("testVar", globalVariable.Name);
+            Assert.AreEqual("arr(refType,10)", globalVariable.DataType.ToString());
         }
     }
 }

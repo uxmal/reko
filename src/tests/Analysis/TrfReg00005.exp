@@ -1,10 +1,10 @@
-fn0C00_0000 SCZO ax cx bx di al cl bl ah ch bh es
+fn0C00_0000 SCZO ah al ax bh bl bx ch cl cx di dil eax ebx ecx edi es rax rbx rcx rdi
 const ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid> es:<invalid>
     fn0C00_0000_entry sp:fp
     l0C00_0000 sp:fp
-    fn0C00_0000_exit ah:<invalid> al:0x00 bx:<invalid> cx:<invalid> di:<invalid> es:<invalid> sp:fp
+    fn0C00_0000_exit ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid> es:<invalid> sp:fp
 
-fn0C00_000C SCZO ax cx bx di al cl bl ah ch bh es
+fn0C00_000C SCZO ah al ax bh bl bx ch cl cx di dil eax ebx ecx edi es rax rbx rcx rdi
 const ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid>
     fn0C00_000C_entry sp:fp
     l0C00_000C sp:fp
@@ -13,5 +13,5 @@ const ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid>
     l0C00_001B al:0x00 cx:<invalid> di:<invalid> es:ds sp:fp
     l0C00_001D al:0x00 cx:<invalid> di:<invalid> es:ds sp:fp
     l0C00_002D al:0x00 cx:<invalid> di:<invalid> es:ds sp:fp
-    fn0C00_000C_exit ah:<invalid> al:0x00 bx:<invalid> cx:<invalid> di:<invalid> es:ds sp:fp
+    fn0C00_000C_exit ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid> es:ds sp:fp
 

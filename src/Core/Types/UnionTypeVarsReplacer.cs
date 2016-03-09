@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,11 @@ namespace Reko.Core.Types
         {
             at.ElementType = at.ElementType.Accept(this);
             return at;
+        }
+
+        public DataType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
         }
 
         public DataType VisitCode(CodeType c)

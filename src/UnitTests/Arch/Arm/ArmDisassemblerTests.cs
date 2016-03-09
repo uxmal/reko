@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected static Arm32Instruction Disassemble(byte[] bytes)
         {
-            var image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
+            var image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
             var dasm = new Arm32Disassembler(new Arm32ProcessorArchitecture(), image.CreateLeReader(0));
             return dasm.First();
         }
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected MachineInstruction Disassemble32(uint instr)
         {
-            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
+            var image = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             w.WriteLeUInt32(0, instr);
             var arch = CreateArchitecture();
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected MachineInstruction DisassembleBits(string bitPattern)
         {
-            var image = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
+            var image = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);
@@ -96,6 +96,7 @@ namespace Reko.UnitTests.Arch.Arm
     }
 
     [TestFixture]
+    [Category(Categories.Capstone)]
     public class ArmDisassemblerTests : ArmTestBase
     {
         protected override IProcessorArchitecture CreateArchitecture()

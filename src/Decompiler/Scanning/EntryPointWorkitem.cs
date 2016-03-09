@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,11 +27,11 @@ namespace Reko.Scanning
 {
     public class EntryPointWorkitem : WorkItem
     {
-        private IScanner scanner;
+        private Scanner scanner;
         private Program program;
         private EntryPoint ep;
 
-        public EntryPointWorkitem(IScanner scanner, Program program, EntryPoint ep)
+        public EntryPointWorkitem(Scanner scanner, Program program, EntryPoint ep) : base(ep.Address)
         {
             this.scanner = scanner;
             this.program = program;
@@ -40,18 +40,7 @@ namespace Reko.Scanning
 
         public override void Process()
         {
-            try
-            {
-                var pb = scanner.ScanProcedure(ep.Address, ep.Name, ep.ProcessorState);
-                var proc = pb as Procedure;
-                if (proc != null)
-                {
-                    program.CallGraph.AddEntryPoint(proc);
-                }
-            } catch (AddressCorrelatedException aex)
-            {
-                scanner.Error(aex.Address, aex.Message);
-            }
+            scanner.ScanEntryPoint(program, ep);
         }
     }
 }

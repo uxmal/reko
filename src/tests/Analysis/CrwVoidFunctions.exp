@@ -1,7 +1,7 @@
 void fn0C00_0000(Register word16 di, Register selector ds)
 // MayUse:  di ds
 // LiveOut:
-// Trashed: SCZO ax bx si al bl ah bh
+// Trashed: SCZO ah al ax bh bl bx eax ebx esi rax rbx rsi si sil
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -31,9 +31,9 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_0010(Register word16 si, Register word16 di, Register selector ds)
-// MayUse:  si di ds
+// MayUse:  di ds si
 // LiveOut:
-// Trashed: ax al ah
+// Trashed: ah al ax eax rax
 // Preserved: sp
 // fn0C00_0010
 // Return size: 0
@@ -58,8 +58,8 @@ fn0C00_0010_exit:
 void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
 // MayUse:  di ds
 // LiveOut:
-// Trashed: SCZO ax bx al bl ah bh
-// Preserved: sp bp
+// Trashed: SCZO ah al ax bh bl bx eax ebx rax rbx
+// Preserved: bp sp
 // Stack args: Stack +0002(16)
 // fn0C00_0017
 // Return size: 0
@@ -123,8 +123,8 @@ fn0C00_0029_exit:
 void fn0C00_002C(Register word16 di, Register selector ds, Stack word16 wArg02)
 // MayUse:  di ds
 // LiveOut:
-// Trashed: ax al ah
-// Preserved: sp bp
+// Trashed: ah al ax eax rax
+// Preserved: bp sp
 // Stack args: Stack +0002(16)
 // fn0C00_002C
 // Return size: 0

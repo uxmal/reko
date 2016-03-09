@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,16 @@ namespace Reko.UnitTests.Typing
 		private TypeStore store;
 		private EquivalenceClassBuilder eqb;
 
+		[SetUp]
+		public void Setup()
+		{
+			factory = new TypeFactory();
+			store = new TypeStore();
+			eqb = new EquivalenceClassBuilder(factory, store);
+		}
+
 		[Test]
-		public void SimpleEquivalence()
+		public void EqbSimpleEquivalence()
 		{
 			TypeFactory factory = new TypeFactory();
 			TypeStore store = new TypeStore();
@@ -54,7 +62,7 @@ namespace Reko.UnitTests.Typing
 		}
 
 		[Test]
-		public void ArrayAccess()
+		public void EqbArrayAccess()
 		{
             ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", PrimitiveType.Pointer32, null), new Identifier("i", PrimitiveType.Int32, null));
 			e.Accept(eqb);
@@ -64,7 +72,7 @@ namespace Reko.UnitTests.Typing
 		}
 
 		[Test]
-		public void SegmentedAccess()
+		public void EqbSegmentedAccess()
 		{
 			Identifier ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
 			Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
@@ -74,7 +82,7 @@ namespace Reko.UnitTests.Typing
 		}
 
         [Test]
-        public void SegmentConstants()
+        public void EqbSegmentConstants()
         {
             Constant seg1 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
             Constant seg2 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
@@ -85,12 +93,23 @@ namespace Reko.UnitTests.Typing
             Assert.AreSame(seg1.TypeVariable, seg2.TypeVariable);
         }
 
-		[SetUp]
-		public void Setup()
-		{
-			factory = new TypeFactory();
-			store = new TypeStore();
-			eqb = new EquivalenceClassBuilder(factory, store);
-		}
+        [Test(Description = "Fixes a regression test that failed when the new type system cut over.")]
+        public void EqbProcedureSignature()
+        {
+            var sig = new ProcedureSignature(null,
+                new Identifier("dwArg00", PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32)));
+            eqb.EnsureSignatureTypeVariables(sig);
+            Assert.IsNotNull(sig.Parameters[0].TypeVariable);
+        }
+
+        [Test(Description = "Expressions referring to type references should map to the same TypeVariable.")]
+        public void EqbTypeReference()
+        {
+            var a = new Identifier("a", new TypeReference("INT", PrimitiveType.Int32), new TemporaryStorage("a", 43, PrimitiveType.Int32));
+            var b = new Identifier("b", new TypeReference("INT", PrimitiveType.Int32), new TemporaryStorage("b", 44, PrimitiveType.Int32));
+            a.Accept(eqb);
+            b.Accept(eqb);
+            Assert.AreSame(a.TypeVariable.Class, b.TypeVariable.Class);
+        }
 	}
 }

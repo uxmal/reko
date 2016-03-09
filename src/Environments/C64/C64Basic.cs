@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Environments.C64
     public class C64Basic : ProcessorArchitecture
     {
         private SortedList<ushort, C64BasicInstruction> program;
-        private RegisterStorage stackRegister = new RegisterStorage("sp", 1, PrimitiveType.Ptr16);
+        private RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
 
         public C64Basic(SortedList<ushort, C64BasicInstruction> program)
         {
@@ -61,12 +61,17 @@ namespace Reko.Environments.C64
             }
         }
 
-        public override ImageReader CreateImageReader(LoadedImage img, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea img, Address addr)
         {
             return new LeImageReader(img, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage img, ulong off)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             throw new NotImplementedException();
         }
@@ -79,11 +84,6 @@ namespace Reko.Environments.C64
         public override ProcessorState CreateProcessorState()
         {
             return new C64BasicState(this);
-        }
-
-        public override Core.Lib.BitSet CreateRegisterBitset()
-        {
-            return new Core.Lib.BitSet(0x10);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -109,6 +109,11 @@ namespace Reko.Environments.C64
         public override RegisterStorage[] GetRegisters()
         {
             return new RegisterStorage[0];
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotImplementedException();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

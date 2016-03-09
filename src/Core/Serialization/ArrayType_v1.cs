@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,12 +35,6 @@ namespace Reko.Core.Serialization
         [XmlAttribute("length")]
         [DefaultValue(0)]
         public int Length;
-
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            var et = ElementType.BuildDataType(factory);
-            return new ArrayType(et, Length);
-        }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {

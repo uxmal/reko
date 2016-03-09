@@ -2,7 +2,7 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax cx dx bx al cl dl bl ah ch dh bh
+	Trashed:   SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx rax rbx rcx rdx
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
@@ -35,15 +35,15 @@ fn0C00_0000_exit:
 
 // fn0C00_001E /////////////////////
 	LiveOut:   ax cl ds
-	MayUseIn:  ax bx cl ch
+	MayUseIn:  ax bx ch cl
 	BypassIn: 
-	Trashed:   SCZO ax cx bx al cl bl ah bh
+	Trashed:   SCZO ah al ax bh bl bx cl cx eax ebx ecx rax rbx rcx
 	Preserved: sp
 // fn0C00_001E
 void fn0C00_001E()
 // SymbolicIn: sp:fp
 fn0C00_001E_entry:
-// DataOut: ax bx cl ch ds
+// DataOut: ax bx ch cl ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
@@ -52,14 +52,14 @@ l0C00_001E:
 	cl = cl - ch
 	SCZO = cond(cl)
 	branch Test(ULT,C) l0C00_0027
-// DataOut: ax bx cl ch ds
+// DataOut: ax bx ch cl ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cl:cl - ch
 l0C00_0022:
 	bx = bx >> cl
 	SCZO = cond(bx)
-// DataOut: ax bx cl ch ds
+// DataOut: ax bx ch cl ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cl:cl - ch
@@ -72,7 +72,7 @@ l0C00_0027:
 	cl = -cl
 	SCZO = cond(cl)
 	C = cl == 0x00
-// DataOut: ax bx cl ch ds
+// DataOut: ax bx ch cl ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cl:cl - ch bx:bx >> cl - ch ax:ax >> ch - cl
@@ -92,15 +92,15 @@ fn0C00_001E_exit:
 
 // fn0C00_0032 /////////////////////
 	LiveOut:   ax cl ds
-	MayUseIn:  ax bx cl ch
+	MayUseIn:  ax bx ch cl
 	BypassIn: 
-	Trashed:   SCZO ax cx dx al cl dl ah dh
+	Trashed:   SCZO ah al ax cl cx dh dl dx eax ecx edx rax rcx rdx
 	Preserved: sp
 // fn0C00_0032
 void fn0C00_0032()
 // SymbolicIn: sp:fp
 fn0C00_0032_entry:
-// DataOut: ax bx cl ch ds
+// DataOut: ax bx ch cl ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp

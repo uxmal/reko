@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,10 @@ namespace Reko.Core
     /// <summary>
     /// Rewrite call statements to Applications.
     /// </summary>
+    /// <remarks>
+    /// Call statements are rewritten by consulting the ProcedureSignature
+    /// of the called function (callee). 
+    /// </remarks>
 	public class CallRewriter
 	{
 		public CallRewriter(Program program)

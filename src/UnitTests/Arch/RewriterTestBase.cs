@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,14 +31,14 @@ namespace Reko.UnitTests.Arch
 {
     public abstract class RewriterTestBase : ArchTestBase
     {
-        private LoadedImage instructions;
+        private MemoryArea instructions;
 
         public void Rewrite(params uint [] words)
         {
             instructions = RewriteCode(words);
         }
 
-        protected virtual LoadedImage RewriteCode(uint [] words)
+        protected virtual MemoryArea RewriteCode(uint [] words)
         {
             Assert.Fail();
             return null;

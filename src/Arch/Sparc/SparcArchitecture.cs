@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,12 +49,17 @@ namespace Reko.Arch.Sparc
             return new SparcDisassembler(this, imageReader);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new BeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
@@ -67,11 +72,6 @@ namespace Reko.Arch.Sparc
         public override ProcessorState CreateProcessorState()
         {
             return new SparcProcessorState(this);
-        }
-
-        public override BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -100,6 +100,11 @@ namespace Reko.Arch.Sparc
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
             throw new NotImplementedException();
         }

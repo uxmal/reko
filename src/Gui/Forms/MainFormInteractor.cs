@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -307,7 +307,6 @@ namespace Reko.Gui.Forms
         {
             IOpenAsDialog dlg = null;
             IProcessorArchitecture arch = null;
-            Platform platform = null;
             try
             {
                 dlg = dlgFactory.CreateOpenAsDialog();
@@ -317,24 +316,38 @@ namespace Reko.Gui.Forms
 
                 mru.Use(dlg.FileName.Text);
 
-                var archOption = (ListOption) dlg.Architectures.SelectedValue;
-                arch = config.GetArchitecture((string)archOption.Value);
+                var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
+                string archName;
+                string envName;
+                RawFileElement raw = null;
+                if (rawFileOption != null && rawFileOption.Value != null)
+                {
+                    raw = (RawFileElement)rawFileOption.Value;
+                    archName = raw.Architecture;
+                    envName = raw.Environment;
+                }
+                else
+                {
+                    var archOption = (ListOption)dlg.Architectures.SelectedValue;
+                    archName = (string)archOption.Value;
+                    var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
+                    envName = envOption != null? envOption.Name : null;
+                }
+
+                arch = config.GetArchitecture(archName);
                 if (arch == null)
-                    throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archOption.Value));
-
-                var envOption = (ListOption) dlg.Platforms.SelectedValue;
-                var envName = (string)envOption.Value;
-
+                    throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
                 Address addrBase;
-                var sAddr = dlg.AddressTextBox.Text.Trim();
-                if (!arch.TryParseAddress(sAddr, out addrBase))
-                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
-                OpenBinary(dlg.FileName.Text, (f) =>
-                    pageInitial.OpenBinaryAs(
-                        f,
-                        (string)archOption.Value,
-                        envName,
-                        addrBase));
+                    var sAddr = dlg.AddressTextBox.Text.Trim();
+                    if (!arch.TryParseAddress(sAddr, out addrBase))
+                        throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
+                    OpenBinary(dlg.FileName.Text, (f) =>
+                        pageInitial.OpenBinaryAs(
+                            f,
+                            archName,
+                            envName,
+                            addrBase,
+                            raw));
             }
             catch (Exception ex)
             {
@@ -403,10 +416,12 @@ namespace Reko.Gui.Forms
 
             foreach (var program in decompilerSvc.Decompiler.Project.Programs)
             {
-                program.Procedures.Clear();
+                program.Reset();
             }
             SwitchInteractor(this.InitialPageInteractor);
+            
             CloseAllDocumentWindows();
+            projectBrowserSvc.Reload();
         }
 
         public void NextPhase()
@@ -482,16 +497,15 @@ namespace Reko.Gui.Forms
                         .SelectMany(program => 
                             program.ImageMap.Segments.Values.SelectMany(seg =>
                             {
-                                var segOffset = (int) (seg.Address - program.Image.BaseAddress);
                                 return re.GetMatches(
-                                        program.Image.Bytes,
-                                        segOffset,
-                                        segOffset + (int)seg.Size)
+                                        seg.MemoryArea.Bytes,
+                                        0,
+                                        (int)seg.MemoryArea.Length)
                                     .Where(o => filter(o, program))
                                     .Select(offset => new ProgramAddress(
                                         program,
                                         program.ImageMap.MapLinearAddressToAddress(
-                                            program.Image.BaseAddress.ToLinear() + (ulong)offset)));
+                                            seg.MemoryArea.BaseAddress.ToLinear() + (ulong)offset)));
                             }));
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
                 }
@@ -509,7 +523,7 @@ namespace Reko.Gui.Forms
                     {
                         var addr = program.ImageMap.MapLinearAddressToAddress(
                             (ulong)
-                             ((long)program.Image.BaseAddress.ToLinear() + o));
+                             ((long)program.ImageMap.BaseAddress.ToLinear() + o));
                         ImageMapItem item;
                         return program.ImageMap.TryFindItem(addr, out item)
                             && item.DataType != null &&
@@ -521,7 +535,7 @@ namespace Reko.Gui.Forms
                 return (o, program) =>
                     {
                         var addr = program.ImageMap.MapLinearAddressToAddress(
-                              (uint)((long) program.Image.BaseAddress.ToLinear() + o));
+                              (uint)((long) program.ImageMap.BaseAddress.ToLinear() + o));
                         ImageMapItem item;
                         return program.ImageMap.TryFindItem(addr, out item)
                             && item.DataType == null ||

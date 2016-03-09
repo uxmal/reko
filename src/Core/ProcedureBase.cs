@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,13 @@ namespace Reko.Core
 
 		public ProcedureCharacteristics Characteristics { get; set; }
 
-        public TypeVariable TypeVariable { get; set; }
+        /// <summary>
+        /// If this is a member function of a class or struct, this property
+        /// will be a reference to the enclosing type.
+        /// </summary>
+        //$TODO: all the infrastructure for class loading remains to be
+        // implemented; for now we just store the class name.
+        public SerializedType EnclosingType { get; set; }
 
         public override string ToString()
         {

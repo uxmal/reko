@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,25 +47,18 @@ namespace Reko.Core.Serialization
             return visitor.VisitUnion(this);
         }
 
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            UnionType u = factory.CreateUnionType(Name, null);
-            foreach (var alt in Alternatives)
-            {
-                u.Alternatives.Add(new UnionAlternative(alt.Name, alt.Type.BuildDataType(factory), u.Alternatives.Count));
-            }
-            return u;
-        }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("union({0}", ByteSize);
-            foreach (SerializedUnionAlternative alt in Alternatives)
+            if (Alternatives != null)
             {
-                sb.AppendFormat(", ({0}, {1})", alt.Name != null ? alt.Name : "?", alt.Type);
+                foreach (SerializedUnionAlternative alt in Alternatives)
+                {
+                    sb.AppendFormat(", ({0}, {1})", alt.Name != null ? alt.Name : "?", alt.Type);
+                }
+                sb.Append(")");
             }
-            sb.Append(")");
             return sb.ToString();
         }
     }

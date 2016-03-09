@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 
-
-namespace Reko.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class CodeEmitterTests

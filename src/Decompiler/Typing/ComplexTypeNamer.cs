@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,12 @@ namespace Reko.Typing
 			}
 		}
 
-		public DataType VisitStructure(StructureType str)
+        public DataType VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitStructure(StructureType str)
 		{
 			if (str.Name == null && eq != null)
 				str.Name = eq.Name;

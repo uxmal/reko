@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ namespace Reko.Environments.Windows
     /// Microsoft doesn't document the mangling format, but reverse engineering has been done, resulting in:
     /// http://www.kegel.com/mangle.html
     /// http://www.agner.org/optimize/calling_conventions.pdf
+    /// https://github.com/wine-mirror/wine/dlls/msvcrt/undname.c
     /// </remarks>
     public class MsMangledNameParser
     {
@@ -44,6 +45,7 @@ namespace Reko.Environments.Windows
         private List<string> namesSeen;
         private List<string> templateNamesSeen;
         private List<Argument_v1> compoundArgs;
+        private bool isInstanceMethod;
 
         public MsMangledNameParser(string str)
         {
@@ -230,11 +232,16 @@ namespace Reko.Environments.Windows
             case '0':
             case '1':
             case '2':
+            case '3':
                 return new StructField_v1
                 {
                     Type = ParseDataTypeCode(compoundArgs),
                     Name = basicName
                 };
+            case '6':   // Compiler-generated static
+                //$TODO: deal with const/volatile modifier
+                ParseStorageClass();
+                break;
             case 'A': sig = ParseInstanceMethod("private"); break;
             case 'B': sig = ParseInstanceMethod("private far"); break;
             case 'C': sig = ParseStaticMethod("private static"); break;
@@ -258,7 +265,7 @@ namespace Reko.Environments.Windows
 
             case 'Y': sig = ParseGlobalFunction(""); break;
             case 'Z': sig = ParseGlobalFunction("far"); break;
-            default: throw new NotImplementedException();
+            default: throw new NotImplementedException(string.Format("Character '{0}' not supported", str[i-1]));
                
             }
             return new StructField_v1
@@ -293,6 +300,7 @@ namespace Reko.Environments.Windows
         public SerializedSignature ParseInstanceMethod(string modifier)
         {
             this.Modifier = modifier;
+            this.isInstanceMethod = true;
             ParseThisStorageClass();
             return ParseFunctionTypeCode();
         }
@@ -307,6 +315,8 @@ namespace Reko.Environments.Windows
             return new SerializedSignature
             {
                 Convention = convention,
+                IsInstanceMethod = this.isInstanceMethod,
+                EnclosingType = null,
                 Arguments = args,
                 ReturnValue = new Argument_v1 { Type = retType != null ? retType : new VoidType_v1() }
             };
@@ -330,6 +340,7 @@ namespace Reko.Environments.Windows
 
         public SerializedSignature ParseStaticMethod(string modifier)
         {
+            this.isInstanceMethod = false;
             return ParseFunctionTypeCode();
         }
 
@@ -384,6 +395,10 @@ namespace Reko.Environments.Windows
             {
                 Convention = convention,
                 Arguments = args,
+                EnclosingType = !string.IsNullOrEmpty(Scope)
+                    ? new StructType_v1 { Name = Scope, ForceStructure = true }
+                    : null,
+                IsInstanceMethod = isInstanceMethod,
                 ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }
             };
         }

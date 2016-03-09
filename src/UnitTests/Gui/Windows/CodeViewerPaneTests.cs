@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,9 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.CLanguage;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Windows;
 using Reko.Gui.Windows.Controls;
@@ -36,12 +39,14 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class CodeViewerPaneTests
     {
         private string nl = Environment.NewLine;
 
         private CodeViewerPane codeViewer;
         private MockRepository mr;
+        private MockFactory mockFactory;
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
         private IUiPreferencesService uiPreferencesSvc;
@@ -55,7 +60,14 @@ namespace Reko.UnitTests.Gui.Windows
         public void Setup()
         {
             mr = new MockRepository();
-            program = new Program();
+            mockFactory = new MockFactory(mr);
+            var platform = mockFactory.CreatePlatform(); ;
+
+            program = new Program
+            {
+                Architecture = platform.Architecture,
+                Platform = platform,
+            };
             codeViewer = new CodeViewerPane();
             decompilerSvc = mr.Stub<IDecompilerService>();
             decompiler = mr.Stub<IDecompiler>();
@@ -74,7 +86,6 @@ namespace Reko.UnitTests.Gui.Windows
                 }
             };
             uiPreferencesSvc.Stub(u => u.Styles).Return(styles);
-
             var sc = new ServiceContainer();
             decompilerSvc.Decompiler = decompiler;
             sc.AddService<IDecompilerService>(decompilerSvc);
@@ -249,6 +260,27 @@ namespace Reko.UnitTests.Gui.Windows
 
             Assert.AreEqual("foo", proc.Name);
             Assert.AreEqual("char * foo(int)", program.User.Procedures.Values.First().CSignature);
+        }
+
+        [Test]
+        public void Cvp_Accept_Declaration_PlatformTypes()
+        {
+            var types = new Dictionary<string, DataType>()
+            {
+                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
+            };
+            Given_Program();
+            mockFactory.Given_PlatformTypes(types);
+            Given_StubProcedure();
+            mr.ReplayAll();
+
+            When_CodeViewCreated();
+            var oldSig = proc.Signature;
+            codeViewer.DisplayProcedure(program, proc);
+            codeViewer.Declaration.Text = "BYTE foo(BYTE a, BYTE b)";
+
+            Assert.AreEqual("foo", proc.Name);
+            Assert.AreEqual("BYTE foo(BYTE a, BYTE b)", program.User.Procedures.Values.First().CSignature);
         }
     }
 }

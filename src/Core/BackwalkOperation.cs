@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,9 +102,10 @@ namespace Reko.Core
 			switch (cc)
 			{
 				case ConditionCode.UGT:
+				case ConditionCode.GT:
 					return limit + 1;
-            case ConditionCode.ULE:
-                    return limit + 1;
+				case ConditionCode.ULE:
+					return limit + 1;
 				default:
 					throw new NotImplementedException();
 			}
@@ -115,7 +116,6 @@ namespace Reko.Core
 			return string.Format("branch {0}", cc);
 		}
 	}
-
 
 	public class BackwalkError : BackwalkOperation
 	{
@@ -135,7 +135,6 @@ namespace Reko.Core
 		{
 			return string.Format("err {0}", errorMsg);
 		}
-
 	}
 
 	public enum BackwalkOperator

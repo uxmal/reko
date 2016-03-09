@@ -55,7 +55,6 @@
             this.memoryControl1.ImageMap = null;
             this.memoryControl1.Location = new System.Drawing.Point(0, 71);
             this.memoryControl1.Name = "memoryControl1";
-            this.memoryControl1.ProgramImage = null;
             this.memoryControl1.SelectedAddress = null;
             this.memoryControl1.Services = null;
             this.memoryControl1.Size = new System.Drawing.Size(404, 124);
@@ -69,7 +68,6 @@
             this.imageMapView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.imageMapView1.Granularity = 0;
-            this.imageMapView1.Image = null;
             this.imageMapView1.ImageMap = null;
             this.imageMapView1.Location = new System.Drawing.Point(0, 33);
             this.imageMapView1.Name = "imageMapView1";

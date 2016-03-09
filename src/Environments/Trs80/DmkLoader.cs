@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,11 +63,10 @@ namespace Reko.Environments.Trs80
             var bytes = tracks.SelectMany(t => t.Sectors)
                 .SelectMany(s => s.GetData())
                 .ToArray();
-            var image = new LoadedImage(addrLoad, bytes);
+            var image = new MemoryArea(addrLoad, bytes);
             return new Program
             {
                 Architecture = new Z80ProcessorArchitecture(),
-                Image = image,
                 ImageMap = image.CreateImageMap(),
             };
         }

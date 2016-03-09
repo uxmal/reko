@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Analysis
 		private void Prepare(ProcedureBuilder mock)
 		{
 			proc = mock.Procedure;
-			SsaTransform tr = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
+			SsaTransform tr = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph());
 			ssaIds = tr.SsaState.Identifiers;
 		}
 

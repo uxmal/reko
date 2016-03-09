@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Z80
         private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture();
         private Address baseAddr = Address.Ptr16(0x0100);
         private Z80ProcessorState state;
-        private LoadedImage image;
+        private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
         {
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Z80
 
         private void BuildTest(params byte[] bytes)
         {
-            image = new LoadedImage(baseAddr, bytes);
+            image = new MemoryArea(baseAddr, bytes);
         }
 
         [Test]

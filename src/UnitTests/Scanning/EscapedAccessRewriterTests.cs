@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,10 @@ namespace Reko.UnitTests.Scanning
                  new X86TextAssembler(sc, arch),
                 addr);
             var project = new Project { Programs = { program } };
-			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), null);
+			var scan = new Scanner(
+                program, 
+                new Dictionary<Address, ProcedureSignature>(), 
+                new ImportResolver(project, program, null), null);
 			foreach (EntryPoint ep in program.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);

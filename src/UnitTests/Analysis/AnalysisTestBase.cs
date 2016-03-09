@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
 {
 	public abstract class AnalysisTestBase
 	{
-        private Platform platform;
+        private IPlatform platform;
         private ServiceContainer sc;
 
         public AnalysisTestBase()
@@ -125,7 +125,18 @@ namespace Reko.UnitTests.Analysis
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
             var sc = new ServiceContainer();
+            var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
+            var env = MockRepository.GenerateStub<OperatingEnvironment>();
+            var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            cfgSvc.Replay();
+            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
+            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            env.Replay();
+            tlSvc.Replay();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             Program program;
             Assembler asm = new X86TextAssembler(sc, arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
@@ -186,10 +197,11 @@ namespace Reko.UnitTests.Analysis
         {
             var fakeDiagnosticsService = new FakeDiagnosticsService();
             var fakeConfigService = new FakeDecompilerConfiguration();
+            var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
             sc.AddService(typeof(IDiagnosticsService), fakeDiagnosticsService);
             sc.AddService(typeof(IConfigurationService), fakeConfigService);
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
@@ -198,7 +210,7 @@ namespace Reko.UnitTests.Analysis
             var scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                new ImportResolver(project, program, eventListener),
                 sc);
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
@@ -286,14 +298,14 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        protected void Given_Platform(Platform platform)
+        protected void Given_Platform(IPlatform platform)
         {
             this.platform = platform;
         }
 
         protected void Given_FakeWin32Platform(MockRepository mr)
         {
-            var platform = mr.StrictMock<Platform>(null, null);
+            var platform = mr.StrictMock<IPlatform>();
             var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
             var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
             var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
@@ -339,7 +351,7 @@ namespace Reko.UnitTests.Analysis
 
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
-                new Reko.Arch.X86.X86ArchitectureFlat32().CreateRegisterBitset());
+                new HashSet<RegisterStorage>());
             Given_Platform(platform);
         }
 	}

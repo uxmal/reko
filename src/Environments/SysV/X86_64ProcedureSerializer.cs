@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Reko.Environments.SysV
 {
     public class X86_64ProcedureSerializer : ProcedureSerializer
     {
-        private ArgumentSerializer argser;
+        private ArgumentDeserializer argser;
         private int ir;
         private int fr;
         private static string[] iregs = { "rdi", "rsi", "rdx", "rcx", "r8", "r9" };
@@ -55,7 +55,7 @@ namespace Reko.Environments.SysV
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentSerializer(this, Architecture, frame, ss.Convention);
+            this.argser = new ArgumentDeserializer(this, Architecture, frame, Architecture.PointerType.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 

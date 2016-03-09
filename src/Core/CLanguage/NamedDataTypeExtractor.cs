@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,30 +40,18 @@ namespace Reko.Core.CLanguage
         private int byteSize;
         private CTokenType callingConvention;
         private CConstantEvaluator eval;
-        private SimpleSize simpleSize;
+        private CBasicType basicType;
+        private IPlatform platform;
 
-        private enum SimpleSize
+        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable converter)
         {
-            None,
-            Char,
-            WChar_t,
-            Short,
-            Int,
-            Long,
-            LongLong,
-            Float,
-            Double,
-            LongDouble,
-            Int64,
-        }
-
-        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, SymbolTable converter)
-        {
+            if (platform == null) throw new ArgumentNullException("platform");
+            this.platform = platform;
             this.specs = specs;
             this.symbolTable = converter;
             this.callingConvention = CTokenType.None;
-            this.eval = new CConstantEvaluator(converter.Constants);
-            this.simpleSize = SimpleSize.None;
+            this.eval = new CConstantEvaluator(platform, converter.Constants);
+            this.basicType = CBasicType.None;
             foreach (var declspec in specs)
             {
                 dt = declspec.Accept(this);
@@ -148,8 +136,7 @@ namespace Reko.Core.CLanguage
             if (specs.OfType<TypeQualifier>()
                     .Any(t => t.Qualifier == CTokenType._Near))
                 return 2;
-            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
-            return 4;
+            return platform.PointerType.Size;
         }
 
         public Func<NamedDataType, NamedDataType> VisitFunction(FunctionDeclarator function)
@@ -205,7 +192,7 @@ namespace Reko.Core.CLanguage
             }
             else
             {
-                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, symbolTable);
+                var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs, symbolTable);
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 var kind = GetArgumentKindFromAttributes(decl.Attributes);
                 return new Argument_v1
@@ -261,7 +248,7 @@ namespace Reko.Core.CLanguage
                 {
                     Name = nt.Name,
                     DataType = new PointerType_v1 { DataType = at.ElementType },
-                    Size = 4   //$BUGBUG: this is different for z80 and x86-64
+                    Size = platform.PointerType.Size,
                 };
             }
             else
@@ -298,94 +285,75 @@ namespace Reko.Core.CLanguage
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'signed' after '{0}'.", domain));
                 domain = Domain.SignedInt;
-                byteSize = 4;                   // 'unsigned' == 'unsigned int'
-                //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
+                basicType = CBasicType.Int;
                 return CreatePrimitive();
             case CTokenType.Unsigned:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'unsigned' after '{0}'.", domain));
                 domain = Domain.UnsignedInt;
-                byteSize = 4;                   // 'unsigned' == 'unsigned int'
-                //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
+                basicType = CBasicType.Int;
                 return CreatePrimitive();
             case CTokenType.Char:
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}.", domain));
-                simpleSize = SimpleSize.Char;
+                basicType = CBasicType.Char;
                 return CreatePrimitive();
             case CTokenType.Wchar_t:
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                simpleSize = SimpleSize.WChar_t;
+                basicType = CBasicType.WChar_t;
                 return CreatePrimitive();
             case CTokenType.Short:
                 if (domain != Domain.None && domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                simpleSize = SimpleSize.Short;
+                basicType = CBasicType.Short;
                 return CreatePrimitive();
             case CTokenType.Int:
                 if (domain == Domain.None)
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                if (simpleSize == SimpleSize.None)
-                    simpleSize = SimpleSize.Int;
+                if (basicType == CBasicType.None)
+                    basicType = CBasicType.Int;
                 return CreatePrimitive();
-            //$TODO: bitsize is platform-dependent. For instance, an 'int' is 32-bits on Windows x86-64 but 16-bits on MS-DOS
             case CTokenType.Long:
-                if (simpleSize == SimpleSize.None)
-                    simpleSize = SimpleSize.Long;
-                else if (simpleSize == SimpleSize.Long)
-                    simpleSize = SimpleSize.LongLong;
+                if (basicType == CBasicType.None)
+                    basicType = CBasicType.Long;
+                else if (basicType == CBasicType.Long)
+                    basicType = CBasicType.LongLong;
                 return CreatePrimitive();
-            //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
             case CTokenType.__Int64:
                 if (domain == Domain.None)
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                simpleSize = SimpleSize.Int64;
+                basicType = CBasicType.Int64;
                 return CreatePrimitive();
             case CTokenType.Float:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
                 domain = Domain.Real;
-                simpleSize = SimpleSize.Float;
+                basicType = CBasicType.Float;
                 return CreatePrimitive();
             case CTokenType.Double:
                 if (domain != Domain.None && domain != Domain.SignedInt)  //$REVIEW: short double? long double? long long double?
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
                 domain = Domain.Real;
-                if (simpleSize == SimpleSize.None)
-                    simpleSize = SimpleSize.Double;
-                else if (simpleSize == SimpleSize.Long)
-                    simpleSize = SimpleSize.LongDouble;
+                if (basicType == CBasicType.None)
+                    basicType = CBasicType.Double;
+                else if (basicType == CBasicType.Long)
+                    basicType = CBasicType.LongDouble;
                 return CreatePrimitive();
             }
         }
 
         private PrimitiveType_v1 CreatePrimitive()
         {
-            //$BUG: all these are architecture depeendent.
-            switch (simpleSize)
-            {
-            case SimpleSize.None: byteSize = 0; break;
-            case SimpleSize.Char: byteSize = 1; break;
-            case SimpleSize.WChar_t: byteSize = 2; break;
-            case SimpleSize.Short: byteSize = 2; break;
-            case SimpleSize.Int: byteSize = 4; break;
-            case SimpleSize.Long: byteSize = 4; break;
-            case SimpleSize.LongLong: byteSize = 8; break;
-            case SimpleSize.Int64: byteSize = 8; break;
-            case SimpleSize.Float: byteSize = 4; break;
-            case SimpleSize.Double: byteSize = 8; break;
-            case SimpleSize.LongDouble: byteSize = 8; break;
-            default: throw new NotImplementedException();
-            }
+            byteSize = platform.GetByteSizeFromCBasicType(basicType);
             if (domain == Domain.None)
                 domain = Domain.SignedInt;
             return new PrimitiveType_v1
@@ -413,10 +381,10 @@ namespace Reko.Core.CLanguage
         {
             if (complexType.Type == CTokenType.Struct)
             {
-                SerializedStructType str;
+                StructType_v1 str;
                 if (complexType.Name == null || symbolTable.StructsSeen.TryGetValue(complexType.Name, out str))
                 {
-                    str = new SerializedStructType {
+                    str = new StructType_v1 {
                         Name = complexType.Name != null
                             ? complexType.Name
                             : string.Format("struct_{0}", symbolTable.StructsSeen.Count)
@@ -425,14 +393,14 @@ namespace Reko.Core.CLanguage
                 }
                 else
                 {
-                    str = new SerializedStructType { Name = complexType.Name };
+                    str = new StructType_v1 { Name = complexType.Name };
                 }
                 if (!complexType.IsForwardDeclaration() && str.Fields == null)
                 {
                     str.Fields = ExpandStructFields(complexType.DeclList).ToArray();
                     symbolTable.Sizer.SetSize(str);
                     symbolTable.Types.Add(str);
-                    str = new SerializedStructType { Name = str.Name };
+                    str = new StructType_v1 { Name = str.Name };
                 }
                 return str;
             }
@@ -474,7 +442,7 @@ namespace Reko.Core.CLanguage
                         : string.Format("enum_{0}", symbolTable.EnumsSeen.Count)
                 };
                 symbolTable.EnumsSeen.Add(en.Name, en);
-                var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(symbolTable.Constants));
+                var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(platform, symbolTable.Constants));
                 var listMembers = new List<SerializedEnumValue>();
                 foreach (var item in e.Enums)
                 {
@@ -502,7 +470,7 @@ namespace Reko.Core.CLanguage
             int offset = 0;
             foreach (var decl in decls)
             {
-                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable);
+                var ntde = new NamedDataTypeExtractor(platform, decl.SpecQualifierList, symbolTable);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
@@ -523,7 +491,7 @@ namespace Reko.Core.CLanguage
         {
             foreach (var decl in decls)
             {
-                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, symbolTable);
+                var ndte = new NamedDataTypeExtractor(platform, decl.SpecQualifierList, symbolTable);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ndte.GetNameAndType(declarator);

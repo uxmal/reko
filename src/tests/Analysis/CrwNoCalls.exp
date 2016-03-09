@@ -1,7 +1,7 @@
 void fn0C00_0000(Register word16 ax, Register word16 bx, Register selector ds)
 // MayUse:  ax bx ds
 // LiveOut:
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,12 +64,22 @@ namespace Reko.Core
 		public abstract void Write(TextWriter writer);
     }
 
+    public static class StorageEx
+    {
+        public static bool As<T>(this Storage self, out T t) where T : Storage
+        {
+            t = self as T;
+            return t != null;
+        }
+    }
+
     public enum StorageDomain
     {
         None = -1,
         Register = 0,
         Stack = 4096,   // Few architectures have this many registers (fingers xD)
-        Memory = 4097 
+        Memory = 4097, 
+        Temporary = 8192,
     }
 
     /// <summary>
@@ -78,7 +88,7 @@ namespace Reko.Core
     public class FlagRegister : RegisterStorage
     {
         public FlagRegister(string name, PrimitiveType size) :
-            base(name, 0, size)
+            base(name, 0, 0, size)
         {
         }
 
@@ -213,6 +223,7 @@ namespace Reko.Core
 	{
 		public MemoryStorage() : base("Global")
 		{
+            this.Domain = StorageDomain.Memory;
 		}
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -292,20 +303,39 @@ namespace Reko.Core
     /// Used to represent a machine register.
     /// </summary>
 	public class RegisterStorage : Storage
-	{
-		public RegisterStorage(string name, int number, PrimitiveType dt) : base("Register")
-		{
-			this.Name = name;
+    {
+        private RegisterStorage(string kind) : base(kind)
+        {
+
+        }
+
+        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dt) : base("Register")
+        {
+            this.Name = regName;
             this.Number = number;
+            this.BitAddress = bitAddress;
             this.DataType = dt;
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
-		}
+            int bitSize = dt.BitSize;
+            if (bitSize == 64)
+            {
+                BitMask = ~0ul;
+            }
+            else
+            {
+                BitMask = ((1ul << bitSize) - 1) << (int) bitAddress;
+            }
+        }
+
+        public override ulong BitSize {
+            get { return (ulong)DataType.BitSize; }
+            set { throw new NotSupportedException(); }
+        }
 
         /// <summary>
-        /// If this register is a subregister of a wider register, this property the bit offset within that wider register.
+        /// Bitmask used to extract subregister values from a larger backing register.
         /// </summary>
-        /// <remarks>For instance, on i386 systems, AH would return 8 here, since it is located at that bit offset of EAX.</remarks>
-        public virtual int AliasOffset { get { return 0; } }
+        public ulong BitMask { get; private set; }
 
         /// <summary>
         /// The name of the register.
@@ -319,52 +349,31 @@ namespace Reko.Core
         /// General-purpose registers can use the Domain.Word </remarks>
         public PrimitiveType DataType { get; private set; }
 
-        /// <summary>
-        /// Returns true if this is an ALU register that supports operations like addition, address dereference and the like.
-        /// </summary>
-        public virtual bool IsAluRegister { get { return true; } }
-
         public int Number { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
-		{
-			return visitor.VisitRegisterStorage(this);
-		}
+        {
+            return visitor.VisitRegisterStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitRegisterStorage(this, context);
         }
 
-		public override bool Equals(object obj)
-		{
-			var rs = obj as RegisterStorage;
-			if (rs == null)
-				return false;
-			return Number == rs.Number;
-		}
-
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ Number;
-		}
-
-        public RegisterStorage GetPart(DataType width)
+        public override bool Equals(object obj)
         {
-            return GetSubregister(0, width.BitSize);
+            var that = obj as RegisterStorage;
+            if (that == null)
+                return false;
+            return this.Domain == that.Domain &&
+                this.BitAddress == that.BitAddress &&
+                this.BitSize == that.BitSize;
         }
 
-        public virtual RegisterStorage GetSubregister(int offset, int bitSize)
+        public override int GetHashCode()
         {
-            if (offset == 0 && bitSize == DataType.BitSize)
-                return this;
-            else
-                return null;
-        }
-
-        public virtual RegisterStorage GetWidestSubregister(BitSet bits)
-        {
-            return null;
+            return (int)Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
         }
 
         /// <summary>
@@ -373,22 +382,33 @@ namespace Reko.Core
         /// <param name="reg1"></param>
         /// <param name="reg2"></param>
         /// <returns></returns>
-        public virtual bool IsSubRegisterOf(RegisterStorage reg2)
+        public bool IsSubRegisterOf(RegisterStorage reg2)
         {
-            return false;
+            if (this.BitSize >= reg2.BitSize)
+                return false;
+            return this.OverlapsWith(reg2);
         }
 
-		public override int OffsetOf(Storage stgSub)
-		{
-			var regSub = stgSub as RegisterStorage;
-			if (regSub == null)
-				return -1;
-			if (regSub == this)
-				return 0;
-			return regSub.IsSubRegisterOf(this)
-				? regSub.AliasOffset
-				: -1;
-		}
+        public override int OffsetOf(Storage stgSub)
+        {
+            var regSub = stgSub as RegisterStorage;
+            if (regSub == null)
+                return -1;
+            if (!OverlapsWith(regSub))
+                return -1;
+            return (int)stgSub.BitAddress;
+        }
+
+        public bool OverlapsWith(RegisterStorage that)
+        {
+            if (this.Number != that.Number)
+                return false;
+            var thisStart = this.BitAddress;
+            var thisEnd = this.BitAddress + this.BitSize;
+            var thatStart = that.BitAddress;
+            var thatEnd = that.BitAddress + that.BitSize;
+            return thisStart < thatEnd && thatStart < thisEnd;
+        }
 
         /// <summary>
 		/// Given a register, sets/resets the bits corresponding to the register
@@ -397,20 +417,17 @@ namespace Reko.Core
 		/// <param name="iReg">Register to set</param>
 		/// <param name="bits">BitSet to modify</param>
 		/// <param name="f">truth value to set</param>
-		public virtual void SetAliases(BitSet bitset, bool f)
-		{
-			bitset[Number] = f;
-		}
-
-		public override SerializedKind Serialize()
-		{
-			return new Register_v1(Name);
-		}
-
-        public virtual void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
+		public virtual void SetAliases(ISet<RegisterStorage> bitset, bool f)
         {
-            registerFile[Number] = value;
-            valid[Number] = true;
+            if (f)
+                bitset.Add(this);
+            else
+                bitset.Remove(this);
+        }
+
+        public override SerializedKind Serialize()
+        {
+            return new Register_v1(Name);
         }
 
         public virtual void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
@@ -429,29 +446,33 @@ namespace Reko.Core
             return -1;
         }
 
-		public override void Write(TextWriter writer)
-		{
-			writer.Write(Name);
-		}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write(Name);
+        }
 
         public static RegisterStorage None { get { return none; } }
 
-        private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Create(Types.Domain.Any, 0));
-
+        private static RegisterStorage none  = 
+            new RegisterStorage("None")
+            {
+                Name = "None",
+                Number = -1,
+                Domain = StorageDomain.None,
+                BitAddress = 0,
+                DataType = PrimitiveType.Create(Types.Domain.Any, 0)
+            };
+            
         public Expression GetSlice(Expression value)
         {
             var c = value as Constant;
             if (c != null && c.IsValid)
             {
-                return GetSliceImpl(c);
+                var newValue = (c.ToUInt64() & this.BitMask) >> (int)this.BitAddress;
+                return Constant.Create(this.DataType, newValue);
             }
             else
                 return Constant.Invalid;
-        }
-
-        protected virtual Expression GetSliceImpl(Constant c)
-        {
-            return c;
         }
     }
 
@@ -650,31 +671,35 @@ namespace Reko.Core
     /// SCZ = Cond(tmp)
     /// </code>
     /// </remarks>
-	public class TemporaryStorage : RegisterStorage
+	public class TemporaryStorage : Storage
 	{
-		public TemporaryStorage(string name, int number, PrimitiveType dt) : base(name, number, dt)
-		{
+		public TemporaryStorage(string name, int number, PrimitiveType dt) : base("Temporary")
+        {
+            Domain = StorageDomain.Temporary + number;
+            Name = name;
 		}
+
+        public string Name { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
 			return visitor.VisitTemporaryStorage(this);
 		}
 
-        public override RegisterStorage GetSubregister(int offset, int size)
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
-            return null;
+            return visitor.VisitTemporaryStorage(this, context);
         }
 
-        public override bool IsSubRegisterOf(RegisterStorage reg2)
-        {
-            return false;
-        }
-
-		public override int OffsetOf(Storage stgSub)
+        public override int OffsetOf(Storage stgSub)
 		{
 			return -1;
 		}
-	}
+
+        public override void Write(TextWriter writer)
+        {
+            writer.Write(Name);
+        }
+    }
 }
 

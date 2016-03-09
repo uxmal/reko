@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,6 +107,12 @@ namespace Reko.Core
             return Emit(s);
         }
 
+
+        public Statement Store(DataType size, Expression ea, Expression src)
+        {
+            Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, size), src);
+            return Emit(s);
+        }
         public Statement SegStore(Expression basePtr, Expression ea, Expression src)
         {
             Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);

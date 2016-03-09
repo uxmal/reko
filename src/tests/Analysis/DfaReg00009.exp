@@ -2,8 +2,8 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds
 // LiveOut:
-// Trashed: SCZO ax cx dx bx di al cl dl bl ah ch dh bh es gs
-// Preserved: sp ds
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx es gs rax rbx rcx rdi rdx
+// Preserved: ds sp
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)

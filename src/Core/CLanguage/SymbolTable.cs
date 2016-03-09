@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,22 +26,33 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
+    /// <summary>
+    /// Symbol table for the C parser.
+    /// </summary>
     public class SymbolTable 
     {
-        public SymbolTable()
+        private IPlatform platform;
+
+        public SymbolTable(IPlatform platform) : this(platform, new Dictionary<string, SerializedType>())
         {
+        }
+
+        public SymbolTable(IPlatform platform, Dictionary<string, SerializedType> namedTypes)
+        {
+            this.platform = platform;
+
             this.Types = new List<SerializedType>();
-            this.StructsSeen = new Dictionary<string, SerializedStructType>();
+            this.StructsSeen = new Dictionary<string, StructType_v1>();
             this.UnionsSeen = new Dictionary<string, UnionType_v1>();
             this.EnumsSeen = new Dictionary<string, SerializedEnumType>();
             this.Constants = new Dictionary<string, int>();
             this.Procedures = new List<ProcedureBase_v1>();
-            this.NamedTypes = new Dictionary<string, SerializedType>();
+            this.NamedTypes = namedTypes;
             this.Sizer = new TypeSizer(this.NamedTypes);
         }
 
         public List<SerializedType> Types { get; private set; }
-        public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
+        public Dictionary<string, StructType_v1> StructsSeen { get; private set; }
         public Dictionary<string, UnionType_v1> UnionsSeen { get; private set; }
         public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
         public Dictionary<string, int> Constants { get; private set; }
@@ -68,7 +79,7 @@ namespace Reko.Core.CLanguage
                 isTypedef = true;
             }
 
-            var ntde = new NamedDataTypeExtractor(declspecs, this);
+            var ntde = new NamedDataTypeExtractor(platform, declspecs, this);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);

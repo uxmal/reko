@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,12 +54,17 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -70,11 +75,6 @@ namespace Reko.Arch.Arm
         }
 
         public override ProcessorState CreateProcessorState()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
@@ -97,6 +97,11 @@ namespace Reko.Arch.Arm
         public override RegisterStorage[] GetRegisters()
         {
             return A64Registers.XRegs;
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            throw new NotSupportedException();
         }
 
         public override string GrfToString(uint grf)
