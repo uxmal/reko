@@ -72,7 +72,6 @@ namespace Reko.Arch.Mips
             emitter.Assign(hi, emitter.Mod(opLeft, opRight));
         }
 
-
         private void RewriteLoad(MipsInstruction instr)
         {
             var opSrc = RewriteOperand(instr.op2);

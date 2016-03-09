@@ -793,7 +793,27 @@ namespace Reko.Arch.M68k
                 // Immediate 
                 return get_imm_str_u(size);
             }
-            throw new NotImplementedException(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
+            //throw new /*NotImplementedException*/(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
+            this.instr.code = Opcode.illegal;
+            return null;
+        }
+
+        private static M68kInstruction CreateInstruction(
+            Opcode code,
+            PrimitiveType width,
+            MachineOperand op1,
+            MachineOperand op2)
+        {
+            if (op1 == null || op2 == null)
+                return new M68kInstruction { code = Opcode.illegal };
+
+            return new M68kInstruction
+            {
+                code = code,
+                dataWidth = width,
+                op1 = op1,
+                op2 = op2,
+            };
         }
 
         /* ======================================================================== */
@@ -1209,13 +1229,11 @@ namespace Reko.Arch.M68k
             uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
-            return new M68kInstruction
-            {
-                code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
-                dataWidth = PrimitiveType.Byte,
-                op1 = dasm.get_ea_mode_str_8(dasm.instruction), 
-                op2 = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7),
-            };
+            return CreateInstruction(
+                BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                PrimitiveType.Byte,
+                dasm.get_ea_mode_str_8(dasm.instruction),
+                get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7));
         }
 
         private static M68kInstruction d68020_chk2_cmp2_16(M68kDisassembler dasm)
