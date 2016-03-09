@@ -88,6 +88,10 @@ namespace Reko.Gui.Windows.Controls
             for (int i = loc.iModel; count > 0 && i < Nodes.Count; ++i)
             {
                 var model = Nodes[i].Model;
+                if (position.iModel == i)
+                    model.MoveToLine(position.InnerLocation, 0);
+                else
+                    model.MoveToLine(model.StartPosition, 0);
                 var sub = model.GetLineSpans(count);
                 count = count - sub.Length;
                 spans.AddRange(sub.Select(ls => new LineSpan(
@@ -147,12 +151,13 @@ namespace Reko.Gui.Windows.Controls
             for (int i = 0; i < Nodes.Count; ++i)
             {
                 var node = Nodes[i];
-                if (total < node.cLines)
+                if (iPos < node.cLines)
                 {
-                    node.Model.SetPositionAsFraction((int)total, node.cLines);
+                    node.Model.SetPositionAsFraction((int)iPos, node.cLines);
                     this.position = new Location(i, node.Model.CurrentPosition);
                     return;
                 }
+                iPos -= node.cLines;
             }
             var model = Nodes[Nodes.Count - 1].Model;
             model.SetPositionAsFraction(1, 1);
