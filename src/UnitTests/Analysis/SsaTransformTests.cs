@@ -43,12 +43,14 @@ namespace Reko.UnitTests.Analysis
     {
         private ProgramBuilder pb;
         private ProgramDataFlow programFlow;
+        private Dictionary<Address, ImportReference> importReferences;
 
         [SetUp]
         public void Setup()
         {
             this.pb = new ProgramBuilder();
             this.programFlow = new ProgramDataFlow();
+            this.importReferences = new Dictionary<Address, ImportReference>();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -57,9 +59,25 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
             var dg = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+            var project = new Project
+            {
+                Programs = { this.pb.Program }
+            };
+            var importResolver = new ImportResolver(
+                project,
+                this.pb.Program,
+                new FakeDecompilerEventListener());
+            this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
+            this.pb.Program.ImageMap = new ImageMap(
+                Address.Ptr32(0x0000),
+                new ImageSegment(
+                    ".text",
+                    Address.Ptr32(0), 
+                    0x40000,
+                    AccessMode.ReadWriteExecute));
 
             // Perform the initial transformation
-            var ssa = new SsaTransform(programFlow, proc, dg);
+            var ssa = new SsaTransform(programFlow, proc, importResolver, dg);
 
             // Propagate values and simplify the results.
             // We hope the the sequence
@@ -222,7 +240,6 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_7
 	use r63_9
-	use wArg04
 ";
             RunTest(sExp, m =>
             {
@@ -296,7 +313,6 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_7
 	use r63_9
-	use wArg04_16
 ";
             RunTest(sExp, m =>
             {
@@ -415,7 +431,6 @@ ProcedureBuilder_exit:
 	use fp
 	use r1_8
 	use r63_10
-	use wArg04
 ";
             RunTest(sExp, m =>
             {
@@ -641,6 +656,43 @@ ProcedureBuilder_exit:
                 var ah = m.Frame.EnsureRegister(regAh);
                 m.Assign(eax, m.LoadDw(eax));
                 m.Store(m.Word32(0x1234), ah);
+                m.Return();
+            });
+        }
+
+        [Test(Description ="Emulates calling an imported API Win32 on MIPS")]
+        public void Ssa_ConstantPropagation()
+        {
+            var sExp =
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	r13_0 = 0x00030000
+	r12_2 = Mem0[0x00031234:word32]
+	call r12_2 (retsize: 0;)
+		uses: r12_2,r13_0
+		defs: r12_4,r13_3
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use Mem0
+	use r12_4
+	use r13_3
+";
+            var addr = Address.Ptr32(0x00031234);
+            importReferences.Add(addr, new NamedImportReference(
+                addr, "COREDLL.DLL", "fnFoo"));
+            RunTest(sExp, m =>
+            {
+                var r13 = m.Reg32("r13", 13);
+                var r12 = m.Reg32("r12", 12);
+                m.Assign(r13, 0x00030000);
+                m.Assign(r12, m.LoadDw(m.IAdd(r13, 0x1234)));
+                m.Call(r12, 0);
                 m.Return();
             });
         }

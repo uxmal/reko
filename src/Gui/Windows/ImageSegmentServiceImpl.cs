@@ -35,7 +35,7 @@ namespace Reko.Gui.Windows
             pane = new ImageSegmentPane();
         }
 
-        public void DisplayImageSegment(ImageMapSegment segment, Program program)
+        public void DisplayImageSegment(ImageSegment segment, Program program)
         {
             if (segment == null)
                 return;

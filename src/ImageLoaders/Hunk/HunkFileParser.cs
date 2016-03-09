@@ -515,7 +515,7 @@ namespace Reko.ImageLoaders.Hunk
             var size = num_longs * 4;
             if (num_longs < 2)
             {
-                f.Offset += (ulong)size;
+                f.Offset += size;
                 return;
             }
             var offset = (uint) this.read_long();
@@ -585,14 +585,14 @@ namespace Reko.ImageLoaders.Hunk
             
             // check overlay manager
             var overlay_mgr_data = overlayManagerHunk.Data;
-            uint magic = LoadedImage.ReadBeUInt32(overlay_mgr_data, 4);
+            uint magic = MemoryArea.ReadBeUInt32(overlay_mgr_data, 4);
             if (magic != 0xABCD)
                 throw new BadImageFormatException("No valid overlay manager found.");
 
             // check for standard overlay manager
-            var magic2 = LoadedImage.ReadBeUInt32(overlay_mgr_data, 24);
-            var magic3 = LoadedImage.ReadBeUInt32(overlay_mgr_data, 20);
-            var magic4 = LoadedImage.ReadBeUInt32(overlay_mgr_data, 32);
+            var magic2 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 24);
+            var magic3 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 20);
+            var magic4 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 32);
             var std_overlay = magic2 == 23456 && magic3 == 122648165 && magic4 == 1919705465;
             hunk.ov_std = std_overlay;
         }

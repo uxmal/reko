@@ -1,0 +1,6319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <struct name="_object">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyObject">
+      <struct name="_object" />
+    </typedef>
+    <struct name="struct_0">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="ob_size">
+        <prim domain="SignedInt" size="4" />
+      </field>
+    </struct>
+    <typedef name="PyVarObject">
+      <struct name="struct_0" />
+    </typedef>
+    <typedef name="unaryfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="binaryfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="ternaryfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="inquiry">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="coercion">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <ptr size="4">
+                <type>PyObject</type>
+              </ptr>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <ptr size="4">
+                <type>PyObject</type>
+              </ptr>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="intargfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="intintargfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="intobjargproc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="intintobjargproc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="objobjargproc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="getreadbufferproc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <ptr size="4">
+              <ptr size="4">
+                <void />
+              </ptr>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="getwritebufferproc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <ptr size="4">
+              <ptr size="4">
+                <void />
+              </ptr>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="getsegcountproc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <prim domain="SignedInt" size="4" />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="getcharbufferproc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <ptr size="4">
+              <ptr size="4">
+                <prim domain="Character" size="1" />
+              </ptr>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <struct name="struct_1">
+      <field offset="0" name="nb_add">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="4" name="nb_subtract">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="8" name="nb_multiply">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="12" name="nb_divide">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="16" name="nb_remainder">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="20" name="nb_divmod">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="24" name="nb_power">
+        <type>ternaryfunc</type>
+      </field>
+      <field offset="28" name="nb_negative">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="32" name="nb_positive">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="36" name="nb_absolute">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="40" name="nb_nonzero">
+        <type>inquiry</type>
+      </field>
+      <field offset="44" name="nb_invert">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="48" name="nb_lshift">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="52" name="nb_rshift">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="56" name="nb_and">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="60" name="nb_xor">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="64" name="nb_or">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="68" name="nb_coerce">
+        <type>coercion</type>
+      </field>
+      <field offset="72" name="nb_int">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="76" name="nb_long">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="80" name="nb_float">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="84" name="nb_oct">
+        <type>unaryfunc</type>
+      </field>
+      <field offset="88" name="nb_hex">
+        <type>unaryfunc</type>
+      </field>
+    </struct>
+    <typedef name="PyNumberMethods">
+      <struct name="struct_1" />
+    </typedef>
+    <struct name="struct_2">
+      <field offset="0" name="sq_length">
+        <type>inquiry</type>
+      </field>
+      <field offset="4" name="sq_concat">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="8" name="sq_repeat">
+        <type>intargfunc</type>
+      </field>
+      <field offset="12" name="sq_item">
+        <type>intargfunc</type>
+      </field>
+      <field offset="16" name="sq_slice">
+        <type>intintargfunc</type>
+      </field>
+      <field offset="20" name="sq_ass_item">
+        <type>intobjargproc</type>
+      </field>
+      <field offset="24" name="sq_ass_slice">
+        <type>intintobjargproc</type>
+      </field>
+    </struct>
+    <typedef name="PySequenceMethods">
+      <struct name="struct_2" />
+    </typedef>
+    <struct name="struct_3">
+      <field offset="0" name="mp_length">
+        <type>inquiry</type>
+      </field>
+      <field offset="4" name="mp_subscript">
+        <type>binaryfunc</type>
+      </field>
+      <field offset="8" name="mp_ass_subscript">
+        <type>objobjargproc</type>
+      </field>
+    </struct>
+    <typedef name="PyMappingMethods">
+      <struct name="struct_3" />
+    </typedef>
+    <struct name="struct_4">
+      <field offset="0" name="bf_getreadbuffer">
+        <type>getreadbufferproc</type>
+      </field>
+      <field offset="4" name="bf_getwritebuffer">
+        <type>getwritebufferproc</type>
+      </field>
+      <field offset="8" name="bf_getsegcount">
+        <type>getsegcountproc</type>
+      </field>
+      <field offset="12" name="bf_getcharbuffer">
+        <type>getcharbufferproc</type>
+      </field>
+    </struct>
+    <typedef name="PyBufferProcs">
+      <struct name="struct_4" />
+    </typedef>
+    <typedef name="destructor">
+      <ptr size="4">
+        <fn>
+          <return>
+            <void />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="printfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>FILE</type>
+            </ptr>
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="getattrfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <prim domain="Character" size="1" />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="getattrofunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="setattrfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <prim domain="Character" size="1" />
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="setattrofunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="cmpfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="reprfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="hashfunc">
+      <ptr size="4">
+        <fn>
+          <return>
+            <prim domain="SignedInt" size="4" />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <struct name="_typeobject">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="ob_size">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="12" name="tp_name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="16" name="tp_basicsize">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="20" name="tp_itemsize">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="24" name="tp_dealloc">
+        <type>destructor</type>
+      </field>
+      <field offset="28" name="tp_print">
+        <type>printfunc</type>
+      </field>
+      <field offset="32" name="tp_getattr">
+        <type>getattrfunc</type>
+      </field>
+      <field offset="36" name="tp_setattr">
+        <type>setattrfunc</type>
+      </field>
+      <field offset="40" name="tp_compare">
+        <type>cmpfunc</type>
+      </field>
+      <field offset="44" name="tp_repr">
+        <type>reprfunc</type>
+      </field>
+      <field offset="48" name="tp_as_number">
+        <ptr size="4">
+          <type>PyNumberMethods</type>
+        </ptr>
+      </field>
+      <field offset="52" name="tp_as_sequence">
+        <ptr size="4">
+          <type>PySequenceMethods</type>
+        </ptr>
+      </field>
+      <field offset="56" name="tp_as_mapping">
+        <ptr size="4">
+          <type>PyMappingMethods</type>
+        </ptr>
+      </field>
+      <field offset="60" name="tp_hash">
+        <type>hashfunc</type>
+      </field>
+      <field offset="64" name="tp_call">
+        <type>ternaryfunc</type>
+      </field>
+      <field offset="68" name="tp_str">
+        <type>reprfunc</type>
+      </field>
+      <field offset="72" name="tp_getattro">
+        <type>getattrofunc</type>
+      </field>
+      <field offset="76" name="tp_setattro">
+        <type>setattrofunc</type>
+      </field>
+      <field offset="80" name="tp_as_buffer">
+        <ptr size="4">
+          <type>PyBufferProcs</type>
+        </ptr>
+      </field>
+      <field offset="84" name="tp_flags">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="88" name="tp_doc">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="92" name="tp_xxx5">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="96" name="tp_xxx6">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="100" name="tp_xxx7">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="104" name="tp_xxx8">
+        <prim domain="SignedInt" size="4" />
+      </field>
+    </struct>
+    <typedef name="PyTypeObject">
+      <struct name="_typeobject" />
+    </typedef>
+    <struct name="struct_5">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="ob_ival">
+        <prim domain="SignedInt" size="4" />
+      </field>
+    </struct>
+    <typedef name="PyIntObject">
+      <struct name="struct_5" />
+    </typedef>
+    <typedef name="PyLongObject">
+      <struct name="_longobject" />
+    </typedef>
+    <struct name="struct_6">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="ob_fval">
+        <prim domain="Real" size="8" />
+      </field>
+    </struct>
+    <typedef name="PyFloatObject">
+      <struct name="struct_6" />
+    </typedef>
+    <struct name="struct_7">
+      <field offset="0" name="real">
+        <prim domain="Real" size="8" />
+      </field>
+      <field offset="8" name="imag">
+        <prim domain="Real" size="8" />
+      </field>
+    </struct>
+    <typedef name="Py_complex">
+      <struct name="struct_7" />
+    </typedef>
+    <struct name="struct_8">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="cval">
+        <type>Py_complex</type>
+      </field>
+    </struct>
+    <typedef name="PyComplexObject">
+      <struct name="struct_8" />
+    </typedef>
+    <struct name="struct_9">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="ob_size">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="12" name="ob_shash">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="16" name="ob_sinterned">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="20" name="ob_sval">
+        <arr length="1">
+          <prim domain="Character" size="1" />
+        </arr>
+      </field>
+    </struct>
+    <typedef name="PyStringObject">
+      <struct name="struct_9" />
+    </typedef>
+    <struct name="struct_10">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="ob_size">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="12" name="ob_item">
+        <arr length="1">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </arr>
+      </field>
+    </struct>
+    <typedef name="PyTupleObject">
+      <struct name="struct_10" />
+    </typedef>
+    <struct name="struct_11">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="ob_size">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="12" name="ob_item">
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyListObject">
+      <struct name="struct_11" />
+    </typedef>
+    <typedef name="PyCFunction">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PyCFunctionWithKeywords">
+      <ptr size="4">
+        <fn>
+          <return>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <type>PyObject</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <struct name="PyMethodDef">
+      <field offset="0" name="ml_name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="4" name="ml_meth">
+        <type>PyCFunction</type>
+      </field>
+      <field offset="8" name="ml_flags">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="12" name="ml_doc">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyMethodDef">
+      <struct name="PyMethodDef" />
+    </typedef>
+    <struct name="PyMethodChain">
+      <field offset="0" name="methods">
+        <ptr size="4">
+          <type>PyMethodDef</type>
+        </ptr>
+      </field>
+      <field offset="4" name="link">
+        <ptr size="4">
+          <struct name="PyMethodChain" />
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyMethodChain">
+      <struct name="PyMethodChain" />
+    </typedef>
+    <struct name="struct_12">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="m_ml">
+        <ptr size="4">
+          <type>PyMethodDef</type>
+        </ptr>
+      </field>
+      <field offset="12" name="m_self">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyCFunctionObject">
+      <struct name="struct_12" />
+    </typedef>
+    <struct name="struct_13">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="func_code">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="12" name="func_globals">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="16" name="func_defaults">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="20" name="func_doc">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="24" name="func_name">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyFunctionObject">
+      <struct name="struct_13" />
+    </typedef>
+    <struct name="struct_14">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="cl_bases">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="12" name="cl_dict">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="16" name="cl_name">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="20" name="cl_getattr">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="24" name="cl_setattr">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="28" name="cl_delattr">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyClassObject">
+      <struct name="struct_14" />
+    </typedef>
+    <struct name="struct_15">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="in_class">
+        <ptr size="4">
+          <type>PyClassObject</type>
+        </ptr>
+      </field>
+      <field offset="12" name="in_dict">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyInstanceObject">
+      <struct name="struct_15" />
+    </typedef>
+    <struct name="struct_16">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="im_func">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="12" name="im_self">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="16" name="im_class">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyMethodObject">
+      <struct name="struct_16" />
+    </typedef>
+    <struct name="struct_17">
+      <field offset="0" name="ob_refcnt">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="4" name="ob_type">
+        <ptr size="4">
+          <struct name="_typeobject" />
+        </ptr>
+      </field>
+      <field offset="8" name="start">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="12" name="stop">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="16" name="step">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PySliceObject">
+      <struct name="struct_17" />
+    </typedef>
+    <struct name="_is">
+      <field offset="0" name="next">
+        <ptr size="4">
+          <struct name="_is" />
+        </ptr>
+      </field>
+      <field offset="4" name="tstate_head">
+        <ptr size="4">
+          <struct name="_ts" />
+        </ptr>
+      </field>
+      <field offset="8" name="modules">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="12" name="sysdict">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="16" name="builtins">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="20" name="checkinterval">
+        <prim domain="SignedInt" size="4" />
+      </field>
+    </struct>
+    <typedef name="PyInterpreterState">
+      <struct name="_is" />
+    </typedef>
+    <struct name="_ts">
+      <field offset="0" name="next">
+        <ptr size="4">
+          <struct name="_ts" />
+        </ptr>
+      </field>
+      <field offset="4" name="interp">
+        <ptr size="4">
+          <type>PyInterpreterState</type>
+        </ptr>
+      </field>
+      <field offset="8" name="frame">
+        <ptr size="4">
+          <struct name="_frame" />
+        </ptr>
+      </field>
+      <field offset="12" name="recursion_depth">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="16" name="ticker">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="20" name="tracing">
+        <prim domain="SignedInt" size="4" />
+      </field>
+      <field offset="24" name="sys_profilefunc">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="28" name="sys_tracefunc">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="32" name="curexc_type">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="36" name="curexc_value">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="40" name="curexc_traceback">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="44" name="exc_type">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="48" name="exc_value">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="52" name="exc_traceback">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+      <field offset="56" name="dict">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="PyThreadState">
+      <struct name="_ts" />
+    </typedef>
+    <struct name="_inittab">
+      <field offset="0" name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="4" name="initfunc">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </field>
+    </struct>
+    <struct name="_frozen">
+      <field offset="0" name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="4" name="code">
+        <ptr size="4">
+          <prim domain="UnsignedInt" size="1" />
+        </ptr>
+      </field>
+      <field offset="8" name="size">
+        <prim domain="SignedInt" size="4" />
+      </field>
+    </struct>
+  </Types>
+  <procedure name="PyObject_Print">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Repr">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Str">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Compare">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_GetAttrString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_SetAttrString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_HasAttrString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_GetAttr">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_SetAttr">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_HasAttr">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Hash">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_IsTrue">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Not">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCallable_Check">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Coerce">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_CoerceEx">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_ReprEnter">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_ReprLeave">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PyObject_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyTypeObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PyObject_NewVar">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyVarObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyTypeObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyVarObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_FatalError">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyInt_FromLong">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyInt_AsLong">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyInt_GetMax">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyOS_strtoul">
+    <signature>
+      <return>
+        <prim domain="UnsignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <prim domain="Character" size="1" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyOS_strtol">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <prim domain="Character" size="1" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_FromLong">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_FromUnsignedLong">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="UnsignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_FromDouble">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="Real" size="8" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_AsLong">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_AsUnsignedLong">
+    <signature>
+      <return>
+        <prim domain="UnsignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_AsDouble">
+    <signature>
+      <return>
+        <prim domain="Real" size="8" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_FromVoidPtr">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_AsVoidPtr">
+    <signature>
+      <return>
+        <ptr size="4">
+          <void />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_FromLongLong">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="8" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_FromUnsignedLongLong">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="UnsignedInt" size="8" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_AsLongLong">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="8" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_AsUnsignedLongLong">
+    <signature>
+      <return>
+        <prim domain="UnsignedInt" size="8" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyLong_FromString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <prim domain="Character" size="1" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFloat_FromDouble">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="Real" size="8" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFloat_AsDouble">
+    <signature>
+      <return>
+        <prim domain="Real" size="8" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_Py_c_sum">
+    <signature>
+      <return>
+        <type>Py_complex</type>
+      </return>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_Py_c_diff">
+    <signature>
+      <return>
+        <type>Py_complex</type>
+      </return>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_Py_c_neg">
+    <signature>
+      <return>
+        <type>Py_complex</type>
+      </return>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_Py_c_prod">
+    <signature>
+      <return>
+        <type>Py_complex</type>
+      </return>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_Py_c_quot">
+    <signature>
+      <return>
+        <type>Py_complex</type>
+      </return>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_Py_c_pow">
+    <signature>
+      <return>
+        <type>Py_complex</type>
+      </return>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyComplex_FromCComplex">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <type>Py_complex</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyComplex_FromDoubles">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="real">
+        <prim domain="Real" size="8" />
+      </arg>
+      <arg name="imag">
+        <prim domain="Real" size="8" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyComplex_RealAsDouble">
+    <signature>
+      <return>
+        <prim domain="Real" size="8" />
+      </return>
+      <arg name="op">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyComplex_ImagAsDouble">
+    <signature>
+      <return>
+        <prim domain="Real" size="8" />
+      </return>
+      <arg name="op">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyComplex_AsCComplex">
+    <signature>
+      <return>
+        <type>Py_complex</type>
+      </return>
+      <arg name="op">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRange_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_FromStringAndSize">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_FromString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_Size">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_AsString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_Concat">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_ConcatAndDel">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PyString_Resize">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_Format">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_InternInPlace">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyString_InternFromString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyBuffer_FromObject">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="base">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="offset">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="size">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyBuffer_FromReadWriteObject">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="base">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="offset">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="size">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyBuffer_FromMemory">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="ptr">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+      <arg name="size">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyBuffer_FromReadWriteMemory">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="ptr">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+      <arg name="size">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyBuffer_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="size">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTuple_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="size">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTuple_Size">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTuple_GetItem">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTuple_SetItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTuple_GetSlice">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PyTuple_Resize">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="size">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_Size">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_GetItem">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_SetItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_Insert">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_Append">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_GetSlice">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_SetSlice">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_Sort">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_Reverse">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyList_AsTuple">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_GetItem">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_SetItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="item">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_DelItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_Clear">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_Next">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="pos">
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_Keys">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_Values">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_Items">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_Size">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="mp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_GetItemString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="dp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_SetItemString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="dp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="item">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyDict_DelItemString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="dp">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCFunction_GetFunction">
+    <signature>
+      <return>
+        <type>PyCFunction</type>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCFunction_GetSelf">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCFunction_GetFlags">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_FindMethod">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyMethodDef</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCFunction_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyMethodDef</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_FindMethodInChain">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyMethodChain</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyModule_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyModule_GetDict">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyModule_GetName">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyModule_GetFilename">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PyModule_Clear">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFunction_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFunction_GetCode">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFunction_GetGlobals">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFunction_GetDefaults">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFunction_SetDefaults">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyClass_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyInstance_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMethod_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMethod_Function">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMethod_Self">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMethod_Class">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyClass_IsSubclass">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyInstance_DoBinOp">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <fn>
+            <return>
+              <ptr size="4">
+                <type>PyObject</type>
+              </ptr>
+            </return>
+            <arg>
+              <ptr size="4">
+                <type>PyObject</type>
+              </ptr>
+            </arg>
+            <arg>
+              <ptr size="4">
+                <type>PyObject</type>
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_FromString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_SetBufSize">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_FromFile">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <fn>
+            <return>
+              <prim domain="SignedInt" size="4" />
+            </return>
+            <arg>
+              <ptr size="4">
+                <type>FILE</type>
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_AsFile">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_Name">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_GetLine">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_WriteObject">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_SoftSpace">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyFile_WriteString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCObject_FromVoidPtr">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="cobj">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+      <arg name="destruct">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+            <arg>
+              <ptr size="4">
+                <void />
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCObject_FromVoidPtrAndDesc">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="cobj">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+      <arg name="desc">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+      <arg name="destruct">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+            <arg>
+              <ptr size="4">
+                <void />
+              </ptr>
+            </arg>
+            <arg>
+              <ptr size="4">
+                <void />
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCObject_AsVoidPtr">
+    <signature>
+      <return>
+        <ptr size="4">
+          <void />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCObject_GetDesc">
+    <signature>
+      <return>
+        <ptr size="4">
+          <void />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCObject_Import">
+    <signature>
+      <return>
+        <ptr size="4">
+          <void />
+        </ptr>
+      </return>
+      <arg name="module_name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="cobject_name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTraceBack_Here">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <struct name="_frame" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTraceBack_Fetch">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyTraceBack_Store">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyTraceBack_Print">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySlice_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="start">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="stop">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="step">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySlice_GetIndices">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="r">
+        <ptr size="4">
+          <type>PySliceObject</type>
+        </ptr>
+      </arg>
+      <arg name="length">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="start">
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+      <arg name="stop">
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+      <arg name="step">
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_SetNone">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_SetObject">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_SetString">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_Occurred">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_Clear">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_Fetch">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_Restore">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_GivenExceptionMatches">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_ExceptionMatches">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_NormalizeException">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <type>PyObject</type>
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_BadArgument">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_NoMemory">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_SetFromErrno">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_SetFromErrnoWithFilename">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_Format">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_BadInternalCall">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_NewException">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="base">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="dict">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_CheckSignals">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_SetInterrupt">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_Malloc">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_Realloc">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_Free">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMem_Malloc">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMem_Realloc">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMem_Free">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyInterpreterState_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyInterpreterState</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyInterpreterState_Clear">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyInterpreterState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyInterpreterState_Delete">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyInterpreterState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyThreadState_New">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyInterpreterState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyThreadState_Clear">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyThreadState_Delete">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyThreadState_Get">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyThreadState_Swap">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyThreadState_GetDict">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyArg_Parse">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyArg_ParseTuple">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyArg_ParseTupleAndKeywords">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <prim domain="Character" size="1" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_BuildValue">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyArg_VaParse">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <type>va_list</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_VaBuildValue">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <type>va_list</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_InitModule4">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyMethodDef</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_CallObjectWithKeywords">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_CallObject">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_CallFunction">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="obj">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="format">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_CallMethod">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="obj">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="methodname">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="format">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_GetBuiltins">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_GetGlobals">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_GetLocals">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_GetOwner">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_GetFrame">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_GetRestricted">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_FlushLine">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_AddPendingCall">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="func">
+        <ptr size="4">
+          <fn>
+            <return>
+              <prim domain="SignedInt" size="4" />
+            </return>
+            <arg>
+              <ptr size="4">
+                <prim domain="Character" size="1" />
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name="arg">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_MakePendingCalls">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_SaveThread">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_RestoreThread">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_InitThreads">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_AcquireLock">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_ReleaseLock">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_AcquireThread">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="tstate">
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyEval_ReleaseThread">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="tstate">
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_SetProgramName">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetProgramName">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_SetPythonHome">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetPythonHome">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_Initialize">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_Finalize">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_IsInitialized">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_NewInterpreter">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_EndInterpreter">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyThreadState</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRun_AnyFile">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRun_SimpleString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRun_SimpleFile">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRun_InteractiveOne">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRun_InteractiveLoop">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyParser_SimpleParseString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <struct name="_node" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyParser_SimpleParseFile">
+    <signature>
+      <return>
+        <ptr size="4">
+          <struct name="_node" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRun_String">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyRun_File">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_CompileString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_Print">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyErr_PrintEx">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_AtExit">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="func">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_Exit">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_FdIsInteractive">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetProgramFullPath">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetPrefix">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetExecPrefix">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetPath">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetVersion">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetPlatform">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetCopyright">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetCompiler">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="Py_GetBuildInfo">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="_PyBuiltin_Init_1">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="_PyBuiltin_Init_2">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PySys_Init">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="_PyImport_Init">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="_PyImport_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="_PyBuiltin_Fini_1">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="_PyBuiltin_Fini_2">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyMethod_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyFrame_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyCFunction_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyTuple_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyString_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyInt_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyFloat_Fini">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyOS_FiniInterrupts">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyOS_Readline">
+    <signature>
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySys_GetObject">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySys_SetObject">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySys_GetFile">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <type>FILE</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySys_SetArgv">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <ptr size="4">
+            <prim domain="Character" size="1" />
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySys_SetPath">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySys_WriteStdout">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="format">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySys_WriteStderr">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="format">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyOS_InterruptOccurred">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyOS_InitInterrupts">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyOS_AfterFork">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_GetMagicNumber">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_ExecCodeModule">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="co">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_ExecCodeModuleEx">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="co">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="pathname">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_GetModuleDict">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_AddModule">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_ImportModule">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_ImportModuleEx">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="globals">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="locals">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="fromlist">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_Import">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_ReloadModule">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="m">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_Cleanup">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_ImportFrozenModule">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PyImport_FindExtension">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_PyImport_FixupExtension">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_AppendInittab">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="name">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="initfunc">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyImport_ExtendInittab">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="newtab">
+        <ptr size="4">
+          <struct name="_inittab" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Cmp">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="result">
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyCallable_Check">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_CallObject">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="callable_object">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="args">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_CallFunction">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="callable_object">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="format">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_CallMethod">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="m">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="format">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Type">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_Length">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_GetItem">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_SetItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="v">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyObject_DelItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Check">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Add">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Subtract">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Multiply">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Divide">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Remainder">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Divmod">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Power">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o3">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Negative">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Positive">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Absolute">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Invert">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Lshift">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Rshift">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_And">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Xor">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Or">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Int">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Long">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyNumber_Float">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Check">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Length">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Concat">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o1">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="o2">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Repeat">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="count">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_GetItem">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="i">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_GetSlice">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="i1">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="i2">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_SetItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="i">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="v">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_DelItem">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="i">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_SetSlice">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="i1">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="i2">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="v">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_DelSlice">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="i1">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="i2">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Tuple">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_List">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Count">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Contains">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_In">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PySequence_Index">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMapping_Check">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMapping_Length">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMapping_HasKeyString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMapping_HasKey">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMapping_GetItemString">
+    <signature>
+      <return>
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="PyMapping_SetItemString">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="o">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+      <arg name="key">
+        <ptr size="4">
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <type>PyObject</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+</library>

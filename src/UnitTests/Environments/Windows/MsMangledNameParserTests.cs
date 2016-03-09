@@ -57,7 +57,10 @@ namespace Reko.UnitTests.Environments.Windows
                 this.name = name;
                 if (scope != null)
                     this.name = scope + "::" + name;
-                sp.Accept(this);
+                if (sp != null)
+                    sp.Accept(this);
+                else
+                    sb.Append(this.name);
                 return sb.ToString();
             }
 
@@ -467,5 +470,39 @@ namespace Reko.UnitTests.Environments.Windows
                 "__cdecl public: void CLASS_DESCRIPTOR::CLASS_DESCRIPTOR()",
                 "??0CLASS_DESCRIPTOR@@QEAA@XZ");
         }
+
+        [Test]
+        public void PMNP_regression10()
+        {
+            RunTest(
+                "__thiscall private: char A::get(int, int)",
+                "?get@A@@AAEEHH@Z");
+        }
+
+        [Test]
+        public void PMNP_regression11()
+        {
+            RunTest(
+                "__stdcall void CopyElements(COleVariant *, COleVariant *, int)",
+                "??$CopyElements@VCOleVariant@@@@YGXPAVCOleVariant@@PBV0@H@Z");
+        }
+
+
+        [Test]
+        public void PMNP_regression12()
+        {
+            RunTest(
+                "std::exception::`vftable'",
+                "??_7exception@std@@6B@");
+        }
+
+        [Test]
+        public void PMNP_regression13()
+        {
+            RunTest(
+                "nothrow_t std::nothrow",
+                "?nothrow@std@@3Unothrow_t@1@B");
+        }
+       
     }
 }

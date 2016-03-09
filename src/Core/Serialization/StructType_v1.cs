@@ -33,7 +33,10 @@ namespace Reko.Core.Serialization
         [DefaultValue(0)]
 		public int ByteSize;
 
-		public StructType_v1()
+        [XmlAttribute("force")]
+        public bool ForceStructure;
+
+        public StructType_v1()
 		{
 		}
 
@@ -44,16 +47,6 @@ namespace Reko.Core.Serialization
         {
             return visitor.VisitStructure(this);
         }
-
-		public override DataType BuildDataType(TypeFactory factory)
-		{
-			StructureType str = factory.CreateStructureType(null, 0);
-			foreach (StructField_v1 f in Fields)
-			{
-				str.Fields.Add(new StructureField(f.Offset, f.Type.BuildDataType(factory), f.Name));
-			}
-			return str;
-		}
 
 		public override string ToString()
 		{

@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, doms);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, doms);
 			
 			this.ssaIds = sst.SsaState.Identifiers;
 		}

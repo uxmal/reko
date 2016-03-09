@@ -81,7 +81,16 @@ namespace Reko.Core
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(LoadedImage img, Address addr);
+        ImageReader CreateImageReader(MemoryArea img, Address addr);
+
+        /// <summary>
+        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the
+        /// processor, limited to the specified address range.
+        /// </summary>
+        /// <param name="img">Program image to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <returns>An imagereader of the appropriate endianness</returns>
+        ImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
 
         /// <summary>
         /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
@@ -89,7 +98,7 @@ namespace Reko.Core
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(LoadedImage img, ulong off);
+        ImageReader CreateImageReader(MemoryArea img, ulong off);
 
         /// <summary>
         /// Creates a comparer that compares instructions for equality. Normalization means
@@ -170,8 +179,9 @@ namespace Reko.Core
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public abstract ImageReader CreateImageReader(LoadedImage img, Address addr);
-        public abstract ImageReader CreateImageReader(LoadedImage img, ulong off);
+        public abstract ImageReader CreateImageReader(MemoryArea img, Address addr);
+        public abstract ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
+        public abstract ImageReader CreateImageReader(MemoryArea img, ulong off);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);

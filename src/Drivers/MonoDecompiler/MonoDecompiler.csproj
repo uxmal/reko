@@ -151,6 +151,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Cpm\cpm_bdos_services.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Msdos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\ntoskrnl.xml" />
@@ -162,6 +163,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\Xlib.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\linux-syscalls-i386.xml" />
@@ -191,6 +193,7 @@
     <Environments Include="$(ProjectDir)..\..\Environments\MsDos\$(OutDir)Reko.Environments.Msdos.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
+    <Environments Include="$(ProjectDir)..\..\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />

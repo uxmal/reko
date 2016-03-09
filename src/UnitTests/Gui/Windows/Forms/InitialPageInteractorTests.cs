@@ -22,23 +22,20 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.Loading;
 using Reko.UnitTests.Mocks;
-using Reko.Gui.Controls;
-using Reko.Gui.Windows;
 using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
+    [Category(Categories.UserInterface)]
 	public class InitialPageInteractorTests
-	{
+    {
         private MockRepository mr;
         private IMainForm form;
 		private TestInitialPageInteractor i;
@@ -64,13 +61,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             uiSvc = new FakeShellUiService();
             host = mr.StrictMock<DecompilerHost>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
-            var image = new LoadedImage(Address.Ptr32(0x10000), new byte[1000]);
-            var imageMap = image.CreateImageMap();
+            var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[1000]);
+            var imageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = mr.StrictMock<IProcessorArchitecture>();
-            arch.Replay();
-            var platform = mr.StrictMock<Platform>(null, arch);
-            arch.BackToRecord();
-            program = new Program(image, imageMap, arch, platform);
+            var platform = mr.StrictMock<IPlatform>();
+            program = new Program(imageMap, arch, platform);
             project = new Project { Programs = { program } };
 
             browserSvc = mr.StrictMock<IProjectBrowserService>();

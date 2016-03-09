@@ -47,18 +47,17 @@ namespace Reko.Gui.Commands
         {
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            var platform = program.Platform;
-            var ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
+            var ser = program.CreateProcedureSerializer();
             var sProc = ser.Serialize(procedure, address);
             //$REVIEW: use dialog factory.
-            var i = new ProcedureDialogInteractor(platform.Architecture, sProc);
+            var i = new ProcedureDialogInteractor(program.Platform.Architecture, sProc);
             using (ProcedureDialog dlg = i.CreateDialog())
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
                     program.User.Procedures[address] =
                         i.SerializedProcedure;
-                    ser = platform.CreateProcedureSerializer(new TypeLibraryLoader(platform, true), "stdapi");
+                    ser = program.CreateProcedureSerializer();
                     procedure.Signature =
                         ser.Deserialize(i.SerializedProcedure.Signature, procedure.Frame);
 

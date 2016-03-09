@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,12 @@
  */
 #endregion
 
+using Reko.Arch.X86;
+using Reko.Environments.Windows;
 using Reko.Core;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Core
@@ -33,146 +31,107 @@ namespace Reko.UnitTests.Core
     [TestFixture]
     public class TypeLibraryLoaderTests
     {
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private Platform platform;
+        private TypeLibraryLoader tlldr;
+        private IPlatform platform;
 
-        [SetUp]
-        public void Setup()
+        private void CreateTypeLibraryLoader(string filename, string contents)
         {
-            mr = new MockRepository();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            mr.VerifyAll();
-        }
-
-        private void Given_ArchitectureStub()
-        {
-            arch = mr.DynamicMock<IProcessorArchitecture>();
-            platform = mr.DynamicMock<Platform>(null, arch);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-            var procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
-            platform.Stub(p => p.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
-            procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(new ProcedureSignature());
-        }
-
-        private void Given_Arch_PointerDataType(PrimitiveType dt)
-        {
-            arch.Stub(a => a.PointerType).Return(dt);
+            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
+            tlldr = new TypeLibraryLoader(null, filename, Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]
-        public void Tlldr_Empty()
+        public void TLLDR_Typedef()
         {
-            Given_ArchitectureStub();
-            mr.ReplayAll();
-
-            var tlLdr = new TypeLibraryLoader(platform, true);
-            TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
+            var contents =
+@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""INT"">
+      <prim domain=""SignedInt"" size=""4"" />
+    </typedef>
+  </Types>
+</library>";
+            CreateTypeLibraryLoader("c:\\bar\\foo.xml", contents);
+            var lib = tlldr.Load(platform, new TypeLibrary());
+            Assert.AreEqual(1, lib.Types.Count);
+            Assert.AreEqual("int32", lib.Types["INT"].ToString());
+            Assert.AreEqual(0, lib.Signatures.Count);
         }
 
         [Test]
-        public void Tlldr_typedef_int()
+        public void TLLDR_FunctionDecl()
         {
-            Given_ArchitectureStub();
-            mr.ReplayAll();
-
-            var tlLdr = new TypeLibraryLoader(platform, true);
-            var slib = new SerializedLibrary
-            {
-                Types = new SerializedType[]
-                {
-                    new SerializedTypedef { Name="int", DataType=new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize=4 }}
-                }
-            };
-            var lib = tlLdr.Load(slib);
-
-            Assert.AreSame(PrimitiveType.Int32, lib.LookupType("int"));
+            var contents =
+@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""strlen"">
+    <signature convention=""__cdecl"">
+      <return>
+        <type>size_t</type>
+      </return>
+      <arg>
+        <ptr size=""4"">
+          <prim domain=""Character"" size=""1"" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            CreateTypeLibraryLoader("c:\\bar\\foo.xml", contents);
+            var lib = tlldr.Load(platform, new TypeLibrary());
+            Assert.AreEqual(0, lib.Types.Count);
+            Assert.AreEqual(1, lib.Signatures.Count);
+            var sExp =
+@"Register size_t ()(Stack (ptr char) ptrArg00)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, lib.Signatures["strlen"].ToString()
+            );
         }
 
         [Test]
-        public void Tlldr_typedef_ptr_int()
+        public void TLLDR_TypeReference()
         {
-            Given_ArchitectureStub();
-            Given_Arch_PointerDataType(PrimitiveType.Pointer32);
-            mr.ReplayAll();
-
-            var tlLdr = new TypeLibraryLoader(platform, true);
-            var slib = new SerializedLibrary
-            {
-                Types = new SerializedType[]
-                {
-                    new SerializedTypedef { 
-                        Name="pint", 
-                        DataType= new PointerType_v1
-                        {
-                            DataType = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize=4 } 
-                        }
-                    }
-                }
-            };
-            var lib = tlLdr.Load(slib);
-
-            Assert.AreEqual("(ptr int32)", lib.LookupType("pint").ToString());
-        }
-
-        [Test]
-        public void Tlldr_void_fn()
-        {
-            Given_ArchitectureStub();
-            mr.ReplayAll();
-
-            var tlLdr = new TypeLibraryLoader(platform, true);
-            var slib = new SerializedLibrary
-            {
-                Procedures = {
-                    new Procedure_v1 { 
-                        Name="foo",
-                        Signature = new SerializedSignature
-                        {
-                            Convention="__cdecl",
-                            ReturnValue = new Argument_v1 {
-                                Type = new VoidType_v1()
-                            },
-                        }
-                    }
-                }
-            };
-            var lib = tlLdr.Load(slib);
-
-            mr.VerifyAll();
-            Assert.AreEqual(
-                "void foo()",
-                lib.Lookup("foo").ToString("foo"));
-        }
-
-        [Test]
-        public void Tlldr_bothordinalandname()
-        {  
-            Given_ArchitectureStub();
-            mr.ReplayAll();
-            var tlLDr = new TypeLibraryLoader(platform, true);
-            var slib = new SerializedLibrary {
-                Procedures = {
-                    new Procedure_v1 {
-                        Name="foo",
-                        Ordinal=2,
-                        Signature = new SerializedSignature {
-                            ReturnValue = new Argument_v1 {
-                                Type = new VoidType_v1()
-                            }
-                        }
-                    }
-                }
-            };
-            var lib = tlLDr.Load(slib);
-
-            mr.VerifyAll();
-            Assert.AreEqual(1, lib.ServicesByVector.Count);
-            Assert.IsNotNull(lib.ServicesByVector[2]);
+            var contents =
+@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""FOO"">
+      <struct name=""foo"" />
+    </typedef>
+    <struct name=""foo"">
+      <field offset=""0"" name=""x"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+  </Types>
+  <procedure name=""bar"">
+    <signature>
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+      </return>
+      <arg name=""pfoo"">
+        <ptr size=""4"">
+          <type>FOO</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            CreateTypeLibraryLoader("c:\\bar\\foo.xml", contents);
+            var lib = tlldr.Load(platform, new TypeLibrary());
+            Assert.AreEqual(1, lib.Types.Count);
+            Assert.AreEqual(1, lib.Signatures.Count);
+            Assert.AreEqual("(struct \"foo\" (0 int32 x))", lib.Types["FOO"].ToString());
+            var sExp =
+@"Register int32 ()(Stack (ptr FOO) pfoo)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, lib.Signatures["bar"].ToString()
+            );
         }
     }
 }
+

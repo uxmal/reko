@@ -22,6 +22,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Serialization;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,17 +42,16 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
     public class Program
     {
-        private SortedList<Address, ImageMapVectorTable> vectors;
         private Identifier globals;
         private StructureType globalFields;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
+        private TypeLibrary metadata;
 
         public Program()
         {
             this.EntryPoints = new List<EntryPoint>();
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
-            this.vectors = new SortedList<Address, ImageMapVectorTable>();
             this.CallGraph = new CallGraph();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
@@ -62,9 +63,8 @@ namespace Reko.Core
             this.User = new UserData();
         }
 
-        public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
+        public Program(ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
-            this.Image = image;
             this.ImageMap = imageMap;
             this.Architecture = arch;
             this.Platform = platform;
@@ -76,6 +76,20 @@ namespace Reko.Core
         /// The processor architecture to use for decompilation
         /// </summary>
 		public IProcessorArchitecture Architecture { get; set; }
+
+        public IPlatform Platform { get; set; }
+
+        public ImageMap ImageMap { get; set; }
+
+        public TypeLibrary Metadata
+        {
+            get
+            {
+                if (metadata == null)
+                    metadata = Platform.CreateMetadata();
+                return metadata;
+            }
+        }
 
         /// <summary>
         /// The callgraph expresses the relationships between the callers (statements and procedures)
@@ -139,14 +153,39 @@ namespace Reko.Core
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }
 
+        public void LoadMetadataFile(ILoader loader, string filename)
+        {
+            loader.LoadMetadata(filename, Platform, Metadata);
+        }
+
         /// <summary>
-        /// The unpacked, relocated, in-memory image of the program to be decompiled.
+        /// Creates a symbol table for this program populated with the types 
+        /// defined by the platform of the program and user-defined types.
         /// </summary>
-        public LoadedImage Image { get; set; }
+        /// <returns>Prepopulated symbol table.
+        /// </returns>
+        public virtual SymbolTable CreateSymbolTable()
+        {
+            var namedTypes = new Dictionary<string, SerializedType>();
+            var typedefs = Metadata.Types;
+            var dtSer = new DataTypeSerializer();
+            foreach (var typedef in typedefs)
+            {
+                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
+            }
+            return new SymbolTable(Platform, namedTypes);
+        }
 
-        public ImageMap ImageMap { get; set; }
+        public ProcedureSerializer CreateProcedureSerializer()
+        {
+            var typeLoader = new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+            return Platform.CreateProcedureSerializer(typeLoader, Platform.DefaultCallingConvention);
+        }
 
-        public Platform Platform { get; set; }
+        public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
+        {
+            return new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+        }
 
         /// <summary>
         /// The list of known entry points to the program.
@@ -213,15 +252,6 @@ namespace Reko.Core
         /// </summary>
         public UserData User { get; set; }
 
-		/// <summary>
-		/// Provides access to the program's jump and call tables, sorted by address.
-		/// </summary>
-        //$REVIEW: is this ever used? What for?
-		public SortedList<Address, ImageMapVectorTable> Vectors
-		{
-			get { return vectors; }
-		}
-
         /// <summary>
         /// The name of the file in which disassemblies are dumped.
         /// </summary>
@@ -258,13 +288,19 @@ namespace Reko.Core
        
         public ImageReader CreateImageReader(Address addr)
         {
-            return Architecture.CreateImageReader(Image, addr);
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
+            return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
 
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
         {
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateDisassembler(
-                Architecture.CreateImageReader(Image, addr));
+                Architecture.CreateImageReader(segment.MemoryArea, addr));
         }
 
         // Mutators /////////////////////////////////////////////////////////////////
@@ -305,7 +341,7 @@ namespace Reko.Core
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.
-                var rdr = this.Architecture.CreateImageReader(this.Image, addr);
+                var rdr = this.CreateImageReader(addr);
                 while (rdr.IsValid)
                 {
                     var ch = rdr.ReadChar(strDt.ElementType);
@@ -315,6 +351,14 @@ namespace Reko.Core
                 return (uint)(rdr.Address - addr);
             }
             throw new NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            Procedures.Clear();
+            globals = null;
+            TypeFactory = new TypeFactory();
+            TypeStore = new TypeStore();
         }
     } 
 

@@ -73,6 +73,22 @@ namespace Reko.Core
             return new ProtectedSegmentedAddress(seg, (ushort)off);
         }
 
+        public static Address Max(Address a, Address b)
+        {
+            if (a.ToLinear() >= b.ToLinear())
+                return a;
+            else
+                return b;
+        }
+
+        public static Address Min(Address a, Address b)
+        {
+            if (a.ToLinear() <= b.ToLinear())
+                return a;
+            else
+                return b;
+        }
+
         public static Address FromConstant(Constant value)
         {
             switch (value.DataType.BitSize)
@@ -178,7 +194,6 @@ namespace Reko.Core
 		/// <param name="s">The string representation of the Address</param>
 		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
 		/// <returns></returns>
-
         public static bool TryParse16(string s, out Address result)
         {
             if (s != null)

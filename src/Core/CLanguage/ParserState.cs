@@ -39,6 +39,14 @@ namespace Reko.Core.CLanguage
             Typedefs.Add("va_list");
         }
 
+        public ParserState(IEnumerable<string> knownNames) : this()
+        {
+            foreach (var name in knownNames)
+            {
+                Typedefs.Add(name);
+            }
+        }
+
         public HashSet<string> Typedefs { get; private set; }
 
         public int Alignment { get { return alignments.Peek(); } }

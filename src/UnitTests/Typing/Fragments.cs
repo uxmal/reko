@@ -18,21 +18,21 @@
  */
 #endregion
 
-using Reko.Core.Output;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.UnitTests.Typing
 {
-    /// <summary>
-    /// Base class for optional renderers for image map segments. It is used to render
-    /// the contents of a loaded image segment differently from just dumping its contents
-    /// as a bunch of bytes.
-    /// </summary>
-    public abstract class ImageMapSegmentRenderer
+    public class Fragments
     {
-        public abstract void Render(ImageMapSegment segment, Program program, Formatter formatter);
+        public static void MemStore(ProcedureBuilder m)
+        {
+            m.Store(m.Word32(0x3120), 0);
+            m.Store(m.Word32(0x3120), m.IAdd(m.LoadDw(m.Word32(0x3120)), 1));
+            m.Return();
+        }
     }
 }

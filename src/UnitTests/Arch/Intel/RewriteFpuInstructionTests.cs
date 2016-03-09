@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Arch.Intel
@@ -44,7 +45,11 @@ namespace Reko.UnitTests.Arch.Intel
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new X86Rewriter(arch, host, new X86State(arch), asmResult.Image.CreateLeReader(0), frame);
+            return new X86Rewriter(
+                arch,
+                host, 
+                new X86State(arch),
+                asmResult.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0), frame);
         }
 
         public override Address LoadAddress

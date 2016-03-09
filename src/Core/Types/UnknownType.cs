@@ -29,6 +29,11 @@ namespace Reko.Core.Types
 		{
 		}
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitUnknownType(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitUnknownType(this);

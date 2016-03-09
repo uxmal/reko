@@ -20,14 +20,16 @@ namespace Reko.Scanning
         private Program program;
         private Procedure proc;
         private Dictionary<Address, VectorUse> vectorUses;
+        private bool isCallTable;
 
-        public VectorWorkItem(IScanner scanner, Program program, ImageMapVectorTable table, Procedure proc)
-            : base()
+        public VectorWorkItem(IScanner scanner, Program program, ImageMapVectorTable table, bool isCallTable, Procedure proc)
+            : base(table.Address)
         {
             this.scanner = scanner;
             this.program = program;
             this.Table = table;
             this.proc = proc;
+            this.isCallTable = isCallTable;
             this.vectorUses = new Dictionary<Address, VectorUse>();
         }
 
@@ -38,7 +40,7 @@ namespace Reko.Scanning
             if (vector.Count == 0)
             {
                 Address addrNext = Table.TableAddress + Stride.Size;
-                if (program.Image.IsValidAddress(addrNext))
+                if (program.ImageMap.IsValidAddress(addrNext))
                 {
                     // Can't determine the size of the table, but surely it has one entry?
                    program.ImageMap.AddItem(addrNext, new ImageMapItem());
@@ -50,13 +52,12 @@ namespace Reko.Scanning
             for (int i = 0; i < vector.Count; ++i)
             {
                 var st = State.Clone();
-                if (Table.IsCallTable)
+                if (isCallTable)
                 {
                     scanner.ScanProcedure(vector[i], null, st);
                 }
                 else
                 {
-                    //$TODO: BlockFromAddress.
                     scanner.EnqueueJumpTarget(AddrFrom, vector[i], proc, st);
                 }
             }

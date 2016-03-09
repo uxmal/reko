@@ -100,16 +100,21 @@
     <Compile Include="Analysis\UserSignatureBuilderTests.cs" />
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
     <Compile Include="Arch\Mips\MipsPointerScannerTests.cs" />
+    <Compile Include="Categories.cs" />
     <Compile Include="Core\CLanguage\CConstantEvaluatorTests.cs" />
     <Compile Include="Core\CLanguage\CDirectiveLexerTests.cs" />
     <Compile Include="Core\CLanguage\CLexerTests.cs" />
     <Compile Include="Core\CLanguage\CParserTests.cs" />
     <Compile Include="Core\CLanguage\EnumEvaluatorTests.cs" />
     <Compile Include="Core\CLanguage\LookAheadLexerTests.cs" />
+    <Compile Include="Core\CLanguage\NamedDataTypeExtractorTests.cs" />
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
+    <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
+    <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />
     <Compile Include="Core\Services\FileSystemServiceTests.cs" />
+    <Compile Include="Environments\SegaGenesis\RomLoaderTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
@@ -117,7 +122,6 @@
     <Compile Include="Environments\Windows\Win32MipsPlatformTests.cs" />
     <Compile Include="Environments\Windows\Win32PlatformTests.cs" />
     <Compile Include="Environments\Windows\WineSpecFileLoaderTests.cs" />
-    <Compile Include="Evaluation\ConstDivisionImplementedByMultiplication.cs" />
     <Compile Include="Evaluation\ConstDivisionImplementedByMultiplicationTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
@@ -197,6 +201,7 @@
     <Compile Include="Core\Serialization\UnpackerSignatureFileTests.cs" />
     <Compile Include="Core\StructureReaderTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
+    <Compile Include="Core\TypeLibraryDeserializerTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />
     <Compile Include="DchexLoader.cs" />
     <Compile Include="Environments\AmigaOS\AmigaOSPlatformTests.cs" />
@@ -220,8 +225,10 @@
     <Compile Include="Fragments\StaggeredArrayFragment.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Commands\Cmd_MarkProcedureTests.cs" />
+    <Compile Include="Gui\Commands\Cmd_WhatPointsHereTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
+    <Compile Include="Gui\Windows\Controls\ImageMapViewTests.cs" />
     <Compile Include="Gui\Windows\DisassemblyFormatterTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\TabControlHostTests.cs" />
@@ -245,6 +252,7 @@
     <Compile Include="Mocks\SegmentedPointerProc.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
+    <Compile Include="Scanning\Backwalker_x86_Tests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
     <Compile Include="Arch\Intel\X86DisassemblerTests.cs" />
     <Compile Include="Arch\Intel\Fragments\Factorial.cs" />
@@ -304,7 +312,6 @@
     <Compile Include="Core\ProgramTests.cs" />
     <Compile Include="Core\RegisterTests.cs" />
     <Compile Include="Core\RelocationDictionaryTests.cs" />
-    <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureCharacteristicsTests.cs" />
     <Compile Include="Core\Serialization\ArgumentTests.cs" />
     <Compile Include="Core\Serialization\SerializedCallTests.cs" />
@@ -436,6 +443,7 @@
     <Compile Include="Mocks\TreeFindMock.cs" />
     <Compile Include="Mocks\UnstructuredIfsMock.cs" />
     <Compile Include="Mocks\WhileLoopFragment.cs" />
+    <Compile Include="Mocks\MockFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
@@ -443,6 +451,7 @@
     <Compile Include="Scanning\Dfa\AutomatonTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
+    <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />
     <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\HeuristicTestBase.cs" />
@@ -453,6 +462,7 @@
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\ShingledScannerTests.cs" />
     <Compile Include="Scanning\StringFinderTests.cs" />
+    <Compile Include="Scanning\VectorBuilderTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
@@ -484,6 +494,7 @@
     <Compile Include="Typing\ExpressionTypeAscenderTests.cs" />
     <Compile Include="Typing\ExpressionNormalizerTests.cs" />
     <Compile Include="Typing\ExpressionTypeDescenderTests.cs" />
+    <Compile Include="Typing\Fragments.cs" />
     <Compile Include="Typing\GlobalVariablesMock.cs" />
     <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
     <Compile Include="Typing\PtrPrimitiveReplacerTests.cs" />
@@ -495,6 +506,7 @@
     <Compile Include="Typing\TraitMapping.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Typing\TypeCollectorTests.cs" />
     <Compile Include="Typing\TypedConstantRewriterTests.cs" />
     <Compile Include="Typing\TypedExpressionRewriterTests.cs" />
     <Compile Include="Typing\TypedMemoryExpressionRewriterTests.cs" />
@@ -589,6 +601,10 @@
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
       <Name>Msdos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\SegaGenesis\SegaGenesis.csproj">
+      <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>
+      <Name>SegaGenesis</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\SysV\SysV.csproj">
       <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>

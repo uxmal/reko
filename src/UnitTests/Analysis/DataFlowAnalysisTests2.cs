@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
+using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -41,7 +42,6 @@ namespace Reko.UnitTests.Analysis
     public class DataFlowAnalysisTests2
     {
         private ProgramBuilder pb;
-        private DataFlow2 dataFlow;
 
         private void GivenProgram(ProgramBuilder pb)
         {
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Analysis
                     m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
                     m.Return();
                 });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
@@ -104,7 +104,7 @@ test_exit:
                 m.Store(m.Word32(0x010008), r1);
                 m.Return();
             });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
@@ -160,7 +160,7 @@ test_exit:
                 m.Return();
             });
 
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
@@ -181,7 +181,7 @@ test_exit:
         public void Dfa2_FactorialReg()
         {
             var program = Factorial.BuildSample();
-            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp =
             @"@@@";
@@ -191,7 +191,8 @@ test_exit:
         [Test]
         public void Dfa2_UserDefinedStackArgs()
         {
-            var pb = new ProgramBuilder(new X86ArchitectureFlat32());
+            var arch = new X86ArchitectureFlat32();
+            var pb = new ProgramBuilder(arch);
             var test = pb.Add(
                 new Procedure_v1
                 {
@@ -209,15 +210,17 @@ test_exit:
                     m.Return();
                 });
             var program = pb.BuildProgram();
-            var platform = new FakePlatform(null, program.Architecture);
+            var platform = new FakePlatform(null, arch);
             platform.Test_CreateProcedureSerializer = (t, d) =>
             {
-                var typeLoader = new TypeLibraryLoader(platform, false);
+                var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
                 return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
             };
 
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             program.Platform = platform;
-            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 4
@@ -225,8 +228,8 @@ void test(int32 a, int32 b)
 test_entry:
 	// succ:  l1
 l1:
-	word32 r1_4 = a + b
-	Mem5[0x00010008:word32] = r1_4
+	word32 r1_7 = a + b
+	Mem8[0x00010008:word32] = r1_7
 	return
 	// succ:  test_exit
 test_exit:

@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +30,12 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    public class Win32ThumbPlatform : Win32Platform
+    public class Win32ThumbPlatform : Platform
     {
         private Dictionary<int, SystemService> systemServices;
 
         public Win32ThumbPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
-            base(services, arch)
+            base(services, arch, "winArm")
         {
             this.systemServices = new Dictionary<int, SystemService>
             {
@@ -124,11 +126,33 @@ namespace Reko.Environments.Windows
             return new HashSet<RegisterStorage>();
         }
 
+        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             SystemService svc;
             systemServices.TryGetValue(vector, out svc);
             return svc;
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)

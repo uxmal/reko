@@ -1,0 +1,35 @@
+﻿<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+
+  <segment name="lma" addr="0" size="0100" attr="rwx">
+    <description>Low memory area</description>
+    <function addr="0000" name="cpm_warm_boot"></function>
+    <service-function addr="0005" name="cpm_bdos">
+      <service name="P_TERMCPM">
+        <syscallinfo>
+          <regvalue reg="c">0</regvalue>
+        </syscallinfo>
+        <signature></signature>
+      </service>      
+    </service-function>
+  </segment>
+  
+  <segment name="tpa" addr="0100" size="FF00" attr="rwx">
+    <description>Transient program area</description>
+  </segment>
+</memory>
+<!--
+0000 - Warm boot
+3 IO
+4 DSK
+5 Jmp BDOS
+RST 1
+RST 2
+RST 3
+RST 4
+RST 5
+RST 6
+0038 RST 7
+40 Bios_work_area
+60 FCB
+80 File buffer
+-->

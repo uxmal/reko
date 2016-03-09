@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             mr = new MockRepository();
             this.services = mr.Stub<IServiceProvider>();
-            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            var tlSvc = new TypeLibraryLoaderServiceImpl(services);
             var configSvc = mr.StrictMock<IConfigurationService>();
             var fsSvc = new FileSystemServiceImpl();
             var win32env = new OperatingEnvironmentElement
@@ -67,14 +67,8 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
             services.Stub(s => s.GetService(typeof(CancellationTokenSource))).Return(null);
             services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(new FileSystemServiceImpl());
-            tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
-                .Do(new Func<Platform, string, TypeLibrary>((p, n) =>
-                {
-                    var lib = TypeLibrary.Load(p, Path.ChangeExtension(n, ".xml"), fsSvc);
-                    return lib;
-                }));
+            services.Stub(s => s.GetService(typeof(IDiagnosticsService))).Return(new FakeDiagnosticsService());
             services.Replay();
-            tlSvc.Replay();
             configSvc.Replay();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             win32 = new Reko.Environments.Windows.Win32Platform(services, arch);
@@ -157,7 +151,7 @@ namespace Reko.UnitTests.Arch.Intel
             Scanner scan = new Scanner(
                 program,
                 new Dictionary<Address, ProcedureSignature>(),
-                new ImportResolver(project),
+                new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 services);
             foreach (var ep in asm.EntryPoints)
             {

@@ -1411,8 +1411,13 @@ namespace Reko.ImageLoaders.OdbgScript
                     }
                     else
                     {
+                        var ea = Address.Ptr32((uint) src);
+                        ImageSegment segment;
+                        if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                            throw new AccessViolationException();
                         byte[] buffer = new byte[STRING_READSIZE];
-                        if (Host.Image.TryReadBytes((uint)(src - Host.Image.BaseAddress.ToLinear()), buffer.Length, buffer))
+
+                        if (segment.MemoryArea.TryReadBytes(ea, buffer.Length, buffer))
                         {
                             buffer[buffer.Length - 1] = 0;
                             value = Encoding.UTF8.GetString(buffer);
@@ -1502,7 +1507,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     Debug.Assert(src != 0);
                     uint dw;
-                    bool ret = Host.Image.TryReadLeUInt32(Address.Ptr32((uint)src), out dw);
+                    var ea = Address.Ptr32((uint)src);
+                    ImageSegment segment;
+                    if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                        throw new AccessViolationException();
+                    bool ret = segment.MemoryArea.TryReadLeUInt32(ea, out dw);
                     value = dw;
                     return ret;
                 }
@@ -1563,7 +1572,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (GetRulong(tmp, out src))
                 {
                     Debug.Assert(src != 0);
-                    value = Host.Image.ReadLeDouble(Address.Ptr32((uint)src)).ToDouble();
+                    var ea = Address.Ptr32((uint) src);
+                    ImageSegment segment;
+                    if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                        throw new AccessViolationException();
+                    value = segment.MemoryArea.ReadLeDouble(ea).ToDouble();
                     return true;
                 }
             }

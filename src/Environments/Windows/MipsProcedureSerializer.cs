@@ -32,7 +32,7 @@ namespace Reko.Environments.Windows
     /// </summary>
     public class MipsProcedureSerializer : ProcedureSerializer
     {
-        private ArgumentSerializer argser;
+        private ArgumentDeserializer argDeser;
         private int ir;
         private int fr;
         private static string[] iregs = { "r4", "r5", "r6", "r7" };
@@ -56,14 +56,14 @@ namespace Reko.Environments.Windows
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentSerializer(this, Architecture, frame, ss.Convention);
+            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
             FpuStackOffset = 0;
             if (ss.ReturnValue != null)
             {
-                ret = argser.DeserializeReturnValue(ss.ReturnValue);
+                ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
                 fpuDelta += FpuStackOffset;
             }
 
@@ -90,7 +90,7 @@ namespace Reko.Environments.Windows
         {
             if (sArg.Kind != null)
             {
-                return argser.Deserialize(sArg, sArg.Kind);
+                return argDeser.Deserialize(sArg, sArg.Kind);
             }
             Identifier arg;
             var dtArg = sArg.Type.Accept(TypeLoader);
@@ -99,11 +99,11 @@ namespace Reko.Environments.Windows
             {
                 if (this.fr >= fregs.Length)
                 {
-                    arg = argser.Deserialize(sArg, new StackVariable_v1());
+                    arg = argDeser.Deserialize(sArg, new StackVariable_v1());
                 }
                 else
                 {
-                    arg = argser.Deserialize(sArg, new Register_v1 { Name= fregs[fr] });
+                    arg = argDeser.Deserialize(sArg, new Register_v1 { Name= fregs[fr] });
                 }
                 ++this.fr;
                 return arg;
@@ -112,20 +112,34 @@ namespace Reko.Environments.Windows
             {
                 if (this.ir >= iregs.Length)
                 {
-                    arg = argser.Deserialize(sArg, new StackVariable_v1());
+                    arg = argDeser.Deserialize(sArg, new StackVariable_v1());
                 }
                 else
                 {
-                    arg = argser.Deserialize(sArg, new Register_v1 { Name = iregs[ir] });
+                    arg = argDeser.Deserialize(sArg, new Register_v1 { Name = iregs[ir] });
                 }
                 ++this.ir;
                 arg.DataType = dtArg;
                 return arg;
             }
-            int regsNeeded = (dtArg.Size + 7) / 8;
+            int regsNeeded = (dtArg.Size + 3) / 4;
             if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
             {
-                return argser.Deserialize(sArg, new StackVariable_v1());
+                return argDeser.Deserialize(sArg, new StackVariable_v1());
+            }
+            if (regsNeeded == 2)
+            {
+                arg = argDeser.Deserialize(sArg, new SerializedSequence
+                {
+                    Registers = new[]
+                    {
+                        new Register_v1 { Name = iregs[ir] },
+                        new Register_v1 { Name = iregs[ir+1] },
+                    }
+                });
+                ir += 2;
+                arg.DataType = dtArg;
+                return arg;
             }
             throw new NotImplementedException();
         }
@@ -135,16 +149,9 @@ namespace Reko.Environments.Windows
             var dtArg = sArg.Type.Accept(TypeLoader) as PrimitiveType;
             if (dtArg != null && dtArg.Domain == Domain.Real)
             {
-                var xmm0 = Architecture.GetRegister("xmm0");
+                var f0 = Architecture.GetRegister("f0");
                 if (bitSize <= 64)
-                    return xmm0;
-                if (bitSize <= 128)
-                {
-                    var xmm1 = Architecture.GetRegister("xmm1");
-                    return new SequenceStorage(
-                        new Identifier(xmm1.Name, xmm1.DataType, xmm1),
-                        new Identifier(xmm0.Name, xmm0.DataType, xmm0));
-                }
+                    return f0;
                 throw new NotImplementedException();
             }
             var v0 = Architecture.GetRegister("r2");

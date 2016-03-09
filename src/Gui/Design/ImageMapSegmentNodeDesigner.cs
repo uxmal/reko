@@ -28,11 +28,11 @@ namespace Reko.Gui.Design
 {
     public class ImageMapSegmentNodeDesigner : TreeNodeDesigner
     {
-        private ImageMapSegment segment;
+        private ImageSegment segment;
 
         public override void Initialize(object obj)
         {
-            this.segment = (ImageMapSegment) obj;
+            this.segment = (ImageSegment) obj;
             base.TreeNode.Text = segment.Name;
             base.TreeNode.ImageName = GetImageName();
             base.TreeNode.ToolTipText = GetTooltip();

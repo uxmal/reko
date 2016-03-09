@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Intel
     {
         private LeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new LeImageReader(new LoadedImage(address, bytes), 0);
+            return new LeImageReader(new MemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

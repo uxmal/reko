@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -36,12 +37,9 @@ namespace Reko.Environments.Msdos
 	{
 		private SystemService [] realModeServices; 
 
-		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
+		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos")
 		{
-			LoadRealmodeServices(arch);
 		}
-
-        public override string PlatformIdentifier { get { return "ms-dos"; } }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -60,8 +58,15 @@ namespace Reko.Environments.Msdos
             return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
         }
 
-		public override SystemService FindService(int vector, ProcessorState state)
+        public override void EnsureTypeLibraries(string envName)
+        {
+            base.EnsureTypeLibraries(envName);
+            LoadRealmodeServices(Architecture);
+        }
+
+        public override SystemService FindService(int vector, ProcessorState state)
 		{
+            EnsureTypeLibraries(PlatformIdentifier);
 			foreach (SystemService svc in realModeServices)
 			{
 				if (svc.SyscallInfo.Matches(vector, state))
@@ -69,6 +74,23 @@ namespace Reko.Environments.Msdos
 			}
 			return null;
 		}
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 2;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
+        }
 
         /// <summary>
         /// MS-DOS has no concept of "trampolines".
@@ -104,7 +126,7 @@ namespace Reko.Environments.Msdos
 
             realModeServices = lib.Procedures
                 .Cast<SerializedService>()
-                .Select(s => s.Build(this))
+                .Select(s => s.Build(this, Metadata))
                 .ToArray();
         }
 

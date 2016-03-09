@@ -51,11 +51,6 @@ namespace Reko.Core.Serialization
             return visitor.VisitPrimitive(this);
         }
 
-		public override DataType BuildDataType(TypeFactory factory)
-		{
-			return factory.CreatePrimitiveType(Domain, ByteSize);
-		}
-
 		public override string ToString()
 		{
 			return string.Format("prim({0},{1})", Domain, ByteSize);

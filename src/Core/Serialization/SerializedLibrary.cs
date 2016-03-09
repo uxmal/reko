@@ -29,6 +29,7 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary
     {
+        public const string Namespace_v4 = "http://schemata.jklnet.org/Reko/v4";
         public const string Namespace_v3 = "http://schemata.jklnet.org/Reko/v3";
         public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
@@ -67,27 +68,35 @@ namespace Reko.Core.Serialization
         {
             if (serializer == null)
             {
-                serializer = CreateSerializer_v1(typeof(SerializedLibrary));
+                serializer = CreateSerializer(typeof(SerializedLibrary), Namespace_v1);
             }
             return serializer;
         }
 
+        public static XmlSerializer CreateSerializer(Type rootType, string @namespace)
+        {
+            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, @namespace);
+            return new XmlSerializer(rootType, attrOverrides);
+        }
+
+        public static XmlSerializer CreateSerializer_v4(Type rootType)
+        {
+            return CreateSerializer(rootType, Namespace_v4);
+        }
+
         public static XmlSerializer CreateSerializer_v3(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v3);
-            return new XmlSerializer(rootType, attrOverrides);
+            return CreateSerializer(rootType, Namespace_v3);
         }
 
         public static XmlSerializer CreateSerializer_v2(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v2);
-            return new XmlSerializer(rootType, attrOverrides);
+            return CreateSerializer(rootType, Namespace_v2);
         }
 
         public static XmlSerializer CreateSerializer_v1(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v1);
-            return new XmlSerializer(rootType, attrOverrides);
+            return CreateSerializer(rootType, Namespace_v1);
         }
 
         private static Type[] TypesToDecorate = new Type[] 

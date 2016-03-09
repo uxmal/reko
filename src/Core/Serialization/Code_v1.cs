@@ -28,11 +28,6 @@ namespace Reko.Core.Serialization
 {
     public class CodeType_v1 : SerializedType
     {
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            return factory.CreateCodeType();
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitCode(this);

@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core.CLanguage;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,14 +33,19 @@ namespace Reko.Core.CLanguage.UnitTests
     [TestFixture]
     public class CConstantEvaluatorTests
     {
+        private MockRepository mr;
         private CConstantEvaluator eval;
         private Dictionary<string, int> constants;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Replay();
             this.constants = new Dictionary<string,int>();
-            eval = new CConstantEvaluator(constants);
+            eval = new CConstantEvaluator(platform, constants);
         }
 
         [Test]

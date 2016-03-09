@@ -171,7 +171,6 @@
             this.memCtrl.ImageMap = null;
             this.memCtrl.Location = new System.Drawing.Point(0, 18);
             this.memCtrl.Name = "memCtrl";
-            this.memCtrl.ProgramImage = null;
             this.memCtrl.SelectedAddress = null;
             this.memCtrl.Services = null;
             this.memCtrl.Size = new System.Drawing.Size(858, 238);

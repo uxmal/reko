@@ -18,19 +18,20 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using Reko.UnitTests.Arch.Intel;
 using Reko.UnitTests.Arch.Intel.Fragments;
-using NUnit.Framework;
-using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Text;
-using Reko.Environments.Msdos;
 
 namespace Reko.UnitTests.Assemblers.x86
 {
@@ -81,10 +82,10 @@ namespace Reko.UnitTests.Assemblers.x86
             X86Assembler asm = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal()), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
             Program lr = asm.GetImage();
-
+            var mem = lr.ImageMap.Segments.Values.First().MemoryArea;
             X86Disassembler dasm = new X86Disassembler(
                 ProcessorMode.Real,
-                lr.Image.CreateLeReader(lr.Image.BaseAddress),
+                mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);

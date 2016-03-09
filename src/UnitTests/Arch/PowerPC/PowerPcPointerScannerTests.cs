@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     {
         private BeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new BeImageReader(new LoadedImage(address, bytes), 0);
+            return new BeImageReader(new MemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

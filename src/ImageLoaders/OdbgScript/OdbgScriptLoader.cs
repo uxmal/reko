@@ -56,7 +56,6 @@ namespace Reko.ImageLoaders.OdbgScript
             set { throw new NotImplementedException(); }
         }
 
-        public LoadedImage Image { get; private set; }
         public ImageMap ImageMap { get; set; }
         public IntelArchitecture Architecture { get; set; }
 
@@ -72,19 +71,18 @@ namespace Reko.ImageLoaders.OdbgScript
             var pe = CreatePeImageLoader();
             var program = pe.Load(pe.PreferredBaseAddress);
             var rr = pe.Relocate(program, pe.PreferredBaseAddress);
-            this.Image = program.Image;
             this.ImageMap = program.ImageMap;
             this.Architecture = (IntelArchitecture)program.Architecture;
 
-            var win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
+            var win32 = new Win32Emulator(program.ImageMap, program.Platform, program.ImportReferences);
             var state = (X86State)program.Architecture.CreateProcessorState();
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
+            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.ImageMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
             this.scriptInterpreter.Host = new Host(this);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
-            emu.WriteRegister(Registers.esp, (uint)Image.BaseAddress.ToLinear() + 0x1000 - 4u);
+            emu.WriteRegister(Registers.esp, (uint)ImageMap.BaseAddress.ToLinear() + 0x1000 - 4u);
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 

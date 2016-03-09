@@ -45,7 +45,7 @@ namespace Reko.Gui.Windows
             this.Platform = program.Platform;
         }
 
-        public Platform Platform { get; private set; }
+        public IPlatform Platform { get; private set; }
 
         public void WriteOpcode(string opcode)
         {

@@ -40,7 +40,6 @@ namespace Reko.Gui.Windows.Forms
     {
         private UserPreferencesDialog dlg;
         private Program program;
-        private TreeNode curNodeWnd;
         private UiPreferencesService localSettings;
         private ServiceContainer sc;
         private Dictionary<string, string> descs;
@@ -278,13 +277,12 @@ namespace Reko.Gui.Windows.Forms
 
             GenerateSimulatedProgram();
             dlg.MemoryControl.Services = sc;
-            dlg.MemoryControl.ProgramImage = program.Image;
             dlg.MemoryControl.ImageMap = program.ImageMap;
             dlg.MemoryControl.Architecture = program.Architecture;
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
             dlg.DisassemblyControl.StyleClass = UiStyles.Disassembler;
             dlg.DisassemblyControl.Services = sc;
-            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program);
+            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program, program.ImageMap.Segments.Values.First());
             dlg.CodeControl.Model = GenerateSimulatedHllCode();
         }
 
@@ -303,7 +301,7 @@ namespace Reko.Gui.Windows.Forms
         private void GenerateSimulatedProgram()
         {
             var row = Enumerable.Range(0, 0x100).Select(b => (byte)b).ToArray();
-            var image = new LoadedImage(
+            var image = new MemoryArea(
                     Address.Ptr32(0x0010000),
                     Enumerable.Repeat(
                         row,
@@ -316,7 +314,6 @@ namespace Reko.Gui.Windows.Forms
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");
             this.program = new Program
             {
-                Image = image,
                 ImageMap = imageMap,
                 Architecture = arch,
             };
@@ -450,13 +447,10 @@ namespace Reko.Gui.Windows.Forms
             if (node.Parent != null)
                 nodeWnd = node.Parent;
 
-            if (nodeWnd != curNodeWnd)
-            {
-                var designer = (UiStyleDesigner)nodeWnd.Tag;
-                dlg.WindowFontButton.Enabled = designer.EnableFont;
-                dlg.ResetButton.Enabled = designer.EnableFont;
-                designer.Control.BringToFront();
-            }
+            var designer = (UiStyleDesigner)nodeWnd.Tag;
+            dlg.WindowFontButton.Enabled = designer.EnableFont;
+            dlg.ResetButton.Enabled = designer.EnableFont;
+            designer.Control.BringToFront();
         }
 
         private void dlg_Closed(object sender, FormClosedEventArgs e)

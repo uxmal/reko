@@ -41,6 +41,7 @@ namespace Reko.Gui.Windows
         public ComboBoxWrapper(ComboBox ddl) { this.ddl = ddl; }
 
         public object DataSource { get { return ddl.DataSource; } set { ddl.DataSource = value; } }
+        public bool Enabled {  get { return ddl.Enabled; } set { ddl.Enabled = value; } }
         public IList Items { get { return ddl.Items; } }
         public int SelectedIndex { get { return ddl.SelectedIndex; } set { ddl.SelectedIndex = value; } }
         public object SelectedValue { get { return ddl.SelectedValue; } set { ddl.SelectedValue = value; } }

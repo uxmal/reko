@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.Msdos;
@@ -47,13 +48,17 @@ namespace Reko.UnitTests
         {
             mr = new MockRepository();
             fsSvc = mr.Stub<IFileSystemService>();
-            var config = new FakeDecompilerConfiguration();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            var env = mr.Stub<OperatingEnvironment>();
             var host = new FakeDecompilerHost();
             sc = new ServiceContainer();
             loader = mr.StrictMock<ILoader>();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<DecompilerHost>(host);
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             loader.Replay();
             decompiler = new TestDecompiler(loader, sc);
             loader.BackToRecord();

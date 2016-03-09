@@ -20,17 +20,26 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using System.Linq;
 
 namespace Reko.UnitTests.Assemblers.x86
 {
 	[TestFixture]
 	public class AssemblerData : AssemblerBase
 	{
+        private Program lr;
+        private MemoryArea mem;
+
+        private void AssembleFragment(string asmSrc)
+        {
+            lr = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
+            mem = lr.ImageMap.Segments.Values.First().MemoryArea;
+        }
+
 		[Test]
 		public void StringTest()
 		{
-			var lr = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
+			AssembleFragment(
 				@"	.i86
 foo		proc
 		mov	si,offset data
@@ -40,17 +49,18 @@ foo		proc
 foo		endp
 data	db	'Hello',0
 ");
-			Assert.IsTrue(Compare(lr.Image.Bytes, new byte []
+			Assert.AreEqual(new byte []
 					{
-						0xbe,0x08,0x00,0x32,0xc0,0xf3,0xae,0xc3,
-						0x48,0x65,0x6c,0x6c,0x6f,0x0 }));
+					0xbe,0x08,0x00,0x32,0xc0,0xf3,0xae,0xc3,
+					0x48,0x65,0x6c,0x6c,0x6f,0x0
+                },
+                mem.Bytes);
 		}
 
 		[Test]
 		public void SwitchStatement()
 		{
-			var lr = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
+			AssembleFragment(
 				@"	.i86
 foo		proc
 		mov	bl,[si]
@@ -72,7 +82,7 @@ three:
 		ret
 foo		endp
 ");
-            Assert.IsTrue(Compare(lr.Image.Bytes, new byte[]
+            Assert.AreEqual(new byte[]
 			{
 				0x8a,0x1c,0x32,0xff,
 				0xff,0xa7,0x08,0x00,
@@ -84,15 +94,14 @@ foo		endp
 				0xb8,0x02,0x00,
 				0xc3,
 				0xb8,0x03,0x00,
-				0xc3, }));
+				0xc3, },
+                mem.Bytes);
 		}
 
 		[Test]
 		public void MemOperandTest()
 		{
-			Program prog = new Program();
-			var lr = asm.AssembleFragment(
-				Address.SegPtr(0xC00, 0),
+			AssembleFragment(
 				@"	.i86
 		mov word ptr [bx+2],3
 		mov byte ptr [bx+4],3
@@ -100,32 +109,33 @@ foo		endp
 		add word ptr [bx+2],3
 		add byte ptr [bx+4],3
 ");
-			Assert.IsTrue(Compare(lr.Image.Bytes, new byte []
+			Assert.AreEqual(new byte []
 			{
 				0xC7, 0x47, 0x02, 0x03, 0x00,
 				0xC6, 0x47, 0x04, 0x03,
 				0x66, 0xC7, 0x47, 0x06, 0x03, 0x00, 0x00, 0x00,
 				0x83, 0x47, 0x02, 0x03,
 				0x80, 0x47, 0x04, 0x03
-			}));
+			},
+            mem.Bytes);
 		}
 
 		[Test]
 		public void AssignPseudo()
 		{
-			var lr = asm.AssembleFragment(
-                Address.SegPtr(0xC00, 0), 
+			AssembleFragment(
 				@".i86
 		f = 4
 		mov byte ptr [bx + f],3
 		f= 8
 		mov byte ptr [bx + f],3
 ");
-			Assert.IsTrue(Compare(lr.Image.Bytes, new byte[]
+			Assert.AreEqual(new byte[]
 			{
 				0xC6, 0x47, 0x4, 0x3,
 				0xC6, 0x47, 0x8, 0x3, 
-			}));
+			},
+            mem.Bytes);
 		}
 
         [Test]
@@ -265,6 +275,5 @@ foo		endp
 		{
 			RunTest("Fragments/multiple/livenessaftercall.asm", "Intel/AsLivenessAfterCall.txt", Address.SegPtr(0xB00, 0));
 		}
-
 	}
 }

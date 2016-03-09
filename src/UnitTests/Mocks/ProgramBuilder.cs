@@ -50,12 +50,13 @@ namespace Reko.UnitTests.Mocks
             };
         }
 
-        public ProgramBuilder(LoadedImage loadedImage)
+        public ProgramBuilder(MemoryArea mem)
         {
             Program = new Program
             {
-                Image = loadedImage,
-                ImageMap = loadedImage.CreateImageMap(),
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 Architecture = new FakeArchitecture()
             };
         }
@@ -158,9 +159,9 @@ namespace Reko.UnitTests.Mocks
             Program.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
-            Program.ImageMap = new ImageMap(Address.Ptr32(0x1000), Program.Procedures.Count * 0x1000);
-            var seg = Program.ImageMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute, 0);
-            seg.Size = (uint)(Program.Procedures.Count * 0x1000);
+            if (Program.ImageMap == null)
+                Program.ImageMap = new ImageMap(Address.Ptr16(0x1000));
+            var seg = Program.ImageMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute, (uint) Program.Procedures.Count * 0x1000);
             Program.Platform = new DefaultPlatform(null, arch);
 			return Program;
 		}

@@ -20,6 +20,7 @@
 
 using Reko.Arch.PowerPC;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
@@ -36,16 +37,21 @@ namespace Reko.Environments.Ps3
     /// <summary>
     /// Platform support for Sony Playstation 3 (PS3).
     /// </summary>
+    /// <remarks>
+    /// A particularity of this platform is that even though the PowerPC 
+    /// processor is a 64-bit CPU, all pointers are by convention 32-bit.
+    /// This means that special care has to be taken to make sure no
+    /// 64-bit pointers or addresses are introduced into the 
+    /// decompilation process.
+    /// </remarks>
     public class Ps3Platform : Platform
     {
         public Ps3Platform(IServiceProvider services, IProcessorArchitecture arch)
-            : base(services, arch) 
+            : base(services, arch, "ps3") 
         {
         }
 
         public override string DefaultCallingConvention { get { return ""; } }
-
-        public override string PlatformIdentifier { get { return "ps3"; } }
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Pointer32; } }
 
@@ -65,6 +71,24 @@ namespace Reko.Environments.Ps3
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        {
+            switch (cb)
+            {
+            case CBasicType.Char: return 1;
+            case CBasicType.WChar_t: return 2;  //$REVIEW: Does PS/3 support wchar_t?
+            case CBasicType.Short: return 2;
+            case CBasicType.Int: return 4;
+            case CBasicType.Long: return 4;
+            case CBasicType.LongLong: return 8;
+            case CBasicType.Float: return 4;
+            case CBasicType.Double: return 8;
+            case CBasicType.LongDouble: return 8;
+            case CBasicType.Int64: return 8;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
@@ -126,7 +150,7 @@ namespace Reko.Environments.Ps3
             // Read the function pointer from the function descriptor.
 
             offset = (int)aFuncDesc - (int)rdr.Address.ToUInt32();
-            rdr.Offset = (ulong) (((long)rdr.Offset) + offset);
+            rdr.Offset = rdr.Offset + offset;
             var aFn = rdr.ReadUInt32();
             return null;
         }
@@ -147,5 +171,9 @@ namespace Reko.Environments.Ps3
             return Address.Ptr32((uint)uAddr);
         }
 
+        public override bool TryParseAddress(string sAddress, out Address addr)
+        {
+            return Address.TryParse32(sAddress, out addr);
+        }
     }
 }

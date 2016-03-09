@@ -18,16 +18,19 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
-        TypeLibrary LoadLibrary(Platform platform, string name);
+        TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, ITypeLibraryElement tlElement, TypeLibrary libDst);
+        TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary libDst);
 
         string InstalledFileLocation(string name);
 
@@ -49,22 +52,83 @@ namespace Reko.Core.Services
             this.services = services;
         }
 
-        public TypeLibrary LoadLibrary(Platform platform, string name)
+        public TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, ITypeLibraryElement tlElement, TypeLibrary libDst)
+        {
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var diagSvc = services.RequireService<IDiagnosticsService>();
+            try
+            {
+                string libFileName = cfgSvc.GetInstallationRelativePath(tlElement.Name);
+                if (!fsSvc.FileExists(libFileName)) 
+                    return libDst;
+
+                byte[] bytes = fsSvc.ReadAllBytes(libFileName);
+                MetadataLoader loader = CreateLoader(tlElement, libFileName, bytes);
+                if (loader == null)
+                    return libDst;
+                var lib = loader.Load(platform, libDst);
+                return lib;
+            }
+            catch (Exception ex)
+            {
+                diagSvc.Error(ex, string.Format("Unable to load metadata file {0}.", tlElement.Name));
+                return libDst;
+            }
+        }
+
+        public MetadataLoader CreateLoader(ITypeLibraryElement tlElement, string filename, byte[] bytes)
+        {
+            Type loaderType = null;
+            if (string.IsNullOrEmpty(tlElement.Loader))
+            {
+                // By default, assume TypeLibraryLoader is intended.
+                loaderType = typeof(TypeLibraryLoader);
+            }
+            else
+            {
+                var cfgSvc = services.RequireService<IConfigurationService>();
+                var diagSvc = services.RequireService<IDiagnosticsService>();
+                var ldrElement = cfgSvc.GetImageLoaders()
+                    .OfType<LoaderElement>()
+                    .Where(le => le.Label == tlElement.Loader)
+                    .FirstOrDefault();
+                if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
+                {
+                    loaderType = Type.GetType(ldrElement.TypeName, false);
+                }
+                if (loaderType == null)
+                {
+                    diagSvc.Warn(string.Format("Metadata loader type {0} is unknown.", tlElement.Loader));
+                    return null;
+                }
+            }
+            return (MetadataLoader)Activator.CreateInstance(loaderType, services, filename, bytes);
+        }
+
+        [Obsolete("Use LoadMetadataIntoLibrary instead")]
+        public TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary dstLib)
         {
             try
             {
-                string libFileName = ImportFileLocation(name);
+                string libFileName = InstalledFileLocation(name);
                 if (!File.Exists(libFileName))
-                    return null;
+                    return dstLib;
 
+                byte[] bytes;
                 var fsSvc = services.RequireService<IFileSystemService>();
-                var lib = TypeLibrary.Load(platform, libFileName, fsSvc);
-                lib.Filename = libFileName;
+                using (var stm = fsSvc.CreateFileStream(libFileName, FileMode.Open, FileAccess.Read))
+                {
+                    bytes = new Byte[stm.Length];
+                    stm.Read(bytes, 0, (int)stm.Length);
+                }
+                var tlldr = new TypeLibraryLoader(services, libFileName, bytes);
+                var lib = tlldr.Load(platform, dstLib);
                 return lib;
             }
             catch
             {
-                return null;
+                return dstLib;
             }
         }
 

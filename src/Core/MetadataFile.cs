@@ -39,9 +39,5 @@ namespace Reko.Core
 
         public string ModuleName { get; set; }
 
-        public string MetadataType { get; set; }
-
-        public TypeLibrary TypeLibrary { get; set; }
-
     }
 }

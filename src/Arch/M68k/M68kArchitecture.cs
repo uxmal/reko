@@ -73,12 +73,17 @@ namespace Reko.Arch.M68k
             return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new BeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
@@ -136,7 +141,7 @@ namespace Reko.Arch.M68k
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(rdr.ReadBeUInt32());
         }
 
         //$REVIEW: shouldn't this be flaggroup?

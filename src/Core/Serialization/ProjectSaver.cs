@@ -40,19 +40,22 @@ namespace Reko.Core.Serialization
             Save(sProject, sw);
         }
 
-        public void Save(Project_v3 sProject, TextWriter sw)
+        public void Save(Project_v4 sProject, TextWriter sw)
         {
-            var ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+            var ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
             ser.Serialize(sw, sProject);
         }
 
-        public Project_v3 Save(string projectAbsPath, Project project)
+        public Project_v4 Save(string projectAbsPath, Project project)
         {
             var inputs = new List<ProjectFile_v3>();
             inputs.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
             inputs.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
-            var sp = new Project_v3()
+            var sp = new Project_v4
             {
+                // ".Single()" because there can be only one Architecture and Platform, realistically.
+                ArchitectureName = project.Programs.Select(p => p.Architecture.Name).Distinct().SingleOrDefault(),
+                PlatformName = project.Programs.Select(p => p.Platform.Name).Distinct().SingleOrDefault(),   
                 Inputs = inputs
             };
             return sp;
@@ -115,7 +118,7 @@ namespace Reko.Core.Serialization
                 return new ProcessorOptions_v3 { Name = user.Processor };
         }
 
-        private PlatformOptions_v3 SerializePlatformOptions(UserData user, Platform platform)
+        private PlatformOptions_v3 SerializePlatformOptions(UserData user, IPlatform platform)
         {
             if (platform == null)
                 return null;

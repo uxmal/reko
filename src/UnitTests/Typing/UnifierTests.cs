@@ -419,7 +419,6 @@ namespace Reko.UnitTests.Typing
             Assert.IsTrue(un.AreCompatible(t1, t2));
         }
 
-
         [Test]
         public void UnifyTypeReferences()
         {
@@ -427,5 +426,14 @@ namespace Reko.UnitTests.Typing
             var t2 = PrimitiveType.Char;
             Assert.AreEqual("CHAR", un.Unify(t1, t2).ToString());
         }
-	}
+
+        [Test]
+        public void Unify_AreUnknownCompatible()
+        {
+            var t1 = new StructureType("FOO", 3);
+            var t2 = new UnknownType();
+            Assert.IsTrue(un.AreCompatible(t1, t2));
+            Assert.AreEqual("(struct \"FOO\" 0003)", un.Unify(t1, t2).ToString());
+        }
+    }
 }

@@ -40,7 +40,7 @@ namespace Reko.Core.Serialization
 			this.Name = name;
 		}
 
-		public override Identifier Accept(ArgumentSerializer sser)
+		public override Identifier Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);
 		}

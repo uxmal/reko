@@ -25,6 +25,6 @@ namespace Reko.Core.Serialization
 {
 	public abstract class SerializedKind
 	{
-		public abstract Identifier Accept(ArgumentSerializer sser);
+		public abstract Identifier Deserialize(ArgumentDeserializer sser);
 	}
 }

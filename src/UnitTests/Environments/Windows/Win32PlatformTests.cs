@@ -23,6 +23,7 @@ using Reko.Core.Configuration;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.Environments.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -43,9 +44,9 @@ namespace Reko.UnitTests.Environments.Windows
         private ITypeLibraryLoaderService tlSvc;
         private ServiceContainer sc;
         private Win32Platform win32;
+        private Program program;
         private IntelArchitecture arch;
         private ExternalProcedure extProc;
-        private OperatingEnvironment opEnv;
         private IConfigurationService dcSvc;
 
         [SetUp]
@@ -55,30 +56,11 @@ namespace Reko.UnitTests.Environments.Windows
             sc = new ServiceContainer();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             dcSvc = repository.StrictMock<IConfigurationService>();
-            opEnv = repository.StrictMock<OperatingEnvironment>();
         }
 
         private void When_Lookup_Procedure(string moduleName, string procName)
         {
             this.extProc = this.win32.LookupProcedureByName(moduleName, procName);
-        }
-
-        private void Given_Win32_TypeLibraries(string name)
-        {
-            var typelibs = new TypeLibraryElementCollection
-            {
-                new TypeLibraryElement
-                {
-                    Name = name
-                }
-            };
-            opEnv.Expect(o => o.TypeLibraries).Return(typelibs);
-        }
-
-        private void Expect_GetEnvironment_Win32()
-        {
-            dcSvc.Expect(d => d.GetEnvironment("win32"))
-                .Return(opEnv);
         }
 
         [Test]
@@ -95,12 +77,33 @@ namespace Reko.UnitTests.Environments.Windows
             repository.VerifyAll();
         }
 
+        private void Expect_TypeLibraryLoaderService_LoadLibrary(ITypeLibraryElement expected, TypeLibrary dstLib)
+        {
+            tlSvc.Expect(t => t.LoadMetadataIntoLibrary(
+                Arg<IPlatform>.Is.NotNull,
+                Arg<ITypeLibraryElement>.Matches(a => a.Name == expected.Name),
+                Arg<TypeLibrary>.Is.NotNull))
+                .Return(dstLib);
+        }
+
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected)
         {
-            tlSvc.Expect(t => t.LoadLibrary(
-                Arg<Platform>.Is.NotNull,
-                Arg<string>.Is.Equal(expected))).
-                Return(new TypeLibrary());
+            Expect_TypeLibraryLoaderService_LoadLibrary(
+                new TypeLibraryElement
+                {
+                    Name = expected
+                },
+                new TypeLibrary());
+        }
+
+        private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, IDictionary<string, DataType> types)
+        {
+            Expect_TypeLibraryLoaderService_LoadLibrary(
+                new TypeLibraryElement
+                {
+                    Name = expected,
+                },
+                new TypeLibrary(types, new Dictionary<string, ProcedureSignature>()));
         }
 
         private void Given_Configuration_With_Win32_Element()
@@ -128,17 +131,13 @@ namespace Reko.UnitTests.Environments.Windows
             win32 = new Win32Platform(sc, arch);
         }
 
-        private void Expect_CreateFileStream_PathEndsWith(string filename)
+        private void Given_Program()
         {
-            tlSvc.Expect(f => f.LoadLibrary(
-                Arg<Platform>.Is.Anything,
-                Arg<string>.Matches(s => filename.EndsWith(s))))
-                .Return(CreateFakeLib());
-        }
-
-        private TypeLibrary CreateFakeLib()
-        {
-            return new TypeLibrary();
+            program = new Program
+            {
+                Architecture = win32.Architecture,
+                Platform = win32,
+            };
         }
 
         private void Given_TypeLibraryLoaderService()
@@ -150,12 +149,61 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void Win32_SignatureFromName_stdcall()
         {
+            Given_TypeLibraryLoaderService();
+            Given_Configuration_With_Win32_Element();
+
             var fnName = "_foo@4";
             When_Creating_Win32_Platform();
 
-            var sig = win32.SignatureFromName(fnName);
+            var ep = win32.SignatureFromName(fnName);
 
-            Assert.AreEqual("void ()()\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
+            var sigExp =
+@"void ()()
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, ep.Signature.ToString());
+        }
+
+        [Test]
+        public void Win32_Deserialize_PlatformTypes()
+        {
+            var types = new Dictionary<string, DataType>()
+            {
+                { "TESTTYPE1", PrimitiveType.Create( PrimitiveType.Byte.Domain, 1 ) },
+                { "TESTTYPE2", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
+                { "TESTTYPE3", PrimitiveType.Create( PrimitiveType.Int32.Domain, 4 ) },
+            };
+            Given_TypeLibraryLoaderService();
+            Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml", types);
+            Given_Configuration_With_Win32_Element();
+            repository.ReplayAll();
+
+            When_Creating_Win32_Platform();
+            Given_Program();
+
+            var ser = program.CreateProcedureSerializer();
+            var sSig = new SerializedSignature
+            {
+                Convention = "__cdecl",
+                ReturnValue = new Argument_v1(null, new SerializedTypeReference("TESTTYPE1"), null, false),
+                Arguments = new Argument_v1[]
+                {
+                    new Argument_v1("a", new SerializedTypeReference("TESTTYPE2"), null, false),
+                    new Argument_v1("b", new SerializedTypeReference("TESTTYPE3"), null, false)
+                }
+            };
+            var sig = ser.Deserialize(sSig, win32.Architecture.CreateFrame());
+
+            var sigExp =
+@"Register TESTTYPE1 ()(Stack TESTTYPE2 a, Stack TESTTYPE3 b)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+
+            Assert.AreEqual(sigExp, sig.ToString());
+            Assert.AreEqual("byte", (sig.ReturnValue.DataType as TypeReference).Referent.ToString());
+            Assert.AreEqual("int16", (sig.Parameters[0].DataType as TypeReference).Referent.ToString());
+            Assert.AreEqual("int32", (sig.Parameters[1].DataType as TypeReference).Referent.ToString());
         }
     }
 }

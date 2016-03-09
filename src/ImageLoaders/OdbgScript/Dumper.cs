@@ -9,7 +9,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     class Dumper
     {
-        public static bool DumpProcess(LoadedImage image, string filename, ulong ep)
+        public static bool DumpProcess(MemoryArea image, string filename, ulong ep)
         {
             return true;
         }

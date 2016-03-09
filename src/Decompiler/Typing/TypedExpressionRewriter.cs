@@ -32,11 +32,9 @@ namespace Reko.Typing
     /// <summary>
     /// Rewrites all the expressions in the program based on the type information provided.
     /// </summary>
-    public class TypedExpressionRewriter2 : InstructionTransformer
+    public class TypedExpressionRewriter : InstructionTransformer
     {
         private Program program;
-        private Platform platform;
-        private TypeStore store;
         private Identifier globals;
         private DataTypeComparer compTypes;
         private TypedConstantRewriter tcr;
@@ -45,11 +43,9 @@ namespace Reko.Typing
         private bool dereferenced;
         private Expression basePtr;
 
-        public TypedExpressionRewriter2(Program program)
+        public TypedExpressionRewriter(Program program)
         {
             this.program = program;
-            this.platform = program.Platform;
-            this.store = program.TypeStore;
             this.globals = program.Globals;
             this.compTypes = new DataTypeComparer();
             this.tcr = new TypedConstantRewriter(program);
@@ -118,12 +114,16 @@ namespace Reko.Typing
                 }
                 else if (uSrc != null)
                 {
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                     //var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
                     //src = ceb.BuildComplex(false);
+                    src = new Cast(dtDst, src);
                 }
                 else
-                    throw new NotImplementedException(string.Format("{2} [{0}] = {3} [{1}] not supported.", dtDst, dtSrc, dst, src));
+                {
+                    Debug.Print("{2} [{0}] = {3} [{1}] not supported.", dtDst, dtSrc, dst, src);
+                    src = new Cast(dtDst, src);
+                }
             }
             var idDst = dst as Identifier;
             if (idDst != null)
@@ -231,13 +231,18 @@ namespace Reko.Typing
             else if (binOp == Operator.Shr)
                 binOp = Operator.Sar;
             binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
-            store.SetTypeVariableExpression(binExp.TypeVariable, binExp);
+            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable, binExp);
             return binExp;
         }
 
         private static DataType DataTypeOf(Expression exp)
         {
             return exp.TypeVariable != null ? exp.TypeVariable.DataType : exp.DataType;
+        }
+
+        public override Expression VisitAddress(Address addr)
+        {
+            return tcr.Rewrite(addr, dereferenced);
         }
 
         public override Expression VisitConstant(Constant c)
@@ -259,7 +264,7 @@ namespace Reko.Typing
             var head = Rewrite(seq.Head, false);
             var tail = Rewrite(seq.Tail, false);
             Constant c = seq.Tail as Constant;
-            var ptHead = DataTypeOf( head) as PrimitiveType;
+            var ptHead = DataTypeOf(head) as PrimitiveType;
             if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
             {
                 if (c != null)

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
+  <input>
+    <filename>pySample.dll</filename>
+    <disassembly>pySample.asm</disassembly>
+    <intermediate-code>pySample.dis</intermediate-code>
+    <output>pySample.c</output>
+    <types-file>pySample.h</types-file>
+    <global-vars>pySample.globals.c</global-vars>
+    <user>
+      <procedure name="py_unused">
+        <address>10001140</address>
+        <CSignature>PyObject *py_unused(PyObject *self, PyObject *args)</CSignature>
+      </procedure>
+      <global>
+        <Address>10003010</Address>
+        <arr length="5">
+          <type>PyMethodDef</type>
+        </arr>
+        <Name>methods</Name>
+      </global>
+    </user>
+  </input>
+  <metadata>
+    <filename>python.xml</filename>
+  </metadata>
+</project>

@@ -41,6 +41,11 @@ namespace Reko.Core.Types
             set { throw new NotSupportedException(); }
         }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitVoidType(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitVoidType(this);

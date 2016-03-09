@@ -363,5 +363,11 @@ namespace Reko.UnitTests.Typing
             });
             RunTest(pb.BuildProgram());
         }
+
+        [Test]
+        public void TtranMemStore()
+        {
+            RunTest(Fragments.MemStore, "Typing/TtranMemStore.txt");
+        }
     }
 }

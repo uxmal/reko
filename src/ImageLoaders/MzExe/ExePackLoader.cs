@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.MzExe
     public class ExePackLoader : ImageLoader
     {
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 
         private uint exeHdrSize;
         private uint hdrOffset;
@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort ss;				// 000A
         private ushort cpUncompressed;	// 000C
 
-        private LoadedImage imgU;
+        private MemoryArea imgU;
 
         public ExePackLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
@@ -72,11 +72,11 @@ namespace Reko.ImageLoaders.MzExe
             this.cpUncompressed = rdr.ReadLeUInt16();
 
             int offset = ExePackHeaderOffset(exe);
-            if (LoadedImage.CompareArrays(imgRaw, offset, signature, signature.Length))
+            if (MemoryArea.CompareArrays(imgRaw, offset, signature, signature.Length))
             {
                 relocationsOffset = 0x012D;
             }
-            else if (LoadedImage.CompareArrays(imgRaw, offset, signature2, signature2.Length))
+            else if (MemoryArea.CompareArrays(imgRaw, offset, signature2, signature2.Length))
             {
                 relocationsOffset = 0x0125;
             }
@@ -87,8 +87,8 @@ namespace Reko.ImageLoaders.MzExe
         static public bool IsCorrectUnpacker(ExeImageLoader exe, byte[] rawImg)
         {
             int offset = ExePackHeaderOffset(exe);
-            return LoadedImage.CompareArrays(rawImg, offset, signature, signature.Length) ||
-                   LoadedImage.CompareArrays(rawImg, offset, signature2, signature2.Length);
+            return MemoryArea.CompareArrays(rawImg, offset, signature, signature.Length) ||
+                   MemoryArea.CompareArrays(rawImg, offset, signature2, signature2.Length);
         }
 
         private static int ExePackHeaderOffset(ExeImageLoader exe)
@@ -101,7 +101,7 @@ namespace Reko.ImageLoaders.MzExe
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
             Array.Copy(abC, exeHdrSize, abU, ExeImageLoader.CbPsp, abC.Length - exeHdrSize);
-            imgU = new LoadedImage(addr, abU);
+            imgU = new MemoryArea(addr, abU);
 
             uint SI = hdrOffset - 1;
             while (abC[SI] == 0xFF)
@@ -114,7 +114,7 @@ namespace Reko.ImageLoaders.MzExe
             do
             {
                 op = abC[SI];
-                int cx = LoadedImage.ReadLeUInt16(abC, SI - 2);
+                int cx = MemoryArea.ReadLeUInt16(abC, SI - 2);
                 SI -= 3;
                 if ((op & 0xFE) == 0xB0)
                 {
@@ -137,7 +137,7 @@ namespace Reko.ImageLoaders.MzExe
                 }
             } while ((op & 1) == 0);
             imageMap = imgU.CreateImageMap();
-            return new Program(imgU, imageMap, new X86ArchitectureReal(), platform);
+            return new Program(new ImageMap(imgU.BaseAddress, imgU.Length), new X86ArchitectureReal(), platform);
         }
 
         public override Address PreferredBaseAddress
@@ -161,7 +161,8 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+                        var segment = imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+                        segment.MemoryArea = imgU;
                     } while (--cx != 0);
                 }
                 if (dx == 0xF000)

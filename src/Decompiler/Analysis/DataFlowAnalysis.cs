@@ -42,11 +42,13 @@ namespace Reko.Analysis
 	{
 		private Program program;
 		private DecompilerEventListener eventListener;
-		private ProgramDataFlow flow;
+        private IImportResolver importResolver;
+        private ProgramDataFlow flow;
 
-        public DataFlowAnalysis(Program program, DecompilerEventListener eventListener)
+        public DataFlowAnalysis(Program program, IImportResolver importResolver, DecompilerEventListener eventListener)
 		{
 			this.program = program;
+            this.importResolver = importResolver;
             this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(program);
 		}
@@ -79,17 +81,21 @@ namespace Reko.Analysis
                     alias.Transform();
 
                     var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                    var sst = new SsaTransform(flow, proc, doms);
+                    var sst = new SsaTransform(flow, proc, importResolver, doms);
                     var ssa = sst.SsaState;
 
                     var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
                     cce.Transform();
+                    //var cd = new ConstDivisionImplementedByMultiplication(ssa);
+                    //cd.Transform();
+
                     DeadCode.Eliminate(proc, ssa);
 
                     var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
+              
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 
@@ -191,7 +197,6 @@ namespace Reko.Analysis
 			GlobalCallRewriter.Rewrite(program, flow);
 		}
 
-
         // EXPERIMENTAL - consult uxmal before using
         /// <summary>
         /// Analyizes the procedures of a program by finding all strongly 
@@ -224,7 +229,7 @@ namespace Reko.Analysis
                 // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
-                var sst = new SsaTransform(flow, proc, doms);
+                var sst = new SsaTransform(flow, proc, importResolver, doms);
                 var ssa = sst.SsaState;
 
                 // Propagate condition codes and registers. At the end, the hope is that 

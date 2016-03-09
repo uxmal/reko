@@ -30,99 +30,66 @@ using Microsoft.Msagl.Layout.MDS;
 using System.Windows.Forms;
 using System.ComponentModel.Design;
 using Reko.Core;
+using System.Diagnostics;
 
 namespace Reko.Gui.Windows
 {
-    public class CfgGraphGenerator : IWindowPane, ICommandTarget
+    public class CfgGraphGenerator
     {
-        private GViewer graphViewer;
-        private IServiceProvider services;
+        private Graph graph;
+        private HashSet<Block> visited;
 
-        public Control CreateControl()
+        public CfgGraphGenerator(Graph graph)
         {
-            graphViewer = new GViewer() { Dock = DockStyle.Fill };
-            Graph graph = new Graph();
-
-            var nl = "\n";
-            var a = graph.AddNode("A");
-            a.Label.FontName = "Lucida Console";
-            a.Label.FontSize = 10f;
-            a.Attr.LabelMargin = 5;
-            a.LabelText = "A:" + nl + "dec cx" + nl + "jnz A";
-            var b = graph.AddNode("B");
-            graph.AddEdge("A", "B");
-            graph.AddEdge("A", "A");
-
-            graph.AddEdge("B", "C");
-            graph.AddEdge("B", "D");
-            graph.AddEdge("D", "E");
-            graph.AddEdge("C", "E");
-
-            graph.Attr.LayerDirection = LayerDirection.TB;
-            graphViewer.Graph = graph; // throws exception
-            graphViewer.ToolBarIsVisible = false;
-
-            graphViewer.KeyDown += GraphViewer_KeyDown;
-            return graphViewer;
-        }
-
-        public void SetSite(IServiceProvider services)
-        {
-            this.services = services;
-        }
-
-        public void Close()
-        {
-            if (graphViewer != null)
-                graphViewer.Dispose();
-        }
-
-            private void GraphViewer_KeyDown(object sender, KeyEventArgs e)
-            {
-                if (e.KeyCode == Keys.A)
-                {
-                    graphViewer.ZoomF *= 1.1;
-                    e.Handled = true;
-                }
-
-                if (e.KeyCode == Keys.Z)
-                {
-                    graphViewer.ZoomF /= 1.1;
-                    e.Handled = true;
-                }
-            }
-
-        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
-        {
-            return false;
-        }
-
-        public bool Execute(CommandID cmdId)
-        {
-            return false;
+            this.graph = graph;
+            this.visited = new HashSet<Block>();
         }
 
         public static Graph Generate(Procedure proc)
         {
-                     Graph graph = new Graph();
-
-            var nl = "\n";
-            var a = graph.AddNode("A");
-            a.Label.FontName = "Lucida Console";
-            a.Label.FontSize = 10f;
-            a.Attr.LabelMargin = 5;
-            a.LabelText = "A:" + nl + "dec cx" + nl + "jnz A";
-            var b = graph.AddNode("B");
-            graph.AddEdge("A", "B");
-            graph.AddEdge("A", "A");
-
-            graph.AddEdge("B", "C");
-            graph.AddEdge("B", "D");
-            graph.AddEdge("D", "E");
-            graph.AddEdge("C", "E");
-
+            Graph graph = new Graph();
+            var cfgGen = new CfgGraphGenerator(graph);
+            cfgGen.Traverse(proc.EntryBlock.Succ[0]);
             graph.Attr.LayerDirection = LayerDirection.TB;
             return graph;
+        }
+
+        public void Traverse(Block block)
+        {
+            var q = new Queue<Block>();
+            q.Enqueue(block);
+            while (q.Count > 0)
+            {
+                var b = q.Dequeue();
+                if (visited.Contains(b))
+                    continue;
+                visited.Add(b);
+                Debug.Print("Node {0}", b.Name);
+                visited.Add(b);
+                var n = Render(b);
+                foreach (var pred in b.Pred.Where(p => p != block.Procedure.EntryBlock))
+                {
+                    Debug.Print("Edge {0} - {1}", pred.Name, b.Name);
+                    graph.AddEdge(pred.Name, b.Name);
+                }
+                foreach (var succ in b.Succ)
+                {
+                    q.Enqueue(succ);
+                }
+            }
+        }
+
+        private Node Render(Block b)
+        {
+            var nl = "\n    ";
+            var node = graph.AddNode(b.Name);
+            node.Label.FontName = "Lucida Console";
+            node.Label.FontSize = 10f;
+            node.Attr.LabelMargin = 5;
+            node.LabelText =
+                b.Name + nl +
+                string.Join(nl, b.Statements.Select(s => s.Instruction));
+            return node;
         }
     }
 }

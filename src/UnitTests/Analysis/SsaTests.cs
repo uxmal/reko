@@ -29,6 +29,7 @@ using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -161,7 +162,7 @@ namespace Reko.UnitTests.Analysis
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var proc = m.Procedure;
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph());
             ssa = sst.SsaState;
             using (var fut = new FileUnitTester(outfile))
             {
@@ -185,6 +186,8 @@ namespace Reko.UnitTests.Analysis
 		{
             var flow = new ProgramDataFlow(prog);
             var eventListener = new FakeDecompilerEventListener();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
@@ -197,7 +200,7 @@ namespace Reko.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(flow, proc, gr);
+				SsaTransform sst = new SsaTransform(flow, proc, importResolver, gr);
 				ssa = sst.SsaState;
 				ssa.Write(writer);
 				proc.Write(false, true, writer);

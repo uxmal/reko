@@ -41,13 +41,14 @@ namespace Reko.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-            var image = new LoadedImage(Address.Ptr32(0x00400000), new byte[1024]);
+            var mem = new MemoryArea(Address.Ptr32(0x00400000), new byte[1024]);
             var arch = new FakeArchitecture();
             program = new Program
             {
                 Architecture = arch,
-                Image = image,
-                ImageMap = image.CreateImageMap(),
+                ImageMap = new ImageMap(
+                    mem.BaseAddress, 
+                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
                 Platform = new DefaultPlatform(null, arch)
             };
             store = program.TypeStore;
@@ -80,7 +81,7 @@ namespace Reko.UnitTests.Typing
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			var tv = CreateTv(ptr, new Pointer(point, 4), new Pointer(point, 4));
 
-            var tmer = new TypedExpressionRewriter2(program);
+            var tmer = new TypedExpressionRewriter(program);
             var access = CreateTv(m.LoadDw(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);
 			Assert.AreEqual("ptr->dw0000", e.ToString());
@@ -99,7 +100,7 @@ namespace Reko.UnitTests.Typing
 			var c = CreateTv(Constant.Word32(4));
 			var bin = CreateTv(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
             var mem = CreateTv(new MemoryAccess(bin, PrimitiveType.Word32));
-			var tmer = new TypedExpressionRewriter2(program);
+			var tmer = new TypedExpressionRewriter(program);
 			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());
 		}

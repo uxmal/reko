@@ -33,7 +33,7 @@ namespace Reko.Scanning
         private Address addr;
         private string name;
 
-        public ProcedureWorkItem(IScanner scanner, Program program, Address addr, string name)
+        public ProcedureWorkItem(IScanner scanner, Program program, Address addr, string name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;

@@ -165,6 +165,18 @@ namespace Reko.Gui.Windows.Controls
                     SelectedImageKey = value;
                 }
             }
+
+            public void Invoke(Action action)
+            {
+                if (base.TreeView != null && TreeView.InvokeRequired)
+                {
+                    TreeView.Invoke(action);
+                }
+                else
+                {
+                    action();
+                }
+            }
         }
 
         public class WrappedNodeList : ITreeNodeCollection

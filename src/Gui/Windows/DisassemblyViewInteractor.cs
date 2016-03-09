@@ -60,15 +60,18 @@ namespace Reko.Gui.Windows
                     var dumper = new Dumper(arch);
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
-                    var image = program.Image;
-                    var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
-                    while (dasm.MoveNext())
+                    ImageSegment segment;
+                    if (program.ImageMap.TryFindSegment(StartAddress, out segment))
                     {
-                        var instr = dasm.Current;
-                        if (lines <= 0)
-                            break;
-                        dumper.DumpAssemblerLine(image, instr, writer);
-                        --lines;
+                        var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
+                        while (dasm.MoveNext())
+                        {
+                            var instr = dasm.Current;
+                            if (lines <= 0)
+                                break;
+                            dumper.DumpAssemblerLine(segment.MemoryArea, instr, writer);
+                            --lines;
+                        }
                     }
                     txtDisassembly.Text = writer.ToString();
                 }
@@ -110,7 +113,7 @@ namespace Reko.Gui.Windows
             return
                 program != null &&
                 program.Architecture != null &&
-                program.Image != null &&
+                program.ImageMap != null &&
                 StartAddress != null;
         }
 

@@ -22,13 +22,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Expressions;
+using Reko.Core.Services;
 
 namespace Reko.Core
 {
     public interface IImportResolver
     {
-        ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform);
-        ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform);
+        ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
+        ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
+        ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c);
     }
 
     /// <summary>
@@ -39,40 +42,76 @@ namespace Reko.Core
     public class ImportResolver : IImportResolver
     {
         private Project project;
+        private Program program;
+        private DecompilerEventListener eventListener;
 
-        public ImportResolver(Project project)
+        public ImportResolver(Project project, Program program, DecompilerEventListener eventListener)
         {
             if (project == null)
                 throw new ArgumentNullException("project");
             this.project = project;
+            this.program = program;
+            this.eventListener = eventListener;
         }
 
-        public ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform)
+        public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
-            foreach (var module in project.MetadataFiles.Where(m => m.TypeLibrary != null))
+            foreach (var program in project.Programs)
             {
+                ModuleDescriptor mod;
+                if (!program.Metadata.Modules.TryGetValue(moduleName, out mod))
+                    continue;
+
                 SystemService svc;
-                if (module.TypeLibrary.ServicesByName.TryGetValue(importName, out svc))
+                if (mod.ServicesByName.TryGetValue(importName, out svc))
                 {
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
+
+            foreach (var program in project.Programs)
+            {
+                ProcedureSignature sig;
+                if (program.Metadata.Signatures.TryGetValue(importName, out sig))
+                {
+                    return new ExternalProcedure(importName, sig);
+                }
+            }
+
             return platform.LookupProcedureByName(moduleName, importName);
         }
 
-        public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform)
+        public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
-            foreach (var module in project.MetadataFiles.Where(m =>
-                string.Compare(m.ModuleName, moduleName, true) == 0 && //$BUGBUG: platform-dependent string comparison.
-                m.TypeLibrary != null))
+            foreach (var program in project.Programs)
             {
+                ModuleDescriptor mod;
+                if (!program.Metadata.Modules.TryGetValue(moduleName, out mod))
+                    continue;
+
                 SystemService svc;
-                if (module.TypeLibrary.ServicesByVector.TryGetValue(ordinal, out svc))
+                if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
                 {
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
+
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
+        }
+
+        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        {
+            var addrInstruction = program.ImageMap.MapLinearAddressToAddress(stm.LinearAddress);
+            var addrImportThunk = program.Platform.MakeAddressFromConstant(c);
+            ImportReference impref;
+            if (!program.ImportReferences.TryGetValue(addrImportThunk, out impref))
+                return null;
+
+            var extProc = impref.ResolveImportedProcedure(
+                this,
+                program.Platform,
+                new AddressContext(program, addrInstruction, this.eventListener));
+            return new ProcedureConstant(program.Platform.PointerType, extProc);
         }
     }
 }

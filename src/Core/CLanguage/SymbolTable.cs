@@ -26,17 +26,28 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
+    /// <summary>
+    /// Symbol table for the C parser.
+    /// </summary>
     public class SymbolTable 
     {
-        public SymbolTable()
+        private IPlatform platform;
+
+        public SymbolTable(IPlatform platform) : this(platform, new Dictionary<string, SerializedType>())
         {
+        }
+
+        public SymbolTable(IPlatform platform, Dictionary<string, SerializedType> namedTypes)
+        {
+            this.platform = platform;
+
             this.Types = new List<SerializedType>();
             this.StructsSeen = new Dictionary<string, StructType_v1>();
             this.UnionsSeen = new Dictionary<string, UnionType_v1>();
             this.EnumsSeen = new Dictionary<string, SerializedEnumType>();
             this.Constants = new Dictionary<string, int>();
             this.Procedures = new List<ProcedureBase_v1>();
-            this.NamedTypes = new Dictionary<string, SerializedType>();
+            this.NamedTypes = namedTypes;
             this.Sizer = new TypeSizer(this.NamedTypes);
         }
 
@@ -68,9 +79,7 @@ namespace Reko.Core.CLanguage
                 isTypedef = true;
             }
 
-            //$TODO: need a pointer size passed into the symbol table instead
-            // of the constant '4' below.
-            var ntde = new NamedDataTypeExtractor(declspecs, this, 4);
+            var ntde = new NamedDataTypeExtractor(platform, declspecs, this);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);

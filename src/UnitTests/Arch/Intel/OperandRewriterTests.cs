@@ -53,8 +53,13 @@ namespace Reko.UnitTests.Arch.Intel
 		[SetUp]
 		public void Setup()
 		{
-            program = new Program();
-            program.Image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
+            var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
+            program = new Program
+            {
+                ImageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(".text", mem, AccessMode.ReadExecute))
+            };
             var procAddress = Address.Ptr32(0x10000000);
             instr = new X86Instruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
             {
@@ -217,7 +222,7 @@ namespace Reko.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public LoadedImage Image
+		public MemoryArea Image
 		{
 			get { throw new NotImplementedException(); }
 		}

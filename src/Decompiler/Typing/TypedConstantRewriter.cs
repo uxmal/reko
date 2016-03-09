@@ -32,7 +32,7 @@ namespace Reko.Typing
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
         private Program program;
-        private Platform platform;
+        private IPlatform platform;
 		private TypeStore store;
 		private Identifier globals;
 		private Constant c;
@@ -115,6 +115,11 @@ namespace Reko.Typing
 			throw new ArgumentException("Constants cannot have array values yet.");
 		}
 
+        public Expression VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitCode(CodeType c)
         {
             throw new NotImplementedException();
@@ -188,8 +193,9 @@ namespace Reko.Typing
                     return np;
                 }
 
+                var addr = program.Platform.MakeAddressFromConstant(c);
                 // An invalid pointer -- often used as sentinels in code.
-                if (!program.Image.IsValidLinearAddress(c.ToUInt64()))
+                if (!program.ImageMap.IsValidAddress(addr))
                 {
                     //$TODO: probably should use a reinterpret_cast here.
                     var ce = new Cast(c.DataType, c);
@@ -236,7 +242,7 @@ namespace Reko.Typing
             var addr = platform.MakeAddressFromConstant(c);
             if (addr == null)
                 return false;
-            ImageMapSegment seg;
+            ImageSegment seg;
             if (!program.ImageMap.TryFindSegment(addr, out seg))
                 return false;
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;

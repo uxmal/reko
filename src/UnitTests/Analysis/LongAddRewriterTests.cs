@@ -66,8 +66,8 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
         {
-            var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             var eventListener = new FakeDecompilerEventListener();
+            var dfa = new DataFlowAnalysis(prog, null, eventListener);
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();

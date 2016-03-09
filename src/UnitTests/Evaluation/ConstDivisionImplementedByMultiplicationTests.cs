@@ -1,4 +1,24 @@
-﻿using NUnit.Framework;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2016 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -9,44 +29,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace Reko.UnitTests.Evaluation
 {
     [TestFixture]
     public class ConstDivisionImplementedByMultiplicationTests
     {
-        private ProcedureBuilder m;
-
-        [SetUp]
-        public void SetUp()
+        private void AssertSmallConst(string sExp, int shift, uint mult)
         {
-            m = new ProcedureBuilder();
-        }
-
-        [Test]
-        [Ignore("Not appropriate -- needs to be implemented as an SSA transform")]
-        public void Cdiv_3()
-        {
-            /*
-            ﻿  eax = ~0x33333332
-    edx_eax = esi *u eax
-    edx = edx >>u 0x03
-*/
-            var c = Constant.UInt32(0x55555555);
+            var m = new ProcedureBuilder();
+            var c = Constant.Int32((int)mult);
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
             var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
 
-            var ass = m.Assign(r2_r1, m.UMul(r1, c));
+            var ass = m.Assign(r2_r1, m.SMul(r1, c));
+            m.Emit(new AliasAssignment(r2, m.Slice(PrimitiveType.Word32, r2_r1, 32)));
+            if (shift != 0)
+                m.Assign(r2, m.Sar(r2, shift));
 
             var proc = m.Procedure;
-            var ssa = new SsaTransform(null, proc, proc.CreateBlockDominatorGraph()).Transform();
+            var ssa = new SsaTransform(null, proc, null, proc.CreateBlockDominatorGraph()).Transform();
             var ctx = new SsaEvaluationContext(null, ssa.Identifiers);
-            var rule = new ConstDivisionImplementedByMultiplication(ctx);
+            var rule = new ConstDivisionImplementedByMultiplication(ssa);
+            ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
+            Assert.IsTrue(rule.Match(ass));
+            ass = rule.TransformInstruction();
+            Assert.AreEqual(sExp, ass.Src.ToString());
+        }
 
-            //ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
-            //Assert.IsTrue(rule.Match((BinaryExpression) ass.Src));
-            //ass.Src = rule.Transform();
-            Assert.AreEqual("x = id /u 3", ass.ToString());
+
+        [Test]
+        public void Cdiv_SmallConstants()
+        {
+            AssertSmallConst("r1 / 15", 3, 0x88888889);
+            AssertSmallConst("r1 / 14", 3, 0x92492493);
+            AssertSmallConst("r1 / 13", 2, 0x4ec4ec4f);
+            AssertSmallConst("r1 / 12", 1, 0x2aaaaaab);
+            AssertSmallConst("r1 / 11", 1, 0x2e8ba2e9);
+            AssertSmallConst("r1 / 10", 2, 0x66666667);
+            AssertSmallConst("r1 / 9", 1, 0x38e38e39);
+            AssertSmallConst("r1 / 7", 2, 0x92492493);
+            AssertSmallConst("r1 / 6", 0, 0x2aaaaaab);
+            AssertSmallConst("r1 / 5", 1, 0x66666667);
+            AssertSmallConst("r1 / 3", 0, 0x55555556);
+        }
+
+        [Test]
+        public void Cdiv_TwoThirds()
+        {
+            AssertSmallConst("r1 * 2 / 3", 0, 0xAAAAAAAA);
         }
     }
 }

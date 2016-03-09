@@ -32,6 +32,7 @@ namespace Reko.Arch.M68k
 {
     public class M68kState : ProcessorState
     {
+        const int RegisterCount = 32;
         private M68kArchitecture arch;
         private uint[] values;
         private bool[] isValid;
@@ -39,8 +40,8 @@ namespace Reko.Arch.M68k
         public M68kState(M68kArchitecture arch)
         {
             this.arch = arch;
-            this.values = new uint[16];
-            this.isValid = new bool[16];
+            this.values = new uint[RegisterCount];
+            this.isValid = new bool[RegisterCount];
         }
 
         public M68kState(M68kState orig) : base(orig)

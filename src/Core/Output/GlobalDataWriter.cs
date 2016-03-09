@@ -72,11 +72,11 @@ namespace Reko.Core.Output
         private void WriteGlobalVariable(StructureField field)
         {
             var name = string.Format("g_{0:X}", field.Name);
-            var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; offsets should be as wide as the platform permits.
+            var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; field.Offsets should be as wide as the platform permits.
             try
             {
                 tw.WriteDeclaration(field.DataType, name);
-                if (program.Image.IsValidAddress(addr))
+                if (program.ImageMap.IsValidAddress(addr))
                 {
                     formatter.Write(" = ");
                     this.rdr = program.CreateImageReader(addr);
@@ -118,6 +118,11 @@ namespace Reko.Core.Output
             fmt.Indent();
             fmt.Write("}");
             return codeFormatter;
+        }
+
+        public CodeFormatter VisitClass(ClassType ct)
+        {
+            throw new NotImplementedException();
         }
 
         public CodeFormatter VisitCode(CodeType c)
@@ -172,6 +177,14 @@ namespace Reko.Core.Output
         public CodeFormatter VisitPointer(Pointer ptr)
         {
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
+            var addr = Address.FromConstant(c);
+            // Check if it is pointer to function
+            Procedure proc;
+            if (program.Procedures.TryGetValue(addr, out proc))
+            {
+                codeFormatter.InnerFormatter.WriteHyperlink(proc.Name, proc);
+                return codeFormatter;
+            }
             int offset = c.ToInt32();
             if (offset == 0)
             {
@@ -183,7 +196,7 @@ namespace Reko.Core.Output
                 if (field == null)
                 {
                     // We've discovered a global variable! Create it!
-                    //$REVIEW: what about colissions and the usual merge crap?
+                    //$REVIEW: what about collisions and the usual merge crap?
                     globals.Fields.Add(offset, ptr.Pointee);
                     // add field to queue.
                     field = globals.Fields.AtOffset(offset);
@@ -225,12 +238,15 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
 
+            var structOffset = rdr.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
             {
                 fmt.Indent();
+                rdr.Offset = structOffset + str.Fields[i].Offset;
                 str.Fields[i].DataType.Accept(this);
                 fmt.Terminate(",");
             }
+            rdr.Offset = structOffset + str.GetInferredSize();
 
             fmt.Indentation -= fmt.TabSize;
             fmt.Indent();
@@ -240,9 +256,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitTypeReference(TypeReference typeref)
         {
-            var fmt = codeFormatter.InnerFormatter;
-            fmt.WriteType(typeref.Name, typeref);
-            return codeFormatter;
+            return typeref.Referent.Accept(this);
         }
 
         public CodeFormatter VisitTypeVariable(TypeVariable tv)

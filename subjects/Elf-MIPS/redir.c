@@ -10,19 +10,34 @@ fn00400230_entry:
 l00400230:
 l00400230_ds_f:
 	goto l00400238
+l00400230_ds_f:
+	goto l00400238
+l00400230_ds_t:
+	goto l00400238
 l00400230_ds_t:
 l00400238:
 	code * r25_18 = ra->ptrFC00690
-	ERROR: EQ_8.DataType is Null sp_19
-	ERROR: EQ_9.DataType is Null r28_20
-	ERROR: EQ_10.DataType is Null ra_21
-	ERROR: EQ_11.DataType is Null r4_22
-	ERROR: EQ_12.DataType is Null r5_23
-	ERROR: EQ_13.DataType is Null r6_24
-	ERROR: EQ_14.DataType is Null r7_25
-	ERROR: EQ_15.DataType is Null r2_26
-	ERROR: EQ_16.DataType is Null r25_27
+	word32 sp_19
+	word32 r28_20
+	word32 ra_21
+	word32 r4_22
+	word32 r5_23
+	word32 r6_24
+	word32 r7_25
+	word32 r2_26
+	word32 r25_27
 	r25_18()
+	code * r25_42 = globals->ptrFC00690
+	word32 sp_43
+	word32 r28_44
+	word32 ra_45
+	word32 r4_46
+	word32 r5_47
+	word32 r6_48
+	word32 r7_49
+	word32 r2_50
+	word32 r25_51
+	r25_42()
 l00400284:
 	goto l00400284
 fn00400230_exit:

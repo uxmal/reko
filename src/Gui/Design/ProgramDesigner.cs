@@ -54,7 +54,7 @@ namespace Reko.Gui.Design
             TreeNode.ToolTipText = string.Format("{0}{1}{2}",
                 program.Filename != null ? program.Filename : "(No file name)",
                 Environment.NewLine,
-                program.Image.BaseAddress);
+                program.ImageMap.BaseAddress);
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

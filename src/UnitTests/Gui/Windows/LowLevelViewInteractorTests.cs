@@ -35,6 +35,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class LowLevelViewInteractorTests
     {
         private LowLevelViewInteractor interactor;
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Gui.Windows
         private ServiceContainer sp;
         private Address addrBase;
         private LowLevelView control;
-        private LoadedImage image;
+        private MemoryArea mem;
         private ImageMap imageMap;
         private IUiPreferencesService uiPrefsSvc;
         private Program program;
@@ -128,7 +129,7 @@ namespace Reko.UnitTests.Gui.Windows
             Given_Architecture();
             Given_Program(new byte[] { 0x4, 0x3, 0x2, 0x1 });
             interactor.Stub(i => i.GetSelectedAddressRange())
-                .Return(new AddressRange(program.Image.BaseAddress, program.Image.BaseAddress));
+                .Return(new AddressRange(program.ImageMap.BaseAddress, program.ImageMap.BaseAddress));
             mr.ReplayAll();
 
             When_ShowControl();
@@ -150,7 +151,7 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
-                .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
             arch.Stub(a => a.CreateDisassembler(
                 Arg<ImageReader>.Is.NotNull)).Return(dasm);
             Address dummy;
@@ -170,9 +171,15 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program(byte[] bytes)
         {
             var addr = Address.Ptr32(0x1000);
-            var image = new LoadedImage(addr, bytes);
-            this.imageMap = image.CreateImageMap();
-            this.program = new Program(image, imageMap, arch, new DefaultPlatform(null, arch));
+            var mem = new MemoryArea(addr, bytes);
+            this.imageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(
+                        "code", mem, AccessMode.ReadWriteExecute));
+            this.program = new Program(
+                imageMap,
+                arch, 
+                new DefaultPlatform(null, arch));
         }
 
         [Test]
@@ -215,9 +222,12 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_Image(params byte[] bytes)
         {
-            image = new LoadedImage(addrBase, bytes);
-            imageMap = image.CreateImageMap();
-            program = new Program(image, imageMap, arch, null);
+            mem = new MemoryArea(addrBase, bytes);
+            imageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment(
+                        "code", mem, AccessMode.ReadWriteExecute));
+            program = new Program(imageMap, arch, null);
             interactor.Program = program;
         }
 

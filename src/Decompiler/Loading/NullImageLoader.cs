@@ -43,7 +43,7 @@ namespace Reko.Loading
 
         public IProcessorArchitecture Architecture { get; set; }
         public List<EntryPoint> EntryPoints { get; private set; }
-        public Platform Platform { get; set; }
+        public IPlatform Platform { get; set; }
         public override Address PreferredBaseAddress
         {
             get { return this.baseAddr; }
@@ -54,10 +54,14 @@ namespace Reko.Loading
         {
             if (addrLoad == null)
                 addrLoad = PreferredBaseAddress;
-            var image = new LoadedImage(addrLoad, imageBytes);
+            var mem = new MemoryArea(addrLoad, imageBytes);
             return new Program(
-                image,
-                image.CreateImageMap(),
+                new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)
+                    {
+                        MemoryArea = mem
+                    }),
                 Architecture,
                 Platform ?? new DefaultPlatform(Services, Architecture));
         }

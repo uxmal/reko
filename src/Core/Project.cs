@@ -23,6 +23,7 @@ using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;

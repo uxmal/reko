@@ -31,6 +31,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using Rhino.Mocks;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -79,7 +80,7 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
@@ -87,7 +88,7 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, gr);
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr);
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
@@ -102,6 +103,19 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 			}
 		}
+
+        private void AssertStringsEqual(string sExp, SsaState ssa)
+        {
+            var sw = new StringWriter();
+            ssa.Write(sw);
+            ssa.Procedure.Write(false, sw);
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.Print("{0}", sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
+        }
 
 		[Test]
 		public void VpChainTest()
@@ -191,7 +205,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr);
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -459,10 +473,10 @@ namespace Reko.UnitTests.Analysis
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
-			SsaState ssa = sst.SsaState;
-
-            ssa.DebugDump(true);
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr);
+			var ssa = sst.SsaState;
 
 			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
 			vp.Transform();
@@ -474,5 +488,124 @@ namespace Reko.UnitTests.Analysis
 				fut.AssertFilesEqual();
 			}
 		}
-	}
+
+        private SsaState RunTest(ProcedureBuilder m)
+        {
+            var proc = m.Procedure;
+            var gr = proc.CreateBlockDominatorGraph();
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
+            var ssa = sst.SsaState;
+
+            var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+            vp.Transform();
+            return ssa;
+        }
+
+        [Test(Description = "Casting a DPB should result in the deposited bits.")]
+        public void VpLoadDpb()
+        {
+            var m = new ProcedureBuilder();
+            var a2 = m.Reg32("a2", 10);
+            var d3 = m.Reg32("d3", 3);
+            var tmp = m.Temp(PrimitiveType.Byte, "tmp");
+
+            m.Assign(tmp, m.LoadB(a2));
+            m.Assign(d3, m.Dpb(d3, tmp, 0));
+            m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+
+            SsaState ssa = RunTest(m);
+
+            var sExp =
+            #region Expected
+@"a2:a2
+    def:  def a2
+    uses: tmp_2 = Mem0[a2:byte]
+          Mem5[a2 + 0x00000004:byte] = tmp_2
+Mem0:Global memory
+    def:  def Mem0
+    uses: tmp_2 = Mem0[a2:byte]
+tmp_2: orig: tmp
+    def:  tmp_2 = Mem0[a2:byte]
+    uses: d3_4 = DPB(d3, tmp_2, 0)
+          Mem5[a2 + 0x00000004:byte] = tmp_2
+d3:d3
+    def:  def d3
+    uses: d3_4 = DPB(d3, tmp_2, 0)
+d3_4: orig: d3
+    def:  d3_4 = DPB(d3, tmp_2, 0)
+Mem5: orig: Mem0
+    def:  Mem5[a2 + 0x00000004:byte] = tmp_2
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def a2
+	def Mem0
+	def d3
+	// succ:  l1
+l1:
+	tmp_2 = Mem0[a2:byte]
+	d3_4 = DPB(d3, tmp_2, 0)
+	Mem5[a2 + 0x00000004:byte] = tmp_2
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void VpLoadDpbSmallerCast()
+        {
+            var m = new ProcedureBuilder();
+            var a2 = m.Reg32("a2", 10);
+            var d3 = m.Reg32("d3", 3);
+            var tmp = m.Temp(PrimitiveType.Word16, "tmp");
+
+            m.Assign(tmp, m.LoadW(a2));
+            m.Assign(d3, m.Dpb(d3, tmp, 0));
+            m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+
+            SsaState ssa = RunTest(m);
+
+            var sExp =
+            #region Expected
+@"a2:a2
+    def:  def a2
+    uses: tmp_2 = Mem0[a2:word16]
+          Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+Mem0:Global memory
+    def:  def Mem0
+    uses: tmp_2 = Mem0[a2:word16]
+tmp_2: orig: tmp
+    def:  tmp_2 = Mem0[a2:word16]
+    uses: d3_4 = DPB(d3, tmp_2, 0)
+          Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+d3:d3
+    def:  def d3
+    uses: d3_4 = DPB(d3, tmp_2, 0)
+d3_4: orig: d3
+    def:  d3_4 = DPB(d3, tmp_2, 0)
+Mem5: orig: Mem0
+    def:  Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def a2
+	def Mem0
+	def d3
+	// succ:  l1
+l1:
+	tmp_2 = Mem0[a2:word16]
+	d3_4 = DPB(d3, tmp_2, 0)
+	Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
+
+    }
 }

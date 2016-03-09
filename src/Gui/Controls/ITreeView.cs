@@ -65,5 +65,6 @@ namespace Reko.Gui.Controls
         string ToolTipText { get; set; }
 
         void Expand();
+        void Invoke(Action action);
     }
 }

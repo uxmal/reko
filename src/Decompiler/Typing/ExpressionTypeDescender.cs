@@ -48,7 +48,7 @@ namespace Reko.Typing
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
 
-        private Platform platform;
+        private IPlatform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
@@ -169,16 +169,16 @@ namespace Reko.Typing
             return tvElement;
         }
 
-        public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
+        public DataType MemoryAccessCommon(Expression eBase, Expression eStructPtr, int offset, DataType dtField, int structPtrSize)
         {
             var s = factory.CreateStructureType(null, 0);
-            var field = new StructureField(offset, tField);
+            var field = new StructureField(offset, dtField);
             s.Fields.Add(field);
 
-            var pointer = tBase != null && tBase != globals
-                ? (DataType) factory.CreateMemberPointer(tBase.TypeVariable, s, structPtrSize)
-                : (DataType) factory.CreatePointer(s, structPtrSize);
-            return MeetDataType(tStruct, pointer);
+            var pointer = eBase != null && eBase != globals
+                ? (DataType)factory.CreateMemberPointer(eBase.TypeVariable, s, structPtrSize)
+                : (DataType)factory.CreatePointer(s, structPtrSize);
+            return MeetDataType(eStructPtr, pointer);
         }
 
         public bool VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv)
@@ -229,7 +229,8 @@ namespace Reko.Typing
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.FAdd ||
-                binExp.Operator == Operator.FMul)
+                    binExp.Operator == Operator.FMul ||
+                    binExp.Operator == Operator.FDiv)
             {
                 var dt = PrimitiveType.Create(Domain.Real, tv.DataType.Size);
                 MeetDataType(eLeft, dt);
@@ -249,7 +250,8 @@ namespace Reko.Typing
                 dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.UnsignedInt|Domain.Character);
                 MeetDataType(eRight, dt);
             }
-            else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne)
+            else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||
+                binExp.Operator == Operator.Xor)
             {
                 // Not much can be deduced here, except that the operands should have the same size. Earlier passes
                 // already did that work, so just continue with the operands.
@@ -263,6 +265,12 @@ namespace Reko.Typing
             else if (binExp.Operator == Operator.Shr)
             {
                 var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.UnsignedInt| Domain.Character);
+                MeetDataType(eLeft, dt);
+                dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
+            }
+            else if (binExp.Operator == Operator.Sar)
+            {
+                var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.SignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
             }
@@ -391,7 +399,9 @@ namespace Reko.Typing
 
         public bool VisitDereference(Dereference deref, TypeVariable tv)
         {
-            throw new NotImplementedException();
+            //$BUG: push (ptr (typeof(deref)
+            deref.Expression.Accept(this, deref.Expression.TypeVariable);
+            return false;
         }
 
         public bool VisitFieldAccess(FieldAccess acc, TypeVariable tv)
@@ -449,7 +459,6 @@ namespace Reko.Typing
                 ArrayField(null, binEa.Left, binEa.DataType.Size, 0, 1, 0, access);
                 p = effectiveAddress;
                 offset = 0;
-
             }
             else
             {
@@ -692,6 +701,8 @@ namespace Reko.Typing
 
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
+            unary.Expression.Accept(this, unary.Expression.TypeVariable);
+            return false;
             throw new NotImplementedException();
         }
     }

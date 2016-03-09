@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.Text;
 using Reko.Core.Configuration;
 using Reko.Core.Types;
+using Reko.Core.Serialization;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -39,7 +40,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class PeImageLoader : ImageLoader
 	{
         private const ushort MACHINE_i386 = (ushort)0x014C;
-        private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
+        private const ushort MACHINE_x86_64 = (ushort) 0x8664u;
         private const ushort MACHINE_ARMNT = (ushort)0x01C4;
         private const ushort MACHINE_R4000 = (ushort)0x0166;
         private const short ImageFileRelocationsStripped = 0x0001;
@@ -47,7 +48,7 @@ namespace Reko.ImageLoaders.MzExe
         private const short ImageFileDll = 0x2000;
 
         private IProcessorArchitecture arch;
-        private Win32Platform platform;
+        private IPlatform platform;
         private SizeSpecificLoader innerLoader;
         private Program program;
 
@@ -56,7 +57,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort fileFlags;
 		private int sections;
         private uint rvaSectionTable;
-		private LoadedImage imgLoaded;
+		private MemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
 		private SortedDictionary<string, Section> sectionMap;
         private Dictionary<uint, PseudoProcedure> importThunks;
@@ -141,7 +142,7 @@ namespace Reko.ImageLoaders.MzExe
             return cfgSvc.GetArchitecture(arch);
 		}
 
-        public Win32Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
+        public IPlatform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
         {
             string env;
             switch (peMachineType)
@@ -152,7 +153,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000: env = "winMips"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
-            return (Win32Platform) Services.RequireService<IConfigurationService>()
+            return Services.RequireService<IConfigurationService>()
                 .GetEnvironment(env)
                 .Load(Services, this.arch);
         }
@@ -189,12 +190,13 @@ namespace Reko.ImageLoaders.MzExe
         {
             if (sections > 0)
             {
+                ImageMap = new ImageMap(addrLoad);
                 sectionMap = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionMap);
-                ImageMap = imgLoaded.CreateImageMap();
+                AddSectionsToImageMap(addrLoad, ImageMap);
             }
             imgLoaded.BaseAddress = addrLoad;
-            this.program = new Program(imgLoaded, ImageMap, arch, platform);
+            this.program = new Program(ImageMap, arch, platform);
             this.importReferences = program.ImportReferences;
 
             var rsrcLoader = new PeResourceLoader(this.imgLoaded, rvaResources);
@@ -243,11 +245,11 @@ namespace Reko.ImageLoaders.MzExe
             return sectionMap;
 		}
 
-        public LoadedImage LoadSectionBytes(Address addrLoad, SortedDictionary<string, Section> sections)
+        public MemoryArea LoadSectionBytes(Address addrLoad, SortedDictionary<string, Section> sections)
         {
             var vaMax = sections.Values.Max(s => s.VirtualAddress);
             var sectionMax = sections.Values.Where(s => s.VirtualAddress == vaMax).First();
-            var imgLoaded = new LoadedImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
+            var imgLoaded = new MemoryArea(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
             foreach (Section s in sectionMap.Values)
             {
                 Array.Copy(RawImage, s.OffsetRawData, imgLoaded.Bytes, s.VirtualAddress, s.SizeRawData);
@@ -415,15 +417,19 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-            AddSectionsToImageMap(addrLoad, ImageMap);
             var relocations = imgLoaded.Relocations;
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
 			{
-				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.ToLinear(), relocations);
+                ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint)addrLoad.ToLinear(), relocations);
 			}
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
-            var entryPoints = new List<EntryPoint> { new EntryPoint(addrEp, arch.CreateProcessorState()) };
+            var entryPoints = new List<EntryPoint> {
+                CreateMainEntryPoint(
+                    (this.fileFlags & ImageFileDll)!=0,
+                    addrEp,
+                    platform)
+            };
             var functions = ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable);
             AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
@@ -431,7 +437,51 @@ namespace Reko.ImageLoaders.MzExe
             return new RelocationResults(entryPoints, relocations, functions);
 		}
 
-        private void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
+        public EntryPoint CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
+        {
+            string name = null;
+            SerializedSignature ssig = null;
+            Func<string, string, Argument_v1> Arg =
+                (n, t) => new Argument_v1
+                {
+                    Name = n,
+                    Type = new SerializedTypeReference { TypeName = t }
+                };
+            if (isDll)
+            {
+                name = "DllMain";   //$TODO: ensure users can override this name
+                ssig = new SerializedSignature
+                {
+                    Convention = "stdapi",
+                    Arguments = new Argument_v1[]
+                    {
+                        Arg("hModule", "HANDLE"),
+                        Arg("dwReason", "DWORD"),
+                        Arg("lpReserved", "LPVOID")
+                    },
+                    ReturnValue = Arg(null, "BOOL")
+                };
+            }
+            else
+            {
+                name = "WinMain";
+                ssig = new SerializedSignature
+                {
+                    Convention = "stdapi",
+                    Arguments = new Argument_v1[]
+                    {
+                        Arg("hInstance",     "HINSTANCE"),
+                        Arg("hPrevInstance", "HINSTANCE"),
+                        Arg("lpCmdLine",     "LPSTR"),
+                        Arg("nCmdShow",      "INT"),
+                    },
+                    ReturnValue = Arg(null, "INT")
+                };
+            }
+            return new EntryPoint(addrEp, name, arch.CreateProcessorState(), ssig);
+        }
+
+        public void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
         {
             foreach (Section s in sectionMap.Values)
             {
@@ -445,6 +495,7 @@ namespace Reko.ImageLoaders.MzExe
                     acc |= AccessMode.Execute;
                 }
                 var seg = imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc, s.VirtualSize);
+                seg.MemoryArea = imgLoaded;
                 seg.IsDiscardable = s.IsDiscardable;
             }
         }

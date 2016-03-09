@@ -27,9 +27,9 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ElfHeaderRenderer : ImageMapSegmentRenderer
+    public class ElfHeaderRenderer : ImageSegmentRenderer
     {
-        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             throw new NotImplementedException();
         }

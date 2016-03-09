@@ -85,12 +85,17 @@ namespace Reko.Arch.X86
             return mode.CreateDisassembler(imageReader);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, Address addr)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(LoadedImage image, ulong offset)
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -136,9 +141,9 @@ namespace Reko.Arch.X86
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            return mode.CreateInstructionScanner(map, rdr, knownLinAddresses, flags);
+            return mode.CreateInstructionScanner(map, rdr, knownAddresses, flags);
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -275,6 +280,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureReal()
             : base(ProcessorMode.Real)
         {
+            this.Name = "x86-real-16";
         }
     }
 
@@ -283,6 +289,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureProtected16()
             : base(ProcessorMode.ProtectedSegmented)
         {
+            this.Name = "x86-protected-16";
         }
     }
 
@@ -291,6 +298,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureFlat32()
             : base(ProcessorMode.Protected32)
         {
+            this.Name = "x86-protected-32";
         }
     }
 
@@ -299,6 +307,7 @@ namespace Reko.Arch.X86
         public X86ArchitectureFlat64()
             : base(ProcessorMode.Protected64)
         {
+            this.Name = "x86-protected-64";
         }
     }
 }

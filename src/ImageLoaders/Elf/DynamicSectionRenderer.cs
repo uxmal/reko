@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class DynamicSectionRenderer : ImageMapSegmentRenderer
+    public class DynamicSectionRenderer : ImageSegmentRenderer
     {
         private ElfImageLoader loader;
         private  Elf32_SHdr shdr;
@@ -58,7 +58,7 @@ namespace Reko.ImageLoaders.Elf
         public const int DT_DEBUG = 21;
         public const int DT_JMPREL = 23;
 
-        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             // Get the entry that has the segment# for the string table.
             var dynStrtab = loader.GetDynEntries(shdr.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
@@ -141,7 +141,7 @@ namespace Reko.ImageLoaders.Elf
 //6F FF FF F0 10 00 1E 3C  ?
     }
 
-    public class DynamicSectionRenderer64 : ImageMapSegmentRenderer
+    public class DynamicSectionRenderer64 : ImageSegmentRenderer
     {
         private ElfImageLoader loader;
         private Elf64_SHdr shdr;
@@ -177,7 +177,7 @@ namespace Reko.ImageLoaders.Elf
         public const int DT_INIT_ARRAYSZ =	27; // d_val 	O 	O
         public const int DT_FINI_ARRAYSZ =	28; // d_val 	O 	O 
 
-        public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
+        public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             // Get the entry that has the segment# for the string table.
             var dynStrtab = loader.GetDynEntries64(shdr.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();

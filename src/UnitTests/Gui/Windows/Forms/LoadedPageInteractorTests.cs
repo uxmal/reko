@@ -37,6 +37,7 @@ using System.Windows.Forms;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class LoadedPageInteractorTests
     {
         private IMainForm form;
@@ -45,8 +46,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IDecompilerService decSvc;
         private ServiceContainer sc;
         private MockRepository mr;
-        private ImageMapSegment mapSegment1;
-        private ImageMapSegment mapSegment2;
+        private ImageSegment mapSegment1;
+        private ImageSegment mapSegment2;
         private IDecompilerShellUiService uiSvc;
         private ILowLevelViewService memSvc;
 
@@ -59,8 +60,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             program = new Program();
             program.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            program.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[10000]);
-            program.ImageMap = program.Image.CreateImageMap();
+            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
+            program.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
 
             program.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
             program.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
@@ -146,8 +149,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var decSvc = AddService<IDecompilerService>();
             var decompiler = mr.Stub<IDecompiler>();
             var prog = new Program();
-            prog.Image = new LoadedImage(Address.Ptr32(0x3000), new byte[10]);
-            prog.ImageMap = prog.Image.CreateImageMap();
+            var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
+            prog.ImageMap = new ImageMap(
+                mem.BaseAddress,
+                new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
             var project = new Project { Programs = { prog } };
             decompiler.Stub(x => x.Project).Return(project);
             decSvc.Stub(x => x.Decompiler).Return(decompiler);

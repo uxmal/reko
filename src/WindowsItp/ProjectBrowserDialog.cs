@@ -19,10 +19,12 @@ namespace Reko.WindowsItp
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            var image = new LoadedImage(Address.Ptr32(0x12312300),new byte[0x1000]);
-            var imageMap = image.CreateImageMap();
+            var mem = new MemoryArea(Address.Ptr32(0x12312300),new byte[0x1000]);
+            var imageMap = new ImageMap(
+                    mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = new X86ArchitectureFlat32();
-            var program = new Core.Program(image, imageMap, arch, new DefaultPlatform(null, arch));
+            var program = new Core.Program(imageMap, arch, new DefaultPlatform(null, arch));
             var project = new Project { Programs = { program } };
             pbs.Load(project);
         }

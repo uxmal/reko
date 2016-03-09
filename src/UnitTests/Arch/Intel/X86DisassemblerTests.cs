@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private X86Instruction Disassemble16(params byte[] bytes)
         {
-            LoadedImage img = new LoadedImage(Address.SegPtr(0xC00, 0), bytes);
+            MemoryArea img = new MemoryArea(Address.SegPtr(0xC00, 0), bytes);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(ProcessorMode.Real, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
             return dasm.First();
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private X86Instruction Disassemble32(params byte[] bytes)
         {
-            var img = new LoadedImage(Address.Ptr32(0x10000), bytes);
+            var img = new MemoryArea(Address.Ptr32(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.First();
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private X86Instruction Disassemble64(params byte[] bytes)
         {
-            var img = new LoadedImage(Address.Ptr64(0x10000), bytes);
+            var img = new MemoryArea(Address.Ptr64(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(
                 ProcessorMode.Protected64,
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Intel
             return dasm.First();
         }
 
-        private void CreateDisassembler16(LoadedImage image)
+        private void CreateDisassembler16(MemoryArea image)
         {
             dasm = new X86Disassembler(
                 ProcessorMode.Real,
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Arch.Intel
                 false);
         }
 
-        private void CreateDisassembler32(LoadedImage image)
+        private void CreateDisassembler32(MemoryArea image)
         {
             dasm = new X86Disassembler(
                 ProcessorMode.Protected32,
@@ -130,7 +130,7 @@ foo:
 	jnz		foo
 ");
 
-            CreateDisassembler16(program.Image);
+            CreateDisassembler16(program.ImageMap.Segments.Values.First().MemoryArea);
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(5))
             {
@@ -159,7 +159,7 @@ foo:
                 "		mov	ax,[bx+4]\r\n" +
                 "		mov cx,cs:[si+4]\r\n");
 
-            CreateDisassembler16(program.Image);
+            CreateDisassembler16(program.ImageMap.Segments.Values.First().MemoryArea);
             X86Instruction[] instrs = dasm.Take(3).ToArray();
             Assert.AreEqual(Registers.ss, ((MemoryOperand)instrs[0].op2).DefaultSegment);
             Assert.AreEqual(Registers.ds, ((MemoryOperand)instrs[1].op2).DefaultSegment);
@@ -178,7 +178,7 @@ foo:
                 "rcr	word ptr [bp+4],4\r\n" +
                 "rcl	ax,1\r\n");
 
-            LoadedImage img = lr.Image;
+            MemoryArea img = lr.ImageMap.Segments.Values.First().MemoryArea;
             CreateDisassembler16(img.CreateLeReader(img.BaseAddress));
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(4))
@@ -206,7 +206,7 @@ foo		proc
 		movsx	ebx,bx
 		movzx	ax,byte ptr [bp+04]
 ");
-            CreateDisassembler16(program.Image);
+            CreateDisassembler16(program.ImageMap.Segments.Values.First().MemoryArea);
             StringBuilder sb = new StringBuilder();
             foreach (var ii in dasm.Take(4))
             {
@@ -229,7 +229,7 @@ movzx	ax,byte ptr [bp+04]
                 @"	.i386
 	mov ebx,[edi*2]
 ");
-            CreateDisassembler32(program.Image);
+            CreateDisassembler32(program.ImageMap.Segments.Values.First().MemoryArea);
             var instr = dasm.First();
             MemoryOperand mem = (MemoryOperand)instr.op2;
             Assert.AreEqual(2, mem.Scale);
@@ -248,7 +248,7 @@ movzx	ax,byte ptr [bp+04]
                 {
                     lr = asm.Assemble(Address.SegPtr(0xC32, 0), rdr);
                 }
-                CreateDisassembler16(lr.Image);
+                CreateDisassembler16(lr.ImageMap.Segments.Values.First().MemoryArea);
                 foreach (X86Instruction instr in dasm)
                 {
                     fut.TextWriter.WriteLine("{0}", instr.ToString());
@@ -299,7 +299,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_RelocatedOperand()
         {
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
-            LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), image);
+            MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001ul - img.BaseAddress.ToLinear(), 0x12345678);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(
@@ -317,7 +317,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_RelocatedSegment()
         {
             byte[] image = new byte[] { 0x2E, 0xC7, 0x06, 0x01, 0x00, 0x00, 0x08 }; // mov cs:[0001],0800
-            LoadedImage img = new LoadedImage(Address.SegPtr(0x900, 0), image);
+            MemoryArea img = new MemoryArea(Address.SegPtr(0x900, 0), image);
             img.Relocations.AddSegmentReference(5, 0x0800);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             CreateDisassembler16(rdr);

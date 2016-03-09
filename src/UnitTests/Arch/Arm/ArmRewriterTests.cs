@@ -31,10 +31,11 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
-    class ArmRewriterTests : RewriterTestBase
+    [Category(Categories.Capstone)]
+    public class ArmRewriterTests : RewriterTestBase
     {
         private Arm32ProcessorArchitecture arch = new Arm32ProcessorArchitecture();
-        private LoadedImage image;
+        private MemoryArea image;
         private Address baseAddress = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Arch.Arm
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
-            image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
+            image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
         }
 
         private void BuildTest(params uint[] words)
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Arch.Arm
             var bytes = words
                 .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
-            image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
+            image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
         }
 
         [Test]

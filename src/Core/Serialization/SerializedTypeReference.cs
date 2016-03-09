@@ -58,11 +58,6 @@ namespace Reko.Core.Serialization
             this.TypeName = typeName;
         }
 
-        public override Types.DataType BuildDataType(Types.TypeFactory factory)
-        {
-            throw new NotImplementedException();
-        }
-
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitTypeReference(this);

@@ -36,11 +36,11 @@ namespace Reko.ImageLoaders.MzExe
 	public class LzExeUnpacker : ImageLoader
 	{
         private IProcessorArchitecture arch;
-        private Platform platform;
+        private IPlatform platform;
 
 		private int lzHdrOffset;
 		private bool isLz91;
-		private LoadedImage imgLoaded;
+		private MemoryArea imgLoaded;
         private ImageMap imageMap;
 		private ushort lzIp;
 		private ushort lzCs;
@@ -74,13 +74,13 @@ namespace Reko.ImageLoaders.MzExe
 
             byte[] abC = RawImage;
             int entry = lzHdrOffset + exe.e_ip;
-            if (LoadedImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length))
+            if (MemoryArea.CompareArrays(abC, entry, s_sig90, s_sig90.Length))
             {
                 // Untested binary version
                 isLz91 = false;
                 throw new NotImplementedException("Untested");
             }
-            else if (LoadedImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
+            else if (MemoryArea.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
             {
                 isLz91 = true;
             }
@@ -99,8 +99,8 @@ namespace Reko.ImageLoaders.MzExe
 
 			int lzHdrOffset = ((int) exe.e_cparHeader + (int) exe.e_cs) << 4;
 			int entry = lzHdrOffset + exe.e_ip;
-			return (LoadedImage.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
-					LoadedImage.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
+			return (MemoryArea.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
+					MemoryArea.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
 		}
 
 		// Fix up the relocations.
@@ -125,7 +125,7 @@ namespace Reko.ImageLoaders.MzExe
 		}
 
 		// for LZEXE ver 0.90 
-		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, LoadedImage pgmImgNew, RelocationDictionary relocations)
+		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, MemoryArea pgmImgNew, RelocationDictionary relocations)
 		{
 			int ifile = lzHdrOffset + 0x19D;
 
@@ -157,7 +157,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, LoadedImage pgmImgNew, RelocationDictionary relocations)
+		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, MemoryArea pgmImgNew, RelocationDictionary relocations)
 		{
             const int CompressedRelocationTableAddress = 0x0158;
 			int ifile = lzHdrOffset + CompressedRelocationTableAddress;
@@ -193,7 +193,7 @@ namespace Reko.ImageLoaders.MzExe
         public override Program Load(Address addrLoad)
 		{
 			Unpack(RawImage, addrLoad);
-            return new Program(imgLoaded, imageMap, arch, platform);
+            return new Program(imageMap, arch, platform);
 		}
 
 		public override Address PreferredBaseAddress
@@ -202,7 +202,7 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-		public LoadedImage Unpack(byte [] abC, Address addrLoad)
+		public MemoryArea Unpack(byte [] abC, Address addrLoad)
 		{
 			// Extract the LZ stuff.
 
@@ -275,7 +275,7 @@ namespace Reko.ImageLoaders.MzExe
 
 			// Create a new image based on the uncompressed data.
 
-			this.imgLoaded = new LoadedImage(addrLoad, abU);
+			this.imgLoaded = new MemoryArea(addrLoad, abU);
             this.imageMap = imgLoaded.CreateImageMap();
 			return imgLoaded;
 		}
