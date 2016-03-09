@@ -77,6 +77,7 @@ namespace Reko.Gui.Windows
         public Control CreateControl()
         {
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
 
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
@@ -88,13 +89,15 @@ namespace Reko.Gui.Windows
             this.TextView.BackColor = SystemColors.Window;
             this.TextView.Services = services;
             this.TextView.StyleClass = UiStyles.CodeWindow;
-
-            this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
+            this.TextView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.gViewer = new GViewer();
             this.gViewer.Dock = DockStyle.Fill;
             this.gViewer.Visible = false;
+            this.gViewer.PanButtonPressed = true;
+            this.gViewer.ToolBarIsVisible = true;
             this.gViewer.KeyDown += GViewer_KeyDown;
+            this.gViewer.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.navInteractor = new NavigationInteractor<Procedure>();
             this.navInteractor.Attach(codeView);
@@ -199,18 +202,16 @@ namespace Reko.Gui.Windows
         {
             gViewer.Parent = codeView.Parent;
             gViewer.Graph = CfgGraphGenerator.Generate(proc);
-            gViewer.ToolBarIsVisible = false;
             codeView.Visible = false;
             gViewer.Visible = true;
             gViewer.BringToFront();
-            gViewer.Invalidate();
         }
 
         public void ViewCode()
         {
             gViewer.Graph = null;
             gViewer.Visible = false;
-            codeView.Visible = false;
+            codeView.Visible = true;
             codeView.BringToFront();
         }
 

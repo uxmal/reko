@@ -115,8 +115,8 @@ namespace Reko.Gui
 		public const int ViewAsCode = 27 + 2000;
 		public const int ViewAsStrings = 28 + 2000;
 		public const int ViewAsData = 29 + 2000;
-		public const int ViewCfgGraph = 30 + 2000;
-		public const int ViewCfgCode = 31 + 2000;
+		public const int ViewCfgCode = 30 + 2000;
+		public const int ViewCfgGraph = 31 + 2000;
 		public const int ActionNextSearchHit = 32 + 2000;
 		public const int ActionPrevSearchHit = 33 + 2000;
 		public const int ActionRestartDecompilation = 34 + 2000;
