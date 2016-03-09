@@ -15,14 +15,14 @@ namespace Reko.Gui.Windows.Controls
     {
         Graphics g;
 
-        int x = 65;
-        int y = 65;
         int x_old, y_old;
         int x_new, y_new;
-        const int ScaleFactor = 8;
-        private LeImageReader rdr;
+        const int ScaleFactor = 4;
+        private IEnumerator<byte> rdr;
+        private ImageMap imageMap;
+        private Bitmap bmp;
 
-        public ImageMap ImageMap { get; set; }
+        public ImageMap ImageMap { get { return this.imageMap; } set { this.imageMap = value; OnImageMapChanged(); } }
 
         void msg(string ss)
         {
@@ -31,10 +31,18 @@ namespace Reko.Gui.Windows.Controls
 
         void DrawSpaceFillingCurve()
         {
+            if (ImageMap == null)
+                return;
             x_old = 0;
             y_old = 0;
-            this.rdr = ImageMap.Segments.First().Value.MemoryArea.CreateLeReader(0);
-            spacefill(1, 1, x, y);
+            this.bmp = new Bitmap(Width, Height);
+            this.rdr = ImageMap.Segments.Values
+                .Select(seg => seg.MemoryArea)
+                .OrderBy(mem => mem.BaseAddress)
+                .Distinct()
+                .SelectMany(mem => mem.Bytes).GetEnumerator();
+            SpaceFill(1, 1, Width, Height);
+            g.DrawImage(bmp, ClientRectangle.Location);
         }
 
         int abs(int nn)
@@ -54,24 +62,36 @@ namespace Reko.Gui.Windows.Controls
                 g.DrawLine(Pens.Blue, ScaleFactor * x_old+ScaleFactor/4, ScaleFactor * y_old + ScaleFactor / 4, 
                     ScaleFactor * x_new + ScaleFactor / 4, ScaleFactor * y_new + ScaleFactor / 4);
 #else
+
+
+
                 byte b;
-                if (!rdr.TryReadByte(out b))
+                if (!rdr.MoveNext())
                     b = 0xFF;
-                var br = new SolidBrush(Color.FromArgb(b, b, b));
-                g.FillRectangle(br, ScaleFactor * x_old, ScaleFactor * y_old, ScaleFactor, ScaleFactor);
-                br.Dispose();
+                else
+                    b = rdr.Current;
+
+                if (ClientRectangle.Contains(x_old, y_old))
+                {
+                    //$PERF: setpixel is slow; come up with a portable way of taking the grayscale array
+                    // or bytes to an image
+                    this.bmp.SetPixel(x_old, y_old, Color.FromArgb(b, b, b));
+                }
+
+                //var br = new SolidBrush(Color.FromArgb(b, b, b));
+                //g.FillRectangle(br, ScaleFactor * x_old, ScaleFactor * y_old, ScaleFactor, ScaleFactor);
+                //br.Dispose();
 #endif
             }
             else
             {
-                g.FillRectangle(Brushes.Red, ScaleFactor * x_new, ScaleFactor * y_new, 3 * ScaleFactor / 2, 3 * ScaleFactor / 2);
+              //  g.FillRectangle(Brushes.Red, ScaleFactor * x_new, ScaleFactor * y_new, 3 * ScaleFactor / 2, 3 * ScaleFactor / 2);
             }
-            //new Dot(8*x_new, 8*y_new, 6, 6, "#0000ff");
             x_old = x_new;
             y_old = y_new;
         }
 
-        void spacefill(int ll, int tt, int ww, int hh) //left, top, width, height
+        void SpaceFill(int ll, int tt, int ww, int hh) //left, top, width, height
         {
             if (hh > ww) //go top->down
             {
@@ -499,6 +519,11 @@ namespace Reko.Gui.Windows.Controls
         {
             this.g = e.Graphics;
             DrawSpaceFillingCurve();
+        }
+
+        protected virtual void OnImageMapChanged()
+        {
+            Invalidate();
         }
     }
 }
