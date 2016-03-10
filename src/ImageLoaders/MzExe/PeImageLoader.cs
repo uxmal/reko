@@ -195,7 +195,6 @@ namespace Reko.ImageLoaders.MzExe
                 imgLoaded = LoadSectionBytes(addrLoad, sectionMap);
                 AddSectionsToImageMap(addrLoad, ImageMap);
             }
-            imgLoaded.BaseAddress = addrLoad;
             this.program = new Program(ImageMap, arch, platform);
             this.importReferences = program.ImportReferences;
 

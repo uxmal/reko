@@ -37,7 +37,8 @@ namespace Reko.Arch.M68k
     {
         private ImageReader rdr;        // program counter 
         internal M68kInstruction instr;  // instruction being built
-
+        private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
+        
         private M68kDisassembler(ImageReader rdr, uint cpuType)
         {
             this.rdr = rdr;
@@ -793,7 +794,27 @@ namespace Reko.Arch.M68k
                 // Immediate 
                 return get_imm_str_u(size);
             }
-            throw new NotImplementedException(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
+            //throw new /*NotImplementedException*/(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
+            this.instr.code = Opcode.illegal;
+            return null;
+        }
+
+        private static M68kInstruction CreateInstruction(
+            Opcode code,
+            PrimitiveType width,
+            MachineOperand op1,
+            MachineOperand op2)
+        {
+            if (op1 == null || op2 == null)
+                return new M68kInstruction { code = Opcode.illegal };
+
+            return new M68kInstruction
+            {
+                code = code,
+                dataWidth = width,
+                op1 = op1,
+                op2 = op2,
+            };
         }
 
         /* ======================================================================== */
@@ -841,13 +862,13 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68000_1010(M68kDisassembler dasm)
         {
-            Debug.Print("dc.w    ${0:X4}; opcode 1010", dasm.instruction);
+            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1010", dasm.instruction);
             return new M68kInstruction { code = Opcode.illegal, op1 = new M68kImmediateOperand(Constant.Word16( dasm.instruction)) };
         }
 
         private static M68kInstruction d68000_1111(M68kDisassembler dasm)
         {
-            Debug.Print("dc.w    ${0:X4}; opcode 1111", dasm.instruction);
+            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1111", dasm.instruction);
             return new M68kInstruction { code = Opcode.illegal };
         }
 
@@ -934,8 +955,8 @@ namespace Reko.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfchg   {0} {%s:%s}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("bfchg   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_bfclr(M68kDisassembler dasm)
@@ -956,8 +977,8 @@ namespace Reko.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfclr   {0} {%s:%s}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("bfclr   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_bfexts(M68kDisassembler dasm)
@@ -978,8 +999,8 @@ namespace Reko.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfexts  D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("bfexts  D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_bfextu(M68kDisassembler dasm)
@@ -1023,8 +1044,8 @@ namespace Reko.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfffo   D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("bfffo   D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_bfins(M68kDisassembler dasm)
@@ -1045,8 +1066,8 @@ namespace Reko.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfins   D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("bfins   D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_bfset(M68kDisassembler dasm)
@@ -1067,8 +1088,8 @@ namespace Reko.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfset   {0} {%s:%s}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("bfset   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_bftst(M68kDisassembler dasm)
@@ -1089,8 +1110,8 @@ namespace Reko.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bftst   {0} {%s:%s}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("bftst   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         //$REVIEW: doesn't appear to be official opcode mnemonic?
@@ -1166,7 +1187,7 @@ namespace Reko.Arch.M68k
                 (extension >> 16) & 7, extension & 7, (extension >> 22) & 7, (extension >> 6) & 7,
                 BIT_1F(extension) ? 'A' : 'D', (extension >> 28) & 7,
                 BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cas2_32(M68kDisassembler dasm)
@@ -1178,7 +1199,7 @@ namespace Reko.Arch.M68k
                 (extension >> 16) & 7, extension & 7, (extension >> 22) & 7, (extension >> 6) & 7,
                 BIT_1F(extension) ? 'A' : 'D', (extension >> 28) & 7,
                 BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_chk_16(M68kDisassembler dasm)
@@ -1209,13 +1230,11 @@ namespace Reko.Arch.M68k
             uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
-            return new M68kInstruction
-            {
-                code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
-                dataWidth = PrimitiveType.Byte,
-                op1 = dasm.get_ea_mode_str_8(dasm.instruction), 
-                op2 = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7),
-            };
+            return CreateInstruction(
+                BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                PrimitiveType.Byte,
+                dasm.get_ea_mode_str_8(dasm.instruction),
+                get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7));
         }
 
         private static M68kInstruction d68020_chk2_cmp2_16(M68kDisassembler dasm)
@@ -1264,7 +1283,7 @@ namespace Reko.Arch.M68k
                 dasm.g_dasm_str = string.Format("cinva   {0}; (4)", (dasm.instruction >> 6) & 3);
                 break;
             }
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cmpi_pcdi_8(M68kDisassembler dasm)
@@ -1350,8 +1369,8 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
             new_pc = ((uint)(new_pc + make_int_16(dasm.read_imm_16())));
-            dasm.g_dasm_str = string.Format("%db%-4s  %s; %x (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[dasm.instruction & 0x3f], dasm.get_imm_str_s16(), new_pc, extension);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("{0}b{1,4}  {2}; {3:X} (extension = {4:X}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[dasm.instruction & 0x3f], dasm.get_imm_str_s16(), new_pc, extension);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cpbcc_32(M68kDisassembler dasm)
@@ -1362,7 +1381,7 @@ namespace Reko.Arch.M68k
             extension = dasm.read_imm_16();
             new_pc += dasm.read_imm_32();
             dasm.g_dasm_str = string.Format("%db%-4s  %s; %x (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[dasm.instruction & 0x3f], dasm.get_imm_str_s16(), new_pc, extension);
-            throw new NotImplementedException();
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_cpdbcc(M68kDisassembler dasm)
@@ -1375,7 +1394,7 @@ namespace Reko.Arch.M68k
             extension2 = dasm.read_imm_16();
             new_pc += ((uint)make_int_16(dasm.read_imm_16()));
             dasm.g_dasm_str = string.Format("%ddb%-4s D%d,%s; %x (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.instruction & 7, dasm.get_imm_str_s16(), new_pc, extension2);
-            throw new NotImplementedException();
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_cpgen(M68kDisassembler dasm)
@@ -1409,9 +1428,9 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                dasm.g_dasm_str = string.Format("%dsave   %s; (2-3)", (dasm.instruction >> 9) & 7, dasm.get_ea_mode_str_8(dasm.instruction));
+                dasm.g_dasm_str = string.Format("{0}save   {1}; (2-3)", (dasm.instruction >> 9) & 7, dasm.get_ea_mode_str_8(dasm.instruction));
             }
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cpscc(M68kDisassembler dasm)
@@ -1433,8 +1452,8 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension1 = dasm.read_imm_16();
             extension2 = dasm.read_imm_16();
-            dasm.g_dasm_str = string.Format("%dcptrap%-4s; (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("{0}cptrap{1,4}; (extension = {2:X}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cptrapcc_16(M68kDisassembler dasm)
@@ -1444,8 +1463,8 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension1 = dasm.read_imm_16();
             extension2 = dasm.read_imm_16();
-            dasm.g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.get_imm_str_u16(), extension2);
-            throw new NotImplementedException();
+            dasm.g_dasm_str = string.Format("{0}trap{1,4} {2}; (extension = {3}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.get_imm_str_u16(), extension2);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68020_cptrapcc_32(M68kDisassembler dasm)
@@ -1456,7 +1475,7 @@ namespace Reko.Arch.M68k
             extension1 = dasm.read_imm_16();
             extension2 = dasm.read_imm_16();
             dasm.g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.get_imm_str_u32(), extension2);
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68040_cpush(M68kDisassembler dasm)
@@ -1477,7 +1496,7 @@ namespace Reko.Arch.M68k
                 dasm.g_dasm_str = string.Format("cpusha  {0}; (4)", (dasm.instruction >> 6) & 3);
                 break;
             }
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_dbcc(M68kDisassembler dasm)
@@ -1794,7 +1813,7 @@ namespace Reko.Arch.M68k
                     break;
                 }
             }
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_move_8(M68kDisassembler dasm)
@@ -1987,7 +2006,7 @@ namespace Reko.Arch.M68k
                         i++;
                         run_length++;
                     }
-                    if (buffer[0] != 0)
+                    if (buffer.Length > 0)
                         buffer.Append("/");
                     buffer.AppendFormat("D{0}", first);
                     if (run_length > 0)
@@ -2005,7 +2024,7 @@ namespace Reko.Arch.M68k
                         i++;
                         run_length++;
                     }
-                    if (buffer[0] != 0)
+                    if (buffer.Length > 0)
                         buffer.Append("/");
                     buffer.AppendFormat("A{0}", first);
                     if (run_length > 0)
@@ -2013,7 +2032,7 @@ namespace Reko.Arch.M68k
                 }
             }
             dasm.g_dasm_str = string.Format("movem.w {0},{1}", buffer, dasm.get_ea_mode_str_16(dasm.instruction));
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_movem_pd_32(M68kDisassembler dasm)
@@ -2060,7 +2079,7 @@ namespace Reko.Arch.M68k
                 }
             }
             dasm.g_dasm_str = string.Format("movem.l {0},{1}", buffer, dasm.get_ea_mode_str_32(dasm.instruction));
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_movem_er_16(M68kDisassembler dasm)
@@ -2107,7 +2126,7 @@ namespace Reko.Arch.M68k
                 }
             }
             dasm.g_dasm_str = string.Format("movem.w {0}, {1}", dasm.get_ea_mode_str_16(dasm.instruction), buffer);
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_movem_er_32(M68kDisassembler dasm)
@@ -2154,7 +2173,7 @@ namespace Reko.Arch.M68k
                 }
             }
             dasm.g_dasm_str = string.Format("movem.l {0},{1}", dasm.get_ea_mode_str_32(dasm.instruction), buffer);
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_movem_re_16(M68kDisassembler dasm)
@@ -2164,7 +2183,7 @@ namespace Reko.Arch.M68k
             dasm.WriteRegisterSet(data, 0, 1, "D", buffer);
             dasm.WriteRegisterSet(data, 8, 1, "A", buffer);
             dasm.g_dasm_str = string.Format("movem.w {0},{1}", buffer, dasm.get_ea_mode_str_16(dasm.instruction));
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         public static bool bit(uint word, int pos)
@@ -2204,7 +2223,8 @@ namespace Reko.Arch.M68k
             dasm.WriteRegisterSet(data, 0, 1, "D", buffer);
             dasm.WriteRegisterSet(data, 8, 1, "A", buffer);
             dasm.g_dasm_str = string.Format("movem.l {0},{1}", buffer, dasm.get_ea_mode_str_32(dasm.instruction));
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
+
         }
 
         private static M68kInstruction d68000_movep_re_16(M68kDisassembler dasm)
@@ -2452,10 +2472,9 @@ namespace Reko.Arch.M68k
             {
                 dasm.g_dasm_str = string.Format("pflush{0}(A%d)", (dasm.instruction & 8)!=0 ? "" : "n", dasm.instruction & 7);
             }
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
-    
         private static M68kInstruction d68020_rtm(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_ONLY);
@@ -2800,21 +2819,21 @@ namespace Reko.Arch.M68k
                 dasm.g_dasm_str = string.Format("pmove [unknown form] {0}", str);
                 break;
             }
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68851_pbcc16(M68kDisassembler dasm)
         {
             uint temp_pc = dasm.rdr.Address.ToUInt32();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[dasm.instruction & 0xf], temp_pc + make_int_16(dasm.read_imm_16()));
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68851_pbcc32(M68kDisassembler dasm)
         {
             uint temp_pc = dasm.rdr.Address.ToUInt32();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[dasm.instruction & 0xf], temp_pc + make_int_32(dasm. read_imm_32()));
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68851_pdbcc(M68kDisassembler dasm)
@@ -2822,14 +2841,14 @@ namespace Reko.Arch.M68k
             uint temp_pc = dasm.rdr.Address.ToUInt32();
             ushort modes = dasm.read_imm_16();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[modes & 0xf], temp_pc + make_int_16(dasm.read_imm_16()));
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         // PScc:  0000000000xxxxxx
         private static M68kInstruction d68851_p001(M68kDisassembler dasm)
         {
             dasm.g_dasm_str = string.Format("MMU 001 group");
-            throw new NotImplementedException();
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         /* ======================================================================== */
@@ -2914,10 +2933,10 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
 	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
 	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new OpRec("D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),             // d68000_bchg_r
-	new OpRec("Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),             // d68000_bchg_s
-	new OpRec("D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),             // d68000_bclr_r  
-	new OpRec("Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),             // d68000_bclr_s
+	new OpRec("sl:D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r //$BUG: if E0 is mem, size should be sb
+	new OpRec("sl:Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s //$BUG: if E0 is mem, size should be sb
+	new OpRec("sl:D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r //$BUG: if E0 is mem, size should be sb 
+	new OpRec("sl:Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s //$BUG: if E0 is mem, size should be sb
 	new OpRec(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
 	new OpRec(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
 	new OpRec(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
@@ -2935,7 +2954,7 @@ namespace Reko.Arch.M68k
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec("D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),         // d68000_btst_r
+	new OpRec("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r //$BUG: should be sb if destination is memory
 	new OpRec("Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),         // d68000_btst_s
 	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
 	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
@@ -3003,7 +3022,7 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_illegal      , 0xffff, 0x4afc, 0x000),
 	new OpRec("sl:E0", 0xffc0, 0x4ec0, 0x27b, Opcode.jmp),          // d68000_jmp
 	new OpRec("sl:E0", 0xffc0, 0x4e80, 0x27b, Opcode.jsr),          // d68000_jsr
-	new OpRec("E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),          // d68000_lea
+	new OpRec("sl:E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),       // d68000_lea
 	new OpRec("A0,Iw", 0xfff8, 0x4e50, 0x000, Opcode.link),         // d68000_link_16 
 	new OpRec("A0,Il", 0xfff8, 0x4808, 0x000, Opcode.link),         // d68020_link_32
 	new OpRec("s6:q9,D0", 0xf1f8, 0xe008, 0x000, Opcode.lsr),       // d68000_lsr_s_8

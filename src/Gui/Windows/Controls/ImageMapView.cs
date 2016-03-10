@@ -101,7 +101,7 @@ namespace Reko.Gui.Windows.Controls
         long AddressableExtent(ImageSegment seg)
         {
             var addrMin = Address.Max(seg.Address, seg.MemoryArea.BaseAddress);
-            var addrMax = Address.Min(seg.Address + seg.ContentSize, seg.MemoryArea.BaseAddress + seg.MemoryArea.Length);
+            var addrMax = Address.Min(seg.Address + seg.ContentSize, seg.MemoryArea.EndAddress);
             return addrMax - addrMin;
         }
 
