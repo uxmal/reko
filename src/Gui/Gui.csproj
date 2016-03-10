@@ -119,6 +119,7 @@
     <Compile Include="Controls\ILabel.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
+    <Compile Include="Design\GlobalVariablesNodeDesigner.cs" />
     <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Windows\Controls\CombinedCodeView.Designer.cs">
       <DependentUpon>CombinedCodeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\GlobalVariablesPane.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />
     <Compile Include="Windows\MixedCodeDataViewService.cs" />
@@ -515,6 +517,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources.sv-SE.resx" />
     <EmbeddedResource Include="Windows\Controls\CodeView.resx">
       <DependentUpon>CodeView.cs</DependentUpon>
     </EmbeddedResource>
