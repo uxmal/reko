@@ -429,7 +429,7 @@ namespace Reko
                     //scanner.ScanImageHeuristically();
                 }
                 if (false || //$DEBUG
-                    program.User.Heuristics.Contains("shingle"))
+                    program.User.Heuristics.Contains("Shingle heuristic"))
                 {
                     eventListener.ShowStatus("Shingle scanning");
                     var sh = new ShingledScanner(program, (IRewriterHost)scanner);
