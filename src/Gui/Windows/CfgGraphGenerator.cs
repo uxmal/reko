@@ -18,19 +18,11 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Msagl.Core.Routing;
 using Microsoft.Msagl.Drawing;
-using Microsoft.Msagl.GraphViewerGdi;
-using Microsoft.Msagl.Layout.Layered;
-using Microsoft.Msagl.Layout.MDS;
-using System.Windows.Forms;
-using System.ComponentModel.Design;
 using Reko.Core;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Gui.Windows
 {

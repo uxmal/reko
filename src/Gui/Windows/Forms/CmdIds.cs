@@ -74,14 +74,15 @@ namespace Reko.Gui
 		public const int GrpDisassemblerNav = 15 + 1000;
 		public const int GrpDisassemblerEdit = 16 + 1000;
 		public const int GrpCodeView = 17 + 1000;
-		public const int GrpBrowser = 18 + 1000;
-		public const int GrpBrowserProc = 19 + 1000;
-		public const int GrpToolbarFileOps = 20 + 1000;
-		public const int GrpToolbarActions = 21 + 1000;
-		public const int GrpBrowserToolbar = 22 + 1000;
-		public const int GrpProcedure = 23 + 1000;
-		public const int GrpAddressSearchView = 24 + 1000;
-		public const int GrpAddressSearch = 25 + 1000;
+		public const int GrpCodeViewMode = 18 + 1000;
+		public const int GrpBrowser = 19 + 1000;
+		public const int GrpBrowserProc = 20 + 1000;
+		public const int GrpToolbarFileOps = 21 + 1000;
+		public const int GrpToolbarActions = 22 + 1000;
+		public const int GrpBrowserToolbar = 23 + 1000;
+		public const int GrpProcedure = 24 + 1000;
+		public const int GrpAddressSearchView = 25 + 1000;
+		public const int GrpAddressSearch = 26 + 1000;
 	}
 	
 	public class CmdIds

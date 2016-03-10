@@ -101,6 +101,8 @@ namespace Reko.Gui.Windows.Forms
 			slCtxDisassembler.Add(0, slGrpDisassemblerEdit);
 			SortedList slGrpCodeView = CreatePriorityList();
 			slCtxCodeView.Add(0, slGrpCodeView);
+			SortedList slGrpCodeViewMode = CreatePriorityList();
+			slCtxCodeView.Add(0, slGrpCodeViewMode);
 			SortedList slGrpBrowser = CreatePriorityList();
 			slCtxBrowser.Add(0, slGrpBrowser);
 			SortedList slGrpBrowserProc = CreatePriorityList();
@@ -217,10 +219,10 @@ namespace Reko.Gui.Windows.Forms
             slGrpAddressSearchView.Add(0, slViewAsData);
             CommandMenuItem slViewCfgCode = new CommandMenuItem("View _code", new Guid(CmdSets.Reko), CmdIds.ViewCfgCode);
             slViewCfgCode.IsDynamic = false;
-            slGrpCodeView.Add(1, slViewCfgCode);
+            slGrpCodeViewMode.Add(1, slViewCfgCode);
             CommandMenuItem slViewCfgGraph = new CommandMenuItem("View control _graph", new Guid(CmdSets.Reko), CmdIds.ViewCfgGraph);
             slViewCfgGraph.IsDynamic = false;
-            slGrpCodeView.Add(2, slViewCfgGraph);
+            slGrpCodeViewMode.Add(2, slViewCfgGraph);
             CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Reko), CmdIds.ActionRestartDecompilation);
             slActionRestartDecompilation.IsDynamic = false;
             slActionRestartDecompilation.ImageIndex = 2;

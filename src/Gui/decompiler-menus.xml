@@ -53,6 +53,7 @@
   <group id="GrpDisassemblerNav" cmdSet="Reko" container="CtxDisassembler" />
   <group id="GrpDisassemblerEdit" cmdSet="Reko" container="CtxDisassembler" />
   <group id="GrpCodeView" cmdSet="Reko" container="CtxCodeView" />
+  <group id="GrpCodeViewMode" cmdSet="Reko" container="CtxCodeView" />
   <group id="GrpBrowser" cmdSet="Reko" container="CtxBrowser"/>
   <group id="GrpBrowserProc" cmdSet="Reko" container="CtxBrowser"/>
 
@@ -104,8 +105,8 @@
   <cmd id="ViewAsCode" cmdSet="Reko" container="GrpAddressSearchView">View as _code</cmd>
   <cmd id="ViewAsStrings" cmdSet="Reko" container="GrpAddressSearchView">View as _strings</cmd>
   <cmd id="ViewAsData" cmdSet="Reko" container="GrpAddressSearchView">View as _data</cmd>
-  <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeView" priority="1">View _code</cmd>
-  <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeView" priority="2">View control _graph</cmd>
+  <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeViewMode" priority="1">View _code</cmd>
+  <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeViewMode" priority="2">View control _graph</cmd>
 
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />

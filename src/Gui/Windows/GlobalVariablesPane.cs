@@ -20,9 +20,10 @@ namespace Reko.Gui.Windows
             this.program = program;
             this.segment = segment;
         }
-        public void Close()
+
+        public void SetSite(IServiceProvider sp)
         {
-            throw new NotImplementedException();
+            this.services = sp;
         }
 
         public Control CreateControl()
@@ -34,9 +35,13 @@ namespace Reko.Gui.Windows
             return control;
         }
 
-        public void SetSite(IServiceProvider sp)
+        public void Close()
         {
-            this.services = sp;
+            if (control != null)
+            {
+                control.Dispose();
+                control = null;
+            }
         }
     }
 }
