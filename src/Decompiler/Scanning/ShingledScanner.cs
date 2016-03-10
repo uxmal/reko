@@ -81,11 +81,15 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Disassemble every byte of the image, marking those addresses that likely
-        /// are code as MaybeCode, everything else as data.
+        /// Disassemble every byte of the segment, marking those addresses
+        /// that likely are code as MaybeCode, everything else as data.
         /// </summary>
         /// <remarks>
-        /// The plan is </remarks>
+        /// The plan is to disassemble every location of the segment, building
+        /// a reverse control graph. Any jump to an illegal address or any
+        /// invalid instruction will result in an edge from "bad" to that 
+        /// instruction.
+        /// </remarks>
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
@@ -93,7 +97,10 @@ namespace Reko.Scanning
         {
             var G = new DiGraph<Address>();
             G.AddNode(bad);
-            var y = new byte[segment.Size];
+            var cbAlloc = Math.Min(
+                segment.Size,
+                segment.MemoryArea.EndAddress - segment.Address);
+            var y = new byte[cbAlloc];
 
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
@@ -196,7 +203,6 @@ namespace Reko.Scanning
         /// If these pointers point into a valid segment, increment the tally for 
         /// that address
         /// </summary>
-        /// <remarks>Tallies saturate at 255, since they're stored as bytes.</remarks>
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
         public Dictionary<ImageSegment, byte[]> GetPossiblePointerTargets()
         {

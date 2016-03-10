@@ -376,7 +376,7 @@ namespace Reko.Gui.Windows.Controls
             if (mem != null)
             {
                 this.addrMin = Address.Max(mem.BaseAddress, seg.Address);
-                this.addrMax = Address.Min(mem.BaseAddress + mem.Length, seg.Address + seg.Size);
+                this.addrMax = Address.Min(mem.EndAddress, seg.Address + seg.Size);
                 TopAddress = addrMin;
                 UpdateScroll();
             }

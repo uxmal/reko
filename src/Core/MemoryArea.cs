@@ -41,7 +41,8 @@ namespace Reko.Core
 			this.Relocations = new RelocationDictionary();
 		}
 
-        public Address BaseAddress { get; set; }        // Address of start of image.
+        public Address BaseAddress { get; private set; }        // Address of start of image.
+        public Address EndAddress { get { return BaseAddress + Length; } }  // Address of the first byte beyond image.
         public byte[] Bytes { get { return abImage; } }
         public long Length { get { return abImage.Length; } }
         public RelocationDictionary Relocations { get; private set; }

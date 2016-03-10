@@ -60,7 +60,7 @@ namespace Reko.Gui.Windows.Controls
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
             this.position = addrStart;
-            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.BaseAddress + mem.Length);
+            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.EndAddress);
         }
 
         public object StartPosition { get { return addrStart; } }
