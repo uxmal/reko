@@ -106,7 +106,8 @@ namespace Reko.Core
         {
             if (storage is FlagRegister)
                 return 0;
-            throw new InvalidOperationException();
+            else
+                return -1;
         }
     }
 

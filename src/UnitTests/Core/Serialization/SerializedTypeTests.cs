@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core.Serialization
 
 			string s = writer.ToString();
 			int b = s.IndexOf("<field");
-			int e = s.IndexOf("</Ser");
+			int e = s.IndexOf("</Struc");
 			Assert.AreEqual(
                 "<field offset=\"0\"><prim domain=\"SignedInt\" size=\"4\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>" +
                 "<field offset=\"4\"><prim domain=\"Real\" size=\"8\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>",

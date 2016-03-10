@@ -208,6 +208,10 @@
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
     <Compile Include="Windows\CombinedCodeViewerPane.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
+    <Compile Include="Windows\Controls\ByteMapView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Controls\CodeControl.cs" />
     <Compile Include="Windows\Controls\MixedCodeDataControl.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -39,6 +39,7 @@ namespace Reko.Scanning
         private readonly Address bad;
         private IRewriterHost host;
         private IDictionary<Address, int> possibleCallDestinationTallies;
+        private IDictionary<Address, int> possiblePointerTargetTallies;
 
         public ShingledScanner(Program program, IRewriterHost host)
         {
@@ -46,6 +47,7 @@ namespace Reko.Scanning
             this.host = host;
             this.bad = program.Platform.MakeAddressFromLinear(~0u);
             this.possibleCallDestinationTallies = new Dictionary<Address,int>();
+            this.possiblePointerTargetTallies = new Dictionary<Address, int>();
         }
 
         /// <summary>
@@ -59,8 +61,9 @@ namespace Reko.Scanning
                 Dictionary<ImageSegment, byte[]> map = ScanExecutableSegments();
                 return SpeculateCallDests(map);
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.Print("Error: {0}", ex.Message);
                 return new Address[0];
             }
         }
@@ -78,9 +81,15 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Disassemble every byte of the image, marking those addresses that likely
-        /// are code as MaybeCode, everything else as data.
+        /// Disassemble every byte of the segment, marking those addresses
+        /// that likely are code as MaybeCode, everything else as data.
         /// </summary>
+        /// <remarks>
+        /// The plan is to disassemble every location of the segment, building
+        /// a reverse control graph. Any jump to an illegal address or any
+        /// invalid instruction will result in an edge from "bad" to that 
+        /// instruction.
+        /// </remarks>
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
@@ -88,14 +97,25 @@ namespace Reko.Scanning
         {
             var G = new DiGraph<Address>();
             G.AddNode(bad);
-            var y = new byte[segment.Size];
+            var cbAlloc = Math.Min(
+                segment.Size,
+                segment.MemoryArea.EndAddress - segment.Address);
+            var y = new byte[cbAlloc];
+
+            // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
             bool inDelaySlot = false;
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
                 var i = Dasm(segment, a);
-                if (i == null || i.InstructionClass == InstructionClass.Invalid)
+                if (i == null)
+                {
+                    AddEdge(G, bad, segment.Address + a);
+                    inDelaySlot = false;
+                    break;
+                }
+                if (i.InstructionClass == InstructionClass.Invalid)
                 {
                     AddEdge(G, bad, i.Address);
                     inDelaySlot = false;
@@ -115,8 +135,8 @@ namespace Reko.Scanning
                             {
                                 // Fell off segment, i must be a bad instruction.
                                 AddEdge(G, bad, i.Address);
+                            }
                         }
-                    }
                     }
                     if ((i.InstructionClass & InstructionClass.Transfer) != 0) 
                     {
@@ -137,10 +157,10 @@ namespace Reko.Scanning
                             }
                             else
                             {
-                                // jump to data / hyperspace.
+                                // Jump to data / hyperspace.
                                 AddEdge(G, bad, i.Address);
+                            }
                         }
-                    }
                     }
 
                     // If this is a delayed unconditional branch...
@@ -161,7 +181,7 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Returns true if this function might continue to the next function.
+        /// Returns true if this function might continue to the next instruction.
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -181,9 +201,8 @@ namespace Reko.Scanning
         /// <summary>
         /// Scans through each segment to find things that look like pointers.
         /// If these pointers point into a valid segment, increment the tally for 
-        /// that 
+        /// that address
         /// </summary>
-        /// <remarks>Tallies saturate at 255, since they're stored as bytes.</remarks>
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
         public Dictionary<ImageSegment, byte[]> GetPossiblePointerTargets()
         {
@@ -196,10 +215,14 @@ namespace Reko.Scanning
                     if (program.ImageMap.TryFindSegment(pointer, out segPointee) &&
                         segPointee.IsInRange(pointer))
                     {
+                        
                         int segOffset = (int)(pointer - segPointee.Address);
-                        var hits = targetMap[segPointee][segOffset];
+                        int hits = targetMap[segPointee][segOffset];
                         if (hits < 255)    // Not saturated!
                             targetMap[segPointee][segOffset] = (byte)(hits + 1);
+                        if (!this.possiblePointerTargetTallies.TryGetValue(pointer, out hits))
+                            hits = 0;
+                        this.possiblePointerTargetTallies[pointer] = hits;
                     }
                 }
             }
@@ -213,6 +236,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public IEnumerable<Address> GetPossiblePointers(ImageSegment seg)
         {
+            //$TODO: this assumes pointers must be aligned. Not the case for older machines.
             uint ptrSize = (uint)program.Platform.PointerType.Size;
             var rdr = program.CreateImageReader(seg.Address);
             Constant c;
@@ -259,7 +283,10 @@ namespace Reko.Scanning
 
         private MachineInstruction Dasm(ImageSegment segment, int a)
         {
-            var dasm = program.CreateDisassembler(segment.Address + a);
+            var addr = segment.Address + a;
+            if (!segment.IsInRange(addr) || !segment.MemoryArea.IsValidAddress(addr))
+                return null;
+            var dasm = program.CreateDisassembler(addr);
             return dasm.FirstOrDefault();
         }
 
@@ -275,7 +302,7 @@ namespace Reko.Scanning
         private bool IsPossibleExecutableCodeDestination(
             Address addr, 
             IDictionary<ImageSegment, byte[]> map)
-                        {
+        {
             ImageSegment seg;
             if (!program.ImageMap.TryFindSegment(addr, out seg))
                 throw new InvalidOperationException(string.Format("Address {0} doesn't belong to any segment.", addr));

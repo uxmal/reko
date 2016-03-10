@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Assemblers.x86
                     var mem = segment.MemoryArea;
                     dumper.DumpData(program.ImageMap, mem.BaseAddress, mem.Length, fut.TextWriter);
                     fut.TextWriter.WriteLine();
-                    dumper.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.BaseAddress + (uint)mem.Length, fut.TextWriter);
+                    dumper.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
                     if (program.ImportReferences.Count > 0)
                     {
                         foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -384,7 +384,7 @@ foo		endp
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.BaseAddress + mem.Bytes.Length, fut.TextWriter);
+				dump.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}	

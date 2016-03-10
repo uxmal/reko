@@ -315,7 +315,7 @@ namespace Reko.Evaluation
 
             public Storage VisitFlagRegister(FlagRegister freg)
             {
-                throw new NotImplementedException();
+                return freg;
             }
 
             public Storage VisitFpuStackStorage(FpuStackStorage fpu)

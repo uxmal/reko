@@ -108,7 +108,7 @@ namespace Reko.Core
         public ImageReader CreateImageReader(IProcessorArchitecture arch)
         {
             var addrBegin = Address.Max(this.Address, this.MemoryArea.BaseAddress);
-            var addrEnd = Address.Min(this.Address + this.Size, this.MemoryArea.BaseAddress + this.MemoryArea.Length);
+            var addrEnd = Address.Min(this.Address + this.Size, this.MemoryArea.EndAddress);
             return arch.CreateImageReader(this.MemoryArea, addrBegin, addrEnd);
         }
 

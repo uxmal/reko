@@ -34,6 +34,7 @@ namespace Reko.Core.Serialization
 		public int ByteSize;
 
         [XmlAttribute("force")]
+        [DefaultValue(false)]
         public bool ForceStructure;
 
         public StructType_v1()
@@ -56,11 +57,14 @@ namespace Reko.Core.Serialization
                 sb.AppendFormat("{0}, ", Name);
             if (ByteSize > 0)
                 sb.AppendFormat("{0}, ", ByteSize);
-			foreach (StructField_v1 f in Fields)
-			{
-				sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null?f.Name: "?", f.Type);
-			}
-			sb.Append(")");
+            if (Fields != null)
+            {
+                foreach (StructField_v1 f in Fields)
+                {
+                    sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null ? f.Name : "?", f.Type);
+                }
+            }
+            sb.Append(")");
 			return sb.ToString();
 		}
 	}

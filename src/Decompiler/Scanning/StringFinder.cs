@@ -44,7 +44,9 @@ namespace Reko.Scanning
         {
             foreach (var segment in program.ImageMap.Segments.Values)
             {
-                Address segEnd = segment.Address + segment.Size;
+                Address segEnd = Address.Min(
+                    segment.Address + segment.Size,
+                    segment.MemoryArea.BaseAddress + segment.MemoryArea.Bytes.Length);
                 var rdr = program.Architecture.CreateImageReader(segment.MemoryArea, segment.Address);
                 Address addrStartRun = null;
                 int cValid = 0;

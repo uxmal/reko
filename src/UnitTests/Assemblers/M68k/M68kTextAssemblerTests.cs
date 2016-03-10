@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Assemblers.M68k
                 var mem = prog.ImageMap.Segments.Values.First().MemoryArea;
                 dumper.DumpData(prog.ImageMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
                 fut.TextWriter.WriteLine();
-                dumper.DumpAssembler(prog.ImageMap, mem.BaseAddress, mem.BaseAddress + mem.Bytes.Length, fut.TextWriter);
+                dumper.DumpAssembler(prog.ImageMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
                 if (prog.ImportReferences.Count > 0)
                 {
                     var list = new SortedList<Address, ImportReference>(prog.ImportReferences);

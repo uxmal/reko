@@ -48,7 +48,6 @@ namespace Reko.Core.Serialization
             return new CodeType_v1();
         }
 
-
         public SerializedType VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
@@ -134,7 +133,8 @@ namespace Reko.Core.Serialization
             var sStr = new StructType_v1
             {
                 Name = str.Name,
-                ByteSize = str.Size
+                ByteSize = str.Size,
+                ForceStructure = str.ForceStructure,
             };
 
             // If this is a forward reference with 0 fields or 

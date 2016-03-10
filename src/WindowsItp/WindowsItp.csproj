@@ -81,6 +81,12 @@
     <Compile Include="ActiveControlForm.Designer.cs">
       <DependentUpon>ActiveControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ByteMapDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ByteMapDialog.Designer.cs">
+      <DependentUpon>ByteMapDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="CodeViewerFrame.cs">
       <SubType>Form</SubType>
     </Compile>

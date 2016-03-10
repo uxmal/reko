@@ -2,10 +2,10 @@
 <library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
   <Types>
     <typedef name="FILE">
-      <struct name="_iob" force="false" />
+      <struct name="_iob" />
     </typedef>
     <typedef name="_IO_FILE">
-      <struct name="_io_iob" force="false" />
+      <struct name="_io_iob" />
     </typedef>
     <typedef name="sighandler_t">
       <ptr size="4">
@@ -22,7 +22,7 @@
     <typedef name="off64_t">
       <prim domain="SignedInt" size="8" />
     </typedef>
-    <struct name="timespec" force="false">
+    <struct name="timespec">
       <field offset="0" name="tv_sec">
         <prim domain="SignedInt" size="4" />
       </field>
@@ -50,7 +50,7 @@
     <typedef name="gid_t">
       <prim domain="SignedInt" size="4" />
     </typedef>
-    <struct name="passwd" force="false">
+    <struct name="passwd">
       <field offset="0" name="pw_name">
         <ptr size="4">
           <prim domain="Character" size="1" />
@@ -83,7 +83,7 @@
         </ptr>
       </field>
     </struct>
-    <struct name="stat" force="false" />
+    <struct name="stat" />
   </Types>
   <procedure name="__libc_start_main">
     <signature>
@@ -670,7 +670,7 @@
       </arg>
       <arg>
         <ptr size="4">
-          <struct name="timespec" force="false" />
+          <struct name="timespec" />
         </ptr>
       </arg>
     </signature>
@@ -1222,7 +1222,7 @@
     <signature>
       <return>
         <ptr size="4">
-          <struct name="tm" force="false" />
+          <struct name="tm" />
         </ptr>
       </return>
       <arg name="t">
@@ -1285,7 +1285,7 @@
       </arg>
       <arg name="termios_p">
         <ptr size="4">
-          <struct name="termios" force="false" />
+          <struct name="termios" />
         </ptr>
       </arg>
     </signature>
@@ -1317,7 +1317,7 @@
       </arg>
       <arg name="times">
         <ptr size="4">
-          <struct name="utimbuf" force="false" />
+          <struct name="utimbuf" />
         </ptr>
       </arg>
     </signature>
@@ -1466,7 +1466,7 @@
       </arg>
       <arg name="statbuf">
         <ptr size="4">
-          <struct name="stat" force="false" />
+          <struct name="stat" />
         </ptr>
       </arg>
     </signature>
@@ -1489,7 +1489,7 @@
     <signature>
       <return>
         <ptr size="4">
-          <struct name="passwd" force="false" />
+          <struct name="passwd" />
         </ptr>
       </return>
       <arg name="uid">

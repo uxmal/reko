@@ -270,14 +270,14 @@ namespace Reko.Arch.Pdp11
             case 0x000:
                 switch (opcode & 0x3F)
                 {
-                case 0x00: op= null;oc = Opcodes.halt; break;
-                case 0x01: op= null;oc = Opcodes.wait; break;
-                case 0x02: op= null;oc = Opcodes.rti; break;
-                case 0x03: op= null;oc = Opcodes.bpt; break;
-                case 0x04: op= null;oc = Opcodes.iot; break;
-                case 0x05: op= null;oc = Opcodes.reset; break;
+                case 0x00: op = null; oc = Opcodes.halt; break;
+                case 0x01: op = null; oc = Opcodes.wait; break;
+                case 0x02: op = null; oc = Opcodes.rti; break;
+                case 0x03: op = null; oc = Opcodes.bpt; break;
+                case 0x04: op = null; oc = Opcodes.iot; break;
+                case 0x05: op = null; oc = Opcodes.reset; break;
                 case 0x06: op = null; oc = Opcodes.rtt; break;
-                case 0x07: op = null;  oc = Opcodes.illegal; break;
+                case 0x07: op = null; oc = Opcodes.illegal; break;
                 }
                 break;
             case 0x001: oc = Opcodes.jmp; break;
