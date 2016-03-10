@@ -2933,10 +2933,10 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
 	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
 	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new OpRec("sl:D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r //$BUG: if E0 is mem, size should be sb
-	new OpRec("sl:Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s //$BUG: if E0 is mem, size should be sb
-	new OpRec("sl:D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r //$BUG: if E0 is mem, size should be sb 
-	new OpRec("sl:Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s //$BUG: if E0 is mem, size should be sb
+	new OpRec("D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
+	new OpRec("Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
+	new OpRec("D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
+	new OpRec("Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
 	new OpRec(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
 	new OpRec(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
 	new OpRec(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
@@ -2954,7 +2954,7 @@ namespace Reko.Arch.M68k
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r //$BUG: should be sb if destination is memory
+	new OpRec("D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
 	new OpRec("Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),         // d68000_btst_s
 	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
 	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
@@ -3022,7 +3022,7 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_illegal      , 0xffff, 0x4afc, 0x000),
 	new OpRec("sl:E0", 0xffc0, 0x4ec0, 0x27b, Opcode.jmp),          // d68000_jmp
 	new OpRec("sl:E0", 0xffc0, 0x4e80, 0x27b, Opcode.jsr),          // d68000_jsr
-	new OpRec("sl:E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),       // d68000_lea
+	new OpRec("E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),       // d68000_lea
 	new OpRec("A0,Iw", 0xfff8, 0x4e50, 0x000, Opcode.link),         // d68000_link_16 
 	new OpRec("A0,Il", 0xfff8, 0x4808, 0x000, Opcode.link),         // d68020_link_32
 	new OpRec("s6:q9,D0", 0xf1f8, 0xe008, 0x000, Opcode.lsr),       // d68000_lsr_s_8
