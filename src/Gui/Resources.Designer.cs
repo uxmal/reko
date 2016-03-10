@@ -127,11 +127,29 @@ namespace Reko.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Segment_ {
+            get {
+                return ResourceManager.GetString("Segment:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} global variables.
         /// </summary>
         internal static string SegmentGlobalsFmt {
             get {
                 return ResourceManager.GetString("SegmentGlobalsFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} [segment].
+        /// </summary>
+        internal static string SegmentViewerFmt {
+            get {
+                return ResourceManager.GetString("SegmentViewerFmt", resourceCulture);
             }
         }
     }

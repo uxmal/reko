@@ -33,7 +33,11 @@ using System.Diagnostics;
 
 namespace Reko.Gui.Windows
 {
-    public class CombinedCodeViewerPane : IWindowPane, ICommandTarget
+    public interface ICombinedCodeViewerPane {
+        void DisplayProcedure(Program program, Procedure proc);
+    }
+
+    public class CombinedCodeViewerPane : ICombinedCodeViewerPane, IWindowPane, ICommandTarget
     {
         private IServiceProvider services;
         private Program program;
@@ -51,10 +55,19 @@ namespace Reko.Gui.Windows
             this.proc = proc;
             if (program != null)
             {
-                SelectedAddress = program.ImageMap.Segments.Values
-                    .Where(s => s.MemoryArea != null)
-                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
-                    .First();
+                var addr = program.GetProcedureAddress(proc);
+                if (addr == null)
+                {
+                    addr = program.ImageMap.Segments.Values
+                        .Where(s => s.MemoryArea != null)
+                        .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
+                        .FirstOrDefault();
+                    if (addr == null)
+                    {
+                        addr = program.ImageMap.BaseAddress;
+                    }
+                }
+                combinedCodeView.CurrentAddress = addr;
             }
             ProgramChanged();
         }

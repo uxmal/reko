@@ -139,7 +139,13 @@
   <data name="ScanBinaries" xml:space="preserve">
     <value>Sca&amp;n binaries</value>
   </data>
+  <data name="Segment:" xml:space="preserve">
+    <value />
+  </data>
   <data name="SegmentGlobalsFmt" xml:space="preserve">
     <value>{0} global variables</value>
+  </data>
+  <data name="SegmentViewerFmt" xml:space="preserve">
+    <value>{0} [segment]</value>
   </data>
 </root>

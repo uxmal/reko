@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Text;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -351,6 +351,13 @@ namespace Reko.Core
                 return (uint)(rdr.Address - addr);
             }
             throw new NotImplementedException();
+        }
+
+        public Address GetProcedureAddress(Procedure proc)
+        {
+            return Procedures.Where(de => de.Value == proc)
+                .Select(de => de.Key)
+                .FirstOrDefault();
         }
 
         public void Reset()

@@ -46,9 +46,15 @@ namespace Reko.Gui.Windows
             pane.FrameWindow = frame;
             pane.DisplayProcedure(program, proc);
 #else
-            var pane = new CombinedCodeViewerPane();
-            var frame = ShowWindow("combinedCodeViewerWindow", program.Name, program, pane);
-            pane.DisplayProcedure(program, proc);
+            var windowType = typeof(CombinedCodeViewerPane).Name;
+            var frame = ShellUiSvc.FindDocumentWindow(windowType, proc);
+            if (frame == null)
+            {
+                var pane = new CombinedCodeViewerPane();
+                frame = ShellUiSvc.CreateDocumentWindow(windowType, proc, proc.Name, pane);
+            }
+            frame.Show();
+            ((ICombinedCodeViewerPane)frame.Pane).DisplayProcedure(program, proc);
 #endif
         }
 

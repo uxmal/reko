@@ -132,4 +132,7 @@
   <data name="SegmentGlobalsFmt" xml:space="preserve">
     <value>{0}:s globala variabler</value>
   </data>
+  <data name="SegmentViewerFmt" xml:space="preserve">
+    <value>{0} [segment]</value>
+  </data>
 </root>
