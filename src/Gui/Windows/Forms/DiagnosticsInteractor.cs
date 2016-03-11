@@ -39,6 +39,8 @@ namespace Reko.Gui.Windows.Forms
         private ListView listView;
         private List<KeyValuePair<ICodeLocation, Diagnostic>> pending;
 
+        public IWindowFrame Frame { get; set; }
+
         public void Attach(ListView listView)
         {
             if (listView == null)

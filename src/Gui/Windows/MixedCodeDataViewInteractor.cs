@@ -34,6 +34,8 @@ namespace Reko.Gui.Windows
         {
         }
 
+        public IWindowFrame Frame { get; set; }
+
         public Program Program { get { return program; } set { program = value; OnProgramChanged(); } }
         private Program program;
 

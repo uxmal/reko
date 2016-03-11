@@ -120,7 +120,7 @@ namespace Reko.Gui.Windows.Controls
             return CacheBrush(ref bg, new SolidBrush(ctrl.BackColor));
         }
 
-        public Font GetFont(Control ctrl)
+        public Font GetFont(Font defaultFont)
         {
             for (int i = stack.Count - 1; i >= 0; --i)
             {
@@ -128,10 +128,10 @@ namespace Reko.Gui.Windows.Controls
                 if (style != null && style.Font != null)
                     return style.Font;
             }
-            return ctrl.Font;
+            return defaultFont;
         }
 
-        public int? GetWidth(TextView textView)
+        public int? GetWidth()
         {
             for (int i = stack.Count - 1; i >= 0; --i)
             {

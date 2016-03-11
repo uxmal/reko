@@ -21,6 +21,9 @@ namespace Reko.Gui.Windows
             this.segment = segment;
         }
 
+        public IWindowFrame Frame { get; set; }
+
+
         public void SetSite(IServiceProvider sp)
         {
             this.services = sp;

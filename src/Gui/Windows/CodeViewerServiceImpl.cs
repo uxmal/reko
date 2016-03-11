@@ -54,7 +54,7 @@ namespace Reko.Gui.Windows
                 frame = ShellUiSvc.CreateDocumentWindow(windowType, proc, proc.Name, pane);
             }
             frame.Show();
-            ((ICombinedCodeViewerPane)frame.Pane).DisplayProcedure(program, proc);
+            ((CombinedCodeViewerPane)frame.Pane).DisplayProcedure(program, proc);
 #endif
         }
 

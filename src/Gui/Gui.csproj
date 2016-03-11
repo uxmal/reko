@@ -203,6 +203,7 @@
     <Compile Include="SignatureParser.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
     <Compile Include="Windows\ButtonWrapper.cs" />
+    <Compile Include="Windows\CfgBlockNode.cs" />
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CfgGraphGenerator.cs" />
     <Compile Include="Windows\CodeViewerPane.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="Windows\Controls\CombinedCodeView.Designer.cs">
       <DependentUpon>CombinedCodeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Controls\TextViewLayout.cs" />
     <Compile Include="Windows\GlobalVariablesPane.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />

@@ -18,11 +18,16 @@
  */
 #endregion
 
+using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
+using System;
+using Reko.Gui.Windows.Controls;
+using Reko.Core.Output;
 
 namespace Reko.Gui.Windows
 {
@@ -30,17 +35,19 @@ namespace Reko.Gui.Windows
     {
         private Graph graph;
         private HashSet<Block> visited;
+        private Graphics g;
 
-        public CfgGraphGenerator(Graph graph)
+        public CfgGraphGenerator(Graph graph, Graphics g)
         {
             this.graph = graph;
+            this.g = g;
             this.visited = new HashSet<Block>();
         }
 
-        public static Graph Generate(Procedure proc)
+        public static Graph Generate(Procedure proc, Graphics g)
         {
             Graph graph = new Graph();
-            var cfgGen = new CfgGraphGenerator(graph);
+            var cfgGen = new CfgGraphGenerator(graph, g);
             cfgGen.Traverse(proc.EntryBlock.Succ[0]);
             graph.Attr.LayerDirection = LayerDirection.TB;
             return graph;
@@ -58,7 +65,7 @@ namespace Reko.Gui.Windows
                 visited.Add(b);
                 Debug.Print("Node {0}", b.Name);
                 visited.Add(b);
-                var n = Render(b);
+                var n = CreateGraphNode(b);
                 foreach (var pred in b.Pred.Where(p => p != block.Procedure.EntryBlock))
                 {
                     Debug.Print("Edge {0} - {1}", pred.Name, b.Name);
@@ -71,17 +78,44 @@ namespace Reko.Gui.Windows
             }
         }
 
-        private Node Render(Block b)
+        private Node CreateGraphNode(Block b)
         {
             var nl = "\n    ";
+            var blockNode = new CfgBlockNode {
+                Block = b,
+                TextModel = GenerateTextModel(b)
+            };
             var node = graph.AddNode(b.Name);
-            node.Label.FontName = "Lucida Console";
-            node.Label.FontSize = 10f;
             node.Attr.LabelMargin = 5;
-            node.LabelText =
-                b.Name + nl +
-                string.Join(nl, b.Statements.Select(s => s.Instruction));
+            node.UserData = blockNode;
+            if (nl.Length > 0)
+            {
+                node.Attr.Shape = Shape.DrawFromGeometry;
+                node.DrawNodeDelegate = blockNode.DrawNode;
+                node.NodeBoundaryDelegate = blockNode.GetNodeBoundary;
+            }
+            else
+            {
+                node.Label.FontName = "Lucida Console";
+                node.Label.FontSize = 10f;
+                node.LabelText =
+                    b.Name + nl +
+                    string.Join(nl, b.Statements.Select(s => s.Instruction));
+            }
             return node;
         }
+
+        private TextViewModel GenerateTextModel(Block b)
+        {
+            var tsf = new TextSpanFormatter();
+            var fmt = new AbsynCodeFormatter(tsf);
+            var procf = new ProcedureFormatter(b.Procedure, fmt);
+            fmt.InnerFormatter.UseTabs = false;
+            procf.WriteBlock(b, fmt);
+            return tsf.GetModel();
+        }
+
+
     }
+
 }

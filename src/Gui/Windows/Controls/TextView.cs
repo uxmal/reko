@@ -118,7 +118,7 @@ namespace Reko.Gui.Windows.Controls
         private SizeF GetSize(TextSpan span, string text, Font font, Graphics g)
         {
             var size = span.GetSize(text, font, g);
-            int? width = styleStack.GetWidth(this);
+            int? width = styleStack.GetWidth();
             if (width.HasValue)
             {
                 size.Width = width.Value;
@@ -258,29 +258,7 @@ namespace Reko.Gui.Windows.Controls
             Invalidate();
         }
 
-        /// <summary>
-        /// Line of spans.
-        /// </summary>
-        private class LayoutLine
-        {
-            public LayoutLine(object Position) { this.Position = Position; }
-            public object Position;
-            public RectangleF Extent;
-            public LayoutSpan[] Spans;
-        }
-
-        /// <summary>
-        /// Horizontal span of text
-        /// </summary>
-        protected class LayoutSpan
-        {
-            public RectangleF Extent;
-            public string Text;
-            public string Style;
-            public object Tag;
-            public int ContextMenuID;
-        }
-
+     
         private int ComparePositions(TextPointer a, TextPointer b)
         {
             var d = model.ComparePositions(a.Line, b.Line);
@@ -326,15 +304,14 @@ namespace Reko.Gui.Windows.Controls
         /// <param name="g"></param>
         protected void ComputeLayout(Graphics g)
         {
+            var m = model ?? new EmptyEditorModel();
+            var oldPos = m.CurrentPosition;
             GetStyleStack().PushStyle(StyleClass);
             this.visibleLines = new SortedList<float, LayoutLine>();
             SizeF szClient = new SizeF(ClientSize);
             var rcLine = new RectangleF(0, 0, szClient.Width, 0);
 
             // Get the lines.
-            object oldPos = null;
-            var m = model ?? new EmptyEditorModel();
-            oldPos = model.CurrentPosition;
             var lines = m.GetLineSpans(1);
             while (rcLine.Top < szClient.Height && 
                    lines != null && lines.Length == 1)
@@ -351,7 +328,7 @@ namespace Reko.Gui.Windows.Controls
                 rcLine.Offset(0, cyLine);
             }
             GetStyleStack().PopStyle();
-            model.MoveToLine(oldPos, 0);
+            m.MoveToLine(oldPos, 0);
         }
 
         private float MeasureLineHeight(LineSpan line)
@@ -360,7 +337,7 @@ namespace Reko.Gui.Windows.Controls
             foreach (var span in line.TextSpans)
             {
                 GetStyleStack().PushStyle(span.Style);
-                var font = styleStack.GetFont(this);
+                var font = styleStack.GetFont(this.Font);
                 height = Math.Max(height, font.Height);
                 styleStack.PopStyle();
             }
@@ -382,7 +359,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 GetStyleStack().PushStyle(span.Style);
                 var text = span.GetText();
-                var font = styleStack.GetFont(this);
+                var font = styleStack.GetFont(this.Font);
                 var szText = GetSize(span, text, font, g);
                 var rc = new RectangleF(pt, szText);
                 spanLayouts.Add(new LayoutSpan
@@ -472,7 +449,7 @@ namespace Reko.Gui.Windows.Controls
             int iLow = 0;
             int iHigh = textStub.Length;
             styleStack.PushStyle(span.Style);
-            var font = styleStack.GetFont(this);
+            var font = styleStack.GetFont(this.Font);
             var sz = MeasureText(g, textStub, font);
             float xLow = 0;
             float xHigh = sz.Width;

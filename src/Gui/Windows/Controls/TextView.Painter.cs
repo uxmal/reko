@@ -106,7 +106,7 @@ namespace Reko.Gui.Windows.Controls
 
                     this.fg = styleStack.GetForegroundColor(outer);
                     this.bg = styleStack.GetBackground(outer);
-                    this.font = styleStack.GetFont(outer);
+                    this.font = styleStack.GetFont(outer.Font);
 
                     this.rcText = span.Extent;
                     if (!insideSelection)

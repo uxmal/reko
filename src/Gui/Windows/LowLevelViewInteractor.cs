@@ -47,6 +47,7 @@ namespace Reko.Gui.Windows
         private NavigationInteractor<Address> navInteractor;
 
         public LowLevelView Control { get { return control; } }
+        public IWindowFrame Frame { get; set; }
 
         public Program Program
         {
