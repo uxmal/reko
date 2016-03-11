@@ -69,7 +69,8 @@ namespace Reko.Gui.Windows.Controls
                     break;
                 builder.AddLayoutLine(lines[0], ref rcLine);
             }
-            return builder.Build();
+            var layout = builder.Build();
+            return layout;
         }
 
         public static TextViewLayout VisibleLines(TextViewModel model, Size size, Graphics g, Font defaultFont, StyleStack styleStack)
@@ -85,8 +86,92 @@ namespace Reko.Gui.Windows.Controls
                     break;
                 builder.AddLayoutLine(lines[0], ref rcLine);
             }
+            Control ctrl;
             return builder.Build();
         }
+
+        public SizeF CalculateExtent()
+        {
+            var width = visibleLines.Values.Max(l => l.Extent.Width);
+            var height = visibleLines.Values.Select(l => l.Extent.Bottom).LastOrDefault();
+            return new SizeF(width, height);
+        }
+
+        public TextPointer ClientToLogicalPosition(Graphics g, Point pt, StyleStack styleStack)
+        {
+            foreach (var line in this.visibleLines.Values)
+            {
+                if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
+                {
+                    return FindSpanPosition(g, pt, line, styleStack);
+                }
+            }
+            return new TextPointer { Line = model.EndPosition, Span = 0, Character = 0 };
+        }
+
+        private TextPointer FindSpanPosition(Graphics g, Point ptClient, LayoutLine line, StyleStack styleStack)
+        {
+            int iSpan = 0;
+            foreach (var span in line.Spans)
+            {
+                if (span.Extent.Contains(ptClient))
+                {
+                    int iChar = GetCharPosition(g, ptClient, span, styleStack);
+                    return new TextPointer
+                    {
+                        Line = line.Position,
+                        Span = iSpan,
+                        Character = iChar
+                    };
+                }
+                ++iSpan;
+            }
+            return new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
+        }
+
+        private int GetCharPosition(Graphics g, Point ptClient, LayoutSpan span, StyleStack styleStack)
+        {
+            var x = ptClient.X - span.Extent.Left;
+            var textStub = span.Text;
+            int iLow = 0;
+            int iHigh = textStub.Length;
+            styleStack.PushStyle(span.Style);
+            var font = styleStack.GetFont(defaultFont);
+            var sz = MeasureText(g, textStub, font);
+            float xLow = 0;
+            float xHigh = sz.Width;
+            while (iLow < iHigh - 1)
+            {
+                int iMid = iLow + (iHigh - iLow) / 2;
+                textStub = span.Text.Substring(0, iMid);
+                sz = MeasureText(g, textStub, font);
+                if (x < sz.Width)
+                {
+                    iHigh = iMid;
+                    xHigh = sz.Width;
+                }
+                else
+                {
+                    iLow = iMid;
+                    xLow = sz.Width;
+                }
+            }
+            styleStack.PopStyle();
+            var cx = xHigh - xLow;
+            if (x - xLow > cx)
+                return iHigh;
+            else
+                return iLow;
+        }
+
+        private Size MeasureText(Graphics g, string text, Font font)
+        {
+            var sz = TextRenderer.MeasureText(
+                g, text, font, new Size(0, 0),
+                TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+            return sz;
+        }
+
 
         private class Builder
         {
@@ -109,13 +194,24 @@ namespace Reko.Gui.Windows.Controls
             {
                 float cyLine = MeasureLineHeight(line);
                 rcLine.Height = cyLine;
+                var spans = ComputeSpanLayouts(line.TextSpans, rcLine);
                 var ll = new LayoutLine(line.Position)
                 {
-                    Extent = rcLine,
-                    Spans = ComputeSpanLayouts(line.TextSpans, rcLine)
+                    Extent = LineExtent(rcLine, spans),
+                    Spans = spans,
                 };
                 this.visibleLines.Add(rcLine.Top, ll);
                 rcLine.Offset(0, cyLine);
+            }
+
+            private RectangleF LineExtent(RectangleF rcLine, LayoutSpan[] spans)
+            {
+                var r = rcLine.Right;
+                if (spans.Length > 0)
+                {
+                    r = Math.Max(r, spans[spans.Length - 1].Extent.Right);
+                }
+                return new RectangleF(rcLine.X, rcLine.Y, r - rcLine.X, rcLine.Height);
             }
 
             private float MeasureLineHeight(LineSpan line)
@@ -192,80 +288,7 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
-        internal TextPointer ClientToLogicalPosition(Graphics g, Point pt, StyleStack styleStack)
-        {
-            foreach (var line in this.visibleLines.Values)
-            {
-                if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
-                {
-                    return FindSpanPosition(g, pt, line, styleStack);
-                }
-            }
-            return new TextPointer { Line = model.EndPosition, Span = 0, Character = 0 };
-        }
 
-        private TextPointer FindSpanPosition(Graphics g, Point ptClient, LayoutLine line, StyleStack styleStack)
-        {
-            int iSpan = 0;
-            foreach (var span in line.Spans)
-            {
-                if (span.Extent.Contains(ptClient))
-                {
-                    int iChar = GetCharPosition(g, ptClient, span, styleStack);
-                    return new TextPointer
-                    {
-                        Line = line.Position,
-                        Span = iSpan,
-                        Character = iChar
-                    };
-                }
-                ++iSpan;
-            }
-            return new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
-        }
-
-        private int GetCharPosition(Graphics g, Point ptClient, LayoutSpan span, StyleStack styleStack)
-        {
-            var x = ptClient.X - span.Extent.Left;
-            var textStub = span.Text;
-            int iLow = 0;
-            int iHigh = textStub.Length;
-            styleStack.PushStyle(span.Style);
-            var font = styleStack.GetFont(defaultFont);
-            var sz = MeasureText(g, textStub, font);
-            float xLow = 0;
-            float xHigh = sz.Width;
-            while (iLow < iHigh - 1)
-            {
-                int iMid = iLow + (iHigh - iLow) / 2;
-                textStub = span.Text.Substring(0, iMid);
-                sz = MeasureText(g, textStub, font);
-                if (x < sz.Width)
-                {
-                    iHigh = iMid;
-                    xHigh = sz.Width;
-                }
-                else
-                {
-                    iLow = iMid;
-                    xLow = sz.Width;
-                }
-            }
-            styleStack.PopStyle();
-            var cx = xHigh - xLow;
-            if (x - xLow > cx)
-                return iHigh;
-            else
-                return iLow;
-        }
-
-        private Size MeasureText(Graphics g, string text, Font font)
-        {
-            var sz = TextRenderer.MeasureText(
-                g, text, font, new Size(0, 0),
-                TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
-            return sz;
-        }
     }
 
     /// <summary>

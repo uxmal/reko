@@ -32,6 +32,7 @@ namespace Reko.Gui.Windows
     {
         public Block Block { get; set; }
         public TextViewModel TextModel { get; set; }
+        public TextViewLayout Layout { get; set; }
 
         /// <summary>
         /// Compute the size of the block and then render it.
@@ -41,10 +42,9 @@ namespace Reko.Gui.Windows
         public ICurve GetNodeBoundary(Node node)
         {
             const double radiusRatio = 0.3;
-            Image image = null; // ImageOfNode(node);
-            double width = image.Width;
-            double height = image.Height;
-
+            var extent = Layout.CalculateExtent();
+            double height = extent.Height;
+            double width = extent.Width;
             return CurveFactory.CreateRectangleWithRoundedCorners(width, height, width * radiusRatio, height * radiusRatio, new P2());
         }
 

@@ -114,8 +114,5 @@ namespace Reko.Gui.Windows
             procf.WriteBlock(b, fmt);
             return tsf.GetModel();
         }
-
-
     }
-
 }
