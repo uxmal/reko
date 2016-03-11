@@ -27,10 +27,13 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class TextViewLayout
     {
         private TextViewModel model;
-        SortedList<float, LayoutLine> visibleLines;
+        private SortedList<float, LayoutLine> visibleLines;
         private Font defaultFont;
 
         public TextViewLayout(TextViewModel model, Font defaultFont)
@@ -108,6 +111,17 @@ namespace Reko.Gui.Windows.Controls
             return new TextPointer { Line = model.EndPosition, Span = 0, Character = 0 };
         }
 
+        public int ComparePositions(TextPointer a, TextPointer b)
+        {
+            var d = model.ComparePositions(a.Line, b.Line);
+            if (d != 0)
+                return d;
+            d = a.Span.CompareTo(b.Span);
+            if (d != 0)
+                return d;
+            return a.Character.CompareTo(b.Character);
+        }
+
         private TextPointer FindSpanPosition(Graphics g, Point ptClient, LayoutLine line, StyleStack styleStack)
         {
             int iSpan = 0;
@@ -163,7 +177,7 @@ namespace Reko.Gui.Windows.Controls
                 return iLow;
         }
 
-        private Size MeasureText(Graphics g, string text, Font font)
+        public Size MeasureText(Graphics g, string text, Font font)
         {
             var sz = TextRenderer.MeasureText(
                 g, text, font, new Size(0, 0),

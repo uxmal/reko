@@ -50,7 +50,7 @@ namespace Reko.Gui.Windows.Controls
             if (cfFormat != System.Windows.Forms.DataFormats.UnicodeText)
                 throw new NotSupportedException();
 
-            textView.SaveSelectionToStream(stream, cfFormat);
+            textView.SaveSelectionToStream(stream);
         }
     }
 }

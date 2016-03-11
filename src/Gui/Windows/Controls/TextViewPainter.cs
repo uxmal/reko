@@ -1,13 +1,35 @@
-﻿using System;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2016 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
     public class TextViewPainter
     {
-        private TextView outer;
+        private TextViewLayout outer;
         private Graphics graphics;
         private TextPointer selStart;
         private TextPointer selEnd;
@@ -17,22 +39,34 @@ namespace Reko.Gui.Windows.Controls
         private Color fg;
         private SolidBrush bg;
         private Font font;
+        private SizeF extent;
+        //$REVIEW: put these in the stylestack?
+        private Color defaultFgColor;
+        private Color defaultBgColor;
+        private Font defaultFont;
 
-        public Painter(TextView outer, Graphics g, StyleStack styleStack)
+        public TextViewPainter(TextViewLayout outer, Graphics g, Color fgColor, Color bgColor, Font defaultFont, StyleStack styleStack)
         {
             this.outer = outer;
             this.graphics = g;
+            this.defaultFgColor = fgColor;
+            this.defaultBgColor = bgColor;
+            this.defaultFont = defaultFont;
             this.styleStack = styleStack;
+        }
 
-            selStart = outer.GetStartSelection();
-            selEnd = outer.GetEndSelection();
+        public void SetSelection(TextPointer start, TextPointer end)
+        {
+            this.selStart = start;
+            this.selEnd = end;
         }
 
         public void Paint()
         {
-            foreach (var line in outer.layout.LayoutLines)
+            extent = outer.CalculateExtent();
+            foreach (var line in outer.LayoutLines)
             {
-                layout.PaintLine(line, global, styleStack);
+                PaintLine(line);
             }
         }
 
@@ -45,13 +79,13 @@ namespace Reko.Gui.Windows.Controls
             {
                 xMax = line.Spans[line.Spans.Length - 1].Extent.Right;
             }
-            var cx = outer.ClientRectangle.Right - xMax;
+            var cx = extent.Width - xMax;
             if (cx > 0)
             {
                 rcTrailer.X = xMax;
                 rcTrailer.Width = cx;
                 graphics.FillRectangle(
-                    styleStack.GetBackground(outer),
+                    styleStack.GetBackground(defaultBgColor),
                     rcTrailer);
             }
 
@@ -65,9 +99,9 @@ namespace Reko.Gui.Windows.Controls
                     outer.ComparePositions(selStart, pos) <= 0 &&
                     outer.ComparePositions(pos, selEnd) < 0;
 
-                this.fg = styleStack.GetForegroundColor(outer);
-                this.bg = styleStack.GetBackground(outer);
-                this.font = styleStack.GetFont(outer.Font);
+                this.fg = styleStack.GetForegroundColor(defaultFgColor);
+                this.bg = styleStack.GetBackground(defaultBgColor);
+                this.font = styleStack.GetFont(defaultFont);
 
                 this.rcText = span.Extent;
                 if (!insideSelection)

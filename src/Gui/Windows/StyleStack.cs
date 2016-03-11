@@ -98,7 +98,7 @@ namespace Reko.Gui.Windows.Controls
             return Cursors.Default;
         }
 
-        public Color GetForegroundColor(Control ctrl)
+        public Color GetForegroundColor(Color fgColor)
         {
            for(int i = stack.Count - 1; i >= 0; --i)
             {
@@ -106,10 +106,10 @@ namespace Reko.Gui.Windows.Controls
                 if (style != null && style.Foreground != null)
                     return style.Foreground.Color;
             }
-            return ctrl.ForeColor;
+            return fgColor;
         }
 
-        public SolidBrush GetBackground(Control ctrl)
+        public SolidBrush GetBackground(Color bgColor)
         {
             for (int i = stack.Count - 1; i >= 0; --i)
             {
@@ -117,7 +117,7 @@ namespace Reko.Gui.Windows.Controls
                 if (style != null && style.Background != null)
                     return style.Background;
             }
-            return CacheBrush(ref bg, new SolidBrush(ctrl.BackColor));
+            return CacheBrush(ref bg, new SolidBrush(bgColor));
         }
 
         public Font GetFont(Font defaultFont)

@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
  * Copyright (C) 1999-2016 John Källén.
- *
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -20,16 +20,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Controls
+namespace Reko.Scanning.Vsa
 {
-    public partial class TextView
+    public class ReducedIntervalCongruence
     {
-       
+        public int Scale;
+        public int First;
+        public int Last;
+        public long Base;
+
     }
 }

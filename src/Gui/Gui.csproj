@@ -290,9 +290,6 @@
     <Compile Include="Windows\Controls\TextView.Designer.cs">
       <DependentUpon>TextView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Controls\TextView.Painter.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Windows\Controls\TextViewModel.cs" />
     <Compile Include="Windows\DecompilerShellUiService.cs" />
     <Compile Include="Windows\DecompilerUiService.cs" />

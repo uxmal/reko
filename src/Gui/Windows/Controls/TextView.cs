@@ -168,7 +168,7 @@ namespace Reko.Gui.Windows.Controls
                 // to drag it.
                 dragging = true;
             }
-            else if (ComparePositions(pos, cursorPos) != 0)
+            else if (layout.ComparePositions(pos, cursorPos) != 0)
             {
                 Focus();
 
@@ -190,7 +190,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 // We're extending the selection
                 var pos = ClientToLogicalPosition(e.Location);
-                if (ComparePositions(cursorPos, pos) != 0)
+                if (layout.ComparePositions(cursorPos, pos) != 0)
                 {
                     this.cursorPos = pos;
                     Invalidate();
@@ -266,47 +266,39 @@ namespace Reko.Gui.Windows.Controls
                 return;
             }
             GetStyleStack().PushStyle(StyleClass);
-            var painter = new TextViewPainter(this, e.Graphics, styleStack);
+            var painter = new TextViewPainter(layout, e.Graphics, ForeColor, BackColor, Font, styleStack);
+            painter.SetSelection(GetStartSelection(), GetEndSelection());
+
             painter.Paint();
             GetStyleStack().PopStyle();
         }
 
-        private int ComparePositions(TextPointer a, TextPointer b)
-        {
-            var d = model.ComparePositions(a.Line, b.Line);
-            if (d != 0)
-                return d;
-            d = a.Span.CompareTo(b.Span);
-            if (d != 0)
-                return d;
-            return a.Character.CompareTo(b.Character);
-        }
 
-        internal TextPointer GetStartSelection()
+        public TextPointer GetStartSelection()
         {
-            if (ComparePositions(cursorPos, anchorPos) <= 0)
+            if (layout.ComparePositions(cursorPos, anchorPos) <= 0)
                 return cursorPos;
             else
                 return anchorPos;
         }
 
-        internal TextPointer GetEndSelection()
+        public TextPointer GetEndSelection()
         {
-            if (ComparePositions(cursorPos, anchorPos) > 0)
+            if (layout.ComparePositions(cursorPos, anchorPos) > 0)
                 return cursorPos;
             else
                 return anchorPos;
         }
 
-        internal bool IsSelectionEmpty() {
-            return ComparePositions(cursorPos, anchorPos) == 0;
+        public bool IsSelectionEmpty() {
+            return  layout.ComparePositions(cursorPos, anchorPos) == 0;
         }
     
         internal bool IsInsideSelection(TextPointer pos)
         {
             return
-                ComparePositions(GetStartSelection(), pos) <= 0 &&
-                ComparePositions(pos, GetEndSelection()) < 0;
+                layout.ComparePositions(GetStartSelection(), pos) <= 0 &&
+                layout.ComparePositions(pos, GetEndSelection()) < 0;
         }
 
         /// <summary>
@@ -487,7 +479,7 @@ namespace Reko.Gui.Windows.Controls
             g.Dispose();
         }
 
-        internal void SaveSelectionToStream(Stream stream, string cfFormat)
+        internal void SaveSelectionToStream(Stream stream)
         {
             var modelPos = model.CurrentPosition;
             try
@@ -495,7 +487,7 @@ namespace Reko.Gui.Windows.Controls
                 var writer = new StreamWriter(stream, Encoding.Unicode);
                 var start = GetStartSelection();
                 var end = GetEndSelection();
-                if (ComparePositions(start, end) == 0)
+                if (layout.ComparePositions(start, end) == 0)
                     return;
                 model.MoveToLine(start.Line, 0);
                 var spans = model.GetLineSpans(1);
