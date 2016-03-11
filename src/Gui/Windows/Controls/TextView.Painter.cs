@@ -69,7 +69,7 @@ namespace Reko.Gui.Windows.Controls
             public void Paint()
             {
                 Debug.Print("Selection: {0} - {1}", selStart, selEnd);
-                foreach (var line in outer.visibleLines.Values)
+                foreach (var line in outer.layout.LayoutLines)
                 {
                     PaintLine(line);
                 }

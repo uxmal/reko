@@ -43,7 +43,7 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler VScrollValueChanged;
 
         private StringFormat stringFormat;
-        private SortedList<float, LayoutLine> visibleLines;
+        private TextViewLayout layout;
         private bool ignoreScroll;
         internal TextPointer cursorPos;
         internal TextPointer anchorPos;
@@ -56,7 +56,7 @@ namespace Reko.Gui.Windows.Controls
             this.Selection = new TextSelection(this);
             this.model = new EmptyEditorModel();
             this.stringFormat = StringFormat.GenericTypographic;
-            this.visibleLines = new SortedList<float, LayoutLine>();
+            this.layout = new TextViewLayout(model, this.Font);
             this.vScroll.ValueChanged += vScroll_ValueChanged;
         }
 
@@ -307,73 +307,9 @@ namespace Reko.Gui.Windows.Controls
             var m = model ?? new EmptyEditorModel();
             var oldPos = m.CurrentPosition;
             GetStyleStack().PushStyle(StyleClass);
-            this.visibleLines = new SortedList<float, LayoutLine>();
-            SizeF szClient = new SizeF(ClientSize);
-            var rcLine = new RectangleF(0, 0, szClient.Width, 0);
-
-            // Get the lines.
-            var lines = m.GetLineSpans(1);
-            while (rcLine.Top < szClient.Height && 
-                   lines != null && lines.Length == 1)
-            {
-                var line = lines[0];
-                float cyLine = MeasureLineHeight(line);
-                rcLine.Height = cyLine;
-                var ll = new LayoutLine(line.Position) { 
-                    Extent = rcLine,
-                    Spans = ComputeSpanLayouts(line.TextSpans, rcLine, g)
-                };
-                this.visibleLines.Add(rcLine.Top, ll);
-                lines = m.GetLineSpans(1);
-                rcLine.Offset(0, cyLine);
-            }
+            this.layout = TextViewLayout.VisibleLines(m, ClientSize, g, Font, GetStyleStack());
             GetStyleStack().PopStyle();
             m.MoveToLine(oldPos, 0);
-        }
-
-        private float MeasureLineHeight(LineSpan line)
-        {
-            float height = 0.0F;
-            foreach (var span in line.TextSpans)
-            {
-                GetStyleStack().PushStyle(span.Style);
-                var font = styleStack.GetFont(this.Font);
-                height = Math.Max(height, font.Height);
-                styleStack.PopStyle();
-            }
-            return height;
-        }
-
-        /// <summary>
-        /// Computes the layout for a line of spans.
-        /// </summary>
-        /// <param name="spans"></param>
-        /// <param name="rcLine"></param>
-        /// <param name="g"></param>
-        /// <returns></returns>
-        private LayoutSpan[] ComputeSpanLayouts(IEnumerable<TextSpan> spans, RectangleF rcLine, Graphics g)
-        {
-            var spanLayouts = new List<LayoutSpan>();
-            var pt = new PointF(rcLine.Left, rcLine.Top);
-            foreach (var span in spans)
-            {
-                GetStyleStack().PushStyle(span.Style);
-                var text = span.GetText();
-                var font = styleStack.GetFont(this.Font);
-                var szText = GetSize(span, text, font, g);
-                var rc = new RectangleF(pt, szText);
-                spanLayouts.Add(new LayoutSpan
-                {
-                    Extent = rc,
-                    Style = span.Style,
-                    Text = text,
-                    ContextMenuID = span.ContextMenuID,
-                    Tag = span.Tag,
-                });
-                pt.X = pt.X + szText.Width;
-                GetStyleStack().PopStyle();
-            }
-            return spanLayouts.ToArray();
         }
 
         protected override void OnResize(EventArgs e)
@@ -384,16 +320,13 @@ namespace Reko.Gui.Windows.Controls
 
         private TextPointer ClientToLogicalPosition(Point pt)
         {
-            GetStyleStack().PushStyle(StyleClass);
-            foreach (var line in this.visibleLines.Values)
+            using (var g = CreateGraphics())
             {
-                if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
-                {
-                    return FindSpanPosition(pt, line);
-                }
+                GetStyleStack().PushStyle(StyleClass);
+                var ptr = layout.ClientToLogicalPosition(g, pt, styleStack);
+                styleStack.PopStyle();
+                return ptr;
             }
-            styleStack.PopStyle();
-            return new TextPointer { Line = Model.EndPosition, Span = 0, Character = 0 };
         }
 
         /// <summary>
@@ -403,7 +336,7 @@ namespace Reko.Gui.Windows.Controls
         /// <returns></returns>
         protected LayoutSpan GetSpan(Point pt)
         {
-            foreach (var line in this.visibleLines.Values)
+            foreach (var line in this.layout.LayoutLines)
             {
                 if (line.Extent.Contains(pt))
                     return FindSpan(pt, line);
@@ -421,62 +354,7 @@ namespace Reko.Gui.Windows.Controls
             return null;
         }
 
-        private TextPointer FindSpanPosition(Point ptClient, LayoutLine line)
-        {
-            int iSpan = 0;
-            foreach (var span in line.Spans)
-            {
-                if (span.Extent.Contains(ptClient))
-                {
-                    int iChar = GetCharPosition(ptClient, span);
-                    return new TextPointer
-                    {
-                        Line = line.Position,
-                        Span = iSpan,
-                        Character = iChar
-                    };
-                }
-                ++iSpan;
-            }
-            return new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
-        }
-
-        private int GetCharPosition(Point ptClient, LayoutSpan span)
-        {
-            var x = ptClient.X - span.Extent.Left;
-            var g = CreateGraphics();
-            var textStub = span.Text;
-            int iLow = 0;
-            int iHigh = textStub.Length;
-            styleStack.PushStyle(span.Style);
-            var font = styleStack.GetFont(this.Font);
-            var sz = MeasureText(g, textStub, font);
-            float xLow = 0;
-            float xHigh = sz.Width;
-            while (iLow < iHigh-1)
-            {
-                int iMid = iLow + (iHigh - iLow) / 2;
-                textStub = span.Text.Substring(0, iMid);
-                sz = MeasureText(g, textStub, font);
-                if (x < sz.Width)
-                {
-                    iHigh = iMid;
-                    xHigh = sz.Width;
-                }
-                else
-                {
-                    iLow = iMid;
-                    xLow = sz.Width;
-                }
-            }
-            styleStack.PopStyle();
-            var cx = xHigh - xLow;
-            if (x - xLow > cx)
-                return iHigh;
-            else
-                return iLow;
-        }
-
+        [Obsolete("remove when layout refactored")]
         private Size MeasureText(Graphics g, string text, Font font)
         {
             var sz = TextRenderer.MeasureText(
@@ -550,12 +428,10 @@ namespace Reko.Gui.Windows.Controls
 
         private int GetFullyVisibleLines()
         {
-            if (visibleLines == null)
-                return 0;
-            int cLines = visibleLines.Count;
+            int cLines = layout.LayoutLines.Count;
             if (cLines == 0)
                 return 0;
-            if (visibleLines.Values[cLines - 1].Extent.Bottom > ClientRectangle.Bottom)
+            if (layout.LayoutLines[cLines - 1].Extent.Bottom > ClientRectangle.Bottom)
                 return cLines - 1;
             else
                 return cLines;
@@ -574,6 +450,12 @@ namespace Reko.Gui.Windows.Controls
             RecomputeLayout();
             OnScroll();
             Invalidate();
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            RecomputeLayout();
+            base.OnFontChanged(e);
         }
 
         /// <summary>

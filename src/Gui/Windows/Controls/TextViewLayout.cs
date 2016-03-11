@@ -23,17 +23,31 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
     public class TextViewLayout
     {
+        private TextViewModel model;
         SortedList<float, LayoutLine> visibleLines;
+        private Font defaultFont;
 
-        private TextViewLayout(SortedList<float, LayoutLine> visibleLines)
+        public TextViewLayout(TextViewModel model, Font defaultFont)
         {
+            this.model = model;
+            this.visibleLines = new SortedList<float, LayoutLine>();
+            this.defaultFont = defaultFont;
+        }
+
+        private TextViewLayout(TextViewModel model, Font defaultFont, SortedList<float, LayoutLine> visibleLines)
+        {
+            this.model = model;
+            this.defaultFont = defaultFont;
             this.visibleLines = visibleLines;
         }
+
+        public IList<LayoutLine> LayoutLines { get { return visibleLines.Values; } }
 
         /// <summary>
         /// Generates a TextViewLayout from all the lines in the model.
@@ -174,10 +188,84 @@ namespace Reko.Gui.Windows.Controls
 
             public TextViewLayout Build()
             {
-                return new TextViewLayout(visibleLines);
+                return new TextViewLayout(model, defaultFont, visibleLines);
             }
         }
 
+        internal TextPointer ClientToLogicalPosition(Graphics g, Point pt, StyleStack styleStack)
+        {
+            foreach (var line in this.visibleLines.Values)
+            {
+                if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
+                {
+                    return FindSpanPosition(g, pt, line, styleStack);
+                }
+            }
+            return new TextPointer { Line = model.EndPosition, Span = 0, Character = 0 };
+        }
+
+        private TextPointer FindSpanPosition(Graphics g, Point ptClient, LayoutLine line, StyleStack styleStack)
+        {
+            int iSpan = 0;
+            foreach (var span in line.Spans)
+            {
+                if (span.Extent.Contains(ptClient))
+                {
+                    int iChar = GetCharPosition(g, ptClient, span, styleStack);
+                    return new TextPointer
+                    {
+                        Line = line.Position,
+                        Span = iSpan,
+                        Character = iChar
+                    };
+                }
+                ++iSpan;
+            }
+            return new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
+        }
+
+        private int GetCharPosition(Graphics g, Point ptClient, LayoutSpan span, StyleStack styleStack)
+        {
+            var x = ptClient.X - span.Extent.Left;
+            var textStub = span.Text;
+            int iLow = 0;
+            int iHigh = textStub.Length;
+            styleStack.PushStyle(span.Style);
+            var font = styleStack.GetFont(defaultFont);
+            var sz = MeasureText(g, textStub, font);
+            float xLow = 0;
+            float xHigh = sz.Width;
+            while (iLow < iHigh - 1)
+            {
+                int iMid = iLow + (iHigh - iLow) / 2;
+                textStub = span.Text.Substring(0, iMid);
+                sz = MeasureText(g, textStub, font);
+                if (x < sz.Width)
+                {
+                    iHigh = iMid;
+                    xHigh = sz.Width;
+                }
+                else
+                {
+                    iLow = iMid;
+                    xLow = sz.Width;
+                }
+            }
+            styleStack.PopStyle();
+            var cx = xHigh - xLow;
+            if (x - xLow > cx)
+                return iHigh;
+            else
+                return iLow;
+        }
+
+        private Size MeasureText(Graphics g, string text, Font font)
+        {
+            var sz = TextRenderer.MeasureText(
+                g, text, font, new Size(0, 0),
+                TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+            return sz;
+        }
     }
 
     /// <summary>
