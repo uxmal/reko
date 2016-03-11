@@ -269,7 +269,7 @@ namespace Reko.Gui.Windows.Controls
             var painter = new TextViewPainter(layout, e.Graphics, ForeColor, BackColor, Font, styleStack);
             painter.SetSelection(GetStartSelection(), GetEndSelection());
 
-            painter.Paint();
+            painter.PaintGdi();
             GetStyleStack().PopStyle();
         }
 

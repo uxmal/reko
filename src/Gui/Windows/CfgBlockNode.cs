@@ -30,6 +30,7 @@ namespace Reko.Gui.Windows
 {
     public class CfgBlockNode
     {
+        public IUiPreferencesService UiPreferences { get; set; }
         public Block Block { get; set; }
         public TextViewModel TextModel { get; set; }
         public TextViewLayout Layout { get; set; }
@@ -51,7 +52,7 @@ namespace Reko.Gui.Windows
         public bool DrawNode(Node node, object graphics)
         {
             Graphics g = (Graphics)graphics;
-            Image image = null; //  ImageOfNode(node);
+            //Image image = null; //  ImageOfNode(node);
 
             //flip the image around its center
             using (System.Drawing.Drawing2D.Matrix m = g.Transform)
@@ -61,16 +62,30 @@ namespace Reko.Gui.Windows
                     g.SetClip(FillTheGraphicsPath(node.GeometryNode.BoundaryCurve));
                     //using (var m2 = new System.Drawing.Drawing2D.Matrix(1, 0, 0, -1, 0, 2 * (float)node.GeometryNode.Center.Y))
                     //    m.Multiply(m2);
-
-                    g.Transform = m;
-                    g.DrawImage(image, new PointF((float)(node.GeometryNode.Center.X - node.GeometryNode.Width / 2),
-                        (float)(node.GeometryNode.Center.Y - node.GeometryNode.Height / 2)));
+                    g.TranslateTransform(
+                        (float)(node.GeometryNode.Center.X - node.GeometryNode.Width / 2),
+                        (float)(node.GeometryNode.Center.Y - node.GeometryNode.Height / 2));
+                    var styleStack = GetStyleStack();
+                    var painter = new TextViewPainter(Layout, g, SystemColors.WindowText, SystemColors.Window,
+                        SystemFonts.DefaultFont, styleStack);
+                    var ptr = new TextPointer { Character = 0, Span = 0, Line = TextModel.StartPosition };
+                    painter.SetSelection(ptr, ptr);
+                    painter.PaintGdiPlus();
+                    //g.Transform = m;
+                    //g.DrawImage(image, new PointF(
+                    //    (float)(node.GeometryNode.Center.X - node.GeometryNode.Width / 2),
+                    //    (float)(node.GeometryNode.Center.Y - node.GeometryNode.Height / 2)));
                     g.Transform = saveM;
                     g.ResetClip();
                 }
             }
 
             return true;//returning false would enable the default rendering
+        }
+
+        private StyleStack GetStyleStack()
+        {
+            return new StyleStack(this.UiPreferences);
         }
 
         static System.Drawing.Drawing2D.GraphicsPath FillTheGraphicsPath(ICurve iCurve)

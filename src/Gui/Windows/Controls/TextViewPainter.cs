@@ -44,6 +44,7 @@ namespace Reko.Gui.Windows.Controls
         private Color defaultFgColor;
         private Color defaultBgColor;
         private Font defaultFont;
+        private bool useGdiPlus;
 
         public TextViewPainter(TextViewLayout outer, Graphics g, Color fgColor, Color bgColor, Font defaultFont, StyleStack styleStack)
         {
@@ -53,6 +54,7 @@ namespace Reko.Gui.Windows.Controls
             this.defaultBgColor = bgColor;
             this.defaultFont = defaultFont;
             this.styleStack = styleStack;
+            this.useGdiPlus = false;
         }
 
         public void SetSelection(TextPointer start, TextPointer end)
@@ -61,8 +63,19 @@ namespace Reko.Gui.Windows.Controls
             this.selEnd = end;
         }
 
-        public void Paint()
+        public void PaintGdi()
         {
+            this.useGdiPlus = false;
+            extent = outer.CalculateExtent();
+            foreach (var line in outer.LayoutLines)
+            {
+                PaintLine(line);
+            }
+        }
+
+        public void PaintGdiPlus()
+        {
+            this.useGdiPlus = true;
             extent = outer.CalculateExtent();
             foreach (var line in outer.LayoutLines)
             {
@@ -202,16 +215,30 @@ namespace Reko.Gui.Windows.Controls
             graphics.FillRectangle(
                 selected ? SystemBrushes.Highlight : bg,
                 rcText);
-            var pt = new Point((int)rcText.X, (int)rcText.Y);
-            TextRenderer.DrawText(
-                this.graphics,
-                text,
-                this.font,
-                pt,
-                selected ? SystemColors.HighlightText : fg,
-                TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+            if (useGdiPlus)
+            {
+                var brush = new SolidBrush(selected ? SystemColors.HighlightText : fg);
+                graphics.DrawString(
+                    text,
+                    this.font,
+                    brush,
+                    rcText.Left,
+                    rcText.Top,
+                    StringFormat.GenericTypographic);
+                brush.Dispose();
+            }
+            else
+            {
+                var pt = new Point((int)rcText.X, (int)rcText.Y);
+                TextRenderer.DrawText(
+                    this.graphics,
+                    text,
+                    this.font,
+                    pt,
+                    selected ? SystemColors.HighlightText : fg,
+                    TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+            }
             rcText.X += rcText.Width;
         }
     }
-
 }

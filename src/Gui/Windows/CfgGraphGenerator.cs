@@ -36,18 +36,22 @@ namespace Reko.Gui.Windows
         private Graph graph;
         private HashSet<Block> visited;
         private Graphics g;
+        private Font defaultFont;
+        private IUiPreferencesService uiPreferences;
 
-        public CfgGraphGenerator(Graph graph, Graphics g)
+        public CfgGraphGenerator(Graph graph, IUiPreferencesService uiPreferences, Graphics g, Font defaultFont)
         {
+            this.uiPreferences = uiPreferences;
             this.graph = graph;
             this.g = g;
+            this.defaultFont = defaultFont;
             this.visited = new HashSet<Block>();
         }
 
-        public static Graph Generate(Procedure proc, Graphics g)
+        public static Graph Generate(IUiPreferencesService uiPreferences, Procedure proc, Graphics g, Font defaultFont)
         {
             Graph graph = new Graph();
-            var cfgGen = new CfgGraphGenerator(graph, g);
+            var cfgGen = new CfgGraphGenerator(graph, uiPreferences, g, defaultFont);
             cfgGen.Traverse(proc.EntryBlock.Succ[0]);
             graph.Attr.LayerDirection = LayerDirection.TB;
             return graph;
@@ -81,9 +85,14 @@ namespace Reko.Gui.Windows
         private Node CreateGraphNode(Block b)
         {
             var nl = "\n    ";
+            var model = GenerateTextModel(b);
+            var stack = new StyleStack(uiPreferences);
+            var layout = TextViewLayout.AllLines(model, g, defaultFont, stack);
             var blockNode = new CfgBlockNode {
                 Block = b,
-                TextModel = GenerateTextModel(b)
+                TextModel = GenerateTextModel(b),
+                 Layout = layout,
+                 UiPreferences = uiPreferences,
             };
             var node = graph.AddNode(b.Name);
             node.Attr.LabelMargin = 5;

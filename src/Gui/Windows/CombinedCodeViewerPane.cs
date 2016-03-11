@@ -259,7 +259,8 @@ namespace Reko.Gui.Windows
             gViewer.Parent = combinedCodeView.Parent;
             using (var g = combinedCodeView.CreateGraphics())
             {
-                gViewer.Graph = CfgGraphGenerator.Generate(proc, g);
+                var uiPreferences = services.RequireService<IUiPreferencesService>();
+                gViewer.Graph = CfgGraphGenerator.Generate(uiPreferences, proc, g, combinedCodeView.Font);
             }
             combinedCodeView.Visible = false;
             gViewer.Visible = true;

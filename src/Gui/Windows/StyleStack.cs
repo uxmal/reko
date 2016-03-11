@@ -36,6 +36,7 @@ namespace Reko.Gui.Windows.Controls
 
         public StyleStack(IUiPreferencesService uiPrefSvc)
         {
+            if (uiPrefSvc == null) throw new ArgumentNullException("uiPrefSvc");
             this.uiPrefSvc = uiPrefSvc;
             this.stack = new List<UiStyle>();
         }
