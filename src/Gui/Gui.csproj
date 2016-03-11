@@ -274,6 +274,7 @@
       <DependentUpon>CombinedCodeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Controls\TextViewLayout.cs" />
+    <Compile Include="Windows\Controls\TextViewPainter.cs" />
     <Compile Include="Windows\GlobalVariablesPane.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />

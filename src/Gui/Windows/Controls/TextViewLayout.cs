@@ -86,7 +86,6 @@ namespace Reko.Gui.Windows.Controls
                     break;
                 builder.AddLayoutLine(lines[0], ref rcLine);
             }
-            Control ctrl;
             return builder.Build();
         }
 

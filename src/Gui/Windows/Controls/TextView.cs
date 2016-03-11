@@ -258,7 +258,19 @@ namespace Reko.Gui.Windows.Controls
             Invalidate();
         }
 
-     
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (Services == null)
+            {
+                Debug.Print("TextView.OnPaint: Services property must be set");
+                return;
+            }
+            GetStyleStack().PushStyle(StyleClass);
+            var painter = new TextViewPainter(this, e.Graphics, styleStack);
+            painter.Paint();
+            GetStyleStack().PopStyle();
+        }
+
         private int ComparePositions(TextPointer a, TextPointer b)
         {
             var d = model.ComparePositions(a.Line, b.Line);
