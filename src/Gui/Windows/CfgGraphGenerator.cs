@@ -82,6 +82,8 @@ namespace Reko.Gui.Windows
             }
         }
 
+        private bool useTextEngine = false;
+
         private Node CreateGraphNode(Block b)
         {
             var nl = "\n    ";
@@ -97,7 +99,7 @@ namespace Reko.Gui.Windows
             var node = graph.AddNode(b.Name);
             node.Attr.LabelMargin = 5;
             node.UserData = blockNode;
-            if (nl.Length > 0)
+            if (useTextEngine)
             {
                 node.Attr.Shape = Shape.DrawFromGeometry;
                 node.DrawNodeDelegate = blockNode.DrawNode;

@@ -63,6 +63,8 @@ namespace Reko.Gui.Windows.Controls
             this.selEnd = end;
         }
 
+        // Use the more accurate GDI text renderer, but can't participate in 
+        // GDI+ scaling transforms.
         public void PaintGdi()
         {
             this.useGdiPlus = false;
@@ -73,6 +75,8 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
+        // Use the GDI+ text renderer, which scales correctly but doesn't
+        // measure text accurately.
         public void PaintGdiPlus()
         {
             this.useGdiPlus = true;

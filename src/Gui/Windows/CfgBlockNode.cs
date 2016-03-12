@@ -23,6 +23,7 @@ using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using Reko.Gui.Windows.Controls;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using P2 = Microsoft.Msagl.Core.Geometry.Point;
 
@@ -36,7 +37,7 @@ namespace Reko.Gui.Windows
         public TextViewLayout Layout { get; set; }
 
         /// <summary>
-        /// Compute the size of the block and then render it.
+        /// Compute the size of the block
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
@@ -52,34 +53,39 @@ namespace Reko.Gui.Windows
         public bool DrawNode(Node node, object graphics)
         {
             Graphics g = (Graphics)graphics;
-            //Image image = null; //  ImageOfNode(node);
 
-            //flip the image around its center
-            using (System.Drawing.Drawing2D.Matrix m = g.Transform)
+            var m = g.Transform;
+            var saveM = g.Transform.Clone();
+            //      g.SetClip(FillTheGraphicsPath(node.GeometryNode.BoundaryCurve));
+
+            // This is supposed to flip the text around its center
+
+            var c = (float)node.GeometryNode.Center.Y;
+            using (var m2 = new System.Drawing.Drawing2D.Matrix(1, 0, 0, -1, 0, 2 * c))
             {
-                using (System.Drawing.Drawing2D.Matrix saveM = m.Clone())
-                {
-                    g.SetClip(FillTheGraphicsPath(node.GeometryNode.BoundaryCurve));
-                    //using (var m2 = new System.Drawing.Drawing2D.Matrix(1, 0, 0, -1, 0, 2 * (float)node.GeometryNode.Center.Y))
-                    //    m.Multiply(m2);
-                    g.TranslateTransform(
-                        (float)(node.GeometryNode.Center.X - node.GeometryNode.Width / 2),
-                        (float)(node.GeometryNode.Center.Y - node.GeometryNode.Height / 2));
-                    var styleStack = GetStyleStack();
-                    var painter = new TextViewPainter(Layout, g, SystemColors.WindowText, SystemColors.Window,
-                        SystemFonts.DefaultFont, styleStack);
-                    var ptr = new TextPointer { Character = 0, Span = 0, Line = TextModel.StartPosition };
-                    painter.SetSelection(ptr, ptr);
-                    painter.PaintGdiPlus();
-                    //g.Transform = m;
-                    //g.DrawImage(image, new PointF(
-                    //    (float)(node.GeometryNode.Center.X - node.GeometryNode.Width / 2),
-                    //    (float)(node.GeometryNode.Center.Y - node.GeometryNode.Height / 2)));
-                    g.Transform = saveM;
-                    g.ResetClip();
-                }
+                m.Multiply(m2);
             }
 
+            m.Translate(
+                (float)node.GeometryNode.Center.X,
+                (float)node.GeometryNode.Center.Y);
+
+            g.Transform = m;
+
+            var styleStack = GetStyleStack();
+            var painter = new TextViewPainter(
+                Layout, g,
+                SystemColors.WindowText,
+                SystemColors.Window,
+                SystemFonts.DefaultFont, styleStack);
+            var ptr = new TextPointer { Character = 0, Span = 0, Line = TextModel.StartPosition };
+            painter.SetSelection(ptr, ptr);
+            painter.PaintGdiPlus();
+            g.Transform = saveM;
+            g.ResetClip();
+
+            saveM.Dispose();
+       //     m.Dispose();
             return true;//returning false would enable the default rendering
         }
 
