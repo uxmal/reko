@@ -206,6 +206,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
             Assert.AreEqual("00042020", mcdm.CurrentPosition.ToString());
             Assert.AreEqual(0, delta);
+
+            mcdm.MoveToLine(mcdm.StartPosition, 2);
+            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
         }
 
         [Test]
