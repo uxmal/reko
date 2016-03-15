@@ -41,6 +41,6 @@ namespace Reko.Core
 
         public ObservableRangeCollection<Program> Programs { get; private set; }
         public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
-
+        public TypeLibrary LoadedMetadata { get; set; }
     }
 }

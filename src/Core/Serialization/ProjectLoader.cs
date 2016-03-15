@@ -163,11 +163,12 @@ namespace Reko.Core.Serialization
                     string.Format("Unknown operating environment '{0}' in project file.",
                         sp.PlatformName ?? "(null)"));
             this.platform = env.Load(Services, arch);
+            this.project.LoadedMetadata = this.platform.CreateMetadata();
             var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
             var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
             var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
-            project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
+            project.Programs.AddRange(programs);
             return this.project;
         }
 
@@ -182,8 +183,8 @@ namespace Reko.Core.Serialization
             var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
             var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
             var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
-            project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
+            project.Programs.AddRange(programs);
             return this.project;
         }
 
@@ -198,8 +199,8 @@ namespace Reko.Core.Serialization
             var typelibs = sp.Inputs.OfType<MetadataFile_v2>().Select(m => VisitMetadataFile(m));
             var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(s));
             var asm = sp.Inputs.OfType<AssemblerFile_v2>().Select(s => VisitAssemblerFile(s));
-            project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
+            project.Programs.AddRange(programs);
             return this.project;
         }
 
@@ -294,9 +295,9 @@ namespace Reko.Core.Serialization
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
+            var tlDeser = CreateTypeLibraryDeserializer();
             foreach (var kv in user.Globals)
             {
-                var tlDeser = program.CreateTypeLibraryDeserializer();
                 var dt = kv.Value.DataType.Accept(tlDeser);
                 var item = new ImageMapItem((uint)dt.Size)
                 {
@@ -316,6 +317,12 @@ namespace Reko.Core.Serialization
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
             }
+            program.EnvironmentMetadata = project.LoadedMetadata;
+        }
+
+        private TypeLibraryDeserializer CreateTypeLibraryDeserializer()
+        {
+            return new TypeLibraryDeserializer(platform, true, project.LoadedMetadata.Clone());
         }
 
         private object ReadItem(XmlElement element)
@@ -397,9 +404,9 @@ namespace Reko.Core.Serialization
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
+            var tlDeser = CreateTypeLibraryDeserializer();
             foreach (var kv in user.Globals)
             {
-                var tlDeser = program.CreateTypeLibraryDeserializer();
                 var dt = kv.Value.DataType.Accept(tlDeser);
                 var item = new ImageMapItem((uint)dt.Size)
                 {
@@ -420,6 +427,7 @@ namespace Reko.Core.Serialization
             {
                 program.User.Heuristics.Add("shingle");
             }
+            program.EnvironmentMetadata = project.LoadedMetadata;
         }
 
         public MetadataFile VisitMetadataFile(string projectFilePath, MetadataFile_v3 sMetadata)
@@ -437,10 +445,7 @@ namespace Reko.Core.Serialization
         public MetadataFile LoadMetadataFile(string filename)
         {
             var platform = DeterminePlatform(filename);
-            foreach (var program in project.Programs)
-            {
-                program.LoadMetadataFile(loader, filename);
-            }
+            this.project.LoadedMetadata = loader.LoadMetadata(filename, platform, this.project.LoadedMetadata);
             return new MetadataFile
             {
                 Filename = filename,

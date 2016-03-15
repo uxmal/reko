@@ -6,3 +6,5 @@
 *.csproj.user
 TestResults
 /src/Samples/TravisRelease
+*.VC.opendb
+

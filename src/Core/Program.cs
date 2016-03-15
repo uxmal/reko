@@ -45,7 +45,6 @@ namespace Reko.Core
         private Identifier globals;
         private StructureType globalFields;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
-        private TypeLibrary metadata;
 
         public Program()
         {
@@ -53,6 +52,7 @@ namespace Reko.Core
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
             this.CallGraph = new CallGraph();
+            this.EnvironmentMetadata = new TypeLibrary();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
@@ -81,15 +81,11 @@ namespace Reko.Core
 
         public ImageMap ImageMap { get; set; }
 
-        public TypeLibrary Metadata
-        {
-            get
-            {
-                if (metadata == null)
-                    metadata = Platform.CreateMetadata();
-                return metadata;
-            }
-        }
+        /// <summary>
+        /// Metadata obtained from the environment -- not
+        /// from the decompilation of the program itself.
+        /// </summary>
+        public TypeLibrary EnvironmentMetadata { get; set; }
 
         /// <summary>
         /// The callgraph expresses the relationships between the callers (statements and procedures)
@@ -155,7 +151,7 @@ namespace Reko.Core
 
         public void LoadMetadataFile(ILoader loader, string filename)
         {
-            loader.LoadMetadata(filename, Platform, Metadata);
+            loader.LoadMetadata(filename, Platform, EnvironmentMetadata);
         }
 
         /// <summary>
@@ -167,7 +163,7 @@ namespace Reko.Core
         public virtual SymbolTable CreateSymbolTable()
         {
             var namedTypes = new Dictionary<string, SerializedType>();
-            var typedefs = Metadata.Types;
+            var typedefs = EnvironmentMetadata.Types;
             var dtSer = new DataTypeSerializer();
             foreach (var typedef in typedefs)
             {
@@ -178,13 +174,13 @@ namespace Reko.Core
 
         public ProcedureSerializer CreateProcedureSerializer()
         {
-            var typeLoader = new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+            var typeLoader = new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
             return Platform.CreateProcedureSerializer(typeLoader, Platform.DefaultCallingConvention);
         }
 
         public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
         {
-            return new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+            return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
 
         /// <summary>

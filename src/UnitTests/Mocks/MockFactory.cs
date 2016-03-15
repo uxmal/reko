@@ -240,7 +240,8 @@ namespace Reko.UnitTests.Mocks
         }
 
         public void Given_UserDefinedMetafile(
-            string moduleName, Dictionary<string, DataType> types,
+            string moduleName,
+            Dictionary<string, DataType> types,
             Dictionary<string, ProcedureSignature> signatures,
             ModuleDescriptor module)
         {
@@ -254,14 +255,9 @@ namespace Reko.UnitTests.Mocks
 
             var loader = CreateLoader();
 
-            var metafileName = moduleName+".xml";
+            var metafileName = moduleName + ".xml";
 
             CreateLoadMetadataStub(metafileName, platform, loaderMetadata);
-
-            foreach(var program in programs)
-            {
-                program.LoadMetadataFile(loader, metafileName);
-            }
         }
     }
 }

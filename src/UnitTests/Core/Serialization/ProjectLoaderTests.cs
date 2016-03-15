@@ -34,6 +34,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -43,6 +44,7 @@ namespace Reko.UnitTests.Core.Serialization
         private MockRepository mr;
         private MockFactory mockFactory;
         private ServiceContainer sc;
+        private IConfigurationService cfgSvc;
 
         [SetUp]
         public void Setup()
@@ -50,6 +52,8 @@ namespace Reko.UnitTests.Core.Serialization
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
             this.sc = new ServiceContainer();
+            this.cfgSvc = mr.Stub<IConfigurationService>();
+            this.sc.AddService<IConfigurationService>(cfgSvc);
         }
 
         [Test(Description = "If the project file just has a single metadata file, we don't know what the platform is; so ask the user.")]
@@ -285,14 +289,14 @@ namespace Reko.UnitTests.Core.Serialization
 
             var prld = new ProjectLoader(sc, ldr);
             var project = prld.LoadProject(@"c:\foo.project", sProject);
-            Assert.AreEqual(2, project.Programs[0].Metadata.Types.Count);
+            Assert.AreEqual(2, project.Programs[0].EnvironmentMetadata.Types.Count);
             Assert.AreEqual(
                 "word16",
-                project.Programs[0].Metadata.Types["USRTYPE1"].ToString()
+                project.Programs[0].EnvironmentMetadata.Types["USRTYPE1"].ToString()
             );
             Assert.AreEqual(
                 "word32",
-                project.Programs[0].Metadata.Types["USRTYPE2"].ToString()
+                project.Programs[0].EnvironmentMetadata.Types["USRTYPE2"].ToString()
             );
         }
 
@@ -321,6 +325,8 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sproject = new Project_v4
             {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
                 Inputs =
                 {
                     new DecompilerInput_v3
