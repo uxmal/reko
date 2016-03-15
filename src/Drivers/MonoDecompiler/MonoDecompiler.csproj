@@ -178,6 +178,7 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\X86\$(OutDir)Reko.Arch.X86.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
