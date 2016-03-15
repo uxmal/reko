@@ -35,7 +35,7 @@ namespace Reko.Core.Serialization
         T VisitSignature(SerializedSignature signature);
         T VisitStructure(StructType_v1 structure);
         T VisitTypedef(SerializedTypedef typedef);
-        T VisitTypeReference(SerializedTypeReference typeReference);
+        T VisitTypeReference(TypeReference_v1 typeReference);
         T VisitUnion(UnionType_v1 union);
         T VisitEnum(SerializedEnumType serializedEnumType);
         T VisitTemplate(SerializedTemplate serializedTemplate);

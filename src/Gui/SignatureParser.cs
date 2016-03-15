@@ -205,7 +205,7 @@ namespace Reko.Gui
                 Name = reg.Name,
                 Kind = new Register_v1(reg.Name),
                 OutParameter = false,
-                Type = new SerializedTypeReference { TypeName = type },
+                Type = new TypeReference_v1 { TypeName = type },
             };
             return arg;
         }
@@ -220,7 +220,7 @@ namespace Reko.Gui
             if (!arch.TryGetRegister(w2, out reg2))
                 return null;
             var seqArgName = reg.Name + "_" + reg2.Name;
-            var seqArgType = new SerializedTypeReference { TypeName = type };
+            var seqArgType = new TypeReference_v1 { TypeName = type };
             var seqKind = new SerializedSequence();
             seqKind.Registers = new Register_v1[]{ 
                     new Register_v1(reg.Name), 
@@ -250,7 +250,7 @@ namespace Reko.Gui
 
 			Argument_v1 arg = new Argument_v1();
 			arg.Name = argName;
-			arg.Type = new SerializedTypeReference { TypeName = typeName };
+			arg.Type = new TypeReference_v1 { TypeName = typeName };
 			arg.Kind = new StackVariable_v1(); //  (sizeInWords * wordSize);
 			return arg;
 		}

@@ -186,11 +186,11 @@ namespace Reko.UnitTests.Environments.Windows
             var sSig = new SerializedSignature
             {
                 Convention = "__cdecl",
-                ReturnValue = new Argument_v1(null, new SerializedTypeReference("TESTTYPE1"), null, false),
+                ReturnValue = new Argument_v1(null, new TypeReference_v1("TESTTYPE1"), null, false),
                 Arguments = new Argument_v1[]
                 {
-                    new Argument_v1("a", new SerializedTypeReference("TESTTYPE2"), null, false),
-                    new Argument_v1("b", new SerializedTypeReference("TESTTYPE3"), null, false)
+                    new Argument_v1("a", new TypeReference_v1("TESTTYPE2"), null, false),
+                    new Argument_v1("b", new TypeReference_v1("TESTTYPE3"), null, false)
                 }
             };
             var sig = ser.Deserialize(sSig, win32.Architecture.CreateFrame());

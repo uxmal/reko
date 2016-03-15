@@ -319,28 +319,43 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void Prld_LoadGlobalUserData()
         {
-            var sproject =
-    @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
-  <input>
-    <user>
-      <global>
-        <Address>10000010</Address>
-        <arr length=""10"">
-          <type>refType</type>
-        </arr>
-        <Name>testVar</Name>
-      </global>
-    </user>
-  </input>
-</project>";
+            var sproject = new Project_v4
+            {
+                Inputs =
+                {
+                    new DecompilerInput_v3
+                    {
+                        User = new UserData_v3
+                        {
+                            GlobalData =
+                            {
+                                new GlobalDataItem_v2
+                                {
+                                    Address = "10000010",
+                                    Name = "testVar",
+                                    DataType = new ArrayType_v1
+                                    {
+                                        ElementType = new TypeReference_v1
+                                        {
+                                             TypeName = "Blob"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new MetadataFile_v3
+                    {
+                        Filename = "foo.lib",
+                    }
+                }
+            };
             var ldr = mockFactory.CreateLoader();
 
             var prld = new ProjectLoader(sc, ldr);
             var project = prld.LoadProject(
                 @"c:\foo\global_user.proj",
-                new MemoryStream(Encoding.UTF8.GetBytes(sproject))
-            );
+                sproject);
 
             Assert.AreEqual(1, project.Programs.Count);
             Assert.AreEqual(1, project.Programs[0].User.Globals.Count);

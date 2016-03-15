@@ -108,7 +108,7 @@ namespace Reko.Core.CLanguage
             //return size;
         }
 
-        public int VisitTypeReference(SerializedTypeReference typeReference)
+        public int VisitTypeReference(TypeReference_v1 typeReference)
         {
             return typedefs[typeReference.TypeName].Accept(this);
         }

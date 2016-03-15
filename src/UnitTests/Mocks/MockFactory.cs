@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Mocks
                 throw new NotImplementedException();
             }
 
-            public DataType VisitTypeReference(SerializedTypeReference typeReference)
+            public DataType VisitTypeReference(TypeReference_v1 typeReference)
             {
                 return new TypeReference(typeReference.TypeName, null);
             }

@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Environments.SysV
 
         private SerializedType Type(string typeName)
         {
-            return new SerializedTypeReference(typeName);
+            return new TypeReference_v1(typeName);
         }
 
         private Argument_v1 RegArg(SerializedType type, string regName)

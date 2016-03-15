@@ -94,7 +94,7 @@ namespace Reko.Core.Serialization
                     new XmlElementAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
                     new XmlElementAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},
-                    new XmlElementAttribute("type", typeof(SerializedTypeReference)) { Namespace = @namespace},
+                    new XmlElementAttribute("type", typeof(TypeReference_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("void", typeof(VoidType_v1)) { Namespace = @namespace},
                 }
             };
@@ -116,7 +116,7 @@ namespace Reko.Core.Serialization
                     new XmlArrayItemAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},
-                    new XmlArrayItemAttribute("type", typeof(SerializedTypeReference)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("type", typeof(TypeReference_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("void", typeof(VoidType_v1)) { Namespace = @namespace},
                 }
             };

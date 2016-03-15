@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             sig.ReturnValue = new Argument_v1();
             sig.ReturnValue.Kind = new Register_v1("eax");
-            sig.ReturnValue.Type = new SerializedTypeReference("int32");
+            sig.ReturnValue.Type = new TypeReference_v1("int32");
         }
 
         [Test]
