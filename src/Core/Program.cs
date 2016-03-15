@@ -43,7 +43,6 @@ namespace Reko.Core
     public class Program
     {
         private Identifier globals;
-        private StructureType globalFields;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
 
         public Program()
@@ -61,6 +60,7 @@ namespace Reko.Core
             this.TypeStore = new TypeStore();
             this.Resources = new ProgramResourceGroup();
             this.User = new UserData();
+            this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
         }
 
         public Program(ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
@@ -140,12 +140,13 @@ namespace Reko.Core
             }
         }
 
+        public StructureType GlobalFields { get; private set; }
+
         private void EnsureGlobals()
         {
             if (Architecture == null)
                 throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
-            globalFields = TypeFactory.CreateStructureType("Globals", 0);
-            var ptrGlobals = TypeFactory.CreatePointer(globalFields, Platform.PointerType.Size);
+            var ptrGlobals = TypeFactory.CreatePointer(GlobalFields, Platform.PointerType.Size);
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }
 
@@ -355,6 +356,7 @@ namespace Reko.Core
             globals = null;
             TypeFactory = new TypeFactory();
             TypeStore = new TypeStore();
+            GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
         }
     } 
 

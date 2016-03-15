@@ -58,7 +58,7 @@ PyObject * py_unused(PyObject * self, PyObject * args)
 
 void initpySample()
 {
-	Py_InitModule4("pySample", &globals->t10003010, null, null, 1007);
+	Py_InitModule4("pySample", globals->methods, null, null, 1007);
 	return;
 }
 

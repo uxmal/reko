@@ -312,7 +312,11 @@ namespace Reko.Core.Serialization
                 {
                     program.ImageMap.AddItem(kv.Key, item);
                 }
+                //$BUGBUG: what about x86 segmented binaries?
+                int offset = (int)kv.Key.ToLinear();
+                program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
             }
+
             if (sUser.Heuristics != null)
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
