@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core;
 
 namespace Reko.Arch.Vax
 {
@@ -198,7 +199,7 @@ namespace Reko.Arch.Vax
  /* 9B */ new OpRec(Opcode.movzbw,  -1), 
  /* 9C */ new OpRec(Opcode.rotl,  -1), 
  /* 9D */ new OpRec(Opcode.acbb,  -1), 
- /* 9E */ new OpRec(Opcode.movab,  -1), 
+ /* 9E */ new OpRec(Opcode.movab, "ab,wl"), 
  /* 9F */ new OpRec(Opcode.pushab,  -1), 
 
  /* A0 */ new OpRec(Opcode.addw2,  -1), 

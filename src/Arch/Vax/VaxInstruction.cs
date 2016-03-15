@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,53 @@ using System.Text;
 
 namespace Reko.Arch.Vax
 {
-    class VaxInstruction
+    public class VaxInstruction : MachineInstruction
     {
+        internal MachineOperand[] Operands;
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override bool IsValid
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Opcode Opcode { get; internal set; }
+
+        public override int OpcodeAsInteger
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Render(MachineInstructionWriter writer)
+        {
+            writer.WriteOpcode(this.Opcode.ToString());
+            writer.Tab();
+            bool sep = false; 
+            foreach (var op in Operands)
+            {
+                if (sep)
+                    writer.Write(',');
+                sep = true;
+                op.Write(false, writer);
+            }
+        }
     }
 }

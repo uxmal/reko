@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="VaxArchitecture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
