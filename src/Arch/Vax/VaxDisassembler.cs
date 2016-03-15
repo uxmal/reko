@@ -98,6 +98,7 @@ namespace Reko.Arch.Vax
             case 'b': return PrimitiveType.Byte;
             case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
+            case 'f': return PrimitiveType.Real32;  //$TODO: this is not IEEE
             default:
                 throw new NotImplementedException(
                     string.Format(
@@ -110,6 +111,7 @@ namespace Reko.Arch.Vax
         {
             op = null;
             byte b;
+            ushort w;
             if (!rdr.TryReadByte(out b))
             {
                 return false;
@@ -121,22 +123,20 @@ namespace Reko.Arch.Vax
             case 1:
             case 2:
             case 3:
-                op = new ImmediateOperand(
-                    Constant.Create(width, b & 0x3F));
+                op = LiteralOperand(width, b);
                 break;
             case 5: // Register mode
                 op = new RegisterOperand(reg);
                 break;
             case 10: // Displacement mode
                 if (!rdr.TryReadByte(out b))
-                {
                     return false;
-                }
-                op = new MemoryOperand(width)
-                {
-                    Base = reg,
-                    Offset = Constant.SByte((sbyte)b)
-                };
+                op = DisplacementOperand(width, reg, Constant.SByte((sbyte)b));
+                break;
+            case 12:
+                if (!rdr.TryReadUInt16(out w))
+                    return false;
+                op = DisplacementOperand(width, reg, Constant.Int16((short)w));
                 break;
             default:
                 throw new NotImplementedException(
@@ -144,6 +144,41 @@ namespace Reko.Arch.Vax
                         "Unimplemented addressing mode {0:X2}", (b >> 4)));
             }
             return true;
+        }
+
+        private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c)
+        {
+            if (reg.Number == 15)
+            {
+                return AddressOperand.Ptr32(
+                    (uint)((int)rdr.Address.ToLinear() + c.ToInt32()));
+            }
+            return new MemoryOperand(width)
+            {
+                Base = reg,
+                Offset = c,
+            };
+        }
+
+        public static MachineOperand LiteralOperand(PrimitiveType width, byte b)
+        {
+            Constant c;
+            if (width.Domain == Domain.Real)
+            {
+                float exp = 1 << ((b >> 3) & 7);
+                float frac = 8 | (b & 7);
+                if (width.BitSize == 32)
+                {
+                    c = Constant.Real32(frac * exp / 16.0F);
+                }
+                else
+                    throw new NotImplementedException();
+            }
+            else
+            {
+                c = Constant.Create(width, b & 0x3F);
+            }
+            return new ImmediateOperand(c);
         }
 
         private RegisterStorage GetReg(int v)

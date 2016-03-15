@@ -52,8 +52,8 @@ namespace Reko.Arch.Vax
 
             new RegisterStorage("ap", 12, 0, PrimitiveType.Word32),
             new RegisterStorage("fp", 13, 0, PrimitiveType.Word32),
-            new RegisterStorage("sp", 0, 0, PrimitiveType.Word32),
-            new RegisterStorage("pc", 0, 0, PrimitiveType.Word32),
+            new RegisterStorage("sp", 14, 0, PrimitiveType.Word32),
+            new RegisterStorage("pc", 15, 0, PrimitiveType.Word32),
 
         };
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
