@@ -197,6 +197,7 @@ namespace Reko.Gui.Windows.Controls
             if (offset > 0)
             {
                 ImageMapItem item;
+
                 if (!program.ImageMap.TryFindItem(currentPosition, out item))
                     return moved;
                 int iItem = program.ImageMap.Items.IndexOfKey(item.Address);
@@ -255,13 +256,11 @@ namespace Reko.Gui.Windows.Controls
                             offset += i;
                         }
                     }
-                    iItem += offset > 0 ? 1 : -1;
-                    if (iItem < 0)
-                    {
-                        currentPosition = (Address)this.StartPosition;
-                        return moved;
-                    }
-                    else if (iItem >= program.ImageMap.Items.Count)
+
+                    // Since we fall off the current map item,
+                    // move to next image map item.
+                    ++iItem;
+                    if (iItem >= program.ImageMap.Items.Count)
                     {
                         currentPosition = (Address)this.EndPosition;
                         return moved;
@@ -269,14 +268,12 @@ namespace Reko.Gui.Windows.Controls
                     else
                     {
                         item = program.ImageMap.Items.Values[iItem];
-                        currentPosition = offset > 0
-                            ? item.Address
-                            : item.Address + item.Size;
+                        currentPosition = item.Address;
                     }
                 }
                 throw new NotImplementedException();
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("Moving backwards not implemented yet.");
         }
 
         private Address GetAddressOfLine(ImageMapItem item, int i)

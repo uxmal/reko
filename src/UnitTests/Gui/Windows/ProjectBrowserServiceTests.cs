@@ -409,7 +409,11 @@ namespace Reko.UnitTests.Gui.Windows
                     "<node " + 
                         "text=\".text\" " +
                         "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
-                        "tag=\"ImageMapSegmentNodeDesigner\" />" +
+                        "tag=\"ImageMapSegmentNodeDesigner\">" +
+                            "<node " +
+                                "text=\"Global variables\" " +
+                                "tag=\"GlobalVariablesNodeDesigner\" />" +
+                    "</node>" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                 "</node>" +
                 "</root>");

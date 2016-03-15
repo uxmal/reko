@@ -176,6 +176,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
+            // 041000: inst0
+            // 041002: inst1
+            // 042000: data <16 bytes>
+            // 042010: data <16 bytes>
+
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
             this.imageMap = new ImageMap(

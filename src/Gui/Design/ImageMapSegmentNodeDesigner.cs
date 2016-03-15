@@ -83,9 +83,9 @@ namespace Reko.Gui.Design
             if (program == null)
                 return;
             var eps = program.EntryPoints.Select(e => e.Address).ToHashSet();
+            var globals = GetGlobalVariables(program.ImageMap, segment);
             var desDictionary =
-                new TreeNodeDesigner[] { new GlobalVariablesNodeDesigner(segment) }
-                .Concat(
+                globals.Concat(
                 (from proc in program.Procedures.Where(p => segment.IsInRange(p.Key))
                  join up in program.User.Procedures on proc.Key.ToLinear() equals up.Key.ToLinear() into ups
                  from up in ups.DefaultIfEmpty()
@@ -96,6 +96,23 @@ namespace Reko.Gui.Design
                 from proc in ups.DefaultIfEmpty()
                 select new ProcedureDesigner(program, proc.Value, up.Value, up.Key, eps.Contains(up.Key))));
             Host.AddComponents(Component, desDictionary);
+        }
+
+        private TreeNodeDesigner[] GetGlobalVariables(ImageMap imageMap, ImageSegment segment)
+        {
+            if (imageMap.Items.Values
+                .Where(i => !(i is ImageMapBlock))
+                .Any(i => segment.IsInRange(i.Address)))
+            {
+                return new TreeNodeDesigner[]
+                {
+                    new GlobalVariablesNodeDesigner(segment)
+                };
+            }
+            else
+            {
+                return new TreeNodeDesigner[0];
+            }
         }
 
         private Program GetProgram()
