@@ -61,5 +61,16 @@ namespace Reko.UnitTests.Arch.Vax
         {
             AssertCode("movab\t-05(pc),r2", 0x9E, 0xAF, 0xFB, 0x52);
         }
+
+        [Test]
+        public void VaxDis_movl_reg_reg()
+        {
+            AssertCode("movl\tr0,r1", 0xD0, 0x50, 0x51);
+        }
+        [Test]
+        public void VaxDis_pushl_imm()
+        {
+            AssertCode("pushl\t#00000000", 0xDD, 0x00);
+        }
     }
 }

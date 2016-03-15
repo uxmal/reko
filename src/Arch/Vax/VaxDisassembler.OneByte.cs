@@ -253,7 +253,7 @@ namespace Reko.Arch.Vax
  /* CE */ new OpRec(Opcode.mnegl,  -1), 
  /* CF */ new OpRec(Opcode.casel,  -1), 
 
- /* D0 */ new OpRec(Opcode.movl,  -1), 
+ /* D0 */ new OpRec(Opcode.movl, "rl,wl"), 
  /* D1 */ new OpRec(Opcode.cmpl,  -1), 
  /* D2 */ new OpRec(Opcode.mcoml,  -1), 
  /* D3 */ new OpRec(Opcode.bitl,  -1), 
@@ -266,7 +266,7 @@ namespace Reko.Arch.Vax
  /* DA */ new OpRec(Opcode.mtpr,  -1), 
  /* DB */ new OpRec(Opcode.mfpr,  -1), 
  /* DC */ new OpRec(Opcode.movpsl,  -1), 
- /* DD */ new OpRec(Opcode.pushl,  -1), 
+ /* DD */ new OpRec(Opcode.pushl, "rl"), 
  /* DE */ new OpRec(Opcode.moval, -1), // mova,  -1), 
  /* DF */ new OpRec(Opcode.pushal, -1), // pushaf,  -1), 
 

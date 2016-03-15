@@ -66,6 +66,7 @@ namespace Reko.Arch.Vax
                 case ',':
                     continue;
                 case 'a':
+                case 'r':
                 case 'w':
                     if (!TryDecodeOperand(Width(format[i++]), out op))
                         return null;
@@ -108,6 +109,13 @@ namespace Reko.Arch.Vax
             var reg = arch.GetRegister(b & 0xF);
             switch (b >> 4)
             {
+            case 0: // Literal mode
+            case 1:
+            case 2:
+            case 3:
+                op = new ImmediateOperand(
+                    Constant.Create(width, b & 0x3F));
+                break;
             case 5: // Register mode
                 op = new RegisterOperand(reg);
                 break;

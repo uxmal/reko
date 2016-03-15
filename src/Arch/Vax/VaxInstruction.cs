@@ -71,6 +71,8 @@ namespace Reko.Arch.Vax
                 if (sep)
                     writer.Write(',');
                 sep = true;
+                if (op is ImmediateOperand)
+                    writer.Write('#');
                 op.Write(false, writer);
             }
         }
