@@ -50,21 +50,21 @@ namespace Reko.Arch.Vax
  /* 0F */ new OpRec(Opcode.remque,  -1), 
 
  /* 10 */ new OpRec(Opcode.bsbb,  -1), 
- /* 11 */ new OpRec(Opcode.brb,  -1), 
- /* 12 */ new OpRec(Opcode.bneq,    -1),    // bnequ
- /* 13 */ new OpRec(Opcode.beql,    -1),  // beqlu
- /* 14 */ new OpRec(Opcode.bgtr,  -1), 
- /* 15 */ new OpRec(Opcode.bleq,  -1), 
+ /* 11 */ new OpRec(Opcode.brb, "bb"), 
+ /* 12 */ new OpRec(Opcode.bneq, "bb"),    // bnequ
+ /* 13 */ new OpRec(Opcode.beql, "bb"),  // beqlu
+ /* 14 */ new OpRec(Opcode.bgtr, "bb"), 
+ /* 15 */ new OpRec(Opcode.bleq, "bb"), 
  /* 16 */ new OpRec(Opcode.jsb,  -1), 
  /* 17 */ new OpRec(Opcode.jmp,  -1), 
- /* 18 */ new OpRec(Opcode.bgeq,  -1), 
- /* 19 */ new OpRec(Opcode.blss,  -1), 
- /* 1A */ new OpRec(Opcode.bgtru,  -1), 
- /* 1B */ new OpRec(Opcode.blequ,  -1), 
- /* 1C */ new OpRec(Opcode.bvc,  -1), 
- /* 1D */ new OpRec(Opcode.bvs,  -1), 
- /* 1E */ new OpRec(Opcode.bgequ,   -1), // bcc, 
- /* 1F */ new OpRec(Opcode.blssu,  -1), //  bcs, 
+ /* 18 */ new OpRec(Opcode.bgeq, "bb"), 
+ /* 19 */ new OpRec(Opcode.blss, "bb"), 
+ /* 1A */ new OpRec(Opcode.bgtru, "bb"), 
+ /* 1B */ new OpRec(Opcode.blequ, "bb"), 
+ /* 1C */ new OpRec(Opcode.bvc, "bb"), 
+ /* 1D */ new OpRec(Opcode.bvs, "bb"), 
+ /* 1E */ new OpRec(Opcode.bgequ, "bb"), // bcc, 
+ /* 1F */ new OpRec(Opcode.blssu, "bb"), //  bcs, 
 
  /* 20 */ new OpRec(Opcode.addp4,  -1), 
  /* 21 */ new OpRec(Opcode.addp6,  -1), 
@@ -84,7 +84,7 @@ namespace Reko.Arch.Vax
  /* 2F */ new OpRec(Opcode.movtuc,  -1), 
 
  /* 30 */ new OpRec(Opcode.bsbw,  -1), 
- /* 31 */ new OpRec(Opcode.brw,  -1), 
+ /* 31 */ new OpRec(Opcode.brw, "bw"), 
  /* 32 */ new OpRec(Opcode.cvtwl,  -1), 
  /* 33 */ new OpRec(Opcode.cvtwb,  -1), 
  /* 34 */ new OpRec(Opcode.movp,  -1), 

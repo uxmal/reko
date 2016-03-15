@@ -67,10 +67,24 @@ namespace Reko.UnitTests.Arch.Vax
         {
             AssertCode("movl\tr0,r1", 0xD0, 0x50, 0x51);
         }
+
         [Test]
         public void VaxDis_pushl_imm()
         {
             AssertCode("pushl\t#00000000", 0xDD, 0x00);
+        }
+
+        [Test]
+        public void VaxDis_brb()
+        {
+            AssertCode("brb\t00100005", 0x11, 0x03);
+            AssertCode("brw\t00100005", 0x31, 0x02, 0x00);
+        }
+
+        [Test]
+        public void VaxDis_beq()
+        {
+            AssertCode("brb\t0010001A", 0x13, 0x18);
         }
     }
 }

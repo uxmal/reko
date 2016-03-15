@@ -58,6 +58,7 @@ namespace Reko.Arch.Vax
         {
             var ops = new List<MachineOperand>();
             MachineOperand op;
+            PrimitiveType width;
             int i = 0;
             while (i != format.Length)
             {
@@ -70,6 +71,12 @@ namespace Reko.Arch.Vax
                 case 'w':
                     if (!TryDecodeOperand(Width(format[i++]), out op))
                         return null;
+                    break;
+                case 'b':
+                    width = Width(format[i++]);
+                    long jOffset = rdr.ReadLeSigned(width);
+                    ulong uAddr = (uint)((long)rdr.Address.Offset + jOffset);
+                    op = AddressOperand.Ptr32((uint)uAddr);
                     break;
                 default: throw new NotImplementedException(
                     string.Format(
@@ -89,6 +96,7 @@ namespace Reko.Arch.Vax
             switch (w)
             {
             case 'b': return PrimitiveType.Byte;
+            case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
             default:
                 throw new NotImplementedException(
