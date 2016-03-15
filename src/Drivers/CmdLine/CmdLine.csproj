@@ -113,6 +113,7 @@
     <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
