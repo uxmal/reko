@@ -277,5 +277,40 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             mcdm.SetPositionAsFraction(1, 2);
             Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
         }
+
+        [Test]
+        public void Mcdm_GetPositionAsFraction()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute),
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+
+            var num_lines = 4;
+
+            for(int i = 0; i <= num_lines; i++)
+            {
+                mcdm.MoveToLine(mcdm.StartPosition, i);
+                var frac = mcdm.GetPositionAsFraction();
+
+                var format = @"
+  Expected: {0}/{1}
+  But was:  {2}/{3}
+";
+                var msg = string.Format(format, i, num_lines, frac.Item1, frac.Item2);
+                Assert.IsTrue((i * frac.Item2 == num_lines * frac.Item1), msg);
+            }
+        }
     }
 }
