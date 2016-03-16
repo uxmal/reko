@@ -111,10 +111,10 @@ namespace Reko.UnitTests.Core.Serialization
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
                 Inputs = {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
                         Filename = "f.exe",
-                        User = new UserData_v3
+                        User = new UserData_v4
                         {
                             Procedures =
                             {
@@ -165,9 +165,9 @@ namespace Reko.UnitTests.Core.Serialization
             var sp = new Project_v4
             {
                 Inputs = {
-                    new DecompilerInput_v3 {
+                    new DecompilerInput_v4 {
                         Filename ="foo.exe",
-                        User = new UserData_v3 {
+                        User = new UserData_v4 {
                             Heuristics = {
                                 new Heuristic_v3 { Name = "shingle" }
                             }

@@ -85,11 +85,11 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 Inputs =
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
-                        User = new UserData_v3 {
+                        User = new UserData_v4 {
                             Procedures =
                             {
                                 new Procedure_v1
@@ -378,9 +378,9 @@ namespace Reko.UnitTests.Core.Serialization
                 PlatformName = "testOS",
                 Inputs = 
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
-                        User = new UserData_v3
+                        User = new UserData_v4
                         {
                             Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } }
                         }
@@ -411,20 +411,20 @@ namespace Reko.UnitTests.Core.Serialization
             
             var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram("foo.proj", program);
-            var ip = (DecompilerInput_v3)file;
+            var ip = (DecompilerInput_v4)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
         }
 
         private void When_SaveToTextWriter(Program program, TextWriter sw)
         {
             var saver = new ProjectSaver(sc);
-            var sProj = new Project_v3
+            var sProj = new Project_v4
             {
                 Inputs = { saver.VisitProgram("foo.exe", program) }
             };
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = System.Xml.Formatting.Indented;
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
             ser.Serialize(writer, sProj);
         }
 
@@ -455,7 +455,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <input>
     <user>
       <platform>
@@ -489,7 +489,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <input>
     <user>
       <platform>
@@ -533,7 +533,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <input>
     <user>
       <platform>

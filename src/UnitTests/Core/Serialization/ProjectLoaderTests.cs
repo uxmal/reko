@@ -312,7 +312,7 @@ namespace Reko.UnitTests.Core.Serialization
                 PlatformName = "testOS",
                 Inputs =
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
                         Filename = "foo.exe",
                     }
@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Core.Serialization
                 PlatformName = "testOS",
                 Inputs =
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
                         Filename = "foo.exe",
                     },
@@ -423,9 +423,9 @@ namespace Reko.UnitTests.Core.Serialization
                 PlatformName = "testOS",
                 Inputs =
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
-                        User = new UserData_v3
+                        User = new UserData_v4
                         {
                             GlobalData =
                             {
