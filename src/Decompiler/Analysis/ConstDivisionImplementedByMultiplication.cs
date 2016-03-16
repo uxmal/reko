@@ -54,7 +54,6 @@ namespace Reko.Analysis
         private SsaState ssa;
         private Rational bestRational;
         private Identifier idOrig;
-        private object stmCur;
 
         public ConstDivisionImplementedByMultiplication(SsaState ssa)
         {

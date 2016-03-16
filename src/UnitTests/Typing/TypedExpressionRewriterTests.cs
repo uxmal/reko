@@ -179,6 +179,10 @@ namespace Reko.UnitTests.Typing
 
         public void SetupPreStages(Program program)
         {
+            foreach (var f in userDefinedGlobals)
+            {
+                program.GlobalFields.Fields.Add(f);
+            }
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore);
             dtb = new DataTypeBuilder(program.TypeFactory, program.TypeStore, program.Platform);
@@ -207,22 +211,6 @@ namespace Reko.UnitTests.Typing
                         new StackArgumentStorage(i * 4, argType)))
                     .ToArray());
             return new ExternalProcedure(name, sig);
-        }
-
-        private void AddUserDefinitions(Program program)
-        {
-            foreach (var field in userDefinedGlobals)
-            {
-                var addr = Address.Ptr32((uint)field.Offset);
-                program.User.Globals.Add(
-                    addr,
-                    new GlobalDataItem_v2
-                    {
-                        Address = addr,
-                        Name = field.Name,
-                        DataType = field.DataType,
-                    });
-            }
         }
 
         [Test]
@@ -982,7 +970,7 @@ test_exit:
         public void TerNamedGlobal()
         {
             var sExp =
-            #region Expected                @"// Before ///////
+            #region Expected@"// Before ///////
 // test
 // Return size: 0
 void test()
@@ -999,20 +987,19 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	func(&globals->t1000)
+	func(globals->arrayBlobs)
 test_exit:
+
 ";
             #endregion
 
             var sBlob = new StructureType("blob_t", 16);
-
             var func = Given_Procedure("func", new Pointer(sBlob, 4));
             Given_GlobalVariable(
                 0x0001000,
                 "arrayBlobs",
                 new ArrayType(
-                    new TypeReference("blob_t", sBlob),
-                    5));
+                    new TypeReference(sBlob), 5));
             RunStringTest(m =>
             {
                 m.SideEffect(m.Fn(func, m.Word32(0x1000)));
