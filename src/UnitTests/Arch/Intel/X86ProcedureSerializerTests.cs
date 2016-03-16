@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private SerializedType Type(string typeName)
         {
-            return new SerializedTypeReference(typeName);
+            return new TypeReference_v1(typeName);
         }
 
         private Argument_v1 RegArg(SerializedType type, string regName)
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Arch.Intel
                 Convention = "stdapi",
                 ReturnValue = new Argument_v1
                 {
-                    Type = new SerializedTypeReference("double"),
+                    Type = new TypeReference_v1("double"),
                     Kind = new FpuStackVariable_v1 { ByteSize = 8 },
                 }
             };

@@ -444,7 +444,7 @@ namespace Reko.ImageLoaders.MzExe
                 (n, t) => new Argument_v1
                 {
                     Name = n,
-                    Type = new SerializedTypeReference { TypeName = t }
+                    Type = new TypeReference_v1 { TypeName = t }
                 };
             if (isDll)
             {

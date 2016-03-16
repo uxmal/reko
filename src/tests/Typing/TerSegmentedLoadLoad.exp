@@ -23,7 +23,7 @@ l1:
 proc1_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1")
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment "Eq_2" (300 word16 w0300))
 	T_2 (in ds : selector)
@@ -31,7 +31,7 @@ Eq_2: (segment "Eq_2" (300 word16 w0300))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

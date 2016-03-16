@@ -30,7 +30,7 @@ namespace Reko.Core.Serialization
     /// Refers to another type by name only. Requires an external symbol table to
     /// resolve the type.
     /// </summary>
-    public class SerializedTypeReference : SerializedType
+    public class TypeReference_v1 : SerializedType
     {
         [XmlText]
         public string TypeName;
@@ -41,19 +41,19 @@ namespace Reko.Core.Serialization
         [XmlElement("tyArg")]
         public SerializedType[] TypeArguments;
 
-        public SerializedTypeReference()
+        public TypeReference_v1()
         {
         }
 
-        public SerializedTypeReference(string typeName)
+        public TypeReference_v1(string typeName)
         {
             this.TypeName = typeName;
         }
 
-        public SerializedTypeReference(string[] scope, string typeName, SerializedType[] typeArgs)
+        public TypeReference_v1(string[] scope, string typeName, SerializedType[] typeArgs)
         {
         }
-        public SerializedTypeReference(string [] scope, string typeName)
+        public TypeReference_v1(string [] scope, string typeName)
         {
             this.TypeName = typeName;
         }

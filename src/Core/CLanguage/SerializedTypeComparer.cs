@@ -136,7 +136,7 @@ namespace Reko.Core.CLanguage
             throw new NotImplementedException();
         }
 
-        public bool VisitTypeReference(SerializedTypeReference typeReference)
+        public bool VisitTypeReference(TypeReference_v1 typeReference)
         {
             throw new NotImplementedException();
         }

@@ -182,7 +182,7 @@ namespace Reko.UnitTests.Environments.Windows
                 throw new NotImplementedException();
             }
 
-            public StringBuilder VisitTypeReference(SerializedTypeReference typeReference)
+            public StringBuilder VisitTypeReference(TypeReference_v1 typeReference)
             {
                 sb.Append(typeReference.TypeName);
                 if (name != null)

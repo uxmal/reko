@@ -67,6 +67,7 @@ namespace Reko.Core.Serialization
     public interface IProjectFileVisitor_v3<T>
     {
         T VisitInputFile(DecompilerInput_v3 input);
+        T VisitInputFile(DecompilerInput_v4 input);
         T VisitMetadataFile(MetadataFile_v3 metadata);
         T VisitAssemblerFile(AssemblerFile_v3 asm);
     }

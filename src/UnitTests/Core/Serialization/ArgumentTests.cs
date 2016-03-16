@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			Argument_v1 sarg = new Argument_v1 {
 			    Name = "foo",
-			    Type = new SerializedTypeReference("int"),
+			    Type = new TypeReference_v1("int"),
 			    Kind = new Register_v1("eax"),
             };
 			Verify(sarg, "Core/SargWriteRegisterArgument.txt");
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			Argument_v1 sarg = new Argument_v1
             {
-			    Type = new SerializedTypeReference("int"),
+			    Type = new TypeReference_v1("int"),
 			    Kind = new Register_v1("eax"),
             };
 			Verify(sarg, "Core/SargWriteNamelessRegisterArgument.txt");
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Core.Serialization
 			Argument_v1 sarg = new Argument_v1
             {
 			    Name = "bar",
-			    Type = new SerializedTypeReference("int"),
+			    Type = new TypeReference_v1("int"),
 			    Kind = new StackVariable_v1()
             };
 			Verify(sarg, "Core/SargWriteStackArgument.txt");
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Core.Serialization
 			Argument_v1 sarg = new Argument_v1
             {
 			    Name = "bxOut",
-			    Type = new SerializedTypeReference("int"),
+			    Type = new TypeReference_v1("int"),
 			    OutParameter = true,
 			    Kind = new Register_v1("bx")
             };

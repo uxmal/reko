@@ -28,7 +28,7 @@ namespace Reko.Core.Serialization
 {
     public class MemberPointer_v1 : SerializedType
     {
-        public SerializedTypeReference DeclaringClass;
+        public TypeReference_v1 DeclaringClass;
         public SerializedType MemberType;
         public int Size;
 

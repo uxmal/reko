@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ReturnValue = new Argument_v1
                 {
-                    Type = new SerializedTypeReference("int"),
+                    Type = new TypeReference_v1("int"),
                     Kind = new Register_v1("ax")
                 },
                 Arguments = new Argument_v1[]
