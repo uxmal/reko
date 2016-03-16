@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1")
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_3: (struct "A" (0 word32 dw0000))
 	T_3 (in this : (ptr Eq_3))
@@ -21,7 +21,7 @@ Eq_12: LPVOID
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in eax : int32)
   Class: Eq_2
   DataType: int32
@@ -71,7 +71,7 @@ T_13: (in 0x00000001 : word32)
   DataType: Eq_9
   OrigDataType: word32
 */
-typedef struct Eq_1 {
+typedef struct Globals {
 } Eq_1;
 
 typedef struct A {

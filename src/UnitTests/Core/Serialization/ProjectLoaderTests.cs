@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Core.Serialization
         private IConfigurationService cfgSvc;
         private IPlatform platform;
         private IProcessorArchitecture arch;
+        private Dictionary<string, object> loadedOptions;
 
         [SetUp]
         public void Setup()
@@ -212,19 +213,23 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             Given_TestArch();
             Given_TestOS();
-            Dictionary<string,object> loadedOptions = null;
-            platform.Stub(p => p.LoadUserOptions(null))
-                .IgnoreArguments()
-                .Do(new Action<Dictionary<string, object>>(options => { loadedOptions = options; }));
             Given_Binary(ldr, platform);
+            Expect_LoadOptions();
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
-            Assert.AreEqual(2,     loadedOptions.Count);
+            Assert.AreEqual(2, loadedOptions.Count);
             Assert.AreEqual("Bob", loadedOptions["Name"]);
             Assert.AreEqual("Sue", loadedOptions["Name2"]);
+        }
+
+        private void Expect_LoadOptions()
+        {
+            platform.Stub(p => p.LoadUserOptions(null))
+                .IgnoreArguments()
+                .Do(new Action<Dictionary<string, object>>(options => { this.loadedOptions = options; }));
         }
 
         [Test]
@@ -232,7 +237,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sExp =
     @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <arch>testArch</arch>
   <platform>testOS</platform>
   <input>
@@ -249,14 +254,16 @@ namespace Reko.UnitTests.Core.Serialization
   </input>
 </project>";
             var ldr = mr.Stub<ILoader>();
-            var platform = new TestPlatform(sc);
+            Given_TestArch();
+            Given_TestOS();
             Given_Binary(ldr, platform);
+            Expect_LoadOptions();
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             prld.LoadProject("/ff/b/foo.proj", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
-            var list = (IList)platform.Test_Options["Names"];
+            var list = (IList)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
         }
 
@@ -282,16 +289,17 @@ namespace Reko.UnitTests.Core.Serialization
   </input>
 </project>";
             var ldr = mr.Stub<ILoader>();
-            var platform = new TestPlatform(sc);
             Given_TestArch();
-            Given_Platform(platform);
+            Given_TestOS();
             Given_Binary(ldr, platform);
+            Expect_LoadOptions();
+
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             prld.LoadProject("c:\\foo\\bar.proj", new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
 
-            var list = (IDictionary)platform.Test_Options["Names"];
+            var list = (IDictionary)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
         }
 

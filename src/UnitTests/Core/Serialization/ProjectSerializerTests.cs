@@ -30,6 +30,8 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core.Configuration;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -40,6 +42,8 @@ namespace Reko.UnitTests.Core.Serialization
         private ServiceContainer sc;
         private ILoader loader;
         private IProcessorArchitecture arch;
+        private IConfigurationService cfgSvc;
+        private IPlatform platform;
 
         [SetUp]
         public void Setup()
@@ -67,20 +71,45 @@ namespace Reko.UnitTests.Core.Serialization
                 }
                 m.Arguments[1] = addr;
             }).Return(false);
+            this.cfgSvc = mr.Stub<IConfigurationService>();
+            this.sc.AddService<IConfigurationService>(cfgSvc);
+        }
+
+        private void Given_Architecture()
+        {
+            this.arch.Stub(a => a.Name).Return("testArch");
+            this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
+        }
+
+        private void Given_TestOS_Platform()
+        {
+            Debug.Assert(arch != null, "Must call Given_Architecture first.");
+            // A very simple dumb platform with no intelligent behaviour.
+            this.platform = mr.Stub<IPlatform>();
+            var oe = mr.Stub<OperatingEnvironment>();
+            this.platform.Stub(p => p.Name).Return("testOS");
+            this.platform.Stub(p => p.SaveUserOptions()).Return(null);
+            this.platform.Stub(p => p.Architecture).Return(arch);
+            this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
+            this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
+            oe.Stub(e => e.Load(sc, arch)).Return(platform);
         }
 
         [Test]
-        public void Ps_Load_v3()
+        public void Ps_Load_v4()
         {
             var bytes = new byte[100];
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(
                 new Program { Architecture = arch });
-
+            Given_Architecture();
+            Given_TestOS_Platform();
             mr.ReplayAll();
 
-            var sp = new Project_v3
+            var sp = new Project_v4
             {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
                 Inputs = {
                     new DecompilerInput_v3
                     {

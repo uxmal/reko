@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -43,20 +44,24 @@ namespace Reko.UnitTests.Core.Serialization
         private ILoader loader;
         private IProcessorArchitecture arch;
         private IPlatform platform;
+        private IConfigurationService cfgSvc;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
+            this.cfgSvc = mr.Stub<IConfigurationService>();
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
+            sc.AddService<IConfigurationService>(cfgSvc);
         }
 
         private void Given_Architecture()
         {
             this.arch = mr.StrictMock<IProcessorArchitecture>();
             this.arch.Stub(a => a.Name).Return("testArch");
+            this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
         }
 
         private void Given_TestOS_Platform()
@@ -64,9 +69,13 @@ namespace Reko.UnitTests.Core.Serialization
             Debug.Assert(arch != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
             this.platform = mr.Stub<IPlatform>();
+            var oe = mr.Stub<OperatingEnvironment>();
             this.platform.Stub(p => p.Name).Return("testOS");
             this.platform.Stub(p => p.SaveUserOptions()).Return(null);
             this.platform.Stub(p => p.Architecture).Return(arch);
+            this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
+            this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
+            oe.Stub(e => e.Load(sc, arch)).Return(platform);
         }
 
         [Test]
@@ -363,8 +372,10 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SudLoadProgramOptions()
         {
-            var sProject = new Project_v3
+            var sProject = new Project_v4
             {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
                 Inputs = 
                 {
                     new DecompilerInput_v3
@@ -376,6 +387,8 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
+            Given_Architecture();
+            Given_TestOS_Platform();
             var loader = mr.Stub<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()
