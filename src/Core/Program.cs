@@ -43,9 +43,7 @@ namespace Reko.Core
     public class Program
     {
         private Identifier globals;
-        private StructureType globalFields;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
-        private TypeLibrary metadata;
 
         public Program()
         {
@@ -53,6 +51,7 @@ namespace Reko.Core
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
             this.CallGraph = new CallGraph();
+            this.EnvironmentMetadata = new TypeLibrary();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
@@ -61,6 +60,7 @@ namespace Reko.Core
             this.TypeStore = new TypeStore();
             this.Resources = new ProgramResourceGroup();
             this.User = new UserData();
+            this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
         }
 
         public Program(ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
@@ -81,15 +81,11 @@ namespace Reko.Core
 
         public ImageMap ImageMap { get; set; }
 
-        public TypeLibrary Metadata
-        {
-            get
-            {
-                if (metadata == null)
-                    metadata = Platform.CreateMetadata();
-                return metadata;
-            }
-        }
+        /// <summary>
+        /// Metadata obtained from the environment -- not
+        /// from the decompilation of the program itself.
+        /// </summary>
+        public TypeLibrary EnvironmentMetadata { get; set; }
 
         /// <summary>
         /// The callgraph expresses the relationships between the callers (statements and procedures)
@@ -124,7 +120,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Represents a _pointer_ to a structure that contains all the 
+        /// Represents a _fictitious_ pointer to a structure that contains all the 
         /// global variables of the program. 
         /// </summary>
         /// <remarks>
@@ -144,18 +140,19 @@ namespace Reko.Core
             }
         }
 
+        public StructureType GlobalFields { get; private set; }
+
         private void EnsureGlobals()
         {
             if (Architecture == null)
                 throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
-            globalFields = TypeFactory.CreateStructureType("Globals", 0);
-            var ptrGlobals = TypeFactory.CreatePointer(globalFields, Platform.PointerType.Size);
+            var ptrGlobals = TypeFactory.CreatePointer(GlobalFields, Platform.PointerType.Size);
             globals = new Identifier("globals", ptrGlobals, MemoryStorage.Instance);
         }
 
         public void LoadMetadataFile(ILoader loader, string filename)
         {
-            loader.LoadMetadata(filename, Platform, Metadata);
+            loader.LoadMetadata(filename, Platform, EnvironmentMetadata);
         }
 
         /// <summary>
@@ -167,7 +164,7 @@ namespace Reko.Core
         public virtual SymbolTable CreateSymbolTable()
         {
             var namedTypes = new Dictionary<string, SerializedType>();
-            var typedefs = Metadata.Types;
+            var typedefs = EnvironmentMetadata.Types;
             var dtSer = new DataTypeSerializer();
             foreach (var typedef in typedefs)
             {
@@ -178,13 +175,13 @@ namespace Reko.Core
 
         public ProcedureSerializer CreateProcedureSerializer()
         {
-            var typeLoader = new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+            var typeLoader = new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
             return Platform.CreateProcedureSerializer(typeLoader, Platform.DefaultCallingConvention);
         }
 
         public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
         {
-            return new TypeLibraryDeserializer(Platform, true, Metadata.Clone());
+            return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
 
         /// <summary>
@@ -359,6 +356,7 @@ namespace Reko.Core
             globals = null;
             TypeFactory = new TypeFactory();
             TypeStore = new TypeStore();
+            GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
         }
     } 
 

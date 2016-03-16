@@ -30,7 +30,6 @@ namespace Reko.Core.Serialization
 		private ProcedureSerializer procSer;
 		private IProcessorArchitecture arch;
 		private Frame frame;
-		private Argument_v1 argCur;
         private int retAddressOnStack;
 
         public ArgumentSerializer(ProcedureSerializer procSer, IProcessorArchitecture arch, Frame frame, int retAddressOnStack)

@@ -325,7 +325,7 @@
     <Compile Include="Serialization\SerializedProject.cs" />
     <Compile Include="Serialization\SerializedTemplate.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
-    <Compile Include="Serialization\SerializedTypeReference.cs" />
+    <Compile Include="Serialization\TypeReference_v1.cs" />
     <Compile Include="Serialization\StringType_v2.cs" />
     <Compile Include="Serialization\UnionType_v1.cs" />
     <Compile Include="Serialization\UnpackerSignatureFile_v1.cs" />

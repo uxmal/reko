@@ -37,10 +37,11 @@ namespace Reko.Core
         {
             Programs = new ObservableRangeCollection<Program>();
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
+            LoadedMetadata = new TypeLibrary();
         }
 
         public ObservableRangeCollection<Program> Programs { get; private set; }
         public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
-
+        public TypeLibrary LoadedMetadata { get; set; }
     }
 }

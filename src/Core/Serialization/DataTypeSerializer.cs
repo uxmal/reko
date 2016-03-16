@@ -154,7 +154,7 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitTypeReference(TypeReference typeref)
         {
-            return new SerializedTypeReference(typeref.Name);
+            return new TypeReference_v1(typeref.Name);
         }
 
         public SerializedType VisitTypeVariable(TypeVariable tv)

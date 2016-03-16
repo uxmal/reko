@@ -68,8 +68,15 @@ namespace Reko.Core.Machine
 
         public static string FormatValue(Constant c)
         {
-            if (((PrimitiveType)c.DataType).Domain == Domain.SignedInt)
+            var pt = (PrimitiveType)c.DataType;
+            if (pt.Domain == Domain.SignedInt)
+            {
                 return FormatSignedValue(c);
+            }
+            else if (pt.Domain == Domain.Real)
+            {
+                return c.ToReal64().ToString("G");
+            }
             else
                 return FormatUnsignedValue(c);
         }
@@ -108,8 +115,13 @@ namespace Reko.Core.Machine
         {
             var s = FormatValue(value);
             var pt = value.DataType as PrimitiveType;
-            if (pt != null && pt.Domain == Domain.Pointer)
-                writer.WriteAddress(s, Address.FromConstant(value));    //$TODO: add WriteAddress(string, Constant) to MachineINstructionWriter
+            if (pt != null)
+            {
+                if (pt.Domain == Domain.Pointer)
+                    writer.WriteAddress(s, Address.FromConstant(value));
+                else
+                    writer.Write(s);
+            }
             else if (value.DataType is Pointer)
                 writer.WriteAddress(s, Address.FromConstant(value));
             else 

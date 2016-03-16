@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1" (4 Eq_146 t0004) (10002098 (ptr code) ptr10002098) (100020CC (ptr code) ptr100020CC) (1000212C char b1000212C) (10002140 char b10002140) (10002144 (str char) str10002144) (1000214C (str char) str1000214C) (10002150 (str char) str10002150) (10002158 (str char) str10002158) (10002160 (str char) str10002160) (1000216C (str char) str1000216C) (10002174 (str char) str10002174) (10003000 ui32 dw10003000) (10003004 word32 dw10003004) (10003008 Eq_146 t10003008) (10003010 Eq_108 t10003010) (10003070 int32 dw10003070) (100033A4 word32 dw100033A4) (100033A8 word32 dw100033A8) (100033AC Eq_163 t100033AC) (100033B0 Eq_146 t100033B0) (100033B4 Eq_146 t100033B4) (100033B8 (ptr code) ptr100033B8))
+Eq_1: (struct "Globals" (4 Eq_146 t0004) (10002098 (ptr code) ptr10002098) (100020CC (ptr code) ptr100020CC) (10002144 (str char) str10002144) (1000214C (str char) str1000214C) (10002150 (str char) str10002150) (10002158 (str char) str10002158) (10002160 (str char) str10002160) (1000216C (str char) str1000216C) (10002174 (str char) str10002174) (10003000 ui32 dw10003000) (10003004 word32 dw10003004) (10003008 Eq_146 t10003008) (10003010 (arr PyMethodDef 5) methods) (10003070 int32 dw10003070) (100033A4 word32 dw100033A4) (100033A8 word32 dw100033A8) (100033AC Eq_163 t100033AC) (100033B0 Eq_146 t100033B0) (100033B4 Eq_146 t100033B4) (100033B8 (ptr code) ptr100033B8))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: PyObject
 	T_2 (in eax : (ptr Eq_2))
@@ -85,7 +85,7 @@ Eq_110: PyObject
 	T_110 (in ptrArg0C : (ptr PyObject))
 	T_115 (in 0x00000000 : word32)
 Eq_117: PyObject
-	T_117 (in Py_InitModule4("pySample", &globals->t10003010, null, null, 0x000003EF) : (ptr PyObject))
+	T_117 (in Py_InitModule4("pySample", globals->methods, null, null, 0x000003EF) : (ptr PyObject))
 Eq_146: (union "Eq_146" (DWORD u0) (LONG u1) (LPVOID u2))
 	T_146 (in edi_79 : Eq_146)
 	T_152 (in Mem44[Mem44[fs:0x00000018:word32] + 0x00000004:word32] : word32)
@@ -418,11 +418,13 @@ Eq_1156: (fn Eq_884 ((ptr Eq_1158)))
 Eq_1158: LARGE_INTEGER
 	T_1158 (in lpPerformanceCount : (ptr LARGE_INTEGER))
 	T_1160 (in fp - 0x00000014 : word32)
+Eq_1189: (struct "PyMethodDef" (0 (ptr char) ml_name) (4 PyCFunction ml_meth) (8 int32 ml_flags) (C (ptr char) ml_doc))
+	T_1189
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (100020CC T_639 t100020CC) (10003000 T_1089 t10003000) (10003004 T_1173 t10003004) (10003008 T_146 t10003008) (10003070 T_135 t10003070) (100033A4 T_131 t100033A4) (100033A8 T_202 t100033A8) (100033B0 T_364 t100033B0) (100033B4 T_146 t100033B4) (100033B8 T_386 t100033B8)))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in eax : (ptr Eq_2))
   Class: Eq_2
   DataType: (ptr Eq_2)
@@ -883,7 +885,7 @@ T_116: (in 0x000003EF : word32)
   Class: Eq_111
   DataType: int32
   OrigDataType: int32
-T_117: (in Py_InitModule4("pySample", &globals->t10003010, null, null, 0x000003EF) : (ptr PyObject))
+T_117: (in Py_InitModule4("pySample", globals->methods, null, null, 0x000003EF) : (ptr PyObject))
   Class: Eq_117
   DataType: (ptr Eq_117)
   OrigDataType: (ptr PyObject)
@@ -5171,13 +5173,15 @@ T_1188: (in esi_68 | esi_68 << 0x00000010 : word32)
   Class: Eq_1089
   DataType: ui32
   OrigDataType: ui32
+T_1189:
+  Class: Eq_1189
+  DataType: Eq_1189
+  OrigDataType: 
 */
-typedef struct Eq_1 {
+typedef struct Globals {
 	Eq_146 t0004;	// 4
 	 <anonymous> * ptr10002098;	// 10002098
 	 <anonymous> * ptr100020CC;	// 100020CC
-	char b1000212C;	// 1000212C
-	char b10002140;	// 10002140
 	char str10002144[];	// 10002144
 	char str1000214C[];	// 1000214C
 	char str10002150[];	// 10002150
@@ -5188,7 +5192,7 @@ typedef struct Eq_1 {
 	ui32 dw10003000;	// 10003000
 	word32 dw10003004;	// 10003004
 	Eq_146 t10003008;	// 10003008
-	Eq_108 t10003010;	// 10003010
+	 PyMethodDef methods[5];	// 10003010
 	int32 dw10003070;	// 10003070
 	word32 dw100033A4;	// 100033A4
 	word32 dw100033A8;	// 100033A8
@@ -5401,4 +5405,11 @@ typedef Eq_146 (Eq_1152)();
 typedef BOOL (Eq_1156)(LARGE_INTEGER *);
 
 typedef LARGE_INTEGER Eq_1158;
+
+typedef struct PyMethodDef {
+	char * ml_name;	// 0
+	 PyCFunction ml_meth;	// 4
+	int32 ml_flags;	// 8
+	char * ml_doc;	// C
+} Eq_1189;
 

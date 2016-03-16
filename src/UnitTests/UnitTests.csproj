@@ -101,6 +101,7 @@
     <Compile Include="Analysis\UserSignatureBuilderTests.cs" />
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
     <Compile Include="Arch\Mips\MipsPointerScannerTests.cs" />
+    <Compile Include="Arch\Vax\VaxDisassemblerTests.cs" />
     <Compile Include="Categories.cs" />
     <Compile Include="Core\CLanguage\CConstantEvaluatorTests.cs" />
     <Compile Include="Core\CLanguage\CDirectiveLexerTests.cs" />
@@ -558,6 +559,10 @@
     <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
       <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
       <Name>Sparc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Vax\Vax.csproj">
+      <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
+      <Name>Vax</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86.csproj">
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>

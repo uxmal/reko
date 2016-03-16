@@ -150,6 +150,12 @@ namespace Reko.Typing
             return MakeAssignment(store.Dst, store.Src);
         }
 
+        public override Instruction TransformSideEffect(SideEffect side)
+        {
+            var instr = base.TransformSideEffect(side);
+            return instr;
+        }
+
         public Expression Rewrite(Expression expression, bool dereferenced)
         {
             var oldDereferenced = this.dereferenced;

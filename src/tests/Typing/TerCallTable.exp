@@ -23,7 +23,7 @@ l1:
 IndirectCallFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1" (27000 (ptr Eq_2) ptr27000))
+Eq_1: (struct "Globals" (27000 (ptr Eq_2) ptr27000))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment "Eq_2")
 	T_2 (in 0x2700 : selector)
@@ -33,7 +33,7 @@ Eq_3: (segment "Eq_3" (2040 (arr (memptr (ptr Eq_2) code)) a2040))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (27000 T_2 t27000)))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in 0x2700 : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

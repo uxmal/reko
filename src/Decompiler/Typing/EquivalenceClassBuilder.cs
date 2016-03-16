@@ -52,7 +52,8 @@ namespace Reko.Typing
 		{
             // Special case for the global variables. In essence,
             // a memory map of all the globals.
-			store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
+			var tvGlobals = store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
+            tvGlobals.OriginalDataType = program.Globals.DataType;
 
             foreach (Procedure proc in program.Procedures.Values)
             {

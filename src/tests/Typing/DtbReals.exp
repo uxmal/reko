@@ -38,7 +38,7 @@ l0C00_0037:
 fn0C00_0037_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct))
+Eq_1: (ptr (struct "Globals"))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))
 	T_2 (in ds : selector)
@@ -128,8 +128,8 @@ Eq_49: (memptr T_13 (struct (0 T_50 t0000)))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct))
-  OrigDataType: (ptr (struct))
+  DataType: (ptr (struct "Globals"))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))

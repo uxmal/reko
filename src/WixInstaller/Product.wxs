@@ -128,6 +128,7 @@
         <File Source="$(var.Pdp11.TargetPath)" />
         <File Source="$(var.PowerPC.TargetPath)" />
         <File Source="$(var.Sparc.TargetPath)" />
+        <File Source="$(var.Vax.TargetPath)" />
         <File Source="$(var.X86.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
 

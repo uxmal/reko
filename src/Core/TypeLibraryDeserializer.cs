@@ -259,7 +259,7 @@ namespace Reko.Core
             return null;
         }
 
-        public DataType VisitTypeReference(SerializedTypeReference typeReference)
+        public DataType VisitTypeReference(TypeReference_v1 typeReference)
         {
             DataType type;
             if (types.TryGetValue(typeReference.TypeName, out type))

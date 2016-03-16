@@ -64,10 +64,10 @@ namespace Reko.Core.Serialization
         public ProjectFile_v3 VisitProgram(string projectAbsPath, Program program)
         {
             var dtSerializer = new DataTypeSerializer();
-            return new DecompilerInput_v3
+            return new DecompilerInput_v4
             {
                 Filename = ConvertToProjectRelativePath(projectAbsPath, program.Filename),
-                User = new UserData_v3
+                User = new UserData_v4
                 {
                     Procedures = program.User.Procedures
                         .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
@@ -108,17 +108,17 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private ProcessorOptions_v3 SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
+        private ProcessorOptions_v4 SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
         {
             if (architecture == null)
                 return null;
             if (string.IsNullOrEmpty(user.Processor))
                 return null;
             else
-                return new ProcessorOptions_v3 { Name = user.Processor };
+                return new ProcessorOptions_v4 { Name = user.Processor };
         }
 
-        private PlatformOptions_v3 SerializePlatformOptions(UserData user, IPlatform platform)
+        private PlatformOptions_v4 SerializePlatformOptions(UserData user, IPlatform platform)
         {
             if (platform == null)
                 return null;
@@ -128,13 +128,13 @@ namespace Reko.Core.Serialization
                 if (string.IsNullOrEmpty(user.Environment))
                     return null;
                 else
-                    return new PlatformOptions_v3
+                    return new PlatformOptions_v4
                     {
                         Name = user.Environment
                     };
             }
             var doc = new XmlDocument();
-            return new PlatformOptions_v3
+            return new PlatformOptions_v4
             {
                 Name = user.Environment,
                 Options = SerializeValue(dictionary, doc)
@@ -156,14 +156,14 @@ namespace Reko.Core.Serialization
             var sValue = value as string;
             if (sValue != null)
             {
-                var el = doc.CreateElement("item", SerializedLibrary.Namespace_v3);
+                var el = doc.CreateElement("item", SerializedLibrary.Namespace_v4);
                 el.InnerXml = (string)value;
                 return el;
             }
             var dict = value as IDictionary;
             if (dict != null)
             {
-                var el = doc.CreateElement("dict", SerializedLibrary.Namespace_v3);
+                var el = doc.CreateElement("dict", SerializedLibrary.Namespace_v4);
                 foreach (DictionaryEntry de in dict)
                 {
                     var sub = SerializeValue(de.Value, doc);
@@ -175,7 +175,7 @@ namespace Reko.Core.Serialization
             var ienum = value as IEnumerable;
             if (ienum != null)
             {
-                var el = doc.CreateElement("list", SerializedLibrary.Namespace_v3);
+                var el = doc.CreateElement("list", SerializedLibrary.Namespace_v4);
                 foreach (var oValue in ienum)
                 {
                     el.AppendChild(SerializeValue(oValue, doc));

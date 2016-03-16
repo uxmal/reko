@@ -19,7 +19,7 @@ l1:
 proc1_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1" (1028 Eq_5 t1028))
+Eq_1: (struct "Globals" (1028 Eq_5 t1028))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct "Eq_2" (4 (ptr Eq_5) ptr0004))
 	T_2 (in p : word32)
@@ -30,7 +30,7 @@ Eq_5: (struct "foo" 0008)
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in p : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

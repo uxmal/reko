@@ -8,7 +8,7 @@
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct (0 T_139 t0000) (5 (arr T_4314) a0005)))
-  OrigDataType: (ptr (struct (0 T_139 t0000) (5 (arr T_4314) a0005)))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in d0 : word32)
   Class: Eq_2
   DataType: word32

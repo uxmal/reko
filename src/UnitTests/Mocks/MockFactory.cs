@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Mocks
                 throw new NotImplementedException();
             }
 
-            public DataType VisitTypeReference(SerializedTypeReference typeReference)
+            public DataType VisitTypeReference(TypeReference_v1 typeReference)
             {
                 return new TypeReference(typeReference.TypeName, null);
             }
@@ -200,8 +200,9 @@ namespace Reko.UnitTests.Mocks
         }
 
         public void CreateLoadMetadataStub(
-            string metafileName, IPlatform platform, TypeLibrary loaderMetadata
-        )
+            string metafileName, 
+            IPlatform platform,
+            TypeLibrary loaderMetadata)
         {
             loader.Stub(l => l.LoadMetadata(
                 Arg<string>.Is.Equal(metafileName),
@@ -240,7 +241,8 @@ namespace Reko.UnitTests.Mocks
         }
 
         public void Given_UserDefinedMetafile(
-            string moduleName, Dictionary<string, DataType> types,
+            string moduleName,
+            Dictionary<string, DataType> types,
             Dictionary<string, ProcedureSignature> signatures,
             ModuleDescriptor module)
         {
@@ -254,14 +256,9 @@ namespace Reko.UnitTests.Mocks
 
             var loader = CreateLoader();
 
-            var metafileName = moduleName+".xml";
+            var metafileName = moduleName + ".xml";
 
             CreateLoadMetadataStub(metafileName, platform, loaderMetadata);
-
-            foreach(var program in programs)
-            {
-                program.LoadMetadataFile(loader, metafileName);
-            }
         }
     }
 }

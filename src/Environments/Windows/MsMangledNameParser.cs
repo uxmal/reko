@@ -213,7 +213,7 @@ namespace Reko.Environments.Windows
                 }
                 qualifiers.Insert(0, name);
             }
-            var tr = new SerializedTypeReference
+            var tr = new TypeReference_v1
             {
                 TypeName = qualifiers.Last(),
                 Scope = qualifiers.Take(qualifiers.Count - 1).ToArray(),
@@ -606,10 +606,10 @@ namespace Reko.Environments.Windows
             return pType;
         }
 
-        public SerializedTypeReference ParseStructure(List<Argument_v1> compoundArgs)
+        public TypeReference_v1 ParseStructure(List<Argument_v1> compoundArgs)
         {
             var q = ParseQualification();
-            var tr = new SerializedTypeReference
+            var tr = new TypeReference_v1
             {
                 TypeName = q.Last(),
                 Scope = q.Take(q.Length - 1).ToArray()

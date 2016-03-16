@@ -32,7 +32,7 @@ l0C00_0029:
 fn0C00_0004_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct (4DE10 T_24 t4DE10)))
+Eq_1: (ptr (struct "Globals"))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (ptr (fn T_4 ()))
 	T_2 (in fn0C00_0004 : ptr32)
@@ -94,8 +94,8 @@ Eq_34: (struct 0001 (0 T_27 t0000))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct (4DE10 T_24 t4DE10)))
-  OrigDataType: (ptr (struct (4DE10 T_24 t4DE10)))
+  DataType: (ptr (struct "Globals"))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in fn0C00_0004 : ptr32)
   Class: Eq_2
   DataType: (ptr (fn T_4 ()))
