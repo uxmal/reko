@@ -1212,7 +1212,8 @@ ProcedureBuilder_exit:
         public void SsaManyAssignments()
         {
             var sExp =
-            #region Expected@"Mem0:Global memory
+            #region Expected
+@"Mem0:Global memory
     def:  def Mem0
     uses: eax_1 = Mem0[0x00543200:word32]
           edx_2 = Mem0[0x00543208:word32]
@@ -1261,7 +1262,8 @@ ProcedureBuilder_exit:
         public void SsaManyAssignmentsWithAliases()
         {
             var sExp =
-            #region Expected@"Mem0:Global memory
+            #region Expected
+@"Mem0:Global memory
     def:  def Mem0
     uses: edx_1 = Mem0[0x00543200:word32]
 edx_1: orig: edx

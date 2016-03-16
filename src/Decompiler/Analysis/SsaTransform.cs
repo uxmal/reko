@@ -1505,6 +1505,7 @@ namespace Reko.Analysis
             /// <returns></returns>
             public SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
             {
+                if (id.Name == "bx") id.ToString(); //$DEBUG
                 var sid = ReadBlockLocalVariable(bs, aliasProbe);
                 if (sid != null)
                     return sid;
@@ -1557,23 +1558,26 @@ namespace Reko.Analysis
             /// <returns></returns>
             protected SsaIdentifier MaybeGenerateAliasStatement(AliasState alias, bool aliasProbe)
             {
-                Debug.Assert(!(id.Storage is FlagGroupStorage), "Should never be called on a flag group");
-                var stgFrom = alias.SsaId.Identifier.Storage;
+                var b = alias.SsaId.DefStatement.Block;
+                var sidFrom = alias.SsaId;
                 var stgTo = id.Storage;
+                Storage stgFrom = sidFrom.Identifier.Storage;
                 if (stgFrom == stgTo ||
                     (aliasProbe && stgFrom.Exceeds(stgTo)))
                 {
+                    alias.Aliases[id] = sidFrom;
                     return alias.SsaId;
                 }
+
                 Expression e = null;
                 SsaIdentifier sidUse;
                 if (stgFrom.Covers(stgTo))
                 {
                     int offset = stgFrom.OffsetOf(stgTo);
                     if (offset > 0)
-                        e = new Slice(id.DataType, alias.SsaId.Identifier, (uint)offset);
+                        e = new Slice(id.DataType, sidFrom.Identifier, (uint)offset);
                     else
-                        e = new Cast(id.DataType, alias.SsaId.Identifier);
+                        e = new Cast(id.DataType, sidFrom.Identifier);
                     sidUse = alias.SsaId;
                 }
                 else
@@ -1582,7 +1586,7 @@ namespace Reko.Analysis
                     e = new DepositBits(sidUse.Identifier, alias.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
-                var sidAlias = InsertAfterDefinition(alias.SsaId.DefStatement, ass);
+                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
                 alias.Aliases[id] = sidAlias;
                 return sidAlias;
