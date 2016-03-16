@@ -12,13 +12,13 @@ l1:
 FnPointerFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct (1213130 code t1213130) (10000000 (ptr code) ptr10000000))
+Eq_1: (struct "Globals" (1213130 code t1213130) (10000000 (ptr code) ptr10000000))
 	globals_t (in globals : (ptr (struct "Globals")))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (10000000 T_2 t10000000)))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in 0x01213130 : word32)
   Class: Eq_2
   DataType: (ptr code)

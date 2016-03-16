@@ -21,38 +21,38 @@ Eq_146 g_t10003008 = ;
 	{
 		
 		{
-			&g_b10002140,
+			&g_str10002140,
 			fn10001000,
 			1,
-			&g_b1000212C,
+			&g_str1000212C,
 		},
 		
 		{
-			&g_b10002140,
-			fn10001000,
+			&g_str10002128,
+			fn10001050,
 			1,
-			&g_b1000212C,
+			&g_str10002114,
 		},
 		
 		{
-			&g_b10002140,
-			fn10001000,
+			&g_str10002110,
+			fn100010A0,
 			1,
-			&g_b1000212C,
+			&g_str100020FC,
 		},
 		
 		{
-			&g_b10002140,
-			fn10001000,
+			&g_str100020F4,
+			fn100010F0,
 			1,
-			&g_b1000212C,
+			&g_str100020E0,
 		},
 		
 		{
-			&g_b10002140,
-			fn10001000,
-			1,
-			&g_b1000212C,
+			null,
+			null,
+			0,
+			null,
 		},
 	};
 int32 g_dw10003070 = 0;
@@ -62,6 +62,12 @@ Eq_163 g_t100033AC = ;
 Eq_146 g_t100033B0 = ;
 Eq_146 g_t100033B4 = ;
  <anonymous> * g_ptr100033B8 = null;
-char g_b10002140 = 's';
-char g_b1000212C = 's';
+char g_str10002140[] = "sum";
+char g_str1000212C[] = "sum(a, b) = a + b";
+char g_str10002128[] = "dif";
+char g_str10002114[] = "dif(a, b) = a - b";
+char g_str10002110[] = "div";
+char g_str100020FC[] = "div(a, b) = a / b";
+char g_str100020F4[] = "fdiv";
+char g_str100020E0[] = "fdiv(a, b) = a / b";
 

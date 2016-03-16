@@ -183,8 +183,9 @@ namespace Reko.Core.Serialization
             var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
             var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
             var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
-            project.MetadataFiles.AddRange(typelibs);
+            this.project.LoadedMetadata = this.platform.CreateMetadata();
             project.Programs.AddRange(programs);
+            project.MetadataFiles.AddRange(typelibs);
             return this.project;
         }
 
@@ -223,7 +224,6 @@ namespace Reko.Core.Serialization
             else
             {
                 program = loader.LoadExecutable(sInput.Filename, bytes, address);
-
             }
             program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);

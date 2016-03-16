@@ -8,7 +8,7 @@ l1:
 SegmentedArray_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct)
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment (1234 word16 w1234) (5388 (arr word16) a5388))
 	T_2 (in ds : selector)
@@ -16,7 +16,7 @@ Eq_2: (segment (1234 word16 w1234) (5388 (arr word16) a5388))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

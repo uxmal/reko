@@ -200,8 +200,9 @@ namespace Reko.UnitTests.Mocks
         }
 
         public void CreateLoadMetadataStub(
-            string metafileName, IPlatform platform, TypeLibrary loaderMetadata
-        )
+            string metafileName, 
+            IPlatform platform,
+            TypeLibrary loaderMetadata)
         {
             loader.Stub(l => l.LoadMetadata(
                 Arg<string>.Is.Equal(metafileName),

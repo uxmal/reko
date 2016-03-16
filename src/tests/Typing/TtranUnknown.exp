@@ -10,7 +10,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct)
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct (0 word32 dw0000) (4 word32 dw0004))
 	T_2 (in bx : word16)
@@ -20,7 +20,7 @@ Eq_3: (segment)
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in bx : word16)
   Class: Eq_2
   DataType: (memptr (ptr Eq_3) Eq_2)

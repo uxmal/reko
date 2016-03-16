@@ -106,12 +106,9 @@ namespace Reko.Core.Output
             
             for (int i = 0; i < at.Length; ++i)
             {
-                var r = rdr.Clone();
                 fmt.Indent();
                 at.ElementType.Accept(this);
                 fmt.Terminate(",");
-                r.Offset += (uint) at.ElementType.Size;
-                rdr = r;
             }
 
             fmt.Indentation -= fmt.TabSize;
@@ -197,7 +194,17 @@ namespace Reko.Core.Output
                 {
                     // We've discovered a global variable! Create it!
                     //$REVIEW: what about collisions and the usual merge crap?
-                    globals.Fields.Add(offset, ptr.Pointee);
+                    var dt = ptr.Pointee;
+                    //$REVIEW: that this is a pointer to a C-style null 
+                    // terminated string is a wild-assed guess of course.
+                    // It could be a pascal string, or a raw area of bytes.
+                    // Depend on user for this, or possibly platform.
+                    var pt = dt as PrimitiveType;
+                    if (pt != null && pt.Domain == Domain.Character)
+                    {
+                        dt = StringType.NullTerminated(pt);
+                    }
+                    globals.Fields.Add(offset, dt);
                     // add field to queue.
                     field = globals.Fields.AtOffset(offset);
                     queue.Enqueue(field);
@@ -209,6 +216,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitString(StringType str)
         {
+            var offset = rdr.Offset;
             var s = rdr.ReadCString(str.ElementType, Encoding.UTF8);    //$BUG: should get this from platform / user-setting.
             var fmt = codeFormatter.InnerFormatter;
             fmt.Write('"');
@@ -226,6 +234,10 @@ namespace Reko.Core.Output
                 }
             }
             fmt.Write('"');
+            if (str.Length > 0)
+            {
+                rdr.Offset = offset + str.Length * str.ElementType.Size;
+            }
             return codeFormatter;
         }
 

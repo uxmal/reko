@@ -43,7 +43,7 @@ lupe:
 proc1_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1")
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_5: (segment "Eq_5" (5388 (arr word16) a5388))
 	T_5 (in ds : word16)
@@ -51,7 +51,7 @@ Eq_5: (segment "Eq_5" (5388 (arr word16) a5388))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in di_0 : (memptr (ptr Eq_5) word16))
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)

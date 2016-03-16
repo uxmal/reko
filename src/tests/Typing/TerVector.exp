@@ -19,7 +19,7 @@ l1:
 VectorFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1")
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))
 	T_2 (in v : word32)
@@ -27,7 +27,7 @@ Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in v : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

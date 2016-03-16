@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Environments.Windows
     [TestFixture]
     public class Win32PlatformTests
     {
-        private MockRepository repository;
+        private MockRepository mr;
         private ITypeLibraryLoaderService tlSvc;
         private ServiceContainer sc;
         private Win32Platform win32;
@@ -48,14 +48,15 @@ namespace Reko.UnitTests.Environments.Windows
         private IntelArchitecture arch;
         private ExternalProcedure extProc;
         private IConfigurationService dcSvc;
+        private TypeLibrary environmentMetadata;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
             sc = new ServiceContainer();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            dcSvc = repository.StrictMock<IConfigurationService>();
+            dcSvc = mr.StrictMock<IConfigurationService>();
         }
 
         private void When_Lookup_Procedure(string moduleName, string procName)
@@ -69,16 +70,17 @@ namespace Reko.UnitTests.Environments.Windows
             Given_Configuration_With_Win32_Element();
             Given_TypeLibraryLoaderService();
             Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml");
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             When_Creating_Win32_Platform();
             When_Lookup_Procedure("kernel32","foo");
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(ITypeLibraryElement expected, TypeLibrary dstLib)
         {
+            environmentMetadata = dstLib;   
             tlSvc.Expect(t => t.LoadMetadataIntoLibrary(
                 Arg<IPlatform>.Is.NotNull,
                 Arg<ITypeLibraryElement>.Matches(a => a.Name == expected.Name),
@@ -98,17 +100,20 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, IDictionary<string, DataType> types)
         {
+            var tl = new TypeLibrary(
+                types, new Dictionary<string, ProcedureSignature>());
+
             Expect_TypeLibraryLoaderService_LoadLibrary(
                 new TypeLibraryElement
                 {
                     Name = expected,
                 },
-                new TypeLibrary(types, new Dictionary<string, ProcedureSignature>()));
+                tl);
         }
 
         private void Given_Configuration_With_Win32_Element()
         {
-            var dcSvc = repository.Stub<IConfigurationService>();
+            var dcSvc = mr.Stub<IConfigurationService>();
             var opEnv = new OperatingEnvironmentElement 
             {
                 TypeLibraries =
@@ -137,12 +142,13 @@ namespace Reko.UnitTests.Environments.Windows
             {
                 Architecture = win32.Architecture,
                 Platform = win32,
+                EnvironmentMetadata = environmentMetadata,
             };
         }
 
         private void Given_TypeLibraryLoaderService()
         {
-            tlSvc = repository.StrictMock<ITypeLibraryLoaderService>();
+            tlSvc = mr.StrictMock<ITypeLibraryLoaderService>();
             sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
         }
 
@@ -177,7 +183,7 @@ namespace Reko.UnitTests.Environments.Windows
             Given_TypeLibraryLoaderService();
             Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml", types);
             Given_Configuration_With_Win32_Element();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             When_Creating_Win32_Platform();
             Given_Program();
