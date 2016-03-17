@@ -290,15 +290,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
             var program = new Program(imageMap, arch, platform);
-
             Given_CodeBlock(memText.BaseAddress, 4);
-
             mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
-
             var num_lines = 4;
-
             for(int i = 0; i <= num_lines; i++)
             {
                 mcdm.MoveToLine(mcdm.StartPosition, i);

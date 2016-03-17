@@ -73,17 +73,22 @@ namespace Reko.Gui.Windows.Controls
             int sum = 0;
             foreach (var item in program.ImageMap.Items.Values)
             {
-                var bi = item as ImageMapBlock;
-                if (bi != null)
-                {
-                    sum += CountDisassembledLines(bi);
-                }
-                else
-                {
-                    sum += CountMemoryLines(item);
-                }
+                sum += CountBlockLines(item);
             }
             return sum;
+        }
+
+        private int CountBlockLines(ImageMapItem item)
+        {
+            var bi = item as ImageMapBlock;
+            if (bi != null)
+            {
+                return CountDisassembledLines(bi);
+            }
+            else
+            {
+                return CountMemoryLines(item);
+            }
         }
 
         /// <summary>
@@ -158,32 +163,58 @@ namespace Reko.Gui.Windows.Controls
             return diff.CompareTo(0);
         }
 
+        /// <summary>
+        /// Returns the (approximate) position. This doesn't have to be
+        /// 100% precise, but it shouldn't be insanely wrong either.
+        /// </summary>
+        /// <returns></returns>
         public Tuple<int, int> GetPositionAsFraction()
         {
             var linPos = currentPosition;
             long numer = 0;
-            long denom = 0;
             foreach (var item in program.ImageMap.Items.Values)
             {
                 if (item.Address <= currentPosition)
                 {
                     if (item.IsInRange(currentPosition))
                     {
-                        numer += (currentPosition - item.Address);
+                        numer += GetLineOffset(item, currentPosition);
+                        break;
                     }
-                    else
-                    {
-                        numer += item.Size;
-                    }
+                    numer += CountBlockLines(item);
                 }
-                denom += item.Size;
             }
+            long denom = LineCount;
             while (denom >= 0x80000000)
             {
                 numer >>= 1;
                 denom >>= 1;
             }
             return Tuple.Create((int)numer, (int)denom);
+        }
+
+        private int GetLineOffset(ImageMapItem item, Address addr)
+        {
+            var bi = item as ImageMapBlock;
+            if (bi != null)
+            {
+                int i = 0;
+                while (i < instructions[bi].Length)
+                {
+                    if (instructions[bi][i].Address >= addr)
+                    {
+                        break;
+                    }
+                    ++i;
+                }
+                return i;
+            }
+            else
+            {
+                return (int)((Align(addr.ToLinear(), BytesPerLine) -
+                              Align(item.Address.ToLinear(), BytesPerLine)) /
+                              BytesPerLine);
+            }
         }
 
         public int MoveToLine(object position, int offset)
@@ -283,7 +314,6 @@ namespace Reko.Gui.Windows.Controls
             else
                 return Align(item.Address + i * BytesPerLine, BytesPerLine);
         }
-
 
         private int FindIndexOfMemoryAddress(ImageMapItem item, Address addr)
         {
