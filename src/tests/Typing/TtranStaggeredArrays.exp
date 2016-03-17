@@ -9,7 +9,7 @@ l1:
 StaggeredArraysFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct)
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_13: (struct 0008 (0 word32 dw0000) (4 word32 dw0004))
 	T_13
@@ -19,7 +19,7 @@ Eq_14: (struct 0008 (4 word32 dw0004))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in p : word32)
   Class: Eq_2
   DataType: (ptr (arr Eq_13))

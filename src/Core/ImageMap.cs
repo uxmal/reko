@@ -380,11 +380,13 @@ namespace Reko.Core
 
 	/// <summary>
 	/// Represents a span of memory. 
+    /// //$REVIEW: note the similarity to StructureField. It is not coincidental.
 	/// </summary>
 	public class ImageMapItem
 	{
 		public Address Address;
 		public uint Size;
+        public string Name;
         public DataType DataType;
 
 		public ImageMapItem(uint size)

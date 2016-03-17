@@ -19,7 +19,7 @@ l1:
 proc1_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1" (10000 int32 dw10000))
+Eq_1: (struct "Globals" (10000 int32 dw10000))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct "Eq_2" (64 (arr int16) a0064))
 	T_2 (in ecx : word32)
@@ -27,7 +27,7 @@ Eq_2: (struct "Eq_2" (64 (arr int16) a0064))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (10000 T_11 t10000)))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ecx : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

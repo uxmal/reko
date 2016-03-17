@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -43,20 +44,24 @@ namespace Reko.UnitTests.Core.Serialization
         private ILoader loader;
         private IProcessorArchitecture arch;
         private IPlatform platform;
+        private IConfigurationService cfgSvc;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
+            this.cfgSvc = mr.Stub<IConfigurationService>();
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
+            sc.AddService<IConfigurationService>(cfgSvc);
         }
 
         private void Given_Architecture()
         {
             this.arch = mr.StrictMock<IProcessorArchitecture>();
             this.arch.Stub(a => a.Name).Return("testArch");
+            this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
         }
 
         private void Given_TestOS_Platform()
@@ -64,9 +69,13 @@ namespace Reko.UnitTests.Core.Serialization
             Debug.Assert(arch != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
             this.platform = mr.Stub<IPlatform>();
+            var oe = mr.Stub<OperatingEnvironment>();
             this.platform.Stub(p => p.Name).Return("testOS");
             this.platform.Stub(p => p.SaveUserOptions()).Return(null);
             this.platform.Stub(p => p.Architecture).Return(arch);
+            this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
+            this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
+            oe.Stub(e => e.Load(sc, arch)).Return(platform);
         }
 
         [Test]
@@ -76,11 +85,11 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 Inputs =
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
-                        User = new UserData_v3 {
+                        User = new UserData_v4 {
                             Procedures =
                             {
                                 new Procedure_v1
@@ -363,19 +372,23 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SudLoadProgramOptions()
         {
-            var sProject = new Project_v3
+            var sProject = new Project_v4
             {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
                 Inputs = 
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
-                        User = new UserData_v3
+                        User = new UserData_v4
                         {
                             Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } }
                         }
                     }
                 }
             };
+            Given_Architecture();
+            Given_TestOS_Platform();
             var loader = mr.Stub<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()
@@ -398,20 +411,20 @@ namespace Reko.UnitTests.Core.Serialization
             
             var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram("foo.proj", program);
-            var ip = (DecompilerInput_v3)file;
+            var ip = (DecompilerInput_v4)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
         }
 
         private void When_SaveToTextWriter(Program program, TextWriter sw)
         {
             var saver = new ProjectSaver(sc);
-            var sProj = new Project_v3
+            var sProj = new Project_v4
             {
                 Inputs = { saver.VisitProgram("foo.exe", program) }
             };
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = System.Xml.Formatting.Indented;
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v3(typeof(Project_v3));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
             ser.Serialize(writer, sProj);
         }
 
@@ -442,7 +455,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <input>
     <user>
       <platform>
@@ -476,7 +489,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <input>
     <user>
       <platform>
@@ -520,7 +533,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <input>
     <user>
       <platform>

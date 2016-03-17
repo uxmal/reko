@@ -37,7 +37,7 @@ l0C00_0015:
 fn0C00_0015_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct)
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment (100 word16 w0100) (200 word16 w0200) (202 word16 w0202) (300 word16 w0300) (302 word16 w0302))
 	T_2 (in ds : selector)
@@ -54,7 +54,7 @@ Eq_7: (fn void ((ptr Eq_2)))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

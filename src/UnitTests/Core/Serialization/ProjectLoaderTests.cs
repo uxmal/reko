@@ -34,6 +34,8 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Reko.Core.Configuration;
+using Reko.Core.CLanguage;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -43,6 +45,10 @@ namespace Reko.UnitTests.Core.Serialization
         private MockRepository mr;
         private MockFactory mockFactory;
         private ServiceContainer sc;
+        private IConfigurationService cfgSvc;
+        private IPlatform platform;
+        private IProcessorArchitecture arch;
+        private Dictionary<string, object> loadedOptions;
 
         [SetUp]
         public void Setup()
@@ -50,6 +56,31 @@ namespace Reko.UnitTests.Core.Serialization
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
             this.sc = new ServiceContainer();
+            this.cfgSvc = mr.Stub<IConfigurationService>();
+            this.sc.AddService<IConfigurationService>(cfgSvc);
+        }
+
+        private void Given_TestArch()
+        {
+            this.arch = mr.Stub<IProcessorArchitecture>();
+            this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
+        }
+
+        private void Given_TestOS()
+        {
+            var oe = mr.Stub<OperatingEnvironment>();
+            this.platform = mr.Stub<IPlatform>();
+            this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
+            oe.Stub(e => e.Load(sc, null)).IgnoreArguments().Return(platform);
+            this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
+        }
+
+        private void Given_Platform(IPlatform platform)
+        {
+            var oe = mr.Stub<OperatingEnvironment>();
+            this.platform = platform;
+            this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
+            oe.Stub(e => e.Load(sc, null)).IgnoreArguments().Return(platform);
         }
 
         [Test(Description = "If the project file just has a single metadata file, we don't know what the platform is; so ask the user.")]
@@ -78,6 +109,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        [Ignore("do we care about old V2 project files anymore?")]
         public void Prld_LoadMetadata_SingleBinary_ShouldNotQuery()
         {
             var ldr = mr.Stub<ILoader>();
@@ -93,13 +125,13 @@ namespace Reko.UnitTests.Core.Serialization
             prld.LoadProject(new Project_v2
             {
                 Inputs = {
-                        new DecompilerInput_v2 {
-                            Filename = "foo.exe",
-                        },
-                        new MetadataFile_v2 {
-                            Filename = "foo",
-                        }
+                    new DecompilerInput_v2 {
+                        Filename = "foo.exe",
+                    },
+                    new MetadataFile_v2 {
+                        Filename = "foo",
                     }
+                }
             });
             mr.VerifyAll();
         }
@@ -115,11 +147,50 @@ namespace Reko.UnitTests.Core.Serialization
                 Arg<Address>.Is.Anything)).Return(new Program { Platform = platform });
         }
 
-        public class TestPlatform : DefaultPlatform
+        public class TestPlatform : Platform
         {
             public Dictionary<string, object> Test_Options;
-            public TestPlatform() : base(null, null) { }
+            public TestPlatform(IServiceProvider services) : base(services, null, "testOS") { }
+
+            public override string DefaultCallingConvention
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override SystemService FindService(int vector, ProcessorState state)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override int GetByteSizeFromCBasicType(CBasicType cb)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+            {
+                throw new NotImplementedException();
+            }
+
             public override void LoadUserOptions(Dictionary<string, object> options) { Test_Options = options; }
+
+            public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [Test]
@@ -127,7 +198,9 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+  <arch>testArch</arch>
+  <platform>testOS</platform>
   <input>
     <user>
       <platform>
@@ -138,16 +211,25 @@ namespace Reko.UnitTests.Core.Serialization
   </input>
 </project>";
             var ldr = mr.Stub<ILoader>();
-            var platform = new TestPlatform();
+            Given_TestArch();
+            Given_TestOS();
             Given_Binary(ldr, platform);
+            Expect_LoadOptions();
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
-            Assert.AreEqual(2, platform.Test_Options.Count);
-            Assert.AreEqual("Bob", platform.Test_Options["Name"]);
-            Assert.AreEqual("Sue", platform.Test_Options["Name2"]);
+            Assert.AreEqual(2, loadedOptions.Count);
+            Assert.AreEqual("Bob", loadedOptions["Name"]);
+            Assert.AreEqual("Sue", loadedOptions["Name2"]);
+        }
+
+        private void Expect_LoadOptions()
+        {
+            platform.Stub(p => p.LoadUserOptions(null))
+                .IgnoreArguments()
+                .Do(new Action<Dictionary<string, object>>(options => { this.loadedOptions = options; }));
         }
 
         [Test]
@@ -155,7 +237,9 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sExp =
     @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+  <arch>testArch</arch>
+  <platform>testOS</platform>
   <input>
     <user>
       <platform>
@@ -170,14 +254,16 @@ namespace Reko.UnitTests.Core.Serialization
   </input>
 </project>";
             var ldr = mr.Stub<ILoader>();
-            var platform = new TestPlatform();
+            Given_TestArch();
+            Given_TestOS();
             Given_Binary(ldr, platform);
+            Expect_LoadOptions();
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             prld.LoadProject("/ff/b/foo.proj", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
-            var list = (IList)platform.Test_Options["Names"];
+            var list = (IList)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
         }
 
@@ -186,7 +272,9 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sproject =
     @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+  <arch>testArch</arch>
+  <platform>testOS</platform>
   <input>
     <user>
       <platform>
@@ -201,31 +289,37 @@ namespace Reko.UnitTests.Core.Serialization
   </input>
 </project>";
             var ldr = mr.Stub<ILoader>();
-            var platform = new TestPlatform();
+            Given_TestArch();
+            Given_TestOS();
             Given_Binary(ldr, platform);
+            Expect_LoadOptions();
+
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             prld.LoadProject("c:\\foo\\bar.proj", new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
 
-            var list = (IDictionary)platform.Test_Options["Names"];
+            var list = (IDictionary)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
         }
 
         [Test]
         public void Prld_MakePathsAbsolute()
         {
-            var sProject = new Project_v3
+            var sProject = new Project_v4
             {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
                 Inputs =
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
                         Filename = "foo.exe",
                     }
                 }
             };
-
+            Given_TestArch();
+            Given_TestOS();
             var ldr = mr.Stub<ILoader>();
             ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(new byte[1000]);
@@ -239,11 +333,13 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void Prld_LoadUserDefinedMetadata()
         {
-            var sProject = new Project_v3
+            var sProject = new Project_v4
             {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
                 Inputs =
                 {
-                    new DecompilerInput_v3
+                    new DecompilerInput_v4
                     {
                         Filename = "foo.exe",
                     },
@@ -266,33 +362,35 @@ namespace Reko.UnitTests.Core.Serialization
             };
 
             var ldr = mockFactory.CreateLoader();
-            var platform = mockFactory.CreatePlatform();
+            Given_TestArch();
+            Given_TestOS();
 
             mockFactory.CreateLoadMetadataStub(
                 @"c:\meta1.xml",
-                platform,
+                this.platform,
                 new TypeLibrary(
                     types1, new Dictionary<string, ProcedureSignature>()
                 )
             );
             mockFactory.CreateLoadMetadataStub(
                 @"c:\meta2.xml",
-                platform,
+                this.platform,
                 new TypeLibrary(
                     types2, new Dictionary<string, ProcedureSignature>()
                 )
             );
+            mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             var project = prld.LoadProject(@"c:\foo.project", sProject);
-            Assert.AreEqual(2, project.Programs[0].Metadata.Types.Count);
+            Assert.AreEqual(2, project.Programs[0].EnvironmentMetadata.Types.Count);
             Assert.AreEqual(
                 "word16",
-                project.Programs[0].Metadata.Types["USRTYPE1"].ToString()
+                project.Programs[0].EnvironmentMetadata.Types["USRTYPE1"].ToString()
             );
             Assert.AreEqual(
                 "word32",
-                project.Programs[0].Metadata.Types["USRTYPE2"].ToString()
+                project.Programs[0].EnvironmentMetadata.Types["USRTYPE2"].ToString()
             );
         }
 
@@ -306,7 +404,7 @@ namespace Reko.UnitTests.Core.Serialization
   </input>
 </project>";
             var ldr = mr.Stub<ILoader>();
-            var platform = new TestPlatform();
+            var platform = new TestPlatform(sc);
             Given_Binary(ldr, platform);
             mr.ReplayAll();
 
@@ -319,35 +417,53 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void Prld_LoadGlobalUserData()
         {
-            var sproject =
-    @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v3"">
-  <input>
-    <user>
-      <global>
-        <Address>10000010</Address>
-        <arr length=""10"">
-          <type>refType</type>
-        </arr>
-        <Name>testVar</Name>
-      </global>
-    </user>
-  </input>
-</project>";
+            var sproject = new Project_v4
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs =
+                {
+                    new DecompilerInput_v4
+                    {
+                        User = new UserData_v4
+                        {
+                            GlobalData =
+                            {
+                                new GlobalDataItem_v2
+                                {
+                                    Address = "10000010",
+                                    Name = "testVar",
+                                    DataType = new ArrayType_v1
+                                    {
+                                        ElementType = new TypeReference_v1
+                                        {
+                                             TypeName = "Blob"
+                                        },
+                                        Length = 10
+                                    }
+                                }
+                            }
+                        }
+                    },
+                   
+                }
+            };
             var ldr = mockFactory.CreateLoader();
+            Given_TestArch();
+            Given_TestOS();
+            mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
             var project = prld.LoadProject(
                 @"c:\foo\global_user.proj",
-                new MemoryStream(Encoding.UTF8.GetBytes(sproject))
-            );
+                sproject);
 
             Assert.AreEqual(1, project.Programs.Count);
             Assert.AreEqual(1, project.Programs[0].User.Globals.Count);
             var globalVariable = project.Programs[0].User.Globals.Values[0];
             Assert.AreEqual("10000010", globalVariable.Address);
             Assert.AreEqual("testVar", globalVariable.Name);
-            Assert.AreEqual("arr(refType,10)", globalVariable.DataType.ToString());
+            Assert.AreEqual("arr(Blob,10)", globalVariable.DataType.ToString());
         }
     }
 }

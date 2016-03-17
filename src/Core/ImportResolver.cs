@@ -59,7 +59,7 @@ namespace Reko.Core
             foreach (var program in project.Programs)
             {
                 ModuleDescriptor mod;
-                if (!program.Metadata.Modules.TryGetValue(moduleName, out mod))
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
                 SystemService svc;
@@ -72,7 +72,7 @@ namespace Reko.Core
             foreach (var program in project.Programs)
             {
                 ProcedureSignature sig;
-                if (program.Metadata.Signatures.TryGetValue(importName, out sig))
+                if (program.EnvironmentMetadata.Signatures.TryGetValue(importName, out sig))
                 {
                     return new ExternalProcedure(importName, sig);
                 }
@@ -86,7 +86,7 @@ namespace Reko.Core
             foreach (var program in project.Programs)
             {
                 ModuleDescriptor mod;
-                if (!program.Metadata.Modules.TryGetValue(moduleName, out mod))
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
                 SystemService svc;

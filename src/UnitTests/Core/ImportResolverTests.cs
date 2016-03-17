@@ -81,8 +81,7 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-
-            mockFactory.Given_UserDefinedMetafile("foo", null, null, module);
+            program.EnvironmentMetadata.Modules.Add("foo", module);
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", "bar@4", platform);
@@ -121,8 +120,7 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-
-            mockFactory.Given_UserDefinedMetafile("foo", null, null, module);
+            program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", 9, platform);
@@ -147,10 +145,7 @@ namespace Reko.UnitTests.Core
                 }
             };
 
-            var sigs = new Dictionary<string, ProcedureSignature>();
-            sigs.Add(
-                "bar",
-                new ProcedureSignature(
+            var barSig = new ProcedureSignature(
                     new Identifier(
                         "res",
                         PrimitiveType.Word16,
@@ -166,10 +161,18 @@ namespace Reko.UnitTests.Core
                         PrimitiveType.Word16,
                         new RegisterStorage("dx", 0, 0, PrimitiveType.Word16)
                     )
-                )
-            );
+                );
 
-            mockFactory.Given_UserDefinedMetafile("foo", null, sigs, null);
+            program.EnvironmentMetadata.Modules.Add("foo", new ModuleDescriptor("foo")
+            {
+                ServicesByName =
+                {
+                    {  "bar", new SystemService {
+                         Name = "bar",
+                         Signature = barSig }
+                    }
+                }
+            });
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", "bar", platform);

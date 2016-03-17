@@ -9,7 +9,7 @@ l1:
 SegmentedDoubleReferenceMock_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct))
+Eq_1: (ptr (struct "Globals"))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (ptr (segment (100 T_9 t0100) (102 T_15 t0102) (300 T_4 t0300)))
 	T_2 (in ds : word16)
@@ -38,8 +38,8 @@ Eq_14: (memptr T_2 (struct (0 T_15 t0000)))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct))
-  OrigDataType: (ptr (struct))
+  DataType: (ptr (struct "Globals"))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : word16)
   Class: Eq_2
   DataType: (ptr (segment (100 T_9 t0100) (102 T_15 t0102) (300 T_4 t0300)))

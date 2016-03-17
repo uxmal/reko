@@ -97,11 +97,9 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Usb_ParseFunctionDeclaration_PlatfromTypes()
         {
-            var platformTypes = new Dictionary<string, DataType>()
-            {
-                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
-            };
-            mockFactory.Given_PlatformTypes(platformTypes);
+            program.EnvironmentMetadata.Types.Add(
+                "BYTE",
+                PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
             Given_Procedure(0x1000);
 
             var usb = new UserSignatureBuilder(program);
@@ -115,25 +113,16 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Usb_ParseFunctionDeclaration_UserDefinedTypes()
         {
-            var platformTypes = new Dictionary<string, DataType>()
-            {
-                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
-            };
-            var userDefinedTypes1 = new Dictionary<string, DataType>()
-            {
-                { "USRDEF1", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
-            };
-            var userDefinedTypes2 = new Dictionary<string, DataType>()
-            {
-                { "USRDEF2", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
-            };
-            mockFactory.Given_PlatformTypes(platformTypes);
+            program.EnvironmentMetadata.Types.Add(
+                "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
+         
             Given_Procedure(0x1000);
 
             var usb = new UserSignatureBuilder(program);
 
             //should accept user defined type USRDEF1
-            mockFactory.Given_UserDefinedMetafile("mod1", userDefinedTypes1, null, null);
+            program.EnvironmentMetadata.Types.Add(
+                "USRDEF1", PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
 
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)", proc.Frame);
 
@@ -143,11 +132,12 @@ namespace Reko.UnitTests.Analysis
 
             //should not accept undefined type USRDEF2
             sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
-
             Assert.AreEqual(null, sProc);
 
             //define USRDEF2 so parser should accept it
-            mockFactory.Given_UserDefinedMetafile("mod2", userDefinedTypes2, null, null);
+
+            program.EnvironmentMetadata.Types.Add(
+               "USRDEF2", PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
 
             sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
 
@@ -159,16 +149,12 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Usb_BuildSignatures_UserDefinedTypes()
         {
-            var platformTypes = new Dictionary<string, DataType>()
-            {
-                { "PLATFORMDEF", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
-            };
-            var userDefinedTypes = new Dictionary<string, DataType>()
-            {
-                { "USRDEF", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
-            };
-            mockFactory.Given_PlatformTypes(platformTypes);
-            mockFactory.Given_UserDefinedMetafile("mod", userDefinedTypes, null, null);
+            program.EnvironmentMetadata.Types.Add(
+                "PLATFORMDEF",
+                PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
+            program.EnvironmentMetadata.Types.Add(
+                "USRDEF",
+                PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
             Given_Procedure(0x1000);
             Given_UserSignature(0x01000, "int test(PLATFORMDEF a, USRDEF b)");
 

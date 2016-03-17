@@ -10,7 +10,7 @@ l1:
 SegMem3Mock_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct (8000 T_2 t8000) (17960 T_3 t17960)))
+Eq_1: (ptr (struct "Globals"))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (ptr (segment (66 T_12 t0066) (5420 T_10 t5420) (5422 T_8 t5422)))
 	T_2 (in 0x0800 : selector)
@@ -34,8 +34,8 @@ Eq_11: (memptr T_2 (struct (0 T_12 t0000)))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct (8000 T_2 t8000) (17960 T_3 t17960)))
-  OrigDataType: (ptr (struct (8000 T_2 t8000) (17960 T_3 t17960)))
+  DataType: (ptr (struct "Globals"))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in 0x0800 : selector)
   Class: Eq_2
   DataType: (ptr (segment (66 T_12 t0066) (5420 T_10 t5420) (5422 T_8 t5422)))

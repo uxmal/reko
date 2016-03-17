@@ -31,7 +31,7 @@ l1:
 IntelIndexedAddressingMode_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1")
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment "Eq_2" (CA4 (memptr (ptr Eq_2) Eq_13) ptr0CA4) (1C0A int16 w1C0A) (7070 word16 w7070))
 	T_2 (in ds : word16)
@@ -44,7 +44,7 @@ Eq_17: <unknown>
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : word16)
   Class: Eq_2
   DataType: (ptr Eq_2)

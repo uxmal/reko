@@ -374,7 +374,7 @@ namespace Reko.Core.CLanguage
                         typeDefName.Name ?? "(null)"));
             }
             byteSize = type.Accept(symbolTable.Sizer);
-            return new SerializedTypeReference(typeDefName.Name);
+            return new TypeReference_v1(typeDefName.Name);
         }
 
         public SerializedType VisitComplexType(ComplexTypeSpec complexType)

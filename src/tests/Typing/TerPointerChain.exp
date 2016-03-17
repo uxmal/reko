@@ -25,7 +25,7 @@ l1:
 PointerChainFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1")
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct "Eq_2" (4 (ptr Eq_5) ptr0004))
 	T_2 (in r1 : word32)
@@ -37,7 +37,7 @@ Eq_8: (struct "Eq_8" (10 byte b0010))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in r1 : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

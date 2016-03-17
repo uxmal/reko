@@ -21,7 +21,7 @@ l1:
 ConstantUnionMock_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1")
+Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 	T_2 (in 3 : int32)
@@ -31,7 +31,7 @@ Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in 3 : int32)
   Class: Eq_2
   DataType: int32

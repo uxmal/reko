@@ -13,13 +13,13 @@ l1:
 PtrPtrIntMock_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct (10000 word32 dw10000) (10004 (ptr (ptr word32)) ptr10004))
+Eq_1: (struct "Globals" (10000 word32 dw10000) (10004 (ptr (ptr word32)) ptr10004))
 	globals_t (in globals : (ptr (struct "Globals")))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (10000 T_12 t10000) (10004 T_14 t10004)))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in r1 : word32)
   Class: Eq_2
   DataType: (ptr (ptr word32))

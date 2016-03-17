@@ -28,7 +28,10 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 using System.Diagnostics;
+using System.Collections.Generic;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Typing
 {
@@ -43,6 +46,15 @@ namespace Reko.UnitTests.Typing
         private TypeVariableReplacer tvr;
         private TypeTransformer trans;
         private ComplexTypeNamer ctn;
+        private List<StructureField> userDefinedGlobals;
+        private Dictionary<string, ProcedureSignature> userDefinedProcedures;
+
+        [SetUp]
+        public void Setup()
+        {
+            userDefinedGlobals = new List<StructureField>();
+            userDefinedProcedures = new Dictionary<string, ProcedureSignature>();
+        }
 
         protected override void RunTest(Program program, string outputFile)
         {
@@ -165,19 +177,40 @@ namespace Reko.UnitTests.Typing
             fut.AssertFilesEqual();
         }
 
-        public void SetupPreStages(Program prog)
+        public void SetupPreStages(Program program)
         {
-            aen = new ExpressionNormalizer(prog.Platform.PointerType);
-            eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
-            dtb = new DataTypeBuilder(prog.TypeFactory, prog.TypeStore, prog.Platform);
-            tvr = new TypeVariableReplacer(prog.TypeStore);
-            trans = new TypeTransformer(prog.TypeFactory, prog.TypeStore, prog);
+            foreach (var f in userDefinedGlobals)
+            {
+                program.GlobalFields.Fields.Add(f);
+            }
+            aen = new ExpressionNormalizer(program.Platform.PointerType);
+            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore);
+            dtb = new DataTypeBuilder(program.TypeFactory, program.TypeStore, program.Platform);
+            tvr = new TypeVariableReplacer(program.TypeStore);
+            trans = new TypeTransformer(program.TypeFactory, program.TypeStore, program);
             ctn = new ComplexTypeNamer();
         }
 
         private void SetType(Expression e, DataType t)
         {
             e.DataType = t;
+        }
+
+        private void Given_GlobalVariable(uint linAddress, string name, DataType dt)
+        {
+            userDefinedGlobals.Add(new StructureField((int)linAddress, dt, name));
+        }
+
+        private ExternalProcedure Given_Procedure(string name, params DataType [] argTypes)
+        {
+            var sig = new ProcedureSignature(
+                null,
+                argTypes.Select((argType, i) => new Identifier(
+                        "arg" + i, 
+                        argType,
+                        new StackArgumentStorage(i * 4, argType)))
+                    .ToArray());
+            return new ExternalProcedure(name, sig);
         }
 
         [Test]
@@ -930,6 +963,46 @@ test_exit:
             RunStringTest(m =>
             {
                 m.Declare(PrimitiveType.Word32, "foo", m.Word32(1));
+            }, sExp);
+        }
+
+        [Test(Description = "Tests that user-provided global names are used in the output")]
+        public void TerNamedGlobal()
+        {
+            var sExp =
+            #region Expected@"// Before ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	func(0x00001000)
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	func(globals->arrayBlobs)
+test_exit:
+
+";
+            #endregion
+
+            var sBlob = new StructureType("blob_t", 16);
+            var func = Given_Procedure("func", new Pointer(sBlob, 4));
+            Given_GlobalVariable(
+                0x0001000,
+                "arrayBlobs",
+                new ArrayType(
+                    new TypeReference(sBlob), 5));
+            RunStringTest(m =>
+            {
+                m.SideEffect(m.Fn(func, m.Word32(0x1000)));
             }, sExp);
         }
     }

@@ -11,13 +11,13 @@ l1:
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct (3120 word32 dw3120))
+Eq_1: (struct "Globals" (3120 word32 dw3120))
 	globals_t (in globals : (ptr (struct "Globals")))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (3120 T_2 t3120)))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in 0x00000000 : word32)
   Class: Eq_2
   DataType: word32

@@ -265,12 +265,10 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void Cvp_Accept_Declaration_PlatformTypes()
         {
-            var types = new Dictionary<string, DataType>()
-            {
-                { "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1) },
-            };
             Given_Program();
-            mockFactory.Given_PlatformTypes(types);
+            program.EnvironmentMetadata.Types.Add(
+                    "BYTE",
+                    PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
             Given_StubProcedure();
             mr.ReplayAll();
 

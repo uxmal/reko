@@ -147,9 +147,12 @@ namespace Reko.Core.Expressions
 
         public Application Fn(ExternalProcedure ep, params Expression[] args)
         {
+            var retType = ep.Signature.ReturnValue != null
+                ? ep.Signature.ReturnValue.DataType
+                : VoidType.Instance;
             return new Application(
                 new ProcedureConstant(PrimitiveType.Pointer32, ep), 
-                ep.Signature.ReturnValue.DataType,
+                retType,
                 args);
         }
 
