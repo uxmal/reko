@@ -53,6 +53,7 @@ namespace Reko.Gui.Windows.Controls
         {
             InitializeComponent();
 
+            base.DoubleBuffered = true;
             this.Selection = new TextSelection(this);
             this.model = new EmptyEditorModel();
             this.stringFormat = StringFormat.GenericTypographic;
@@ -273,6 +274,11 @@ namespace Reko.Gui.Windows.Controls
             GetStyleStack().PopStyle();
         }
 
+        // Disable background painting to avoid the horrible flicker.
+        // We draw our own background anyway.
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+        }
 
         public TextPointer GetStartSelection()
         {
