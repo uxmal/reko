@@ -30,6 +30,8 @@ namespace Reko.Gui.Windows.Controls
         public CombinedCodeView()
         {
             InitializeComponent();
+            this.mixedCodeDataControl.StyleClass = "dasm";
+            this.codeTextView.StyleClass = "code";
             this.Back = new ToolStripButtonWrapper(btnBack);
             this.Forward = new ToolStripButtonWrapper(btnForward);
             this.ToolBarAddressTextbox = new ToolStripTextBoxWrapper(txtAddress);
