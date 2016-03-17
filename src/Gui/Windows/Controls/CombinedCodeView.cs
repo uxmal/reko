@@ -32,10 +32,14 @@ namespace Reko.Gui.Windows.Controls
             InitializeComponent();
             this.Back = new ToolStripButtonWrapper(btnBack);
             this.Forward = new ToolStripButtonWrapper(btnForward);
+            this.ToolBarAddressTextbox = new ToolStripTextBoxWrapper(txtAddress);
+            this.ToolBarGoButton = new ToolStripButtonWrapper(btnGo);
         }
 
-        public IButton Back { get; set; }
-        public IButton Forward { get; set; }
+        public ITextBox ToolBarAddressTextbox { get; private set; }
+        public IButton ToolBarGoButton { get; private set; }
+        public IButton Back { get; private set; }
+        public IButton Forward { get; private set; }
 
         IButton INavigableControl<Address>.BackButton { get { return Back; } }
         IButton INavigableControl<Address>.ForwardButton { get { return Forward; } }

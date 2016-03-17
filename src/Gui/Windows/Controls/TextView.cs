@@ -293,7 +293,7 @@ namespace Reko.Gui.Windows.Controls
         public bool IsSelectionEmpty() {
             return  layout.ComparePositions(cursorPos, anchorPos) == 0;
         }
-    
+
         internal bool IsInsideSelection(TextPointer pos)
         {
             return
@@ -537,9 +537,8 @@ namespace Reko.Gui.Windows.Controls
             this.ignoreScroll = false;
         }
 
-        public void SetPositionAsFraction(int numer, int denom)
+        public void InvalidateModel()
         {
-            Model.SetPositionAsFraction(numer, denom);
             RecomputeLayout();
             UpdateScrollbar();
             Invalidate();

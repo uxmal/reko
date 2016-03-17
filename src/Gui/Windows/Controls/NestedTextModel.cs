@@ -163,7 +163,28 @@ namespace Reko.Gui.Windows.Controls
             model.SetPositionAsFraction(1, 1);
             this.position = new Location(Nodes.Count - 1, model.CurrentPosition);
         }
-    
+
+        public void SetPositionAsNode(TextModelNode node, int numer, int denom)
+        {
+            for (int i = 0; i < Nodes.Count; ++i)
+            {
+                if (Nodes[i] == node)
+                {
+                    node.Model.SetPositionAsFraction(numer, denom);
+                    this.position = new Location(i, node.Model.CurrentPosition);
+                    return;
+                }
+            }
+        }
+
+        public Tuple<TextModelNode, int, int> GetPositionAsNode()
+        {
+            var node = Nodes[position.iModel];
+            node.Model.MoveToLine(position.InnerLocation, 0);
+            var frac = node.Model.GetPositionAsFraction();
+            return Tuple.Create(node, frac.Item1, frac.Item2);
+        }
+
         public class NodeCollection : Collection<TextModelNode>
         {
             private NestedTextModel outer;

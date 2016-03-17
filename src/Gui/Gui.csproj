@@ -208,7 +208,7 @@
     <Compile Include="Windows\CfgGraphGenerator.cs" />
     <Compile Include="Windows\CodeViewerPane.cs" />
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
-    <Compile Include="Windows\CombinedCodeViewerPane.cs" />
+    <Compile Include="Windows\CombinedCodeViewInteractor.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
     <Compile Include="Windows\Controls\ByteMapView.cs">
       <SubType>Component</SubType>

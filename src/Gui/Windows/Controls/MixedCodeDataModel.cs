@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Drawing;
@@ -371,6 +372,71 @@ namespace Reko.Gui.Windows.Controls
             }
             currentPosition = (Address)EndPosition;
 #endif
+        }
+
+        public int CountLines(object startPos, object endPos)
+        {
+            var oldPos = CurrentPosition;
+
+            MoveToLine(startPos, 0);
+
+            int numLines = 0;
+            while (ComparePositions(CurrentPosition, endPos) < 0)
+                MoveToLine(startPos, ++numLines);
+
+            MoveToLine(oldPos, 0);
+
+            return numLines;
+        }
+
+        public class DataItemNode
+        {
+            public Address StartAddress { get; internal set; }
+            public Address EndAddress { get; internal set; }
+            public Procedure Proc { get; private set; }
+            public int NumLines { get; internal set; }
+            public TextModelNode ModelNode { get; internal set; }
+            public DataItemNode(Procedure proc, int numLines) { this.Proc = proc;  this.NumLines = numLines; }
+        }
+
+        public Collection<DataItemNode> GetDataItemNodes()
+        {
+            var nodes = new Collection<DataItemNode>();
+            Procedure curProc = null;
+            DataItemNode curNode = null;
+
+            foreach (var item in program.ImageMap.Items.Values)
+            {
+                int numLines;
+                var startAddr = item.Address;
+                var endAddr = item.Address + item.Size;
+                var bi = item as ImageMapBlock;
+                if (bi != null)
+                {
+                    numLines = CountDisassembledLines(bi);
+                    curProc = bi.Block.Procedure;
+                }
+                else
+                {
+                    numLines = CountMemoryLines(item);
+                    curProc = null;
+                }
+
+                if (curNode == null || curNode.Proc != curProc || curProc == null)
+                {
+                    curNode = new DataItemNode(curProc, numLines);
+                    curNode.StartAddress = startAddr;
+                    curNode.EndAddress = endAddr;
+                    nodes.Add(curNode);
+                }
+                else
+                {
+                    curNode.NumLines += numLines;
+                    curNode.EndAddress = endAddr;
+                }
+            }
+
+            return nodes;
         }
     }
 }

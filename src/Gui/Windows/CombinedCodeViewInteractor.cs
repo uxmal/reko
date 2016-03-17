@@ -34,7 +34,7 @@ using Microsoft.Msagl.Drawing;
 
 namespace Reko.Gui.Windows
 {
-    public class CombinedCodeViewerPane : IWindowPane, ICommandTarget
+    public class CombinedCodeViewInteractor : IWindowPane, ICommandTarget
     {
         private IServiceProvider services;
         private Program program;
@@ -42,11 +42,11 @@ namespace Reko.Gui.Windows
         private CombinedCodeView combinedCodeView;
         private NavigationInteractor<Address> navInteractor;
 
-        private Map<Address, int> nodes;
+        private Map<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
         private NestedTextModel nestedTextModel;
         private GViewer gViewer;
 
-        public CombinedCodeViewerPane()
+        public CombinedCodeViewInteractor()
         {
         }
 
@@ -62,6 +62,7 @@ namespace Reko.Gui.Windows
         {
             this.program = program;
             this.proc = proc;
+            ProgramChanged();
             if (program != null)
             {
                 var addr = program.GetProcedureAddress(proc);
@@ -76,9 +77,8 @@ namespace Reko.Gui.Windows
                         addr = program.ImageMap.BaseAddress;
                     }
                 }
-                combinedCodeView.CurrentAddress = addr;
+                SelectedAddress = addr;
             }
-            ProgramChanged();
         }
 
         private void ProgramChanged()
@@ -95,26 +95,30 @@ namespace Reko.Gui.Windows
         private void CreateNestedTextModel()
         {
             nestedTextModel = new NestedTextModel();
-            nodes = new Map<Address, int>();
 
-            foreach (var item in program.ImageMap.Items)
+            var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
+            var dataItemNodes = mixedCodeDataModel.GetDataItemNodes();
+
+            this.nodeByAddress = new Map<Address, MixedCodeDataModel.DataItemNode>();
+
+            foreach (var dataItemNode in dataItemNodes)
             {
-                var curAddr = item.Key;
-                var addrTop = curAddr - ((int)curAddr.ToLinear() & 0x0F);
+                var curAddr = dataItemNode.StartAddress;
 
-                Procedure proc;
-                if (program.Procedures.TryGetValue(curAddr, out proc))
+                bool nodeCreated = false;
+
+                GlobalDataItem_v2 globalDataItem;
+                Procedure proc = dataItemNode.Proc;
+                if (proc != null)
                 {
                     var tsf = new TextSpanFormatter();
                     var fmt = new AbsynCodeFormatter(tsf);
                     fmt.InnerFormatter.UseTabs = false;
                     fmt.Write(proc);
                     nestedTextModel.Nodes.Add(tsf.GetModel());
-                    nodes[curAddr] = nestedTextModel.Nodes.Count - 1;
+                    nodeCreated = true;
                 }
-
-                GlobalDataItem_v2 globalDataItem;
-                if (program.User.Globals.TryGetValue(curAddr, out globalDataItem))
+                else if (program.User.Globals.TryGetValue(curAddr, out globalDataItem))
                 {
                     var tlDeser = program.CreateTypeLibraryDeserializer();
                     var dt = globalDataItem.DataType.Accept(tlDeser);
@@ -126,7 +130,13 @@ namespace Reko.Gui.Windows
                     var gdw = new GlobalDataWriter(program, services);
                     gdw.WriteGlobalVariable(curAddr, dt, name, tsf);
                     nestedTextModel.Nodes.Add(tsf.GetModel());
-                    nodes[curAddr] = nestedTextModel.Nodes.Count - 1;
+                    nodeCreated = true;
+                }
+
+                if (nodeCreated)
+                {
+                    dataItemNode.ModelNode = nestedTextModel.Nodes.Last();
+                    this.nodeByAddress[curAddr] = dataItemNode;
                 }
             }
         }
@@ -146,6 +156,9 @@ namespace Reko.Gui.Windows
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
             this.combinedCodeView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
+
+            this.combinedCodeView.ToolBarGoButton.Click += ToolBarGoButton_Click;
+            this.combinedCodeView.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
 
             this.gViewer = new GViewer();
             this.gViewer.Dock = DockStyle.Fill;
@@ -278,46 +291,92 @@ namespace Reko.Gui.Windows
 
         void CombinedCodeView_CurrentAddressChanged(object sender, EventArgs e)
         {
+            combinedCodeView.MixedCodeDataView.TopAddress = SelectedAddress;
+            MixedCodeDataView_TopAddressChanged();
+        }
+
+        private void MixedCodeDataView_TopAddressChanged()
+        {
+            var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
+            MixedCodeDataModel.DataItemNode dataItemNode;
+            if (!nodeByAddress.TryGetLowerBound(topAddress, out dataItemNode))
+                return;
+
+            int numer;
+            int denom;
+            if (topAddress < dataItemNode.EndAddress)
+            {
+                var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
+                numer = mixedCodeDataModel.CountLines(dataItemNode.StartAddress, topAddress);
+                denom = dataItemNode.NumLines;
+            }
+            else
+            {
+                numer = 1;
+                denom = 1;
+            }
+
+            nestedTextModel.SetPositionAsNode(dataItemNode.ModelNode, numer, denom);
+            combinedCodeView.CodeView.InvalidateModel();
+        }
+
+        private void CodeView_PositionChanged()
+        {
+            var pos = nestedTextModel.GetPositionAsNode();
+            var node = pos.Item1;
+            var numer = pos.Item2;
+            var denom = pos.Item3;
+
+            var dataItemNode = nodeByAddress.Where(n => n.Value.ModelNode == node).
+                Select(n => n.Value).SingleOrDefault();
+
+            long numLines = dataItemNode.NumLines;
+            var offset = (int)((numLines * numer) / denom);
+            combinedCodeView.MixedCodeDataView.Model.MoveToLine(dataItemNode.StartAddress, offset);
+            combinedCodeView.MixedCodeDataView.InvalidateModel();
         }
 
         private void MixedCodeDataView_VScrollValueChanged(object sender, EventArgs e)
         {
-            var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
-            int nodeIndex;
-            if (!nodes.TryGetLowerBound(topAddress, out nodeIndex))
-                return;
-            if (nodeIndex >= nestedTextModel.Nodes.Count)
-                return;
-
-            int pos = 0;
-            for(int i = 0; i < nodeIndex; i++)
-                pos += nestedTextModel.Nodes[i].cLines;
-
-            combinedCodeView.CodeView.SetPositionAsFraction(pos, nestedTextModel.LineCount);
+            MixedCodeDataView_TopAddressChanged();
         }
 
         private void CodeView_VScrollValueChanged(object sender, EventArgs e)
         {
-            var frac = nestedTextModel.GetPositionAsFraction();
-            var line = (int)(Math.BigMul(frac.Item1, nestedTextModel.LineCount) / frac.Item2);
+            CodeView_PositionChanged();
+        }
 
-            Address addr = null;
-            foreach (var node in nodes)
-            {
-                addr = node.Key;
-                var nodeIndex = node.Value;
-                if (nodeIndex >= nestedTextModel.Nodes.Count)
-                    continue;
-                var cLines = nestedTextModel.Nodes[nodeIndex].cLines;
-                if (line < cLines)
-                    break;
-                line -= cLines;
-            }
-
-            if (addr == null)
+        private void NavigateToToolbarAddress()
+        {
+            Address addr;
+            var txtAddr = combinedCodeView.ToolBarAddressTextbox.Text.Trim();
+            if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
+                txtAddr = txtAddr.Substring(2);
+            if (!program.Architecture.TryParseAddress(txtAddr, out addr))
                 return;
+            UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress, addr);
+        }
 
-            combinedCodeView.MixedCodeDataView.TopAddress = addr;
+        private void UserNavigateToAddress(Address addrFrom, Address addrTo)
+        {
+            if (!program.ImageMap.IsValidAddress(addrTo))
+                return;
+            navInteractor.RememberAddress(addrFrom);
+            this.SelectedAddress = addrTo;        // ...and move to the new position.
+        }
+
+        void ToolBarAddressTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData != Keys.Return)
+                return;
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+            NavigateToToolbarAddress();
+        }
+
+        void ToolBarGoButton_Click(object sender, EventArgs e)
+        {
+            NavigateToToolbarAddress();
         }
 
         private void GViewer_KeyDown(object sender, KeyEventArgs e)
