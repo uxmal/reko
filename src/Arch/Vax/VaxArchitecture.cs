@@ -54,8 +54,8 @@ namespace Reko.Arch.Vax
             new RegisterStorage("fp", 13, 0, PrimitiveType.Word32),
             new RegisterStorage("sp", 14, 0, PrimitiveType.Word32),
             new RegisterStorage("pc", 15, 0, PrimitiveType.Word32),
-
         };
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new VaxDisassembler(this, imageReader);
