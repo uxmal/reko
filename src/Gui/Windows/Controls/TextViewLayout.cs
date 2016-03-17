@@ -76,6 +76,7 @@ namespace Reko.Gui.Windows.Controls
             return layout;
         }
 
+
         public static TextViewLayout VisibleLines(TextViewModel model, Size size, Graphics g, Font defaultFont, StyleStack styleStack)
         {
             var szClient = new SizeF(size);

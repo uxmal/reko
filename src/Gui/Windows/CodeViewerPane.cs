@@ -117,8 +117,6 @@ namespace Reko.Gui.Windows
             return this.codeView;
         }
 
-    
-
         private void EnableControls()
         {
             Core.Serialization.ProcedureBase_v1 sProc;
