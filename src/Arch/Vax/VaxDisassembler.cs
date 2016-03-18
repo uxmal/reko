@@ -111,42 +111,74 @@ namespace Reko.Arch.Vax
         {
             op = null;
             byte b;
+            byte bSpecifier;
             ushort w;
-            if (!rdr.TryReadByte(out b))
+            uint dw;
+            if (!rdr.TryReadByte(out bSpecifier))
             {
                 return false;
             }
-            var reg = arch.GetRegister(b & 0xF);
-            switch (b >> 4)
+            var reg = arch.GetRegister(bSpecifier & 0xF);
+            switch (bSpecifier >> 4)
             {
             case 0: // Literal mode
             case 1:
             case 2:
             case 3:
-                op = LiteralOperand(width, b);
+                op = LiteralOperand(width, bSpecifier);
                 break;
             case 5: // Register mode
                 op = new RegisterOperand(reg);
                 break;
+            case 7: // Autodecrement mode
+                op = new MemoryOperand(width)
+                {
+                    Base = reg,
+                    AutoDecrement = true,
+                };
+                break;
+            case 8: // Autoincrement mode
+                op = new MemoryOperand(width)
+                {
+                    Base = reg,
+                    AutoIncrement = true,
+                };
+                break;
+            case 9: // Deferred Autoincrement mode
+                op = new MemoryOperand(width)
+                {
+                    Base = reg,
+                    AutoIncrement = true,
+                    Deferred = true,
+                };
+                break;
             case 10: // Displacement mode
+            case 11:
                 if (!rdr.TryReadByte(out b))
                     return false;
-                op = DisplacementOperand(width, reg, Constant.SByte((sbyte)b));
+                op = DisplacementOperand(width, reg, Constant.SByte((sbyte)b), bSpecifier);
                 break;
             case 12:
+            case 13:
                 if (!rdr.TryReadUInt16(out w))
                     return false;
-                op = DisplacementOperand(width, reg, Constant.Int16((short)w));
+                op = DisplacementOperand(width, reg, Constant.Int16((short)w), bSpecifier);
+                break;
+            case 14:
+            case 15:
+                if (!rdr.TryReadUInt32(out dw))
+                    return false;
+                op = DisplacementOperand(width, reg, Constant.Word32(dw), bSpecifier);
                 break;
             default:
                 throw new NotImplementedException(
                     string.Format(
-                        "Unimplemented addressing mode {0:X2}", (b >> 4)));
+                        "Unimplemented addressing mode {0:X2}", (bSpecifier >> 4)));
             }
             return true;
         }
 
-        private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c)
+        private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c, byte bSpecifier)
         {
             if (reg.Number == 15)
             {
@@ -157,6 +189,7 @@ namespace Reko.Arch.Vax
             {
                 Base = reg,
                 Offset = c,
+                Deferred = (bSpecifier & 1) == 1
             };
         }
 

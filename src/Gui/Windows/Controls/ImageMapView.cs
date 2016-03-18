@@ -92,7 +92,11 @@ namespace Reko.Gui.Windows.Controls
             this.painter = CalculateLayout();
             painter.Paint(pe.Graphics, this);
         }
- 
+
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+        }
+
         public Painter CalculateLayout()
         {
             return new Painter(this);

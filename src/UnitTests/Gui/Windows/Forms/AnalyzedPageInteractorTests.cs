@@ -72,6 +72,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             form.Stub(f => f.Show());
 
+            var platform = mr.Stub<IPlatform>();
             var loadAddress = Address.Ptr32(0x100000);
             var bytes = new byte[4711];
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
@@ -82,7 +83,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                     mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute)),
                 Architecture = arch,
-                Platform = new DefaultPlatform(sc, arch),
+                Platform = platform,
             };
             ILoader ldr = mr.StrictMock<ILoader>();
             ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(prog);

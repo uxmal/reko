@@ -55,11 +55,14 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             mr = new MockRepository();
+            sc = new ServiceContainer();
 
             form = new MainForm();
 
+            var platform = mr.Stub<IPlatform>();
             program = new Program();
             program.Architecture = new IntelArchitecture(ProcessorMode.Real);
+            program.Platform = platform;
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.ImageMap = new ImageMap(
                 mem.BaseAddress,
@@ -70,13 +73,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mapSegment1 = program.ImageMap.Segments.Values[0];
             mapSegment2 = program.ImageMap.Segments.Values[1];
 
-            sc = new ServiceContainer();
             decSvc = new DecompilerService();
 
-            sc.AddService(typeof(IDecompilerService), decSvc);
-            sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
-            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            sc.AddService(typeof(IStatusBarService), new FakeStatusBarService());
+            sc.AddService<IDecompilerService>(decSvc);
+            sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IStatusBarService>(new FakeStatusBarService());
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
