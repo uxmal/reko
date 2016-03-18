@@ -69,9 +69,14 @@ namespace Reko.Arch.Z80
                 case Opcode.call: RewriteCall(dasm.Current); break;
                 case Opcode.cp: RewriteCp(); break;
                 case Opcode.cpl: RewriteCpl(); break;
+                case Opcode.daa: RewriteDaa(); break;
                 case Opcode.dec: RewriteDec(); break;
                 case Opcode.djnz: RewriteDjnz(dasm.Current.Op1); break;
                 case Opcode.ex: RewriteEx(); break;
+                case Opcode.hlt: emitter.SideEffect(PseudoProc("__hlt", VoidType.Instance)); break;
+                case Opcode.im:
+                    emitter.SideEffect(PseudoProc("__im", VoidType.Instance, RewriteOp(dasm.Current.Op1)));
+                    break;
                 case Opcode.inc: RewriteInc(); break;
                 case Opcode.jp: RewriteJp(dasm.Current); break;
                 case Opcode.jr: RewriteJr(); break;
@@ -79,6 +84,7 @@ namespace Reko.Arch.Z80
                     RewriteOp(dasm.Current.Op1),
                     RewriteOp(dasm.Current.Op2));
                     break;
+                case Opcode.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
                 case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
                 case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
                 case Opcode.rlca: RewriteRotation(PseudoProcedure.RolC, false); break;
@@ -96,10 +102,8 @@ namespace Reko.Arch.Z80
                 case Opcode.xor: RewriteXor(); break;
 
                 //$TODO: Not implemented yet; feel free to implement these!
-        case Opcode.daa: goto default;
         case Opcode.di: goto default;
         case Opcode.ei: goto default;
-        case Opcode.hlt: goto default;
         case Opcode.bit: goto default;
         case Opcode.ccf: goto default;
         case Opcode.cpd: goto default;
@@ -111,7 +115,6 @@ namespace Reko.Arch.Z80
         case Opcode.ldd: goto default;
         case Opcode.lddr: goto default;
         case Opcode.ldi: goto default;
-        case Opcode.im: goto default;
         case Opcode.@in: goto default;
         case Opcode.ind: goto default;
         case Opcode.indr: goto default;
@@ -126,7 +129,6 @@ namespace Reko.Arch.Z80
         case Opcode.res: goto default;
         case Opcode.reti: goto default;
         case Opcode.retn: goto default;
-        case Opcode.rl: goto default;
         case Opcode.rld: goto default;
         case Opcode.rr: goto default;
         case Opcode.rrd: goto default;
@@ -141,6 +143,25 @@ namespace Reko.Arch.Z80
                 }
                 yield return rtlc;
             }
+        }
+
+        //$REVIEW: push PseudoProc into the RewriterHost interface"
+        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
+        {
+            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
+            return PseudoProc(ppp, retType, args);
+        }
+
+        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+        {
+            if (args.Length != ppp.Arity)
+                throw new ArgumentOutOfRangeException(
+                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                    ppp.Name,
+                    ppp.Arity,
+                    args.Length));
+
+            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
 
         private void RewriteAdc()
@@ -327,6 +348,15 @@ namespace Reko.Arch.Z80
         {
             var a = frame.EnsureRegister(Registers.a);
             emitter.Assign(a, emitter.Comp(a));
+        }
+
+        private void RewriteDaa()
+        {
+            var a = frame.EnsureRegister(Registers.a);
+            emitter.Assign(
+                a,
+                PseudoProc("__daa", PrimitiveType.Byte, a));
+            AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, a);
         }
 
         private void RewriteDec()
