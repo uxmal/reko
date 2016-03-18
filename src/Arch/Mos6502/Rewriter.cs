@@ -153,7 +153,6 @@ namespace Reko.Arch.Mos6502
                 emitter.Cond(dst));
         }
 
-
         private void Branch(ConditionCode cc, FlagM flags)
         {
             ric.Class = RtlClass.ConditionalTransfer;
@@ -281,7 +280,6 @@ namespace Reko.Arch.Mos6502
             emitter.Assign(r, mem);
             emitter.Assign(c, emitter.Cond(r));
         }
-
 
         private void And()
         {

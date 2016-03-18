@@ -206,6 +206,7 @@ namespace Reko
             {
                 var program = loader.LoadExecutable(fileName, image, null);
                 Project = CreateDefaultProject(fileName, program);
+                Project.LoadedMetadata = program.Platform.CreateMetadata();
                 isProject = false;
             }
             eventListener.ShowStatus("Source program loaded.");
