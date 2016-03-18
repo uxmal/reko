@@ -32,6 +32,9 @@ namespace Reko.Arch.Vax
 
         public RegisterStorage Base;
         public Constant Offset;
+        public bool Deferred;
+        internal bool AutoDecrement;
+        internal bool AutoIncrement;
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {

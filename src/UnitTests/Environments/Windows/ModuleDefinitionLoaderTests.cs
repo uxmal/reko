@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Environments.Windows
                 "EXPORTS" + nl +
                 " _foo@12 @ 1" + nl);
             var lib = dfl.Load(platform, new TypeLibrary());
-            Assert.IsTrue(lib.Modules.ContainsKey("bar"));
+            Assert.IsTrue(lib.Modules.ContainsKey("BAR"));
         }
     }
 }

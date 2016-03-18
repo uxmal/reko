@@ -89,6 +89,7 @@ namespace Reko.UnitTests.Gui
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var prog = new Program(imageMap, arch, platform);
             sc.AddService<DecompilerHost>(host);
+            platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(fileName, bytes, null)).Return(prog);
             loader.Replay();

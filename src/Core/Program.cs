@@ -150,11 +150,6 @@ namespace Reko.Core
             globals = new Identifier("globals", ptrGlobals, MemoryStorage.Instance);
         }
 
-        public void LoadMetadataFile(ILoader loader, string filename)
-        {
-            loader.LoadMetadata(filename, Platform, EnvironmentMetadata);
-        }
-
         /// <summary>
         /// Creates a symbol table for this program populated with the types 
         /// defined by the platform of the program and user-defined types.
