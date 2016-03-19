@@ -152,6 +152,57 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         }
 
         [Test]
+        public void Mcdm_GetLineSpans_MemoryAreaIsLargerThanSegment()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+            var lines = mcdm.GetLineSpans(1);
+            Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00041002", mcdm.CurrentPosition.ToString());
+
+            lines = mcdm.GetLineSpans(1);
+            Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
+        }
+
+        [Test]
+        public void Mcdm_GetLineSpans_InvalidAddress()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute),
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+
+            mcdm.MoveToLine(Address.Ptr32(0x41008), 0);
+
+            var lines = mcdm.GetLineSpans(1);
+            Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("0x42008", mcdm.CurrentPosition.ToString());
+        }
+
+        [Test]
         public void Mcdm_FindInstructionIndex()
         {
             var instrs = new MachineInstruction[]
