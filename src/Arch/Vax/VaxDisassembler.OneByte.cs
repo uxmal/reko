@@ -202,8 +202,8 @@ namespace Reko.Arch.Vax
  /* 9E */ new OpRec(Opcode.movab, "ab,wl"), 
  /* 9F */ new OpRec(Opcode.pushab,  -1), 
 
- /* A0 */ new OpRec(Opcode.addw2,  -1), 
- /* A1 */ new OpRec(Opcode.addw3,  -1), 
+ /* A0 */ new OpRec(Opcode.addw2, "rw,ww"), 
+ /* A1 */ new OpRec(Opcode.addw3, "rw,rw,ww"), 
  /* A2 */ new OpRec(Opcode.subw2,  -1), 
  /* A3 */ new OpRec(Opcode.subw3,  -1), 
  /* A4 */ new OpRec(Opcode.mulw2,  -1), 
