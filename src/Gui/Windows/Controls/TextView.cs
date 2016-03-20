@@ -307,6 +307,12 @@ namespace Reko.Gui.Windows.Controls
                 layout.ComparePositions(pos, GetEndSelection()) < 0;
         }
 
+        public void ClearSelection()
+        {
+            anchorPos = cursorPos;
+            Invalidate();
+        }
+
         /// <summary>
         /// Computes the layout of all visible text spans and stores them the 
         /// member variable 'visibleLines'. This includes a final partial item on the end.
