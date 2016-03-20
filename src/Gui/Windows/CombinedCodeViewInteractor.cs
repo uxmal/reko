@@ -24,7 +24,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Output;
 using Reko.Gui.Windows.Controls;
 using System;
-using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Msagl.GraphViewerGdi;
@@ -152,9 +152,11 @@ namespace Reko.Gui.Windows
 
             this.combinedCodeView.MixedCodeDataView.VScrollValueChanged += MixedCodeDataView_VScrollValueChanged;
             this.combinedCodeView.MixedCodeDataView.Services = services;
+            this.combinedCodeView.MixedCodeDataView.MouseDown += MixedCodeDataView_MouseDown;
 
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
+            this.combinedCodeView.CodeView.MouseDown += CodeView_MouseDown;
             this.combinedCodeView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.combinedCodeView.ToolBarGoButton.Click += ToolBarGoButton_Click;
@@ -202,6 +204,19 @@ namespace Reko.Gui.Windows
             combinedCodeView = null;
         }
 
+        private TextView FocusedTextView {
+            get
+            {
+                if (combinedCodeView.MixedCodeDataView.Focused)
+                    return combinedCodeView.MixedCodeDataView;
+
+                if (combinedCodeView.CodeView.Focused)
+                    return combinedCodeView.CodeView;
+
+                return null;
+            }
+        }
+
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
@@ -209,10 +224,9 @@ namespace Reko.Gui.Windows
                 switch (cmdId.ID)
                 {
                 case CmdIds.EditCopy:
-                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
-                    //status.Status = combinedCodeView.Selection.IsEmpty
-                    //    ? MenuStatus.Visible
-                    //    : MenuStatus.Visible | MenuStatus.Enabled;
+                    status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
+                        ? MenuStatus.Visible
+                        : MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
                 case CmdIds.ViewCfgGraph:
                     status.Status = gViewer.Visible
@@ -253,18 +267,23 @@ namespace Reko.Gui.Windows
         {
             if (this.proc == null)
                 return;
-            if (combinedCodeView.Focused)
-            {
-                //$TODO: @ptomin -- how to select text in the combined code viewer pane?
-                //var ms = new MemoryStream();
-                //this.codeView.TextView.Selection.Save(ms, System.Windows.Forms.DataFormats.UnicodeText);
-                //Debug.Print(Encoding.Unicode.GetString(ms.ToArray()));
-                //Clipboard.SetData(DataFormats.UnicodeText, ms);
-            }
-            else if (false) // combinedCodeView.ProcedureDeclaration.Focused)
-            {
-                //Clipboard.SetText(combinedCodeView.ProcedureDeclaration.SelectedText);
-            }
+
+            if (FocusedTextView == null)
+                return;
+
+            var ms = new MemoryStream();
+            FocusedTextView.Selection.Save(ms, DataFormats.UnicodeText);
+            Clipboard.SetData(DataFormats.UnicodeText, ms);
+        }
+
+        private void MixedCodeDataView_MouseDown(object sender, EventArgs e)
+        {
+            combinedCodeView.CodeView.ClearSelection();
+        }
+
+        private void CodeView_MouseDown(object sender, EventArgs e)
+        {
+            combinedCodeView.MixedCodeDataView.ClearSelection();
         }
 
         public void ViewGraph()
