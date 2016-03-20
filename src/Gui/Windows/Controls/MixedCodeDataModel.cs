@@ -39,6 +39,7 @@ namespace Reko.Gui.Windows.Controls
 
         private Program program;
         private Address currentPosition;
+        private Address endAddress;
         private Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
 
         public MixedCodeDataModel(Program program)
@@ -49,7 +50,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 this.currentPosition = program.ImageMap.BaseAddress;
                 this.StartPosition = program.ImageMap.BaseAddress;
-                this.EndPosition = program.ImageMap.BaseAddress;
+                this.endAddress = program.ImageMap.BaseAddress;
                 this.LineCount = 0;
             }
             else
@@ -57,7 +58,7 @@ namespace Reko.Gui.Windows.Controls
                 var lastSeg = program.ImageMap.Segments.Values.Last();
                 this.currentPosition = firstSeg.Address;
                 this.StartPosition = firstSeg.Address;
-                this.EndPosition = lastSeg.EndAddress;
+                this.endAddress = lastSeg.EndAddress;
                 this.CollectInstructions();
                 this.LineCount = CountLines();
             }
@@ -65,7 +66,7 @@ namespace Reko.Gui.Windows.Controls
 
         public object CurrentPosition {  get { return currentPosition; } }
         public object StartPosition { get; private set;  }
-        public object EndPosition { get; private set;  }
+        public object EndPosition { get { return endAddress; } }
 
         public int LineCount { get; private set; }
 
@@ -222,7 +223,7 @@ namespace Reko.Gui.Windows.Controls
         {
             if (position == null)
                 throw new ArgumentNullException("position");
-            currentPosition = (Address)position;
+            currentPosition = SanitizeAddress((Address) position);
             if (offset == 0)
                 return 0;
             int moved = 0;
@@ -267,10 +268,10 @@ namespace Reko.Gui.Windows.Controls
                         // Determine current line # within memory block
 
                         int i = FindIndexOfMemoryAddress(item, currentPosition);
-                        int iEnd = FindIndexOfMemoryAddress(item, item.Address + item.Size);
+                        int iEnd = CountBlockLines(item);
                         Debug.Assert(i >= 0, "Should have been inside item");
                         int iNew = i + offset;
-                        if (0 <= iNew && iNew <= iEnd)
+                        if (0 <= iNew && iNew < iEnd)
                         {
                             moved += offset;
                             currentPosition = GetAddressOfLine(item, iNew);
@@ -308,6 +309,33 @@ namespace Reko.Gui.Windows.Controls
             throw new NotImplementedException("Moving backwards not implemented yet.");
         }
 
+        /// <summary>
+        /// Given an address, attempts to make sure that it points to a valid
+        /// position in the address space.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        private Address SanitizeAddress(Address position)
+        {
+            ImageMapItem item;
+            if (program.ImageMap.TryFindItem(position, out item))
+            {
+                if (position < item.EndAddress)
+                {
+                    return position;
+                }
+                int iItem = program.ImageMap.Items.Keys.IndexOf(item.Address) + 1;
+                if (iItem >= program.ImageMap.Items.Count)
+                    return this.endAddress;
+                return program.ImageMap.Items.Keys[iItem];
+            }
+            if (position < program.ImageMap.BaseAddress)
+            {
+                return program.ImageMap.BaseAddress;
+            }
+            return endAddress;
+        }
+
         private Address GetAddressOfLine(ImageMapItem item, int i)
         {
             if (i == 0)
@@ -316,6 +344,12 @@ namespace Reko.Gui.Windows.Controls
                 return Align(item.Address + i * BytesPerLine, BytesPerLine);
         }
 
+        /// <summary>
+        /// Find the index of the address within the item.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="addr"></param>
+        /// <returns></returns>
         private int FindIndexOfMemoryAddress(ImageMapItem item, Address addr)
         {
             var addrStart = Align(item.Address, BytesPerLine);

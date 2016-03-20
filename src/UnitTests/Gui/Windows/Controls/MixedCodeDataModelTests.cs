@@ -152,6 +152,68 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         }
 
         [Test]
+        public void Mcdm_GetLineSpans_MemoryAreaIsLargerThanSegment()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+
+            // Read the first instruction
+            var lines = mcdm.GetLineSpans(1);
+            Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00041002", mcdm.CurrentPosition.ToString());
+
+            // Read the second and last instruction.
+            lines = mcdm.GetLineSpans(1);
+            Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00041004", mcdm.CurrentPosition.ToString());
+
+            // Read the 8 remaining bytes from .data
+            lines = mcdm.GetLineSpans(1);
+            Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+        }
+
+        [Test]
+        public void Mcdm_GetLineSpans_InvalidAddress()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute),
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+
+            // This places the curpos right after the last item in the .text
+            // segment.
+            mcdm.MoveToLine(Address.Ptr32(0x41008), 0);
+
+            // This should return the first line of the .data segment.
+            var lines = mcdm.GetLineSpans(1);
+            Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+        }
+
+        [Test]
         public void Mcdm_FindInstructionIndex()
         {
             var instrs = new MachineInstruction[]
@@ -307,6 +369,36 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 var msg = string.Format(format, i, num_lines, frac.Item1, frac.Item2);
                 Assert.IsTrue((i * frac.Item2 == num_lines * frac.Item1), msg);
             }
+        }
+
+        [Test(Description = "After placing the curpos in a 'gap' in the address space, we expect MoveToLine to 'do the right thing'")]
+        public void Mcdm_MoveToLine_FromInvalidPosition()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+
+            // Read the two instructions, placing curpos in the 'gap'
+            var lines = mcdm.GetLineSpans(2);
+            Assert.AreEqual(2, lines.Length);
+            Assert.AreEqual("00041004", mcdm.CurrentPosition.ToString());
+
+            // Advance a line. 
+            int cLines = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
+            Assert.AreEqual(1, cLines);
+            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
         }
     }
 }
