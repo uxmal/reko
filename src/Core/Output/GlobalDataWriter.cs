@@ -245,7 +245,7 @@ namespace Reko.Core.Output
         public CodeFormatter VisitString(StringType str)
         {
             var offset = rdr.Offset;
-            var s = rdr.ReadCString(str.ElementType, Encoding.UTF8);    //$BUG: should get this from platform / user-setting.
+            var s = rdr.ReadCString(str.ElementType, program.Platform.DefaultTextEncoding);    //$TODO: allow user to override?
             var fmt = codeFormatter.InnerFormatter;
             fmt.Write('"');
             foreach (var ch in s.ToString())

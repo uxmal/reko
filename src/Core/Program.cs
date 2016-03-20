@@ -320,7 +320,7 @@ namespace Reko.Core
             this.User.Globals.Add(address, new Serialization.GlobalDataItem_v2
             {
                 Address = address.ToString(),
-                DataType = dataType.Accept(new  Serialization.DataTypeSerializer()),
+                DataType = dataType.Accept(new Serialization.DataTypeSerializer()),
             });
             return item;
         }
@@ -334,13 +334,13 @@ namespace Reko.Core
             {
                 // Zero-terminated string.
                 var rdr = this.CreateImageReader(addr);
-                while (rdr.IsValid)
-                {
-                    var ch = rdr.ReadChar(strDt.ElementType);
-                    if (ch == 0)
-                        break;
-                }
+                while (rdr.IsValid && !rdr.ReadNullCharTerminator(strDt.ElementType))
+                    ;
                 return (uint)(rdr.Address - addr);
+            }
+            else
+            {
+                return (uint)(strDt.Size + strDt.Size);
             }
             throw new NotImplementedException();
         }
