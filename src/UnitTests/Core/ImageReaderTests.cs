@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Core
                             0x12, 0x34, 0x03, 0x00, 0x00, 0x00, 0x46, 0x00,
                             0x6f, 0x00, 0x6f, 0x00, 0x02, 0x02}),
                     2);
-            StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar);
+            StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar, Encoding.Unicode);
             Assert.AreEqual("Foo", str.ToString());
         }
 

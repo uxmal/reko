@@ -334,13 +334,13 @@ namespace Reko.Core
             {
                 // Zero-terminated string.
                 var rdr = this.CreateImageReader(addr);
-                while (rdr.IsValid)
-                {
-                    var ch = rdr.ReadChar(strDt.ElementType);
-                    if (ch == 0)
-                        break;
-                }
+                while (rdr.IsValid && !rdr.ReadNullCharTerminator(strDt.ElementType))
+                    ;
                 return (uint)(rdr.Address - addr);
+            }
+            else
+            {
+                return (uint)(strDt.Size + strDt.Size);
             }
             throw new NotImplementedException();
         }

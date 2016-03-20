@@ -424,13 +424,16 @@ namespace Reko.Core
         public abstract Constant Read(PrimitiveType dataType);
         public abstract bool TryRead(PrimitiveType dataType, out Constant c);
 
-        [Obsolete("Use ReadCString / ReadLengthPrefixedString")]
-        public char ReadChar(DataType charType)
+        /// <summary>
+        /// </summary>
+        /// <param name="charType"></param>
+        /// <returns></returns>
+        public bool ReadNullCharTerminator(DataType charType)
         {
             switch (charType.Size)
             {
-            case 1: return (char)ReadByte();
-            case 2: return (char)ReadUInt16();
+            case 1: return (char)ReadByte() == 0;
+            case 2: return (char)ReadUInt16() == 0;
             default: throw new NotSupportedException(string.Format("Character size {0} not supported.", charType.Size));
             }
         }
@@ -443,26 +446,33 @@ namespace Reko.Core
         public StringConstant ReadCString(DataType charType, Encoding encoding)
         {
             int iStart = (int)Offset;
-            var sb = new StringBuilder();
-            //$BUG: ignores the encoding!
-            for (char ch = ReadChar(charType); ch != 0; ch = ReadChar(charType))
-            {
-                sb.Append(ch);
-            }
+            while (IsValid && !ReadNullCharTerminator(charType))
+                ;
             return new StringConstant(
                 StringType.NullTerminated(charType),
-                encoding.GetString(bytes, iStart, (int)Offset - iStart - 1));
+                encoding.GetString(
+                    bytes,
+                    iStart,
+                    (int)Offset - iStart - 1));
         }
 
-        public StringConstant ReadLengthPrefixedString(PrimitiveType lengthType, PrimitiveType charType)
+        /// <summary>
+        /// Read a character string that is preceded by a character count. 
+        /// </summary>
+        /// <param name="lengthType"></param>
+        /// <param name="charType"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public StringConstant ReadLengthPrefixedString(PrimitiveType lengthType, PrimitiveType charType, Encoding encoding)
         {
             int length = Read(lengthType).ToInt32();
-            var sb = new StringBuilder();
-            for (int i = 0; i < length; ++i)
-            {
-                sb.Append(ReadChar(charType));
-            }
-            return new StringConstant(charType, sb.ToString());
+            int iStart = (int)Offset;
+            return new StringConstant(
+                StringType.LengthPrefixedStringType(charType, lengthType),
+                encoding.GetString(
+                    bytes,
+                    iStart,
+                    length * charType.Size));
         }
 
         public void Seek(int offset)
