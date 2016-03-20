@@ -287,6 +287,7 @@ namespace Reko.Core
         public bool TryPeekByte(int offset, out byte value) { return MemoryArea.TryReadByte(bytes, offset + off, out value); }
         public bool TryPeekBeUInt16(int offset, out ushort value) { return MemoryArea.TryReadBeUInt16(bytes, offset + off, out value); }
         public bool TryPeekBeUInt32(int offset, out uint value) { return MemoryArea.TryReadBeUInt32(bytes, offset + off, out value); }
+        public bool TryPeekBeUInt64(int offset, out ulong value) { return MemoryArea.TryReadBeUInt64(bytes, offset + off, out value); }
 
         public bool TryPeekLeUInt32(int offset, out uint value) { return MemoryArea.TryReadLeUInt32(bytes, offset + off, out value); }
 
@@ -487,10 +488,6 @@ namespace Reko.Core
             return ab;
         }
 
-        public bool TryPeekBeUInt64(int p, out ulong target)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     /// <summary>
