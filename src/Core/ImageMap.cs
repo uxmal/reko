@@ -384,12 +384,11 @@ namespace Reko.Core
 	/// </summary>
 	public class ImageMapItem
 	{
-		public Address Address;
 		public uint Size;
         public string Name;
         public DataType DataType;
 
-		public ImageMapItem(uint size)
+        public ImageMapItem(uint size)
 		{
 			this.Size = size;
             DataType = new UnknownType();
@@ -400,7 +399,10 @@ namespace Reko.Core
             DataType = new UnknownType();
 		}
 
-		public bool IsInRange(Address addr)
+        public Address Address { get; set; }
+        public Address EndAddress { get { return Address + Size; } }
+
+        public bool IsInRange(Address addr)
 		{
 			return IsInRange(addr.ToLinear());
 		}

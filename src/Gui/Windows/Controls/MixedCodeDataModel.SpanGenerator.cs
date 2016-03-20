@@ -37,21 +37,28 @@ namespace Reko.Gui.Windows.Controls
             ImageMapItem item;
             program.ImageMap.TryFindSegment(currentPosition, out seg);
             program.ImageMap.TryFindItem(currentPosition, out item);
+
             SpanGenerator sp = CreateSpanifier(item, currentPosition);
             while (count != 0 && seg != null && item != null)
             {
-                var tuple = sp.GenerateSpan();
-                if (tuple != null)
+                bool memValid =
+                    seg.MemoryArea.IsValidAddress(currentPosition) &&
+                    currentPosition < item.EndAddress;
+
+                if (memValid)
                 {
-                    currentPosition = tuple.Item1;
-                    spans.Add(tuple.Item2);
-                    --count;
+                    var tuple = sp.GenerateSpan();
+                    if (tuple != null)
+                    {
+                        currentPosition = tuple.Item1;
+                        spans.Add(tuple.Item2);
+                        --count;
+                    }
+                    else
+                    {
+                        sp = null;
+                    }
                 }
-                else
-                {
-                    sp = null;
-                }
-                bool memValid = seg.MemoryArea.IsValidAddress(currentPosition);
                 if (sp == null || !memValid)
                 {
                     if (!memValid || !program.ImageMap.TryFindItem(currentPosition, out item))
@@ -94,6 +101,7 @@ namespace Reko.Gui.Windows.Controls
 
             return sp;
         }
+
         public abstract class SpanGenerator
         {
             public abstract Tuple<Address, LineSpan> GenerateSpan();
