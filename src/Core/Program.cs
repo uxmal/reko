@@ -320,7 +320,7 @@ namespace Reko.Core
             this.User.Globals.Add(address, new Serialization.GlobalDataItem_v2
             {
                 Address = address.ToString(),
-                DataType = dataType.Accept(new  Serialization.DataTypeSerializer()),
+                DataType = dataType.Accept(new Serialization.DataTypeSerializer()),
             });
             return item;
         }

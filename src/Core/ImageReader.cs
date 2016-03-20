@@ -424,6 +424,7 @@ namespace Reko.Core
         public abstract Constant Read(PrimitiveType dataType);
         public abstract bool TryRead(PrimitiveType dataType, out Constant c);
 
+        [Obsolete("Use ReadCString / ReadLengthPrefixedString")]
         public char ReadChar(DataType charType)
         {
             switch (charType.Size)
@@ -439,15 +440,11 @@ namespace Reko.Core
         /// </summary>
         /// <param name="charType"></param>
         /// <returns></returns>
-        public StringConstant ReadCString(DataType charType)
-        {
-            return ReadCString(charType, Encoding.GetEncoding("ISO_8859-1"));
-        }
-
         public StringConstant ReadCString(DataType charType, Encoding encoding)
         {
             int iStart = (int)Offset;
             var sb = new StringBuilder();
+            //$BUG: ignores the encoding!
             for (char ch = ReadChar(charType); ch != 0; ch = ReadChar(charType))
             {
                 sb.Append(ch);
@@ -487,7 +484,8 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Use this reader when the processor is in Little-Endian mode to read multi-byte quantities from memory.
+    /// Use this reader when the processor is in Little-Endian mode to read multi-
+    /// byte quantities from memory.
     /// </summary>
     public class LeImageReader : ImageReader
     {
@@ -533,7 +531,8 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Use this reader when the processor is in Big-Endian mode to read multi-byte quantities from memory.
+    /// Use this reader when the processor is in Big-Endian mode to read multi-
+    /// byte quantities from memory.
     /// </summary>
     public class BeImageReader : ImageReader
     {
