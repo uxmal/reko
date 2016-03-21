@@ -111,6 +111,7 @@ namespace Reko.Environments.Windows
             return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
         }
 
+        //$REFACTOR: should be loaded from config file.
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)

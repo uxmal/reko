@@ -163,7 +163,7 @@ namespace Reko.Gui.Windows.Controls
                 var cbPadding = BytesPerLine - (cbFiller + cbBytes);
 
                 var sb = new StringBuilder();
-                var sbCode = new StringBuilder();
+                var abCode = new List<byte>();
 
                 // Do any filler first
 
@@ -179,8 +179,8 @@ namespace Reko.Gui.Windows.Controls
                     {
                         byte b = rdr.ReadByte();
                         sb.AppendFormat(" {0:X2}", b);
-                        char ch = (char)b;
-                        sbCode.Append(char.IsControl(ch) ? '.' : ch);
+                        //$BUG: should use platform.Encoding
+                        abCode.Add(b);
                     }
                     else
                     {
@@ -198,21 +198,28 @@ namespace Reko.Gui.Windows.Controls
                     line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbPadding), UiStyles.MemoryWindow));
                 }
 
-                // Now do the final bytes.
-                sbCode.Append(' ', (int)cbFiller);
-                if (rdr.IsValid)
-                {
-                    byte b = rdr.ReadByte();
-                    char ch = (char)b;
-                    sbCode.Append(Char.IsControl(ch) ? '.' : ch);
-                }
-                sbCode.Append(' ', (int)cbPadding);
-                line.Add(new MemoryTextSpan(sbCode.ToString(), UiStyles.MemoryWindow));
+                // Now display the code bytes.
+                string sBytes = RenderBytesAsText(abCode.ToArray());
+                line.Add(new MemoryTextSpan(" ", UiStyles.MemoryWindow));
+                line.Add(new MemoryTextSpan(sBytes, UiStyles.MemoryWindow));
 
                 this.addr = addrEnd;
                 return Tuple.Create(
                     addrEnd,
                     new LineSpan(addr, line.ToArray()));
+            }
+
+            private string RenderBytesAsText(byte[] abCode)
+            {
+                var chars = program.Platform.DefaultTextEncoding.GetChars(abCode.ToArray());
+                for (int i = 0; i < chars.Length; ++i)
+                {
+                    char ch = chars[i];
+                    if (char.IsControl(ch) || char.IsSurrogate(ch))
+                        chars[i] = '.';
+                }
+
+                return new string(chars);
             }
         }
 
