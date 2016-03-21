@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
 using System;
 using System.ComponentModel.Design;
@@ -197,6 +198,7 @@ namespace Reko.Gui.Windows
                     case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
                     case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
                     case CmdIds.ViewFindPattern: return ViewFindPattern();
+                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     }
                 }
             }
@@ -207,6 +209,7 @@ namespace Reko.Gui.Windows
                     switch (cmdId.ID)
                     {
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
+                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     }
                 }
             }
@@ -376,6 +379,21 @@ namespace Reko.Gui.Windows
                             program,
                             program.ImageMap.BaseAddress + offset));
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
+                }
+            }
+            return true;
+        }
+
+        public bool ChooseTextEncoding()
+        {
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var enc = dlg.GetSelectedTextEncoding();
+                    program.Platform.DefaultTextEncoding = enc;
                 }
             }
             return true;

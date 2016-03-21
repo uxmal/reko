@@ -43,7 +43,7 @@ namespace Reko.Core
     {
         IProcessorArchitecture Architecture { get; }
         string DefaultCallingConvention { get; }
-        Encoding DefaultTextEncoding { get; }
+        Encoding DefaultTextEncoding { get; set; }
         string Description { get; set; }
         PrimitiveType FramePointerType { get; }
         PlatformHeuristics Heuristics { get; }
@@ -97,6 +97,7 @@ namespace Reko.Core
             this.Architecture = arch;
             this.PlatformIdentifier = platformId;
             this.Heuristics = new PlatformHeuristics();
+            this.DefaultTextEncoding = Encoding.ASCII;
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
@@ -123,7 +124,7 @@ namespace Reko.Core
         /// We use ASCII as the lowest common denominator here, but some arcane platforms (e.g.
         /// ZX-81) don't use ASCII.
         /// </remarks>
-        public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
+        public virtual Encoding DefaultTextEncoding { get; set; }
 
         public abstract string DefaultCallingConvention { get; }
 

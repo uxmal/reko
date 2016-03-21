@@ -38,5 +38,6 @@ namespace Reko.Gui
         ISearchDialog CreateSearchDialog();
         IUserPreferencesDialog CreateUserPreferencesDialog();
         IWorkerDialog CreateWorkerDialog();
+        ITextEncodingDialog CreateTextEncodingDialog();
     }
 }
