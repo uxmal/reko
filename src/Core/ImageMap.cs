@@ -407,7 +407,7 @@ namespace Reko.Core
 			return IsInRange(addr.ToLinear());
 		}
 
-		public virtual bool IsInRange(ulong linearAddress)
+		public bool IsInRange(ulong linearAddress)
 		{
             ulong linItem = this.Address.ToLinear();
 			return (linItem <= linearAddress && linearAddress < linItem + Size);

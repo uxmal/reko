@@ -32,25 +32,27 @@ namespace Reko.Gui.Windows.Controls
    {
         public LineSpan[] GetLineSpans(int count)
         {
+            addrCur = SanitizeAddress(addrCur);
+
             var spans = new List<LineSpan>();
             ImageSegment seg;
             ImageMapItem item;
-            program.ImageMap.TryFindSegment(currentPosition, out seg);
-            program.ImageMap.TryFindItem(currentPosition, out item);
+            program.ImageMap.TryFindSegment(addrCur, out seg);
+            program.ImageMap.TryFindItem(addrCur, out item);
 
-            SpanGenerator sp = CreateSpanifier(item, currentPosition);
+            SpanGenerator sp = CreateSpanifier(item, addrCur);
             while (count != 0 && seg != null && item != null)
             {
                 bool memValid =
-                    seg.MemoryArea.IsValidAddress(currentPosition) &&
-                    currentPosition < item.EndAddress;
+                    seg.MemoryArea.IsValidAddress(addrCur) &&
+                    item.IsInRange(addrCur);
 
                 if (memValid)
                 {
                     var tuple = sp.GenerateSpan();
                     if (tuple != null)
                     {
-                        currentPosition = tuple.Item1;
+                        addrCur = tuple.Item1;
                         spans.Add(tuple.Item2);
                         --count;
                     }
@@ -61,28 +63,29 @@ namespace Reko.Gui.Windows.Controls
                 }
                 if (sp == null || !memValid)
                 {
-                    if (!memValid || !program.ImageMap.TryFindItem(currentPosition, out item))
+                    if (!memValid || !program.ImageMap.TryFindItem(addrCur, out item))
                     {
                         // Find next segment.
                         Address addrSeg;
-                        if (program.ImageMap.Segments.TryGetUpperBoundKey(currentPosition, out addrSeg))
+                        if (program.ImageMap.Segments.TryGetUpperBoundKey(addrCur, out addrSeg))
                         {
                             program.ImageMap.TryFindSegment(addrSeg, out seg);
                             program.ImageMap.TryFindItem(addrSeg, out item);
-                            currentPosition = addrSeg;
-                            sp = CreateSpanifier(item, currentPosition);
+                            addrCur = addrSeg;
+                            sp = CreateSpanifier(item, addrCur);
                         }
                         else
                         {
                             seg = null;
                             item = null;
-                            currentPosition = (Address)EndPosition;
+                            addrCur = addrEnd;
                             break;
                         }
                     }
-                    sp = CreateSpanifier(item, currentPosition);
+                    sp = CreateSpanifier(item, addrCur);
                 }
             }
+            addrCur = SanitizeAddress(addrCur);
             return spans.ToArray();
         }
 

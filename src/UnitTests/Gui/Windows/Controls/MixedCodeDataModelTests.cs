@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // Read the second and last instruction.
             lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
-            Assert.AreEqual("00041004", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
 
             // Read the 8 remaining bytes from .data
             lines = mcdm.GetLineSpans(1);
@@ -391,9 +391,12 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var mcdm = new MixedCodeDataModel(program);
 
             // Read the two instructions, placing curpos in the 'gap'
+            // of invalid addresses between the .text and .data segments
+            // GetLineSpans should Sanitize the addres and move it to
+            // the beginning of .data
             var lines = mcdm.GetLineSpans(2);
             Assert.AreEqual(2, lines.Length);
-            Assert.AreEqual("00041004", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
 
             // Advance a line. 
             int cLines = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
