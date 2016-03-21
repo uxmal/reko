@@ -149,6 +149,7 @@ namespace Reko.Gui.Windows
                     case CmdIds.ActionMarkType:
                     case CmdIds.ViewFindWhatPointsHere:
                     case CmdIds.ActionMarkProcedure:
+                    case CmdIds.TextEncodingChoose:
                         status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                     case CmdIds.EditCopy:
                     case CmdIds.ViewFindPattern:
@@ -173,6 +174,8 @@ namespace Reko.Gui.Windows
                         return true;
                     case CmdIds.EditAnnotation:
                         status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
+                        return true;
+                    case CmdIds.TextEncodingChoose:
                         return true;
                     }
                 }
