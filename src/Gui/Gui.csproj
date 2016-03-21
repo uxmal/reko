@@ -117,6 +117,7 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\ILabel.cs" />
+    <Compile Include="Controls\IListBox.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\GlobalVariablesNodeDesigner.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="IMixedCodeDataViewService.cs" />
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
+    <Compile Include="Forms\ITextEncodingDialog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
     <Compile Include="CommandGroup.cs" />
@@ -276,7 +278,15 @@
     <Compile Include="Windows\Controls\TextViewLayout.cs" />
     <Compile Include="Windows\Controls\TextViewPainter.cs" />
     <Compile Include="Windows\GlobalVariablesPane.cs" />
+    <Compile Include="Windows\Forms\TextEncodingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\TextEncodingDialog.Designer.cs">
+      <DependentUpon>TextEncodingDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextEncodingInteractor.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
+    <Compile Include="Windows\ListboxWrapper.cs" />
     <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />
     <Compile Include="Windows\MixedCodeDataViewService.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
@@ -589,6 +599,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\TextEncodingDialog.resx">
+      <DependentUpon>TextEncodingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\UserPreferencesDialog.resx">
       <DependentUpon>UserPreferencesDialog.cs</DependentUpon>

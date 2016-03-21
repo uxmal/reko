@@ -13,7 +13,9 @@
   <menu id="ToolsMenu" cmdSet="Reko" container="GrpMain">_Tools</menu>
   <menu id="WindowsMenu" cmdSet="Reko" container="GrpMain">_Windows</menu>
 	<menu id="HelpMenu" cmdSet="Reko" container="GrpMain">_Help</menu>
-
+  
+  <menu id="TextEncodingMenu" cmdSet="Reko" container="GrpLowLevel">_Text Encoding</menu>
+  
   <menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Reko"/>
   <menu type="ContextMenu" id="CtxDisassembler" cmdSet="Reko"/> 
   <menu type="ContextMenu" id="CtxBrowser" cmdSet="Reko"/>
@@ -38,6 +40,7 @@
 
   <group id="GrpLowLevel" cmdSet="Reko" container="ViewMenu" />
 	<group id="GrpViewScanned" cmdSet="Reko" container="ViewMenu"/>
+  <group id="GrpTextEncoding" cmdSet="Reko" container="TextEncodingMenu" />
 
 	<group id="GrpActions" cmdSet="Reko" container="ActionMenu"/>
 	<group id="GrpActionsScanned" cmdSet="Reko" container="ActionMenu"/>
@@ -91,6 +94,8 @@
 
   <cmd id="ViewMemory" cmdSet="Reko" container="GrpLowLevel">_Memory</cmd>
   <cmd id="ViewDisassembly" cmdSet="Reko" container="GrpLowLevel">_Disassembly</cmd>
+  <cmd id="TextEncodingChoose" cmdSet="Reko" container="GrpTextEncoding">_Choose...</cmd>
+  
   <cmd id="OpenLink" cmdSet="Reko" container="OpenLink">_Open</cmd>
   <cmd id="OpenLinkInNewWindow" cmdSet="Reko" container="OpenLinkInNewWindow">Open in ne_w window</cmd>
 

@@ -31,6 +31,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.UnitTests.Core.Serialization
@@ -382,7 +383,8 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         User = new UserData_v4
                         {
-                            Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } }
+                            Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } },
+                            TextEncoding = "windows-1251"
                         }
                     }
                 }
@@ -401,6 +403,7 @@ namespace Reko.UnitTests.Core.Serialization
             var ploader = new ProjectLoader(sc, loader);
             var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
+            Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
         }
 
         [Test]
@@ -408,11 +411,13 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var program = new Program();
             program.User.Heuristics.Add("shingle");
+            program.User.TextEncoding = Encoding.GetEncoding("windows-1251");
             
             var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram("foo.proj", program);
             var ip = (DecompilerInput_v4)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
+            Assert.AreEqual("windows-1251", ip.User.TextEncoding);
         }
 
         private void When_SaveToTextWriter(Program program, TextWriter sw)

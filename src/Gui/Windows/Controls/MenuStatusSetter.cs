@@ -66,7 +66,13 @@ namespace Reko.Gui.Windows.Controls
                 {
                     var cmdId = menu.GetCommandID(i);
                     cmdStatus.Status = 0;
-                    if (cmdId != null && ct.QueryStatus(cmdId, cmdStatus, cmdText))
+                    if (cmdId == null)
+                    {
+                        cmdStatus.Status = MenuStatus.Enabled|MenuStatus.Visible;
+                        ++visibleItemsInGroup;
+                        ++totalVisible;
+                    }
+                    else if (ct.QueryStatus(cmdId, cmdStatus, cmdText))
                     {
                         if (menu.IsDynamic(i))
                         {

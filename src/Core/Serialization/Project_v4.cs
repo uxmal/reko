@@ -132,6 +132,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("annotation")]
         public List<Annotation_v3> Annotations;
+
+        [XmlElement("textEncoding")]
+        public string TextEncoding;
     }
 
     public class PlatformOptions_v4

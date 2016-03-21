@@ -256,7 +256,6 @@ namespace Reko.Gui.Windows.Controls
             RecomputeLayout();
             UpdateScrollbar();
             OnScroll();
-            Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -465,7 +464,6 @@ namespace Reko.Gui.Windows.Controls
             model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
             RecomputeLayout();
             OnScroll();
-            Invalidate();
         }
 
         protected override void OnFontChanged(EventArgs e)
@@ -482,8 +480,9 @@ namespace Reko.Gui.Windows.Controls
             VScrollValueChanged.Fire(this);
         }
 
-        protected void RecomputeLayout()
+        public void RecomputeLayout()
         {
+            Invalidate();
             if (services == null)
                 return;
             var g = CreateGraphics();

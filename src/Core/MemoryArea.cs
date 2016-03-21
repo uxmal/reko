@@ -454,7 +454,7 @@ namespace Reko.Core
 
         public static short ReadLeInt16(byte[] abImage, long offset)
         {
-            return (short)(abImage[offset] + ((short)abImage[offset + 1] << 8));
+            return (short)(abImage[offset] + (abImage[offset + 1] << 8));
         }
 
         public static bool TryReadLeUInt16(byte[] abImage, uint offset, out ushort us)

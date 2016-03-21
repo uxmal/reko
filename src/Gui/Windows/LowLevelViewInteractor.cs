@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
 using System;
 using System.ComponentModel.Design;
@@ -150,6 +151,7 @@ namespace Reko.Gui.Windows
                     case CmdIds.ActionMarkType:
                     case CmdIds.ViewFindWhatPointsHere:
                     case CmdIds.ActionMarkProcedure:
+                    case CmdIds.TextEncodingChoose:
                         status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                     case CmdIds.EditCopy:
                     case CmdIds.ViewFindPattern:
@@ -175,6 +177,8 @@ namespace Reko.Gui.Windows
                     case CmdIds.EditAnnotation:
                         status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
+                    case CmdIds.TextEncodingChoose:
+                        return true;
                     }
                 }
             }
@@ -195,6 +199,7 @@ namespace Reko.Gui.Windows
                     case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
                     case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
                     case CmdIds.ViewFindPattern: return ViewFindPattern();
+                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     }
                 }
             }
@@ -205,6 +210,7 @@ namespace Reko.Gui.Windows
                     switch (cmdId.ID)
                     {
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
+                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     }
                 }
             }
@@ -374,6 +380,23 @@ namespace Reko.Gui.Windows
                             program,
                             program.ImageMap.BaseAddress + offset));
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
+                }
+            }
+            return true;
+        }
+
+        public bool ChooseTextEncoding()
+        {
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var enc = dlg.GetSelectedTextEncoding();
+                    this.control.MemoryView.Encoding = enc;
+                    program.User.TextEncoding = enc;
+                    this.control.DisassemblyView.RecomputeLayout();
                 }
             }
             return true;

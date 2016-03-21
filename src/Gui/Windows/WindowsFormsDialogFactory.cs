@@ -129,6 +129,11 @@ namespace Reko.Gui.Windows
                 return new WorkerDialog();
             }
         }
+
+        public ITextEncodingDialog CreateTextEncodingDialog()
+        {
+            return new TextEncodingDialog();
+        }
     }
 }
 

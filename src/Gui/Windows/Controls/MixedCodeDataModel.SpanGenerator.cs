@@ -211,7 +211,7 @@ namespace Reko.Gui.Windows.Controls
 
             private string RenderBytesAsText(byte[] abCode)
             {
-                var chars = program.Platform.DefaultTextEncoding.GetChars(abCode.ToArray());
+                var chars = program.TextEncoding.GetChars(abCode.ToArray());
                 for (int i = 0; i < chars.Length; ++i)
                 {
                     char ch = chars[i];

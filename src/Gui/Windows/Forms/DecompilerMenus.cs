@@ -56,6 +56,7 @@ namespace Reko.Gui.Windows.Forms
 			SortedList slToolsMenu = CreatePriorityList();
 			SortedList slWindowsMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
+			SortedList slTextEncodingMenu = CreatePriorityList();
 			SortedList slCtxMemoryControl = CreatePriorityList();
 			SortedList slCtxDisassembler = CreatePriorityList();
 			SortedList slCtxBrowser = CreatePriorityList();
@@ -81,6 +82,8 @@ namespace Reko.Gui.Windows.Forms
 			slViewMenu.Add(0, slGrpLowLevel);
 			SortedList slGrpViewScanned = CreatePriorityList();
 			slViewMenu.Add(0, slGrpViewScanned);
+			SortedList slGrpTextEncoding = CreatePriorityList();
+			slTextEncodingMenu.Add(0, slGrpTextEncoding);
 			SortedList slGrpActions = CreatePriorityList();
 			slActionMenu.Add(0, slGrpActions);
 			SortedList slGrpActionsScanned = CreatePriorityList();
@@ -178,6 +181,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slViewDisassembly = new CommandMenuItem("_Disassembly", new Guid(CmdSets.Reko), CmdIds.ViewDisassembly);
             slViewDisassembly.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewDisassembly);
+            CommandMenuItem slTextEncodingChoose = new CommandMenuItem("_Choose...", new Guid(CmdSets.Reko), CmdIds.TextEncodingChoose);
+            slTextEncodingChoose.IsDynamic = false;
+            slGrpTextEncoding.Add(0, slTextEncodingChoose);
             CommandMenuItem slOpenLink = new CommandMenuItem("_Open", new Guid(CmdSets.Reko), CmdIds.OpenLink);
             slOpenLink.IsDynamic = false;
             
@@ -293,6 +299,8 @@ namespace Reko.Gui.Windows.Forms
             slGrpMain.Add(0, miWindowsMenu);
             CommandMenuItem miHelpMenu = new CommandMenuItem("_Help");
             slGrpMain.Add(0, miHelpMenu);
+            CommandMenuItem miTextEncodingMenu = new CommandMenuItem("_Text Encoding");
+            slGrpLowLevel.Add(0, miTextEncodingMenu);
     
 			// Place commands.
 			
@@ -396,6 +404,8 @@ namespace Reko.Gui.Windows.Forms
 			BuildMenu(slWindowsMenu, miWindowsMenu.MenuItems);
 			
 			BuildMenu(slHelpMenu, miHelpMenu.MenuItems);
+			
+			BuildMenu(slTextEncodingMenu, miTextEncodingMenu.MenuItems);
 			
 			this.CtxMemoryControl = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxMemoryControl, CtxMemoryControl.MenuItems);

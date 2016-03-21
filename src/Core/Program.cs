@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Reko.Core
 {
@@ -141,6 +142,16 @@ namespace Reko.Core
         }
 
         public StructureType GlobalFields { get; private set; }
+
+        public Encoding TextEncoding
+        {
+            get
+            {
+                if (User.TextEncoding != null)
+                    return User.TextEncoding;
+                return Platform.DefaultTextEncoding;
+            }
+        }
 
         private void EnsureGlobals()
         {
