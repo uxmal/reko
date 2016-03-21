@@ -393,7 +393,9 @@ namespace Reko.Gui.Windows
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     var enc = dlg.GetSelectedTextEncoding();
+                    this.control.MemoryView.Encoding = enc;
                     program.Platform.DefaultTextEncoding = enc;
+                    this.control.DisassemblyView.RecomputeLayout();
                 }
             }
             return true;

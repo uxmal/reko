@@ -102,7 +102,6 @@ namespace Reko.Gui.Windows.Controls
             }
             RecomputeLayout();
             base.UpdateScrollbar();
-            Invalidate();
         }
 
         /*

@@ -254,7 +254,6 @@ namespace Reko.Gui.Windows.Controls
             RecomputeLayout();
             UpdateScrollbar();
             OnScroll();
-            Invalidate();
         }
 
         /// <summary>
@@ -595,7 +594,6 @@ namespace Reko.Gui.Windows.Controls
             model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
             RecomputeLayout();
             OnScroll();
-            Invalidate();
         }
 
         /// <summary>
@@ -605,8 +603,9 @@ namespace Reko.Gui.Windows.Controls
         {
         }
 
-        protected void RecomputeLayout()
+        public void RecomputeLayout()
         {
+            Invalidate();
             if (services == null)
                 return;
             var g = CreateGraphics();
