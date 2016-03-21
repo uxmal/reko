@@ -394,7 +394,7 @@ namespace Reko.Gui.Windows
                 {
                     var enc = dlg.GetSelectedTextEncoding();
                     this.control.MemoryView.Encoding = enc;
-                    program.Platform.DefaultTextEncoding = enc;
+                    program.User.TextEncoding = enc;
                     this.control.DisassemblyView.RecomputeLayout();
                 }
             }

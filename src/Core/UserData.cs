@@ -37,6 +37,7 @@ namespace Reko.Core
             this.Globals = new SortedList<Address, Serialization.GlobalDataItem_v2>();
             this.Heuristics = new SortedSet<string>();
             this.Annotations = new List<Annotation>();
+            this.TextEncoding = Encoding.ASCII;
         }
 
         // 'Oracular' information provided by the user.
@@ -57,6 +58,11 @@ namespace Reko.Core
         /// Scanning heuristics to try.
         /// </summary>
         public SortedSet<string> Heuristics { get; set; }
+
+        /// <summary>
+        /// Text encoding to use to interpret strings.
+        /// </summary>
+        public Encoding TextEncoding { get; set; }
     }
 
     public class Annotation

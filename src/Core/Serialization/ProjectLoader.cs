@@ -28,6 +28,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Reko.Core.Services;
 using System.Diagnostics;
+using System.Text;
 
 namespace Reko.Core.Serialization
 {
@@ -364,6 +365,19 @@ namespace Reko.Core.Serialization
             if (sUser.Heuristics != null)
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
+            }
+            if (sUser.TextEncoding != null)
+            {
+                Encoding enc = null;
+                try
+                {
+                    enc = Encoding.GetEncoding(sUser.TextEncoding);
+                } catch
+                {
+                    var diagSvc = Services.RequireService<IDiagnosticsService>();
+                    diagSvc.Warn(string.Format("Unknown text encoding '{0}'. Defaulting to platform text encoding.", sUser.TextEncoding));
+                }
+                user.TextEncoding = enc;
             }
             program.EnvironmentMetadata = project.LoadedMetadata;
         }

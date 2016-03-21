@@ -89,7 +89,8 @@ namespace Reko.Core.Serialization
                     OnLoadedScript = program.User.OnLoadedScript,
                     Heuristics = program.User.Heuristics
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
-                    Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList()
+                    Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList(),
+                    TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding.WebName : null,
                 },
                 DisassemblyFilename =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyFilename),
                 IntermediateFilename = ConvertToProjectRelativePath(projectAbsPath, program.IntermediateFilename),

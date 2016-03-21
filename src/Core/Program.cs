@@ -142,6 +142,16 @@ namespace Reko.Core
 
         public StructureType GlobalFields { get; private set; }
 
+        public Encoding TextEncoding
+        {
+            get
+            {
+                if (User.TextEncoding != null)
+                    return User.TextEncoding;
+                return Platform.DefaultTextEncoding;
+            }
+        }
+
         private void EnsureGlobals()
         {
             if (Architecture == null)
