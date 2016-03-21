@@ -31,6 +31,7 @@ using Microsoft.Msagl.GraphViewerGdi;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using Microsoft.Msagl.Drawing;
+using Reko.Gui.Forms;
 
 namespace Reko.Gui.Windows
 {
@@ -223,6 +224,9 @@ namespace Reko.Gui.Windows
             {
                 switch (cmdId.ID)
                 {
+                case CmdIds.TextEncodingChoose:
+                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
                 case CmdIds.EditCopy:
                     status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
                         ? MenuStatus.Visible
@@ -258,6 +262,8 @@ namespace Reko.Gui.Windows
                 case CmdIds.ViewCfgCode:
                     ViewCode();
                     return true;
+                case CmdIds.TextEncodingChoose:
+                    return ChooseTextEncoding();
                 }
             }
             return false;
@@ -274,6 +280,23 @@ namespace Reko.Gui.Windows
             var ms = new MemoryStream();
             FocusedTextView.Selection.Save(ms, DataFormats.UnicodeText);
             Clipboard.SetData(DataFormats.UnicodeText, ms);
+        }
+
+        public bool ChooseTextEncoding()
+        {
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var enc = dlg.GetSelectedTextEncoding();
+                    program.User.TextEncoding = enc;
+                    this.combinedCodeView.MixedCodeDataView.RecomputeLayout();
+                    this.combinedCodeView.CodeView.RecomputeLayout();
+                }
+            }
+            return true;
         }
 
         private void MixedCodeDataView_MouseDown(object sender, EventArgs e)
