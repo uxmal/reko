@@ -319,12 +319,14 @@ namespace Reko.Gui.Forms
                 var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
                 string archName;
                 string envName;
+                string sAddr;
                 RawFileElement raw = null;
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
                     raw = (RawFileElement)rawFileOption.Value;
                     archName = raw.Architecture;
                     envName = raw.Environment;
+                    sAddr = raw.BaseAddress;
                 }
                 else
                 {
@@ -332,13 +334,13 @@ namespace Reko.Gui.Forms
                     archName = (string)archOption.Value;
                     var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
                     envName = envOption != null? envOption.Name : null;
+                    sAddr = dlg.AddressTextBox.Text.Trim();
                 }
 
                 arch = config.GetArchitecture(archName);
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
                 Address addrBase;
-                    var sAddr = dlg.AddressTextBox.Text.Trim();
                     if (!arch.TryParseAddress(sAddr, out addrBase))
                         throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
                     OpenBinary(dlg.FileName.Text, (f) =>

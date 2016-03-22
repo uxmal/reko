@@ -43,8 +43,8 @@ namespace Reko.UnitTests.Gui.Design
         public void Setup()
         {
             mr = new MockRepository();
-            seg1 = new ImageSegment("seg1", Address.Ptr32(0x01000), AccessMode.Execute);
-            seg2 = new ImageSegment("seg2", Address.Ptr32(0x02000), AccessMode.Execute);
+            seg1 = new ImageSegment("seg1", new MemoryArea(Address.Ptr32(0x01000), new byte[0x1000]), AccessMode.Execute);
+            seg2 = new ImageSegment("seg2", new MemoryArea(Address.Ptr32(0x02000), new byte[0x1000]), AccessMode.Execute);
             map = new ImageMap(seg1.Address, 0x4000);
         }
 
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Gui.Design
             var treeNode = mr.StrictMock<ITreeNode>();
             treeNode.Expect(t => t.Text = "seg1");
             treeNode.Expect(t => t.ImageName = "RoSection.ico");
-            treeNode.Expect(t => t.ToolTipText = "seg1\r\nAddress: 00001000\r\nSize: 0\r\n--x");
+            treeNode.Expect(t => t.ToolTipText = "seg1\r\nAddress: 00001000\r\nSize: 1000\r\n--x");
             var des = new ImageMapSegmentNodeDesigner();
             des.Host = host;
             des.TreeNode = treeNode;

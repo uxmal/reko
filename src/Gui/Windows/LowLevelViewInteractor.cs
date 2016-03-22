@@ -428,8 +428,14 @@ namespace Reko.Gui.Windows
             this.ignoreAddressChange = true;
             this.Control.MemoryView.SelectedAddress = addr;
             this.Control.MemoryView.TopAddress = addr;
-            this.Control.DisassemblyView.SelectedObject = addr;
-            this.control.DisassemblyView.TopAddress = addr;
+
+            ImageSegment seg;
+            if (program.ImageMap.TryFindSegment(addr, out seg))
+            {
+                this.Control.DisassemblyView.Model  = new DisassemblyTextModel(program, seg);
+                this.Control.DisassemblyView.SelectedObject = addr;
+                this.control.DisassemblyView.TopAddress = addr;
+            }
             this.SelectionChanged.Fire(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
             this.ignoreAddressChange = false;

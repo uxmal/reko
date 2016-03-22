@@ -50,5 +50,13 @@ namespace Reko.UnitTests.Core
         {
             Assert.AreEqual(4096, Address.ProtectedSegPtr(0xF, 0).ToLinear());
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void Addr_AddToSegmented()
+        {
+            Assert.AreEqual("1C00:0000", (Address.SegPtr(0xC00, 0xF000) + 0x1000).ToString());
+            Assert.AreEqual("1C00:1000", (Address.SegPtr(0xC00, 0xF000) + 0x2000).ToString());
+        }
     }
 }

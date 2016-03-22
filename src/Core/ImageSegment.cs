@@ -31,13 +31,21 @@ namespace Reko.Core
 	public class ImageSegment : ImageMapItem        //$REVIEW: why inherit from ImageMapItem?
 	{
         private uint ctSize;
-
-		public ImageSegment(string name, Address addr, AccessMode access) : base() 
+        /// <summary>
+        /// Use this constructor when the segment shares the MemoryArea with
+        /// other segments.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="addr"></param>
+        /// <param name="mem"></param>
+        /// <param name="access"></param>
+		public ImageSegment(string name, Address addr, MemoryArea mem, AccessMode access) : base() 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
 			this.Name = name;
             this.Address = addr;
+            this.MemoryArea = mem;
 			this.Access = access;
 		}
 
@@ -61,6 +69,13 @@ namespace Reko.Core
             this.Access = access;
         }
 
+        /// <summary>
+        /// Use this constructor when the segment is completely disjoint from
+        /// other segments. This is usually the case in PE or ELF binaries.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="mem"></param>
+        /// <param name="access"></param>
         public ImageSegment(string name, MemoryArea mem, AccessMode access) : base((uint)mem.Length)
         {
             if (name == null)
