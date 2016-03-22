@@ -29,12 +29,118 @@ namespace Reko.Arch.X86
     {
         private bool IsEmulated8087Vector(byte vectorNumber)
         {
-            return false;
+            return (0x34 <= vectorNumber && vectorNumber <= 0x3E);
         }
 
-        private X86Instruction RewriteEmulated8087Instruction()
+        private X86Instruction RewriteEmulated8087Instruction(byte vectorNumber)
         {
-            return new X86Instruction(Opcode.nop, null, null);
+            switch (vectorNumber)
+            {
+            case 0x34: return Patchx87Instruction(0xD8);
+            case 0x35: return Patchx87Instruction(0xD9);
+            case 0x36: return Patchx87Instruction(0xDA);
+            case 0x37: return Patchx87Instruction(0xDB);
+            case 0x38: return Patchx87Instruction(0xDC);
+            case 0x39: return Patchx87Instruction(0xDD);
+            case 0x3A: return Patchx87Instruction(0xDE);
+            case 0x3B: return Patchx87Instruction(0xDF);
+            case 0x3C: return Patchx87InstructionSegPrefix();
+            case 0x3D: return Patchx87Instruction(0x90);
+            case 0x3E: return Emitx87BorlandShortcut();
+            }
+            throw new InvalidOperationException();
+        }
+
+        private X86Instruction Patchx87Instruction(byte op)
+        {
+            long off = rdr.Offset - 2;
+            // On a real 8086, the NOP was a FWAIT, but
+            // we violate this so that the resulting 
+            // disassembled code is actually legible.
+            rdr.Bytes[off] = 0x90;      // NOP
+            rdr.Bytes[off + 1] = op;
+            rdr.Offset = off;
+            return DisassembleInstruction();
+        }
+
+        private static byte[] patchx87prefixes = new byte[]{
+            0x3E, // DS
+            0x36, // SS
+            0x2E, // CS
+            0x26, // ES
+        };  
+
+        private X86Instruction Patchx87InstructionSegPrefix()
+        {
+            var modifiedEscOp = rdr.Bytes[rdr.Offset];
+            long off = rdr.Offset - 2;
+            rdr.Bytes[off] = 0x90;      // NOP
+            // Segment override is encoded as the top two bits 
+            // of modifiedEscOp.
+            rdr.Bytes[off + 1] = patchx87prefixes[modifiedEscOp >> 6];
+            rdr.Bytes[off + 2] = (byte)(modifiedEscOp | 0xC0);
+            rdr.Offset = off;
+            return DisassembleInstruction();
+        }
+
+        /// <summary>
+        /// Borland used INT 3C followed by two bytes to implement
+        /// "short cuts". None of these correspond to a real x87
+        /// instruction, so we have to simulate them.
+        /// </summary>
+        private X86Instruction Emitx87BorlandShortcut()
+        {
+            byte b1 = rdr.Bytes[rdr.Offset];
+            byte b2 = rdr.Bytes[rdr.Offset + 1];
+            rdr.Offset += 2;    // Skip the two trailing bytes.
+            switch (b1)
+            {
+            case 0xDC:
+            // load 8086 stack with 8087 registers; overwrites the 10 * N bytes
+            // at the top of the stack prior to the INT 3E with the 8087
+            // register contents
+            case 0xDE:
+            // load 8087 registers from top of 8086 stack; ST0 is furthest
+            // from  top of 8086 stack
+            case 0xE0:
+            // round TOS and R1 to single precision, compare, pop twice
+            // returns AX = 8087 status word, FLAGS = 8087 condition bits
+            case 0xE2:
+            // round TOS and R1 to double precision, compare, pop twice
+            // returns AX = 8087 status word, FLAGS = 8087 condition bits
+            // Note: buggy in TPas5.5, because it sets the 8087 precision
+            // control field to the undocumented value 01h; this results in
+            // actually rounding to single precision
+            case 0xE4:
+            //  compare TOS/R1 with two POP's
+            //  returns FLAGS = 8087 condition bits
+            case 0xE6:
+            // compare TOS/R1 with POP
+            // returns FLAGS = 8087 condition bits
+            case 0xE8:
+            // FTST(check TOS value)
+            // returns FLAGS = 8087 condition bits
+            case 0xEA:
+            // FXAM(check TOS value)
+            // returns AX = 8087 status word
+            case 0xEC:  //  sine(ST0)
+            default:
+                throw new NotImplementedException();
+
+            //  EEh cosine(ST0)
+            //  F0h tangent(ST0)
+            //  F2h arctangent(ST0)
+            case 0xF4:
+                //  F4h ST0 = ln(ST0)
+                return new X86Instruction(Opcode.BOR_ln, dataWidth, addressWidth);
+            // F6h    ST0 = log2(ST0)
+            //  F8h ST0 = log10(ST0)
+            case 0xFA:
+                // FAh    ST0 = e** ST0
+                return new X86Instruction(Opcode.BOR_exp, dataWidth, addressWidth);
+                //  FCh ST0 = 2 * *ST0
+                // FEh    ST0 = 10**ST0
+            }
         }
 
         private static OpRec[] CreateFpuOprecs()

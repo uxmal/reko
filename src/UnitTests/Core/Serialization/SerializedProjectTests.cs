@@ -62,6 +62,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             this.arch = mr.StrictMock<IProcessorArchitecture>();
             this.arch.Stub(a => a.Name).Return("testArch");
+            this.arch.Stub(a => a.SaveUserOptions()).Return(null);
             this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
         }
 

@@ -282,5 +282,10 @@ namespace Reko.Arch.X86
         xgetbv,
         xlat,
         xor,
+
+        // Borland implemented an x87 emulator, and introduced these
+        // pseudo-instructions.
+        BOR_exp,
+        BOR_ln
     }
 }

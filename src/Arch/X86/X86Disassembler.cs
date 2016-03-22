@@ -640,7 +640,7 @@ namespace Reko.Arch.X86
                     var vector = imm.Value.ToByte();
                     if (disasm.IsEmulated8087Vector(vector))
                     {
-                        return disasm.RewriteEmulated8087Instruction();
+                        return disasm.RewriteEmulated8087Instruction(vector);
                     }
                 }
                 return instr;

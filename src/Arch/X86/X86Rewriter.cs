@@ -311,6 +311,8 @@ namespace Reko.Arch.X86
                 case Opcode.xgetbv: RewriteXgetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
+                case Opcode.BOR_exp: RewriteFUnary("exp"); break;
+                case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }
                 yield return ric;
             }
