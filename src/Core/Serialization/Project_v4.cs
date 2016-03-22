@@ -150,5 +150,8 @@ namespace Reko.Core.Serialization
     {
         [XmlAttribute("name")]
         public string Name;
+
+        [XmlAnyElement]
+        public XmlElement[] Options;
     }
 }
