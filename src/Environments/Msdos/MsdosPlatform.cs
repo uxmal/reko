@@ -27,13 +27,15 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
 namespace Reko.Environments.Msdos
 {
-	public class MsdosPlatform : Platform
+    [Designer("Reko.Environments.Msdos.Design.MsdosPlatformDesigner,Reko.Environments.Msdos.Design")]
+    public class MsdosPlatform : Platform
 	{
 		private SystemService [] realModeServices; 
 

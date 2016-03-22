@@ -244,6 +244,16 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public void LoadUserOptions(Dictionary<string, object> options)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Dictionary<string, object> SaveUserOptions()
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion
         }
 

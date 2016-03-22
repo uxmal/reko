@@ -180,6 +180,7 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\X86\$(OutDir)Reko.Arch.X86.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\BinHex\$(OutDir)Reko.ImageLoaders.BinHex.*" />

@@ -27,6 +27,16 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
+        private bool IsEmulated8087Vector(byte vectorNumber)
+        {
+            return false;
+        }
+
+        private X86Instruction RewriteEmulated8087Instruction()
+        {
+            return new X86Instruction(Opcode.nop, null, null);
+        }
+
         private static OpRec[] CreateFpuOprecs()
         {
             return new SingleByteOpRec[]  

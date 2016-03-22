@@ -70,6 +70,11 @@ namespace Reko.Arch.X86
         }
 
         /// <summary>
+        /// If set, then x86 instruction section
+        /// </summary>
+        public bool Emulate8087 { get; set; }
+
+        /// <summary>
         /// Disassembles the current instruction. The address is incremented
         /// to point at the first address after the instruction and returned to the caller.
         /// </summary>
@@ -480,6 +485,7 @@ namespace Reko.Arch.X86
                 }
             }
         }
+
         public class F2ByteOpRec : OpRec
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
@@ -616,6 +622,28 @@ namespace Reko.Arch.X86
                     else
                         return disasm.DecodeOperands(this.op, op, opFmt);
                 }
+            }
+        }
+
+        public class InterruptOpRec : SingleByteOpRec
+        {
+            public InterruptOpRec(Opcode op, string fmt) : base(op, fmt)
+            {
+            }
+
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                var instr = base.Decode(disasm, op, opFormat);
+                if (disasm.Emulate8087)
+                {
+                    var imm = (ImmediateOperand)instr.op1;
+                    var vector = imm.Value.ToByte();
+                    if (disasm.IsEmulated8087Vector(vector))
+                    {
+                        return disasm.RewriteEmulated8087Instruction();
+                    }
+                }
+                return instr;
             }
         }
 

@@ -146,9 +146,12 @@ namespace Reko.Gui
                 if (attr.Length > 0)
                 {
                     var desType = Type.GetType(
-                        ((DesignerAttribute) attr[0]).DesignerTypeName,
-                        true);
-                    des = (TreeNodeDesigner) Activator.CreateInstance(desType);
+                        ((DesignerAttribute)attr[0]).DesignerTypeName,
+                        false);
+                    if (desType != null)
+                        des = (TreeNodeDesigner)Activator.CreateInstance(desType);
+                    else
+                        des = new TreeNodeDesigner();
                 }
                 else
                 {

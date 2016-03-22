@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -51,6 +52,7 @@ namespace Reko.Arch.X86
     /// Processor architecture definition for the Intel x86 family. Currently supported processors are 8086/7,
     /// 80186/7, 80286/7, 80386/7, 80486, and Pentium,  x86-64
     /// </summary>
+    [Designer("Reko.Arch.X86.Design.X86ArchitectureDesigner,Reko.Arch.X86.Design")]
 	public class IntelArchitecture : ProcessorArchitecture
 	{
 		private ProcessorMode mode;
@@ -82,7 +84,7 @@ namespace Reko.Arch.X86
 
         public X86Disassembler CreateDisassemblerImpl(ImageReader imageReader)
         {
-            return mode.CreateDisassembler(imageReader);
+            return mode.CreateDisassembler(imageReader, Options);
         }
 
         public override ImageReader CreateImageReader(MemoryArea image, Address addr)
@@ -234,6 +236,29 @@ namespace Reko.Arch.X86
             return Registers.All.Where(a => a != null).ToArray();
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            if (options != null)
+            {
+                this.Options = new X86Options
+                {
+                    Emulate8087 = options.ContainsKey("Emulate8087") && (string)options["Emulate8087"] == "true"
+                };
+            }
+        }
+
+        public override Dictionary<string, object> SaveUserOptions()
+        {
+            if (Options == null)
+                return null;
+            var dict = new Dictionary<string, object>();
+            if (Options.Emulate8087)
+            {
+                dict["Emulate8087"] = "true";
+            }
+            return dict;
+        }
+
         public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
         {
             foreach (var rAlias in GetAliases(reg))
@@ -268,6 +293,8 @@ namespace Reko.Arch.X86
 		{
 			get { return mode; }
 		}
+
+        public X86Options Options { get; set; }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
