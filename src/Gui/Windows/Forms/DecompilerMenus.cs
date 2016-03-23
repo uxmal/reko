@@ -182,6 +182,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slTextEncodingChoose = new CommandMenuItem("_Choose...", new Guid(CmdSets.Reko), CmdIds.TextEncodingChoose);
             slTextEncodingChoose.IsDynamic = false;
             slGrpTextEncoding.Add(0, slTextEncodingChoose);
+            CommandMenuItem slViewCallGraph = new CommandMenuItem("_Call graph", new Guid(CmdSets.Reko), CmdIds.ViewCallGraph);
+            slViewCallGraph.IsDynamic = false;
+            slGrpLowLevel.Add(0, slViewCallGraph);
             CommandMenuItem slOpenLink = new CommandMenuItem("_Open", new Guid(CmdSets.Reko), CmdIds.OpenLink);
             slOpenLink.IsDynamic = false;
             

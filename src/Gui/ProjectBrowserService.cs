@@ -64,6 +64,8 @@ namespace Reko.Gui
             set { SetSelectedObject(value); }
         }
 
+        public Program CurrentProgram { get { return FindCurrentProgram(); } }
+
         public void Clear()
         {
             Load(null);
@@ -177,6 +179,22 @@ namespace Reko.Gui
             return node;
         }
 
+        private Program FindCurrentProgram()
+        {
+            var obj = SelectedObject;
+            while (obj != null)
+            {
+                var program = obj as Program;
+                if (program != null)
+                    return program;
+                var des = GetDesigner(obj);
+                if (des.Parent == null)
+                    return null;
+                obj = des.Parent.Component;
+            }
+            return null;
+        }
+
         public TreeNodeDesigner GetDesigner(object o)
         {
             if (o == null)
@@ -185,7 +203,7 @@ namespace Reko.Gui
             if (mpitemToDesigner.TryGetValue(o, out des))
                 return des;
             else
-                return null;
+                return o as TreeNodeDesigner;
         }
 
         public void RemoveComponent(object component)

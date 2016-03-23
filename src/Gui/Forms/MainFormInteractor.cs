@@ -201,6 +201,9 @@ namespace Reko.Gui.Forms
 
             var resEditService = svcFactory.CreateResourceEditorService();
             sc.AddService<IResourceEditorService>(resEditService);
+
+            var cgvSvc = svcFactory.CreateCallGraphViewService();
+            sc.AddService<ICallGraphViewService>(cgvSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -589,6 +592,17 @@ namespace Reko.Gui.Forms
             //memService.ShowWindow();
         }
 
+        public void ViewCallGraph()
+        {
+            var brSvc = sc.RequireService<IProjectBrowserService>();
+            var program = brSvc.CurrentProgram;
+            if (program != null)
+            {
+                var cgvSvc = sc.RequireService<ICallGraphViewService>();
+                cgvSvc.ShowCallgraph(program);
+            }
+        }
+
         public void ToolsOptions()
         {
             using (var dlg = dlgFactory.CreateUserPreferencesDialog())
@@ -748,6 +762,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileSave:
                 case CmdIds.FileCloseProject:
                 case CmdIds.EditFind:
+                case CmdIds.ViewCallGraph:
                 case CmdIds.ViewFindAllProcedures:
                 case CmdIds.ViewFindStrings:
                     cmdStatus.Status = IsDecompilerLoaded
@@ -817,6 +832,7 @@ namespace Reko.Gui.Forms
 
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); retval = true; break;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
+                case CmdIds.ViewCallGraph: ViewCallGraph(); retval = true; break;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
                 case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 

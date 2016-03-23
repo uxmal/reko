@@ -39,15 +39,15 @@ namespace Reko.Gui.Windows
             this.visited = new HashSet<Procedure>();
         }
 
-        public static Graph Generate(CallGraph cgraph)
+        public static Graph Generate(Program program)
         {
             Graph graph = new Graph();
             var cfgGen = new CallGraphGenerator(graph);
-            foreach (var rootProc in cgraph.EntryPoints)
+            foreach (var rootProc in program.Procedures.Values)
             {
-                cfgGen.Traverse(cgraph, rootProc);
+                cfgGen.Traverse(program.CallGraph, rootProc);
             }
-            graph.Attr.LayerDirection = LayerDirection.LR;
+            graph.Attr.LayerDirection = LayerDirection.TB;
             return graph;
         }
 
@@ -64,7 +64,7 @@ namespace Reko.Gui.Windows
                 Debug.Print("Node {0}", proc.Name);
                 visited.Add(proc);
                 var n = Render(proc);
-                foreach (var pred in cgraph.CallerProcedures(rootProc).Where(p => p != rootProc))
+                foreach (var pred in cgraph.CallerProcedures(proc).Where(p => p != rootProc))
                 {
                     Debug.Print("Edge {0} - {1}", pred.Name, proc.Name);
                     graph.AddEdge(pred.Name, proc.Name);

@@ -24,29 +24,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Windows
 {
-    public interface IProjectBrowserService : ICommandTarget
+    public class CallGraphViewService : ICallGraphViewService
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
+        private IServiceProvider services;
 
-        Program CurrentProgram { get; }
+        public CallGraphViewService(IServiceProvider services)
+        {
+            this.services = services;
+        }
 
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object SelectedObject { get; set; }
-
-
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
+        public void ShowCallgraph(Program program)
+        {
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var frame = uiSvc.FindDocumentWindow(typeof(CallGraph).FullName, program.CallGraph);
+            if (frame == null)
+            {
+                frame = uiSvc.CreateDocumentWindow(
+                    typeof(CallGraph).FullName,
+                    program.CallGraph,
+                    string.Format("{0} {1}", program.Name, Resources.CallGraphTitle),
+                    new CallGraphPane(program));
+            }
+            frame.Show();
+        }
     }
 }

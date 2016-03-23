@@ -26,27 +26,8 @@ using System.Text;
 
 namespace Reko.Gui
 {
-    public interface IProjectBrowserService : ICommandTarget
+    public interface ICallGraphViewService
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
-
-        Program CurrentProgram { get; }
-
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object SelectedObject { get; set; }
-
-
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
+        void ShowCallgraph(Program program);
     }
 }
