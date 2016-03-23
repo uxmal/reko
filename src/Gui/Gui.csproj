@@ -203,6 +203,7 @@
     <Compile Include="SignatureParser.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
     <Compile Include="Windows\ButtonWrapper.cs" />
+    <Compile Include="Windows\CallGraphGenerator.cs" />
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CfgGraphGenerator.cs" />
     <Compile Include="Windows\CodeViewerPane.cs" />

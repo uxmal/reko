@@ -173,6 +173,7 @@ namespace Reko.Arch.X86
                 case Opcode.fmul: EmitCommonFpuInstruction(Operator.FMul, false, false); break;
                 case Opcode.fmulp: EmitCommonFpuInstruction(Operator.FMul, false, true); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
+                case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.frndint: RewriteFUnary("__rndint"); break;
                 case Opcode.frstor: RewriteFrstor(); break;
                 case Opcode.fsave: RewriteFsave(); break;
