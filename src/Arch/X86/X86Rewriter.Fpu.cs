@@ -245,6 +245,16 @@ namespace Reko.Arch.X86
             WriteFpuStack(0);
         }
 
+        private void RewriteFprem()
+        {
+            Expression op1 = FpuRegister(1);
+            Expression op2 = FpuRegister(0);
+            state.ShrinkFpuStack(1);
+            emitter.Assign(FpuRegister(0),
+                emitter.Mod(op2, op1));
+            WriteFpuStack(0);
+        }
+
         private void RewriteFsincos()
         {
             Identifier itmp = frame.CreateTemporary(PrimitiveType.Real64);

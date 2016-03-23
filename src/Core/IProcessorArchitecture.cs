@@ -152,6 +152,14 @@ namespace Reko.Core
 
         Address MakeAddressFromConstant(Constant c);
 
+        /// <summary>
+        /// Provide user options to enable overriding of behaviors.
+        /// </summary>
+        /// <param name="options"></param>
+        void LoadUserOptions(Dictionary<string, object> options);
+
+        Dictionary<string, object> SaveUserOptions();
+
     }
 
     /// <summary>
@@ -225,9 +233,12 @@ namespace Reko.Core
         public abstract FlagGroupStorage GetFlagGroup(uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);
         public abstract string GrfToString(uint grf);
+        public virtual void LoadUserOptions(Dictionary<string, object> options) { }
         public abstract Address MakeAddressFromConstant(Constant c);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public abstract Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
+        public virtual Dictionary<string, object> SaveUserOptions() { return null; }
+
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
     }
 }

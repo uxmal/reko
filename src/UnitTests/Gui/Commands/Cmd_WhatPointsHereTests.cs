@@ -66,10 +66,9 @@ namespace Reko.UnitTests.Gui.Commands
 
         private void Given_Segment(string name, Address address, uint size)
         {
-            imageMap.AddSegment(new ImageSegment(name, address, AccessMode.ReadWriteExecute)
+            imageMap.AddSegment(new ImageSegment(name, address, mem, AccessMode.ReadWriteExecute)
             {
                 Size = size, 
-                MemoryArea = mem,
             });
         }
 

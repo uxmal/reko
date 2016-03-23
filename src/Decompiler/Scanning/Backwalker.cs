@@ -438,7 +438,7 @@ namespace Reko.Scanning
                 // We have [id + C]
                 Stride = 1;
                 DetermineVector(mem, bin.Right);
-                if (host.IsValidAddress(VectorAddress))
+                if (VectorAddress != null && host.IsValidAddress(VectorAddress))
                     return RegisterOf(idLeft);
                 else
                     return null;

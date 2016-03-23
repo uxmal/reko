@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Core
 			Assert.AreEqual(1, seg.Size);
 			
             seg = e[2];
-			Assert.AreEqual(10, seg.Size);
+			Assert.AreEqual(9, seg.Size);
 
             Assert.IsTrue(e.Length == 3);
 		}
@@ -80,8 +80,10 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void Im_Overlaps()
 		{
-			ImageMap im = new ImageMap(Address.SegPtr(0x8000, 0), 40);
-			im.AddSegment(Address.SegPtr(0x8000, 10), "", AccessMode.ReadWrite, 0);
+			ImageMap im = new ImageMap(Address.SegPtr(0x8000, 0));
+            var mem = new MemoryArea(im.BaseAddress, new byte[40]);
+            var seg = new ImageSegment("8000", Address.SegPtr(0x8000, 10), mem, AccessMode.ReadWrite);
+            im.AddSegment(seg);
 		}
 
 		private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
@@ -148,7 +150,16 @@ namespace Reko.UnitTests.Core
             map.MapChanged += (sender, e) => { mapChangedFired = true; };
             map.AddItem(addrBase, new ImageMapItem { DataType = new CodeType() });
             Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
+        }
 
+        [Test]
+        public void Im_AddSegment()
+        {
+            var map = new ImageMap(addrBase);
+            var mem = new MemoryArea(addrBase, new byte[0x4000]);
+            var seg = new ImageSegment("8100", Address.SegPtr(0x8100, 0), mem, AccessMode.ReadWriteExecute);
+            map.AddSegment(seg);
+            Assert.AreEqual(0x3000, seg.Size);
         }
 	}
 }

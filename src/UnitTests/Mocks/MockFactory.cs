@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Mocks
             var mem = new MemoryArea(Address.Ptr32(0x10000000), new byte[1000]);
             program.ImageMap = new ImageMap(
                 mem.BaseAddress,
-                new ImageSegment(".text", mem.BaseAddress, AccessMode.ReadExecute));
+                new ImageSegment(".text", mem, AccessMode.ReadExecute));
 
             loader.Stub(
                 l => l.LoadExecutable(null, null, null)

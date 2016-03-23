@@ -24,6 +24,7 @@ using Reko.Core;
 using System;
 using System.Collections.Generic;
 using Reko.Core.Configuration;
+using System.Diagnostics;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -81,7 +82,13 @@ namespace Reko.ImageLoaders.MzExe
 				imgLoaded.WriteLeUInt16(offset, seg);
 				relocations.AddSegmentReference(offset, seg);
 
-				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+                var segment = new ImageSegment(
+                    seg.ToString("X4"),
+                    Address.SegPtr(seg, 0),
+                    imgLoaded, 
+                    AccessMode.ReadWriteExecute);
+                segment = imageMap.AddSegment(segment);
+                segment.MemoryArea = imgLoaded;
 				--i;
 			}
 		
@@ -92,10 +99,20 @@ namespace Reko.ImageLoaders.MzExe
                 Address.SegPtr(addrStart.Selector.Value, 0),
                 addrStart.Selector.Value.ToString("X4"),
                 AccessMode.ReadWriteExecute, 0);
+            DumpSegments(imageMap);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
                 relocations,
                 new List<Address>());
 		}
+
+        [Conditional("DEBUG")]
+        public void DumpSegments(ImageMap imageMap)
+        {
+            foreach (var seg in imageMap.Segments.Values)
+            {
+                Debug.Print("{0} {1} size:{2}", seg.Name, seg.Address, seg.Size);
+            }
+        }
 	}
 }

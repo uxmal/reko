@@ -38,6 +38,7 @@ namespace Reko.UnitTests.Arch.Intel
     {
         private ServiceContainer sc;
         private X86Disassembler dasm;
+        private X86Options options;
 
         public X86DisassemblerTests()
         {
@@ -50,6 +51,10 @@ namespace Reko.UnitTests.Arch.Intel
             MemoryArea img = new MemoryArea(Address.SegPtr(0xC00, 0), bytes);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(ProcessorMode.Real, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            if (options != null)
+            {
+                dasm.Emulate8087 = options.Emulate8087;
+            }
             return dasm.First();
         }
 
@@ -74,14 +79,24 @@ namespace Reko.UnitTests.Arch.Intel
             return dasm.First();
         }
 
-        private void CreateDisassembler16(MemoryArea image)
+        private void CreateDisassembler16(params byte[] bytes)
+        {
+            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), bytes);
+            CreateDisassembler16(mem);
+        }
+
+        private void CreateDisassembler16(MemoryArea mem)
         {
             dasm = new X86Disassembler(
                 ProcessorMode.Real,
-                image.CreateLeReader(image.BaseAddress),
+                mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
+            if (options != null)
+            {
+                dasm.Emulate8087 = options.Emulate8087;
+            }
         }
 
         private void CreateDisassembler32(MemoryArea image)
@@ -114,6 +129,12 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var instr = Disassemble64(bytes);
             Assert.AreEqual(sExp, instr.ToString());
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            options = null;
         }
 
         [Test]
@@ -665,6 +686,30 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_invalid_les()
         {
             AssertCode64("illegal\t", 0xC4, 0xC0);
+        }
+
+        [Test]
+        public void Dis_x86_emulate_x87_int_39()
+        {
+            options = new X86Options { Emulate8087 = true };
+            CreateDisassembler16(0xCD, 0x39, 0x5E, 0xEA);
+            var instrs = dasm.Take(2)
+                .Select(i => i.ToString())
+                .ToArray();
+            Assert.AreEqual("nop\t", instrs[0]);
+            Assert.AreEqual("fstp\tdouble ptr [bp-16]", instrs[1]);
+        }
+
+        [Test]
+        public void Dis_x86_emulate_x87_int_3C()
+        {
+            options = new X86Options { Emulate8087 = true };
+            CreateDisassembler16(0xCD, 0x3C, 0xDD, 0x06, 0x8B, 0x04);
+            var instrs = dasm.Take(2)
+                .Select(i => i.ToString())
+                .ToArray();
+            Assert.AreEqual("nop\t", instrs[0]);
+            Assert.AreEqual("fld\tdouble ptr es:[048B]", instrs[1]);
         }
     }
 }

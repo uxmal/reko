@@ -127,6 +127,7 @@
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
+    <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
     <Compile Include="IMixedCodeDataViewService.cs" />
@@ -205,6 +206,9 @@
     <Compile Include="SignatureParser.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
     <Compile Include="Windows\ButtonWrapper.cs" />
+    <Compile Include="Windows\CallGraphGenerator.cs" />
+    <Compile Include="Windows\CallGraphPane.cs" />
+    <Compile Include="Windows\CallGraphViewService.cs" />
     <Compile Include="Windows\CfgBlockNode.cs" />
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CfgGraphGenerator.cs" />

@@ -203,6 +203,9 @@ namespace Reko.Gui.Forms
 
             var resEditService = svcFactory.CreateResourceEditorService();
             sc.AddService<IResourceEditorService>(resEditService);
+
+            var cgvSvc = svcFactory.CreateCallGraphViewService();
+            sc.AddService<ICallGraphViewService>(cgvSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -321,12 +324,14 @@ namespace Reko.Gui.Forms
                 var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
                 string archName;
                 string envName;
+                string sAddr;
                 RawFileElement raw = null;
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
                     raw = (RawFileElement)rawFileOption.Value;
                     archName = raw.Architecture;
                     envName = raw.Environment;
+                    sAddr = raw.BaseAddress;
                 }
                 else
                 {
@@ -334,13 +339,13 @@ namespace Reko.Gui.Forms
                     archName = (string)archOption.Value;
                     var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
                     envName = envOption != null? envOption.Name : null;
+                    sAddr = dlg.AddressTextBox.Text.Trim();
                 }
 
                 arch = config.GetArchitecture(archName);
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
                 Address addrBase;
-                    var sAddr = dlg.AddressTextBox.Text.Trim();
                     if (!arch.TryParseAddress(sAddr, out addrBase))
                         throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
                     OpenBinary(dlg.FileName.Text, (f) =>
@@ -589,6 +594,17 @@ namespace Reko.Gui.Forms
             //memService.ShowWindow();
         }
 
+        public void ViewCallGraph()
+        {
+            var brSvc = sc.RequireService<IProjectBrowserService>();
+            var program = brSvc.CurrentProgram;
+            if (program != null)
+            {
+                var cgvSvc = sc.RequireService<ICallGraphViewService>();
+                cgvSvc.ShowCallgraph(program);
+            }
+        }
+
         public void ToolsOptions()
         {
             using (var dlg = dlgFactory.CreateUserPreferencesDialog())
@@ -748,6 +764,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileSave:
                 case CmdIds.FileCloseProject:
                 case CmdIds.EditFind:
+                case CmdIds.ViewCallGraph:
                 case CmdIds.ViewFindAllProcedures:
                 case CmdIds.ViewFindStrings:
                     cmdStatus.Status = IsDecompilerLoaded
@@ -817,6 +834,7 @@ namespace Reko.Gui.Forms
 
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); retval = true; break;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
+                case CmdIds.ViewCallGraph: ViewCallGraph(); retval = true; break;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
                 case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 

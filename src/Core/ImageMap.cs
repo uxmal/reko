@@ -234,35 +234,59 @@ namespace Reko.Core
 
         public ImageSegment AddSegment(ImageSegment segNew)
         {
+            if (segNew.Address.ToString().Contains("17B4")) //$DEBUG
+                segNew.ToString();
             ImageSegment seg;
             if (!TryFindSegment(segNew.Address, out seg))
-			{
-				segments.Add(segNew.Address, segNew);
-                AddItem(segNew.Address, new ImageMapItem(segNew.Size) { DataType = new UnknownType() } );
+            {
+                EnsureSegmentSize(segNew);
+                segments.Add(segNew.Address, segNew);
+                AddItem(segNew.Address, new ImageMapItem(segNew.Size) { DataType = new UnknownType() });
                 MapChanged.Fire(this);
+                Debug.Print("== New segment {0}", segNew.Name);
+                DumpSections();
                 return segNew;
-			}
-			long delta = segNew.Address - seg.Address;
+            }
+            long delta = segNew.Address - seg.Address;
 			Debug.Assert(delta >= 0);
 			if (delta > 0)
 			{
 				// Need to split the segment. //$REVIEW: or do we? x86 segments can overlap.
 
-				var segSplit = new ImageSegment(segNew.Name, segNew.Address, segNew.Access);
+				var segSplit = new ImageSegment(segNew.Name, segNew.Address, segNew.MemoryArea, segNew.Access);
 				segSplit.Size = (uint)(seg.Size - delta);
 				seg.Size = (uint) delta;
-                segments.Add(segNew.Address, segNew);
+                segments.Add(segNew.Address, segSplit);
 
 				// And split any items in the segment
 
-				AddItem(segNew.Address, new ImageMapItem());
+				AddItem(segSplit.Address, new ImageMapItem());
                 MapChanged.Fire(this);
-                return segNew;
-			}
+                Debug.Print("== Split segment into {0} and {1}", seg.Name, segSplit.Name);
+                DumpSections();
+                return segSplit;
+            }
 			return seg;
-		}
+        }
 
-		public void SetAddressSpan(Address addr, uint size)
+        private void EnsureSegmentSize(ImageSegment seg)
+        {
+            Address addrAbove;
+            if (seg.Size == 0)
+            {
+                if (!Segments.TryGetUpperBoundKey(seg.Address, out addrAbove))
+                {
+                    // No segment above this one, consume all remaining space.
+                    seg.Size = (uint)((seg.MemoryArea.BaseAddress - seg.Address) + seg.MemoryArea.Length);
+                }
+                else
+                {
+                    seg.Size = (uint)(addrAbove - seg.Address);
+                }
+            }
+        }
+
+        public void SetAddressSpan(Address addr, uint size)
 		{
 			items.Clear();
 			segments.Clear();
@@ -295,6 +319,8 @@ namespace Reko.Core
 		{
             if (!segments.TryGetLowerBound(addr, out segment))
                 return false;
+            if (segment.Address.ToLinear() == addr.ToLinear())
+                return true;
             return segment.IsInRange(addr);
 		}
 

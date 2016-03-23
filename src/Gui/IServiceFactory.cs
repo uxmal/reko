@@ -54,6 +54,7 @@ namespace Reko.Gui
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IUiPreferencesService CreateUiPreferencesService();
         ILoader CreateLoader();
+        ICallGraphViewService CreateCallGraphViewService();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -157,6 +158,11 @@ namespace Reko.Gui
         public IFileSystemService CreateFileSystemService()
         {
             return new FileSystemServiceImpl();
+        }
+
+        public ICallGraphViewService CreateCallGraphViewService()
+        {
+            return new CallGraphViewService(services);
         }
     }
 }

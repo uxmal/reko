@@ -95,6 +95,7 @@
   <cmd id="ViewMemory" cmdSet="Reko" container="GrpLowLevel">_Memory</cmd>
   <cmd id="ViewDisassembly" cmdSet="Reko" container="GrpLowLevel">_Disassembly</cmd>
   <cmd id="TextEncodingChoose" cmdSet="Reko" container="GrpTextEncoding">_Choose...</cmd>
+  <cmd id="ViewCallGraph" cmdSet="Reko" container="GrpLowLevel">_Call graph</cmd>
   
   <cmd id="OpenLink" cmdSet="Reko" container="OpenLink">_Open</cmd>
   <cmd id="OpenLinkInNewWindow" cmdSet="Reko" container="OpenLinkInNewWindow">Open in ne_w window</cmd>

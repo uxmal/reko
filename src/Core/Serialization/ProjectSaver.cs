@@ -113,10 +113,20 @@ namespace Reko.Core.Serialization
         {
             if (architecture == null)
                 return null;
-            if (string.IsNullOrEmpty(user.Processor))
+            var options = architecture.SaveUserOptions();
+            if (string.IsNullOrEmpty(user.Processor) && options == null)
                 return null;
             else
-                return new ProcessorOptions_v4 { Name = user.Processor };
+            {
+                var doc = new XmlDocument();
+                return new ProcessorOptions_v4 {
+                    Name = user.Processor,
+                    Options = SerializeValue(options, doc)
+                        .ChildNodes
+                        .OfType<XmlElement>()
+                        .ToArray()
+                };
+            }
         }
 
         private PlatformOptions_v4 SerializePlatformOptions(UserData user, IPlatform platform)

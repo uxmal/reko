@@ -69,6 +69,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ISearchResultService srSvc;
         private IDecompiler decompiler;
         private IResourceEditorService resEditSvc;
+        private ICallGraphViewService cgvSvc;
 
 		[SetUp]
 		public void Setup()
@@ -523,6 +524,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             srSvc = MockRepository.GenerateMock<ISearchResultService, IWindowPane>();
             diagnosticSvc = MockRepository.GenerateMock<IDiagnosticsService, IWindowPane>();
             resEditSvc = mr.StrictMock<IResourceEditorService>();
+            cgvSvc = mr.StrictMock<ICallGraphViewService>();
             loader = mr.StrictMock<ILoader>();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
@@ -543,6 +545,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
             svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);
             svcFactory.Stub(s => s.CreateResourceEditorService()).Return(resEditSvc);
+            svcFactory.Stub(s => s.CreateCallGraphViewService()).Return(cgvSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             brSvc.Stub(b => b.Clear());

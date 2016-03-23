@@ -386,7 +386,7 @@ namespace Reko.Core
 			uint newOff = (uint) (uOffset + offset);
 			if (newOff > 0xFFFF)
 			{
-				sel += 0x1000;
+                sel += (ushort)((newOff & ~0xFFFFu) >> 4);
 				newOff &= 0xFFFF;
 			}
 			return new RealSegmentedAddress(sel, (ushort) newOff);

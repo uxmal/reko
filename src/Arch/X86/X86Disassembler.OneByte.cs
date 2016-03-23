@@ -343,7 +343,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.retf,	"Iw"),
 				new SingleByteOpRec(Opcode.retf,	""),
 				new SingleByteOpRec(Opcode.@int,	"3"),
-				new SingleByteOpRec(Opcode.@int,	"Ib"),
+				new InterruptOpRec(Opcode.@int,	"Ib"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.into,	""),
                     new SingleByteOpRec(Opcode.illegal)),

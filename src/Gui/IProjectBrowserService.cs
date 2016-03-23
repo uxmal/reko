@@ -30,10 +30,13 @@ namespace Reko.Gui
     {
         event EventHandler<FileDropEventArgs> FileDropped;
 
+        Program CurrentProgram { get; }
+
         /// <summary>
         /// The currently selected object in the project browser tree.
         /// </summary>
         object SelectedObject { get; set; }
+
 
         /// <summary>
         /// Loads a project into the project browser and starts listening to changes. 

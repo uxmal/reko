@@ -306,7 +306,7 @@ namespace Reko.Core.Serialization
                 {
                     program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
                 }
-                //program.Architecture.LoadUserOptions();       //$TODO
+                program.Architecture.LoadUserOptions(LoadWeaklyTypedOptions(sUser.Processor.Options));
             }
             if (sUser.Procedures != null)
             {
@@ -324,7 +324,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -412,7 +412,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -491,7 +491,7 @@ namespace Reko.Core.Serialization
                 e => ReadItem(e));
         }
 
-        private Dictionary<string, object> LoadPlatformOptions(XmlElement[] options)
+        private Dictionary<string, object> LoadWeaklyTypedOptions(XmlElement[] options)
         {
             if (options == null)
                 return new Dictionary<string, object>();
