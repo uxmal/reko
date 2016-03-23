@@ -483,10 +483,10 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.swapa,  fmt="Ew,r25" },
 
             // 20
-            new OpRec { code=Opcode.ldf,   fmt="Fw,f24", },
+            new OpRec { code=Opcode.ldf,   fmt="Ew,f24", },
             new OpRec { code=Opcode.ldfsr, fmt="Ew,%fsr" },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.lddf,  fmt="Fd,f24" },
+            new OpRec { code=Opcode.lddf,  fmt="Ed,f24" },
             new OpRec { code=Opcode.stf,   fmt ="f24,Fw" },
             new OpRec { code=Opcode.stfsr, fmt="%fsr,Ew" },
             new OpRec { code=Opcode.stdfq, },

@@ -157,4 +157,18 @@ namespace Reko.Arch.Sparc
         }
         #endregion
     }
+
+    public class SparcArchitecture32 : SparcArchitecture
+    {
+        public SparcArchitecture32() : base(PrimitiveType.Word32)
+        {
+        }
+    }
+
+    public class SparcArchitecture64 : SparcArchitecture
+    {
+        public SparcArchitecture64() : base(PrimitiveType.Word64)
+        {
+        }
+    }
 }

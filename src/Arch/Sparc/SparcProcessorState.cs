@@ -35,7 +35,7 @@ namespace Reko.Arch.Sparc
     public class SparcProcessorState : ProcessorState
     {
         private SparcArchitecture arch;
-        private uint[] regs;
+        private ulong[] regs;
         private bool[] valid;
         private uint flags;
         private uint validFlags;
@@ -43,7 +43,7 @@ namespace Reko.Arch.Sparc
         public SparcProcessorState(SparcArchitecture arch)
         {
             this.arch = arch;
-            this.regs = new uint[32];
+            this.regs = new ulong[32];
             this.valid = new bool[32];
         }
 
@@ -78,12 +78,10 @@ namespace Reko.Arch.Sparc
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)

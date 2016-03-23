@@ -524,10 +524,17 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
-                return Address.Ptr32(
-                    ProgramHeaders
-                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    .Min(ph => ph.p_vaddr));
+                if (ProgramHeaders.Count > 0)
+                {
+                    return Address.Ptr32(
+                        ProgramHeaders
+                        .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                        .Min(ph => ph.p_vaddr));
+                }
+                else
+                {
+                    return Address.Ptr32(0x00100000);
+                }
             }
         }
 
@@ -544,11 +551,18 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
-                return Address.Ptr32(
-                    ProgramHeaders
-                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    .Select(ph => ph.p_vaddr + ph.p_pmemsz)
-                    .Max());
+                if (ProgramHeaders.Count != 0)
+                {
+                    return Address.Ptr32(
+                        ProgramHeaders
+                        .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                        .Select(ph => ph.p_vaddr + ph.p_pmemsz)
+                        .Max());
+                }
+                else
+                {
+                    return addrPreferred + this.RawImage.Length;
+                }
             }
         }
 
@@ -559,7 +573,7 @@ namespace Reko.ImageLoaders.Elf
             switch (machineType)
             {
             case EM_NONE: return null; // No machine
-            case EM_SPARC: arch = "sparc"; break;
+            case EM_SPARC: arch = "sparc32"; break;
             case EM_386: arch = "x86-protected-32"; break;
             case EM_X86_64: arch = "x86-protected-64"; break;
             case EM_68K: arch = "m68k"; break;
@@ -746,6 +760,7 @@ namespace Reko.ImageLoaders.Elf
                     break;
                 case EM_MIPS:
                 case EM_ARM:
+                case EM_SPARC:
                     break;
                 default:
                     throw new NotImplementedException();
