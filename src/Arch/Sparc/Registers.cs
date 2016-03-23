@@ -121,6 +121,8 @@ namespace Reko.Arch.Sparc
         private static RegisterStorage[] iRegs;
         private static RegisterStorage[] fRegs;
 
+        private static Dictionary<string, RegisterStorage> mpNameToReg;
+
         static Registers()
         {
             g0 = new RegisterStorage("g0", 0, 0, PrimitiveType.Word32);
@@ -291,6 +293,7 @@ namespace Reko.Arch.Sparc
                 f30,
                 f31,
             };
+            mpNameToReg = iRegs.Concat(fRegs).ToDictionary(k => k.Name, v => v);
         }
 
         public static RegisterStorage GetRegister(uint r)
@@ -306,6 +309,15 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage GetFpuRegister(uint f)
         {
             return fRegs[f];
+        }
+
+        public static RegisterStorage GetRegister(string regName)
+        {
+            RegisterStorage reg;
+            if (mpNameToReg.TryGetValue(regName, out reg))
+                return reg;
+            else
+                return null;
         }
     }
 

@@ -19,7 +19,6 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
@@ -31,16 +30,17 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 using Rhino.Mocks;
+using Reko.Arch.Sparc;
 
 namespace Reko.UnitTests.Environments.SysV
 {
     [TestFixture]
-    public class X86_64ProcedureSerializerTests
+    public class SparcProcedureSerializerTests
     {
         private MockRepository mr;
         private MockFactory mockFactory;
-        private X86ArchitectureFlat64 arch;
-        private X86_64ProcedureSerializer ser;
+        private SparcArchitecture32 arch;
+        private SparcProcedureSerializer ser;
         private SysVPlatform platform;
         private ISerializedTypeVisitor<DataType> deserializer;
 
@@ -49,14 +49,14 @@ namespace Reko.UnitTests.Environments.SysV
         {
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
-            arch = new X86ArchitectureFlat64();
+            arch = new SparcArchitecture32();
             platform = new SysVPlatform(null, arch);
         }
 
         private void Given_ProcedureSerializer()
         {
             this.deserializer = mockFactory.CreateDeserializer();
-            this.ser = new X86_64ProcedureSerializer(arch, deserializer, "");
+            this.ser = new SparcProcedureSerializer(arch, deserializer, "");
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)
@@ -72,27 +72,27 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         [Test]
-        public void SvAmdPs_Serialize()
+        public void SvSparcPs_Serialize()
         {
             Given_ProcedureSerializer();
 
             mr.ReplayAll();
 
             var sig = new ProcedureSignature(
-                new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx")),
+                new Identifier("o0", PrimitiveType.Word32, arch.GetRegister("o0")),
                 new Identifier[] {
-                    new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx"))
+                    new Identifier("o0", PrimitiveType.Word32, arch.GetRegister("o0"))
                 });
 
             SerializedSignature ssig = ser.Serialize(sig);
             Assert.IsNotNull(ssig.ReturnValue);
-            Assert.AreEqual("rbx", ssig.ReturnValue.Name);
+            Assert.AreEqual("o0", ssig.ReturnValue.Name);
             Register_v1 sreg = (Register_v1)ssig.ReturnValue.Kind;
-            Assert.AreEqual("rbx", sreg.Name);
+            Assert.AreEqual("o0", sreg.Name);
         }
 
         [Test]
-        public void SvAmdPs_SerializeProcedure()
+        public void SvSparcPs_SerializeProcedure()
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
@@ -106,14 +106,14 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         [Test]
-        public void SvAmdPs_SerializeProcedureWithSignature()
+        public void SvSparcPs_SerializeProcedureWithSignature()
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
                 Signature = new ProcedureSignature(
-                    new Identifier("rax", PrimitiveType.Word32, arch.GetRegister("rax")),
+                    new Identifier("o0", PrimitiveType.Word32, arch.GetRegister("o0")),
                     new Identifier[] {
-                        new Identifier("arg00", PrimitiveType.Word32, arch.GetRegister("rdi")),
+                        new Identifier("arg00", PrimitiveType.Word32, arch.GetRegister("o0")),
                     })
             };
 
@@ -123,26 +123,7 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
-            Assert.AreEqual("rax", sproc.Signature.ReturnValue.Name);
-        }
-
-        [Test]
-        public void SvAmdPs_DeserializeFpuArgument()
-        {
-            var ssig = new SerializedSignature
-            {
-                Convention = "stdapi",
-                ReturnValue = RegArg(Type("int"), "rax"),
-                Arguments = new Argument_v1[] {
-                    FpuArg(Type("double"), "xmm0")
-                }
-            };
-            Given_ProcedureSerializer();
-
-            mr.ReplayAll();
-
-            var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register int test(Register double xmm0)", sig.ToString("test"));
+            Assert.AreEqual("o0", sproc.Signature.ReturnValue.Name);
         }
 
         private SerializedType Type(string typeName)
@@ -170,7 +151,7 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         [Test]
-        public void SvAmdPs_DeserializeFpuStackReturnValue()
+        public void SvSparcPs_DeserializeFpuStackReturnValue()
         {
             var ssig = new SerializedSignature
             {
@@ -184,15 +165,14 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("xmm0", sig.ReturnValue.Storage.ToString());
+            Assert.AreEqual("Sequence f1:f0", sig.ReturnValue.Storage.ToString());
         }
 
         [Test]
-        public void SvAmdPs_Load_cdecl()
+        public void SvSparcPs_Load_cdecl()
         {
             var ssig = new SerializedSignature
             {
-                Convention = "__cdecl",
                 Arguments = new Argument_v1[] {
                     new Argument_v1
                     {
@@ -209,7 +189,7 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         [Test]
-        public void SvAmdPs_Load_IntArgs()
+        public void SvSparcPs_Load_IntArgs()
         {
             var ssig = new SerializedSignature
             {
@@ -221,32 +201,32 @@ namespace Reko.UnitTests.Environments.SysV
                     },
                     new Argument_v1
                     {
-                        Name = "b2",
+                        Name = "b1",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
                     },
                        new Argument_v1
                     {
-                        Name = "w3",
+                        Name = "w2",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 4 },
                     },
                        new Argument_v1
                     {
-                        Name = "h4",
+                        Name = "h3",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=2 },
                     },
                        new Argument_v1
                     {
-                        Name = "b5",
+                        Name = "b4",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
                     },
                     new Argument_v1
                     {
-                        Name = "i6",
+                        Name = "w5",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 4 },
                     },
                     new Argument_v1
                     {
-                        Name = "b7",
+                        Name = "foo",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
                     }
                 }

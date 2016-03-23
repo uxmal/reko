@@ -116,6 +116,7 @@
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />
     <Compile Include="Core\Services\FileSystemServiceTests.cs" />
     <Compile Include="Environments\SegaGenesis\RomLoaderTests.cs" />
+    <Compile Include="Environments\SysV\SparcProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />

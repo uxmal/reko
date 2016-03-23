@@ -91,7 +91,7 @@ namespace Reko.Arch.Sparc
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.GetRegister(name);
         }
 
         public override RegisterStorage[] GetRegisters()

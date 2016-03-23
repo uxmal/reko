@@ -22,22 +22,116 @@ using System;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.Core.Expressions;
+using System.Collections.Generic;
 
 namespace Reko.Environments.SysV
 {
     public class SparcProcedureSerializer : ProcedureSerializer
     {
+        private ArgumentDeserializer argser;
+
         public SparcProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) : base(arch, typeLoader, defaultConvention)
         {
         }
 
+        public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
+        {
+            string d = ssig.Convention;
+            if (d == null || d.Length == 0)
+                d = DefaultConvention;
+            sig.StackDelta = 0;
+            sig.FpuStackDelta = 0;
+        }
+
         public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
         {
+            if (ss == null)
+                return null;
+            this.argser = new ArgumentDeserializer(this, Architecture, frame, Architecture.PointerType.Size);
+            Identifier ret = null;
+
+            if (ss.ReturnValue != null)
+            {
+                ret = argser.DeserializeReturnValue(ss.ReturnValue);
+            }
+
+            this.ir = 0;
+            var args = new List<Identifier>();
+            if (ss.Arguments != null)
+            {
+                for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                {
+                    var sArg = ss.Arguments[iArg];
+                    var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                    args.Add(arg);
+                }
+            }
+
+            var sig = new ProcedureSignature(ret, args.ToArray());
+            ApplyConvention(ss, sig);
+            return sig;
+        }
+
+        private static string[] iregs = new string[]
+        {
+            "o0","o1","o2","o3","o4","o5",
+        };
+        private int ir;
+
+        public Identifier DeserializeArgument(Argument_v1 sArg, int idx, string convention)
+        {
+            if (sArg.Kind != null)
+            {
+                return argser.Deserialize(sArg, sArg.Kind);
+            }
+            Identifier arg;
+            var dtArg = sArg.Type.Accept(TypeLoader);
+            var prim = dtArg as PrimitiveType;
+            if (dtArg.Size <= 8)
+            {
+                if (this.ir >= iregs.Length)
+                {
+                    arg = argser.Deserialize(sArg, new StackVariable_v1());
+                }
+                else
+                {
+                    arg = argser.Deserialize(sArg, new Register_v1 { Name = iregs[ir] });
+                }
+                ++this.ir;
+                return arg;
+            }
+            //int regsNeeded = (dtArg.Size + 7) / 8;
+            //if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
+            //{
+            //    return argser.Deserialize(sArg, new StackVariable_v1());
+            //}
             throw new NotImplementedException();
         }
 
         public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
+            var dtArg = sArg.Type.Accept(TypeLoader);
+            var ptArg = dtArg as PrimitiveType;
+            if (ptArg != null)
+            {
+                if (ptArg.Domain == Domain.Real)
+                {
+                    var f0 = Architecture.GetRegister("f0");
+                    if (ptArg.Size <= 4)
+                        return f0;
+                    var f1 = Architecture.GetRegister("f1");
+                    return new SequenceStorage(
+                        new Identifier(f1.Name, f1.DataType, f1),
+                        new Identifier(f0.Name, f0.DataType, f0));
+                }
+                return Architecture.GetRegister("o0");
+            }
+            else if (dtArg is Pointer)
+            {
+                return Architecture.GetRegister("o0");
+
+            }
             throw new NotImplementedException();
         }
     }
