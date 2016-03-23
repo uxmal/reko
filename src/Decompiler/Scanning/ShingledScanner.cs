@@ -175,6 +175,8 @@ namespace Reko.Scanning
                 if (a != bad)
                 {
                     y[a - segment.Address] = Data;
+                    // Destination can't be a call destination.
+                    possibleCallDestinationTallies.Remove(a);
                 }
             }
             return y;
@@ -204,9 +206,9 @@ namespace Reko.Scanning
         /// that address
         /// </summary>
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
-        public Dictionary<ImageSegment, byte[]> GetPossiblePointerTargets()
+        public Dictionary<ImageSegment, int[]> GetPossiblePointerTargets()
         {
-            var targetMap = program.ImageMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
+            var targetMap = program.ImageMap.Segments.ToDictionary(s => s.Value, s => new int[s.Value.ContentSize]);
             foreach (var seg in program.ImageMap.Segments.Values)
             {
                 foreach (var pointer in GetPossiblePointers(seg))
@@ -215,11 +217,9 @@ namespace Reko.Scanning
                     if (program.ImageMap.TryFindSegment(pointer, out segPointee) &&
                         segPointee.IsInRange(pointer))
                     {
-                        
                         int segOffset = (int)(pointer - segPointee.Address);
                         int hits = targetMap[segPointee][segOffset];
-                        if (hits < 255)    // Not saturated!
-                            targetMap[segPointee][segOffset] = (byte)(hits + 1);
+                        targetMap[segPointee][segOffset] = hits + 1;
                         if (!this.possiblePointerTargetTallies.TryGetValue(pointer, out hits))
                             hits = 0;
                         this.possiblePointerTargetTallies[pointer] = hits;
@@ -292,10 +292,11 @@ namespace Reko.Scanning
 
         public IEnumerable<Address> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
         {
-            var addrs = from addr in this.possibleCallDestinationTallies
-                    orderby addr.Value descending
-                    where IsPossibleExecutableCodeDestination(addr.Key, map)
-                    select addr.Key;
+            var addrs = 
+                from addr in this.possibleCallDestinationTallies
+                orderby addr.Value descending
+                where IsPossibleExecutableCodeDestination(addr.Key, map)
+                select addr.Key;
             return addrs;
         }
 
