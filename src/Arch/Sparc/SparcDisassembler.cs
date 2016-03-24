@@ -474,23 +474,23 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.stda, fmt="r25,Ad" },
 
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.ldsba,   fmt="r25,Eb" },
-            new OpRec { code=Opcode.ldsha,   fmt="r25,Eh" },
+            new OpRec { code=Opcode.ldsba,   fmt="r25,Ab" },
+            new OpRec { code=Opcode.ldsha,   fmt="r25,Ah" },
             new OpRec { code=Opcode.illegal  },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.ldstuba, fmt="Eb,r25"},
+            new OpRec { code=Opcode.ldstuba, fmt="Ab,r25"},
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.swapa,  fmt="Ew,r25" },
+            new OpRec { code=Opcode.swapa,  fmt="Aw,r25" },
 
             // 20
-            new OpRec { code=Opcode.ldf,   fmt="Ew,f24", },
-            new OpRec { code=Opcode.ldfsr, fmt="Ew,%fsr" },
+            new OpRec { code=Opcode.ldf,   fmt="Mw,f24", },
+            new OpRec { code=Opcode.ldfsr, fmt="Mw,%fsr" },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.lddf,  fmt="Ed,f24" },
-            new OpRec { code=Opcode.stf,   fmt ="f24,Fw" },
-            new OpRec { code=Opcode.stfsr, fmt="%fsr,Ew" },
+            new OpRec { code=Opcode.lddf,  fmt="Md,f24" },
+            new OpRec { code=Opcode.stf,   fmt ="f24,Mw" },
+            new OpRec { code=Opcode.stfsr, fmt="%fsr,Mw" },
             new OpRec { code=Opcode.stdfq, },
-            new OpRec { code=Opcode.stdf, },
+            new OpRec { code=Opcode.stdf, fmt= "f24,Md" },
 
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.illegal, },
@@ -533,7 +533,7 @@ namespace Reko.Arch.Sparc
         {
             public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 4) & 0x1FF].Decode(dasm, wInstr);
+                return fpOprecs[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
             }
         }
 

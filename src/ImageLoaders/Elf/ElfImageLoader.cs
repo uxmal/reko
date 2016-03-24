@@ -644,7 +644,7 @@ namespace Reko.ImageLoaders.Elf
 
         public void Dump(TextWriter writer)
         {
-#if NOT
+#if !NOT
             writer.WriteLine("Entry: {0:X}", Header32.e_entry);
             writer.WriteLine("Sections:");
             foreach (var sh in SectionHeaders)

@@ -91,19 +91,23 @@ namespace Reko.Arch.Sparc
                 case Opcode.bn: RewriteBranch(Constant.False()); break;
                 case Opcode.bne: RewriteBranch(emitter.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
                 case Opcode.be: RewriteBranch(emitter.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
-//                    Z
-//case Opcode.bg   not (Z or (N xor V))
-//case Opcode.ble  Z or (N xor V)
-//case Opcode.bge  not (N xor V)
-//case Opcode.bl   N xor V
-//case Opcode.bgu  not (C or Z)
-//case Opcode.bleu (C or Z)
-//case Opcode.bcc  not C
-//case Opcode.bcs   C
-//case Opcode.bpos not N
-//case Opcode.bneg N
-//case Opcode.bvc  not V
-//case Opcode.bvs  V
+                case Opcode.bg: RewriteBranch(emitter.Test(ConditionCode.GT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Opcode.bge: RewriteBranch(emitter.Test(ConditionCode.GE, Grf(FlagM.NF | FlagM.VF))); break;
+                case Opcode.bgu: RewriteBranch(emitter.Test(ConditionCode.UGE, Grf(FlagM.CF | FlagM.ZF))); break;
+                case Opcode.bl: RewriteBranch(emitter.Test(ConditionCode.LT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Opcode.ble: RewriteBranch(emitter.Test(ConditionCode.LE, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Opcode.bleu: RewriteBranch(emitter.Test(ConditionCode.ULE, Grf(FlagM.CF | FlagM.ZF))); break;
+                case Opcode.bcc: RewriteBranch(emitter.Test(ConditionCode.UGE, Grf(FlagM.CF))); break;
+                case Opcode.bcs: RewriteBranch(emitter.Test(ConditionCode.ULT, Grf(FlagM.CF))); break;
+                //                    Z
+                //case Opcode.bgu  not (C or Z)
+                //case Opcode.bleu (C or Z)
+                //case Opcode.bcc  not C
+                //case Opcode.bcs   C
+                //case Opcode.bpos not N
+                //case Opcode.bneg N
+                //case Opcode.bvc  not V
+                //case Opcode.bvs  V
 
                 case Opcode.call: RewriteCall(); break;
                 case Opcode.fbne: RewriteBranch(emitter.Test(ConditionCode.NE, Grf(FlagM.LF | FlagM.GF))); break;
@@ -128,18 +132,27 @@ namespace Reko.Arch.Sparc
                 case Opcode.fitoq: RewriteFitoq(); break;
                 case Opcode.fitos: RewriteFitos(); break;
                 case Opcode.jmpl: RewriteJmpl(); break;
+                case Opcode.ld: RewriteLoad(PrimitiveType.Word32); break;
                 case Opcode.ldsb: RewriteLoad(PrimitiveType.SByte); break;
+                case Opcode.ldsh: RewriteLoad(PrimitiveType.Int16); break;
+                case Opcode.ldub: RewriteLoad(PrimitiveType.Byte); break;
+                case Opcode.lduh: RewriteLoad(PrimitiveType.Word16); break;
                 case Opcode.mulscc: RewriteMulscc(); break;
                 case Opcode.or: RewriteAlu(Operator.Or); break;
                 case Opcode.orcc: RewriteAluCc(Operator.Or); break;
                 case Opcode.rett: RewriteRett(); break;
+                case Opcode.save: RewriteSave(); break;
                 case Opcode.sethi: RewriteSethi(); break;
                 case Opcode.sdiv: RewriteAlu(Operator.SDiv); break;
                 case Opcode.sdivcc: RewriteAlu(Operator.SDiv); break;
                 case Opcode.sll: RewriteAlu(Operator.Shl); break;
                 case Opcode.smul: RewriteAlu(Operator.SMul); break;
                 case Opcode.smulcc: RewriteAlu(Operator.SMul); break;
+                case Opcode.stb: RewriteStore(PrimitiveType.Byte); break;
                 case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
+                case Opcode.st: RewriteStore(PrimitiveType.Word32); break;
+                case Opcode.sub: RewriteAlu(Operator.ISub); break;
+                case Opcode.subcc: RewriteAluCc(Operator.ISub); break;
                 case Opcode.ta: RewriteTrap(Constant.True()); break;
                 case Opcode.tn: RewriteTrap(Constant.False()); break;
                 case Opcode.tne: RewriteTrap(emitter.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;

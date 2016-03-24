@@ -130,7 +130,10 @@ namespace Reko.Environments.SysV
             else if (dtArg is Pointer)
             {
                 return Architecture.GetRegister("o0");
-
+            }
+            else if (dtArg.Size <= this.Architecture.WordWidth.Size)
+            {
+                return Architecture.GetRegister("o0");
             }
             throw new NotImplementedException();
         }

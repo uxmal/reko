@@ -71,9 +71,17 @@ namespace Reko.Arch.Sparc
                 return Constant.Invalid;
         }
 
-        public override void SetRegister(RegisterStorage r, Constant v)
+        public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            throw new NotImplementedException();
+            if (v.IsValid)
+            {
+                valid[reg.Number] = false;
+            }
+            else
+            {
+                valid[reg.Number] = true;
+                regs[reg.Number] = v.ToUInt64();
+            }
         }
 
         public override void SetInstructionPointer(Address addr)
@@ -86,12 +94,11 @@ namespace Reko.Arch.Sparc
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnAfterCall(ProcedureSignature sigCallee)
